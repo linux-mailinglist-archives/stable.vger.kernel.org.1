@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-212877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCn9MkyyfGmbOQIAu9opvQ
-	(envelope-from <stable+bounces-212877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:29:48 +0100
+	id qM8uGKqyfGmbOQIAu9opvQ
+	(envelope-from <stable+bounces-212878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:31:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B28BB058
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:29:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E771ABB094
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D514B3007B98
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 13:29:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C423302DF48
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 13:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0BD2E4258;
-	Fri, 30 Jan 2026 13:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945E42E6CDE;
+	Fri, 30 Jan 2026 13:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UOFRnrPz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b98T5xrB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEB72E03F5;
-	Fri, 30 Jan 2026 13:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3E82D7395;
+	Fri, 30 Jan 2026 13:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769779782; cv=none; b=G+9W2pz8ohSsR6sEvunGu0FaqkeifkHBjMCnmNpg/LYxb2wOeefMviEqO3A2XerjZ5HGEtAUB1IIvxU05K/zfEVoLTZn9yzxfKgvu+sIjQHyHyCJq6AyT8Dsw1ZpY6jmHIinmE9kX2g6pN8e8GWTbafZ0Q0PzpmTX+kXdpO3z7I=
+	t=1769779791; cv=none; b=BIeLD2/nBOELh8KREATIOJsNRvwZeK6IPN0f2ULHc8veDGYuYZapWRNosDzxttGILtO5Z9BQUbbihBpKusu2Oqi8UoPrZOV0+IsC7OLxtinDcA8jfOsmr/6IlaQvRkYU4K/JMgegZx7LIzDOeeAOhvvHBRBolZnsag+y6b1NUN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769779782; c=relaxed/simple;
-	bh=KYUpUdrzugPsCtS0tUswQI3r8Uf6rPUv7lph+Wn/z4Q=;
+	s=arc-20240116; t=1769779791; c=relaxed/simple;
+	bh=Rr8YWcdvf+lD4/sci2RgBkuBudxzQXyLEVraa7BMbgo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rOE4YSIPGHvEOwSqnKP1Xb4M9zMhkmNzDfzkjvcdyNnWilT7ojG546XbBLvmLW6LzPoaB93A1XVmIMzTQC1BK6M6awz8rIMLSWCQlLb182K77eWhb9EsJWNE0lR5AeFM5l/58WgOWA5WU9qDwYTa6oFP/eWF91Pm3p5J0Dl1kTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UOFRnrPz; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version:Content-Type; b=daBOKi5VwGt3jyTN4fag35kp8B+n0uonUs4wrJ+aVQSR0XOVIy2GoY58Vom/MH6Zvjxtj3WU+JdjukIh6r2UNym7MGblay14cug0Zyh7TiEqi6zh/X0bOpejdARCovdzRS1lBrYlbQKVFjOYfbapYKHdLAgGyitC8Q7/vegwvpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b98T5xrB; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769779781; x=1801315781;
+  t=1769779790; x=1801315790;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KYUpUdrzugPsCtS0tUswQI3r8Uf6rPUv7lph+Wn/z4Q=;
-  b=UOFRnrPzLH9K2zb6J5zJwWhVZBmmBMWnBru9uXrM7yLOeB/mRt1sOg9E
-   /S+c/oZ/IyfB4XEuMJrlgZFpxhFnmOQIyOpE9n3nYRHIncaEGPu8K6u8w
-   u3EstV+lWcDReUkck6M181Of6fZg5aRPPLKXy0pmg2cuRcF61CyBk/jwE
-   rG6QrSObTwtn5LOPOXBgq8MInhri1HfV3eBJkmX84iFrtWN4JOwmBDN1r
-   FJAhcpmLpXfAba0iQV+CsCXzsNv2wvxlxy7o1NchaVCFfiWkAaryH3dE3
-   CjDZvL6g73YAOFIudNcRI/a6yERpu0+cl8nRp6o7W45AeKmRCoupcxMkS
-   g==;
-X-CSE-ConnectionGUID: YOBeIRqbRvKeKGKStXajSA==
-X-CSE-MsgGUID: I4oIrOq8RzyUdaFeS/gfzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="74882393"
+  bh=Rr8YWcdvf+lD4/sci2RgBkuBudxzQXyLEVraa7BMbgo=;
+  b=b98T5xrBVhwWyeII6jHxUgtqN4Kj8ZKbD8UnPVLnz8uAoTmGtbb2WtuH
+   CB1FBXSFv5j7Iv+wQuTFe+j+vc6dtnvL/4Bx3ITCGQtZCT7AutbdXQiGj
+   Np9wvZIhmgBG2bq7ItvWDpe4caObNUEzjVOxKAjoEUA5/9uElt3NiSwr7
+   AmOiAU7zYKPBTzl65KvAXW9WeFRwuD3uwL8DYqO0OwpJN3M1k88tziRXK
+   FlPqaiFccDcZemCBWsDeb5msUUl2MWi47P0M2ELpYacOHHT9Twh14TZ7H
+   JKqL4rbjrdeh5wvsSJ/uEP14PwroirTTTOYmC1HOKJETse3fv8Yvez1wz
+   A==;
+X-CSE-ConnectionGUID: QfqEUWwSShesxwkysB8keQ==
+X-CSE-MsgGUID: mY8JCVTvTJigH4x4/1YLZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70230240"
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="74882393"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:40 -0800
-X-CSE-ConnectionGUID: CFOk6NZVTqCOZRA1mqFPfA==
-X-CSE-MsgGUID: AEZI67+7QfWZbdgfUkKV1g==
+   d="scan'208";a="70230240"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:49 -0800
+X-CSE-ConnectionGUID: 0XX7hsOpQeOPtsdvbBtIYg==
+X-CSE-MsgGUID: Acdj8ykhTCiD50VyEEqJ3g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="209103803"
+   d="scan'208";a="209271598"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.54])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:36 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:45 -0800
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Slaby <jirislaby@kernel.org>,
@@ -68,14 +68,14 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	qianfan Zhao <qianfanguijin@163.com>,
 	Adriana Nicolae <adriana@arista.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	linux-kernel@vger.kernel.org
 Cc: "Bandal, Shankar" <shankar.bandal@intel.com>,
 	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 3/7] serial: 8250: Add serial8250_handle_irq_locked()
-Date: Fri, 30 Jan 2026 15:28:53 +0200
-Message-Id: <20260130132857.13124-4-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v3 4/7] serial: 8250_dw: Rework dw8250_handle_irq() locking and IIR handling
+Date: Fri, 30 Jan 2026 15:28:54 +0200
+Message-Id: <20260130132857.13124-5-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260130132857.13124-1-ilpo.jarvinen@linux.intel.com>
 References: <20260130132857.13124-1-ilpo.jarvinen@linux.intel.com>
@@ -93,18 +93,18 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212877-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212878-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,linux.intel.com,163.com,arista.com];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
@@ -113,21 +113,29 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A1B28BB058
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,linux.intel.com:mid]
+X-Rspamd-Queue-Id: E771ABB094
 X-Rspamd-Action: no action
 
-8250_port exports serial8250_handle_irq() to HW specific 8250 drivers.
-It takes port's lock within but a HW specific 8250 driver may want to
-take port's lock itself, do something, and then call the generic
-handler in 8250_port but to do that, the caller has to release port's
-lock for no good reason.
+dw8250_handle_irq() takes port's lock multiple times with no good
+reason to release it in between and calls serial8250_handle_irq()
+that also takes port's lock.
 
-Introduce serial8250_handle_irq_locked() which a HW specific driver can
-call while already holding port's lock.
+Take port's lock only once in dw8250_handle_irq() and use
+serial8250_handle_irq_locked() to avoid releasing port's lock in
+between.
 
-As this is new export, put it straight into a namespace (where all 8250
-exports should eventually be moved).
+As IIR_NO_INT check in serial8250_handle_irq() was outside of port's
+lock, it has to be done already in dw8250_handle_irq().
+
+DW UART can, in addition to IIR_NO_INT, report BUSY_DETECT (0x7) which
+collided with the IIR_NO_INT (0x1) check in serial8250_handle_irq()
+(because & is used instead of ==) meaning that no other work is done by
+serial8250_handle_irq() during an BUSY_DETECT interrupt.
+
+This allows reorganizing code in dw8250_handle_irq() to do both
+IIR_NO_INT and BUSY_DETECT handling right at the start simplifying
+the logic.
 
 Tested-by: "Bandal, Shankar" <shankar.bandal@intel.com>
 Tested-by: "Murthy, Shanth" <shanth.murthy@intel.com>
@@ -135,79 +143,102 @@ Cc: stable@vger.kernel.org
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/tty/serial/8250/8250_port.c | 24 ++++++++++++++++--------
- include/linux/serial_8250.h         |  1 +
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c | 37 ++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index f7a3c5555204..bc223eb1f474 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -18,6 +18,7 @@
- #include <linux/irq.h>
- #include <linux/console.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/lockdep.h>
- #include <linux/sysrq.h>
- #include <linux/delay.h>
- #include <linux/platform_device.h>
-@@ -1782,20 +1783,16 @@ static bool handle_rx_dma(struct uart_8250_port *up, unsigned int iir)
- }
- 
- /*
-- * This handles the interrupt from one port.
-+ * Context: port's lock must be held by the caller.
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 7500b1ff1ac1..964750d17186 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -9,6 +9,9 @@
+  * LCR is written whilst busy.  If it is, then a busy detect interrupt is
+  * raised, the LCR needs to be rewritten and the uart status register read.
   */
--int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
-+void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	struct tty_port *tport = &port->state->port;
- 	bool skip_rx = false;
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -40,6 +43,8 @@
+ #define RZN1_UART_RDMACR 0x110 /* DMA Control Register Receive Mode */
+ 
+ /* DesignWare specific register fields */
++#define DW_UART_IIR_IID			GENMASK(3, 0)
++
+ #define DW_UART_MCR_SIRE		BIT(6)
+ 
+ /* Renesas specific register fields */
+@@ -312,7 +317,19 @@ static int dw8250_handle_irq(struct uart_port *p)
+ 	bool rx_timeout = (iir & 0x3f) == UART_IIR_RX_TIMEOUT;
+ 	unsigned int quirks = d->pdata->quirks;
+ 	unsigned int status;
 -	unsigned long flags;
- 	u16 status;
- 
--	if (iir & UART_IIR_NO_INT)
--		return 0;
--
--	uart_port_lock_irqsave(port, &flags);
-+	lockdep_assert_held_once(&port->lock);
- 
- 	status = serial_lsr_in(up);
- 
-@@ -1828,8 +1825,19 @@ int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
- 		else if (!up->dma->tx_running)
- 			__stop_tx(up);
- 	}
-+}
-+EXPORT_SYMBOL_NS_GPL(serial8250_handle_irq_locked, "SERIAL_8250");
- 
--	uart_unlock_and_check_sysrq_irqrestore(port, flags);
-+/*
-+ * This handles the interrupt from one port.
-+ */
-+int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
-+{
-+	if (iir & UART_IIR_NO_INT)
++
++	switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
++	case UART_IIR_NO_INT:
 +		return 0;
 +
-+	guard(uart_port_lock_irqsave)(port);
-+	serial8250_handle_irq_locked(port, iir);
++	case UART_IIR_BUSY:
++		/* Clear the USR */
++		serial_port_in(p, d->pdata->usr_reg);
++
++		return 1;
++	}
++
++	guard(uart_port_lock_irqsave)(p);
  
- 	return 1;
+ 	/*
+ 	 * There are ways to get Designware-based UARTs into a state where
+@@ -325,20 +342,15 @@ static int dw8250_handle_irq(struct uart_port *p)
+ 	 * so we limit the workaround only to non-DMA mode.
+ 	 */
+ 	if (!up->dma && rx_timeout) {
+-		uart_port_lock_irqsave(p, &flags);
+ 		status = serial_lsr_in(up);
+ 
+ 		if (!(status & (UART_LSR_DR | UART_LSR_BI)))
+ 			serial_port_in(p, UART_RX);
+-
+-		uart_port_unlock_irqrestore(p, flags);
+ 	}
+ 
+ 	/* Manually stop the Rx DMA transfer when acting as flow controller */
+ 	if (quirks & DW_UART_QUIRK_IS_DMA_FC && up->dma && up->dma->rx_running && rx_timeout) {
+-		uart_port_lock_irqsave(p, &flags);
+ 		status = serial_lsr_in(up);
+-		uart_port_unlock_irqrestore(p, flags);
+ 
+ 		if (status & (UART_LSR_DR | UART_LSR_BI)) {
+ 			dw8250_writel_ext(p, RZN1_UART_RDMACR, 0);
+@@ -346,17 +358,9 @@ static int dw8250_handle_irq(struct uart_port *p)
+ 		}
+ 	}
+ 
+-	if (serial8250_handle_irq(p, iir))
+-		return 1;
+-
+-	if ((iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
+-		/* Clear the USR */
+-		serial_port_in(p, d->pdata->usr_reg);
++	serial8250_handle_irq_locked(p, iir);
+ 
+-		return 1;
+-	}
+-
+-	return 0;
++	return 1;
  }
-diff --git a/include/linux/serial_8250.h b/include/linux/serial_8250.h
-index 01efdce0fda0..a95b2d143d24 100644
---- a/include/linux/serial_8250.h
-+++ b/include/linux/serial_8250.h
-@@ -195,6 +195,7 @@ void serial8250_do_set_mctrl(struct uart_port *port, unsigned int mctrl);
- void serial8250_do_set_divisor(struct uart_port *port, unsigned int baud,
- 			       unsigned int quot);
- int fsl8250_handle_irq(struct uart_port *port);
-+void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir);
- int serial8250_handle_irq(struct uart_port *port, unsigned int iir);
- u16 serial8250_rx_chars(struct uart_8250_port *up, u16 lsr);
- void serial8250_read_char(struct uart_8250_port *up, u16 lsr);
+ 
+ static void dw8250_clk_work_cb(struct work_struct *work)
+@@ -858,6 +862,7 @@ static struct platform_driver dw8250_platform_driver = {
+ 
+ module_platform_driver(dw8250_platform_driver);
+ 
++MODULE_IMPORT_NS("SERIAL_8250");
+ MODULE_AUTHOR("Jamie Iles");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Synopsys DesignWare 8250 serial port driver");
 -- 
 2.39.5
 
