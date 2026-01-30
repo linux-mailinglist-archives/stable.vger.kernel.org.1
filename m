@@ -1,191 +1,197 @@
-Return-Path: <stable+bounces-212922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOI9HTc4fWlMQwIAu9opvQ
-	(envelope-from <stable+bounces-212922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 00:01:11 +0100
+	id KIwbA0o8fWl5RAIAu9opvQ
+	(envelope-from <stable+bounces-212923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 00:18:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E6ABF49E
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 00:01:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD50BF57B
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 00:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4138300B3CB
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 23:01:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C9FF930065CE
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 23:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1763446B5;
-	Fri, 30 Jan 2026 23:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C3036A037;
+	Fri, 30 Jan 2026 23:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R74TAEZm"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="h2oOv/wf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F0435B654
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 23:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E780A1EB5F8;
+	Fri, 30 Jan 2026 23:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769814067; cv=none; b=it4qcWhXKh+OhvVL8HceurdplK0QkMzn79Htsuj7iCJUZvGLQK1P2hDg4J34wsoT1moYTltqwZnFpnHxs9j6m3njGO6+lJLUGRQZc9FgapWo1gO/WORjTpS7s8J5EMsEsNLtIatuvBtjFPYzObQsv26VXsdP3y04Ph7Cazxz6a4=
+	t=1769815110; cv=none; b=qnXfodr2QxrAwOgqJuoTUvHThDzrTWuY+wfMDWUpHr1/BVHzAEgXlJuYK43VVdY4eIz2Qnz1BVolYcYHulKOgmaTIKLqnMQsO//TEE0QaHBcz1gai+BtnOJlf7exbweqbQL4Tv9yRg4ECGcFmyJo6pVBxHSiG4qQzmcYP+EiZb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769814067; c=relaxed/simple;
-	bh=YcpEfZQTsm6x4i7YQGBxoxQHFpqNqiq87Wo3LOjlTvg=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=f27F4Pxaze7CcMcaL0qWTSxAC18xVKtp19U7L0EwSNjIOI79+o8geYtyeYwU62kZfh1tfz5AcWZ6lHixFnj55et+MV2HXhcOwIRHLOcjcDkAPT/l0Bwz5FeY6h56RhOeBVDyefUjAo3bamc2nRGeD6n+htUK3IoI2zjLquRA1X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R74TAEZm; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b8838339fc6so490340166b.0
-        for <stable@vger.kernel.org>; Fri, 30 Jan 2026 15:01:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769814063; x=1770418863; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XpzJMKrnIvJPiY74TgzeTlKt0Hvq5aWJIdiYlnsoQHE=;
-        b=R74TAEZmkgJ1rKpOVAEjLFVYCN23nTlfoMmnRSerH7dbBxhE1evlOo4YBkD7/aBGKB
-         QsGOPIeAWI2pgi8bg5DvObR0RBEn92hnkqLkwWERim/3HlRvNToIhqGI3h5vWISJDEbu
-         YIq8BrKsP2ZHiVFY/FKBpoBxh4OJl104Dj3oUb7OrUqlomWTIUsbZSPvFnsJJjC+jcr0
-         uYDRIP9jDjkIuMgfCzDTfKblDDVbvRWIZZ6EPDCCXdPFGynNTLzTLBxqjtngc7kKZdid
-         QuugyDY6DPrsEu+aUYJdeOYGCIxLwJQsJpPUHy5UUMGbrlJ0/GZrKGDvWByuzEIj1kTP
-         gEEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769814063; x=1770418863;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XpzJMKrnIvJPiY74TgzeTlKt0Hvq5aWJIdiYlnsoQHE=;
-        b=uvOQ2Hb29EU+qphH2k4SEabFUk8HTC4Cv0Mn5W4l8GbekIGg+QTKaPd3ijG47bWIOV
-         ulrDxfJAvQfNro+RLmQtjS1o/lp5iDyPBYWPJFUff2PqoI1e2aJmP/yIxvoqCJalzdGa
-         RWS9tNW7w9E4qE9pcfQ7sGeRVWQU1DVO/YhJHmEyQXBANM8XxWJOvtR0TGmetMsUe6CD
-         FPq/RZvpMJpwBfGV3WmBD9iHFyiPJj68w7W48jIs/2o0UP8hSKKF37wfIbxpmsQDa9jJ
-         lhBeQzGv0JgbxRmwL+cJXnewe+lthNgwXFqF510s8T9ll+R4eqBreMlHIi5xsc5BJraK
-         xQTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXckywtPZdaRYTwT8oIX2sSsZtbURKjRWjhifik8Xz2BbL5tX5hbx1ols86PXd8c1N8R+6WII=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN6zRsA9qmh2LIqI+kTEen9Gxk2ceEb+ARIyP+jKxUfL36KVlo
-	G8Y/hg+KFEhotYXpa03KPjRRb2TBdnKxa6DN/fsPyzfLIGoIXzINlmBo
-X-Gm-Gg: AZuq6aKu5lM7QTXoFtuUJI5WgLpVvRavUakduypKF/RsrnZDS0sRpIiUHtLSWGDKYs1
-	0+HaZevRHu5gu3SbG/X4AuiewVdDbJybf3hqVmIEioE2wTr11BuaSOiswamxH+30t55VplcQ2Aq
-	IU/aGErbubN3MSbDdt8OXWCL6jQ4GNUp0sIW17iKRlVz8KaIovU4HF2dKExGaq5FO7G30mg2y6D
-	ZhgWdxv9uVaksOlPMD4OWe65iCohaEhpg4WsXZ1icDj/q+OvbGqLzOMKGTYpHcR2glsM7MgI2pi
-	FjjR8zwD6stVdwWjuV8x5CuEoTgaI2Ztr1eKoi2VF0wAFuIDUNB4LPZcCujqFi633ZKEDBOIFrd
-	NLl9PpAclIEhtQyeEjVO10vKrdrqu2+7QfbD3lQQd3qMIuawHTQMbts0RFaS7MIBvmjw/lIshtB
-	j+Ak16fiRdEA==
-X-Received: by 2002:a17:907:2d0e:b0:b88:1e2:ed49 with SMTP id a640c23a62f3a-b8dff22f549mr298811466b.8.1769814062665;
-        Fri, 30 Jan 2026 15:01:02 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8e0a5a3b1asm152556866b.57.2026.01.30.15.01.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 30 Jan 2026 15:01:01 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	gavinguo@igalia.com,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared thp
-Date: Fri, 30 Jan 2026 23:00:58 +0000
-Message-Id: <20260130230058.11471-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+	s=arc-20240116; t=1769815110; c=relaxed/simple;
+	bh=t6+FD63TBEjAF4loU6XF4HOpBwGsFUNv91UC8x59JYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fu6RWOQT/UBsFk9sblbb9zf4CtSz5jwqaCk1Si2axSLjhLFnrt6XslBK2x/uSO5LDBGf77pF6CoajC0N72/F74AjQXHaCA130zmLlP4W9UwhnbKgi7OaklrRe7Z0EdBVrgEvUvquKx6PXfWL/pc9xdzNq9GBJg3dZt0v3qNgSzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=h2oOv/wf; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=6O1mYVG2C4caxIEKCFEl8cUKL+tPPC5+mqnQqr+mWek=; b=h2oOv/wf+Gc10WkF1rp6lpKhkx
+	REDyin4qfKyGMKAcdYmyjQRWX+VrSfwR4eXd8S2FNWlADZqsKpnxN7EvCdHc8CCZMwbNlODRRUqBj
+	V5U+9vU+B7KisVoQ7uYed0oa+vWVk0Kq636TjCG7kO6S1Pchuxw0YZNWtk50oIw/VEjd5R/oHVwg4
+	V4/CUHugHHoryEUoLPQSjfboedENzshD0dfK61pSZkzolTxa9WB2kLMBpjHNW2jd0R8aDCgwqzRHD
+	4Uw/6WH8KgIZ5wEXi17F41tNvBNsKBlrj08GiHFqQXWU1oOPozjg3NZmHoQIHPRKbXbZRPwDonUCe
+	2Uz7VkBw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vlxku-000000025sf-22tZ;
+	Fri, 30 Jan 2026 23:18:24 +0000
+Message-ID: <70955fc0-84c0-440f-85ba-2d97418ca827@infradead.org>
+Date: Fri, 30 Jan 2026 15:18:22 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kbuild: Do not run kernel-doc when building external
+ modules
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Rong Zhang
+ <i@rong.moe>, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+References: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-212922-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kvack.org,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212923-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rdunlap@infradead.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,huawei];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,igalia.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: D1E6ABF49E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,infradead.org:dkim,infradead.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9BD50BF57B
 X-Rspamd-Action: no action
 
-Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-split_huge_pmd_locked()") return false unconditionally after
-split_huge_pmd_locked() which may fail early during try_to_migrate() for
-shared thp. This will lead to unexpected folio split failure.
 
-One way to reproduce:
 
-    Create an anonymous thp range and fork 512 children, so we have a
-    thp shared mapped in 513 processes. Then trigger folio split with
-    /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
-    order 0.
+On 1/30/26 1:37 PM, Nathan Chancellor wrote:
+> After commit 778b8ebe5192 ("docs: Move the python libraries to
+> tools/lib/python"), building an external module with any value of W=
+> against the output of install-extmod-build fails with:
+> 
+>   $ make -C /usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build M=$PWD W=1
+>   make: Entering directory '/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build'
+>   make[1]: Entering directory '...'
+>     CC [M] ...
+>   Traceback (most recent call last):
+>     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 339, in <module>
+>       main()
+>       ~~~~^^
+>     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 295, in main
+>       from kdoc.kdoc_files import KernelFiles             # pylint: disable=C0415
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>   ModuleNotFoundError: No module named 'kdoc'
+> 
+> scripts/lib was included in the build directory from find_in_scripts but
+> after the move to tools/lib/python, it is no longer included, breaking
+> kernel-doc.py.
+> 
+> Commit eba6ffd126cd ("docs: kdoc: move kernel-doc to tools/docs") breaks
+> this even further by moving kernel-doc outside of scripts as well, so it
+> cannot be found when called by cmd_checkdoc.
+> 
+>   $ make -C /usr/lib/modules/6.19.0-rc7-next-20260130/build M=$PWD W=1
+>   make: Entering directory '/usr/lib/modules/6.19.0-rc7-next-20260130/build'
+>   make[1]: Entering directory '...'
+>     CC [M]  ...
+>   python3: can't open file '/usr/lib/modules/6.19.0-rc7-next-20260130/build/tools/docs/kernel-doc': [Errno 2] No such file or directory
+> 
+> While kernel-doc could be useful for external modules, it is more useful
+> for in-tree documentation that will be build and included in htmldocs.
+> Rather than including it in install-extmod-build, just skip running
+> kernel-doc for the external module build.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 778b8ebe5192 ("docs: Move the python libraries to tools/lib/python")
+> Reported-by: Rong Zhang <i@rong.moe>
+> Closes: https://lore.kernel.org/20260129175321.415295-1-i@rong.moe/
+> Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-Without the above commit, we can successfully split to order 0.
-With the above commit, the folio is still a large folio.
 
-The reason is the above commit return false after split pmd
-unconditionally in the first process and break try_to_migrate().
+LGTM.
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 
-The tricky thing in above reproduce method is current debugfs interface
-leverage function split_huge_pages_pid(), which will iterate the whole
-pmd range and do folio split on each base page address. This means it
-will try 512 times, and each time split one pmd from pmd mapped to pte
-mapped thp. If there are less than 512 shared mapped process,
-the folio is still split successfully at last. But in real world, we
-usually try it for once.
+Thanks.
 
-This patch fixes this by removing the unconditional false return after
-split_huge_pmd_locked(). Later, we may introduce a true fail early if
-split_huge_pmd_locked() does fail.
+> ---
+> This is an alternative to Rong's proposed fix for the first error:
+> 
+>   https://lore.kernel.org/20260129175321.415295-1-i@rong.moe/
+> 
+> I noticed the second one by inspection of -next and further testing.
+> ---
+>  scripts/Makefile.build | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 5037f4715d74..f01d7957edf7 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -166,11 +166,13 @@ else ifeq ($(KBUILD_CHECKSRC),2)
+>          cmd_force_checksrc = $(CHECK) $(CHECKFLAGS) $(c_flags) $<
+>  endif
+>  
+> +ifeq ($(KBUILD_EXTMOD),)
+>  ifneq ($(KBUILD_EXTRA_WARN),)
+>    cmd_checkdoc = PYTHONDONTWRITEBYTECODE=1 $(PYTHON3) $(KERNELDOC) -none $(KDOCFLAGS) \
+>          $(if $(findstring 2, $(KBUILD_EXTRA_WARN)), -Wall) \
+>          $<
+>  endif
+> +endif
+>  
+>  # Compile C sources (.c)
+>  # ---------------------------------------------------------------------------
+> 
+> ---
+> base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+> change-id: 20260130-kbuild-skip-kernel-doc-extmod-276584e7b2b0
+> 
+> Best regards,
+> --  
+> Nathan Chancellor <nathan@kernel.org>
+> 
+> 
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-Cc: Gavin Guo <gavinguo@igalia.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
----
- mm/rmap.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 618df3385c8b..eed971568d65 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2448,7 +2448,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			if (flags & TTU_SPLIT_HUGE_PMD) {
- 				split_huge_pmd_locked(vma, pvmw.address,
- 						      pvmw.pmd, true);
--				ret = false;
- 				page_vma_mapped_walk_done(&pvmw);
- 				break;
- 			}
 -- 
-2.34.1
-
+~Randy
 
