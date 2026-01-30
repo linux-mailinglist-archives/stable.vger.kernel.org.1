@@ -1,166 +1,259 @@
-Return-Path: <stable+bounces-212851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNHVL2lvfGk/MgIAu9opvQ
-	(envelope-from <stable+bounces-212851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:44:25 +0100
+	id IAzbB8hvfGk/MgIAu9opvQ
+	(envelope-from <stable+bounces-212852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:46:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264E6B8971
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:44:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F4FB899F
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88AAA300C033
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:44:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 21E90300748D
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7BF335579;
-	Fri, 30 Jan 2026 08:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576CD31282D;
+	Fri, 30 Jan 2026 08:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jVF6hor/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KFA6DgYZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCC924729A
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 08:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769762661; cv=none; b=dQqhOT1yx/NWKzbKQq7WQtREyYPD7hBRVDsyypz+eulQG5NoTiqikbyNzWnkjE2l1QsIyaNGjwOIL8xBJi/r6hHlzmAmtoTa2kiJTDhMzSiaqyDNZGTirwtDfp4vqF8Ri6s4/p6jPWU1utN2B66uDOixdj+FXfvcQ0E1gYM5UkE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769762661; c=relaxed/simple;
-	bh=Se2TZEtd1mmElnC/ZfubyC1jOuxzf4V7hbuk2QTCVwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zx1MB8sqJgtBemFycCo9EqnOaWrtQwODtNlyMU2t46CyU9r8eJnDMSLGhazRTP/llpp7+h4070bhvK243/XkpQlMXOYsAEfwpgBn/9/IE/Y3qxJM9stNNnTVLHOp0f+SY6OEgxb1eY0CAZc97Kzhe1ctqw0G2KMaHbCSWxnP7YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jVF6hor/; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4359a16a400so1560548f8f.1
-        for <stable@vger.kernel.org>; Fri, 30 Jan 2026 00:44:20 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C19C2DF6E3
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 08:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769762757; cv=pass; b=Dg6xKzuow2qNwDzbIYuPNjchTAV0dvk3IYVBtpWX9Jy4zYbLLTXKupjN7r4twk6v77Gwe/k990Vk9uV+xdF8a4o32rBlEfOlnAcKocxmS2QHsuahgb+dhUJP1CKncvUyZIN+4Rvij0rNy/eG/Y2mIKT2Y3VCcz1IbsmDdSW8sCg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769762757; c=relaxed/simple;
+	bh=mDnGzrchXvJn/pw7nT0cssXOZtkYxKOWE4V2rTMp6oQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O4XBsRB7pZyn61g8nZ0nf7PsGpm8eocf472s6yoJY64tai4wl0bRQPS9W95kQgzQFaeG5bw3ZFmJtYu4dHdMuQ7w91voVkrsKJu3bWxtpdPooJDWGYifOqbyqAuL5savbFXGlVUdAI82fhLVP/r9/vIfZzxam8PEAv1gr0NrTm4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KFA6DgYZ; arc=pass smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c54f700b5b1so1142710a12.0
+        for <stable@vger.kernel.org>; Fri, 30 Jan 2026 00:45:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769762754; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Go7MdLvlsxuyn4K7dQCViDtTCnVlKeo717CCEvta61uPt1Da9ccRo/TTkt1DDPoPSp
+         DtDa/cVDNsnYYj/xvqm3RDf/bH24AjZHJH/gNm7qsFSYwVw0Hyf+0PooDwKF4icuu3/H
+         3nTLvAUiX72Rg4VEHj8UMumfKWimwTQmAy7NF8V2Q4eQIAXU262wukx0fQAlpvIxLqcV
+         8hJvZAYto4HPvmlkHpJ/zJj4+PQaMOc6s99KtzeqwIlhEr4/es24s5zcUcGPF6bnxh5J
+         O390HfpV5YIgQsvE8RWgIpWd7Kj939J/8jjK1xCmMmc5C/xDW+qB+Q4P9QgNiivc120E
+         DnMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=eEAW01z9JQWBTM10b2sP0NfwiccdN1/5P+EOzAVhSFs=;
+        fh=G6a6tl+S0xx4A95AlbFrbYIqStTEE6KyB7m8s8+BFog=;
+        b=RU1XgDuDJTUM/PMn4ppXeHLQJULFE+bnKzWcfV1HBvOKHLo8oK8D9rb5io4yVjTKbG
+         yH+udOOIXDz1usZKtv/47hFE7z56LDEIlu3698MArS12YYo9dfSos2KQhHKWMfi8+xda
+         Tc+y8yFsIHU+RtkRaCQlHheV//72o0svnOlFRC+pXTdQsGqhJzY3biiOoHkTgLCo1dZv
+         tTKdeaDryd1dbijamr8e+d3KvMthDvpsmDxQNg7YaoOYVVkd1GQwYxkFIX8DkB/23ne9
+         RQc0+INR4M3I/bMxYhmrtx9saymDuPqIBl1nfKLtQIP1tWqOEkp7LoFhnxwQzH9JKUxX
+         ibXA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769762659; x=1770367459; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BhdgDuWmGVX3Ii7iXI00D64FLe4zlVQ9D5T9rX3Mk2U=;
-        b=jVF6hor/hxRKdOzus1zTjxtt4tv7p8w77QRqivR0TD3RSXs0H7tbYgBtDXdjYPXpi5
-         OuPXS4/3DQlRlvmTqZ1/9IIDUwQ5Vb06jbN2FcLGr5b3LbaqdX1sDacZQNa7SO8VucDP
-         PR54KodU8kvh2RWDIIY8GfRgKcLJe3SZCFVqHtkSE8PEO72d7BHZz7SCeqNk6BE+oNLJ
-         UaFbCsxBmV9BH68BlfLllr8yU4K3drmFG63h+a8mlDb4Pbpeosz/+oZ6AeV6ALhIF7A2
-         29rtEkYeiw+TwRUfrZpEFxc0WUtT2uX4T8poAG89QgZNStx36fPdx+hIMZ0/CEf4AU4Q
-         sToA==
+        d=gmail.com; s=20230601; t=1769762754; x=1770367554; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eEAW01z9JQWBTM10b2sP0NfwiccdN1/5P+EOzAVhSFs=;
+        b=KFA6DgYZh8IMsKDxVagpfW5cDu9Fi5fkDgpVPmUkJcsFF4FfsYB+aJ19iySDE1GtU9
+         t74o2G2kpHd18Z/Pn4qRAvP3RtLXu+Rkum/sOp7cTyZzyyWWcgjd9XEG1qR5fG6ElhaI
+         pXDL+Kidof+UQ++2vmHAhbtOja1sCJOmVS/xwOJtl2TBW9sojUfKvs3N0IBf18w1SvKo
+         J5iHQNdtF9qT569Bc5pE4AKRdI8BzbxPgeZlin2169ULJirMEbRGVujhVwmYRCnws++B
+         PjiyYqFpUWoX+o8osH8ujgace+01gyTy4oh//HZNm15jLSeoFplwYSrBzZmhKRc2oqyV
+         CLuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769762659; x=1770367459;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BhdgDuWmGVX3Ii7iXI00D64FLe4zlVQ9D5T9rX3Mk2U=;
-        b=jouxd3TlykcQR48bMaOomFi8YvyEHeEoEtFHra7IqflqqtNRQv7sJ2glP/aJIVxJVp
-         TECDUT+8gemSX9kyHRfVhaNEwlBJ4F2VZEJLxkFmT0UG4wOYw1K//o6xeNONM6PuCTq0
-         j1QVQ3mrG5U674as5qOPdV6icCyF9//N/26hoLQYulgP/6ZiZA0khd6Kvrr3rApAKmXG
-         9KXzSKYeqGfOpXzJCY9XA6lr6fLEQC/0enMSuImcEizC2ecc0/hUjBwAod+viD909f5Y
-         KkP1vDUaYACdeUt+jeN+zqzjiU6SsMRVrRS0XVBgq8AnMzIWJR6vhhp6b/+v2aGCmQiS
-         6ZZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHaxf88+H2lSP5vqao0Bk7RawA3JqFWO8mLK4zqBAwUt4sN0oc8feSJ+Ni69OzykseF9w9MLU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLbFtTpFHqsaJMXdpLJDWTaunMnD568SsWumQQGQvO8tRdeBcl
-	TlqeHoIRT7t9lDPP0+NowJsKhs3f9rnVpS0jAO0Akel+RP1uVmwDESbOB2DEx8Tb7c8=
-X-Gm-Gg: AZuq6aJ+X1FNaoBmGVvvIfzhskLvxyaNVl5fQfVgTIKAYHkJygjrHguMof6zeDNR7DX
-	wj4cP66OWxIXy5+7649jiQLwFzGh5ix5XqQl/qKJiTEElu09fzNUeSAP8VeET3aiH26hgXejZcQ
-	6POJHEE6LqY1WEs06qTAYFMhlT5QYOP2iuxENia0b3zOFIeyu989jCmeuEZEhiOMrOKaFOdco7m
-	lFlRS04Unaf8DWCjiW6h2XOffs3gBigRJELz4s3vw4fdAk2X7gc0MsOX4VPsErz7K+uwxXyzbZp
-	swdveA+D+xqv+fCPiX2PS39aLeF8TvzRiHJb67zZO7iEYjJGFXuTuuGeYEL5gPG5DdR0UKXP4ZY
-	um/EpYAVuUtDJwkL26vNpHkApd5aebGjb7x99Fc7SjF+7GYo4/QvbAoSfEi/TXyApdBncOc2hhp
-	33WT5f0Cs2EvPqkvNe
-X-Received: by 2002:a05:6000:428a:b0:431:32f:3140 with SMTP id ffacd0b85a97d-435f3a81d19mr3457102f8f.12.1769762658743;
-        Fri, 30 Jan 2026 00:44:18 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e131cfd4sm19785768f8f.25.2026.01.30.00.44.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 00:44:18 -0800 (PST)
-Date: Fri, 30 Jan 2026 11:44:14 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Luka Gejak <lukagejak5@gmail.com>
-Cc: gregkh@linuxfoundation.org, straube.linux@gmail.com,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] staging: rtl8723bs: fix potential out-of-bounds
- read in rtw_restruct_wmm_ie
-Message-ID: <aXxvXqZeZSHoivFH@stanley.mountain>
-References: <20260129181541.72066-1-lukagejak5@gmail.com>
- <20260129181541.72066-2-lukagejak5@gmail.com>
+        d=1e100.net; s=20230601; t=1769762754; x=1770367554;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eEAW01z9JQWBTM10b2sP0NfwiccdN1/5P+EOzAVhSFs=;
+        b=BfwxWWJN7Pp8zt3DHTwq1HZVZ9iEYwtSWkgtjwRjshYgnWKE9aGiEBDHmY3uajVyl1
+         wWl90PoB+fC6ok6dPLX7R+N15DJHQN0tN56EZojERxXInipaAAqAPQa6hj4gUqYq4mNE
+         X5FGv0wKVnYSsrpL0knX4ZnLcrnrhmoTctFLyiyscPk6p8Em29hV2w1m4rx8708hnphF
+         LfKSX/P+doUdIA91h2Qh/vn9KVvqO9fKPTQyy1B9JCq8BFFae+2r4lap8FMSJITKIWp8
+         0GqO9AEyxLiZnhgPQvdMw8ztixWCOAT/a+oWcTUSrz7njsgiIBtB3M6fICEjJLuTqtIr
+         ToSw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0R4gBmtRydb9mlBRag1ecvgfZxB0RF8P6YQrz8nk7GcQqrCfw9giOFsM+I7gMmA1cfutKYpc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRbwzlpNAJnj08h240oUoNaYcvlkelMxMPd6lfmYLWvuDGUoGm
+	YBYYGMBh9cJc+3sE0XKcxby5M3Cr9wVl+sFDakb95Wb9pPhBdYT4a66DLHhGTzO3Ln2h2meGDiK
+	AngxuNEs6pDkT3BzNdPO63ndzeU6FbxEP8FZKgHvgD4NpsxE=
+X-Gm-Gg: AZuq6aLJJwXXCaabI3T9BazFlYNsCetaWcopWU1nz0b7rqJcZjsIRcpGxY5vqZAiUfY
+	aUohTit42qdohZQDMr+WYB56JWeoJdIfs/e81U+1OSSb2kwQ7FMwEvB+JqZ5KmzT59MyIyZTArB
+	pksbMHpVKy9HCvKFXuoaNRACD0/v+0/ET9qyCGTkRhlwiiA8Jph3R9Qv+n9uM/3vYHGH+f7jTzX
+	TE05gJG7vcUEY1596PE6j+oyuZvlJC5lYISZYCzbSyvWmoipUk+lOZfWKlVS10/n/jeYkSOveCi
+	bUwnWggO1G9oBtqo9Hd5P6GAB6jp
+X-Received: by 2002:a05:6a21:a42:b0:334:a11e:6bed with SMTP id
+ adf61e73a8af0-392e0053615mr2227722637.29.1769762753855; Fri, 30 Jan 2026
+ 00:45:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129181541.72066-2-lukagejak5@gmail.com>
+References: <20260129233703.407404-1-xjdeng@buaa.edu.cn> <ie3hipmp5nqappyuwnxm2kpgscnl6qe42cwf2sep4inwunb5th@gontu4foua6q>
+ <CAK+ZN9oaUh5PPBx5QPCya=hqDM42CQptD2-MrJvMZsypNuZ66A@mail.gmail.com> <4rfalipp5xyejwappzi5gny4muetuzrr2q3sunctfmsvb4juwf@64kdxjrakr5q>
+In-Reply-To: <4rfalipp5xyejwappzi5gny4muetuzrr2q3sunctfmsvb4juwf@64kdxjrakr5q>
+Reply-To: micro6947@gmail.com
+From: Xingjing Deng <micro6947@gmail.com>
+Date: Fri, 30 Jan 2026 16:45:43 +0800
+X-Gm-Features: AZwV_QiaVUxZYp2r3LsMEsEBTrYjWrRMw1lgAjNb8iVpASaAPEQ6nzSN-ssydZk
+Message-ID: <CAK+ZN9pDpvf+29quNptrMKoti_E5m36XHZJP125ctZmBk2w3sw@mail.gmail.com>
+Subject: Re: [PATCH v7] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: srini@kernel.org, amahesh@qti.qualcomm.com, arnd@arndb.de, 
+	gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Xingjing Deng <xjdeng@buaa.edu.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212852-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212851-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,lists.linux.dev,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dan.carpenter@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,stanley.mountain:mid]
-X-Rspamd-Queue-Id: 264E6B8971
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[micro6947@gmail.com,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	HAS_REPLYTO(0.00)[micro6947@gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: B2F4FB899F
 X-Rspamd-Action: no action
 
-Please, slow down.  Only resend a patchset once per day.
+Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com> =E4=BA=8E2026=E5=B9=B4=
+1=E6=9C=8830=E6=97=A5=E5=91=A8=E4=BA=94 12:33=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, Jan 30, 2026 at 11:07:38AM +0800, Xingjing Deng wrote:
+> > Yes, I found that.
+> > I will release patch v8.
+>
+> You have been notified once already. Please stop top-posting (aka
+> responding at the top of the message).
+>
 
-On Thu, Jan 29, 2026 at 07:15:37PM +0100, Luka Gejak wrote:
-> The current code checks 'i + 5 < in_len' at the end of
-> the if statement.
-> However, it accesses 'in_ie[i + 5]' before that check,
-> which can lead to an out-of-bounds read.
+Sorry about that, I just replied the email directly.
 
-The line breaks are weird looking.  You're putting a new line between
-sentences and a blank line between paragraphs.  Just put a blank line
-between paragraphs and delete the extra newline.
-
-The out of bounds read is most likely going to be harmless.  Hopefully,
-it would be detected and trigger a warning from the UBSan type tools.
-Also if you got really unlucky and in_ie[] was at the end of a page
-then it could cause a crash.
-
-This bug is still definitely worth fixing.
-
-> 
-> Move the length check to the beginning of the conditional
-> to ensure the index is within bounds before accessing the array.
-> 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> 
-> Cc: stable@vger.kernel.org
-> 
-> Signed-off-by: Luka Gejak <lukagejak5@gmail.com>
-
-Delete the blank lines in the S-o-b block.
-
-regards,
-dan carpenter
-
+> > Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com> =E4=BA=8E2026=E5=
+=B9=B41=E6=9C=8830=E6=97=A5=E5=91=A8=E4=BA=94 10:38=E5=86=99=E9=81=93=EF=BC=
+=9A
+> > >
+> > > On Fri, Jan 30, 2026 at 07:37:03AM +0800, Xingjing Deng wrote:
+> > > > In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
+> > > > reserved memory to the configured VMIDs, but its return value was n=
+ot checked.
+> > > >
+> > > > Fail the probe if the SCM call fails to avoid continuing with an
+> > > > unexpected/incorrect memory permission configuration.
+> > > >
+> > > > This issue was found by an in-house analysis workflow that extracts=
+ AST-based
+> > > > information and runs static checks, with LLM assistance for triage,=
+ and was
+> > > > confirmed by manual code review.
+> > > > No hardware testing was performed.
+> > > >
+> > > > Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool acc=
+ess to the DSP")
+> > > > Cc: stable@vger.kernel.org # 6.11-rc1
+> > > > Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
+> > > > ---
+> > > > v7:
+> > > > - Add the detail description of how the tool detect.
+> > > > - Link to v6: https://lore.kernel.org/linux-arm-msm/20260128033454.=
+2614886-1-xjdeng@buaa.edu.cn/
+> > > >
+> > > > v6:
+> > > > - Add description of the detection tool.
+> > > > - Link to v5: https://lore.kernel.org/linux-arm-msm/20260117140351.=
+875511-1-xjdeng@buaa.edu.cn/T/#u
+> > > >
+> > > > v5:
+> > > > - Squash the functional change and indentation fix into a single pa=
+tch.
+> > > > - Link to v4: https://lore.kernel.org/linux-arm-msm/2026011637-stat=
+ute-showy-2c3f@gregkh/T/#t
+> > > >
+> > > > v4:
+> > > > - Format the indentation
+> > > > - Link to v3: https://lore.kernel.org/linux-arm-msm/20260113084352.=
+72itrloj5w7qb5o3@hu-mojha-hyd.qualcomm.com/T/#t
+> > > >
+> > > > v3:
+> > > > - Add missing linux-kernel@vger.kernel.org to cc list.
+> > > > - Standarlize changelog placement/format.
+> > > > - Link to v2: https://lore.kernel.org/linux-arm-msm/20260113063618.=
+e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#t
+> > > >
+> > > > v2:
+> > > > - Add Fixes: and Cc: stable tags.
+> > > > - Link to v1: https://lore.kernel.org/linux-arm-msm/20260113022550.=
+4029635-1-xjdeng@buaa.edu.cn/T/#u
+> > > > ---
+> > > >  drivers/misc/fastrpc.c | 5 ++++-
+> > > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+> > > > index ee652ef01534..8bac2216cb20 100644
+> > > > --- a/drivers/misc/fastrpc.c
+> > > > +++ b/drivers/misc/fastrpc.c
+> > > > @@ -2337,8 +2337,11 @@ static int fastrpc_rpmsg_probe(struct rpmsg_=
+device *rpdev)
+> > > >               if (!err) {
+> > > >                       src_perms =3D BIT(QCOM_SCM_VMID_HLOS);
+> > > >
+> > > > -                     qcom_scm_assign_mem(res.start, resource_size(=
+&res), &src_perms,
+> > > > +                     err =3D qcom_scm_assign_mem(res.start, resour=
+ce_size(&res), &src_perms,
+> > > >                                   data->vmperms, data->vmcount);
+> > > > +                     if (err) {
+> > > > +                             goto err_free_data;
+> > > > +                     }
+> > >
+> > > I think, checkpatch should warn here about unnecessary braces.
+> > >
+> > > >               }
+> > > >
+> > > >       }
+> > > > --
+> > > > 2.25.1
+> > > >
+> > >
+> > > --
+> > > With best wishes
+> > > Dmitry
+>
+> --
+> With best wishes
+> Dmitry
 
