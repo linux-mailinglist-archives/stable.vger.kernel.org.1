@@ -1,433 +1,269 @@
-Return-Path: <stable+bounces-212848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FFOJmlifGmTMAIAu9opvQ
-	(envelope-from <stable+bounces-212848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:48:57 +0100
+	id kL7iBcBkfGkKMQIAu9opvQ
+	(envelope-from <stable+bounces-212849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:58:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14370B808F
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:48:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DBFB815A
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDEB230173BA
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:48:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FC49301325B
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8245306B3E;
-	Fri, 30 Jan 2026 07:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDB430DD3A;
+	Fri, 30 Jan 2026 07:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CIMFr94a"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="CIr9HMBy";
+	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="BbORFQKT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC482EB87E
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 07:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769759332; cv=none; b=HG+2hA6PG50fzIpI2VuIp7pmdBbWnAz8ZvD4KzkDj04wleDQ4QOWvh2f2mYdtKRxrw1KwlgaYsLmlrZnzHhfTgsvfwC6gaWb8FDIYD1b+8LOZ13yDMKzX+twauosvfFtwxSGgfRsf0hmXJp/oYAe94FW7QchomIl3DTV8ERGbtY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769759332; c=relaxed/simple;
-	bh=p4RI/PJNo9P2zoz4qNZVHYn11CSHjlAh2ePSn95HglE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=uBwh937sJKQLJMW9NP7Bi4777VcnxivXmZi+l0CqmRaUgUGP8lZmYLAN2xGtil+yTkYVEnqFip1XrgkBz81n/CDeP23UO4tDWgEQxk40YZ1mc2MniwfVbY60Y4AA3MH4pD4X3N05U7L2scEVxeFN9MWnXfFWiEPISpvq4Y56780=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CIMFr94a; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a0e952f153so46973185ad.0
-        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 23:48:50 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CE114E2F2;
+	Fri, 30 Jan 2026 07:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=210.61.82.184
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769759928; cv=fail; b=nZtwpZcyfP65JHWL6cpkCNtv7HJcI+IAJ3azj4Tg67y9KSBTrE1BGLZfqjcnXmtZa+Jf5Q5IswvwCCO0MwLtArV40+8T3DF9G5ZjHFs+uyQ7hTTIdhPJ6AC99kE4Su9TPUz00mU5NREtLTleFmj9aun7l4K9PrW7C+xw3bCFuAc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769759928; c=relaxed/simple;
+	bh=ZI1BT7n7+0+yGanUTCop32YzMBUpb3ogT1FpPA19z7o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OyLkgvaCfTNdAMTZhHA4VCudJEl9hKGPKvf+UlUuGwlxuRA8wIH2ZCfhVgJ586mxEXVdZUgGkUUkzzo9uha34TgwHm2WYqzLd7gayvj6DdhE0LUKpBCDUZTJFGEj/4t0c1oTG6PlGk1YsxRoe7c6LNrAvChX8iqiTUYRxwNLgTE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=CIr9HMBy; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=BbORFQKT; arc=fail smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 79d2475cfdb111f0b7fc4fdb8733b2bc-20260130
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=ZI1BT7n7+0+yGanUTCop32YzMBUpb3ogT1FpPA19z7o=;
+	b=CIr9HMByvvuynts/qOJ44DwJk8rYQxiq/nlvTBUfkPnVXJVWYyIDgZdqO8lfJ9vwaXK9KY18v07w0VbbupTncmeSLnsjyFstt8yY0p9tX5PYT5cPaIambPOYqfpWCqYwjdY83g0OkoMx37eaPdostQl9+g8cJVZDJGQ1DIXKS38=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:d6480a75-160a-42e8-8a88-ecc39feab2c1,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:82e21ee9-ef90-4382-9c6f-55f2a0689a6b,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|888|898,
+	TC:-5,Content:0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BE
+	C:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 79d2475cfdb111f0b7fc4fdb8733b2bc-20260130
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+	(envelope-from <peter.wang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1586167428; Fri, 30 Jan 2026 15:58:34 +0800
+Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 30 Jan 2026 15:58:33 +0800
+Received: from SI4PR04CU002.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Fri, 30 Jan 2026 15:58:33 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C1ZORkxf/a4RoFi83gp4c3DfFe/E+aHWa8rJayHs83k5AW79gwThUlvuEV85A+tUhsIAFQDC53mGIUoF89WHRtIwsTrdDxixN+/rEMmD8ZXFxAbsCnSAJeWK1WWQYvDesDe9tDCBRS+p4lpRYl1IQflWGTIZBYg6EiynZs+qRHF/T5NY4LFMyd/K+Dx4vO79DG+AMZp+6IY4i8qQ4mEDCraUgCZ/vFTeznNOOFKVHrwaqxeNak8Do/Tu8D80MbQUwHrBCH28lHEn7WlRCaNwQSp78//xwpPEzKy62a9jhmCjxzBOkf+8wO3MIaqX57bEy86+to7ttvpFBjW/y3quEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZI1BT7n7+0+yGanUTCop32YzMBUpb3ogT1FpPA19z7o=;
+ b=udFkACIJc1XrknixNF9ndpt6ke5KGrtpBff6BhY70BwSe80RB7O+CXzRTbpWKr63fcGSc3a2khB7qgqpLflZ6PoM1tL4PWbDnot8CiA2q0E/Z2Geuml2jwKYr2TrhYe1yxCygAkZ9/+HPrwfbK3z3vUoSKp60k3EfFUDRfyT4BrMODyFBEixnTRoff7Qv9GIPUH1aMqc1N737CzQkv9ZARFYpAHcas10y2imCAt+WFO2qxbLVEQpiqp1edlwYBal+fOQfrJPIWw4CdtzEdUerAAUAiPV10grLGNN0L8psXMMzMILdHPjrvmihy89VBPyQYwQw3y2c2i+seH9mjzkog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769759330; x=1770364130; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ubwoGcMvFrz/YoKawnL1KLVWp0+NDz5W2QGY4b7pS8w=;
-        b=CIMFr94a38nYU0TPcZkC1HtZEz7iqDL405VIpITH9+GpTvg6P/NO7lC46HnKw40zzb
-         HN7tbrQkH4WvKBUc0MgaT4cEtAEpiG6UKG9asJjz6ixyW2AhL7TmzoZ/88tQmcEVOTzF
-         YYRZ1V6wjpCmG8mkVtzo7YGUIxk17497LSaOSYbgUiK0Jeusd74qrRXIfrL5Uzg2oozD
-         ADzLccvqhQcnYRPlSM2NoBqUtQUM9dfhZDSL9okli0MwCnNtfu1niULYl7Q0pXY915Hl
-         vW8yKlswl8Ay1FLr7NX3pI47vQA0UTmR6GSgJu8ubrR8flinkZYr8Pz9UfTe9LWBYmwA
-         OcJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769759330; x=1770364130;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ubwoGcMvFrz/YoKawnL1KLVWp0+NDz5W2QGY4b7pS8w=;
-        b=vekAvwgFyxRv0XL4GtFH15bjzkjLrBI9AjlnSTPPV5eVgWLvDXs4+wYzcKFUYtBOPP
-         BmENrvtCpRQ5g+6iib+4Q7DhvNnln4F2CEetflCxYTdpsMTpHPWyLzdRB9X/VCqgzJTa
-         yCAPG18OJSjUXPCAf2pJLxElhPUoVqRlR9wvPuBIxvSv462TkINhDc/LEO/iApCmHyP5
-         E2dEHAOJ52WrND31sBiq9Z1ClGS35NTaMIlxRY6a/ha5y85KAUWV0DaAs2Ci8Vmh5LwS
-         HnOvxaVbW0hC6+s9W4pm6gBBVUUOn2YWxhJJZoLkr5hFyzUtOU4eG7FTeiLqcLR6m0uk
-         0K5g==
-X-Forwarded-Encrypted: i=1; AJvYcCV1UJLxSzsW0NhBQ1jpnjp1Dp3MuFzVtUukWECvybfERppmq1RB89JdtmJwzirpKYlc76D/0mc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxOsc8orbi9dFgpUem2itTWnn8+UaWINyn+WPnJt4LmnMkEpfH
-	MIsaD35NrFL5ULCGQN0bTDCq6zL1VhW3s1GVfS804uH94Q47a4ip2WR+26C4+PZcFsrWIEpZrCy
-	xeMwcJ4s6veAw2z/Qew==
-X-Received: from plsl6.prod.google.com ([2002:a17:903:2446:b0:2a3:1bf9:d25])
- (user=guanyulin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2d0:b0:2a7:cf36:819 with SMTP id d9443c01a7336-2a8d9a5edc8mr22929475ad.44.1769759330394;
- Thu, 29 Jan 2026 23:48:50 -0800 (PST)
-Date: Fri, 30 Jan 2026 07:47:46 +0000
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZI1BT7n7+0+yGanUTCop32YzMBUpb3ogT1FpPA19z7o=;
+ b=BbORFQKTjnlYxc3xsnh843mVNDRzi+XHOzp2/IkxnqdQ9H59VpvL2vFz5NP37VKCpkaZNy423bT/9crfqKS5KkI/w+Ne1CPIBkypQ6oxbgPtrSAw8kHsmMUm7YzFOnze8ejnMWc4PID/7LVFOb17786A+0Md9SQyZpXtPif9QyU=
+Received: from PSAPR03MB5605.apcprd03.prod.outlook.com (2603:1096:301:66::6)
+ by SEYPR03MB9754.apcprd03.prod.outlook.com (2603:1096:101:304::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
+ 2026 07:58:30 +0000
+Received: from PSAPR03MB5605.apcprd03.prod.outlook.com
+ ([fe80::165:d36a:3f76:2925]) by PSAPR03MB5605.apcprd03.prod.outlook.com
+ ([fe80::165:d36a:3f76:2925%4]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
+ 07:58:29 +0000
+From: =?utf-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>
+To: "thomasyen@google.com" <thomasyen@google.com>,
+	"James.Bottomley@HansenPartnership.com"
+	<James.Bottomley@HansenPartnership.com>, "martin.petersen@oracle.com"
+	<martin.petersen@oracle.com>
+CC: "beanhuo@micron.com" <beanhuo@micron.com>, "subhashj@codeaurora.org"
+	<subhashj@codeaurora.org>, "avri.altman@wdc.com" <avri.altman@wdc.com>,
+	"quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+	"sthumma@codeaurora.org" <sthumma@codeaurora.org>, "bvanassche@acm.org"
+	<bvanassche@acm.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "adrian.hunter@intel.com"
+	<adrian.hunter@intel.com>, "alim.akhtar@samsung.com"
+	<alim.akhtar@samsung.com>, "draviv@codeaurora.org" <draviv@codeaurora.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>
+Subject: Re: [PATCH v4 1/1] scsi: ufs: core: Flush exception handling work
+ when RPM level is zero
+Thread-Topic: [PATCH v4 1/1] scsi: ufs: core: Flush exception handling work
+ when RPM level is zero
+Thread-Index: AQHckT/GAoBnUzqNnk+/ms9+77pbBbVqWfAA
+Date: Fri, 30 Jan 2026 07:58:29 +0000
+Message-ID: <348df8f6023f1161df57d73a6059b671f3c771aa.camel@mediatek.com>
+References: <20260129165156.956601-1-thomasyen@google.com>
+In-Reply-To: <20260129165156.956601-1-thomasyen@google.com>
+Accept-Language: zh-TW, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PSAPR03MB5605:EE_|SEYPR03MB9754:EE_
+x-ms-office365-filtering-correlation-id: 136d883a-0d61-467b-9d27-08de5fd55af9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?R0UyMTJCL1A3dm5UckphdWI0WUNBb01nWWZQSmxySzRXcHZETDdmVzNGRkZX?=
+ =?utf-8?B?bnNKOEs3cWZMTEJMRUV3Z2toKzdwR1JITmZJUDAwNHRPZmE1RERpZmdRQnI3?=
+ =?utf-8?B?WW5vODIwSUhka3pFdEh2d0ZiU0xCem5iUUVVUWpmUnI2aWovcGl3Z3o3cExB?=
+ =?utf-8?B?T3pzQ1pJdnVwVjJRdHZyZmNzMEJYOTAxVVRtd0FhY29rWkVRMXJVS2htMURI?=
+ =?utf-8?B?TjdvYSt3Yk8vTksyY1kwSDZXcXlZbVhqVGxPOWJLOVZHdGIwMVhvc2hPWXIx?=
+ =?utf-8?B?bGtzR3FCenBxakFGdU1BNy94V2F6YlQ3NlBTd3JIVEhXbUhJcUpIaDhSc2Jo?=
+ =?utf-8?B?OEhiV2NiRkxkajd5N25yOEtzMGNOaUVweDZnd1krV1I0UHBqOUU5MGlkZUw5?=
+ =?utf-8?B?S0U4UFVnVnZoUWRLL0IrcVRnQ3Mwdm5KcGdEVzJQYVU5RE03dFZENCtKbTJy?=
+ =?utf-8?B?WTg1UTh2dnQ1cVRWT096OG9GZ1FkY1I1WGRialRRY2VleVcrQlg4aE52YnNy?=
+ =?utf-8?B?YjcwajdOOVcwM3RGL1pyeVNKR0RjOHNQTWMzZys2empZYWpxY3RDdVJUQ0o3?=
+ =?utf-8?B?R0VQSk83RzdBcEZ1NVFLMHVMN2RXNmZrR0YvZzlXdWJQZ2lqZW9KbGR3Vnkv?=
+ =?utf-8?B?Nlk1YUZNVFBXSVROcTNTZml1aTAzRlVlNXMwUXptUzBhYWY1RWhnRkVXYTYx?=
+ =?utf-8?B?WGI5RnZRcE5qQ083UmtlSjB1d1JWUnljN1h0YVFkQWhpa1BZSktrTzNPZTdX?=
+ =?utf-8?B?bUJ2MzBvWjBmUU40MEdvQ1I2TklQM2VMWHlqMGdlcGN3d3B3WFFNNi9hU0c3?=
+ =?utf-8?B?SGJqdHJJV09DZGNRQVhXNnVCMGRpRTQ3OEJJRWhwSXd0cmdKdGFCd2ErQ0Zw?=
+ =?utf-8?B?bzhzZU5PalAyZGhPOHppT1NNOUhXUzc1M0lmQWdHbVlCRUZTSEtVT1RjUk8v?=
+ =?utf-8?B?WGRteTlHZ0dmOHRiT3F2dG1IUHh0SUVxektXWW43VHQ1emNXUWJxQU5tRXRE?=
+ =?utf-8?B?MkpsU2hkZVI2U0gvQkJnMmkySXprblFPZEhCb3RodWdLSGYxcVFuUjJYRFpX?=
+ =?utf-8?B?VzgyOWpLMFpiZTNOYVRhakV6dElmUC9DRk4xM0dLUm1ONXlwaWNVL1p3S0wr?=
+ =?utf-8?B?aHFzVjljYjM0QWNLYWVPT3psK210NkFXYmQzL2MvZ1d2bUJ5OEFSZXl1a0ky?=
+ =?utf-8?B?a1o5QVBPMnRoWm1Ublo0eU5UYnhrQU9VNEdDMjRCQTByV2ZoTHVBWHpXRW5y?=
+ =?utf-8?B?QUN4K2VCMmtzREhRUDF5SU15YWw5S1B0N1cvTUs3WEdVVGdIYUNYQWxsU1dy?=
+ =?utf-8?B?aGZaWFdpT1Q2UHNocmRqMGdsWTBQaFVhemJuNldYaGZZZ3BzdjdPK2czZHRI?=
+ =?utf-8?B?ekRmelV4QmxhWGVKd3pZUGtwcTBBQnZkSmgrWURmQkFVN1Z4K09hMVRISVA1?=
+ =?utf-8?B?WVdBRG9xWUUwWU9xMHVPVTdzZzloWlNmclZwdFYvdHdVK2ZST3V0OFV4KzBK?=
+ =?utf-8?B?OGNSSlhpTHo1K2NTZGZPNHdPcldMWW5BczhRVG8yUFcwVXhBbjUyN2RvSXg3?=
+ =?utf-8?B?YTkrSkZkejhmNVdjc2JEcUE2ZDVFRnFkOUVMOFN2ZnM0clFLY05vK1NUQkV6?=
+ =?utf-8?B?akVoRzlSNTdnTzlvN2lGMVdCYzgxalFGTFlKMnMyaVZFOEY0SXNUMnBlOUFj?=
+ =?utf-8?B?ejBxWkp2cXpQeVdqbTcrUXFFVDJKS25ZYUkrWjM5amxpOFpBcWhjVG1WaUd3?=
+ =?utf-8?B?SlBJMHFlMFFZK2hjNzJzSk1FT3p4NUJBMXkwcThGU3diakY5UzVtT25NWDB4?=
+ =?utf-8?B?dzZobklMbTBFZ25OOFROcTRIUTNnSU44RlJrVWhjUjVXazAyZmxTNlpHbW9t?=
+ =?utf-8?B?aElEUHBuejM1NzkwTld5djArVlI0Ky9lNkhqSXozM1QrUklweUcrdnJUS256?=
+ =?utf-8?B?ZGRQOEZSK2N5UUdUaGs2UTduczNFWGtxUzIrajNmamw0RWZWL2gwV0Zra3I2?=
+ =?utf-8?B?WDgxQ0Q4bDkzUzMrSGR1SS9KeEhKZExrZE1Ta1QzWUdYYi9UMCtSNFNPc2RX?=
+ =?utf-8?B?bEJ4U0Q1K1VlbWZFbXo4djFDS1gweHBOVXNjVHpwODdPRnpkQ1hDbEY3bUVL?=
+ =?utf-8?B?d3BJYWFLd29vN3Y1N2k1U1Njdy9IbHhuMzJMZURWNXJvZnFOcTlTWVBhNFQ2?=
+ =?utf-8?Q?2TjqHljmqIPdmmyvdCuDdEE=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PSAPR03MB5605.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SUp1ak1YUWFjZkFia0srOVp2dWtTTkFBcEZTOEM4MmZxZzZYUUdzdnZ6aUwy?=
+ =?utf-8?B?UHhkWkd6QTBIUjNHckZFajV1QnZ0SlZEelR2RHNwUUIrYTl2SHgrUWtHeVM4?=
+ =?utf-8?B?OWRoaGE5cDlReVIxNXNDWWtFRHVxaGF3dndib0FhWHhqT3ByeDFrcmZqQklK?=
+ =?utf-8?B?MDJNbWlMTDd5ZjBwcHozOEtuZ0hHY0FWUWswN2kwR0ZjcFpGdDVzdDUwekEz?=
+ =?utf-8?B?b2RmLzBpM0NaVU02UTUwYzNCSW9NY0pWaVdCcHA3ZmNDSDE1RXFKZXJkSFAz?=
+ =?utf-8?B?QjkwQTgvZEFMTVlHcEN1akNLZnhwWko1UGFIQUplb21XYTRTNDhvdDhINmE0?=
+ =?utf-8?B?NTZveE5QSlJqMHF0endIMzNwNHY4dDQyU2R4V3hYeEhmTHhjVXk3RkFtUUxs?=
+ =?utf-8?B?YTNzVXB4UmxXMnpJSnlCdzBIclYvZnRITmlBR0VMOHhNaGszRmtCSStTZEFC?=
+ =?utf-8?B?K3ExWFJ3NER1bmUrTnd6QWFnSEpJcGQ0L2lyNmJKWkU5aDZjckdYSkxhRDFQ?=
+ =?utf-8?B?bU1JcEdlUHVCT25zODBQbHRtd0cxR05OMWM2d3ZCc056QzI5TEhBazhhQjJp?=
+ =?utf-8?B?bVJseFpZek9FcWRreEJoSUhDZmZRZXl6SFZXS2RwNzlNVDlqREZZWG1nZkdv?=
+ =?utf-8?B?d29KZHpETXEvbDBneWkwVGtMOVhHUmczVHN2eElwajdvVi9QMHZOZktlcTR2?=
+ =?utf-8?B?U0ptUzdnOWlsMk45RTBHR2ZoaUxEMnpXZUZPZ29HYVMvelJ6ZTN2VS9OTEli?=
+ =?utf-8?B?UVlnd3FzclBndmpJSHN6U0JZOVJTWDJUMzdiRHc5eFRZTjhoV25HYXoyTWxK?=
+ =?utf-8?B?YW9waVlGMlUrMjhjNzIxYXNuRE9Ua25pUktpQzZnNFFKcVJaM01XbXNndGI2?=
+ =?utf-8?B?NWQ0Sll5SGpyZzVDcXAwbW85WHNzSHgrdWNzeEZUUFhvcnlpSTlRcDdwbmh4?=
+ =?utf-8?B?QmEwUmxLdnIza0M0WDU4RmN6NVU1SHIwY2dUektvUkZqVnM5NEJndEkzS0Fl?=
+ =?utf-8?B?N2lpTlVhUDhwdlpYZUE3cmJPQWJIOUlMWWRaRTFLaGpFaEg3WHdCTDM0UjdM?=
+ =?utf-8?B?L1ZNWmo2QkxhbWJOaTczOEJuNnMyNVRHTmJNekc3cEhVMUx2d3ZiaXVIUUlL?=
+ =?utf-8?B?MkhrZ3lIVjlZa1ljNlp2eUJtM2dzTFpiRTBGSjJvWnpuU2Z6bC80RGRieEt4?=
+ =?utf-8?B?L2dveTk3YytjanNNb3hNM2U5QWUzemU2MmhNdEVqRWFMYWhpOVBHaVJPNGNq?=
+ =?utf-8?B?cUlxS3ZDbXVWSjV6bjEvOVVPQm5rblVBeDN0cjRFanFWZU9ya2dPaGV4V211?=
+ =?utf-8?B?V2dyM09WSzlkY2ZkVDhSb2FmZlJGc2lrcmtlNjFRWXFnRlBNWkV1WnlGcHlu?=
+ =?utf-8?B?d3RsR05IUHk4eTJ3aTZPYWNFaDNwRDVhZlpNWUZhdmlwbkdrcE9oQU1vWmdW?=
+ =?utf-8?B?SkpTQzJGWVllUVBtbkpEMU9ocjZqOWpWaVp0QWpnQkkwY05GYjlOTUFjVWVL?=
+ =?utf-8?B?R0JwbDk4YWhET2tIZjRPMHkzQStBa28ycnc0ZWtESloyRjdEeFd5QU1nU1dh?=
+ =?utf-8?B?NXlaOGZaeldOU2Q3RStvTzN4Tk14Q1BHdlcxYTMvMGFweVJTWHl5UXZuN0Jr?=
+ =?utf-8?B?WmZiT3lVQTY4dXd0eW1zWXpjZ1BGM0hEUGhuK3NENStXeE5tVWF6eDliMldC?=
+ =?utf-8?B?RlhkZVNUUmVIRksvYmFGWTNBZ0E1NVdrMzU4d3l5UjF6NVVzbHhrRnJCTFRD?=
+ =?utf-8?B?UVByeHdnaXBka3JTUmxELzdLVTNoUUg2ai9zZWR3NTlHWHR4bVlwdDhqcm9u?=
+ =?utf-8?B?Y0NseFVpdDhGeXdQU0ZFOHZJVWQvTzduRjdlbW9yQWEzUUdxUWptVzFkSzFz?=
+ =?utf-8?B?ZkdwNWZDS3dnaUwxV0NsU1FDMkR0STZZZ21Gbi96TmZURVBWMjZnM1o2ZHJS?=
+ =?utf-8?B?SW5GYjJrL1V3YW5kN3Q0ZzBaL3Q0VlNNV0pvWFJiOVNPWENyamQ3VGc1a2Rp?=
+ =?utf-8?B?YmE1SVN2ZEFXTTFNQmFnVkFESGF0WVc5THFZckJ1OGlGODZWWG9meGhZWVlv?=
+ =?utf-8?B?NTNZdm1WRDI5S3JWQUIxelRYQitCYTY3ZDdzMFAyOFpRenNhS1g3d2lyMm5B?=
+ =?utf-8?B?c2IvTXl2anl0aUxwNFV6M294VytxZ0tvWUNDeTdnblBPbDJYbTlFbnhER01H?=
+ =?utf-8?B?SmlyWlM5OTMrT01OMnN1UTRSNWEzZUtCcDQxcWhQYjUyNGNYOHZGQnNUSzhr?=
+ =?utf-8?B?OXpKcytVN1U4cGxpZzBhbWp6Rys4U0lQTTg5MVVxUVhOUVVmRGRuaVEyaDZo?=
+ =?utf-8?B?WnZxWHpiU0NtNzV5U0tBbHplV093N2ZOQVYxT21aVlM3ZktqeVFZQVBTTzFr?=
+ =?utf-8?Q?NRkh16e0Z7JE0umk=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <560F14F682C8CB44B73E0DCF10542D0A@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.rc1.225.gd81095ad13-goog
-Message-ID: <20260130074746.287750-1-guanyulin@google.com>
-Subject: [RFC PATCH] usb: host: xhci-sideband: fix deadlock in unregister path
-From: Guan-Yu Lin <guanyulin@google.com>
-To: gregkh@linuxfoundation.org, mathias.nyman@intel.com, 
-	stern@rowland.harvard.edu, wesley.cheng@oss.qualcomm.com
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Guan-Yu Lin <guanyulin@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PSAPR03MB5605.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 136d883a-0d61-467b-9d27-08de5fd55af9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2026 07:58:29.1994
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DHnbmaCu4EDjn7AbDjgQYMknTiVd5w6rvQFM8XeEwPz/TllijjfdUtk0RZSQzI6QM9oF6GZ7HMeqKTb0Ub8cYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR03MB9754
+X-MTK: N
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-0.06 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk,mediateko365.onmicrosoft.com:s=selector2-mediateko365-onmicrosoft-com];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212848-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212849-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email,mediatek.com:dkim,mediatek.com:mid,mediateko365.onmicrosoft.com:dkim];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[mediatek.com:+,mediateko365.onmicrosoft.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[peter.wang@mediatek.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 14370B808F
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: 69DBFB815A
 X-Rspamd-Action: no action
 
-When a USB device is disconnected or a driver is unbound, the USB core
-invokes the driver's disconnect callback while holding the udev device
-lock. If the driver calls xhci_sideband_unregister(), it eventually
-reaches usb_offload_put(), which attempts to acquire the same udev
-lock, resulting in a self-deadlock.
-
-Introduce lockless variants __usb_offload_get() and __usb_offload_put()
-to allow modifying the offload usage count when the device lock is
-already held. These helpers use device_lock_assert() to ensure callers
-meet the locking requirements.
-
-Update the xHCI sideband implementation to use these lockless variants
-in the unregister and interrupter removal paths. For public sideband
-APIs that can be called from other contexts, wrap the calls with
-explicit udev locking to maintain synchronization.
-
-Cc: stable@vger.kernel.org
-Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
-Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
----
-Hi Maintainers,
-
-In the current implementation, xhci_sideband_unregister() is only invoked
-when a driver manages a USB interface via snd_usb_platform_ops callbacks
-(.connect_cb and .disconnect_cb). In these contexts, the parent USB
-device lock is already held by the USB core. However, the original design
-of usb_offload_put() attempts to re-acquire the same USB device lock,
-leading to a recursive locking scenario.
-
-This patch resolves the issue by:
-1. Refactoring Lock Ownership: Shifting lock acquisition responsibility
-to the upper-level USB driver. This ensures usb_offload_put() can be
-safely called from contexts where the lock is already held.
-2. Standardizing the Lock Hierarchy: To prevent potential ABBA deadlocks,
-the locking sequence is unified across the driver. The functions
-xhci_sideband_create_interrupter() and xhci_sideband_remove_interrupter()
-have been updated to strictly follow the same hierarchy.
----
- drivers/usb/core/offload.c       | 92 +++++++++++++++++++++-----------
- drivers/usb/host/xhci-sideband.c | 48 +++++++++++------
- include/linux/usb.h              |  6 +++
- 3 files changed, 100 insertions(+), 46 deletions(-)
-
-diff --git a/drivers/usb/core/offload.c b/drivers/usb/core/offload.c
-index 7c699f1b8d2b..bc5f337fb355 100644
---- a/drivers/usb/core/offload.c
-+++ b/drivers/usb/core/offload.c
-@@ -13,44 +13,59 @@
- #include "usb.h"
- 
- /**
-- * usb_offload_get - increment the offload_usage of a USB device
-+ * __usb_offload_get - increment the offload_usage of a USB device
-  * @udev: the USB device to increment its offload_usage
-  *
-- * Incrementing the offload_usage of a usb_device indicates that offload is
-- * enabled on this usb_device; that is, another entity is actively handling USB
-- * transfers. This information allows the USB driver to adjust its power
-- * management policy based on offload activity.
-+ * This is the lockless version of usb_offload_get. The caller must hold
-+ * @udev's device lock.
-  *
-  * Return: 0 on success. A negative error code otherwise.
-  */
--int usb_offload_get(struct usb_device *udev)
-+int __usb_offload_get(struct usb_device *udev)
- {
- 	int ret;
- 
--	usb_lock_device(udev);
--	if (udev->state == USB_STATE_NOTATTACHED) {
--		usb_unlock_device(udev);
-+	device_lock_assert(&udev->dev);
-+
-+	if (udev->state == USB_STATE_NOTATTACHED)
- 		return -ENODEV;
--	}
- 
- 	if (udev->state == USB_STATE_SUSPENDED ||
--		   udev->offload_at_suspend) {
--		usb_unlock_device(udev);
-+	    udev->offload_at_suspend)
- 		return -EBUSY;
--	}
- 
- 	/*
- 	 * offload_usage could only be modified when the device is active, since
- 	 * it will alter the suspend flow of the device.
- 	 */
- 	ret = usb_autoresume_device(udev);
--	if (ret < 0) {
--		usb_unlock_device(udev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	udev->offload_usage++;
- 	usb_autosuspend_device(udev);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(__usb_offload_get);
-+
-+/**
-+ * usb_offload_get - increment the offload_usage of a USB device
-+ * @udev: the USB device to increment its offload_usage
-+ *
-+ * Incrementing the offload_usage of a usb_device indicates that offload is
-+ * enabled on this usb_device; that is, another entity is actively handling USB
-+ * transfers. This information allows the USB driver to adjust its power
-+ * management policy based on offload activity.
-+ *
-+ * Return: 0 on success. A negative error code otherwise.
-+ */
-+int usb_offload_get(struct usb_device *udev)
-+{
-+	int ret;
-+
-+	usb_lock_device(udev);
-+	ret = __usb_offload_get(udev);
- 	usb_unlock_device(udev);
- 
- 	return ret;
-@@ -58,45 +73,60 @@ int usb_offload_get(struct usb_device *udev)
- EXPORT_SYMBOL_GPL(usb_offload_get);
- 
- /**
-- * usb_offload_put - drop the offload_usage of a USB device
-+ * __usb_offload_put - drop the offload_usage of a USB device
-  * @udev: the USB device to drop its offload_usage
-  *
-- * The inverse operation of usb_offload_get, which drops the offload_usage of
-- * a USB device. This information allows the USB driver to adjust its power
-- * management policy based on offload activity.
-+ * This is the lockless version of usb_offload_put. The caller must hold
-+ * @udev's device lock.
-  *
-  * Return: 0 on success. A negative error code otherwise.
-  */
--int usb_offload_put(struct usb_device *udev)
-+int __usb_offload_put(struct usb_device *udev)
- {
- 	int ret;
- 
--	usb_lock_device(udev);
--	if (udev->state == USB_STATE_NOTATTACHED) {
--		usb_unlock_device(udev);
-+	device_lock_assert(&udev->dev);
-+
-+	if (udev->state == USB_STATE_NOTATTACHED)
- 		return -ENODEV;
--	}
- 
- 	if (udev->state == USB_STATE_SUSPENDED ||
--		   udev->offload_at_suspend) {
--		usb_unlock_device(udev);
-+	    udev->offload_at_suspend)
- 		return -EBUSY;
--	}
- 
- 	/*
- 	 * offload_usage could only be modified when the device is active, since
- 	 * it will alter the suspend flow of the device.
- 	 */
- 	ret = usb_autoresume_device(udev);
--	if (ret < 0) {
--		usb_unlock_device(udev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	/* Drop the count when it wasn't 0, ignore the operation otherwise. */
- 	if (udev->offload_usage)
- 		udev->offload_usage--;
- 	usb_autosuspend_device(udev);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(__usb_offload_put);
-+
-+/**
-+ * usb_offload_put - drop the offload_usage of a USB device
-+ * @udev: the USB device to drop its offload_usage
-+ *
-+ * The inverse operation of usb_offload_get, which drops the offload_usage of
-+ * a USB device. This information allows the USB driver to adjust its power
-+ * management policy based on offload activity.
-+ *
-+ * Return: 0 on success. A negative error code otherwise.
-+ */
-+int usb_offload_put(struct usb_device *udev)
-+{
-+	int ret;
-+
-+	usb_lock_device(udev);
-+	ret = __usb_offload_put(udev);
- 	usb_unlock_device(udev);
- 
- 	return ret;
-diff --git a/drivers/usb/host/xhci-sideband.c b/drivers/usb/host/xhci-sideband.c
-index 2bd77255032b..c37c3f3adf4a 100644
---- a/drivers/usb/host/xhci-sideband.c
-+++ b/drivers/usb/host/xhci-sideband.c
-@@ -89,7 +89,7 @@ __xhci_sideband_remove_endpoint(struct xhci_sideband *sb, struct xhci_virt_ep *e
- 	sb->eps[ep->ep_index] = NULL;
- }
- 
--/* Caller must hold sb->mutex */
-+/* Caller must hold sb->mutex and udev device lock */
- static void
- __xhci_sideband_remove_interrupter(struct xhci_sideband *sb)
- {
-@@ -102,10 +102,10 @@ __xhci_sideband_remove_interrupter(struct xhci_sideband *sb)
- 
- 	xhci_remove_secondary_interrupter(xhci_to_hcd(sb->xhci), sb->ir);
- 	sb->ir = NULL;
--	udev = sb->vdev->udev;
- 
--	if (udev->state != USB_STATE_NOTATTACHED)
--		usb_offload_put(udev);
-+	udev = interface_to_usbdev(sb->intf);
-+	device_lock_assert(&udev->dev);
-+	__usb_offload_put(udev);
- }
- 
- /* sideband api functions */
-@@ -334,25 +334,36 @@ xhci_sideband_create_interrupter(struct xhci_sideband *sb, int num_seg,
- 	if (!sb || !sb->xhci)
- 		return -ENODEV;
- 
--	guard(mutex)(&sb->mutex);
-+	udev = interface_to_usbdev(sb->intf);
-+	usb_lock_device(udev);
-+	mutex_lock(&sb->mutex);
- 
--	if (!sb->vdev)
--		return -ENODEV;
-+	if (!sb->vdev) {
-+		ret = -ENODEV;
-+		goto unlock;
-+	}
- 
--	if (sb->ir)
--		return -EBUSY;
-+	if (sb->ir) {
-+		ret = -EBUSY;
-+		goto unlock;
-+	}
- 
- 	sb->ir = xhci_create_secondary_interrupter(xhci_to_hcd(sb->xhci),
- 						   num_seg, imod_interval,
- 						   intr_num);
--	if (!sb->ir)
--		return -ENOMEM;
-+	if (!sb->ir) {
-+		ret = -ENOMEM;
-+		goto unlock;
-+	}
- 
--	udev = sb->vdev->udev;
--	ret = usb_offload_get(udev);
-+	ret = __usb_offload_get(udev);
- 
- 	sb->ir->ip_autoclear = ip_autoclear;
- 
-+unlock:
-+	mutex_unlock(&sb->mutex);
-+	usb_unlock_device(udev);
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(xhci_sideband_create_interrupter);
-@@ -367,12 +378,19 @@ EXPORT_SYMBOL_GPL(xhci_sideband_create_interrupter);
- void
- xhci_sideband_remove_interrupter(struct xhci_sideband *sb)
- {
--	if (!sb)
-+	struct usb_device *udev;
-+
-+	if (!sb || !sb->vdev)
- 		return;
- 
--	guard(mutex)(&sb->mutex);
-+	udev = interface_to_usbdev(sb->intf);
-+	usb_lock_device(udev);
-+	mutex_lock(&sb->mutex);
- 
- 	__xhci_sideband_remove_interrupter(sb);
-+
-+	mutex_unlock(&sb->mutex);
-+	usb_unlock_device(udev);
- }
- EXPORT_SYMBOL_GPL(xhci_sideband_remove_interrupter);
- 
-diff --git a/include/linux/usb.h b/include/linux/usb.h
-index fbfcc70b07fb..19c84c05f376 100644
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -846,11 +846,17 @@ static inline void usb_mark_last_busy(struct usb_device *udev)
- #endif
- 
- #if IS_ENABLED(CONFIG_USB_XHCI_SIDEBAND)
-+int __usb_offload_get(struct usb_device *udev);
-+int __usb_offload_put(struct usb_device *udev);
- int usb_offload_get(struct usb_device *udev);
- int usb_offload_put(struct usb_device *udev);
- bool usb_offload_check(struct usb_device *udev);
- #else
- 
-+static inline int __usb_offload_get(struct usb_device *udev)
-+{ return 0; }
-+static inline int __usb_offload_put(struct usb_device *udev)
-+{ return 0; }
- static inline int usb_offload_get(struct usb_device *udev)
- { return 0; }
- static inline int usb_offload_put(struct usb_device *udev)
--- 
-2.53.0.rc1.225.gd81095ad13-goog
-
+T24gRnJpLCAyMDI2LTAxLTMwIGF0IDAwOjUxICswODAwLCBUaG9tYXMgWWVuIHdyb3RlOg0KPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy91ZnMvY29yZS91ZnNoY2QuYyBiL2RyaXZlcnMvdWZzL2NvcmUv
+dWZzaGNkLmMNCj4gaW5kZXggMDM2OTA0M2NhMDEwLi44Yzg4ZGQ1YzJjY2EgMTAwNjQ0DQo+IC0t
+LSBhL2RyaXZlcnMvdWZzL2NvcmUvdWZzaGNkLmMNCj4gKysrIGIvZHJpdmVycy91ZnMvY29yZS91
+ZnNoY2QuYw0KPiBAQCAtOTk5Nyw2ICs5OTk3LDggQEAgc3RhdGljIGludCBfX3Vmc2hjZF93bF9z
+dXNwZW5kKHN0cnVjdCB1ZnNfaGJhDQo+ICpoYmEsIGVudW0gdWZzX3BtX29wIHBtX29wKQ0KPiDC
+oA0KPiDCoAlpZiAocmVxX2Rldl9wd3JfbW9kZSA9PSBVRlNfQUNUSVZFX1BXUl9NT0RFICYmDQo+
+IMKgCQkJcmVxX2xpbmtfc3RhdGUgPT0gVUlDX0xJTktfQUNUSVZFX1NUQVRFKSB7DQo+ICsJCXVm
+c2hjZF9kaXNhYmxlX2F1dG9fYmtvcHMoaGJhKTsNCj4gKwkJZmx1c2hfd29yaygmaGJhLT5lZWhf
+d29yayk7DQo+IMKgCQlnb3RvIHZvcHNfc3VzcGVuZDsNCj4gwqAJfQ0KPiDCoA0KPiANCj4gDQoN
+ClJldmlld2VkLWJ5OiBQZXRlciBXYW5nIDxwZXRlci53YW5nQG1lZGlhdGVrLmNvbT4NCg0KSWYg
+eW91IGhhdmUgdGhlIG5leHQgdmVyc2lvbiwgcGxlYXNlIGZlZWwgZnJlZSB0byBhZGQgbXkgcmV2
+aWV3IHRhZy4NClRoYW5rcy4NCg0KDQoNCg==
 
