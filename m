@@ -1,168 +1,200 @@
-Return-Path: <stable+bounces-212861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFXRIXyCfGlwNgIAu9opvQ
-	(envelope-from <stable+bounces-212861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:05:48 +0100
+	id UHvUMr+CfGlwNgIAu9opvQ
+	(envelope-from <stable+bounces-212862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:06:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5774B9250
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:05:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5C8B928C
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD62D300A747
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 10:05:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFD07300953A
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 10:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FDB2FC89C;
-	Fri, 30 Jan 2026 10:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40743396E9;
+	Fri, 30 Jan 2026 10:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="j/peVqNR"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="I6ouKihC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A302DECA5
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 10:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8726531ED6B
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 10:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769767544; cv=none; b=jDKjhMiS3desM3WMr+bMOLlYzNzYjEHWUQeq0IBE10reAF0aCrGLPpPTKLA7VmZfIIRMxtQfqB0yekIQJpC2yFXPhsrRTLghwPAfaKW4gZ2il9Q5bYtETfXWl8NyHGC6adwPwaL0WM9RXD2PG81IGLdQY/nr0mxutriHr4JCN3o=
+	t=1769767589; cv=none; b=o6mtClhpnkcWX9zMTMdwiSPuZy0F/rd6YPnPi7rj8K3JaGGG7LN+qPrSjaidr2aXmuoEyCTPvb5eChx+aGdx/SqCOL3fKEZHiSeFxVaiz6JrH5y4YAwe8kgEUUzoHbiOludONgqd6Bdbrb7JuKQKkNoMk7APfISpH5I1qMHjmEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769767544; c=relaxed/simple;
-	bh=bYd0gNIPsQfrRjQ50GYAw4VHaMDTFpCKlop3i6J00yc=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=A3HeilS33YCESjKnIQN8cIBIdUMwivt5acZv1rLGjF/0newcS4N1iPHO/twxDFi9V3hk2IiInraC5RkyeRnWqH6Z7fh01149yV46RbPJAeQkrtDnIX5dqAfnqjUHAjm7KK080IViM3VNVmr272QUK86kR6qWJvqHJAYmjzx0Rts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=j/peVqNR; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1769767491;
-	bh=bYd0gNIPsQfrRjQ50GYAw4VHaMDTFpCKlop3i6J00yc=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=j/peVqNRKbVUr7VSZw5Rq1yg1tVAapNmoCwySrVLLLf6Zqbs9vBFQAPDr1kmrceeZ
-	 RBg7WCljghNxRbMtE4K/DzSPMBYA7vVASsbcmdKNGkioOeEhBdXGCkmZuHRn+xQJCn
-	 CRVJ4IyGJLmdTDTRqfkr+w4K3yvXb+8qaIp5NFkw=
-EX-QQ-RecipientCnt: 5
-X-QQ-GoodBg: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqSqhbzcQ9CBTJeqGhrDD4pnhr5tH6LJw/E=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: ZvpNZN00dh91KxFvLzKXzIpru8CqnKa6yLl5EIsXCJo=
-X-QQ-STYLE: 
-X-QQ-mid: lv3gz7b-6t1769767485t96c1df8a
-From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
-To: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
-Cc: "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>, "=?utf-8?B?dGl3YWk=?=" <tiwai@suse.de>, "=?utf-8?B?c2FzaGFs?=" <sashal@kernel.org>, "=?utf-8?B?cGF2ZWw=?=" <pavel@denx.de>
-Subject:  [PATCH 6.6] ALSA: usb-audio: Fix missing unlock at error path of  maxpacksize check
+	s=arc-20240116; t=1769767589; c=relaxed/simple;
+	bh=7jyevZFZLAcUnXqqzxI4skDEIwGmnlSZapSWB8fMnM4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Te96+kKzkyAkyd7UVfZw8zlcMns3zFTTfswTH7dCM0+0uSxQNGupHOrZRGUUvqucFyG0sE7vm+aOVNiU3e3r1suJSUGzYlK+m9U6rAUOuthsEg8wIvdygBrHtZyaXYEBbgyjynGhEn/uNMcQQCMaTQr4STM22XEPjPvrtbWxq78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=I6ouKihC; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 2A1B3C22F5B;
+	Fri, 30 Jan 2026 10:06:28 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C600A6075A;
+	Fri, 30 Jan 2026 10:06:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C0895119A8875;
+	Fri, 30 Jan 2026 11:06:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769767584; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=hLDn2ySiB0Tpsta6+/1jzi+11wm+hKE7qMJ6g6qxnDY=;
+	b=I6ouKihC9TXTAqhV7SESHA6UzNTAdelgUUQMpbavPT6LcMzm4iCLTJO7lODJuPjQ7FYNqL
+	rPD8Ze+K226nL0tAfoqV7NUlrfsa/GrchxiQt/agvOsCH+Xvm6/qzdQbOjugQooWHY8MJt
+	EM1MkRT3a2E1C5C05peULv/uhIp9Nogc+qRKEwawCeqEIiRns5rK70Wnh4QTlxkeJc2xbn
+	dvtI3+TRYS+DZaRK8KG/83coh2acMC2lyKtLWuu2EnL6OTJOO+2mNQ/c9qzQ49QXCr3Hbf
+	SiSBJQAYPaM5WS5+/bkA1iPfqrjoyxzgTp3yUXAqwf0Mv0wvqiNNWRmq6x6Blg==
+From: "Thomas Richard (TI)" <thomas.richard@bootlin.com>
+Date: Fri, 30 Jan 2026 11:05:45 +0100
+Subject: [PATCH] usb: cdns3: fix role switching during resume
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Fri, 30 Jan 2026 18:04:44 +0800
-X-Priority: 3
-Message-ID: <tencent_42D789F563D3A21850DD27DE@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_09063379481F265B19AC7AC7@qq.com>
-In-Reply-To: <tencent_09063379481F265B19AC7AC7@qq.com>
-X-QQ-ReplyHash: 3650666767
-X-BIZMAIL-ID: 20175316097290189
-X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Fri, 30 Jan 2026 18:04:46 +0800 (CST)
-Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NWth7vBa++Gd/u2dW/G8Jx7DeM3yylBJTriUWaf7z3EYXGufa/ndknVU
-	FSFqzRL4y4SIGH3jg8/6dPP8KPN1deX6JO23cDwaesMPEOe5Xn+LtMJHINkOVP561+hAVJy
-	G3ZdZJZqsO2bsJr9liP9XnVa4zLK6RHnJJjXdeYgM1vOUffwWb77hrl3ltzOw9cojlp3648
-	Q+jgH+RxK8kPW80LxbSgvOyVWCjIBaIiRLE16xqsN3PO+CPR1iu5ykUQvU3ONWpOD9fo2gj
-	Zk8xeyQUTRGqqswTjez+vP8sdV2BZDfyIPlwtnIZqdYqc9XA+ddmgYutLJqanj4FBhxz7cC
-	IZAMXcnIB16EK2u/pUDfEMNsYOb0/nLeLRY2SiHzRgO0KAi7l0HjonLLxOVDzqsExLFSEvo
-	Rm+WqWzDKoT+VZGZh5anizL55inmqjiYpApL5n4JU4FllN/D2XkxYAgokBxrkA+feWBMEHv
-	F/OqW2LYpFDRBwJBmhFZCwo3J+q1nCiis1rI+Rb7cIUFrTtATHDY26zbaH520NC136lADQ4
-	tBDEKbR+jHuk8fGdwNtw2TR+a+KD6/aJqssSL/nhV/XWaWBPvIGAPnQ3lKSvMyVShFuXIDL
-	4AiIE8ca/6QYX4KZqDwBlhm5A+VmNs0A1jwJoLxbdPApjhrpcwGfH5XH7xPMLwmdJUC/crw
-	jRodq6UHgxocD05wn5XRqJHoQ0S4qsY57DJcW+qerbQKw/RioPiEa6Ujn5T3zeA4Qzehhje
-	7F5iVQbESzkVVHmH5OA5vTgtM5Rayxi2XEmwlGDjORSiedZqXTc4lI8z+5F6o+XvxTNfnCs
-	FSk+MOEaXAL15ajEuVVOjNtV7YUGTNzjc0fVI315uj28on+Uokm392vQTW521mT0hWKtu67
-	Qj2WaCbiqlWz2JY/SB5HUl9Mz9CEf8TcUiL6ng/3LTq8m3Ro3lIoZoBsqIk9Odeuza+XTqm
-	8WcA7q7EiVOBCjFButn9oMwYAZGXkvTRUMrEsx5GkpoN7A1g6v5cqRXS1Ll6a5F4zV36HCj
-	iknImhXSi5MJb0HolLaMKhwyCC/ac4rvodBf1xTHikkn7RNfVdVYa3SuZmpqbUGwf7Wnl0O
-	BCC0WkNuJMg
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAHiCfGkC/y2N2w6CQAxEf4X02SbLQlT8FeOD7BZooou2rJIQ/
+ p16eZqcSWbOAkrCpHAqFhB6sfKYDMpdAWG4pp6QozF45/eu9A1mbTHEpBV2PKOMN0J98xQGTj3
+ GLJ8Q0nwnjFV3bOp4oLZ2YIcPIdt8ZefLj4We2ZzTv1zXDbcUbPmRAAAA
+X-Change-ID: 20260129-usb-cdns3-fix-role-switching-during-resume-d3f894d7eb40
+To: Pawel Laszczak <pawell@cadence.com>, Peter Chen <peter.chen@kernel.org>, 
+ Roger Quadros <rogerq@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, theo.lebrun@bootlin.com, 
+ Frank Li <frank.li@nxp.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, richard.genoud@bootlin.com, 
+ Udit Kumar <u-kumar1@ti.com>, Prasanth Mantena <p-mantena@ti.com>, 
+ Abhash Kumar <a-kumar2@ti.com>, linux-usb@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Peter Chen <peter.chen@nxp.com>, 
+ stable@vger.kernel.org, "Thomas Richard (TI)" <thomas.richard@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.44 / 15.00];
-	CC_EXCESS_BASE64(1.50)[];
-	TO_EXCESS_BASE64(1.50)[];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212862-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_ALL(0.00)[];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212861-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	HAS_X_PRIO_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[thomas.richard@bootlin.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_EXCESS_BASE64(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: C5774B9250
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid]
+X-Rspamd-Queue-Id: 3A5C8B928C
 X-Rspamd-Action: no action
 
-SSBmb3VuZCB0aGF0IHBhdGNoIHdoaWNoIGluIHY2LjEyLjYwIHNob3VsZCBiZSBhcHBsaWVk
-IGluIHY2LjYtc3RhYmxlIHRyZWUuDQoNCkZyb206IFRha2FzaGkgSXdhaSA8dGl3YWlAc3Vz
-ZS5kZT4NCg0KVGhlIHJlY2VudCBiYWNrcG9ydCBvZiB0aGUgdXBzdHJlYW0gY29tbWl0IDA1
-YTFmYzVlZmRkOCAoIkFMU0E6DQp1c2ItYXVkaW86IEZpeCBwb3RlbnRpYWwgb3ZlcmZsb3cg
-b2YgUENNIHRyYW5zZmVyIGJ1ZmZlciIpIG9uIHRoZQ0Kb2xkZXIgc3RhYmxlIGtlcm5lbHMg
-bGlrZSA2LjEyLnkgd2FzIGJyb2tlbiBzaW5jZSBpdCBkb2Vzbid0IGNvbnNpZGVyDQp0aGUg
-bXV0ZXggdW5sb2NrLCB3aGVyZSB0aGUgdXBzdHJlYW0gY29kZSBtYW5hZ2VzIHdpdGggZ3Vh
-cmQoKS4NCkluIHRoZSBvbGRlciBjb2RlLCB3ZSBzdGlsbCBuZWVkIGFuIGV4cGxpY2l0IHVu
-bG9jay4NCg0KVGhpcyBpcyBhIGZpeCB0aGF0IGNvcnJlY3RzIHRoZSBlcnJvciBwYXRoLCBh
-cHBsaWVkIG9ubHkgb24gb2xkIHN0YWJsZQ0KdHJlZXMuDQoNClJlcG9ydGVkLWJ5OiBQYXZl
-bCBNYWNoZWsgPHBhdmVsQGRlbnguZGU+DQpDbG9zZXM6IGh0dHBzOi8vbG9yZS5rZXJuZWwu
-b3JnL2FTV3RIMEFaSDUrYWViK2FAZHVvLnVjdy5jeg0KRml4ZXM6IDk4ZTlkNWUzM2JkYSAo
-IkFMU0E6IHVzYi1hdWRpbzogRml4IHBvdGVudGlhbCBvdmVyZmxvdyBvZiBQQ00gdHJhbnNm
-ZXIgYnVmZmVyIikNClJldmlld2VkLWJ5OiBQYXZlbCBNYWNoZWsgPHBhdmVsQGRlbnguZGU+
-DQpTaWduZWQtb2ZmLWJ5OiBUYWthc2hpIEl3YWkgPHRpd2FpQHN1c2UuZGU+DQpTaWduZWQt
-b2ZmLWJ5OiBTYXNoYSBMZXZpbiA8c2FzaGFsQGtlcm5lbC5vcmc+DQooY2hlcnJ5IHBpY2tl
-ZCBmcm9tIGNvbW1pdCBmZGYwZGM4MmViNjAwOTE3NzJlY2VhNzNjYmM1YThmYjc1NjJmYzQ1
-KQ0KU2lnbmVkLW9mZi1ieTogV2VudGFvIEd1YW4gPGd1YW53ZW50YW9AdW5pb250ZWNoLmNv
-bT4NCi0tLQ0KIHNvdW5kL3VzYi9lbmRwb2ludC5jIHwgMyArKy0NCiAxIGZpbGUgY2hhbmdl
-ZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYgLS1naXQgYS9zb3Vu
-ZC91c2IvZW5kcG9pbnQuYyBiL3NvdW5kL3VzYi9lbmRwb2ludC5jDQppbmRleCA3MjM4ZjY1
-Y2JjZmZmLi5hYTIwMWU0NzQ0YmY2IDEwMDY0NA0KLS0tIGEvc291bmQvdXNiL2VuZHBvaW50
-LmMNCisrKyBiL3NvdW5kL3VzYi9lbmRwb2ludC5jDQpAQCAtMTM4OSw3ICsxMzg5LDggQEAg
-aW50IHNuZF91c2JfZW5kcG9pbnRfc2V0X3BhcmFtcyhzdHJ1Y3Qgc25kX3VzYl9hdWRpbyAq
-Y2hpcCwNCiAgICAgICAgaWYgKGVwLT5wYWNrc2l6ZVsxXSA+IGVwLT5tYXhwYWNrc2l6ZSkg
-ew0KICAgICAgICAgICAgICAgIHVzYl9hdWRpb19kYmcoY2hpcCwgIlRvbyBzbWFsbCBtYXhw
-YWNrc2l6ZSAldSBmb3IgcmF0ZSAldSAvIHBwcyAldVxuIiwNCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIGVwLT5tYXhwYWNrc2l6ZSwgZXAtPmN1cl9yYXRlLCBlcC0+cHBzKTsN
-Ci0gICAgICAgICAgICAgICByZXR1cm4gLUVJTlZBTDsNCisgICAgICAgICAgICAgICBlcnIg
-PSAtRUlOVkFMOw0KKyAgICAgICAgICAgICAgIGdvdG8gdW5sb2NrOw0KICAgICAgICB9DQog
-DQogICAgICAgIC8qIGNhbGN1bGF0ZSB0aGUgZnJlcXVlbmN5IGluIDE2LjE2IGZvcm1hdCAq
-Lw0KLS0gDQoyLjUxLjA=
+If the role change while we are suspended, the cdns3 driver switches to the
+new mode during resume. However, switching to host mode in this context
+causes a NULL pointer dereference.
+
+The host role's start() operation registers a xhci-hcd device, but its
+probe is deferred while we are in the resume path. The host role's resume()
+operation assumes the xhci-hcd device is already probed, which is not the
+case, leading to the dereference. Since the start() operation of the new
+role is already called, the resume operation can be skipped.
+
+So skip the resume operation for the new role if a role switch occurs
+during resume. Once the resume sequence is complete, the xhci-hcd device
+can be probed in case of host mode.
+
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
+Mem abort info:
+...
+Data abort info:
+...
+[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1]  SMP
+Modules linked in:
+CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
+6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
+Hardware name: Texas Instruments J7200 EVM (DT)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : usb_hcd_is_primary_hcd+0x0/0x1c
+lr : cdns_host_resume+0x24/0x5c
+...
+Call trace:
+ usb_hcd_is_primary_hcd+0x0/0x1c (P)
+ cdns_resume+0x6c/0xbc
+ cdns3_controller_resume.isra.0+0xe8/0x17c
+ cdns3_plat_resume+0x18/0x24
+ platform_pm_resume+0x2c/0x68
+ dpm_run_callback+0x90/0x248
+ device_resume+0x100/0x24c
+ dpm_resume+0x190/0x2ec
+ dpm_resume_end+0x18/0x34
+ suspend_devices_and_enter+0x2b0/0xa44
+ pm_suspend+0x16c/0x5fc
+ state_store+0x80/0xec
+ kobj_attr_store+0x18/0x2c
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x130/0x1dc
+ vfs_write+0x240/0x370
+ ksys_write+0x70/0x108
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x10c
+ el0_svc_common.constprop.0+0x40/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0x108
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
+Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
+---[ end trace 0000000000000000 ]---
+
+Cc: stable@vger.kernel.org
+Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
+Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
+---
+This patch is related to the following discussion:
+https://lore.kernel.org/all/8743fec1-301d-46e1-89bf-7952c73faa86@bootlin.com/
+---
+ drivers/usb/cdns3/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index 1243a5cea91b..f0e32227c0b7 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -551,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
+ 		}
+ 	}
+ 
+-	if (cdns->roles[cdns->role]->resume)
++	if (!role_changed && cdns->roles[cdns->role]->resume)
+ 		cdns->roles[cdns->role]->resume(cdns, power_lost);
+ 
+ 	return 0;
+
+---
+base-commit: 9ff530af7fe2b44c93784641540d5b79fc9fe315
+change-id: 20260129-usb-cdns3-fix-role-switching-during-resume-d3f894d7eb40
+
+Best regards,
+-- 
+Thomas Richard (TI) <thomas.richard@bootlin.com>
 
 
