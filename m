@@ -1,303 +1,162 @@
-Return-Path: <stable+bounces-212842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mC28IxdNfGlwLwIAu9opvQ
-	(envelope-from <stable+bounces-212842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:17:59 +0100
+	id cB4jNZZSfGmwLwIAu9opvQ
+	(envelope-from <stable+bounces-212843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:41:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31295B796D
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:17:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A62B7AA4
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 97CEA30065F9
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 06:17:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 557353003BD1
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 06:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163F52E0405;
-	Fri, 30 Jan 2026 06:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FDA33890E;
+	Fri, 30 Jan 2026 06:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uh/m2RGZ"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Z+U+ny+o"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBEE25B662
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 06:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769753876; cv=none; b=SC3sEP1uVG5b1MGoTu8+KtpqHhPFn9lIiDH0rvzgbCSmmvzxciYv8aJmcYC43LB62cP8VKcvyiIKSIKjOQ5ucpZ2GKLpwGcUuit6AMF4STxu54hy0eNTviX692oX15KZ3Fcn1I23WI8XtofteQ098PmjpylRujDAPgX1HNupPAQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769753876; c=relaxed/simple;
-	bh=gi56fCFxndmZS3u5rZn7lLKjCFP6jws0mcuR3jguaLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MXZ0QthRgGJWtWkIqzk5q2DKoxSVa1bfhaFlkhd/WMhJKaXlasUg3JRlHMHt1m/nsjwWFOfcbqkb9HG6ORTniqs/eoC8uTyIHWQbkU6zvYT8d91C/owWOOhwGtsphLP9hpwckgpGI/DEhUjeI37T0OgnL7EylDecu1lZZOnrmUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uh/m2RGZ; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 30 Jan 2026 14:17:32 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769753863;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Oc43I2XjtgSCW/lhB/Z+tW4u7IMzTAGJYJqdI4VSEG8=;
-	b=uh/m2RGZONlBv4grhrNFYxpeBB+mzaqQU52VLKVj8SSwhbfi1jnn0JW0X+4pOg5bJL5MqN
-	o46QNk0LCfDriaEtLad5Vrtq/JHJ+bpLCNRk7tPdv48NALYk4ZsqIe55oErjRhM1dOsD5P
-	+OEXEBCY2GU8MBZBsUmCb2GAq6Khez4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v4 00/22] slab: replace cpu (partial) slabs with sheaves
-Message-ID: <oj5ossmsvybogs5fr2fjdmms66usoh7pdpkuxwlkagxniscrrb@vghtzkxauvix>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <imzzlzuzjmlkhxc7hszxh5ba7jksvqcieg5rzyryijkkdhai5q@l2t4ye5quozb>
- <390d6318-08f3-403b-bf96-4675a0d1fe98@suse.cz>
- <pdmjsvpkl5nsntiwfwguplajq27ak3xpboq3ab77zrbu763pq7@la3hyiqigpir>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3295D3314AE
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 06:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769755278; cv=pass; b=Odfhfns5t/bJii/zH3xcUM/XDrIUNrkAFE8HN197s3YLBUxWMjlWyKAH/GTqMF4ooo5EIApMDyQMuDlBMWtJZH0jVEzKlhxxZ8AHnrdqEo8yEPSoHFSZ/GZ8EUdpRSoK6zJOA1RQlRZhhACFKKiAe0o/BPfZvyM+On2YZ98/POw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769755278; c=relaxed/simple;
+	bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pqz8f27CXqwW4g3jHB3Fzw+payFWgdhGUjxNbylo6P749zBdQ+Go81I7yBC9RraSkbhK08z/xu55I/IHHCpJKT2so7a21zd1Jd/HgTnzTCOKiDKSWXOmR92LuN0SDyolkl+UIcAhY6b86loxc+L+UB5X4CAs1BwBV1yt5IE2yN0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Z+U+ny+o; arc=pass smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4094fbd1808so715071fac.1
+        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 22:41:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769755276; cv=none;
+        d=google.com; s=arc-20240605;
+        b=f+k3CgF8Dw6ShZlD4M+j1Q3dx71UJa++2SUPHdipJUTIPcXfW6ataKrPwP6EVQBwNj
+         gKwSDlOAPksIAEdfr7XkhgEva43fjqzK6NqyyTJqYKrzX3bhn+qh9QDyyLjhYnzNCTy0
+         P0WVCB/vt27sNhwL8jYC3/B1X8PpgccyPIFKSWHrc7fNZho08UEAAn0ikmQ+Ea/dpbNL
+         FfrBkg+yHE5BnW/syP7/Egn8I+tyv6zgrmYQmI/iTsQxn6fRhDw9LNykNV+OPWAIJHUD
+         0vqbYLeU8FWLykLJa65zl23U+T8KPU+dWMZABMyZcd60JX9qL1puZ14Lkf0Vxrn45nDs
+         GQyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
+        fh=W65YBmETc133tNim6mzvjyl99T/KtxMOPkoB3NSIT7w=;
+        b=STMk4sYuT092oCs7fpKJczW5MQ5D6Hx6frLjcoAZLGm5Vz9us9a+HFxduLWoQj6EtH
+         oUynTkqRXupGMZsvErpKH5OU0dQCdEw8cq6ABEz0dLPoCZJz1Vu+tHgI59F1XqZTH41y
+         AALzI2NmdThtMLixmyD9S9KFDTfH8LOn/n/JBnu7zPXz9yP6oRUnG2Zw4OC4sOwOVs4c
+         jM7MreKvJqpUMhFpaXw58p/Ko6Ll1zuvYJHwBS2U0Gc5rnSf+l+R55hIoScPxQ2CUC6E
+         1/Lf6jeWMw+pH7VtiKcqU+uwGBBak5cLygHky67wQ20tHWuRDuHP9iTMUeGaG8fRahew
+         PMxQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1769755276; x=1770360076; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
+        b=Z+U+ny+ozVR309fDpfHAkgiuhKmVmcmA9RFHV9cr+kETaUpQtabsqT9anfREO2JCVu
+         mER6ZEVWk9yB7tgv4uPT7Ei1ikBbROd/SP+0Serpk1n55/HsNiSfRV3anp4mb7phmHdn
+         GYPrrK5iTto9GOIOzZrniLCkogETBT0F8cOBhn3z0VWCE9f7qd/PTHuZcAuuVY+7vTcT
+         7ZIbKz5ZUTwuf2gkbcvLsK845QpLArMKS2avwyi/JTFL/e0xJVlYgO+LerWDZ343z6Kp
+         lixUieRJ344Zv/5g9N2z8K5hfJbsbH1xA+LF4VdxaVensy2xJ6b6oxWLSh8Q2wvcUNN3
+         f5pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769755276; x=1770360076;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
+        b=FVInDbDvS/lgZdtjOTUACtyQVDP3Rej2/B5Ctk1k2G9SGf84v1ZFez1XB+VBFLFHTI
+         7I4soWYgT4D0PnRA3ENoCMBNSuIbSYNC3U15LjdBc+Eg9h2sQl/MmuLwPLbKyOIuWNeL
+         7hG0aeq8dbWyPwcg7wWQgXBfR4FHVc2O32SrR6YRliZObpFE5eGTJ66l4WVj0fUem5hj
+         93MWhUI3grAZCe3AE8IemcjPPHQ+z9d7DYHN2TjUhvvIbmOL063HnDiz/Xr+pYRgw3Tv
+         F26RXMgSgV4vM/mpFoUY7/eDiBbsx/68yP+e1x5GKAGQo6hCFDfWWY+n/Z2/7TNqQeS4
+         X/1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUGmVRO5Vl00LbLN8TLHzzq4cce8P6nOk+/ILKDR+8h8JP0FiSnvRz8LKJ+6R68EcCXLUMbgVY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6dUjE5Br1S9kqgg9nVwfrqTiHiJapCD8HAf+7K1Io4ENxjTIL
+	yNj29Kybpg1kTiK0k72LLJKv2FRwiiyzwLXaD/BDxeHmwlmqL9SqTPCudTVmqBbCuGmJtq2FRyM
+	QKYSQBVQyLSSFupGJOzR4FXECR/gmu/8dMmFNLGKh
+X-Gm-Gg: AZuq6aJypspqZjiRSNvaKuZ0uPPckLLyQLK2uB+kVTcAqKxSvhPhtU+TvRQ0iakiopI
+	wPnnRzr2Yq5YT5HANvVZvWEOAZvv6L+yF+xwbIL512vnHKJAoFNMLGoOpLN2/IH2AVCs4IdEKSj
+	F8WykdFTGz0wYF4tWepYKletzXm3lrg7e7+yw0E9w4GRpBgbgw2wRAjyMdh0CKJHs4ZYcMbcciA
+	d2rMak12yQ6cF01t21L+Hgqrv1qpXGRThQ8B7CBCDMkokwfefhE5rPN0sEbARrxH68M8jdPSI7G
+	dWFauDE=
+X-Received: by 2002:a4a:ee0d:0:b0:663:c8a:f14d with SMTP id
+ 006d021491bc7-6630f34ec68mr804679eaf.29.1769755276000; Thu, 29 Jan 2026
+ 22:41:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <pdmjsvpkl5nsntiwfwguplajq27ak3xpboq3ab77zrbu763pq7@la3hyiqigpir>
-X-Migadu-Flow: FLOW_OUT
+References: <20260130050750.4050-1-jasowang@redhat.com>
+In-Reply-To: <20260130050750.4050-1-jasowang@redhat.com>
+From: Yongji Xie <xieyongji@bytedance.com>
+Date: Fri, 30 Jan 2026 14:41:05 +0800
+X-Gm-Features: AZwV_QjZWXvGY6fbhwTXsBsPoSEryCiwjIw8p9jgzeUbuJsf6rP1qz6KrDl9010
+Message-ID: <CACycT3tVT5x3hoDrtuzqMgLgmw_1JbDtQwwJQ2o4mV2xUkFc9w@mail.gmail.com>
+Subject: Re: [PATCH] VDUSE: avoid leaking information to userspace
+To: Jason Wang <jasowang@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, 
+	linux-kernel <linux-kernel@vger.kernel.org>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio Perez Martin <eperezma@redhat.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212842-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212843-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[oracle.com,suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,gmail.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hao.li@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 31295B796D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xieyongji@bytedance.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,bytedance.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 05A62B7AA4
 X-Rspamd-Action: no action
 
-On Fri, Jan 30, 2026 at 12:50:25PM +0800, Hao Li wrote:
-> On Thu, Jan 29, 2026 at 04:28:01PM +0100, Vlastimil Babka wrote:
-> > 
-> > So previously those would become kind of double
-> > cached by both sheaves and cpu (partial) slabs (and thus hopefully benefited
-> > more than they should) since sheaves introduction in 6.18, and now they are
-> > not double cached anymore?
-> > 
-> 
-> I've conducted new tests, and here are the details of three scenarios:
-> 
->   1. Checked out commit 9d4e6ab865c4, which represents the state before the
->      introduction of the sheaves mechanism.
->   2. Tested with 6.19-rc5, which includes sheaves but does not yet apply the
->      "sheaves for all" patchset.
->   3. Applied the "sheaves for all" patchset and also included the "avoid
->      list_lock contention" patch.
+On Fri, Jan 30, 2026 at 1:08=E2=80=AFPM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> The bounceing is not necessarily page aligned, so current VDUSE can
+> leak kernel information through mapping bounce pages to
+> userspace. Allocate bounce pages with __GFP_ZERO to avoid leaking
+> information to userspace.
+>
+> Fixes: 8c773d53fb7b ("vduse: Implement an MMU-based software IOTLB")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jason Wang <jasowang@redhat.com>
 
-Here is my testing environment information and the raw test data.
+Thanks for catching this!
 
-Command:
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
 
-cd will-it-scale/
-python3 ./runtest.py mmap2 25 process 0 0 64 128 192
-
-Env:
-
-CPU(s):                                  192
-Thread(s) per core:                      1
-Core(s) per socket:                      96
-Socket(s):                               2
-NUMA node(s):                            4
-NUMA node0 CPU(s):                       0-47
-NUMA node1 CPU(s):                       48-95
-NUMA node2 CPU(s):                       96-143
-NUMA node3 CPU(s):                       144-191
-Memory:                                  1.5T
-
-Raw data:
-
-1. Checked out commit 9d4e6ab865c4, which represents the state before the
-   introduction of the sheaves mechanism.
-
-{
-  "time.elapsed_time": 93.88,
-  "time.elapsed_time.max": 93.88,
-  "time.file_system_inputs": 2640,
-  "time.file_system_outputs": 128,
-  "time.involuntary_context_switches": 417738,
-  "time.major_page_faults": 54,
-  "time.maximum_resident_set_size": 90012,
-  "time.minor_page_faults": 80569,
-  "time.page_size": 4096,
-  "time.percent_of_cpu_this_job_got": 5707,
-  "time.system_time": 5272.97,
-  "time.user_time": 85.59,
-  "time.voluntary_context_switches": 2436,
-  "will-it-scale.128.processes": 28445014,
-  "will-it-scale.128.processes_idle": 33.89,
-  "will-it-scale.192.processes": 39899678,
-  "will-it-scale.192.processes_idle": 1.29,
-  "will-it-scale.64.processes": 15645502,
-  "will-it-scale.64.processes_idle": 66.75,
-  "will-it-scale.per_process_ops": 224832,
-  "will-it-scale.time.elapsed_time": 93.88,
-  "will-it-scale.time.elapsed_time.max": 93.88,
-  "will-it-scale.time.file_system_inputs": 2640,
-  "will-it-scale.time.file_system_outputs": 128,
-  "will-it-scale.time.involuntary_context_switches": 417738,
-  "will-it-scale.time.major_page_faults": 54,
-  "will-it-scale.time.maximum_resident_set_size": 90012,
-  "will-it-scale.time.minor_page_faults": 80569,
-  "will-it-scale.time.page_size": 4096,
-  "will-it-scale.time.percent_of_cpu_this_job_got": 5707,
-  "will-it-scale.time.system_time": 5272.97,
-  "will-it-scale.time.user_time": 85.59,
-  "will-it-scale.time.voluntary_context_switches": 2436,
-  "will-it-scale.workload": 83990194
-}
-
-2. Tested with 6.19-rc5, which includes sheaves but does not yet apply the
-   "sheaves for all" patchset.
-
-{
-  "time.elapsed_time": 93.86000000000001,
-  "time.elapsed_time.max": 93.86000000000001,
-  "time.file_system_inputs": 1952,
-  "time.file_system_outputs": 160,
-  "time.involuntary_context_switches": 766225,
-  "time.major_page_faults": 50.666666666666664,
-  "time.maximum_resident_set_size": 90012,
-  "time.minor_page_faults": 80635,
-  "time.page_size": 4096,
-  "time.percent_of_cpu_this_job_got": 5738,
-  "time.system_time": 5251.88,
-  "time.user_time": 134.57666666666665,
-  "time.voluntary_context_switches": 2539,
-  "will-it-scale.128.processes": 38223543.333333336,
-  "will-it-scale.128.processes_idle": 33.833333333333336,
-  "will-it-scale.192.processes": 54039039,
-  "will-it-scale.192.processes_idle": 1.26,
-  "will-it-scale.64.processes": 20579207.666666668,
-  "will-it-scale.64.processes_idle": 66.74333333333334,
-  "will-it-scale.per_process_ops": 300541,
-  "will-it-scale.time.elapsed_time": 93.86000000000001,
-  "will-it-scale.time.elapsed_time.max": 93.86000000000001,
-  "will-it-scale.time.file_system_inputs": 1952,
-  "will-it-scale.time.file_system_outputs": 160,
-  "will-it-scale.time.involuntary_context_switches": 766225,
-  "will-it-scale.time.major_page_faults": 50.666666666666664,
-  "will-it-scale.time.maximum_resident_set_size": 90012,
-  "will-it-scale.time.minor_page_faults": 80635,
-  "will-it-scale.time.page_size": 4096,
-  "will-it-scale.time.percent_of_cpu_this_job_got": 5738,
-  "will-it-scale.time.system_time": 5251.88,
-  "will-it-scale.time.user_time": 134.57666666666665,
-  "will-it-scale.time.voluntary_context_switches": 2539,
-  "will-it-scale.workload": 112841790
-}
-
-3. Applied the "sheaves for all" patchset and also included the "avoid
-   list_lock contention" patch.
-
-{
-  "time.elapsed_time": 93.86666666666667,
-  "time.elapsed_time.max": 93.86666666666667,
-  "time.file_system_inputs": 1800,
-  "time.file_system_outputs": 149.33333333333334,
-  "time.involuntary_context_switches": 421120,
-  "time.major_page_faults": 37,
-  "time.maximum_resident_set_size": 90016,
-  "time.minor_page_faults": 80645,
-  "time.page_size": 4096,
-  "time.percent_of_cpu_this_job_got": 5714.666666666667,
-  "time.system_time": 5256.176666666667,
-  "time.user_time": 108.88333333333333,
-  "time.voluntary_context_switches": 2513,
-  "will-it-scale.128.processes": 28067051.333333332,
-  "will-it-scale.128.processes_idle": 33.82,
-  "will-it-scale.192.processes": 38232965.666666664,
-  "will-it-scale.192.processes_idle": 1.2733333333333334,
-  "will-it-scale.64.processes": 15464041.333333334,
-  "will-it-scale.64.processes_idle": 66.76333333333334,
-  "will-it-scale.per_process_ops": 220009.33333333334,
-  "will-it-scale.time.elapsed_time": 93.86666666666667,
-  "will-it-scale.time.elapsed_time.max": 93.86666666666667,
-  "will-it-scale.time.file_system_inputs": 1800,
-  "will-it-scale.time.file_system_outputs": 149.33333333333334,
-  "will-it-scale.time.involuntary_context_switches": 421120,
-  "will-it-scale.time.major_page_faults": 37,
-  "will-it-scale.time.maximum_resident_set_size": 90016,
-  "will-it-scale.time.minor_page_faults": 80645,
-  "will-it-scale.time.page_size": 4096,
-  "will-it-scale.time.percent_of_cpu_this_job_got": 5714.666666666667,
-  "will-it-scale.time.system_time": 5256.176666666667,
-  "will-it-scale.time.user_time": 108.88333333333333,
-  "will-it-scale.time.voluntary_context_switches": 2513,
-  "will-it-scale.workload": 81764058.33333333
-}
-
-> 
-> 
-> Results:
-> 
-> For scenario 2 (with sheaves but without "sheaves for all"), there is a
-> noticeable performance improvement compared to scenario 1:
-> 
-> will-it-scale.128.processes +34.3%
-> will-it-scale.192.processes +35.4%
-> will-it-scale.64.processes +31.5%
-> will-it-scale.per_process_ops +33.7%
-> 
-> For scenario 3 (after applying "sheaves for all"), performance slightly
-> regressed compared to scenario 1:
-> 
-> will-it-scale.128.processes -1.3%
-> will-it-scale.192.processes -4.2%
-> will-it-scale.64.processes -1.2%
-> will-it-scale.per_process_ops -2.1%
-> 
-> Analysis:
-> 
-> So when the sheaf size for maple nodes is set to 32 by default, the performance
-> of fully adopting the sheaves mechanism roughly matches the performance of the
-> previous approach that relied solely on the percpu slab partial list.
-> 
-> The performance regression observed with the "sheaves for all" patchset can
-> actually be explained as follows: moving from scenario 1 to scenario 2
-> introduces an additional cache layer, which boosts performance temporarily.
-> When moving from scenario 2 to scenario 3, this additional cache layer is
-> removed, then performance reverted to its original level.
-> 
-> So I think the performance of the percpu partial list and the sheaves mechanism
-> is roughly the same, which is consistent with our expectations.
-> 
-> -- 
-> Thanks,
-> Hao
+Thanks,
+Yongji
 
