@@ -1,64 +1,91 @@
-Return-Path: <stable+bounces-212850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YG0dEJxnfGk/MQIAu9opvQ
-	(envelope-from <stable+bounces-212850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:11:08 +0100
+	id sNHVL2lvfGk/MgIAu9opvQ
+	(envelope-from <stable+bounces-212851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:44:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3028B8317
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:11:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264E6B8971
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 09:44:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15E2730053C9
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:10:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88AAA300C033
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5264232B9A5;
-	Fri, 30 Jan 2026 08:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7BF335579;
+	Fri, 30 Jan 2026 08:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="D0WOjZgd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jVF6hor/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A75A32B99F;
-	Fri, 30 Jan 2026 08:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCC924729A
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 08:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769760616; cv=none; b=Oby5k513oyXeS7hSfUY02UGxp9+YP2o1IevIQ2AseSf2S/b+As/lWxIbQcQbU3IV2ZqWAsk3Eqp3aEn8rTQeoH5JQhrDlT9ZGibrL2xfGOR00tmU6PRiUB0QBwn5duOY/1yGvgH7XwC0KWH+Jf6Xg9ddQdc9ax4tLRlwgKoCcQo=
+	t=1769762661; cv=none; b=dQqhOT1yx/NWKzbKQq7WQtREyYPD7hBRVDsyypz+eulQG5NoTiqikbyNzWnkjE2l1QsIyaNGjwOIL8xBJi/r6hHlzmAmtoTa2kiJTDhMzSiaqyDNZGTirwtDfp4vqF8Ri6s4/p6jPWU1utN2B66uDOixdj+FXfvcQ0E1gYM5UkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769760616; c=relaxed/simple;
-	bh=Lo2fUO90q/v1JUx9mj7PlHCHtIMjuN2bDdqaRtG0DWI=;
+	s=arc-20240116; t=1769762661; c=relaxed/simple;
+	bh=Se2TZEtd1mmElnC/ZfubyC1jOuxzf4V7hbuk2QTCVwY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QQn7XNqMC+pzf6eGoWyHpN+rgwnF+oBDQF1K9En0KJzveZWSGW36+7amhFU0DuG8bgDXlFOAXaMXI5GMfSTGVolgxiQq9TDte6fa2kP3CNsq6agxUG9ueV4J9NZWp/Z+yoNGQG0ct7kJL/a5HRzOUQY7u6ovS9Snwkyx/1i8C70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=D0WOjZgd; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 628DA1FB55;
-	Fri, 30 Jan 2026 09:10:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1769760603;
-	bh=67UzpBZIHZQ7e3X7q7iVPb/2tlQ+jW3PPWa81fH4DkI=; h=From:To:Subject;
-	b=D0WOjZgdfDvtz72Ej5e3wl3mgZGzTCEqRfblslZM9Fw6nO7dz3qj6cy1pOLoJa87x
-	 KlmpewBFqFdIK7Nw7RrJEpMEt3v1LtNHjdiUGgRcs8csoc/59uDhz+jWtE7KbA8trU
-	 v4nhwOT7RnM6j/LEiz+8rxy1L3j4HrJGm6qy4zLZHbV6lnboDPy84ZLRwRPmzZvd9k
-	 EADxG9zetZmg9SQKrHYR+btK7wbzmgVwTMRELquv7pLwEsHka3B/6uh6iDc+Qmqt14
-	 vS+n+qYn5I9BUaYpRoAC3bnX7X0Z1JX9YKUMwa5V+NITTWnUNebnEL05ZpQ3TyYzW9
-	 J2Gd9aq64wynw==
-Date: Fri, 30 Jan 2026 09:09:59 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] power: reset: tdx-ec-poweroff: fix restart
-Message-ID: <20260130080943.GA157514@francesco-nb>
-References: <20260130071208.1184239-1-ghidoliemanuele@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zx1MB8sqJgtBemFycCo9EqnOaWrtQwODtNlyMU2t46CyU9r8eJnDMSLGhazRTP/llpp7+h4070bhvK243/XkpQlMXOYsAEfwpgBn/9/IE/Y3qxJM9stNNnTVLHOp0f+SY6OEgxb1eY0CAZc97Kzhe1ctqw0G2KMaHbCSWxnP7YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jVF6hor/; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4359a16a400so1560548f8f.1
+        for <stable@vger.kernel.org>; Fri, 30 Jan 2026 00:44:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1769762659; x=1770367459; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BhdgDuWmGVX3Ii7iXI00D64FLe4zlVQ9D5T9rX3Mk2U=;
+        b=jVF6hor/hxRKdOzus1zTjxtt4tv7p8w77QRqivR0TD3RSXs0H7tbYgBtDXdjYPXpi5
+         OuPXS4/3DQlRlvmTqZ1/9IIDUwQ5Vb06jbN2FcLGr5b3LbaqdX1sDacZQNa7SO8VucDP
+         PR54KodU8kvh2RWDIIY8GfRgKcLJe3SZCFVqHtkSE8PEO72d7BHZz7SCeqNk6BE+oNLJ
+         UaFbCsxBmV9BH68BlfLllr8yU4K3drmFG63h+a8mlDb4Pbpeosz/+oZ6AeV6ALhIF7A2
+         29rtEkYeiw+TwRUfrZpEFxc0WUtT2uX4T8poAG89QgZNStx36fPdx+hIMZ0/CEf4AU4Q
+         sToA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769762659; x=1770367459;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BhdgDuWmGVX3Ii7iXI00D64FLe4zlVQ9D5T9rX3Mk2U=;
+        b=jouxd3TlykcQR48bMaOomFi8YvyEHeEoEtFHra7IqflqqtNRQv7sJ2glP/aJIVxJVp
+         TECDUT+8gemSX9kyHRfVhaNEwlBJ4F2VZEJLxkFmT0UG4wOYw1K//o6xeNONM6PuCTq0
+         j1QVQ3mrG5U674as5qOPdV6icCyF9//N/26hoLQYulgP/6ZiZA0khd6Kvrr3rApAKmXG
+         9KXzSKYeqGfOpXzJCY9XA6lr6fLEQC/0enMSuImcEizC2ecc0/hUjBwAod+viD909f5Y
+         KkP1vDUaYACdeUt+jeN+zqzjiU6SsMRVrRS0XVBgq8AnMzIWJR6vhhp6b/+v2aGCmQiS
+         6ZZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXHaxf88+H2lSP5vqao0Bk7RawA3JqFWO8mLK4zqBAwUt4sN0oc8feSJ+Ni69OzykseF9w9MLU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLbFtTpFHqsaJMXdpLJDWTaunMnD568SsWumQQGQvO8tRdeBcl
+	TlqeHoIRT7t9lDPP0+NowJsKhs3f9rnVpS0jAO0Akel+RP1uVmwDESbOB2DEx8Tb7c8=
+X-Gm-Gg: AZuq6aJ+X1FNaoBmGVvvIfzhskLvxyaNVl5fQfVgTIKAYHkJygjrHguMof6zeDNR7DX
+	wj4cP66OWxIXy5+7649jiQLwFzGh5ix5XqQl/qKJiTEElu09fzNUeSAP8VeET3aiH26hgXejZcQ
+	6POJHEE6LqY1WEs06qTAYFMhlT5QYOP2iuxENia0b3zOFIeyu989jCmeuEZEhiOMrOKaFOdco7m
+	lFlRS04Unaf8DWCjiW6h2XOffs3gBigRJELz4s3vw4fdAk2X7gc0MsOX4VPsErz7K+uwxXyzbZp
+	swdveA+D+xqv+fCPiX2PS39aLeF8TvzRiHJb67zZO7iEYjJGFXuTuuGeYEL5gPG5DdR0UKXP4ZY
+	um/EpYAVuUtDJwkL26vNpHkApd5aebGjb7x99Fc7SjF+7GYo4/QvbAoSfEi/TXyApdBncOc2hhp
+	33WT5f0Cs2EvPqkvNe
+X-Received: by 2002:a05:6000:428a:b0:431:32f:3140 with SMTP id ffacd0b85a97d-435f3a81d19mr3457102f8f.12.1769762658743;
+        Fri, 30 Jan 2026 00:44:18 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e131cfd4sm19785768f8f.25.2026.01.30.00.44.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 00:44:18 -0800 (PST)
+Date: Fri, 30 Jan 2026 11:44:14 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Luka Gejak <lukagejak5@gmail.com>
+Cc: gregkh@linuxfoundation.org, straube.linux@gmail.com,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] staging: rtl8723bs: fix potential out-of-bounds
+ read in rtw_restruct_wmm_ie
+Message-ID: <aXxvXqZeZSHoivFH@stanley.mountain>
+References: <20260129181541.72066-1-lukagejak5@gmail.com>
+ <20260129181541.72066-2-lukagejak5@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,63 +94,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260130071208.1184239-1-ghidoliemanuele@gmail.com>
+In-Reply-To: <20260129181541.72066-2-lukagejak5@gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212850-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212851-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,lists.linux.dev,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[dolcini.it:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[dan.carpenter@linaro.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dolcini.it:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D3028B8317
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,stanley.mountain:mid]
+X-Rspamd-Queue-Id: 264E6B8971
 X-Rspamd-Action: no action
 
-On Fri, Jan 30, 2026 at 08:11:35AM +0100, Emanuele Ghidoli wrote:
-> From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Please, slow down.  Only resend a patchset once per day.
+
+On Thu, Jan 29, 2026 at 07:15:37PM +0100, Luka Gejak wrote:
+> The current code checks 'i + 5 < in_len' at the end of
+> the if statement.
+> However, it accesses 'in_ie[i + 5]' before that check,
+> which can lead to an out-of-bounds read.
+
+The line breaks are weird looking.  You're putting a new line between
+sentences and a blank line between paragraphs.  Just put a blank line
+between paragraphs and delete the extra newline.
+
+The out of bounds read is most likely going to be harmless.  Hopefully,
+it would be detected and trigger a warning from the UBSan type tools.
+Also if you got really unlucky and in_ie[] was at the end of a page
+then it could cause a crash.
+
+This bug is still definitely worth fixing.
+
 > 
-> During testing, restart occasionally failed on Toradex modules.
+> Move the length check to the beginning of the conditional
+> to ensure the index is within bounds before accessing the array.
 > 
-> The issue was traced to an interaction between the EC-based reset/poweroff
-> handler and the PSCI restart handler. While the embedded controller is
-> resetting or powering off the module, the PSCI code may still be invoked,
-> triggering an I2C transaction to the PMIC. This can leave the PMIC I2C
-> in a frozen state.
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 > 
-> Add a delay after issuing the EC reset or power-off command to give the
-> controller time to complete the operation and avoid falling back to another
-> restart/poweroff provider.
-> 
-> Also print an error message if sending the command to the embedded controller
-> fails.
-> 
-> Fixes: 18672fe12367 ("power: reset: add Toradex Embedded Controller")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> 
+> Signed-off-by: Luka Gejak <lukagejak5@gmail.com>
 
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Delete the blank lines in the S-o-b block.
 
+regards,
+dan carpenter
 
 
