@@ -1,149 +1,191 @@
-Return-Path: <stable+bounces-212910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHywILcWfWkGQQIAu9opvQ
-	(envelope-from <stable+bounces-212910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 21:38:15 +0100
+	id ULEYOxEZfWkhQQIAu9opvQ
+	(envelope-from <stable+bounces-212911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 21:48:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD854BE743
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 21:38:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298D4BE85D
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 21:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D58C5300A106
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 20:38:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6FC7730093B4
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 20:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A5132C312;
-	Fri, 30 Jan 2026 20:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A345A34EF1B;
+	Fri, 30 Jan 2026 20:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pBile50Q"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="DZYGi1pX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8FB329E7F
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 20:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B65318ED8;
+	Fri, 30 Jan 2026 20:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769805491; cv=none; b=HIGmKMrt0v77i98Vi290Rf2JrFW8UIj6319BM69KacGuij9SVEVoGqZMg4CHZ360Dpj0AKuxBxwoaWlz6eBy9VTD7ZT8EsdTjr/w5cc1yaJaaBeVa2wCoWh8yHs0eYgAP79y49yyex6yweorEkMrGhLd/MgyWU7zoXWUvAyWdlk=
+	t=1769806091; cv=none; b=Lw13yihvD+Iwi9L1C4uZ0/B1taJtyxSosa4SFtMYTDwm4ZuA4kA2l99MvNzfLiMUCyI/GXWkdhKqDgY2qWNKLvvbe4/6jIArOVbuxOupfrcCU59jeAtybfGrTtTNO5dGGsr4svqYfEpcKiiD1++aAmww6Hf36JujoDefDeX/vpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769805491; c=relaxed/simple;
-	bh=ZtMtrB2Y+G7ZscbAHQAFYF5f2VD5t3/mtZEyvZca4WU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=T73BRGYOhjfhwf+avfKQhpmJ/DuMdQdQ3Zchcv9N19R2CesNnJPgOZRXJxuYU+1HLPEcS4zFY6kliv3pBPUAn8HINMiKlhGeCKceo01Hp1mIsD8iz+PldQ7b0JC8M4kP1bkgzlfyM0FuT4YXhQHETcUHL8F1iE5WZr3JLHxsT5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pBile50Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9694EC4CEF7;
-	Fri, 30 Jan 2026 20:38:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769805491;
-	bh=ZtMtrB2Y+G7ZscbAHQAFYF5f2VD5t3/mtZEyvZca4WU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pBile50QnlGw8x75Ig9U45/zvrTbeGA0ov5UjecXOYj8eYIHEOhIX+dMpbkvVuR0W
-	 KaxG0ErlZlPaC9kxvgycPVLALXmhDSQoT1+nQjyuzLDUT5H8vJmsc62X6Y0T9uQaHR
-	 4Qo3+b9PwRuH9v2n3d6JoxuwZYR/0fN/oL8ep4/Q=
-Date: Fri, 30 Jan 2026 12:38:10 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-Cc: intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>,
- Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, Jason
- Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, linux-mm@kvack.org, stable@vger.kernel.org,
- dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-Message-Id: <20260130123810.61dde600422a8fe01cff8296@linux-foundation.org>
-In-Reply-To: <b9dd97e7d9e62ebc33c4dfef53a9fd3f51352d3a.camel@linux.intel.com>
-References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
-	<20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-	<b9dd97e7d9e62ebc33c4dfef53a9fd3f51352d3a.camel@linux.intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1769806091; c=relaxed/simple;
+	bh=NH3nSMZ3689wk1k+Ydtvm9911igQwjgTtxEraXA3qqE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I6ic1KTtbaj+02jglOSZdyk3f7kgd0Di0IGj67vvsiEUwv/8nWGwQ3hqMGSWE+pQcxQ5mFGOD3MC2FCaYT2mF7OLFPl5HgYi9CnP5PjC+9jFja2iY4Rdw7GOsv+4ULIsOinueKXUckMO9X5wZcmSEC4QjKwQdTYfGzc3zvBIGD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=DZYGi1pX; arc=none smtp.client-ip=85.9.206.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1769806078; x=1770065278;
+	bh=Ns6aX4kVdG2x2DS59nidc0rJohsMUdrNgcAO4lwVAHY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=DZYGi1pXMmC/ubxw0V9VFT3GCanL1MXxliYflYZFJ0cpNFRDkbhmac4wXsyyWFpyk
+	 C0lJwJ34OSynuEP4MSuqk+6JEUe/nInqPxYzOx23wSwJO2NXCurpA3AJnX78idfvKg
+	 kQvsTMKmAzSQQA8PPrwMNTYwOWxAC2sWMOYsW1FWx6cFsfoOHD7Rk3OWCFkxcRZoc1
+	 4ONFQ7npa9bZlgP4BTreEjbydmy2mNu0Vs9vBAwPh5PFS6cK+oxwj3umDjPnco3/Fq
+	 2uxHkZ0xEbXDQcotJjGyiFEqS47iQ9zlRa+mehX0+KY6vS1t/U0jCDtfV3SPQNHUUi
+	 RpMd6vCpJ7Uaw==
+Date: Fri, 30 Jan 2026 20:47:52 +0000
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: sched: act_api: size RTM_GETACTION reply by fill size
+Message-ID: <pXV1wsavqcYDq5HfAVaW_gMoTITR9M0PBWKhnz9n6VHYxhW56DQU7qfCEoaYcCixz4iqrj31Mt9vL9bHqTNGygLK5pYvyw1z3san5ndlkkQ=@1g4.org>
+In-Reply-To: <CAM0EoMmY-v0HWAkB5EgSYhpca8fXVX7SQ1SpVbUBcFpbvuTd1g@mail.gmail.com>
+References: <20260130134220.305757-1-p@1g4.org> <CAM0EoMkS2Uoarr+551wNe7zvmPTGFZxdb-otKYLBPF5+2s+FEg@mail.gmail.com> <Fkv_0Ju_R82Hh-rBUDW7uALCp8vjL8WZqAsQhreDrulXNad2A2PlNWkSO-95bSzYNai0wYDsZZZFtC2-YAr-B9ZWWtNg8iqafAMDUA0F7Pc=@1g4.org> <CAM0EoMmY-v0HWAkB5EgSYhpca8fXVX7SQ1SpVbUBcFpbvuTd1g@mail.gmail.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: f7035d83a69cc823dd322282f4eb5a8914867daf
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212910-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-212911-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[1g4.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DD854BE743
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 298D4BE85D
 X-Rspamd-Action: no action
 
-On Fri, 30 Jan 2026 20:56:31 +0100 Thomas Hellstr=F6m <thomas.hellstrom@lin=
-ux.intel.com> wrote:
+What version of act_gate.c are you currently testing? Did you actually run =
+the tests? =E2=80=9Clarge dump=E2=80=9D creates ONE action at base_index, w=
+ith num_entries=3D100, then immediately does GETACTION. So =E2=80=9Ctc acti=
+ons ls action gate | grep index | wc -l=E2=80=9D won=E2=80=99t exercise thi=
+s, because it only counts actions. It doesn=E2=80=99t amplify the per actio=
+n dump size (the entry list does). It uses libmnl (mnl_socket_sendto / mnl_=
+socket_recvfrom) with MNL_SOCKET_BUFFER_SIZE. There is no custom netlink ha=
+ndling. The failure is returned by the kernel before userspace parses anyth=
+ing. The dumps are transactional at the netlink level, but an individual ac=
+tion dump still has to fit in the skb backing that message.=20
 
-> >=20
-> > > --- a/mm/hmm.c
-> > > +++ b/mm/hmm.c
-> > > @@ -674,6 +674,13 @@ int hmm_range_fault(struct hmm_range *range)
-> > > =A0			return -EBUSY;
-> > > =A0		ret =3D walk_page_range(mm, hmm_vma_walk.last,
-> > > range->end,
-> > > =A0				=A0=A0=A0=A0=A0 &hmm_walk_ops,
-> > > &hmm_vma_walk);
-> > > +		/*
-> > > +		 * Conditionally reschedule to let other work
-> > > items get
-> > > +		 * a chance to unlock device-private pages whose
-> > > locks
-> > > +		 * we're spinning on.
-> > > +		 */
-> > > +		cond_resched();
-> > > +
-> > > =A0		/*
-> > > =A0		 * When -EBUSY is returned the loop restarts with
-> > > =A0		 * hmm_vma_walk.last set to an address that has
-> > > not been stored
-> >=20
-> > If the process which is running hmm_range_fault() has
-> > SCHED_FIFO/SHCED_RR then cond_resched() doesn't work.=A0 An explicit
-> > msleep() would be better?
->=20
-> Unfortunately hmm_range_fault() is typically called from a gpu
-> pagefault handler and it's crucial to get the gpu up and running again
-> as fast as possible.
+look at af_netlink.c
+=09/* NLMSG_GOODSIZE is small to avoid high order allocations being
+=09 * required, but it makes sense to _attempt_ a 32KiB allocation
+=09 * to reduce number of system calls on dump operations, if user
+=09 * ever provided a big enough buffer.
+=09 */
+         ...
+=09/* Trim skb to allocated size. User is expected to provide buffer as
+=09 * large as max(min_dump_alloc, 32KiB (max_recvmsg_len capped at
+=09 * netlink_recvmsg())). dump will pack as many smaller messages as
+=09 * could fit within the allocated skb. skb is typically allocated
+=09 * with larger space than required (could be as much as near 2x the
+=09 * requested size with align to next power of 2 approach). Allowing
+=09 * dump to use the excess space makes it difficult for a user to have a
+=09 * reasonable static buffer based on the expected largest dump of a
+=09 * single netdev. The outcome is MSG_TRUNC error.
+=09 */
 
-Would a millisecond matter?  Regular old preemption will often cause
-longer delays.
+This is where I am currently but I have seen these bugs appear throughout a=
+ll my iterations including what's in the tree currently, if you show me bet=
+ter alternatives that solve my problems, I'll gladly accept.=20
+https://github.com/torvalds/linux/compare/master...jopamo:linux:net-stable-=
+upstream-v4
 
-> Is there a way we could test for the cases where cond_resched() doesn't
-> work and in that case instead call sched_yield(), at least on -EBUSY
-> errors?
+gatebench --selftest=20
+Configuration:
+  Iterations per run: 1000
+  Warmup iterations:  100
+  Runs:               5
+  Gate entries:       10
+  Gate interval:      1000000 ns
+  Starting index:     1000
+  CPU pinning:        no
+  Netlink timeout:    1000 ms
+  Selftest:           yes
+  JSON output:        no
+  Sampling:           no
+  Clock ID:           11
+  Base time:          0 ns
+  Cycle time:         0 ns
+  Cycle time ext:     0 ns
 
-kernel-internal sched_yield() was taken away years ago and I don't
-think there's a replacement, particularly one which will cause a
-realtime-policy task to yield to a non-rt-policy one.
+Environment:
+  Kernel: Linux 6.18.7 x86_64
+  Current CPU: 7
+  Clock source: CLOCK_MONOTONIC_RAW
 
-It's common for kernel code to forget that it could have realtime
-policy - we probably have potential lockups in various places.
+Running selftests...
+Running 20 selftests...
+  create missing parms           PASS (got -22)
+  create missing entry list      PASS (got -22)
+  create empty entry list        PASS (got -22)
+  create zero interval           PASS (got -22)
+  create bad clockid             PASS (got -22)
+  replace without existing       PASS (got 0)
+  duplicate create               PASS (got -17)
+  dump correctness               PASS (got 0)
+  replace persistence            PASS (got 0)
+  clockid variants               PASS (got 0)
+  cycle time derivation          PASS (got 0)
+  cycle time extension parsing   PASS (got 0)
+  replace preserve schedule      PASS (got 0)
+  base time update               PASS (got 0)
+  multiple entries               PASS (got 0)
+  malformed nesting              PASS (got -22)
+  bad attribute size             PASS (got -22)
+  param validation               PASS (got 0)
+  replace invalid                PASS (got 0)
+  large dump                     DEBUG: msg->len =3D 3112
+PASS (got 0)
 
-I suggest you rerun your testcase with this patch using `chrt -r', see
-if my speculation is correct.
+Selftests: 20/20 passed
+Selftests passed
+
+Running benchmark...
+Run 1/5... done (311721.5 ops/sec)
+Run 2/5... done (321045.7 ops/sec)
+Run 3/5... done (336402.3 ops/sec)
+Run 4/5... done (338419.7 ops/sec)
+Run 5/5... done (316618.9 ops/sec)
+Benchmark completed successfully
+
 
