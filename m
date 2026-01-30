@@ -1,167 +1,172 @@
-Return-Path: <stable+bounces-212892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SB87MP3XfGlbOwIAu9opvQ
-	(envelope-from <stable+bounces-212892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 17:10:37 +0100
+	id gOIlGOPYfGlbOwIAu9opvQ
+	(envelope-from <stable+bounces-212893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 17:14:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347F0BC689
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 17:10:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08ADABC700
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 17:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 17A2E301A405
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 16:10:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C5EA30125CB
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 16:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C05B347FE6;
-	Fri, 30 Jan 2026 16:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B993C34CFB3;
+	Fri, 30 Jan 2026 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DDCfqAuM"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cX9OTmL5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08795346FAE;
-	Fri, 30 Jan 2026 16:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D034C349AE7
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 16:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769789434; cv=none; b=LSUjRm1ePqGQAqiXeF7xSBgUyOzWjQhMB53DUOKQUGt4MbwyGlaesTsQBfkt+9DZNTtvBN1c75u8rQAlyZROeUMTsHkjpoLA59gbgOv7JL4oAh+vU+YmjC3a4Hzn/QB3NmvhaMddCFFarktzxaOYEiBI66TIO3hCv7LheO0hQkQ=
+	t=1769789661; cv=none; b=Zb+/kDA4GYJIA9ce6yjo6E6HTnv6nWYB7WfSj+kPxyJZ7N5rNsGxbIq1v5shFXayDzB/StCQw6dh6yhpfpfR5W5kZnQtvuRKKJfcPfYuhau9Pm4AKwN6wZ39+uKSuH7aJ/aFTrWyoVErmUc3nu0TlwkgPHwf5ka47VcMHx8szqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769789434; c=relaxed/simple;
-	bh=KTuap8kdmVW1GPDaErKGGJn+66swwrDJ78HyQS6jS04=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Wrc3gU8pNZbsaxIAUZAfPoFsSKcKXa+badPc2NjdBNNqJ0ga2mj6R3TGQayjn2Oj7JSHV09/aS5xjeg0Yyq2JfczVJuxc28la9Y9o2t0wZXXU9H3nJJd9q2Ai/zyfalaHvyvANB72d2PgizgB7v5NX8Tzs+8WL04aHQE4Cgw678=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DDCfqAuM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CF3E6C4CEF7;
-	Fri, 30 Jan 2026 16:10:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769789433;
-	bh=KTuap8kdmVW1GPDaErKGGJn+66swwrDJ78HyQS6jS04=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=DDCfqAuMpAvJR6nkUUhZf89mM1BONa18Y5/pdPFH0emmX82uRqpyQ9+ZmlqJkghju
-	 ta7N5XwLHyolV0bo2XS4L+7DkF05V8anBdsv4Sujc63ihkhZ3MQKdGBacbDBWgeYP/
-	 rJhOSpw5INaE80EM4e65GodeK0xai0Uu2g7vJDG+siIRh9krVTP1mNIY69Trp16/py
-	 WNhid2vHrUxtNk0mtcPqy5mll76lBnFPevj6goe1tVVJ9jD1vcbzFSVb9pc1n7vVTP
-	 vpO3+gmhHirv42ZJcCbYQ1tD+gXQCzYw4CMptn7ss3y22B3kmIgiVNYiZTcUwz6E+p
-	 V2hs7jwvG67Xw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD626E6BF1F;
-	Fri, 30 Jan 2026 16:10:33 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Fri, 30 Jan 2026 17:10:23 +0100
-Subject: [PATCH] iio: imu: inv_icm42600: fix odr switch when turning buffer
- off
+	s=arc-20240116; t=1769789661; c=relaxed/simple;
+	bh=DDT0bJbVWVtyD5zM2EzRN1dNjE9w8AQkHO+bYmweHYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ur8hB0S7lXrHTdf96c6UD2RRXZkIJgSvf4l3XL2+5POU14RHGL/bC+84a3Y8H3epFFmnQ6BmkR04wJyj2b7jZWf5UDBUKjZLCJXC701wXZGU9RcReWlmunvaR5GIt/biHvlL425L/ujcY7FIJSbvTZGL6fH3ANc3n0u9QStM4l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cX9OTmL5; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fbc544b09so2239864f8f.1
+        for <stable@vger.kernel.org>; Fri, 30 Jan 2026 08:14:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1769789658; x=1770394458; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DDT0bJbVWVtyD5zM2EzRN1dNjE9w8AQkHO+bYmweHYE=;
+        b=cX9OTmL5WZ+PLEgp+aHoXu1oFDrmQkPT8zChJz8oMtchZ6fs6o+6/9nyHPpYjgp796
+         /yvhO/0/LfE1DOKz+NBFPCSD6dSuxDAiBSM9J2FecUEmnCcu09JqFxmWL61ciFzdQbxU
+         +sk4W8iXXWS0CNeFlcsnmEctw1WISzExjXgvHR1wdfxHNHq/mXOe9mjm6mqsXbyedt5Q
+         Cdkk+C3DYZFRHM3bV85dRuOwd2AHymYjBBIAZ7P1jLm/S9PIS/2L3o+N97Ud4LrEGCNk
+         SqXXUi728PagbgwMKefX70Shl6xu1S6gwiwvwbjwtChFeu6ZHfqTwiQ4VmHfOvDb+Ub6
+         lSGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769789658; x=1770394458;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DDT0bJbVWVtyD5zM2EzRN1dNjE9w8AQkHO+bYmweHYE=;
+        b=VR6zTGevae3SO9jS1E7svuXsyhI0Y+0AYyvHUzC0TIGqXTYJv4NNt/4HWjF5FvDILR
+         JkFsP2OmkXFkSkdLCb2v1Vu2ugIx5YvrFRqW6HMNXAJWHeSpicyDmh5ia06Ko1E10DC5
+         RRzeG+zjatFQBHdmJgDwiUVoYPqY5etiQqrM0445QKdokjpY3GGc9PLxSD1a0U80VY9c
+         O+LLg7uRGXyQWWgI95gVqMeiBsfLvxZ4sP9xRB7NMpX+8FefCtjpR4P2VlhV9hyRQ9nl
+         HZjP+B1Hs3FQjNRJJRBB96SehcqqbIfl37E++tFqG1rLBzAJO+Y9Zezzh8ov8OudM/uh
+         ou8g==
+X-Gm-Message-State: AOJu0Yzqq9LHIYq6887ZidNNoBbU2T3gLnya5nP28BSWSeOR+PCt1xLD
+	r5iR0uOLF02N4Vb3Zs9S4ht8TbVPQugLhzdsskTIHQNeOVb7XWEmS5BtE9+4DpYuQsw=
+X-Gm-Gg: AZuq6aKg82U8xXstMQDpUsfGZ2PXCW8AyKbOUuHGeSaSxeRfEe2jLFYd2J6Ll66DFQ+
+	aswDu/UHVlcEX1iN/NfJAihPLKXIqdRQ2FVGlWpAPsQELcaIVyl6hyU+YGwBopjWpssNTRcpWDe
+	8m07k4yG7OkKm+W4ur0ylYrr1SMrVnsgsFasMNeWL9/jMPdlg16hoxZE6wTRCAa4nGQv1G4cu1S
+	DIY4uVoeQSqohr8NN/+tFYnFfZB02RH4TJSTjhMI8OUiiGuYTzI20EalKD24wiI3+ua6zPEyMnD
+	DaeUMzLBn8BlZAli5klh51YG8HSFQaR4pK1YBfNJDfdwaXx5pgL2kemdVajy7tEzMIuHUS2PeXK
+	n4Zc+ggM8SKcG82p4y0enWy0KzcSIERExgxi63+ez4fGJdSh1LBE+8GKyLbtEuOJVC+KJf0PDZz
+	wNH7RoAZw+d8nJYjJskEgwkPO87EN5i6tSs6T4bmXP3g==
+X-Received: by 2002:a05:6000:24c1:b0:42b:38b1:e32e with SMTP id ffacd0b85a97d-435f3aac886mr5782699f8f.46.1769789657831;
+        Fri, 30 Jan 2026 08:14:17 -0800 (PST)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10edf62sm25452401f8f.13.2026.01.30.08.14.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 08:14:17 -0800 (PST)
+Date: Fri, 30 Jan 2026 17:14:15 +0100
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: "T.J. Mercier" <tjmercier@google.com>
+Cc: stable@vger.kernel.org, tj@kernel.org, hannes@cmpxchg.org, 
+	cgroups@vger.kernel.org, hawk@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12.y] cgroup: Fix kernfs_node UAF in css_free_rwork_fn
+Message-ID: <xlebwk6u4a2uwxzexxwnhwldjtgcd5gl3srtciujayegoucweq@gx5ny36x3pu4>
+References: <20260129191034.3181412-1-tjmercier@google.com>
+ <CABdmKX3rhV-Kn7fMg689Yo2M3f88xS5BxK+5R6G0-rEx9thBOA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-inv-icm42600-fix-odr-change-when-turning-buffer-off-v1-1-f76fc3604bdc@tdk.com>
-X-B4-Tracking: v=1; b=H4sIAO7XfGkC/y3NzQqDMAwH8FeRnBeoVpTtVcYOtiaaw9KRTh2I7
- 74iHn/w/9ghkwlleFQ7GK2SJWlBfasgzoNOhDIWQ+OaztXeoeiKEt9toUOWH6bR8IpuMyl+F1P
- RCcPCTIaJGX0YfMf9vY2hh7L8MSrN8/X5Oo4/C1dNn4UAAAA=
-X-Change-ID: 20260130-inv-icm42600-fix-odr-change-when-turning-buffer-off-3ba36f794cb7
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769789432; l=1938;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=V+V88fAK8S3LRNlRrvLoACHqnirAnUGI3yB4cFHD2YQ=;
- b=g1bZqJfpCPrJ6Njn9UJDzPM2DEnt6LVrFBiX/gWCn7lkV8DGRDW3D+/hYBGwzdGCiIHQzx6oV
- hLdoOSwSX6gBQ0waVHQe8B54J3gyCAmt5WQX/UWURwo/IEMsl/Fc+cs
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lexnkbxkojdohjkh"
+Content-Disposition: inline
+In-Reply-To: <CABdmKX3rhV-Kn7fMg689Yo2M3f88xS5BxK+5R6G0-rEx9thBOA@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212892-lists,stable=lfdr.de,jean-baptiste.maneyrol.tdk.com];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212893-lists,stable=lfdr.de];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkoutny@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	HAS_REPLYTO(0.00)[jean-baptiste.maneyrol@tdk.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tdk.com:replyto,tdk.com:email,tdk.com:mid]
-X-Rspamd-Queue-Id: 347F0BC689
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 08ADABC700
 X-Rspamd-Action: no action
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-ODR switch is done in 2 steps when FIFO is on : change the ODR register
-value and acknowledge change when reading the FIFO ODR change flag.
-When we are switching odr and turning buffer off just afterward, we are
-losing the FIFO ODR change flag and ODR switch is blocked.
+--lexnkbxkojdohjkh
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.12.y] cgroup: Fix kernfs_node UAF in css_free_rwork_fn
+MIME-Version: 1.0
 
-Fix the issue by force applying any waiting ODR change when turning
-buffer off.
+On Thu, Jan 29, 2026 at 11:11:48AM -0800, "T.J. Mercier" <tjmercier@google.=
+com> wrote:
+> On Thu, Jan 29, 2026 at 11:10=E2=80=AFAM T.J. Mercier <tjmercier@google.c=
+om> wrote:
+> >
+> > This fix patch is not upstream, and is applicable only to kernels 6.10
+> > (where the cgroup_rstat_lock tracepoint was added) through 6.15 after
+> > which commit 5da3bfa029d6 ("cgroup: use separate rstat trees for each
+> > subsystem") reordered cgroup_rstat_flush as part of a new feature
+> > addition and inadvertently fixed this UAF.
+>=20
+> I am proposing we apply this one-off patch to stable rather than
+> backporting 5da3bfa029d6 ("cgroup: use separate rstat trees for each
+> subsystem") and its fixes to 6.12.y.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
----
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
+That's a performance optimization rework, IMO too big for stable.
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-index ada968be954d480a2022bc8aa6918f32e5e543f7..68a395758031884792781d6eee748d273a86a22e 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -371,6 +371,8 @@ static int inv_icm42600_buffer_predisable(struct iio_dev *indio_dev)
- static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
- {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-+	struct inv_icm42600_sensor_state *sensor_st = iio_priv(indio_dev);
-+	struct inv_sensors_timestamp *ts = &sensor_st->ts;
- 	struct device *dev = regmap_get_device(st->map);
- 	unsigned int sensor;
- 	unsigned int *watermark;
-@@ -392,6 +394,8 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
- 
- 	mutex_lock(&st->lock);
- 
-+	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
-+
- 	ret = inv_icm42600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
- 	if (ret)
- 		goto out_unlock;
+For the conservative stable-specific fixup:
 
----
-base-commit: 62b44ebc1f2c71db3ca2d4737c52e433f6f03038
-change-id: 20260130-inv-icm42600-fix-odr-change-when-turning-buffer-off-3ba36f794cb7
+Acked-by: Michal Koutn=C3=BD <mkoutny@suse.com>
 
-Best regards,
--- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Thanks!
 
+--lexnkbxkojdohjkh
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaXzY0xsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+Ah+vQD/cH3j1FB2MFNGkCW9bJcX
+lIbreEhIUjPYK0nxLUm/RsUBAMhDHGfYmED9UTCGEmAB8W0UW+3f6+45abeEAU6L
+g6IL
+=BvqL
+-----END PGP SIGNATURE-----
+
+--lexnkbxkojdohjkh--
 
