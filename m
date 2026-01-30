@@ -1,308 +1,413 @@
-Return-Path: <stable+bounces-212833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPKFESklfGnsKgIAu9opvQ
-	(envelope-from <stable+bounces-212833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 04:27:37 +0100
+	id mOnZEpQrfGkYLAIAu9opvQ
+	(envelope-from <stable+bounces-212834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 04:55:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9537B6D3F
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 04:27:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01927B6EF0
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 04:54:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C881300DF54
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:27:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53F9830065F9
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8012FE060;
-	Fri, 30 Jan 2026 03:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03B4352933;
+	Fri, 30 Jan 2026 03:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="nnZ1uzaP"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CbjmrdpP"
 X-Original-To: stable@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013018.outbound.protection.outlook.com [40.107.159.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEEB2DCF6C;
-	Fri, 30 Jan 2026 03:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769743639; cv=fail; b=czaDZNvAt50Tg8zoFCSslHy++gc/jMnj5vOJjim0IRAGmroX7T2sJCp2bnXy0CPhS8mKqmujgvei5UR5Sh7pxeVGsOBXv/Aopb8ZhRiYImfP/sd3EO7DrQNPo5CG5LIvurHm46lc9ScssaAuZuKjz/AJ+8h/qp1hkDaPwLzKjbY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769743639; c=relaxed/simple;
-	bh=XrsZ/naqpGykIwYrN8eQfg24TW48Yb9NlVDt1038vz4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gDOpvzUBi8MnJ6sA/M8w48cL3KdWgFERFY6VAFwiRCgnStCFBgQeHbFbZtx9NqS77hKomaviu08+Sce3T0KMxjsgJwL4k2BhTMGo3KRumS7Bgq4YUTYXjAJxsjKCHfzG0/QOD2n7NTFo9RGPTgi08HK2DTSV46zhYIb6CH9TiYI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=nnZ1uzaP; arc=fail smtp.client-ip=40.107.159.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CqpfHvDegZVEbZR/6CxZ9+CNI16XppqWupKgwu+mJG2Ylutwh/LqsBEgKn98mqpbjeRM4deOFyBd735oiDg3owcIa5sf0a0c6+w7sbKuH9PZ5TljP5qJty5Rhz085yfpDjFOPSzHFUVCKq9bot+WNebQCWbHrUuN7ZB9xfanX0kHvM003CDpODAAjOVwE+/xbU4V7W/1c9Fv/vLoDKYUPQp79ByI9Q6GY86xRTv3Ko787YkkOavt75EWEW2hzgImpBfdMNUduBOs5gCai7p0lfgA8vHWzZxl1Nyix7x76DbpwcyaNd72WNz/H/d7uhWGr3tPm/YbIPvekDq6aRKqqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C4j5m/qvj0AHvhBi/UUFxtS7QDkIpObv+eg5LRScufw=;
- b=ZV7QcZmOW9rZIU2T3EscxgL+ihv2+J91aN6GaLvoKE5UArP8H2zXoQV6EuAPZt3CvbnF9mwjLdgJT9E7s30f++q1V2zugGVbEiKzknDpPWTMLZl+tFCxBarPq/AFxCvHEh9fWSa7wOc1gAqkJXGp1Lt7hqDKR93rou7P9xW809H9sMAuAD022siqCcrFTiWwOZsLQ41dG5ZWW+CZqc40s3bE1/Sw1sgPql/9kGd9uIWqEIgdQQ4xI8jdENmpoxJsL3bhR7cjp0JT4f09RVXixlZeIjDM0K0TYgXJVPl+Cp8tGq8g+8nZ6TaBlcCvwe+zikSFQ/MrcZMeu8arSzxFJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C4j5m/qvj0AHvhBi/UUFxtS7QDkIpObv+eg5LRScufw=;
- b=nnZ1uzaPiYqlapca1Vy/XTJUocTcJAGGr24al3amzCULqBOcJvox4aIrFK2Bf+T9v0pEfbzz9qCjMNzRLDZF1NIGgEKJyZTfd0IbZvjJq/YrbDvzvN283sZS6wpM56kBqa+Ec4SDCVZroL4wOWnbd1L3w/hAvdRPDTfd2YVXnnKGBHggqja4XBTBNlsJ+gZplN97dmOBYtjGtHe/EChTi7KFO+TspBtTyx5wtvdk3szPLKLS7Oq18j+sDujevWnGrcsqsQK+2BsBNwFyY3/X2e88bX2DZ1Cq+ahM+gQ2OeW12gbqRqnDNhE337ZmSupbYsVmFPEvR5T+WQHqAc9fzw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by MRWPR04MB11496.eurprd04.prod.outlook.com (2603:10a6:501:75::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
- 2026 03:27:14 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e%5]) with mapi id 15.20.9564.006; Fri, 30 Jan 2026
- 03:27:14 +0000
-Date: Fri, 30 Jan 2026 11:27:08 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Daniel Baluta <daniel.baluta@gmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] remoteproc: imx: Fix invalid loaded resource table
- detection
-Message-ID: <aXwlA8OnT5mqeaiC@shlinux89>
-References: <20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com>
- <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com>
-X-ClientProxiedBy: SG2PR03CA0113.apcprd03.prod.outlook.com
- (2603:1096:4:91::17) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BBB314D26
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 03:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769745294; cv=none; b=qgEU3YrNkTDurMuy+TisobLjvs5XOqw4r+TV7Y/OvaBWO0lkyBCzhSnxmlUppxRC5kviRllTpr2WmnKIUelsdJFi4Hk/kdYFT/6EZ2qE13e0M4eIsZXDAnqK1eNtfHpSjo+Vg5Uzw3Sl0RN1TabE2ManxnXFII2IuT2S2myXKNk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769745294; c=relaxed/simple;
+	bh=61AdblHSKpwEd8XSc8ByKLLBiiiUs87L9eDfd5ye0XU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p3ufh6BrmfzqDheNTsOtChZ2Jlv1tS8kCMSkdS1gPrcDa1ZZFiLDVJCbcYnKOYoI9y0u5QS8kcTvemopuXXkYPK1IKYjKj7Z+1lP+yMHQuybZ5Qq1P5H7odDzL1zMtzoxJWHkwuyCfga5MezDi2fR7lTyMcn8inQy9+QJrmzrKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CbjmrdpP; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-4043b909ed4so1005819fac.3
+        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 19:54:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1769745291; x=1770350091; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wKrsJyAADsVbRFEkxPd+kVRNcQo0Gojt5413CoBLvuY=;
+        b=CbjmrdpPxsILGAeCGCoFsxIlxBXDsw3nlfndAbrgw/q2e9TfpMKNzRy+OGfKtuQqXR
+         b2PRgSDzM6SwKsRl1NNZtnBg8yof8//DdIk+lHNA2nyq5gurWTzMV9LxYzvtHDDAeV3a
+         w7LjHPRdGA+zWV6YPfSZ8bUpMPJEPZh7MhkCI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769745291; x=1770350091;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wKrsJyAADsVbRFEkxPd+kVRNcQo0Gojt5413CoBLvuY=;
+        b=DG1DLHCZWBxho9w/v/92wyfDPUX74zoFYCqkoThQJye5ZnkXZuSEdkD0kEjnPuA+jJ
+         8cej9+Ib5Ak+y9RBa8xMDDX7q/bM8njf/ocegRiyTerzE2fkDkXIlgHz6m2NuCRRYs7i
+         5K0Tct58RvfWVz2lelMCMzvGQs4xY3ZbgqFzQblstyUdNBBg/9vYdMHPWx6P5y8i5fV8
+         aDNu995X0cnU9nYiQif8qgyojBcYL7FzEphY0OShlA5rZJGpRhybRFopEdTLfg+CCVyQ
+         LxW45Blb79Q63Qoq62xynIcilzooYdDNPE4L0qg/rOSfm50Bs3pHwWPq7yC6NhC13MCd
+         PFyg==
+X-Forwarded-Encrypted: i=1; AJvYcCXzJD8fmdSPh24Mt4jYtIbK9mQHgJTIbgGDxG+b/TrBXvjiJ6mnBUg1KobPuUQ2gshyefRNb/I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu38z+RvEpIyuJwMd0RKTlcAH1i2X4v1MDRYvBPJ0KC5uDrxDN
+	EcxF7v2CSui13j8Odc3qr5w8xrjZM5LH1IfcQU/5qYSO7JSdjGjGUuZLPpY9715GUw==
+X-Gm-Gg: AZuq6aLKznHGmL3iqhSwZpDATpyg7CuC74K1pQZHMdbTNqP/9zmsIhItXW0ZA+6XNuH
+	8caBd2OPtuTwsVqrjU6YL31plO9YQXwAA+W0PO2xcS1LYuLEVYzaJFns+8uPb1CRl8+NWoSh869
+	AyOKh1gSmT6Gz1H1jzMRuogyFtanj0pRvz0MIEkCCIK2bT3W17NJFDZVQaaE9/m1aAaUKzgU9wB
+	G/4jPKSHetlNjC8UnR6tzY44P3YYMqy3klXiKfz4RHPSQ8B7ZXsCdOLhrkYSdVjkyJl4xQEJyCI
+	IdAgoCNdZFUdI12WiRHZ1UVHmblvsVQigNazMR20jWWWxvdjj+xZp9eNMfjlP0Kuq3qnGgQYjD4
+	1x9Gy0BQBjKUQt3zWEOyHsBJrRMcZpXMaE5t62x9oD5sN9aWNuyuT7DVITXs9d79KMqCTjFkc1H
+	LPrsR2eqwVrHB65A+cTzZgeTOW1ewIUAsSe5Vj+EKI2s55ksG7g9XM5iAvlUKnGihb
+X-Received: by 2002:a05:6820:820:b0:662:c372:4cc9 with SMTP id 006d021491bc7-6630f3d7346mr805426eaf.79.1769745290803;
+        Thu, 29 Jan 2026 19:54:50 -0800 (PST)
+Received: from google.com (h96-60-216-201.arvdco.broadband.dynamic.tds.net. [96.60.216.201])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-662f9a18de2sm4424183eaf.11.2026.01.29.19.54.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 19:54:49 -0800 (PST)
+Date: Thu, 29 Jan 2026 20:54:45 -0700
+From: Raul E Rangel <rrangel@chromium.org>
+To: John Keeping <jkeeping@inmusicbrands.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Petr Mladek <pmladek@suse.com>, Arnd Bergmann <arnd@arndb.de>,
+	John Ogness <john.ogness@linutronix.de>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ferry Toth <ftoth@exalondelft.nl>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v3] serial: 8250: Fix fifo underflow on flush
+Message-ID: <aXwrhV6_FQ-o8KY2@google.com>
+References: <20250208124148.1189191-1-jkeeping@inmusicbrands.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|MRWPR04MB11496:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ea1800c-3ef0-4fc2-84a7-08de5faf7676
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|7416014|376014|52116014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eUNYVFJxd2dJbnZBWnNFNEthaFcybnZSNmlkL3FnRTZMdzY1Mnk0amo2T1BF?=
- =?utf-8?B?MGUwd1B5UTBsYm1UVXU1TCtscGE4USt1dDdDanBxL0c3d2o4UDBVTmV3eU40?=
- =?utf-8?B?d1cwaUZDSU8vN3RuZGNrNXg5elB4eGVPZmE5TlpMajA4dHFtK3NFU0JBVzVn?=
- =?utf-8?B?WTN1cmFLaVlnenNYU1NjeCtFeDBRenVad3FBK09LY3VxdUx4dlNJeGJSd21m?=
- =?utf-8?B?TmNoR0ZJcmlZd1owUUo0ajJrZXhZMXdWc1k0S2g4a053SGRKTWpzWGZUdm5z?=
- =?utf-8?B?cElMVmNoWWFKbHNETFFjUytCcGtsbEZpWWkzYmRybGVJZnJlaHdHaUhhU1FJ?=
- =?utf-8?B?UlVWc3hFRktHZ3hqbUlWYkZ1czBVZlVuK3ZrdG4yMUc0WUJwMW1TTEZ2dUJJ?=
- =?utf-8?B?RkF1K2lndy9LY1FUbjBGM2dJcXlsL1hGSWFtSytpZThCZHVtR2dlc2hhbU5R?=
- =?utf-8?B?aXU0eVJseDdGOVhJdDZvR2pJWmVuS0c3bEZuT2ZXQWpVOHJ1QVhIZDZvVzBx?=
- =?utf-8?B?b1lEOHplSUxvMHZqUUl1WkpBK1R1dWcxcXhqTUdWUjRucGVpKy8wV2xHbFdz?=
- =?utf-8?B?SkQ0MnEreXd1ODVIdGJpa0lqSTJ1SEVpemRENnQxWnZCTVQyVEd2a0NCb1ZO?=
- =?utf-8?B?eU43NGJvcTJqYXcvN0c2U2l5UmVQcFp3aXp5YU9MOGY4djluMFdDYXBCR0M5?=
- =?utf-8?B?ckxvR3o3U0V6TkJWVStuTG9EMVBNaXczSTNncGp6anZyOEo4K2QvZW9UeGNm?=
- =?utf-8?B?dFM3dnQ5RU9QZFVlZTNZeS9RSmRpU0V2RGRJbmtxc0xIb0tkL3MvU2R0SGpj?=
- =?utf-8?B?a09GZm5KcERUaFRKWnNMemhDWWJUVjlWdCtkQjF1MG9qUEwwMDZRVTQ5a3ps?=
- =?utf-8?B?dWQwb0NxYmlRdmhCQlkzZWdPVXNQcDJuSHhkZ3pWZ29NMzh2Q1h1NS9wZFFx?=
- =?utf-8?B?QmlpWUsvSnZ4STlsMElTcHp2NGh3aGlBSUxNUGd6NElnU1JMY2ExNk0xMHhv?=
- =?utf-8?B?Z2JPcW8vYkt5QUtkU0tPZmx2NWxmT1A1YW15M2IrNlplbWVRditUVG5XWFky?=
- =?utf-8?B?S2h5bFlQamtqZ1FBbVFQbnpYMVlveWFxSk80YmcyWWh5dWdneUgxWnlGUnRX?=
- =?utf-8?B?Y2hpMkN5d3hXRzhPTnpZMFV4ZVdxVS9KMVpNNkl0RzdNN2RDdzBXcUt3eGhY?=
- =?utf-8?B?TjE0eHJMK0VaUi9OYjVzVk94b0ZHbTBYL21zVVBiS0JoWTBzd1NXWVEvckph?=
- =?utf-8?B?KzVQY0xYbHNKMWwzaTJ2SXEwUGhVYkNxNmVXbDdSaTJXV293M3M0YnVVdDkr?=
- =?utf-8?B?MTlrbWMrdU45SWg2QjlGaGpLVnlGRUNRYzYvQWxWclZzYzVzMlkrY3MzVUU4?=
- =?utf-8?B?QjZ2SzloTzhFNHE0aDFMblJZSHBrMThPbUdIZk9MQllOcTZjdThNeTNoY2Jq?=
- =?utf-8?B?TG02M3ZIL0U1NDVIVzV0cHB6d1J3ZTk0dXFTNVlnRE5ONjVwNkc4RkR4MlRJ?=
- =?utf-8?B?aWgvZmVzRkl5ZXVKdU01U2JoNDF2T0d6RXhQSHhza0JpeVJhbk1PY3pFV1VO?=
- =?utf-8?B?TDNWbXFqdWorQ2NZZVNJZGhWOVh5ZTZWcjRBVGFVQXBrK1ZJcWNHN29mK0hX?=
- =?utf-8?B?OVJtcUhXcjg1akxCcTJac2tSV1dPdGFSNllCUVR2dlkxYlkvang3YnBheFhU?=
- =?utf-8?B?RmpraWJuSE1GMkVkYStOc2hrdm1pdVovd21scXpjbEgySStnN0RqZjFYWkd6?=
- =?utf-8?B?TzJNajQ0MFNoWTNPK0hvei9uMkI2Z2x3Nmc1ZnY4ZXp4b1VlZ0U5RWVFSFdX?=
- =?utf-8?B?a3lNdmtqQUhjWDJjZ1RmcW5yUlczdUEyTkFsTHgyUlZuY0N0VWVVTkhBWk1W?=
- =?utf-8?B?T1dsUi9YeHJsU1IxU2Zzakk5NkNzV0FpalJKU1ZFRjdFUi9aVFhtTU4wVWJI?=
- =?utf-8?B?V081bWtGc2R6ZmJib2tuYi82R01qUzI4RDhOYUFCL2htOEtaRmhaWnJJSGxF?=
- =?utf-8?B?dFVBVkhPd2h1MFQ2UWo1Q0JzRys5REtqYXpoZHVTdW5oNlBLVjlKN3ZtY0VP?=
- =?utf-8?B?STN1Nk0vMi9mMjRPdlpUQTJuTU5WY3pUQ2FJQkZudUFuaXZpYm1LR080UEEw?=
- =?utf-8?B?SU90Sk41V21FV3QrM2gyK3lOY1B6TUhvRlZabERycEpXWVIzSTlIZXZyQXVQ?=
- =?utf-8?Q?Zu1EMNx1XLdLgRVnDEnAgso=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NGswd0dUdjJCNStOdHU2b0I4bnozdWMvaklPZEFhSGZhbjJKdDh0RURIaTNS?=
- =?utf-8?B?VXN0eWE2ZzRxZWNvMVRpRXpUaXd4dHF5M2V4TUR3ODNLbDBvYWFwMUh3Y0Np?=
- =?utf-8?B?NnJuTTI0OW9IdHl4WUFyYkVxdnZGUEt0RkNXMjhYSmpqOUovTlhWTGgrcFFR?=
- =?utf-8?B?WnBBOFp1Tm1IZVh0ZHJvM1hSQ25ML2xBcEh3UWs4am4vVFRXRlNpSFhFSkwx?=
- =?utf-8?B?N1l3UlpiQTZrRnpZeFMrbC9aNzkwTkgzN1JSR2RiZFdTTDZSR1dYdlpFUUNh?=
- =?utf-8?B?d1ZVSHVyMHk2MEVEZnZzcWt2TWw4aG0rdkIwejhQYW95Vmt0WFBXZW5kRndP?=
- =?utf-8?B?bnZFbEpDRWl1OElRb2IrZHl2VzRkU0IyeEoyNi81VXpCb1BTWWRwZVNFN1Er?=
- =?utf-8?B?RStqUWM1SFRqVER0N3ZpV2Y1bE9EU2VYbXNCR0NCS0FXSmhRWndpRS9PRmZK?=
- =?utf-8?B?VndFQjZpbnVUYnp3RjlLUXVnS05ISkM4OGV2blZ5L0xGcEpKU0wwSWZHa0FC?=
- =?utf-8?B?a1E0QTNWUHFMZ1hwZElqbC9xdWlZb2VRbjh0cUE4RWU4ZW1WUUdwN0tYb2Yy?=
- =?utf-8?B?clkvdzU0bzltQ2MvaXN4THB0SU8yZ2J6bTBBV09zNnRjc3NNR0k5cHRNZzd0?=
- =?utf-8?B?Zi9Ud3FpM3VGaHJNRng4eDRkMmw1d0RuZzRYWm9aaDh2TkRFWkcyMDVwbDJL?=
- =?utf-8?B?QXErTEd2QmwrcGtQMTRZUFBTOUNUVlBKT1BPd1MzeWpQc2ExL1BnNlVTdnV3?=
- =?utf-8?B?aHg4RjZxTTNWSDRrUm05Y2hJbVllSjVBSFNuMExuVU5EUWc3cWh0eXNQaC9J?=
- =?utf-8?B?TUpyUlI0LzFwNGlTclhrbWRFV0thbTduaWhkM3NmUk9rZGFRdkVrSVYzVFlH?=
- =?utf-8?B?QnVpcEU4RnBlQm1IT2FjeklPTFVZQjZmMXV4Y2xsWjlyZ2tJSWVvSVZmck5y?=
- =?utf-8?B?YXRUNGx6S1AxS2FDOTgrcnlCcUhtNWFYTnY3U3Jzem5rNktBY0VlZG52WFNG?=
- =?utf-8?B?R1N5dHFPeDlocU9kYmpjRVNEdHF6M0FSdm94cEI0ZEZoNHdWQTJBNnFSQVEr?=
- =?utf-8?B?aGloT3JWNmZQenZWYUtEREp6Ni9VVFVpNzNlZWRlWkRQM3N4VzU4MjdZaWVm?=
- =?utf-8?B?dnkzWTc1M3o2cFJ1VE9wNk10RDR0NmNVV1F4Wndzb3hOaHFtOTVlbWcwU1Av?=
- =?utf-8?B?QmJZOXNDWE1iWjVkbkdGeWYzbFZ0T0dJRzA0UFVVOEZhQ3VJZ0tUNWVuRlRw?=
- =?utf-8?B?VlhUUWZHSDJ6ck9tcjBTa0JONHBPVGkzcWo3UWE1UWtsVFN5eXpMNXFoeEcw?=
- =?utf-8?B?dUhVQzFnTGJqUEROeWwwN0FOOFcyTkgxVkN4Y0FyTWw3M3l2MmJ5Tm50UURv?=
- =?utf-8?B?ajIwNk0rdTcwTlltUER2eG9HOHBsWEsrN0x3TmRIYnZaSllFOHIrVUdlL1FR?=
- =?utf-8?B?aC9IaUJXUEZnZkRCaURmNjYrM05ydzErdVR5NkQyWi9oRjZNSFFZdVVVbG9Z?=
- =?utf-8?B?ODhaZG1EVU01UmlZbnVIMSt0V2hIamJNUUpURWFlMDEvajM1alFycHBoOGww?=
- =?utf-8?B?MVlQWjVOWmtlSUlkVkVZbUxkRHJka0NkeGxGVnpVUDUvSzNQckxlMmlEYnp1?=
- =?utf-8?B?T0tUSVRPWlFnQTN5YkpuSVlodk9MOUUrNUZ4UUgxTzBaRkdhbXEvYmRPS2Ns?=
- =?utf-8?B?aWtyTTZZWGZobGs1SE4wMHRhdFhsZ3R2T1RNQW5GS1c4azlVaGJjb3FMWk1M?=
- =?utf-8?B?Q2xHWWo3aEYxZ3BzRHFjeUdSekg5SzIxdWQ0VG4yVmN2MGZsazFPaTl6WXZz?=
- =?utf-8?B?Qk94Y3NISEhWd255OVhHOXd1VHA5YkdqK1dRZ2w2dk4vNVphaGV2cG9XVHdw?=
- =?utf-8?B?TVM3SElIajM5dldDV2NYRHgzd3UrYm9QTEt3M3FxdkRYWkd3S3JYUzRRNHFi?=
- =?utf-8?B?Qnd0dlJFcWFFc0RsRGZjTkZ0a21iZkdTbC9IN0kxOTJSb1dyK0Nxa1pwSUZZ?=
- =?utf-8?B?WGZldUUyK2h4aUpxcERNMHZacGNLeXRlaXluZGxGWGN4OSs5bWFiVnduZkVW?=
- =?utf-8?B?R0lXTFB1dVZHWjVFUlNnT2l2TjZWSWlTd2xZZWVZY1VxOTZmcHRNb0ZDTTc5?=
- =?utf-8?B?eXAzY1pyc2tKeTkxM0VnNWttbEFMMWxVb1lJZEp6Q0ZneXZjQUwxQzJjbWp0?=
- =?utf-8?B?UWlrL0pPYys5OS9CN0E4MjkwQi9wR0s1SlZadkJiNGxsaWNxOTZhencrekVG?=
- =?utf-8?B?UmZ0SVpsWkd0aGpmRnZGZXZNcnVDVWRncE5tM0hQWVNIenBheUxxTEVLVDZX?=
- =?utf-8?B?ZVJucTQzSjhjRXY5K1VxdDJORVZFOXlIV3p6ZVVRaHQ5WDk2Tlo2QT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ea1800c-3ef0-4fc2-84a7-08de5faf7676
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 03:27:14.6815
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CM2hQvuON+vbGRNdxamwpY68vgN1/vYgaJ3MUGyObZ9nlIz9PXpOmxCv52eyepBEEUMRIp8WsqPY64PxVREf9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11496
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250208124148.1189191-1-jkeeping@inmusicbrands.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.44 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212833-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-212834-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,kernel.org,linux.intel.com,ventanamicro.com,suse.com,arndb.de,linutronix.de,exalondelft.nl,linux.ibm.com,gmail.com];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peng.fan@oss.nxp.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,pengutronix.de,gmail.com,nxp.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[rrangel@chromium.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,NXP1.onmicrosoft.com:dkim]
-X-Rspamd-Queue-Id: D9537B6D3F
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[inmusicbrands.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,chromium.org:dkim]
+X-Rspamd-Queue-Id: 01927B6EF0
 X-Rspamd-Action: no action
 
-Hi Daniel,
+On Sat, Feb 08, 2025 at 12:41:44PM +0000, John Keeping wrote:
+> When flushing the serial port's buffer, uart_flush_buffer() calls
+> kfifo_reset() but if there is an outstanding DMA transfer then the
+> completion function will consume data from the kfifo via
+> uart_xmit_advance(), underflowing and leading to ongoing DMA as the
+> driver tries to transmit another 2^32 bytes.
+> 
+> This is readily reproduced with serial-generic and amidi sending even
+> short messages as closing the device on exit will wait for the fifo to
+> drain and in the underflow case amidi hangs for 30 seconds on exit in
+> tty_wait_until_sent().  A trace of that gives:
+> 
+>      kworker/1:1-84    [001]    51.769423: bprint:               serial8250_tx_dma: tx_size=3 fifo_len=3
+>            amidi-763   [001]    51.769460: bprint:               uart_flush_buffer: resetting fifo
+>  irq/21-fe530000-76    [000]    51.769474: bprint:               __dma_tx_complete: tx_size=3
+>  irq/21-fe530000-76    [000]    51.769479: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294967293
+>  irq/21-fe530000-76    [000]    51.781295: bprint:               __dma_tx_complete: tx_size=4096
+>  irq/21-fe530000-76    [000]    51.781301: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294963197
+>  irq/21-fe530000-76    [000]    51.793131: bprint:               __dma_tx_complete: tx_size=4096
+>  irq/21-fe530000-76    [000]    51.793135: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294959101
+>  irq/21-fe530000-76    [000]    51.804949: bprint:               __dma_tx_complete: tx_size=4096
+> 
+> Since the port lock is held in when the kfifo is reset in
+> uart_flush_buffer() and in __dma_tx_complete(), adding a flush_buffer
+> hook to adjust the outstanding DMA byte count is sufficient to avoid the
+> kfifo underflow.
+> 
+> Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+> ---
+> Changes in v3:
+> - Fix !CONFIG_SERIAL_8250_DMA build
+> Changes in v2:
+> - Add Fixes: tag
+> - Return early to reduce indentation in serial8250_tx_dma_flush()
+> 
+>  drivers/tty/serial/8250/8250.h      |  2 ++
+>  drivers/tty/serial/8250/8250_dma.c  | 16 ++++++++++++++++
+>  drivers/tty/serial/8250/8250_port.c |  9 +++++++++
+>  3 files changed, 27 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/8250/8250.h b/drivers/tty/serial/8250/8250.h
+> index 11e05aa014e54..b861585ca02ac 100644
+> --- a/drivers/tty/serial/8250/8250.h
+> +++ b/drivers/tty/serial/8250/8250.h
+> @@ -374,6 +374,7 @@ static inline int is_omap1510_8250(struct uart_8250_port *pt)
+>  
+>  #ifdef CONFIG_SERIAL_8250_DMA
+>  extern int serial8250_tx_dma(struct uart_8250_port *);
+> +extern void serial8250_tx_dma_flush(struct uart_8250_port *);
+>  extern int serial8250_rx_dma(struct uart_8250_port *);
+>  extern void serial8250_rx_dma_flush(struct uart_8250_port *);
+>  extern int serial8250_request_dma(struct uart_8250_port *);
+> @@ -406,6 +407,7 @@ static inline int serial8250_tx_dma(struct uart_8250_port *p)
+>  {
+>  	return -1;
+>  }
+> +static inline void serial8250_tx_dma_flush(struct uart_8250_port *p) { }
+>  static inline int serial8250_rx_dma(struct uart_8250_port *p)
+>  {
+>  	return -1;
+> diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250/8250_dma.c
+> index d215c494ee24c..f245a84f4a508 100644
+> --- a/drivers/tty/serial/8250/8250_dma.c
+> +++ b/drivers/tty/serial/8250/8250_dma.c
+> @@ -149,6 +149,22 @@ int serial8250_tx_dma(struct uart_8250_port *p)
+>  	return ret;
+>  }
+>  
+> +void serial8250_tx_dma_flush(struct uart_8250_port *p)
+> +{
+> +	struct uart_8250_dma *dma = p->dma;
+> +
+> +	if (!dma->tx_running)
+> +		return;
+> +
+> +	/*
+> +	 * kfifo_reset() has been called by the serial core, avoid
+> +	 * advancing and underflowing in __dma_tx_complete().
+> +	 */
+> +	dma->tx_size = 0;
+> +
+> +	dmaengine_terminate_async(dma->rxchan);
 
-On Thu, Jan 29, 2026 at 06:02:21PM +0200, Daniel Baluta wrote:
->On Thu, Jan 29, 2026 at 3:45 AM Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
->>
->> From: Peng Fan <peng.fan@nxp.com>
->>
->> imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
->> resource table even when the current firmware does not provide one.
->>
->> When the device tree contains a "rsc-table" entry, priv->rsc_table is
->> non-NULL and denotes where a resource table would be located if one is
->> present in memory. However, when the current firmware has no resource
->> table, rproc->table_ptr is NULL. The function still returns
->> priv->rsc_table, and the remoteproc core interprets this as a valid loaded
->> resource table.
->>
->> Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
->> there is no resource table for the current firmware (i.e. when
->> rproc->table_ptr is NULL). This aligns the function's semantics with the
->> remoteproc core: a loaded resource table is only reported when a valid
->> table_ptr exists.
->>
->> With this change, starting firmware without a resource table no longer
->> triggers a crash.
->>
->> Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->
->Changes looks good to  me >
->
->> --- a/drivers/remoteproc/imx_rproc.c
->> +++ b/drivers/remoteproc/imx_rproc.c
->> @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
->>  {
->>         struct imx_rproc *priv = rproc->priv;
->>
->> +       /* No resource table in the firmware */
->> +       if (!rproc->table_ptr)
->> +               return NULL;
->
->I wonder if we can make this change generic because it should happen
->on other platforms also.
->
->Maybe something like this:
->
->remoteproc: core: Only copy loaded table when valid
->
->Copy resource table in memory only when:
->* the current loaded firmware provides one
->AND
->* there is an explicit request to have the rsc table copied in memory
->via rsc-table
->
->--- a/drivers/remoteproc/remoteproc_core.c
->+++ b/drivers/remoteproc/remoteproc_core.c
->@@ -1281,7 +1281,7 @@ static int rproc_start(struct rproc *rproc,
->const struct firmware *fw)
->         * that any subsequent changes will be applied to the loaded version.
->         */
->        loaded_table = rproc_find_loaded_rsc_table(rproc, fw);
->-       if (loaded_table) {
->+       if (rproc->cached_table && loaded_table) {
->                memcpy(loaded_table, rproc->cached_table, rproc->table_sz);
->                rproc->table_ptr = loaded_table;
->        }
+Hrmm, I think this is causing a deadlock.
+If the DMA transaction is canceled, then the callback might not run.
+This leaves dma->tx_running set to 1 causing the channel to never
+restart the channel.
 
-This change looks fine to me; however, it should not be treated as a bug fix
-for imx_rproc. Since we need a proper Fixes tag for backporting, I would still
-prefer using the changes in my original patch to ensure it can be applied to
-older releases.
+I tried the following fix (and it works for me), but I'm not sure it's
+the correct fix.
 
-As for the modification you introduced, I think it can serve as a guard to
-prevent potential issues on other platforms. You could submit it separately as
-a formal patch to the mailing list.
+diff --git a/drivers/tty/serial/8250/8250_dma.c b/drivers/tty/serial/8250/8250_dma.c
+index bdd26c9f34bd..58b914c20d98 100644
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -162,7 +162,22 @@ void serial8250_tx_dma_flush(struct uart_8250_port *p)
+         */
+        dma->tx_size = 0;
+
++       /*
++        * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
++        * holding the uart port spinlock.
++        */
+        dmaengine_terminate_async(dma->txchan);
++
++       /*
++        * The callback might or might not run. If it doesn't run, we need to ensure
++        * that `tx_running` is cleared so that we can schedule new transactions.
++        * If it does run, then the zombie callback will clear `tx_running` for us
++        * and perform a no-op since `tx_size` was cleared.
++        *
++        * In either case, we assume DMA transaction will be terminated or the
++        * callback will run before we issue a new `serial8250_tx_dma`.
++        */
++       dma->tx_running = 0;
+ }
+
+ int serial8250_rx_dma(struct uart_8250_port *p)
+
+The problem is IIUC, that we need to either use dmaengine_terminate_sync
+or dmaengine_synchronize so we can guarantee that the hardware is
+stopped, the callback is done, and we can free-reuse the resources.
+I think a better approach might be to add a `tx_flushing` bool and push
+a job onto a work queue that calls `dmaengine_terminate_sync`, and then
+sets `tx_running=0` and `tx_flushing=0`. I'm not sure what happens
+though if something comes along and starts writing to the UART registers
+while we are waiting for the DMA transaction to complete.
+
+Thoughts?
+
+---
+Here is the debug trace I took that shows the problem:
+
+< lots of tty_write omitted >
+3250.941306 |    0)               |  tty_write() {
+3250.941307 |    0)   0.174 us    |    tty_ldisc_ref_wait();
+3250.941307 |    0)   0.154 us    |    tty_hung_up_p();
+3250.941307 |    0)               |    tty_write_room() {
+3250.941308 |    0)   0.211 us    |      uart_write_room();
+3250.941308 |    0)   0.542 us    |    }
+3250.941308 |    0)               |    uart_write() {
+3250.941308 |    0)               |      serial8250_start_tx() {
+3250.941309 |    0)               |        serial8250_tx_dma() {
+3250.941309 |    0)               |          /* serial8250_tx_dma: tx_running => 1 */
+3250.941309 |    0)   0.408 us    |        }
+3250.941309 |    0)   0.714 us    |      }
+3250.941309 |    0)   1.261 us    |    }
+3250.941310 |    0)               |    tty_write_room() {
+3250.941310 |    0)   0.217 us    |      uart_write_room();
+3250.941310 |    0)   0.489 us    |    }
+3250.941310 |    0)               |    uart_flush_chars() {
+3250.941310 |    0)               |      uart_start() {
+3250.941311 |    0)               |        serial8250_start_tx() {
+3250.941311 |    0)               |          serial8250_tx_dma() {
+3250.941311 |    0)               |            /* serial8250_tx_dma: tx_running => 1 */
+3250.941311 |    0)   0.389 us    |          }
+3250.941311 |    0)   0.681 us    |        }
+3250.941312 |    0)   1.207 us    |      }
+3250.941312 |    0)   1.488 us    |    }
+3251.008825 |   10)               |  serial8250_interrupt() {
+3251.008828 |   10)               |    serial8250_default_handle_irq() {
+3251.008830 |   10) + 17.915 us   |      dw8250_serial_in32 [8250_dw]();
+3251.008848 |   10)   0.207 us    |      serial8250_handle_irq();
+3251.008849 |   10) + 20.208 us   |    }
+3251.008849 |   10) + 27.505 us   |  }
+3251.008862 |   10)               |  /* __dma_tx_complete: tx_running <= 0 */
+3251.008863 |   10)               |  serial8250_tx_dma() {
+3251.008864 |   10)               |  /* serial8250_tx_dma: tx_running => 0 */
+3251.008872 |   10)               |  /* serial8250_tx_dma: tx_running <= 1 */
+3251.008879 |   10)   9.410 us    |  }
+3251.107685 |   10)               |  serial8250_interrupt() {
+3251.107688 |   10)               |    serial8250_default_handle_irq() {
+3251.107689 |   10) + 18.007 us   |      dw8250_serial_in32 [8250_dw]();
+3251.107707 |   10)               |      serial8250_handle_irq() {
+3251.107708 |   10)   1.847 us    |        dw8250_serial_in32 [8250_dw]();
+3251.107713 |   10)   1.003 us    |        serial8250_rx_dma_flush();
+3251.107714 |   10)               |        serial8250_read_char() {
+3251.107715 |   10) + 17.452 us   |          dw8250_serial_in32 [8250_dw]();
+3251.107732 |   10)   1.008 us    |          uart_insert_char();
+3251.107734 |   10) + 19.136 us   |        }
+3251.107734 |   10)   3.914 us    |        dw8250_serial_in32 [8250_dw]();
+3251.107739 |   10)   6.789 us    |        tty_flip_buffer_push();
+3251.107746 |   10)               |        serial8250_modem_status() {
+3251.107746 |   10) + 17.556 us   |          dw8250_serial_in32 [8250_dw]();
+3251.107764 |   10) + 18.039 us   |        }
+3251.107764 |   10) + 56.710 us   |      }
+3251.107764 |   10) + 76.870 us   |    }
+3251.107765 |   10)               |    serial8250_default_handle_irq() {
+3251.107765 |   10)   4.205 us    |      dw8250_serial_in32 [8250_dw]();
+3251.107769 |   10)   0.219 us    |      serial8250_handle_irq();
+3251.107770 |   10)   5.076 us    |    }
+3251.107770 |   10) + 88.331 us   |  }
+3251.107805 |    6)               |  tty_port_default_receive_buf() {
+3251.107808 |    6)   1.377 us    |    tty_ldisc_ref();
+3251.107810 |    6)               |    tty_ldisc_receive_buf() {
+3251.107813 |    6)   0.639 us    |      tty_get_pgrp();
+3251.107823 |    6)               |      tty_driver_flush_buffer() {
+3251.107824 |    6)               |        uart_flush_buffer() {
+3251.107825 |    6)               |          serial8250_flush_buffer() {
+3251.107826 |    6)               |            serial8250_tx_dma_flush() {
+3251.107829 |    6)               |              /* serial8250_tx_dma_flush: tx_running => 1 */
+                                                 /* Notice the callback is never ran */
+3251.108186 |    6) ! 360.293 us  |            }
+3251.108186 |    6) ! 361.125 us  |          }
+3251.108196 |    6)               |          tty_port_tty_wakeup() {
+3251.108196 |    6)               |            tty_port_default_wakeup() {
+3251.108196 |    6)   1.146 us    |              tty_wakeup();
+3251.108198 |    6)   0.247 us    |              tty_kref_put();
+3251.108198 |    6)   2.359 us    |            }
+3251.108199 |    6)   2.987 us    |          }
+3251.108199 |    6) ! 374.727 us  |        }
+3251.108199 |    6) ! 375.679 us  |      }
+3251.108202 |    6)               |      tty_write_room() {
+3251.108203 |    6)   0.286 us    |        uart_write_room();
+3251.108203 |    6)   1.074 us    |      }
+3251.108204 |    6)               |      tty_put_char() {
+3251.108204 |    6)   0.487 us    |        uart_put_char();
+3251.108205 |    6)   1.177 us    |      }
+3251.108205 |    6)               |      tty_put_char() {
+3251.108205 |    6)   0.261 us    |        uart_put_char();
+3251.108206 |    6)   0.677 us    |      }
+3251.108206 |    6)               |      uart_flush_chars() {
+3251.108207 |    6)               |        uart_start() {
+3251.108208 |    6)               |          serial8250_start_tx() {
+3251.108209 |    6)               |            serial8250_tx_dma() {
+3251.108210 |    6)               |              /* serial8250_tx_dma: tx_running => 1 */
+3251.108210 |    6)   1.194 us    |            }
+3251.108211 |    6)   2.251 us    |          }
+3251.108213 |    6)   5.829 us    |        }
+3251.108213 |    6)   6.532 us    |      }
+3251.108214 |    6) ! 404.132 us  |    }
+3251.108214 |    6)   0.238 us    |    tty_ldisc_deref();
+3251.108214 |    6) ! 411.672 us  |  }
+3251.108260 |    0)   3.102 us    |    tty_ldisc_deref();
+3251.108263 |    0) @ 166956.2 us |  }
+3251.108270 |    0)   0.465 us    |  tty_audit_exit();
+3251.109013 |   11)   2.680 us    |  tty_kref_put();
+3251.109059 |   11)               |  tty_ioctl() {
+3251.109060 |   11)               |    tty_jobctrl_ioctl() {
+3251.109060 |   11)   0.622 us    |      __tty_check_change();
+3251.109062 |   11)   2.450 us    |    }
+3251.109063 |   11)   4.003 us    |  }
+3251.109064 |   11)               |  tty_ioctl() {
+3251.109064 |   11)   0.225 us    |    tty_jobctrl_ioctl();
+3251.109065 |   11)   1.550 us    |    uart_ioctl();
+3251.109067 |   11)   0.554 us    |    tty_ldisc_ref_wait();
+3251.109069 |   11)               |    tty_mode_ioctl() {
+3251.109069 |   11)               |      tty_check_change() {
+3251.109070 |   11)   0.282 us    |        __tty_check_change();
+3251.109070 |   11)   0.662 us    |      }
+3251.109071 |   11)   0.477 us    |      tty_termios_input_baud_rate();
+3251.109071 |   11)   0.214 us    |      tty_termios_baud_rate();
+3251.109072 |   11)   0.483 us    |      uart_chars_in_buffer();
+3251.109073 |   11)   0.247 us    |      uart_chars_in_buffer();
+------------------------------------------
+11)    sh-7708     =>   kworker-90
+------------------------------------------
+
+3251.686493 |   11)               |  serial8250_start_tx() {
+3251.686496 |   11)               |    serial8250_tx_dma() {
+3251.686500 |   11)               |      /* serial8250_tx_dma: tx_running => 1 */
+3251.686501 |   11)   4.696 us    |    }
+3251.686501 |   11) + 12.203 us   |  }
+3252.311575 |   11)               |  serial8250_start_tx() {
+3252.311579 |   11)               |    serial8250_tx_dma() {
+3252.311582 |   11)               |      /* serial8250_tx_dma: tx_running => 1 */
+3252.311583 |   11)   4.020 us    |    }
+3252.311583 |   11) + 10.556 us   |  }
+3252.936657 |   11)               |  serial8250_start_tx() {
+3252.936661 |   11)               |    serial8250_tx_dma() {
+3252.936664 |   11)               |      /* serial8250_tx_dma: tx_running => 1 */
+3252.936665 |   11)   3.989 us    |    }
+3252.936665 |   11) + 10.880 us   |  }
 
 Thanks,
-Peng
+Raul
+
 
