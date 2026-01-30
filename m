@@ -1,71 +1,94 @@
-Return-Path: <stable+bounces-212845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJpYK4tZfGkYMAIAu9opvQ
-	(envelope-from <stable+bounces-212845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:11:07 +0100
+	id oBbvEwRafGkYMAIAu9opvQ
+	(envelope-from <stable+bounces-212846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:13:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC9FB7CCB
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F2EB7CE3
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:13:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CBAC3019531
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:10:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A1903013D5B
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46B6307491;
-	Fri, 30 Jan 2026 07:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D168C33E356;
+	Fri, 30 Jan 2026 07:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="YSYYQWsT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QBGItkWb"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A946A21883E;
-	Fri, 30 Jan 2026 07:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364D9316904
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 07:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769757056; cv=none; b=RWEYikg/8HLTLH35WapGZHhxbD5FwP7CDKZyEPxbtkoq2MMPIiN8Iu7cLfctOTya4A8pYjNLwkMk7IvxqD3/h/xhwYXYNWlqThYBldKO2aw8q1NXQGAhwFduHD3c8sFmK2n52BPesutzrVJsLMjEDiYl6rwFa7ACGlZgX+mDQyE=
+	t=1769757182; cv=none; b=JZyrHjPiwbP5VX0RYmOjU0sO0SzPkWoQsxsUpCl/y8DKWp3s6ZGvtAoMv4cmgYW44PI6o+iyK+l3/BvqA/0S75KJUtesc9jPq3BYE/m4goiaacPv1TvaLI4zxhTBlvdhgFzNsatnxg5h7+4nzxmbrxpSXmENkRANxARShxBtGmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769757056; c=relaxed/simple;
-	bh=KyGofQA+yPanct2ad1s/4EMe4J4e3sxY1/iZhzeXLDE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dY9yJGgDo0o+nfJ0Ep96MdoEhegMlv+cM1wQItr14gp226XUBJmFsQ0DAmavdegWNTRUi9klueGXjNT28F635Q5FyJnlHPSarMxjXiWUPJjkHM8qKmtZlBV0E1kFKyedG94Qy6xZAHEK3JIe9kUUyVzuuRLOpqKJtxCZjiPp+Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=YSYYQWsT; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1769757182; c=relaxed/simple;
+	bh=vVxHFH6Yc8NWRiRG32Mnm8241KHahA48nTKLUwCZR9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GcUtPeFg+LnJhuVvG+jPZQjw/9cWba18z5+WLPSA3FBD1cyxG2k+77Y0pw9t3zLWQhjfYCqQsBR15/LrXol7gaOqPrQSBFOtARIHql+d9QEv7vqn9VKkPYKI2GAI4EOjiWlOXex+IROcM/1FlkPjsNURgmh8Y5HY6UzttFGJ6tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QBGItkWb; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4327555464cso1388599f8f.1
+        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 23:13:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=YSYYQWsTrYbAoBDC46vtwuLGbtuuVniXpbR6fiTZCtjrq+fGx2gcc21OSKet3JUHn3hi812bEzFHB
-	 OPH57CG8w4wvEIXe2MR35pxLZIo49HD6ocTrXxnzGsF3ZFl6khv27HqtOys1Zlo5sjokQM7OfrMWzB
-	 zgK6DNvkun82xGmE=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-09-12087 (RichMail) with SMTP id 2f37697c5978bec-04c4d;
-	Fri, 30 Jan 2026 15:10:54 +0800 (CST)
-X-RM-TRANSID:2f37697c5978bec-04c4d
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	lucien.xin@gmail.com
-Cc: patches@lists.linux.dev,
+        d=gmail.com; s=20230601; t=1769757179; x=1770361979; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qOWxZQdmNaToaPwUEH1k3Iwm/h1XYwVGWPJU1KGWwqo=;
+        b=QBGItkWbI6HDwaFF8McF008WgMtJIQZJzk41LQxqenxSxlP4cy0MCRaIcy+/vq4PtX
+         nbf7A66rOPLN4PD0j9fUG/iF5Nn/B8Fs2PEwYesh7CHeGKDIB2M4dA9LHBuhURNDGcCb
+         5evE63VGZWDCc5hEQeTYCkuQjhd/e7+5MXW8rHdCjr8jltq3HXECgnCCngQd44RoPIjW
+         XvRPZYl9Q4naSEFHUVRKLmMoL//lwSXbHLo6wmQrVzabmfn/GwnWf4U0qgRAkUVjtk5/
+         RQMZ6Makap6YdiTN0O49cTuOwLD1pTFx9w3j9ICgwVLYk2rNKdX2Gw9FSbddh4zqutmz
+         PbIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769757179; x=1770361979;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qOWxZQdmNaToaPwUEH1k3Iwm/h1XYwVGWPJU1KGWwqo=;
+        b=tjhYjPwuS4QQuG2/A2e8zK4JuhAkgacmPbvhUJOlmmPhICq5l8sknIt2IyBjfUqDkl
+         vmHG6cbAi0QdIp4hrmnUKlCvfxEdj8IaIhgYq2ZWK9AsarfMqLDrEJdSVGGFaN3iC5Ms
+         gADEhrnjCBB7zpMDEeGKzNrWVZx0G1vrO85gUDFzHX4RqyJCv/GFLjQPPkDo2bfqYlEq
+         tWYCyUe6ZMQ9cconumTbiD8MHpr5Iw8IN0CZpw/wtRYBot/bd4iuEwup0mzf90la+Q5E
+         kbtxascZUKSUUePvkWqaA/CxeAGDt0mADWQIm/ZI95/3147egPZpGt4p400MOo98IvrY
+         90Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFJNY9bxLEO8VoFrZqNaxa6TrgoH3XBJHpBnnpv8CO62Rq/yXSJX5wf5hkC7/NqET0neP5/g0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQyY1z6t87Bks+c+S9qAKiCIGpHYJNwXsXF4F3BtFDA+WEAdvb
+	/9fh7CZut2EuopZt1cXJ5FnS8khLjhjzbsyhQxftaS1t2b3W05hXa4VV
+X-Gm-Gg: AZuq6aI7HdzJSZQTYHSxoazwHNleqMRVRgyeR3DGl5WrZzX07Ew6UkZ7jIaCy7D16By
+	BUUclb7F0+kgtooOWS9DHKaTaTUu7yIf9ljhb01UTwTn0zlMIr06y7qJW8MhS3MRilEB8Af8w3h
+	o7ippdpQUKL/wIYIPKPX0daoHCUyFPCAHzM0Lt17wD4sVcDuiHVp3oFryB5jZ7oueGWJFBm2wQd
+	KOg2XpgXl1hh731EXtGrfqQxuqJVWT6bUCPM6T7KRQstABgUP1KEP97I+ZD6MuuxAbT3FOvT68D
+	xhiSyS00sMFwAYSUU2rY1ks+JvVPJrwpfaYYRsiwXhfd3rIIhJkxoOnIl7FHtzYlvHFhrTnr+5n
+	j864vtQh/3HBZZbezyftsvuFwnmnjPIjqvRM9+/uL69i1x1iR6e5ek9F8jkniCYDMQEvrszQlpg
+	7P4/IM0/nwKokjDk7Ia67w30DVPSkHbn5PcP1ezp9D969tJ+28h58lf/xLtFhtwQSAXZF2c8hN
+X-Received: by 2002:a05:6000:430e:b0:435:a48a:1239 with SMTP id ffacd0b85a97d-435f3a79d86mr2893572f8f.14.1769757179322;
+        Thu, 29 Jan 2026 23:12:59 -0800 (PST)
+Received: from emanuele-nb.int.toradex.com (93-34-120-147.ip49.fastwebnet.it. [93.34.120.147])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e132368csm18261389f8f.31.2026.01.29.23.12.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 23:12:58 -0800 (PST)
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+To: Francesco Dolcini <francesco@dolcini.it>,
+	Sebastian Reichel <sre@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	vyasevich@gmail.com,
-	nhorman@tuxdriver.com,
-	marcelo.leitner@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 6.1.y] sctp: linearize cloned gso packets in sctp_rcv
-Date: Fri, 30 Jan 2026 15:10:38 +0800
-Message-Id: <20260130071038.3931297-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	stable@vger.kernel.org
+Subject: [PATCH v1] power: reset: tdx-ec-poweroff: fix restart
+Date: Fri, 30 Jan 2026 08:11:35 +0100
+Message-ID: <20260130071208.1184239-1-ghidoliemanuele@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,112 +97,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212845-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,tuxdriver.com,davemloft.net,google.com,kernel.org,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	DKIM_TRACE(0.00)[139.com:-];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212846-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ghidoliemanuele@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,dt];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0FC9FB7CCB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[toradex.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A8F2EB7CE3
 X-Rspamd-Action: no action
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit fd60d8a086191fe33c2d719732d2482052fa6805 ]
+During testing, restart occasionally failed on Toradex modules.
 
-A cloned head skb still shares these frag skbs in fraglist with the
-original head skb. It's not safe to access these frag skbs.
+The issue was traced to an interaction between the EC-based reset/poweroff
+handler and the PSCI restart handler. While the embedded controller is
+resetting or powering off the module, the PSCI code may still be invoked,
+triggering an I2C transaction to the PMIC. This can leave the PMIC I2C
+in a frozen state.
 
-syzbot reported two use-of-uninitialized-memory bugs caused by this:
+Add a delay after issuing the EC reset or power-off command to give the
+controller time to complete the operation and avoid falling back to another
+restart/poweroff provider.
 
-  BUG: KMSAN: uninit-value in sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
-   sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
-   sctp_assoc_bh_rcv+0x1a7/0xc50 net/sctp/associola.c:998
-   sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
-   sctp_backlog_rcv+0x397/0xdb0 net/sctp/input.c:331
-   sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1122
-   __release_sock+0x1da/0x330 net/core/sock.c:3106
-   release_sock+0x6b/0x250 net/core/sock.c:3660
-   sctp_wait_for_connect+0x487/0x820 net/sctp/socket.c:9360
-   sctp_sendmsg_to_asoc+0x1ec1/0x1f00 net/sctp/socket.c:1885
-   sctp_sendmsg+0x32b9/0x4a80 net/sctp/socket.c:2031
-   inet_sendmsg+0x25a/0x280 net/ipv4/af_inet.c:851
-   sock_sendmsg_nosec net/socket.c:718 [inline]
+Also print an error message if sending the command to the embedded controller
+fails.
 
-and
-
-  BUG: KMSAN: uninit-value in sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
-   sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
-   sctp_inq_push+0x2a3/0x350 net/sctp/inqueue.c:88
-   sctp_backlog_rcv+0x3c7/0xda0 net/sctp/input.c:331
-   sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
-   __release_sock+0x1d3/0x330 net/core/sock.c:3213
-   release_sock+0x6b/0x270 net/core/sock.c:3767
-   sctp_wait_for_connect+0x458/0x820 net/sctp/socket.c:9367
-   sctp_sendmsg_to_asoc+0x223a/0x2260 net/sctp/socket.c:1886
-   sctp_sendmsg+0x3910/0x49f0 net/sctp/socket.c:2032
-   inet_sendmsg+0x269/0x2a0 net/ipv4/af_inet.c:851
-   sock_sendmsg_nosec net/socket.c:712 [inline]
-
-This patch fixes it by linearizing cloned gso packets in sctp_rcv().
-
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Reported-by: syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com
-Reported-by: syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/dd7dc337b99876d4132d0961f776913719f7d225.1754595611.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: 18672fe12367 ("power: reset: add Toradex Embedded Controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 ---
-This patch is lost/missing, as it has already been added
-into stable branches less than and greater than 6.1. Previous patch in
-https://lore.kernel.org/stable/20251022075549.195012-1-kovalev@altlinux.org/ is still not added.
-So I resent it again.
----
----
- net/sctp/input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/reset/tdx-ec-poweroff.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 4ee9374dcfb9..182898cb754a 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -114,7 +114,7 @@ int sctp_rcv(struct sk_buff *skb)
- 	 * it's better to just linearize it otherwise crc computing
- 	 * takes longer.
- 	 */
--	if ((!is_gso && skb_linearize(skb)) ||
-+	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
- 	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
- 		goto discard_it;
+diff --git a/drivers/power/reset/tdx-ec-poweroff.c b/drivers/power/reset/tdx-ec-poweroff.c
+index 3302a127fce5..8040aa03d74d 100644
+--- a/drivers/power/reset/tdx-ec-poweroff.c
++++ b/drivers/power/reset/tdx-ec-poweroff.c
+@@ -8,7 +8,10 @@
+  */
+ 
+ #include <linux/array_size.h>
++#include <linux/bug.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
++#include <linux/dev_printk.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
+ #include <linux/mod_devicetable.h>
+@@ -31,6 +34,8 @@
+ 
+ #define EC_REG_MAX                      0xD0
+ 
++#define EC_CMD_TIMEOUT_MS             	1000
++
+ static const struct regmap_range volatile_ranges[] = {
+ 	regmap_reg_range(EC_CMD_REG, EC_CMD_REG),
+ };
+@@ -75,6 +80,13 @@ static int tdx_ec_power_off(struct sys_off_data *data)
+ 
+ 	err = tdx_ec_cmd(regmap, EC_CMD_POWEROFF);
+ 
++	if (err) {
++		dev_err(data->dev, "Failed to send power off command\n");
++	} else {
++		mdelay(EC_CMD_TIMEOUT_MS);
++		WARN_ONCE(1, "Unable to power off system\n");
++	}
++
+ 	return err ? NOTIFY_BAD : NOTIFY_DONE;
+ }
+ 
+@@ -85,6 +97,13 @@ static int tdx_ec_restart(struct sys_off_data *data)
+ 
+ 	err = tdx_ec_cmd(regmap, EC_CMD_RESET);
+ 
++	if (err) {
++		dev_err(data->dev, "Failed to send restart command\n");
++	} else {
++		mdelay(EC_CMD_TIMEOUT_MS);
++		WARN_ONCE(1, "Unable to restart system\n");
++	}
++
+ 	return err ? NOTIFY_BAD : NOTIFY_DONE;
+ }
  
 -- 
-2.34.1
-
+2.43.0
 
 
