@@ -1,138 +1,187 @@
-Return-Path: <stable+bounces-212915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oH4eLK0efWlQQQIAu9opvQ
-	(envelope-from <stable+bounces-212915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 22:12:13 +0100
+	id MKWWOb8kfWnxQQIAu9opvQ
+	(envelope-from <stable+bounces-212916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 22:38:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145ACBEBDA
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 22:12:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90115BED29
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 22:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 905783002F9C
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 21:08:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 406D4301724A
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 21:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1FE34FF61;
-	Fri, 30 Jan 2026 21:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF6A350A0E;
+	Fri, 30 Jan 2026 21:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PxHhylMn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WsjlDWcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660F43074AB
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 21:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88CA346FB7;
+	Fri, 30 Jan 2026 21:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769807316; cv=none; b=u7VILk+WSHjLqIZ6dTLoywAuHOzr2XefSQvR48OsASfJnCQHXObZSbnRHl2RCsswgpdA0uw3t0PFAppoWX9lJAXyqZG5poS4aOnFZwSGW6+iwSR8v3PQCBvPWvdw65PKGlSIqom/n3t+TAT4Ljakqpa57zIDVm3d+K8/5CkjtEc=
+	t=1769809083; cv=none; b=tdqtOhonO3OFFW2qohfDZN2IOaI6EwLbAa2zhbS4llSja+OnFIiIyd7NLjSibFPEjgS3kq+/yfxTPuMVnt6NhspIpAZ3Ul3PPcBe+lbBZ+W1gSWvUfZwPYqIWd1bmx2SmnkdjQLbTPZu8FTWn56B8/HrG5Rd5ihFZU4BMYwLQjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769807316; c=relaxed/simple;
-	bh=NpIWKTcK0nElwmNCWQsMcXiocFq60OtqNvc0TmYMhpw=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Ghdt7RhdbghkfaJe2V6tf+LPidgspO70I4FiNraiBPu/pL1+Fqim75T4Oa9o4vVZ/DVCmB1CFeQM98gMgZKWKKSWPhOHNRm0Y+5+fBIrutOP21g1+TThrxOM4jxnCfEXDtqnqNi6Ygo7foelvv2xRXLXm5iuuqFtMeKGGoYF3W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PxHhylMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94782C4CEF7;
-	Fri, 30 Jan 2026 21:08:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769807315;
-	bh=NpIWKTcK0nElwmNCWQsMcXiocFq60OtqNvc0TmYMhpw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PxHhylMnpGHxaYWvYQVZLPqe6RRG2x2B+ggYwZIU30b3Ew6cQLMcdWnHk4NxUd35q
-	 /DWbjjtUbgZoNxYCAIONothAH76NlkNHxJERU6WcPdb0qnRJIzB3EW/0MwUiv5SpA0
-	 6Sy9LCXY/OF0lVDCO1Q6CM7gE1uBdrVtvcIGVElA=
-Date: Fri, 30 Jan 2026 13:08:35 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- <intel-xe@lists.freedesktop.org>, Ralph Campbell <rcampbell@nvidia.com>,
- Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- <linux-mm@kvack.org>, <stable@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-Message-Id: <20260130130835.10d004cd79d67c55b10def74@linux-foundation.org>
-In-Reply-To: <aX0cJGIU9NLt/OLW@lstrano-desk.jf.intel.com>
-References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
-	<20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-	<b9dd97e7d9e62ebc33c4dfef53a9fd3f51352d3a.camel@linux.intel.com>
-	<20260130123810.61dde600422a8fe01cff8296@linux-foundation.org>
-	<aX0cJGIU9NLt/OLW@lstrano-desk.jf.intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1769809083; c=relaxed/simple;
+	bh=hG/FMFjw+Bsjjqf6+oGgdTmtU6Rj6R39FcIG0oxjB4g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S7A8kagxYchLSMT+yxQGfSk+pkt0HIEkwOO2wP8zxH/C2HUJX5laoNZxThE0/8IPSR5W9eEkH4juX08FaCsg1kDe3E05zIFkjTf6XdDgTPcTHrK9jSBJnCBcd6G9x7nrw4+8sfGGw5N97kk+hBSE4noL6cYetNoRN7mOMd8R2a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WsjlDWcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC43AC4CEF7;
+	Fri, 30 Jan 2026 21:38:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769809082;
+	bh=hG/FMFjw+Bsjjqf6+oGgdTmtU6Rj6R39FcIG0oxjB4g=;
+	h=From:Date:Subject:To:Cc:From;
+	b=WsjlDWcuspRPbESmBhstfkK56VpUEZUT92aisw++uiwRD4OKUnC2X8DKECtzIiUP2
+	 2tqIyEXoCUlglp1bnkKp9uAyMt0TJJ9MX1XKZK3F65QJyn7Y+lR5Lk2Kl8xg+h5Sb8
+	 aZrKCBq+PZbswnML9coHYmWvjHmP6wOwpvGF1s1Kpy76dl6r56jnfrpcpAMpNJZTKA
+	 NMxbjf2zXMXI/NM/zMDXS8E3iW/V4Rns4kurM00r9Te84Qfirk9IYxT0DPPEJEmpHf
+	 tzKqUuoCRxGpAy3NBvUnu/lUYHy+Q8V3d5A4g30YVwfx61wYqt5HifZ48C7+2ccE9X
+	 ugSdkZ5dlNQ5Q==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Fri, 30 Jan 2026 14:37:47 -0700
+Subject: [PATCH] kbuild: Do not run kernel-doc when building external
+ modules
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBAF0KuQWTtJqQjGqxgWtv3qWGxJC4SEc
+ HerLt/mbZSRBJku1UYJi2SJoaA+VGSft/AAiysmrXSr6qNib2YZHGcvI3ukgIFdtIx1ekfHumt
+ P5wad0UZROcaEu6y//9r/nWfzgp2+Ke37By0QqAGBAAAA
+X-Change-ID: 20260130-kbuild-skip-kernel-doc-extmod-276584e7b2b0
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Rong Zhang <i@rong.moe>, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3283; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=hG/FMFjw+Bsjjqf6+oGgdTmtU6Rj6R39FcIG0oxjB4g=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJm1KjvqVhdnRG95sMfWl01Q86Jq6XKWE2Vu3LqZr2oPT
+ fiqXu3YUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACbSls3wh7d8m2vrhFfH6ybw
+ WH9bukDgxqkF5y7wz5Zgtazweekue5yRob2lT54n5/QSWb4n/OEnGCyPPU7NL7EJvtQvLcjm/ng
+ CHwA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212915-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212916-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_RCPT(0.00)[stable,huawei];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linux-foundation.org:mid,linux-foundation.org:dkim]
-X-Rspamd-Queue-Id: 145ACBEBDA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,kernel-doc.py:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 90115BED29
 X-Rspamd-Action: no action
 
-On Fri, 30 Jan 2026 13:01:24 -0800 Matthew Brost <matthew.brost@intel.com> wrote:
+After commit 778b8ebe5192 ("docs: Move the python libraries to
+tools/lib/python"), building an external module with any value of W=
+against the output of install-extmod-build fails with:
 
-> > > Unfortunately hmm_range_fault() is typically called from a gpu
-> > > pagefault handler and it's crucial to get the gpu up and running again
-> > > as fast as possible.
-> > 
-> > Would a millisecond matter?  Regular old preemption will often cause
-> > longer delays.
-> > 
-> 
-> I think millisecond is too high. We are aiming to GPU page faults
-> serviced in 10-15us of CPU time (GPU copy time varies based on size of
-> fault / copy bus speed but still at most 200us).
+  $ make -C /usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build M=$PWD W=1
+  make: Entering directory '/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build'
+  make[1]: Entering directory '...'
+    CC [M] ...
+  Traceback (most recent call last):
+    File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 339, in <module>
+      main()
+      ~~~~^^
+    File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 295, in main
+      from kdoc.kdoc_files import KernelFiles             # pylint: disable=C0415
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ModuleNotFoundError: No module named 'kdoc'
 
-But it's a rare case?
+scripts/lib was included in the build directory from find_in_scripts but
+after the move to tools/lib/python, it is no longer included, breaking
+kernel-doc.py.
 
-Am I incorrect in believing that getting preempted will cause latencies
-much larger than this?
+Commit eba6ffd126cd ("docs: kdoc: move kernel-doc to tools/docs") breaks
+this even further by moving kernel-doc outside of scripts as well, so it
+cannot be found when called by cmd_checkdoc.
 
-> Matt
-> 
-> > > Is there a way we could test for the cases where cond_resched() doesn't
-> > > work and in that case instead call sched_yield(), at least on -EBUSY
-> > > errors?
-> > 
-> > kernel-internal sched_yield() was taken away years ago and I don't
-> > think there's a replacement, particularly one which will cause a
-> > realtime-policy task to yield to a non-rt-policy one.
-> > 
-> > It's common for kernel code to forget that it could have realtime
-> > policy - we probably have potential lockups in various places.
-> > 
-> > I suggest you rerun your testcase with this patch using `chrt -r', see
-> > if my speculation is correct.
+  $ make -C /usr/lib/modules/6.19.0-rc7-next-20260130/build M=$PWD W=1
+  make: Entering directory '/usr/lib/modules/6.19.0-rc7-next-20260130/build'
+  make[1]: Entering directory '...'
+    CC [M]  ...
+  python3: can't open file '/usr/lib/modules/6.19.0-rc7-next-20260130/build/tools/docs/kernel-doc': [Errno 2] No such file or directory
 
-Please?
+While kernel-doc could be useful for external modules, it is more useful
+for in-tree documentation that will be build and included in htmldocs.
+Rather than including it in install-extmod-build, just skip running
+kernel-doc for the external module build.
+
+Cc: stable@vger.kernel.org
+Fixes: 778b8ebe5192 ("docs: Move the python libraries to tools/lib/python")
+Reported-by: Rong Zhang <i@rong.moe>
+Closes: https://lore.kernel.org/20260129175321.415295-1-i@rong.moe/
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+This is an alternative to Rong's proposed fix for the first error:
+
+  https://lore.kernel.org/20260129175321.415295-1-i@rong.moe/
+
+I noticed the second one by inspection of -next and further testing.
+---
+ scripts/Makefile.build | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 5037f4715d74..f01d7957edf7 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -166,11 +166,13 @@ else ifeq ($(KBUILD_CHECKSRC),2)
+         cmd_force_checksrc = $(CHECK) $(CHECKFLAGS) $(c_flags) $<
+ endif
+ 
++ifeq ($(KBUILD_EXTMOD),)
+ ifneq ($(KBUILD_EXTRA_WARN),)
+   cmd_checkdoc = PYTHONDONTWRITEBYTECODE=1 $(PYTHON3) $(KERNELDOC) -none $(KDOCFLAGS) \
+         $(if $(findstring 2, $(KBUILD_EXTRA_WARN)), -Wall) \
+         $<
+ endif
++endif
+ 
+ # Compile C sources (.c)
+ # ---------------------------------------------------------------------------
+
+---
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+change-id: 20260130-kbuild-skip-kernel-doc-extmod-276584e7b2b0
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
