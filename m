@@ -1,268 +1,152 @@
-Return-Path: <stable+bounces-212945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOcEI+glfmlQWAIAu9opvQ
-	(envelope-from <stable+bounces-212945-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 16:55:20 +0100
+	id OIedNNUmfmmLWAIAu9opvQ
+	(envelope-from <stable+bounces-212946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 16:59:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B04AC2CF1
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 16:55:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E264C2D5F
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 16:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78C8E303CC2C
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 15:54:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 26D2F300615F
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 15:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBBF3376B8;
-	Sat, 31 Jan 2026 15:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F6833EB17;
+	Sat, 31 Jan 2026 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f37NOcNy"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="jAyWIZvV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855663382F0;
-	Sat, 31 Jan 2026 15:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA9D33DEEC
+	for <stable@vger.kernel.org>; Sat, 31 Jan 2026 15:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769874880; cv=none; b=Kma/vTm1Km4OffWuqTkCr3ZuBVFMLQ1TbuOeTKqzNJIlEYIYocQEB8r2BNS9onq/BsQfA8OqT0UdyoVpl1kSQlyH2hmX5Y2Zpv8ihKlAPg2GwR8h0KeqZZmIVs1m7h9rafpZ2X7uPxuPpqnsBLltCHp9+tRRVvMc1DQinWFaxiw=
+	t=1769875138; cv=none; b=c3lox9o1/uvulNeTLzIsBuwetWeHbGpBKhRYYBuCBWe5ChmMqSVCh1Fv6jDhu8nVMc8y920Bg6QEwTQ5m/sCqKWK8KYoSTZ9Qo9xQv2U9vEq7CxxSOaQt85yHc5uECB46IE3dJdAfsRQxAcTFUtvWCBITGV+QNp01Kp3MF1eD6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769874880; c=relaxed/simple;
-	bh=yP/+lWu8w6TVpcU/sK04du+syKfA7fdOXqbErdv8SGk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OX/e6bAr9LzpVAYmpWDr9Y8WX23aaqBzg4PbX+BlWUX9hlwyGu/ThPF12Fw3kt9euM8alhbF0J9q8SUXEXuhr38QOFExlRWrsRhEJuDRAj9b3tOdVyd6Mz4BNYd/KcERuywFIT+Kr40v7bolu4nrT5jU/7Ol66O0tIx5YO9s5fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f37NOcNy; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769874878; x=1801410878;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yP/+lWu8w6TVpcU/sK04du+syKfA7fdOXqbErdv8SGk=;
-  b=f37NOcNyYVKnSTwbctSd3O7TVzwn+GF3zQeo7lLNnGfVkx+ipP8pXdtQ
-   Y8ee44Hxqr3eGHvHIsQJ/z54AMTpftq5v+SYKbawL70IWJ6J5TfldzTHT
-   9pLzzN3rcKdJTlS9ha1YRlFrqHDB4x7ZSwCFmVXP1IEBy99BpmaoIVqdq
-   Jo7u6PGANeg42bkZ+4whbDE79j33fARD5Jt0AB1xsj65pYNn8s2/geXlA
-   cif4rFQxZRF7SRvsDwYyvtL+nqOIYIVIIruA8Blcbub1yPRfHwOK5ZUjq
-   hLt8yaxmSfORHWxWFK8wotuDp6Fw2QLzPhMequke3RxanYQUDZORtH176
-   w==;
-X-CSE-ConnectionGUID: 4YvMylxZTTuK3wJZZXlwcQ==
-X-CSE-MsgGUID: +hk1m2nSS9i9ox5RZgmG+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="70118250"
-X-IronPort-AV: E=Sophos;i="6.21,265,1763452800"; 
-   d="scan'208";a="70118250"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2026 07:54:38 -0800
-X-CSE-ConnectionGUID: mNM1mRCKRvO2CXNfpAHMEg==
-X-CSE-MsgGUID: HLs4j+UdQ/C/xg8xorcjOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,265,1763452800"; 
-   d="scan'208";a="208350889"
-Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
-  by orviesa010.jf.intel.com with ESMTP; 31 Jan 2026 07:54:16 -0800
-Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vmDIc-000000002iX-0fps;
-	Sat, 31 Jan 2026 15:54:14 +0000
-Date: Sat, 31 Jan 2026 16:54:04 +0100
-From: kernel test robot <lkp@intel.com>
-To: nspmangalore@gmail.com, linux-cifs@vger.kernel.org, smfrench@gmail.com,
-	pc@manguebit.org, bharathsm@microsoft.com
-Cc: oe-kbuild-all@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] cifs: Fix locking usage for tcon fields
-Message-ID: <202601311634.9WVpg186-lkp@intel.com>
-References: <20260131080239.943483-2-sprasad@microsoft.com>
+	s=arc-20240116; t=1769875138; c=relaxed/simple;
+	bh=K9aN7OjuKemtuSTajY0LoUlFdOIQZsAHYT3xi+Lw8SQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dvexODhncf9Y1+Klatldw4djKz6Nt5Yp0QK5Bvv2rL8CHVL0EfrsC3NIy1fK8Mr1+ywNGo+OJnc3Yp4yuzO6t2q4F56yUHFIg3plMIRlpiQU2mrm06D782xhd2oPVyr1mlywdEXdIdtx/JbfbroxWvWSGZ7Ry2ZLJRiX/breQ8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=jAyWIZvV; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fbbc3df8fso2355361f8f.2
+        for <stable@vger.kernel.org>; Sat, 31 Jan 2026 07:58:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1769875135; x=1770479935; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FVER5vPZC6mrgsjqcbK85uhUXRqOLGCzOU5rUyInYAc=;
+        b=jAyWIZvVzZOL7FBF1Z2dsEP7T97EjKtDKtxreN9rC7hcjhrUkcrw6bN33SnHUCW8Gk
+         A0+LaSaix/+/GD3q2d31Vl8aNa89pOuOTAFXEHxHMx0IBI+Uc6gyrt9GivmTs4/OeIj8
+         VZU9vxW/BMWaLT8cvko+NTOISfITbvC9ohtjXsf7TgQBwq+kdhuKutBGwDs0JwkuqREA
+         yC2aNgxP2FFeVdDsvIHh2qck4yNmVG0tPHibmLHrKBX++EOcpQ9ERj93DuOxtxAly8eB
+         7KXVO46y9jOmfoTlhlr5QAFY6iCECHnC9w9fbKcGpnvBjlxZ3sgNxnAiQlNjcLjB8mAL
+         ZeaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769875135; x=1770479935;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FVER5vPZC6mrgsjqcbK85uhUXRqOLGCzOU5rUyInYAc=;
+        b=oQAqS8A+tGUjZCuY4qfncVfXdw1Rm75dVaFif3aTJUIvF95badK9UX91ExZwy4GSAf
+         DMa9j/3ZYyXyPjyMj7hY5/7Gn/c5SjVECvT/Rpe/+sPwv6NQ0zYw8xEnQZdIH1/OTvrI
+         Qe01ayohC+JO5cMa7meW/fqg/PeLveGuNCJrs0HdmqohO6JkkrleJzLk15J9MxLx7UU4
+         9N/PZpN3Aksk7L0PQKhXcMPOhJNEhRl+mDPsVXuNdXEEY000R3836qj6KbBtJ2++r7jv
+         EO6zeGIXaTowjgmHVyStDW8e4WG0M0x2/coesaQPQhut9uVtZZcv51EUJVH2TBIPacBD
+         29Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCXFSrztJCSq85QstxOlcnxxxbjK2KGgppqk9+8af9yExtC/9HjzByhuBlgS6dsvRoVdzoIrz4A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ20wWiXHhcMeD1vzgH1+35mSuusF8vjZ2TRauDyoinSELKR9q
+	UtXXAWSR2HTyVOs0yqeoomB6zF5qAmrafrqlwYON71lkb+Xhva27zjJQ8Rn1QemjVDk=
+X-Gm-Gg: AZuq6aLjklmSI24NXa263Rv/VXf6jDy0TrHhiP/lWirSK/rg+JfSPkhORzHZCGJFE0x
+	HODIoiweweVeX8X5F3TY0bwuIHzUHjepiBRJicGJlpt21MAR9z8hXRNFe5UXCuSBHhmj8r3IVpA
+	a63jjv16NbeNTvIoNh+mxLT4EyCXJ2xfQRIF39GN9G40SWnO0q1l/2T6RgTaZCPDt/PYk7h8eP4
+	wZZsjUjZFu4DRQEVLx5QG1qvA1T1fnxtjBCFbvOuvRmYw92M6CX1ZUn66sRLQBcwmS4ifMYr6mj
+	/qlf0WrRV3vEQ73GbQaWWz+peRUgZPBWt/vJh5EMdgLLlQALX/BnR5on4AEgZo8IXNXhf0EQvHz
+	nNC7+pwc14GH0UlruVe3w7Yyj1WjmCuPYq6l+ZR3ydbdbBrH+xUNlSrmHWeXEiRe2zCxRYaEBfH
+	F7nzpZiJIhXkfj90N6CQ==
+X-Received: by 2002:a05:6000:24c1:b0:435:8ad8:b7a with SMTP id ffacd0b85a97d-435f3aaf763mr9878839f8f.46.1769875134874;
+        Sat, 31 Jan 2026 07:58:54 -0800 (PST)
+Received: from [192.168.50.4] ([82.78.167.31])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e1322f40sm29757534f8f.34.2026.01.31.07.58.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 Jan 2026 07:58:54 -0800 (PST)
+Message-ID: <a34bbde5-1dc8-4cad-8deb-f2e7855eb4f8@tuxon.dev>
+Date: Sat, 31 Jan 2026 17:58:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260131080239.943483-2-sprasad@microsoft.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/19] nvmem: microchip-otpc: Avoid reading a
+ write-only register
+To: Alexander Dahl <ada@thorsis.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Ryan Wanner <ryan.wanner@microchip.com>,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+ stable@vger.kernel.org, Srinivas Kandagatla <srini@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20260120143759.904013-1-ada@thorsis.com>
+ <20260120154502.1280938-1-ada@thorsis.com>
+ <20260120154502.1280938-4-ada@thorsis.com>
+Content-Language: en-US
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+In-Reply-To: <20260120154502.1280938-4-ada@thorsis.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[tuxon.dev:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212945-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[tuxon.dev:+];
+	TAGGED_FROM(0.00)[bounces-212946-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,manguebit.org,microsoft.com];
+	DMARC_NA(0.00)[tuxon.dev];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@tuxon.dev,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,git-scm.com:url,01.org:url,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 2B04AC2CF1
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,thorsis.com:email,tuxon.dev:email,tuxon.dev:dkim,tuxon.dev:mid]
+X-Rspamd-Queue-Id: 7E264C2D5F
 X-Rspamd-Action: no action
 
-Hi,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on cifs/for-next]
-[also build test ERROR on linus/master v6.19-rc7 next-20260130]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/nspmangalore-gmail-com/cifs-Fix-locking-usage-for-tcon-fields/20260131-160419
-base:   git://git.samba.org/sfrench/cifs-2.6.git for-next
-patch link:    https://lore.kernel.org/r/20260131080239.943483-2-sprasad%40microsoft.com
-patch subject: [PATCH 2/2] cifs: Fix locking usage for tcon fields
-config: s390-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260131/202601311634.9WVpg186-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260131/202601311634.9WVpg186-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601311634.9WVpg186-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   fs/smb/client/smb2ops.c: In function 'smb2_get_dfs_refer':
->> fs/smb/client/smb2ops.c:3178:17: error: too few arguments to function 'cifs_put_tcon'; expected 2, have 1
-    3178 |                 cifs_put_tcon(tcon);
-         |                 ^~~~~~~~~~~~~
-   In file included from fs/smb/client/smb2ops.c:20:
-   fs/smb/client/cifsproto.h:273:6: note: declared here
-     273 | void cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace);
-         |      ^~~~~~~~~~~~~
 
 
-vim +/cifs_put_tcon +3178 fs/smb/client/smb2ops.c
+On 1/20/26 17:44, Alexander Dahl wrote:
+> The OTPC Control Register (OTPC_CR) has just write-only members.
+> Reading from that register leads to a warning in OTPC Write Protection
+> Status Register (OTPC_WPSR) in field Software Error Type (SWETYP) of
+> type READ_WO (A write-only register has been read (warning).)
+> 
+> Just create the register write content from scratch is sufficient here.
+> 
+> Fixes: 98830350d3fc ("nvmem: microchip-otpc: add support")
+> Cc:stable@vger.kernel.org
+> Signed-off-by: Alexander Dahl<ada@thorsis.com>
 
-  3078	
-  3079	static int
-  3080	smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
-  3081			   const char *search_name,
-  3082			   struct dfs_info3_param **target_nodes,
-  3083			   unsigned int *num_of_nodes,
-  3084			   const struct nls_table *nls_codepage, int remap)
-  3085	{
-  3086		int rc;
-  3087		__le16 *utf16_path = NULL;
-  3088		int utf16_path_len = 0;
-  3089		struct cifs_tcon *tcon;
-  3090		struct fsctl_get_dfs_referral_req *dfs_req = NULL;
-  3091		struct get_dfs_referral_rsp *dfs_rsp = NULL;
-  3092		u32 dfs_req_size = 0, dfs_rsp_size = 0;
-  3093		int retry_once = 0;
-  3094	
-  3095		cifs_dbg(FYI, "%s: path: %s\n", __func__, search_name);
-  3096	
-  3097		/*
-  3098		 * Try to use the IPC tcon, otherwise just use any
-  3099		 */
-  3100		tcon = ses->tcon_ipc;
-  3101		if (tcon == NULL) {
-  3102			spin_lock(&cifs_tcp_ses_lock);
-  3103			tcon = list_first_entry_or_null(&ses->tcon_list,
-  3104							struct cifs_tcon,
-  3105							tcon_list);
-  3106			if (tcon) {
-  3107				spin_lock(&tcon->tc_lock);
-  3108				tcon->tc_count++;
-  3109				spin_unlock(&tcon->tc_lock);
-  3110				trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-  3111						    netfs_trace_tcon_ref_get_dfs_refer);
-  3112			}
-  3113			spin_unlock(&cifs_tcp_ses_lock);
-  3114		}
-  3115	
-  3116		if (tcon == NULL) {
-  3117			cifs_dbg(VFS, "session %p has no tcon available for a dfs referral request\n",
-  3118				 ses);
-  3119			rc = -ENOTCONN;
-  3120			goto out;
-  3121		}
-  3122	
-  3123		utf16_path = cifs_strndup_to_utf16(search_name, PATH_MAX,
-  3124						   &utf16_path_len,
-  3125						   nls_codepage, remap);
-  3126		if (!utf16_path) {
-  3127			rc = -ENOMEM;
-  3128			goto out;
-  3129		}
-  3130	
-  3131		dfs_req_size = sizeof(*dfs_req) + utf16_path_len;
-  3132		dfs_req = kzalloc(dfs_req_size, GFP_KERNEL);
-  3133		if (!dfs_req) {
-  3134			rc = -ENOMEM;
-  3135			goto out;
-  3136		}
-  3137	
-  3138		/* Highest DFS referral version understood */
-  3139		dfs_req->MaxReferralLevel = DFS_VERSION;
-  3140	
-  3141		/* Path to resolve in an UTF-16 null-terminated string */
-  3142		memcpy(dfs_req->RequestFileName, utf16_path, utf16_path_len);
-  3143	
-  3144		for (;;) {
-  3145			rc = SMB2_ioctl(xid, tcon, NO_FILE_ID, NO_FILE_ID,
-  3146					FSCTL_DFS_GET_REFERRALS,
-  3147					(char *)dfs_req, dfs_req_size, CIFSMaxBufSize,
-  3148					(char **)&dfs_rsp, &dfs_rsp_size);
-  3149			if (fatal_signal_pending(current)) {
-  3150				rc = -EINTR;
-  3151				break;
-  3152			}
-  3153			if (!is_retryable_error(rc) || retry_once++)
-  3154				break;
-  3155			usleep_range(512, 2048);
-  3156		}
-  3157	
-  3158		if (!rc && !dfs_rsp)
-  3159			rc = smb_EIO(smb_eio_trace_dfsref_no_rsp);
-  3160		if (rc) {
-  3161			if (!is_retryable_error(rc) && rc != -ENOENT && rc != -EOPNOTSUPP)
-  3162				cifs_tcon_dbg(FYI, "%s: ioctl error: rc=%d\n", __func__, rc);
-  3163			goto out;
-  3164		}
-  3165	
-  3166		rc = parse_dfs_referrals(dfs_rsp, dfs_rsp_size,
-  3167					 num_of_nodes, target_nodes,
-  3168					 nls_codepage, remap, search_name,
-  3169					 true /* is_unicode */);
-  3170		if (rc && rc != -ENOENT) {
-  3171			cifs_tcon_dbg(VFS, "%s: failed to parse DFS referral %s: %d\n",
-  3172				      __func__, search_name, rc);
-  3173		}
-  3174	
-  3175	 out:
-  3176		if (tcon && !tcon->ipc) {
-  3177			/* ipc tcons are not refcounted */
-> 3178			cifs_put_tcon(tcon);
-  3179			trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-  3180					    netfs_trace_tcon_ref_dec_dfs_refer);
-  3181		}
-  3182		kfree(utf16_path);
-  3183		kfree(dfs_req);
-  3184		kfree(dfs_rsp);
-  3185		return rc;
-  3186	}
-  3187	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
