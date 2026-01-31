@@ -1,128 +1,138 @@
-Return-Path: <stable+bounces-212954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJUANmo7fmkOWgIAu9opvQ
-	(envelope-from <stable+bounces-212954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 18:27:06 +0100
+	id KAK1AoYcfmn5VgIAu9opvQ
+	(envelope-from <stable+bounces-212941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 16:15:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BEEAC3342
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 18:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7372C2A74
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 16:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 935A93050A0C
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 17:26:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58499300D329
+	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 15:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F9934DCE4;
-	Sat, 31 Jan 2026 17:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0120831D72D;
+	Sat, 31 Jan 2026 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="PH1VnivB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOOvCxv/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-244104.protonmail.ch (mail-244104.protonmail.ch [109.224.244.104])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83D735028E
-	for <stable@vger.kernel.org>; Sat, 31 Jan 2026 17:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3017311967;
+	Sat, 31 Jan 2026 15:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769880380; cv=none; b=D2AXPZrKszwPlrse07AvAJFflLA7TpfpLEG3nCZKDbK2RexaPlwiLloUcpPYRolJgExlYzg9lgCstjGZuHGfEvj3ajtGQB0Vx3RNK5r02HfDVxhTJaDlVch2xx5B4QGamXqVZwbLdjuhEZ6lseW8C3AfUZtxLV5W4I6HFOOPm0g=
+	t=1769872510; cv=none; b=B1Hq03d2LO0TBhVCft5Mm8/luES83YGlmZoic7izFyGDz6ki+CyF0oAZCzrFZNg/QzSxhoynuNErzFtpQIfxSUZjge6a5LFgDZg/a0d5FzkhFpzDLSdS6dlvWIFFCz4nr6pQG6jyDy0qxcrEn+1IYNb5mM8zwqNHVghlmZixNpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769880380; c=relaxed/simple;
-	bh=yNwHhNa+heliVuLXUrQko/d+H6PvZ1Ncj1k81RKd9lc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QMeLPgBowJRS4p/wJ0/EvgWN5dCM2NwYk6w9guq1yy7xzVBdEUnX5Z6/JMleleKRdUHw9FOA61JB2fFqJgMLBLXTcnIxqm2uYuczpX59F7SbAt2Zbj5XfkTLrl4pyiOAmj6NgwlyhmE2/lBtQG5rjPIL2YGcRMdrhdx3+x/Iypw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=PH1VnivB; arc=none smtp.client-ip=109.224.244.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1769871627; x=1770130827;
-	bh=Qh+3JkFhiy4nIGSMFxn6kJmF5ZPrgjdBMWDDxS2+4/M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=PH1VnivBgpmU8D1Ll8IP+c+gYhLczr3puNPVU67XL1ieYZx8FYgLPVsJHTAWhm3tv
-	 sX9x2bg4CkNtwy9MjQp5zHYgcnPR8qlIYwvcdvtusAwxUZD7qCVfEwNoxyJuXC9Hlf
-	 W1X3zvY1nvIM5UIEPwhD/x1oJIcR+rH0aX9UtsEWke4nRv8WB5ImZBb7b+B8Re51+5
-	 aYK5VLeQdTqQBCgYIL1d2/bW1gAP2Bq7adSCqX5VwHduhe6zSc8kaVmcFME/iQEQ5E
-	 w1R6rTgdMcDRcwepqnF8ec7sqUseKSB6gmYaIeeAMYyw96nH0dbcPrnZh1A9sFo/Do
-	 +2692kznb/yMQ==
-Date: Sat, 31 Jan 2026 15:00:23 +0000
-To: Victor Nogueira <victor@mojatatu.com>
-From: Paul Moses <p@1g4.org>
-Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 6/7] net/sched: act_gate: reject empty schedule list
-Message-ID: <Pr4njxDDR8e9tElhovQfunuoyxlxUQdZqfdGBZg028rsKLPq4w1aYIUNKcAlF9EuqQHZjoj-9ocK2wEltjyQoRhUvsoKyZYveLK3oCAAd4k=@1g4.org>
-In-Reply-To: <CA+NMeC-65UfJyq=34_K9tzf9J=-XFPJqDe1BxLNZv0mnjkxZEA@mail.gmail.com>
-References: <20260121131954.2710459-1-p@1g4.org> <20260121131954.2710459-7-p@1g4.org> <c8a8ae22-c5c4-4112-8084-0faa256a1d84@mojatatu.com> <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com> <77q-JcImMG2fuQxj_GMUtYmaFAIuPrYMasj4I3aqIVID-Op24JIShBIPgt9kozLZgN4HvsGCS8Ez16mKq4Wq9juL1IOKydWUJwMwCYgHRMg=@1g4.org> <CA+NMeC-65UfJyq=34_K9tzf9J=-XFPJqDe1BxLNZv0mnjkxZEA@mail.gmail.com>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 33c208a5f3561c0aaf6e1841e737ff64732bef69
+	s=arc-20240116; t=1769872510; c=relaxed/simple;
+	bh=Rq2hicaHYETtelHvVqw0B0CBq77TKKw70RkDiNd/h7A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bu9DPNUeaBUPtcqNtFbHCBgkS5D0POC94A9JDSHfdWocSvrhdOvYXrGsFtQsq1LsLeUlYkgj4NOF5B7O4IfK/wxbuHm9I0LZ4/lFPVswTdEav8ALp1mwbHl/0HC0UAct9ApT6Kmaon93zOHrW1SpewsvyOQUzNB+nGKzukTk6iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOOvCxv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC249C4CEF1;
+	Sat, 31 Jan 2026 15:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769872510;
+	bh=Rq2hicaHYETtelHvVqw0B0CBq77TKKw70RkDiNd/h7A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cOOvCxv/PU3fbYJSxlp9K/j7E1u5XV5KCd6V3ydGY7VL+QTS2wyGfo1/gzz7ED/rK
+	 SPuMWv4H/246daQUqOFGb0UYxK3c5ihJuGqcGam1hpIA6by4jcLSc5WF1losYIv87R
+	 lrJ/txO/R30kRolguiLmSL4Ac2PubJCAf89ju8gbMK8gIUaerXMTPAIbIO//e4B7rM
+	 n21hbmMSTKUJN4Fa/iEmtX5SDDq0mXGQDwhLuliBD+jKkbg7qPvCAtb3WgpqplkHrl
+	 MVLLfv+R/B+vOVkV6dyrgx51cjG7LNrm3de1RHsDd7reCkKvDuJP6tmWq45OB/ph/Y
+	 WsE00+VQRDU+A==
+From: Nicolas Schier <nsc@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nsc@kernel.org>,
+	linux-kbuild@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Rong Zhang <i@rong.moe>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: Re: [PATCH] kbuild: Do not run kernel-doc when building external modules
+Date: Sat, 31 Jan 2026 16:15:01 +0100
+Message-ID: <176987242178.1743608.5094531752561489739.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
+References: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212954-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212941-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[1g4.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,huawei];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3BEEAC3342
+X-Rspamd-Queue-Id: A7372C2A74
 X-Rspamd-Action: no action
 
-Ok, just to confirm the intended behavior changes compared to what is curre=
-ntly in the tree:
+On Fri, 30 Jan 2026 14:37:47 -0700, Nathan Chancellor wrote:
+> After commit 778b8ebe5192 ("docs: Move the python libraries to
+> tools/lib/python"), building an external module with any value of W=
+> against the output of install-extmod-build fails with:
+> 
+>   $ make -C /usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build M=$PWD W=1
+>   make: Entering directory '/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build'
+>   make[1]: Entering directory '...'
+>     CC [M] ...
+>   Traceback (most recent call last):
+>     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 339, in <module>
+>       main()
+>       ~~~~^^
+>     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 295, in main
+>       from kdoc.kdoc_files import KernelFiles             # pylint: disable=C0415
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>   ModuleNotFoundError: No module named 'kdoc'
+> 
+> [...]
 
-  create missing entry list      FAIL (got -22, expected 0)
-  create empty entry list        FAIL (got -22, expected 0)
-  replace append entries         REPLACE append failed: expected 2 entries,=
- got 1
-                                  FAIL (got -22, expected 0)
+Applied to kbuild/linux.git (kbuild-fixes-unstable), thanks!
 
-- CREATE with missing or empty entry list now returns -EINVAL =20
-  Previously, CREATE could appear to succeed if cycle_time was=20
-  provided even with no entries, but it still left an
-  empty schedule and later called list_first_entry() at
-  net/sched/act_gate.c:552, which is unsafe. Returning -EINVAL here is the
-  correct behavior fix.
+[1/1] kbuild: Do not run kernel-doc when building external modules
+      https://git.kernel.org/kbuild/c/8e249948
 
-- REPLACE now replaces the schedule, it does not append =20
-  The old append behavior was an accident caused by reusing the same list a=
-nd
-  never clearing it. With the RCU snapshot change, a fresh schedule is buil=
-t
-  and swapped atomically, so providing a new entry list on REPLACE replaces
-  the old one and avoids stale data.
+Please look out for regression or issue reports or other follow up
+comments, as they may result in the patch/series getting dropped,
+reverted or modified (e.g. trailers). Patches applied to the
+kbuild-fixes-unstable branch are accepted pending wider testing in
+linux-next and any post-commit review; they will generally be moved
+to the kbuild-fixes branch in a week if no issues are found.
 
-- REPLACE with an empty entry list keeps the old schedule =20
-
-Thanks,
-Paul
+Best regards,
+-- 
+Nicolas
 
 
