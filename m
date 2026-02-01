@@ -1,265 +1,160 @@
-Return-Path: <stable+bounces-212968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MQ1uBgWRfmkEawIAu9opvQ
-	(envelope-from <stable+bounces-212968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 00:32:21 +0100
+	id YAZNOHSbfmnGbQIAu9opvQ
+	(envelope-from <stable+bounces-212969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 01:16:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC0BC455D
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 00:32:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16231C4783
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 01:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C012A3016ECF
-	for <lists+stable@lfdr.de>; Sat, 31 Jan 2026 23:32:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B6C53020017
+	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 00:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A828133BBD8;
-	Sat, 31 Jan 2026 23:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D96145FE0;
+	Sun,  1 Feb 2026 00:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cxKnKmwc"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="k+vo6uK4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF37423D281
-	for <stable@vger.kernel.org>; Sat, 31 Jan 2026 23:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28D73EBF1D;
+	Sun,  1 Feb 2026 00:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769902333; cv=none; b=cDshMBXlmkxFV+rJgFElVFWW7Jx/jVxg/HZNF47ZxVTtEq6+icAgtoQ95lKz3OBc4Odydl6jAbOcLjSf77hjVV+Ubg2pMZwNxwf43+fK5ytSyZEBd4a7QzaxlKPKcabd+9AhArdqmMDm4WMoOCR1MPzHjy2gCWSAJH2oHY3YC/Q=
+	t=1769905006; cv=none; b=KHGaUSeE67dq45Yqi80EZdPp8dCPhEliaIvhnWHZwtW/uWLThne+ebBnAdiORey1pa+KNUWmlEKuYJxltoNPkonPCaJjntYUVXbuQvRkjXrYoRXdzQ9Xk9213BwnTfLIz/f063LyQetUFho6AK1fZ/oLZ79a3Zw+Tcoq4rYe7Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769902333; c=relaxed/simple;
-	bh=LSpQdEyj7+wqociODTfTui6CMQaeKW5xXBDeNGSAzqA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KkccDQrBQpNgaUxIQXcv9zkuGC5RHvIIIDnKncJUAEyl2GFFI5v6o7XSeKwVYCMBuJ0ZNlJ0RejqgxsOY+VfXGw1k6HOgwM604myvjENo9v5aVzVFHab37f1C7eIOZz0xl4uD573ruYp8rWILtwcKsJyZHuJJfUYqc8LRtnIbMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cxKnKmwc; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47ee76e8656so43352265e9.0
-        for <stable@vger.kernel.org>; Sat, 31 Jan 2026 15:32:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769902330; x=1770507130; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5KOcYgh3TwjZOo3y1JLTR+xDDzOK1+fIpD6nfp3PV7g=;
-        b=cxKnKmwcYU7pNIVPIXQzVlj9LXNEtPuvqPlo4C5a/zhV39aUOvUePHshoB2+u8gUKg
-         +e/2kg29ABnnf7cjuoc3qlmGBhbwr4s/iRz8erEsbeuQRmJpbHKSOXxr/ozN0CF2IRlB
-         mc95CJIcfD2REROp/3c/7y9pGrdnzwkUHOhQ4/HeqJ7f2dajNkoRoBOgh7JtOF8FOHU7
-         IQNuV8OU4XwzJ8rnwMacRjCgt+ytuyS3wQ/K+04VukNBoLJEduYItLbOajrtBFF/r9XJ
-         D/JLgimiR0T9uUiTrrQpZbNWAsUlWasDjKPKJuVJFiQzyADLLo7YFr5y440nG80d0XNz
-         nMtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769902330; x=1770507130;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5KOcYgh3TwjZOo3y1JLTR+xDDzOK1+fIpD6nfp3PV7g=;
-        b=bRJ8FTi0G+Xa6ekBySOQmBN64uENLYgSoIpJBF2QghU6Bii0cvpZ3tFoH5cg3g1owS
-         FJN5ew+4gjBAzHUqJAlTzNl5ko7mQPSKLkLItuGeVHfTwvK+e0QKtBY6Qmm0DiAX3FYu
-         Tf3/z56lGReHqG3OS1Y9ZfX9jQ3GWD91qa3Ny13CLICjS9/2E0HToGXqqv3Y2/xgGm1E
-         r3unsdWYONd+eHCx2N45XlxzNOvzLq/uuKpp68YUZuTDt5g7K9vAdSad0O14+H2f1aa4
-         u+jmlIKHzRbsh3RYGKyi1/X3spofBXlT3lQneeO0AYadsodKuuDp3t3LIDbVLOuE5VB6
-         e5rw==
-X-Forwarded-Encrypted: i=1; AJvYcCWiJ8+yy7U1wpNcD61ShWont4wsqEM+2pBK4iQByFV52l8HaKPX2OfNHy13e8fLPVs3A8m9Dfc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9pZ5uYYB5Pf/6qPoo5K1JHud0aot5oSfP5DxTaRUuv952RtMb
-	jkY8ZBjkVxvkNKlfVhl+A/mS5idQ52pG02lNsNu1mKX1xWtSjQjK73wlbOhN2jSFU+I=
-X-Gm-Gg: AZuq6aJFROMOXRGe9BqRWfP4oNWscuOnKi+zVrK4Bz0LR2alWncEYTXQyRuGtLLiauA
-	7xzQDb95VaVnhN0ATo6jYrLNh8II32+pXdGS934dytOLxybyXuFQMf+Nk0MXkTS+8OWSdcHf9CV
-	3MMNo6894FD2PD3y/qTLZUttWC472cTttyCLFZS+IhaKyz+JyRm1e1oT/1ho82kUngxN26vxqRl
-	KX9T/dnBIV9WEL8U8zpuGZwsmrrIRfQ29LaNO6QnUgg8hvCIOAkvAQRKFzL7GPK/G1zID9jP6gN
-	bu38kjQuKtDH5fuWrhy4zlbT0Cm0YX+fIo8Io2AL0L8RepmwMPocYwFKK7oUgfkWqHzbLVy2WhV
-	GTyQDN/owpDo2Q4xWdE25oCwxE15MOEVBkH6aVEMYiapQDmFiZ7TnRMY6fX0MdFHMMMl+Ac/wAz
-	7/PTaIYIcjZWR8CU15+QitzGFls4O2LZshc809/Lo=
-X-Received: by 2002:a05:600c:4e89:b0:477:9fcf:3fe3 with SMTP id 5b1f17b1804b1-482db213a37mr90293935e9.0.1769902330035;
-        Sat, 31 Jan 2026 15:32:10 -0800 (PST)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b1efa6sm11254064b3a.6.2026.01.31.15.32.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 31 Jan 2026 15:32:09 -0800 (PST)
-Message-ID: <0932845c-0ece-4d48-a0d5-4b8de7c301a6@suse.com>
-Date: Sun, 1 Feb 2026 10:02:01 +1030
+	s=arc-20240116; t=1769905006; c=relaxed/simple;
+	bh=RLzHHZizplOr80+cGQElSRYkOI/ePm4eYRnerU6DYPQ=;
+	h=Date:To:From:Subject:Message-Id; b=hn7USriCOGLhzs22qGrMGSX+wpVGlL7dM5kFk9w+EssJhVIEX6X9XrVBHHqlM0BqXKJ436FFn5I+GJo7t31qjWsBtdS4CmVnkDI8+nzM9C2m+jaZnBfyBQ4XojM7pyDP4HTOoSCYB7ROswFFQF4/ftFiXfOmWWTc9EquOVpXkIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=k+vo6uK4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A24C4CEF1;
+	Sun,  1 Feb 2026 00:16:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769905005;
+	bh=RLzHHZizplOr80+cGQElSRYkOI/ePm4eYRnerU6DYPQ=;
+	h=Date:To:From:Subject:From;
+	b=k+vo6uK4JQASjEWd4uaCdrlEB/iB+N+khmQbU37pbS7mBcVrRSzUAjkcZBuQ4gfxa
+	 VgQkrjBbmOQkYDGdNWx9uJWydLl2QySarPdU+dJuyaGP5nH2U3T9gBkgGzCRelNWDq
+	 ZKn4XOxlJq+cVYmsjSqSP6IPAQwHx/c778LapglY=
+Date: Sat, 31 Jan 2026 16:16:45 -0800
+To: mm-commits@vger.kernel.org,ubizjak@gmail.com,stable@vger.kernel.org,morbo@google.com,justinstitt@google.com,nathan@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-nonmm-stable] compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch removed from -mm tree
+Message-Id: <20260201001645.92A24C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12] btrfs: prevent use-after-free
- prealloc_file_extent_cluster()
-To: JP Kobryn <inwardvessel@gmail.com>, boris@bur.io, clm@fb.com,
- dsterba@suse.com
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260131185335.72204-1-inwardvessel@gmail.com>
- <4c37d4e1-e656-48e3-ac80-83c09fe92625@suse.com>
- <fe31cf8b-ac19-4bb4-9cce-d6f2b2996246@gmail.com>
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <fe31cf8b-ac19-4bb4-9cce-d6f2b2996246@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_FROM(0.00)[bounces-212968-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,bur.io,fb.com,suse.com];
+	TAGGED_FROM(0.00)[bounces-212969-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,google.com,kernel.org,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,suse.com:dkim,suse.com:mid]
-X-Rspamd-Queue-Id: 4CC0BC455D
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 16231C4783
 X-Rspamd-Action: no action
 
 
+The quilt patch titled
+     Subject: compiler-clang.h: require LLVM 19.1.0 or higher for __typeof_unqual__
+has been removed from the -mm tree.  Its filename was
+     compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch
 
-在 2026/2/1 09:53, JP Kobryn 写道:
-> On 1/31/26 1:08 PM, Qu Wenruo wrote:
->>
->>
->> 在 2026/2/1 05:23, JP Kobryn 写道:
->>> Users of filemap_lock_folio() need to guard against the situation where
->>> release_folio() has been invoked during reclaim but the folio was
->>> ultimately not removed from the page cache. This patch covers one 
->>> location
->>> that was overlooked. Affected code has changed as of 6.17, so this 
->>> patch is
->>> only targeting stable trees prior.
->>>
->>> After acquiring the folio, use set_folio_extent_mapped() to ensure the
->>> folio private state is valid. This is especially important in the 
->>> subpage
->>> case, where the private field is an allocated struct containing 
->>> bitmap and
->>> lock data.
->>>
->>> Without this protection, the race below is possible:
->>>
->>> [mm] page cache reclaim path        [fs] relocation in subpage mode
->>> shrink_folio_list()
->>>    folio_trylock() /* lock acquired */
->>>    filemap_release_folio()
->>>      mapping->a_ops->release_folio()
->>>        btrfs_release_folio()
->>>          __btrfs_release_folio()
->>>            clear_folio_extent_mapped()
->>>              btrfs_detach_folio_state()
->>>                bfs = folio_detach_private(folio)
->>>                btrfs_free_folio_state(folio)
->>>                  kfree(bfs) /* point A */
->>>
->>>                                     prealloc_file_extent_cluster()
->>>                                       filemap_lock_folio()
->>>                                         folio_try_get() /* inc 
->>> refcount */
->>>                                         folio_lock() /* wait for lock */
->>>
->>>    if (...)
->>>      ...
->>>    else if (!mapping || !__remove_mapping(..))
->>>      /*
->>>       * __remove_mapping() returns zero when
->>>       * folio_ref_freeze(folio, refcount) fails /* point B */
->>>       */
->>>      goto keep_locked /* folio remains in cache */
->>>
->>> keep_locked:
->>>    folio_unlock(folio) /* lock released */
->>>
->>>                                     /* lock acquired */
->>>                                     btrfs_subpage_clear_updodate()
->>>                                       bfs = folio->priv /* use-after- 
->>> free */
->>
->> This patch itself and the root cause look good to me.
->>
->> Reviewed-by: Qu Wenruo <wqu@suse.com>
->>
-> 
-> Much appreciated :)
-> 
->>>
->>> This patch is intended as a minimal fix for backporting to affected
->>> kernels. As of 6.17, a commit [0] replaced the vulnerable
->>> filemap_lock_folio() + btrfs_subpage_clear_uptodate() sequence with
->>> filemap_invalidate_inode() avoiding the race entirely. That commit 
->>> was part
->>> of a series with a different goal of preparing for large folio 
->>> support so
->>> backporting may not be straight forward.
->>
->> However I'm not sure if stable tree even accepts non-upstreamed patches.
->>
->> Thus the stable maintainer may ask you the same question as I did 
->> before, why not backport the upstream commit 4e346baee95f?
-> 
-> That commit relies on filemap_invalidate_folio() which was introduced in
-> 6.10 so it would not apply to earlier stable branches.
-> 
-> We need to fix as far back as 5.15 so I can send one additional patch to
-> cover stable trees 5.15 to 6.6. The patch would be almost identical,
-> with the only change being using the page API instead of the folio API
-> (set_folio_extent_mapped() -> set_page_extent_mapped()). Let me know if
-> you're in agreement and I can send the extra patch.
+This patch was dropped because it was merged into the mm-nonmm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-If stable chooses to go this path, I'm totally fine with similar backports.
+------------------------------------------------------
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: compiler-clang.h: require LLVM 19.1.0 or higher for __typeof_unqual__
+Date: Fri, 16 Jan 2026 16:26:27 -0700
 
-Thanks,
-Qu
+When building the kernel using a version of LLVM between llvmorg-19-init
+(the first commit of the LLVM 19 development cycle) and the change in
+LLVM that actually added __typeof_unqual__ for all C modes [1], which
+might happen during a bisect of LLVM, there is a build failure:
 
-> 
->>
->> If it's lacking the reason why it's a bug fix, I believe you can 
->> modify the commit message to include the analyze and the fixes tag.
->>
->>
->> I'm also curious to learn the proper way for such situation.
-> 
-> It's new to me as well. For reference, there are some commits on the
-> list that have language like this: "This is a stable-only fix".
+  In file included from arch/x86/kernel/asm-offsets.c:9:
+  In file included from include/linux/crypto.h:15:
+  In file included from include/linux/completion.h:12:
+  In file included from include/linux/swait.h:7:
+  In file included from include/linux/spinlock.h:56:
+  In file included from include/linux/preempt.h:79:
+  arch/x86/include/asm/preempt.h:61:2: error: call to undeclared function '__typeof_unqual__'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     61 |         raw_cpu_and_4(__preempt_count, ~PREEMPT_NEED_RESCHED);
+        |         ^
+  arch/x86/include/asm/percpu.h:478:36: note: expanded from macro 'raw_cpu_and_4'
+    478 | #define raw_cpu_and_4(pcp, val)                         percpu_binary_op(4, , "and", (pcp), val)
+        |                                                         ^
+  arch/x86/include/asm/percpu.h:210:3: note: expanded from macro 'percpu_binary_op'
+    210 |                 TYPEOF_UNQUAL(_var) pto_tmp__;                          \
+        |                 ^
+  include/linux/compiler.h:248:29: note: expanded from macro 'TYPEOF_UNQUAL'
+    248 | # define TYPEOF_UNQUAL(exp) __typeof_unqual__(exp)
+        |                             ^
+
+The current logic of CC_HAS_TYPEOF_UNQUAL just checks for a major
+version of 19 but half of the 19 development cycle did not have support
+for __typeof_unqual__.
+
+Harden the logic of CC_HAS_TYPEOF_UNQUAL to avoid this error by only
+using __typeof_unqual__ with a released version of LLVM 19, which is
+greater than or equal to 19.1.0 with LLVM's versioning scheme that
+matches GCC's [2].
+
+Link: https://github.com/llvm/llvm-project/commit/cc308f60d41744b5920ec2e2e5b25e1273c8704b [1]
+Link: https://github.com/llvm/llvm-project/commit/4532617ae420056bf32f6403dde07fb99d276a49 [2]
+Link: https://lkml.kernel.org/r/20260116-require-llvm-19-1-for-typeof_unqual-v1-1-3b9a4a4b212b@kernel.org
+Fixes: ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/compiler-clang.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/include/linux/compiler-clang.h~compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__
++++ a/include/linux/compiler-clang.h
+@@ -153,4 +153,4 @@
+  * Bindgen uses LLVM even if our C compiler is GCC, so we cannot
+  * rely on the auto-detected CONFIG_CC_HAS_TYPEOF_UNQUAL.
+  */
+-#define CC_HAS_TYPEOF_UNQUAL (__clang_major__ >= 19)
++#define CC_HAS_TYPEOF_UNQUAL (__clang_major__ > 19 || (__clang_major__ == 19 && __clang_minor__ > 0))
+_
+
+Patches currently in -mm which might be from nathan@kernel.org are
+
 
 
