@@ -1,300 +1,190 @@
-Return-Path: <stable+bounces-212995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPGxBtdPf2kmnwIAu9opvQ
-	(envelope-from <stable+bounces-212995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 14:06:31 +0100
+	id hW7rA6FPf2kmnwIAu9opvQ
+	(envelope-from <stable+bounces-212994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 14:05:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604A9C5F84
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 14:06:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A494C5F73
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 14:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B77F23008D3C
-	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 13:06:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC072300380F
+	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 13:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CC634676B;
-	Sun,  1 Feb 2026 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002E73446DA;
+	Sun,  1 Feb 2026 13:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Ig+iuG3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxlccvyf"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F633345CA3
-	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 13:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1FB1BCA1C;
+	Sun,  1 Feb 2026 13:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769951187; cv=none; b=kzts9aiVH50eBxp1QpP3hel+T2oe6lkvSz1D/1nLtDk5gYH4II/2DYFiVULrBcEQr4jvubIaHfolKd5uBOMF23Pf5mZUmDBwcuTKV5oskWzGGZJSVA42EvdHv+R4rav/RfxQZq2a3B3Am4XYIvjIF9H2Ys7kw2QoUstXrLuzX+s=
+	t=1769951128; cv=none; b=D8/l+hL6MbgfPhLG1lYCMW2FYCZj4oo7Az2F+Xao4bpFprW13/JUorQCATqyAoZRbV+q6P4SWgSKh/T9oPAkZncm4WmCOj+Flj8aLWyygOlGMBkReKlXA7UubLL9CC7JoCFMhUcKkDFQAND18/LfN+zFl39U+EtH2RTnZ/1QOCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769951187; c=relaxed/simple;
-	bh=GTquO7qbPU5ksuTrLT1mh/RQaFU+5LQ6Ub/HGyH7SCw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dzc4MQsZlek0d2o2E2zj3oWZVuX7UiAy6PjYt9iEaMNm+eMbiFhLZPu4xy1btYu/6Xep+MmkzL1cPyAQT0Tbbj0jaDc5i+8Jk54UAFIUiphOCWHWtGKSzXI5JWvCddMq8Y4kSJbh1pZZ3CPd9xJDKylhP0RJ4Q7+wPtB7jv8YuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Ig+iuG3h; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=BZqm1/Smx1ZhncMV3at0HOf6nRzc5QtCzZ65lye7cbw=; b=Ig+iuG3hGUOc4saO2uzXOQhLdG
-	s8GrYWf1HZBf+l+mb0eUkypYbc348rkmg5cGU9bErhLsYudhXk6THWveyRtzd7OzQmvr8M9yy83eK
-	oFji07abBD5Bq8YQ3cUGkfCbCbDIfBDEYeUkz0MY8iyxQxKz8xFaRDXbw37tdJMmEW2/dbtFd1C1v
-	suvaV46FSeYgoZJwlGw8GVl/7blBmQqB0PQ6g5l7yJHvV5HDlvga/eEPZ1dHxRP7dKgFPhRIPjhfT
-	JHGhcYlmDgoo+P9cEOUXbB9f8v5UhOAIxhkrlQJU8r62cRwHnFY8zoXykEvJASZGIaXJ6oZGdP7P4
-	N3dW7EOA==;
-Received: from ppp-27-55-83-89.revip3.asianet.co.th ([27.55.83.89] helo=[10.37.212.43])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vmX9E-00CPgF-8D; Sun, 01 Feb 2026 14:05:53 +0100
-Message-ID: <08f0f26b-8a53-4903-a9dc-16f571b5cfee@igalia.com>
-Date: Sun, 1 Feb 2026 21:04:52 +0800
+	s=arc-20240116; t=1769951128; c=relaxed/simple;
+	bh=ykDc/mX/B0Knfb1w4d4WmKGX7RhY+JpKLs0BSN0c4RA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C3QpHINMrtxg4GO0RoAqOOk7KryR9BWrUL1lmzGcgwcVZCPNoyqqperwwLy5RkeiQF6jLJU3P2uem2AzUjnZ7w4ip+fow4buzTM7U32xHBXceguZJdNYBGoYX7n7s04rK4M/WNMNgGJcxQrkNmwBrcmErfMTozijvn9+ewkwhbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxlccvyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E8AC4CEF7;
+	Sun,  1 Feb 2026 13:05:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1769951127;
+	bh=ykDc/mX/B0Knfb1w4d4WmKGX7RhY+JpKLs0BSN0c4RA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kxlccvyfoOQ1mow+24FMMNIHNm5IjaT8eLMQPQqcjv3ikV2UqMrwptxnS9h04GNF1
+	 ieQvCoDPHmnmN+yNDVE5Sq7CUp1iT7hPoUQijk54zEXBQhSv2t96GiGvlTIbjSfc8q
+	 YdPeg60aEQbIagl3SOJ0kYV/qVa4F6/f5IB2U1b4=
+Date: Sun, 1 Feb 2026 14:05:24 +0100
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Sai Ritvik Tanksalkar <stanksal@purdue.edu>
+Cc: "kees@kernel.org" <kees@kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"gpiccoli@igalia.com" <gpiccoli@igalia.com>,
+	"anton.vorontsov@linaro.org" <anton.vorontsov@linaro.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] pstore/ram: fix buffer overflow in
+ persistent_ram_save_old()
+Message-ID: <2026020150-nerd-unweave-929a@gregkh>
+References: <SJ2PR22MB4268740D8B115ED88EAC4959BE9DA@SJ2PR22MB4268.namprd22.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix early failure try_to_migrate() when
- split huge pmd for shared thp
-To: Zi Yan <ziy@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>,
- david@kernel.org
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, baolin.wang@linux.alibaba.com, linux-mm@kvack.org,
- stable@vger.kernel.org, Gavin Shan <gshan@redhat.com>
-References: <20260130230058.11471-1-richard.weiyang@gmail.com>
- <178ADAB8-50AB-452F-B25F-6E145DEAA44C@nvidia.com>
- <20260201020950.p6aygkkiy4hxbi5r@master>
- <C620202F-685A-4B9E-B51B-078EBE5BF0C4@nvidia.com>
-Content-Language: en-US
-From: Gavin Guo <gavinguo@igalia.com>
-In-Reply-To: <C620202F-685A-4B9E-B51B-078EBE5BF0C4@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <SJ2PR22MB4268740D8B115ED88EAC4959BE9DA@SJ2PR22MB4268.namprd22.prod.outlook.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.14 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+X-Spamd-Result: default: False [3.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	FROM_DN_EQ_ADDR(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212995-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[nvidia.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212994-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gavinguo@igalia.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 604A9C5F84
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,purdue.edu:email]
+X-Rspamd-Queue-Id: 2A494C5F73
 X-Rspamd-Action: no action
 
-On 2/1/26 11:39, Zi Yan wrote:
-> On 31 Jan 2026, at 21:09, Wei Yang wrote:
+On Sun, Feb 01, 2026 at 12:59:24PM +0000, Sai Ritvik Tanksalkar wrote:
+> persistent_ram_save_old() can be called multiple times for the same
+> persistent_ram_zone (e.g., via ramoops_pstore_read -> ramoops_get_next_prz
+> for PSTORE_TYPE_DMESG records).
 > 
->> On Fri, Jan 30, 2026 at 09:44:10PM -0500, Zi Yan wrote:
->>> On 30 Jan 2026, at 18:00, Wei Yang wrote:
->>>
->>>> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
->>>> split_huge_pmd_locked()") return false unconditionally after
->>>> split_huge_pmd_locked() which may fail early during try_to_migrate() for
->>>> shared thp. This will lead to unexpected folio split failure.
->>>>
->>>> One way to reproduce:
->>>>
->>>>      Create an anonymous thp range and fork 512 children, so we have a
->>>>      thp shared mapped in 513 processes. Then trigger folio split with
->>>>      /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
->>>>      order 0.
->>>>
->>>> Without the above commit, we can successfully split to order 0.
->>>> With the above commit, the folio is still a large folio.
->>>>
->>>> The reason is the above commit return false after split pmd
->>>> unconditionally in the first process and break try_to_migrate().
->>>
->>> The reasoning looks good to me.
->>>
->>>>
->>>> The tricky thing in above reproduce method is current debugfs interface
->>>> leverage function split_huge_pages_pid(), which will iterate the whole
->>>> pmd range and do folio split on each base page address. This means it
->>>> will try 512 times, and each time split one pmd from pmd mapped to pte
->>>> mapped thp. If there are less than 512 shared mapped process,
->>>> the folio is still split successfully at last. But in real world, we
->>>> usually try it for once.
->>>>
->>>> This patch fixes this by removing the unconditional false return after
->>>> split_huge_pmd_locked(). Later, we may introduce a true fail early if
->>>> split_huge_pmd_locked() does fail.
->>>>
->>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
->>>> Cc: Gavin Guo <gavinguo@igalia.com>
->>>> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
->>>> Cc: Zi Yan <ziy@nvidia.com>
->>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> Cc: <stable@vger.kernel.org>
->>>> ---
->>>>   mm/rmap.c | 1 -
->>>>   1 file changed, 1 deletion(-)
->>>>
->>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>> index 618df3385c8b..eed971568d65 100644
->>>> --- a/mm/rmap.c
->>>> +++ b/mm/rmap.c
->>>> @@ -2448,7 +2448,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>>   			if (flags & TTU_SPLIT_HUGE_PMD) {
->>>>   				split_huge_pmd_locked(vma, pvmw.address,
->>>>   						      pvmw.pmd, true);
->>>> -				ret = false;
->>>>   				page_vma_mapped_walk_done(&pvmw);
->>>>   				break;
->>>>   			}
->>>
->>> How about the patch below? It matches the pattern of set_pmd_migration_entry() below.
->>> Basically, continue if the operation is successful, break otherwise.
->>>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index 618df3385c8b..83cc9d98533e 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -2448,9 +2448,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>> 			if (flags & TTU_SPLIT_HUGE_PMD) {
->>> 				split_huge_pmd_locked(vma, pvmw.address,
->>> 						      pvmw.pmd, true);
->>> -				ret = false;
->>> -				page_vma_mapped_walk_done(&pvmw);
->>> -				break;
->>> +				continue;
->>> 			}
->>
->> Per my understanding if @freeze is trur, split_huge_pmd_locked() may "fail" as
->> the comment says:
->>
->> 		 * Without "freeze", we'll simply split the PMD, propagating the
->> 		 * PageAnonExclusive() flag for each PTE by setting it for
->> 		 * each subpage -- no need to (temporarily) clear.
->> 		 *
->> 		 * With "freeze" we want to replace mapped pages by
->> 		 * migration entries right away. This is only possible if we
->> 		 * managed to clear PageAnonExclusive() -- see
->> 		 * set_pmd_migration_entry().
->> 		 *
->> 		 * In case we cannot clear PageAnonExclusive(), split the PMD
->> 		 * only and let try_to_migrate_one() fail later.
->>
->> While currently we don't return the status of split_huge_pmd_locked() to
->> indicate whether it does replaced PMD with migration entries successfully. So
->> we are not sure this operation succeed.
+> Currently, the function only allocates prz->old_log when it is NULL,
+> but it unconditionally updates prz->old_log_size to the current buffer
+> size and then performs memcpy_fromio() using this new size. If the
+> buffer size has grown since the first allocation (which can happen
+> across different kernel boot cycles), this leads to:
 > 
-> This is the right reasoning. This means to properly handle it, split_huge_pmd_locked()
-> needs to return whether it inserts migration entries or not when freeze is true.
+> 1. A heap buffer overflow (OOB write) in the memcpy_fromio() calls.
+> 2. A subsequent OOB read when ramoops_pstore_read() accesses the buffer
+>    using the incorrect (larger) old_log_size.
 > 
->>
->> Another difference from set_pmd_migration_entry() is split_huge_pmd_locked()
->> would change the page table from PMD mapped to PTE mapped.
->> page_vma_mapped_walk() can handle it now for (pvmw->pmd && !pvmw->pte), but I
->> am not sure this is what we expected. For example, in try_to_unmap_one(), we
->> use page_vma_mapped_walk_restart() after pmd splitted.
->>
->> So I prefer just remove the "ret = false" for a fix. Not sure this is
->> reasonable to you.
->>
->> I am thinking two things after this fix:
->>
->>    * add one similar test in selftests
->>    * let split_huge_pmd_locked() return value to indicate freeze is degrade to
->>      !freeze, and fail early on try_to_migrate() like the thp migration branch
->>
->> Look forward your opinion on whether it worth to do it.
+> The KASAN splat would look similar to:
+>   BUG: KASAN: slab-out-of-bounds in ramoops_pstore_read+0x...
+>   Read of size N at addr ... by task ...
 > 
-> This is not the right fix, neither was mine above. Because before commit 60fbb14396d5,
-> the code handles PAE properly. If PAE is cleared, PMD is split into PTEs and each
-> PTE becomes a migration entry, page_vma_mapped_walk(&pvmw) returns false,
-> and try_to_migrate_one() returns true. If PAE is not cleared, PMD is split into PTEs
-> and each PTE is not a migration entry, inside while (page_vma_mapped_walk(&pvmw)),
-> PAE will be attempted to get cleared again and it will fail again, leading to
-> try_to_migrate_one() returns false. After commit 60fbb14396d5, no matter PAE is
-> cleared or not, try_to_migrate_one() always returns false. It causes folio split
-> failures for shared PMD THPs.
+> Fix this by freeing and reallocating the buffer when the new size
+> exceeds the previously allocated size. This ensures old_log always has
+> sufficient space for the data being copied.
 > 
-> Now with your fix (and mine above), no matter PAE is cleared or not, try_to_migrate_one()
-> always returns true. It just flips the code to a different issue. So the proper fix
-> is to let split_huge_pmd_locked() returns whether it inserts migration entries or not
-> and do the same pattern as THP migration code path.
+> Fixes: 201e4aca5aa1 ("pstore/ram: Should update old dmesg buffer before reading")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pwnverse <stanksal@purdue.edu>
+> ---
+>  fs/pstore/ram_core.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+> index f1848cdd6d34..8df813a42a41 100644
+> --- a/fs/pstore/ram_core.c
+> +++ b/fs/pstore/ram_core.c
+> @@ -298,6 +298,14 @@ void persistent_ram_save_old(struct persistent_ram_zone *prz)
+>      if (!size)
+>          return;
+>  
+> +     /*
+> +      * If the existing buffer is too small, free it so a new one is
+> +      * allocated. This can happen when persistent_ram_save_old() is
+> +      * called multiple times with different buffer sizes.
+> +      */
+> +     if (prz->old_log && prz->old_log_size < size)
+> +           persistent_ram_free_old(prz);
+> +
+>      if (!prz->old_log) {
+>          persistent_ram_ecc_old(prz);
+>          prz->old_log = kvzalloc(size, GFP_KERNEL);
+> -- 
+> 2.43.0
 
-How about aligning with the try_to_unmap_one()? The behavior would be 
-the same before applying the commit 60fbb14396d5:
+Hi,
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 7b9879ef442d..0c96f0883013 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2333,9 +2333,9 @@ static bool try_to_migrate_one(struct folio 
-*folio, struct vm_area_struct *vma,
-                         if (flags & TTU_SPLIT_HUGE_PMD) {
-                                 split_huge_pmd_locked(vma, pvmw.address,
-                                                       pvmw.pmd, true);
--                               ret = false;
--                               page_vma_mapped_walk_done(&pvmw);
--                               break;
-+                               flags &= ~TTU_SPLIT_HUGE_PMD;
-+                               page_vma_mapped_walk_restart(&pvmw);
-+                               continue;
-                         }
-  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
-                         pmdval = pmdp_get(pvmw.pmd);
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-> 
-> 
-> Hi David,
-> 
-> In terms of unmap_folio(), which is the only user of split_huge_pmd_locked(..., freeze=true),
-> there is no folio_mapped() check afterwards. That might be causing an issue,
-> when the folio is pinned between the refcount check and unmap_folio(), unmap_folio()
-> fails, but folio split code proceeds. That means the folio is still accessible
-> via PTEs and later remove_migration_pte() will try to remove non migration PTEs.
-> It needs to be fixed separately, right?
-> 
-> 
->>
->>> #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->>> 			pmdval = pmdp_get(pvmw.pmd);
->>>
->>>
->>>
->>> --
->>> Best Regards,
->>> Yan, Zi
->>
->> -- 
->> Wei Yang
->> Help you, Help me
-> 
-> 
-> --
-> Best Regards,
-> Yan, Zi
+- Your patch is malformed (tabs converted to spaces, linewrapped, etc.)
+  and can not be applied.  Please read the file,
+  Documentation/process/email-clients.rst in order to fix this.
 
+- It looks like you did not use your "real" name for the patch on either
+  the Signed-off-by: line, or the From: line (both of which have to
+  match).  Please read the kernel file,
+  Documentation/process/submitting-patches.rst for how to do this
+  correctly.
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
 
