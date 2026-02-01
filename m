@@ -1,181 +1,188 @@
-Return-Path: <stable+bounces-213008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GXrwGeavf2nWvwIAu9opvQ
-	(envelope-from <stable+bounces-213008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 20:56:22 +0100
+	id sD8BCiu5f2mxwgIAu9opvQ
+	(envelope-from <stable+bounces-213009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 21:35:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E02C71D7
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 20:56:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73238C7324
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 21:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2942230048CE
-	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 19:56:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85D7930071F2
+	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 20:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD4E2C21EC;
-	Sun,  1 Feb 2026 19:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27962C21F0;
+	Sun,  1 Feb 2026 20:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MIbeWjmf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1qjLEUB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C10279DC2
-	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 19:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3512C26E173
+	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 20:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769975775; cv=none; b=ANtQee+9fVYRya9NhCsSdhdnlT/BccJGHo5WN6xmhTJtuLdTFRtWzBaxzUeIxHQ8994XbJ3EBXYm95WwGTfTsbvxndKI6dIzuiI2GUK2WWi6JFquheqQibiC0s6nPg6pPKykRmJ1WjtolQd/FzDJWwriNdgE1+a16ggmrPij7uw=
+	t=1769978121; cv=none; b=lWfMS+ppXv5WYC6AewVAIe4TL49p9b3ArYoUN88CrR+fs7O6dUhzV8zl2+bNXGmLmlHDxYrLylIm2YJcw2m6nAe8TCbJXvOS8JBxu5QcP2lAWx9LlaJ2Ai7Bljt/yToOqrfvtCAm6Ard1wLWzHofHJZrJ2NSagbDc84x7s33qsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769975775; c=relaxed/simple;
-	bh=Pwlx/J9MbOtPxsxZBOhkLEulnA+mVCEwhThJ11/j0kk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBNzpi+Ck/B3hqA80RxfOIdU6TmSV+8g3fm5YU+ZZs0tNFKsxubIoKW6i3yxxRU9yEXcMiJLeLagESn8wNtwTV5Xk5jJ8k+kBl10EPeNIs7kXMbh8pufS6lCPrwCAxjtSAqG7nrjoqZDFW4sMulid0FLfGFXr9x2KGeR0dVNJjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MIbeWjmf; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1769978121; c=relaxed/simple;
+	bh=5aFcpAaR/lASpDeQK/SKRvYCXntKw60Rvq8b69dCrfw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LgdXzuIFTTQOFRQYSNBgHfdWHAYzgmjk5HEYZHCas0CPbhVdw+MGSpA6rYJAoJypZcdtUEL5qVw+Y+iE0/L2a0z5nIZxF5DV9h9IrFX2E7vvS2hKdXQBJ06VxU3XJMsl45gqf+D0NaHxg+j6C6HIz0rQChfY3CSQJVPDbwG2iJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1qjLEUB; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47d6a1f08bbso16823105e9.2
-        for <stable@vger.kernel.org>; Sun, 01 Feb 2026 11:56:13 -0800 (PST)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4801ea9bafdso15062615e9.3
+        for <stable@vger.kernel.org>; Sun, 01 Feb 2026 12:35:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769975772; x=1770580572; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9noXDr9PCECzEbfKECXdKZNREsy2QQwblXo7rhKIEZw=;
-        b=MIbeWjmfXr1Tq5pqPwzLpuKUU2wyIVCurGQlCJTBo3LegF9BE5ZuNtQYnyGhw9BC+C
-         PeXlplMWZle9pvq6oekEqmrJUeQMAkxZ7Hj5Oyrfq2TbvRpjjyKrDMlNJYYP+7jDbqdn
-         x1tOmTU/MupIa7lHZLtLgIKrYT2Uv7PIDV7TPqFYRIlUnOyBQPf+PZkP5n9foxqdobRv
-         0/vTC9WU+AAWbfkCRxytzYA8Krk8tzEF6JBlGZKVR3hhkSS4kS30Vv3QeQFpgYupmNME
-         ZbEH3Mx+p3oGiZOCYDNDuoc4WvfE5FWJxyANfQ0tfqoHBOKn8nyfrfenVDFVRXrn48eH
-         aRRQ==
+        d=gmail.com; s=20230601; t=1769978118; x=1770582918; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=91/0VfU3LtdVoSnFoD2Wj5KpABZ0e6Hnrwv0/nUnRaY=;
+        b=d1qjLEUBpGMmNcA4iRbOdpiQ0r0e94uFb9lscngtOWjOlURwjalkY0JdrNAUz5o1hA
+         HImDc0Z1NZM/XguIbd9DYh5GZ45FFhVPtGTeGG7uA/9teNxHc5XgGeSoLB5z3wBiNa/s
+         qoHAUnpNf8rYClpNbZnN8kyGeugfweZlk3xXb7n2ve5sgtptecILMgqEQSs139dqgf9c
+         Ow9Q2/T/KTxIILSHQaqonjCxXXyDC1CbV6weU6oJMrqyGiQPcrhGhov9R0ck+rGvELkB
+         YrEl7OHIEJImiXQ+5IYoeL2DIIt6FjHrTOwKDFGIpyhCLsN7ZC9LBKVv+qpGBbTRjgY+
+         pJMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769975772; x=1770580572;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9noXDr9PCECzEbfKECXdKZNREsy2QQwblXo7rhKIEZw=;
-        b=r2gea1+Rf7TjYj9xjlv3JrXX4k8YP7SrWQHkmL0rbzTW49RMoS27lqmpsbUtESAZDi
-         a3vBhUH3SjPVEqJwhFjuB3LwzJPndAu6Caoe2Kpt7lRtlw/3Zn4NmN7Ry3OLBI+MT9ZL
-         r0kUTJ4NUWHJ41LL0j+VIZKEJK8EIUdpdwJrvCZW+ZLDV+ep8xZ6laYVP0E1LXtxWH+2
-         nUzMkXBnDk4MO4XX5MyJMMmKI5i3EKzt6y+bjc/VnyIU0QuYbYgHp7sYDSPS56RZnpgz
-         BKsGrbosd/4/9oXiuod69qsPz3/LDz4EM1tdhUgXUDzL4Scqfwd//e2ddmz461vfsVZb
-         3HBw==
-X-Forwarded-Encrypted: i=1; AJvYcCWTmxcxhHlg+Ralu+q0pbHL+bD9dLHQHYIV07D4TY/Pd2wDsRDwFJ3MHIA6KApwy71uJlg+5D4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZx32EHLZ0nKbfSbytGqS7fR/v9Q7zecXJ+ETznQKiGqY5mNF+
-	2BXezG+xjYyG5YO5UPPdqygYJuXo951lX2WqMwSjw/fH7GrZnYeUX8CO
-X-Gm-Gg: AZuq6aKmG0awMMgDKI5uSyxrvzjvoIwUkMNg1nwh2CTPhDhtIjlRSRMyDLAVwcld6Lx
-	qwEUwkYldeZXf1SG3R0TICj9I3BvG6vGktT4XRrNfcgaOayCEwrOsw+fJaa3jMtbnTdKQFkPNpi
-	EQyoX/yUvvRW1Rd6wF3dPXABCsmxik2GzT4l3MKIGNOR5zkwqULS/NO/SDdsc1EQQ01yKnj/oh6
-	6mz6veBvLlBqg8VqXUVxfKmahsMniaOS+xl8vMWyyyu9QdIDz5i4bfhHwfldBgetOA7P4PMXxQe
-	kG4rbIZ4yxKU0x8+bDXbaRrSh+4FAVA1Ke0itCCNS2gyJqawj/GQBufXWs7J/kgEWlIcSb1fPCF
-	TN/Z3J7KdpevA/WCTn8H9b3GvDCLOo3Av60lBY9fYuHuzD+fKt7gxxujE3KyvRghEYGI55mkU6L
-	esZ/1Z3R4=
-X-Received: by 2002:a05:600c:354c:b0:477:8b77:155f with SMTP id 5b1f17b1804b1-482db493ea9mr116560545e9.8.1769975772302;
-        Sun, 01 Feb 2026 11:56:12 -0800 (PST)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4806cddffe9sm495503285e9.4.2026.02.01.11.56.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Feb 2026 11:56:11 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: brauner@kernel.org
-Cc: amir73il@gmail.com,
-	jack@suse.cz,
-	jlayton@kernel.org,
-	josef@toxicpanda.com,
-	lennart@poettering.net,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	zbyszek@in.waw.pl
-Subject: Re: [PATCH v2 0/4] fs: add immutable rootfs
-Date: Sun,  1 Feb 2026 22:55:31 +0300
-Message-ID: <20260201195531.1480148-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260112-work-immutable-rootfs-v2-0-88dd1c34a204@kernel.org>
-References: <20260112-work-immutable-rootfs-v2-0-88dd1c34a204@kernel.org>
+        d=1e100.net; s=20230601; t=1769978118; x=1770582918;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=91/0VfU3LtdVoSnFoD2Wj5KpABZ0e6Hnrwv0/nUnRaY=;
+        b=S+YLuHHbL2fsAow57LaaU5OO8yqVX+fZFsY1jk5y5LrfpURGQAHN8AwJVRghJ6oryh
+         +r5Pi3bP6gYS0tlfqj5RSA9m+6lNyq+WnHmkqBEq+GQlUPx5EKEKIjvSyhxWj/6b5R1U
+         NnitlK7RmRfi/Qy3fX/hz2NUnpcXmmEtoB5H8MjrZiSY02gCFYobVEKFrMytO7uCc4kx
+         KG0q86fYEjT7UEimAD/AyBrjxnm8oGHeqYWjaIPA5nrf+9uieVNVCwJLsKO+jiZ9hjFs
+         lYZoR1+xmqHk2sCjYiOvr61G6EaOhb8CO1fftIBDuX+0K0lI6m+uupMp1Y7oO2RMoPGT
+         vNUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVGKkl6z5bZWT4Jjt9DZQYrEndkhyTHQZW9duZLx/xMijFgO2n9PcqbHayKpl3mPFwYRQONhPw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK+81RMB72umuTEoNGOtk2Fj4bKi5EHiGHX+rGib1aCCrsB8R3
+	zwY2yDwM9Wtcvi9JDj4oKvCfVY/wPvvk2vIX9KmPrDYZsyMLK8cnOp3Q
+X-Gm-Gg: AZuq6aIsr6v9SHVXFyfiW5Fgf0tHJKu+i8zZ62IqDI6JDEZ4QrifwNx8Hqre/V0HQ1R
+	zNs44HPkcUXCsvAgGzcW9iL2uOXsyKPHVWtslwrG4qO4Gqy90ZacGKtAg9rNl2lg2rsG/4mYQqi
+	I7uQqaZhrGtwPDpLLLENrTAQ9NA40tm7ber5peqK56IUpv7fme/OIV9vor/sFZPZc4ZqKdUL894
+	KEJtpirkzgXcXq6AWIIhOquQZsTPPUDl5A3vlR4nt/zxn0qpDMfAsiEo9k68Xtxu1sUe2kj0RI9
+	EwkgGl73FUxrtnqbbGu/YA22QWu+xER7Qnj2zqUnxlaO8t+gwETj58X/5Exd0EPNMJoEUs04nAR
+	M9QCrFdzxWGJflObX+qu9gxAWsejw2iaGMS4hM4YpBprzKT9OLkdABTv6/tFEfcza2qz3OSs+ds
+	BhC8As+gWTPblq/Mz5JA/+66T7N0KOMEe2AuwMnPYFdtrzVOIADQU=
+X-Received: by 2002:a05:600c:310f:b0:480:1b1a:5526 with SMTP id 5b1f17b1804b1-482db46c28amr129120025e9.16.1769978118540;
+        Sun, 01 Feb 2026 12:35:18 -0800 (PST)
+Received: from [192.168.0.253] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-435e10e48a6sm37663837f8f.8.2026.02.01.12.35.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Feb 2026 12:35:17 -0800 (PST)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Sun, 01 Feb 2026 21:35:06 +0100
+Subject: [PATCH] hwmon: gpio-fan: fix set_rpm() return value
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260201-gpio-fan-set_rpm-retval-fix-v1-1-dc39bc7693ca@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPm4f2kC/x3MQQqDMBBG4avIrB2YRGqhVylFgv6xA20MExFBv
+ LvB5fcW76ACUxR6NQcZNi26pArXNjR+Q5rBOlWTF9+LF8dz1oVjSFywDpb/bFi38OOoO6MPz+i
+ kg0wPqodsqPm+vz/neQGJ4KZlbQAAAA==
+X-Change-ID: 20260201-gpio-fan-set_rpm-retval-fix-e6a7f103e0d5
+To: Guenter Roeck <linux@roeck-us.net>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.14.2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213008-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kernel.org,toxicpanda.com,poettering.net,vger.kernel.org,zeniv.linux.org.uk,in.waw.pl];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213009-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[safinaskar@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[j4g8y7@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:url]
-X-Rspamd-Queue-Id: A6E02C71D7
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 73238C7324
 X-Rspamd-Action: no action
 
-Christian, important! Your patchset breaks userspace! (And I tested this.)
+The set_rpm function is used as a 'store' callback of a device attribute,
+and as such it should return with the number of bytes consumed. However
+since commit 0d01110e6356 ("hwmon: (gpio-fan) Add regulator support"),
+the function returns with zero on success.
 
-Christian Brauner <brauner@kernel.org>:
-> Currently pivot_root() doesn't work on the real rootfs because it
-> cannot be unmounted. Userspace has to do a recursive removal of the
-> initramfs contents manually before continuing the boot.
+Due to this, the function gets called again and again whenever the user
+tries to change the FAN speed by writing the desired RPM value into the
+'fan1_target' sysfs attribute.
 
-listmount is buggy (see details below), but currently on a typical
-Linux distro the bug is hidden. Your new nullfs patchset exposes the bug,
-and now typical Linux configuration becomes buggy!
+The broken behaviour can be reproduced easily. For example, the following
+command never returns unless it gets terminated:
 
-Look at this loop:
-https://elixir.bootlin.com/linux/v6.19-rc5/source/fs/namespace.c#L5518 .
+  $ echo 500 > /sys/class/hwmon/hwmon1/fan1_target
+  ^C
+  $
 
-This loop is executed, when we call listmount on non-our namespace with
-LSMT_ROOT.
+Change the code to return with the same value as the 'count' parameter
+on success to indicate that all bytes from the input buffer are consumed.
+The function behaved the same way prior to the offending change.
 
-As you can see, this loop finds mount, which is exactly one layer above
-initial root mount. But why? What if our initial root mount was
-overmounted multiple times?
+Cc: stable@vger.kernel.org
+Fixes: 0d01110e6356 ("hwmon: (gpio-fan) Add regulator support")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+ drivers/hwmon/gpio-fan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-What (in my opinion) is actually needed here is to find topmost overmount
-of initial root mount. We know how to do this, we do this here:
-https://elixir.bootlin.com/linux/v6.19-rc5/source/fs/namespace.c#L6096 .
+diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
+index 516c34bb61c9cfa2927d31ee6459c8306be2fb5b..d7fa021f376e39b79b6a0302377c4516f9861459 100644
+--- a/drivers/hwmon/gpio-fan.c
++++ b/drivers/hwmon/gpio-fan.c
+@@ -291,7 +291,7 @@ static ssize_t set_rpm(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct gpio_fan_data *fan_data = dev_get_drvdata(dev);
+ 	unsigned long rpm;
+-	int ret = count;
++	int ret;
+ 
+ 	if (kstrtoul(buf, 10, &rpm))
+ 		return -EINVAL;
+@@ -308,7 +308,7 @@ static ssize_t set_rpm(struct device *dev, struct device_attribute *attr,
+ exit_unlock:
+ 	mutex_unlock(&fan_data->lock);
+ 
+-	return ret;
++	return ret ? ret : count;
+ }
+ 
+ static DEVICE_ATTR_RW(pwm1);
 
-Fortunately, current listmount code works in a typical configuration.
-Usually we indeed overmount initramfs exactly one time.
-So, listmount usually does the right thing.
+---
+base-commit: 1117702454262fb361869451be5b006c022eb08a
+change-id: 20260201-gpio-fan-set_rpm-retval-fix-e6a7f103e0d5
 
-But this nullfs patchset breaks listmount. Now on a typical distro
-(we assume that initramfs implementations (i. e. dracut, etc) are not
-yet changed to take advantage of nullfs) initial root mount (i. e. nullfs)
-will be overmounted two times: initramfs and actual disk root fs.
-
-So listmount with LSMT_ROOT in somebody's else namespace will return
-initramfs instead of actual topmost root fs.
-
-I think this listmount bug should be fixed before nullfs is applied to
-mainline.
-
-I tested listmount behavior I'm talking about. On both vfs.all (i. e. with
-nullfs patches applied) and on some older vfs.git commit (without nullfs).
-
+Best regards,
 -- 
-Askar Safin
+Gabor Juhos <j4g8y7@gmail.com>
+
 
