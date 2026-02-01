@@ -1,76 +1,92 @@
-Return-Path: <stable+bounces-212986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKq0BJn9fml9hwIAu9opvQ
-	(envelope-from <stable+bounces-212986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:15:37 +0100
+	id cLViDkL9fml9hwIAu9opvQ
+	(envelope-from <stable+bounces-212985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:14:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED98C51B0
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:15:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C98C5191
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09EB83012248
-	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 07:15:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0E263014408
+	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 07:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B114C1DF74F;
-	Sun,  1 Feb 2026 07:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6602E54A3;
+	Sun,  1 Feb 2026 07:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="PSEp83sx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j84VZcJm"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-149.mail.qq.com (out203-205-221-149.mail.qq.com [203.205.221.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3566419DFAB
-	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 07:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D9B283CB1
+	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 07:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769930131; cv=none; b=TjBL0lTzoX9aEQr0sVIIvRoIzmmMOhMkdb7IisopX/sA4lFbYVgxi/n6uFuGcPFL2arnRhkSBcouwN0InkDk6Jv3UDhacIPy6H4VNO8m84io0YjVKdydm/Ba3NYUuO7gfdh5osEQnfMwZNDNhd4I5Ez7ZAFSqLJDR/CQww+tJq0=
+	t=1769930047; cv=none; b=ovaTu+RrjR+nImGe9ESSEoTQcQSAlBYMnMSIbKLEvLCFz7ZuV+ctH6A9ZmiFQ3piBmAzOs1Rcxyovk3v1lfjPpX7GGa7fkyhapwKu3iYgW1VzvvIxYK3rdN0yAVEdnQXImBZRCPmPaHOOqVhvfwyLTn3OT9xi0HDnZchFMMpW6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769930131; c=relaxed/simple;
-	bh=dzi5Nois0ylIdWzJ/BlaYfPBmZyTRkUFWvJi8A93UuI=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=FDnpEOo+Rruwn7xJm4O5LPbvOus8eUCdsr36WwhU9/oXZUwSCnXY7M2Fz1cuV7wfy0fAI4jSmjCA87WjJX9xkI6zafK+5xt2PEWIZcwy9rwFTH10RGREqdxWla74Da1bYkWV5I6J/vl70xn+bhzy5QL7tjbebk0We6h+Y3Btifc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=PSEp83sx; arc=none smtp.client-ip=203.205.221.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1769930119;
-	bh=tyUMo0Z8Ys4hcdGmev/BC1d3Gpj7aqdHTr64uLIOLTE=;
-	h=From:To:Cc:Subject:Date;
-	b=PSEp83sxc4NhtGP7ibMGhxf3vqydYu1a5bYlRLiLJcD1trSARN5oxfBAhp3ync9y7
-	 Aaj2zljz6MvXvApDrN+b6ySxk3Y4sVAdwYAthQc6ijtp6OcIdwlFGTy/BPUqP1NzLc
-	 xRP6n0nu0FsJFe5iWJlMRm8qZvm4eslaAq/PU26g=
-Received: from ubuntu24.corp.ad.wrs.com ([183.241.55.101])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 3689B6C0; Sun, 01 Feb 2026 15:13:40 +0800
-X-QQ-mid: xmsmtpt1769930020tebn9bile
-Message-ID: <tencent_A280B5140E218C468311AD76CDEBC78B2406@qq.com>
-X-QQ-XMAILINFO: M3cUO7vMX4chyatjcjwHQ6wLwY5c2eQYRnzEkGV6bloDGwsV3CdhSKDN39TQY6
-	 xgzRrEifit68IjJu3+RP74X+ACV/iDdSfuAjSH/NrSVtQ0CKZHwWJ11UYGFPU4pChRnQjKB/r4WU
-	 4gQ/LFUy+dBi0UiaPNHBGHGo2o8y10MGkhJQbEoGxbQyONGVn2tpNzgTf3m8jEUkuUTyMIlyRbCY
-	 4eN5jeYO7HU+VWNgEsGqJDMP1NWJkuJ8B0/t8RUARtLoajwOz9eKNkf6is05tmmZAKRjkKTTOxo8
-	 ONuwkjnQuQ0v5fMJT6R/fXEbff80EYI3kh7h9C0aVPYv6tTSRxyBOJEZK2f4hAqXfeuu+Odh5Dpi
-	 pJ0WQTtsGtjQ4D47RgeaifY2JFlJ1b9faepaUCjgQTilKG457cD2Wkr3q6RVkeCTWv2wedPzUwto
-	 iCrwn7b77h8UTKPvzkxUjTCaIHJQF3hHRL3ww40szebaAC4W//bX6rgWeGBNWg111z7hiEgPuxo7
-	 TmZKKvSdLDikFxTzigAUZbxiqn30BaFpEyoJPcH7GBGWtVNEgxSAi14fVLZBQrbgYafmFFjWByk+
-	 9IGIGZbqxXGnCZgpGFg3MwLlEoW2GNlr6TwiFNgTgKzFwSiSe2bj4lVDdVPLPCFajL/PT2K7e1u+
-	 0adkYYic1s2su8rAy9GfJ4tf7JUdSVxRryLaQio3nGdljDrw7pkYjExWl1pUShL03kGFHcMtwL+u
-	 dFkB33FjWzP2uVlJV2O4CzE9k08o/lbb9njq2zP3DjzqgBvuoaa6Si5OTfA0Hq3a48pEur3800hk
-	 auNjxSXjF//dpDWPFEOKraNyC5FL85VObMOrhiaHaB9MZ3H4cOrz4VeqeDk6JJA40axxa0aTY5Ix
-	 cuHk00nKQQQM8FlaE5q318d7BTGGUIhnZC8v6dAIFFc3t/udCA0WpBShBgJVrO/MLsI/NHjtVDJg
-	 xbMcJh4dad6KbZTpgRVkJDSTKhcX/JSd2QswlmEMNw8rX1oBxlBdukYA00wXrqPeJOum5PpdBqcG
-	 f903tZtVJxZIXDPOfVOfp3ib7g9qjtLSJxPtrc9A8f/ecmoOFZOmOCJCPZxmDEV3mFPxyL6Q==
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: alvalan9@foxmail.com
-To: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@kernel.org>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.10.y] ipv6: sr: Fix MAC comparison to be constant-time
-Date: Sun,  1 Feb 2026 07:13:37 +0000
-X-OQ-MSGID: <20260201071337.5032-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1769930047; c=relaxed/simple;
+	bh=qQ5jEQwXfoZAkudftg+kXXDEawdvl34d9f7OgSGwN1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EPnYyTcbFF+zkdXyIhf7Il+/ooo6tpxo5XKZnZ9hIVthxM7AjiF9uozASt9Zp5UcG30zJ3rawsTirZTMLRF/j9NMSpQugCvjcK2vpEAvMnl5tSs7LyvnIoS3mIN/2mtoHZ/P4yMjLNSrDYl9g9R0uU3ntIYtPIKKdZn9pYfs4sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j84VZcJm; arc=none smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b7381d2d95so1850254eec.0
+        for <stable@vger.kernel.org>; Sat, 31 Jan 2026 23:14:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769930045; x=1770534845; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZDw3vdQYiwVFo053FncWzhupEEGPJGFHynGMHSSRHQ=;
+        b=j84VZcJm56RRlmhyhbF6M13TYBZQDSyHfYKj+mPtYXUoZsDZWBB7kRkH/VHfMrTH5Q
+         L9F1vc16YLul8+E7GIG6SQ25m3V/fyg8uNwoin+njU0oHXfWZPw7JRFyFb//1Ur96ZWO
+         DyhzVyI0E0gcpvb1D+6XnkcwStngOy2wn+yjDz64Ci+NUeVgjd7JWHpMcRBGB8yCu4Dz
+         NokUKzIria6aT9Z6ANCXR13jMolZbkFSKv4p6qPKBjldEKYuDzBqEKCLXrrayWCPr1Fb
+         meUBbdPn5cb7qZuiT8FCTKd0ns4FLtCyTH2F9YWiAEVCmpEfW6y0Xbn2VDX2BfW4JcBi
+         QfNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769930045; x=1770534845;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qZDw3vdQYiwVFo053FncWzhupEEGPJGFHynGMHSSRHQ=;
+        b=HUBBr1A7lmGdDcqTlPM1EllofxTy/j3TarKTH8dfaPz1DcaOZYeK5JYDawHfo5DYZU
+         qJg3CgOZkaSLerAMPvbbOOK+XpYrxSoSbTDvK7govTby/hEClnS3Bel/6UZyAs6NcsNx
+         eSmVW/fuuq7IfpKsDTR17QwSYZbO8J1aFNr+6OpFVymGG1uaWP+tqskkAyalkFgMn6R+
+         fCczRTBKJy+zoaaah61ACFdhJUX8VpFTYoU5D0hXUEk7q5lvxySRGAj9+2sdEiuZF4ML
+         kkFTrHz+v09FqrGAgK99Uz5kCrvO0/KlBAIJQeAFox8aT8gvKHrUY/n17m3KzsqvI9zl
+         14ng==
+X-Forwarded-Encrypted: i=1; AJvYcCXUwUonVErH1a50v0VTilxVk3lB/JlyzFpdYbiuopkMR/YYpDmWsfk/S9yaiyZXBcxk7Z3jwLA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyv68TT6wWV5KYlBYYw3qX2vlGmUh12m/M7VFXqmnnK7QaF7MU0
+	7L6p3NZAgQhuBzC5tg0EvQNMGipwX+wvy1rFiZpNMOjy2yokgtITw+cW
+X-Gm-Gg: AZuq6aLMQ4S8OypGWvHz8YV3az00ZOkCrCimNhirJjpSpAcI0QALPi6Ge5aunTEe8fW
+	c9yyh26TPpsluNWKqb/1SsLOFdMpwpq8BT+CnP8HPdgPPmTfWEJzOYth9qFE9NsTqmlGchB5JVe
+	lxP6VUCf+FBQ/pQqv/NNjCVtmpe3VtAlEZBj59z9hRlkUm/ofTY/xJV6jGENK96lSVkDl5YduMP
+	K/S9Y5Iax+iywi7Ck89U7oGxl2ZyT0x2bv8kzXnSkPMqcVFgIUu66ypGEDvDyz6iD1KsbVTGd1N
+	+jDHlF5p212ZLRzOi0FeJAnTQyTK9J0pIU5I8aLTrJ8ktKAcFmH4Z47DT5Bvn4afxB4HA6D7rhS
+	kd3zEW7xy/le1QS28Ihwc4LhheR33JRMgGZMnD21fYSV5oHbU7bZMOkvP8AnXK8nZJW6vUrQreG
+	ZnhBrcvjvzfVU7FRZUESfl//t8985r9X8WsipopA==
+X-Received: by 2002:a05:7300:80cd:b0:2b7:b4f7:27de with SMTP id 5a478bee46e88-2b7c925284bmr3856136eec.6.1769930044963;
+        Sat, 31 Jan 2026 23:14:04 -0800 (PST)
+Received: from jpkobryn-fedora-PF5CFKNC.lan ([73.222.117.172])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a1abe92dsm17419076eec.17.2026.01.31.23.14.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Jan 2026 23:14:04 -0800 (PST)
+From: JP Kobryn <inwardvessel@gmail.com>
+To: wqu@suse.com,
+	boris@bur.io,
+	clm@fb.com,
+	dsterba@suse.com
+Cc: linux-btrfs@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH stable 6.10-6.16] btrfs: prevent use-after-free on folio private data in btrfs_subpage_clear_uptodate()
+Date: Sat, 31 Jan 2026 23:13:46 -0800
+Message-ID: <20260201071346.130641-1-inwardvessel@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,77 +95,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212986-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[foxmail.com];
-	FREEMAIL_CC(0.00)[kernel.org,uniroma2.it,foxmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[foxmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-212985-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,foxmail.com:email,foxmail.com:dkim]
-X-Rspamd-Queue-Id: AED98C51B0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[inwardvessel@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: A7C98C5191
 X-Rspamd-Action: no action
 
-From: Eric Biggers <ebiggers@kernel.org>
+This is a stable-only patch. The issue was inadvertently fixed in 6.17 [0]
+as part of a refactoring, but this patch serves as a minimal targeted fix
+for prior kernels.
 
-[ Upstream commit a458b2902115b26a25d67393b12ddd57d1216aaa ]
+Users of filemap_lock_folio() need to guard against the situation where
+release_folio() has been invoked during reclaim but the folio was
+ultimately not removed from the page cache. This patch covers one location
+that was overlooked.
 
-To prevent timing attacks, MACs need to be compared in constant time.
-Use the appropriate helper function for this.
+After acquiring the folio, use set_folio_extent_mapped() to ensure the
+folio private state is valid. This is especially important in the subpage
+case, where the private field is an allocated struct containing bitmap and
+lock data.
 
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Link: https://patch.msgid.link/20250818202724.15713-1-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Include crypto/algapi.h instead of crypto/utils.h in v5.10.y. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Without this protection, the race below is possible:
+
+[mm] page cache reclaim path        [fs] relocation in subpage mode
+shrink_folio_list()
+  folio_trylock() /* lock acquired */
+  filemap_release_folio()
+    mapping->a_ops->release_folio()
+      btrfs_release_folio()
+        __btrfs_release_folio()
+          clear_folio_extent_mapped()
+            btrfs_detach_subpage()
+              subpage = folio_detach_private(folio)
+              btrfs_free_subpage(subpage)
+                kfree(subpage) /* point A */
+
+                                   prealloc_file_extent_cluster()
+                                     filemap_lock_folio()
+                                       folio_try_get() /* inc refcount */
+                                       folio_lock() /* wait for lock */
+
+  if (...)
+    ...
+  else if (!mapping || !__remove_mapping(..))
+    /*
+     * __remove_mapping() returns zero when
+     * folio_ref_freeze(folio, refcount) fails /* point B */
+     */
+    goto keep_locked /* folio remains in cache */
+
+keep_locked:
+  folio_unlock(folio) /* lock released */
+
+                                   /* lock acquired */
+                                   btrfs_subpage_clear_uptodate()
+                                     /* use-after-free */
+                                     subpage = folio_get_private(folio)
+
+Fixes: 9d9ea1e68a05 ("btrfs: subpage: fix relocation potentially overwriting last page data")
+Cc: stable@vger.kernel.org # 6.10-6.16
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+
+[0] 4e346baee95f ("btrfs: reloc: unconditionally invalidate the page cache for each cluster")
 ---
- net/ipv6/seg6_hmac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v2:
+ - comment text formatting
+ - renamed subject from "prevent use-after-free prealloc_file_extent_cluster()"
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 4a3f7bb027ed..d334458cbc9e 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -36,6 +36,7 @@
- 
- #include <crypto/hash.h>
- #include <crypto/sha.h>
-+#include <crypto/algapi.h> // For crypto_memneq
- #include <net/seg6.h>
- #include <net/genetlink.h>
- #include <net/seg6_hmac.h>
-@@ -270,7 +271,7 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
- 		return false;
- 
--	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
-+	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
- 		return false;
- 
- 	return true;
+v1:
+ - https://lore.kernel.org/all/20260131185335.72204-1-inwardvessel@gmail.com/
+
+ fs/btrfs/relocation.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index 0d5a3846811a..43e8c331168e 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2811,6 +2811,20 @@ static noinline_for_stack int prealloc_file_extent_cluster(struct reloc_control
+ 		 * will re-read the whole page anyway.
+ 		 */
+ 		if (!IS_ERR(folio)) {
++			/*
++			 * release_folio() could have cleared the folio private data
++			 * while we were not holding the lock. Reset the mapping if
++			 * needed so subpage operations can access a valid private
++			 * folio state.
++			 */
++			ret = set_folio_extent_mapped(folio);
++			if (ret) {
++				folio_unlock(folio);
++				folio_put(folio);
++
++				return ret;
++			}
++
+ 			btrfs_subpage_clear_uptodate(fs_info, folio, i_size,
+ 					round_up(i_size, PAGE_SIZE) - i_size);
+ 			folio_unlock(folio);
 -- 
-2.43.0
+2.52.0
 
 
