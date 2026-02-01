@@ -1,92 +1,76 @@
-Return-Path: <stable+bounces-212984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOPCN3T8fmlThwIAu9opvQ
-	(envelope-from <stable+bounces-212984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:10:44 +0100
+	id iKq0BJn9fml9hwIAu9opvQ
+	(envelope-from <stable+bounces-212986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:15:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5367BC5170
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:10:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AED98C51B0
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:15:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3129F3014424
-	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 07:10:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09EB83012248
+	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 07:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B512B2E54A3;
-	Sun,  1 Feb 2026 07:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B114C1DF74F;
+	Sun,  1 Feb 2026 07:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QT2zH3zP"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="PSEp83sx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-149.mail.qq.com (out203-205-221-149.mail.qq.com [203.205.221.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C292DC337
-	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 07:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3566419DFAB
+	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 07:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769929836; cv=none; b=OkBVgznsk3jPEsSo85UfAI9s60ABPPStlyYty3+ciCl7xbJgxT372/PNyaA3NKFC6pUV0fgw4AEO3p4C+UHa3wNcTXPahoVoW0gC1VspvCSpEUHeGaFC0yopUWW1/fdBID3o8+c1VsjG9kWqwVz619DX5RLFYI8liI9QMfKQrXA=
+	t=1769930131; cv=none; b=TjBL0lTzoX9aEQr0sVIIvRoIzmmMOhMkdb7IisopX/sA4lFbYVgxi/n6uFuGcPFL2arnRhkSBcouwN0InkDk6Jv3UDhacIPy6H4VNO8m84io0YjVKdydm/Ba3NYUuO7gfdh5osEQnfMwZNDNhd4I5Ez7ZAFSqLJDR/CQww+tJq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769929836; c=relaxed/simple;
-	bh=/+vbohuWCeA5apK0xQZdqX1BArl3qOvcWSMuYG2I2XM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HQ5E6Qt2yBwGsV2aqf85YmfnYXvXUlRTue15hUV+Z+45MgAV6cbVrJYVvivHjtV++wgHPcZgW+SLhyUR3RWCfaDKJKZiO76NG/XF/nMRvypOOBU2MGz6OleYYiGIqbeOEfcUpL+OgrXS7X5ofckTeiCky+8MWtowdw6L5gqfQGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QT2zH3zP; arc=none smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-124a635476fso5023641c88.0
-        for <stable@vger.kernel.org>; Sat, 31 Jan 2026 23:10:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769929834; x=1770534634; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wzXD3tBTqqP8oZwwUMhbpbowxhGXxwF671sYxC/ntIA=;
-        b=QT2zH3zPCQnaqkgMKXnabxiywIRFiR9McJxKxMOf7c0tLMmQuHhGWxJjcpVKXEA+uc
-         gCxH1cAJ6gkU10dRj5oDwXt9IaQPZAj/RUCdldUMoKaQ4AMkpFWewsW0pCoJTd+Tytck
-         U4Wqf7i68iygwYSVRnx8YLc5R2Z9UgWYuYgz+QYp1ea5c/iNEvVUIJcJ8ZUnku1fT1Tc
-         1B4yzd04iAvGVU58k1jBH0BSCMOatxHp9AEDnVK18ZHFr8iEA/5YJ8mQIQP9E/e1w3Qg
-         UlGxY8jGJ9F8oWT5+T/sGviYu8ncau21QDL8/+TnM1tuyH+Na4fmyW+oOBw5gstIYrN/
-         qG4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769929834; x=1770534634;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wzXD3tBTqqP8oZwwUMhbpbowxhGXxwF671sYxC/ntIA=;
-        b=hx7wMXtPJWBlVLpo/dV+NZ+qiH9+WKnUUjuG7hMz3I7N9l2+4JYGn8iTKeu0ygRsg9
-         Gx8h44yMCGISAI50msnMdPGwGt8P9w7pedOx9cgfWGEoLKUs6+2XFwI/O+rgCSejE61G
-         0ljSSZM77fAbfpLO7sKbbIboX9E9lqmsDrtwrM8QnFxAcoASyV/RpFiXwhde3njqcoF/
-         35Dv6+ygL/nzdbD8z6c9P0/xKe9e/jzKQr/9JYm9WxCxeqQPVTH2EoAqamblAb02POdL
-         zENT9FoF4zkIZ0+evLaPZsDDM4pQSzEZyEprqMZguy1YDTAwaqiCHS6vnWrQ8MdV9Ben
-         +kmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIGMX4aW5neObRLr5+JcekrXgV03Gk0SFnq4ThlRmwDQisSjr2uPgnEJA8txLmMnFLD/YHRE8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywwqr0cYr1zNscQ+qPEG8y3IHnn6elsih3+ztBsmOtzOXqVXaIk
-	5amSrdOR39Jg7RhpRgJSqYYzabMm5VeJe9V/rIzmGNnF3iCe8nTMZpy3
-X-Gm-Gg: AZuq6aJVBptOlm2MOSeoIEAeZYuHCFVUYwx5w66gqBf374hgsstOunR/+/JmKRcymne
-	n5dTG8/EYikTXxPw3sVwMutdHYwKvDdWyxTdZYny+KKUXV65aepSIIW86dvlj79n7KyJVKG+LwM
-	Llu0kT9s+kHntqJD4pKspI+K9t2uD+5SN+oqMianxv4cCVd/qxahjCkJCEsUNdd9b0ye0DdGori
-	wE1WpSM15zgk6zvGU26MdvFvjgZDd3ZTe8iUrJ+kOmXugtF/zclk5KiALEC81MKFMLQONtXIWZm
-	zZMMsvMSMcBsWYvOz9/bu4SGFPardT5kNmwWYBdGCxXTfZoIFS4y8vPZsfe45WIsf0JrqikmkqI
-	H0bSlp2HKixw/xJ2hn++qvN0WmJJOp5eiAv8y+xpe+Vp4zXWwFvi/95yeL9Jg7NDFJ4sSMTiMoH
-	0q18s6WilwxfgadgeQLGtNxS3EcIQitE0kJOeMyQ==
-X-Received: by 2002:a05:7022:e1f:b0:11e:3e9:3e8c with SMTP id a92af1059eb24-125c101b3demr4250108c88.49.1769929834048;
-        Sat, 31 Jan 2026 23:10:34 -0800 (PST)
-Received: from jpkobryn-fedora-PF5CFKNC.lan ([73.222.117.172])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9d6b663sm15486422c88.1.2026.01.31.23.10.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Jan 2026 23:10:33 -0800 (PST)
-From: JP Kobryn <inwardvessel@gmail.com>
-To: wqu@suse.com,
-	boris@bur.io,
-	clm@fb.com,
-	dsterba@suse.com
-Cc: linux-btrfs@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH stable 5.15-6.9] btrfs: prevent use-after-free on page private data in btrfs_subpage_clear_uptodate()
-Date: Sat, 31 Jan 2026 23:09:53 -0800
-Message-ID: <20260201070953.129723-1-inwardvessel@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1769930131; c=relaxed/simple;
+	bh=dzi5Nois0ylIdWzJ/BlaYfPBmZyTRkUFWvJi8A93UuI=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=FDnpEOo+Rruwn7xJm4O5LPbvOus8eUCdsr36WwhU9/oXZUwSCnXY7M2Fz1cuV7wfy0fAI4jSmjCA87WjJX9xkI6zafK+5xt2PEWIZcwy9rwFTH10RGREqdxWla74Da1bYkWV5I6J/vl70xn+bhzy5QL7tjbebk0We6h+Y3Btifc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=PSEp83sx; arc=none smtp.client-ip=203.205.221.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1769930119;
+	bh=tyUMo0Z8Ys4hcdGmev/BC1d3Gpj7aqdHTr64uLIOLTE=;
+	h=From:To:Cc:Subject:Date;
+	b=PSEp83sxc4NhtGP7ibMGhxf3vqydYu1a5bYlRLiLJcD1trSARN5oxfBAhp3ync9y7
+	 Aaj2zljz6MvXvApDrN+b6ySxk3Y4sVAdwYAthQc6ijtp6OcIdwlFGTy/BPUqP1NzLc
+	 xRP6n0nu0FsJFe5iWJlMRm8qZvm4eslaAq/PU26g=
+Received: from ubuntu24.corp.ad.wrs.com ([183.241.55.101])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 3689B6C0; Sun, 01 Feb 2026 15:13:40 +0800
+X-QQ-mid: xmsmtpt1769930020tebn9bile
+Message-ID: <tencent_A280B5140E218C468311AD76CDEBC78B2406@qq.com>
+X-QQ-XMAILINFO: M3cUO7vMX4chyatjcjwHQ6wLwY5c2eQYRnzEkGV6bloDGwsV3CdhSKDN39TQY6
+	 xgzRrEifit68IjJu3+RP74X+ACV/iDdSfuAjSH/NrSVtQ0CKZHwWJ11UYGFPU4pChRnQjKB/r4WU
+	 4gQ/LFUy+dBi0UiaPNHBGHGo2o8y10MGkhJQbEoGxbQyONGVn2tpNzgTf3m8jEUkuUTyMIlyRbCY
+	 4eN5jeYO7HU+VWNgEsGqJDMP1NWJkuJ8B0/t8RUARtLoajwOz9eKNkf6is05tmmZAKRjkKTTOxo8
+	 ONuwkjnQuQ0v5fMJT6R/fXEbff80EYI3kh7h9C0aVPYv6tTSRxyBOJEZK2f4hAqXfeuu+Odh5Dpi
+	 pJ0WQTtsGtjQ4D47RgeaifY2JFlJ1b9faepaUCjgQTilKG457cD2Wkr3q6RVkeCTWv2wedPzUwto
+	 iCrwn7b77h8UTKPvzkxUjTCaIHJQF3hHRL3ww40szebaAC4W//bX6rgWeGBNWg111z7hiEgPuxo7
+	 TmZKKvSdLDikFxTzigAUZbxiqn30BaFpEyoJPcH7GBGWtVNEgxSAi14fVLZBQrbgYafmFFjWByk+
+	 9IGIGZbqxXGnCZgpGFg3MwLlEoW2GNlr6TwiFNgTgKzFwSiSe2bj4lVDdVPLPCFajL/PT2K7e1u+
+	 0adkYYic1s2su8rAy9GfJ4tf7JUdSVxRryLaQio3nGdljDrw7pkYjExWl1pUShL03kGFHcMtwL+u
+	 dFkB33FjWzP2uVlJV2O4CzE9k08o/lbb9njq2zP3DjzqgBvuoaa6Si5OTfA0Hq3a48pEur3800hk
+	 auNjxSXjF//dpDWPFEOKraNyC5FL85VObMOrhiaHaB9MZ3H4cOrz4VeqeDk6JJA40axxa0aTY5Ix
+	 cuHk00nKQQQM8FlaE5q318d7BTGGUIhnZC8v6dAIFFc3t/udCA0WpBShBgJVrO/MLsI/NHjtVDJg
+	 xbMcJh4dad6KbZTpgRVkJDSTKhcX/JSd2QswlmEMNw8rX1oBxlBdukYA00wXrqPeJOum5PpdBqcG
+	 f903tZtVJxZIXDPOfVOfp3ib7g9qjtLSJxPtrc9A8f/ecmoOFZOmOCJCPZxmDEV3mFPxyL6Q==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: alvalan9@foxmail.com
+To: stable@vger.kernel.org
+Cc: Eric Biggers <ebiggers@kernel.org>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.10.y] ipv6: sr: Fix MAC comparison to be constant-time
+Date: Sun,  1 Feb 2026 07:13:37 +0000
+X-OQ-MSGID: <20260201071337.5032-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,118 +79,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212984-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-212986-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	FREEMAIL_CC(0.00)[kernel.org,uniroma2.it,foxmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[inwardvessel@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[foxmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5367BC5170
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,foxmail.com:email,foxmail.com:dkim]
+X-Rspamd-Queue-Id: AED98C51B0
 X-Rspamd-Action: no action
 
-This is a stable-only patch. The issue was inadvertently fixed in 6.17 [0]
-as part of a refactoring, but this patch serves as a minimal targeted fix
-for prior kernels.
+From: Eric Biggers <ebiggers@kernel.org>
 
-Users of find_lock_page() need to guard against the situation where
-releasepage() has been invoked during reclaim but the page was ultimately
-not removed from the page cache. This patch covers one location that was
-overlooked.
+[ Upstream commit a458b2902115b26a25d67393b12ddd57d1216aaa ]
 
-After acquiring the page, use set_page_extent_mapped() to ensure the page
-private state is valid. This is especially important in the subpage case,
-where the private field is an allocated struct containing bitmap and lock
-data.
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-Without this protection, the race below is possible:
-
-[mm] page cache reclaim path        [fs] relocation in subpage mode
-shrink_page_list()
-  trylock_page() /* lock acquired */
-  try_to_release_page()
-    mapping->a_ops->releasepage()
-      btrfs_releasepage()
-        __btrfs_releasepage()
-          clear_page_extent_mapped()
-            btrfs_detach_subpage()
-              subpage = detach_page_private(page)
-              btrfs_free_subpage(subpage)
-                kfree(subpage) /* point A */
-                                        prealloc_file_extent_cluster()
-                                          find_lock_page()
-                                            page_cache_get_speculative()
-                                            lock_page() /* wait for lock */
-  if (...)
-    ...
-  else if (!mapping || !__remove_mapping(..))
-    /*
-     * __remove_mapping() returns zero when
-     * page_ref_freeze(page, refcount) fails /* point B */
-     */
-    goto keep_locked /* page remains in cache */
-keep_locked:
-  unlock_page(page) /* lock released */
-                                        /* lock acquired */
-                                        btrfs_subpage_clear_uptodate()
-                                          /* use-after-free */
-                                          subpage = page->private
-
-Fixes: 9d9ea1e68a05 ("btrfs: subpage: fix relocation potentially overwriting last page data")
-Cc: stable@vger.kernel.org # 5.15 - 6.9
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-
-[0] 4e346baee95f ("btrfs: reloc: unconditionally invalidate the page cache for each cluster")
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Link: https://patch.msgid.link/20250818202724.15713-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Include crypto/algapi.h instead of crypto/utils.h in v5.10.y. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
- fs/btrfs/relocation.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/ipv6/seg6_hmac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 96c89884988b..e66ec0c23153 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -2900,6 +2900,19 @@ static noinline_for_stack int prealloc_file_extent_cluster(
- 		 * will re-read the whole page anyway.
- 		 */
- 		if (page) {
-+			/*
-+			 * releasepage() could have cleared the page private data while
-+			 * we were not holding the lock. Reset the mapping if needed so
-+			 * subpage operations can access a valid private page state.
-+			 */
-+			ret = set_page_extent_mapped(page);
-+			if (ret) {
-+				unlock_page(page);
-+				put_page(page);
-+
-+				return ret;
-+			}
-+
- 			btrfs_subpage_clear_uptodate(fs_info, page, i_size,
- 					round_up(i_size, PAGE_SIZE) - i_size);
- 			unlock_page(page);
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index 4a3f7bb027ed..d334458cbc9e 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -36,6 +36,7 @@
+ 
+ #include <crypto/hash.h>
+ #include <crypto/sha.h>
++#include <crypto/algapi.h> // For crypto_memneq
+ #include <net/seg6.h>
+ #include <net/genetlink.h>
+ #include <net/seg6_hmac.h>
+@@ -270,7 +271,7 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+ 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
+ 		return false;
+ 
+-	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
++	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
+ 		return false;
+ 
+ 	return true;
 -- 
-2.52.0
+2.43.0
 
 
