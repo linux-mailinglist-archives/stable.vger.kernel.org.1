@@ -1,276 +1,212 @@
-Return-Path: <stable+bounces-212983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id b9kHGZHofmn2ggIAu9opvQ
-	(envelope-from <stable+bounces-212983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 06:45:53 +0100
+	id GOPCN3T8fmlThwIAu9opvQ
+	(envelope-from <stable+bounces-212984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:10:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968B0C4FD0
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 06:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5367BC5170
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 08:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED4F030154A8
-	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 05:45:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3129F3014424
+	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 07:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A392D879B;
-	Sun,  1 Feb 2026 05:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B512B2E54A3;
+	Sun,  1 Feb 2026 07:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TE6xRE80"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QT2zH3zP"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C270118859B;
-	Sun,  1 Feb 2026 05:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C292DC337
+	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 07:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769924749; cv=none; b=O3BY622qyULB53kFIxPtAWBXTc6o2azguGzPpySrWyadi6IzL7KGw80615AwjtuiOKldjcxFOLpwL6YxdvIr7ReQkO8iB9KvzQiWFoaw/ivE+UnA8PWsT5dm2Z3P0Da2EfP0KOhIYl/OO3EqGGW5xBWFzFFlxRwmqKxQ/0fBXyc=
+	t=1769929836; cv=none; b=OkBVgznsk3jPEsSo85UfAI9s60ABPPStlyYty3+ciCl7xbJgxT372/PNyaA3NKFC6pUV0fgw4AEO3p4C+UHa3wNcTXPahoVoW0gC1VspvCSpEUHeGaFC0yopUWW1/fdBID3o8+c1VsjG9kWqwVz619DX5RLFYI8liI9QMfKQrXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769924749; c=relaxed/simple;
-	bh=wmdU6j24xok3QN+AvpOevv0hG+C0xnYZebCq708jyl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KIgla/PHbzbl0cP4s2/4PSSXlSJAfDSP1MhI8tq3XuF0O/KhS/kr9rR4QDJ70BvO6BnGg9lyvK7SfFn9I0bFpuhiziyFRGR51ieXTNLaFho8hH0ufcGy1EbozYLxP6g2NpJhFzASrJtKcG9uH9/thiqss8Fx7myFSPrikYnEIpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TE6xRE80; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769924747; x=1801460747;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wmdU6j24xok3QN+AvpOevv0hG+C0xnYZebCq708jyl4=;
-  b=TE6xRE80v8f9zaplkyVDcgWqcl4HjE1XrHRnwWkZi8rc2BKW4vCfF7/Z
-   LUGknvlp/IH8kzF2mQonQt8MgbO/KcKr2/3AEEbfHLb/mG3yy+7zvjCh1
-   g2PUp0VuvawLm4bCExQBGfEmGDDp8JAENQANuvCxSt4AfE4NSddaVjLlI
-   L2PEXsxqajZOmq5MkrgFERbKx6xDJ2VhPZMUfiqmlsoPjgE3R+AeodbBD
-   4+lQ0rc3XrvPx6a6xTPirt+eRboHOGIvGScqU7q+D02yjhhLTZYxsbWbL
-   hAxogGRzO3/Xo4wOa9fYni7Sy8m2icf8ST6Z4Eldj6kQZvYeruqIQp1WM
-   Q==;
-X-CSE-ConnectionGUID: JmE5L8prSpmGFkwS+FPNSQ==
-X-CSE-MsgGUID: yEZjTtUVSmmaUyvLb+R8UA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11688"; a="71017499"
-X-IronPort-AV: E=Sophos;i="6.21,266,1763452800"; 
-   d="scan'208";a="71017499"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2026 21:45:46 -0800
-X-CSE-ConnectionGUID: ziBlGkAeS/OM7AIQFZruYA==
-X-CSE-MsgGUID: T9cKmxjqQpaU1ewOp7BJZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,266,1763452800"; 
-   d="scan'208";a="213731916"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 31 Jan 2026 21:45:42 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vmQHE-00000000ebw-1ReG;
-	Sun, 01 Feb 2026 05:45:40 +0000
-Date: Sun, 1 Feb 2026 13:44:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, daniel@iogearbox.net, magnus.karlsson@intel.com,
-	bjorn@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, stable@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH v2] i40e: add an error handling path in
- i40e_xsk_pool_enable()
-Message-ID: <202602011335.eVX5YSY8-lkp@intel.com>
-References: <20260131055217.729048-1-lihaoxiang@isrc.iscas.ac.cn>
+	s=arc-20240116; t=1769929836; c=relaxed/simple;
+	bh=/+vbohuWCeA5apK0xQZdqX1BArl3qOvcWSMuYG2I2XM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HQ5E6Qt2yBwGsV2aqf85YmfnYXvXUlRTue15hUV+Z+45MgAV6cbVrJYVvivHjtV++wgHPcZgW+SLhyUR3RWCfaDKJKZiO76NG/XF/nMRvypOOBU2MGz6OleYYiGIqbeOEfcUpL+OgrXS7X5ofckTeiCky+8MWtowdw6L5gqfQGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QT2zH3zP; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-124a635476fso5023641c88.0
+        for <stable@vger.kernel.org>; Sat, 31 Jan 2026 23:10:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769929834; x=1770534634; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wzXD3tBTqqP8oZwwUMhbpbowxhGXxwF671sYxC/ntIA=;
+        b=QT2zH3zPCQnaqkgMKXnabxiywIRFiR9McJxKxMOf7c0tLMmQuHhGWxJjcpVKXEA+uc
+         gCxH1cAJ6gkU10dRj5oDwXt9IaQPZAj/RUCdldUMoKaQ4AMkpFWewsW0pCoJTd+Tytck
+         U4Wqf7i68iygwYSVRnx8YLc5R2Z9UgWYuYgz+QYp1ea5c/iNEvVUIJcJ8ZUnku1fT1Tc
+         1B4yzd04iAvGVU58k1jBH0BSCMOatxHp9AEDnVK18ZHFr8iEA/5YJ8mQIQP9E/e1w3Qg
+         UlGxY8jGJ9F8oWT5+T/sGviYu8ncau21QDL8/+TnM1tuyH+Na4fmyW+oOBw5gstIYrN/
+         qG4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769929834; x=1770534634;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wzXD3tBTqqP8oZwwUMhbpbowxhGXxwF671sYxC/ntIA=;
+        b=hx7wMXtPJWBlVLpo/dV+NZ+qiH9+WKnUUjuG7hMz3I7N9l2+4JYGn8iTKeu0ygRsg9
+         Gx8h44yMCGISAI50msnMdPGwGt8P9w7pedOx9cgfWGEoLKUs6+2XFwI/O+rgCSejE61G
+         0ljSSZM77fAbfpLO7sKbbIboX9E9lqmsDrtwrM8QnFxAcoASyV/RpFiXwhde3njqcoF/
+         35Dv6+ygL/nzdbD8z6c9P0/xKe9e/jzKQr/9JYm9WxCxeqQPVTH2EoAqamblAb02POdL
+         zENT9FoF4zkIZ0+evLaPZsDDM4pQSzEZyEprqMZguy1YDTAwaqiCHS6vnWrQ8MdV9Ben
+         +kmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIGMX4aW5neObRLr5+JcekrXgV03Gk0SFnq4ThlRmwDQisSjr2uPgnEJA8txLmMnFLD/YHRE8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywwqr0cYr1zNscQ+qPEG8y3IHnn6elsih3+ztBsmOtzOXqVXaIk
+	5amSrdOR39Jg7RhpRgJSqYYzabMm5VeJe9V/rIzmGNnF3iCe8nTMZpy3
+X-Gm-Gg: AZuq6aJVBptOlm2MOSeoIEAeZYuHCFVUYwx5w66gqBf374hgsstOunR/+/JmKRcymne
+	n5dTG8/EYikTXxPw3sVwMutdHYwKvDdWyxTdZYny+KKUXV65aepSIIW86dvlj79n7KyJVKG+LwM
+	Llu0kT9s+kHntqJD4pKspI+K9t2uD+5SN+oqMianxv4cCVd/qxahjCkJCEsUNdd9b0ye0DdGori
+	wE1WpSM15zgk6zvGU26MdvFvjgZDd3ZTe8iUrJ+kOmXugtF/zclk5KiALEC81MKFMLQONtXIWZm
+	zZMMsvMSMcBsWYvOz9/bu4SGFPardT5kNmwWYBdGCxXTfZoIFS4y8vPZsfe45WIsf0JrqikmkqI
+	H0bSlp2HKixw/xJ2hn++qvN0WmJJOp5eiAv8y+xpe+Vp4zXWwFvi/95yeL9Jg7NDFJ4sSMTiMoH
+	0q18s6WilwxfgadgeQLGtNxS3EcIQitE0kJOeMyQ==
+X-Received: by 2002:a05:7022:e1f:b0:11e:3e9:3e8c with SMTP id a92af1059eb24-125c101b3demr4250108c88.49.1769929834048;
+        Sat, 31 Jan 2026 23:10:34 -0800 (PST)
+Received: from jpkobryn-fedora-PF5CFKNC.lan ([73.222.117.172])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9d6b663sm15486422c88.1.2026.01.31.23.10.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Jan 2026 23:10:33 -0800 (PST)
+From: JP Kobryn <inwardvessel@gmail.com>
+To: wqu@suse.com,
+	boris@bur.io,
+	clm@fb.com,
+	dsterba@suse.com
+Cc: linux-btrfs@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH stable 5.15-6.9] btrfs: prevent use-after-free on page private data in btrfs_subpage_clear_uptodate()
+Date: Sat, 31 Jan 2026 23:09:53 -0800
+Message-ID: <20260201070953.129723-1-inwardvessel@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260131055217.729048-1-lihaoxiang@isrc.iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212984-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212983-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 968B0C4FD0
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[inwardvessel@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5367BC5170
 X-Rspamd-Action: no action
 
-Hi Haoxiang,
+This is a stable-only patch. The issue was inadvertently fixed in 6.17 [0]
+as part of a refactoring, but this patch serves as a minimal targeted fix
+for prior kernels.
 
-kernel test robot noticed the following build errors:
+Users of find_lock_page() need to guard against the situation where
+releasepage() has been invoked during reclaim but the page was ultimately
+not removed from the page cache. This patch covers one location that was
+overlooked.
 
-[auto build test ERROR on tnguy-next-queue/dev-queue]
-[also build test ERROR on tnguy-net-queue/dev-queue linus/master v6.19-rc7 next-20260130]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+After acquiring the page, use set_page_extent_mapped() to ensure the page
+private state is valid. This is especially important in the subpage case,
+where the private field is an allocated struct containing bitmap and lock
+data.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Haoxiang-Li/i40e-add-an-error-handling-path-in-i40e_xsk_pool_enable/20260131-135447
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git dev-queue
-patch link:    https://lore.kernel.org/r/20260131055217.729048-1-lihaoxiang%40isrc.iscas.ac.cn
-patch subject: [Intel-wired-lan] [PATCH v2] i40e: add an error handling path in i40e_xsk_pool_enable()
-config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20260201/202602011335.eVX5YSY8-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260201/202602011335.eVX5YSY8-lkp@intel.com/reproduce)
+Without this protection, the race below is possible:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602011335.eVX5YSY8-lkp@intel.com/
+[mm] page cache reclaim path        [fs] relocation in subpage mode
+shrink_page_list()
+  trylock_page() /* lock acquired */
+  try_to_release_page()
+    mapping->a_ops->releasepage()
+      btrfs_releasepage()
+        __btrfs_releasepage()
+          clear_page_extent_mapped()
+            btrfs_detach_subpage()
+              subpage = detach_page_private(page)
+              btrfs_free_subpage(subpage)
+                kfree(subpage) /* point A */
+                                        prealloc_file_extent_cluster()
+                                          find_lock_page()
+                                            page_cache_get_speculative()
+                                            lock_page() /* wait for lock */
+  if (...)
+    ...
+  else if (!mapping || !__remove_mapping(..))
+    /*
+     * __remove_mapping() returns zero when
+     * page_ref_freeze(page, refcount) fails /* point B */
+     */
+    goto keep_locked /* page remains in cache */
+keep_locked:
+  unlock_page(page) /* lock released */
+                                        /* lock acquired */
+                                        btrfs_subpage_clear_uptodate()
+                                          /* use-after-free */
+                                          subpage = page->private
 
-All errors (new ones prefixed by >>):
+Fixes: 9d9ea1e68a05 ("btrfs: subpage: fix relocation potentially overwriting last page data")
+Cc: stable@vger.kernel.org # 5.15 - 6.9
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
 
-   drivers/net/ethernet/intel/i40e/i40e_xsk.c: In function 'i40e_xsk_pool_enable':
->> drivers/net/ethernet/intel/i40e/i40e_xsk.c:130:9: error: implicit declaration of function 'i40e_xsk_pool_disable'; did you mean 'i40e_xsk_pool_enable'? [-Wimplicit-function-declaration]
-     130 |         i40e_xsk_pool_disable(vsi, qid);
-         |         ^~~~~~~~~~~~~~~~~~~~~
-         |         i40e_xsk_pool_enable
-   drivers/net/ethernet/intel/i40e/i40e_xsk.c: At top level:
->> drivers/net/ethernet/intel/i40e/i40e_xsk.c:141:12: error: conflicting types for 'i40e_xsk_pool_disable'; have 'int(struct i40e_vsi *, u16)' {aka 'int(struct i40e_vsi *, short unsigned int)'}
-     141 | static int i40e_xsk_pool_disable(struct i40e_vsi *vsi, u16 qid)
-         |            ^~~~~~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/intel/i40e/i40e_xsk.c:142:1: note: an argument type that has a default promotion cannot match an empty parameter name list declaration
-     142 | {
-         | ^
-   drivers/net/ethernet/intel/i40e/i40e_xsk.c:130:9: note: previous implicit declaration of 'i40e_xsk_pool_disable' with type 'int()'
-     130 |         i40e_xsk_pool_disable(vsi, qid);
-         |         ^~~~~~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/intel/i40e/i40e_xsk.c: In function 'i40e_xsk_pool_enable':
-   drivers/net/ethernet/intel/i40e/i40e_xsk.c:131:1: warning: control reaches end of non-void function [-Wreturn-type]
-     131 | }
-         | ^
+[0] 4e346baee95f ("btrfs: reloc: unconditionally invalidate the page cache for each cluster")
+---
+ fs/btrfs/relocation.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-
-vim +130 drivers/net/ethernet/intel/i40e/i40e_xsk.c
-
-    72	
-    73	/**
-    74	 * i40e_xsk_pool_enable - Enable/associate an AF_XDP buffer pool to a
-    75	 * certain ring/qid
-    76	 * @vsi: Current VSI
-    77	 * @pool: buffer pool
-    78	 * @qid: Rx ring to associate buffer pool with
-    79	 *
-    80	 * Returns 0 on success, <0 on failure
-    81	 **/
-    82	static int i40e_xsk_pool_enable(struct i40e_vsi *vsi,
-    83					struct xsk_buff_pool *pool,
-    84					u16 qid)
-    85	{
-    86		struct net_device *netdev = vsi->netdev;
-    87		bool if_running;
-    88		int err;
-    89	
-    90		if (vsi->type != I40E_VSI_MAIN)
-    91			return -EINVAL;
-    92	
-    93		if (qid >= vsi->num_queue_pairs)
-    94			return -EINVAL;
-    95	
-    96		if (qid >= netdev->real_num_rx_queues ||
-    97		    qid >= netdev->real_num_tx_queues)
-    98			return -EINVAL;
-    99	
-   100		err = xsk_pool_dma_map(pool, &vsi->back->pdev->dev, I40E_RX_DMA_ATTR);
-   101		if (err)
-   102			return err;
-   103	
-   104		set_bit(qid, vsi->af_xdp_zc_qps);
-   105	
-   106		if_running = netif_running(vsi->netdev) && i40e_enabled_xdp_vsi(vsi);
-   107	
-   108		if (if_running) {
-   109			err = i40e_queue_pair_disable(vsi, qid);
-   110			if (err)
-   111				goto err_out;
-   112	
-   113			err = i40e_realloc_rx_xdp_bi(vsi->rx_rings[qid], true);
-   114			if (err)
-   115				goto err_out;
-   116	
-   117			err = i40e_queue_pair_enable(vsi, qid);
-   118			if (err)
-   119				goto err_out;
-   120	
-   121			/* Kick start the NAPI context so that receiving will start */
-   122			err = i40e_xsk_wakeup(vsi->netdev, qid, XDP_WAKEUP_RX);
-   123			if (err)
-   124				goto err_out;
-   125		}
-   126	
-   127		return 0;
-   128	
-   129	err_out:
- > 130		i40e_xsk_pool_disable(vsi, qid);
-   131	}
-   132	
-   133	/**
-   134	 * i40e_xsk_pool_disable - Disassociate an AF_XDP buffer pool from a
-   135	 * certain ring/qid
-   136	 * @vsi: Current VSI
-   137	 * @qid: Rx ring to associate buffer pool with
-   138	 *
-   139	 * Returns 0 on success, <0 on failure
-   140	 **/
- > 141	static int i40e_xsk_pool_disable(struct i40e_vsi *vsi, u16 qid)
-   142	{
-   143		struct net_device *netdev = vsi->netdev;
-   144		struct xsk_buff_pool *pool;
-   145		bool if_running;
-   146		int err;
-   147	
-   148		pool = xsk_get_pool_from_qid(netdev, qid);
-   149		if (!pool)
-   150			return -EINVAL;
-   151	
-   152		if_running = netif_running(vsi->netdev) && i40e_enabled_xdp_vsi(vsi);
-   153	
-   154		if (if_running) {
-   155			err = i40e_queue_pair_disable(vsi, qid);
-   156			if (err)
-   157				return err;
-   158		}
-   159	
-   160		clear_bit(qid, vsi->af_xdp_zc_qps);
-   161		xsk_pool_dma_unmap(pool, I40E_RX_DMA_ATTR);
-   162	
-   163		if (if_running) {
-   164			err = i40e_realloc_rx_xdp_bi(vsi->rx_rings[qid], false);
-   165			if (err)
-   166				return err;
-   167			err = i40e_queue_pair_enable(vsi, qid);
-   168			if (err)
-   169				return err;
-   170		}
-   171	
-   172		return 0;
-   173	}
-   174	
-
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index 96c89884988b..e66ec0c23153 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2900,6 +2900,19 @@ static noinline_for_stack int prealloc_file_extent_cluster(
+ 		 * will re-read the whole page anyway.
+ 		 */
+ 		if (page) {
++			/*
++			 * releasepage() could have cleared the page private data while
++			 * we were not holding the lock. Reset the mapping if needed so
++			 * subpage operations can access a valid private page state.
++			 */
++			ret = set_page_extent_mapped(page);
++			if (ret) {
++				unlock_page(page);
++				put_page(page);
++
++				return ret;
++			}
++
+ 			btrfs_subpage_clear_uptodate(fs_info, page, i_size,
+ 					round_up(i_size, PAGE_SIZE) - i_size);
+ 			unlock_page(page);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
 
