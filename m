@@ -1,188 +1,377 @@
-Return-Path: <stable+bounces-213009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sD8BCiu5f2mxwgIAu9opvQ
-	(envelope-from <stable+bounces-213009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 21:35:55 +0100
+	id JqWVD0q8f2nAwwIAu9opvQ
+	(envelope-from <stable+bounces-213010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 21:49:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73238C7324
-	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 21:35:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9824AC736F
+	for <lists+stable@lfdr.de>; Sun, 01 Feb 2026 21:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85D7930071F2
-	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 20:35:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BEF630053AE
+	for <lists+stable@lfdr.de>; Sun,  1 Feb 2026 20:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27962C21F0;
-	Sun,  1 Feb 2026 20:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0072D3EE5;
+	Sun,  1 Feb 2026 20:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1qjLEUB"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="anyzAZjM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011065.outbound.protection.outlook.com [40.93.194.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3512C26E173
-	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 20:35:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769978121; cv=none; b=lWfMS+ppXv5WYC6AewVAIe4TL49p9b3ArYoUN88CrR+fs7O6dUhzV8zl2+bNXGmLmlHDxYrLylIm2YJcw2m6nAe8TCbJXvOS8JBxu5QcP2lAWx9LlaJ2Ai7Bljt/yToOqrfvtCAm6Ard1wLWzHofHJZrJ2NSagbDc84x7s33qsc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769978121; c=relaxed/simple;
-	bh=5aFcpAaR/lASpDeQK/SKRvYCXntKw60Rvq8b69dCrfw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LgdXzuIFTTQOFRQYSNBgHfdWHAYzgmjk5HEYZHCas0CPbhVdw+MGSpA6rYJAoJypZcdtUEL5qVw+Y+iE0/L2a0z5nIZxF5DV9h9IrFX2E7vvS2hKdXQBJ06VxU3XJMsl45gqf+D0NaHxg+j6C6HIz0rQChfY3CSQJVPDbwG2iJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1qjLEUB; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4801ea9bafdso15062615e9.3
-        for <stable@vger.kernel.org>; Sun, 01 Feb 2026 12:35:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769978118; x=1770582918; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=91/0VfU3LtdVoSnFoD2Wj5KpABZ0e6Hnrwv0/nUnRaY=;
-        b=d1qjLEUBpGMmNcA4iRbOdpiQ0r0e94uFb9lscngtOWjOlURwjalkY0JdrNAUz5o1hA
-         HImDc0Z1NZM/XguIbd9DYh5GZ45FFhVPtGTeGG7uA/9teNxHc5XgGeSoLB5z3wBiNa/s
-         qoHAUnpNf8rYClpNbZnN8kyGeugfweZlk3xXb7n2ve5sgtptecILMgqEQSs139dqgf9c
-         Ow9Q2/T/KTxIILSHQaqonjCxXXyDC1CbV6weU6oJMrqyGiQPcrhGhov9R0ck+rGvELkB
-         YrEl7OHIEJImiXQ+5IYoeL2DIIt6FjHrTOwKDFGIpyhCLsN7ZC9LBKVv+qpGBbTRjgY+
-         pJMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769978118; x=1770582918;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=91/0VfU3LtdVoSnFoD2Wj5KpABZ0e6Hnrwv0/nUnRaY=;
-        b=S+YLuHHbL2fsAow57LaaU5OO8yqVX+fZFsY1jk5y5LrfpURGQAHN8AwJVRghJ6oryh
-         +r5Pi3bP6gYS0tlfqj5RSA9m+6lNyq+WnHmkqBEq+GQlUPx5EKEKIjvSyhxWj/6b5R1U
-         NnitlK7RmRfi/Qy3fX/hz2NUnpcXmmEtoB5H8MjrZiSY02gCFYobVEKFrMytO7uCc4kx
-         KG0q86fYEjT7UEimAD/AyBrjxnm8oGHeqYWjaIPA5nrf+9uieVNVCwJLsKO+jiZ9hjFs
-         lYZoR1+xmqHk2sCjYiOvr61G6EaOhb8CO1fftIBDuX+0K0lI6m+uupMp1Y7oO2RMoPGT
-         vNUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGKkl6z5bZWT4Jjt9DZQYrEndkhyTHQZW9duZLx/xMijFgO2n9PcqbHayKpl3mPFwYRQONhPw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK+81RMB72umuTEoNGOtk2Fj4bKi5EHiGHX+rGib1aCCrsB8R3
-	zwY2yDwM9Wtcvi9JDj4oKvCfVY/wPvvk2vIX9KmPrDYZsyMLK8cnOp3Q
-X-Gm-Gg: AZuq6aIsr6v9SHVXFyfiW5Fgf0tHJKu+i8zZ62IqDI6JDEZ4QrifwNx8Hqre/V0HQ1R
-	zNs44HPkcUXCsvAgGzcW9iL2uOXsyKPHVWtslwrG4qO4Gqy90ZacGKtAg9rNl2lg2rsG/4mYQqi
-	I7uQqaZhrGtwPDpLLLENrTAQ9NA40tm7ber5peqK56IUpv7fme/OIV9vor/sFZPZc4ZqKdUL894
-	KEJtpirkzgXcXq6AWIIhOquQZsTPPUDl5A3vlR4nt/zxn0qpDMfAsiEo9k68Xtxu1sUe2kj0RI9
-	EwkgGl73FUxrtnqbbGu/YA22QWu+xER7Qnj2zqUnxlaO8t+gwETj58X/5Exd0EPNMJoEUs04nAR
-	M9QCrFdzxWGJflObX+qu9gxAWsejw2iaGMS4hM4YpBprzKT9OLkdABTv6/tFEfcza2qz3OSs+ds
-	BhC8As+gWTPblq/Mz5JA/+66T7N0KOMEe2AuwMnPYFdtrzVOIADQU=
-X-Received: by 2002:a05:600c:310f:b0:480:1b1a:5526 with SMTP id 5b1f17b1804b1-482db46c28amr129120025e9.16.1769978118540;
-        Sun, 01 Feb 2026 12:35:18 -0800 (PST)
-Received: from [192.168.0.253] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-435e10e48a6sm37663837f8f.8.2026.02.01.12.35.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 12:35:17 -0800 (PST)
-From: Gabor Juhos <j4g8y7@gmail.com>
-Date: Sun, 01 Feb 2026 21:35:06 +0100
-Subject: [PATCH] hwmon: gpio-fan: fix set_rpm() return value
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BE72D3A77
+	for <stable@vger.kernel.org>; Sun,  1 Feb 2026 20:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769978950; cv=fail; b=hWh9opNBwbzrLfWc6UBuBQybFDSr18g4FLHLTLkEs6hMiEnK0tYX1dM6yCptpkyxYz8dNK0NH6oXqLP5X36RZg6rQFXpRq9+waA9Z82zd5uYwfRa9oWRxPx4Jrbx9nS6zhgSc1+ZZoC0MzmpR9Yeh8fPjQv+Ug1Se/owzlYFATk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769978950; c=relaxed/simple;
+	bh=ZCowpBkKZmWR8fHLv2lz1y1+4+VobRUA7471uC8pd+A=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bIFzrxsPajK+Nl2A+mpl0zq6RthLoO5HGoMsgMyfMrs8Htxw9gtTtSSpKOzSaBUOSq6yiH2tw1RcLJxpEfCgWXRjmh/UJVP0sEPwQKObaSbTIwx1YcCIVUYHxQI64NvFM6lWtYvoBUG2EqVkh8d8hD8atOIU9GPeJL6Iz/qFy4s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=anyzAZjM; arc=fail smtp.client-ip=40.93.194.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=slTKyiePjGLlSkMU8/zATnCORYpaWBzcKSNEez8a2RNNibfEYNz8Cz11WIkoIoE89U3ounZ4sVWtmV70BjTM3f9Cm/ft8DQTrkB92THCqEUHV4EotLdNJ7CcOMjM8OQinb4evxORdgWMGk4eDcWsVeDv1yrbsz6A5UXk+1nAKi81qBEPiu9NY2BTuvAGgluH9GgjfCL3xi+I+PEmuBEys4SlGDzALNtrbxip2taBKqXZYN72rQDXkg5s2zwu4XKWQ4fwUcYcMdR3ONWGwAie9x7XEyqqY3XhKVWppQSRO5j+GoDxeQgu/zi/vQv4DDfP7GKUVyHsj45EbrsUjv+cgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qc8BxuIdQuCu6p8puGCu3Ix62wcZnFd8+TyK5awbBzA=;
+ b=VkFKxJJQsguFQ7VbC/WaOlQ2sJtCNWAmRW+ePwfUkJbpxzCfCigtB+krZPFWueuDgSEWeUxMktLzGzteoRfV5ozJCoHLFqCT5SSpPVaDUHqymngGKzblA29CYX1rFuxldiI9Id9OCKYdSYzICmBDzSgY1loFJsOtN06KRDIZpLAry4RPuUxUKIIfh9SJkLiE/qEc/3lY8YGfkimUeAlRV4c8uTWhiiz3uSFjDyC+6dcdCpH9FMNUbww7ZHWqFmVd1Pj52zhJ3ThW920fd4/P8B6FdMDRV9Hfrbt56uZsLXhIcOGepezhnYbZG+Mgs6al3TiEuIDonba86uv6aKmryQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qc8BxuIdQuCu6p8puGCu3Ix62wcZnFd8+TyK5awbBzA=;
+ b=anyzAZjMO8CzANqgrQkl8TpBIjF9xJ8U3JbPrPKnSnLU/E8tp9PXnw5M1i6n4LV99gImdVo/j+OhMXAN5CCpNLcZE9PZSGZ9jjQ+kQs8oBpBxYD0hXmV1Grt5ncrrZoBIFVRVrivyVV8eoymtzOkKivUS/E4MPD3mS03odBE5Ejr40616C7u5ZRRiUu3Y4XMXGDpsw1UwiLrobNYRmfd8j2paULB6s6C2MfE7KyYQnFT0ITkJ4LSjMrJR28HKmyc7t+O5FwxnRCYFz5lke2w85c+HgnTqzqe40JipUKFOOj9DLOUeLaOslSEcUNW3n3DYeWBxjNjVn3Eh5spp8NBKA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ BN7PPFA42F4F89B.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6dd) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.12; Sun, 1 Feb
+ 2026 20:49:04 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9564.016; Sun, 1 Feb 2026
+ 20:49:04 +0000
+Message-ID: <81b9ffa6-7624-4ab0-89b7-5502bc6c711a@nvidia.com>
+Date: Sun, 1 Feb 2026 12:48:33 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
+ problem
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, intel-xe@lists.freedesktop.org,
+ Ralph Campbell <rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+ Jason Gunthorpe <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, linux-mm@kvack.org,
+ stable@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
+ <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
+ <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
+ <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
+ <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
+ <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
+ <aX+oUorOWPt1xbgw@lstrano-desk.jf.intel.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <aX+oUorOWPt1xbgw@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY1P220CA0004.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:59d::15) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260201-gpio-fan-set_rpm-retval-fix-v1-1-dc39bc7693ca@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAPm4f2kC/x3MQQqDMBBG4avIrB2YRGqhVylFgv6xA20MExFBv
- LvB5fcW76ACUxR6NQcZNi26pArXNjR+Q5rBOlWTF9+LF8dz1oVjSFywDpb/bFi38OOoO6MPz+i
- kg0wPqodsqPm+vz/neQGJ4KZlbQAAAA==
-X-Change-ID: 20260201-gpio-fan-set_rpm-retval-fix-e6a7f103e0d5
-To: Guenter Roeck <linux@roeck-us.net>, 
- Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
-X-Mailer: b4 0.14.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|BN7PPFA42F4F89B:EE_
+X-MS-Office365-Filtering-Correlation-Id: 097ebbb3-100d-493f-df6a-08de61d355dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N21sb2hFT1dpYVJoYUdGa25mdzZ5d0NzblRabFk2TE9wMEdDcFdUbWsvTmhr?=
+ =?utf-8?B?bDh3eS9zMnRaaWtjREZ0NzhvTUFnajdmM2xaQ2NRT1Npb0Zja2dVUDVrQVI2?=
+ =?utf-8?B?dlNCY2xycEJsYVR0bWNqeDhBS2l6Ym5udFM2SGhGY3Y3VDR0UUpRVFZXZHhy?=
+ =?utf-8?B?eDFZTnRubXA5Qm9YbHJXT01hcmZBSTRPdzhxc3BSa0Uva0ZBT2N4UUFrbGVs?=
+ =?utf-8?B?eWRTLzR5NEIxRTNwQWdkaStJamlmd2dFOFExTE80ZmNzUGJERm01M0NaUEl0?=
+ =?utf-8?B?T0lIWnRKcHhScUEwbnoxOEJydEhqcVE2eVRJSDJTaDBjL1Z4RjhuUHk0cjZx?=
+ =?utf-8?B?aTR2Mm1yTCs3ajZVYWZVOHoxQnUyeUVEQ1NEVjFRN1BpTUltamtqd20yYzFB?=
+ =?utf-8?B?eEtDZHEwU2ROWWlXcExYdzg1RFd1WlhHV1VpMStPekxyN05lUW9NQlRHQ3Ez?=
+ =?utf-8?B?bktCWlhNQTRaRVBmOGxpMDUyZk9pTnlKTDFsRDV0MTJkY1JtazczdE9Xd1pK?=
+ =?utf-8?B?dGp1WkNJcUJpT2pSU21xZ0JTTHNldGlMTzFSV1lJYytiQk14aWZRWHgvNjAv?=
+ =?utf-8?B?OGl0ZnJqZHVQTkdGeEl5MXg5YUNQTFVRVE56K1h6WG5UaUZhbmFCUVlFRVBl?=
+ =?utf-8?B?Qk1Fa01KQUNTK1FBNXp3NTJFSVRXbEtDQnRkTjRObWpQTk9BaEw1OXFvdWlJ?=
+ =?utf-8?B?MU5rR2ZQMy90L1F1QzVoN0wrVnZSdmRpWUUrY1czVGNvby9KOG0xTDVpOWpl?=
+ =?utf-8?B?d2F6b3YyazhqL0s1WkE1ZXkxc2R3TGlrOVFDM1JJeFdVQzBMWE1WamlweTVL?=
+ =?utf-8?B?T1hyRjlBV0M2Z1loL3VDQ0FEQWRnMjFUMGFMY1RCY3dlaGMwVkNSeDN1d0l2?=
+ =?utf-8?B?c0pFL3A5ZUxxMVdacjc5cUVUNzZxbGdBUXNCdHFHZFVjRkltNjY5MnIxd1Fn?=
+ =?utf-8?B?cEZ3eWZXWDZIUGl1TStQaFh5ZmxkcTdUYlBFam1qM1ptWTk5L01jaVJVNGhi?=
+ =?utf-8?B?ZmlFVlhaM3ZFS0dveGlUMzVNWDZ1QmZobnd2RU1XdDJtMWt0WjJ0aTl4dUVJ?=
+ =?utf-8?B?VUpxVW1YaG9LQVpNb2l2blV5bjRaakJtcDRKWGh6Yk55QmZZZGpJUzdBbjRX?=
+ =?utf-8?B?VmlQa08yR1FTZEo4aS92eG1iTUEyaStPYUNYWEhaWmtuMTFLZ0xNaXo1NnFs?=
+ =?utf-8?B?ZFYxdjYrNSsvODBLcGM4YnFTdDB3NnFXNUtvLzhVUW9EZ3Frb09NYWkxK3c0?=
+ =?utf-8?B?c21NRVJTK0xWeWtUNU42RlZkbW1hQXJqNHFRczIwV0paUkdhSS9hRFdTM1lG?=
+ =?utf-8?B?YXRRaDVraTU0b1oydDBsU0czUFpGcm5HTWVXWGdzNGMxWjJMeGppamQ5WU42?=
+ =?utf-8?B?T0V1NGs3VTE3cmJjUzl3Rm5lKzhxQjFFMk1KY201L2Z2ZG9IOHh5NGp4eXhi?=
+ =?utf-8?B?TzF5Z2YxRTVPVWFvWHY5WEpnZlhwM1ZNSE5SZzYrZitwRTlOWFpuUk1aS2Jl?=
+ =?utf-8?B?VE5BWkE2UWQwNmNBMFRGUzdSUFN1SWUxZDBvS2VCM2MzUE5ORmZkOEZVODZq?=
+ =?utf-8?B?SnhDdGVDTVh1T0FWSkk1Si8yL3JFSW9neStaMFFQWi9CcHVrazBzc1JjTVJK?=
+ =?utf-8?B?bUg2MkNEVHprT0RSVkZqSXVOTi9Semo1c3FCeDNpcXB2ZEJXTW9sYW1ndVJx?=
+ =?utf-8?B?V1NNck4rWmNoSW8xY2xXVVQveVZ0cGJuRmJ3N0hTdkcvTEVaQjZvVyt3MHpB?=
+ =?utf-8?B?WkM1V2xpY2R5cnpxVklmN2piNlptLzlJdjIzaEtmQ2VhRkVwL3dDMHRrM0Ix?=
+ =?utf-8?B?Zy9ORHhqcmFnUHY3T3FFTmpGYThpMitWaUhQcnM4WDhlSklsL3paV3kxWkg1?=
+ =?utf-8?B?S2tkU05tOWxwVFBHaXo3RmlncnM1VW5wQzZaeFp0TVl1Y3luZmVmVmJtaFFo?=
+ =?utf-8?B?K1g3MWZ4TVIyZkZnU2ptdnVrUVduMDJSVy96aDlXR0s2N2JJcFJFRGJrbGhY?=
+ =?utf-8?B?bXNpME9Kd3ZVWnR3Q1dGODhoYmpFdEN4MFY4Q3RoUE85MTBaaFhZaDVNSGdR?=
+ =?utf-8?B?cnpjQ0tmcDhRTnNQZzh5dGNhK25JSWdrc1poN3pGOFk2Skh4U3owR0IyTTY1?=
+ =?utf-8?Q?wVBg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aGhxeDhQL0F6S2krL1NydzR2VTIzaHViaENJT3RsOUNRNGVkakJ1ZzA2OWlu?=
+ =?utf-8?B?d2dLRittRjBTR1Jkc3R3ejJ6Qnd0b3JvM2l6YkxYNy9zNXVKL2RIc293dmJP?=
+ =?utf-8?B?dmdaSlh4WEhpMHNRa3BvWjJVYWFjNFdhbDU4Qk9SWFFpa2gwYUYxM1k4ci9P?=
+ =?utf-8?B?NXM1c3R5S3JoNmFoUnpaUXEwckEyQkVnRlNjS1c2bU1uR1Qxdkd3SFg5YjM5?=
+ =?utf-8?B?ajFqQWk5M1ZzNkN1U1lpSXgxaFNtTzRWS1cvQ05QL2swYWVHM0cveFNHYnJH?=
+ =?utf-8?B?Mkp4VFc5RjJwWWhjVnpKOFRWNEVqaFFFckJYdlNtYnprWktnZ0dCa0tUeWpQ?=
+ =?utf-8?B?REhCQm5JY2s2R2FSWTh0U3UyWnhmVW5wdTRnRWZaNkNMLzRRYTE2YUJXQlJl?=
+ =?utf-8?B?NE5VZU5OOE9Td1V6dU9BbGtKejFtTjQ2bW0rNDV6Nm9pWnVMN3ZUeFRlekh5?=
+ =?utf-8?B?Q1EwVWk0TDFqNkJDSHg2YnNPTHI0Y1hzWVMwVTNNQmJIbDluU0M4YTRPcE5v?=
+ =?utf-8?B?RHo4c2xVN0YrMjNMZ3l5bWFoZENsNUg0SFB0T0cyZlNjTjNSeU9JQ0VKVXNV?=
+ =?utf-8?B?cEc3L0c0VTdyMDhLT2Z5dmtMcWYvb0FIU2E5SzV4R2NyclhMRXhXa1dWWE1V?=
+ =?utf-8?B?ZkpvdUc5R2l0REQvc1paOWh2RkFLYkhPdEU0em0rL2UrL3BuZ29QRW4xcS9N?=
+ =?utf-8?B?N0pyak52UHpRdTRzNUZETHlIeE1MN0JscGJXdHV5TkFiS2lhejlVZmNDakli?=
+ =?utf-8?B?MThjSmduM1FFMjBnR3BWeWlvS2pRQUpOUlpMY3Q4ZzRLR0pOS2h0K3pkMXVP?=
+ =?utf-8?B?ZHB0TFVMWEJzTWMzTXd0bWYvZzV6QXl5UjB4VExqTkJycVpRZWhhR3VORTlW?=
+ =?utf-8?B?NVJobmlpOEdxTnJvWjJPSi9ZSVUyek5FcDRybG0yWWpCZXhzejNnTHlaSXBq?=
+ =?utf-8?B?UEFDOWRhcWFTMS9uNkdURzFsSTlDbmIyelpYQnBHOEl4L0hmWE5RNTJ0Ym9I?=
+ =?utf-8?B?emRjam81L09VZHI0QXB6RExBS2lVZE12UHYwV3ZOOTkzSTk5SDBCYTBVaS9l?=
+ =?utf-8?B?L1h1WFdlTDNCc0pHUktheHhGUExtSStWMkozSE9iRkcxVGxqWkJUWkY2SWFL?=
+ =?utf-8?B?MGxIbTZlK1lWWW1TamVuMUNUTDNNOExDMWxQbTBsOEY1eDd2em1vSy9BaVA0?=
+ =?utf-8?B?MUtwdVg0YU42RldHZnhOTGFKTkpIanN2YWJ0b0hRamlVV2JQamxzUUZ4TE1G?=
+ =?utf-8?B?czRsbVFLVUdUSTJLamMyUDNiOHd6WXBTOVlNZTVmazVPSHBMRjhvSXF1eUww?=
+ =?utf-8?B?MVRVSmxhcFh4ODExVlhBck5nenU0MnRFeFY5d0F3UUhqbCt5NUJ3RUtNbUVs?=
+ =?utf-8?B?VzZtdkI3WGhCWEQ3bEdmcDA0N0poUEpMZkpPVEY4aldsOUtEeUxITkpROFNU?=
+ =?utf-8?B?MUZQZ2xWQlBHWWVEL0FRc2ZoNEM0UW5xVEJsVGg2VktuYU5NUGhOeXl3Mktp?=
+ =?utf-8?B?TUdJVlIxNWZ3ZnFvMW4xOU9uK2ZiMDVYL2J0akNnSmt0dHJZWlpWVnB0QTV4?=
+ =?utf-8?B?b21BZE9IWEJUL0dXQmtNUEc2YUdEUW04RXF4RjVHUzdpb2ZMOXRqWHA0L0pJ?=
+ =?utf-8?B?Zyt5dGZFT0xUZmhGZ245ZHZ5SFNBWDB6UG54em1zb2FhenlJMFg2VHpieldH?=
+ =?utf-8?B?dEJiY054Wkw5VENiZkZlczBWQjZpYUFiay8rOUxnYk9WSkZsdExnQ0tkaGg2?=
+ =?utf-8?B?MG1jUUluNWtnWGhaQ1lObFNtZjdWcVFBK1NYNnVaY1JNTExBeGcwM1k4T2lo?=
+ =?utf-8?B?eGxoN3dVRTgzTU1MRUxoZC9LQy9PdU1rOTNsT1EvZTRxcXhtTzU5allISFht?=
+ =?utf-8?B?Qyt0cFZnQWR2Z0FXMUMvOHEzUTNqbkUyUnlISW05MW9PaVVrc2NDbHVzaThl?=
+ =?utf-8?B?elJ1OW1BZVRkVkVIdE40d1doWkppbVhtMlBJVHp1aU5vdVIvenNBaFBoYzhX?=
+ =?utf-8?B?aEE5ZGJuQ2dRWENodjFtSlpibHlpbkI0cFFtRWlyQWtNbEJaWlNOaENIczRC?=
+ =?utf-8?B?bGlqTG9nUmU5WWpUaElZRWNSUWZMSFM2VG8zVC9penhWWWlZeUZ0ZGdKb2o2?=
+ =?utf-8?B?NTRhU2ZEVSttRzFKM3ZOSnBpL3B2c3RkQzZXL3BVYnY2b2tvU0tGbnFkTW9W?=
+ =?utf-8?B?dU1qWS9VRjRPL1JlV1hBZ1BseFJRclE0QmVsQ201RDZtRG13SUtEa3MxZUJX?=
+ =?utf-8?B?NTFHWlBTYjFoK01GbDY4RldCZGR2Y2tXZFpvd1lWK3ZqaThtUnhhSm5haVox?=
+ =?utf-8?B?N0hZdGt5bkRsb2hJT25PRHAzQTg5UEJiSHFRa1pzTldHTFlScEMzVnQ4c3V2?=
+ =?utf-8?Q?kumzGkAjmmiYQVKc=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 097ebbb3-100d-493f-df6a-08de61d355dd
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2026 20:49:04.1692
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gS0qag0KVj2iWjPTJRUWxDqGuS+mdOR27pPDsTKJQeGPgN1OYXajkTaoExjeIH/y4Nu93qYc9J/HMdwOaTEXsw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFA42F4F89B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-213009-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213010-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[j4g8y7@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jhubbard@nvidia.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 73238C7324
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9824AC736F
 X-Rspamd-Action: no action
 
-The set_rpm function is used as a 'store' callback of a device attribute,
-and as such it should return with the number of bytes consumed. However
-since commit 0d01110e6356 ("hwmon: (gpio-fan) Add regulator support"),
-the function returns with zero on success.
+On 2/1/26 11:24 AM, Matthew Brost wrote:
+> On Sat, Jan 31, 2026 at 01:42:20PM -0800, John Hubbard wrote:
+>> On 1/31/26 11:00 AM, Matthew Brost wrote:
+>>> On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas Hellström wrote:
+>>>> On Fri, 2026-01-30 at 19:01 -0800, John Hubbard wrote:
+>>>>> On 1/30/26 10:00 AM, Andrew Morton wrote:
+>>>>>> On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellström wrote:
+>>>>> ...
+>>> I’m not convinced the folio refcount has any bearing if we can take a
+>>> sleeping lock in do_swap_page, but perhaps I’m missing something.
+>>
+>> So far, I am not able to find a problem with your proposal. So,
+>> something like this I believe could actually work:
+> 
+> I did something slightly more defensive with a refcount protection, but
+> this seems to work + fix the raised by Thomas and shows no noticeable
+> performance difference. If we go this route, do_huge_pmd_device_private
+> would need to be updated with the same pattern as well - I don't have
+> large device pages enabled in current test branch but would have to test
+> that part out too.
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index da360a6eb8a4..1e7ccc4a1a6c 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4652,6 +4652,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>                          vmf->page = softleaf_to_page(entry);
+>                          ret = remove_device_exclusive_entry(vmf);
+>                  } else if (softleaf_is_device_private(entry)) {
+> +                       struct dev_pagemap *pgmap;
+> +
+>                          if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+>                                  /*
+>                                   * migrate_to_ram is not yet ready to operate
+> @@ -4670,21 +4672,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>                                                          vmf->orig_pte)))
+>                                  goto unlock;
+> 
+> -                       /*
+> -                        * Get a page reference while we know the page can't be
+> -                        * freed.
+> -                        */
+> -                       if (trylock_page(vmf->page)) {
+> -                               struct dev_pagemap *pgmap;
+> -
+> -                               get_page(vmf->page);
+> -                               pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +                       pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +                       lock_page(vmf->page);
+> +                       if (get_page_unless_zero(vmf->page)) {
 
-Due to this, the function gets called again and again whenever the user
-tries to change the FAN speed by writing the desired RPM value into the
-'fan1_target' sysfs attribute.
+I think this ordering has a problem, because it releases the PTL before
+getting a refcount. That allows another thread to free the page, and
+then the lock_page() call here will be doing a use-after-free.
 
-The broken behaviour can be reproduced easily. For example, the following
-command never returns unless it gets terminated:
+That's why I reversed the order of those, and then as a result the
+get_page_unless_zero() also becomes unnecessary.
 
-  $ echo 500 > /sys/class/hwmon/hwmon1/fan1_target
-  ^C
-  $
+>                                  pgmap = page_pgmap(vmf->page);
+>                                  ret = pgmap->ops->migrate_to_ram(vmf);
+>                                  unlock_page(vmf->page);
+>                                  put_page(vmf->page);
+>                          } else {
+> -                               pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +                               unlock_page(vmf->page);
+>                          }
+>                  } else if (softleaf_is_hwpoison(entry)) {
+>                          ret = VM_FAULT_HWPOISON;
+> 
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index da360a6eb8a4..af73430e7888 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -4652,6 +4652,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>   			vmf->page = softleaf_to_page(entry);
+>>   			ret = remove_device_exclusive_entry(vmf);
+>>   		} else if (softleaf_is_device_private(entry)) {
+>> +			struct dev_pagemap *pgmap;
+>> +
+>>   			if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+>>   				/*
+>>   				 * migrate_to_ram is not yet ready to operate
+>> @@ -4674,18 +4676,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>   			 * Get a page reference while we know the page can't be
+>>   			 * freed.
+>>   			 */
+>> -			if (trylock_page(vmf->page)) {
+>> -				struct dev_pagemap *pgmap;
+>> -
+>> -				get_page(vmf->page);
+>> -				pte_unmap_unlock(vmf->pte, vmf->ptl);
+>> -				pgmap = page_pgmap(vmf->page);
+>> -				ret = pgmap->ops->migrate_to_ram(vmf);
+>> -				unlock_page(vmf->page);
+>> -				put_page(vmf->page);
+>> -			} else {
+>> -				pte_unmap_unlock(vmf->pte, vmf->ptl);
+>> -			}
+>> +			get_page(vmf->page);
+>> +			pte_unmap_unlock(vmf->pte, vmf->ptl);
+>> +			lock_page(vmf->page);
+>> +			pgmap = page_pgmap(vmf->page);
+>> +			ret = pgmap->ops->migrate_to_ram(vmf);
+>> +			unlock_page(vmf->page);
+>> +			put_page(vmf->page);
+>>   		} else if (softleaf_is_hwpoison(entry)) {
+>>   			ret = VM_FAULT_HWPOISON;
+>>   		} else if (softleaf_is_marker(entry)) {
+>>
+>>>
+>>>> But it looks like an AR for us to try to check how bad
+>>>> lru_cache_disable() really is. And perhaps compare with an
+>>>> unconditional lru_add_drain_all() at migration start.
+>>>>
+>>>> Does anybody know who would be able to tell whether a page refcount
+>>>> still should block migration (like today) or whether that could
+>>>> actually be relaxed to a page pincount?
+>>
+>> Yes, it really should block migration, see my response above: both
+>> pincount and refcount literally mean "do not move this page".
+>>
+>> As an aside because it might help at some point, I'm just now testing a
+>> tiny patchset that uses:
+>>
+>>      wait_var_event_killable(&folio->_refcount,
+>>                              folio_ref_count(folio) <= expected)
+>>
+>> during migration, paired with:
+>>
+>>       wake_up_var(&folio->_refcount) in put_page().
+>>
+>> This waits for the expected refcount, instead of doing a blind, tight
+>> retry loop during migration attempts. This lets migration succeed even
+>> when waiting a long time for another caller to release a refcount.
+>>
+>> It works well, but of course, it also has a potentially serious
+>> performance cost (which I need to quantify), because it adds cycles to
+>> the put_page() hot path. Which is why I haven't posted it yet, even as
+>> an RFC. It's still in the "is this even reasonable" stage, just food
+>> for thought here.
+>>
+> 
+> If you post an RFC we (Intel) can give it try as we have tests that
+> really stress migration in odd ways and have fairly good metrics to
+> catch perf issues too.
+> 
 
-Change the code to return with the same value as the 'count' parameter
-on success to indicate that all bytes from the input buffer are consumed.
-The function behaved the same way prior to the offending change.
+That would be wonderful, thanks! Testing is hard.
 
-Cc: stable@vger.kernel.org
-Fixes: 0d01110e6356 ("hwmon: (gpio-fan) Add regulator support")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
----
- drivers/hwmon/gpio-fan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
-index 516c34bb61c9cfa2927d31ee6459c8306be2fb5b..d7fa021f376e39b79b6a0302377c4516f9861459 100644
---- a/drivers/hwmon/gpio-fan.c
-+++ b/drivers/hwmon/gpio-fan.c
-@@ -291,7 +291,7 @@ static ssize_t set_rpm(struct device *dev, struct device_attribute *attr,
- {
- 	struct gpio_fan_data *fan_data = dev_get_drvdata(dev);
- 	unsigned long rpm;
--	int ret = count;
-+	int ret;
- 
- 	if (kstrtoul(buf, 10, &rpm))
- 		return -EINVAL;
-@@ -308,7 +308,7 @@ static ssize_t set_rpm(struct device *dev, struct device_attribute *attr,
- exit_unlock:
- 	mutex_unlock(&fan_data->lock);
- 
--	return ret;
-+	return ret ? ret : count;
- }
- 
- static DEVICE_ATTR_RW(pwm1);
-
----
-base-commit: 1117702454262fb361869451be5b006c022eb08a
-change-id: 20260201-gpio-fan-set_rpm-retval-fix-e6a7f103e0d5
-
-Best regards,
+thanks,
 -- 
-Gabor Juhos <j4g8y7@gmail.com>
+John Hubbard
 
 
