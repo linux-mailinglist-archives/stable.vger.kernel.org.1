@@ -1,262 +1,173 @@
-Return-Path: <stable+bounces-213022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OIMLH8ngGnv3QIAu9opvQ
-	(envelope-from <stable+bounces-213022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 05:26:39 +0100
+	id eBbIHD4qgGl73gIAu9opvQ
+	(envelope-from <stable+bounces-213023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 05:38:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CD5C826E
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 05:26:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFE8C8301
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 05:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3174E300C835
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 04:26:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5FB4300EAAF
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 04:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16EE28CF52;
-	Mon,  2 Feb 2026 04:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4718D2BEFE8;
+	Mon,  2 Feb 2026 04:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqs5rDBA"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3A228EA72;
-	Mon,  2 Feb 2026 04:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35E82882B7
+	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 04:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770006389; cv=none; b=Ka2iaKXaHjYE6tU95Kpe7v0rIE7MxrrxUs6mvXj9eUDgadjq+Kxm4+5DTpXwUmESChANstHgvtkaoRZ8IcjlV0ANh43sIHJRfCNz+PXmT8vfAh9Rr3DK9gN4I6aCaN/EjE37wuOWGfxbfvptjMiPJJDJGF8jV67kZM7SoA3gYIk=
+	t=1770007071; cv=none; b=goQ2ODEuczqB1JWIeUPgnERam1o0YwkcQTtGFQKqHbbQm4CrfBE6a2OagzOjv5a9rdKwIDyUeP7rb9V5L/ARwhDG8xx3/6mYBOtVghdQ5+qFAbe+oI8f16F9UFoJqE04F8bf7xR35Qo0EybDCn0kG74PALBkc+yKk9qVoPTbf48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770006389; c=relaxed/simple;
-	bh=LOSCuA7MZGwrIIsEWNN8iCtblTwVXafkk+0MvfypKTs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m6znUY1If8OAceyn92QUL0mbRvLkQRcHAKs0PkcOMGkJnDTJXh6fwxh5hrFhYrHFTmWOd0pubhYiQX3E5e2mnErAAE1zgx/Wv6/Hxa5Q8KUHhP7WxsPBMSqN+HADbTfu+ygazoHxNDaUoziqCj6NfI6s870WjpQIeSlwcXmwJhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C100D1042;
-	Sun,  1 Feb 2026 20:26:20 -0800 (PST)
-Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D2D5E3F740;
-	Sun,  1 Feb 2026 20:26:25 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] arm64/mm: Reject memory removal that splits a kernel leaf mapping
-Date: Mon,  2 Feb 2026 04:26:17 +0000
-Message-Id: <20260202042617.504183-3-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260202042617.504183-1-anshuman.khandual@arm.com>
-References: <20260202042617.504183-1-anshuman.khandual@arm.com>
+	s=arc-20240116; t=1770007071; c=relaxed/simple;
+	bh=SMul7Ue7pVJUIaVvSQDUhube/LVKiEJKTatjF53Wseg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VLpkuq23gvA+yCEhwoyeSL3mjvp4/NedZRm4UEBkKN9KC/hryTkEE2AV1ipdq666e1TGX5G7Gb4Y0s1ek7ZDA+5dLT1izCNtz4X4dHU6aL30x2rV8motr/WNMNw9TRwVuxYlWugJKzDu7Y8+7RdE5W+VtB4AfUoXmSvMPSQ8dUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqs5rDBA; arc=none smtp.client-ip=209.85.222.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-9489a15fc74so1362268241.3
+        for <stable@vger.kernel.org>; Sun, 01 Feb 2026 20:37:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770007068; x=1770611868; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AIbmx9IfBuJ7bRGyJfUQEL9l0O2sIDuG9wDyiySCy8o=;
+        b=dqs5rDBA3M291lCrpQ2lwFNAWobtX9W4Igi3npnBccHmti7OpEsvdbujLy/SKgFEpn
+         Lv8JBAU03CSzl3E2NLocAxFVUpVtbYhrNwuN1MAdRn9RKFdnM5jYPqegJHFNYBEdphzf
+         bT9708WnYVyL8/bhJn9a7dMAVSFc/8IqQ8SP++R5xc9wLSMAUpuioVeL5hQm6NNTQyzZ
+         Fsasa9TkeLA3KX8FkVqrHZIoiAdeHzI4krPl8G5oX8S3uf/AT+1yDobm0lnAoKAif9M1
+         KArmBhiN/QBkT580TkStO2nD6d/VAiWTB7fo1NwL+AlQ+KFaI13ZqO0v1OxqylL1T/tu
+         35wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770007068; x=1770611868;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AIbmx9IfBuJ7bRGyJfUQEL9l0O2sIDuG9wDyiySCy8o=;
+        b=CJbVN4oA3lbmoew5yTnClv0JuAWzCE5IXKacH3NRHNNQNO1J8WdLUcmR0ikOg00ess
+         E2zXd99im5Fj5fydmMDixir5or+OwGp6wMqZ7uwCCvDjYsxQ5aWtsGlDfb3XJIJp9+Ei
+         nJPlCRsEazJtSMkRp5gQr94CmaYnh5x8sYNSuye0ia8zdKfOLDT3qd47svMvHqenmo5H
+         yCnJCgxDD6HHXpbS5uvaT0qIf+gbq9HVXoHseK5Xd5Z7+xnwDDiWv2raCf5HZAwvgtFm
+         6D2pw9BZAeRhuofyE6iX5qOXtYNLtAa+7cSfLiuPEdMsD/f2uyIs9ouPus6tD/BF2dNm
+         cRcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkuV6KxQ3JNfAqjdnH3t8dlFfgC7JXWwgsA0PgtMlwv2op/UCUGFaw8wNVDLvUxNWlDCw97Os=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwT05yK+0U3emDcNdSmGAqF1JvRhw3P33whaSS1Dkl2eWmUMN7K
+	Eri1+J3ZuMAQe8olNsKbDKmcqz/Lo+ghc/6ja4C7PdBkECTpvZJ1O1jS
+X-Gm-Gg: AZuq6aJtM295YNC3FdaBQ80F4WS2Hzc7ffr3rpl/hH2EnXqO+EjPIP2GQGGic35FCmh
+	smjPBZYM9D6tct6/mWqVlWF7ZdocRyzeNPuIb2Q2+6e3JYwrK4r4gNP4K5vv9A5KiN/wi1LZB7u
+	eBIpDWQm3NUFXoUijZxhx9lr6yPuoteErfl4biphrj7MMOjjYPPPMa+5mXv823ONuPHK23kcscd
+	J4zGfgMoQyIHGFti8lxbt67wgkE+fqrNQXoaCojHBICHp+AUwRKaa3wPSwqmi7D9As16WS8mQE1
+	KMkI1eZRFQQ0+QieqH78rVryZTILZHdxQ+3wk+8DV6InduAKXpfxrn4CPiDL7dvi8TfQdcUMKQb
+	a4p4Am5zlQZmI8dRAcqdmBkX8aTRc+yMmS7xIA//lWTZtL6L8qnuQEGCDY5NV9x3wllALY0Cudo
+	JHI7IhgcPR/6qlNvZkXKJlh0Q=
+X-Received: by 2002:a05:6102:6c5:b0:5f5:11d5:70fc with SMTP id ada2fe7eead31-5f8e2471030mr4401133137.2.1770007068610;
+        Sun, 01 Feb 2026 20:37:48 -0800 (PST)
+Received: from [192.168.100.253] ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9487241762fsm4379654241.7.2026.02.01.20.37.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Feb 2026 20:37:48 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+Date: Sun, 01 Feb 2026 23:37:37 -0500
+Subject: [PATCH] platform/x86: dell-wmi: Add audio/mic mute key codes
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260201-mute-keys-v1-1-825e786732fc@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDQyMz3dzSklTd7NTKYl3zNItEI/PkFGND8zQloPqCotS0zAqwWdGxtbU
+ ASQoXkFsAAAA=
+X-Change-ID: 20260126-mute-keys-7f8a27cd317f
+To: Matthew Garrett <mjg59@srcf.ucam.org>, 
+ =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
+ Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Olexa Bilaniuk <obilaniu@gmail.com>, 
+ Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1080; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=SMul7Ue7pVJUIaVvSQDUhube/LVKiEJKTatjF53Wseg=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJkNWuIGtn/2qPTNatBnn6CS9bmC7+w9/doJx4Q/vwqr2
+ J6+3eVvRykLgxgXg6yYIkt7wqJvj6Ly3vodCL0PM4eVCWQIAxenAEzEzIOR4cuRL05HzdnWXEuv
+ 5o9nbbKYvu1NYda2g2oFAl/03M7Ps2Rk+O945uFrR7lW7vPNFSLeN1eu3cIXxqi7Rb382SfXze+
+ T+QA=
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213022-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[anshuman.khandual@arm.com,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuurtb@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email]
-X-Rspamd-Queue-Id: 41CD5C826E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BEFE8C8301
 X-Rspamd-Action: no action
 
-Linear and vmemmap mapings that get teared down during a memory hot remove
-operation might contain leaf level entries on any page table level. If the
-requested memory range's linear or vmemmap mappings falls within such leaf
-entries, new mappings need to be created for the remaning memory mapped on
-the leaf entry earlier, following standard break before make aka BBM rules.
+Add audio/mic mute key codes found in some Alienware devices.
 
-Currently memory hot remove operation does not perform such restructuring,
-and so removing memory ranges that could split a kernel leaf level mapping
-need to be rejected.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
 Cc: stable@vger.kernel.org
-Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Tested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+Suggested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- arch/arm64/mm/mmu.c | 126 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 126 insertions(+)
+ drivers/platform/x86/dell/dell-wmi-base.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 8ec8a287aaa1..9d59e10fb3de 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -2063,6 +2063,129 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- 	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
- }
+diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/platform/x86/dell/dell-wmi-base.c
+index 28076929d6af..62cf28d1fe19 100644
+--- a/drivers/platform/x86/dell/dell-wmi-base.c
++++ b/drivers/platform/x86/dell/dell-wmi-base.c
+@@ -86,6 +86,9 @@ static const struct key_entry dell_wmi_keymap_type_0000[] = {
+ 	/* Meta key unlock */
+ 	{ KE_IGNORE, 0xe001, { KEY_RIGHTMETA } },
  
++	{ KE_KEY,    0x0109, { KEY_MUTE } },
++	{ KE_KEY,    0x0150, { KEY_MICMUTE } },
 +
-+static bool split_kernel_leaf_boundary(unsigned long addr)
-+{
-+	pgd_t *pgdp, pgd;
-+	p4d_t *p4dp, p4d;
-+	pud_t *pudp, pud;
-+	pmd_t *pmdp, pmd;
-+	pte_t *ptep, pte;
-+
-+	/*
-+	 * PGD: If addr is PGD aligned then addr already
-+	 * describes a leaf boundary.
-+	 */
-+	if (ALIGN_DOWN(addr, PGDIR_SIZE) == addr)
-+		return false;
-+
-+	pgdp = pgd_offset_k(addr);
-+	pgd = pgdp_get(pgdp);
-+	if (!pgd_present(pgd))
-+		return false;
-+
-+	/*
-+	 * P4D: If addr is P4D aligned then addr already
-+	 * describes a leaf boundary.
-+	 */
-+	if (ALIGN_DOWN(addr, P4D_SIZE) == addr)
-+		return false;
-+
-+	p4dp = p4d_offset(pgdp, addr);
-+	p4d = p4dp_get(p4dp);
-+	if (!p4d_present(p4d))
-+		return false;
-+
-+	/*
-+	 * PUD: If addr is PUD aligned then addr already
-+	 * describes a leaf boundary.
-+	 */
-+	if (ALIGN_DOWN(addr, PUD_SIZE) == addr)
-+		return false;
-+
-+	pudp = pud_offset(p4dp, addr);
-+	pud = pudp_get(pudp);
-+	if (!pud_present(pud))
-+		return false;
-+
-+	if (pud_leaf(pud))
-+		return true;
-+
-+	/*
-+	 * CONT_PMD: If addr is CONT_PMD aligned then
-+	 * addr already describes a leaf boundary.
-+	 */
-+	if (ALIGN_DOWN(addr, CONT_PMD_SIZE) == addr)
-+		return false;
-+
-+	pmdp = pmd_offset(pudp, addr);
-+	pmd = pmdp_get(pmdp);
-+	if (!pmd_present(pmd))
-+		return false;
-+
-+	if (pmd_leaf(pmd) && pmd_cont(pmd))
-+		return true;
-+
-+	/*
-+	 * PMD: If addr is PMD aligned then addr already
-+	 * describes a leaf boundary.
-+	 */
-+	if (ALIGN_DOWN(addr, PMD_SIZE) == addr)
-+		return false;
-+
-+	if (pmd_leaf(pmd))
-+		return true;
-+
-+	/*
-+	 * CONT_PTE: If addr is CONT_PTE aligned then addr
-+	 * already describes a leaf boundary.
-+	 */
-+	if (ALIGN_DOWN(addr, CONT_PTE_SIZE) == addr)
-+		return false;
-+
-+	ptep = pte_offset_kernel(pmdp, addr);
-+	pte = __ptep_get(ptep);
-+	if (!pte_present(pte))
-+		return false;
-+
-+	if (pte_valid(pte) && pte_cont(pte))
-+		return true;
-+
-+	if (ALIGN_DOWN(addr, PAGE_SIZE) == addr)
-+		return false;
-+	return true;
-+}
-+
-+static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
-+{
-+	unsigned long linear_start, linear_end, phys_start, phys_end;
-+	unsigned long vmemmap_size, vmemmap_start, vmemmap_end;
-+
-+	/* Assert linear map edges do not split a leaf entry */
-+	phys_start = PFN_PHYS(pfn);
-+	phys_end = phys_start + nr_pages * PAGE_SIZE;
-+	linear_start = __phys_to_virt(phys_start);
-+	linear_end =  __phys_to_virt(phys_end);
-+	if (split_kernel_leaf_boundary(linear_start) ||
-+	    split_kernel_leaf_boundary(linear_end)) {
-+		pr_warn("[%lx %lx] splits a leaf entry in linear map\n",
-+			phys_start, phys_end);
-+		return false;
-+	}
-+
-+	/* Assert vmemmap edges do not split a leaf entry */
-+	vmemmap_size = nr_pages * sizeof(struct page);
-+	vmemmap_start = (unsigned long) pfn_to_page(pfn);
-+	vmemmap_end = vmemmap_start + vmemmap_size;
-+	if (split_kernel_leaf_boundary(vmemmap_start) ||
-+	    split_kernel_leaf_boundary(vmemmap_end)) {
-+		pr_warn("[%lx %lx] splits a leaf entry in vmemmap\n",
-+			phys_start, phys_end);
-+		return false;
-+	}
-+	return true;
-+}
-+
- /*
-  * This memory hotplug notifier helps prevent boot memory from being
-  * inadvertently removed as it blocks pfn range offlining process in
-@@ -2083,6 +2206,9 @@ static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
- 	if ((action != MEM_GOING_OFFLINE) && (action != MEM_OFFLINE))
- 		return NOTIFY_OK;
- 
-+	if (!can_unmap_without_split(pfn, arg->nr_pages))
-+		return NOTIFY_BAD;
-+
- 	for (; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
- 		unsigned long start = PFN_PHYS(pfn);
- 		unsigned long end = start + (1UL << PA_SECTION_SHIFT);
+ 	/* Key code is followed by brightness level */
+ 	{ KE_KEY,    0xe005, { KEY_BRIGHTNESSDOWN } },
+ 	{ KE_KEY,    0xe006, { KEY_BRIGHTNESSUP } },
+
+---
+base-commit: 008bec8ffe6e7746588d1e12c5b3865fa478fc91
+change-id: 20260126-mute-keys-7f8a27cd317f
+
 -- 
-2.30.2
+ ~ Kurt
 
 
