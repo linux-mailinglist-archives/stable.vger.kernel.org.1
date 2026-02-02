@@ -1,302 +1,341 @@
-Return-Path: <stable+bounces-213063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCegBSaNgGkl+wIAu9opvQ
-	(envelope-from <stable+bounces-213063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:40:22 +0100
+	id YHytAgGMgGnO9wIAu9opvQ
+	(envelope-from <stable+bounces-213064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:35:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97A5CBD58
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:40:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74055CBB6A
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:35:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 453D9307B203
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 11:32:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60E95300D9E5
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 11:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA88536214D;
-	Mon,  2 Feb 2026 11:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ePycUsjR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F6635C197;
+	Mon,  2 Feb 2026 11:35:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B073624CC
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 11:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4323321B918;
+	Mon,  2 Feb 2026 11:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770031972; cv=none; b=qdwarLQs3PU1cDzS3nEDkot6oKpofbPORI1oe+x9wKsoiBEOIbkiSSDJP7FTHCHFUkJWK/gCj/73R7HGvayi/eNJen0rS5hkLXWDnWmLaCpBICxrRj7vX7rk95BDphmICgHslPdCkyY0DUsMkE6PcHjJ+cdE8NtcuvP6UfuhALI=
+	t=1770032126; cv=none; b=BXjkOD5dN6P21IxSdCi4tlFk/evukjFZkxRn8J6lTxWd63GrzlyDoJqk3DtDQ+7JVeZZn8nU0X802gap+xu9MWAjSjZFX21TJN97Gi4yjlm+W7YA/8Uco5pzaBSTgEyPyJKU91BwGyRcXPH2uYc9kAGBv4zeg6sRYJLUwqCv9TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770031972; c=relaxed/simple;
-	bh=bnB73CudNO/ibm5Iqjxo8bfSR2hjaY2bLMkBRovZU7E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dj6ka6rvQ1uGUl/pHoBbD3LQdSyZ7jNUjFFORd+JwjZ6KF8UcltsDkecHcEzpyMDxLd8adth5HeP4qJDyAvAx2tj4scCLaonT+fyhJK8pF1QCKVwN36Uk5kX/r/Jh8uTvLUBScvDgHK8IfBCvnA3xE7AkqBja39s5jZxowx0JCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ePycUsjR; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-81f47610542so2363051b3a.0
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 03:32:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770031970; x=1770636770; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NiX6sc+bte0/E+dFVuNXwgpx22zYYyWdASCMsSYGK9c=;
-        b=ePycUsjR/pFvvLPWnrRlkEcsf4C79k5532Op1A733jWgYOBfXEkiVZaWyAXUTwWzuu
-         LNfdmVCLaNPcIYAZrQVEAjSPLDGE2TGsAI/P8P7GnOlXb/QM7tSYIZ90tHrDkS5NCsrH
-         OnjJAQS1tx6ym8djw6inHLNJDkrcw/13fHWGW9dRKgSPZ9/a3FhE4mgU6dNBKRGzEv4z
-         lzBGgWlqpRIlM0bAO8onOlN3Lzzn0IB7NJgL8zUJNu5Jm5J406LUe8NeP7pv0+gc2QOq
-         3SZ8RTijf+k9LJEPa0h1IlA27QNdQ/f7T4bYdytbg4rWuA12Hrl7+uNj09wbpkg/Es/W
-         EqSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770031970; x=1770636770;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NiX6sc+bte0/E+dFVuNXwgpx22zYYyWdASCMsSYGK9c=;
-        b=adDUq09jnXK+FmLJ4ho9AB5K6f6qWvMba7QrcyFbkMMm3vN/9TU1f1CiSwni1l6cQu
-         pgWURWVYjmdrgWpLikYHwThpdIshr1seR6pfaQRUe9My9g2Ea46ngHEhWcF+qTI9tChy
-         r7nogR0bXk61RfdjjTyF8qx9vTSnuAMnEWUgg9w5NfqotBiAOkeVPfm4Og9m1AgT12A3
-         q+hiL/tkSE0jV3Ym+rAiPvpkyGcRVaiNRvKautnVQKg7Mrf0Dv7fkZnHewG+Hgyc2hlD
-         AiQXEPbZGdCSHdJccJxwsfmHwzyjFTvSt774s7jX9TenY14OgFNvpGAK0RqQyf6mqHYt
-         jh1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWxvFUDfcRw3WK8JG/KZJLaub3dhkUv7GK4J66bu5B4SmtTDnHHat+T1i4f5pRiOb4v2BV4GOs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8jZwmEsvZPCdh4j/J1DHz8S9MVkjtyBeX7/9PDSdeonqGr8GJ
-	/3OHX4rY1WgX26sp2KrrDYEl6OY40Y4+DEQd72XhBheD51sMlrgjrF1Z
-X-Gm-Gg: AZuq6aIV0J5XmLCnNXuQxevP9AEGHIeilPPCEXQ99qLayaWL0WNDrNzCDznzEdbIfl+
-	MwQx3s4AcnAe+p11ShmONQLdSs78uIRYFyW3vgjv3ggdAnzE8z5t0QNV4FjyL+LIjv3tymiicwi
-	k2HzfhGvv5omTXHVIAIs+030RyaFR8AF8rLyTE0cowfWx3SDK6CHaVtWRKY5BGIIMLAYIFzCE6J
-	G/siObq3kpvSAWuYrort5PmHr9JKDyzy7/TdcreYUOCrahk8xJheR292clgO2MQpi+S9EkocxVE
-	DL8Sf3cAT+Ht6d3c1GYHvkvwy0BwNzYAvyPU6cMMHVCvMG4TTeOK/BEDzygiz2FBaJErehTcQlb
-	C5z6FxjIYOHNtwgPA+50APoJul84TwEKR2lffh4xiQBDcIxHOwRyOr4PxGVXWrYB7C+0cDvFClG
-	FzlNvNpReYW47ATn8T4qqZj64oMIcqgC3VpG+36A==
-X-Received: by 2002:a05:6a21:483:b0:366:19c9:b6b6 with SMTP id adf61e73a8af0-392e0000539mr10085643637.11.1770031970541;
-        Mon, 02 Feb 2026 03:32:50 -0800 (PST)
-Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642a9f539dsm13743190a12.26.2026.02.02.03.32.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 03:32:50 -0800 (PST)
-From: Jeongjun Park <aha310510@gmail.com>
-To: Inki Dae <inki.dae@samsung.com>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 3/3 v2] drm/exynos: vidi: use ctx->lock to protect struct vidi_context member variables related to memory alloc/free
-Date: Mon,  2 Feb 2026 20:32:34 +0900
-Message-Id: <20260202113234.183393-4-aha310510@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260202113234.183393-1-aha310510@gmail.com>
-References: <20260202113234.183393-1-aha310510@gmail.com>
+	s=arc-20240116; t=1770032126; c=relaxed/simple;
+	bh=ak21b6PVl+HgGETcvdqk4A2OqW7P3FPczbC5gPQLNFA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XbOeSR4uEo/L0o9ekW7CelnAkceNNHH357q/ur7gx1Arl4LdZyQi6cxtm/gJX58mtjrG0Okl0d3WChCXn8F86y3EnB4OzDya/zyKE7552vRptswcev6tLBWXyC1PlCCf4bT0QepDvvLf7Sgdu3xWF0xE444okGAq6o/QoYpz8ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 59D47339;
+	Mon,  2 Feb 2026 03:35:17 -0800 (PST)
+Received: from [10.57.95.78] (unknown [10.57.95.78])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7AAFD3F7A6;
+	Mon,  2 Feb 2026 03:35:22 -0800 (PST)
+Message-ID: <fbc45a22-a916-4885-9aeb-857c7c9dcb9c@arm.com>
+Date: Mon, 2 Feb 2026 11:35:20 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] arm64/mm: Reject memory removal that splits a kernel
+ leaf mapping
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260202042617.504183-1-anshuman.khandual@arm.com>
+ <20260202042617.504183-3-anshuman.khandual@arm.com>
+ <10088a12-332f-490e-9726-3015f99e264a@arm.com>
+ <7790afb1-df77-4c14-90f1-1499f4e68f94@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <7790afb1-df77-4c14-90f1-1499f4e68f94@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,ffwll.ch,kernel.org,samsung.com,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-213063-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-213064-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A97A5CBD58
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74055CBB6A
 X-Rspamd-Action: no action
 
-Exynos Virtual Display driver performs memory alloc/free operations
-without lock protection, which easily causes concurrency problem.
+On 02/02/2026 11:06, Anshuman Khandual wrote:
+> On 02/02/26 3:12 PM, Ryan Roberts wrote:
+>> On 02/02/2026 04:26, Anshuman Khandual wrote:
+>>> Linear and vmemmap mapings that get teared down during a memory hot remove
+>>> operation might contain leaf level entries on any page table level. If the
+>>> requested memory range's linear or vmemmap mappings falls within such leaf
+>>> entries, new mappings need to be created for the remaning memory mapped on
+>>> the leaf entry earlier, following standard break before make aka BBM rules.
+>>
+>> I think it would be good to mention that the kernel cannot tolerate BBM so
+>> remapping to fine grained leaves would not be possible on systems without
+>> BBML2_NOABORT.
+> 
+> Sure will add that.
+> 
+>>
+>>>
+>>> Currently memory hot remove operation does not perform such restructuring,
+>>> and so removing memory ranges that could split a kernel leaf level mapping
+>>> need to be rejected.
+>>
+>> Perhaps it is useful to mention that while memory_hotplug.c does appear to
+>> permit hot-unplugging arbitrary ranges of memory, the higher layers that drive
+>> memory_hotplug (e.g. ACPI, virtio, ...) all appear to treat memory as fixed size
+>> devices so it is impossible to hotunplug a different amount than was previously
+>> hotplugged, and so we should never see a rejection in practice, but adding the
+>> check makes us robust against a future change.
+> 
+> Agreed, will update the commit message.
+> 
+>>
+>>>
+>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>> Cc: Will Deacon <will@kernel.org>
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+>>> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+>>> Cc: stable@vger.kernel.org
+>>> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>>  arch/arm64/mm/mmu.c | 126 ++++++++++++++++++++++++++++++++++++++++++++
+>>>  1 file changed, 126 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>>> index 8ec8a287aaa1..9d59e10fb3de 100644
+>>> --- a/arch/arm64/mm/mmu.c
+>>> +++ b/arch/arm64/mm/mmu.c
+>>> @@ -2063,6 +2063,129 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+>>>  	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
+>>>  }
+>>>  
+>>> +
+>>> +static bool split_kernel_leaf_boundary(unsigned long addr)
+>>
+>> The name currently makes it sound like we are asking for the mapping to be split
+>> (we have existing functions to do this that are named similarly). Perhaps a
+>> better name would be addr_splits_leaf()?
+> 
+> Agreed that name sounds bit confusing and ambiguous as there is already
+> a similarly named function. Will rename it as addr_splits_kernel_leaf()
+> instead.
+> 
+>>
+>>> +{
+>>> +	pgd_t *pgdp, pgd;
+>>> +	p4d_t *p4dp, p4d;
+>>> +	pud_t *pudp, pud;
+>>> +	pmd_t *pmdp, pmd;
+>>> +	pte_t *ptep, pte;
+>>> +
+>>> +	/*
+>>> +	 * PGD: If addr is PGD aligned then addr already
+>>> +	 * describes a leaf boundary.
+>>> +	 */
+>>> +	if (ALIGN_DOWN(addr, PGDIR_SIZE) == addr)
+>>> +		return false;
+>>> +
+>>> +	pgdp = pgd_offset_k(addr);
+>>> +	pgd = pgdp_get(pgdp);
+>>> +	if (!pgd_present(pgd))
+>>> +		return false;
+>>> +
+>>> +	/*
+>>> +	 * P4D: If addr is P4D aligned then addr already
+>>> +	 * describes a leaf boundary.
+>>> +	 */
+>>> +	if (ALIGN_DOWN(addr, P4D_SIZE) == addr)
+>>> +		return false;
+>>> +
+>>> +	p4dp = p4d_offset(pgdp, addr);
+>>> +	p4d = p4dp_get(p4dp);
+>>> +	if (!p4d_present(p4d))
+>>> +		return false;
+>>> +
+>>> +	/*
+>>> +	 * PUD: If addr is PUD aligned then addr already
+>>> +	 * describes a leaf boundary.
+>>> +	 */
+>>> +	if (ALIGN_DOWN(addr, PUD_SIZE) == addr)
+>>> +		return false;
+>>> +
+>>> +	pudp = pud_offset(p4dp, addr);
+>>> +	pud = pudp_get(pudp);
+>>> +	if (!pud_present(pud))
+>>> +		return false;
+>>> +
+>>> +	if (pud_leaf(pud))
+>>> +		return true;
+>>> +
+>>> +	/*
+>>> +	 * CONT_PMD: If addr is CONT_PMD aligned then
+>>> +	 * addr already describes a leaf boundary.
+>>> +	 */
+>>> +	if (ALIGN_DOWN(addr, CONT_PMD_SIZE) == addr)
+>>> +		return false;
+>>> +
+>>> +	pmdp = pmd_offset(pudp, addr);
+>>> +	pmd = pmdp_get(pmdp);
+>>> +	if (!pmd_present(pmd))
+>>> +		return false;
+>>> +
+>>> +	if (pmd_leaf(pmd) && pmd_cont(pmd))
+>>> +		return true;
+>>> +
+>>> +	/*
+>>> +	 * PMD: If addr is PMD aligned then addr already
+>>> +	 * describes a leaf boundary.
+>>> +	 */
+>>> +	if (ALIGN_DOWN(addr, PMD_SIZE) == addr)
+>>> +		return false;
+>>> +
+>>> +	if (pmd_leaf(pmd))
+>>> +		return true;
+>>> +
+>>> +	/*
+>>> +	 * CONT_PTE: If addr is CONT_PTE aligned then addr
+>>> +	 * already describes a leaf boundary.
+>>> +	 */
+>>> +	if (ALIGN_DOWN(addr, CONT_PTE_SIZE) == addr)
+>>> +		return false;
+>>> +
+>>> +	ptep = pte_offset_kernel(pmdp, addr);
+>>> +	pte = __ptep_get(ptep);
+>>> +	if (!pte_present(pte))
+>>> +		return false;
+>>> +
+>>> +	if (pte_valid(pte) && pte_cont(pte))
+>>
+>> Why do you need pte_valid() here? You have already checked !pte_present(). Are
+>> you expecting a case of present but not valid (PTE_PRESENT_INVALID)? If so, do
+>> you need to consider that for the other levels too? (pmd_leaf() only checks
+>> pmd_present()).
+>>> Personally I think you can just drop the pte_valid() check here.
+> 
+> Added pte_valid() for abundance of caution but it is not really
+> necessary though. Sure will drop it off.
+> 
+>>
+>>> +		return true;
+>>> +
+>>> +	if (ALIGN_DOWN(addr, PAGE_SIZE) == addr)
+>>> +		return false;
+>>> +	return true;
+>>> +}
+>>> +
+>>> +static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
+>>> +{
+>>> +	unsigned long linear_start, linear_end, phys_start, phys_end;
+>>> +	unsigned long vmemmap_size, vmemmap_start, vmemmap_end;
+>>
+>> nit: do we need all these variables. Perhaps just:
+>>
+>> unsigned long sz, start, end, phys_start, phys_end;
+>>
+>> are sufficient?
+> 
+> Alright. I guess start and end can be re-used both for linear and
+> vmemmap mapping.
+> 
+>>
+>>> +
+>>> +	/* Assert linear map edges do not split a leaf entry */
+>>> +	phys_start = PFN_PHYS(pfn);
+>>> +	phys_end = phys_start + nr_pages * PAGE_SIZE;
+>>> +	linear_start = __phys_to_virt(phys_start);
+>>> +	linear_end =  __phys_to_virt(phys_end);
+>>> +	if (split_kernel_leaf_boundary(linear_start) ||
+>>> +	    split_kernel_leaf_boundary(linear_end)) {
+>>> +		pr_warn("[%lx %lx] splits a leaf entry in linear map\n",
+>>> +			phys_start, phys_end);
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	/* Assert vmemmap edges do not split a leaf entry */
+>>> +	vmemmap_size = nr_pages * sizeof(struct page);
+>>> +	vmemmap_start = (unsigned long) pfn_to_page(pfn);
+>>
+>> nit:                                   ^
+>>
+>> I don't think we would normally have that space?
+> 
+> Sure will drop that.
+> 
+>>
+>>> +	vmemmap_end = vmemmap_start + vmemmap_size;
+>>> +	if (split_kernel_leaf_boundary(vmemmap_start) ||
+>>> +	    split_kernel_leaf_boundary(vmemmap_end)) {
+>>> +		pr_warn("[%lx %lx] splits a leaf entry in vmemmap\n",
+>>> +			phys_start, phys_end);
+>>> +		return false;
+>>> +	}
+>>> +	return true;
+>>> +}
+>>> +
+>>>  /*
+>>>   * This memory hotplug notifier helps prevent boot memory from being
+>>>   * inadvertently removed as it blocks pfn range offlining process in
+>>> @@ -2083,6 +2206,9 @@ static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
+>>>  	if ((action != MEM_GOING_OFFLINE) && (action != MEM_OFFLINE))
+>>>  		return NOTIFY_OK;
+>>>  
+>>> +	if (!can_unmap_without_split(pfn, arg->nr_pages))
+>>> +		return NOTIFY_BAD;
+>>> +
+>>
+>> Personally, I'd keep the bootmem check first and do this check after. That means
+>> an existing warning will not change.
+> 
+> Makes sense, will move it after existing bootmem check. BTW the function
+> still named as prevent_bootmem_remove_notifier() although now it's going
+> to check leaf boundaries as well. Should the function be renamed as well
+> to something more generic e.g prevent_memory_remove_notifier() ?
 
-For example, use-after-free can occur in race scenario like this:
-```
-	CPU0				CPU1				CPU2
-	----				----				----
-  vidi_connection_ioctl()
-    if (vidi->connection) // true
-      drm_edid = drm_edid_alloc(); // alloc drm_edid
-      ...
-      ctx->raw_edid = drm_edid;
-      ...
-								drm_mode_getconnector()
-								  drm_helper_probe_single_connector_modes()
-								    vidi_get_modes()
-								      if (ctx->raw_edid) // true
-								        drm_edid_dup(ctx->raw_edid);
-								          if (!drm_edid) // false
-								          ...
-				vidi_connection_ioctl()
-				  if (vidi->connection) // false
-				    drm_edid_free(ctx->raw_edid); // free drm_edid
-				    ...
-								          drm_edid_alloc(drm_edid->edid)
-								            kmemdup(edid); // UAF!!
-								            ...
-```
+Works for me.
 
-To prevent these vulns, at least in vidi_context, member variables related
-to memory alloc/free should be protected with ctx->lock.
+> 
+>>
+>> Thanks,
+>> Ryan
+>>
+>>>  	for (; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
+>>>  		unsigned long start = PFN_PHYS(pfn);
+>>>  		unsigned long end = start + (1UL << PA_SECTION_SHIFT);
+>>
+> 
 
-Cc: <stable@vger.kernel.org>
-Fixes: b73d12303ecf ("drm/exynos: added virtual display driver.")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
----
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 38 ++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index 601406b640c7..37733f2ac0e7 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -186,29 +186,37 @@ static ssize_t vidi_store_connection(struct device *dev,
- 				const char *buf, size_t len)
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
--	int ret;
-+	int ret, new_connected;
- 
--	ret = kstrtoint(buf, 0, &ctx->connected);
-+	ret = kstrtoint(buf, 0, &new_connected);
- 	if (ret)
- 		return ret;
--
--	if (ctx->connected > 1)
-+	if (new_connected > 1)
- 		return -EINVAL;
- 
-+	mutex_lock(&ctx->lock);
-+
- 	/*
- 	 * Use fake edid data for test. If raw_edid is set then it can't be
- 	 * tested.
- 	 */
- 	if (ctx->raw_edid) {
- 		DRM_DEV_DEBUG_KMS(dev, "edid data is not fake data.\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto fail;
- 	}
- 
-+	ctx->connected = new_connected;
-+	mutex_unlock(&ctx->lock);
-+
- 	DRM_DEV_DEBUG_KMS(dev, "requested connection.\n");
- 
- 	drm_helper_hpd_irq_event(ctx->drm_dev);
- 
- 	return len;
-+fail:
-+	mutex_unlock(&ctx->lock);
-+	return ret;
- }
- 
- static DEVICE_ATTR(connection, 0644, vidi_show_connection,
-@@ -243,11 +251,14 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
- 		return -EINVAL;
- 	}
- 
-+	mutex_lock(&ctx->lock);
- 	if (ctx->connected == vidi->connection) {
-+		mutex_unlock(&ctx->lock);
- 		DRM_DEV_DEBUG_KMS(ctx->dev,
- 				  "same connection request.\n");
- 		return -EINVAL;
- 	}
-+	mutex_unlock(&ctx->lock);
- 
- 	if (vidi->connection) {
- 		const struct drm_edid *drm_edid;
-@@ -281,14 +292,21 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
- 					  "edid data is invalid.\n");
- 			return -EINVAL;
- 		}
-+		mutex_lock(&ctx->lock);
- 		ctx->raw_edid = drm_edid;
-+		mutex_unlock(&ctx->lock);
- 	} else {
- 		/* with connection = 0, free raw_edid */
-+		mutex_lock(&ctx->lock);
- 		drm_edid_free(ctx->raw_edid);
- 		ctx->raw_edid = NULL;
-+		mutex_unlock(&ctx->lock);
- 	}
- 
-+	mutex_lock(&ctx->lock);
- 	ctx->connected = vidi->connection;
-+	mutex_unlock(&ctx->lock);
-+
- 	drm_helper_hpd_irq_event(ctx->drm_dev);
- 
- 	return 0;
-@@ -303,7 +321,7 @@ static enum drm_connector_status vidi_detect(struct drm_connector *connector,
- 	 * connection request would come from user side
- 	 * to do hotplug through specific ioctl.
- 	 */
--	return ctx->connected ? connector_status_connected :
-+	return READ_ONCE(ctx->connected) ? connector_status_connected :
- 			connector_status_disconnected;
- }
- 
-@@ -326,11 +344,15 @@ static int vidi_get_modes(struct drm_connector *connector)
- 	const struct drm_edid *drm_edid;
- 	int count;
- 
-+	mutex_lock(&ctx->lock);
-+
- 	if (ctx->raw_edid)
- 		drm_edid = drm_edid_dup(ctx->raw_edid);
- 	else
- 		drm_edid = drm_edid_alloc(fake_edid_info, sizeof(fake_edid_info));
- 
-+	mutex_unlock(&ctx->lock);
-+
- 	drm_edid_connector_update(connector, drm_edid);
- 
- 	count = drm_edid_connector_add_modes(connector);
-@@ -482,9 +504,13 @@ static void vidi_remove(struct platform_device *pdev)
- {
- 	struct vidi_context *ctx = platform_get_drvdata(pdev);
- 
-+	mutex_lock(&ctx->lock);
-+
- 	drm_edid_free(ctx->raw_edid);
- 	ctx->raw_edid = NULL;
- 
-+	mutex_unlock(&ctx->lock);
-+
- 	component_del(&pdev->dev, &vidi_component_ops);
- }
- 
---
 
