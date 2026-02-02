@@ -1,169 +1,281 @@
-Return-Path: <stable+bounces-213038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKGONpBrgGkd8AIAu9opvQ
-	(envelope-from <stable+bounces-213038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 10:17:04 +0100
+	id JexmIXdsgGl38AIAu9opvQ
+	(envelope-from <stable+bounces-213039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 10:20:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534FECA031
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 10:17:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9321CA0AA
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 10:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2A41302711B
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 09:13:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E2833014677
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 09:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADF23559CF;
-	Mon,  2 Feb 2026 09:13:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlDSALWR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC1E21FF48;
+	Mon,  2 Feb 2026 09:18:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB731EDA2B
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 09:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5FA2853EE;
+	Mon,  2 Feb 2026 09:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770023591; cv=none; b=qdxMmkmEzdM6vAp1ItNC3zFz4/6utEDFQIlSbrqZ9Z0d7eLO+giiBCJWRNSJYXZ9VV0FrwEtuK1ognyHuL3mmXbVpVXkTB71TO/s+eUlZgT3NI3wE9blN2hV7JnVc+CSho7TffqQQnjXe339hfqk/cs41rp7zeuoqAwI8NA01uQ=
+	t=1770023906; cv=none; b=LjS8vapHlTkguzEKGPl3mOuRFngQDqMudYavA4bLS9v+ow3ys8QrboClB6mb9fvZZnA9LBA+60IUoHAi6NsGrXr3cToVK/sChlvW7yJPLC+rf/ltDnHt96b+/vtiSKdj63sFo5etvGK4LGiSvdIUvNpCFHXTz54A1ciDvFyRz7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770023591; c=relaxed/simple;
-	bh=vXOTW8XU61f4CbGPL3gcpzwdMcHgirqYXw8QOj4FO6Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QPes7DorKJQxEP7dHfhZfZ0pkMwHoWVwTgHiK2ZdSuWH8EnIqQcpTol3jehFktVhzg9DFeBmST3gKDaiGvi5hqRoAgKDqeySQdosBHx98wDxxyClbE+DvNhr6pw9ICeHTsfGMJB8/+FUA3YMsrdc+RCYShMw9FL4Dr4Bn+WrYSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XlDSALWR; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770023590; x=1801559590;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=vXOTW8XU61f4CbGPL3gcpzwdMcHgirqYXw8QOj4FO6Q=;
-  b=XlDSALWRYMUKW4j+HxjIDI9ObLAz31I45q0kCZzp49/HJ3GzTNJSre4j
-   bgjRb/4oNzlx4ylbwFlXOF0Ss/VUqTZ11pPC3XVyn2WoiTeJE+3XyQWwJ
-   VD65YSF9G1lY2Hayunfl3vOW8GUMItcucA+trK/DCCcV/YiADZv1WAhLx
-   cMxAReGGz3U03MkbipfR+uPoPQERtUwka/+Empf0ZXVKodI8waWtE4ddW
-   6bdeEFKMY7vZSU+0jgdIlQW8thEoGRL7LzHPbedK3tweb8K0bFyGUXpKq
-   DLf8dDw2A6UBYJB6YvRrkXwrs+Av4JVH2N417iYBT7sXhfmcB3FanBeEQ
-   Q==;
-X-CSE-ConnectionGUID: 2Sho3cmbSOSIuZSl3th+qQ==
-X-CSE-MsgGUID: C8nEqzsCRrCW//zESwdL0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="71160136"
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="71160136"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 01:13:09 -0800
-X-CSE-ConnectionGUID: +NriBRTqQlOEiLyPxWQibQ==
-X-CSE-MsgGUID: TSSK///DRCO7TAWUDBX7mA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="213570159"
-Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.193]) ([10.245.244.193])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 01:13:06 -0800
-Message-ID: <a459f147b461c6e6e806282956b7931f74a0aa93.camel@linux.intel.com>
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: John Hubbard <jhubbard@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- intel-xe@lists.freedesktop.org,  Ralph Campbell <rcampbell@nvidia.com>,
- Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,  Jason
- Gunthorpe	 <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- linux-mm@kvack.org, 	stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-Date: Mon, 02 Feb 2026 10:13:03 +0100
-In-Reply-To: <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
-References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
-	 <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-	 <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
-	 <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
-	 <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
-	 <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	s=arc-20240116; t=1770023906; c=relaxed/simple;
+	bh=4v3D21B6hTaqn2MwwckEw8K3ezBfFg+HctZkT4afc84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gT/Dw5gxREbw9xntJBjw58qoaNSffaW6CohMnrF1Pq//6G8f3TfIi7OkgmdFcPRupG7ABqqiH6daQehtuX/k47H5wTqwHCu7vyZSPKieJsIRmC6SMhsRUmpmcrv8DQVwAC6UQEGPU2Y0UCCA7Q76ei+qtbtw1IvHqwzg12IOgzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FDB3339;
+	Mon,  2 Feb 2026 01:18:17 -0800 (PST)
+Received: from [10.57.95.78] (unknown [10.57.95.78])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D0263F740;
+	Mon,  2 Feb 2026 01:18:22 -0800 (PST)
+Message-ID: <57bc3f07-c227-4117-8fb4-a2b198629215@arm.com>
+Date: Mon, 2 Feb 2026 09:18:20 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] arm64/mm: Enable batched TLB flush in
+ unmap_hotplug_range()
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260202042617.504183-1-anshuman.khandual@arm.com>
+ <20260202042617.504183-2-anshuman.khandual@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260202042617.504183-2-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-213038-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213039-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.intel.com:mid,intel.com:email,intel.com:dkim]
-X-Rspamd-Queue-Id: 534FECA031
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,arm.com:mid,arm.com:email]
+X-Rspamd-Queue-Id: D9321CA0AA
 X-Rspamd-Action: no action
 
-On Sat, 2026-01-31 at 13:42 -0800, John Hubbard wrote:
-> On 1/31/26 11:00 AM, Matthew Brost wrote:
-> > On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas Hellstr=C3=B6m wrote:
-> > > On Fri, 2026-01-30 at 19:01 -0800, John Hubbard wrote:
-> > > > On 1/30/26 10:00 AM, Andrew Morton wrote:
-> > > > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellstr=C3=B6m
-> > > > > <thomas.hellstrom@linux.intel.com> wrote:
-> > > > ...
->=20
-> >=20
-> > > I'm also not sure a folio refcount should block migration after
-> > > the
-> > > introduction of pinned (like in pin_user_pages) pages. Rather
-> > > perhaps a
-> > > folio pin-count should block migration and in that case
-> > > do_swap_page()
-> > > can definitely do a sleeping folio lock and the problem is gone.
->=20
-> A problem for that specific point is that pincount and refcount both
-> mean, "the page is pinned" (which in turn literally means "not
-> allowed
-> to migrate/move").
+On 02/02/2026 04:26, Anshuman Khandual wrote:
+> During a memory hot remove operartion both linear and vmemmap mappings for
+> the memory range being removed, get unmapped via unmap_hotplug_range() but
+> mapped pages get freed only for vmemmap mapping. This is just a sequential
+> operation where each table entry gets cleared, followed by a leaf specific
+> TLB flush, and then followed by memory free operation when applicable.
+> 
+> This approach was simple and uniform both for vmemmap and linear mappings.
+> But linear mapping might contain CONT marked block memory where it becomes
+> necessary to first clear out all entire in the range before a TLB flush.
+> This is as per the architecture requirement. Hence batch all TLB flushes
+> during the table tear down walk and finally do it in unmap_hotplug_range().
 
-Yeah this is what I actually want to challenge since this is what
-blocks us from doing a clean robust solution here. From brief reading
-of the docs around the pin-count implementation, I understand it as "If
-you want to access the struct page metadata, get a refcount, If you
-want to access the actual memory of a page, take a pin-count"
+I might be worth mentioning the impact of not bein architecture compliant here?
 
-I guess that might still not be true for all old instances in the
-kernel using get_user_pages() instead of pin_user_pages() for things
-like DMA, but perhaps we can set that in stone and document it at least
-for device-private pages for now which would be sufficient for the
-do_swap_pages() refcount not to block migration.
+Something like:
+
+  Prior to this fix, it was hypothetically possible for a speculative access to
+  a higher address in the contiguous block to fill the TLB with shattered
+  entries for the entire contiguous range after a lower address had already been
+  cleared and invalidated. Due to the entries being shattered, the subsequent
+  tlbi for the higher address would not then clear the TLB entries for the lower
+  address, meaning stale TLB entries could persist.
+
+> 
+> Besides it is helps in improving the performance via TLBI range operation
+
+nit:         ^^ (remove)
+
+> along with reduced synchronization instructions. The time spent executing
+> unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
+> in KVM guest.
+
+That's a great improvement :)
+
+> 
+> This scheme is not applicable during vmemmap mapping tear down where memory
+> needs to be freed and hence a TLB flush is required after clearing out page
+> table entry.
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+I suggested the original shape of this and I see you have added my SOB. Final
+patch looks good to me - I'm not sure if it's correct for me to add Rb, but here
+it is regardless:
+
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
 
->=20
-> (In fact, pincount is implemented in terms of refcount, in most
-> configurations still.)
+> ---
+>  arch/arm64/mm/mmu.c | 81 +++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 67 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 8e1d80a7033e..8ec8a287aaa1 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1458,10 +1458,32 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
+>  
+>  		WARN_ON(!pte_present(pte));
+>  		__pte_clear(&init_mm, addr, ptep);
+> -		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> -		if (free_mapped)
+> +		if (free_mapped) {
+> +			/*
+> +			 * If page is part of an existing contiguous
+> +			 * memory block, individual TLB invalidation
+> +			 * here would not be appropriate. Instead it
+> +			 * will require clearing all entries for the
+> +			 * memory block and subsequently a TLB flush
+> +			 * for the entire range.
+> +			 */
+> +			WARN_ON(pte_cont(pte));
+> +
+> +			/*
+> +			 * TLB flush is essential for freeing memory.
+> +			 */
+> +			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>  			free_hotplug_page_range(pte_page(pte),
+>  						PAGE_SIZE, altmap);
+> +		}
+> +
+> +		/*
+> +		 * TLB flush is batched in unmap_hotplug_range()
+> +		 * for the entire range, when memory need not be
+> +		 * freed. Besides linear mapping might have CONT
+> +		 * blocks where TLB flush needs to be done after
+> +		 * clearing all relevant entries.
+> +		 */
+>  	} while (addr += PAGE_SIZE, addr < end);
+>  }
+>  
+> @@ -1482,15 +1504,32 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
+>  		WARN_ON(!pmd_present(pmd));
+>  		if (pmd_sect(pmd)) {
+>  			pmd_clear(pmdp);
+> +			if (free_mapped) {
+> +				/*
+> +				 * If page is part of an existing contiguous
+> +				 * memory block, individual TLB invalidation
+> +				 * here would not be appropriate. Instead it
+> +				 * will require clearing all entries for the
+> +				 * memory block and subsequently a TLB flush
+> +				 * for the entire range.
+> +				 */
+> +				WARN_ON(pmd_cont(pmd));
+> +
+> +				/*
+> +				 * TLB flush is essential for freeing memory.
+> +				 */
+> +				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+> +				free_hotplug_page_range(pmd_page(pmd),
+> +							PMD_SIZE, altmap);
+> +			}
+>  
+>  			/*
+> -			 * One TLBI should be sufficient here as the PMD_SIZE
+> -			 * range is mapped with a single block entry.
+> +			 * TLB flush is batched in unmap_hotplug_range()
+> +			 * for the entire range, when memory need not be
+> +			 * freed. Besides linear mapping might have CONT
+> +			 * blocks where TLB flush needs to be done after
+> +			 * clearing all relevant entries.
+>  			 */
+> -			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> -			if (free_mapped)
+> -				free_hotplug_page_range(pmd_page(pmd),
+> -							PMD_SIZE, altmap);
+>  			continue;
+>  		}
+>  		WARN_ON(!pmd_table(pmd));
+> @@ -1515,15 +1554,20 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
+>  		WARN_ON(!pud_present(pud));
+>  		if (pud_sect(pud)) {
+>  			pud_clear(pudp);
+> +			if (free_mapped) {
+> +				/*
+> +				 * TLB flush is essential for freeing memory.
+> +				 */
+> +				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
+> +				free_hotplug_page_range(pud_page(pud),
+> +							PUD_SIZE, altmap);
+> +			}
+>  
+>  			/*
+> -			 * One TLBI should be sufficient here as the PUD_SIZE
+> -			 * range is mapped with a single block entry.
+> +			 * TLB flush is batched in unmap_hotplug_range()
+> +			 * for the entire range, when memory need not be
+> +			 * freed.
+>  			 */
+> -			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> -			if (free_mapped)
+> -				free_hotplug_page_range(pud_page(pud),
+> -							PUD_SIZE, altmap);
+>  			continue;
+>  		}
+>  		WARN_ON(!pud_table(pud));
+> @@ -1553,6 +1597,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
+>  static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+>  				bool free_mapped, struct vmem_altmap *altmap)
+>  {
+> +	unsigned long start = addr;
+>  	unsigned long next;
+>  	pgd_t *pgdp, pgd;
+>  
+> @@ -1574,6 +1619,14 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+>  		WARN_ON(!pgd_present(pgd));
+>  		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
+>  	} while (addr = next, addr < end);
+> +
+> +	/*
+> +	 * Batched TLB flush only for linear mapping which
+> +	 * might contain CONT blocks, and does not require
+> +	 * freeing up memory as well.
+> +	 */
+> +	if (!free_mapped)
+> +		flush_tlb_kernel_range(start, end);
+>  }
+>  
+>  static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
 
-Yes but that's only a space optimization never intended to conflict,
-right? Meaning a pin-count will imply a refcount but a refcount will
-never imply a pin-count?
-
-Thanks,
-Thomas
 
