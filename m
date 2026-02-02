@@ -1,156 +1,137 @@
-Return-Path: <stable+bounces-213031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213032-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHI3ARxbgGlj7AIAu9opvQ
-	(envelope-from <stable+bounces-213031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 09:06:52 +0100
+	id oC1xFmtdgGlj7AIAu9opvQ
+	(envelope-from <stable+bounces-213032-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 09:16:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8A7C97AB
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 09:06:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBEDC99CA
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 09:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 941EA3044825
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 07:59:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B94430329A7
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 08:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0766A2C1584;
-	Mon,  2 Feb 2026 07:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A8131AAAB;
+	Mon,  2 Feb 2026 08:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Ru87Sg2J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRdmQxdJ"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1E2296BBC;
-	Mon,  2 Feb 2026 07:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFD231987D;
+	Mon,  2 Feb 2026 08:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770019149; cv=none; b=nzqPL9rJPFnO4p9jNICFJMy1I5tAeWxix1OLiLJHwtiSZ28bLH7Q22hsd6XXHm89QG+dBoIWyLMoPLilmtyrTvcGRkeMDOUAOP1zIlgPVlw8pBMo3/YUrceXnU2z1WEgTE0BtdoLEoacPStV2jW2TPP787Z8BYAGri9inTW5dmY=
+	t=1770019978; cv=none; b=S/vIm4Yq/OEOPHrkN1duQzolIcodeXIwWv65ENgcUw1vgIzxfisuulCQ+BST4hCcKVRwLhuPISAh/NZkuLDHGSgvLS2avAFkctZ3ubuAo0gyTEa/NLWk01M2meb6Droxk8kDyYPCAYD2/CVnknoZk74yFCVwHRwMmKIXfCYvaXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770019149; c=relaxed/simple;
-	bh=cmBlgaXEpfurE/glj7lwr6dyYgsmqCQjq3X6IKWuPfc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A6Y1vwyXUwC19xspSbkYA0532zLhJNbOOyvzzFh9Pi0S4iSxL6PTyHMiDizXZTeynfCEjN/hAzJuxco7hOlovfcgWfyQLAdYyRdofHUC+PiPhcjKcEM2CyqKPfr7Vp3OMjMqNw2uIhLBPTgtJRgjIPyz5B/EBYczz8etTqFqq9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Ru87Sg2J; arc=none smtp.client-ip=120.232.169.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Ru87Sg2J4uUcZvOOY0u4R1y0rScgFix+Fg13nGRGqpYiaXWvhYa8/7S4rABN01KpqwqIzlSY/O/pr
-	 5NYTrjvPrF5Z+W1Tkmfut0Ycc+afSCBkOaeKBtIHYCjjTgqdh1F4sGUEbGOGlYZaYnBYt91Un1tJ9j
-	 +F+7LppXinG47VkM=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-27-12032 (RichMail) with SMTP id 2f0069805926d3d-01d60;
-	Mon, 02 Feb 2026 15:58:35 +0800 (CST)
-X-RM-TRANSID:2f0069805926d3d-01d60
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	rbmccav@gmail.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.1.y] drm/radeon: delete radeon_fence_process in is_signaled, no deadlock
-Date: Mon,  2 Feb 2026 15:58:55 +0800
-Message-Id: <20260202075855.947632-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1770019978; c=relaxed/simple;
+	bh=J/miz9G6KPWFyQRqmLFXDkSic/bk7y5/czUygFiENIk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e6eI0v3/EsV2fcuqnPzuw7k0Wx0qiBU5SyWalctpdaKC/HZ4B0XoUVqa8HjAN6nWLSfPCQIMIZimjj7E/6mDjej4Zi2FBhLK63lfjDSqYN4+dBIqNUj3fYky4736LHefV5CvrtsJKWbZxxB1kAlvt8H7l+txPShk9aN3vSpHdu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRdmQxdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B9CC116C6;
+	Mon,  2 Feb 2026 08:12:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770019977;
+	bh=J/miz9G6KPWFyQRqmLFXDkSic/bk7y5/czUygFiENIk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eRdmQxdJc2MmzDFX/MXy2ZJ6ojBjmPYQ5ezExca6TdDsEMmMq+cmpCusG9ZA01WzA
+	 oq09GHl2+8mUXuJvbVqK8AkfaQlwHAy1MtccpzoBd0s2J8YA2lsP83OetgHv0rAWl1
+	 DZTf+/42WRjfXE9Rqzojd6WS5tkvznmMEnZLrj8IAiMI52Y+eG0ld60WF7nQIlqPqf
+	 lTTok9o9ekiaFAWHe5u0ul3wlahbaf63LLrirhNTYB+R59ixoaqokgL7B56bOTwI2M
+	 dHV9+nMBBJhyfglYnLM+IkKhHubTIrRJiudtsq/0H6v1UryfI+AAq+G62h1m0lg2ku
+	 vukPevXB4x3Ow==
+Received: by pali.im (Postfix)
+	id E098148F; Mon,  2 Feb 2026 09:12:47 +0100 (CET)
+Date: Mon, 2 Feb 2026 09:12:47 +0100
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Kurt Borja <kuurtb@gmail.com>
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, Hans de Goede <hansg@kernel.org>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Olexa Bilaniuk <obilaniu@gmail.com>
+Subject: Re: [PATCH] platform/x86: dell-wmi: Add audio/mic mute key codes
+Message-ID: <20260202081247.vpvbsapdrynr7vtf@pali>
+References: <20260201-mute-keys-v1-1-825e786732fc@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260201-mute-keys-v1-1-825e786732fc@gmail.com>
+User-Agent: NeoMutt/20180716
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213031-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,lists.freedesktop.org];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	DMARC_NA(0.00)[139.com];
+	FREEMAIL_CC(0.00)[srcf.ucam.org,kernel.org,linux.intel.com,vger.kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213032-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pali@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: 4B8A7C97AB
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: AFBEDC99CA
 X-Rspamd-Action: no action
 
-From: Robert McClinton <rbmccav@gmail.com>
+On Sunday 01 February 2026 23:37:37 Kurt Borja wrote:
+> Add audio/mic mute key codes found in some Alienware devices.
+> 
+> Cc: stable@vger.kernel.org
+> Tested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+> Suggested-by: Olexa Bilaniuk <obilaniu@gmail.com>
+> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> ---
+>  drivers/platform/x86/dell/dell-wmi-base.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/platform/x86/dell/dell-wmi-base.c
+> index 28076929d6af..62cf28d1fe19 100644
+> --- a/drivers/platform/x86/dell/dell-wmi-base.c
+> +++ b/drivers/platform/x86/dell/dell-wmi-base.c
+> @@ -86,6 +86,9 @@ static const struct key_entry dell_wmi_keymap_type_0000[] = {
+>  	/* Meta key unlock */
+>  	{ KE_IGNORE, 0xe001, { KEY_RIGHTMETA } },
+>  
+> +	{ KE_KEY,    0x0109, { KEY_MUTE } },
+> +	{ KE_KEY,    0x0150, { KEY_MICMUTE } },
 
-[ Upstream commit 9eb00b5f5697bd56baa3222c7a1426fa15bacfb5 ]
+Hello, please keep codes in the array sorted.
 
-Delete the attempt to progress the queue when checking if fence is
-signaled. This avoids deadlock.
-
-dma-fence_ops::signaled can be called with the fence lock in unknown
-state. For radeon, the fence lock is also the wait queue lock. This can
-cause a self deadlock when signaled() tries to make forward progress on
-the wait queue. But advancing the queue is unneeded because incorrectly
-returning false from signaled() is perfectly acceptable.
-
-Link: https://github.com/brave/brave-browser/issues/49182
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4641
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Robert McClinton <rbmccav@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 527ba26e50ec2ca2be9c7c82f3ad42998a75d0db)
-Cc: stable@vger.kernel.org
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
----
- drivers/gpu/drm/radeon/radeon_fence.c | 8 --------
- 1 file changed, 8 deletions(-)
-
-diff --git a/drivers/gpu/drm/radeon/radeon_fence.c b/drivers/gpu/drm/radeon/radeon_fence.c
-index 73e3117420bf..1f2a12a43dd3 100644
---- a/drivers/gpu/drm/radeon/radeon_fence.c
-+++ b/drivers/gpu/drm/radeon/radeon_fence.c
-@@ -362,14 +362,6 @@ static bool radeon_fence_is_signaled(struct dma_fence *f)
- 		return true;
- 	}
- 
--	if (down_read_trylock(&rdev->exclusive_lock)) {
--		radeon_fence_process(rdev, ring);
--		up_read(&rdev->exclusive_lock);
--
--		if (atomic64_read(&rdev->fence_drv[ring].last_seq) >= seq) {
--			return true;
--		}
--	}
- 	return false;
- }
- 
--- 
-2.34.1
-
-
+> +
+>  	/* Key code is followed by brightness level */
+>  	{ KE_KEY,    0xe005, { KEY_BRIGHTNESSDOWN } },
+>  	{ KE_KEY,    0xe006, { KEY_BRIGHTNESSUP } },
+> 
+> ---
+> base-commit: 008bec8ffe6e7746588d1e12c5b3865fa478fc91
+> change-id: 20260126-mute-keys-7f8a27cd317f
+> 
+> -- 
+>  ~ Kurt
+> 
 
