@@ -1,305 +1,185 @@
-Return-Path: <stable+bounces-213042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAQNN4JxgGkw8QIAu9opvQ
-	(envelope-from <stable+bounces-213042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 10:42:26 +0100
+	id +PtbLRp2gGkV8gIAu9opvQ
+	(envelope-from <stable+bounces-213043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:02:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26560CA364
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 10:42:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E424CA642
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04ABA300ECA0
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 09:42:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C216301753B
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 10:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FAD302CC0;
-	Mon,  2 Feb 2026 09:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663B42E8B8F;
+	Mon,  2 Feb 2026 10:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="WthYmqm1"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF7E2C0F69;
-	Mon,  2 Feb 2026 09:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF8913DDA4;
+	Mon,  2 Feb 2026 10:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770025343; cv=none; b=oA8NDuaiB5skFt2uA4PMR2vbOhfMrfqbFPn+PZVYK9TZ3xyaxdo0USJdjlPJwCcFJ8jqAh6DcxJ1lSlIk5rb13K5OhS+wLL6a0jd/7YE45Ke2Zmu1ZfZlz4/ISHu38Ob56e8G40o/CtonplYUJb6ZWOvCkTnqWMAjhuyiZW4is4=
+	t=1770026511; cv=none; b=fxAYiT+igBKWcTpLh+k37x3AHMx9NJS4l4HXFfhTys9gbDmDfMFFDf8/7MOGvg2E9Yrfh2OlBGd7ENOCOT/ABP4yxOtLiUiM8WQ4XzUSXnxWhgcVXtBUiulKA6qYA82oK30l9mp6hb2No5B+J/Q8RINhz6iy7q0rStMDkxiw2Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770025343; c=relaxed/simple;
-	bh=0EVJlIC+o0CMbI6wpxWPH5wP7o2G8jsAT4dTlekGmPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZKbHz59kVDZQclW1/2eOD0IqYmGTFJGBczboeeW0gA4n0WAAGpTkyv5LX6/VJqQJk4MhC/lN82fRik7eOpaqv+LZOAY+qRM6Al7j0CNuELwOpxxilOjJ0U0JAxnCb3gs+2oQOCc+aurU9AhOmJwO4IMwZLmwpWegTVfJjXXYSdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B74C339;
-	Mon,  2 Feb 2026 01:42:14 -0800 (PST)
-Received: from [10.57.95.78] (unknown [10.57.95.78])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A8F83F740;
-	Mon,  2 Feb 2026 01:42:19 -0800 (PST)
-Message-ID: <10088a12-332f-490e-9726-3015f99e264a@arm.com>
-Date: Mon, 2 Feb 2026 09:42:17 +0000
+	s=arc-20240116; t=1770026511; c=relaxed/simple;
+	bh=rciqWe9MknIhKucUK+4wbzClj9FvwHeXsn6kPpt+wM8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CjEol7uscSrBu/Fn883/DfSD2IVkr0LfT1A4bygIAFgwkeJHQAeMORCjqFEpWsZkxoWTAC6g39C4E5/ucpWB9GFZIf+LDn/mAlhhekC/6Pyhb3iiWTmvV4maMB5fSGqAD/0Pnb8VWyOfhUQ78aSEKTWQ0dpOQJ2zzFOdevrwvYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=WthYmqm1; arc=none smtp.client-ip=211.125.140.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=sony.com; s=s1jp; t=1770026509; x=1801562509;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=9aqqCS44lWCHB49Zm7J55r5rkQXnOnuoUWB3fHL0bvM=;
+  b=WthYmqm18NcKRaulODHiMrXwGk3KNmOKbApGsp+aHd/mAzUUanpb2H8a
+   yMcqfdsJlcTu5MnszvUuh0csC3XBtbZEp5j4anZFRIKP4Lc/EMRScPGaO
+   3/0Y+DplUVZrK9huDVcZKw5TyrpyjIC4nGeE2vM2hGV6kK+oHqImMJVYa
+   zyNVPmTUbQ8DOKlzU+GuOAgBJ7tOc2xODkLD/NgZL5E7MH9DRQe0aKoTK
+   ec1JfmUVIV+qix/aM3Nud5bihiFYlwJ4JGLPh54wapM/hieiCKfCsIgQl
+   Cmp8WGKnIceiUNEljFyW1t0VabUqnn1ug0P1l40vuGqcFYjAESoh+Ypbd
+   A==;
+Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
+  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 18:51:38 +0900
+X-IronPort-AV: E=Sophos;i="6.21,268,1763391600"; 
+   d="scan'208";a="607384933"
+Received: from unknown (HELO [127.0.1.1]) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
+  by jpmta-ob1.noc.sony.co.jp with ESMTP; 02 Feb 2026 18:51:37 +0900
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
+Subject: [PATCH 0/3] x86/x2apic: Fix hang-up of defconfig kernel on resume
+ from s2ram
+Date: Mon, 02 Feb 2026 18:51:01 +0900
+Message-Id: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64/mm: Reject memory removal that splits a kernel
- leaf mapping
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260202042617.504183-1-anshuman.khandual@arm.com>
- <20260202042617.504183-3-anshuman.khandual@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260202042617.504183-3-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIZzgGkC/x2MQQqAIBAAvyJ7TlDBsL4SHXTbai8mCiGIf086z
+ sBMg0KZqcAqGmR6ufATB+hJAN4+XiT5GAxGmVkZpWU1PjHKk6t0Fh3qYDEsCkaQMg39z7a99w8
+ R+TM4XAAAAA==
+X-Change-ID: 20260201-x2apic-fix-85c8c1b5cb90
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Suresh Siddha <suresh.b.siddha@intel.com>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+ Ajay Kaher <ajay.kaher@broadcom.com>, 
+ Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Jan Kiszka <jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org, 
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
+ jailhouse-dev@googlegroups.com, kvm@vger.kernel.org, 
+ xen-devel@lists.xenproject.org, Rahul Bukte <rahul.bukte@sony.com>, 
+ Shashank Balaji <shashank.mahadasyam@sony.com>, 
+ Daniel Palmer <daniel.palmer@sony.com>, Tim Bird <tim.bird@sony.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2357;
+ i=shashank.mahadasyam@sony.com; h=from:subject:message-id;
+ bh=rciqWe9MknIhKucUK+4wbzClj9FvwHeXsn6kPpt+wM8=;
+ b=owGbwMvMwCU2bX1+URVTXyjjabUkhsyG4hXbtvp/s2L/pXvGSPVq9wtGQUU/0+sZWw9OOKhfs
+ jfkl8CHjlIWBjEuBlkxRZZSpepfe1cELek581oRZg4rE8gQBi5OAZhIlhTD/8DScGFBO6NF8ydO
+ ftFcVXsmfwpX6p0FupNYLebce84rq8zI0Cddbi5zcoJG8MkZzSbn5D/+eMqwb04Pw8ycnOdp7hW
+ XuQA=
+X-Developer-Key: i=shashank.mahadasyam@sony.com; a=openpgp;
+ fpr=75227BFABDA852A48CCCEB2196AF6F727A028E55
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[sony.com,none];
+	R_DKIM_ALLOW(-0.20)[sony.com:s=s1jp];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213042-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[32];
 	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shashank.mahadasyam@sony.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:mid,arm.com:email,infradead.org:email]
-X-Rspamd-Queue-Id: 26560CA364
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213043-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[sony.com:+]
+X-Rspamd-Queue-Id: 6E424CA642
 X-Rspamd-Action: no action
 
-On 02/02/2026 04:26, Anshuman Khandual wrote:
-> Linear and vmemmap mapings that get teared down during a memory hot remove
-> operation might contain leaf level entries on any page table level. If the
-> requested memory range's linear or vmemmap mappings falls within such leaf
-> entries, new mappings need to be created for the remaning memory mapped on
-> the leaf entry earlier, following standard break before make aka BBM rules.
+On resume from s2ram, a defconfig kernel gets into a state where the x2apic
+hardware state and the kernel's perceived state are different.
 
-I think it would be good to mention that the kernel cannot tolerate BBM so
-remapping to fine grained leaves would not be possible on systems without
-BBML2_NOABORT.
+On boot, x2apic is enabled by the firmware, and then the kernel does the
+following (relevant lines from dmesg):
 
-> 
-> Currently memory hot remove operation does not perform such restructuring,
-> and so removing memory ranges that could split a kernel leaf level mapping
-> need to be rejected.
+	[    0.000381] x2apic: enabled by BIOS, switching to x2apic ops
+	[    0.009939] APIC: Switched APIC routing to: cluster x2apic
+	[    0.095151] x2apic: IRQ remapping doesn't support X2APIC mode
+	[    0.095154] x2apic disabled
+	[    0.095551] APIC: Switched APIC routing to: physical flat
 
-Perhaps it is useful to mention that while memory_hotplug.c does appear to
-permit hot-unplugging arbitrary ranges of memory, the higher layers that drive
-memory_hotplug (e.g. ACPI, virtio, ...) all appear to treat memory as fixed size
-devices so it is impossible to hotunplug a different amount than was previously
-hotplugged, and so we should never see a rejection in practice, but adding the
-check makes us robust against a future change.
+defconfig has CONFIG_IRQ_REMAP=n, which leads to x2apic being disabled,
+because on bare metal, x2apic has an architectural dependence on interrupt
+remapping.
 
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
-> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/arm64/mm/mmu.c | 126 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 126 insertions(+)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 8ec8a287aaa1..9d59e10fb3de 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -2063,6 +2063,129 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->  	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
->  }
->  
-> +
-> +static bool split_kernel_leaf_boundary(unsigned long addr)
+While resuming from s2ram, x2apic is enabled again by the firmware, but
+the kernel continues using the physical flat apic routing. This causes a
+hang-up and no console output.
 
-The name currently makes it sound like we are asking for the mapping to be split
-(we have existing functions to do this that are named similarly). Perhaps a
-better name would be addr_splits_leaf()?
+Patch 1 fixes this in lapic_resume by disabling x2apic when the kernel expects
+it to be disabled.
+Patch 2 enables CONFIG_IRQ_REMAP in defconfig so that defconfig kernels at
+least don't disable x2apic because of a lack of IRQ_REMAP support.
+Patch 3 is a non-functional change renaming x2apic_available to
+x2apic_without_ir_available in struct x86_hyper_init, to better convey
+the semantic.
 
-> +{
-> +	pgd_t *pgdp, pgd;
-> +	p4d_t *p4dp, p4d;
-> +	pud_t *pudp, pud;
-> +	pmd_t *pmdp, pmd;
-> +	pte_t *ptep, pte;
-> +
-> +	/*
-> +	 * PGD: If addr is PGD aligned then addr already
-> +	 * describes a leaf boundary.
-> +	 */
-> +	if (ALIGN_DOWN(addr, PGDIR_SIZE) == addr)
-> +		return false;
-> +
-> +	pgdp = pgd_offset_k(addr);
-> +	pgd = pgdp_get(pgdp);
-> +	if (!pgd_present(pgd))
-> +		return false;
-> +
-> +	/*
-> +	 * P4D: If addr is P4D aligned then addr already
-> +	 * describes a leaf boundary.
-> +	 */
-> +	if (ALIGN_DOWN(addr, P4D_SIZE) == addr)
-> +		return false;
-> +
-> +	p4dp = p4d_offset(pgdp, addr);
-> +	p4d = p4dp_get(p4dp);
-> +	if (!p4d_present(p4d))
-> +		return false;
-> +
-> +	/*
-> +	 * PUD: If addr is PUD aligned then addr already
-> +	 * describes a leaf boundary.
-> +	 */
-> +	if (ALIGN_DOWN(addr, PUD_SIZE) == addr)
-> +		return false;
-> +
-> +	pudp = pud_offset(p4dp, addr);
-> +	pud = pudp_get(pudp);
-> +	if (!pud_present(pud))
-> +		return false;
-> +
-> +	if (pud_leaf(pud))
-> +		return true;
-> +
-> +	/*
-> +	 * CONT_PMD: If addr is CONT_PMD aligned then
-> +	 * addr already describes a leaf boundary.
-> +	 */
-> +	if (ALIGN_DOWN(addr, CONT_PMD_SIZE) == addr)
-> +		return false;
-> +
-> +	pmdp = pmd_offset(pudp, addr);
-> +	pmd = pmdp_get(pmdp);
-> +	if (!pmd_present(pmd))
-> +		return false;
-> +
-> +	if (pmd_leaf(pmd) && pmd_cont(pmd))
-> +		return true;
-> +
-> +	/*
-> +	 * PMD: If addr is PMD aligned then addr already
-> +	 * describes a leaf boundary.
-> +	 */
-> +	if (ALIGN_DOWN(addr, PMD_SIZE) == addr)
-> +		return false;
-> +
-> +	if (pmd_leaf(pmd))
-> +		return true;
-> +
-> +	/*
-> +	 * CONT_PTE: If addr is CONT_PTE aligned then addr
-> +	 * already describes a leaf boundary.
-> +	 */
-> +	if (ALIGN_DOWN(addr, CONT_PTE_SIZE) == addr)
-> +		return false;
-> +
-> +	ptep = pte_offset_kernel(pmdp, addr);
-> +	pte = __ptep_get(ptep);
-> +	if (!pte_present(pte))
-> +		return false;
-> +
-> +	if (pte_valid(pte) && pte_cont(pte))
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+---
+Shashank Balaji (3):
+      x86/x2apic: disable x2apic on resume if the kernel expects so
+      x86/defconfig: add CONFIG_IRQ_REMAP
+      x86/virt: rename x2apic_available to x2apic_without_ir_available
 
-Why do you need pte_valid() here? You have already checked !pte_present(). Are
-you expecting a case of present but not valid (PTE_PRESENT_INVALID)? If so, do
-you need to consider that for the other levels too? (pmd_leaf() only checks
-pmd_present()).
+ arch/x86/configs/x86_64_defconfig |  1 +
+ arch/x86/include/asm/x86_init.h   |  4 ++--
+ arch/x86/kernel/apic/apic.c       | 10 ++++++++--
+ arch/x86/kernel/cpu/acrn.c        |  2 +-
+ arch/x86/kernel/cpu/bhyve.c       |  2 +-
+ arch/x86/kernel/cpu/mshyperv.c    |  2 +-
+ arch/x86/kernel/cpu/vmware.c      |  2 +-
+ arch/x86/kernel/jailhouse.c       |  2 +-
+ arch/x86/kernel/kvm.c             |  2 +-
+ arch/x86/kernel/x86_init.c        | 12 ++++++------
+ arch/x86/xen/enlighten_hvm.c      |  4 ++--
+ 11 files changed, 25 insertions(+), 18 deletions(-)
+---
+base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+change-id: 20260201-x2apic-fix-85c8c1b5cb90
 
-Personally I think you can just drop the pte_valid() check here.
-
-> +		return true;
-> +
-> +	if (ALIGN_DOWN(addr, PAGE_SIZE) == addr)
-> +		return false;
-> +	return true;
-> +}
-> +
-> +static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
-> +{
-> +	unsigned long linear_start, linear_end, phys_start, phys_end;
-> +	unsigned long vmemmap_size, vmemmap_start, vmemmap_end;
-
-nit: do we need all these variables. Perhaps just:
-
-unsigned long sz, start, end, phys_start, phys_end;
-
-are sufficient?
-
-> +
-> +	/* Assert linear map edges do not split a leaf entry */
-> +	phys_start = PFN_PHYS(pfn);
-> +	phys_end = phys_start + nr_pages * PAGE_SIZE;
-> +	linear_start = __phys_to_virt(phys_start);
-> +	linear_end =  __phys_to_virt(phys_end);
-> +	if (split_kernel_leaf_boundary(linear_start) ||
-> +	    split_kernel_leaf_boundary(linear_end)) {
-> +		pr_warn("[%lx %lx] splits a leaf entry in linear map\n",
-> +			phys_start, phys_end);
-> +		return false;
-> +	}
-> +
-> +	/* Assert vmemmap edges do not split a leaf entry */
-> +	vmemmap_size = nr_pages * sizeof(struct page);
-> +	vmemmap_start = (unsigned long) pfn_to_page(pfn);
-
-nit:                                   ^
-
-I don't think we would normally have that space?
-
-> +	vmemmap_end = vmemmap_start + vmemmap_size;
-> +	if (split_kernel_leaf_boundary(vmemmap_start) ||
-> +	    split_kernel_leaf_boundary(vmemmap_end)) {
-> +		pr_warn("[%lx %lx] splits a leaf entry in vmemmap\n",
-> +			phys_start, phys_end);
-> +		return false;
-> +	}
-> +	return true;
-> +}
-> +
->  /*
->   * This memory hotplug notifier helps prevent boot memory from being
->   * inadvertently removed as it blocks pfn range offlining process in
-> @@ -2083,6 +2206,9 @@ static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
->  	if ((action != MEM_GOING_OFFLINE) && (action != MEM_OFFLINE))
->  		return NOTIFY_OK;
->  
-> +	if (!can_unmap_without_split(pfn, arg->nr_pages))
-> +		return NOTIFY_BAD;
-> +
-
-Personally, I'd keep the bootmem check first and do this check after. That means
-an existing warning will not change.
-
-Thanks,
-Ryan
-
->  	for (; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
->  		unsigned long start = PFN_PHYS(pfn);
->  		unsigned long end = start + (1UL << PA_SECTION_SHIFT);
+Best regards,
+-- 
+Shashank Balaji <shashank.mahadasyam@sony.com>
 
 
