@@ -1,90 +1,95 @@
-Return-Path: <stable+bounces-213086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICjzHqfVgGmFBwMAu9opvQ
-	(envelope-from <stable+bounces-213086-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:49:43 +0100
+	id MEikGrvVgGmFBwMAu9opvQ
+	(envelope-from <stable+bounces-213087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:50:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F25CF267
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:49:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 168A5CF279
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:50:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 50C753015D83
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 16:49:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBB323018437
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 16:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D5C3803E0;
-	Mon,  2 Feb 2026 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA313803F8;
+	Mon,  2 Feb 2026 16:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KNxgHPH+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPPziV2+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E007837FF6B
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 16:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFED83806B5
+	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 16:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770050980; cv=none; b=JrxeSs30Ppzq4W+OeJN8r6UvIgyhcOOD132ry9qjjmJ4G6oGt257y4fy8aMzyJ0R9eVc4WwzMH+h64jPVPMIbN9ZElD9NaTZJg31q8iDH9lStF8cxeYQMZpcM0fJowlvI4nTmq7fDCBgzilkRSTGAZnBAg2tBgle/jTLE2jleVA=
+	t=1770050997; cv=none; b=UAA6TjGyLc1JD7L1AOCzK36X3je8e/+vA1uQuEB1sJz56yEZR45uDKD4W9tBGTd6KdwMxAg58fGdRvsq3kP4oggJffNkEmRs1I9SRnTpNS9b5qIBn+ev+vF2tDNB1DpOHTorLSQvCwFvmyYN06LBXDFau2lrcxhjT2vtnltjE74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770050980; c=relaxed/simple;
-	bh=9FQTQ5XT23vi3SldL4OO7E66I3J0aHUZ/Dkp1I60gNM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dcdy0L0oLZ/WA5W7tWPGRQn7dWmVG80JlYVspwFwpG1zk4utFbbcr5dfpKJL0G0uirq570QpFrq6hVnSbw2uzjhy29OiLW7V/caP1gyRzSGkLYqgJGV1fJ0pv/6Xy3Krjh6xSaXSEf7FB/2zjAqSwXs48Scl+TlnEZKSHBahV8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KNxgHPH+; arc=none smtp.client-ip=209.85.167.48
+	s=arc-20240116; t=1770050997; c=relaxed/simple;
+	bh=jhN+YleJ9I8wkZB6e165Fsm08eZT4j05sZ9wxNMGoE0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E61uYuH370MAzmtz6eQf+jTI0qNVUrNUoC6+UyFgn581SW/98ktkjMgx7Udc/yo0Ar0fi63W4ECIENgvGd6AoaGFe9mxsscqVHRzD9PI6x7qrFP2MtxUP+qG0SH1tPuB9rYxors57eWU9L1I3OMVJkuosDZlifrhUW/1hrVTUXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPPziV2+; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59de0b7c28aso5433325e87.1
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 08:49:38 -0800 (PST)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59dd54b1073so5451531e87.0
+        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 08:49:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770050977; x=1770655777; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Zy8cbAPvmMp4/nsRe8+Q1FLj4E5T7eqUSyhIhSY+EY=;
-        b=KNxgHPH+dNiCDDvXiiIPL2TbXROt4ck/OfHxEESvAsfX9Hdlhqd5gHvBo6g7t1kSHv
-         WYtsjJLZMJhF4mmCPBVi+6rJugCKUg3fkkb4pV2JsuBJmilnOxE7eyVXqHmpNW6wTB6L
-         hPjGkZQ5dM26clpFg1b4O18N0opUWZGiI0tAwwEMXBBnUSNEvvSTp80LoWYSJ0R8jJtt
-         jyPgsCK0fg76Y/584Z0Qgt9tyVx4dadKDqRgAgild3Y+zA7J7tZ7NkzmqT21K8PR7WuS
-         F1vL4fDEPE8Xdi5P/qj929oRX5luqaQfoKb3vvGOcRCfZDODMIr/3bosfQKMQvF73HfP
-         XS9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770050977; x=1770655777;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770050994; x=1770655794; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1Zy8cbAPvmMp4/nsRe8+Q1FLj4E5T7eqUSyhIhSY+EY=;
-        b=VRKsygImccUxKoobYZm84AMQX+7sJ1Gq5uqUKN1rmOPAJO+CFKh+LdHcpB3ZPuuiYG
-         5VEyu8Yko9BfahmrOEWrds4HcD1aZUFZlUIvhUF/r0T7vM4NgLERzwmb9rWb3/Z4P8UY
-         FJCe2uq91GZCP2/5yKnsQq7PbHAOomZMnRqv1hSw5kPBASgltKHk8agaMjw78OEzqYRS
-         25sPkv4E1y70oZdFUkfmWC+YlAauimJyF2ky4pCLtyWsXLlYlkJ0vqfZgsBQPAsqFJ2x
-         TieamUTnkl18+bfWs6mexqBRL7WfE3/83MwRDCSFxgDfAJRqjwIkjduW1Un3eAHtbAQE
-         JVaA==
-X-Gm-Message-State: AOJu0YyqqLfdVrLpBBZUvw6YpmLUmBsv2x9TnIVTLZf3ayStRShhqOxm
-	4h3Rd2zf9RBuuP8mu5Yy+Fu79dzT5NsTNUqcKG0+gFHeKhltyXxDw3nlWlt7qfxe
-X-Gm-Gg: AZuq6aJMZu022Q5FjjclTSKeFz5Hc5JXzuyTlxMBxt9JMdm1wOdZFzLRFPQT6yiLbAB
-	OAFDO7tx0ZLPnLy6SJHGhePFJwwiKJu3ApLMMOhwkXwuwo0ueej+ZtA3KcsM2PzRSj8ls3LJd/R
-	PXteoSEXD0RSYxmKmV/MCl/SjO8vAqUl5oLrmFDUJxDYIPUxCMAPU4moL6uwBxCqSRIVlWL8j8M
-	g0+dIeWzZOSDVsmrAlkJHmzeUN5QZnupMhfrySc4dB6KiErcjUpJvFqVLx+VKq0N9gVHMLxDXTx
-	TxusOya/294FLp9c0GpxFYfsClUw0eIMc//FU0m/N+NGpEoxHX6h9tQYukaUoQU+zyYnD6+MDgf
-	S+aStUuHp0grQa2EM5WRw9blZJdUq+MYRdXrIzgZ8gN07Odbn2BYaaZSDaQl23N+8gkakc3gDVN
-	GMhzYXcT6+qBOu8GAA+kwTqiOYAVi0J6Fk/BDc/nZGjXHY2UkcWdK/FFx2zVW1kmuLeK4Zfe/tn
-	ZEjII77JLPHz4aqAiA8
-X-Received: by 2002:ac2:4bc8:0:b0:59e:2f86:1a50 with SMTP id 2adb3069b0e04-59e2f861c51mr414539e87.38.1770050976819;
-        Mon, 02 Feb 2026 08:49:36 -0800 (PST)
+        bh=fXhgxcsuPkNcRdWC6jKl2Ki9gol6dqqET4szBsmvqSc=;
+        b=lPPziV2+8KqpvVW4SSYqUvubwR55ZB7NbvQJkcT8WqbHMBodB/OqWVecJjQL2hLYvh
+         vAsgNnJlpQEsFGdGdwgxb12Uz89qaK0a+Zj8wzsoCFE8s/GjyEcYUjTWVnEYDsnXgz1M
+         lM5YHURR/DErrpnQXzoHF7YkmD13v4ZumEJQ3qixrJl9xBx7fU1m49LYGDJbmi+ojVEz
+         EcU5PefYFBE0jnT4ND5xFQ4iNBmOAyaDcFw4PHqKp0PiTnCk5vd+iHTi4x89nFfvCJVf
+         s6N6DmeBEy1ph+M1Gp2Oa9TJ7DKH4g3juujiqrWuS2ZfSCiNavx3pG5s5yEnnqXvelqi
+         d7VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770050994; x=1770655794;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fXhgxcsuPkNcRdWC6jKl2Ki9gol6dqqET4szBsmvqSc=;
+        b=AaTnvdtGDWVcWcq46PYV3E+w0X1Tr3qut8YLFpwKMPl4iMVxhQZ8mBfo5oyA2HuuY3
+         CQ4gZi+3eGdxpJTgUNPFry2bWDb80iP5sVIeVbNCKBpecnB6/H4BTJVQzbha6Jcr92/T
+         acGIDKcyddjj9AuDHBxNxNY05KsjwfDVLljhcWdmKmtV3P4bGeFtG1fQ1SzwCcGaGQM8
+         EhZNeRrwZ+GzXXSuYaNh0A5+JeNkjwj57DE6eAppDvBlYdKeb+btBUy2cfexI0p6hYNv
+         ZyY5UlTwEhMXFZfsEkR2NZZs1Dvu6qXGYyv9H8O2l/9gpWAhNyZFrYc9jBEDN4khIT8A
+         eqLA==
+X-Gm-Message-State: AOJu0Yw87vDCONtSdlsCmSYHeFtBnZS8qki5bGe0JmhSihXKZEwFVvr7
+	wYO/ppRPQnsNPm3mjGl5Oo9W94dfUi+BWSOrK0FHuV8lCe8sK5qJ944MpPzjpPC2
+X-Gm-Gg: AZuq6aJ813/evp2+8xD7oV9lGOzbkhLQD4O2sLaT5fMOwFxBsrvmwoCQntqnKaOlGoh
+	KbgcdiWesd1GQiMCJKG6qE9g6qYoVzJbhCgPbDZ3+qDOBvvrzbIbmnCLSs1jZXNhraak8ZaFVN7
+	JSfjcCVammgtnGx2fHgKC1B2j3nPfZ7yCLgnttwKuQBK2BHLvtaivBA0Biy7XMsGB0zSPdtzvds
+	eI4DXQGcBerbE8286GNdV6BvT+8LZ07RjX7xhIH97r1wuOwaUQG6sbcrYxFyR5qEXUUQyR1pgyW
+	Zv1/q5t72i5FX5AbQtUCr+5FcoC65JnC2SAPx3Z5u7pwFSxA2T9DhTpGXQ5RrFcB0rXTP4PYt22
+	Sk78ZdbRs0ZFoe9JvKwZ1SXINBOBTELznxMTheZxAxw4adbgulgy+TqrcjIm8QNM3PiArTrXWzM
+	8TyverFA2ffgDqULA+Arjbzgvgj0k0y1A94Xo9kdVjz2zwqfzZxYfc+netjNsohhqv0yFfAriqA
+	9CHu0zRCQ==
+X-Received: by 2002:ac2:4f07:0:b0:59e:2c7a:1ae0 with SMTP id 2adb3069b0e04-59e2c7a1b1dmr780344e87.13.1770050994021;
+        Mon, 02 Feb 2026 08:49:54 -0800 (PST)
 Received: from uuba.fritz.box (2001-14ba-6e-3100-2ef5-59d5-c9b3-566.rev.dnainternet.fi. [2001:14ba:6e:3100:2ef5:59d5:c9b3:566])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59e074b7092sm3598268e87.71.2026.02.02.08.49.34
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59e074b7092sm3598268e87.71.2026.02.02.08.49.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 08:49:36 -0800 (PST)
+        Mon, 02 Feb 2026 08:49:53 -0800 (PST)
 From: =?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
 To: stable@vger.kernel.org
 Cc: johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 6.1.y 1/2] wifi: mac80211: use wiphy work for sdata->work
-Date: Mon,  2 Feb 2026 18:49:23 +0200
-Message-ID: <20260202164924.215621-1-hannelotta@gmail.com>
+Subject: [PATCH 6.1.y 2/2] wifi: mac80211: move TDLS work to wiphy work
+Date: Mon,  2 Feb 2026 18:49:24 +0200
+Message-ID: <20260202164924.215621-2-hannelotta@gmail.com>
 X-Mailer: git-send-email 2.53.0.rc2.2.g2258446484
+In-Reply-To: <20260202164924.215621-1-hannelotta@gmail.com>
+References: <20260202164924.215621-1-hannelotta@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,358 +109,129 @@ X-Spamd-Result: default: False [-0.28 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213086-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[sipsolutions.net,vger.kernel.org,intel.com,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213087-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[hannelotta@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 15F25CF267
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 168A5CF279
 X-Rspamd-Action: no action
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 16114496d684a3df4ce09f7c6b7557a8b2922795 ]
+[ Upstream commit 777b26002b73127e81643d9286fadf3d41e0e477 ]
 
-We'll need this later to convert other works that might
-be cancelled from here, so convert this one first.
+Again, to have the wiphy locked for it.
 
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-(cherry picked from commit 16114496d684a3df4ce09f7c6b7557a8b2922795)
+[ Summary of conflict resolutions:
+  - In mlme.c, move only tdls_peer_del_work
+    to wiphy work, and none the other works ]
 Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
 ---
- net/mac80211/ibss.c        |  8 ++++----
- net/mac80211/ieee80211_i.h |  2 +-
- net/mac80211/iface.c       | 10 +++++-----
- net/mac80211/mesh.c        | 10 +++++-----
- net/mac80211/mesh_hwmp.c   |  6 +++---
- net/mac80211/mlme.c        |  6 +++---
- net/mac80211/ocb.c         |  6 +++---
- net/mac80211/rx.c          |  2 +-
- net/mac80211/scan.c        |  2 +-
- net/mac80211/status.c      |  6 +++---
- net/mac80211/util.c        |  2 +-
- 11 files changed, 30 insertions(+), 30 deletions(-)
+ net/mac80211/ieee80211_i.h |  4 ++--
+ net/mac80211/mlme.c        |  7 ++++---
+ net/mac80211/tdls.c        | 11 ++++++-----
+ 3 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index 79d2c5505289..363e7e4fdd02 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -741,7 +741,7 @@ static void ieee80211_csa_connection_drop_work(struct work_struct *work)
- 	skb_queue_purge(&sdata->skb_queue);
- 
- 	/* trigger a scan to find another IBSS network to join */
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- 
- 	sdata_unlock(sdata);
- }
-@@ -1242,7 +1242,7 @@ void ieee80211_ibss_rx_no_sta(struct ieee80211_sub_if_data *sdata,
- 	spin_lock(&ifibss->incomplete_lock);
- 	list_add(&sta->list, &ifibss->incomplete_stations);
- 	spin_unlock(&ifibss->incomplete_lock);
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- }
- 
- static void ieee80211_ibss_sta_expire(struct ieee80211_sub_if_data *sdata)
-@@ -1721,7 +1721,7 @@ static void ieee80211_ibss_timer(struct timer_list *t)
- 	struct ieee80211_sub_if_data *sdata =
- 		from_timer(sdata, t, u.ibss.timer);
- 
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- }
- 
- void ieee80211_ibss_setup_sdata(struct ieee80211_sub_if_data *sdata)
-@@ -1856,7 +1856,7 @@ int ieee80211_ibss_join(struct ieee80211_sub_if_data *sdata,
- 	sdata->deflink.needed_rx_chains = local->rx_chains;
- 	sdata->control_port_over_nl80211 = params->control_port_over_nl80211;
- 
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- 
- 	return 0;
- }
 diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 64f8d8f2b799..6cc5bba2ba52 100644
+index 6cc5bba2ba52..e94a370da4c4 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -1046,7 +1046,7 @@ struct ieee80211_sub_if_data {
- 	/* used to reconfigure hardware SM PS */
- 	struct work_struct recalc_smps;
+@@ -531,7 +531,7 @@ struct ieee80211_if_managed {
  
--	struct work_struct work;
-+	struct wiphy_work work;
- 	struct sk_buff_head skb_queue;
- 	struct sk_buff_head status_queue;
- 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index e691ecdd2ad5..6818c9d852e8 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -43,7 +43,7 @@
-  * by either the RTNL, the iflist_mtx or RCU.
-  */
- 
--static void ieee80211_iface_work(struct work_struct *work);
-+static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work);
- 
- bool __ieee80211_recalc_txpower(struct ieee80211_sub_if_data *sdata)
- {
-@@ -650,7 +650,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		RCU_INIT_POINTER(local->p2p_sdata, NULL);
- 		fallthrough;
- 	default:
--		cancel_work_sync(&sdata->work);
-+		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
- 		/*
- 		 * When we get here, the interface is marked down.
- 		 * Free the remaining keys, if there are any
-@@ -1224,7 +1224,7 @@ int ieee80211_add_virtual_monitor(struct ieee80211_local *local)
- 
- 	skb_queue_head_init(&sdata->skb_queue);
- 	skb_queue_head_init(&sdata->status_queue);
--	INIT_WORK(&sdata->work, ieee80211_iface_work);
-+	wiphy_work_init(&sdata->work, ieee80211_iface_work);
- 
- 	return 0;
- }
-@@ -1707,7 +1707,7 @@ static void ieee80211_iface_process_status(struct ieee80211_sub_if_data *sdata,
- 	}
- }
- 
--static void ieee80211_iface_work(struct work_struct *work)
-+static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work)
- {
- 	struct ieee80211_sub_if_data *sdata =
- 		container_of(work, struct ieee80211_sub_if_data, work);
-@@ -1819,7 +1819,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
- 
- 	skb_queue_head_init(&sdata->skb_queue);
- 	skb_queue_head_init(&sdata->status_queue);
--	INIT_WORK(&sdata->work, ieee80211_iface_work);
-+	wiphy_work_init(&sdata->work, ieee80211_iface_work);
- 	INIT_WORK(&sdata->recalc_smps, ieee80211_recalc_smps_work);
- 	INIT_WORK(&sdata->activate_links_work, ieee80211_activate_links_work);
- 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 9c9b47d153c2..434efb30c75f 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -44,7 +44,7 @@ static void ieee80211_mesh_housekeeping_timer(struct timer_list *t)
- 
- 	set_bit(MESH_WORK_HOUSEKEEPING, &ifmsh->wrkq_flags);
- 
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- }
- 
- /**
-@@ -643,7 +643,7 @@ static void ieee80211_mesh_path_timer(struct timer_list *t)
- 	struct ieee80211_sub_if_data *sdata =
- 		from_timer(sdata, t, u.mesh.mesh_path_timer);
- 
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- }
- 
- static void ieee80211_mesh_path_root_timer(struct timer_list *t)
-@@ -654,7 +654,7 @@ static void ieee80211_mesh_path_root_timer(struct timer_list *t)
- 
- 	set_bit(MESH_WORK_ROOT, &ifmsh->wrkq_flags);
- 
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- }
- 
- void ieee80211_mesh_root_setup(struct ieee80211_if_mesh *ifmsh)
-@@ -1018,7 +1018,7 @@ void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
- 	for_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE)
- 		set_bit(bit, &ifmsh->mbss_changed);
- 	set_bit(MESH_WORK_MBSS_CHANGED, &ifmsh->wrkq_flags);
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- }
- 
- int ieee80211_start_mesh(struct ieee80211_sub_if_data *sdata)
-@@ -1043,7 +1043,7 @@ int ieee80211_start_mesh(struct ieee80211_sub_if_data *sdata)
- 	ifmsh->sync_offset_clockdrift_max = 0;
- 	set_bit(MESH_WORK_HOUSEKEEPING, &ifmsh->wrkq_flags);
- 	ieee80211_mesh_root_setup(ifmsh);
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- 	sdata->vif.bss_conf.ht_operation_mode =
- 				ifmsh->mshcfg.ht_opmode;
- 	sdata->vif.bss_conf.enable_beacon = true;
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index da9e152a7aab..50dba479246b 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-  * Copyright (c) 2008, 2009 open80211s Ltd.
-- * Copyright (C) 2019, 2021-2022 Intel Corporation
-+ * Copyright (C) 2019, 2021-2023 Intel Corporation
-  * Author:     Luis Carlos Cobo <luisca@cozybit.com>
-  */
- 
-@@ -1025,14 +1025,14 @@ static void mesh_queue_preq(struct mesh_path *mpath, u8 flags)
- 	spin_unlock_bh(&ifmsh->mesh_preq_queue_lock);
- 
- 	if (time_after(jiffies, ifmsh->last_preq + min_preq_int_jiff(sdata)))
--		ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+		wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- 
- 	else if (time_before(jiffies, ifmsh->last_preq)) {
- 		/* avoid long wait if did not send preqs for a long time
- 		 * and jiffies wrapped around
- 		 */
- 		ifmsh->last_preq = jiffies - min_preq_int_jiff(sdata) - 1;
--		ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+		wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- 	} else
- 		mod_timer(&ifmsh->mesh_path_timer, ifmsh->last_preq +
- 						min_preq_int_jiff(sdata));
+ 	/* TDLS support */
+ 	u8 tdls_peer[ETH_ALEN] __aligned(2);
+-	struct delayed_work tdls_peer_del_work;
++	struct wiphy_delayed_work tdls_peer_del_work;
+ 	struct sk_buff *orig_teardown_skb; /* The original teardown skb */
+ 	struct sk_buff *teardown_skb; /* A copy to send through the AP */
+ 	spinlock_t teardown_lock; /* To lock changing teardown_skb */
+@@ -2525,7 +2525,7 @@ int ieee80211_tdls_mgmt(struct wiphy *wiphy, struct net_device *dev,
+ 			size_t extra_ies_len);
+ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 			const u8 *peer, enum nl80211_tdls_operation oper);
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk);
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk);
+ int ieee80211_tdls_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 				  const u8 *addr, u8 oper_class,
+ 				  struct cfg80211_chan_def *chandef);
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 1fb41e5cc577..8824460a2060 100644
+index 8824460a2060..30db27df6b79 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -3168,7 +3168,7 @@ void ieee80211_sta_tx_notify(struct ieee80211_sub_if_data *sdata,
- 		sdata->u.mgd.probe_send_count = 0;
- 	else
- 		sdata->u.mgd.nullfunc_failed = true;
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- }
+@@ -6517,8 +6517,8 @@ void ieee80211_sta_setup_sdata(struct ieee80211_sub_if_data *sdata)
+ 		  ieee80211_beacon_connection_loss_work);
+ 	INIT_WORK(&ifmgd->csa_connection_drop_work,
+ 		  ieee80211_csa_connection_drop_work);
+-	INIT_DELAYED_WORK(&ifmgd->tdls_peer_del_work,
+-			  ieee80211_tdls_peer_del_work);
++	wiphy_delayed_work_init(&ifmgd->tdls_peer_del_work,
++				ieee80211_tdls_peer_del_work);
+ 	timer_setup(&ifmgd->timer, ieee80211_sta_timer, 0);
+ 	timer_setup(&ifmgd->bcn_mon_timer, ieee80211_sta_bcn_mon_timer, 0);
+ 	timer_setup(&ifmgd->conn_mon_timer, ieee80211_sta_conn_mon_timer, 0);
+@@ -7524,7 +7524,8 @@ void ieee80211_mgd_stop(struct ieee80211_sub_if_data *sdata)
+ 	cancel_work_sync(&ifmgd->monitor_work);
+ 	cancel_work_sync(&ifmgd->beacon_connection_loss_work);
+ 	cancel_work_sync(&ifmgd->csa_connection_drop_work);
+-	cancel_delayed_work_sync(&ifmgd->tdls_peer_del_work);
++	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++				  &ifmgd->tdls_peer_del_work);
  
- static void ieee80211_mlme_send_probe_req(struct ieee80211_sub_if_data *sdata,
-@@ -6031,7 +6031,7 @@ static void ieee80211_sta_timer(struct timer_list *t)
- 	struct ieee80211_sub_if_data *sdata =
- 		from_timer(sdata, t, u.mgd.timer);
+ 	sdata_lock(sdata);
+ 	if (ifmgd->assoc_data)
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index 04531d18fa93..1f07b598a6a1 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -21,7 +21,7 @@
+ /* give usermode some time for retries in setting up the TDLS session */
+ #define TDLS_PEER_SETUP_TIMEOUT	(15 * HZ)
  
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- }
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk)
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_local *local;
+@@ -1128,9 +1128,9 @@ ieee80211_tdls_mgmt_setup(struct wiphy *wiphy, struct net_device *dev,
+ 		return ret;
+ 	}
  
- void ieee80211_sta_connection_lost(struct ieee80211_sub_if_data *sdata,
-@@ -6175,7 +6175,7 @@ void ieee80211_mgd_conn_tx_status(struct ieee80211_sub_if_data *sdata,
- 	sdata->u.mgd.status_acked = acked;
- 	sdata->u.mgd.status_received = true;
- 
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- }
- 
- void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata)
-diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
-index a57dcbe99a0d..fcc326913391 100644
---- a/net/mac80211/ocb.c
-+++ b/net/mac80211/ocb.c
-@@ -81,7 +81,7 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
- 	spin_lock(&ifocb->incomplete_lock);
- 	list_add(&sta->list, &ifocb->incomplete_stations);
- 	spin_unlock(&ifocb->incomplete_lock);
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- }
- 
- static struct sta_info *ieee80211_ocb_finish_sta(struct sta_info *sta)
-@@ -157,7 +157,7 @@ static void ieee80211_ocb_housekeeping_timer(struct timer_list *t)
- 
- 	set_bit(OCB_WORK_HOUSEKEEPING, &ifocb->wrkq_flags);
- 
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- }
- 
- void ieee80211_ocb_setup_sdata(struct ieee80211_sub_if_data *sdata)
-@@ -197,7 +197,7 @@ int ieee80211_ocb_join(struct ieee80211_sub_if_data *sdata,
- 	ifocb->joined = true;
- 
- 	set_bit(OCB_WORK_HOUSEKEEPING, &ifocb->wrkq_flags);
--	ieee80211_queue_work(&local->hw, &sdata->work);
-+	wiphy_work_queue(local->hw.wiphy, &sdata->work);
- 
- 	netif_carrier_on(sdata->dev);
+-	ieee80211_queue_delayed_work(&sdata->local->hw,
+-				     &sdata->u.mgd.tdls_peer_del_work,
+-				     TDLS_PEER_SETUP_TIMEOUT);
++	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
++				 &sdata->u.mgd.tdls_peer_del_work,
++				 TDLS_PEER_SETUP_TIMEOUT);
  	return 0;
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 42dd7d1dda39..a6636e9f5c08 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -229,7 +229,7 @@ static void __ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
+ 
+ out_unlock:
+@@ -1427,7 +1427,8 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
  	}
  
- 	skb_queue_tail(&sdata->skb_queue, skb);
--	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- 	if (sta)
- 		sta->deflink.rx_stats.packets++;
- }
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index f1147d156c1f..58da59836884 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -503,7 +503,7 @@ static void __ieee80211_scan_completed(struct ieee80211_hw *hw, bool aborted)
- 	 */
- 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
- 		if (ieee80211_sdata_running(sdata))
--			ieee80211_queue_work(&sdata->local->hw, &sdata->work);
-+			wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 	if (ret == 0 && ether_addr_equal(sdata->u.mgd.tdls_peer, peer)) {
+-		cancel_delayed_work(&sdata->u.mgd.tdls_peer_del_work);
++		wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++					  &sdata->u.mgd.tdls_peer_del_work);
+ 		eth_zero_addr(sdata->u.mgd.tdls_peer);
  	}
  
- 	if (was_scanning)
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 3a96aa306616..9a8fca897d9f 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2008-2010	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-- * Copyright 2021-2022  Intel Corporation
-+ * Copyright 2021-2023  Intel Corporation
-  */
- 
- #include <linux/export.h>
-@@ -747,8 +747,8 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
- 					if (qskb) {
- 						skb_queue_tail(&sdata->status_queue,
- 							       qskb);
--						ieee80211_queue_work(&local->hw,
--								     &sdata->work);
-+						wiphy_work_queue(local->hw.wiphy,
-+								 &sdata->work);
- 					}
- 				}
- 			} else {
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index e60c8607e4b6..116a3e70582b 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2751,7 +2751,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 
- 		/* Requeue all works */
- 		list_for_each_entry(sdata, &local->interfaces, list)
--			ieee80211_queue_work(&local->hw, &sdata->work);
-+			wiphy_work_queue(local->hw.wiphy, &sdata->work);
- 	}
- 
- 	ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
 -- 
 2.53.0.rc2.2.g2258446484
 
