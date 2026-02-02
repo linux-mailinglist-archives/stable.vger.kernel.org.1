@@ -1,377 +1,293 @@
-Return-Path: <stable+bounces-213053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBlHLAaAgGnE8wIAu9opvQ
-	(envelope-from <stable+bounces-213053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:44:22 +0100
+	id aHdGIHWCgGnE8wIAu9opvQ
+	(envelope-from <stable+bounces-213054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:54:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB21FCB245
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:44:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9ECCB49B
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4A4CF300B2A8
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 10:42:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 177573042245
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 10:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268623563D6;
-	Mon,  2 Feb 2026 10:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UkI/vjVv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80505358D37;
+	Mon,  2 Feb 2026 10:48:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C488C2701CB
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 10:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720A127AC57;
+	Mon,  2 Feb 2026 10:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770028960; cv=none; b=Q1hBOuPNcWEwlew1FZtz4ATijWpVM0gotqP+D2e90ogEc7re8E8u0ML/6jtUFloXtkOU7UNJoTURpdDx018ddSA/+eNsQAsR+VzG/2Ok3/wYKjnyQXrhD2Y9GwNYrYHlrUqz922rJJzZt7FYhVcvMdRUuPIL+ULOFt8zPHrMSLA=
+	t=1770029331; cv=none; b=PxgmbaQOOAMNct4y0DWeFWWYGd6IuG0xj4LkkKCMAgNmKWqx0Vw86RxtLIFpd9J2R50GVHYzoytAYhSJTN2dSGhzE04MpJroG8u6cOwePRcPcZN55lFt6fYNPxwYjpp80s1beKG6znvSgdmR653kYnSK4C6R3zk/qO8VsUO9kc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770028960; c=relaxed/simple;
-	bh=HfbgfI4yoG07K2TM8oxZOyfmUnfK+HlfALUvR7rwYzE=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 MIME-Version:Date; b=MUXjyPWOi/C+f/DCqIshp7pWEDesGboHex/OdT/bQpzxGZNnZOh83lYj0pWduElhrhHjXdzi1Ohum/Th0CrWidvB2rPNduRjU2vN46nnyycYSl4GLO8cZr6Z5p5m/OAgI9b3CxOxA8PGktPRN9N7YUaO8cm7dOcoyFVgcpf2ct8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UkI/vjVv; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770028959; x=1801564959;
-  h=message-id:subject:from:to:cc:in-reply-to:references:
-   content-transfer-encoding:mime-version:date;
-  bh=HfbgfI4yoG07K2TM8oxZOyfmUnfK+HlfALUvR7rwYzE=;
-  b=UkI/vjVvVKIbz+skpsLv6eoJNN4qT5xvR3rT4gCsEILAw50oiX/ItkkE
-   L8QfcxcrWqG8wiBHZSuINfdXJz1GWjGkHfAkyfE7EIOHPHLIjwLEHvJFI
-   RhrNv8kYICxBDYr1VHxLTrnyFqay1oFznG/sfb7EdAQeI9wtruR/f6aIb
-   iDSElJPSLLSqfJNfcNltWJYKGr+L7OcpWDi5DvhfkZbFN7fAg3DbN/OdA
-   2rFN6CZkfJ3RlGR38Z1uYAsmD5f3NH+OXhEt8b0M4R93xxKHVM9xP2RK/
-   xvX54E+BN9/U69/M0dRV7PHH933Tv0e2rDESXhhiPby3mI8Jp5OLLFIHd
-   A==;
-X-CSE-ConnectionGUID: +MSNef4uSPSkCCnQ+bNAcg==
-X-CSE-MsgGUID: M67fXakIS06CENBrdtV0uQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="70902263"
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="70902263"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 02:42:38 -0800
-X-CSE-ConnectionGUID: pV+IQe09Sm2wunR2/xlRUw==
-X-CSE-MsgGUID: U+mXd3PfRU2BapCal+fMkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="213591322"
-Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.223]) ([10.245.244.223])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 02:42:34 -0800
-Message-ID: <d8c02e59a4cdd2d02b41aa5ce8dcd36a94fbba86.camel@linux.intel.com>
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: Matthew Brost <matthew.brost@intel.com>, John Hubbard
- <jhubbard@nvidia.com>,  Andrew Morton <akpm@linux-foundation.org>,
- intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>, 
- Christoph Hellwig	 <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, Jason
- Gunthorpe <jgg@ziepe.ca>,  Leon Romanovsky	 <leon@kernel.org>,
- linux-mm@kvack.org, stable@vger.kernel.org, 	dri-devel@lists.freedesktop.org
-In-Reply-To: <ymg5yawktqtw7vfgt77iciqzxhjlsnqrwnjx3xmkflbjqbmq5s@jcxzcymqq2af>
-References: <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-	 <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
-	 <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
-	 <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
-	 <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
-	 <aX+oUorOWPt1xbgw@lstrano-desk.jf.intel.com>
-	 <81b9ffa6-7624-4ab0-89b7-5502bc6c711a@nvidia.com>
-	 <aX/AgHAZ7Tl4iOua@lstrano-desk.jf.intel.com>
-	 <lbqqmohxpeynsrunbdyvod2fm4tinzq5coueh2mq6weubste5x@y4f5weqvwszg>
-	 <f48e3d818c6e20d6ea7a7fbd6b1741f25df17a78.camel@linux.intel.com>
-	 <ymg5yawktqtw7vfgt77iciqzxhjlsnqrwnjx3xmkflbjqbmq5s@jcxzcymqq2af>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1770029331; c=relaxed/simple;
+	bh=OymeOrzz4iNF9a/6uvCn01vya/GB8eGV785femhK8Tw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rKn2U8k0ONxo4QJhfCjmmAFfo1xzS3P4B50j0J1xXv9rA496hD+cZSdFMl1aKWdTQAOvpqUoXhmCc81sPknU6Lw1iHUz1nR9juPyp53Ln+mXhC0D6SbJ2AeVch/qLRAHs3nRvIooT01pYaXP030qti6irmIA5J+lF9Vmycs9k7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7741F339;
+	Mon,  2 Feb 2026 02:48:42 -0800 (PST)
+Received: from [10.163.168.36] (unknown [10.163.168.36])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A5433F740;
+	Mon,  2 Feb 2026 02:48:45 -0800 (PST)
+Message-ID: <86888c49-4596-48ba-b480-bd317d386c72@arm.com>
+Date: Mon, 2 Feb 2026 16:18:43 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 02 Feb 2026 11:41:56 +0100
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] arm64/mm: Enable batched TLB flush in
+ unmap_hotplug_range()
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260202042617.504183-1-anshuman.khandual@arm.com>
+ <20260202042617.504183-2-anshuman.khandual@arm.com>
+ <57bc3f07-c227-4117-8fb4-a2b198629215@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <57bc3f07-c227-4117-8fb4-a2b198629215@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213053-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: DB21FCB245
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[anshuman.khandual@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213054-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: DB9ECCB49B
 X-Rspamd-Action: no action
 
-On Mon, 2026-02-02 at 21:25 +1100, Alistair Popple wrote:
-> On 2026-02-02 at 20:30 +1100, Thomas Hellstr=C3=B6m
-> <thomas.hellstrom@linux.intel.com> wrote...
-> > Hi,
-> >=20
-> > On Mon, 2026-02-02 at 11:10 +1100, Alistair Popple wrote:
-> > > On 2026-02-02 at 08:07 +1100, Matthew Brost
-> > > <matthew.brost@intel.com>
-> > > wrote...
-> > > > On Sun, Feb 01, 2026 at 12:48:33PM -0800, John Hubbard wrote:
-> > > > > On 2/1/26 11:24 AM, Matthew Brost wrote:
-> > > > > > On Sat, Jan 31, 2026 at 01:42:20PM -0800, John Hubbard
-> > > > > > wrote:
-> > > > > > > On 1/31/26 11:00 AM, Matthew Brost wrote:
-> > > > > > > > On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas
-> > > > > > > > Hellstr=C3=B6m
-> > > > > > > > wrote:
-> > > > > > > > > On Fri, 2026-01-30 at 19:01 -0800, John Hubbard
-> > > > > > > > > wrote:
-> > > > > > > > > > On 1/30/26 10:00 AM, Andrew Morton wrote:
-> > > > > > > > > > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas
-> > > > > > > > > > > Hellstr=C3=B6m
-> > > > > > > > > > > wrote:
-> > > > > > > > > > ...
-> > > > > > > > I=E2=80=99m not convinced the folio refcount has any bearin=
-g if
-> > > > > > > > we
-> > > > > > > > can take a
-> > > > > > > > sleeping lock in do_swap_page, but perhaps I=E2=80=99m miss=
-ing
-> > > > > > > > something.
-> > >=20
-> > > I think the point of the trylock vs. lock is that if you can't
-> > > immediately
-> > > lock the page then it's an indication the page is undergoing a
-> > > migration.
-> > > In other words there's no point waiting for the lock and then
-> > > trying
-> > > to call
-> > > migrate_to_ram() as the page will have already moved by the time
-> > > you
-> > > acquire
-> > > the lock. Of course that just means you spin faulting until the
-> > > page
-> > > finally
-> > > migrates.
-> > >=20
-> > > If I'm understanding the problem it sounds like we just want to
-> > > sleep
-> > > until the
-> > > migration is complete, ie. same as the migration entry path. We
-> > > don't
-> > > have a
-> > > device_private_entry_wait() function, but I don't think we need
-> > > one,
-> > > see below.
-> > >=20
-> > > > > > diff --git a/mm/memory.c b/mm/memory.c
-> > > > > > index da360a6eb8a4..1e7ccc4a1a6c 100644
-> > > > > > --- a/mm/memory.c
-> > > > > > +++ b/mm/memory.c
-> > > > > > @@ -4652,6 +4652,8 @@ vm_fault_t do_swap_page(struct
-> > > > > > vm_fault
-> > > > > > *vmf)
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 vmf->page =3D
-> > > > > > softleaf_to_page(entry);
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 ret =3D
-> > > > > > remove_device_exclusive_entry(vmf);
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else if
-> > > > > > (softleaf_is_device_private(entry))
-> > > > > > {
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 st=
-ruct dev_pagemap *pgmap;
-> > > > > > +
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 if (vmf->flags &
-> > > > > > FAULT_FLAG_VMA_LOCK)
-> > > > > > {
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * migrate_to_r=
-am is not
-> > > > > > yet
-> > > > > > ready to operate
-> > > > > > @@ -4670,21 +4672,15 @@ vm_fault_t do_swap_page(struct
-> > > > > > vm_fault
-> > > > > > *vmf)
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > > > > vmf-
-> > > > > > > orig_pte)))
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto unlock;
-> > > > > >=20
-> > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
-> > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 * Get a page reference while we
-> > > > > > know
-> > > > > > the page can't be
-> > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 * freed.
-> > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 */
-> > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if=
- (trylock_page(vmf->page)) {
-> > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct dev_pagemap *pgmap;
-> > > > > > -
-> > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 get_page(vmf->page);
-> > >=20
-> > > At this point we:
-> > > 1. Know the page needs to migrate
-> > > 2. Have the page locked
-> > > 3. Have a reference on the page
-> > > 4. Have the PTL locked
-> > >=20
-> > > Or in other words we have everything we need to install a
-> > > migration
-> > > entry,
-> > > so why not just do that? This thread would then proceed into
-> > > migrate_to_ram()
-> > > having already done migrate_vma_collect_pmd() for the faulting
-> > > page
-> > > and any
-> > > other threads would just sleep in the wait on migration entry
-> > > path
-> > > until the
-> > > migration is complete, avoiding the livelock problem the trylock
-> > > was
-> > > introduced
-> > > for in 1afaeb8293c9a.
-> > >=20
-> > > =C2=A0- Alistair
-> > >=20
-> > > > >=20
-> >=20
-> > There will always be a small time between when the page is locked
-> > and
-> > when we can install a migration entry. If the page only has a
-> > single
-> > mapcount, then the PTL lock is held during this time so the issue
-> > does
-> > not occur. But for multiple map-counts we need to release the PTL
-> > lock
-> > in migration to run try_to_migrate(), and before that, the migrate
-> > code
-> > is running lru_add_drain_all() and gets stuck.
->=20
-> Oh right, my solution would be fine for the single mapping case but I
-> hadn't
-> fully thought through the implications of other threads accessing
-> this for
-> multiple map-counts. Agree it doesn't solve anything there (the rest
-> of the
-> threads would still spin on the trylock).
->=20
-> Still we could use a similar solution for waiting on device-private
-> entries as
-> we do for migration entries. Instead of spinning on the trylock (ie.
-> PG_locked)
-> we could just wait on it to become unlocked if it's already locked.
-> Would
-> something like the below completely untested code work? (obviously
-> this is a bit
-> of hack, to do it properly you'd want to do more than just remove the
-> check from
-> migration_entry_wait)
-
-Well I guess there could be failed migration where something is
-aborting the migration even after a page is locked. Also we must unlock
-the PTL lock before waiting otherwise we could deadlock.
-
-I believe a robust solution would be to take a folio reference and do a
-sleeping lock like John's example. Then to assert that a folio pin-
-count, not ref-count is required to pin a device-private folio. That
-would eliminate the problem of the refcount held while locking blocking
-migration. It looks like that's fully consistent with=20
-
-https://docs.kernel.org/core-api/pin_user_pages.html
-
-Then as general improvements we should fully unmap pages before calling
-lru_add_drain_all() as MBrost suggest and finally, to be more nice to
-the system in the common cases, add a cond_resched() to
-hmm_range_fault().
-
-Thanks,
-Thomas
 
 
+On 02/02/26 2:48 PM, Ryan Roberts wrote:
+> On 02/02/2026 04:26, Anshuman Khandual wrote:
+>> During a memory hot remove operartion both linear and vmemmap mappings for
+>> the memory range being removed, get unmapped via unmap_hotplug_range() but
+>> mapped pages get freed only for vmemmap mapping. This is just a sequential
+>> operation where each table entry gets cleared, followed by a leaf specific
+>> TLB flush, and then followed by memory free operation when applicable.
+>>
+>> This approach was simple and uniform both for vmemmap and linear mappings.
+>> But linear mapping might contain CONT marked block memory where it becomes
+>> necessary to first clear out all entire in the range before a TLB flush.
+>> This is as per the architecture requirement. Hence batch all TLB flushes
+>> during the table tear down walk and finally do it in unmap_hotplug_range().
+> 
+> I might be worth mentioning the impact of not bein architecture compliant here?
+> 
+> Something like:
+> 
+>   Prior to this fix, it was hypothetically possible for a speculative access to
+>   a higher address in the contiguous block to fill the TLB with shattered
+>   entries for the entire contiguous range after a lower address had already been
+>   cleared and invalidated. Due to the entries being shattered, the subsequent
+>   tlbi for the higher address would not then clear the TLB entries for the lower
+>   address, meaning stale TLB entries could persist.
 
->=20
-> ---
->=20
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 2a55edc48a65..3e5e205ee279 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4678,10 +4678,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> =C2=A0				pte_unmap_unlock(vmf->pte, vmf-
-> >ptl);
-> =C2=A0				pgmap =3D page_pgmap(vmf->page);
-> =C2=A0				ret =3D pgmap->ops-
-> >migrate_to_ram(vmf);
-> -				unlock_page(vmf->page);
-> =C2=A0				put_page(vmf->page);
-> =C2=A0			} else {
-> -				pte_unmap_unlock(vmf->pte, vmf-
-> >ptl);
-> +				migration_entry_wait(vma->vm_mm,
-> vmf->pmd,
-> +						=C2=A0=C2=A0=C2=A0=C2=A0 vmf->address);
-> =C2=A0			}
-> =C2=A0		} else if (softleaf_is_hwpoison(entry)) {
-> =C2=A0			ret =3D VM_FAULT_HWPOISON;
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 5169f9717f60..b676daf0f4e8 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -496,8 +496,6 @@ void migration_entry_wait(struct mm_struct *mm,
-> pmd_t *pmd,
-> =C2=A0		goto out;
-> =C2=A0
-> =C2=A0	entry =3D softleaf_from_pte(pte);
-> -	if (!softleaf_is_migration(entry))
-> -		goto out;
-> =C2=A0
-> =C2=A0	migration_entry_wait_on_locked(entry, ptl);
-> =C2=A0	return;
+Sounds good - will add in the commit message.
+
+> 
+>>
+>> Besides it is helps in improving the performance via TLBI range operation
+> 
+> nit:         ^^ (remove)
+
+Will fix that.
+
+> 
+>> along with reduced synchronization instructions. The time spent executing
+>> unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
+>> in KVM guest.
+> 
+> That's a great improvement :)
+> 
+>>
+>> This scheme is not applicable during vmemmap mapping tear down where memory
+>> needs to be freed and hence a TLB flush is required after clearing out page
+>> table entry.
+>>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+>> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> 
+> I suggested the original shape of this and I see you have added my SOB. Final
+> patch looks good to me - I'm not sure if it's correct for me to add Rb, but here
+> it is regardless:
+> 
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+
+Thanks !
+
+> 
+> 
+>> ---
+>>  arch/arm64/mm/mmu.c | 81 +++++++++++++++++++++++++++++++++++++--------
+>>  1 file changed, 67 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 8e1d80a7033e..8ec8a287aaa1 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -1458,10 +1458,32 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
+>>  
+>>  		WARN_ON(!pte_present(pte));
+>>  		__pte_clear(&init_mm, addr, ptep);
+>> -		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>> -		if (free_mapped)
+>> +		if (free_mapped) {
+>> +			/*
+>> +			 * If page is part of an existing contiguous
+>> +			 * memory block, individual TLB invalidation
+>> +			 * here would not be appropriate. Instead it
+>> +			 * will require clearing all entries for the
+>> +			 * memory block and subsequently a TLB flush
+>> +			 * for the entire range.
+>> +			 */
+>> +			WARN_ON(pte_cont(pte));
+>> +
+>> +			/*
+>> +			 * TLB flush is essential for freeing memory.
+>> +			 */
+>> +			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>>  			free_hotplug_page_range(pte_page(pte),
+>>  						PAGE_SIZE, altmap);
+>> +		}
+>> +
+>> +		/*
+>> +		 * TLB flush is batched in unmap_hotplug_range()
+>> +		 * for the entire range, when memory need not be
+>> +		 * freed. Besides linear mapping might have CONT
+>> +		 * blocks where TLB flush needs to be done after
+>> +		 * clearing all relevant entries.
+>> +		 */
+>>  	} while (addr += PAGE_SIZE, addr < end);
+>>  }
+>>  
+>> @@ -1482,15 +1504,32 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
+>>  		WARN_ON(!pmd_present(pmd));
+>>  		if (pmd_sect(pmd)) {
+>>  			pmd_clear(pmdp);
+>> +			if (free_mapped) {
+>> +				/*
+>> +				 * If page is part of an existing contiguous
+>> +				 * memory block, individual TLB invalidation
+>> +				 * here would not be appropriate. Instead it
+>> +				 * will require clearing all entries for the
+>> +				 * memory block and subsequently a TLB flush
+>> +				 * for the entire range.
+>> +				 */
+>> +				WARN_ON(pmd_cont(pmd));
+>> +
+>> +				/*
+>> +				 * TLB flush is essential for freeing memory.
+>> +				 */
+>> +				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+>> +				free_hotplug_page_range(pmd_page(pmd),
+>> +							PMD_SIZE, altmap);
+>> +			}
+>>  
+>>  			/*
+>> -			 * One TLBI should be sufficient here as the PMD_SIZE
+>> -			 * range is mapped with a single block entry.
+>> +			 * TLB flush is batched in unmap_hotplug_range()
+>> +			 * for the entire range, when memory need not be
+>> +			 * freed. Besides linear mapping might have CONT
+>> +			 * blocks where TLB flush needs to be done after
+>> +			 * clearing all relevant entries.
+>>  			 */
+>> -			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>> -			if (free_mapped)
+>> -				free_hotplug_page_range(pmd_page(pmd),
+>> -							PMD_SIZE, altmap);
+>>  			continue;
+>>  		}
+>>  		WARN_ON(!pmd_table(pmd));
+>> @@ -1515,15 +1554,20 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
+>>  		WARN_ON(!pud_present(pud));
+>>  		if (pud_sect(pud)) {
+>>  			pud_clear(pudp);
+>> +			if (free_mapped) {
+>> +				/*
+>> +				 * TLB flush is essential for freeing memory.
+>> +				 */
+>> +				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
+>> +				free_hotplug_page_range(pud_page(pud),
+>> +							PUD_SIZE, altmap);
+>> +			}
+>>  
+>>  			/*
+>> -			 * One TLBI should be sufficient here as the PUD_SIZE
+>> -			 * range is mapped with a single block entry.
+>> +			 * TLB flush is batched in unmap_hotplug_range()
+>> +			 * for the entire range, when memory need not be
+>> +			 * freed.
+>>  			 */
+>> -			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>> -			if (free_mapped)
+>> -				free_hotplug_page_range(pud_page(pud),
+>> -							PUD_SIZE, altmap);
+>>  			continue;
+>>  		}
+>>  		WARN_ON(!pud_table(pud));
+>> @@ -1553,6 +1597,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
+>>  static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+>>  				bool free_mapped, struct vmem_altmap *altmap)
+>>  {
+>> +	unsigned long start = addr;
+>>  	unsigned long next;
+>>  	pgd_t *pgdp, pgd;
+>>  
+>> @@ -1574,6 +1619,14 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+>>  		WARN_ON(!pgd_present(pgd));
+>>  		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
+>>  	} while (addr = next, addr < end);
+>> +
+>> +	/*
+>> +	 * Batched TLB flush only for linear mapping which
+>> +	 * might contain CONT blocks, and does not require
+>> +	 * freeing up memory as well.
+>> +	 */
+>> +	if (!free_mapped)
+>> +		flush_tlb_kernel_range(start, end);
+>>  }
+>>  
+>>  static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
+> 
+
 
