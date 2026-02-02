@@ -1,353 +1,179 @@
-Return-Path: <stable+bounces-213098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPjvJs4OgWnmDwMAu9opvQ
-	(envelope-from <stable+bounces-213098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 21:53:34 +0100
+	id 6OGZCiIPgWnmDwMAu9opvQ
+	(envelope-from <stable+bounces-213099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 21:54:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4D9D1524
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 21:53:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBE0D1560
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 21:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B13B8302AD1C
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 20:50:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 126A73008D40
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 20:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090B63033CE;
-	Mon,  2 Feb 2026 20:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6958430E83A;
+	Mon,  2 Feb 2026 20:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="tNVODMtq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Npi9lyhQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDEB274B35
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 20:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E2F2DCF70
+	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 20:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770065409; cv=none; b=JejPKqWqq+0U7cy2TbYkRIbzlylkKxBk5w5mkZ/sQiapO1KQTOkxekFb6yRU0BOsn3S/pC6lqy07qMchnkRX433naZrn+vy6n6n8FsAvEAYnflqTb3vA+V/kBFUspnHf02l5tE3I6dp88v8c7+rWxxBUmsH+13/YhmvJmGWoKOs=
+	t=1770065695; cv=none; b=UO4bfMESfoQ9MnmQWC2BlIDXbpZiO9pxfWgt0Gnd1IdFHXs4aUkzQOmscnGiP9QQsExPLqdmK4F460Br9JE6rGSQZh8GX63yfmujQzC5gU5C5IighpqXoc2HV3salC92b4OXxeMfXdFwZPZF35MGrEzWgYgLtm3ZHXkIUgD3aho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770065409; c=relaxed/simple;
-	bh=mg9H9F5yHPJp2fzisdbRYIC4qAhmlgFf9LgyCdIy7Fg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ah4OfVyI4U4aMBOhPfMNaCBkWa7nsCM+VW/LKMLlToEzsPhSfk1nZfb68EJGBBMun7gvoQZWEWHHu7YyRxjUt5BR3+qt2qI7+BhCXL7jaom0WpG2dNziXqGgWZTwf/XM6W+mFXROnItJlICbFI9nGBsMjvwK0PBcrCH9kCo16Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=tNVODMtq; arc=none smtp.client-ip=109.224.244.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1770065403; x=1770324603;
-	bh=mg9H9F5yHPJp2fzisdbRYIC4qAhmlgFf9LgyCdIy7Fg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=tNVODMtqgSDrSuVGkzD/O12xGKo2bVqGaePQnshXE92J1Jw8P595OC4CPwja1wseJ
-	 OvLCUJYHjX7Of2GD0Nvp+xjkJW++herNcaraYg/NSAhPQqDltvOCXAkoRjOV3IwUKU
-	 6l582l5OSo/ohTzrxIH18fcsiVDCSmwGpqZjRvZ/pMtT+1R0QSxOtP/1F+rHQ46L42
-	 HW77YUJR/Xt/MuUbtf7DcGEUTaKQjK/41fDVaFBj7Jjx31bfQVI+1vc05QIGElsbSJ
-	 e1CpSyieJkoXac40jHl/AjzNJF9xA0TZXdhBYkywvNN2sWLy5HOJR9qSF2xorge07U
-	 +5ZTJM3LdyN3A==
-Date: Mon, 02 Feb 2026 20:49:59 +0000
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-From: Paul Moses <p@1g4.org>
-Cc: netdev@vger.kernel.org, xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: sched: act_api: size RTM_GETACTION reply by fill size
-Message-ID: <JLZxnCN_V32FjW6UUERYLlLtbbzDCDUmB3LOJ8ovdzV5pbUuGMRKi8K7ebh1j2yDt1u3A0pc1y4Zjjsw6-c7zucKHasFnfvYjnZ7hvT7aR4=@1g4.org>
-In-Reply-To: <CAM0EoM=T4QiGB+_3jqWKYze_OrcsjYBy0UvckTiGtHkxSm6BDQ@mail.gmail.com>
-References: <20260130134220.305757-1-p@1g4.org> <CAM0EoMmY-v0HWAkB5EgSYhpca8fXVX7SQ1SpVbUBcFpbvuTd1g@mail.gmail.com> <pXV1wsavqcYDq5HfAVaW_gMoTITR9M0PBWKhnz9n6VHYxhW56DQU7qfCEoaYcCixz4iqrj31Mt9vL9bHqTNGygLK5pYvyw1z3san5ndlkkQ=@1g4.org> <CAM0EoMkBb+d_5dn6vdtSxPJ-HuUUL9uei65euSQfX3bXYm9RAw@mail.gmail.com> <CAM0EoMnseQw6H+a4wzhg7BkPJraFwN-=2x4FOSOUp5f7=XbyaQ@mail.gmail.com> <tuZof6471icLlkjecTuMCBxpZ5zJVhOeUv7lAK7MFwt3g7LfrH7ZFlbE5odrcbTFUukV6J8Dywy9daCrLI-kiY-_vpiABXStvdudLw-HXDI=@1g4.org> <CAM0EoMkD=3aRFq=tXijcop5tYsD4X_Ki0REcnj3x+w_C69MaFw@mail.gmail.com> <tRA-1eVt0Av_cRCmND6povnCqYiBpaOoilgpCM2qNbo3GIe6szAEIN1mI20gRjgf215ODBQJBfolBlBzyJ4en67AQVHhLt6QmtWlQUjLqfc=@1g4.org> <CAM0EoM=T4QiGB+_3jqWKYze_OrcsjYBy0UvckTiGtHkxSm6BDQ@mail.gmail.com>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 73133abcbfe30135cf85dd77d7b8607584a036b6
+	s=arc-20240116; t=1770065695; c=relaxed/simple;
+	bh=xbzYJNxSCFjkiffSM6jyIjz1IvRu/q+sVuB3QG1dkqM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RI/DTxKXi6MAfXqOOq6zp1DzqFp6oNuZLJsyP6L1b7eHE6Ez3Phs/p3pczCKA/vvplE0aCTuzgFt2NE36nA4kF0ktrsh2DItK8QoypC9ZcNrJ/YALcrq/rkachRjmR7J6MSnTc5oJq8TaR30qOmVHc6Hf8gNzdbOAMaABrEI9L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Npi9lyhQ; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-794e95357cfso7841737b3.0
+        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 12:54:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770065693; x=1770670493; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1iTIQduAX8adZigUW+P0nUWVGs+OtfVrnk6DuA8/cXI=;
+        b=Npi9lyhQj185gn+HBA/vW3MF6j5rEKWWuHNnJ5qcKy8svTcMr39WAsHFxvDtKNsnc5
+         LzSiB51D3y/9XXWTdowdv4lIv6O/rmzrbaLR68hqtQzmGCR6fflKB7nU6S9G6AVGNvx7
+         mUHP7esEMvnroKA7tu9/duT/BYoiCdgFcL2R+o9eI2C6pImF5Dwg/vwWSn/V2tAwux0O
+         z8hutgVSa+fHkrOlen0Z7jKOdMPv5N7YZRa/7JwQVpMDtvfVs58lJ1z/X7PbdtglxsmD
+         oZBjg+ZtLx+nBN8lxZtsBGlxGQcALno9rA2ulbsMrLfRk0H4kS3itcSNBduLg6Cstwee
+         lGGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770065693; x=1770670493;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1iTIQduAX8adZigUW+P0nUWVGs+OtfVrnk6DuA8/cXI=;
+        b=OxYfzjKQho2Z8/9fD/wX0j8ZK+zgOuHgqBwg62HQSBtscXA8gAlUg4yKdGytgYmiQF
+         fb4YKTlgXo2cj3U7WvAFbfotb6DtzrNGmDVQluRw69YMH4sQDjEfjodorpDfd3mdVviY
+         kZuSjSQ+NMs6wglGKrxmGFE3zQK+iIEUpzQ3euQ7OngPGNygHFjQWdDxdE+Y6jmpt7ov
+         BXaF3WH1IcAaZm7nLRCL+3FqjQw5UxG6H3bLFMnZFMnUUaBj7vM2k0jWt0W8Zt5ZQ9FX
+         +uOnWoeD+MVw5YmN2RINEaiuVvHDueh4T/uSu4gVidIncxu9OWOvwyzs4w8bjD5LmouG
+         crMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsIgSW+dTEkfqqr1cqb7Zja9a1EMphEK98nFuNlDP2IkKZEeDbudqUlOzfVb8B+lFRDJ4Mg0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/TFn6B4QCW5F6WZWU/piNLLUa/zhFNRfuSs1ReB842yixSN7z
+	XIITjqNL/a9debAW9M593UKgfdRxsARO93J8KfwWsuU6lEEeqjf95Arj
+X-Gm-Gg: AZuq6aLVe02eX32NtN9mt4npjdnMXEfdPk6mJ5jZDN4+01LQvb3e3/5GyobOArQpTCd
+	DfDJdvcxq+kcFYV24SxvfWPwKtD9R3fgMkW4qmcV3hA0gpwx8nZIlrCQIYTE+jKW+aDS7g9IirE
+	fWkRhy6UUgI0CEg7mCu5On+BLzUMVJH0LaQUMENZrvdpabP5voWju1VEe9Rb2lleXOLhwHl3FkB
+	3Uc0Z9D04kZp6xtjRby90dDFl8pC3TeHqf9XecherlnlZJedvQENIyswi7Am1uqD/kQnfRr36V5
+	gbEmM/abvd62d3wsKCipZNIH5GnPmc2EjLd6Qfm4eOo1DdQ/vDu0me4TLxK2JLbxBeuxCC/Dgsj
+	RoRvKAj/xDW8rIyIAvzLriJNk/uaFchPsZiB6c9qYwMsnOq55LyMhv+Xhk7osotCP0HMZodULTS
+	toeHIJiaSJjVcozrOyWyir6kI=
+X-Received: by 2002:a05:690c:dc7:b0:78c:2916:3ef5 with SMTP id 00721157ae682-7949de63e70mr120040087b3.8.1770065692890;
+        Mon, 02 Feb 2026 12:54:52 -0800 (PST)
+Received: from tux ([2601:7c0:c37c:4c00::9944])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-794b2468901sm55977777b3.22.2026.02.02.12.54.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 12:54:52 -0800 (PST)
+From: Ethan Tidmore <ethantidmore06@gmail.com>
+To: gregkh@linuxfoundation.org,
+	straube.linux@gmail.com
+Cc: dan.carpenter@linaro.org,
+	hansg@kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] staging: rtl8723bs: fix null dereference in find_network
+Date: Mon,  2 Feb 2026 14:54:29 -0600
+Message-ID: <20260202205429.20181-1-ethantidmore06@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com];
-	TAGGED_FROM(0.00)[bounces-213098-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
+	FREEMAIL_CC(0.00)[linaro.org,kernel.org,lists.linux.dev,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[1g4.org:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213099-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[ethantidmore06@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,1g4.org:email,1g4.org:dkim,1g4.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EF4D9D1524
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BFBE0D1560
 X-Rspamd-Action: no action
 
-Want to be clear, as I said before, I spent months on this before I approac=
-hed.=20
+The variable pwlan has the possibility of being NULL when passed into 
+rtw_free_network_nolock() which would later dereference the variable.
 
-The gates are programmed by a controller and used to orchestrate determinis=
-tic traffic admission. This is not a simple open/close mechanism configured=
- by humans.=20
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+---
+v2:
+- Included more context to demonstrate possible null dereference.
 
-I am moving closer to IEEE not further away from.
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Thanks
-Paul
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index 8e1e1c97f0c4..e734d35c11a9 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -828,22 +828,24 @@ static void rtw_reset_rx_info(struct debug_priv *pdbgpriv)
+ 	pdbgpriv->dbg_rx_ampdu_window_shift_cnt = 0;
+ }
+ 
+ static void find_network(struct adapter *adapter)
+ {
+ 	struct wlan_network *pwlan = NULL;
+ 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
+ 	struct wlan_network *tgt_network = &pmlmepriv->cur_network;
+ 
+ 	pwlan = rtw_find_network(&pmlmepriv->scanned_queue, tgt_network->network.mac_address);
+-	if (pwlan)
+-		pwlan->fixed = false;
++	if (!pwlan)
++		return;
++
++	pwlan->fixed = false;
+ 
+ 	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) &&
+ 	    (adapter->stapriv.asoc_sta_count == 1))
+ 		rtw_free_network_nolock(adapter, pwlan);
+ }
+ 
+ /* rtw_free_assoc_resources: the caller has to lock pmlmepriv->lock */
+ void rtw_free_assoc_resources(struct adapter *adapter, int lock_scanned_queue)
+ {
+ 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
+-- 
+2.52.0
 
-
-On Monday, February 2nd, 2026 at 8:33 AM, Jamal Hadi Salim <jhs@mojatatu.co=
-m> wrote:
-
->=20
->=20
-> On Sun, Feb 1, 2026 at 4:57=E2=80=AFAM Paul Moses p@1g4.org wrote:
->=20
-> > The hardware manufacturers impose their own limits based on design cons=
-traints, it's not based on the spec. iproute2's value seems arbitrary, 1024=
- comes out to be about 32 entries, based on the message length of 3112 at 1=
-00 entries (this isn't counting overhead). Is page size ever less than 4k? =
-May as well see what can safely fit into NLMSG_GOODSIZE at it's lowest poss=
-ible value.
-> >=20
-> > With 4k page size, the failure point appears to be 93 entries:
-> > large dump DEBUG: large dump msg_len=3D2904 cap=3D12288 entries=3D93 cy=
-cle_time=3D9304278
-> >=20
-> > So bounding it at 64 entries or so(for now at least) would be a safe ch=
-oice to maintain a margin and not impose arbitrarily low values.
->=20
->=20
-> Why dont we pick some value that doesnt require changes to iproute2? Exam=
-ple 32.
->=20
-> > Yes, I've wanted to talk to Po for a while now. :)
->=20
->=20
-> There has to be someone else, vendor, etc who is invested in this..
-> That looks like magic valves to me that open/close - not sure why you
-> want to do it more than once.
->=20
-> cheers,
-> jamal
->=20
-> > Thanks,
-> > Paul
-> >=20
-> > On Saturday, January 31st, 2026 at 11:34 AM, Jamal Hadi Salim jhs@mojat=
-atu.com wrote:
-> >=20
-> > > On Sat, Jan 31, 2026 at 12:18=E2=80=AFPM Paul Moses p@1g4.org wrote:
-> > >=20
-> > > > 1. Your script creates 100 separate gate actions, not one gate acti=
-on with a large schedule.
-> > > > 2. Each =E2=80=9Ctc actions add =E2=80=A6 gate =E2=80=A6=E2=80=
-=9D call creates a new action, so you end up with 100 small actions.
-> > > > 3. The issue I am reporting needs one single gate action that conta=
-ins many sched-entry objects.
-> > > > 4. Because of that, your test only exercises the dump path with man=
-y small actions.
-> > > > 5. The failure I see is in the GETACTION notify path, not in the ge=
-neric dump batching logic.
-> > > > 6. In that path, tcf_get_notify() allocates a fixed-size skb using =
-NLMSG_GOODSIZE.
-> > > > 7. The kernel then tries to serialize one action into that skb.
-> > > > 8. If a single action contains a large gate schedule, tca_get_fill(=
-) runs out of tailroom and fails, and the kernel returns -EINVAL.
-> > > > 9. A single sched-entry does not exceed NLMSG_GOODSIZE.
-> > > > 10. The problem is one action with many sched-entries, because the =
-entire entry list is serialized into the payload of that one action.
-> > > > 11. The =E2=80=9Ctotal acts 12 / 12 / 76=E2=80=9D output only shows=
- how many small actions were packed into each dump batch.
-> > > > 12. It does not reflect the size of an individual action dump, and =
-in your test each action is small.
-> > > > 13. To reproduce with tc, you need one tc invocation that adds many=
- sched-entry attributes to the same gate action, and then run =E2=80=9Ctc a=
-ctions get action gate index <idx>=E2=80=9D on that action.
-> > > > 14. tc has it's own limit at 1024 apparently "addattr_l ERROR: mess=
-age exceeded bound of 1024"
-> > >=20
-> > > Yes, thats the same error i was getting (with script below).
-> > > ---
-> > > ENTRY=3D"sched-entry open 200000000 -1 8000000 sched-entry close 1000=
-00000 -1 -1 "
-> > > SCHEDULE=3D$(printf "$ENTRY%.0s" {1..100})
-> > > #SCHEDULE=3D$(printf "$ENTRY%.0s" {1..10})
-> > >=20
-> > > for i in {1..2}; do
-> > > echo "Iteration: $i"
-> > > tc actions add action gate clockid CLOCK_TAI $SCHEDULE
-> > > done
-> > > ----
-> > >=20
-> > > I know of no other action that exceeds this limit with all its params
-> > > batched, and of course tc in userspace truncates it to about 32.
-> > > Addition does succeed at 32 of those things per action.
-> > > I have no idea if above is legal but it is allowed by the system.
-> > >=20
-> > > > I'm not opposed to gate being clamped instead of adding support for=
- large schedule sizes, but I wanted to thoroughly document why it's not pos=
-sible so the next person isn't chasing a cryptic -EINVAL like I did.
-> > >=20
-> > > We cant have it to be infinite for sure - we will need to put an uppe=
-r
-> > > bound in parse_gate_list().
-> > > Are you knowledgeable about this spec? I was Ccing Po Liu but his
-> > > email is bouncing (so i removed him).
-> > >=20
-> > > So back to your first post: I agree we have an issue here. Your
-> > > solution will solve the event notifications but then we will need an
-> > > upper bound check. We will also need to check that same upper bound i=
-n
-> > > user space iproute2 code so we dont allow arbitrary values. Current
-> > > number of 16 seems to work just fine - if we agree that is a "good"
-> > > number (or if the specs dicate it is) then you can simply provide tha=
-t
-> > > fix..
-> > >=20
-> > > cheers,
-> > > jamal
-> > >=20
-> > > > Thanks
-> > > > Paul
-> > > >=20
-> > > > On Saturday, January 31st, 2026 at 11:14 AM, Jamal Hadi Salim jhs@m=
-ojatatu.com wrote:
-> > > >=20
-> > > > > On Sat, Jan 31, 2026 at 11:51=E2=80=AFAM Jamal Hadi Salim jhs@moj=
-atatu.com wrote:
-> > > > >=20
-> > > > > > .
-> > > > > >=20
-> > > > > > On Fri, Jan 30, 2026 at 3:48=E2=80=AFPM Paul Moses p@1g4.org wr=
-ote:
-> > > > > >=20
-> > > > > > > What version of act_gate.c are you currently testing?
-> > > > > >=20
-> > > > > > I am running plain ubuntu on this machine using their shipped k=
-ernel 6.8.0.
-> > > > > > But i did look at the latest kernel tree and the dumping code h=
-as not changed.
-> > > > > > +Cc Po Liu who i believe added that code.
-> > > > > >=20
-> > > > > > > Did you actually run the tests? =E2=80=9Clarge dump=E2=80=
-=9D creates ONE action at base_index, with num_entries=3D100, then immediat=
-ely does GETACTION. So =E2=80=9Ctc actions ls action gate | grep index | wc=
- -l=E2=80=9D won=E2=80=99t exercise this, because it only counts actions. I=
-t doesn=E2=80=99t amplify the per action dump size (the entry list does). I=
-t uses libmnl (mnl_socket_sendto / mnl_socket_recvfrom) with MNL_SOCKET_BUF=
-FER_SIZE. There is no custom netlink handling. The failure is returned by t=
-he kernel before userspace parses anything. The dumps are transactional at =
-the netlink level, but an individual action dump still has to fit in the sk=
-b backing that message.
-> > > > > >=20
-> > > > > > Sorry - I am not running your code (didnt want to compile anyth=
-ing on
-> > > > > > this machine), just plain tc and i have to admit I dont know mu=
-ch
-> > > > > > about the mechanics or spec for gate, so my example is based on
-> > > > > > something Po Liu posted, here's a script to add 100 entries:
-> > > > > > ---
-> > > > > > for i in {1..100}; do
-> > > > > > echo "$i"
-> > > > > > tc actions add action gate clockid CLOCK_TAI sched-entry open
-> > > > > > 200000000 -1 8000000 sched-entry close 100000000 -1 -1
-> > > > > > done
-> > > > > > ---
-> > > > > >=20
-> > > > > > Then dumping:
-> > > > > >=20
-> > > > > > $ sudo tc actions ls action gate | grep index
-> > > > > > index 1 ref 1 bind 0
-> > > > > > index 2 ref 1 bind 0
-> > > > > > index 3 ref 1 bind 0
-> > > > > > index 4 ref 1 bind 0
-> > > > > > index 5 ref 1 bind 0
-> > > > > > index 6 ref 1 bind 0
-> > > > > > ..
-> > > > > > ...
-> > > > > > ....
-> > > > > > index 95 ref 1 bind 0
-> > > > > > index 96 ref 1 bind 0
-> > > > > > index 97 ref 1 bind 0
-> > > > > > index 98 ref 1 bind 0
-> > > > > > index 99 ref 1 bind 0
-> > > > > > index 100 ref 1 bind 0
-> > > > > > $
-> > > > > >=20
-> > > > > > > look at af_netlink.c
-> > > > > > > /* NLMSG_GOODSIZE is small to avoid high order allocations be=
-ing
-> > > > > > > * required, but it makes sense to attempt a 32KiB allocation
-> > > > > > > * to reduce number of system calls on dump operations, if use=
-r
-> > > > > > > * ever provided a big enough buffer.
-> > > > > > > /
-> > > > > > > ...
-> > > > > > > / Trim skb to allocated size. User is expected to provide buf=
-fer as
-> > > > > > > * large as max(min_dump_alloc, 32KiB (max_recvmsg_len capped =
-at
-> > > > > > > * netlink_recvmsg())). dump will pack as many smaller message=
-s as
-> > > > > > > * could fit within the allocated skb. skb is typically alloca=
-ted
-> > > > > > > * with larger space than required (could be as much as near 2=
-x the
-> > > > > > > * requested size with align to next power of 2 approach). All=
-owing
-> > > > > > > * dump to use the excess space makes it difficult for a user =
-to have a
-> > > > > > > * reasonable static buffer based on the expected largest dump=
- of a
-> > > > > > > * single netdev. The outcome is MSG_TRUNC error.
-> > > > > > > */
-> > > > > > >=20
-> > > > > > > This is where I am currently but I have seen these bugs appea=
-r throughout all my iterations including what's in the tree currently, if y=
-ou show me better alternatives that solve my problems, I'll gladly accept.
-> > > > > > > https://github.com/torvalds/linux/compare/master...jopamo:lin=
-ux:net-stable-upstream-v4
-> > > > > >=20
-> > > > > > I dont see a problem with "dump" as you seem to be suggesting. =
-I asked
-> > > > > > earlier if it is possible that you can create some single entry=
- - not
-> > > > > > 100 as shown above that will consume more than NLMSG_GOODSIZE? =
-My
-> > > > > > limited knowledge is not helping me see such a scenario.
-> > > > >=20
-> > > > > Aha. I think there is a terminology mixup ;->
-> > > > >=20
-> > > > > "dump" (a very unfortunate use of that word in the netlink world =
-;->)
-> > > > >=20
-> > > > > is a very special word. So when you take a dump in this world you=
- are
-> > > > > GETing a whole table. In this case all the gate actions.
-> > > > >=20
-> > > > > If i am not mistaken in your case this is not a dump - rather, yo=
-u are
-> > > > > CREATing a single entry which is bigger than NLMSG_GOODSIZE as i
-> > > > > suspected. I dont believe iproute2 will allow you to do that.
-> > > > > What's happening then is that the generated netlink event notific=
-ation
-> > > > > for that single entry is too big to fit in NLMSG_GOODSIZE.
-> > > > > Let me try to craft something for that...
-> > > > >=20
-> > > > > cheers,
-> > > > > jamal
 
