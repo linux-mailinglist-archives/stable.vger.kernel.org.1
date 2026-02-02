@@ -1,68 +1,73 @@
-Return-Path: <stable+bounces-213074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJkyEli9gGl3AgMAu9opvQ
-	(envelope-from <stable+bounces-213074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 16:06:00 +0100
+	id AHO+LbTAgGl3AgMAu9opvQ
+	(envelope-from <stable+bounces-213075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 16:20:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15B1CDDC3
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 16:05:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593F0CE1B6
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 16:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CBDE8308775B
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 14:56:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1C893017C0E
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 15:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9126737419D;
-	Mon,  2 Feb 2026 14:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C8A37754E;
+	Mon,  2 Feb 2026 15:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BvP8XhFN"
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="UcsB6VLP"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8645C36F43E;
-	Mon,  2 Feb 2026 14:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770044167; cv=none; b=MqEIkyvf0rqouKtkOxWuL1TSKzAP9o3ALR8emzn9uQAjZC773IlVF8HlK9ChF2w75WiLXpb15STxe+qKDdh027GHECGCBWXtqw6/jVyqe7PDwb+B6dr6HmqaeK/n1vhm8E4bsFpCzEQxxNb+mWKWW470u+cj9EefETj6SeH5LUw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770044167; c=relaxed/simple;
-	bh=k7mARi3aDSskRfWdb82r+p2uGc6x2hUb+zjPCcJLNrQ=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A913369979;
+	Mon,  2 Feb 2026 15:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770044898; cv=pass; b=a6cBmqPBQ5uN8Ka8hprJ9NrNo8rJVBVGKD8NQ6w1SfA4oQC1s55mO8RJc3++sjAK0d4tTxIS6tPBfYYN0aKT47mxDIPDuIjtN8tGWVBQVMlgRxiNjpK35V6LBslUvGfKtr2AhBtZJ1Q+tdg7XXgHMJck6y9C6J2rh9dei09s9fc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770044898; c=relaxed/simple;
+	bh=OHwglCci930h0BPeoKnfBXI07YfnmYvkYhe1czCXm5k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NDEpVfksSmhvzWzT9O7LztgKi7tB9rDXS0ckxKIASy6cs8z9JkGyR/Ipm9YK1VEPBbI4oryTmGNuCeLYToiw3ZyJWlMRdyYG8Ew3KpzStvqczTTfGb7CeWAG2WVYL18tbfR2qP3+rchrXuHQeg6azsv4eYDLl2/xwoCBWnT31EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BvP8XhFN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=udxGf0xljtegrIJMFi88Nd41JfqjJkfTxsoBLvLuTok=; b=BvP8XhFNFHfFYcqQ5d1LiHaXxr
-	JQvdJk6EbKEyUY/RbHqipwCf0fNGkgB9egtxe2JkNeUWe/0A9zIarl54uaWyUnn5Bi5k1KaIz/uyi
-	/36dmO2/lMn8zSQkOJb1hb3YIWnoCkoutMpxK5Wqwfwmp4ZX/abo4PnE28gKqxjNJVro=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vmvLI-005pyz-Am; Mon, 02 Feb 2026 15:55:56 +0100
-Date: Mon, 2 Feb 2026 15:55:56 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: Quentin Schulz <foss+kernel@0leil.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] arm64: dts: rockchip: fix Ethernet PHY not found on
- PX30 Cobra
-Message-ID: <38452338-6e65-47ad-a696-b90c02ac42f0@lunn.ch>
-References: <20260202-px30-eth-phy-v1-0-ef365be64922@cherry.de>
- <20260202-px30-eth-phy-v1-1-ef365be64922@cherry.de>
- <33d3bdd5-0fed-41f6-8b8c-9690e7665346@lunn.ch>
- <567d6404-2a71-43ad-8ba7-5053fe1576bd@cherry.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mB9BRlBBmS3apJpzU57zYdvoLejHXqwCAXWmdglySn9I5irv4Z2hqIu2iEBnFL6beNPRJpVd0ODY7fIC3tGW5SLnBXWscBLQJg+we6jbP90Uhmrqivg6qatFBnwjMmgxDy8cHqpIwW6o8sPmn+Q7R+PhBvXfZ/12O5C7vSJeS6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=UcsB6VLP; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+ARC-Seal: i=1; a=rsa-sha256; t=1770044866; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=O1nsTu0Nm32KmUJcysdnX55vXY+nYlZU7sQyjU6a9F3DauNQDj5CMigQQjzvgBSMI7thc1O3L8ebT15IWw8HdV11S6fB4IzgJW2d34ZMqOq6CzZIuXEkzKU4rgIx4w9VCyK0ba//QqqlIypHPvB2GIhN7P1GoHNkiNEL58nqRlc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770044866; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dwVKuZddl4r/mV4Cr5AKUVYl+TwlSGWfy8J+FStd4oE=; 
+	b=mOXtWJt14DhbwjFFy0c8WGyLFmYcsPYaTWrhOySy3mFcXQ0byxP8hleo67JuQuGF9UezmLuy8fZh8fTIE/WznemS5FoEZ4h9RHS/EEBCrQGcRAyTXZWRdzgBD5j4FB+dqTu8oqkvkm9MMc0nyxRWkTglLo71BCFvYj5W050c2fI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ziyao.cc;
+	spf=pass  smtp.mailfrom=me@ziyao.cc;
+	dmarc=pass header.from=<me@ziyao.cc>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770044866;
+	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=dwVKuZddl4r/mV4Cr5AKUVYl+TwlSGWfy8J+FStd4oE=;
+	b=UcsB6VLPIEf1abuUYSf6DiHKcwlu9vYf7bQdmpWemlpcN0982Z971L0f6CElyGuk
+	2iqGWjF95CmTb6wQAV0Fxj/KT4XUwbiO8NzZYytcAbqoRX4M40C65y3jd3XR63/UOIc
+	tve2HWHJVOIxARWTGcdWj7ZlDi4NqW/S/w4VZgVA=
+Received: by mx.zohomail.com with SMTPS id 1770044863450508.49955181658333;
+	Mon, 2 Feb 2026 07:07:43 -0800 (PST)
+Date: Mon, 2 Feb 2026 15:07:22 +0000
+From: Yao Zi <me@ziyao.cc>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Work around LLVM bug when gp is used as global
+ register variable
+Message-ID: <aYC9qgTdhnrWQ1zg@pie>
+References: <20260118090235.60670-1-me@ziyao.cc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,103 +76,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <567d6404-2a71-43ad-8ba7-5053fe1576bd@cherry.de>
+In-Reply-To: <20260118090235.60670-1-me@ziyao.cc>
+X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
+X-Spamd-Result: default: False [9.34 / 15.00];
+	URIBL_BLACK(7.50)[ziyao.cc:email,ziyao.cc:dkim];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213074-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213075-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[ziyao.cc:s=zmail];
+	FREEMAIL_TO(0.00)[alpha.franken.de,kernel.org,gmail.com,google.com,linutronix.de];
+	GREYLIST(0.00)[pass,body];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[lunn.ch:+];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ziyao.cc:+];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[stable,lkml];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[me@ziyao.cc,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[ziyao.cc,quarantine];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lunn.ch:mid,lunn.ch:dkim,cherry.de:email]
-X-Rspamd-Queue-Id: B15B1CDDC3
-X-Rspamd-Action: no action
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	NEURAL_SPAM(0.00)[0.990];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gnu.org:url,ziyao.cc:email,ziyao.cc:dkim]
+X-Rspamd-Queue-Id: 593F0CE1B6
+X-Rspamd-Action: add header
+X-Spam: Yes
 
-On Mon, Feb 02, 2026 at 03:02:08PM +0100, Quentin Schulz wrote:
-> Hi Andrew,
+On Sun, Jan 18, 2026 at 09:02:35AM +0000, Yao Zi wrote:
+> On MIPS, __current_thread_info is defined as global register variable
+> locating in $gp, and is simply assigned with new address during kernel
+> relocation.
 > 
-> On 2/2/26 2:52 PM, Andrew Lunn wrote:
-> > On Mon, Feb 02, 2026 at 11:27:25AM +0100, Quentin Schulz wrote:
-> > > From: Quentin Schulz <quentin.schulz@cherry.de>
-> > > 
-> > > When not passing the PHY ID with an ethernet-phy-idX.Y compatible
-> > > property, the MDIO bus will attempt to auto-detect the PHY by reading
-> > > its registers and then probing the appropriate driver. For this to work,
-> > > the PHY needs to be in a working state.
-> > > 
-> > > Unfortunately, the net subsystem doesn't control the PHY reset GPIO when
-> > > attempting to auto-detect the PHY. This means the PHY needs to be in a
-> > > working state when entering the Linux kernel. This historically has been
-> > > the case for this device, but only because the bootloader was taking
-> > > care of initializing the Ethernet controller even when not using it.
-> > > We're attempting to support the removal of the network stack in the
-> > > bootloader, which means the Linux kernel will be entered with the PHY
-> > > still in reset and now Ethernet doesn't work anymore.
-> > > 
-> > > The devices in the field only ever had a TI DP83825, so let's simply
-> > > bypass the auto-detection mechanism entirely by passing the appropriate
-> > > PHY IDs via the compatible.
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: bb510ddc9d3e ("arm64: dts: rockchip: add px30-cobra base dtsi and board variants")
-> > > Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-> > 
-> > What is the justification for stable?
-> > 
+> This however is broken with LLVM, which always restores $gp if it finds
+> $gp is clobbered in any form, including when intentionally through a
+> global register variable. This is against GCC's documentation[1], which
+> requires a callee-saved register used as global register variable not to
+> be restored if it's clobbered.
 > 
-> Bootloader without network stack = no network in Linux.
+> As a result, $gp will continue to point to the unrelocated kernel after
+> the epilog of relocate_kernel(), leading to an early crash in init_idle,
+> 
+> [    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff81afada8, ra == ffffffff81afad90
+> [    0.000000] Oops[#1]:
+> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W           6.19.0-rc5-00262-gd3eeb99bbc99-dirty #188 VOLUNTARY
+> [    0.000000] Tainted: [W]=WARN
+> [    0.000000] Hardware name: loongson,loongson64v-4core-virtio
+> [    0.000000] $ 0   : 0000000000000000 0000000000000000 0000000000000001 0000000000000000
+> [    0.000000] $ 4   : ffffffff80b80ec0 ffffffff80b53d48 0000000000000000 00000000000f4240
+> [    0.000000] $ 8   : 0000000000000100 ffffffff81d82f80 ffffffff81d82f80 0000000000000001
+> [    0.000000] $12   : 0000000000000000 ffffffff81776f58 00000000000005da 0000000000000002
+> [    0.000000] $16   : ffffffff80b80e40 0000000000000000 ffffffff80b81614 9800000005dfbe80
+> [    0.000000] $20   : 00000000540000e0 ffffffff81980000 0000000000000000 ffffffff80f81c80
+> [    0.000000] $24   : 0000000000000a26 ffffffff8114fb90
+> [    0.000000] $28   : ffffffff80b50000 ffffffff80b53d40 0000000000000000 ffffffff81afad90
+> [    0.000000] Hi    : 0000000000000000
+> [    0.000000] Lo    : 0000000000000000
+> [    0.000000] epc   : ffffffff81afada8 init_idle+0x130/0x270
+> [    0.000000] ra    : ffffffff81afad90 init_idle+0x118/0x270
+> [    0.000000] Status: 540000e2	KX SX UX KERNEL EXL
+> [    0.000000] Cause : 00000008 (ExcCode 02)
+> [    0.000000] BadVA : 0000000000000000
+> [    0.000000] PrId  : 00006305 (ICT Loongson-3)
+> [    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
+> [    0.000000] Stack : 9800000005dfbf00 ffffffff8178e950 0000000000000000 0000000000000000
+> [    0.000000]         0000000000000000 ffffffff81970000 000000000000003f ffffffff810a6528
+> [    0.000000]         0000000000000001 9800000005dfbe80 9800000005dfbf00 ffffffff81980000
+> [    0.000000]         ffffffff810a6450 ffffffff81afb6c0 0000000000000000 ffffffff810a2258
+> [    0.000000]         ffffffff81d82ec8 ffffffff8198d010 ffffffff81b67e80 ffffffff8197dd98
+> [    0.000000]         ffffffff81d81c80 ffffffff81930000 0000000000000040 0000000000000000
+> [    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> [    0.000000]         0000000000000000 000000000000009e ffffffff9fc01000 0000000000000000
+> [    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> [    0.000000]         0000000000000000 ffffffff81ae86dc ffffffff81b3c741 0000000000000002
+> [    0.000000]         ...
+> [    0.000000] Call Trace:
+> [    0.000000] [<ffffffff81afada8>] init_idle+0x130/0x270
+> [    0.000000] [<ffffffff81afb6c0>] sched_init+0x5c8/0x6c0
+> [    0.000000] [<ffffffff81ae86dc>] start_kernel+0x27c/0x7a8
+> 
+> This bug has been reported to LLVM[2] and affects version from (at
+> least) 18 to 21. Let's work around this by using inline assembly to
+> assign $gp before a fix is widely available.
+> 
+> Cc: stable@vger.kernel.org
+> Link: https://gcc.gnu.org/onlinedocs/gcc-15.2.0/gcc/Global-Register-Variables.html # [1]
+> Link: https://github.com/llvm/llvm-project/issues/176546 # [2]
+> Signed-off-by: Yao Zi <me@ziyao.cc>
 
-I can see this multiple ways....
+Gently ping on this patch. Thanks for your time and review.
 
-Changing the bootloader introduces a regression. Hence you cannot
-change the bootloader.
-
-I personally also don't like boot loaders with basic functionality
-missing. Why cripple the bootloader by removing the network stack?
-
-But i also don't like Linux being dependent on the bootloader. Because
-some vendors ship boards with crippled bootloaders and you need to
-replace the bootloader. And then hidden vendor initialization is not
-in the mainline version of the bootloader, and something breaks in
-Linux.  Making Linux more robust is generally ongoing development, not
-a bug fix.
-
-However, it bootloader developers decide to break the contract between
-the bootloader and the kernel, regressions have been reported, then it
-would make sense to backport the fix to work around the bootloader
-breakage.
-
-I don't know the internal of uboot too well. Can you remove the IP
-stack, but leave the drivers? Get the driver to probe and setup the
-PHY, so you keep the agreed contract with Linux, but you also get the
-crippled bootloader you want.
-
-For the commit message, i would like to see a reasoned argument, based
-on
-
-https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
-why this should be in stable.
-
-	 Andrew
-
+Regards,
+Yao Zi
 
