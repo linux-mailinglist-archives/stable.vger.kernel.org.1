@@ -1,182 +1,180 @@
-Return-Path: <stable+bounces-213075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHO+LbTAgGl3AgMAu9opvQ
-	(envelope-from <stable+bounces-213075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 16:20:20 +0100
+	id 0OYfBozLgGl3AgMAu9opvQ
+	(envelope-from <stable+bounces-213076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:06:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593F0CE1B6
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 16:20:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 888BDCEAA4
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1C893017C0E
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 15:08:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 304B43054CBE
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 15:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C8A37754E;
-	Mon,  2 Feb 2026 15:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ABA379999;
+	Mon,  2 Feb 2026 15:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="UcsB6VLP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBrXaunx"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A913369979;
-	Mon,  2 Feb 2026 15:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770044898; cv=pass; b=a6cBmqPBQ5uN8Ka8hprJ9NrNo8rJVBVGKD8NQ6w1SfA4oQC1s55mO8RJc3++sjAK0d4tTxIS6tPBfYYN0aKT47mxDIPDuIjtN8tGWVBQVMlgRxiNjpK35V6LBslUvGfKtr2AhBtZJ1Q+tdg7XXgHMJck6y9C6J2rh9dei09s9fc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770044898; c=relaxed/simple;
-	bh=OHwglCci930h0BPeoKnfBXI07YfnmYvkYhe1czCXm5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mB9BRlBBmS3apJpzU57zYdvoLejHXqwCAXWmdglySn9I5irv4Z2hqIu2iEBnFL6beNPRJpVd0ODY7fIC3tGW5SLnBXWscBLQJg+we6jbP90Uhmrqivg6qatFBnwjMmgxDy8cHqpIwW6o8sPmn+Q7R+PhBvXfZ/12O5C7vSJeS6Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=UcsB6VLP; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
-ARC-Seal: i=1; a=rsa-sha256; t=1770044866; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=O1nsTu0Nm32KmUJcysdnX55vXY+nYlZU7sQyjU6a9F3DauNQDj5CMigQQjzvgBSMI7thc1O3L8ebT15IWw8HdV11S6fB4IzgJW2d34ZMqOq6CzZIuXEkzKU4rgIx4w9VCyK0ba//QqqlIypHPvB2GIhN7P1GoHNkiNEL58nqRlc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770044866; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dwVKuZddl4r/mV4Cr5AKUVYl+TwlSGWfy8J+FStd4oE=; 
-	b=mOXtWJt14DhbwjFFy0c8WGyLFmYcsPYaTWrhOySy3mFcXQ0byxP8hleo67JuQuGF9UezmLuy8fZh8fTIE/WznemS5FoEZ4h9RHS/EEBCrQGcRAyTXZWRdzgBD5j4FB+dqTu8oqkvkm9MMc0nyxRWkTglLo71BCFvYj5W050c2fI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770044866;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=dwVKuZddl4r/mV4Cr5AKUVYl+TwlSGWfy8J+FStd4oE=;
-	b=UcsB6VLPIEf1abuUYSf6DiHKcwlu9vYf7bQdmpWemlpcN0982Z971L0f6CElyGuk
-	2iqGWjF95CmTb6wQAV0Fxj/KT4XUwbiO8NzZYytcAbqoRX4M40C65y3jd3XR63/UOIc
-	tve2HWHJVOIxARWTGcdWj7ZlDi4NqW/S/w4VZgVA=
-Received: by mx.zohomail.com with SMTPS id 1770044863450508.49955181658333;
-	Mon, 2 Feb 2026 07:07:43 -0800 (PST)
-Date: Mon, 2 Feb 2026 15:07:22 +0000
-From: Yao Zi <me@ziyao.cc>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Work around LLVM bug when gp is used as global
- register variable
-Message-ID: <aYC9qgTdhnrWQ1zg@pie>
-References: <20260118090235.60670-1-me@ziyao.cc>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A614AD0D
+	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 15:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770047952; cv=none; b=Jl+d/MNU1vfltQaNUsciSl9W+/sD7utPSBWDo7LG0vG2/WJpmOwJwVUTWN45/qDgItBVE282vsqCm5ueY6+eiXa3plBgB8fSGPyDX1/AULyfKJ0HufW44/RHCx7SX0/EkwEFEBRvCiR3GtytGYh++U0e+E27Qa3dVw7VkK0B5gs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770047952; c=relaxed/simple;
+	bh=kARCeaAKhDeIKKAlMz1UbawFMFAokaEWYZvZ6sB7T4w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GLl346nFil5VGG+B+oNBGfxcayXD0oDy2WUHbNhM72O5t2aTyDZE9gc7GthRciq/JExxAmaGZJyyas8xhUaJDcUt1VillfY0ICxB8BF47r7JX9vGHN2ussnz41PXR7JiRIe+ynOXhaE0fuT07ljJ0SA3ojV9LA9HghuNuZhq6eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBrXaunx; arc=none smtp.client-ip=209.85.221.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-43590777e22so2902416f8f.3
+        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 07:59:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770047949; x=1770652749; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LZZm7iyAn8JIl9dQI6HiLl2VItdwuhdut+41offwFMw=;
+        b=ZBrXaunxXywOGHZplQrwYyDCxtTARGDcrWmRVOJwHk7ZUQC8Br/bXkpHBMr7wxk8gy
+         YnyxfSRHkvbYzYHY4ZJcCdsL8ezoGpze2TLiCjWbyF2Qyp/q5wrqPwcbzqqkYO7BGhCB
+         pFDXiNLdH1oDPZz8h2/s/067IMAGMXMsX4ShoUzzj0xcZHWVJk4kvisAqze9iL7TM30S
+         hk+gORVMwzHLRMvwy/9YqFp5SVqs4zkwUe/OilTiHur71DljQ915BLNRqJLE8mQjl5J6
+         gjdf2HtNMrM+wql2vCss3SBPjNOvGktDS7/4Oa+i6xYRGtP1H0ufzchnct0IB6XQ7+AW
+         f8hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770047949; x=1770652749;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LZZm7iyAn8JIl9dQI6HiLl2VItdwuhdut+41offwFMw=;
+        b=bggAkxDwb2KUuZPW7DXdE+Xs5dS67Uj52EKtXT+W5aiz0bAJRongxsSlLuhu+1nyub
+         zfYX1AaRoxDdlUAYaYC4OoZSQYNXlf7k+aHu8LFgMLlpAv8Fz0XyIDtPrXebcrPaFHIP
+         Tcsas0XnYRU/QY14drqg6baxggDg3mFHmw8EmaBD8tXGlwDiiG9JpdKx6Ya32bVgzNym
+         iZYBSVt9wlUks4/IKqrQjkoqCeGkmFS18vV/CiRdxKD/nUqnV/14Vc3qcEC0faoFkFRH
+         8fxlOP/gcrv/CQBpNTdNOO/d/CMIoWLoVEgftbk8mL+r95nv6KUktpKm3mUjCZWzHn38
+         FlXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFeevzgtQC1iA7sFZ9B4/A0oP3f6ywsdp1BRk+FaRBZA3e01PFndcvT/D/j+qycOOjyAXa8wU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfNBSUE6jor+tsN9CSaS3CpWw28i5dGYCkMWSBT4Br2aMN6iVN
+	pZ5koHkBqXKyjZGUON+upaclHiV/CFwrSymClwWLWw3cF5M3zCSsY6Xl
+X-Gm-Gg: AZuq6aJG76XqiragGGdzUPef538YNrRoz8Zryad4mRHg3CAj8ltBgnbl2CAZjMT/BSi
+	+gCJGwmuOcmycgdjeBuSZ0+7lqfUHRrFrzLopPK6fxxnqkkgcM2Z6LOw/Wuac1je4Q4NHBn74Hd
+	44Zk7ijmaNRH88wUkWJxMqBKpF4FR1LmDwUp6rc62agoG0VpO23+v3a61GpmnuPLmOqEYwNWEq+
+	syqDsdqLEUMxuF3c95C8Ta2VQM05iaI0qaaKj7cjcnTJxXxyDXtZX1UhycRxieN5O89mBxlt5F5
+	LhW1Ij0lmvNfzBsa+GUtDlojSownlOx4Q1i0NcYr2tYyJar2+8zOmlYi/MeYtjtEeoz0l3nuuS2
+	LZH4ob8d19ia0AjOmTQquVp0uyzXaSEUdPONF9UilLQsmn4d6+3t+mWVPXoMAy9G0TNZAMgTrKR
+	yVuqn+r5WJL6IjSOaZtoqn3TRyNqSzGMlYXaubQeILKis5KhBf2O8=
+X-Received: by 2002:a05:6000:26c3:b0:435:b7b9:afe5 with SMTP id ffacd0b85a97d-435f3a66f53mr16112258f8f.1.1770047949225;
+        Mon, 02 Feb 2026 07:59:09 -0800 (PST)
+Received: from [192.168.0.253] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-435e131ce64sm46708334f8f.26.2026.02.02.07.59.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 07:59:08 -0800 (PST)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Mon, 02 Feb 2026 16:58:57 +0100
+Subject: [PATCH] hwmon: gpio-fan: allow to stop FANs when CONFIG_PM is
+ disabled
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260118090235.60670-1-me@ziyao.cc>
-X-ZohoMailClient: External
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260202-gpio-fan-stop-fix-v1-1-c7853183d93d@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMDJgGkC/x2MQQqAMAwEv1JyNqC1FPQr4qFoqrm0pRERin83e
+ BmYgd0GQpVJYDYNKt0snJPK0BnYzpAOQt7VwfbW9wo8CmeMIaFcuWDkByeKbrM+TKN3oLtSSfP
+ /uazv+wF5VnkcYwAAAA==
+X-Change-ID: 20260202-gpio-fan-stop-fix-9ef4c26a9364
+To: Guenter Roeck <linux@roeck-us.net>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.14.2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [9.34 / 15.00];
-	URIBL_BLACK(7.50)[ziyao.cc:email,ziyao.cc:dkim];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213075-lists,stable=lfdr.de];
-	R_DKIM_ALLOW(0.00)[ziyao.cc:s=zmail];
-	FREEMAIL_TO(0.00)[alpha.franken.de,kernel.org,gmail.com,google.com,linutronix.de];
-	GREYLIST(0.00)[pass,body];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213076-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ziyao.cc:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable,lkml];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[me@ziyao.cc,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[ziyao.cc,quarantine];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[j4g8y7@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	NEURAL_SPAM(0.00)[0.990];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gnu.org:url,ziyao.cc:email,ziyao.cc:dkim]
-X-Rspamd-Queue-Id: 593F0CE1B6
-X-Rspamd-Action: add header
-X-Spam: Yes
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 888BDCEAA4
+X-Rspamd-Action: no action
 
-On Sun, Jan 18, 2026 at 09:02:35AM +0000, Yao Zi wrote:
-> On MIPS, __current_thread_info is defined as global register variable
-> locating in $gp, and is simply assigned with new address during kernel
-> relocation.
-> 
-> This however is broken with LLVM, which always restores $gp if it finds
-> $gp is clobbered in any form, including when intentionally through a
-> global register variable. This is against GCC's documentation[1], which
-> requires a callee-saved register used as global register variable not to
-> be restored if it's clobbered.
-> 
-> As a result, $gp will continue to point to the unrelocated kernel after
-> the epilog of relocate_kernel(), leading to an early crash in init_idle,
-> 
-> [    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff81afada8, ra == ffffffff81afad90
-> [    0.000000] Oops[#1]:
-> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W           6.19.0-rc5-00262-gd3eeb99bbc99-dirty #188 VOLUNTARY
-> [    0.000000] Tainted: [W]=WARN
-> [    0.000000] Hardware name: loongson,loongson64v-4core-virtio
-> [    0.000000] $ 0   : 0000000000000000 0000000000000000 0000000000000001 0000000000000000
-> [    0.000000] $ 4   : ffffffff80b80ec0 ffffffff80b53d48 0000000000000000 00000000000f4240
-> [    0.000000] $ 8   : 0000000000000100 ffffffff81d82f80 ffffffff81d82f80 0000000000000001
-> [    0.000000] $12   : 0000000000000000 ffffffff81776f58 00000000000005da 0000000000000002
-> [    0.000000] $16   : ffffffff80b80e40 0000000000000000 ffffffff80b81614 9800000005dfbe80
-> [    0.000000] $20   : 00000000540000e0 ffffffff81980000 0000000000000000 ffffffff80f81c80
-> [    0.000000] $24   : 0000000000000a26 ffffffff8114fb90
-> [    0.000000] $28   : ffffffff80b50000 ffffffff80b53d40 0000000000000000 ffffffff81afad90
-> [    0.000000] Hi    : 0000000000000000
-> [    0.000000] Lo    : 0000000000000000
-> [    0.000000] epc   : ffffffff81afada8 init_idle+0x130/0x270
-> [    0.000000] ra    : ffffffff81afad90 init_idle+0x118/0x270
-> [    0.000000] Status: 540000e2	KX SX UX KERNEL EXL
-> [    0.000000] Cause : 00000008 (ExcCode 02)
-> [    0.000000] BadVA : 0000000000000000
-> [    0.000000] PrId  : 00006305 (ICT Loongson-3)
-> [    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
-> [    0.000000] Stack : 9800000005dfbf00 ffffffff8178e950 0000000000000000 0000000000000000
-> [    0.000000]         0000000000000000 ffffffff81970000 000000000000003f ffffffff810a6528
-> [    0.000000]         0000000000000001 9800000005dfbe80 9800000005dfbf00 ffffffff81980000
-> [    0.000000]         ffffffff810a6450 ffffffff81afb6c0 0000000000000000 ffffffff810a2258
-> [    0.000000]         ffffffff81d82ec8 ffffffff8198d010 ffffffff81b67e80 ffffffff8197dd98
-> [    0.000000]         ffffffff81d81c80 ffffffff81930000 0000000000000040 0000000000000000
-> [    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    0.000000]         0000000000000000 000000000000009e ffffffff9fc01000 0000000000000000
-> [    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    0.000000]         0000000000000000 ffffffff81ae86dc ffffffff81b3c741 0000000000000002
-> [    0.000000]         ...
-> [    0.000000] Call Trace:
-> [    0.000000] [<ffffffff81afada8>] init_idle+0x130/0x270
-> [    0.000000] [<ffffffff81afb6c0>] sched_init+0x5c8/0x6c0
-> [    0.000000] [<ffffffff81ae86dc>] start_kernel+0x27c/0x7a8
-> 
-> This bug has been reported to LLVM[2] and affects version from (at
-> least) 18 to 21. Let's work around this by using inline assembly to
-> assign $gp before a fix is widely available.
-> 
-> Cc: stable@vger.kernel.org
-> Link: https://gcc.gnu.org/onlinedocs/gcc-15.2.0/gcc/Global-Register-Variables.html # [1]
-> Link: https://github.com/llvm/llvm-project/issues/176546 # [2]
-> Signed-off-by: Yao Zi <me@ziyao.cc>
+When CONFIG_PM is disabled, the GPIO controlled FANs can't be stopped by
+using the sysfs attributes since commit 0d01110e6356 ("hwmon: (gpio-fan)
+Add regulator support").
 
-Gently ping on this patch. Thanks for your time and review.
+Using either the 'pwm1' or the 'fan1_target' attribute fails the same way:
 
-Regards,
-Yao Zi
+  $ echo 0 > /sys/class/hwmon/hwmon1/pwm1
+  ash: write error: Function not implemented
+  $ echo 0 > /sys/class/hwmon/hwmon1/fan1_target
+  ash: write error: Function not implemented
+
+Both commands were working flawlessly before the mentioned commit.
+
+The issue happens because pm_runtime_put_sync() returns with -ENOSYS
+when CONFIG_PM is disabled, and the set_fan_speed() function handles
+this as an error.
+
+In order to restore the previous behaviour, change the error check in
+the set_fan_speed() function to ignore the -ENOSYS error code.
+
+Cc: stable@vger.kernel.org
+Fixes: 0d01110e6356 ("hwmon: (gpio-fan) Add regulator support")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+ drivers/hwmon/gpio-fan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
+index 516c34bb61c9cfa2927d31ee6459c8306be2fb5b..37645e9141dc7034fd440afed695af57829ec900 100644
+--- a/drivers/hwmon/gpio-fan.c
++++ b/drivers/hwmon/gpio-fan.c
+@@ -148,7 +148,7 @@ static int set_fan_speed(struct gpio_fan_data *fan_data, int speed_index)
+ 		int ret;
+ 
+ 		ret = pm_runtime_put_sync(fan_data->dev);
+-		if (ret < 0)
++		if (ret < 0 && ret != -ENOSYS)
+ 			return ret;
+ 	}
+ 
+
+---
+base-commit: 1117702454262fb361869451be5b006c022eb08a
+change-id: 20260202-gpio-fan-stop-fix-9ef4c26a9364
+
+Best regards,
+-- 
+Gabor Juhos <j4g8y7@gmail.com>
+
 
