@@ -1,92 +1,74 @@
-Return-Path: <stable+bounces-213025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CL+QII5GgGkE5gIAu9opvQ
-	(envelope-from <stable+bounces-213025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 07:39:10 +0100
+	id ++NFI45IgGnC5gIAu9opvQ
+	(envelope-from <stable+bounces-213026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 07:47:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A80C8DE6
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 07:39:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED52C8EDB
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 07:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A4273005D0A
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 06:38:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7CF4B300B3D1
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 06:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99152FE596;
-	Mon,  2 Feb 2026 06:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1F730AD1C;
+	Mon,  2 Feb 2026 06:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gfUCXixJ"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Ea7hJZIc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEEB1494C3
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 06:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FB2AD24;
+	Mon,  2 Feb 2026 06:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770014308; cv=none; b=hwu0n1ixrm7zc/1fbQsdRRMeXm6OSJC0F6chaRYBFL9OxF6VUnhe+KN2ha2m8Rgy9OSKDdUzCznR++WnlG3D+mg1hyCTs9CA1gyTzIuKQci80sCt8wHwMbGNn3FJOhf3coA8pawe8UFcvfFcsbQqR2qxLjMTyObRJzLNh6JYNN8=
+	t=1770014858; cv=none; b=DTao07s1gaEcUqDq5JC7Jk3nvoJGMW/75/9yeO7TozRMk89u5TIoxItsUu8UjgvuxRoTHmDY1gJNq9PYPc8vH4VQuFHD9Z7LaR2yIy8alsvtxwWrl8swGoJsEmCqVcvQL9PpQD6Pi5zZcKJOEyu7d/m1k9L85+G4tPWl/OCuFQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770014308; c=relaxed/simple;
-	bh=c2qyeHjVaOmyrtgY42eDuxJJm5mkYDGCfcQLnxJhSbk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pjMG71zN7kilY91x9WNW1yBK/LUJPnQwMBy/nmYmTAIJs+QV4bSCFcpEUwmiuXX5lDOUyf5FNT1OcYTn90KGZyLCacHVR7VWUl26Vr1HIow9zwdguUyAxJ4iwXTQM3POUcCCMpL0uQ7qwnDSn2nhsuWE7JrrgYmog6v8+0m+czE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gfUCXixJ; arc=none smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-649bb5a0ba1so1049707d50.1
-        for <stable@vger.kernel.org>; Sun, 01 Feb 2026 22:38:27 -0800 (PST)
+	s=arc-20240116; t=1770014858; c=relaxed/simple;
+	bh=79QRdfY8Kh+DAQbA6nusrCU+fQQBIGh+BTOLrtWJ15M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=smU4fpgLhqZBBXKxSvRUamWXasudLxjlMH+qRdnCkL6v/YoiI8OPgJsWtjz/Sgn6OSDc2+MN4q4tRnDDhe5aw3AG1GMT98sL9JxOwkITxSm46a+cHtv00G20qe49TcEZWFZm2LalQjUYhV32184DuvHvYyEiBNQ3op63g9vagQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Ea7hJZIc; arc=none smtp.client-ip=120.232.169.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770014306; x=1770619106; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fAfwHYV8/UgKwbTNXtNiOxc4+en9+lyKeBe4ZozbvW0=;
-        b=gfUCXixJssuagAm4kqhHdDDUyuZ205dOp9sX1frcpd57hlz/8tYoI8cR0G0/TDPtkQ
-         xDxjz68us98hsYSGU2s487PuP533lfB0J7mR0dcl3PbJGlXIROztzjuam/Ay+dJ6MTOz
-         PLUq76jQO2yH71FHlUylbvmNKfY0JvsrgUcpPYE37R8xFkzF5WeAb6HWZWOq4l4J2myF
-         ISWmCAvJW5TQC0ZEF7IRZ8kmzmt3+dW1mUfYwmLmLdaL7+NizxyE5TIRhAxq4VnV6KW2
-         yugmWKtH1og6AfWWlzzDxW+uEJBdWv4lFexcP8oTM661GS0eSeRORrCRHgZPk9idHeWb
-         ykPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770014306; x=1770619106;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fAfwHYV8/UgKwbTNXtNiOxc4+en9+lyKeBe4ZozbvW0=;
-        b=t/guzvGcPXBlwqaK0v9UcFqeRCKKzGdWwD+NzUm+riM+HOQe4TWHenS7+wke9iBlU/
-         Xy3hwk49+tCMkxBXDnskhkjvI+NpcFZA9f3OYvXPWUSMumXIakyfWXVYCoJ722WSLMZk
-         9KISmOdPBFZHClmdV5gHi3Tz86nSh8L8UOOU1Ub9ej769muBjZBNNc2FaVZZ3CKM3R4Z
-         uo11B+w/VGoiaOwQXP4Oc5uTpMmWJlqMhokGxC0KDKxa4qE+9pIzOtz6YceGeufozoty
-         rlCuQcrzqTfWHt3FnqvZOcmhvcMB7UMV/oPX0J6hi58Vu3u8rjaGNW5ONd1UUM1Cyf6Q
-         lyhw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/96vNFdkwC6DyMId0zYvPWPfIBjRV+2Mivx21W/8P4J6im40jA9V7JA+bwVNNJQg3dJF1xh4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYipHfgsuFgLLJmFL6V1AWEsDPD1WRHVq+LrVQC/l1YGLRcb+p
-	tlsf3RZYpD6nN34aaa8R0WkGGDbD1hKjoaLopi+6QtZLTkPJYCnto/Ju
-X-Gm-Gg: AZuq6aJ5nUJs3PBiS2VK1CyL0rUVH2PTAFONXpBQyXSed70LX9p5y2UufpECN1C8hol
-	7SS51qWvOb3wXO1SSJuIfgDw84i4RL6DNIo/tStOEMDxrzXV1OyZco4YUkoa/hKpWrFedsE9kXU
-	cTk3s7DckLJx750Ywq4MCQj3sXjEvzBsUtOMwkOC4gq0Ftjf/qJ/U4FHPmPGRb4hGEQWTiVTFXM
-	830UGLs/0tAGmpFRbTekdP7YrP7kXLGAPWMd2jxdqQ1wgNJRZ23GPZrMO3D4eTCMzm5gGppUHZu
-	WKvZSZ2+tjP9zdtkVKoK0SGh56QKv9O9IjCdl8vdBdruacSmmZdPi+8Y4pWrOCEIJyohhOE17eT
-	j62XyKBS0Ra7CFQLpmfEHrshb8dR3rTec8v+LUsap6LBAc+eOtjED/S8uaqLGl3BeobB92ZFhMH
-	q4U4qY2wwEg+99Q4LVKpE3+S0=
-X-Received: by 2002:a53:ac82:0:b0:649:2e3c:7d76 with SMTP id 956f58d0204a3-649a84e5c58mr8022667d50.69.1770014306344;
-        Sun, 01 Feb 2026 22:38:26 -0800 (PST)
-Received: from tux ([2601:7c0:c37c:4c00::9944])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-649960e0965sm8478547d50.13.2026.02.01.22.38.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 22:38:26 -0800 (PST)
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=Ea7hJZIcRwhgFQQhJKhefcXvmBkcNsRnweH1xGaUt9jFHnpLK3veN5QXseIugetZkpT8l+ifj+m4q
+	 ytaKl49Zi5FE56UTl3lp0axemitE/8mPsG+JenpR1ifs5RaFZm3eK4wBNMDH8h8x1mG6L3ozJyInBu
+	 8jHZMQ/qNtSLeVnc=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-36-12050 (RichMail) with SMTP id 2f1269804dba213-0223f;
+	Mon, 02 Feb 2026 15:09:54 +0800 (CST)
+X-RM-TRANSID:2f1269804dba213-0223f
+From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
-	straube.linux@gmail.com
-Cc: dan.carpenter@linaro.org,
-	hansg@kernel.org,
-	linux-staging@lists.linux.dev,
+	stable@vger.kernel.org,
+	michael.christie@oracle.com
+Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] staging: rtl8723bs: fix null dereference in find_network
-Date: Mon,  2 Feb 2026 00:38:08 -0600
-Message-ID: <20260202063808.664468-1-ethantidmore06@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	mst@redhat.com,
+	jasowang@redhat.com,
+	pbonzini@redhat.com,
+	stefanha@redhat.com,
+	mlombard@redhat.com,
+	asias@redhat.com,
+	nab@linux-iscsi.org,
+	virtualization@lists.linux-foundation.org,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	wh1sper@zju.edu.cn,
+	sgarzare@redhat.com
+Subject: [PATCH 6.1.y] vhost-scsi: Fix handling of multiple calls to vhost_scsi_set_endpoint
+Date: Mon,  2 Feb 2026 14:47:19 +0800
+Message-Id: <20260202064719.642351-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,69 +77,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
-	FREEMAIL_CC(0.00)[linaro.org,kernel.org,lists.linux.dev,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213026-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213025-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ethantidmore06@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D9A80C8DE6
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[139.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zju.edu.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0ED52C8EDB
 X-Rspamd-Action: no action
 
-The pwlan variable has the possibility of returning NULL and is not
-checked for NULL and then later dereferenced.
+From: Mike Christie <michael.christie@oracle.com>
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+[ Upstream commit 5dd639a1646ef5fe8f4bf270fad47c5c3755b9b6 ]
+
+If vhost_scsi_set_endpoint is called multiple times without a
+vhost_scsi_clear_endpoint between them, we can hit multiple bugs
+found by Haoran Zhang:
+
+1. Use-after-free when no tpgs are found:
+
+This fixes a use after free that occurs when vhost_scsi_set_endpoint is
+called more than once and calls after the first call do not find any
+tpgs to add to the vs_tpg. When vhost_scsi_set_endpoint first finds
+tpgs to add to the vs_tpg array match=true, so we will do:
+
+vhost_vq_set_backend(vq, vs_tpg);
+...
+
+kfree(vs->vs_tpg);
+vs->vs_tpg = vs_tpg;
+
+If vhost_scsi_set_endpoint is called again and no tpgs are found
+match=false so we skip the vhost_vq_set_backend call leaving the
+pointer to the vs_tpg we then free via:
+
+kfree(vs->vs_tpg);
+vs->vs_tpg = vs_tpg;
+
+If a scsi request is then sent we do:
+
+vhost_scsi_handle_vq -> vhost_scsi_get_req -> vhost_vq_get_backend
+
+which sees the vs_tpg we just did a kfree on.
+
+2. Tpg dir removal hang:
+
+This patch fixes an issue where we cannot remove a LIO/target layer
+tpg (and structs above it like the target) dir due to the refcount
+dropping to -1.
+
+The problem is that if vhost_scsi_set_endpoint detects a tpg is already
+in the vs->vs_tpg array or if the tpg has been removed so
+target_depend_item fails, the undepend goto handler will do
+target_undepend_item on all tpgs in the vs_tpg array dropping their
+refcount to 0. At this time vs_tpg contains both the tpgs we have added
+in the current vhost_scsi_set_endpoint call as well as tpgs we added in
+previous calls which are also in vs->vs_tpg.
+
+Later, when vhost_scsi_clear_endpoint runs it will do
+target_undepend_item on all the tpgs in the vs->vs_tpg which will drop
+their refcount to -1. Userspace will then not be able to remove the tpg
+and will hang when it tries to do rmdir on the tpg dir.
+
+3. Tpg leak:
+
+This fixes a bug where we can leak tpgs and cause them to be
+un-removable because the target name is overwritten when
+vhost_scsi_set_endpoint is called multiple times but with different
+target names.
+
+The bug occurs if a user has called VHOST_SCSI_SET_ENDPOINT and setup
+a vhost-scsi device to target/tpg mapping, then calls
+VHOST_SCSI_SET_ENDPOINT again with a new target name that has tpgs we
+haven't seen before (target1 has tpg1 but target2 has tpg2). When this
+happens we don't teardown the old target tpg mapping and just overwrite
+the target name and the vs->vs_tpg array. Later when we do
+vhost_scsi_clear_endpoint, we are passed in either target1 or target2's
+name and we will only match that target's tpgs when we loop over the
+vs->vs_tpg. We will then return from the function without doing
+target_undepend_item on the tpgs.
+
+Because of all these bugs, it looks like being able to call
+vhost_scsi_set_endpoint multiple times was never supported. The major
+user, QEMU, already has checks to prevent this use case. So to fix the
+issues, this patch prevents vhost_scsi_set_endpoint from being called
+if it's already successfully added tpgs. To add, remove or change the
+tpg config or target name, you must do a vhost_scsi_clear_endpoint
+first.
+
+Fixes: 25b98b64e284 ("vhost scsi: alloc cmds per vq instead of session")
+Fixes: 4f7f46d32c98 ("tcm_vhost: Use vq->private_data to indicate if the endpoint is setup")
+Reported-by: Haoran Zhang <wh1sper@zju.edu.cn>
+Closes: https://lore.kernel.org/virtualization/e418a5ee-45ca-4d18-9b5d-6f8b6b1add8e@oracle.com/T/#me6c0041ce376677419b9b2563494172a01487ecb
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20250129210922.121533-1-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/vhost/scsi.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-index f81a29cd6a78..29dd0b56223a 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -835,8 +835,11 @@ static void find_network(struct adapter *adapter)
- 	struct wlan_network *tgt_network = &pmlmepriv->cur_network;
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index de6f108a50a9..f9ef17c3e566 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -1572,14 +1572,19 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
+ 		}
+ 	}
  
- 	pwlan = rtw_find_network(&pmlmepriv->scanned_queue, tgt_network->network.mac_address);
--	if (pwlan)
--		pwlan->fixed = false;
++	if (vs->vs_tpg) {
++		pr_err("vhost-scsi endpoint already set for %s.\n",
++		       vs->vs_vhost_wwpn);
++		ret = -EEXIST;
++		goto out;
++	}
 +
-+	if (!pwlan)
-+		return;
-+
-+	pwlan->fixed = false;
+ 	len = sizeof(vs_tpg[0]) * VHOST_SCSI_MAX_TARGET;
+ 	vs_tpg = kzalloc(len, GFP_KERNEL);
+ 	if (!vs_tpg) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+-	if (vs->vs_tpg)
+-		memcpy(vs_tpg, vs->vs_tpg, len);
  
- 	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) &&
- 	    (adapter->stapriv.asoc_sta_count == 1))
+ 	list_for_each_entry(tpg, &vhost_scsi_list, tv_tpg_list) {
+ 		mutex_lock(&tpg->tv_tpg_mutex);
+@@ -1594,11 +1599,6 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
+ 		tv_tport = tpg->tport;
+ 
+ 		if (!strcmp(tv_tport->tport_name, t->vhost_wwpn)) {
+-			if (vs->vs_tpg && vs->vs_tpg[tpg->tport_tpgt]) {
+-				mutex_unlock(&tpg->tv_tpg_mutex);
+-				ret = -EEXIST;
+-				goto undepend;
+-			}
+ 			/*
+ 			 * In order to ensure individual vhost-scsi configfs
+ 			 * groups cannot be removed while in use by vhost ioctl,
+@@ -1643,15 +1643,15 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
+ 		}
+ 		ret = 0;
+ 	} else {
+-		ret = -EEXIST;
++		ret = -ENODEV;
++		goto free_tpg;
+ 	}
+ 
+ 	/*
+-	 * Act as synchronize_rcu to make sure access to
+-	 * old vs->vs_tpg is finished.
++	 * Act as synchronize_rcu to make sure requests after this point
++	 * see a fully setup device.
+ 	 */
+ 	vhost_scsi_flush(vs);
+-	kfree(vs->vs_tpg);
+ 	vs->vs_tpg = vs_tpg;
+ 	goto out;
+ 
+@@ -1668,6 +1668,7 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
+ 			target_undepend_item(&tpg->se_tpg.tpg_group.cg_item);
+ 		}
+ 	}
++free_tpg:
+ 	kfree(vs_tpg);
+ out:
+ 	mutex_unlock(&vs->dev.mutex);
+@@ -1757,6 +1758,7 @@ vhost_scsi_clear_endpoint(struct vhost_scsi *vs,
+ 	vhost_scsi_flush(vs);
+ 	kfree(vs->vs_tpg);
+ 	vs->vs_tpg = NULL;
++	memset(vs->vs_vhost_wwpn, 0, sizeof(vs->vs_vhost_wwpn));
+ 	WARN_ON(vs->vs_events_nr);
+ 	mutex_unlock(&vs->dev.mutex);
+ 	mutex_unlock(&vhost_scsi_mutex);
 -- 
-2.52.0
+2.34.1
+
 
 
