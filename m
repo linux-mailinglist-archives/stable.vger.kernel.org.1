@@ -1,333 +1,458 @@
-Return-Path: <stable+bounces-213057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GsHKKqFgGnE8wIAu9opvQ
-	(envelope-from <stable+bounces-213057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:08:26 +0100
+	id QDzeMTmJgGnO9wIAu9opvQ
+	(envelope-from <stable+bounces-213058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:23:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E422CB7BF
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:08:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE60CB946
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 12:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBB82300E618
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 11:06:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EE9F301ECCF
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 11:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF8235BDD5;
-	Mon,  2 Feb 2026 11:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CA635CBD1;
+	Mon,  2 Feb 2026 11:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IvI5v6T/"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E93723D7FC;
-	Mon,  2 Feb 2026 11:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770030400; cv=none; b=UenHPTpj6UJoxrG+uhQvCGGCWXawevz94w2RCAdSfQER2Dvs35lLRj+1/LOZvKIlC4bnXWlSRgsdkcwCFDatx74qrRRc+8vUALhsx3x7Nd7F6BYndLkA4FRfkPLXLRSrb9rRS9sp2goXvFnk3daZixVBH05AhJt6uDdtuXXwoJk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770030400; c=relaxed/simple;
-	bh=RH7KX9BxYYBXoGaI5AhYVydWoCwzALRpKIV1S40XV+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FOEXZ/CM1FnfdOa6+zUKBnhjEB5PkJaLxLg/xHRI43+A7pY9kuvhz1YF8p6KMgsJEVtHOqd7zQJatu7ZRzfdy6FSRbfgmW85zWuRipEocVQ0YyFO1MF7212KQWPCEa8B84O8fYlhKNfuzJzKDCnI+QHkm9WzygkngzBq0JyByO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F112339;
-	Mon,  2 Feb 2026 03:06:31 -0800 (PST)
-Received: from [10.163.168.36] (unknown [10.163.168.36])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0530E3F7A6;
-	Mon,  2 Feb 2026 03:06:34 -0800 (PST)
-Message-ID: <7790afb1-df77-4c14-90f1-1499f4e68f94@arm.com>
-Date: Mon, 2 Feb 2026 16:36:31 +0530
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010000.outbound.protection.outlook.com [52.101.201.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DC236166F
+	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 11:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770031369; cv=fail; b=UyvAQpW0vcIlJRtLHhNW3YQIcrmQualTaWe8uNOgTZ+oSIxM1a+kppvmtg5lo7bTvfDVFyvUOL+J/It8rFuxfjxcpr4xnL40BelnKEzP3Lf90W4XesaaWB2TVjgGPjkVPmDoMsTpS/dwoRdZUvIyIWOa1rtSjQPBina2+FnPB9s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770031369; c=relaxed/simple;
+	bh=dTJhGv6gRynUCgu29VNijMJ2RcCFU8RZc8GOK012Cvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Kp/L28jolBG/1IPyt7TSvC4UBTsXZ/RjYfzat9h5vE7jSKxKAADfXKjQFaQ+o7Isie3GBBVZ434EYyf8LqJ2pqKgsWhe3Kg7rAlKUI7RQrLNC2QQPPlxELHu1I+ytp6AwT2OeoEJO9qIsnE8mIGaAfvsyiNg+//l+EnauPFrnU8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IvI5v6T/; arc=fail smtp.client-ip=52.101.201.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QovrM+uTpwqaCjkk0ZXU15ERZj/Uwzk9vVWgFYhB5VDAzeNXs5CbNk2u1iis99ij4KnoSQ/DnK6S5N5YXx60SQkdfQXVVtRnn77/xVApZ+VttfD2KWqQY+DtBZ2x/QpRWrBwP6ObcS/cS3CKBI8Hdu5R0NT+GrYuICRMO1n42oA1MPXhlGp3V3NJv87Q17sm8svQudTymTmtEGutC++eHAtmP9InFjlqYURF+vQMt6F4hwBBh+RnmmC8WwPgPldQQA3hIROQj9h+VTRgp7Wyby5S1BgOKP7KJ1XOO6C8Y5sUIiXHJ6VisoG1xZDx5GHW18vHnuQn+MY3JAPemb67tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DTbb3sQtohKQa/i6WnDSIpzkk/XXcuVQDXdcK0/qC6I=;
+ b=cR1P3A9IFN6CDjQG7zCeFb4wpOFenBWZ7zB2buf737DepcysD2dP12IozUEjIyY/RaLnxdQy1Qa0clrlVoVHzW345sAPy5fqhepirEAEgWr1CwQURAn0duqO++bdF5NEOV3MtOQllIGhfgci+GYULQyZJvoDyxdFt3KmwavAoBU0xmaDdNYJHko5pXcZbVey38+mAa2+RUGYLr6rEi5hAHzcSI6VBUNPbU6RrxhrLBDQRdniz1d5t0qL/q84E5F3UR83/zI4tjOQSv+jVS2KCa00DOSA+4opph/UtFFdxfyoAc1MpKJ9O8AqIqdHB8tckaFPFyZRILD7qw4buPiB0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DTbb3sQtohKQa/i6WnDSIpzkk/XXcuVQDXdcK0/qC6I=;
+ b=IvI5v6T/8pIajHSFciYSFWEDS5OJm3UstwXxX4yCMBwSWisYRYF4w83j3LFiYTrA+0ySOcUE1Y3W50F6cnul3swasod5gNYrcl/d/LdHm3ARj+VC2ZiBmO0/t4GdcMDw72Mlu2M6qHsEErx2g+l66RNUYldUod2eFh6DWWXAvtqdydMItcEi3zX0Prsbf9ZDmJRshpk9bXIMkrU5FcM89yxoYDiTew49MORvmeaDflzbGHvhSxY39wNvC/A/TkdRVSiMduQ6zfS9kFlnOvjpnI/RamDaiuhryErYWqu6zWyOiHM73/5RbS4x/cxn1DJE1eRsd8pIj0ZrafpXvAFbtw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ DM6PR12MB4417.namprd12.prod.outlook.com (2603:10b6:5:2a4::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.16; Mon, 2 Feb 2026 11:22:43 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 11:22:42 +0000
+Date: Mon, 2 Feb 2026 22:22:37 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>, 
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, linux-mm@kvack.org, 
+	stable@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-ID: <ewowxagab6ej5xldwsewfvg4wgpmelps2dgqj7efmcnhks4nqg@nqdhfedzlvjb>
+References: <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
+ <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
+ <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
+ <aX+oUorOWPt1xbgw@lstrano-desk.jf.intel.com>
+ <81b9ffa6-7624-4ab0-89b7-5502bc6c711a@nvidia.com>
+ <aX/AgHAZ7Tl4iOua@lstrano-desk.jf.intel.com>
+ <lbqqmohxpeynsrunbdyvod2fm4tinzq5coueh2mq6weubste5x@y4f5weqvwszg>
+ <f48e3d818c6e20d6ea7a7fbd6b1741f25df17a78.camel@linux.intel.com>
+ <ymg5yawktqtw7vfgt77iciqzxhjlsnqrwnjx3xmkflbjqbmq5s@jcxzcymqq2af>
+ <d8c02e59a4cdd2d02b41aa5ce8dcd36a94fbba86.camel@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d8c02e59a4cdd2d02b41aa5ce8dcd36a94fbba86.camel@linux.intel.com>
+X-ClientProxiedBy: SY5P282CA0067.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:203::18) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64/mm: Reject memory removal that splits a kernel
- leaf mapping
-To: Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260202042617.504183-1-anshuman.khandual@arm.com>
- <20260202042617.504183-3-anshuman.khandual@arm.com>
- <10088a12-332f-490e-9726-3015f99e264a@arm.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <10088a12-332f-490e-9726-3015f99e264a@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DM6PR12MB4417:EE_
+X-MS-Office365-Filtering-Correlation-Id: d66bd7b3-7005-4606-9d9d-08de624d61b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007|27256017;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QU1WSEVmajNxUWtXZUpDbWh3Y3RkWDhnMDNjY2JXaWgvajQzMUlMcDZZNWVU?=
+ =?utf-8?B?VU8vbmM4ZVY0RDZKcUNwMDVDN24wR2FsUnE1eC9ZM05FVHArd1dReER5bTRn?=
+ =?utf-8?B?a1ZmRkZ6eWV0WmRSNXZxRW01ellLV3VDN0pESm1MY3hFZG5wOFgxZURZemxB?=
+ =?utf-8?B?TVJzYU5XTWl4Nll6ZkRLSDk2TFBpcnFSOVZQOGNOTWR1WUNVdm1mRks0YUs5?=
+ =?utf-8?B?Wmw4RlhJeThSNzZJalV5TEhqZk42cGFuUUZGS3lMQlZkNHhkZFc1OFFnZU5T?=
+ =?utf-8?B?aUNNdW52UDFzTXoxUGRNS1d2R0JWaHFHNEpCb3JYSTlnbHBVYS9NQndvbmox?=
+ =?utf-8?B?NXMwbW0xMWRtRm5GOXlQTFlvME9wTUJMbUM0N25YSk5JNWo2QzlIRmFiUXM1?=
+ =?utf-8?B?aS9Qa04zdjkvY1J6WGhPQkx0UkEwandFRGNMRnRvYUh1aFBJOFU5bHpsNVBT?=
+ =?utf-8?B?SElNd3gzMnQwd2NSekFPcEVySytHQjFYeGFDUFVaLzRhL3R5TC9vTnFYeFky?=
+ =?utf-8?B?UE9kMVFLLy9lSW5SaVpDVEpGS2YrYXZYcXdWMDk3YWdDSldJQTh0YnpmakZa?=
+ =?utf-8?B?SHJ0SGYxK1BZU1EwTmgvSjdZS0l2OEt4QmdtZWJNUTNSV1Z4RkpxNWVnZXBC?=
+ =?utf-8?B?RWsyYmNyVTJwcU1HMzZjV1ArTzJSblVTN29NbmwvcDZBSzRFaGh3RGVaWHBn?=
+ =?utf-8?B?MUEwVnZxYnZ1MWlpUzE3VDc0a1V1TW1WbHdJUzFFcitvTndhUDNOZGIyTzRj?=
+ =?utf-8?B?N1J3ZFNPYU1XbTZ6NkVDUU9JT1pKeXBmZGtHOUNnK0lLeWZsK0wwc1pRRUZC?=
+ =?utf-8?B?L1B3ODR3bW4xcTl5QXBaSy9qTDRMeFgyMHkzV29RekhwYmg0NkEzRzNsbG9j?=
+ =?utf-8?B?UU84SkNSYXg1NUtxRjd3QW9YaGxIZHlMSFM2aytKWDh5Nit5dE5obXZrRzFm?=
+ =?utf-8?B?WDh4ZmJNeHBjeFN3SDdNMWhYQ2szM1lSVGFGRHQwL1ZwUlRreTU4bSs4ZE5t?=
+ =?utf-8?B?UEt4SHdsSkUyc3drY0MxRWZOYjkzWVluek1oMzlNc2FuN1FZOXlMc2YwYUpo?=
+ =?utf-8?B?aWdCTm1WTGROdDdDTGJIYXJDRmFwWWxRbHd2VEw4VlpsWlNFeVgwYks5VVNH?=
+ =?utf-8?B?TWk1VFVCWlMyOGw3em43OHdCRUY1R2hWNUhwbmd2TklRZk5pZ2pLSXAvdVYw?=
+ =?utf-8?B?WmdKb3lrYjNDYkhPaE03RWdOYVF5aGlaR0FoeERqVmt2ZWdBa0Jpb3NXbVpH?=
+ =?utf-8?B?bkNXa0Y0aDU4b3VZUXFWNWp0dVVpalZLMWxUNk9pbEd6cjFuYzIyeHZTVmdt?=
+ =?utf-8?B?ZlM2ZGo4bGIvS2R4MGc4UDZES3hYMW5tdC9CRGI0UEJ4cE9kVUdISVV5WTIw?=
+ =?utf-8?B?WERzdmUwRjN3czA0V29OSlJtZmVlRUVwV3l4YnRIZDQxb1ZCdWViTjkvRnJQ?=
+ =?utf-8?B?WENYN0ZPQTd1RUoxTDZJWk9Kb1NqQzMyNHZMeGl2ZGlOUStIaERtN2NLY2FL?=
+ =?utf-8?B?S3BheFR3WklPSFI3WFpwRC95VnR3UE10eFhFd2ovVHdoS2tFRnlvOTV0K3Nx?=
+ =?utf-8?B?R3Zra0JEUkRZelhmMVZQNENNakpTNEZUVzhZakordTNva1VhaW0rVCttMFFP?=
+ =?utf-8?B?MGpMY0pTSFJvMFY0MWZaVmYwWHM0dStYUzNOeWF6WnpIRVJBam5GUm1uR1k1?=
+ =?utf-8?B?ZU4xREVDblZUdWRZdnBDSWJGTEVoNklBaVZ0UXNPTXlQRzY5TC8zeXMvNHFI?=
+ =?utf-8?B?SDNMN1RsRHVObCtNa0E1QWpmZDNOVCtQeFpmcWZlV0t5MndYMnFrMnNFZWFp?=
+ =?utf-8?B?NmhDaXNaTHpaclZySllkVjRtSk53bldES1dKWTVUUVRQcDd0a3lrVThJVW11?=
+ =?utf-8?B?eXdmQlcyczhZZkRYL1Z0VGYzdG8xTGpXd29HZnQxWGU4NUhHc1hzSmxIV2p2?=
+ =?utf-8?B?QmlweTZJY0lCK3BWemdRV0tpOThQd28rK2dZWUJ0REVicXBMeWh5akxjdTF4?=
+ =?utf-8?B?Q3EyaHQ5VTBOOTFlWUpHTUJjZTZxUlk1RVJMRkVOTzAwTkMvcEp0SVl6YVJZ?=
+ =?utf-8?B?YzM3cS82bEJCMjlnZWFLc0hnQUt0ME9WbWxyZmNxR01Gc2VYNXVvbUp4cEY1?=
+ =?utf-8?B?L1ZXcWxaWkJ3Y3lWV0VrQmJsVERXeWE1elZWWVllZW81eW1aZHNxWmo0Q21U?=
+ =?utf-8?Q?b77BfqZIJ0UN3o0CBiKC95M=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007)(27256017);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SzRrYVUzZkYxUlpuUUtlY29CUS9rV0Vpb21QbktWeVcvdDhqTy9VV2RBcit4?=
+ =?utf-8?B?T1d4ZUUzUG40VUl3ZXNKcnVIeTlKOFNaZlk5NkdtMDFOeEpyUnJyeHJWRmlk?=
+ =?utf-8?B?TW5uL1VlRFFuWFFPc2hxeGxMcEpBcGpqMW9YSGx2dWwvMGh5VXU5TlVycUh6?=
+ =?utf-8?B?L0h0R3R6RDFTOUdkaFE1Y1Y1U1VZV2llb2tQQ3p5SUxCSEhYWUJFUVhRcWZ5?=
+ =?utf-8?B?cG43YUVxSURQYmhIUHNVVFgrMUhURjJhVCtDQnFramRIbER5Q2tHMW9iUFY1?=
+ =?utf-8?B?Nnd3Mm1rQ2k4ZDJ0eGRQZVN6c1h1SGRRYzJHQjRjVkFqSmlIamsreUxFQXVP?=
+ =?utf-8?B?bys4SWVDcU9BRE9xNExLWDlCVnBMeFpMTU94SE1wTEZUbENKL3ZrbVkyRTUv?=
+ =?utf-8?B?UndBcm1KM2djTFo0MDhKck9YYitkRWJCbWorWkRBOEJVTEptWlJtSzlRVXVL?=
+ =?utf-8?B?NjhGdmswZjl2OXErK1IwWVBzZWtIaHg3aUtqdjZ2WkhRbVdhK3FMRUxqRURN?=
+ =?utf-8?B?dkpJbDNtdGtvNHRQUXZVMkdmbUtGU0ZBd1RMVjR3K3NreTFxWE5YZE5BNCt6?=
+ =?utf-8?B?OXFSY2M4OXNMQitNdzhTNzl6b0VURUhMMEY4SmxzU010L0Q5MHl3UE9BSXdr?=
+ =?utf-8?B?YlZ5TUFyc0dSYkp4RVlSZk1HbG4xNGZrckZxM2daRVRDcGJiUnoySkhBUzRa?=
+ =?utf-8?B?MVlwYVFGL1BFNWFwTHlteUdoSitmUHU3aE94OGdlbHFaSnhoT2FFbWU3TGJ4?=
+ =?utf-8?B?bFN3dXlscmpFNnEzcENHNkdhMVp1WVE4a1huT3VBQlBtd25wOHhnODRvSzNt?=
+ =?utf-8?B?ZkRKck1VcWpOTmtuOWN6WkYwaDZIaTFoMktuNk1QejhXMHU5bUcyU01wVU0z?=
+ =?utf-8?B?VjYrSUJjTC9SU3hScnl6ckdXa1pkUzQxZTZqYW80UUpHLzlPeXdEekp3WEtp?=
+ =?utf-8?B?b3ZrV1R1U3RBVEFsZzdubmpwS0FBZWU0WHBNZzdWcU1McSswM3UrK045UUFr?=
+ =?utf-8?B?a29ucjZXNEc4Wmk1Q2ZjNndFUmJwWjc1dnFtcXZpY1VEVVdiOWhJRkg0K3lO?=
+ =?utf-8?B?YmxQRHhSOVozK0RtTFlBaVY2Z1JORzR3b3hEbzhNS2ZiWHptS0hlZW82MnN1?=
+ =?utf-8?B?MWQ2OC9IR1BvTjhiUW83cHlWT2VMNUF2VEwrOUZnRkNIeWlhZmpKWWJBODJq?=
+ =?utf-8?B?cVR3eHFQRFlpS3dxQUxpSVNTeVgrd09PR0NYR3RiNG1FL3ZPM1l4Ty9sdVZL?=
+ =?utf-8?B?a2UraEYxRnBxcnp1WFpNK3ZxRTJsUkRyUm9CUFllTG9iTFB0bk5mdDEzcDY3?=
+ =?utf-8?B?MVpsbGE0OXJqWkFqNGFxbjh3U2s5Z1BsU2ZaU2JxN0FOTVlTQmRnTjBLbnJt?=
+ =?utf-8?B?cGJITWFIL3RSVkMzdEE3SEUzTVl4UTBMTHZWc25ZNTUyNzl2N0Q0ZTFZYkxF?=
+ =?utf-8?B?bjZ1L0p6YTdHNWEwVFBDN0VYMEtaUFBNRmtkc3NLNUNpSmlTQXROeFVWM2Ev?=
+ =?utf-8?B?d3J3OWNPakVOMldvVEZQYmVJdjB6emMvRHBaTlhwcFZiSzBudWo4b01JdGMw?=
+ =?utf-8?B?M29nUTAxdVJ3VldZcnVFYlNzNFZlcFhtYll4OTh5M3FES0JxQWNtTTdPWXdi?=
+ =?utf-8?B?OUNPSUx2WVppNWc5bXMvYWYzWjI5SHcyL3hnd0ttWXJkSGJYbnp2Y0VpWlND?=
+ =?utf-8?B?Y3lOOStSWGNjSjBmbEhxUVBTb00wcVU2Q0hEVjdrVXRPNkhYa0xWSjUrdXA5?=
+ =?utf-8?B?UW4rQnRDN1ZuLy84cWM5UW9temNCKzlZQno2UXFwTlpGRzhzN041cG5UeDBO?=
+ =?utf-8?B?RnduMy9CeDhXbDZxZDZkY0xWMmpkT01KT0ZMeVcvWHVENEwySzkxVHp1UC9n?=
+ =?utf-8?B?YjUrajBNYUd0dDhVdHo2U1ovTG8zTWJjYktDdEF0bWM1MXJYWm1ONjkzVUNJ?=
+ =?utf-8?B?QWtDQU95Wk16L2lOZFptWXMxb0ZUUExwSnJRa3J4MzJPNkNxaFR3Wjd4M0tO?=
+ =?utf-8?B?Z0ZvZndhT1YvcHZ6aGtEQXJlelhWRURqQ2dka045WExtLysxc2ptY1RYSENI?=
+ =?utf-8?B?UUl4SDBmL0xpQkJzWTN3Q1VhVExibmQwbEFrN2IrV2J4R1AwNXJ2RzFKN2Ix?=
+ =?utf-8?B?bXpVaTM1TEJiejR4MnVGd3FEOFJ6NGVTSmgrVERuckxWbENoa1FvVGVxYmd3?=
+ =?utf-8?B?SlpqVXVBZlptZmlDY05QRUZMVTZZbXEzdUVhUndDeUhINnpHbXBMM3NuaTNW?=
+ =?utf-8?B?RGswMnl6cGs1bSswd3Z1bHBOZk5lU1I5NjRYSWJFdzJQOHo4bzJTQVdVajBk?=
+ =?utf-8?B?ZklmVGk2aWV1VVRmb1BPV1JqNkFSbmxhRC9OM2sxbTF2YTVCeDR6UT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d66bd7b3-7005-4606-9d9d-08de624d61b0
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 11:22:42.7552
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E2gqAoA1v6I2KrmI1WO8QCMyStEQfbDUTMZo06vVrW6dtDmQgxUyPy2zvd+f3yNkrkuRvcw39f/XGW/jV/cOIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4417
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	R_DKIM_NA(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anshuman.khandual@arm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-213058-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213057-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[apopple@nvidia.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 1E422CB7BF
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 4BE60CB946
 X-Rspamd-Action: no action
 
-On 02/02/26 3:12 PM, Ryan Roberts wrote:
-> On 02/02/2026 04:26, Anshuman Khandual wrote:
->> Linear and vmemmap mapings that get teared down during a memory hot remove
->> operation might contain leaf level entries on any page table level. If the
->> requested memory range's linear or vmemmap mappings falls within such leaf
->> entries, new mappings need to be created for the remaning memory mapped on
->> the leaf entry earlier, following standard break before make aka BBM rules.
+On 2026-02-02 at 21:41 +1100, Thomas Hellström <thomas.hellstrom@linux.intel.com> wrote...
+> On Mon, 2026-02-02 at 21:25 +1100, Alistair Popple wrote:
+> > On 2026-02-02 at 20:30 +1100, Thomas Hellström
+> > <thomas.hellstrom@linux.intel.com> wrote...
+> > > Hi,
+> > > 
+> > > On Mon, 2026-02-02 at 11:10 +1100, Alistair Popple wrote:
+> > > > On 2026-02-02 at 08:07 +1100, Matthew Brost
+> > > > <matthew.brost@intel.com>
+> > > > wrote...
+> > > > > On Sun, Feb 01, 2026 at 12:48:33PM -0800, John Hubbard wrote:
+> > > > > > On 2/1/26 11:24 AM, Matthew Brost wrote:
+> > > > > > > On Sat, Jan 31, 2026 at 01:42:20PM -0800, John Hubbard
+> > > > > > > wrote:
+> > > > > > > > On 1/31/26 11:00 AM, Matthew Brost wrote:
+> > > > > > > > > On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas
+> > > > > > > > > Hellström
+> > > > > > > > > wrote:
+> > > > > > > > > > On Fri, 2026-01-30 at 19:01 -0800, John Hubbard
+> > > > > > > > > > wrote:
+> > > > > > > > > > > On 1/30/26 10:00 AM, Andrew Morton wrote:
+> > > > > > > > > > > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas
+> > > > > > > > > > > > Hellström
+> > > > > > > > > > > > wrote:
+> > > > > > > > > > > ...
+> > > > > > > > > I’m not convinced the folio refcount has any bearing if
+> > > > > > > > > we
+> > > > > > > > > can take a
+> > > > > > > > > sleeping lock in do_swap_page, but perhaps I’m missing
+> > > > > > > > > something.
+> > > > 
+> > > > I think the point of the trylock vs. lock is that if you can't
+> > > > immediately
+> > > > lock the page then it's an indication the page is undergoing a
+> > > > migration.
+> > > > In other words there's no point waiting for the lock and then
+> > > > trying
+> > > > to call
+> > > > migrate_to_ram() as the page will have already moved by the time
+> > > > you
+> > > > acquire
+> > > > the lock. Of course that just means you spin faulting until the
+> > > > page
+> > > > finally
+> > > > migrates.
+> > > > 
+> > > > If I'm understanding the problem it sounds like we just want to
+> > > > sleep
+> > > > until the
+> > > > migration is complete, ie. same as the migration entry path. We
+> > > > don't
+> > > > have a
+> > > > device_private_entry_wait() function, but I don't think we need
+> > > > one,
+> > > > see below.
+> > > > 
+> > > > > > > diff --git a/mm/memory.c b/mm/memory.c
+> > > > > > > index da360a6eb8a4..1e7ccc4a1a6c 100644
+> > > > > > > --- a/mm/memory.c
+> > > > > > > +++ b/mm/memory.c
+> > > > > > > @@ -4652,6 +4652,8 @@ vm_fault_t do_swap_page(struct
+> > > > > > > vm_fault
+> > > > > > > *vmf)
+> > > > > > >                          vmf->page =
+> > > > > > > softleaf_to_page(entry);
+> > > > > > >                          ret =
+> > > > > > > remove_device_exclusive_entry(vmf);
+> > > > > > >                  } else if
+> > > > > > > (softleaf_is_device_private(entry))
+> > > > > > > {
+> > > > > > > +                       struct dev_pagemap *pgmap;
+> > > > > > > +
+> > > > > > >                          if (vmf->flags &
+> > > > > > > FAULT_FLAG_VMA_LOCK)
+> > > > > > > {
+> > > > > > >                                  /*
+> > > > > > >                                   * migrate_to_ram is not
+> > > > > > > yet
+> > > > > > > ready to operate
+> > > > > > > @@ -4670,21 +4672,15 @@ vm_fault_t do_swap_page(struct
+> > > > > > > vm_fault
+> > > > > > > *vmf)
+> > > > > > >                                                         
+> > > > > > > vmf-
+> > > > > > > > orig_pte)))
+> > > > > > >                                  goto unlock;
+> > > > > > > 
+> > > > > > > -                       /*
+> > > > > > > -                        * Get a page reference while we
+> > > > > > > know
+> > > > > > > the page can't be
+> > > > > > > -                        * freed.
+> > > > > > > -                        */
+> > > > > > > -                       if (trylock_page(vmf->page)) {
+> > > > > > > -                               struct dev_pagemap *pgmap;
+> > > > > > > -
+> > > > > > > -                               get_page(vmf->page);
+> > > > 
+> > > > At this point we:
+> > > > 1. Know the page needs to migrate
+> > > > 2. Have the page locked
+> > > > 3. Have a reference on the page
+> > > > 4. Have the PTL locked
+> > > > 
+> > > > Or in other words we have everything we need to install a
+> > > > migration
+> > > > entry,
+> > > > so why not just do that? This thread would then proceed into
+> > > > migrate_to_ram()
+> > > > having already done migrate_vma_collect_pmd() for the faulting
+> > > > page
+> > > > and any
+> > > > other threads would just sleep in the wait on migration entry
+> > > > path
+> > > > until the
+> > > > migration is complete, avoiding the livelock problem the trylock
+> > > > was
+> > > > introduced
+> > > > for in 1afaeb8293c9a.
+> > > > 
+> > > >  - Alistair
+> > > > 
+> > > > > > 
+> > > 
+> > > There will always be a small time between when the page is locked
+> > > and
+> > > when we can install a migration entry. If the page only has a
+> > > single
+> > > mapcount, then the PTL lock is held during this time so the issue
+> > > does
+> > > not occur. But for multiple map-counts we need to release the PTL
+> > > lock
+> > > in migration to run try_to_migrate(), and before that, the migrate
+> > > code
+> > > is running lru_add_drain_all() and gets stuck.
+> > 
+> > Oh right, my solution would be fine for the single mapping case but I
+> > hadn't
+> > fully thought through the implications of other threads accessing
+> > this for
+> > multiple map-counts. Agree it doesn't solve anything there (the rest
+> > of the
+> > threads would still spin on the trylock).
+> > 
+> > Still we could use a similar solution for waiting on device-private
+> > entries as
+> > we do for migration entries. Instead of spinning on the trylock (ie.
+> > PG_locked)
+> > we could just wait on it to become unlocked if it's already locked.
+> > Would
+> > something like the below completely untested code work? (obviously
+> > this is a bit
+> > of hack, to do it properly you'd want to do more than just remove the
+> > check from
+> > migration_entry_wait)
 > 
-> I think it would be good to mention that the kernel cannot tolerate BBM so
-> remapping to fine grained leaves would not be possible on systems without
-> BBML2_NOABORT.
+> Well I guess there could be failed migration where something is
+> aborting the migration even after a page is locked. Also we must unlock
+> the PTL lock before waiting otherwise we could deadlock.
 
-Sure will add that.
+Yes, this is exactly what the migration entry wait code does. And if there's a
+failed migration, no problem, you just retry. That's not a deadlock unless the
+migration never succeeds and then your stuffed anyway.
 
-> 
->>
->> Currently memory hot remove operation does not perform such restructuring,
->> and so removing memory ranges that could split a kernel leaf level mapping
->> need to be rejected.
-> 
-> Perhaps it is useful to mention that while memory_hotplug.c does appear to
-> permit hot-unplugging arbitrary ranges of memory, the higher layers that drive
-> memory_hotplug (e.g. ACPI, virtio, ...) all appear to treat memory as fixed size
-> devices so it is impossible to hotunplug a different amount than was previously
-> hotplugged, and so we should never see a rejection in practice, but adding the
-> check makes us robust against a future change.
+> I believe a robust solution would be to take a folio reference and do a
+> sleeping lock like John's example. Then to assert that a folio pin-
+> count, not ref-count is required to pin a device-private folio. That
+> would eliminate the problem of the refcount held while locking blocking
+> migration. It looks like that's fully consistent with 
 
-Agreed, will update the commit message.
+Waiting on a migration entry like in my example below is exactly the same as
+sleeping on the page lock other than it just waits for the page to be unlocked
+rather than trying to lock it.
 
-> 
->>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
->> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
->> Cc: stable@vger.kernel.org
->> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/arm64/mm/mmu.c | 126 ++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 126 insertions(+)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 8ec8a287aaa1..9d59e10fb3de 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -2063,6 +2063,129 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->>  	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
->>  }
->>  
->> +
->> +static bool split_kernel_leaf_boundary(unsigned long addr)
-> 
-> The name currently makes it sound like we are asking for the mapping to be split
-> (we have existing functions to do this that are named similarly). Perhaps a
-> better name would be addr_splits_leaf()?
+Internally migration_entry_wait_on_locked() is just an open-coded version
+of folio_lock() which deals with dropping the PTL and that works without a page
+refcount.
 
-Agreed that name sounds bit confusing and ambiguous as there is already
-a similarly named function. Will rename it as addr_splits_kernel_leaf()
-instead.
+So I don't understand how this solution isn't robust? It requires no funniness
+with refcounts and works practically the same as a sleeping lock.
 
-> 
->> +{
->> +	pgd_t *pgdp, pgd;
->> +	p4d_t *p4dp, p4d;
->> +	pud_t *pudp, pud;
->> +	pmd_t *pmdp, pmd;
->> +	pte_t *ptep, pte;
->> +
->> +	/*
->> +	 * PGD: If addr is PGD aligned then addr already
->> +	 * describes a leaf boundary.
->> +	 */
->> +	if (ALIGN_DOWN(addr, PGDIR_SIZE) == addr)
->> +		return false;
->> +
->> +	pgdp = pgd_offset_k(addr);
->> +	pgd = pgdp_get(pgdp);
->> +	if (!pgd_present(pgd))
->> +		return false;
->> +
->> +	/*
->> +	 * P4D: If addr is P4D aligned then addr already
->> +	 * describes a leaf boundary.
->> +	 */
->> +	if (ALIGN_DOWN(addr, P4D_SIZE) == addr)
->> +		return false;
->> +
->> +	p4dp = p4d_offset(pgdp, addr);
->> +	p4d = p4dp_get(p4dp);
->> +	if (!p4d_present(p4d))
->> +		return false;
->> +
->> +	/*
->> +	 * PUD: If addr is PUD aligned then addr already
->> +	 * describes a leaf boundary.
->> +	 */
->> +	if (ALIGN_DOWN(addr, PUD_SIZE) == addr)
->> +		return false;
->> +
->> +	pudp = pud_offset(p4dp, addr);
->> +	pud = pudp_get(pudp);
->> +	if (!pud_present(pud))
->> +		return false;
->> +
->> +	if (pud_leaf(pud))
->> +		return true;
->> +
->> +	/*
->> +	 * CONT_PMD: If addr is CONT_PMD aligned then
->> +	 * addr already describes a leaf boundary.
->> +	 */
->> +	if (ALIGN_DOWN(addr, CONT_PMD_SIZE) == addr)
->> +		return false;
->> +
->> +	pmdp = pmd_offset(pudp, addr);
->> +	pmd = pmdp_get(pmdp);
->> +	if (!pmd_present(pmd))
->> +		return false;
->> +
->> +	if (pmd_leaf(pmd) && pmd_cont(pmd))
->> +		return true;
->> +
->> +	/*
->> +	 * PMD: If addr is PMD aligned then addr already
->> +	 * describes a leaf boundary.
->> +	 */
->> +	if (ALIGN_DOWN(addr, PMD_SIZE) == addr)
->> +		return false;
->> +
->> +	if (pmd_leaf(pmd))
->> +		return true;
->> +
->> +	/*
->> +	 * CONT_PTE: If addr is CONT_PTE aligned then addr
->> +	 * already describes a leaf boundary.
->> +	 */
->> +	if (ALIGN_DOWN(addr, CONT_PTE_SIZE) == addr)
->> +		return false;
->> +
->> +	ptep = pte_offset_kernel(pmdp, addr);
->> +	pte = __ptep_get(ptep);
->> +	if (!pte_present(pte))
->> +		return false;
->> +
->> +	if (pte_valid(pte) && pte_cont(pte))
-> 
-> Why do you need pte_valid() here? You have already checked !pte_present(). Are
-> you expecting a case of present but not valid (PTE_PRESENT_INVALID)? If so, do
-> you need to consider that for the other levels too? (pmd_leaf() only checks
-> pmd_present()).
-> > Personally I think you can just drop the pte_valid() check here.
+ - Alistair
 
-Added pte_valid() for abundance of caution but it is not really
-necessary though. Sure will drop it off.
-
+> https://docs.kernel.org/core-api/pin_user_pages.html
 > 
->> +		return true;
->> +
->> +	if (ALIGN_DOWN(addr, PAGE_SIZE) == addr)
->> +		return false;
->> +	return true;
->> +}
->> +
->> +static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
->> +{
->> +	unsigned long linear_start, linear_end, phys_start, phys_end;
->> +	unsigned long vmemmap_size, vmemmap_start, vmemmap_end;
-> 
-> nit: do we need all these variables. Perhaps just:
-> 
-> unsigned long sz, start, end, phys_start, phys_end;
-> 
-> are sufficient?
-
-Alright. I guess start and end can be re-used both for linear and
-vmemmap mapping.
-
-> 
->> +
->> +	/* Assert linear map edges do not split a leaf entry */
->> +	phys_start = PFN_PHYS(pfn);
->> +	phys_end = phys_start + nr_pages * PAGE_SIZE;
->> +	linear_start = __phys_to_virt(phys_start);
->> +	linear_end =  __phys_to_virt(phys_end);
->> +	if (split_kernel_leaf_boundary(linear_start) ||
->> +	    split_kernel_leaf_boundary(linear_end)) {
->> +		pr_warn("[%lx %lx] splits a leaf entry in linear map\n",
->> +			phys_start, phys_end);
->> +		return false;
->> +	}
->> +
->> +	/* Assert vmemmap edges do not split a leaf entry */
->> +	vmemmap_size = nr_pages * sizeof(struct page);
->> +	vmemmap_start = (unsigned long) pfn_to_page(pfn);
-> 
-> nit:                                   ^
-> 
-> I don't think we would normally have that space?
-
-Sure will drop that.
-
-> 
->> +	vmemmap_end = vmemmap_start + vmemmap_size;
->> +	if (split_kernel_leaf_boundary(vmemmap_start) ||
->> +	    split_kernel_leaf_boundary(vmemmap_end)) {
->> +		pr_warn("[%lx %lx] splits a leaf entry in vmemmap\n",
->> +			phys_start, phys_end);
->> +		return false;
->> +	}
->> +	return true;
->> +}
->> +
->>  /*
->>   * This memory hotplug notifier helps prevent boot memory from being
->>   * inadvertently removed as it blocks pfn range offlining process in
->> @@ -2083,6 +2206,9 @@ static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
->>  	if ((action != MEM_GOING_OFFLINE) && (action != MEM_OFFLINE))
->>  		return NOTIFY_OK;
->>  
->> +	if (!can_unmap_without_split(pfn, arg->nr_pages))
->> +		return NOTIFY_BAD;
->> +
-> 
-> Personally, I'd keep the bootmem check first and do this check after. That means
-> an existing warning will not change.
-
-Makes sense, will move it after existing bootmem check. BTW the function
-still named as prevent_bootmem_remove_notifier() although now it's going
-to check leaf boundaries as well. Should the function be renamed as well
-to something more generic e.g prevent_memory_remove_notifier() ?
-
+> Then as general improvements we should fully unmap pages before calling
+> lru_add_drain_all() as MBrost suggest and finally, to be more nice to
+> the system in the common cases, add a cond_resched() to
+> hmm_range_fault().
 > 
 > Thanks,
-> Ryan
+> Thomas
 > 
->>  	for (; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
->>  		unsigned long start = PFN_PHYS(pfn);
->>  		unsigned long end = start + (1UL << PA_SECTION_SHIFT);
 > 
-
+> 
+> > 
+> > ---
+> > 
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 2a55edc48a65..3e5e205ee279 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -4678,10 +4678,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >  				pte_unmap_unlock(vmf->pte, vmf-
+> > >ptl);
+> >  				pgmap = page_pgmap(vmf->page);
+> >  				ret = pgmap->ops-
+> > >migrate_to_ram(vmf);
+> > -				unlock_page(vmf->page);
+> >  				put_page(vmf->page);
+> >  			} else {
+> > -				pte_unmap_unlock(vmf->pte, vmf-
+> > >ptl);
+> > +				migration_entry_wait(vma->vm_mm,
+> > vmf->pmd,
+> > +						     vmf->address);
+> >  			}
+> >  		} else if (softleaf_is_hwpoison(entry)) {
+> >  			ret = VM_FAULT_HWPOISON;
+> > diff --git a/mm/migrate.c b/mm/migrate.c
+> > index 5169f9717f60..b676daf0f4e8 100644
+> > --- a/mm/migrate.c
+> > +++ b/mm/migrate.c
+> > @@ -496,8 +496,6 @@ void migration_entry_wait(struct mm_struct *mm,
+> > pmd_t *pmd,
+> >  		goto out;
+> >  
+> >  	entry = softleaf_from_pte(pte);
+> > -	if (!softleaf_is_migration(entry))
+> > -		goto out;
+> >  
+> >  	migration_entry_wait_on_locked(entry, ptl);
+> >  	return;
 
