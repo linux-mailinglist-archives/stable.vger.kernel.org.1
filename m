@@ -1,160 +1,205 @@
-Return-Path: <stable+bounces-213055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOsTHpiCgGnE8wIAu9opvQ
-	(envelope-from <stable+bounces-213055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:55:20 +0100
+	id ICXgAgeDgGnE8wIAu9opvQ
+	(envelope-from <stable+bounces-213056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:57:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CB1CB4AB
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:55:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DD4CB4FC
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 11:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 589F3300F9C8
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 10:49:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68689305CF6C
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 10:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5A52D7813;
-	Mon,  2 Feb 2026 10:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0053570B2;
+	Mon,  2 Feb 2026 10:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LHIWYKXr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n56N27PV"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1B527AC57
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 10:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C472359707
+	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 10:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770029387; cv=none; b=HvfhC0TgHOTkcsXxIQalSLQ2BgMVR34A0Y6p3p40uYXHFc1cpG7vhwAnLe4/0x970cAPwOYesOOevebOMSXPFGvyZSRZU9NZqDVbRb9GgMQa7FYN6ARbCmTDOVZj1NAztHBTyXGgCntvTIlAS51vmY5wUnGIZ65YlQ2tJTclK58=
+	t=1770029475; cv=none; b=a9Oo0ObiIbrDUx5rZRo4uh2i59muwKEewCQ0AMZnGmcAWQIdR98mwe4pyrYO2XBh1nmW0l+8q0mff1E1sYJZmQqf5mrnK6hk325/ArgJFIi13aA9u6V8DMkG0daEx2VUo+UA6JzG55g06zYWqVTOw0iTTc/dMZOS4jiZLYE5uPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770029387; c=relaxed/simple;
-	bh=8EmWrJzdfnu8N20ykOVeXuUcxkw3hPqqJqGJ1XLu+lU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J4LJkDOtQwcJ7CKFJR11mJQyYxLV6U4MfsIlKrZIONeVv78rVjhpw9M8zLWgt82QCG7G9VKY5/9QVjrat6NUOGAck6vL0AUlNasB/DxBktAgix+fVjbIdiB5JYFLWCXJeMOeXEG9BgxSjCvNB7bF1cDikmVWpop60+7+j9R9+6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LHIWYKXr; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=oH
-	N6oA2Gtn7XTtbECxKm2Qkq3v1TTUTrqRK4YBUU74Y=; b=LHIWYKXrnS9GRSaaz+
-	0Xu9S/MFNRwmXev0nM5hU50qy4YAwaP5Gr4pOGeQ14UtHUf++CuNKr6+uxEtDM2x
-	qAID4EebWP9bFLVoOhjJfQwZdhc85r8PpYvmC++u9YG6lQQvvHtdx+FqLEpegtBo
-	9HCzix87CrL/oBZ6D9JvlqlZs=
-Received: from ubuntu24.corp.ad.wrs.com (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgAX3wYigYBpl1lsMw--.49151S4;
-	Mon, 02 Feb 2026 18:49:23 +0800 (CST)
-From: jetlan9@163.com
-To: stable@vger.kernel.org
-Cc: Ying Hsu <yinghsu@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 5.15.y] Bluetooth: Fix hci_suspend_sync crash
-Date: Mon,  2 Feb 2026 10:48:57 +0000
-Message-ID: <20260202104857.4134-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1770029475; c=relaxed/simple;
+	bh=CU+EqcrQo41HxY+mJmIJYrt/CzhgHVJ/Cwyd+zcgbdA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=e4V2XOm71p53kFP72f1NcozLTMXPcaQFDQtb+HRdQ/uPrAV4RXfbEXayMvGcFTHwWkAGm3I83Tdn2XP29aD13A+FetklDucLx0au4rLx1R6yzhHBt1M3ks5bRphKWZD8yVfRKSFlz9hikhjWEyyk77ofhkxG8McpaQPMZ32xJH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n56N27PV; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770029473; x=1801565473;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=CU+EqcrQo41HxY+mJmIJYrt/CzhgHVJ/Cwyd+zcgbdA=;
+  b=n56N27PVh0cgzbZcUhfmZU9HMOAo4iu299+5vsUi2EBBBAug9f4y11n5
+   BqeR+ccVc+jmgyvUUT2jHId9v1PHrwS9WCVwRIUQyYBDhXxxSAl1aAB4M
+   pGgV8pbyzqms2Yr+t6MQtCx5n0dSauIeZMBYFbWINGYBfFnHSaDAsOCkf
+   sWCTJ9vB8CLlkjW1HtGRWCYYxO8W/HKbCgoXfMv72TuliObPcBQj4kISV
+   dT5YNnaZoYRX/1Lzj1TbXkl6Att7A1rMlCJAEivmY8EpyTW/zDAcbJWi0
+   FNblFLATI69hrfCN0HrgLOj5aUz/TMe6aK5Pgb5HDO1pf+iOg10ss/pVR
+   Q==;
+X-CSE-ConnectionGUID: 6yHzOLr1TL2WKuQn+OeN0w==
+X-CSE-MsgGUID: DQlIaLtLSx+47ZxGJ5swIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="81497362"
+X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
+   d="scan'208";a="81497362"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 02:51:13 -0800
+X-CSE-ConnectionGUID: bdUGNwPTRgCA1JyWkJ5CRQ==
+X-CSE-MsgGUID: VxeTC3hDSnaok3tgirY+DQ==
+X-ExtLoop1: 1
+Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.223]) ([10.245.244.223])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 02:51:10 -0800
+Message-ID: <6a6e054bb6efe76c439b3329702829dbc75b9060.camel@linux.intel.com>
+Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
+ problem
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>,  Andrew Morton <akpm@linux-foundation.org>,
+ intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>, 
+ Christoph Hellwig	 <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, Jason
+ Gunthorpe <jgg@ziepe.ca>,  Leon Romanovsky	 <leon@kernel.org>,
+ linux-mm@kvack.org, stable@vger.kernel.org, 	dri-devel@lists.freedesktop.org
+Date: Mon, 02 Feb 2026 11:51:08 +0100
+In-Reply-To: <nm4qa6fz2kecodhtt7yfcnfx77ik7pr7332amfqvgyhgs5xwqf@v2v6coz5genz>
+References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
+	 <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
+	 <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
+	 <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
+	 <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
+	 <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
+	 <a459f147b461c6e6e806282956b7931f74a0aa93.camel@linux.intel.com>
+	 <nm4qa6fz2kecodhtt7yfcnfx77ik7pr7332amfqvgyhgs5xwqf@v2v6coz5genz>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgAX3wYigYBpl1lsMw--.49151S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tw18tw13Wr4xJFykWw1rZwb_yoW5JF45p3
-	43KF4Fgas7Jr12grWqqay8ZFyrGrZxWrW7ZFZ3Kryrtw45tw4kArW3Xry3tF4UArZ5JF95
-	Aa1Yvry8ua1UAFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pREJPXUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCwxPmr2mAgTN51QAA3u
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213055-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213056-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	PRECEDENCE_BULK(0.00)[];
-	FREEMAIL_CC(0.00)[chromium.org,intel.com,163.com];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org]
-X-Rspamd-Queue-Id: E1CB1CB4AB
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 57DD4CB4FC
 X-Rspamd-Action: no action
 
-From: Ying Hsu <yinghsu@chromium.org>
+On Mon, 2026-02-02 at 21:34 +1100, Alistair Popple wrote:
+> On 2026-02-02 at 20:13 +1100, Thomas Hellstr=C3=B6m
+> <thomas.hellstrom@linux.intel.com> wrote...
+> > On Sat, 2026-01-31 at 13:42 -0800, John Hubbard wrote:
+> > > On 1/31/26 11:00 AM, Matthew Brost wrote:
+> > > > On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas Hellstr=C3=B6m
+> > > > wrote:
+> > > > > On Fri, 2026-01-30 at 19:01 -0800, John Hubbard wrote:
+> > > > > > On 1/30/26 10:00 AM, Andrew Morton wrote:
+> > > > > > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellstr=C3=B6m
+> > > > > > > <thomas.hellstrom@linux.intel.com> wrote:
+> > > > > > ...
+> > >=20
+> > > >=20
+> > > > > I'm also not sure a folio refcount should block migration
+> > > > > after
+> > > > > the
+> > > > > introduction of pinned (like in pin_user_pages) pages. Rather
+> > > > > perhaps a
+> > > > > folio pin-count should block migration and in that case
+> > > > > do_swap_page()
+> > > > > can definitely do a sleeping folio lock and the problem is
+> > > > > gone.
+> > >=20
+> > > A problem for that specific point is that pincount and refcount
+> > > both
+> > > mean, "the page is pinned" (which in turn literally means "not
+> > > allowed
+> > > to migrate/move").
+> >=20
+> > Yeah this is what I actually want to challenge since this is what
+> > blocks us from doing a clean robust solution here. From brief
+> > reading
+> > of the docs around the pin-count implementation, I understand it as
+> > "If
+> > you want to access the struct page metadata, get a refcount, If you
+> > want to access the actual memory of a page, take a pin-count"
+> >=20
+> > I guess that might still not be true for all old instances in the
+> > kernel using get_user_pages() instead of pin_user_pages() for
+> > things
+> > like DMA, but perhaps we can set that in stone and document it at
+> > least
+> > for device-private pages for now which would be sufficient for the
+> > do_swap_pages() refcount not to block migration.
+>=20
+> Having just spent a long time cleaning up a bunch of special
+> rules/cases for
+> ZONE_DEVICE page refcounting I'm rather against reintroducing them
+> just for some
+> ZONE_DEVICE pages. So whatever arguments are applied or introduced
+> here would
+> need to be made to work for all pages, not just some ZONE_DEVICE
+> pages.
 
-[ Upstream commit 573ebae162111063eedc6c838a659ba628f66a0f ]
+That's completely understandable. I would like to be able to say if we
+apply the argument that when checking the pin-count pages are locked,
+lru-isolated and with zero map-count then that would hold for all
+pages, but my knowledge of the mm internals isn't sufficient
+unfortunately.
 
-If hci_unregister_dev() frees the hci_dev object but hci_suspend_notifier
-may still be accessing it, it can cause the program to crash.
-Here's the call trace:
-  <4>[102152.653246] Call Trace:
-  <4>[102152.653254]  hci_suspend_sync+0x109/0x301 [bluetooth]
-  <4>[102152.653259]  hci_suspend_dev+0x78/0xcd [bluetooth]
-  <4>[102152.653263]  hci_suspend_notifier+0x42/0x7a [bluetooth]
-  <4>[102152.653268]  notifier_call_chain+0x43/0x6b
-  <4>[102152.653271]  __blocking_notifier_call_chain+0x48/0x69
-  <4>[102152.653273]  __pm_notifier_call_chain+0x22/0x39
-  <4>[102152.653276]  pm_suspend+0x287/0x57c
-  <4>[102152.653278]  state_store+0xae/0xe5
-  <4>[102152.653281]  kernfs_fop_write+0x109/0x173
-  <4>[102152.653284]  __vfs_write+0x16f/0x1a2
-  <4>[102152.653287]  ? selinux_file_permission+0xca/0x16f
-  <4>[102152.653289]  ? security_file_permission+0x36/0x109
-  <4>[102152.653291]  vfs_write+0x114/0x21d
-  <4>[102152.653293]  __x64_sys_write+0x7b/0xdb
-  <4>[102152.653296]  do_syscall_64+0x59/0x194
-  <4>[102152.653299]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+So even if that would be an ultimate goal, we would probably have to be
+prepared to have to revert (at least temporarily) such a solution for
+!ZONE_DEVICE pages and have a plan for handling that.
 
-This patch holds the reference count of the hci_dev object while
-processing it in hci_suspend_notifier to avoid potential crash
-caused by the race condition.
+Thanks,
+Thomas
 
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[ Adjust context ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- net/bluetooth/hci_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 7ed5d6e47e4f..cd4d931368a0 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3706,6 +3706,9 @@ static int hci_suspend_notifier(struct notifier_block *nb, unsigned long action,
- 	int ret = 0;
- 	u8 state = BT_RUNNING;
- 
-+	/* To avoid a potential race with hci_unregister_dev. */
-+	hci_dev_hold(hdev);
-+
- 	/* If powering down, wait for completion. */
- 	if (mgmt_powering_down(hdev)) {
- 		set_bit(SUSPEND_POWERING_DOWN, hdev->suspend_tasks);
-@@ -3757,6 +3760,7 @@ static int hci_suspend_notifier(struct notifier_block *nb, unsigned long action,
- 		bt_dev_err(hdev, "Suspend notifier action (%lu) failed: %d",
- 			   action, ret);
- 
-+	hci_dev_put(hdev);
- 	return NOTIFY_DONE;
- }
- 
--- 
-2.43.0
-
+>=20
+> > >=20
+> > > (In fact, pincount is implemented in terms of refcount, in most
+> > > configurations still.)
+> >=20
+> > Yes but that's only a space optimization never intended to
+> > conflict,
+> > right? Meaning a pin-count will imply a refcount but a refcount
+> > will
+> > never imply a pin-count?
+> >=20
+> > Thanks,
+> > Thomas
+> >=20
 
