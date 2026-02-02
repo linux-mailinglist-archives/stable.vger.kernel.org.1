@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-213081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJzuEBHTgGlBBwMAu9opvQ
-	(envelope-from <stable+bounces-213081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:38:41 +0100
+	id +CMUKjvTgGmFBwMAu9opvQ
+	(envelope-from <stable+bounces-213082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:39:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98034CF0FD
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A18BCF129
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 17:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 531A6309A1C8
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 16:31:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85EA630C038F
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 16:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B41378804;
-	Mon,  2 Feb 2026 16:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE4037F0EA;
+	Mon,  2 Feb 2026 16:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXYly0QJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mG2ZBSUs"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A2323278D
-	for <Stable@vger.kernel.org>; Mon,  2 Feb 2026 16:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE6937E2F9
+	for <Stable@vger.kernel.org>; Mon,  2 Feb 2026 16:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770049863; cv=none; b=vF/d2WzhXWbMuOh1mTwHGDbRwwTYGvY/hOPAFXDaY6YqtEohpLsU7xDYzpTu81OSP5pXbrKZXxREtDN3ZMIVkaVjCBb2EArFeL2F8eSieiJpcbFfw06RwWlInULKkuUOLrfRankXldVBZl8yFjPlOBzU6lPsS7L4me9gI9RCSQk=
+	t=1770049904; cv=none; b=Bw2EivRZwyWGbKUc8QqxByjF9ZPOgAkeH5vAhKsh5mIFVakNWGZKEiyqHr38lXiw59IiFRwAosmueJSUWm72N28u+vaH9+1peHsC02b3ZpzicT+ytejzMUBZRJWzOo8H7nPG53gMCdXI74Z4Nopk5yUTz41tXKcRtKwtYOFETEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770049863; c=relaxed/simple;
-	bh=xzw0bKN22ni6DjoVH4CzWiSJkubODpSfkmGaUs2AySc=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=ETQ5Hv8+dhPI7LTA5xCMXLLC/nJ73GUv6ZSQe3VRqd02CpdSLyeP+Y69fvrCde1JbVPyN4rB7dUl+enUL9a1Ey6sKmnBu2ZwfvS5odeBKXPn5goiv5Zmot3GRNMDmB9UMjQMp20olJbvLCFGyTfRhlQ0Yx/mZ62FD53wsCkz2So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXYly0QJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEF2C116C6;
-	Mon,  2 Feb 2026 16:31:02 +0000 (UTC)
+	s=arc-20240116; t=1770049904; c=relaxed/simple;
+	bh=vdu5ff6Vg0MKKvJ5TQi6seENDmXyyQ2krfOWlpRPQ0A=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=L3HpwwPRkmM3y8HpTEy0EffmC6umi/b+CTyfuYnupYeyg3htmcUCWoz0yvsEHcADMxZXUB//vneyQ6xZqh4aCWTpaVnyU86TvLR1+iuDh6sZG25C5PD4+jMqcaaS6xAaIJqN05r+LvY236l2PG1eXUVhGUTRii0v1fa9votN7UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mG2ZBSUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B5FC116C6;
+	Mon,  2 Feb 2026 16:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770049863;
-	bh=xzw0bKN22ni6DjoVH4CzWiSJkubODpSfkmGaUs2AySc=;
+	s=korg; t=1770049904;
+	bh=vdu5ff6Vg0MKKvJ5TQi6seENDmXyyQ2krfOWlpRPQ0A=;
 	h=Subject:To:From:Date:From;
-	b=IXYly0QJzawyteZ29pWyjwtAqvDCTItyAStQG7Qi+fs3F04Y5TSEOVsoGS5eIa4W3
-	 oYw4gNyd7t1CjmzIvHQO0ghRtuh8vkhwj6Q0MwGYOLFHaT7ffRYDP/ym+vTZv2zGrw
-	 Ta/7H5Lx6e3qQAnVDYD1NKWZOX65JLE/0x5Rh73g=
-Subject: patch "iio: accel: adxl380: Avoid reading more entries than present in FIFO" added to char-misc-next
-To: flavra@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=mG2ZBSUsybMybMaFObS3u7u/11R1j7U1VFGr62PFUvnBNWXoM43Z9mYewH5vcBZAj
+	 h99Y+zXfgofyXfSs2penNube0I+15UeKPI6iAbaxeYY3aonwhcdfH36zCPknhQVsCx
+	 7uGr4KnzucBVybCS7rZZoel3n7BgdJZo+QNc3DR4=
+Subject: patch "iio: gyro: itg3200: Fix unchecked return value in read_raw" added to char-misc-next
+To: antoniu.miclaus@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Feb 2026 17:14:56 +0100
-Message-ID: <2026020256-detract-liquefy-3ac3@gregkh>
+Date: Mon, 02 Feb 2026 17:15:00 +0100
+Message-ID: <2026020200-hull-joyride-fd71@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +64,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213081-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213082-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -76,19 +76,19 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 98034CF0FD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,analog.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 1A18BCF129
 X-Rspamd-Action: no action
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: accel: adxl380: Avoid reading more entries than present in FIFO
+    iio: gyro: itg3200: Fix unchecked return value in read_raw
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -103,42 +103,40 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From c1b14015224cfcccd5356333763f2f4f401bd810 Mon Sep 17 00:00:00 2001
-From: Francesco Lavra <flavra@baylibre.com>
-Date: Mon, 19 Jan 2026 11:23:16 +0100
-Subject: iio: accel: adxl380: Avoid reading more entries than present in FIFO
+From b79b24f578cdb2d657db23e5fafe82c7e6a36b72 Mon Sep 17 00:00:00 2001
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Date: Thu, 29 Jan 2026 17:01:45 +0200
+Subject: iio: gyro: itg3200: Fix unchecked return value in read_raw
 
-The interrupt handler reads FIFO entries in batches of N samples, where N
-is the number of scan elements that have been enabled. However, the sensor
-fills the FIFO one sample at a time, even when more than one channel is
-enabled. Therefore,the number of entries reported by the FIFO status
-registers may not be a multiple of N; if this number is not a multiple, the
-number of entries read from the FIFO may exceed the number of entries
-actually present.
+The return value from itg3200_read_reg_s16() is stored in ret but
+never checked. The function unconditionally returns IIO_VAL_INT,
+ignoring potential I2C read failures. This causes garbage data to
+be returned to userspace when the read fails, with no error reported.
 
-To fix the above issue, round down the number of FIFO entries read from the
-status registers so that it is always a multiple of N.
+Add proper error checking to propagate the failure to callers.
 
-Fixes: df36de13677a ("iio: accel: add ADXL380 driver")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/adxl380.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/gyro/itg3200_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-index ba550142866a..a77c2323d1aa 100644
---- a/drivers/iio/accel/adxl380.c
-+++ b/drivers/iio/accel/adxl380.c
-@@ -966,6 +966,7 @@ static irqreturn_t adxl380_irq_handler(int irq, void  *p)
- 	if (ret)
- 		return IRQ_HANDLED;
- 
-+	fifo_entries = rounddown(fifo_entries, st->fifo_set_size);
- 	for (i = 0; i < fifo_entries; i += st->fifo_set_size) {
- 		ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
- 					&st->fifo_buf[i],
+diff --git a/drivers/iio/gyro/itg3200_core.c b/drivers/iio/gyro/itg3200_core.c
+index cd8a2dae56cd..bfe95ec1abda 100644
+--- a/drivers/iio/gyro/itg3200_core.c
++++ b/drivers/iio/gyro/itg3200_core.c
+@@ -93,6 +93,8 @@ static int itg3200_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		reg = (u8)chan->address;
+ 		ret = itg3200_read_reg_s16(indio_dev, reg, val);
++		if (ret)
++			return ret;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
 -- 
 2.52.0
 
