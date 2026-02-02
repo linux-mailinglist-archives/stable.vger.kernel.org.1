@@ -1,179 +1,178 @@
-Return-Path: <stable+bounces-213099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OGZCiIPgWnmDwMAu9opvQ
-	(envelope-from <stable+bounces-213099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 21:54:58 +0100
+	id CHXFNXwRgWnmDwMAu9opvQ
+	(envelope-from <stable+bounces-213100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 22:05:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBE0D1560
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 21:54:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02334D1752
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 22:04:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 126A73008D40
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 20:54:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2DC4C301C6DA
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 21:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6958430E83A;
-	Mon,  2 Feb 2026 20:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C6830F804;
+	Mon,  2 Feb 2026 21:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Npi9lyhQ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0tJ6PSMN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w2P86WNe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E2F2DCF70
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 20:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E0E222565;
+	Mon,  2 Feb 2026 21:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770065695; cv=none; b=UO4bfMESfoQ9MnmQWC2BlIDXbpZiO9pxfWgt0Gnd1IdFHXs4aUkzQOmscnGiP9QQsExPLqdmK4F460Br9JE6rGSQZh8GX63yfmujQzC5gU5C5IighpqXoc2HV3salC92b4OXxeMfXdFwZPZF35MGrEzWgYgLtm3ZHXkIUgD3aho=
+	t=1770066282; cv=none; b=eVfckwzyx5ASWnG9eu/GBFbOKBzajz4ZTzSV4tbQHRKKfsB4Av6YrdpRYL0s3Bgf4FXqfbPSkX4k0xSc0CArOmstKSZzyXZIDXwhoJCL+vGXkLw8Ze2uzHX0WTnhlFifnFdhxkvVJ82UTHwk9s1/eVtWFFUdtyiDeG6OS4wGHpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770065695; c=relaxed/simple;
-	bh=xbzYJNxSCFjkiffSM6jyIjz1IvRu/q+sVuB3QG1dkqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RI/DTxKXi6MAfXqOOq6zp1DzqFp6oNuZLJsyP6L1b7eHE6Ez3Phs/p3pczCKA/vvplE0aCTuzgFt2NE36nA4kF0ktrsh2DItK8QoypC9ZcNrJ/YALcrq/rkachRjmR7J6MSnTc5oJq8TaR30qOmVHc6Hf8gNzdbOAMaABrEI9L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Npi9lyhQ; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-794e95357cfso7841737b3.0
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 12:54:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770065693; x=1770670493; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1iTIQduAX8adZigUW+P0nUWVGs+OtfVrnk6DuA8/cXI=;
-        b=Npi9lyhQj185gn+HBA/vW3MF6j5rEKWWuHNnJ5qcKy8svTcMr39WAsHFxvDtKNsnc5
-         LzSiB51D3y/9XXWTdowdv4lIv6O/rmzrbaLR68hqtQzmGCR6fflKB7nU6S9G6AVGNvx7
-         mUHP7esEMvnroKA7tu9/duT/BYoiCdgFcL2R+o9eI2C6pImF5Dwg/vwWSn/V2tAwux0O
-         z8hutgVSa+fHkrOlen0Z7jKOdMPv5N7YZRa/7JwQVpMDtvfVs58lJ1z/X7PbdtglxsmD
-         oZBjg+ZtLx+nBN8lxZtsBGlxGQcALno9rA2ulbsMrLfRk0H4kS3itcSNBduLg6Cstwee
-         lGGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770065693; x=1770670493;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1iTIQduAX8adZigUW+P0nUWVGs+OtfVrnk6DuA8/cXI=;
-        b=OxYfzjKQho2Z8/9fD/wX0j8ZK+zgOuHgqBwg62HQSBtscXA8gAlUg4yKdGytgYmiQF
-         fb4YKTlgXo2cj3U7WvAFbfotb6DtzrNGmDVQluRw69YMH4sQDjEfjodorpDfd3mdVviY
-         kZuSjSQ+NMs6wglGKrxmGFE3zQK+iIEUpzQ3euQ7OngPGNygHFjQWdDxdE+Y6jmpt7ov
-         BXaF3WH1IcAaZm7nLRCL+3FqjQw5UxG6H3bLFMnZFMnUUaBj7vM2k0jWt0W8Zt5ZQ9FX
-         +uOnWoeD+MVw5YmN2RINEaiuVvHDueh4T/uSu4gVidIncxu9OWOvwyzs4w8bjD5LmouG
-         crMA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsIgSW+dTEkfqqr1cqb7Zja9a1EMphEK98nFuNlDP2IkKZEeDbudqUlOzfVb8B+lFRDJ4Mg0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/TFn6B4QCW5F6WZWU/piNLLUa/zhFNRfuSs1ReB842yixSN7z
-	XIITjqNL/a9debAW9M593UKgfdRxsARO93J8KfwWsuU6lEEeqjf95Arj
-X-Gm-Gg: AZuq6aLVe02eX32NtN9mt4npjdnMXEfdPk6mJ5jZDN4+01LQvb3e3/5GyobOArQpTCd
-	DfDJdvcxq+kcFYV24SxvfWPwKtD9R3fgMkW4qmcV3hA0gpwx8nZIlrCQIYTE+jKW+aDS7g9IirE
-	fWkRhy6UUgI0CEg7mCu5On+BLzUMVJH0LaQUMENZrvdpabP5voWju1VEe9Rb2lleXOLhwHl3FkB
-	3Uc0Z9D04kZp6xtjRby90dDFl8pC3TeHqf9XecherlnlZJedvQENIyswi7Am1uqD/kQnfRr36V5
-	gbEmM/abvd62d3wsKCipZNIH5GnPmc2EjLd6Qfm4eOo1DdQ/vDu0me4TLxK2JLbxBeuxCC/Dgsj
-	RoRvKAj/xDW8rIyIAvzLriJNk/uaFchPsZiB6c9qYwMsnOq55LyMhv+Xhk7osotCP0HMZodULTS
-	toeHIJiaSJjVcozrOyWyir6kI=
-X-Received: by 2002:a05:690c:dc7:b0:78c:2916:3ef5 with SMTP id 00721157ae682-7949de63e70mr120040087b3.8.1770065692890;
-        Mon, 02 Feb 2026 12:54:52 -0800 (PST)
-Received: from tux ([2601:7c0:c37c:4c00::9944])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-794b2468901sm55977777b3.22.2026.02.02.12.54.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 12:54:52 -0800 (PST)
-From: Ethan Tidmore <ethantidmore06@gmail.com>
-To: gregkh@linuxfoundation.org,
-	straube.linux@gmail.com
-Cc: dan.carpenter@linaro.org,
-	hansg@kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] staging: rtl8723bs: fix null dereference in find_network
-Date: Mon,  2 Feb 2026 14:54:29 -0600
-Message-ID: <20260202205429.20181-1-ethantidmore06@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1770066282; c=relaxed/simple;
+	bh=+dhCdBEsIiNm9jFTYY0OVo5eAeLFBPugkNN84DY1eB4=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=SZKPNHNfqKE1MYfGhu9Yw/b9dlsNft+xlEO5BsobP1CK881bNsst16h2VXEivFJLJVHRCob6E/BKoYLl+83VJ77uAIFWesz6jKh8BitVgaIk9NennRN7v5OnQ2p6O4OEdSKPk18/FFShC2ubDDbm/aErOsRvq4ZzL0TzLqgTqyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0tJ6PSMN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w2P86WNe; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 02 Feb 2026 21:04:38 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1770066280;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x7xalSVKFyUhuZvK4gJlnPsI2klQoWZuADHJifLfjEg=;
+	b=0tJ6PSMNPlGQUXqMMQJAobMNkcPcSktL0HfJJo/N0P12kq0GaJQS30Ge0ejJIuWOMr8aWG
+	IP+fSzXzBMcqc8UG7EMq5LgV3/HKQtN3Nvp3/bHaL6RaAQe8RqAKwb32+EdKPCzX0cetmO
+	LmaTKVMYrvSnePE5Rn3LnGD51QQ0b/PIp3mwq9UdCLbIOjHWLy8AXqr/4TZUKjSUu4oUAv
+	MCSSs4oANOuUeVEftqla1EHBOo1NRYEtkgae5NiWxu+Yuvkt/nS+z26+U9qN9Ld55xsPKI
+	KFVxwDOte1Qod1PN06qpStTaQsZuE+YoY0Zz+Kqs1cBWhKQBBFlB/7D584kyWw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1770066280;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x7xalSVKFyUhuZvK4gJlnPsI2klQoWZuADHJifLfjEg=;
+	b=w2P86WNeMsogTI5NCWJezU3QvMrvjPUr++zRxx3A/I1kfaAg8ZFV5NVkBmRtbHNqqiP9Gi
+	kZfDgLEfh/cr/WDA==
+From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: perf/core] uprobes: Fix incorrect lockdep condition in filter_chain()
+Cc: Breno Leitao <leitao@debian.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Oleg Nesterov <oleg@redhat.com>, Andrii Nakryiko <andrii@kernel.org>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260128-uprobe_rcu-v2-1-994ea6d32730@debian.org>
+References: <20260128-uprobe_rcu-v2-1-994ea6d32730@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <177006627890.2495410.15132261871969236543.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
-	FREEMAIL_CC(0.00)[linaro.org,kernel.org,lists.linux.dev,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213100-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213099-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ethantidmore06@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BFBE0D1560
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email,linutronix.de:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 02334D1752
 X-Rspamd-Action: no action
 
-The variable pwlan has the possibility of being NULL when passed into 
-rtw_free_network_nolock() which would later dereference the variable.
+The following commit has been merged into the perf/core branch of tip:
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Commit-ID:     a56a38fd9196fc89401e498d70b7aa9c9679fa6e
+Gitweb:        https://git.kernel.org/tip/a56a38fd9196fc89401e498d70b7aa9c967=
+9fa6e
+Author:        Breno Leitao <leitao@debian.org>
+AuthorDate:    Wed, 28 Jan 2026 10:16:11 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 02 Feb 2026 22:01:07 +01:00
+
+uprobes: Fix incorrect lockdep condition in filter_chain()
+
+The list_for_each_entry_rcu() in filter_chain() uses
+rcu_read_lock_trace_held() as the lockdep condition, but the function
+holds consumer_rwsem, not the RCU trace lock.
+
+This gives me the following output when running with some locking debug
+option enabled:
+
+  kernel/events/uprobes.c:1141 RCU-list traversed in non-reader section!!
+    filter_chain
+    register_for_each_vma
+    uprobe_unregister_nosync
+    __probe_event_disable
+
+Remove the incorrect lockdep condition since the rwsem provides
+sufficient protection for the list traversal.
+
+Fixes: cc01bd044e6a ("uprobes: travers uprobe's consumer list locklessly unde=
+r SRCU protection")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Link: https://patch.msgid.link/20260128-uprobe_rcu-v2-1-994ea6d32730@debian.o=
+rg
 ---
-v2:
-- Included more context to demonstrate possible null dereference.
+ kernel/events/uprobes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/staging/rtl8723bs/core/rtw_mlme.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-index 8e1e1c97f0c4..e734d35c11a9 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -828,22 +828,24 @@ static void rtw_reset_rx_info(struct debug_priv *pdbgpriv)
- 	pdbgpriv->dbg_rx_ampdu_window_shift_cnt = 0;
- }
- 
- static void find_network(struct adapter *adapter)
- {
- 	struct wlan_network *pwlan = NULL;
- 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
- 	struct wlan_network *tgt_network = &pmlmepriv->cur_network;
- 
- 	pwlan = rtw_find_network(&pmlmepriv->scanned_queue, tgt_network->network.mac_address);
--	if (pwlan)
--		pwlan->fixed = false;
-+	if (!pwlan)
-+		return;
-+
-+	pwlan->fixed = false;
- 
- 	if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) &&
- 	    (adapter->stapriv.asoc_sta_count == 1))
- 		rtw_free_network_nolock(adapter, pwlan);
- }
- 
- /* rtw_free_assoc_resources: the caller has to lock pmlmepriv->lock */
- void rtw_free_assoc_resources(struct adapter *adapter, int lock_scanned_queue)
- {
- 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
--- 
-2.52.0
-
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index dfbce02..424ef22 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1138,7 +1138,7 @@ static bool filter_chain(struct uprobe *uprobe, struct =
+mm_struct *mm)
+ 	bool ret =3D false;
+=20
+ 	down_read(&uprobe->consumer_rwsem);
+-	list_for_each_entry_rcu(uc, &uprobe->consumers, cons_node, rcu_read_lock_tr=
+ace_held()) {
++	list_for_each_entry(uc, &uprobe->consumers, cons_node) {
+ 		ret =3D consumer_filter(uc, mm);
+ 		if (ret)
+ 			break;
 
