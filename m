@@ -1,173 +1,207 @@
-Return-Path: <stable+bounces-213023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBbIHD4qgGl73gIAu9opvQ
-	(envelope-from <stable+bounces-213023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 05:38:22 +0100
+	id yLwYDYsxgGnH4AIAu9opvQ
+	(envelope-from <stable+bounces-213024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 06:09:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEFE8C8301
-	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 05:38:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A150C8440
+	for <lists+stable@lfdr.de>; Mon, 02 Feb 2026 06:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5FB4300EAAF
-	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 04:37:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 948BB3008D22
+	for <lists+stable@lfdr.de>; Mon,  2 Feb 2026 05:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4718D2BEFE8;
-	Mon,  2 Feb 2026 04:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF45E2C21C3;
+	Mon,  2 Feb 2026 05:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqs5rDBA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IxaOgUM3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35E82882B7
-	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 04:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D302206B1
+	for <stable@vger.kernel.org>; Mon,  2 Feb 2026 05:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770007071; cv=none; b=goQ2ODEuczqB1JWIeUPgnERam1o0YwkcQTtGFQKqHbbQm4CrfBE6a2OagzOjv5a9rdKwIDyUeP7rb9V5L/ARwhDG8xx3/6mYBOtVghdQ5+qFAbe+oI8f16F9UFoJqE04F8bf7xR35Qo0EybDCn0kG74PALBkc+yKk9qVoPTbf48=
+	t=1770008948; cv=none; b=oZgLiZEVDfaWW1EYzxsXXsECaPtfkyPJaXrnx/VLiTezZoTmPBKKd86FrzqedtUo9YTPLn4m8yypxlWB7zeQhwpLkImkJ0lz4ZLGKJymgtAsb3rsbLkYYMH7XzzdqhFETk9FoYa6C8y0k/e6scs9oHNBz8KfSLm1lJe5nA0iffA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770007071; c=relaxed/simple;
-	bh=SMul7Ue7pVJUIaVvSQDUhube/LVKiEJKTatjF53Wseg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VLpkuq23gvA+yCEhwoyeSL3mjvp4/NedZRm4UEBkKN9KC/hryTkEE2AV1ipdq666e1TGX5G7Gb4Y0s1ek7ZDA+5dLT1izCNtz4X4dHU6aL30x2rV8motr/WNMNw9TRwVuxYlWugJKzDu7Y8+7RdE5W+VtB4AfUoXmSvMPSQ8dUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqs5rDBA; arc=none smtp.client-ip=209.85.222.46
+	s=arc-20240116; t=1770008948; c=relaxed/simple;
+	bh=BLVr0yHznI0UbET4EDD4WUi4dJZEkUkCydrgyWRw2xU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZBtz8FOB3Rh+sdnBovnAFkaJiQtzowV1HIa5Pp/sCekkb0I/yc1uyg1LZFwenm/wR8IvRceME3RVZRxXS3eohCheplTTHn24TG37+2E1OuXEyCFQkrt6z5i5PSxpqjWWPhxRSFshO0+j7sGzp4We3Nx2p1cEqFUxw+FJpwjCw34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IxaOgUM3; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-9489a15fc74so1362268241.3
-        for <stable@vger.kernel.org>; Sun, 01 Feb 2026 20:37:49 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-81f4ba336b4so3343871b3a.1
+        for <stable@vger.kernel.org>; Sun, 01 Feb 2026 21:09:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770007068; x=1770611868; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIbmx9IfBuJ7bRGyJfUQEL9l0O2sIDuG9wDyiySCy8o=;
-        b=dqs5rDBA3M291lCrpQ2lwFNAWobtX9W4Igi3npnBccHmti7OpEsvdbujLy/SKgFEpn
-         Lv8JBAU03CSzl3E2NLocAxFVUpVtbYhrNwuN1MAdRn9RKFdnM5jYPqegJHFNYBEdphzf
-         bT9708WnYVyL8/bhJn9a7dMAVSFc/8IqQ8SP++R5xc9wLSMAUpuioVeL5hQm6NNTQyzZ
-         Fsasa9TkeLA3KX8FkVqrHZIoiAdeHzI4krPl8G5oX8S3uf/AT+1yDobm0lnAoKAif9M1
-         KArmBhiN/QBkT580TkStO2nD6d/VAiWTB7fo1NwL+AlQ+KFaI13ZqO0v1OxqylL1T/tu
-         35wQ==
+        d=gmail.com; s=20230601; t=1770008947; x=1770613747; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pjbiA4RQMfYKLmkhjuBB5OyBq3Fn1YFJd6sTAf8pd+I=;
+        b=IxaOgUM37914xFt+/SlxINrABqOTjkO1y5zLi38TRvOqiTVqlCIBkkUN44J2efdn2j
+         eGEFmSOswT6l+07khhv5ufJ/moZ0Ai78PZOZ/hwAZbR3i/vj72vYis0zS4ltOOTS2bHQ
+         cEWNcGU6O4mrmrRMrj1V27TJ3wWnZVLjHK55vfNk3+H4StLtwRPiyDIXOwQMj8uLHaD5
+         ctBeuc9kbasLvyctrWrK4YkAkdyNxA1sDJXqn2aiysp4voLfKlCWsup6fQyXtTOgZgwv
+         SN7Ixi9QLnukIyFfJg7SgFy88Emqock+/hGAxNTl2+unPaeg+BouKy450Dsk6PS3j1lP
+         ck7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770007068; x=1770611868;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AIbmx9IfBuJ7bRGyJfUQEL9l0O2sIDuG9wDyiySCy8o=;
-        b=CJbVN4oA3lbmoew5yTnClv0JuAWzCE5IXKacH3NRHNNQNO1J8WdLUcmR0ikOg00ess
-         E2zXd99im5Fj5fydmMDixir5or+OwGp6wMqZ7uwCCvDjYsxQ5aWtsGlDfb3XJIJp9+Ei
-         nJPlCRsEazJtSMkRp5gQr94CmaYnh5x8sYNSuye0ia8zdKfOLDT3qd47svMvHqenmo5H
-         yCnJCgxDD6HHXpbS5uvaT0qIf+gbq9HVXoHseK5Xd5Z7+xnwDDiWv2raCf5HZAwvgtFm
-         6D2pw9BZAeRhuofyE6iX5qOXtYNLtAa+7cSfLiuPEdMsD/f2uyIs9ouPus6tD/BF2dNm
-         cRcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkuV6KxQ3JNfAqjdnH3t8dlFfgC7JXWwgsA0PgtMlwv2op/UCUGFaw8wNVDLvUxNWlDCw97Os=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT05yK+0U3emDcNdSmGAqF1JvRhw3P33whaSS1Dkl2eWmUMN7K
-	Eri1+J3ZuMAQe8olNsKbDKmcqz/Lo+ghc/6ja4C7PdBkECTpvZJ1O1jS
-X-Gm-Gg: AZuq6aJtM295YNC3FdaBQ80F4WS2Hzc7ffr3rpl/hH2EnXqO+EjPIP2GQGGic35FCmh
-	smjPBZYM9D6tct6/mWqVlWF7ZdocRyzeNPuIb2Q2+6e3JYwrK4r4gNP4K5vv9A5KiN/wi1LZB7u
-	eBIpDWQm3NUFXoUijZxhx9lr6yPuoteErfl4biphrj7MMOjjYPPPMa+5mXv823ONuPHK23kcscd
-	J4zGfgMoQyIHGFti8lxbt67wgkE+fqrNQXoaCojHBICHp+AUwRKaa3wPSwqmi7D9As16WS8mQE1
-	KMkI1eZRFQQ0+QieqH78rVryZTILZHdxQ+3wk+8DV6InduAKXpfxrn4CPiDL7dvi8TfQdcUMKQb
-	a4p4Am5zlQZmI8dRAcqdmBkX8aTRc+yMmS7xIA//lWTZtL6L8qnuQEGCDY5NV9x3wllALY0Cudo
-	JHI7IhgcPR/6qlNvZkXKJlh0Q=
-X-Received: by 2002:a05:6102:6c5:b0:5f5:11d5:70fc with SMTP id ada2fe7eead31-5f8e2471030mr4401133137.2.1770007068610;
-        Sun, 01 Feb 2026 20:37:48 -0800 (PST)
-Received: from [192.168.100.253] ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9487241762fsm4379654241.7.2026.02.01.20.37.47
+        d=1e100.net; s=20230601; t=1770008947; x=1770613747;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pjbiA4RQMfYKLmkhjuBB5OyBq3Fn1YFJd6sTAf8pd+I=;
+        b=YnDVXNLKi4pETn9fHlzDoQaunvjW8Qhp4A55BTzpmWnLUvlSbp8T+8tflXt99O0cJZ
+         u5bhFFqINDOXkw2V8rUgEMF4jy/XORs4mm0HdKPkULHYUS54lA6p0MLdnAO29X/4yJHC
+         VO7lhJW9HSAyEbIxbZTx3mQBbkdEY7pPzs7+0N98vrGUrzoVwAEIza8yiItONeoWGdY/
+         xmlN64ZBEjFxrPF066zL6jfR5VVQkQUyOHDGEYN0MTONMdJ1RkBlL/BkrxvD/Kyi3o3I
+         JMwrTQiu/THw2+PxS2P19ws01esODNtEdJZAg4ElO9mKcHQSmlHtxdMfXVOwTEQswGpq
+         BtEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUI3SnNxXT39/Lr5ASfVBD9+Yql+9NTHRCz/GI17C8tx8GsJVeCJYnVl2bA+9CP7ejIZ2hY/44=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOJMWyVaogj++snOBcd9aBVVdxFpcLorKtad6nBpQlpDKsEgpX
+	d8S2D3ck7sLCPy9pPzekXrkLh7JRWAdmfTDB53Ozktd/ggLN+LDtWECI
+X-Gm-Gg: AZuq6aIg6FLYWrZ1L63fZLVlRRmmL1x2HVcrWkhmt7l9oyymWAT44GoFYr9pYO725dP
+	1rs71q78Hu6Ej4Y42+LOCHJnuBVq13Llrzfaw/wvG0EGvajs7K5ySC9ihWMG9T/70BA+TgBzMm2
+	oHFrvrbcDgz6EThn3lGrxZbzp+hD5kcl9Z5N9lrjh6dN9KwD7ZCyKIa4+ynfSfFLkEX+veF0G2w
+	HZ0H9Zl+Lm+v8a5JBDhwd6/ubVkZw2hrQ2EjwhlwFRie5eD7L75DM7H97Z3SjeE5bJZtvbubbqZ
+	Z7DBbCxJdYE5qkpOdQWYFUjVhXsJL8+fcqZhsj5iNH0ziu7euLPb4GZpDe87JcwrILNHTocnf0j
+	jlYfktBzlNa4fzWtK9Mg0hjttIxV3b5Oiv8axvBGY+u250lm4O9sgOoHrk1oNmHsamFdiEKwYY4
+	wngYTxwhw9DTHCjiOi0QGO4kRPnwBci8mxjbd+VzbspXhI+R4BZHGd8LA=
+X-Received: by 2002:a05:6a21:1509:b0:38e:9acd:97b3 with SMTP id adf61e73a8af0-392e01a7a57mr9582307637.73.1770008946706;
+        Sun, 01 Feb 2026 21:09:06 -0800 (PST)
+Received: from google.com (61-230-34-48.dynamic-ip.hinet.net. [61.230.34.48])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b346de2sm128805315ad.0.2026.02.01.21.09.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 20:37:48 -0800 (PST)
-From: Kurt Borja <kuurtb@gmail.com>
-Date: Sun, 01 Feb 2026 23:37:37 -0500
-Subject: [PATCH] platform/x86: dell-wmi: Add audio/mic mute key codes
+        Sun, 01 Feb 2026 21:09:06 -0800 (PST)
+Date: Mon, 2 Feb 2026 13:09:01 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: James Clark <james.clark@linaro.org>
+Cc: suzuki.poulose@arm.com, mike.leach@linaro.org,
+	alexander.shishkin@linux.intel.com, gregkh@linuxfoundation.org,
+	mathieu.poirier@linaro.org, leo.yan@arm.com, Al.Grant@arm.com,
+	jserv@ccns.ncku.edu.tw, marscheng@google.com, ericchancf@google.com,
+	milesjiang@google.com, nickpan@google.com,
+	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] coresight: etm3x: Fix cntr_val_show() to match
+ cntr_val_store() behavior
+Message-ID: <aYAxbbkHslAP9RBN@google.com>
+References: <20251202082613.3265761-1-visitorckw@gmail.com>
+ <3bec7ceb-61a8-4b38-a794-02ee2fc9e68c@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260201-mute-keys-v1-1-825e786732fc@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQyMz3dzSklTd7NTKYl3zNItEI/PkFGND8zQloPqCotS0zAqwWdGxtbU
- ASQoXkFsAAAA=
-X-Change-ID: 20260126-mute-keys-7f8a27cd317f
-To: Matthew Garrett <mjg59@srcf.ucam.org>, 
- =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
- Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Olexa Bilaniuk <obilaniu@gmail.com>, 
- Kurt Borja <kuurtb@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1080; i=kuurtb@gmail.com;
- h=from:subject:message-id; bh=SMul7Ue7pVJUIaVvSQDUhube/LVKiEJKTatjF53Wseg=;
- b=owGbwMvMwCUmluBs8WX+lTTG02pJDJkNWuIGtn/2qPTNatBnn6CS9bmC7+w9/doJx4Q/vwqr2
- J6+3eVvRykLgxgXg6yYIkt7wqJvj6Ly3vodCL0PM4eVCWQIAxenAEzEzIOR4cuRL05HzdnWXEuv
- 5o9nbbKYvu1NYda2g2oFAl/03M7Ps2Rk+O945uFrR7lW7vPNFSLeN1eu3cIXxqi7Rb382SfXze+
- T+QA=
-X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
- fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3bec7ceb-61a8-4b38-a794-02ee2fc9e68c@linaro.org>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-213023-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213024-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuurtb@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[visitorckw@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BEFE8C8301
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 9A150C8440
 X-Rspamd-Action: no action
 
-Add audio/mic mute key codes found in some Alienware devices.
+On Tue, Dec 02, 2025 at 09:26:19AM +0000, James Clark wrote:
+> 
+> 
+> On 02/12/2025 8:26 am, Kuan-Wei Chiu wrote:
+> > The cntr_val_show() function was intended to print the values of all
+> > counters using a loop. However, due to a buffer overwrite issue with
+> > sprintf(), it effectively only displayed the value of the last counter.
+> > 
+> > The companion function, cntr_val_store(), allows users to modify a
+> > specific counter selected by 'cntr_idx'. To maintain consistency
+> > between read and write operations and to align with the ETM4x driver
+> > behavior, modify cntr_val_show() to report only the value of the
+> > currently selected counter.
+> > 
+> > This change removes the loop and the "counter %d:" prefix, printing
+> > only the hexadecimal value. It also adopts sysfs_emit() for standard
+> > sysfs output formatting.
+> > 
+> > Fixes: a939fc5a71ad ("coresight-etm: add CoreSight ETM/PTM driver")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> > ---
+> > Build test only.
+> > 
+> > Changes in v3:
+> > - Switch format specifier to %#x to include the 0x prefix.
+> > - Add Cc stable
+> > 
+> > v2: https://lore.kernel.org/lkml/20251201095228.1905489-1-visitorckw@gmail.com/
+> > 
+> >   .../hwtracing/coresight/coresight-etm3x-sysfs.c   | 15 ++++-----------
+> >   1 file changed, 4 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/drivers/hwtracing/coresight/coresight-etm3x-sysfs.c b/drivers/hwtracing/coresight/coresight-etm3x-sysfs.c
+> > index 762109307b86..b3c67e96a82a 100644
+> > --- a/drivers/hwtracing/coresight/coresight-etm3x-sysfs.c
+> > +++ b/drivers/hwtracing/coresight/coresight-etm3x-sysfs.c
+> > @@ -717,26 +717,19 @@ static DEVICE_ATTR_RW(cntr_rld_event);
+> >   static ssize_t cntr_val_show(struct device *dev,
+> >   			     struct device_attribute *attr, char *buf)
+> >   {
+> > -	int i, ret = 0;
+> >   	u32 val;
+> >   	struct etm_drvdata *drvdata = dev_get_drvdata(dev->parent);
+> >   	struct etm_config *config = &drvdata->config;
+> >   	if (!coresight_get_mode(drvdata->csdev)) {
+> >   		spin_lock(&drvdata->spinlock);
+> > -		for (i = 0; i < drvdata->nr_cntr; i++)
+> > -			ret += sprintf(buf, "counter %d: %x\n",
+> > -				       i, config->cntr_val[i]);
+> > +		val = config->cntr_val[config->cntr_idx];
+> >   		spin_unlock(&drvdata->spinlock);
+> > -		return ret;
+> > -	}
+> > -
+> > -	for (i = 0; i < drvdata->nr_cntr; i++) {
+> > -		val = etm_readl(drvdata, ETMCNTVRn(i));
+> > -		ret += sprintf(buf, "counter %d: %x\n", i, val);
+> > +	} else {
+> > +		val = etm_readl(drvdata, ETMCNTVRn(config->cntr_idx));
+> >   	}
+> > -	return ret;
+> > +	return sysfs_emit(buf, "%#x\n", val);
+> >   }
+> >   static ssize_t cntr_val_store(struct device *dev,
+> 
+> Reviewed-by: James Clark <james.clark@linaro.org>
+> 
+Thanks for the review!
+Is there anything else I need to do for this fix to land?
 
-Cc: stable@vger.kernel.org
-Tested-by: Olexa Bilaniuk <obilaniu@gmail.com>
-Suggested-by: Olexa Bilaniuk <obilaniu@gmail.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
----
- drivers/platform/x86/dell/dell-wmi-base.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/platform/x86/dell/dell-wmi-base.c
-index 28076929d6af..62cf28d1fe19 100644
---- a/drivers/platform/x86/dell/dell-wmi-base.c
-+++ b/drivers/platform/x86/dell/dell-wmi-base.c
-@@ -86,6 +86,9 @@ static const struct key_entry dell_wmi_keymap_type_0000[] = {
- 	/* Meta key unlock */
- 	{ KE_IGNORE, 0xe001, { KEY_RIGHTMETA } },
- 
-+	{ KE_KEY,    0x0109, { KEY_MUTE } },
-+	{ KE_KEY,    0x0150, { KEY_MICMUTE } },
-+
- 	/* Key code is followed by brightness level */
- 	{ KE_KEY,    0xe005, { KEY_BRIGHTNESSDOWN } },
- 	{ KE_KEY,    0xe006, { KEY_BRIGHTNESSUP } },
-
----
-base-commit: 008bec8ffe6e7746588d1e12c5b3865fa478fc91
-change-id: 20260126-mute-keys-7f8a27cd317f
-
--- 
- ~ Kurt
+Regards,
+Kuan-Wei
 
 
