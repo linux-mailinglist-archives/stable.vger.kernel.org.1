@@ -1,368 +1,176 @@
-Return-Path: <stable+bounces-213276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPE/B5EjgmnPPgMAu9opvQ
-	(envelope-from <stable+bounces-213276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:34:25 +0100
+	id CB7qEjImgmnPPgMAu9opvQ
+	(envelope-from <stable+bounces-213277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:45:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58F6DC08F
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:34:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4082DC2E9
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:45:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4E39305B676
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 16:29:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC9B530D0AC3
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 16:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA143D1CB2;
-	Tue,  3 Feb 2026 16:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3BC3D300A;
+	Tue,  3 Feb 2026 16:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IciGJudS"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="VBt3hDo9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A19372B34
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 16:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F1D3C1960
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 16:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770136172; cv=none; b=LGu1CMqJXpt343rHUymb4Zb8ZMsFfER3fXkXBRXhYGE0Oqa6vwNEK/wTp91Wj2j4e9ULNcvyKAlfiO8b1HoXjhyeyCoRG15/84ewNvnUsNoCiKaUse7QtruPA4z+XJqCErcJqhC9a7RkUI1HtelfHYlQVzpaAi0K5MIh30BcwoU=
+	t=1770136564; cv=none; b=uEnlZn46xjtB8xogUJ3JOyPl3uHD/Cd72fG1Zj1z4pqdjlfKPptX1jTmjVpUZq9osihU8jehc+WSoM6NT8jdq7NtGXHURIYiv7KdomMIJ5vjfozEZ4d1aYZINyTqCxojIHCDigZK3jg+caR4rXXrrtVL8LR/CDLSYHbd7iZEaS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770136172; c=relaxed/simple;
-	bh=t6LMMgWmsKGMNKlLO8aMPwxoD+2GncGJHD5bqlFrUOk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FekoygZttsY2kqIjFuO8aB/s4MzXChrKqAteesz9FjYyNDUA/mKGZtII8bDLPfacefnA0jKsceW9Efu5cCgprrN/D3mN90gJm97MZFkhgXEcxRQcJYj+V9i+D0Z82WajND5n3kO5P3fFs8Ibf0PsRvhVOxQZJA6Mu2FmoFB8ohY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IciGJudS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E30C116D0;
-	Tue,  3 Feb 2026 16:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770136172;
-	bh=t6LMMgWmsKGMNKlLO8aMPwxoD+2GncGJHD5bqlFrUOk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IciGJudSlHpnC9lZHMn9T9v7l8EAGTzhO7jcLdbJQR+EAwFKDkC/pERFz0XoTGmAD
-	 Ggem3UviKHe51eo16HERyWOzy1JT7zv8svibhne5ZMV6ScUmx6dMKYgczdp+jpFZoh
-	 cUHdoanpXZQDabTXAlOUo2fwuniiz8H3Ke8XwWkBoDpFP2m9U7TR7okMXpL/0hYExR
-	 C2MUs4uBRVtdzK3pS71oeCBArRyQFzaJ2YtJYTyTCNzfgoYQNjqBAWNpk4+r2vY4Qe
-	 +l8rOrV9zOS61EYnM/g9MUCgyPlHOiGA3zrsGGU+18LzpUcaAG0crPeI3NUEf7boGf
-	 6PGvOTMyMy3PQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix I2S2 and SWR TX pins
-Date: Tue,  3 Feb 2026 11:29:29 -0500
-Message-ID: <20260203162929.1309413-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020345-excuse-herbs-b8f8@gregkh>
-References: <2026020345-excuse-herbs-b8f8@gregkh>
+	s=arc-20240116; t=1770136564; c=relaxed/simple;
+	bh=qap9S7WORoUubJqTBtETXU0xFt0az5wDCXk0PrXYzOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fMlNPxBSTxskQ2XK8e7HJ6SXZ9XYV6PgqzzLOFIAa+IW1aAWO5QvgRLrQJfhlM5xaKRuvbmSift5RlQ2q52B2xSrI+f+2ow6l8IRXssoYW7nE6fIDkvmrqeMNqW6cxhRRXp7O3whv5/uuX2cci9NHk45KuKU8XKP0AUyOFcWyFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VBt3hDo9; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4359a16a400so5089567f8f.1
+        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 08:36:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1770136561; x=1770741361; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FQuo/p5AInQk1R/8pvqh/pjovAKXDnSWHvDzZRsI+LE=;
+        b=VBt3hDo9vGybANjrUkwXqw61AVGw+GKLWLzBalRMHC30ytCT/TyulnB7Its5Caic0y
+         TDeSGPb16o50+O50oUF1ZJWqWswIFcQ8B4B265ftHqNKeOajGJjIpXG4m/bYkgU5lcsy
+         DxmftfxirMJ9SnqJdwVE6NABPND8GB4wsjNEtGQ8f1MZpH8jpVySxLmfmcgrdg8YkjLq
+         xqTPFxYk4LFKDg6/+L/uloaF1hPRtYlH0bUS5AThzCEep+xioywe90qDRdkpzZ+h48pu
+         TM/JdZN8Zf7hiRuDweHSoDbuDp7iaITj/g8WdQmNaYZUb36u4AU6HEFrxAHJrWi56iYX
+         9iNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770136561; x=1770741361;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FQuo/p5AInQk1R/8pvqh/pjovAKXDnSWHvDzZRsI+LE=;
+        b=LAjW1IzTK3D27HNll4b+xQEkgeQrr/6iPW82fk8WOqvS2iXlZW8xZnNrSgUdq1UQtV
+         vH3v8sNcbvEpX3RbTi00Kppe0QLmpeQPXnJ1e0ywfFVRAn3/SPZutI2zhtwTv+SGT+Lp
+         k5pjUFcduzlptDucpvkc1qtyjh5OsTG9LdhmAg+lcpNnQhwZeFJoE4AHHUCguepjhcIq
+         zX+GbRZrDez8GIgb/KqQlP6+sNzclHhJ9CYSVqeLus+0IOCK2RaxhqvxnBn9QP3wMvd9
+         4/WqLsPfxImveUo9NVAIS3qptshCYTYT5I8H0d3gVCuwLjiBtmvfxHhTpBhSCN3Cb1Xn
+         IqqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlkN7jmTPSYUsu3dfeTiEok2qSB4KXTIfiEzr+TIxtvVG50b5S9jXdgUTzeNIdNvoHC1A9QcE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrUtxKoclsXk1s2NBC9EHzc3r5J3swDZ91tQblMuyRuMLEUXcI
+	CHK0/VaE0P+WFiAdTj10JwlyALQhxwVEhUYcj1C+IDN7RPI1mCcTsUI3vLRnT1FQ7Uo=
+X-Gm-Gg: AZuq6aJc1lBHF5+rKf6ruhA6F9RjytGHR/TxksAlKhycvyowkOyLJMEjMblNBggDGDU
+	LqwS4ssaoTAWBqmRNyo1lmsIaf1TzeL/7G5iTEDewXul1rCacZjm4f4LGF1TKZHK+g2HXuBzwf7
+	YB5EvtrIHsrbewtFl/sdOGzaYCDA1hDj1p21Y1n5U69ydqw1QXmLruDtpv0NRwInbo68Dt2yI5w
+	rKVt/mINvSs7iqEZ3aDiuTpV7F4Vnu+skuqe5dJ9NgyP4lVBTN5B+fHXKGwaK1PHBehQI56NTcT
+	mHU34sd7o3ZI+X9GACMwqVWCEU211KBlo4uprG9oPc7Yvx5VrgqLME1nyE3ZDtiPL51OfV/zTQD
+	jm1Id7p5+P+9UDbtIZ67e6dcoSWh/awRMhm2yPoGA3Ox/1MZDMi4bs25R15KjNy9N99fbEK4m9W
+	zQngULua6hsn8obg==
+X-Received: by 2002:a05:6000:401e:b0:430:feb3:f5ae with SMTP id ffacd0b85a97d-435f3ad7646mr20374411f8f.55.1770136560693;
+        Tue, 03 Feb 2026 08:36:00 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e48a6sm51375458f8f.8.2026.02.03.08.35.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 08:36:00 -0800 (PST)
+Date: Tue, 3 Feb 2026 17:35:56 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Qiliang Yuan <realwujing@gmail.com>
+Cc: Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Jinchao Wang <wangjinchao600@gmail.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Pingfan Liu <kernelfans@gmail.com>,
+	Lecopzer Chen <lecopzer.chen@mediatek.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	linux-watchdog@vger.kernel.org, mm-commits@vger.kernel.org,
+	Shouxin Sun <sunshx@chinatelecom.cn>,
+	Junnan Zhang <zhangjn11@chinatelecom.cn>,
+	Qiliang Yuan <yuanql9@chinatelecom.cn>, Song Liu <song@kernel.org>,
+	stable@vger.kernel.org,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] watchdog/hardlockup: Fix UAF in perf event cleanup
+ due to migration race
+Message-ID: <aYIj7BzCI46iz2wj@pathway.suse.cz>
+References: <20260127022238.1182079-1-realwujing@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260127022238.1182079-1-realwujing@gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213276-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-213277-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,huawei.com,linux.dev,gmail.com,hisilicon.com,mediatek.com,chromium.org,vger.kernel.org,chinatelecom.cn];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B58F6DC08F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: B4082DC2E9
 X-Rspamd-Action: no action
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+On Mon 2026-01-26 21:22:24, Qiliang Yuan wrote:
+> The hardlockup detector's probe path (watchdog_hardlockup_probe()) can
+> be executed in a non-pinned context, such as during the asynchronous
+> retry mechanism (lockup_detector_delay_init) which runs in a standard
+> unbound workqueue.
 
-[ Upstream commit 1fbe3abb449c5ef2178e1c3e3e8b9a43a7a410ac ]
+[...]
 
-Qualcomm SC7280 and SM8350 SoCs have slightly different LPASS audio
-blocks (v9.4.5 and v9.2), however the LPASS LPI pin controllers are
-exactly the same.  The driver for SM8350 has two issues, which can be
-fixed by simply moving over to SC7280 driver which has them correct:
+> Refactor hardlockup_detector_event_create() to be stateless by returning
+> the created perf_event pointer instead of directly modifying the per-cpu
+> 'watchdog_ev' variable. This allows the probe logic to safely manage
+> the temporary event. Use cpu_hotplug_disable() during the probe to ensure
+> the target CPU remains valid throughout the check.
+> 
+> Fixes: 930d8f8dbab9 ("watchdog/perf: adapt the watchdog_perf interface for async model")
+> Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
+> Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
+> Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+> Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+> Cc: Song Liu <song@kernel.org>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Jinchao Wang <wangjinchao600@gmail.com>
+> Cc: <stable@vger.kernel.org>
 
-1. "i2s2_data_groups" listed twice GPIO12, but should have both GPIO12
-   and GPIO13,
+Please, do not remove people from Cc, especially when you send new
+versions on such a rapid speed.
 
-2. "swr_tx_data_groups" contained GPIO5 for "swr_tx_data2" function, but
-   that function is also available on GPIO14, thus listing it twice is
-   not necessary.  OTOH, GPIO5 has also "swr_rx_data1", so selecting
-   swr_rx_data function should not block  the TX one.
+I was on Cc only for this version. There were no replies. I started
+review just to realize that another 4 versions were sent within
+a week and they got some proper review and v9 already ended in
+linux-next...
 
-Fixes: be9f6d56381d ("pinctrl: qcom: sm8350-lpass-lpi: add SM8350 LPASS TLMM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-[ .remove_new vs .remove ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/configs/defconfig                  |   1 -
- drivers/pinctrl/qcom/Kconfig                  |  15 +-
- drivers/pinctrl/qcom/Makefile                 |   1 -
- .../pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c   |   3 +
- .../pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c   | 151 ------------------
- 5 files changed, 6 insertions(+), 165 deletions(-)
- delete mode 100644 drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
-
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index f988dd79add89..5c03cf0f8d20e 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -635,7 +635,6 @@ CONFIG_PINCTRL_LPASS_LPI=m
- CONFIG_PINCTRL_SC7280_LPASS_LPI=m
- CONFIG_PINCTRL_SM6115_LPASS_LPI=m
- CONFIG_PINCTRL_SM8250_LPASS_LPI=m
--CONFIG_PINCTRL_SM8350_LPASS_LPI=m
- CONFIG_PINCTRL_SM8450_LPASS_LPI=m
- CONFIG_PINCTRL_SC8280XP_LPASS_LPI=m
- CONFIG_PINCTRL_SM8550_LPASS_LPI=m
-diff --git a/drivers/pinctrl/qcom/Kconfig b/drivers/pinctrl/qcom/Kconfig
-index dd9bbe8f3e11c..8e1b11f5f1c4d 100644
---- a/drivers/pinctrl/qcom/Kconfig
-+++ b/drivers/pinctrl/qcom/Kconfig
-@@ -60,13 +60,14 @@ config PINCTRL_LPASS_LPI
- 	  (Low Power Island) found on the Qualcomm Technologies Inc SoCs.
- 
- config PINCTRL_SC7280_LPASS_LPI
--	tristate "Qualcomm Technologies Inc SC7280 LPASS LPI pin controller driver"
-+	tristate "Qualcomm Technologies Inc SC7280 and SM8350 LPASS LPI pin controller driver"
- 	depends on ARM64 || COMPILE_TEST
- 	depends on PINCTRL_LPASS_LPI
- 	help
- 	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
- 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
--	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280 platform.
-+	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280
-+	  and SM8350 platforms.
- 
- config PINCTRL_SM4250_LPASS_LPI
- 	tristate "Qualcomm Technologies Inc SM4250 LPASS LPI pin controller driver"
-@@ -95,16 +96,6 @@ config PINCTRL_SM8250_LPASS_LPI
- 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
- 	  (Low Power Island) found on the Qualcomm Technologies Inc SM8250 platform.
- 
--config PINCTRL_SM8350_LPASS_LPI
--	tristate "Qualcomm Technologies Inc SM8350 LPASS LPI pin controller driver"
--	depends on ARM64 || COMPILE_TEST
--	depends on PINCTRL_LPASS_LPI
--	help
--	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
--	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
--	  (Low Power Island) found on the Qualcomm Technologies Inc SM8350
--	  platform.
--
- config PINCTRL_SM8450_LPASS_LPI
- 	tristate "Qualcomm Technologies Inc SM8450 LPASS LPI pin controller driver"
- 	depends on ARM64 || COMPILE_TEST
-diff --git a/drivers/pinctrl/qcom/Makefile b/drivers/pinctrl/qcom/Makefile
-index eb04297b63889..e76cf9262869c 100644
---- a/drivers/pinctrl/qcom/Makefile
-+++ b/drivers/pinctrl/qcom/Makefile
-@@ -55,7 +55,6 @@ obj-$(CONFIG_PINCTRL_SM8150) += pinctrl-sm8150.o
- obj-$(CONFIG_PINCTRL_SM8250) += pinctrl-sm8250.o
- obj-$(CONFIG_PINCTRL_SM8250_LPASS_LPI) += pinctrl-sm8250-lpass-lpi.o
- obj-$(CONFIG_PINCTRL_SM8350) += pinctrl-sm8350.o
--obj-$(CONFIG_PINCTRL_SM8350_LPASS_LPI) += pinctrl-sm8350-lpass-lpi.o
- obj-$(CONFIG_PINCTRL_SM8450) += pinctrl-sm8450.o
- obj-$(CONFIG_PINCTRL_SM8450_LPASS_LPI) += pinctrl-sm8450-lpass-lpi.o
- obj-$(CONFIG_PINCTRL_SM8550) += pinctrl-sm8550.o
-diff --git a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
-index 6bb39812e1d8b..1313e158d1330 100644
---- a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
-@@ -131,6 +131,9 @@ static const struct of_device_id lpi_pinctrl_of_match[] = {
- 	{
- 	       .compatible = "qcom,sc7280-lpass-lpi-pinctrl",
- 	       .data = &sc7280_lpi_data,
-+	}, {
-+	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
-+	       .data = &sc7280_lpi_data,
- 	},
- 	{ }
- };
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
-deleted file mode 100644
-index 5b9a2cb216bd8..0000000000000
---- a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
-+++ /dev/null
-@@ -1,151 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2020-2023 Linaro Ltd.
-- */
--
--#include <linux/gpio/driver.h>
--#include <linux/module.h>
--#include <linux/platform_device.h>
--
--#include "pinctrl-lpass-lpi.h"
--
--enum lpass_lpi_functions {
--	LPI_MUX_dmic1_clk,
--	LPI_MUX_dmic1_data,
--	LPI_MUX_dmic2_clk,
--	LPI_MUX_dmic2_data,
--	LPI_MUX_dmic3_clk,
--	LPI_MUX_dmic3_data,
--	LPI_MUX_i2s1_clk,
--	LPI_MUX_i2s1_data,
--	LPI_MUX_i2s1_ws,
--	LPI_MUX_i2s2_clk,
--	LPI_MUX_i2s2_data,
--	LPI_MUX_i2s2_ws,
--	LPI_MUX_qua_mi2s_data,
--	LPI_MUX_qua_mi2s_sclk,
--	LPI_MUX_qua_mi2s_ws,
--	LPI_MUX_swr_rx_clk,
--	LPI_MUX_swr_rx_data,
--	LPI_MUX_swr_tx_clk,
--	LPI_MUX_swr_tx_data,
--	LPI_MUX_wsa_swr_clk,
--	LPI_MUX_wsa_swr_data,
--	LPI_MUX_gpio,
--	LPI_MUX__,
--};
--
--static const struct pinctrl_pin_desc sm8350_lpi_pins[] = {
--	PINCTRL_PIN(0, "gpio0"),
--	PINCTRL_PIN(1, "gpio1"),
--	PINCTRL_PIN(2, "gpio2"),
--	PINCTRL_PIN(3, "gpio3"),
--	PINCTRL_PIN(4, "gpio4"),
--	PINCTRL_PIN(5, "gpio5"),
--	PINCTRL_PIN(6, "gpio6"),
--	PINCTRL_PIN(7, "gpio7"),
--	PINCTRL_PIN(8, "gpio8"),
--	PINCTRL_PIN(9, "gpio9"),
--	PINCTRL_PIN(10, "gpio10"),
--	PINCTRL_PIN(11, "gpio11"),
--	PINCTRL_PIN(12, "gpio12"),
--	PINCTRL_PIN(13, "gpio13"),
--	PINCTRL_PIN(14, "gpio14"),
--};
--
--static const char * const swr_tx_clk_groups[] = { "gpio0" };
--static const char * const swr_tx_data_groups[] = { "gpio1", "gpio2", "gpio5", "gpio14" };
--static const char * const swr_rx_clk_groups[] = { "gpio3" };
--static const char * const swr_rx_data_groups[] = { "gpio4", "gpio5" };
--static const char * const dmic1_clk_groups[] = { "gpio6" };
--static const char * const dmic1_data_groups[] = { "gpio7" };
--static const char * const dmic2_clk_groups[] = { "gpio8" };
--static const char * const dmic2_data_groups[] = { "gpio9" };
--static const char * const i2s2_clk_groups[] = { "gpio10" };
--static const char * const i2s2_ws_groups[] = { "gpio11" };
--static const char * const dmic3_clk_groups[] = { "gpio12" };
--static const char * const dmic3_data_groups[] = { "gpio13" };
--static const char * const qua_mi2s_sclk_groups[] = { "gpio0" };
--static const char * const qua_mi2s_ws_groups[] = { "gpio1" };
--static const char * const qua_mi2s_data_groups[] = { "gpio2", "gpio3", "gpio4" };
--static const char * const i2s1_clk_groups[] = { "gpio6" };
--static const char * const i2s1_ws_groups[] = { "gpio7" };
--static const char * const i2s1_data_groups[] = { "gpio8", "gpio9" };
--static const char * const wsa_swr_clk_groups[] = { "gpio10" };
--static const char * const wsa_swr_data_groups[] = { "gpio11" };
--static const char * const i2s2_data_groups[] = { "gpio12", "gpio12" };
--
--static const struct lpi_pingroup sm8350_groups[] = {
--	LPI_PINGROUP(0, 0, swr_tx_clk, qua_mi2s_sclk, _, _),
--	LPI_PINGROUP(1, 2, swr_tx_data, qua_mi2s_ws, _, _),
--	LPI_PINGROUP(2, 4, swr_tx_data, qua_mi2s_data, _, _),
--	LPI_PINGROUP(3, 8, swr_rx_clk, qua_mi2s_data, _, _),
--	LPI_PINGROUP(4, 10, swr_rx_data, qua_mi2s_data, _, _),
--	LPI_PINGROUP(5, 12, swr_tx_data, swr_rx_data, _, _),
--	LPI_PINGROUP(6, LPI_NO_SLEW, dmic1_clk, i2s1_clk, _,  _),
--	LPI_PINGROUP(7, LPI_NO_SLEW, dmic1_data, i2s1_ws, _, _),
--	LPI_PINGROUP(8, LPI_NO_SLEW, dmic2_clk, i2s1_data, _, _),
--	LPI_PINGROUP(9, LPI_NO_SLEW, dmic2_data, i2s1_data, _, _),
--	LPI_PINGROUP(10, 16, i2s2_clk, wsa_swr_clk, _, _),
--	LPI_PINGROUP(11, 18, i2s2_ws, wsa_swr_data, _, _),
--	LPI_PINGROUP(12, LPI_NO_SLEW, dmic3_clk, i2s2_data, _, _),
--	LPI_PINGROUP(13, LPI_NO_SLEW, dmic3_data, i2s2_data, _, _),
--	LPI_PINGROUP(14, 6, swr_tx_data, _, _, _),
--};
--
--static const struct lpi_function sm8350_functions[] = {
--	LPI_FUNCTION(dmic1_clk),
--	LPI_FUNCTION(dmic1_data),
--	LPI_FUNCTION(dmic2_clk),
--	LPI_FUNCTION(dmic2_data),
--	LPI_FUNCTION(dmic3_clk),
--	LPI_FUNCTION(dmic3_data),
--	LPI_FUNCTION(i2s1_clk),
--	LPI_FUNCTION(i2s1_data),
--	LPI_FUNCTION(i2s1_ws),
--	LPI_FUNCTION(i2s2_clk),
--	LPI_FUNCTION(i2s2_data),
--	LPI_FUNCTION(i2s2_ws),
--	LPI_FUNCTION(qua_mi2s_data),
--	LPI_FUNCTION(qua_mi2s_sclk),
--	LPI_FUNCTION(qua_mi2s_ws),
--	LPI_FUNCTION(swr_rx_clk),
--	LPI_FUNCTION(swr_rx_data),
--	LPI_FUNCTION(swr_tx_clk),
--	LPI_FUNCTION(swr_tx_data),
--	LPI_FUNCTION(wsa_swr_clk),
--	LPI_FUNCTION(wsa_swr_data),
--};
--
--static const struct lpi_pinctrl_variant_data sm8350_lpi_data = {
--	.pins = sm8350_lpi_pins,
--	.npins = ARRAY_SIZE(sm8350_lpi_pins),
--	.groups = sm8350_groups,
--	.ngroups = ARRAY_SIZE(sm8350_groups),
--	.functions = sm8350_functions,
--	.nfunctions = ARRAY_SIZE(sm8350_functions),
--};
--
--static const struct of_device_id lpi_pinctrl_of_match[] = {
--	{
--	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
--	       .data = &sm8350_lpi_data,
--	},
--	{ }
--};
--MODULE_DEVICE_TABLE(of, lpi_pinctrl_of_match);
--
--static struct platform_driver lpi_pinctrl_driver = {
--	.driver = {
--		   .name = "qcom-sm8350-lpass-lpi-pinctrl",
--		   .of_match_table = lpi_pinctrl_of_match,
--	},
--	.probe = lpi_pinctrl_probe,
--	.remove_new = lpi_pinctrl_remove,
--};
--module_platform_driver(lpi_pinctrl_driver);
--
--MODULE_AUTHOR("Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>");
--MODULE_DESCRIPTION("QTI SM8350 LPI GPIO pin control driver");
--MODULE_LICENSE("GPL");
--- 
-2.51.0
-
+Best Regards,
+Petr
 
