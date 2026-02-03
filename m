@@ -1,349 +1,198 @@
-Return-Path: <stable+bounces-213192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GC6LHybQgWl1JwMAu9opvQ
-	(envelope-from <stable+bounces-213192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 11:38:30 +0100
+	id aDXVCkfSgWl1JwMAu9opvQ
+	(envelope-from <stable+bounces-213193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 11:47:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F3ED7CDF
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 11:38:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AC6D7EF3
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 11:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6FEC1306620F
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 10:31:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE07A302803C
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 10:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D6C314A64;
-	Tue,  3 Feb 2026 10:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1042BF3DB;
+	Tue,  3 Feb 2026 10:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fqyt2IfZ"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939242C0F6F;
-	Tue,  3 Feb 2026 10:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7ED2877FE
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 10:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770114627; cv=none; b=m3qWqaWxALJJ+O+tic1yK2b520EmwdPE57HQLK/uVGtTfaR69dJqbqOeRJ/bwc2YlSENTcmD/+AUJEOppNf3ip/wr5Y5cAvoo2i9BHdnbfZLeIpOZDEL9VXxf42Rs0zghX3+HeVY0zdPESyni1I1vB7phec8mEq8vHoJMNmKZyQ=
+	t=1770115560; cv=none; b=fnpYo/0iQVwoQlxNrjyxHJ7G2IZGe86sU8EtgRI5kD7L06WCKeZLWgRsTfWcrxSHx1Pg4k1FnDo+6ajSI324xNyCJCwEEbuf3M0zFHycRgeEI78GJj3CC1pwZVaFiyv3+zeBVUFztwbUJQDiKyjZT285M2GvDz0VmX6asbu2vVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770114627; c=relaxed/simple;
-	bh=CuFpm9TL5626lt9dWVGbdXRn3iSRb4F0hxOGlD7zxaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cBdqjfNmcOW15MSC4Qs1xAPoLmudwK+rKrHqJ1uZ89Ygu35QDbRbqqhUh90yvuXOv9EE9oN+FZaQ4dR59B4tk/nW42rVp05zcrpV+FA04BHHK18bS9hEkPsJKRK2ssEjwM9w/WPxF6u7TUtUGSmVdH+z+x3D1yMiXgvmzECjp3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7BB5D339;
-	Tue,  3 Feb 2026 02:30:18 -0800 (PST)
-Received: from [10.57.68.168] (unknown [10.57.68.168])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D76EC3F632;
-	Tue,  3 Feb 2026 02:30:22 -0800 (PST)
-Message-ID: <0b14dd99-c258-4090-a3d2-b52e3ba7fc7e@arm.com>
-Date: Tue, 3 Feb 2026 10:30:20 +0000
+	s=arc-20240116; t=1770115560; c=relaxed/simple;
+	bh=kjyxA60L8xhgKFON85U0bBh5TOrChBXp9hwXJ5/2Fvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZUgzdszumXPrfMEi7HPt1pr4PAh69Hx1ov6taneU3srpyMhpr+wkrykNMWV8cFY7H/swWFpVpioU0a0KqGy+2ry7bqum9tkyM/uNghHwcfD2Jpu2eOJYVr1OQFlSToePO6WUyV1pj+I3SLCKeEHwF1LyBiQRv3WZJye25bECYlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fqyt2IfZ; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770115559; x=1801651559;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kjyxA60L8xhgKFON85U0bBh5TOrChBXp9hwXJ5/2Fvc=;
+  b=Fqyt2IfZGQbDUDm384vl4kiXQQ8dlWg9gBTygl/k90GjEbKSMP2pUiiQ
+   HirBgVIL0xwTB5ywZXophfs2UWOqV83s11iy8HDd+3fbvvbEQZtQVTcOv
+   839/C/A5KANukYRLn7FSdCWqqYSCxvMUGM1wbzN1hEt4JzOtQOdJN3DR+
+   lfkXBr9Irht+y5O5N4rNfpEtH4T/X90F1VdnOnlj/KCnTLSlo5cTsS529
+   /jcSwN+wT/BtdiPJ5ArAQXHCaUwTdx+xx6QCM7D7XZzGYR378gTafzXCH
+   L32FvWR/MxI185C/M3Srikvmz1pOsNh/PMl4WsTUkELeFfbBY6LqKitgM
+   w==;
+X-CSE-ConnectionGUID: OFWjTvKESniFVeNmE8JEQw==
+X-CSE-MsgGUID: e1dc/u++Sh+hudKbfeWg1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="71005741"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="71005741"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 02:45:58 -0800
+X-CSE-ConnectionGUID: OxX4/WPKS7eRU64QvwjcBA==
+X-CSE-MsgGUID: GSPn8rJPR4O6xritYvNlcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="209982222"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO fedora) ([10.245.245.55])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 02:45:54 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Tue,  3 Feb 2026 11:45:32 +0100
+Message-ID: <20260203104532.98534-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
- Avoid discarding useful information" on 5.15 LTS
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Doug Smythies <dsmythies@telus.net>
-Cc: Sasha Levin <sashal@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
- stable@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>
-References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
- <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com>
- <005401dc64a4$75f1d770$61d58650$@telus.net>
- <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com>
- <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
- <849ee0ff-e15b-4b69-84de-6503e3b3168d@oracle.com>
- <003e01dc9013$e3bc5060$ab34f120$@telus.net>
- <004e01dc90b1$4b28f9e0$e17aeda0$@telus.net>
- <002601dc916e$6acbe650$4063b2f0$@telus.net>
- <CAJZ5v0gcSb_6QPMfHkjSMJ6OOF+PaCZrUKOafYQ++tHE2jBB4w@mail.gmail.com>
- <3b0720d2-9b72-48d0-998a-1fd091cec44f@arm.com>
- <5d4b624c-f993-49aa-95ab-5f279f7f6599@oracle.com>
- <8fd5a9d4-e555-4db1-aa02-8fe5b8a2962c@arm.com>
- <3395ad0b-425e-40f5-844c-627cff471353@oracle.com>
- <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com>
- <943a402f-8d37-4932-a777-02a55d1ec0ce@oracle.com>
-Content-Language: en-US
-From: Christian Loehle <christian.loehle@arm.com>
-In-Reply-To: <943a402f-8d37-4932-a777-02a55d1ec0ce@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-213193-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213192-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	REDIRECTOR_URL(0.00)[urldefense.com];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.loehle@arm.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[urldefense.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arm.com:mid]
-X-Rspamd-Queue-Id: A7F3ED7CDF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ziepe.ca:email,nvidia.com:email,intel.com:email,intel.com:dkim,linux-foundation.org:email,lst.de:email,lists.freedesktop.org:email,kvack.org:email,mellanox.com:email]
+X-Rspamd-Queue-Id: 82AC6D7EF3
 X-Rspamd-Action: no action
 
-On 2/3/26 10:22, Harshvardhan Jha wrote:
-> 
-> On 03/02/26 3:01 PM, Christian Loehle wrote:
->> On 2/3/26 09:16, Harshvardhan Jha wrote:
->>> On 03/02/26 2:37 PM, Christian Loehle wrote:
->>>> On 2/2/26 17:31, Harshvardhan Jha wrote:
->>>>> On 02/02/26 12:50 AM, Christian Loehle wrote:
->>>>>> On 1/30/26 19:28, Rafael J. Wysocki wrote:
->>>>>>> On Thu, Jan 29, 2026 at 11:27 PM Doug Smythies <dsmythies@telus.net> wrote:
->>>>>>>> On 2026.01.28 15:53 Doug Smythies wrote:
->>>>>>>>> On 2026.01.27 21:07 Doug Smythies wrote:
->>>>>>>>>> On 2026.01.27 07:45 Harshvardhan Jha wrote:
->>>>>>>>>>> On 08/12/25 6:17 PM, Christian Loehle wrote:
->>>>>>>>>>>> On 12/8/25 11:33, Harshvardhan Jha wrote:
->>>>>>>>>>>>> On 04/12/25 4:00 AM, Doug Smythies wrote:
->>>>>>>>>>>>>> On 2025.12.03 08:45 Christian Loehle wrote:
->>>>>>>>>>>>>>> On 12/3/25 16:18, Harshvardhan Jha wrote:
->>>>>>>>> ... snip ...
->>>>>>>>>
->>>>>>>>>>>> It would be nice to get the idle states here, ideally how the states' usage changed
->>>>>>>>>>>> from base to revert.
->>>>>>>>>>>> The mentioned thread did this and should show how it can be done, but a dump of
->>>>>>>>>>>> cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
->>>>>>>>>>>> before and after the workload is usually fine to work with:
->>>>>>>>>>>> https://urldefense.com/v3/__https://lore.kernel.org/linux-pm/8da42386-282e-4f97-af93-4715ae206361@arm.com/__;!!ACWV5N9M2RV99hQ!PEhkFcO7emFLMaNxWEoE2Gtnw3zSkpghP17iuEvZM3W6KUpmkbgKw_tr91FwGfpzm4oA5f7c5sz8PkYvKiEVwI_iLIPpMt53$
->>>>>>>>>>> Apologies for the late reply, I'm attaching a tar ball which has the cpu
->>>>>>>>>>> states for the test suites before and after tests. The folders with the
->>>>>>>>>>> name of the test contain two folders good-kernel and bad-kernel
->>>>>>>>>>> containing two files having the before and after states. Please note
->>>>>>>>>>> that different machines were used for different test suites due to
->>>>>>>>>>> compatibility reasons. The jbb test was run using containers.
->>>>>>>>> Please provide the results of the test runs that were done for
->>>>>>>>> the supplied before and after idle data.
->>>>>>>>> In particular, what is the "fio" test and it results. Its idle data is not very revealing.
->>>>>>>>> Is it a test I can run on my test computer?
->>>>>>>> I see that I have fio installed on my test computer.
->>>>>>>>
->>>>>>>>>> It is a considerable amount of work to manually extract and summarize the data.
->>>>>>>>>> I have only done it for the phoronix-sqlite data.
->>>>>>>>> I have done the rest now, see below.
->>>>>>>>> I have also attached the results, in case the formatting gets screwed up.
->>>>>>>>>
->>>>>>>>>> There seems to be 40 CPUs, 5 idle states, with idle state 3 defaulting to disabled.
->>>>>>>>>> I remember seeing a Linux-pm email about why but couldn't find it just now.
->>>>>>>>>> Summary (also attached as a PNG file, in case the formatting gets messed up):
->>>>>>>>>> The total idle entries (usage)  and time seem low to me, which is why the ???.
->>>>>>>>>>
->>>>>>>>>> phoronix-sqlite
->>>>>>>>>>      Good Kernel: Time between samples 4 seconds (estimated and ???)
->>>>>>>>>>              Usage   Above   Below   Above   Below
->>>>>>>>>> state 0      220     0       218     0.00%   99.09%
->>>>>>>>>> state 1      70212   5213    34602   7.42%   49.28%
->>>>>>>>>> state 2      30273   5237    1806    17.30%  5.97%
->>>>>>>>>> state 3      0       0       0       0.00%   0.00%
->>>>>>>>>> state 4      11824   2120    0       17.93%  0.00%
->>>>>>>>>>
->>>>>>>>>> total                112529  12570   36626   43.72%   <<< Misses %
->>>>>>>>>>
->>>>>>>>>>      Bad Kernel: Time between samples 3.8 seconds (estimated and ???)
->>>>>>>>>>              Usage   Above   Below   Above   Below
->>>>>>>>>> state 0      262     0       260     0.00%   99.24%
->>>>>>>>>> state 1      62751   3985    35588   6.35%   56.71%
->>>>>>>>>> state 2      24941   7896    1433    31.66%  5.75%
->>>>>>>>>> state 3      0       0       0       0.00%   0.00%
->>>>>>>>>> state 4      24489   11543   0       47.14%  0.00%
->>>>>>>>>>
->>>>>>>>>> total                112443  23424   37281   53.99%   <<< Misses %
->>>>>>>>>>
->>>>>>>>>> Observe 2X use of idle state 4 for the "Bad Kernel"
->>>>>>>>>>
->>>>>>>>>> I have a template now, and can summarize the other 40 CPU data
->>>>>>>>>> faster, but I would have to rework the template for the 56 CPU data,
->>>>>>>>>> and is it a 64 CPU data set at 4 idle states per CPU?
->>>>>>>>> jbb: 40 CPU's; 5 idle states, with idle state 3 defaulting to disabled.
->>>>>>>>> POLL, C1, C1E, C3 (disabled), C6
->>>>>>>>>
->>>>>>>>>       Good Kernel: Time between samples > 2 hours (estimated)
->>>>>>>>>       Usage           Above           Below           Above   Below
->>>>>>>>> state 0       297550          0               296084          0.00%   99.51%
->>>>>>>>> state 1       8062854 341043          4962635 4.23%   61.55%
->>>>>>>>> state 2       56708358        12688379        6252051 22.37%  11.02%
->>>>>>>>> state 3       0               0               0               0.00%   0.00%
->>>>>>>>> state 4       54624476        15868752        0               29.05%  0.00%
->>>>>>>>>
->>>>>>>>> total 119693238       28898174        11510770        33.76%  <<< Misses
->>>>>>>>>
->>>>>>>>>       Bad Kernel: Time between samples > 2 hours (estimated)
->>>>>>>>>       Usage           Above           Below           Above   Below
->>>>>>>>> state 0       90715           0               75134           0.00%   82.82%
->>>>>>>>> state 1       8878738 312970          6082180 3.52%   68.50%
->>>>>>>>> state 2       12048728        2576251 603316          21.38%  5.01%
->>>>>>>>> state 3       0               0               0               0.00%   0.00%
->>>>>>>>> state 4       85999424        44723273        0               52.00%  0.00%
->>>>>>>>>
->>>>>>>>> total 107017605       47612494        6760630 50.81%  <<< Misses
->>>>>>>>>
->>>>>>>>> As with the previous test, observe 1.6X use of idle state 4 for the "Bad Kernel"
->>>>>>>>>
->>>>>>>>> fio: 64 CPUs; 4 idle states; POLL, C1, C1E, C6.
->>>>>>>>>
->>>>>>>>> fio
->>>>>>>>>       Good Kernel: Time between samples ~ 1 minute (estimated)
->>>>>>>>>       Usage           Above   Below   Above   Below
->>>>>>>>> state 0       3822            0       3818    0.00%   99.90%
->>>>>>>>> state 1       148640          4406    68956   2.96%   46.39%
->>>>>>>>> state 2       593455          45344   105675  7.64%   17.81%
->>>>>>>>> state 3       3209648 807014  0       25.14%  0.00%
->>>>>>>>>
->>>>>>>>> total 3955565 856764  178449  26.17%  <<< Misses
->>>>>>>>>
->>>>>>>>>       Bad Kernel: Time between samples ~ 1 minute (estimated)
->>>>>>>>>       Usage           Above   Below   Above   Below
->>>>>>>>> state 0       916             0       756     0.00%   82.53%
->>>>>>>>> state 1       80230           2028    42791   2.53%   53.34%
->>>>>>>>> state 2       59231           6888    6791    11.63%  11.47%
->>>>>>>>> state 3       2455784 564797  0       23.00%  0.00%
->>>>>>>>>
->>>>>>>>> total 2596161 573713  50338   24.04%  <<< Misses
->>>>>>>>>
->>>>>>>>> It is not clear why the number of idle entries differs so much
->>>>>>>>> between the tests, but there is a bit of a different distribution
->>>>>>>>> of the workload among the CPUs.
->>>>>>>>>
->>>>>>>>> rds-stress: 56 CPUs; 5 idle states, with idle state 3 defaulting to disabled.
->>>>>>>>> POLL, C1, C1E, C3 (disabled), C6
->>>>>>>>>
->>>>>>>>> rds-stress-test
->>>>>>>>>       Good Kernel: Time between samples ~70 Seconds (estimated)
->>>>>>>>>       Usage   Above   Below   Above   Below
->>>>>>>>> state 0       1561    0       1435    0.00%   91.93%
->>>>>>>>> state 1       13855   899     2410    6.49%   17.39%
->>>>>>>>> state 2       467998  139254  23679   29.76%  5.06%
->>>>>>>>> state 3       0       0       0       0.00%   0.00%
->>>>>>>>> state 4       213132  107417  0       50.40%  0.00%
->>>>>>>>>
->>>>>>>>> total 696546  247570  27524   39.49%  <<< Misses
->>>>>>>>>
->>>>>>>>>       Bad Kernel: Time between samples ~ 70 Seconds (estimated)
->>>>>>>>>       Usage   Above   Below   Above   Below
->>>>>>>>> state 0       231     0       231     0.00%   100.00%
->>>>>>>>> state 1       5413    266     1186    4.91%   21.91%
->>>>>>>>> state 2       54365   719     3789    1.32%   6.97%
->>>>>>>>> state 3       0       0       0       0.00%   0.00%
->>>>>>>>> state 4       267055  148327  0       55.54%  0.00%
->>>>>>>>>
->>>>>>>>> total 327064  149312  5206    47.24%  <<< Misses
->>>>>>>>>
->>>>>>>>> Again, differing numbers of idle entries between tests.
->>>>>>>>> This time the load distribution between CPUs is more
->>>>>>>>> obvious. In the "Bad" case most work is done on 2 or 3 CPU's.
->>>>>>>>> In the "Good" case the work is distributed over more CPUs.
->>>>>>>>> I assume without proof, that the scheduler is deciding not to migrate
->>>>>>>>> the next bit of work to another CPU in the one case verses the other.
->>>>>>>> The above is incorrect. The CPUs involved between the "Good"
->>>>>>>> and "Bad" tests are very similar, mainly 2 CPUs with a little of
->>>>>>>> a 3rd and 4th. See the attached graph for more detail / clarity.
->>>>>>>>
->>>>>>>> All of the tests show higher usage of shallower idle states with
->>>>>>>> the "Good" verses the "Bad", which was the expectation of the
->>>>>>>> original patch, as has been mentioned a few times in the emails.
->>>>>>>>
->>>>>>>> My input is to revert the reversion.
->>>>>>> OK, noted, thanks!
->>>>>>>
->>>>>>> Christian, what do you think?
->>>>>> I've attached readable diffs of the values provided the tldr is:
->>>>>>
->>>>>> +--------------------+-----------+-----------+
->>>>>> | Workload           | Δ above % | Δ below % |
->>>>>> +--------------------+-----------+-----------+
->>>>>> | fio                |  -10.11   |  +2.36    |
->>>>>> | rds-stress-test    |   -0.44   |  +2.57    |
->>>>>> | jbb                |  -20.35   |  +3.30    |
->>>>>> | phoronix-sqlite    |   -9.66   |  -0.61    |
->>>>>> +--------------------+-----------+-----------+
->>>>>>
->>>>>> I think the overall trend however is clear, the commit
->>>>>> 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
->>>>>> improved menu on many systems and workloads, I'd dare to say most.
->>>>>>
->>>>>> Even on the reported regression introduced by it, the cpuidle governor
->>>>>> performed better on paper, system metrics regressed because other
->>>>>> CPUs' P-states weren't available due to being in a shallower state.
->>>>>> https://urldefense.com/v3/__https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/__;!!ACWV5N9M2RV99hQ!KSEGRBOHs7E_E4fRenT3y3MovrhDewsTY-E4lu1JCX0Py-r4GiEJefoLfcHrummpmvmeO_vp1beh-OO_MYxG9xLU0BuBunAS$ 
->>>>>> (+CC Sergey)
->>>>>> It could be argued that this is a limitation of a per-CPU cpuidle
->>>>>> governor and a more holistic approach would be needed for that platform
->>>>>> (i.e. power/thermal-budget-sharing-CPUs want to use higher P-states,
->>>>>> skew towards deeper cpuidle states).
->>>>>>
->>>>>> I also think that the change made sense, for small residency values
->>>>>> with a bit of random noise mixed in, performing the same statistical
->>>>>> test doesn't seem sensible, the short intervals will look noisier.
->>>>>>
->>>>>> So options are:
->>>>>> 1. Revert revert on mainline+stable
->>>>>> 2. Revert revert on mainline only
->>>>>> 3. Keep revert, miss out on the improvement for many.
->>>>>> 4. Revert only when we have a good solution for the platforms like
->>>>>> Sergey's.
->>>>>>
->>>>>> I'd lean towards 2 because 4 won't be easy, unless of course a minor
->>>>>> hack like playing with the deep idle state residency values would
->>>>>> be enough to mitigate.
->>>>> Wouldn't it be better to choose option 1 as reverting the revert has
->>>>> even more pronounced improvements on older kernels? I've tested this on
->>>>> 6.12, 5.15 and 5.4 stable based kernels and found massive improvements.
->>>>> Since the revert has optimizations present only in Jasper Lake Systems
->>>>> which is new, isn't reverting the revert more relevant on stable
->>>>> kernels? It's more likely that older hardware runs older kernels than
->>>>> newer hardware although not always necessary imo.
->>>>>
->>>> FWIW Jasper Lake seems to be supported from 5.6 on, see
->>>> b2d32af0bff4 ("x86/cpu: Add Jasper Lake to Intel family")
->>> Oh I see, but shouldn't avoiding regressions on established platforms be
->>> a priority over further optimizing for specific newer platforms like
->>> Jasper Lake?
->>>
->> Well avoiding regressions on established platforms is what lead to
->> 10fad4012234 Revert "cpuidle: menu: Avoid discarding useful information"
->> being applied and backported.
->> The expectation for stable is that we avoid regressions and potentially
->> miss out on improvements. If you want the latest greatest performance you
->> should probably run a latest greatest kernel.
->> The original
->> 85975daeaa4d cpuidle: menu: Avoid discarding useful information
->> was seen as a fix and overall improvement, that's why it was backported,
->> but Sergey's regression report contradicted that.
->> What is "established" and "newer" for a stable kernel is quite handwavy
->> IMO but even here Sergey's regression report is a clear data point...
->> Your report is only restoring 5.15 (and others) performance to 5.15
->> upstream-ish levels which is within the expectations of running a stable
->> kernel. No doubt it's frustrating either way!
-> Ah but we see a regression on 5.15, 5.4 and 6.12 stable based kernels
-> with the revert and reapplying it recovers performance across many
-> benchmarks. Hence, the previous suggestion.
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
 
-Right but in the case of 5.15 (similar for the others) we have:
-v5.15.196 5666bcc3c00f Revert "cpuidle: menu: Avoid discarding useful information"
-v5.15.185 14790abc8779 cpuidle: menu: Avoid discarding useful information
-So your regression on v5.15.196 only restores performance back to pre-v5.15.185
-levels, you now don't get an improvement which wasn't originally part of v5.15.
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
+
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+The lru_add_drain_all() function requires a short work-item
+to be run on all online cpus to complete.
+
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
+
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
+
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in the do_swap_page() function.
+
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
+
+v2:
+- Instead of a cond_resched() in the hmm_range_fault() function,
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+---
+ mm/memory.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index da360a6eb8a4..ed20da5570d5 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				migration_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+-- 
+2.52.0
+
 
