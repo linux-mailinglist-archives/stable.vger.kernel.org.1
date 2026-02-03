@@ -1,265 +1,176 @@
-Return-Path: <stable+bounces-213279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sN3OG0AlgmnPPgMAu9opvQ
-	(envelope-from <stable+bounces-213279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:41:36 +0100
+	id oDxmDUcmgmnPPgMAu9opvQ
+	(envelope-from <stable+bounces-213280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:45:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4783DC226
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:41:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBDCDC2FA
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C0CD9303487E
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 16:39:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 032B030046AA
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 16:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B0B3D3301;
-	Tue,  3 Feb 2026 16:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F21C3D331E;
+	Tue,  3 Feb 2026 16:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a7DpuRpn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGrg7t3I"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416043D301B
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 16:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4288E39E6ED
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 16:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770136734; cv=none; b=jlDHTxgIAt5OOzmEt7nNNfiGM1r/LcogwWKsyaCjmG1FR6QfZQnuLLG+xjbB6JrVYiNxyi6+Fhk6DvcFWqOT1I6cG87NcQ3I9aTmgYuPz3GCPakgt16jnH0aPjDU+GNt27pvLpTIdEzbNNauP5vAK4lqNTYBLrYb4mNNK4XVRQ8=
+	t=1770137151; cv=none; b=EeNQPUayuajkIDTT8xtdxNV+SzLP4YGwibkr3z/3jFJC0NQ73JnypQxc1YQeBYr2KFTQSU9lIq8uJ1xNBxyM3yzFMAe8wGyh5mHMl84BQMisbSi16DZkOOI3qaBGvaXioEB5qMG/G+Np7a18FINLetouT+RGms5fUosGbQ3uVNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770136734; c=relaxed/simple;
-	bh=N0sc4DRcHW6ct40Fv+a+bdKZNgj/NJ22Xjrwph2Uw6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OcC+DApOc5PDdd853ukZU0GjKzQRIE9M82qn7HnGZIUJJeOfBmN6FTdAT6Ogy+NMfuGSqU64uPIfDmwfmWbXkbt8D1oMaEZZvg833zl2SbUEdwEnwRA63lF9fC6YeopwnwHN0mlr6ZaOKu7MiJGpTDY4EMqJqB96CeMfkTsQst4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a7DpuRpn; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770136732; x=1801672732;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=N0sc4DRcHW6ct40Fv+a+bdKZNgj/NJ22Xjrwph2Uw6Q=;
-  b=a7DpuRpnZSNfpC9Z4BUp0+GupnNKLomsm3ip3rEYALWIGo/HZ1nARVu6
-   vWakb4adrIZNnYTUykzMoN8E3a0iw57u+/QCU93ZQc7JU7K3LggG/Rcf7
-   3SfJ+bM6Hy6YSEOQCHNAMIe1qL0R+2MYYFL1Vo8RIi2p0lVhuNfHD939u
-   jALfuMWxoMbSA6rsVfyPqPUP/5sZows+91YsYaVnJSNtC9lXNgp5BCKBa
-   97GAXY7rHwdawmDS2hi6fWxTl1kRB5xzVqPO+jPVSqK9+PqfKfEMXouDh
-   n/SeUyrUdyUxkpkVdZgj7Npf8ZvSuGbPnfGLVxbUIwGXiJnndLpNGGyao
-   g==;
-X-CSE-ConnectionGUID: nsovTH+pSC2adnrjkMYsgA==
-X-CSE-MsgGUID: wHcLq69LRpa8LiSjr5TcjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82423446"
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="82423446"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 08:38:52 -0800
-X-CSE-ConnectionGUID: n0WFGXkNR66WT7GG2fp+VA==
-X-CSE-MsgGUID: g2Ys+PLnQK2SKZOaqLljMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="240577683"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO [10.245.245.92]) ([10.245.245.92])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 08:38:50 -0800
-Message-ID: <582ecdea-b2a9-4ece-8cb0-854e9a2fa540@intel.com>
-Date: Tue, 3 Feb 2026 16:38:48 +0000
+	s=arc-20240116; t=1770137151; c=relaxed/simple;
+	bh=2IX2Jb8lpm29me5/jiISeudswVSt0f7Ria8TXxFoeRc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U0yPff3385C2f51lTNbFhcbv22Avjgvy1L59yOfb4Zv2NXhLD7MWw+NYjzj9uFrKQqkGnfFVf5hslr7vIqKdo9LBcUQi6krljGtDF8CL5QsT/KVSRGl1x4TMaMiPJAf/9ji+0D4hC0eWgvfSlIMhLM+Dzi4/QOYP7lwJlWQ4UPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGrg7t3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A00C2BC87
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 16:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770137151;
+	bh=2IX2Jb8lpm29me5/jiISeudswVSt0f7Ria8TXxFoeRc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=kGrg7t3IWmjdERwFOnkzMrnUbb6MWFzrSh4KCwA32aU+pCCQ0i000gHl+iGOfrVtv
+	 zN5eBHBgQZiTOWxn35PPieRlNlA9lysH7hCuEtG7oC+CZ9P2vG/DOsJH45cc5tdGGo
+	 reMevxpRE7GIU5ln/w1bjMIT7ZQtgyQMVDnTftEw4oHqVDkhOI9hQq/Uqm7Blv1Zqj
+	 uRY7zVbZH4hN1SwLon7WxhTarICx15PElV4CM6GcMeNLCojIzA6B8bCSl3ARx32OrH
+	 sIQXSNKj9m4cXih8zUkmpi+OF1WrpLqgdVJliQzyY00znwt6zAZAjpu9MglEzyYCSS
+	 lP+R4DYb+d/Qw==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-4094fbd1808so2436734fac.1
+        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 08:45:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVLTCt9XZ0ivurdzwqc0uyF3XUz1xYPkxg+wtJ4FpA3Mju/+Tt7J5wta2DuMfm1bOYmCSpkM7A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5qPwEipWgSXO0KkNzcC7S4JB6IEo2IO+sxH33eR4TBPZaiiFE
+	eoBhDOdcliqXObh+O7xLX3oAuyjoqUT4lYu3/46ocTAHpBAjkhAafqh/E6xNhCUE9VGhVpqfAqy
+	vzFvEUXOL26EaVHxv0LwzEIxzJZr9M/E=
+X-Received: by 2002:a05:6820:f006:b0:662:ffc4:8349 with SMTP id
+ 006d021491bc7-66a23df0466mr89575eaf.81.1770137150149; Tue, 03 Feb 2026
+ 08:45:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] drm/xe/uapi: Reject coh_none PAT index for CPU cached
- memory in madvise
-To: Jia Yao <jia.yao@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org, Shuicheng Lin <shuicheng.lin@intel.com>,
- Mathew Alwin <alwin.mathew@intel.com>,
- Michal Mrozek <michal.mrozek@intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-References: <20260129000147.339361-1-jia.yao@intel.com>
- <20260203154846.1113521-1-jia.yao@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20260203154846.1113521-1-jia.yao@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
+ <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com> <005401dc64a4$75f1d770$61d58650$@telus.net>
+ <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com> <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
+ <849ee0ff-e15b-4b69-84de-6503e3b3168d@oracle.com> <003e01dc9013$e3bc5060$ab34f120$@telus.net>
+ <004e01dc90b1$4b28f9e0$e17aeda0$@telus.net> <002601dc916e$6acbe650$4063b2f0$@telus.net>
+ <CAJZ5v0gcSb_6QPMfHkjSMJ6OOF+PaCZrUKOafYQ++tHE2jBB4w@mail.gmail.com>
+ <3b0720d2-9b72-48d0-998a-1fd091cec44f@arm.com> <5d4b624c-f993-49aa-95ab-5f279f7f6599@oracle.com>
+ <8fd5a9d4-e555-4db1-aa02-8fe5b8a2962c@arm.com> <3395ad0b-425e-40f5-844c-627cff471353@oracle.com>
+ <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com>
+In-Reply-To: <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 3 Feb 2026 17:45:38 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0j+jfTHog+rVO0816mofk7nSSKCt7dbwSa2QCpYSN013Q@mail.gmail.com>
+X-Gm-Features: AZwV_QhB2zexcuvHiHohqEhk5MUVIDPfQO25Kl692r5gItoGoTXA2N-3_AmANog
+Message-ID: <CAJZ5v0j+jfTHog+rVO0816mofk7nSSKCt7dbwSa2QCpYSN013Q@mail.gmail.com>
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Christian Loehle <christian.loehle@arm.com>
+Cc: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Doug Smythies <dsmythies@telus.net>, Sasha Levin <sashal@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org, 
+	stable@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213279-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213280-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: D4783DC226
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 3CBDCDC2FA
 X-Rspamd-Action: no action
 
-On 03/02/2026 15:48, Jia Yao wrote:
-> Add validation in xe_vm_madvise_ioctl() to reject PAT indices with
-> XE_COH_NONE coherency mode when applied to CPU cached memory.
-> 
-> Using coh_none with CPU cached buffers is a security issue. When the
-> kernel clears pages before reallocation, the clear operation stays in
-> CPU cache (dirty). GPU with coh_none can bypass CPU caches and read
-> stale sensitive data directly from DRAM, potentially leaking data from
-> previously freed pages of other processes.
-> 
-> This aligns with the existing validation in vm_bind path
-> (xe_vm_bind_ioctl_validate_bo).
-> 
-> v2(Matthew brost)
-> - Add fixes
-> - Move one debug print to better place
-> 
-> v3(Matthew Auld)
-> - Should be drm/xe/uapi
-> - More Cc
-> 
-> v4(Shuicheng Lin)
-> - Fix kmem leak issues by the way
-> 
-> Fixes: ada7486c5668 ("drm/xe: Implement madvise ioctl for xe")
-> Cc: stable@vger.kernel.org # v6.18
-> Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-> Cc: Mathew Alwin <alwin.mathew@intel.com>
-> Cc: Michal Mrozek <michal.mrozek@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Jia Yao <jia.yao@intel.com>
+On Tue, Feb 3, 2026 at 10:31=E2=80=AFAM Christian Loehle
+<christian.loehle@arm.com> wrote:
+>
+> On 2/3/26 09:16, Harshvardhan Jha wrote:
+> >
+> > On 03/02/26 2:37 PM, Christian Loehle wrote:
+> >> On 2/2/26 17:31, Harshvardhan Jha wrote:
 
-Unless I'm blind, it looks like there is some missing validation on the 
-pat_index coming from userspace also, where we can trigger OOB kernel 
-read when calling get_coh_mode(), if malicious user gives you a bogus 
-too large index. I think we need to fix that also, maybe as a seperate 
-patch in this series or just send as seperate fix and get it landed ASAP?
+[cut]
 
-> ---
->   drivers/gpu/drm/xe/xe_vm_madvise.c | 55 +++++++++++++++++++++++++++---
->   1 file changed, 50 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_vm_madvise.c b/drivers/gpu/drm/xe/xe_vm_madvise.c
-> index add9a6ca2390..bf41fe75a336 100644
-> --- a/drivers/gpu/drm/xe/xe_vm_madvise.c
-> +++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
-> @@ -74,7 +74,7 @@ static int get_vmas(struct xe_vm *vm, struct xe_vmas_in_madvise_range *madvise_r
->   		}
->   
->   		madvise_range->vmas[madvise_range->num_vmas] = vma;
-> -		(madvise_range->num_vmas)++;
-> +		madvise_range->num_vmas++;
->   	}
->   
->   	if (!madvise_range->num_vmas)
-> @@ -352,6 +352,43 @@ static void xe_madvise_details_fini(struct xe_madvise_details *details)
->   	drm_pagemap_put(details->dpagemap);
->   }
->   
-> +static bool check_pat_args_are_sane(struct xe_device *xe,
-> +				    struct xe_vmas_in_madvise_range *madvise_range,
-> +				    u16 pat_index)
-> +{
-> +	u16 coh_mode = xe_pat_index_get_coh_mode(xe, pat_index);
-> +	int i;
-> +
-> +	/*
-> +	 * Using coh_none with CPU cached buffers is not allowed.
-> +	 * Otherwise CPU page clearing can be bypassed, which is a
-> +	 * security issue. GPU can directly access system memory and
-> +	 * bypass CPU caches, potentially reading stale sensitive data
-> +	 * from previously freed pages.
-> +	 */
-> +	if (coh_mode != XE_COH_NONE)
-> +		return true;
-> +
-> +	for (i = 0; i < madvise_range->num_vmas; i++) {
-> +		struct xe_vma *vma = madvise_range->vmas[i];
-> +		struct xe_bo *bo = xe_vma_bo(vma);
-> +
-> +		if (bo) {
-> +			/* BO with WB caching + COH_NONE is not allowed */
-> +			if (XE_IOCTL_DBG(xe, bo->cpu_caching == DRM_XE_GEM_CPU_CACHING_WB))
-> +				return false;
-> +			/* Imported dma-buf without caching info, assume cached */
-> +			if (XE_IOCTL_DBG(xe, !bo->cpu_caching))
-> +				return false;
-> +		} else if (XE_IOCTL_DBG(xe, xe_vma_is_cpu_addr_mirror(vma) ||
-> +					    xe_vma_is_userptr(vma)))
-> +			/* System memory (userptr/SVM) is always CPU cached */
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->   static bool check_bo_args_are_sane(struct xe_vm *vm, struct xe_vma **vmas,
->   				   int num_vmas, u32 atomic_val)
->   {
-> @@ -388,12 +425,12 @@ static bool check_bo_args_are_sane(struct xe_vm *vm, struct xe_vma **vmas,
->   	return true;
->   }
->   /**
-> - * xe_vm_madvise_ioctl - Handle MADVise ioctl for a VM
-> + * xe_vm_madvise_ioctl - Handle madvise ioctl for a VM
->    * @dev: DRM device pointer
->    * @data: Pointer to ioctl data (drm_xe_madvise*)
->    * @file: DRM file pointer
->    *
-> - * Handles the MADVISE ioctl to provide memory advice for vma's within
-> + * Handles the madvise ioctl to provide memory advice for vma's within
->    * input range.
->    *
->    * Return: 0 on success or a negative error code on failure.
-> @@ -442,13 +479,21 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
->   	if (err || !madvise_range.num_vmas)
->   		goto madv_fini;
->   
-> +	if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
-> +		if (!check_pat_args_are_sane(xe, &madvise_range,
-> +					     args->pat_index.val)) {
-> +			err = -EINVAL;
-> +			goto free_vmas;
-> +		}
-> +	}
-> +
->   	if (madvise_range.has_bo_vmas) {
->   		if (args->type == DRM_XE_MEM_RANGE_ATTR_ATOMIC) {
->   			if (!check_bo_args_are_sane(vm, madvise_range.vmas,
->   						    madvise_range.num_vmas,
->   						    args->atomic.val)) {
->   				err = -EINVAL;
-> -				goto madv_fini;
-> +				goto free_vmas;
->   			}
->   		}
->   
-> @@ -485,8 +530,8 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
->   err_fini:
->   	if (madvise_range.has_bo_vmas)
->   		drm_exec_fini(&exec);
-> +free_vmas:
->   	kfree(madvise_range.vmas);
-> -	madvise_range.vmas = NULL;
->   madv_fini:
->   	xe_madvise_details_fini(&details);
->   unlock_vm:
+> >> FWIW Jasper Lake seems to be supported from 5.6 on, see
+> >> b2d32af0bff4 ("x86/cpu: Add Jasper Lake to Intel family")
+> >
+> > Oh I see, but shouldn't avoiding regressions on established platforms b=
+e
+> > a priority over further optimizing for specific newer platforms like
+> > Jasper Lake?
+> >
+>
+> Well avoiding regressions on established platforms is what lead to
+> 10fad4012234 Revert "cpuidle: menu: Avoid discarding useful information"
+> being applied and backported.
+> The expectation for stable is that we avoid regressions and potentially
+> miss out on improvements. If you want the latest greatest performance you
+> should probably run a latest greatest kernel.
+> The original
+> 85975daeaa4d cpuidle: menu: Avoid discarding useful information
+> was seen as a fix and overall improvement,
 
+Note, however, that commit 85975daeaa4d carries no Fixes: tag and no
+Cc: stable.  It was picked up into stable kernels for another reason.
+
+> that's why it was backported, but Sergey's regression report contradicted=
+ that.
+
+Exactly.
+
+> What is "established" and "newer" for a stable kernel is quite handwavy
+> IMO but even here Sergey's regression report is a clear data point...
+
+Which wasn't known at the time commit 85975daeaa4d went in.
+
+> Your report is only restoring 5.15 (and others) performance to 5.15
+> upstream-ish levels which is within the expectations of running a stable
+> kernel. No doubt it's frustrating either way!
+
+That is a consequence of the time it takes for mainline changes to
+propagate to distributions (Chrome OS in this particular case) at
+which point they get tested on a wider range of systems.  Until that
+happens, it is not really guaranteed that the given change will stay
+in.
+
+In this particular case, restoring commit 85975daeaa4d would cause the
+same problems on the systems adversely affected by it to become
+visible again and I don't think it would be fair to say "Too bad" to
+the users of those systems.  IMV, it cannot be restored without a way
+to at least limit the adverse effect on performance.
+
+I have an idea to test, but getting something workable out of it may
+be a challenge, even if it turns out to be a good one.
 
