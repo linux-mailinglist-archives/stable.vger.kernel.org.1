@@ -1,179 +1,153 @@
-Return-Path: <stable+bounces-213155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIySEi5hgWn6FwMAu9opvQ
-	(envelope-from <stable+bounces-213155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:45:02 +0100
+	id 0Kx0MeFhgWn6FwMAu9opvQ
+	(envelope-from <stable+bounces-213156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:48:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7CB1D3D69
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:45:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E438CD3DAD
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8BAE30378BE
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 02:44:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BFB9E300723F
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 02:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2880311955;
-	Tue,  3 Feb 2026 02:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D899322527;
+	Tue,  3 Feb 2026 02:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eqP0z5uR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRVd/TcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940DA30FC3C;
-	Tue,  3 Feb 2026 02:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C43E31E0FA
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 02:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770086674; cv=none; b=qyWlAwk24SggYM7Xw8uwUW+cgwa6a9tDVYZlJV0QT/Igj/EQh7MSuvb4Q0kXK8F0ap3XCbmrMNzYuouFDzJsPOiuCZHhv/Gmbqeob/U6xAfRe23pRFXjkx2EnDEJ1xc5Lm+Ry871bMGNhepXLTm9XMXSrV31GezjzJdpx9l1KaY=
+	t=1770086874; cv=none; b=qksqPZ/X8aRdyRdl+7C23n5Dg5J/t9aW1MhwZXMEF7a7RYb0Qxq3AkFQXrmnA2VhgiW4LeVUDTzbEnUi4lW6cC2SPVS6VRtIc6pKh+yvTvIJzzFhko6gFt/hHVatKkiRESlFhPDrXEGJ+pwOAlg9iIhPodjLN2BqjLI/hJKhPVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770086674; c=relaxed/simple;
-	bh=0mLPVjLBuAMhKxTPguxXdTiuzyrN2Pswn1FlJUfsqvY=;
-	h=Date:To:From:Subject:Message-Id; b=aPkvlnSQ0hj6O6GyAvQg1JB3N2Wgq30FdbOBvPbKJNE6GjIuFs0/6kazTVLIqw96opE9FexrTqGnAYV9K8Bwz9gVwsZr7REpFvt/WBQR/i7vezYL7JtL4y8yYdSbc2LaKbalwWlPjpuErJSvSzmSk1vQ+R0/wzoa0jpJr1XS8vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eqP0z5uR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382DDC116C6;
-	Tue,  3 Feb 2026 02:44:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770086674;
-	bh=0mLPVjLBuAMhKxTPguxXdTiuzyrN2Pswn1FlJUfsqvY=;
-	h=Date:To:From:Subject:From;
-	b=eqP0z5uRI1RXEW4e0Axb0+xO4Y3fsGy1YyDeOFMF2jQYHH0OdlPGrgfwASSM3fDL4
-	 pxIehLr3bNVs8jA5NnYlusJCMVqDptNh/jhA85y7Jms1Nv52NBRNANzeZ9DSfmYn56
-	 B6Ox2lcE3cAHMCzpq2/0Hvl74ZbFwvT8FN1804BA=
-Date: Mon, 02 Feb 2026 18:44:33 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,hughd@google.com,clm@meta.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-shmem-swap-fix-race-of-truncate-and-swap-entry-split.patch removed from -mm tree
-Message-Id: <20260203024434.382DDC116C6@smtp.kernel.org>
+	s=arc-20240116; t=1770086874; c=relaxed/simple;
+	bh=opVN2Uy5CV1GyOyVv04l4w99A8x7CInPOUJcM14Wc7c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ubb2Jz+lQMjU0lMaUUmdIsiKbcfj/1aiT73PwhPpSWRKhHOE7osKvbci+Tr5stPDvv+F6MoSHcvn/ltJjy5t56xQh89eOmHECDElTEefO2TZ06IL+GdHJNZJZQaaFhULeW40oZgNqH2XaSFwMX+b2+zHbbhhLonePvmC02Q+nx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRVd/TcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02340C2BC86
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 02:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770086874;
+	bh=opVN2Uy5CV1GyOyVv04l4w99A8x7CInPOUJcM14Wc7c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YRVd/TcMoUZlvY+H99CsGdndoLhglHsDtgWv7HfE80EuYIBtcCTS3vFznCOKoqJN/
+	 3NfCqaxcycvj5SPWAs8sVCr4v6m//exvtJU4BVFhikDMxb9VHCNMtJM8iMXAV9MG8d
+	 FKyi7QPHw66JbIyee7LdImDlxqQugbTJrKej8Vmngw/XzdGpzfcSEPrLjYuqDjfW5t
+	 Ad+ejtqkYu+VFI1Ym5Bi5QSpz3HHGb+vn4LopccWzBluWsg/tZcz6UAi2Gd3YjMwFq
+	 m0ZpQBCHItjUwKNG6MITYDOShjpF81xMcMRW4vQJCGFUtHniRO5cvan9H7JNF1am+q
+	 6pka2kOvpCr+g==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b8845cb5862so806082066b.3
+        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 18:47:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVgnT9ZVC8Ug4ekkrmYOF01+TS8jjFxnwbpcdReuO9pdfZd4Td8dH3MNr5ZzX2OhL6oSr8sMWo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywonj8y0L6kZLQjdbjfSm/4t9lWQA0E38jPoBJNiNqENu859wzx
+	HYt4SaD1zOIXmv3SlVOwF4YnY0k2nocFfbBWC23eE2Hvv7j0iZrB7STWJJEPLQddeAL+TuP1+bz
+	yic4AR9LVQxLBTFkltdN0ayOxAmfqv+E=
+X-Received: by 2002:a17:906:478b:b0:b88:7568:26d5 with SMTP id
+ a640c23a62f3a-b8dff5bf946mr825230966b.27.1770086872391; Mon, 02 Feb 2026
+ 18:47:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260201023700.366531-1-chenhuacai@loongson.cn> <4d1abb0c-e518-4751-b462-345ed76bb3f1@lunn.ch>
+In-Reply-To: <4d1abb0c-e518-4751-b462-345ed76bb3f1@lunn.ch>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 3 Feb 2026 10:47:43 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7WwZM8Sg_E0Z0-+e6V-NtJA0r8Aiqw30TqH0_pyLKTdA@mail.gmail.com>
+X-Gm-Features: AZwV_Qh1O3Zhzst3pqZnN_WRLwJiAXHYLEQSgCfKfN6tjdg68bwOz8eKRTnfKWA
+Message-ID: <CAAhV-H7WwZM8Sg_E0Z0-+e6V-NtJA0r8Aiqw30TqH0_pyLKTdA@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: stmmac: dwmac-loongson: Set clk_csr_i to 100-150MHz
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Yanteng Si <si.yanteng@linux.dev>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	Serge Semin <fancer.lancer@gmail.com>, loongarch@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Hongliang Wang <wanghongliang@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213155-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huaweicloud.com,gmail.com,google.com,meta.com,kernel.org,redhat.com,linux.alibaba.com,tencent.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-213156-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[loongson.cn,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,linux.dev,foss.st.com,synopsys.com,gmail.com,lists.linux.dev,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid,alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huaweicloud.com:email]
-X-Rspamd-Queue-Id: A7CB1D3D69
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,mail.gmail.com:mid,loongson.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E438CD3DAD
 X-Rspamd-Action: no action
 
+Hi, Andrew,
 
-The quilt patch titled
-     Subject: mm, shmem: prevent infinite loop on truncate race
-has been removed from the -mm tree.  Its filename was
-     mm-shmem-swap-fix-race-of-truncate-and-swap-entry-split.patch
+On Tue, Feb 3, 2026 at 5:42=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Sun, Feb 01, 2026 at 10:37:00AM +0800, Huacai Chen wrote:
+> > Current clk_csr_i setting of Loongson STMMAC (including LS7A1000/2000
+> > and LS2K1000/2000/3000) are copy & paste from other drivers. In fact,
+> > Loongson STMMAC use 125MHz clocks and need 62 freq division to within
+> > 2.5MHz, meeting most PHY MDC requirement. So fix by setting clk_csr_i
+> > to 100-150MHz.
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>
+> Fixes tag?
+OK, will add it.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>
+> Does the error mean that MDC is ticking at 9.7Mhz? That is pretty fast
+> for PHYs. But i assume it must work for some boards.
+Yes, some PHYs work while others don't.
 
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm, shmem: prevent infinite loop on truncate race
-Date: Thu, 29 Jan 2026 00:19:23 +0800
-
-When truncating a large swap entry, shmem_free_swap() returns 0 when the
-entry's index doesn't match the given index due to lookup alignment.  The
-failure fallback path checks if the entry crosses the end border and
-aborts when it happens, so truncate won't erase an unexpected entry or
-range.  But one scenario was ignored.
-
-When `index` points to the middle of a large swap entry, and the large
-swap entry doesn't go across the end border, find_get_entries() will
-return that large swap entry as the first item in the batch with
-`indices[0]` equal to `index`.  The entry's base index will be smaller
-than `indices[0]`, so shmem_free_swap() will fail and return 0 due to the
-"base < index" check.  The code will then call shmem_confirm_swap(), get
-the order, check if it crosses the END boundary (which it doesn't), and
-retry with the same index.
-
-The next iteration will find the same entry again at the same index with
-same indices, leading to an infinite loop.
-
-Fix this by retrying with a round-down index, and abort if the index is
-smaller than the truncate range.
-
-Link: https://lkml.kernel.org/r/aXo6ltB5iqAKJzY8@KASONG-MC4
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reported-by: Chris Mason <clm@meta.com>
-Closes: https://lore.kernel.org/linux-mm/20260128130336.727049-1-clm@meta.com/
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/shmem.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
-
---- a/mm/shmem.c~mm-shmem-swap-fix-race-of-truncate-and-swap-entry-split
-+++ a/mm/shmem.c
-@@ -1211,17 +1211,22 @@ whole_folios:
- 				swaps_freed = shmem_free_swap(mapping, indices[i],
- 							      end - 1, folio);
- 				if (!swaps_freed) {
--					/*
--					 * If found a large swap entry cross the end border,
--					 * skip it as the truncate_inode_partial_folio above
--					 * should have at least zerod its content once.
--					 */
-+					pgoff_t base = indices[i];
-+
- 					order = shmem_confirm_swap(mapping, indices[i],
- 								   radix_to_swp_entry(folio));
--					if (order > 0 && indices[i] + (1 << order) > end)
--						continue;
--					/* Swap was replaced by page: retry */
--					index = indices[i];
-+					/*
-+					 * If found a large swap entry cross the end or start
-+					 * border, skip it as the truncate_inode_partial_folio
-+					 * above should have at least zerod its content once.
-+					 */
-+					if (order > 0) {
-+						base = round_down(base, 1 << order);
-+						if (base < start || base + (1 << order) > end)
-+							continue;
-+					}
-+					/* Swap was replaced by page or extended, retry */
-+					index = base;
- 					break;
- 				}
- 				nr_swaps_freed += swaps_freed;
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
-
+Huacai
+>
+> Separate to this fix, you might be interested in:
+>
+>   clock-frequency:
+>     description:
+>       Desired MDIO bus clock frequency in Hz. Values greater than IEEE 80=
+2.3
+>       defined 2.5MHz should only be used when all devices on the bus supp=
+ort
+>       the given clock speed.
+>
+> So you could allow faster MDC values using this property.
+>
+>     Andrew
+>
+> ---
+> pw-bot: cr
 
