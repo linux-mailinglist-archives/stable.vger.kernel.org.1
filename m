@@ -1,184 +1,262 @@
-Return-Path: <stable+bounces-213315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFkeLk1zgmnBUgMAu9opvQ
-	(envelope-from <stable+bounces-213315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 23:14:37 +0100
+	id sLYqLXB+gmnAVQMAu9opvQ
+	(envelope-from <stable+bounces-213316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 00:02:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF04DF239
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 23:14:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25C4DF845
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 00:02:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A4403068564
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 22:12:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 144333004639
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 23:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F2D36EABF;
-	Tue,  3 Feb 2026 22:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E152BEC5A;
+	Tue,  3 Feb 2026 23:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="USm5cm8L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZOwizYJH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566983242D2;
-	Tue,  3 Feb 2026 22:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770156751; cv=none; b=e2TUFrzpf+q9hV/IxOdV2mgJHk6RnAnR4M0AlCTBYiSVfzPWHBYgsgF7LEkQLfMmVkndGa6waOjXREpdBd5op3ZOxTvOwCMtIxwCGDM997IInqEYnNgg69M+X1wOQa5bBDaD4j/2D1iUklQOWUwUw0l1Il4kIgzly4sArTQ9MEw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770156751; c=relaxed/simple;
-	bh=lZ8fLajBaBKfxqRgm1/CsQg35IImhyp3WoJlRneemVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i8KYgOUJ0ZziqKJnYMbDIVzIxif/pWCOJm/PHVrubRuwz+JvJZTNePqNfcOrVIrSUURFdJrq4BWPovmqkkD1Ctljq4C1QPJabpr0OVRCnUkV9b+2XoD0pFVLYDJ+gvBh0WOj++cQFZEicV9Q69bz3JO8GPeP3Hl6Vd3hXTSDwog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=USm5cm8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4123AC116D0;
-	Tue,  3 Feb 2026 22:12:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770156750;
-	bh=lZ8fLajBaBKfxqRgm1/CsQg35IImhyp3WoJlRneemVQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=USm5cm8LNFz7Zpvvr/WC/z9iJEDDkb8V3Cyxo1LI1WmLyMzXA4oKVJZyuas1CgaKY
-	 PpMNh1Sk0dn/mxa0vbvjKHD7DCXnllbVOXBghDQ+IRdfOyz0akw1SIoy6ZAA6Jwnd4
-	 hGupHwZer3dXRy35+1tEXGlqppADY/e9s4OtvqvIQ870n1Wib0lRq6k7Dwt/eNxreK
-	 FOAdrcppaWnJVqKFD2ilNl+0NixHLyQHch5hyk48aIDJv+c6hmhCRUHOFUMdJLYPlH
-	 rFpLsbmNIY/dXx0G1KpSDlWfi7DJ349Q3wgxtTWnAZk/Cl2KsTJvTbb2WeQEEhML7h
-	 UOrs0pL4FLJ7Q==
-Date: Tue, 3 Feb 2026 15:12:24 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: HeeSu Kim <mlksvender@gmail.com>
-Cc: a.hindborg@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com,
-	boqun@google.com, charmitro@posteo.net, dakr@kernel.org,
-	gary@garyguo.net, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lossin@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, nsc@kernel.org, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] rust: Makefile: bound rustdoc workaround to affected
- versions
-Message-ID: <20260203221224.GA2703490@ax162>
-References: <20260203005627.GB52989@ax162>
- <20260203234843.2834885-1-mlksvender@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBFF2BD5A7;
+	Tue,  3 Feb 2026 23:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770159721; cv=fail; b=kGZuJUP76Fp9rlPBWBHf/5DHhl7N+zUHSI2wsZYaugzZUHGFL43qh+XpntOwcXh88eD0GvJMqlY5IMWqvmM9mndndXtYZ1qYkueVj3iexcTS7VfCACZxwHTjJucyxUUZI5QB4qlGLs2nzhVXwO+vs9pgHOfuTJT3JFUriqspjhI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770159721; c=relaxed/simple;
+	bh=nkdrRBymoY2W9qZ2RuU57pmLWuHsZdJsbKBgkqSBOY4=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=F/rgW68VE38kyQ4DpcuDeRfsHK1SMtW8dUkV9B6QOrNDNxLGznEVMSLOwLOwNQ3Nt10Ne03KrcuLXgmxVrt/w6Ukk/Zdkea8VEZ6rIDVjCk2UZV8ZuSXd+HwLmuJsj/1mkuZbHe+Ku5Jao7JBx/ios5t96rEUUAY2KV1aILqaBw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZOwizYJH; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770159720; x=1801695720;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=nkdrRBymoY2W9qZ2RuU57pmLWuHsZdJsbKBgkqSBOY4=;
+  b=ZOwizYJHdTLVkvc4IrZ9woKS7ssWIDbdw+mOpGXanr7kJCPQVGJumcaV
+   IO1djgiTuv2BKz5THJrnHFvTRl5Ijq5QGFFup9tg/6ss+eYRqJp8sAUPf
+   TnnNI5YUP+P9vMyC7A8HAnejrU1c1WLT3tdta78EEbrDL7tqYyohJAgLK
+   Nl4gTAuX5//HNLA2Q8lL9Rcbmf9n/dWGVWaT/EBzp5W6KhB95AIflg8Op
+   EUjWvSSD4T/H2tLF+KmJZRWxG9qeHkrrfcY1HpLVifzbZILejh5uksy85
+   QHAk9gaP632CQiwBx8GbvqnX2pIYLprZoXUlYpnOGwTSayq3Uv38LSPzj
+   w==;
+X-CSE-ConnectionGUID: VhPid+BbRJCxUao4t951dA==
+X-CSE-MsgGUID: 3K/U2B//QYyG/LVBgko7Qw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="70362865"
+X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
+   d="scan'208";a="70362865"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 15:01:59 -0800
+X-CSE-ConnectionGUID: yX+QyP4zTfqA4UWdLzDOMA==
+X-CSE-MsgGUID: kmZ2Vt93TyqRwPj/MJLErw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
+   d="scan'208";a="214532687"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 15:01:59 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 3 Feb 2026 15:01:58 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Tue, 3 Feb 2026 15:01:58 -0800
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.6) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 3 Feb 2026 15:01:58 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a8NiD6u7u+DaOufdBXiE2gchK+3rxQKyIIlPD0L6ayvF9rflV2dvKSfZR0x/d8j4nHDy9el6hO+Yt6nLcGzFPbPng53BeZKK7Gm+6gXu25IAj5j+t8nFPnF59j/j7Lw9xMSoE0jHEwyUFhGJLX2LyMuFs2oF7CCB+KHkkM3nvz/YPG8iV5RMbekWPlbtFguGfl4Lwin2J8UzQo22crbBf0gCyC0lmQU3sVV/HaZdmjTI+n7SMtP4TeL6Td9I160uFfSkLwlxxVFf1BRdZ3reTNOZSpkKF0SiHA2NL/RUwwdsy27VDFeasNFBlYZI356OI7K3XIYVV3gBc9OFaCXidg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6nDZ/bqUfyqIelVZ0DQXz7Iu3WzRkd3VadcfpQnnH6o=;
+ b=sI5iocgvmBiJIII3uHYdLsDbVgl7VZi1sGHqk3WLMSFi93or3s14WVt14Y+2S5d3rWT1dB04em4pMH1y4Z6CcKd8WLcWMvaL+YAxTGuemmBzR8eY5YBiLbUP1iQgNM6KMEPgqRpGRpY/6YzPT1JDQ0Fbsg+K1+3YEEA+Sjc3WzxRDQ7pxG60qQUo/Om0Fa6c1DsHpGe9exx67Vo7hSykC3mkf0/NYT+gI3rKmD+1uSOddXJaFYAbVbEn/LKivc24Cl0he6T2o8j1VnkCH4vRi3OW1wBdJbBuxIexFSclghLRrTvrlg//8MEKA/OGIyDkn6u+wkUdAtE+rTFKiUzSuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7579.namprd11.prod.outlook.com (2603:10b6:8:14d::5) by
+ SJ2PR11MB8470.namprd11.prod.outlook.com (2603:10b6:a03:56f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
+ 2026 23:01:55 +0000
+Received: from DS0PR11MB7579.namprd11.prod.outlook.com
+ ([fe80::4199:4cb5:cf88:e79e]) by DS0PR11MB7579.namprd11.prod.outlook.com
+ ([fe80::4199:4cb5:cf88:e79e%5]) with mapi id 15.20.9587.010; Tue, 3 Feb 2026
+ 23:01:54 +0000
+Message-ID: <4d203020-25c6-4d88-a850-f455e0c59f36@intel.com>
+Date: Tue, 3 Feb 2026 15:01:50 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/mgag200: fix mgag200_bmc_stop_scanout()
+To: Thomas Zimmermann <tzimmermann@suse.de>, Dave Airlie <airlied@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>
+CC: Pasi Vaananen <pvaanane@redhat.com>, <dri-devel@lists.freedesktop.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20260202-jk-mgag200-fix-bad-udelay-v2-1-ce1e9665987d@intel.com>
+ <c05faf6b-dced-4cef-8f8c-9f43241dfa2a@suse.de>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <c05faf6b-dced-4cef-8f8c-9f43241dfa2a@suse.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4P223CA0028.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:303:80::33) To DS0PR11MB7579.namprd11.prod.outlook.com
+ (2603:10b6:8:14d::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203234843.2834885-1-mlksvender@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7579:EE_|SJ2PR11MB8470:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8fce6afe-1d68-40f8-0411-08de6378398d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RFhkMDdUSDlPdWxLVGhDckpMQzhwdmdJTVpUc2ZxQS80cGRzclZ3aW1mTU4z?=
+ =?utf-8?B?Zm4vRTRnTzhyb0pOU0ZqVmFVd1FFQW82SHM0M1J4R0kxbFNNTXpSU05LT3M4?=
+ =?utf-8?B?YWVxWCt2STNPQ3NjZTFFUEJsUEdZZk55b0lPTGlCUzR5WlZwUm5nNmlvYlFR?=
+ =?utf-8?B?Q3VIcDJON052Z0Y1Z1lsVStTdEl5UWJ1NmJ3UkhRb0lWMW5FdzRKUTdjSzJ1?=
+ =?utf-8?B?MGxJNkxISXZYYWZSVjlZKy9tT1UwR09vaHRJeEp2bmxPSGdtcjlEeDdGaUtm?=
+ =?utf-8?B?Y2xrY3ozekxQbzVqTlhhWmZ0NDVZa2ZCTnNIU2I4dHFyZlFjVzd3a2pyRVRT?=
+ =?utf-8?B?TWhjMFFCN1JpdGlDcDgzcU5VdHRBTy8xcmxSTWVTNHJob2UwTFhzTXk4RWlJ?=
+ =?utf-8?B?NldoY2E0allRdCtqdnh3RGdJeEpQbUJiUVFrbklKVUU3ZU1vc3FWQXFRUi9z?=
+ =?utf-8?B?MkNXcW9qNXRWRUMxeTF3SFZpZDh0aUhoTkNEdVpteXVES3NjZ1pTSkFNa2JX?=
+ =?utf-8?B?bGJiT1hqRmExWDRJdEQxem04S2lxNzhpd1dLdnFVVE9lZEdtbE1QdnczSWlR?=
+ =?utf-8?B?akxrRG40ajBTMWEwQitESDAzbzFCTmhQTE9RSC9zWWVkOVZtTmQ1TFphVW56?=
+ =?utf-8?B?RHJad2JrQ2c2cDNOZm9QVDNNeDZEYXdGbmdzVFZkNTFjK05jaldTWDRERWow?=
+ =?utf-8?B?NVh6Uno0ak5lUHBtNjN0OXloZ040T29xZmFiUzFqS3ZOZkRQWUxRSy80Vkp0?=
+ =?utf-8?B?Y0UrMXMrKzlXbUJTdm5VbUl1bkQrM3pBOVJYQzk3Zm10c1lsQWo0TExIL3I4?=
+ =?utf-8?B?eTZBWG9ITTh4Ymx6WUFBOTlDYlBGQ2NJd0tXYldQMmpyT1pCL2lIWUJ2Vldh?=
+ =?utf-8?B?RytnRituOVdDOUQrTjdETThUVTl0VXU4TlJ5S2krSUt6c3dJcC9EaEdkd0Jk?=
+ =?utf-8?B?ZFJGZlRSWmY4YlV1eXBCVkZCRk5QVGlLRld0WmpaUjFwMHRUejVnNERIOWc0?=
+ =?utf-8?B?VEd2Tjg0dzMrbjRKMm05djhLeUl6b0FhUFFvcktta2VVVjM0WUt0S0ZpWkJQ?=
+ =?utf-8?B?QlRJYzcvcVBheXBEbHh5VWQrT1lsY3d1b1RXeTZja0p0cVc5OGc4dEJJWlJo?=
+ =?utf-8?B?aEVuZkFYOERCekg2b05tVG5BeEU3TkcxZDRkWS83LzV4V3dFK09DcHc1OGdv?=
+ =?utf-8?B?OU9wb0luNWc1N09IU2tUMEhUakVBRm5kUlJmK24zR2dyNUlRa05rT015TS9v?=
+ =?utf-8?B?NGF6dUw0Rm5lYjJBenRHbVVOOFJmcEplZ0EzYVFQd1FkcFdXamJOTGlpWndP?=
+ =?utf-8?B?U2I1dlRNVnZ2Z2tYa1FuNjVwY0hIVDBFb0swdUNWU3lGaFlwQjd0ajBrS1hi?=
+ =?utf-8?B?Qi9oSldLdUYwWkNFeFlVY1FsTE1UZi9Sb1A4Z0dJY3h5dHBhMnV5ZTFyNm9v?=
+ =?utf-8?B?TWZZN3BHdjFUK1U5dElNTzRnZUVqak5Jd3EwZmcwRzcxZkJOcy8vZ1dhTEww?=
+ =?utf-8?B?T1NGQ2FHTDlHVlhWa1JSUEN5R3I4WDFwZ2NQK3loSitLMWFkeXduSzdYZzkr?=
+ =?utf-8?B?SUN4Z1pHQk1kMk9VUVA1ekNNL2ZGMTdEYlppOGtIMWMyOGVhK0Q4T08ycm1t?=
+ =?utf-8?B?b3kzT0tZKzlPZFdQaDZ0UGlMRmVUOWw4U1gwSnVpZThOQlVxMWZmS29CNFNu?=
+ =?utf-8?B?aWlMeEZVd1B5R3dwVGNhZU5hclE5QUV5TmlvM1VNYjFXY0tsaDIvSmVqZXBQ?=
+ =?utf-8?B?K3prRVEzUThJcHcxeG94K240OEdXQit3NWozeXVqR3ZEckxqWU5oKzNzQTFu?=
+ =?utf-8?B?cjIrTGNEWWtlZi93WEo1ZnJOY2RiY3VWVzZsWDVJS0pOeHlhWnJ4SElWUHgz?=
+ =?utf-8?B?a00yMmphc2poNU5nSUdobnJ2T0dqWFJwVTlPVHdiS0dKbUJtQmtnWWNIVEZt?=
+ =?utf-8?B?SUM0bVM5SFRZR2U0QVdlbTBIWmxNSjJObExDUGFBK0ZNL0FYZFFuNURtQ3FK?=
+ =?utf-8?B?V0xMT2NLMnR5UWE5OGNORGhyTy9YTWs1bTk3Z2g2d3IrbWh3eFJUaWRMU2NF?=
+ =?utf-8?Q?zSNPxm?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NllVS0hYSG4yNlJwU0JmeGFMclBOOEwwVkZ1aXNBQWJ5endpcHFGdG1PWkND?=
+ =?utf-8?B?R0xjRVFad095VHcxM2JQQXVodnpUdDJza0RHa2ZZL2ZvSHJYUnhDUFlTUnF4?=
+ =?utf-8?B?amJsR3RyRU5vbkYzN1JoQ2ovaktab2E1eGxKeGJjV2JDem9KZ005dDZ4VzU5?=
+ =?utf-8?B?RVZlTWFQZGcrWE1OTU1FMEc4dmtoSjJwS2FTZlNwbjdmcHBKcDVnRkd5bFNa?=
+ =?utf-8?B?alIzQ1pBaWNVaXVBQ2FHZFFqMklZenhrT1FYZjVzRkFoYWFjYlVmMFBxMU12?=
+ =?utf-8?B?Z0crR0NGY3BqWDFBVzFwcURJSHRwNWlmUDU2Q2xYNmpjODVEVSt3RzY3WTZq?=
+ =?utf-8?B?QUtCMGNlTmUwQ0JKNkwrVHFpUmdDZUh3OHVRM2kyd3AxQ2ZIa3N6MU9oRmY1?=
+ =?utf-8?B?WllSQVc4Z3pXYnFrU3pjRzZCYkg5UXZzMzVUc0Rlb2NObzhXSUswTGZGTTNS?=
+ =?utf-8?B?Umo5OThNaUNucE0zcm5KTndZSTYyZmZWdE5pYUV2L3VUSWhQNDdXc1pqNHFl?=
+ =?utf-8?B?N1pLR3FyK2VjTnAvdG1tR0szUUJuV3JNTnVURytBSUVndWY3bDVSSWt1NzYz?=
+ =?utf-8?B?dzFuT3BQZ0ZWNzAvNE5McU1RTkpaUkNiV0VvUDNvRlRQME96MWw0KzI0bFp6?=
+ =?utf-8?B?QXVZbDAvN2oyazhMRGNQV2lEWEJWMFRpZzRaQVMwTlI4dlZCRTYrNXBucGN2?=
+ =?utf-8?B?ZjNabGxpRlpTczFOT2VseldJTDlCMzJIWWdCTGdWS3VoSXJkSGQyY3A3cVVJ?=
+ =?utf-8?B?STNkd0hsTHhxVWZXN2YvQzJGdmZ0Umw1NzdKZVVMYW9XdVd0MGdJMVo5ZVB4?=
+ =?utf-8?B?QVQ0MXFBaGlXTlNTdmF4TldmNkNPVWRTWmNpZnltS09ZejRDUTVHUW9QNi95?=
+ =?utf-8?B?TjV3S2ZjRUFMc2pRVWZTeGFFQUZudUNSdUVraEVxTUpmdXZVcHpMb0NwUWJL?=
+ =?utf-8?B?YmZFRnhKTk9ObzRmMjEyTGZDb3M3ZDJBN3FGTm80b0FtT0ZTK3NKcXZxUlpL?=
+ =?utf-8?B?anIyaGk5UzdTNk9BT3FrYTUxZ2kwdi94ZkxiSlBHVS9NaExOb2luc0I0UWFm?=
+ =?utf-8?B?bVpBVHBrbzRaQkkwblNuWkxCR3I4L2xVYUdFSDJOeDVoQkJxT203QkZVV1pl?=
+ =?utf-8?B?SWtuZDJMWXB0ejZtaG5POWhRdkJUQ1AzUHgxTDl2ZnVVY0NpeXA3Mko4RjdI?=
+ =?utf-8?B?MFhsUTQ5STEzb3lxNTJqcDNGQXE5WTdOYlF1TEo0MVBPd3YrV0NqTXlwYy81?=
+ =?utf-8?B?cUIvUGlaZ1ZEMkhEY1pqb01XeVhEdzMrUlJPamNvYXRTM1E4c1krb0FpRXpy?=
+ =?utf-8?B?bmJPUzVDb0k1OGJxYXlnUkEvWWhldnltUWs1ZXBDbDd5Q2twV0plMTV6ZXlz?=
+ =?utf-8?B?eEhpcDdkbG5LazJ6ZnJVdk1kNlk4L0tRQ3lNUHJTY2wvNXFaTmVHWTVVc3B1?=
+ =?utf-8?B?dXlPWk5pOVd3Si95eExMeE9qTkxlNURkVDZ4dVhOSURqRlhOb1hoQVZJTk1v?=
+ =?utf-8?B?UG1IS0NReXpNRFliV0Z0TDBXN28waE5pNnBhc1A1QWxlSkNSSCtwSmdwOFFO?=
+ =?utf-8?B?VjFtdmMzdUpwZ25zUitTbENKWnk4dWVDa25ONVRPNVVGSS9kaWU4K1dnU2Ju?=
+ =?utf-8?B?eWU2MnVHaU9sUHNHODFPSXREbXl1R1AxeFl1Y2FZQ0N4VFlUSFJKU3hMOWxa?=
+ =?utf-8?B?WGxsNXh3a0d1Q0h6M1hYNzFBSS9uc0FmOWlmZUJ2NnlsV0M3V2dOM2pZbEZR?=
+ =?utf-8?B?UVJBekNMWmtzc0hLRmdBMzFHdkpQcXNVclZFYnh2eko3THdBN2VkcDJ0Y0RJ?=
+ =?utf-8?B?ZjIycGxiaUZlQXFIL2xDUmFzcUZCcFlMcjlNSWEvZXF3eEZTRGkwMldkeWt5?=
+ =?utf-8?B?cGw1dEluaUsrWFhZbnRZdFlrZmdnK0EvU0l5dG9jK2dUZmY4OTdYN0hVRWhL?=
+ =?utf-8?B?SVhCZGR6YlVNcDkrRjFLK2hOQm9MWUpxVmt6K1BzZHVqNERoNmtzVThVQkJJ?=
+ =?utf-8?B?NWRQb0RmNGF4emxVdE1YSG5ZanNwek9TOVg3L25HY0NSUmh3TXhtTVVNcEVX?=
+ =?utf-8?B?aXd2bTBFeWJiUGlTQUVGY1dmaE5Tb1VWaGozQWsrQUFIU3pURlN4dFVOSUpZ?=
+ =?utf-8?B?ZC82VXBPUEhXdUw2THQwTVVpSHhjTTdWTDdaMTJucndRUU16OXM3eEJldGJ5?=
+ =?utf-8?B?RlFqalhDNkVEZDJHcTNaT2tLNjdLT2RWMmF1OXh4R2kxSGhXazArbkl4b2tw?=
+ =?utf-8?B?UmY3SldZaUxUZDd1clZieFBjQ3poVzdGWHQxVTYxN0dYMXVHcDRrYzRKYWc1?=
+ =?utf-8?B?N0M0UDIvUnY3RlRDbVZ3Y1RnWmtWSkVtK1l5a0xyWlNMVXVJMStPUT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fce6afe-1d68-40f8-0411-08de6378398d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 23:01:54.8339
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mUgeUqXPGUOGYrZ96SLQSyrPgdwtubiFsYXIdM5zoGoPJ9JGfZen9PkJZatIy2E/n9TD+db53TvqWbn2PHvhNWWn0TUkMUCIQcg3n9or/Fs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8470
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213315-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,gmail.com,umich.edu];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213316-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5DF04DF239
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: C25C4DF845
 X-Rspamd-Action: no action
 
-On Wed, Feb 04, 2026 at 08:48:43AM +0900, HeeSu Kim wrote:
-> The `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround was added to
-> handle a rustdoc bug where target modifiers were not properly saved [1].
-> 
-> This bug was fixed in Rust 1.90.0 [2]. Restrict the workaround to only
-> apply for Rust 1.88.x and 1.89.x versions that are affected by the
-> bug, preserving ABI compatibility checks on newer compiler versions.
-> 
-> Add `rustc-max-version` macro to `scripts/Makefile.compiler` for
-> version upper bound checks, mirroring the existing `rustc-min-version`.
-> 
-> Link: https://github.com/rust-lang/rust/issues/144521 [1]
-> Link: https://github.com/rust-lang/rust/pull/144523 [2]
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Link: https://lore.kernel.org/rust-for-linux/DG4JM9PU51M0.1YRGM9HVTY24U@garyguo.net/
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com/
-> Cc: stable@vger.kernel.org # Useful in 6.18.y and later.
-> Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
 
-Acked-by: Nathan Chancellor <nathan@kernel.org>
 
-I assume Miguel will pick this up.
-
-> ---
-> Changes in v4:
-> - Add rustc-max-version macro for cleaner version bounds
-> - Use rustc-max-version instead of test-lt for readability
+On 2/2/2026 11:37 PM, Thomas Zimmermann wrote:
+> Hi,
 > 
-> Changes in v3:
-> - Remove Fixes: tag (this is a feature, not a fix)
-> - Use full URLs with Link: tags instead of GitHub-style references
-> - Add Link: to lore.kernel.org for Suggested-by attribution
-> - Add Cc: stable for potential backporting to 6.18.y
+> thanks for fixing this issue. Just FTR, I looked through the original 
+> implementation in the user-space driver and found the same bug. This 
+> code was added in 2008 by commit 62c8f0a ("Bug #16545: Add G200WB 
+> support.")
 > 
-> Changes in v2:
-> - Change approach: bound to affected Rust versions instead of ARM64-only
->   (the flag is simply ignored on non-ARM64 architectures)
+>   https://gitlab.freedesktop.org/xorg/driver/xf86-video-mga/-/blob/ 
+> master/src/mga_dacG.c?ref_type=heads#L740
 > 
->  rust/Makefile             | 3 ++-
->  scripts/Makefile.compiler | 4 ++++
->  2 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 5c0155b83454..1e8a75bc2878 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -136,7 +136,8 @@ pin_init-flags := \
->  
->  # `rustdoc` did not save the target modifiers, thus workaround for
->  # the time being (https://github.com/rust-lang/rust/issues/144521).
-> -rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
-> +# The bug was fixed in Rust 1.90.0, so only apply for 1.88.x and 1.89.x.
-> +rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),$(if $(call rustc-max-version,108999),-Cunsafe-allow-abi-mismatch=fixed-x18))
->  
->  # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
->  doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
-> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-> index ef91910de265..85268f6f1494 100644
-> --- a/scripts/Makefile.compiler
-> +++ b/scripts/Makefile.compiler
-> @@ -71,6 +71,10 @@ clang-min-version = $(call test-ge, $(CONFIG_CLANG_VERSION), $1)
->  # Usage: rustc-$(call rustc-min-version, 108500) += -Cfoo
->  rustc-min-version = $(call test-ge, $(CONFIG_RUSTC_VERSION), $1)
->  
-> +# rustc-max-version
-> +# Usage: rustc-$(call rustc-max-version, 109000) += -Cfoo
-> +rustc-max-version = $(call test-le, $(CONFIG_RUSTC_VERSION), $1)
-
-Minor meta comment: It is generally perferred to add a macro like this
-in a separate change to make it easier to backport if it is needed in
-the future.
-
->  # ld-option
->  # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
->  ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
-> -- 
-> 2.52.0
-> 
+Interesting note: the original code in the user-space driver used 
+usleep, and that then got translated to a udelay when coming over to the 
+kernel.
 
