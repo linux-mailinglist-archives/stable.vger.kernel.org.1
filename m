@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CDGEIaPgWl/HAMAu9opvQ
-	(envelope-from <stable+bounces-213170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 07:02:46 +0100
+	id 2JJGEneSgWl/HAMAu9opvQ
+	(envelope-from <stable+bounces-213171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 07:15:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8DDD4F12
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 07:02:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99490D51C4
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 07:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C3353005321
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 06:02:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15DFF30C62AB
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 06:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC30D369984;
-	Tue,  3 Feb 2026 06:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C1E36C597;
+	Tue,  3 Feb 2026 06:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOUIKdyA"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ccfjrplj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D32A2581;
-	Tue,  3 Feb 2026 06:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2069136BCE6;
+	Tue,  3 Feb 2026 06:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770098560; cv=none; b=L6u1RHlddhGS23kbX9G1ioNDFRF6RyZia0ZwofMmhPq/Hzonag7FPxNECQEdBAQ2O0WtDcSlTZruq95BNOeoHVwW+3MnWjghUgbkApXiT1wpSlsvjBhvV/hXTu3QPbdvebGlFpnPqABh+7QX2HUGk9XgQw269slYNn2eNdGEdHg=
+	t=1770099123; cv=none; b=DSWdUzQ4RbBL1S8V7YYpN80zaDNFwM5vYvu452iKgXe61Rudwo74HzWBmzNxw8EPvC0x8I6FOcwyh3KpM3VT2Ur+57NJdeN8W/nGYSnKvGjDCKr+TQXWQTaAR90/yuiyPIs8nIAOHa7nKgAcmccK0AV9YYeUpjcxvAIi+IOWXVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770098560; c=relaxed/simple;
-	bh=pp/VQls0NOdy2jWc1PwN0JrH1WCl9njf2+524akQWCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G0BZQyKt0JFiQeOZ6mT/18xK2mEI6HvzDwgWAR/aNbrlHRrbEmPooUuoVJLJy2AxjbPYn3/IeZUK2LT+S6eVoYFSTjG7lNDJ/3f7xCl2oE4qZx0JTJUnai2k0l3/JNC5WJLmuv0+TjOL8EH2MawG+8dMATlZd+vEr3LJb/1E2ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOUIKdyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3CDC116D0;
-	Tue,  3 Feb 2026 06:02:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770098560;
-	bh=pp/VQls0NOdy2jWc1PwN0JrH1WCl9njf2+524akQWCs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WOUIKdyATmjVCLGp8bV4YZCsT3qB3KOHDwDIesD4FC3MWbrKlYd9DuMQBR5HqM2LM
-	 Q50T1/KsBV48Ftl3bUPYorAG/CFGr30QWNcQ4jCR/+4QGwt4dH+RU3m66TTC8Q2Hxl
-	 w/GvFBAUfO3Bq8ANTV+a6y9uq1hEotufb7aEj2M9Gxzmr2A3ztpSkFtK6E98AcYPQ6
-	 4eXNpsTBFPaPE6nU82yoYj4mWrpHbV1EF+mpC6+xYOr56f/IawaHfuc8+PzjEdaRY9
-	 6UHTLlqEUuHvNVzaXEUbPTGFE0sPkCxcQ10hcNsLD4uQTDcAkPpwmJeAeA3sjZS/b1
-	 cuOy/ifs6IhQA==
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	tzungbi@kernel.org,
+	s=arc-20240116; t=1770099123; c=relaxed/simple;
+	bh=WGHG0SHoOjNTxAXTqG9WwF1/5Mv7Vj1kfDmkBSlEJXQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fKDbIbIi8lwZ5fOu8QI0iFyhkJZUT0Gnk0bdQDMtdqISFfhxq2EbE5jpnmmqXBitYZHKpRr/Ag/K/XnqYJYOcw+0yKmDuUB02y4f2RHeDjpt+QbwlagTbaoJ+UcO8ghSPc1lgSRduU9u6R+yAATccpafp+lHbclAMzLLZMmv87E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ccfjrplj; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=hj
+	tUfvkhoH+cOdZEdqNCO8r3yY6LIoVe24ODp9RcWUA=; b=ccfjrplj88UNB9wHaK
+	rm/XIVyxBlddXUkogviFy18/O+VJ2hMwgbqjqy3oqSuPDL1SCb+JdhE3p8/6Wvjc
+	LPuFXf6w3EDT2Y2Ex+5ZW3RMcdvwQE5B1Srl59VByaI+OFIluCMn2tT4/XGBLoHK
+	8K+wCql3qBfe6+E599bu58gq8=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCnDv33kIFpT3DFJw--.4984S2;
+	Tue, 03 Feb 2026 14:08:56 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2] gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
-Date: Tue,  3 Feb 2026 06:02:10 +0000
-Message-ID: <20260203060210.972243-1-tzungbi@kernel.org>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
+Cc: linux-kernel@vger.kernel.org,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1.y] team: Move team device type change at the end of team_port_add
+Date: Tue,  3 Feb 2026 14:08:48 +0800
+Message-Id: <20260203060848.1805797-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,268 +62,156 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCnDv33kIFpT3DFJw--.4984S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCF43Ww4fCryxKF45Kw4DArb_yoWrWw4rpF
+	W3X3WDtryDGay2gas3uw4jqF1Yq39aya42qry5tw1jkw1Yqry8AFWrtFy8KFy0kFWUCFWa
+	qF4YvF4kZw1jgF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zMpBfUUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+RgdtmmBkPiR4AAA37
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213170-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com,nvidia.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-213171-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzungbi@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[163.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5E8DDD4F12
+	TAGGED_RCPT(0.00)[stable,a2a3b519de727b0f7903];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 99490D51C4
 X-Rspamd-Action: no action
 
-Since commit aab5c6f20023 ("gpio: set device type for GPIO chips"),
-`gdev->dev.release` is unset.  As a result, the reference count to
-`gdev->dev` isn't dropped on the error handling paths.
+From: "Nikola Z. Ivanov" <zlatistiv@gmail.com>
 
-Drop the reference on errors.
+[ Upstream commit 0ae9cfc454ea5ead5f3ddbdfe2e70270d8e2c8ef ]
 
-Also reorder the instructions to make the error handling simpler.
-Now gpiochip_add_data_with_key() roughly looks like:
+Attempting to add a port device that is already up will expectedly fail,
+but not before modifying the team device header_ops.
 
-   >>> Some memory allocation.  Go to ERR ZONE 1 on errors.
-   >>> device_initialize().
+In the case of the syzbot reproducer the gre0 device is
+already in state UP when it attempts to add it as a
+port device of team0, this fails but before that
+header_ops->create of team0 is changed from eth_header to ipgre_header
+in the call to team_dev_type_check_change.
 
-   (gpiodev_release() takes over the responsibility for freeing the
-    resources of `gdev->dev`.  The subsequent error handling paths
-    shouldn't go through ERR ZONE 1 again which leads to double free.)
+Later when we end up in ipgre_header() struct ip_tunnel* points to nonsense
+as the private data of the device still holds a struct team.
 
-   >>> Some initialization mainly on `gdev`.
-   >>> The rest of initialization.  Go to ERR ZONE 2 on errors.
-   >>> Chip registration success and exit.
+Example sequence of iproute2 commands to reproduce the hang/BUG():
+ip link add dev team0 type team
+ip link add dev gre0 type gre
+ip link set dev gre0 up
+ip link set dev gre0 master team0
+ip link set dev team0 up
+ping -I team0 1.1.1.1
 
-   >>> ERR ZONE 2.  gpio_device_put() and exit.
-   >>> ERR ZONE 1.
+Move team_dev_type_check_change down where all other checks have passed
+as it changes the dev type with no way to restore it in case
+one of the checks that follow it fail.
 
-Cc: stable@vger.kernel.org
-Fixes: aab5c6f20023 ("gpio: set device type for GPIO chips")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Also make sure to preserve the origial mtu assignment:
+  - If port_dev is not the same type as dev, dev takes mtu from port_dev
+  - If port_dev is the same type as dev, port_dev takes mtu from dev
+
+This is done by adding a conditional before the call to dev_set_mtu
+to prevent it from assigning port_dev->mtu = dev->mtu and instead
+letting team_dev_type_check_change assign dev->mtu = port_dev->mtu.
+The conditional is needed because the patch moves the call to
+team_dev_type_check_change past dev_set_mtu.
+
+Testing:
+  - team device driver in-tree selftests
+  - Add/remove various devices as slaves of team device
+  - syzbot
+
+Reported-by: syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a2a3b519de727b0f7903
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20251122002027.695151-1-zlatistiv@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 ---
-v2:
-- Reorder the instructions again to make the error handling simpler which
-  fixes https://lore.kernel.org/all/20260116081036.352286-2-tzungbi@kernel.org
-  too.
-- Modify the commit message slightly.
+ drivers/net/team/team.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-v1: https://lore.kernel.org/all/20260116081036.352286-4-tzungbi@kernel.org
-
- drivers/gpio/gpiolib.c | 96 +++++++++++++++++++-----------------------
- 1 file changed, 43 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index c52200eaaaff..039cd3e56baf 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -893,13 +893,15 @@ static const struct device_type gpio_dev_type = {
- #define gcdev_unregister(gdev)		device_del(&(gdev)->dev)
- #endif
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index e315a1d3a9e9..ea2a7cea3f6a 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -1186,10 +1186,6 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		return -EPERM;
+ 	}
  
-+/*
-+ * An initial reference count has been held in gpiochip_add_data_with_key().
-+ * The caller should drop the reference via gpio_device_put() on errors.
-+ */
- static int gpiochip_setup_dev(struct gpio_device *gdev)
- {
- 	struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
- 	int ret;
- 
--	device_initialize(&gdev->dev);
+-	err = team_dev_type_check_change(dev, port_dev);
+-	if (err)
+-		return err;
 -
- 	/*
- 	 * If fwnode doesn't belong to another device, it's safe to clear its
- 	 * initialized flag.
-@@ -965,9 +967,11 @@ static void gpiochip_setup_devs(void)
- 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
- 				 srcu_read_lock_held(&gpio_devices_srcu)) {
- 		ret = gpiochip_setup_dev(gdev);
--		if (ret)
-+		if (ret) {
-+			gpio_device_put(gdev);
- 			dev_err(&gdev->dev,
- 				"Failed to initialize gpio device (%d)\n", ret);
+ 	if (port_dev->flags & IFF_UP) {
+ 		NL_SET_ERR_MSG(extack, "Device is up. Set it down before adding it as a team port");
+ 		netdev_err(dev, "Device %s is up. Set it down before adding it as a team port\n",
+@@ -1207,10 +1203,16 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 	INIT_LIST_HEAD(&port->qom_list);
+ 
+ 	port->orig.mtu = port_dev->mtu;
+-	err = dev_set_mtu(port_dev, dev->mtu);
+-	if (err) {
+-		netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
+-		goto err_set_mtu;
++	/*
++	 * MTU assignment will be handled in team_dev_type_check_change
++	 * if dev and port_dev are of different types
++	 */
++	if (dev->type == port_dev->type) {
++		err = dev_set_mtu(port_dev, dev->mtu);
++		if (err) {
++			netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
++			goto err_set_mtu;
 +		}
  	}
- }
  
-@@ -1048,71 +1052,67 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	int base = 0;
- 	int ret;
- 
--	/*
--	 * First: allocate and populate the internal stat container, and
--	 * set up the struct device.
--	 */
- 	gdev = kzalloc(sizeof(*gdev), GFP_KERNEL);
- 	if (!gdev)
- 		return -ENOMEM;
--
--	gdev->dev.type = &gpio_dev_type;
--	gdev->dev.bus = &gpio_bus_type;
--	gdev->dev.parent = gc->parent;
--	rcu_assign_pointer(gdev->chip, gc);
--
- 	gc->gpiodev = gdev;
- 	gpiochip_set_data(gc, data);
- 
--	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
--
- 	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
- 	if (ret < 0)
- 		goto err_free_gdev;
- 	gdev->id = ret;
- 
--	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
-+	ret = init_srcu_struct(&gdev->srcu);
- 	if (ret)
- 		goto err_free_ida;
-+	rcu_assign_pointer(gdev->chip, gc);
- 
--	if (gc->parent && gc->parent->driver)
--		gdev->owner = gc->parent->driver->owner;
--	else if (gc->owner)
--		/* TODO: remove chip->owner */
--		gdev->owner = gc->owner;
--	else
--		gdev->owner = THIS_MODULE;
-+	ret = init_srcu_struct(&gdev->desc_srcu);
-+	if (ret)
-+		goto err_cleanup_gdev_srcu;
-+
-+	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
-+	if (ret)
-+		goto err_cleanup_desc_srcu;
-+
-+	device_initialize(&gdev->dev);
-+	gdev->dev.type = &gpio_dev_type;
-+	gdev->dev.bus = &gpio_bus_type;
-+	gdev->dev.parent = gc->parent;
-+	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
- 
- 	ret = gpiochip_get_ngpios(gc, &gdev->dev);
- 	if (ret)
--		goto err_free_dev_name;
-+		goto err_put_device;
-+	gdev->ngpio = gc->ngpio;
- 
- 	gdev->descs = kcalloc(gc->ngpio, sizeof(*gdev->descs), GFP_KERNEL);
- 	if (!gdev->descs) {
- 		ret = -ENOMEM;
--		goto err_free_dev_name;
-+		goto err_put_device;
- 	}
- 
- 	gdev->label = kstrdup_const(gc->label ?: "unknown", GFP_KERNEL);
- 	if (!gdev->label) {
- 		ret = -ENOMEM;
--		goto err_free_descs;
-+		goto err_put_device;
- 	}
- 
--	gdev->ngpio = gc->ngpio;
- 	gdev->can_sleep = gc->can_sleep;
--
- 	rwlock_init(&gdev->line_state_lock);
- 	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
- 	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
--
--	ret = init_srcu_struct(&gdev->srcu);
--	if (ret)
--		goto err_free_label;
--
--	ret = init_srcu_struct(&gdev->desc_srcu);
--	if (ret)
--		goto err_cleanup_gdev_srcu;
-+#ifdef CONFIG_PINCTRL
-+	INIT_LIST_HEAD(&gdev->pin_ranges);
-+#endif
-+	if (gc->parent && gc->parent->driver)
-+		gdev->owner = gc->parent->driver->owner;
-+	else if (gc->owner)
-+		/* TODO: remove chip->owner */
-+		gdev->owner = gc->owner;
-+	else
-+		gdev->owner = THIS_MODULE;
- 
- 	scoped_guard(mutex, &gpio_devices_lock) {
- 		/*
-@@ -1128,7 +1128,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 			if (base < 0) {
- 				ret = base;
- 				base = 0;
--				goto err_cleanup_desc_srcu;
-+				goto err_put_device;
- 			}
- 
- 			/*
-@@ -1148,14 +1148,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 		ret = gpiodev_add_to_list_unlocked(gdev);
- 		if (ret) {
- 			gpiochip_err(gc, "GPIO integer space overlap, cannot add chip\n");
--			goto err_cleanup_desc_srcu;
-+			goto err_put_device;
+ 	memcpy(port->orig.dev_addr, port_dev->dev_addr, port_dev->addr_len);
+@@ -1285,6 +1287,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
  		}
  	}
  
--#ifdef CONFIG_PINCTRL
--	INIT_LIST_HEAD(&gdev->pin_ranges);
--#endif
--
- 	if (gc->names)
- 		gpiochip_set_desc_names(gc);
++	err = team_dev_type_check_change(dev, port_dev);
++	if (err)
++		goto err_set_dev_type;
++
+ 	if (dev->flags & IFF_UP) {
+ 		netif_addr_lock_bh(dev);
+ 		dev_uc_sync_multiple(port_dev, dev);
+@@ -1303,6 +1309,7 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
  
-@@ -1249,25 +1245,19 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	scoped_guard(mutex, &gpio_devices_lock)
- 		list_del_rcu(&gdev->list);
- 	synchronize_srcu(&gpio_devices_srcu);
--	if (gdev->dev.release) {
--		/* release() has been registered by gpiochip_setup_dev() */
--		gpio_device_put(gdev);
--		goto err_print_message;
--	}
-+err_put_device:
-+	gpio_device_put(gdev);
-+	goto err_print_message;
-+
- err_cleanup_desc_srcu:
- 	cleanup_srcu_struct(&gdev->desc_srcu);
- err_cleanup_gdev_srcu:
- 	cleanup_srcu_struct(&gdev->srcu);
--err_free_label:
--	kfree_const(gdev->label);
--err_free_descs:
--	kfree(gdev->descs);
--err_free_dev_name:
--	kfree(dev_name(&gdev->dev));
- err_free_ida:
- 	ida_free(&gpio_ida, gdev->id);
- err_free_gdev:
- 	kfree(gdev);
-+
- err_print_message:
- 	/* failures here can mean systems won't boot... */
- 	if (ret != -EPROBE_DEFER) {
+ 	return 0;
+ 
++err_set_dev_type:
+ err_set_slave_promisc:
+ 	__team_option_inst_del_port(team, port);
+ 
 -- 
-2.53.0.rc2.204.g2597b5adb4-goog
+2.34.1
 
 
