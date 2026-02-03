@@ -1,374 +1,192 @@
-Return-Path: <stable+bounces-213204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONO6NBzvgWlAMwMAu9opvQ
-	(envelope-from <stable+bounces-213204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:50:36 +0100
+	id gPC+DMrtgWkFMAMAu9opvQ
+	(envelope-from <stable+bounces-213207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:44:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F542D9547
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:50:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBC0D936C
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6487D30E629F
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:42:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 430D5303E391
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2722A340A63;
-	Tue,  3 Feb 2026 12:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB613451BB;
+	Tue,  3 Feb 2026 12:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mur9Kms/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eeez7ONV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2EC1C69D
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1837342CBD
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770122577; cv=none; b=VmX8QMhD+hsuHYSK7omI7gX1053x/3eyMAnUq6B60/GMkqE3wcOd0JPd1b28M6aRbw7Z+bN36qQ9r9m2K7+WCO+lTOm1T/WcO6L9/h8H8Fzxef1jyNAPm8BUW+dzVe4uxQeOb87GSo+v6RI3THgl2Oens8VAe/vOwPtexZajG2M=
+	t=1770122615; cv=none; b=l9ilt4my4d/azVisdJ+cs3tv6DyOq+93bG6kSlnxJ2o1DdazzxjEQ70CpSTCNO2bxR+tv1Iz9ThCCaWXORRCPbUR5dL0nZDYH6U4PR3Dt709OQ6f6336BbZQwJLmAEFD3+NYw6cY/DSxen1EFnD2mno6+dffbfWyyx6AxvuZ/o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770122577; c=relaxed/simple;
-	bh=KOBFcUykY4TWu3W5vdF2k7NxtjRsJ0Etta+h+BpJTeQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nuI9NhzbfWFga/gXbgdDyk0Zb4V7LGrQ1FrbTNd48/lsbxxRSYFiSd5Yecp7odJ0Ax8jot6nE0hZdO8R+i9418oiHJKyF2SUKeo/bsUwwUBOToutWPELa2brFjzHqtJHlxT5EnaiMHR9sQYFSpksEHZhUkwLUpbn84Pp/nE96Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mur9Kms/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8919C116D0;
-	Tue,  3 Feb 2026 12:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770122577;
-	bh=KOBFcUykY4TWu3W5vdF2k7NxtjRsJ0Etta+h+BpJTeQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Mur9Kms/DXsjs4pweRkcqca2789AJrjqmSgeyrj1w1Cb3givBHcJ/ZxpWonXKirZn
-	 DP3r3dl0mbX1MXThwCfa2XG0Omltm9U2XWB/2O3uJbgtrjYTtwYMXGkg9BekFytsig
-	 amcmvCra9wuncqqSsEhfaSY9CHDO48YQSUy+KhGo=
-Subject: FAILED: patch "[PATCH] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix" failed to apply to 6.6-stable tree
-To: krzysztof.kozlowski@oss.qualcomm.com,bartosz.golaszewski@oss.qualcomm.com,konrad.dybcio@oss.qualcomm.com,linusw@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 13:42:46 +0100
-Message-ID: <2026020346-reappoint-divided-0018@gregkh>
+	s=arc-20240116; t=1770122615; c=relaxed/simple;
+	bh=WBJJb48LvNCLB7eCJx4qgCbJuGlWDejCj8VJq/6cvn0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YAHSnw8Qxy+wss9E0rF2o29nEcFUVhHKs05TiMgcwjmL7EEGXsmFPRW8Jorp/WwlIgCk8dNK8/uZM4llenx4WPIX5J7ElNQd+kzqNgbs/u2m2Og/SH8u0F+Xi2XHAoq+mHInb8WTxER4s3O57piccWwxCohbHP23+JKdAZKhSRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eeez7ONV; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89461ccc46eso98318096d6.2
+        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 04:43:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770122613; x=1770727413; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X7TZeF/N6S3YuCMvZLz08GHYLrlP/fgxIlS8hkF8ABw=;
+        b=eeez7ONVYl9c2/NukjBvLCMLM5WKEchJ/7DjA8HalN56S3UDgcBQCO+ecrdMWrrkBO
+         +kGDSmrKayQhIL5UPz8epQKk5nbhoGarvKXpWVJZ1piQ65im1CxE0eO+Eko59C0bXzij
+         HohPYo0g7+VVaPpIiUdepDJhqG3mTwfibiGTzY+W1fv/sr5RfI8qOUgaCIhW1DOU+d4S
+         41nWR0Co0M+ANepxZCughXdcVm45YcQIQ50GjK8Ny8TYF7Y/I+DrheJGvyUSGSjmeo5/
+         Xcz1boQcRzIex1LJtH30x/ko46+8dWnWe5QFakAB+hlJWqToFU27F/0b/LBIiyptw6m1
+         E4mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770122613; x=1770727413;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X7TZeF/N6S3YuCMvZLz08GHYLrlP/fgxIlS8hkF8ABw=;
+        b=Q692Q3lDE6ZzE/LrbOtMtv7lAkpyrLLGEMJcfYcOe5rxOGeRDiK+kLTHt4C9uG19FT
+         2mjiXsujiWvVKAFQjkr/cG/RzFhB+GXPIRoFRds/RkUXi1AzVScKFx7MegkxTJto11u7
+         ikYiPaADOwWS1KUrv6SHApjq83nCLg+kS+AlxkKc73TSyCdrlttOqZ4vvFIUUaZxwhul
+         WYkluSYqFGcBrV9eQ3arV0IyTsypeuUO7F58TKoJ8iAX6tss0ZsfAXixh9tbT/M4uuFU
+         r49p0RtJLiN/bAMoMRWmk22QCTjMcKLRagQ17uuET0S4akdZoYD2d9+tk9dLgsWPkHHZ
+         w8UA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWcOrxQQAFEzS4gEDKOM381xUYFndEQ+GRVQ5oulOgNdE8y2A73X/t3NmqsatMHYK9XWnYmv8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqHxC8R05bGCLKHDNOwzDHGZeTtnwUAEUSMG2rbPRiyC85eVG6
+	ZsGwTy1ep4Q88LZETGjP0z4zikzcy0oxOBM9z4DREpNU81R7W+jD6il4
+X-Gm-Gg: AZuq6aKYIqDNkqaRDSdxDKsPPujUtlH8J7b/j6f3fjDKMOQWenmgAjItoGQ6f6PRZON
+	QN4ke/++l8Vo6WBND97bsxW7AvfAeFTV0k9bOKNsgg+sp5ImZjlPVeJozi96BtqMw0D7awcLO/O
+	vEKAURptctQY1JOxZsx/tCT8qoXsBtkc1XlVUxB/yPlDnZfhldr0rNuqh/PPUwruObL8ZjvE/5g
+	mvogUkDDKKpag8QzFWVM+nv4t8ryihBqc2xj14ed1iIvo8hG4dEK2GEMTM02kBuKJVQ/F+51zFA
+	EYOwMRq7EtGe4XYhzXvbGvG7tD0wFFG2vBs9xA8QRMJufS7VE8ujN8q2plvGvWlLDxc6jVQorqy
+	t619c8/LxrLC1krk60OiOuSQyyYKj0GxgPY9mSfL7G8z/oEDggMPGyo/+JtpIFqBB/paVvnnqx6
+	OFK50HuzB7muyKy2ije0t9
+X-Received: by 2002:ad4:5dee:0:b0:894:2d44:509e with SMTP id 6a1803df08f44-894e9f85e2emr227219146d6.23.1770122612794;
+        Tue, 03 Feb 2026 04:43:32 -0800 (PST)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d36c85b9sm132915776d6.24.2026.02.03.04.43.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 04:43:32 -0800 (PST)
+From: Kevin Hao <haokexin@gmail.com>
+Date: Tue, 03 Feb 2026 20:43:08 +0800
+Subject: [PATCH net] net: ti: icssg-prueth: Add dependency on HSR
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260203-icssg-dep-v1-1-bacaf5234fb3@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAFvtgWkC/x3MQQqAIBBG4avErBPUoKirRIu035qNiRMRSHdPW
+ n7weIUEmSE0NYUybhY+Y4VpG/LHGnco3qrJattrqzvFXmRXG5JyYxiCtw7GgGqfMgI//2umiIu
+ W9/0Akv5yk2AAAAA=
+X-Change-ID: 20260203-icssg-dep-b9f7fc2be11e
+To: netdev@vger.kernel.org
+Cc: Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org, 
+ MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+X-Mailer: b4 0.14.2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213204-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,ti.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213207-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
-X-Rspamd-Queue-Id: 2F542D9547
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,lunn.ch:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CEBC0D936C
 X-Rspamd-Action: no action
 
+Commit 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame
+forward offload") introduces support for offloading HSR frame forwarding,
+which relies on functions such as is_hsr_master() provided by the HSR
+module. Therefore, a dependency on HSR should be added for this driver.
+Otherwise, the following build failures will occur when icssg-prueth is
+built-in while HSR is configured as a module:
+  ld.lld: error: undefined symbol: is_hsr_master
+  >>> referenced by icssg_prueth.c:710 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:710)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:681 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:681)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:1812 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:1812)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(prueth_netdevice_event) in archive vmlinux.a
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+  ld.lld: error: undefined symbol: hsr_get_port_ndev
+  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
+  >>>               drivers/net/etherneteth_hsr_del_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:683 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:683)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
+  >>> referenced 1 more times
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1fbe3abb449c5ef2178e1c3e3e8b9a43a7a410ac
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020346-reappoint-divided-0018@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1fbe3abb449c5ef2178e1c3e3e8b9a43a7a410ac Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Thu, 8 Jan 2026 11:07:22 +0100
-Subject: [PATCH] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix
- I2S2 and SWR TX pins
-
-Qualcomm SC7280 and SM8350 SoCs have slightly different LPASS audio
-blocks (v9.4.5 and v9.2), however the LPASS LPI pin controllers are
-exactly the same.  The driver for SM8350 has two issues, which can be
-fixed by simply moving over to SC7280 driver which has them correct:
-
-1. "i2s2_data_groups" listed twice GPIO12, but should have both GPIO12
-   and GPIO13,
-
-2. "swr_tx_data_groups" contained GPIO5 for "swr_tx_data2" function, but
-   that function is also available on GPIO14, thus listing it twice is
-   not necessary.  OTOH, GPIO5 has also "swr_rx_data1", so selecting
-   swr_rx_data function should not block  the TX one.
-
-Fixes: be9f6d56381d ("pinctrl: qcom: sm8350-lpass-lpi: add SM8350 LPASS TLMM")
+Fixes: 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame forward offload")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+Cc: MD Danish Anwar <danishanwar@ti.com>
+Cc: Roger Quadros <rogerq@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+---
+ drivers/net/ethernet/ti/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 45288ec9eaf7..35e9eb180c9a 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -670,7 +670,6 @@ CONFIG_PINCTRL_LPASS_LPI=m
- CONFIG_PINCTRL_SC7280_LPASS_LPI=m
- CONFIG_PINCTRL_SM6115_LPASS_LPI=m
- CONFIG_PINCTRL_SM8250_LPASS_LPI=m
--CONFIG_PINCTRL_SM8350_LPASS_LPI=m
- CONFIG_PINCTRL_SM8450_LPASS_LPI=m
- CONFIG_PINCTRL_SC8280XP_LPASS_LPI=m
- CONFIG_PINCTRL_SM8550_LPASS_LPI=m
-diff --git a/drivers/pinctrl/qcom/Kconfig b/drivers/pinctrl/qcom/Kconfig
-index c480e8b78503..f56592411cf6 100644
---- a/drivers/pinctrl/qcom/Kconfig
-+++ b/drivers/pinctrl/qcom/Kconfig
-@@ -61,13 +61,14 @@ config PINCTRL_LPASS_LPI
- 	  (Low Power Island) found on the Qualcomm Technologies Inc SoCs.
- 
- config PINCTRL_SC7280_LPASS_LPI
--	tristate "Qualcomm Technologies Inc SC7280 LPASS LPI pin controller driver"
-+	tristate "Qualcomm Technologies Inc SC7280 and SM8350 LPASS LPI pin controller driver"
- 	depends on ARM64 || COMPILE_TEST
- 	depends on PINCTRL_LPASS_LPI
+diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
+index fe5b2926d8ab060d83f5a58d91e749a45c6cea18..48aa3457fd6d7fd99147e4fb1148559d6fcba082 100644
+--- a/drivers/net/ethernet/ti/Kconfig
++++ b/drivers/net/ethernet/ti/Kconfig
+@@ -192,6 +192,7 @@ config TI_ICSSG_PRUETH
+ 	depends on NET_SWITCHDEV
+ 	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
+ 	depends on PTP_1588_CLOCK_OPTIONAL
++	depends on HSR
  	help
- 	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
- 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
--	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280 platform.
-+	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280
-+	  and SM8350 platforms.
- 
- config PINCTRL_SDM660_LPASS_LPI
- 	tristate "Qualcomm Technologies Inc SDM660 LPASS LPI pin controller driver"
-@@ -106,16 +107,6 @@ config PINCTRL_SM8250_LPASS_LPI
- 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
- 	  (Low Power Island) found on the Qualcomm Technologies Inc SM8250 platform.
- 
--config PINCTRL_SM8350_LPASS_LPI
--	tristate "Qualcomm Technologies Inc SM8350 LPASS LPI pin controller driver"
--	depends on ARM64 || COMPILE_TEST
--	depends on PINCTRL_LPASS_LPI
--	help
--	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
--	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
--	  (Low Power Island) found on the Qualcomm Technologies Inc SM8350
--	  platform.
--
- config PINCTRL_SM8450_LPASS_LPI
- 	tristate "Qualcomm Technologies Inc SM8450 LPASS LPI pin controller driver"
- 	depends on ARM64 || COMPILE_TEST
-diff --git a/drivers/pinctrl/qcom/Makefile b/drivers/pinctrl/qcom/Makefile
-index 748b17a77b2c..4269d1781015 100644
---- a/drivers/pinctrl/qcom/Makefile
-+++ b/drivers/pinctrl/qcom/Makefile
-@@ -64,7 +64,6 @@ obj-$(CONFIG_PINCTRL_SM8150) += pinctrl-sm8150.o
- obj-$(CONFIG_PINCTRL_SM8250) += pinctrl-sm8250.o
- obj-$(CONFIG_PINCTRL_SM8250_LPASS_LPI) += pinctrl-sm8250-lpass-lpi.o
- obj-$(CONFIG_PINCTRL_SM8350) += pinctrl-sm8350.o
--obj-$(CONFIG_PINCTRL_SM8350_LPASS_LPI) += pinctrl-sm8350-lpass-lpi.o
- obj-$(CONFIG_PINCTRL_SM8450) += pinctrl-sm8450.o
- obj-$(CONFIG_PINCTRL_SM8450_LPASS_LPI) += pinctrl-sm8450-lpass-lpi.o
- obj-$(CONFIG_PINCTRL_SM8550) += pinctrl-sm8550.o
-diff --git a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
-index 1161f0a91a00..750f410311a8 100644
---- a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
-@@ -131,6 +131,9 @@ static const struct of_device_id lpi_pinctrl_of_match[] = {
- 	{
- 	       .compatible = "qcom,sc7280-lpass-lpi-pinctrl",
- 	       .data = &sc7280_lpi_data,
-+	}, {
-+	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
-+	       .data = &sc7280_lpi_data,
- 	},
- 	{ }
- };
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
-deleted file mode 100644
-index 7b146b4acfdf..000000000000
---- a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
-+++ /dev/null
-@@ -1,151 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2020-2023 Linaro Ltd.
-- */
--
--#include <linux/gpio/driver.h>
--#include <linux/module.h>
--#include <linux/platform_device.h>
--
--#include "pinctrl-lpass-lpi.h"
--
--enum lpass_lpi_functions {
--	LPI_MUX_dmic1_clk,
--	LPI_MUX_dmic1_data,
--	LPI_MUX_dmic2_clk,
--	LPI_MUX_dmic2_data,
--	LPI_MUX_dmic3_clk,
--	LPI_MUX_dmic3_data,
--	LPI_MUX_i2s1_clk,
--	LPI_MUX_i2s1_data,
--	LPI_MUX_i2s1_ws,
--	LPI_MUX_i2s2_clk,
--	LPI_MUX_i2s2_data,
--	LPI_MUX_i2s2_ws,
--	LPI_MUX_qua_mi2s_data,
--	LPI_MUX_qua_mi2s_sclk,
--	LPI_MUX_qua_mi2s_ws,
--	LPI_MUX_swr_rx_clk,
--	LPI_MUX_swr_rx_data,
--	LPI_MUX_swr_tx_clk,
--	LPI_MUX_swr_tx_data,
--	LPI_MUX_wsa_swr_clk,
--	LPI_MUX_wsa_swr_data,
--	LPI_MUX_gpio,
--	LPI_MUX__,
--};
--
--static const struct pinctrl_pin_desc sm8350_lpi_pins[] = {
--	PINCTRL_PIN(0, "gpio0"),
--	PINCTRL_PIN(1, "gpio1"),
--	PINCTRL_PIN(2, "gpio2"),
--	PINCTRL_PIN(3, "gpio3"),
--	PINCTRL_PIN(4, "gpio4"),
--	PINCTRL_PIN(5, "gpio5"),
--	PINCTRL_PIN(6, "gpio6"),
--	PINCTRL_PIN(7, "gpio7"),
--	PINCTRL_PIN(8, "gpio8"),
--	PINCTRL_PIN(9, "gpio9"),
--	PINCTRL_PIN(10, "gpio10"),
--	PINCTRL_PIN(11, "gpio11"),
--	PINCTRL_PIN(12, "gpio12"),
--	PINCTRL_PIN(13, "gpio13"),
--	PINCTRL_PIN(14, "gpio14"),
--};
--
--static const char * const swr_tx_clk_groups[] = { "gpio0" };
--static const char * const swr_tx_data_groups[] = { "gpio1", "gpio2", "gpio5", "gpio14" };
--static const char * const swr_rx_clk_groups[] = { "gpio3" };
--static const char * const swr_rx_data_groups[] = { "gpio4", "gpio5" };
--static const char * const dmic1_clk_groups[] = { "gpio6" };
--static const char * const dmic1_data_groups[] = { "gpio7" };
--static const char * const dmic2_clk_groups[] = { "gpio8" };
--static const char * const dmic2_data_groups[] = { "gpio9" };
--static const char * const i2s2_clk_groups[] = { "gpio10" };
--static const char * const i2s2_ws_groups[] = { "gpio11" };
--static const char * const dmic3_clk_groups[] = { "gpio12" };
--static const char * const dmic3_data_groups[] = { "gpio13" };
--static const char * const qua_mi2s_sclk_groups[] = { "gpio0" };
--static const char * const qua_mi2s_ws_groups[] = { "gpio1" };
--static const char * const qua_mi2s_data_groups[] = { "gpio2", "gpio3", "gpio4" };
--static const char * const i2s1_clk_groups[] = { "gpio6" };
--static const char * const i2s1_ws_groups[] = { "gpio7" };
--static const char * const i2s1_data_groups[] = { "gpio8", "gpio9" };
--static const char * const wsa_swr_clk_groups[] = { "gpio10" };
--static const char * const wsa_swr_data_groups[] = { "gpio11" };
--static const char * const i2s2_data_groups[] = { "gpio12", "gpio12" };
--
--static const struct lpi_pingroup sm8350_groups[] = {
--	LPI_PINGROUP(0, 0, swr_tx_clk, qua_mi2s_sclk, _, _),
--	LPI_PINGROUP(1, 2, swr_tx_data, qua_mi2s_ws, _, _),
--	LPI_PINGROUP(2, 4, swr_tx_data, qua_mi2s_data, _, _),
--	LPI_PINGROUP(3, 8, swr_rx_clk, qua_mi2s_data, _, _),
--	LPI_PINGROUP(4, 10, swr_rx_data, qua_mi2s_data, _, _),
--	LPI_PINGROUP(5, 12, swr_tx_data, swr_rx_data, _, _),
--	LPI_PINGROUP(6, LPI_NO_SLEW, dmic1_clk, i2s1_clk, _,  _),
--	LPI_PINGROUP(7, LPI_NO_SLEW, dmic1_data, i2s1_ws, _, _),
--	LPI_PINGROUP(8, LPI_NO_SLEW, dmic2_clk, i2s1_data, _, _),
--	LPI_PINGROUP(9, LPI_NO_SLEW, dmic2_data, i2s1_data, _, _),
--	LPI_PINGROUP(10, 16, i2s2_clk, wsa_swr_clk, _, _),
--	LPI_PINGROUP(11, 18, i2s2_ws, wsa_swr_data, _, _),
--	LPI_PINGROUP(12, LPI_NO_SLEW, dmic3_clk, i2s2_data, _, _),
--	LPI_PINGROUP(13, LPI_NO_SLEW, dmic3_data, i2s2_data, _, _),
--	LPI_PINGROUP(14, 6, swr_tx_data, _, _, _),
--};
--
--static const struct lpi_function sm8350_functions[] = {
--	LPI_FUNCTION(dmic1_clk),
--	LPI_FUNCTION(dmic1_data),
--	LPI_FUNCTION(dmic2_clk),
--	LPI_FUNCTION(dmic2_data),
--	LPI_FUNCTION(dmic3_clk),
--	LPI_FUNCTION(dmic3_data),
--	LPI_FUNCTION(i2s1_clk),
--	LPI_FUNCTION(i2s1_data),
--	LPI_FUNCTION(i2s1_ws),
--	LPI_FUNCTION(i2s2_clk),
--	LPI_FUNCTION(i2s2_data),
--	LPI_FUNCTION(i2s2_ws),
--	LPI_FUNCTION(qua_mi2s_data),
--	LPI_FUNCTION(qua_mi2s_sclk),
--	LPI_FUNCTION(qua_mi2s_ws),
--	LPI_FUNCTION(swr_rx_clk),
--	LPI_FUNCTION(swr_rx_data),
--	LPI_FUNCTION(swr_tx_clk),
--	LPI_FUNCTION(swr_tx_data),
--	LPI_FUNCTION(wsa_swr_clk),
--	LPI_FUNCTION(wsa_swr_data),
--};
--
--static const struct lpi_pinctrl_variant_data sm8350_lpi_data = {
--	.pins = sm8350_lpi_pins,
--	.npins = ARRAY_SIZE(sm8350_lpi_pins),
--	.groups = sm8350_groups,
--	.ngroups = ARRAY_SIZE(sm8350_groups),
--	.functions = sm8350_functions,
--	.nfunctions = ARRAY_SIZE(sm8350_functions),
--};
--
--static const struct of_device_id lpi_pinctrl_of_match[] = {
--	{
--	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
--	       .data = &sm8350_lpi_data,
--	},
--	{ }
--};
--MODULE_DEVICE_TABLE(of, lpi_pinctrl_of_match);
--
--static struct platform_driver lpi_pinctrl_driver = {
--	.driver = {
--		   .name = "qcom-sm8350-lpass-lpi-pinctrl",
--		   .of_match_table = lpi_pinctrl_of_match,
--	},
--	.probe = lpi_pinctrl_probe,
--	.remove = lpi_pinctrl_remove,
--};
--module_platform_driver(lpi_pinctrl_driver);
--
--MODULE_AUTHOR("Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>");
--MODULE_DESCRIPTION("QTI SM8350 LPI GPIO pin control driver");
--MODULE_LICENSE("GPL");
+ 	  Support dual Gigabit Ethernet ports over the ICSSG PRU Subsystem.
+ 	  This subsystem is available starting with the AM65 platform.
+
+---
+base-commit: 193579fe01389bc21aff0051d13f24e8ea95b47d
+change-id: 20260203-icssg-dep-b9f7fc2be11e
+
+Best regards,
+-- 
+Kevin Hao <haokexin@gmail.com>
 
 
