@@ -1,192 +1,222 @@
-Return-Path: <stable+bounces-213207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPC+DMrtgWkFMAMAu9opvQ
-	(envelope-from <stable+bounces-213207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:44:58 +0100
+	id MMZlIaftgWkFMAMAu9opvQ
+	(envelope-from <stable+bounces-213205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:44:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBC0D936C
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAE6D9327
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 430D5303E391
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:43:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 65CD7303322D
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB613451BB;
-	Tue,  3 Feb 2026 12:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BC9342CBD;
+	Tue,  3 Feb 2026 12:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eeez7ONV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPUbiPRj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1837342CBD
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2BB31A7F2
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770122615; cv=none; b=l9ilt4my4d/azVisdJ+cs3tv6DyOq+93bG6kSlnxJ2o1DdazzxjEQ70CpSTCNO2bxR+tv1Iz9ThCCaWXORRCPbUR5dL0nZDYH6U4PR3Dt709OQ6f6336BbZQwJLmAEFD3+NYw6cY/DSxen1EFnD2mno6+dffbfWyyx6AxvuZ/o4=
+	t=1770122596; cv=none; b=CJ20zjT199WcNJR/GbRjMuRK/vgOalIiP3Nw+jtfkVzNrHGDTlUsKCPq/ix5joQ4DTjoFq4cmpB2o9eH+XmD+i5r5kMCqPVEL0vlUCehG9XNSxge8w2hb35irJ0njDoOKL3KmoQ/KzAXyFm4Q3QNy7zPEla7RO6q/ty7MZvpjJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770122615; c=relaxed/simple;
-	bh=WBJJb48LvNCLB7eCJx4qgCbJuGlWDejCj8VJq/6cvn0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YAHSnw8Qxy+wss9E0rF2o29nEcFUVhHKs05TiMgcwjmL7EEGXsmFPRW8Jorp/WwlIgCk8dNK8/uZM4llenx4WPIX5J7ElNQd+kzqNgbs/u2m2Og/SH8u0F+Xi2XHAoq+mHInb8WTxER4s3O57piccWwxCohbHP23+JKdAZKhSRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eeez7ONV; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89461ccc46eso98318096d6.2
-        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 04:43:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770122613; x=1770727413; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X7TZeF/N6S3YuCMvZLz08GHYLrlP/fgxIlS8hkF8ABw=;
-        b=eeez7ONVYl9c2/NukjBvLCMLM5WKEchJ/7DjA8HalN56S3UDgcBQCO+ecrdMWrrkBO
-         +kGDSmrKayQhIL5UPz8epQKk5nbhoGarvKXpWVJZ1piQ65im1CxE0eO+Eko59C0bXzij
-         HohPYo0g7+VVaPpIiUdepDJhqG3mTwfibiGTzY+W1fv/sr5RfI8qOUgaCIhW1DOU+d4S
-         41nWR0Co0M+ANepxZCughXdcVm45YcQIQ50GjK8Ny8TYF7Y/I+DrheJGvyUSGSjmeo5/
-         Xcz1boQcRzIex1LJtH30x/ko46+8dWnWe5QFakAB+hlJWqToFU27F/0b/LBIiyptw6m1
-         E4mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770122613; x=1770727413;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X7TZeF/N6S3YuCMvZLz08GHYLrlP/fgxIlS8hkF8ABw=;
-        b=Q692Q3lDE6ZzE/LrbOtMtv7lAkpyrLLGEMJcfYcOe5rxOGeRDiK+kLTHt4C9uG19FT
-         2mjiXsujiWvVKAFQjkr/cG/RzFhB+GXPIRoFRds/RkUXi1AzVScKFx7MegkxTJto11u7
-         ikYiPaADOwWS1KUrv6SHApjq83nCLg+kS+AlxkKc73TSyCdrlttOqZ4vvFIUUaZxwhul
-         WYkluSYqFGcBrV9eQ3arV0IyTsypeuUO7F58TKoJ8iAX6tss0ZsfAXixh9tbT/M4uuFU
-         r49p0RtJLiN/bAMoMRWmk22QCTjMcKLRagQ17uuET0S4akdZoYD2d9+tk9dLgsWPkHHZ
-         w8UA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWcOrxQQAFEzS4gEDKOM381xUYFndEQ+GRVQ5oulOgNdE8y2A73X/t3NmqsatMHYK9XWnYmv8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqHxC8R05bGCLKHDNOwzDHGZeTtnwUAEUSMG2rbPRiyC85eVG6
-	ZsGwTy1ep4Q88LZETGjP0z4zikzcy0oxOBM9z4DREpNU81R7W+jD6il4
-X-Gm-Gg: AZuq6aKYIqDNkqaRDSdxDKsPPujUtlH8J7b/j6f3fjDKMOQWenmgAjItoGQ6f6PRZON
-	QN4ke/++l8Vo6WBND97bsxW7AvfAeFTV0k9bOKNsgg+sp5ImZjlPVeJozi96BtqMw0D7awcLO/O
-	vEKAURptctQY1JOxZsx/tCT8qoXsBtkc1XlVUxB/yPlDnZfhldr0rNuqh/PPUwruObL8ZjvE/5g
-	mvogUkDDKKpag8QzFWVM+nv4t8ryihBqc2xj14ed1iIvo8hG4dEK2GEMTM02kBuKJVQ/F+51zFA
-	EYOwMRq7EtGe4XYhzXvbGvG7tD0wFFG2vBs9xA8QRMJufS7VE8ujN8q2plvGvWlLDxc6jVQorqy
-	t619c8/LxrLC1krk60OiOuSQyyYKj0GxgPY9mSfL7G8z/oEDggMPGyo/+JtpIFqBB/paVvnnqx6
-	OFK50HuzB7muyKy2ije0t9
-X-Received: by 2002:ad4:5dee:0:b0:894:2d44:509e with SMTP id 6a1803df08f44-894e9f85e2emr227219146d6.23.1770122612794;
-        Tue, 03 Feb 2026 04:43:32 -0800 (PST)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d36c85b9sm132915776d6.24.2026.02.03.04.43.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 04:43:32 -0800 (PST)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Tue, 03 Feb 2026 20:43:08 +0800
-Subject: [PATCH net] net: ti: icssg-prueth: Add dependency on HSR
+	s=arc-20240116; t=1770122596; c=relaxed/simple;
+	bh=0J/B0jaarvaOWl20XASl8BoV5YYDtu6vmojeWjr0dQM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PKCZYqXjb65QV6DHm/QEpnKrqwT2dgQ28fpjoPHNkA61E818r1V24D7QxDcc6Uuzibg0aDt2ivdAZwE5LCSqlz65PvDEIUu4pwKFsyBpbtCXGpBXmfydOrvY1WZt7FfDKuMMjDEnkAUqdbe3YrNI2uZodvGWT/hv/OaFDQzD0QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPUbiPRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BCBC116D0;
+	Tue,  3 Feb 2026 12:43:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770122596;
+	bh=0J/B0jaarvaOWl20XASl8BoV5YYDtu6vmojeWjr0dQM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=BPUbiPRjhcyU/IdJiuOQ09un6YSJezxrKzmXUUJdp/jmNVzDaXEaZWb0O7i36ZtaS
+	 e2k8A2u3kFJNk9JV/R5OxzFKekygFQYIOkeHs8XLMlierJY5ziOvM4wUdrlVX5nx8h
+	 cYHycKpON6tUxTH9nSbdtRa1Mrdr7z/fggSM9RFU=
+Subject: FAILED: patch "[PATCH] perf: sched: Fix perf crash with new is_user_task() helper" failed to apply to 6.12-stable tree
+To: rostedt@goodmis.org,linux@roeck-us.net,peterz@infradead.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 03 Feb 2026 13:43:13 +0100
+Message-ID: <2026020313-shone-sister-6db5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260203-icssg-dep-v1-1-bacaf5234fb3@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAFvtgWkC/x3MQQqAIBBG4avErBPUoKirRIu035qNiRMRSHdPW
- n7weIUEmSE0NYUybhY+Y4VpG/LHGnco3qrJattrqzvFXmRXG5JyYxiCtw7GgGqfMgI//2umiIu
- W9/0Akv5yk2AAAAA=
-X-Change-ID: 20260203-icssg-dep-b9f7fc2be11e
-To: netdev@vger.kernel.org
-Cc: Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org, 
- MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,ti.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213207-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-213205-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,lunn.ch:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CEBC0D936C
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email]
+X-Rspamd-Queue-Id: 2AAE6D9327
 X-Rspamd-Action: no action
 
-Commit 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame
-forward offload") introduces support for offloading HSR frame forwarding,
-which relies on functions such as is_hsr_master() provided by the HSR
-module. Therefore, a dependency on HSR should be added for this driver.
-Otherwise, the following build failures will occur when icssg-prueth is
-built-in while HSR is configured as a module:
-  ld.lld: error: undefined symbol: is_hsr_master
-  >>> referenced by icssg_prueth.c:710 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:710)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:681 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:681)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:1812 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:1812)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(prueth_netdevice_event) in archive vmlinux.a
 
-  ld.lld: error: undefined symbol: hsr_get_port_ndev
-  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
-  >>>               drivers/net/etherneteth_hsr_del_mcast) in archive vmlinux.a
-  >>> referenced by icssg_prueth.c:683 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:683)
-  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
-  >>> referenced 1 more times
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame forward offload")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 76ed27608f7dd235b727ebbb12163438c2fbb617
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020313-shone-sister-6db5@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 76ed27608f7dd235b727ebbb12163438c2fbb617 Mon Sep 17 00:00:00 2001
+From: Steven Rostedt <rostedt@goodmis.org>
+Date: Thu, 29 Jan 2026 10:28:21 -0500
+Subject: [PATCH] perf: sched: Fix perf crash with new is_user_task() helper
+
+In order to do a user space stacktrace the current task needs to be a user
+task that has executed in user space. It use to be possible to test if a
+task is a user task or not by simply checking the task_struct mm field. If
+it was non NULL, it was a user task and if not it was a kernel task.
+
+But things have changed over time, and some kernel tasks now have their
+own mm field.
+
+An idea was made to instead test PF_KTHREAD and two functions were used to
+wrap this check in case it became more complex to test if a task was a
+user task or not[1]. But this was rejected and the C code simply checked
+the PF_KTHREAD directly.
+
+It was later found that not all kernel threads set PF_KTHREAD. The io-uring
+helpers instead set PF_USER_WORKER and this needed to be added as well.
+
+But checking the flags is still not enough. There's a very small window
+when a task exits that it frees its mm field and it is set back to NULL.
+If perf were to trigger at this moment, the flags test would say its a
+user space task but when perf would read the mm field it would crash with
+at NULL pointer dereference.
+
+Now there are flags that can be used to test if a task is exiting, but
+they are set in areas that perf may still want to profile the user space
+task (to see where it exited). The only real test is to check both the
+flags and the mm field.
+
+Instead of making this modification in every location, create a new
+is_user_task() helper function that does all the tests needed to know if
+it is safe to read the user space memory or not.
+
+[1] https://lore.kernel.org/all/20250425204120.639530125@goodmis.org/
+
+Fixes: 90942f9fac05 ("perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL")
+Closes: https://lore.kernel.org/all/0d877e6f-41a7-4724-875d-0b0a27b8a545@roeck-us.net/
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 Cc: stable@vger.kernel.org
----
-Cc: MD Danish Anwar <danishanwar@ti.com>
-Cc: Roger Quadros <rogerq@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
----
- drivers/net/ethernet/ti/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Link: https://patch.msgid.link/20260129102821.46484722@gandalf.local.home
 
-diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
-index fe5b2926d8ab060d83f5a58d91e749a45c6cea18..48aa3457fd6d7fd99147e4fb1148559d6fcba082 100644
---- a/drivers/net/ethernet/ti/Kconfig
-+++ b/drivers/net/ethernet/ti/Kconfig
-@@ -192,6 +192,7 @@ config TI_ICSSG_PRUETH
- 	depends on NET_SWITCHDEV
- 	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
- 	depends on PTP_1588_CLOCK_OPTIONAL
-+	depends on HSR
- 	help
- 	  Support dual Gigabit Ethernet ports over the ICSSG PRU Subsystem.
- 	  This subsystem is available starting with the AM65 platform.
-
----
-base-commit: 193579fe01389bc21aff0051d13f24e8ea95b47d
-change-id: 20260203-icssg-dep-b9f7fc2be11e
-
-Best regards,
--- 
-Kevin Hao <haokexin@gmail.com>
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index da0133524d08..5f00b5ed0f3b 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1776,6 +1776,11 @@ static __always_inline bool is_percpu_thread(void)
+ 		(current->nr_cpus_allowed  == 1);
+ }
+ 
++static __always_inline bool is_user_task(struct task_struct *task)
++{
++	return task->mm && !(task->flags & (PF_KTHREAD | PF_USER_WORKER));
++}
++
+ /* Per-process atomic flags. */
+ #define PFA_NO_NEW_PRIVS		0	/* May not gain new privileges. */
+ #define PFA_SPREAD_PAGE			1	/* Spread page cache over cpuset */
+diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
+index 1f6589578703..9d24b6e0c91f 100644
+--- a/kernel/events/callchain.c
++++ b/kernel/events/callchain.c
+@@ -246,7 +246,7 @@ get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
+ 
+ 	if (user && !crosstask) {
+ 		if (!user_mode(regs)) {
+-			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
++			if (!is_user_task(current))
+ 				goto exit_put;
+ 			regs = task_pt_regs(current);
+ 		}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index a0fa488bce84..8cca80094624 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7460,7 +7460,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
+ 	if (user_mode(regs)) {
+ 		regs_user->abi = perf_reg_abi(current);
+ 		regs_user->regs = regs;
+-	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++	} else if (is_user_task(current)) {
+ 		perf_get_regs_user(regs_user, regs);
+ 	} else {
+ 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
+@@ -8100,7 +8100,7 @@ static u64 perf_virt_to_phys(u64 virt)
+ 		 * Try IRQ-safe get_user_page_fast_only first.
+ 		 * If failed, leave phys_addr as 0.
+ 		 */
+-		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++		if (is_user_task(current)) {
+ 			struct page *p;
+ 
+ 			pagefault_disable();
+@@ -8215,7 +8215,7 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
+ {
+ 	bool kernel = !event->attr.exclude_callchain_kernel;
+ 	bool user   = !event->attr.exclude_callchain_user &&
+-		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
++		is_user_task(current);
+ 	/* Disallow cross-task user callchains. */
+ 	bool crosstask = event->ctx->task && event->ctx->task != current;
+ 	bool defer_user = IS_ENABLED(CONFIG_UNWIND_USER) && user &&
 
 
