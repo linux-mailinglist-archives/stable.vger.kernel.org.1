@@ -1,366 +1,370 @@
-Return-Path: <stable+bounces-213281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIAoFhYqgmnFPwMAu9opvQ
-	(envelope-from <stable+bounces-213281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:02:14 +0100
+	id 4EXxLtwrgmlFQAMAu9opvQ
+	(envelope-from <stable+bounces-213282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:09:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66107DC6D1
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:02:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA72DC893
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 26C5F303D8D2
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 17:00:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E5F9C30595BC
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 17:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A100B3D34AA;
-	Tue,  3 Feb 2026 16:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDCF30CDBB;
+	Tue,  3 Feb 2026 17:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iQhHHHk5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFQinO4C"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBCE3D3491
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 16:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770137995; cv=fail; b=GJgGob7J+hGxS2uyEhmQrc6FDI7Vk5id7AcscPYGLJaUGXfSe5DAnpsA7VmYtqY1394VbKBEEW0ifHYKd29CXJwJTIIzibGXLK+Lw0xl5iX+qeTpcdLBDuu3EYMlVTA683iNNDvDAyv5gG1ele1upZ56XcAVm/4UmhNh7bWR6ok=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770137995; c=relaxed/simple;
-	bh=8s5BaRPDnyWug1PAliwqZ7omn1pu5jXCqNCmC+16B2I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nz5B17GEQQPc2XDMzhq7RnwblgtdqQD5mT3TT7GxXnwc8dMuAww6Lwpv9FU86KDztcMjr+66iWaFMcjo7DSABuywPt6S33Bs4jV/SxeuBUx6BTfICBdReRn0yBWH8S2klyWJwMLIkMrvHBqhPF4/Ue92gVnoNPdwFX4ddPoiG4c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iQhHHHk5; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770137994; x=1801673994;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=8s5BaRPDnyWug1PAliwqZ7omn1pu5jXCqNCmC+16B2I=;
-  b=iQhHHHk5igPAWHpM5k5QGWptRARePVH5clPDRBCXsL/y9WFl8chjHtex
-   N473wz/TYc3AXwf2qeg9PPuYUBO6iDiwkVLVx0Au5xQOknnvqQIh1c82M
-   wT9yCnCPUYC+ROKBX1k8lmxM3NLArTh14SJI0JFBRy5VXQ4IKfGVz1VtU
-   PmxtCpk1QSIGSJIS24Om1ddscPyml514n3Wl1iN5VLjrIM0XqbMJeRIdj
-   +GQB99HPHvfRX5iSio3+NZKK9GJ5L78lwKmGtn3h2n8UhdlPUqR4HMYZe
-   x+q5qqMYn3bTq60EoYLpuAoryqkgJcjECIaYcPz3VAFKDcaXz69Qel4cR
-   w==;
-X-CSE-ConnectionGUID: ZT2cj+T+SiC+ZNuAEe4V6g==
-X-CSE-MsgGUID: ccF/hNKHTs22hUY6h+pZCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71034187"
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="71034187"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 08:59:54 -0800
-X-CSE-ConnectionGUID: PnLx2fOlSsOZcyOuIDrMBQ==
-X-CSE-MsgGUID: 4Ha1gU3uSlyHfAYR114beQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="209321206"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 08:59:53 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 3 Feb 2026 08:59:52 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 3 Feb 2026 08:59:52 -0800
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.37) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 3 Feb 2026 08:59:52 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dxBMptzOeLewJUcwE+T+Km8ARlAHct3tC+kJlnW9qnYPO8v5iqOkfQ8QyjD4yqdncjmE0seg4l0sgu6N7I3DFPjvaUsbMoBrKO55cQmNdB+cLs2Z5YmjgG0LkkA7byYFOGEWe46k6hNknKvD5D0JHU1VeTfMTW2EKakx9PINbv39BYXVg1D9U57ix2OaWJbYvYL362F3bYEhyRZ/THHBx9ecIHgPLXECaLfEWGX+2UsB+W0At5H8ouG4fui7Uc+Gxmqs1+zigFuc2FV64ZmZTOLfAspm571wMIYc+uhArWhpxpztRChgUk8rRdoz84DnNJ+P1v3XpZs4qnF822rOYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8s5BaRPDnyWug1PAliwqZ7omn1pu5jXCqNCmC+16B2I=;
- b=MRsjvMbBqDvk7tvkURfUcxrx2mcdM0m5c69zspMbO+WjjrxmkE2Q/5kAColB4fwag7HFOGGEp10/8jNdgX2H05rrXaE+kmBf/SYYJ4VYcXFvsFe2usGEZD0tIsd5vfKhRUW9arihInT2vdc+HT2y966wDrj+fcUcQu1SQySYSjbWCOYgI0pCl7RC4MRSmKhY8Nz8li4BCd6cP64bj0OCAWxO0+O22sipUK327LlVq6yP8mMo6RNdqmwK/34IfXuDuOAG+KqcQ3QFwwtgJOrwNwpkOE6WCjOesfk34JheJdL1I0WClTNGEoVJquZyjzLN3wAokc108rmP7rfvndlpnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH8PR11MB8040.namprd11.prod.outlook.com (2603:10b6:510:238::11)
- by DS7PR11MB6016.namprd11.prod.outlook.com (2603:10b6:8:75::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 16:59:47 +0000
-Received: from PH8PR11MB8040.namprd11.prod.outlook.com
- ([fe80::89bf:2274:1371:50c5]) by PH8PR11MB8040.namprd11.prod.outlook.com
- ([fe80::89bf:2274:1371:50c5%7]) with mapi id 15.20.9564.016; Tue, 3 Feb 2026
- 16:59:46 +0000
-From: "Yao, Jia" <jia.yao@intel.com>
-To: "Auld, Matthew" <matthew.auld@intel.com>, "intel-xe@lists.freedesktop.org"
-	<intel-xe@lists.freedesktop.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, "Lin, Shuicheng"
-	<shuicheng.lin@intel.com>, "Mathew, Alwin" <alwin.mathew@intel.com>, "Mrozek,
- Michal" <michal.mrozek@intel.com>, "Brost, Matthew" <matthew.brost@intel.com>
-Subject: RE: [PATCH v4] drm/xe/uapi: Reject coh_none PAT index for CPU cached
- memory in madvise
-Thread-Topic: [PATCH v4] drm/xe/uapi: Reject coh_none PAT index for CPU cached
- memory in madvise
-Thread-Index: AQHclSScCMu1KRBd0EWtPvONyqG56rVxLNoAgAABQjA=
-Date: Tue, 3 Feb 2026 16:59:46 +0000
-Message-ID: <PH8PR11MB8040AF50CC76C6D4C8A019EFF49BA@PH8PR11MB8040.namprd11.prod.outlook.com>
-References: <20260129000147.339361-1-jia.yao@intel.com>
- <20260203154846.1113521-1-jia.yao@intel.com>
- <582ecdea-b2a9-4ece-8cb0-854e9a2fa540@intel.com>
-In-Reply-To: <582ecdea-b2a9-4ece-8cb0-854e9a2fa540@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR11MB8040:EE_|DS7PR11MB6016:EE_
-x-ms-office365-filtering-correlation-id: e540f6df-1405-4853-89cc-08de6345a2c7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|42112799006|1800799024|366016|38070700021|7053199007;
-x-microsoft-antispam-message-info: =?utf-8?B?OTFqMVM4QUNlU2ErWjUwbzlUVnRuS0FOc094a0ZRRkRPZVVIT2tHejEza3VH?=
- =?utf-8?B?S1hPbTJ3U3FTOWx4V2JUeFg1bjdtN2t2dnMrdkRtcWF2Qmo0MEVDdEQvaHVt?=
- =?utf-8?B?SzZPRWRyYXhYQ2dqdERIYTU2K0ZBUDNkQU9yakpNczhxc20yMEVpMUtaQlMv?=
- =?utf-8?B?YmNjOWV2RG9uODlWYTVvY3VXT1Fib3dwSnFxYmlIS2JpbnBBaGtqMHIxeVZ2?=
- =?utf-8?B?bVJGb2lSMmVNYjFGUUw4TVpGK2lISktRL0FpV3R2ZUVCaHU3akJiek1zUXBS?=
- =?utf-8?B?OXdaWEtxS01jR3NMVlI0V3RsTXZNLy9LODNaWjRSQkZYRzVZQ0hoSFBTTWhU?=
- =?utf-8?B?dDBkMkRRODY5amRVcEJJMTg3ODljOXE3SUs0MjkwK0VIZ3FrYzhuUjh1VTd5?=
- =?utf-8?B?TEx1TWc3VGRsd0xDdWJkdHNqVzJMUHhGcWxvNDdxOWFvcGkyamc5T0lVUWZt?=
- =?utf-8?B?cVRkNG5JQ3dGTHVoSHBveVJUbVVOWUFrRCs2MGdrZklmRHZ3ZENWSlF5OWN2?=
- =?utf-8?B?QmFnWHBtRld1QUhSeWM0c1RwR3BVc3ErMTFUVldTR3ZyamN4d3ZKeENxZ0Mw?=
- =?utf-8?B?MW9NbDZZOUdtQWsyVGY3bytEdVpnS2dOUHBza21UZHlHdlpZTEc4T2N0bnJQ?=
- =?utf-8?B?c3B6cFN1MjJlNXhaem54ZkJML0JpRzFRLzFmUWJQNW1jMWY4YW41bnFOWXQ5?=
- =?utf-8?B?VVM2cmJ2RFVqNEROVldlSEtFK1RCaFJsbCttQmRvdkZ2dDBDNERYbVJURHFV?=
- =?utf-8?B?YUVWMTRzRDRNNkxUYk4wSXFtWHRqZDkranV3Wmp2MEo3eWZnWHFRbUZ0NldN?=
- =?utf-8?B?b2NNOXo2VjZOdGkwVm5BL1oyRFlnL3dzV21uSHdmNXh2dnJ6R2FwWmtxeVhy?=
- =?utf-8?B?eUQ3SU1iNnRtbzVrWGVNZnRFTEtINGhyNEFDM0VpeUFpQmRDNEQ4SExnUnky?=
- =?utf-8?B?b0ZNNWptVW9waFUwVUsxOS9MaEdsd0VwaWxURzl3UzZ3d2kwWDlQazlPdU1p?=
- =?utf-8?B?T0tKMmhiS3ZqajhhWkIzZndvdm9NLzZhQjRUMjczT2JoVUI4OE1wWHM3RU1C?=
- =?utf-8?B?M0FERTVvREppVXRvMXUwRnU1OHYxQVNtUUx3VGRDcWd1N2djbkkwM3NyYnZE?=
- =?utf-8?B?NHBDMXhRZFZiVWYvamVQQXlHUTM0MFE5aitsbUNMaDRQWGJFUVp4MDNRT1ZQ?=
- =?utf-8?B?cW9tMTVyU1Fxd2oyMUcvK29XK01wM2QxbW1pVUlxZ0xiR2sreWlMY0VmbU1h?=
- =?utf-8?B?STkwYzlQc0FIZG1qNUJhMEE5aVNLOFpkdFdEOThod2QwL2JNUGpBL2JlSUtr?=
- =?utf-8?B?VytPVDRCR1hCOHViU0dnWDhUTC9rY3NqbmtoNzhFOXIzcnN6eFROOWErOWtT?=
- =?utf-8?B?eUVLNlhDMWhaQU5ZeEx4VG5NS1BaM01aeEZUY3g4eFkxblhtd0E2ODVIQmdm?=
- =?utf-8?B?SEdjdW5vUVJHbnpLT0FGWEZOMXZlanZOZDB1T3ZNVGNmSXBQY05QSXdENU9F?=
- =?utf-8?B?ekEwaFZpNlV4YTJ6ZjkyUjBFeU5rVGRCY0RMMDVPNVNReXNyWksveW1wOUE0?=
- =?utf-8?B?STFuSGczYVdWeXZvRVZCNnRRV2xrTW5kVW1WZ1krNE1kaEE1cEhSaTlWeDB5?=
- =?utf-8?B?VjI1ejlKWGN6NFNuUzNWUHZvaitwWnMzendNN0Z0ZGZMV3lkbWdrSUpYbTlT?=
- =?utf-8?B?Y0hmbjJ6czJucjNHcDR3TURUbk4zYzZlNklLVVhhOWdYN2t4eWxVQlErUmRN?=
- =?utf-8?B?RVBCQWErL0xyQkUrOTRJNENXZEtHcmN3dWVVekRNVlBjaFRrdDAzSTBWL2tW?=
- =?utf-8?B?Mk10QVNSZzUzYVJveEhqYUhGL1JPRUNPaG4xTHlMV1FHdTJVSDFxMmQyR0cx?=
- =?utf-8?B?WWF6N3lDdU5lRlVXZXJleThuM3F1aWR5Q3BWQ3Vudy94SlF6WjhCY21CT0h0?=
- =?utf-8?B?Rkl1SGVsVDFqVGJwM2hxcU8wcERCVXJZek9QaW5Kb0ZLRU1XUlFWZW8rREwv?=
- =?utf-8?B?aXBqSTEyaGFkRFgwMm9VbHNxRXU3Ykg1TDdZMFZvcGJwUXZDYTNTRjNvZ1Q2?=
- =?utf-8?B?aUp1V1JHU3g1Z1JMZW9FcGtkY3U3cHdMMXN4L2trcjNneTBRZmRNMVVNQStR?=
- =?utf-8?B?aG92a1FGQnNrY3d3V3hnU3NkbTV5aDNCdmFTUFRObjQ3T2ROclBhUkMzNVN4?=
- =?utf-8?Q?hA1fJm7rolQznPgJ3Z+LkS4=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8040.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(42112799006)(1800799024)(366016)(38070700021)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SEMxb2IzVC9WMmFuOG1CQkVrRm83bmJPWHNackRGSGVoTjh5NXVBR1lVd2ha?=
- =?utf-8?B?a0FldXhub001Nkw4SkJ2aE1CK3BLZVVYS0JFcXlwRWcyeUtnUVNHa1lvMGlw?=
- =?utf-8?B?RFc4RlhDeFNHN25sQ2V5dDFGSGFLdXNrcHF2czNjRzVKODJlYk9qYjhiRGRR?=
- =?utf-8?B?c01sZE1uaUhBZlQ5WHA5QjI0eG50V3daNUJGdUJEanRsTG8wbld5MFdyb3Vx?=
- =?utf-8?B?OHdFOTRYU3NTYm81OEJMcHoxRFEybm54c2djUGZualFxNFpTVVNNV1hJTy81?=
- =?utf-8?B?c1dLbXVNZWREOENiUG96d0lQQXBUaW11RjhwMFlmc1I5dFVNaGF3MHpVYkV6?=
- =?utf-8?B?TVBIcHUxYloxYWZNYlRUeStscXl1eHEvbzg3UDlTbW50UExjUW5rbS9jWHFJ?=
- =?utf-8?B?U3A5ODF1dUZoZS9Pbk1KYkRiZXMyZUcyTmpkbnhVZVpzdFF1ZzVrWUYrb29k?=
- =?utf-8?B?ZGZaelJkTStRWTVIbTRQakZRY3Rjekd5Y2RvYUJNNTU1aWZITnE1enQ4RWlr?=
- =?utf-8?B?UEdXdmptQUg4VHlQaWNqdVJCck9ZdGxxem5kR25uY29BNk54RzFESm9qZytY?=
- =?utf-8?B?cHhUSWVaalp2RU9MbVkrMDhwcU9ocWVqTGJPT0o3RXZXYXBoZkpCUzgrK2Zq?=
- =?utf-8?B?Y2VseUFqRUxNUG0weXVZcGVIYitzU016M0lnSVlXOXpDYmswQ2ExS1V3RFVL?=
- =?utf-8?B?cVdxVDFueVZHQ1NJYXpETDh5QTk1T0VTZG1xejZJRGU5alVjeEpLeVJzV1dx?=
- =?utf-8?B?UHJldXhadEJDWXJVRXd2Qzl0bkR0VnV2bG85MnBzNUE3Z01ITmJobVYyYjgw?=
- =?utf-8?B?VVpJTGlOTEU0K3dKTDhHVy9hNlVzVjljREFzVVVZY215d3VjSWVYRTJsbzVN?=
- =?utf-8?B?YUJNTHJrTWlrZ1czY0NNL3RXc2owOGlUb1ZCelFwWllYYVljQVhrNXhtZEpi?=
- =?utf-8?B?Nk5sajFIc1d1dkZSSEg3bEFmck1scklMdmptS0gzaVZ6emR4WkV4cnhtSnZF?=
- =?utf-8?B?cCtXWXM2bmVISGN4WjRtWE53MUkzZkxGY1RickN3L0M1YjlyM054b2dCOTdu?=
- =?utf-8?B?a1lxajArUEp4SE9ieVFmaElGUlJOb2loVG9uTStQTEZIZkp6WXNPaVpGVGEx?=
- =?utf-8?B?ZkJYZ1RZd1MxenU2bjNqRFJHY3I1TDlOSTRBSHZVWC96Y3NtZ01ZVnF1UW1u?=
- =?utf-8?B?VTc5cHRqYzdDYzh2ZFNGTlR3WUxjWHc2Y09qTmNOeGtoNTJKWm1WUlRrY1g2?=
- =?utf-8?B?TDdGYXpJd2VGd2RSTjNEVi9iNzJHUkVVZy8zb2lJeDlkVVB5aGxGc2NJL3VG?=
- =?utf-8?B?MXZLZzdCMGVkcWkwdjNyN3E0Z2lzQk4zT3AyVkZyRGZsS0lUVmdDMFFjalM2?=
- =?utf-8?B?c3MrWnVSZ0dOR2xkMWg0L0g1RTJtYzMreHlIcDFtYU5RSVJCVkJ4d1pWRDJw?=
- =?utf-8?B?QkoyYU5JMEViQkNxTENCVkhIbTBCb3hTcDJKd0RWUzBTMlBUZVQvRmlSNnB3?=
- =?utf-8?B?cWkxdnl5M1NIcnVXb1ozSFVadHpNdlBPanFPWkxWNWcvMjZ3L2xrckd6OXpv?=
- =?utf-8?B?RTFXNVM4UVJnbTJYSmZBK0tOWVV3VFY3bHJkSVA1SHM0aEZFVHJJaFc2QXpo?=
- =?utf-8?B?ejJjV0NCSkdvTlhCU2dXUWJKalZLUkhhdHBZZ3BXWm56dndoVnNxVnArS2pH?=
- =?utf-8?B?ZXFHWGd3TXRMenJlZEFaNE9kR1ZPQXB4QnpvY2NKanA5N2RUL0hkQ3BhaVFW?=
- =?utf-8?B?MFpOTTVscXlpUml6dGoyS1FnbHFLaE4xaTVVN0VUaEExUm1qRjRNWUhsY1lQ?=
- =?utf-8?B?cjZYT2VYNHUwUWNRWWxPb0JaV2tJaStHOVp1S1YwL2RvMFZSdXloVFM1Ny9J?=
- =?utf-8?B?WDdycW1zOGdFYnZsNDZEWm9qV0lyRHZqZlRGUlRxd3IyZWRZMVFQRERYOVBS?=
- =?utf-8?B?OE5PaXAyL2JPWWhIQy90NllNUzk0Q004bnVMV0ZqRzc3UkhkNnY2YkJJVWh4?=
- =?utf-8?B?amdEWEllMFp2blJMMXZKVFpSZWl1bXhvTEZFS2ZKSjRIbHZjcjl4TndoUEd5?=
- =?utf-8?B?TGNjMys3NmlxNk5hOUNrRE9ZMDhxU0ZsWmRIS3ZLR1VKN0w3MlVZL2RVT2pJ?=
- =?utf-8?B?TWs0RVYrSWdSY0xDakFTZHFrWkFDNUdldTlyUGVrSGNmZ3RRRVE1TVRQL3Ur?=
- =?utf-8?B?RjVBZkR0MWw3WC9oRG9QcGxSampZUmZETkFaOVlCdzdJQ2lYWnBqVXgwbm5B?=
- =?utf-8?B?cUNZZndtSkhQN2NsWHNVM3F2TVF4Z2RobHF5TTdmVy9pcnpZS3hNUDd4NVRW?=
- =?utf-8?Q?c3rvGCCyL+Q0XAc1lP?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9CB318EF0
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 17:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770138242; cv=none; b=pABEP/8pmF2sxFhSXYx7oYyNk73OQCVMdwLNTLspjpmR/xiiKlanrSjLuAnh+zecWPDVynzbB2bFmQaLtdpJtYaaztCQo1s3KoaM0lQSFNpT0OQa4ArMew09BLb6DqGxXavgQnSHmL/Qp4apdVVMHlaWDt4Wcn+xooBCmohaEyA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770138242; c=relaxed/simple;
+	bh=BKMFY+dssvaqAizOX/dyAgQmGZnrdF4D/pPPwJWD+Yo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pkZRf8FTwTPmaQn4V8g44xTIP819vK412sDBmg4n8JtnENhdCg0pIjDguk1rvg2VfFO/EMBMrrgWfEJwZLUww3JEqsaGQMqubeZjCnbNpx+cky/2YajZvQjZ3lPMZv5okUO53eZPr1oV7ncVSxKQ4x6phP2aDp6Iy1sYa2s1Dnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFQinO4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A90C116D0;
+	Tue,  3 Feb 2026 17:04:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770138242;
+	bh=BKMFY+dssvaqAizOX/dyAgQmGZnrdF4D/pPPwJWD+Yo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hFQinO4Caa5T6JglfCptcaaIhAQcHLex56OR+jfrZUPw17Yu1ChF2ujoHhpQ8gasS
+	 96lxaW+rOEFazbsYI2URf1HRrinRKgfJxekcxLGuOtrUyfilL0fYWs5mjbFoSsLGjv
+	 lPXwoinC/N4C929v8ZMKXi7+ch+iRr1VgIWqrmDxavQyojuo/0A6S5L7MUZVUm89Gc
+	 sYrOiWxxW5sE5lKPFUUCJ8emy2X7ZQpYXPE6aES+/rbreKErDKp/I1uwruaGYhWTam
+	 byqDQbMjdHkhOoKgQmByny0eGlyILRq9SYNzAubzIwDXx85PnkWGkmF9UcpQE6b0Sx
+	 5cDh1oMzWUZkQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix I2S2 and SWR TX pins
+Date: Tue,  3 Feb 2026 12:04:00 -0500
+Message-ID: <20260203170400.1324051-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026020346-reappoint-divided-0018@gregkh>
+References: <2026020346-reappoint-divided-0018@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8040.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e540f6df-1405-4853-89cc-08de6345a2c7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Feb 2026 16:59:46.7569
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O8cgCt4MvzWvPP8Ycnm6Ha1Pb+2z1RCW16qI3PefbjlrmDoXSvsjPqd6+nAgolgnWv2YUyQOrm7YNmAkGW8bkg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6016
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.94 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213281-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213282-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jia.yao@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 66107DC6D1
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CFA72DC893
 X-Rspamd-Action: no action
 
-SSBwcmVmZXIgYSBzZXBhcmF0ZSBwYXRjaCB0byBnZXQgaXQgbGFuZGVkIEFTQVAuICBGb3IgdGhp
-cyBvbmUsIG5lZWQgY2xhcmlmeSB0aGUgc2l0dWF0aW9uIHdpdGggQ0ksICBmb3IgdGhpcyBwYXRj
-aCBhbmQgdGhlIGNoYW5nZXMgaW4gSUdUIGFyZSBpbnRlcmRlcGVuZGVudC4NCg0KPiAtLS0tLU9y
-aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBBdWxkLCBNYXR0aGV3IDxtYXR0aGV3LmF1bGRA
-aW50ZWwuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBGZWJydWFyeSAzLCAyMDI2IDg6MzkgQU0NCj4g
-VG86IFlhbywgSmlhIDxqaWEueWFvQGludGVsLmNvbT47IGludGVsLXhlQGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZw0KPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZzsgTGluLCBTaHVpY2hlbmcgPHNo
-dWljaGVuZy5saW5AaW50ZWwuY29tPjsNCj4gTWF0aGV3LCBBbHdpbiA8YWx3aW4ubWF0aGV3QGlu
-dGVsLmNvbT47IE1yb3playwgTWljaGFsDQo+IDxtaWNoYWwubXJvemVrQGludGVsLmNvbT47IEJy
-b3N0LCBNYXR0aGV3IDxtYXR0aGV3LmJyb3N0QGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQ
-QVRDSCB2NF0gZHJtL3hlL3VhcGk6IFJlamVjdCBjb2hfbm9uZSBQQVQgaW5kZXggZm9yIENQVQ0K
-PiBjYWNoZWQgbWVtb3J5IGluIG1hZHZpc2UNCj4gDQo+IE9uIDAzLzAyLzIwMjYgMTU6NDgsIEpp
-YSBZYW8gd3JvdGU6DQo+ID4gQWRkIHZhbGlkYXRpb24gaW4geGVfdm1fbWFkdmlzZV9pb2N0bCgp
-IHRvIHJlamVjdCBQQVQgaW5kaWNlcyB3aXRoDQo+ID4gWEVfQ09IX05PTkUgY29oZXJlbmN5IG1v
-ZGUgd2hlbiBhcHBsaWVkIHRvIENQVSBjYWNoZWQgbWVtb3J5Lg0KPiA+DQo+ID4gVXNpbmcgY29o
-X25vbmUgd2l0aCBDUFUgY2FjaGVkIGJ1ZmZlcnMgaXMgYSBzZWN1cml0eSBpc3N1ZS4gV2hlbiB0
-aGUNCj4gPiBrZXJuZWwgY2xlYXJzIHBhZ2VzIGJlZm9yZSByZWFsbG9jYXRpb24sIHRoZSBjbGVh
-ciBvcGVyYXRpb24gc3RheXMgaW4NCj4gPiBDUFUgY2FjaGUgKGRpcnR5KS4gR1BVIHdpdGggY29o
-X25vbmUgY2FuIGJ5cGFzcyBDUFUgY2FjaGVzIGFuZCByZWFkDQo+ID4gc3RhbGUgc2Vuc2l0aXZl
-IGRhdGEgZGlyZWN0bHkgZnJvbSBEUkFNLCBwb3RlbnRpYWxseSBsZWFraW5nIGRhdGEgZnJvbQ0K
-PiA+IHByZXZpb3VzbHkgZnJlZWQgcGFnZXMgb2Ygb3RoZXIgcHJvY2Vzc2VzLg0KPiA+DQo+ID4g
-VGhpcyBhbGlnbnMgd2l0aCB0aGUgZXhpc3RpbmcgdmFsaWRhdGlvbiBpbiB2bV9iaW5kIHBhdGgN
-Cj4gPiAoeGVfdm1fYmluZF9pb2N0bF92YWxpZGF0ZV9ibykuDQo+ID4NCj4gPiB2MihNYXR0aGV3
-IGJyb3N0KQ0KPiA+IC0gQWRkIGZpeGVzDQo+ID4gLSBNb3ZlIG9uZSBkZWJ1ZyBwcmludCB0byBi
-ZXR0ZXIgcGxhY2UNCj4gPg0KPiA+IHYzKE1hdHRoZXcgQXVsZCkNCj4gPiAtIFNob3VsZCBiZSBk
-cm0veGUvdWFwaQ0KPiA+IC0gTW9yZSBDYw0KPiA+DQo+ID4gdjQoU2h1aWNoZW5nIExpbikNCj4g
-PiAtIEZpeCBrbWVtIGxlYWsgaXNzdWVzIGJ5IHRoZSB3YXkNCj4gPg0KPiA+IEZpeGVzOiBhZGE3
-NDg2YzU2NjggKCJkcm0veGU6IEltcGxlbWVudCBtYWR2aXNlIGlvY3RsIGZvciB4ZSIpDQo+ID4g
-Q2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcgIyB2Ni4xOA0KPiA+IENjOiBTaHVpY2hlbmcgTGlu
-IDxzaHVpY2hlbmcubGluQGludGVsLmNvbT4NCj4gPiBDYzogTWF0aGV3IEFsd2luIDxhbHdpbi5t
-YXRoZXdAaW50ZWwuY29tPg0KPiA+IENjOiBNaWNoYWwgTXJvemVrIDxtaWNoYWwubXJvemVrQGlu
-dGVsLmNvbT4NCj4gPiBDYzogTWF0dGhldyBCcm9zdCA8bWF0dGhldy5icm9zdEBpbnRlbC5jb20+
-DQo+ID4gQ2M6IE1hdHRoZXcgQXVsZCA8bWF0dGhldy5hdWxkQGludGVsLmNvbT4NCj4gPiBTaWdu
-ZWQtb2ZmLWJ5OiBKaWEgWWFvIDxqaWEueWFvQGludGVsLmNvbT4NCj4gDQo+IFVubGVzcyBJJ20g
-YmxpbmQsIGl0IGxvb2tzIGxpa2UgdGhlcmUgaXMgc29tZSBtaXNzaW5nIHZhbGlkYXRpb24gb24g
-dGhlIHBhdF9pbmRleA0KPiBjb21pbmcgZnJvbSB1c2Vyc3BhY2UgYWxzbywgd2hlcmUgd2UgY2Fu
-IHRyaWdnZXIgT09CIGtlcm5lbCByZWFkIHdoZW4NCj4gY2FsbGluZyBnZXRfY29oX21vZGUoKSwg
-aWYgbWFsaWNpb3VzIHVzZXIgZ2l2ZXMgeW91IGEgYm9ndXMgdG9vIGxhcmdlIGluZGV4LiBJDQo+
-IHRoaW5rIHdlIG5lZWQgdG8gZml4IHRoYXQgYWxzbywgbWF5YmUgYXMgYSBzZXBlcmF0ZSBwYXRj
-aCBpbiB0aGlzIHNlcmllcyBvciBqdXN0DQo+IHNlbmQgYXMgc2VwZXJhdGUgZml4IGFuZCBnZXQg
-aXQgbGFuZGVkIEFTQVA/DQo+IA0KPiA+IC0tLQ0KPiA+ICAgZHJpdmVycy9ncHUvZHJtL3hlL3hl
-X3ZtX21hZHZpc2UuYyB8IDU1DQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLQ0KPiA+
-ICAgMSBmaWxlIGNoYW5nZWQsIDUwIGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+ID4N
-Cj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJtL3hlL3hlX3ZtX21hZHZpc2UuYw0KPiA+
-IGIvZHJpdmVycy9ncHUvZHJtL3hlL3hlX3ZtX21hZHZpc2UuYw0KPiA+IGluZGV4IGFkZDlhNmNh
-MjM5MC4uYmY0MWZlNzVhMzM2IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvZ3B1L2RybS94ZS94
-ZV92bV9tYWR2aXNlLmMNCj4gPiArKysgYi9kcml2ZXJzL2dwdS9kcm0veGUveGVfdm1fbWFkdmlz
-ZS5jDQo+ID4gQEAgLTc0LDcgKzc0LDcgQEAgc3RhdGljIGludCBnZXRfdm1hcyhzdHJ1Y3QgeGVf
-dm0gKnZtLCBzdHJ1Y3QNCj4geGVfdm1hc19pbl9tYWR2aXNlX3JhbmdlICptYWR2aXNlX3INCj4g
-PiAgIAkJfQ0KPiA+DQo+ID4gICAJCW1hZHZpc2VfcmFuZ2UtPnZtYXNbbWFkdmlzZV9yYW5nZS0+
-bnVtX3ZtYXNdID0gdm1hOw0KPiA+IC0JCShtYWR2aXNlX3JhbmdlLT5udW1fdm1hcykrKzsNCj4g
-PiArCQltYWR2aXNlX3JhbmdlLT5udW1fdm1hcysrOw0KPiA+ICAgCX0NCj4gPg0KPiA+ICAgCWlm
-ICghbWFkdmlzZV9yYW5nZS0+bnVtX3ZtYXMpDQo+ID4gQEAgLTM1Miw2ICszNTIsNDMgQEAgc3Rh
-dGljIHZvaWQgeGVfbWFkdmlzZV9kZXRhaWxzX2Zpbmkoc3RydWN0DQo+IHhlX21hZHZpc2VfZGV0
-YWlscyAqZGV0YWlscykNCj4gPiAgIAlkcm1fcGFnZW1hcF9wdXQoZGV0YWlscy0+ZHBhZ2VtYXAp
-Ow0KPiA+ICAgfQ0KPiA+DQo+ID4gK3N0YXRpYyBib29sIGNoZWNrX3BhdF9hcmdzX2FyZV9zYW5l
-KHN0cnVjdCB4ZV9kZXZpY2UgKnhlLA0KPiA+ICsJCQkJICAgIHN0cnVjdCB4ZV92bWFzX2luX21h
-ZHZpc2VfcmFuZ2UNCj4gKm1hZHZpc2VfcmFuZ2UsDQo+ID4gKwkJCQkgICAgdTE2IHBhdF9pbmRl
-eCkNCj4gPiArew0KPiA+ICsJdTE2IGNvaF9tb2RlID0geGVfcGF0X2luZGV4X2dldF9jb2hfbW9k
-ZSh4ZSwgcGF0X2luZGV4KTsNCj4gPiArCWludCBpOw0KPiA+ICsNCj4gPiArCS8qDQo+ID4gKwkg
-KiBVc2luZyBjb2hfbm9uZSB3aXRoIENQVSBjYWNoZWQgYnVmZmVycyBpcyBub3QgYWxsb3dlZC4N
-Cj4gPiArCSAqIE90aGVyd2lzZSBDUFUgcGFnZSBjbGVhcmluZyBjYW4gYmUgYnlwYXNzZWQsIHdo
-aWNoIGlzIGENCj4gPiArCSAqIHNlY3VyaXR5IGlzc3VlLiBHUFUgY2FuIGRpcmVjdGx5IGFjY2Vz
-cyBzeXN0ZW0gbWVtb3J5IGFuZA0KPiA+ICsJICogYnlwYXNzIENQVSBjYWNoZXMsIHBvdGVudGlh
-bGx5IHJlYWRpbmcgc3RhbGUgc2Vuc2l0aXZlIGRhdGENCj4gPiArCSAqIGZyb20gcHJldmlvdXNs
-eSBmcmVlZCBwYWdlcy4NCj4gPiArCSAqLw0KPiA+ICsJaWYgKGNvaF9tb2RlICE9IFhFX0NPSF9O
-T05FKQ0KPiA+ICsJCXJldHVybiB0cnVlOw0KPiA+ICsNCj4gPiArCWZvciAoaSA9IDA7IGkgPCBt
-YWR2aXNlX3JhbmdlLT5udW1fdm1hczsgaSsrKSB7DQo+ID4gKwkJc3RydWN0IHhlX3ZtYSAqdm1h
-ID0gbWFkdmlzZV9yYW5nZS0+dm1hc1tpXTsNCj4gPiArCQlzdHJ1Y3QgeGVfYm8gKmJvID0geGVf
-dm1hX2JvKHZtYSk7DQo+ID4gKw0KPiA+ICsJCWlmIChibykgew0KPiA+ICsJCQkvKiBCTyB3aXRo
-IFdCIGNhY2hpbmcgKyBDT0hfTk9ORSBpcyBub3QgYWxsb3dlZCAqLw0KPiA+ICsJCQlpZiAoWEVf
-SU9DVExfREJHKHhlLCBiby0+Y3B1X2NhY2hpbmcgPT0NCj4gRFJNX1hFX0dFTV9DUFVfQ0FDSElO
-R19XQikpDQo+ID4gKwkJCQlyZXR1cm4gZmFsc2U7DQo+ID4gKwkJCS8qIEltcG9ydGVkIGRtYS1i
-dWYgd2l0aG91dCBjYWNoaW5nIGluZm8sIGFzc3VtZQ0KPiBjYWNoZWQgKi8NCj4gPiArCQkJaWYg
-KFhFX0lPQ1RMX0RCRyh4ZSwgIWJvLT5jcHVfY2FjaGluZykpDQo+ID4gKwkJCQlyZXR1cm4gZmFs
-c2U7DQo+ID4gKwkJfSBlbHNlIGlmIChYRV9JT0NUTF9EQkcoeGUsIHhlX3ZtYV9pc19jcHVfYWRk
-cl9taXJyb3Iodm1hKQ0KPiB8fA0KPiA+ICsJCQkJCSAgICB4ZV92bWFfaXNfdXNlcnB0cih2bWEp
-KSkNCj4gPiArCQkJLyogU3lzdGVtIG1lbW9yeSAodXNlcnB0ci9TVk0pIGlzIGFsd2F5cyBDUFUN
-Cj4gY2FjaGVkICovDQo+ID4gKwkJCXJldHVybiBmYWxzZTsNCj4gPiArCX0NCj4gPiArDQo+ID4g
-KwlyZXR1cm4gdHJ1ZTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgIHN0YXRpYyBib29sIGNoZWNrX2Jv
-X2FyZ3NfYXJlX3NhbmUoc3RydWN0IHhlX3ZtICp2bSwgc3RydWN0IHhlX3ZtYQ0KPiAqKnZtYXMs
-DQo+ID4gICAJCQkJICAgaW50IG51bV92bWFzLCB1MzIgYXRvbWljX3ZhbCkNCj4gPiAgIHsNCj4g
-PiBAQCAtMzg4LDEyICs0MjUsMTIgQEAgc3RhdGljIGJvb2wgY2hlY2tfYm9fYXJnc19hcmVfc2Fu
-ZShzdHJ1Y3QNCj4geGVfdm0gKnZtLCBzdHJ1Y3QgeGVfdm1hICoqdm1hcywNCj4gPiAgIAlyZXR1
-cm4gdHJ1ZTsNCj4gPiAgIH0NCj4gPiAgIC8qKg0KPiA+IC0gKiB4ZV92bV9tYWR2aXNlX2lvY3Rs
-IC0gSGFuZGxlIE1BRFZpc2UgaW9jdGwgZm9yIGEgVk0NCj4gPiArICogeGVfdm1fbWFkdmlzZV9p
-b2N0bCAtIEhhbmRsZSBtYWR2aXNlIGlvY3RsIGZvciBhIFZNDQo+ID4gICAgKiBAZGV2OiBEUk0g
-ZGV2aWNlIHBvaW50ZXINCj4gPiAgICAqIEBkYXRhOiBQb2ludGVyIHRvIGlvY3RsIGRhdGEgKGRy
-bV94ZV9tYWR2aXNlKikNCj4gPiAgICAqIEBmaWxlOiBEUk0gZmlsZSBwb2ludGVyDQo+ID4gICAg
-Kg0KPiA+IC0gKiBIYW5kbGVzIHRoZSBNQURWSVNFIGlvY3RsIHRvIHByb3ZpZGUgbWVtb3J5IGFk
-dmljZSBmb3Igdm1hJ3MNCj4gPiB3aXRoaW4NCj4gPiArICogSGFuZGxlcyB0aGUgbWFkdmlzZSBp
-b2N0bCB0byBwcm92aWRlIG1lbW9yeSBhZHZpY2UgZm9yIHZtYSdzDQo+ID4gKyB3aXRoaW4NCj4g
-PiAgICAqIGlucHV0IHJhbmdlLg0KPiA+ICAgICoNCj4gPiAgICAqIFJldHVybjogMCBvbiBzdWNj
-ZXNzIG9yIGEgbmVnYXRpdmUgZXJyb3IgY29kZSBvbiBmYWlsdXJlLg0KPiA+IEBAIC00NDIsMTMg
-KzQ3OSwyMSBAQCBpbnQgeGVfdm1fbWFkdmlzZV9pb2N0bChzdHJ1Y3QgZHJtX2RldmljZSAqZGV2
-LA0KPiB2b2lkICpkYXRhLCBzdHJ1Y3QgZHJtX2ZpbGUgKmZpbA0KPiA+ICAgCWlmIChlcnIgfHwg
-IW1hZHZpc2VfcmFuZ2UubnVtX3ZtYXMpDQo+ID4gICAJCWdvdG8gbWFkdl9maW5pOw0KPiA+DQo+
-ID4gKwlpZiAoYXJncy0+dHlwZSA9PSBEUk1fWEVfTUVNX1JBTkdFX0FUVFJfUEFUKSB7DQo+ID4g
-KwkJaWYgKCFjaGVja19wYXRfYXJnc19hcmVfc2FuZSh4ZSwgJm1hZHZpc2VfcmFuZ2UsDQo+ID4g
-KwkJCQkJICAgICBhcmdzLT5wYXRfaW5kZXgudmFsKSkgew0KPiA+ICsJCQllcnIgPSAtRUlOVkFM
-Ow0KPiA+ICsJCQlnb3RvIGZyZWVfdm1hczsNCj4gPiArCQl9DQo+ID4gKwl9DQo+ID4gKw0KPiA+
-ICAgCWlmIChtYWR2aXNlX3JhbmdlLmhhc19ib192bWFzKSB7DQo+ID4gICAJCWlmIChhcmdzLT50
-eXBlID09IERSTV9YRV9NRU1fUkFOR0VfQVRUUl9BVE9NSUMpIHsNCj4gPiAgIAkJCWlmICghY2hl
-Y2tfYm9fYXJnc19hcmVfc2FuZSh2bSwNCj4gbWFkdmlzZV9yYW5nZS52bWFzLA0KPiA+ICAgCQkJ
-CQkJICAgIG1hZHZpc2VfcmFuZ2UubnVtX3ZtYXMsDQo+ID4gICAJCQkJCQkgICAgYXJncy0+YXRv
-bWljLnZhbCkpIHsNCj4gPiAgIAkJCQllcnIgPSAtRUlOVkFMOw0KPiA+IC0JCQkJZ290byBtYWR2
-X2Zpbmk7DQo+ID4gKwkJCQlnb3RvIGZyZWVfdm1hczsNCj4gPiAgIAkJCX0NCj4gPiAgIAkJfQ0K
-PiA+DQo+ID4gQEAgLTQ4NSw4ICs1MzAsOCBAQCBpbnQgeGVfdm1fbWFkdmlzZV9pb2N0bChzdHJ1
-Y3QgZHJtX2RldmljZSAqZGV2LA0KPiB2b2lkICpkYXRhLCBzdHJ1Y3QgZHJtX2ZpbGUgKmZpbA0K
-PiA+ICAgZXJyX2Zpbmk6DQo+ID4gICAJaWYgKG1hZHZpc2VfcmFuZ2UuaGFzX2JvX3ZtYXMpDQo+
-ID4gICAJCWRybV9leGVjX2ZpbmkoJmV4ZWMpOw0KPiA+ICtmcmVlX3ZtYXM6DQo+ID4gICAJa2Zy
-ZWUobWFkdmlzZV9yYW5nZS52bWFzKTsNCj4gPiAtCW1hZHZpc2VfcmFuZ2Uudm1hcyA9IE5VTEw7
-DQo+ID4gICBtYWR2X2Zpbmk6DQo+ID4gICAJeGVfbWFkdmlzZV9kZXRhaWxzX2ZpbmkoJmRldGFp
-bHMpOw0KPiA+ICAgdW5sb2NrX3ZtOg0KDQo=
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+
+[ Upstream commit 1fbe3abb449c5ef2178e1c3e3e8b9a43a7a410ac ]
+
+Qualcomm SC7280 and SM8350 SoCs have slightly different LPASS audio
+blocks (v9.4.5 and v9.2), however the LPASS LPI pin controllers are
+exactly the same.  The driver for SM8350 has two issues, which can be
+fixed by simply moving over to SC7280 driver which has them correct:
+
+1. "i2s2_data_groups" listed twice GPIO12, but should have both GPIO12
+   and GPIO13,
+
+2. "swr_tx_data_groups" contained GPIO5 for "swr_tx_data2" function, but
+   that function is also available on GPIO14, thus listing it twice is
+   not necessary.  OTOH, GPIO5 has also "swr_rx_data1", so selecting
+   swr_rx_data function should not block  the TX one.
+
+Fixes: be9f6d56381d ("pinctrl: qcom: sm8350-lpass-lpi: add SM8350 LPASS TLMM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+[ Context, no dedicated config option ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pinctrl/qcom/Kconfig                  |  15 +-
+ drivers/pinctrl/qcom/Makefile                 |   1 -
+ .../pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c   |   3 +
+ .../pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c   | 167 ------------------
+ 4 files changed, 6 insertions(+), 180 deletions(-)
+ delete mode 100644 drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
+
+diff --git a/drivers/pinctrl/qcom/Kconfig b/drivers/pinctrl/qcom/Kconfig
+index f84c0d3b79517..36d7ef4097c0f 100644
+--- a/drivers/pinctrl/qcom/Kconfig
++++ b/drivers/pinctrl/qcom/Kconfig
+@@ -60,13 +60,14 @@ config PINCTRL_LPASS_LPI
+ 	  (Low Power Island) found on the Qualcomm Technologies Inc SoCs.
+ 
+ config PINCTRL_SC7280_LPASS_LPI
+-	tristate "Qualcomm Technologies Inc SC7280 LPASS LPI pin controller driver"
++	tristate "Qualcomm Technologies Inc SC7280 and SM8350 LPASS LPI pin controller driver"
+ 	depends on ARM64 || COMPILE_TEST
+ 	depends on PINCTRL_LPASS_LPI
+ 	help
+ 	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
+ 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
+-	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280 platform.
++	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280
++	  and SM8350 platforms.
+ 
+ config PINCTRL_SM6115_LPASS_LPI
+ 	tristate "Qualcomm Technologies Inc SM6115 LPASS LPI pin controller driver"
+@@ -86,16 +87,6 @@ config PINCTRL_SM8250_LPASS_LPI
+ 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
+ 	  (Low Power Island) found on the Qualcomm Technologies Inc SM8250 platform.
+ 
+-config PINCTRL_SM8350_LPASS_LPI
+-	tristate "Qualcomm Technologies Inc SM8350 LPASS LPI pin controller driver"
+-	depends on ARM64 || COMPILE_TEST
+-	depends on PINCTRL_LPASS_LPI
+-	help
+-	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
+-	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
+-	  (Low Power Island) found on the Qualcomm Technologies Inc SM8350
+-	  platform.
+-
+ config PINCTRL_SM8450_LPASS_LPI
+ 	tristate "Qualcomm Technologies Inc SM8450 LPASS LPI pin controller driver"
+ 	depends on ARM64 || COMPILE_TEST
+diff --git a/drivers/pinctrl/qcom/Makefile b/drivers/pinctrl/qcom/Makefile
+index 5910e08c84cec..d1179d8b2c42b 100644
+--- a/drivers/pinctrl/qcom/Makefile
++++ b/drivers/pinctrl/qcom/Makefile
+@@ -53,7 +53,6 @@ obj-$(CONFIG_PINCTRL_SM8150) += pinctrl-sm8150.o
+ obj-$(CONFIG_PINCTRL_SM8250) += pinctrl-sm8250.o
+ obj-$(CONFIG_PINCTRL_SM8250_LPASS_LPI) += pinctrl-sm8250-lpass-lpi.o
+ obj-$(CONFIG_PINCTRL_SM8350) += pinctrl-sm8350.o
+-obj-$(CONFIG_PINCTRL_SM8350_LPASS_LPI) += pinctrl-sm8350-lpass-lpi.o
+ obj-$(CONFIG_PINCTRL_SM8450) += pinctrl-sm8450.o
+ obj-$(CONFIG_PINCTRL_SM8450_LPASS_LPI) += pinctrl-sm8450-lpass-lpi.o
+ obj-$(CONFIG_PINCTRL_SM8550) += pinctrl-sm8550.o
+diff --git a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
+index d615b6c55b891..74cc5b4ac9820 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
+@@ -147,6 +147,9 @@ static const struct of_device_id lpi_pinctrl_of_match[] = {
+ 	{
+ 	       .compatible = "qcom,sc7280-lpass-lpi-pinctrl",
+ 	       .data = &sc7280_lpi_data,
++	}, {
++	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
++	       .data = &sc7280_lpi_data,
+ 	},
+ 	{ }
+ };
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
+deleted file mode 100644
+index f889c779bccd5..0000000000000
+--- a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
++++ /dev/null
+@@ -1,167 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+- * Copyright (c) 2020-2023 Linaro Ltd.
+- */
+-
+-#include <linux/gpio/driver.h>
+-#include <linux/module.h>
+-#include <linux/platform_device.h>
+-
+-#include "pinctrl-lpass-lpi.h"
+-
+-enum lpass_lpi_functions {
+-	LPI_MUX_dmic1_clk,
+-	LPI_MUX_dmic1_data,
+-	LPI_MUX_dmic2_clk,
+-	LPI_MUX_dmic2_data,
+-	LPI_MUX_dmic3_clk,
+-	LPI_MUX_dmic3_data,
+-	LPI_MUX_i2s1_clk,
+-	LPI_MUX_i2s1_data,
+-	LPI_MUX_i2s1_ws,
+-	LPI_MUX_i2s2_clk,
+-	LPI_MUX_i2s2_data,
+-	LPI_MUX_i2s2_ws,
+-	LPI_MUX_qua_mi2s_data,
+-	LPI_MUX_qua_mi2s_sclk,
+-	LPI_MUX_qua_mi2s_ws,
+-	LPI_MUX_swr_rx_clk,
+-	LPI_MUX_swr_rx_data,
+-	LPI_MUX_swr_tx_clk,
+-	LPI_MUX_swr_tx_data,
+-	LPI_MUX_wsa_swr_clk,
+-	LPI_MUX_wsa_swr_data,
+-	LPI_MUX_gpio,
+-	LPI_MUX__,
+-};
+-
+-static int gpio0_pins[] = { 0 };
+-static int gpio1_pins[] = { 1 };
+-static int gpio2_pins[] = { 2 };
+-static int gpio3_pins[] = { 3 };
+-static int gpio4_pins[] = { 4 };
+-static int gpio5_pins[] = { 5 };
+-static int gpio6_pins[] = { 6 };
+-static int gpio7_pins[] = { 7 };
+-static int gpio8_pins[] = { 8 };
+-static int gpio9_pins[] = { 9 };
+-static int gpio10_pins[] = { 10 };
+-static int gpio11_pins[] = { 11 };
+-static int gpio12_pins[] = { 12 };
+-static int gpio13_pins[] = { 13 };
+-static int gpio14_pins[] = { 14 };
+-
+-static const struct pinctrl_pin_desc sm8350_lpi_pins[] = {
+-	PINCTRL_PIN(0, "gpio0"),
+-	PINCTRL_PIN(1, "gpio1"),
+-	PINCTRL_PIN(2, "gpio2"),
+-	PINCTRL_PIN(3, "gpio3"),
+-	PINCTRL_PIN(4, "gpio4"),
+-	PINCTRL_PIN(5, "gpio5"),
+-	PINCTRL_PIN(6, "gpio6"),
+-	PINCTRL_PIN(7, "gpio7"),
+-	PINCTRL_PIN(8, "gpio8"),
+-	PINCTRL_PIN(9, "gpio9"),
+-	PINCTRL_PIN(10, "gpio10"),
+-	PINCTRL_PIN(11, "gpio11"),
+-	PINCTRL_PIN(12, "gpio12"),
+-	PINCTRL_PIN(13, "gpio13"),
+-	PINCTRL_PIN(14, "gpio14"),
+-};
+-
+-static const char * const swr_tx_clk_groups[] = { "gpio0" };
+-static const char * const swr_tx_data_groups[] = { "gpio1", "gpio2", "gpio5", "gpio14" };
+-static const char * const swr_rx_clk_groups[] = { "gpio3" };
+-static const char * const swr_rx_data_groups[] = { "gpio4", "gpio5" };
+-static const char * const dmic1_clk_groups[] = { "gpio6" };
+-static const char * const dmic1_data_groups[] = { "gpio7" };
+-static const char * const dmic2_clk_groups[] = { "gpio8" };
+-static const char * const dmic2_data_groups[] = { "gpio9" };
+-static const char * const i2s2_clk_groups[] = { "gpio10" };
+-static const char * const i2s2_ws_groups[] = { "gpio11" };
+-static const char * const dmic3_clk_groups[] = { "gpio12" };
+-static const char * const dmic3_data_groups[] = { "gpio13" };
+-static const char * const qua_mi2s_sclk_groups[] = { "gpio0" };
+-static const char * const qua_mi2s_ws_groups[] = { "gpio1" };
+-static const char * const qua_mi2s_data_groups[] = { "gpio2", "gpio3", "gpio4" };
+-static const char * const i2s1_clk_groups[] = { "gpio6" };
+-static const char * const i2s1_ws_groups[] = { "gpio7" };
+-static const char * const i2s1_data_groups[] = { "gpio8", "gpio9" };
+-static const char * const wsa_swr_clk_groups[] = { "gpio10" };
+-static const char * const wsa_swr_data_groups[] = { "gpio11" };
+-static const char * const i2s2_data_groups[] = { "gpio12", "gpio12" };
+-
+-static const struct lpi_pingroup sm8350_groups[] = {
+-	LPI_PINGROUP(0, 0, swr_tx_clk, qua_mi2s_sclk, _, _),
+-	LPI_PINGROUP(1, 2, swr_tx_data, qua_mi2s_ws, _, _),
+-	LPI_PINGROUP(2, 4, swr_tx_data, qua_mi2s_data, _, _),
+-	LPI_PINGROUP(3, 8, swr_rx_clk, qua_mi2s_data, _, _),
+-	LPI_PINGROUP(4, 10, swr_rx_data, qua_mi2s_data, _, _),
+-	LPI_PINGROUP(5, 12, swr_tx_data, swr_rx_data, _, _),
+-	LPI_PINGROUP(6, LPI_NO_SLEW, dmic1_clk, i2s1_clk, _,  _),
+-	LPI_PINGROUP(7, LPI_NO_SLEW, dmic1_data, i2s1_ws, _, _),
+-	LPI_PINGROUP(8, LPI_NO_SLEW, dmic2_clk, i2s1_data, _, _),
+-	LPI_PINGROUP(9, LPI_NO_SLEW, dmic2_data, i2s1_data, _, _),
+-	LPI_PINGROUP(10, 16, i2s2_clk, wsa_swr_clk, _, _),
+-	LPI_PINGROUP(11, 18, i2s2_ws, wsa_swr_data, _, _),
+-	LPI_PINGROUP(12, LPI_NO_SLEW, dmic3_clk, i2s2_data, _, _),
+-	LPI_PINGROUP(13, LPI_NO_SLEW, dmic3_data, i2s2_data, _, _),
+-	LPI_PINGROUP(14, 6, swr_tx_data, _, _, _),
+-};
+-
+-static const struct lpi_function sm8350_functions[] = {
+-	LPI_FUNCTION(dmic1_clk),
+-	LPI_FUNCTION(dmic1_data),
+-	LPI_FUNCTION(dmic2_clk),
+-	LPI_FUNCTION(dmic2_data),
+-	LPI_FUNCTION(dmic3_clk),
+-	LPI_FUNCTION(dmic3_data),
+-	LPI_FUNCTION(i2s1_clk),
+-	LPI_FUNCTION(i2s1_data),
+-	LPI_FUNCTION(i2s1_ws),
+-	LPI_FUNCTION(i2s2_clk),
+-	LPI_FUNCTION(i2s2_data),
+-	LPI_FUNCTION(i2s2_ws),
+-	LPI_FUNCTION(qua_mi2s_data),
+-	LPI_FUNCTION(qua_mi2s_sclk),
+-	LPI_FUNCTION(qua_mi2s_ws),
+-	LPI_FUNCTION(swr_rx_clk),
+-	LPI_FUNCTION(swr_rx_data),
+-	LPI_FUNCTION(swr_tx_clk),
+-	LPI_FUNCTION(swr_tx_data),
+-	LPI_FUNCTION(wsa_swr_clk),
+-	LPI_FUNCTION(wsa_swr_data),
+-};
+-
+-static const struct lpi_pinctrl_variant_data sm8350_lpi_data = {
+-	.pins = sm8350_lpi_pins,
+-	.npins = ARRAY_SIZE(sm8350_lpi_pins),
+-	.groups = sm8350_groups,
+-	.ngroups = ARRAY_SIZE(sm8350_groups),
+-	.functions = sm8350_functions,
+-	.nfunctions = ARRAY_SIZE(sm8350_functions),
+-};
+-
+-static const struct of_device_id lpi_pinctrl_of_match[] = {
+-	{
+-	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
+-	       .data = &sm8350_lpi_data,
+-	},
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, lpi_pinctrl_of_match);
+-
+-static struct platform_driver lpi_pinctrl_driver = {
+-	.driver = {
+-		   .name = "qcom-sm8350-lpass-lpi-pinctrl",
+-		   .of_match_table = lpi_pinctrl_of_match,
+-	},
+-	.probe = lpi_pinctrl_probe,
+-	.remove = lpi_pinctrl_remove,
+-};
+-module_platform_driver(lpi_pinctrl_driver);
+-
+-MODULE_AUTHOR("Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>");
+-MODULE_DESCRIPTION("QTI SM8350 LPI GPIO pin control driver");
+-MODULE_LICENSE("GPL");
+-- 
+2.51.0
+
 
