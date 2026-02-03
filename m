@@ -1,192 +1,261 @@
-Return-Path: <stable+bounces-213135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCGEO3FBgWl6FAMAu9opvQ
-	(envelope-from <stable+bounces-213135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 01:29:37 +0100
+	id 0JsuEHTAgWm7JAMAu9opvQ
+	(envelope-from <stable+bounces-213182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 10:31:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68284D2F9F
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 01:29:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A07FD6C97
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 10:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9041130177B8
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 00:17:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B69C83006992
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 09:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B877B14B96E;
-	Tue,  3 Feb 2026 00:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001BA30FC1F;
+	Tue,  3 Feb 2026 09:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X4h5okCy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dkruFm8L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2F813635E
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 00:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75C0225788
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 09:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770077875; cv=none; b=QqKbayz649ldipgIjaFno5gXWu45W1T406lFIUDWg1ZJ6gy5R4Xqjwp5rc9l942qLFSb9dB7s3mp6mk4z7kDVm86P/Rkqz4WZjK6LXcBnF/MN2CQFW6WelJjUSBvry7gFQbDcbJ1QBBfDcIf5pnTeV+G/5KahVQNfs4y00WZa7U=
+	t=1770111086; cv=none; b=Jf8UOrBrXIidZMekopz2OzAUonfN097w2v3lCYIEDJcUfTNRN+WItQ1cub61dF1VhLfZGNH4K5SgWwNY+G98UPWZFxkq1nSXrkHJXQYdQ7OzY8RpGr7N3a2Quyvu7H1zEsZz9Uj63K3BzEL99sRMldz6Pj6SoNVrn43xVfMfqQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770077875; c=relaxed/simple;
-	bh=ZJVy6cPRC9mVjPwe70OyZwHOLgx0hBKchie2Ey+56o4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpSaUJ0LK0MHZeDAjAgn4TOY6xTuxTXQTiMH1v9RRibvILD5OKp7mVE0WCF865qDr9atUdVE9b8L1JIzvFhJ5uvSzwBc37l9pXmgBCcAwOBAEmfsMXCins4zWvFtNjImP2Ma30BuKw6s2D5U8gljCQG9J/+N8yjOqZGVPHSLbyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X4h5okCy; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0c09bb78cso2096655ad.0
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 16:17:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770077873; x=1770682673; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SZ1ws/HZ3fMtoPm4mMzkQZSOpt+7LENYkmppWHzFdqA=;
-        b=X4h5okCysoBz/QiSq5/mM9++K1C1JQlcJxa107X0FYoJkks62N4Vo91K0uWw4MnW3Y
-         8e363Uw0SZ5YUckuF/CxOl97e9bS/2c1nm/qXPbEgW/NTN3genVWNb9eDDDXPvu1aLel
-         5W9fwyTBlskb0vjfws3Ccjg3eCQUuwmgHlaAOi4n5+soluSYXIzBfXVrWA4Dtl+sCcZU
-         6OxN/plGs059h4hIfKWlyXlRT6H/fgkz9qf25aACVQscHoTlAUBnp6tsP00Tm6vzgHqK
-         /5+chZvsJkeDiYPwU0K5QMHeXbWpQUtEVft7JOyUsXG3DXvEljLqB+9tBhNIUM77hMpX
-         M2kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770077873; x=1770682673;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SZ1ws/HZ3fMtoPm4mMzkQZSOpt+7LENYkmppWHzFdqA=;
-        b=NZyV46nqfOJVbx02N+BAeNlXl8mxlG1zLrSbrkh0bHmFVMAP8k5XhNA/kiXDzBzDXa
-         pHHOcrNUnm4PoRL+wWbBptO0zxCmNdzDa4VYa2dqNgySqIby+gT1ORga7cqzMirQPhDw
-         HVvHZQJizoqjRMhbECsS5Z8rckkuOtN4UKW0Qq1bKW8KF7f+mekbwzwMpeiR2A9euukg
-         F9/lq1CI2X/Rq07qOrCWgJV5PJeXHVV/ITogDz2FUHBSSEheHKkdv/+g66aDZtxlp0zn
-         P1IuIYEaEbxH80SRGotp7x6SzrXpiIVcXnP+EX2o0htxZfOXFp4lL8geOgX7iI157lik
-         yFMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXWumkJp69+imTRyqVu2ABvggf986kNaubOG206HmZqzwvxZbJuOibaF1+JDeGARo4CkOGypI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoP7VPyYcEEEQwWyIio0bBcpQPBoJD6o1AGSmj8ZmoXtaFkuPn
-	BZi58qGGUnaUmpl8KAjgO/iM8i3h8YtnX6zsS9pUNpijOWLNA+4Jdc6y
-X-Gm-Gg: AZuq6aKbhuEYsQfiQO/Q+l481xjY/dIt5KTx88xEsfcuDnymJdO/cI68UqYiifO6AHh
-	FY95HsZ8Zva9FHVihebFIRYoo8P1RYm0EHo64P4FIdamn6bijzlS7pqSkrKYf6cl9SHtPgH+goZ
-	UgFftXpvnwA5z33Ta7emeovYWxI0b0X2R0iBfv3InJGTe7MWAgjutwtVJ3PXHeiJn0N5RfONUgb
-	b4kK3399AMgo/qzm1LkJavoKlTXHM4E+FkvhUTekv9xYhUip8FrX+YctXfB7wynZwdSSzOMTsrw
-	lpSqHBNEs5otvqC0AOx7SfiidnvA5RChw+xxi3BJwc4UAxnPWhIK8LKa0KRaHNSb/GusUShWn/N
-	doITpYk9cMu/P28yNsg04DxU1suz8UnoAQdc9ftkovrX9QUs6sj/xqu95bQwAgRJqCPUiL7ueQC
-	bZvNk=
-X-Received: by 2002:a17:903:2ecd:b0:2a7:b412:6cc8 with SMTP id d9443c01a7336-2a92458de40mr8592055ad.1.1770077873450;
-        Mon, 02 Feb 2026 16:17:53 -0800 (PST)
-Received: from misys ([58.120.241.145])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b6e4110sm149973765ad.84.2026.02.02.16.17.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 16:17:53 -0800 (PST)
-From: HeeSu Kim <mlksvender@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@google.com,
-	charmitro@posteo.net,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	nathan@kernel.org,
-	nsc@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	HeeSu Kim <mlksvender@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] rust: Makefile: bound rustdoc workaround to affected versions
-Date: Tue,  3 Feb 2026 18:17:31 +0900
-Message-ID: <20260203091731.2731080-1-mlksvender@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
-References: <CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com>
+	s=arc-20240116; t=1770111086; c=relaxed/simple;
+	bh=9ZCbCekETf/Hc7H9g6zabuW31iHCCcdMboCzlVHoOOY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qevTK7tkkjFUdO6g+jlC+z2pim6AQrk7epC8YUHXP3SH/KlDb6AZjEQ9Z8ci4j37S76mqoblN9/eAPKEoHsNIUo9kPft/kEUYWbz1uBKZNspSoFvzG0/Sm62FuvCyNKjuqNS33JMX5xv0Z/G2vLsz2QRHIUme4GvBtGsT2T84Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dkruFm8L; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770111084; x=1801647084;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=9ZCbCekETf/Hc7H9g6zabuW31iHCCcdMboCzlVHoOOY=;
+  b=dkruFm8LB1uWUa5bOHOo3MeXo3fyiKK70ai+X2MEfxhjVloYoww2DqEt
+   bTvTQnWKmkoeE5/P3ml9Sr6PdznKujPR7vk1CkLlIsDQUzUykzfRav1fK
+   iF4pr3e9S6Le/EzBiWxO2DMZoPhdsBEFzdjxjS3BKMIXWOUTBvMBnRQ6a
+   v6HaBtNKxK9hbAcnfBfkwXR3danRlLE5S6NpIUkYl47sVlzmwT1gfchoe
+   HU2dIeeNKvg/pPfbmqv3vDZ7zbYOcLYzCYYbyRKEnj3XDva6Hlt2Asqq9
+   z1l36LB2KFQCiCTwctNtpbJC7q1n+ISH2BtgZYKREl/wsvWRuAJ4oXN5N
+   g==;
+X-CSE-ConnectionGUID: sEomnNKQQ5mgONw0E9letA==
+X-CSE-MsgGUID: A0bcg1R7TUqQWB/GHoXY1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="82385804"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="82385804"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 01:31:23 -0800
+X-CSE-ConnectionGUID: lG5quSw+RHGTOlWRbhDFtw==
+X-CSE-MsgGUID: lZ/yXG0gRkCAAQSG3/jopw==
+X-ExtLoop1: 1
+Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.245.55]) ([10.245.245.55])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 01:31:20 -0800
+Message-ID: <9a9853a320a30802ff35803a574aab037aa2fd92.camel@linux.intel.com>
+Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
+ problem
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: John Hubbard <jhubbard@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ intel-xe@lists.freedesktop.org,  Ralph Campbell <rcampbell@nvidia.com>,
+ Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,  Jason
+ Gunthorpe	 <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ linux-mm@kvack.org, 	stable@vger.kernel.org, dri-devel@lists.freedesktop.org
+Date: Tue, 03 Feb 2026 10:31:04 +0100
+In-Reply-To: <a5b71dbc-9e3a-4098-8821-21a9a02ec235@nvidia.com>
+References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
+	 <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
+	 <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
+	 <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
+	 <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
+	 <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
+	 <a459f147b461c6e6e806282956b7931f74a0aa93.camel@linux.intel.com>
+	 <a5b71dbc-9e3a-4098-8821-21a9a02ec235@nvidia.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.84 / 15.00];
-	DATE_IN_FUTURE(4.00)[8];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-213135-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,umich.edu,gmail.com];
-	GREYLIST(0.00)[pass,body];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-213182-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mlksvender@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 68284D2F9F
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6A07FD6C97
 X-Rspamd-Action: no action
 
-The `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround was added to
-handle a rustdoc bug where target modifiers were not properly saved [1].
 
-This bug was fixed in Rust 1.90.0 [2]. Restrict the workaround to only
-apply for Rust 1.88.x and 1.89.x versions that are affected by the
-bug, preserving ABI compatibility checks on newer compiler versions.
+On Mon, 2026-02-02 at 14:28 -0800, John Hubbard wrote:
+> On 2/2/26 1:13 AM, Thomas Hellstr=C3=B6m wrote:
+> > On Sat, 2026-01-31 at 13:42 -0800, John Hubbard wrote:
+> > > On 1/31/26 11:00 AM, Matthew Brost wrote:
+> > > > On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas Hellstr=C3=B6m
+> > > > wrote:
+> > > > > On Fri, 2026-01-30 at 19:01 -0800, John Hubbard wrote:
+> > > > > > On 1/30/26 10:00 AM, Andrew Morton wrote:
+> > > > > > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellstr=C3=B6m
+> > > > > > > <thomas.hellstrom@linux.intel.com> wrote:
+> > > > > > ...
+> > >=20
+> > > >=20
+> > > > > I'm also not sure a folio refcount should block migration
+> > > > > after
+> > > > > the
+> > > > > introduction of pinned (like in pin_user_pages) pages. Rather
+> > > > > perhaps a
+> > > > > folio pin-count should block migration and in that case
+> > > > > do_swap_page()
+> > > > > can definitely do a sleeping folio lock and the problem is
+> > > > > gone.
+> > >=20
+> > > A problem for that specific point is that pincount and refcount
+> > > both
+> > > mean, "the page is pinned" (which in turn literally means "not
+> > > allowed
+> > > to migrate/move").
+> >=20
+> > Yeah this is what I actually want to challenge since this is what
+> > blocks us from doing a clean robust solution here. From brief
+> > reading
+> > of the docs around the pin-count implementation, I understand it as
+> > "If
+> > you want to access the struct page metadata, get a refcount, If you
+> > want to access the actual memory of a page, take a pin-count"
+> >=20
+> > I guess that might still not be true for all old instances in the
+> > kernel using get_user_pages() instead of pin_user_pages() for
+> > things
+> > like DMA, but perhaps we can set that in stone and document it at
+> > least
+> > for device-private pages for now which would be sufficient for the
+> > do_swap_pages() refcount not to block migration.
+> >=20
+>=20
+> It's an interesting direction to go...
+>=20
+> >=20
+> > >=20
+> > > (In fact, pincount is implemented in terms of refcount, in most
+> > > configurations still.)
+> >=20
+> > Yes but that's only a space optimization never intended to
+> > conflict,
+> > right? Meaning a pin-count will imply a refcount but a refcount
+> > will
+> > never imply a pin-count?
+> >=20
+> Unfortunately, they are more tightly linked than that today, at least
+> until
+> someday when specialized folios are everywhere (at which point
+> pincount
+> gets its own field).
+>=20
+> Until then, it's not just a "space optimization", it's "overload
+> refcount
+> to also do pincounting". And "let core mm continue to treat refcounts
+> as
+> meaning that the page is pinned".
 
-Link: https://github.com/rust-lang/rust/issues/144521 [1]
-Link: https://github.com/rust-lang/rust/pull/144523 [2]
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DG4JM9PU51M0.1YRGM9HVTY24U@garyguo.net/
-Cc: stable@vger.kernel.org # Useful in 6.18.y and later.
-Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
----
-Changes in v3:
-- Remove Fixes: tag (this is a feature, not a fix)
-- Use full URLs with Link: tags instead of GitHub-style references
-- Add Link: to lore.kernel.org for Suggested-by attribution
-- Add Cc: stable for potential backporting to 6.18.y
+So this is what I had in mind:
 
-Changes in v2:
-- Change approach: bound to affected Rust versions instead of ARM64-only
-  (the flag is simply ignored on non-ARM64 architectures)
+I think certainly this would work regardless of whether pincount is
+implemented by means of refcount with a bias or not, and AFAICT it's
+also consistent with=20
 
- rust/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+https://docs.kernel.org/core-api/pin_user_pages.html
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 5c0155b83454..55e2dc865207 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -136,7 +136,8 @@ pin_init-flags := \
+But it would not work if some part of core mm grabs a page refcount and
+*expects* that to pin a page in the sense that it should not be
+migrated. But you're suggesting that's actually the case?
 
- # `rustdoc` did not save the target modifiers, thus workaround for
- # the time being (https://github.com/rust-lang/rust/issues/144521).
--rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
-+# The bug was fixed in Rust 1.90.0, so only apply for 1.88.x and 1.89.x.
-+rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),$(if $(call test-lt,$(CONFIG_RUSTC_VERSION),109000),-Cunsafe-allow-abi-mismatch=fixed-x18))
+Thanks,
+Thomas
 
- # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
- doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
---
-2.52.0
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index a101a187e6da..c07a79995128 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -534,33 +534,15 @@ static void migrate_vma_collect(struct
+migrate_vma *migrate)
+  * migrate_vma_check_page() - check if page is pinned or not
+  * @page: struct page to check
+  *
+- * Pinned pages cannot be migrated. This is the same test as in
+- * folio_migrate_mapping(), except that here we allow migration of a
+- * ZONE_DEVICE page.
++ * Pinned pages cannot be migrated.
+  */
+ static bool migrate_vma_check_page(struct page *page, struct page
+*fault_page)
+ {
+        struct folio *folio =3D page_folio(page);
+=20
+-       /*
+-        * One extra ref because caller holds an extra reference,
+either from
+-        * folio_isolate_lru() for a regular folio, or
+migrate_vma_collect() for
+-        * a device folio.
+-        */
+-       int extra =3D 1 + (page =3D=3D fault_page);
+-
+-       /* Page from ZONE_DEVICE have one extra reference */
+-       if (folio_is_zone_device(folio))
+-               extra++;
+-
+-       /* For file back page */
+-       if (folio_mapping(folio))
+-               extra +=3D 1 + folio_has_private(folio);
+-
+-       if ((folio_ref_count(folio) - extra) > folio_mapcount(folio))
+-               return false;
++       VM_WARN_ON_FOLIO(folio_test_lru(folio) || folio_mapped(folio),
+folio);
+=20
+-       return true;
++       return !folio_maybe_dma_pinned(folio);
+ }
+=20
 
+
+
+>=20
+>=20
+> thanks,
 
