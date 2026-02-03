@@ -1,245 +1,193 @@
-Return-Path: <stable+bounces-213174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOoTKeiogWn0IQMAu9opvQ
-	(envelope-from <stable+bounces-213174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 08:51:04 +0100
+	id 0ARWEQOqgWn0IQMAu9opvQ
+	(envelope-from <stable+bounces-213175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 08:55:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F28D5D76
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 08:51:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A13D5E24
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 08:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2E6163004682
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 07:51:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A4393004D1B
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 07:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BA5392C33;
-	Tue,  3 Feb 2026 07:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CBC392C3A;
+	Tue,  3 Feb 2026 07:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IxdbBWyk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZgrHo8ef"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AEB31D74C
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 07:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770105060; cv=pass; b=qFkZGWIl/i0RsAmfiz2QtxnPehQpZrQrQQ79ywR3V1BZnOjbGUQ/OqGUvmPP8D2kiY87QqP5BTZ2LEhuGHq7yY+9RKMuwyBzEswJEaO7qY0dzCd1wovMKTXnJxmfs+JUDqAIwHwh5RJ0dUVL7E9o1yT/GifI7lm0/i91fejYLkY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770105060; c=relaxed/simple;
-	bh=z3uO4wDS4x6z936FnI7cggR5KRAC0BgutNuhO1txo6g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hc0mN00Ab5psEPuthZSWyqbUQWCoz3loID6+YuVGlKL0mIa/v0YacPJ3TxzHFFJwLHW9eVJeY151anWNMQOSU+bYmcnDYiHVrziEhIHcZeYD0AUsLhXtqwZYIH13kU00+kbPa72Q4D9b8FwqQpLHN4n2lRzP2Q+Cf5oaSGPONvk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IxdbBWyk; arc=pass smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12460a7caa2so8078379c88.1
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 23:50:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770105056; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DYaHwVvMukkEUvepTqEF3kP/6zRl3PP2XcuX+XArQRgpqmsdG6X1jB8s8xEDOAA7zy
-         AdTk9KDhdWAfDklRiXEPQd1PyQt2jSkr5XwWzeJG50++Ow8bFj/Ecp0SIOaXc4BjDQN3
-         Q0FQgGph6ncuG40Wld+A98WA8oyItAVuCJ6W03zKn4TTKAocgKaiW1zvvOCTUcnr+sni
-         DoKJsY/eB0rEOu8jTYgTSddOz/rHuiGGj+L9QB1gBGxn0G7rU5hYNT6+bKbC/OMifMje
-         n1YPByIJtk6xHtFKZ3dXe1phi9Po4JSaeH0j+scy79HxLigENLaQ/hkUwHyfUmq6B40r
-         lUgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dzMuEZYMn/hj9SYdAXLTnPBjRskZLNxUP6ZIZEqwunk=;
-        fh=rYuiSWP8HxC8O3z/Ui5yvMMZoRK3o9Db+FuGQh6R5to=;
-        b=U5kizhF0Sz5Ga+nAE3j20EQ6I9LAiF2BSxDAGWOJCUGvCRbiF831UZAnU81ofzea5a
-         9rHpEDt/AFLnpempnskSlBu9AF6gP22irtLXua6n+n+JQwuY/Ts/dyiASKL/AW0eXxqe
-         T++T3RNBW7ZjhYEnXUH+Vty4lAHh7LBg+6vl8YBFviVlAtAJuLSQsVBV2ROZ8/K6Lcry
-         zq5RCMdbOZIXBMdB6eUWqkpf3W1LEcrf9upmwmwKQM7nANaM243KjcZo8N08gTw/XJin
-         eUpgitoo6zyF6oZThErStV0L8gX4h1ynoy0Eq4zZam9kKkF0WwcpYiNGLEoVUpYoloQD
-         qaMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770105056; x=1770709856; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dzMuEZYMn/hj9SYdAXLTnPBjRskZLNxUP6ZIZEqwunk=;
-        b=IxdbBWykyN6SCKXUzV/u1uJzV5XIMNTY0ESeHRhKeO0HdvhevwhONg9J1h5Rfk4tpK
-         eBpD8sYdeaasAQLZIJS7PDSjWD8bIiMDElOw0CYrLs6pBaWVG5auFRo0Bfpxywr7btas
-         vid0zfnI40fizGts7Wc/KUg3Z6iq/rdt5uuWfAol+ZaOIfZSbwlkiLhFMIQFpF++XHSO
-         wxgK2VuCSqeQdmWn34q95Po5SBsh3m9oICbashUv4U8eAdCO6Tjk3e7ZiRkjHbtC8wMK
-         YbQ898CrnGZRF3K3YQXNtKi/2zHvci83WYHX/erAZCAZ4VRm5Pzy00wwZYgqI7pGc9nk
-         KZjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770105056; x=1770709856;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dzMuEZYMn/hj9SYdAXLTnPBjRskZLNxUP6ZIZEqwunk=;
-        b=tbjtUFO2fPMc025V9YIt3gqTTRp4rucgE5KbcpBegAtd2oVrRrAiP4On1X1T3oohim
-         XtBr4vqm8glegey3GwbBEiqymyIVdn61boPCeU9bC/02O1U6fUBqFrYW1Q7GAQSVfauh
-         fHup0YWXhUJOeRfoQAhjYNcQxJqw0tT9gtbfb0HB3UAF7igUl1FyB8Xok1pKckEUqNbx
-         vM33xjH8xwYgquFjhPPvbhDcffgz4h3ugkkRWoBAtT0UyMeIq+ESLa/vf0jVEs0Q05y2
-         ip4yWvn2Bg3aQiP5ozxYkNu8pmMJpZPI8NX/+YnZwDQLuLOWTnI9+XO/D9wwnlc0+Fk4
-         6dng==
-X-Forwarded-Encrypted: i=1; AJvYcCWUzoH5f81GM7Gv0Xbsw+cKbnLPq7F389b4UoTrrdeIYLPQ7pi8Xez7tD7zHojkK1aMH2JYu2M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPQZRBzqrnIiSnL0hmhyUZWyTpFLDoQcyWyw5z4T89l9xN2kEm
-	o6WEt9/D9I+eOH5wScXAykuhoGOdGFj5veyaifjj4XnlgGWK+h22d12RdI7v0l6h9bpxRjkmZPP
-	zcE0m7tSM9Ah3v2YsEveeir+1QPGMC+k=
-X-Gm-Gg: AZuq6aK+/FZ0feuPK+AoyLyhI+9yJ+dL0g8QA2pJDMkZyFnbRsJf4fj33Jv88lClzWF
-	6Layh1CjYNjZD/Hvq6VOX7qefdxaW2u4ZU8zcOSsIovq9Xogufk4jlokphm6MwxY957/HEskv0S
-	+zPaQvhJA3iIoKLLP3/gA7vpjozD1k3wf2wDJD7rNUrjsCBek2uiPO+sym5AIeYm7mOFf09B3Ko
-	UZYSQi2oZtTJA2H8O0H9PVjtU/QV+ILlAUg1MviONd2a1Zbye2nIrSMESXsFuMw+CKr5Z9Y7gEa
-	DsBN1RcGKmoURMt2urMQz7+5p6Fvc4k1lvNPJu8D7EYevth27pDTPMdANMOwAeCG/nyTfIUCnDQ
-	OkPuLQIQXLw==
-X-Received: by 2002:a05:7022:41e:b0:124:9e46:82fb with SMTP id
- a92af1059eb24-125c1010d65mr5955626c88.38.1770105056409; Mon, 02 Feb 2026
- 23:50:56 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8762F5328;
+	Tue,  3 Feb 2026 07:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770105338; cv=none; b=MUmDJDB1Vf5egHmFFFuFW1viWh0/WyOZ14pPcrK7wzeHp6y1Cnh1W8lhMnpEqPIBpQE0kjj7cT2O0prdTScGlyM70NHOWlkEDTr+ybhjbHjnCOlZeIdVZebyOCESLnEZT7RmFUMeEsvQcT07nfEbgiKQJS/dJOcZ7JRWIGZywds=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770105338; c=relaxed/simple;
+	bh=4Vq5HT9GMbuZxPxsT9MI3F5lUAEFdnnd3SV89HgtbiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HDPNRM+N2DNlVJ6Ec+/Y8iGHHiz5odQ6CLW86RxZ/oPUY83rRjvCOigfCVzhQQMwCS+EBpn2iCR9ymUCS6P8IgzfxvdQHj1fhA2m6MTixpZZWGgENXQPZWlLyVjYvFx+IRnkwNcG1gwfXpF4Q09q+JWSnw9iDaJt3k/FN/RJtuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZgrHo8ef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E94C116D0;
+	Tue,  3 Feb 2026 07:55:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770105338;
+	bh=4Vq5HT9GMbuZxPxsT9MI3F5lUAEFdnnd3SV89HgtbiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZgrHo8efwWhKG72A/lo1uIpJEsxbnmB/+X4lxJ1ROODvZ7p/Um6aznZHdBfWooFEj
+	 vLjRO79jepU/n+6Ls4isDYUW1zpcPed4CEUeDDk6iIz9gUlw3UmT/pMPQC9gXYAzjL
+	 KsDavt5Wjby1NsZgD9GTkXSJbNj56etLNZj1l8ewMWXcDImInn0lLkbvhkL4dxlHH5
+	 5/H3446d2K1NERiVeR5hAveV1iUVLKRUeWQ3Sbsg/ve++lnksJ3NLQb/yU8E3gEfu3
+	 OfbRhveeTSAzsy8G4kE18sWYTT9oVndeNLptmGzbk7IGqKWuwbzx2HS4IkkLgruy8W
+	 ZriSncHdyX6ww==
+Date: Tue, 3 Feb 2026 15:55:33 +0800
+From: "Peter Chen (CIX)" <peter.chen@kernel.org>
+To: "Thomas Richard (TI)" <thomas.richard@bootlin.com>
+Cc: Pawel Laszczak <pawell@cadence.com>, Roger Quadros <rogerq@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	theo.lebrun@bootlin.com, Frank Li <frank.li@nxp.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	richard.genoud@bootlin.com, Udit Kumar <u-kumar1@ti.com>,
+	Prasanth Mantena <p-mantena@ti.com>, Abhash Kumar <a-kumar2@ti.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Peter Chen <peter.chen@nxp.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: cdns3: fix role switching during resume
+Message-ID: <20260203075533.GA326240@nchen-desktop>
+References: <20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com>
- <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com> <aYDN6X0WVT9nV8fg@p14s>
-In-Reply-To: <aYDN6X0WVT9nV8fg@p14s>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 3 Feb 2026 09:53:38 +0200
-X-Gm-Features: AZwV_Qi4gqYVwTTFEPdJsETuT6WyCitJtTK7rW3QVszmKRnozagvutFj3QflZ74
-Message-ID: <CAEnQRZBVhijvq0VRTKXpW7va2Dxprzz-cnvvj=z90FPXRK+TSA@mail.gmail.com>
-Subject: Re: [PATCH v3] remoteproc: imx: Fix invalid loaded resource table detection
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Iuliana Prodan <iuliana.prodan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
-	Frank Li <frank.li@nxp.com>, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213174-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[oss.nxp.com,kernel.org,pengutronix.de,gmail.com,nxp.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213175-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[danielbaluta@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[peter.chen@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linaro.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C1F28D5D76
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email]
+X-Rspamd-Queue-Id: B9A13D5E24
 X-Rspamd-Action: no action
 
-On Mon, Feb 2, 2026 at 6:16=E2=80=AFPM Mathieu Poirier
-<mathieu.poirier@linaro.org> wrote:
->
-> On Thu, Jan 29, 2026 at 06:02:21PM +0200, Daniel Baluta wrote:
-> > On Thu, Jan 29, 2026 at 3:45=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nx=
-p.com> wrote:
-> > >
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > >
-> > > imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
-> > > resource table even when the current firmware does not provide one.
-> > >
-> > > When the device tree contains a "rsc-table" entry, priv->rsc_table is
-> > > non-NULL and denotes where a resource table would be located if one i=
-s
-> > > present in memory. However, when the current firmware has no resource
-> > > table, rproc->table_ptr is NULL. The function still returns
-> > > priv->rsc_table, and the remoteproc core interprets this as a valid l=
-oaded
-> > > resource table.
-> > >
-> > > Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table()=
- when
-> > > there is no resource table for the current firmware (i.e. when
-> > > rproc->table_ptr is NULL). This aligns the function's semantics with =
-the
-> > > remoteproc core: a loaded resource table is only reported when a vali=
-d
-> > > table_ptr exists.
-> > >
-> > > With this change, starting firmware without a resource table no longe=
-r
-> > > triggers a crash.
-> > >
-> > > Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook fo=
-r find_loaded_rsc_table")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> >
-> > Changes looks good to  me >
-> >
-> > > --- a/drivers/remoteproc/imx_rproc.c
-> > > +++ b/drivers/remoteproc/imx_rproc.c
-> > > @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc=
- *rproc, const struct firmware *
-> > >  {
-> > >         struct imx_rproc *priv =3D rproc->priv;
-> > >
-> > > +       /* No resource table in the firmware */
-> > > +       if (!rproc->table_ptr)
-> > > +               return NULL;
-> >
-> > I wonder if we can make this change generic because it should happen
-> > on other platforms also.
-> >
-> > Maybe something like this:
-> >
-> > remoteproc: core: Only copy loaded table when valid
-> >
-> > Copy resource table in memory only when:
-> > * the current loaded firmware provides one
-> > AND
-> > * there is an explicit request to have the rsc table copied in memory
-> > via rsc-table
-> >
-> > --- a/drivers/remoteproc/remoteproc_core.c
-> > +++ b/drivers/remoteproc/remoteproc_core.c
-> > @@ -1281,7 +1281,7 @@ static int rproc_start(struct rproc *rproc,
-> > const struct firmware *fw)
-> >          * that any subsequent changes will be applied to the loaded ve=
-rsion.
-> >          */
-> >         loaded_table =3D rproc_find_loaded_rsc_table(rproc, fw);
-> > -       if (loaded_table) {
-> > +       if (rproc->cached_table && loaded_table) {
->
-> But we would be doing the check for rproc->table_ptr twice (->table_ptr a=
-nd
-> ->cached_table should be the same).  The way it is currently writting for=
-ces
-> vendor specific implementation of rproc_elf_find_loaded_rsc_table() to do=
- the
-> right thing.
->
-> The merge window has been pushed by a week, giving me an opportunity to m=
-erge
-> this patch.  Should I do that or should we continue discussing the best
-> approach?
+On 26-01-30 11:05:45, Thomas Richard (TI) wrote:
+> If the role change while we are suspended, the cdns3 driver switches to the
+> new mode during resume. However, switching to host mode in this context
+> causes a NULL pointer dereference.
+> 
+> The host role's start() operation registers a xhci-hcd device, but its
+> probe is deferred while we are in the resume path. The host role's resume()
+> operation assumes the xhci-hcd device is already probed, which is not the
+> case, leading to the dereference. Since the start() operation of the new
+> role is already called, the resume operation can be skipped.
+> 
+> So skip the resume operation for the new role if a role switch occurs
+> during resume. Once the resume sequence is complete, the xhci-hcd device
+> can be probed in case of host mode.
+> 
+> Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
+> Mem abort info:
+> ...
+> Data abort info:
+> ...
+> [0000000000000208] pgd=0000000000000000, p4d=0000000000000000
+> Internal error: Oops: 0000000096000004 [#1]  SMP
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
+> 6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
+> Hardware name: Texas Instruments J7200 EVM (DT)
+> pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : usb_hcd_is_primary_hcd+0x0/0x1c
+> lr : cdns_host_resume+0x24/0x5c
+> ...
+> Call trace:
+>  usb_hcd_is_primary_hcd+0x0/0x1c (P)
+>  cdns_resume+0x6c/0xbc
+>  cdns3_controller_resume.isra.0+0xe8/0x17c
+>  cdns3_plat_resume+0x18/0x24
+>  platform_pm_resume+0x2c/0x68
+>  dpm_run_callback+0x90/0x248
+>  device_resume+0x100/0x24c
+>  dpm_resume+0x190/0x2ec
+>  dpm_resume_end+0x18/0x34
+>  suspend_devices_and_enter+0x2b0/0xa44
+>  pm_suspend+0x16c/0x5fc
+>  state_store+0x80/0xec
+>  kobj_attr_store+0x18/0x2c
+>  sysfs_kf_write+0x7c/0x94
+>  kernfs_fop_write_iter+0x130/0x1dc
+>  vfs_write+0x240/0x370
+>  ksys_write+0x70/0x108
+>  __arm64_sys_write+0x1c/0x28
+>  invoke_syscall+0x48/0x10c
+>  el0_svc_common.constprop.0+0x40/0xe0
+>  do_el0_svc+0x1c/0x28
+>  el0_svc+0x34/0x108
+>  el0t_64_sync_handler+0xa0/0xe4
+>  el0t_64_sync+0x198/0x19c
+> Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
+> ---[ end trace 0000000000000000 ]---
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
+> Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
 
-Let's go with Peng's approach:
+Acked-by: Peter Chen <peter.chen@kernel.org>
 
-Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
+Peter
+> ---
+> This patch is related to the following discussion:
+> https://lore.kernel.org/all/8743fec1-301d-46e1-89bf-7952c73faa86@bootlin.com/
+> ---
+>  drivers/usb/cdns3/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+> index 1243a5cea91b..f0e32227c0b7 100644
+> --- a/drivers/usb/cdns3/core.c
+> +++ b/drivers/usb/cdns3/core.c
+> @@ -551,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
+>  		}
+>  	}
+>  
+> -	if (cdns->roles[cdns->role]->resume)
+> +	if (!role_changed && cdns->roles[cdns->role]->resume)
+>  		cdns->roles[cdns->role]->resume(cdns, power_lost);
+>  
+>  	return 0;
+> 
+
+-- 
+
+Best regards,
+Peter
 
