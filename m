@@ -1,53 +1,60 @@
-Return-Path: <stable+bounces-213165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLnCB4B3gWk0GgMAu9opvQ
-	(envelope-from <stable+bounces-213165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 05:20:16 +0100
+	id 8NuJHdV9gWnlGgMAu9opvQ
+	(envelope-from <stable+bounces-213166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 05:47:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C8AD461A
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 05:20:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B493ED477A
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 05:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 325AE30209FE
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 04:20:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE7503009521
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 04:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696281EA7DF;
-	Tue,  3 Feb 2026 04:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6749B6DCE1;
+	Tue,  3 Feb 2026 04:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKGh6I5Z"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OIeE20ZL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2921943AA4;
-	Tue,  3 Feb 2026 04:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D93249E5;
+	Tue,  3 Feb 2026 04:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770092409; cv=none; b=kghyMtYBI5AtflZUtCDvG9Mh2smG3aFWJNMgY+MN4WGTDbRbC1N8s3j6WSUX6NzOUiFX/UwhSGb8jIFbfhSWwX/5LXemzET+apCmUl/W94sw5O8koPyUIJq658cauGYUVcQhta+loG/zRFTwCN65x9jVlaK7Qhvf8UHA3EqiI+E=
+	t=1770094006; cv=none; b=oV4qGyphcUi5WXJE97QnW6ye3cJg1bphhynfRd692wHCV8nRTdYl0zqup4WXjeIdHX4nqZC3yAlmGlx3MtzvdJ/vpR3/YeylolpJi+6KYTIGia1qSNZXl1tIUkXQ0Vu7nakhRcNAhZw0R3iyvyrU6tTsevujBiPPK5bEhrMRs6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770092409; c=relaxed/simple;
-	bh=0YAWDIS+eysLPVl7yK0G0fnhNv1PM/4TCL5u/TuVNpI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=tNzTm0ZKuaAR55nlBFhI/Ac7+IkfQIysIytr+xksM997z7saXHvMtsDeH4Biebuwwb/diOP5rooj+zGcNv/rUyh70qjiPNT2qqnjVrnq/rA6Mbl3CByGYuG8hB3FZc+aSUHS26jFHTYggQTOjhT2siIIXwdjHZSg8e1CAYMaJ1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKGh6I5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9611C116D0;
-	Tue,  3 Feb 2026 04:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770092408;
-	bh=0YAWDIS+eysLPVl7yK0G0fnhNv1PM/4TCL5u/TuVNpI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UKGh6I5ZSbFuQyF6DyfPCFHB9zdBfTUzUeJCejaTBm/dpEDVsBM9akcfz3ux8mjSN
-	 V1GGYH7vDQuV6SIe/LPBTMFw0tV7KFHHMj74U1Nl1DEZATxxV+Apfi1UU2R4TPvm81
-	 p586sz5MMkfS8KUKTGZFF2vHVgfyJ01+ADhtSsbgPWPVUT2XYTGX8oChOUyQg4LhjC
-	 fANHZLY9Px53Wst1UDYbFQNpV3xWQ+XSv+K975fxhQ5ENsHYcY7aRzFc0qzYUQPV68
-	 caRRSkpontpG4cOKKEKWy/Wl2kId12Yd2BtpjqbnnxUTwhqVo8h7Qzr5O0Rqz9T7Z7
-	 DG0+ZRQWAJRKQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9104D3808200;
-	Tue,  3 Feb 2026 04:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1770094006; c=relaxed/simple;
+	bh=hB37mWQGan3TNZL/z95c//qtPtcz+6QB38d/U92yOYA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ib6+FukYpD1boG8xDSelTiK8mTBkDhkYbTELvHb9JqbNPWslrTf/EcOL2FhauvNBKuDOdIP+zBYGGdSCUiMiNSd1dje/RquCQMcksAHzL39I5dWJRH7A1v2mqaedPFbc0dwhMvj+V3Az8qvHf6FovN3nrwBQgK9o30Lf+Qdy0RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OIeE20ZL; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=2N
+	y2uQKPQBNueQvSu6XrKmuupnByzTNPh34Mp1RBuHg=; b=OIeE20ZLPC5HC3p+51
+	PWqE33zMsjnTbzO20o8C/5ReAyK+i1k0UWfx3y/BFNgjs9cVveK/Id0My/tNAvYi
+	mbzg55t4AmHT/3T5z6kTRKuDNHF3LllJbw/OZ5sSnraZL01HKRJkwHqot46q/TSX
+	YZQmpOur9cA8WiQjvgBoEHtO0=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3X3WHfYFpUWEbJA--.3142S2;
+	Tue, 03 Feb 2026 12:46:01 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.6.y] team: Move team device type change at the end of team_port_add
+Date: Tue,  3 Feb 2026 12:45:57 +0800
+Message-Id: <20260203044557.440244-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,75 +62,156 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: spacemit: k1-emac: fix jumbo frame support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177009240524.1309272.13521907862288181709.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Feb 2026 04:20:05 +0000
-References: <20260130102301.477514-1-tmshlvck@gmail.com>
-In-Reply-To: <20260130102301.477514-1-tmshlvck@gmail.com>
-To: Tomas Hlavacek <tmshlvck@gmail.com>
-Cc: netdev@vger.kernel.org, linux-riscv@lists.infradead.org,
- spacemit@lists.linux.dev, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, dlan@kernel.org, wangruikang@iscas.ac.cn,
- stable@vger.kernel.org
+X-CM-TRANSID:_____wD3X3WHfYFpUWEbJA--.3142S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCF43Ww4fCryxKF45Kw4DArb_yoWrWw4rpF
+	W3X3Z8tryDGay2gas3uw4jqF1YqrZaya42qry5tw1jk34jqry8AFWrtFy0gFy0kFWUCFWa
+	qF4YvFs5Zw10gF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEFAp7UUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3Qo81WmBfYp2+AAA3v
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213165-lists,stable=lfdr.de,netdevbpf];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_NO_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com,nvidia.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-213166-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,a2a3b519de727b0f7903];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 73C8AD461A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B493ED477A
 X-Rspamd-Action: no action
 
-Hello:
+From: "Nikola Z. Ivanov" <zlatistiv@gmail.com>
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+[ Upstream commit 0ae9cfc454ea5ead5f3ddbdfe2e70270d8e2c8ef ]
 
-On Fri, 30 Jan 2026 11:23:01 +0100 you wrote:
-> The driver never programs the MAC frame size and jabber registers,
-> causing the hardware to reject frames larger than the default 1518
-> bytes even when larger DMA buffers are allocated.
-> 
-> Program MAC_MAXIMUM_FRAME_SIZE, MAC_TRANSMIT_JABBER_SIZE, and
-> MAC_RECEIVE_JABBER_SIZE based on the configured MTU. Also fix the
-> maximum buffer size from 4096 to 4095, since the descriptor buffer
-> size field is only 12 bits. Account for double VLAN tags in frame
-> size calculations.
-> 
-> [...]
+Attempting to add a port device that is already up will expectedly fail,
+but not before modifying the team device header_ops.
 
-Here is the summary with links:
-  - [net,v3] net: spacemit: k1-emac: fix jumbo frame support
-    https://git.kernel.org/netdev/net/c/3125fc170169
+In the case of the syzbot reproducer the gre0 device is
+already in state UP when it attempts to add it as a
+port device of team0, this fails but before that
+header_ops->create of team0 is changed from eth_header to ipgre_header
+in the call to team_dev_type_check_change.
 
-You are awesome, thank you!
+Later when we end up in ipgre_header() struct ip_tunnel* points to nonsense
+as the private data of the device still holds a struct team.
+
+Example sequence of iproute2 commands to reproduce the hang/BUG():
+ip link add dev team0 type team
+ip link add dev gre0 type gre
+ip link set dev gre0 up
+ip link set dev gre0 master team0
+ip link set dev team0 up
+ping -I team0 1.1.1.1
+
+Move team_dev_type_check_change down where all other checks have passed
+as it changes the dev type with no way to restore it in case
+one of the checks that follow it fail.
+
+Also make sure to preserve the origial mtu assignment:
+  - If port_dev is not the same type as dev, dev takes mtu from port_dev
+  - If port_dev is the same type as dev, port_dev takes mtu from dev
+
+This is done by adding a conditional before the call to dev_set_mtu
+to prevent it from assigning port_dev->mtu = dev->mtu and instead
+letting team_dev_type_check_change assign dev->mtu = port_dev->mtu.
+The conditional is needed because the patch moves the call to
+team_dev_type_check_change past dev_set_mtu.
+
+Testing:
+  - team device driver in-tree selftests
+  - Add/remove various devices as slaves of team device
+  - syzbot
+
+Reported-by: syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a2a3b519de727b0f7903
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20251122002027.695151-1-zlatistiv@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ drivers/net/team/team.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index 9baa13808933..deb6eb3a240a 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -1184,10 +1184,6 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		return -EPERM;
+ 	}
+ 
+-	err = team_dev_type_check_change(dev, port_dev);
+-	if (err)
+-		return err;
+-
+ 	if (port_dev->flags & IFF_UP) {
+ 		NL_SET_ERR_MSG(extack, "Device is up. Set it down before adding it as a team port");
+ 		netdev_err(dev, "Device %s is up. Set it down before adding it as a team port\n",
+@@ -1205,10 +1201,16 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 	INIT_LIST_HEAD(&port->qom_list);
+ 
+ 	port->orig.mtu = port_dev->mtu;
+-	err = dev_set_mtu(port_dev, dev->mtu);
+-	if (err) {
+-		netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
+-		goto err_set_mtu;
++	/*
++	 * MTU assignment will be handled in team_dev_type_check_change
++	 * if dev and port_dev are of different types
++	 */
++	if (dev->type == port_dev->type) {
++		err = dev_set_mtu(port_dev, dev->mtu);
++		if (err) {
++			netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
++			goto err_set_mtu;
++		}
+ 	}
+ 
+ 	memcpy(port->orig.dev_addr, port_dev->dev_addr, port_dev->addr_len);
+@@ -1283,6 +1285,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		}
+ 	}
+ 
++	err = team_dev_type_check_change(dev, port_dev);
++	if (err)
++		goto err_set_dev_type;
++
+ 	if (dev->flags & IFF_UP) {
+ 		netif_addr_lock_bh(dev);
+ 		dev_uc_sync_multiple(port_dev, dev);
+@@ -1301,6 +1307,7 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 
+ 	return 0;
+ 
++err_set_dev_type:
+ err_set_slave_promisc:
+ 	__team_option_inst_del_port(team, port);
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
 
