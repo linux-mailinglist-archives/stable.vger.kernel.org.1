@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-213220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLu4GSPwgWlAMwMAu9opvQ
-	(envelope-from <stable+bounces-213220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:54:59 +0100
+	id yK7eHQ3vgWlAMwMAu9opvQ
+	(envelope-from <stable+bounces-213222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:50:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C02D968C
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:54:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AAFD953A
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFADA30DD6F7
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:47:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C5F8830A7A77
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3A63451BB;
-	Tue,  3 Feb 2026 12:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D2C34679B;
+	Tue,  3 Feb 2026 12:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyeU1gVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KC1KkxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7741F583D
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2310C34679C
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770122863; cv=none; b=ZlcalKltsUw1PN+4uSYPh+DK2DAKOCvlcdJ/Y+k0wWNGbMTgepDH6wvIMCcMJhYE1nl1WBPnykCq/TG1SOiwttqAxKrMXD28Nu/M0X4gyE/KWPssDY8zQEIR+krhWiiVRIxX69aJYJo5+9fQpY4H6TvfuDs1nWvpPNE/dOU0jbM=
+	t=1770122930; cv=none; b=fOBdLrP58n9LEXulBH7OqO/Z/t3X92xHI5tumMTLazvRAUzWzNb5NG8v0kUh53UuGSr/sBWcDQnAHmnA24JB0kwOkG1SF1FqBQdtYDynBv+DUhTTue086+doECM1VELKBzyTb4z1JGhku+0RblKflkxTv2is6ALPS0jayrk8P8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770122863; c=relaxed/simple;
-	bh=Af6ODBRCUMmmyr9m4SFu7jVJ+o2hKN6Xq5LNhaTqOP0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=edHHxhnk2WI+QhBJZpaa8lSlEDd5aLDLn/uDUH1AevYMhUGbSKVCYS+9Noof5g70QGzIeeTHCnuuacT9bxZ5+Zf7Pqp3bRwVFMGw182yvhBDTmMFrOEzPcCAJVuAuqso/hyO8jLyRdgp73txheaYH5kHws8Di/F7mCND9wxDEm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyeU1gVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFCFC116D0;
-	Tue,  3 Feb 2026 12:47:42 +0000 (UTC)
+	s=arc-20240116; t=1770122930; c=relaxed/simple;
+	bh=rUdE9S6cc55EP4KTc1pGZ7xHsTc7WSEWaLEfw7OtAuo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m6k0EtjGgW9HocP+Vwyju+Q5lICb0hxNWQTdeXZLz5UQv9ccfdWEl3M44MyiLqRdavUB1ePoMUNqJtIOT264pNSzxcKlat35qKcaADASRCbUdzqUay+E87maMKrDJTyyps5LnEV66t9S0K256Od5xMwJz3bEhnWOM/6Xrpe2ssc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KC1KkxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD52C19425;
+	Tue,  3 Feb 2026 12:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770122863;
-	bh=Af6ODBRCUMmmyr9m4SFu7jVJ+o2hKN6Xq5LNhaTqOP0=;
+	s=korg; t=1770122929;
+	bh=rUdE9S6cc55EP4KTc1pGZ7xHsTc7WSEWaLEfw7OtAuo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gyeU1gVJtsieCY8jlYEdkvGwwdUqaAY/ZGvJJtr05Cdw84mUd/O7Et8rC0PgXiimr
-	 bBDwSB+24OhBfTEoU3QZ8AQZKbVU+xXOet9voJhTAjTVxc/F94jCIEKc4ueqPK7sIY
-	 3O65IyXlS8PzxjX89eXbm3xljAYic47qXjbif5tg=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: join: fix local endp not being tracked" failed to apply to 6.1-stable tree
-To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
+	b=2KC1KkxMNhYRGz5o+YLC1c+MCbvIVH0DNfDqFU7xB4IYbeGUv2DeUkhc+ZtFD7jI7
+	 Q6TmqKOqInB+kWY6HASSQ91lqx/hE0+gZhngC7S4O7uix2jD/HyULIWWBq+WcfJ9BQ
+	 J9s2gnQ+k2VFLCNOQASMrHGNcGsjhHIud6V4cIRk=
+Subject: FAILED: patch "[PATCH] mm/kfence: randomize the freelist on initialization" failed to apply to 6.6-stable tree
+To: pimyn@google.com,akpm@linux-foundation.org,dvyukov@google.com,elver@google.com,ernesto.martinezgarcia@tugraz.at,glider@google.com,gregkh@linuxfoundation.org,kees@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 13:47:39 +0100
-Message-ID: <2026020339-impart-correct-2ff7@gregkh>
+Date: Tue, 03 Feb 2026 13:48:38 +0100
+Message-ID: <2026020338-hemstitch-magnolia-fb91@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,48 +58,48 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213220-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213222-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gregkh:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mptcp_join.sh:url]
-X-Rspamd-Queue-Id: C0C02D968C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,tugraz.at:email,linuxfoundation.org:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E9AAFD953A
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x c5d5ecf21fdd9ce91e6116feb3aa83cee73352cc
+git cherry-pick -x 870ff19251bf3910dda7a7245da826924045fedd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020339-impart-correct-2ff7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020338-hemstitch-magnolia-fb91@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,59 +111,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c5d5ecf21fdd9ce91e6116feb3aa83cee73352cc Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 27 Jan 2026 20:27:27 +0100
-Subject: [PATCH] selftests: mptcp: join: fix local endp not being tracked
+From 870ff19251bf3910dda7a7245da826924045fedd Mon Sep 17 00:00:00 2001
+From: Pimyn Girgis <pimyn@google.com>
+Date: Tue, 20 Jan 2026 17:15:10 +0100
+Subject: [PATCH] mm/kfence: randomize the freelist on initialization
 
-When running this mptcp_join.sh selftest on older kernel versions not
-supporting local endpoints tracking, this test fails because 3 MP_JOIN
-ACKs have been received, while only 2 were expected.
+Randomize the KFENCE freelist during pool initialization to make
+allocation patterns less predictable.  This is achieved by shuffling the
+order in which metadata objects are added to the freelist using
+get_random_u32_below().
 
-It is not clear why only 2 MP_JOIN ACKs were expected on old kernel
-versions, while 3 MP_JOIN SYN and SYN+ACK were expected. When testing on
-the v5.15.197 kernel, 3 MP_JOIN ACKs are seen, which is also what is
-expected in the selftests included in this kernel version, see commit
-f4480eaad489 ("selftests: mptcp: add missing join check").
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-Switch the expected MP_JOIN ACKs to 3. While at it, move this
-chk_join_nr helper out of the special condition for older kernel
-versions as it is now the same as with more recent ones. Also, invert
-the condition to be more logical: what's expected on newer kernel
-versions having such helper first.
+Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Fixes: d4c81bbb8600 ("selftests: mptcp: join: support local endpoint being tracked or not")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-5-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 3fc29201362a..e70d3420954f 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2329,17 +2329,16 @@ signal_address_tests()
- 		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=1
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 3 3 3
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index da0f5b6f5744..4f79ec720752 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -596,7 +596,7 @@ static void rcu_guarded_free(struct rcu_head *h)
+ static unsigned long kfence_init_pool(void)
+ {
+ 	unsigned long addr, start_pfn;
+-	int i;
++	int i, rand;
  
- 		# It is not directly linked to the commit introducing this
- 		# symbol but for the parent one which is linked anyway.
--		if ! mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
--			chk_join_nr 3 3 2
--			chk_add_nr 4 4
--		else
--			chk_join_nr 3 3 3
-+		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
- 			# the server will not signal the address terminating
- 			# the MPC subflow
- 			chk_add_nr 3 3
-+		else
-+			chk_add_nr 4 4
- 		fi
- 	fi
- }
+ 	if (!arch_kfence_init_pool())
+ 		return (unsigned long)__kfence_pool;
+@@ -647,13 +647,27 @@ static unsigned long kfence_init_pool(void)
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
+ 
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
+ 			goto reset_slab;
++	}
+ 
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32_below(i);
++		swap(kfence_metadata_init[i - 1].addr, kfence_metadata_init[rand].addr);
++	}
++
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata_init[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata_init[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata_init[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
+ 	}
+ 
+@@ -666,6 +680,7 @@ static unsigned long kfence_init_pool(void)
+ 	return 0;
+ 
+ reset_slab:
++	addr += 2 * i * PAGE_SIZE;
+ 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+ 		struct page *page;
+ 
 
 
