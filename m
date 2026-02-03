@@ -1,203 +1,164 @@
-Return-Path: <stable+bounces-213153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECiDOj5ggWnfFwMAu9opvQ
-	(envelope-from <stable+bounces-213153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:41:02 +0100
+	id UGOuORdhgWn6FwMAu9opvQ
+	(envelope-from <stable+bounces-213154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:44:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725AED3D17
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:41:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC6ED3D61
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 138DE30214D5
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 02:40:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE4FE3019F3F
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 02:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614703101C2;
-	Tue,  3 Feb 2026 02:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C14310784;
+	Tue,  3 Feb 2026 02:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9I6rN3C"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LByOla14"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00DB2FBDF2
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 02:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB03287276;
+	Tue,  3 Feb 2026 02:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770086457; cv=none; b=BnF43EnbNd+BsB7DF77lb+zN+nj0RmZyMhLYyHqlYSlHCmpDC8Sa/Mfoc/FER6L9/N1h1D1V1peFXq/3Humgo3yiSF72OIEUcYJejJThCOvtfQTLegh0StV3uGSG/EKKSkkychplfuv0mbow+5NbW0XzkfEOhs8wd2E7F+2qWsk=
+	t=1770086670; cv=none; b=uRiR6lp8bprdYKWRYRdeqOc5LxKu05vDDiXLFyftIux7Gjw0lIOfiSoGoArusAyD9JsyV1jP/MXIAvpKBs137lkxqqIEuIR9P2DCLPIp/zfc3yQbNirzR6Bw/s6ovCOd8sGn1TI90O7ZWwv8gh24YFp1iOGDcngzuuLnzV3w9Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770086457; c=relaxed/simple;
-	bh=ndaXLIpsmF2vxSgB6X+oRj8aKFBYdVhhWSbAd6S4LNI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=Jl3tj4diYnJ2OgnMh9ejUf4JKevEirsaz0FSuAveOx02mT2pm+A2zIKSA6gTAsVtlFje8PVhCN+hfDL9b0PviBnLlViQSXBCMxEmL3FWHwCTzQgNLtfTQ+yGCiomaFiP3cil3zrsK41F5kX1aeJIZGK+l5O24pEzw/6KR3mLej4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9I6rN3C; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-560227999d2so1937686e0c.1
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 18:40:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770086455; x=1770691255; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KsqYKO57kcaexHTzdufWdg6k5lDbRhwfeK1kutGLUV8=;
-        b=N9I6rN3C+xdyq9S8fRz+kcx8LJWyskEpmJmDVr1pqvBVRzJsbJcxk7GdDAbrtUD2Eb
-         mmLqviafH55lgh2SpiyMqSADR5MUOGEet0iHFtQFHznrBvoU3k+hLaQLhPnns7VeBl8j
-         NZ8kpJBUTo7A5H0ovqBTL1ZQ2MfFHBqXWCu/mE2sbQ+AyWxnRGZsYuDNhPX8QOj6WDuw
-         9puM8coAabY2Yzh7mGrae9xs38AUlJbfb0NDM43Tj8qKYa6erotQrPUgAz8KBJe3xg1L
-         xXnylNwdfn7D/5tOC3HeiTAN1cAX7VetWOU7WoAA9KK6c6bm5yryqKmNC7UODbid7ij1
-         q9lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770086455; x=1770691255;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KsqYKO57kcaexHTzdufWdg6k5lDbRhwfeK1kutGLUV8=;
-        b=LykxmPTHh5+mu1+fojcNYC0J4A2mqcp1HL0RfWMWSRKHOuq2u4d8YJb/ZtMIpmNNkp
-         pzcPUvvGiRQHUHWh9NeNWu4RIiSnwxy/Uzcmuw1srVrXbSKfhRlh+5YdFAZswIPI1Opd
-         SRs+X7yLUQYdCHu+1Z5m8+GErun/BeqtR7xvoHZiQsiIGqwlPIyPgfG1MCwCkK/l/8yb
-         VcI9klUqqxhps+Lv8/jWJH1J6Ufwpj590uPxXtRc5ejvo++KjEU8n6JNJmLrQIKwMLcB
-         iU9KIn/NsPlqIVaRniC+J5bM8ujUJRdYeowXahgjXm2PnqTc+bzbeJmruTYc5GOpUp64
-         qqkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUf5Am7/hzhrl4C/+JgKP00uWK70Kg1i8Fr8ayohPyYQqNpeWowF5HYodpnZuKj9EIMhW/itbc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXWb4cWTKXT6DE7S7NbbdEeeWdyOTEOsOaqNk38hbubKyyeiGX
-	mQ6l8uVJ6nS6p0KjbCQDcusKvq2XjaIbXIK2fIUCca38pt6hSnS8Ss7h
-X-Gm-Gg: AZuq6aKKL9I20S5RCC+E945TVGhA5CoHzXhGX5QJn4J08nIv3IUm5ryQHb67aWos3BV
-	kcoTlG3log5DLZSsOxBiu8XZO5VGZAaaJz7jJMSetWkzp6b4KqF889kEE8H9AqR5J059bUQO0eV
-	5r+6M40aFHtuQrYO6vigjxS+VFTEnfuxoT+af+ghFn5HZEDlxBZtKs+ccpWIVGgmyL1drXL7Fn8
-	NpK4Uc0Fb95hWBJhzlOUGqSvD0MTkACmo6N5fwovG+GV+og51D6RHuoJovl6j3BREnlNcls0ioM
-	XgIvzBDShbHual36COw7dDLLH5ejylCBxBolle+Uon7nzocoXkpPJn3e9a4GJrQOVZuewUgOcNI
-	wRvqQ8NVqT00LRaeFbVzzM9nv2eEdVTuWpQiS75izweYsfOcNx8PSuW7RjYYqdxcfVIwRNgiAvJ
-	A2OQ==
-X-Received: by 2002:a05:6122:1692:b0:563:702b:e2a7 with SMTP id 71dfb90a1353d-566a01437b9mr3665059e0c.19.1770086454761;
-        Mon, 02 Feb 2026 18:40:54 -0800 (PST)
-Received: from localhost ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56685b015e5sm5611567e0c.3.2026.02.02.18.40.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Feb 2026 18:40:54 -0800 (PST)
+	s=arc-20240116; t=1770086670; c=relaxed/simple;
+	bh=u2vaav65jDAgJKk5V0Btf2IIdI/ODFpVvbtnu1xYPmA=;
+	h=Date:To:From:Subject:Message-Id; b=eJGIYYhtI0H8us6+cAexPQWFDYTGi1I9QQJqm595mX1nnYNxcS4eYU3r1L9IZbGGHTdxRqiSxmfst4MxLqYdMSrh3Fly+vneOewbq2oRxmeVF3KeYFglJHjRxiTtN3gGu9rsZKZY64T8UOTRm3SqH38ubrijsurjF5PvnP2bpxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LByOla14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BF6C116C6;
+	Tue,  3 Feb 2026 02:44:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770086670;
+	bh=u2vaav65jDAgJKk5V0Btf2IIdI/ODFpVvbtnu1xYPmA=;
+	h=Date:To:From:Subject:From;
+	b=LByOla14stHib242H2Qoq8wUxRKBo+kXl6Fs2a0dWz1gUYjWKKb+dRRwOWTp+njsk
+	 DVSX/+z5tmFt6IRqe5IXomnvgF1imynFkcL9OfjDWcq3VysFiK8Asua5uuKQMPL94j
+	 wQX6JOJ2EEer/llWgQaJXIPCz55Xw14ffB6uD/g0=
+Date: Mon, 02 Feb 2026 18:44:29 -0800
+To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,mingo@redhat.com,konishi.ryusuke@gmail.com,jannh@google.com,hpa@zytor.com,glider@google.com,elver@google.com,dvyukov@google.com,dave.hansen@linux.intel.com,bp@alien8.de,andrew.cooper3@citrix.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] x86-kfence-fix-booting-on-32bit-non-pae-systems.patch removed from -mm tree
+Message-Id: <20260203024430.20BF6C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Feb 2026 21:40:47 -0500
-Message-Id: <DG4ZA0AFOSQI.J5EJQMPYPV7K@gmail.com>
-Subject: Re: [PATCH] platform/x86: dell-wmi: Add audio/mic mute key codes
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, "Kurt Borja"
- <kuurtb@gmail.com>
-Cc: "Matthew Garrett" <mjg59@srcf.ucam.org>, "Hans de Goede"
- <hansg@kernel.org>, =?utf-8?q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>, <platform-driver-x86@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Olexa Bilaniuk"
- <obilaniu@gmail.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260201-mute-keys-v1-1-825e786732fc@gmail.com>
- <20260202081247.vpvbsapdrynr7vtf@pali>
- <DG4NNLOA8MJI.35V2HGOFN3RM8@gmail.com>
- <20260202174322.x6fr4atrx5vulxt7@pali>
-In-Reply-To: <20260202174322.x6fr4atrx5vulxt7@pali>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213153-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[srcf.ucam.org,kernel.org,linux.intel.com,vger.kernel.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213154-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,linutronix.de,redhat.com,gmail.com,google.com,zytor.com,linux.intel.com,alien8.de,citrix.com,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuurtb@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 725AED3D17
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,linutronix.de:email,citrix.com:email]
+X-Rspamd-Queue-Id: 4BC6ED3D61
 X-Rspamd-Action: no action
 
-On Mon Feb 2, 2026 at 12:43 PM -05, Pali Roh=C3=A1r wrote:
-> On Monday 02 February 2026 12:34:19 Kurt Borja wrote:
->> On Mon Feb 2, 2026 at 3:12 AM -05, Pali Roh=C3=A1r wrote:
->> > On Sunday 01 February 2026 23:37:37 Kurt Borja wrote:
->> >> Add audio/mic mute key codes found in some Alienware devices.
->> >>=20
->> >> Cc: stable@vger.kernel.org
->> >> Tested-by: Olexa Bilaniuk <obilaniu@gmail.com>
->> >> Suggested-by: Olexa Bilaniuk <obilaniu@gmail.com>
->> >> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->> >> ---
->> >>  drivers/platform/x86/dell/dell-wmi-base.c | 3 +++
->> >>  1 file changed, 3 insertions(+)
->> >>=20
->> >> diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/plat=
-form/x86/dell/dell-wmi-base.c
->> >> index 28076929d6af..62cf28d1fe19 100644
->> >> --- a/drivers/platform/x86/dell/dell-wmi-base.c
->> >> +++ b/drivers/platform/x86/dell/dell-wmi-base.c
->> >> @@ -86,6 +86,9 @@ static const struct key_entry dell_wmi_keymap_type_=
-0000[] =3D {
->> >>  	/* Meta key unlock */
->> >>  	{ KE_IGNORE, 0xe001, { KEY_RIGHTMETA } },
->> >> =20
->> >> +	{ KE_KEY,    0x0109, { KEY_MUTE } },
->> >> +	{ KE_KEY,    0x0150, { KEY_MICMUTE } },
->> >
->> > Hello, please keep codes in the array sorted.
->>=20
->> Hi Pali,
->>=20
->> I thought I sorted it... I'll fix it, thanks!
->
-> Before is value 0xe001 and your new values are 0x01xx. Most of values
-> are 0xeXXX, so it is quite unusual that Dell allocated values with
-> different pattern.
 
-It is a bit unusual but it corresponds with the user report
+The quilt patch titled
+     Subject: x86/kfence: fix booting on 32bit non-PAE systems
+has been removed from the -mm tree.  Its filename was
+     x86-kfence-fix-booting-on-32bit-non-pae-systems.patch
 
-	dell_wmi: Unknown key with type 0x0000 and code 0x0109 pressed
-	dell_wmi: Unknown key with type 0x0000 and code 0x0150 pressed
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-and I also checked the acpidump.
+------------------------------------------------------
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Subject: x86/kfence: fix booting on 32bit non-PAE systems
+Date: Mon, 26 Jan 2026 21:10:46 +0000
 
->
-> Also, could you please include into commit message for which Alienware
-> devices is change needed? It would help to detect devices which will be
-> fixed by your change.
+The original patch inverted the PTE unconditionally to avoid
+L1TF-vulnerable PTEs, but Linux doesn't make this adjustment in 2-level
+paging.
 
-Sure, the model is Alienware m18 r1 AMD.
+Adjust the logic to use the flip_protnone_guard() helper, which is a nop
+on 2-level paging but inverts the address bits in all other paging modes.
 
-I said "some" in the commit message because it's very likely other
-Alienware models also use these codes.
+This doesn't matter for the Xen aspect of the original change.  Linux no
+longer supports running 32bit PV under Xen, and Xen doesn't support
+running any 32bit PV guests without using PAE paging.
 
->
-> And please add some comment into source file above those two new codes
-> for which are needed, in similar way how we have commented/documented
-> other key codes.
+Link: https://lkml.kernel.org/r/20260126211046.2096622-1-andrew.cooper3@citrix.com
+Fixes: b505f1944535 ("x86/kfence: avoid writing L1TF-vulnerable PTEs")
+Reported-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAKFNMokwjw68ubYQM9WkzOuH51wLznHpEOMSqtMoV1Rn9JV_gw@mail.gmail.com/
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-Ack.
+ arch/x86/include/asm/kfence.h |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---=20
-Thanks,
- ~ Kurt
+--- a/arch/x86/include/asm/kfence.h~x86-kfence-fix-booting-on-32bit-non-pae-systems
++++ a/arch/x86/include/asm/kfence.h
+@@ -42,7 +42,7 @@ static inline bool kfence_protect_page(u
+ {
+ 	unsigned int level;
+ 	pte_t *pte = lookup_address(addr, &level);
+-	pteval_t val;
++	pteval_t val, new;
+ 
+ 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
+ 		return false;
+@@ -57,11 +57,12 @@ static inline bool kfence_protect_page(u
+ 		return true;
+ 
+ 	/*
+-	 * Otherwise, invert the entire PTE.  This avoids writing out an
++	 * Otherwise, flip the Present bit, taking care to avoid writing an
+ 	 * L1TF-vulnerable PTE (not present, without the high address bits
+ 	 * set).
+ 	 */
+-	set_pte(pte, __pte(~val));
++	new = val ^ _PAGE_PRESENT;
++	set_pte(pte, __pte(flip_protnone_guard(val, new, PTE_PFN_MASK)));
+ 
+ 	/*
+ 	 * If the page was protected (non-present) and we're making it
+_
+
+Patches currently in -mm which might be from andrew.cooper3@citrix.com are
+
+
 
