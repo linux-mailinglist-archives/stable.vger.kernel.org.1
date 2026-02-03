@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-213306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBE1NBpagmlhSwMAu9opvQ
-	(envelope-from <stable+bounces-213306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:27:06 +0100
+	id kGjvIUpagmlhSwMAu9opvQ
+	(envelope-from <stable+bounces-213307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:27:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BB9DE7A5
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:27:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAD5DE7DB
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:27:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A864B30072A3
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 20:27:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1148F308699E
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 20:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C77E368263;
-	Tue,  3 Feb 2026 20:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9617A36D4E5;
+	Tue,  3 Feb 2026 20:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T82Ba7kq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPCMgS6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD5526AAAB
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 20:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561DF36D4E3
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 20:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770150419; cv=none; b=YZghBSG7KrpcphJAQHdS0BPIyQpa1khADscZSwNWyIsU+08kUZ5WjCL6dMRThaHR8/xvhPWl4MvUHS630WygySquWIL1Ch2ZtyN13ZNYgpfjIkt1HxwvbygREcPXky4vMMmSMemParRm0bjC1TEl9WBpfqtKK8Rzeja94bTT+tA=
+	t=1770150468; cv=none; b=bZQiBSHLQrN10DQVa2o2o6dq1L6ikKhh7BgcQGQqIFn4oWUFlOo0yHE2lzdd3ECiexb33o295YsMKT0jlu5Y34e42FYsprLUQSK698J7uofWmfmCOIhtAWOleZSnhykak6kRfuJDF8RHmaQbWuqhCmUdebno9szpF/0Q7olTqu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770150419; c=relaxed/simple;
-	bh=8WndJjJ869Kt2ERca9RLE95Tizv2KQFvYtCR12furTU=;
+	s=arc-20240116; t=1770150468; c=relaxed/simple;
+	bh=qhMSAoRuN7Mm85tjV3mFC0jHQ8on/jR9CbTFobbsFaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwVlSGzTHDj0a+ALwmjowVyHeY8Nq9N5yosCP9N4jUdSIQPpoEGdRcL5oGEW+wtGKVW79cwhh/ZQnjnkrbcF4to0tkQ0AYJdq3K15HTaQvE6HB+R2STn3wucWzmnic4iudmR1QWNi18wWgwReHWf6hga1wWaT7NPSw1Vea2MgHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T82Ba7kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F326C116D0;
-	Tue,  3 Feb 2026 20:26:58 +0000 (UTC)
+	 MIME-Version; b=NsH0nXHiqzoVx0t9mMLgcYmXawkuJQuQGEu8qrHf3bEErLL2w24j0DOEn6BDBenLI5KPhn9386+hzYM3R4CTlnNHUgNMqPU3PCzVGrPC2bKFwlam/i4ps7UxBkT4TBOgfhihBf8tV0t50vPY+ew2LbZnnd7x0XKMpZs6sKi/84s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPCMgS6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62415C19422;
+	Tue,  3 Feb 2026 20:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770150419;
-	bh=8WndJjJ869Kt2ERca9RLE95Tizv2KQFvYtCR12furTU=;
+	s=k20201202; t=1770150468;
+	bh=qhMSAoRuN7Mm85tjV3mFC0jHQ8on/jR9CbTFobbsFaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T82Ba7kqflBKkj9F285KuqZC9oAomBJDjfx+MckPXKarphAOlGx+n4mHQGlDVjlsy
-	 X9UsqebJOberrn7Tbc1FNCQL+DEqglxnaYMDudQADO0wzds8IlzHnWpC7hVgA6G2fK
-	 Tgq5UkWvR0GE7PRhNQMtf7N8Di8kjaduNFKz9ztEABFC66FDWAd59D1qAqRisH+55x
-	 YL0in6KrBoIjV++ycOZTW45S+MD37DOfp7OO5lo64CgCGBRs77+c3Or5AExwxa9WBe
-	 nSv3t1rfjOG4QHhJx68H1+2cqqTNmF0PVo6WzvZD2ojBMS5ApoFttsyMi63Ayet5h5
-	 NFVQBoSl05iTA==
+	b=UPCMgS6eDDCb9t5rb+kTw+w/z9dzEQ/RiXH4lQFvTuFLsMJ8RoDVtHN0ZQ9VZWLl0
+	 TfKjQDuvkxHW87UoLFDwEVV4NTBcW9GsSFX5qlN4yHliXY9Et9gE2nILj+tAnuLWd+
+	 P5BSoLKZwXOSNjIPLTlbn8kCg1Xj700S5b9uRM/cf20v6PgPMxoxGnB1nKWRAS1Irj
+	 aIQzj19+H5qM8pIgL5lKoq1VpMWelbmthhttVcpxGQ8Nbp1TAmIVQ6xkM1sHCM9sdR
+	 OBCeBQQvgRuq9sXzgYivYErIDspRRsiib5AV4+SGb6ZisDA43HAidj/MA1+CBtukgt
+	 ggaxK52anroLA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Laveesh Bansal <laveeshb@laveeshbansal.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] writeback: fix 100% CPU usage when dirtytime_expire_interval is 0
-Date: Tue,  3 Feb 2026 15:26:57 -0500
-Message-ID: <20260203202657.1391505-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] perf: sched: Fix perf crash with new is_user_task() helper
+Date: Tue,  3 Feb 2026 15:27:45 -0500
+Message-ID: <20260203202745.1391918-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020305-fidgeting-jump-20d0@gregkh>
-References: <2026020305-fidgeting-jump-20d0@gregkh>
+In-Reply-To: <2026020314-bazooka-gauntlet-ce30@gregkh>
+References: <2026020314-bazooka-gauntlet-ce30@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213306-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213307-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,80 +90,123 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.cz:email]
-X-Rspamd-Queue-Id: 06BB9DE7A5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,roeck-us.net:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0EAD5DE7DB
 X-Rspamd-Action: no action
 
-From: Laveesh Bansal <laveeshb@laveeshbansal.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 543467d6fe97e27e22a26e367fda972dbefebbff ]
+[ Upstream commit 76ed27608f7dd235b727ebbb12163438c2fbb617 ]
 
-When vm.dirtytime_expire_seconds is set to 0, wakeup_dirtytime_writeback()
-schedules delayed work with a delay of 0, causing immediate execution.
-The function then reschedules itself with 0 delay again, creating an
-infinite busy loop that causes 100% kworker CPU usage.
+In order to do a user space stacktrace the current task needs to be a user
+task that has executed in user space. It use to be possible to test if a
+task is a user task or not by simply checking the task_struct mm field. If
+it was non NULL, it was a user task and if not it was a kernel task.
 
-Fix by:
-- Only scheduling delayed work in wakeup_dirtytime_writeback() when
-  dirtytime_expire_interval is non-zero
-- Cancelling the delayed work in dirtytime_interval_handler() when
-  the interval is set to 0
-- Adding a guard in start_dirtytime_writeback() for defensive coding
+But things have changed over time, and some kernel tasks now have their
+own mm field.
 
-Tested by booting kernel in QEMU with virtme-ng:
-- Before fix: kworker CPU spikes to ~73%
-- After fix: CPU remains at normal levels
-- Setting interval back to non-zero correctly resumes writeback
+An idea was made to instead test PF_KTHREAD and two functions were used to
+wrap this check in case it became more complex to test if a task was a
+user task or not[1]. But this was rejected and the C code simply checked
+the PF_KTHREAD directly.
 
-Fixes: a2f4870697a5 ("fs: make sure the timestamps for lazytime inodes eventually get written")
+It was later found that not all kernel threads set PF_KTHREAD. The io-uring
+helpers instead set PF_USER_WORKER and this needed to be added as well.
+
+But checking the flags is still not enough. There's a very small window
+when a task exits that it frees its mm field and it is set back to NULL.
+If perf were to trigger at this moment, the flags test would say its a
+user space task but when perf would read the mm field it would crash with
+at NULL pointer dereference.
+
+Now there are flags that can be used to test if a task is exiting, but
+they are set in areas that perf may still want to profile the user space
+task (to see where it exited). The only real test is to check both the
+flags and the mm field.
+
+Instead of making this modification in every location, create a new
+is_user_task() helper function that does all the tests needed to know if
+it is safe to read the user space memory or not.
+
+[1] https://lore.kernel.org/all/20250425204120.639530125@goodmis.org/
+
+Fixes: 90942f9fac05 ("perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL")
+Closes: https://lore.kernel.org/all/0d877e6f-41a7-4724-875d-0b0a27b8a545@roeck-us.net/
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220227
-Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
-Link: https://patch.msgid.link/20260106145059.543282-2-laveeshb@laveeshbansal.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ adapted system_percpu_wq to system_wq for the workqueue used in dirtytime_interval_handler() ]
+Link: https://patch.msgid.link/20260129102821.46484722@gandalf.local.home
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs-writeback.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ include/linux/sched.h     | 5 +++++
+ kernel/events/callchain.c | 2 +-
+ kernel/events/core.c      | 6 +++---
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 095eaa896cbe2..aff9f0613495a 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2391,12 +2391,14 @@ static void wakeup_dirtytime_writeback(struct work_struct *w)
- 				wb_wakeup(wb);
- 	}
- 	rcu_read_unlock();
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 9559501236af0..9c7c67efce346 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1800,6 +1800,11 @@ static __always_inline bool is_percpu_thread(void)
+ #endif
  }
  
- static int __init start_dirtytime_writeback(void)
++static __always_inline bool is_user_task(struct task_struct *task)
++{
++	return task->mm && !(task->flags & (PF_KTHREAD | PF_USER_WORKER));
++}
++
+ /* Per-process atomic flags. */
+ #define PFA_NO_NEW_PRIVS		0	/* May not gain new privileges. */
+ #define PFA_SPREAD_PAGE			1	/* Spread page cache over cpuset */
+diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
+index ee01cfcc35064..0bd9cb625111b 100644
+--- a/kernel/events/callchain.c
++++ b/kernel/events/callchain.c
+@@ -206,7 +206,7 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
+ 
+ 	if (user && !crosstask) {
+ 		if (!user_mode(regs)) {
+-			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
++			if (!is_user_task(current))
+ 				regs = NULL;
+ 			else
+ 				regs = task_pt_regs(current);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index c9a3fb6fdb2f6..9a6be06176bb4 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6985,7 +6985,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
+ 	if (user_mode(regs)) {
+ 		regs_user->abi = perf_reg_abi(current);
+ 		regs_user->regs = regs;
+-	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++	} else if (is_user_task(current)) {
+ 		perf_get_regs_user(regs_user, regs);
+ 	} else {
+ 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
+@@ -7612,7 +7612,7 @@ static u64 perf_virt_to_phys(u64 virt)
+ 		 * Try IRQ-safe get_user_page_fast_only first.
+ 		 * If failed, leave phys_addr as 0.
+ 		 */
+-		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++		if (is_user_task(current)) {
+ 			struct page *p;
+ 
+ 			pagefault_disable();
+@@ -7725,7 +7725,7 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
  {
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
- 	return 0;
- }
- __initcall(start_dirtytime_writeback);
-@@ -2407,8 +2409,12 @@ int dirtytime_interval_handler(struct ctl_table *table, int write,
- 	int ret;
- 
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
--	if (ret == 0 && write)
--		mod_delayed_work(system_wq, &dirtytime_work, 0);
-+	if (ret == 0 && write) {
-+		if (dirtytime_expire_interval)
-+			mod_delayed_work(system_wq, &dirtytime_work, 0);
-+		else
-+			cancel_delayed_work_sync(&dirtytime_work);
-+	}
- 	return ret;
- }
- 
+ 	bool kernel = !event->attr.exclude_callchain_kernel;
+ 	bool user   = !event->attr.exclude_callchain_user &&
+-		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
++		is_user_task(current);
+ 	/* Disallow cross-task user callchains. */
+ 	bool crosstask = event->ctx->task && event->ctx->task != current;
+ 	const u32 max_stack = event->attr.sample_max_stack;
 -- 
 2.51.0
 
