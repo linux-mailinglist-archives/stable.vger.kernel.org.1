@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-213235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uP+/ChP0gWljNAMAu9opvQ
-	(envelope-from <stable+bounces-213235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 14:11:47 +0100
+	id GOFjOafygWkMNAMAu9opvQ
+	(envelope-from <stable+bounces-213234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 14:05:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AECBD9BCF
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 14:11:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABCE7D99DE
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 14:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 501733023028
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 13:05:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 50670303BA3F
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 13:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB8334BA42;
-	Tue,  3 Feb 2026 13:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F49F34A3C1;
+	Tue,  3 Feb 2026 13:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pkd53qJW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q7ddkYkK"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4110D349B1F
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 13:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EED634B1A6
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 13:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770123918; cv=none; b=k87f8eIHRycQoHr3hM4tsgrXbm92hyAuoXKG16fJkVQIE8+6XhxlW8LXon/AOERrIk5fgGLmT5ZUj1dr7dxcoWVTM2h3Mwzr9B0rQmktxMTpiM3FVyZAWWjErpCJA+7bBLgeoJJzRYGdaaDqFL46cEIKzk2fX1pV4fxSfVNgT4U=
+	t=1770123916; cv=none; b=NhNATN6pvm9Mm0JAOrImHHEvxl/XKin03/wYrUdZ31DGFDCowXBPZkQH7B//rCu+wQmMZhXVJzljYnN8MyY0qx8iu4qg+xP1dcau6WJ9LLpPDgRHmfA1dILNn1cXJ7Zy5jttjT9T5UPSob8NEY0ffcG9dd6Hy4bCO06DeBPd21A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770123918; c=relaxed/simple;
-	bh=eAOTahntRImrik38mnsnViDi0PjENZgxrqEs53AMudI=;
+	s=arc-20240116; t=1770123916; c=relaxed/simple;
+	bh=kn3C6M/TSejjaUN/E6ZMHb6KaBqL5MF8BD7HrMgd0CI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OBcYY5wozhLO2auRoCt2XDB8ftWKVYnjwrvkLiRjTs2e4jcqJ4rZtKHsxIhC3JokD29e5PoOI8ClRc9yFGiAj2rzdIgHAWaLWK4M6qGCyW3jVu+Ws0342xjHN97+/+KgkMwMXHdN6n8ULF7CzI/F7Zx64/fGVkenOgzfv++f6j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pkd53qJW; arc=none smtp.client-ip=198.175.65.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=MIpBXCqcLevOjyxL7JZV8eIs6PRxFQeWEu1LXPqyzENzKy0JyALRGkDQiGCAavS5CqiuxWDb27mWCKAvYcZvF78iv8XfdeTKHVN3YM8QSdImZoMXb93j/s9HaXxlqx87suxxMmQM4BzS/sNQOFBpTdzUsu2rN8GzzIuCcX19+d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q7ddkYkK; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770123916; x=1801659916;
+  t=1770123914; x=1801659914;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=eAOTahntRImrik38mnsnViDi0PjENZgxrqEs53AMudI=;
-  b=Pkd53qJWsN1R7zrEv+IE+soPvlw+y7XzugwXqis27P424aH58d7oGh2+
-   /bewPtSE3Dlo/Js8HjpgJMMJ08F1frTXGirXTvVPA0/UfL5QA3merOf1c
-   9PexjM46hnZrmXM7gMYCmINZpFwK/NQ3K4hKwillfnrcZkyiRBGsa0BrR
-   fN0J1Fm7yw3+XhYbSuTiRLiR/Qy/dIk7ns/fUH3HfWjB1M4ZtpyGOMy2P
-   UNF2xYY2pVMVTW083PTBT81hKPVywWktQknSAcdhZQ/+XjH3TKGxRugLJ
-   cay7QdRA3L+zQlgz/mjsWhef7YZ0IfUpyVq/Z66kiDSZXFAbKHyCpxS5S
+  bh=kn3C6M/TSejjaUN/E6ZMHb6KaBqL5MF8BD7HrMgd0CI=;
+  b=Q7ddkYkKzBvmqg0J0BpVnpsvButshlE0ecEKDIEPAhLtGJuYwq5X9+rs
+   /ZDnh4mYb6zFtRBQH6/Lx01xtr16p4nYBlMwyry9t3Ubey1dbmjPTgP1/
+   mh6ojPdt1gQ2ABjDU6lOWGVTP1xWL4Urz3gA8WLTRE7q0zb25YzE5HLSg
+   nGIiC9PeCEVL/9+S4/uF6qHCYX/6CkxsT7OzIt2vjhfQwcXYwE36YPl5w
+   kYkRQHel40xA5GGoty8OpkEO/8Q+W9dxFuWEOsRV9bsqn0TA0O9Fjcwbk
+   RNIYjLwPxzkk1Sjk0JLNPVXLx0J2CwyMcpxRnHHlKO3R4ax6ehjg1Ks8k
    g==;
-X-CSE-ConnectionGUID: M9gAomVSRLW/ozq3YSw5RQ==
-X-CSE-MsgGUID: 9NLcL6VHRC+gPA/rWoyldQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="93945552"
+X-CSE-ConnectionGUID: AntPc58zSs6c86nloBlIFA==
+X-CSE-MsgGUID: tgPUeHqzRIGY6oiJz8/p9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="93945543"
 X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="93945552"
+   d="scan'208";a="93945543"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 05:05:14 -0800
-X-CSE-ConnectionGUID: NUmFSuM4RTG8P55q95+ARw==
-X-CSE-MsgGUID: nLLd4nr8TfSH1xmlM01hPA==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 05:05:13 -0800
+X-CSE-ConnectionGUID: kNfuwGaxQDib9rOdY46bLw==
+X-CSE-MsgGUID: R3noAhp2TNytBWA9/xTLwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="240516124"
+   d="scan'208";a="240516119"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
   by orviesa002.jf.intel.com with ESMTP; 03 Feb 2026 05:05:10 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vnG5b-00000000gfe-1dla;
+	id 1vnG5b-00000000gfc-1XXY;
 	Tue, 03 Feb 2026 13:05:07 +0000
 Date: Tue, 3 Feb 2026 21:04:47 +0800
 From: kernel test robot <lkp@intel.com>
 To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
 	intel-xe@lists.freedesktop.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+Cc: oe-kbuild-all@lists.linux.dev,
 	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	Ralph Campbell <rcampbell@nvidia.com>,
@@ -82,7 +82,7 @@ Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	stable@vger.kernel.org
 Subject: Re: [PATCH v2] mm: Fix a hmm_range_fault() livelock / starvation
  problem
-Message-ID: <202602032123.zvKd7G8W-lkp@intel.com>
+Message-ID: <202602032021.bgMlVqDp-lkp@intel.com>
 References: <20260203104532.98534-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -99,15 +99,15 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213235-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213234-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
@@ -118,9 +118,9 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,intel.com:email,intel.com:dkim,intel.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3AECBD9BCF
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,01.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ABCE7D99DE
 X-Rspamd-Action: no action
 
 Hi Thomas,
@@ -133,28 +133,25 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Hellstr-m/mm-Fix-a
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 patch link:    https://lore.kernel.org/r/20260203104532.98534-1-thomas.hellstrom%40linux.intel.com
 patch subject: [PATCH v2] mm: Fix a hmm_range_fault() livelock / starvation problem
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260203/202602032123.zvKd7G8W-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260203/202602032123.zvKd7G8W-lkp@intel.com/reproduce)
+config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20260203/202602032021.bgMlVqDp-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260203/202602032021.bgMlVqDp-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602032123.zvKd7G8W-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602032021.bgMlVqDp-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> mm/memory.c:4769:5: error: call to undeclared function 'migration_entry_wait_on_locked'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   mm/memory.c: In function 'do_swap_page':
+>> mm/memory.c:4769:33: error: implicit declaration of function 'migration_entry_wait_on_locked'; did you mean 'migration_entry_wait_huge'? [-Wimplicit-function-declaration]
     4769 |                                 migration_entry_wait_on_locked(entry, vmf->ptl);
-         |                                 ^
-   mm/memory.c:4769:5: note: did you mean 'migration_entry_wait_huge'?
-   include/linux/swapops.h:237:20: note: 'migration_entry_wait_huge' declared here
-     237 | static inline void migration_entry_wait_huge(struct vm_area_struct *vma,
-         |                    ^
-   1 error generated.
+         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                 migration_entry_wait_huge
 
 
-vim +/migration_entry_wait_on_locked +4769 mm/memory.c
+vim +4769 mm/memory.c
 
   4699	
   4700	/*
