@@ -1,274 +1,200 @@
-Return-Path: <stable+bounces-213161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OP4iH1VqgWmwGAMAu9opvQ
-	(envelope-from <stable+bounces-213161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:24:05 +0100
+	id oA/oA3hqgWmwGAMAu9opvQ
+	(envelope-from <stable+bounces-213162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:24:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8BBD416B
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60121D4183
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:24:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A929305022B
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 03:23:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBC7A304A665
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 03:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220BF31CA6A;
-	Tue,  3 Feb 2026 03:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414922F25E4;
+	Tue,  3 Feb 2026 03:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IwZJwF/8";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="F+XPtfnF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNVfBLEi"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746481F0995
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 03:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770088998; cv=pass; b=XpZ9C1Y8UoI92BUrBbew40Jk3jLPO2jnuCRhryFnmrxnD+2/S6ycNHtP0ktksm69jv0NgEf+kmjn9+DGvdHYKclW5e8OU/GXLSxGR4asU1fU2iS21kREgN57DaXi7mvue7rLqFlgp8xbMWR1YS7CO6xE9L3Yw/Q0+/9vcjHjN7I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770088998; c=relaxed/simple;
-	bh=KrtGgk294GRjBEs6iQyOp5BKbLlkhgJGu4IdQFjdyrc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tEVceKOt1PY5rZcPxndty1w6HKj556ROiM0xDFmruTUv57ScZZ/pUOrtJOpeJJOJ0j6vMR7xZFGBE0jOWpiVlm0/EOl2I9CnivjcaAD+gaBvbUP5uWfqj7zQOxl9sOEZhsQChPt4h76j+l4QdId7FkFJ72r5sqUzyC/Py6FU0Hk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IwZJwF/8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=F+XPtfnF; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770088995;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IL3VVCy6HeFE+SU5i9MQx2mEMpgSKX2XiM1AgerOcGg=;
-	b=IwZJwF/8qWtw7yKB0UdLXpeeX57KCcsb6JeTR0Qh/HE8lxwA4rg8L4rce+3jMiZz8gnN8A
-	AHIAWL5Si+ECSS1hlc18Sw7g5y8PUi8DsSkKY15I6xTTqYUvu8DaNQDStqvN2q84xp6MFf
-	HJQ2D165enoRJFokPCiD0b9gEI9fKqQ=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-Wye-BWMuNpeIR2Ob9wxuww-1; Mon, 02 Feb 2026 22:23:14 -0500
-X-MC-Unique: Wye-BWMuNpeIR2Ob9wxuww-1
-X-Mimecast-MFC-AGG-ID: Wye-BWMuNpeIR2Ob9wxuww_1770088993
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2a0f47c0e60so9274165ad.3
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 19:23:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770088993; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XsBMb8nVwZ4NogNpyV2+0N22+n1E/fhVpjWCQXNrseqLwcT70Au6pW28hlo/gkidWV
-         m0l+baTyaJsQyTAbEP+VL/UhV73jekdPsV/XMHUesjkzyvds4E7bUjCWrRqDEf0TiuWO
-         awQNjDql89zmkblni4/j9rc+hjRMk/BN91pM4BT7oVTIxsNhwLYMMchbqC6cDwAk2gI4
-         +j0gkFr3b6QJGSqS8NAOFnqOxeF5AiiLSIRBmuXegwhYfV657n8OszrIyXVA3vfDXgV6
-         DEODiYUWtqWcZxh821OxygiFDTEDZIlEKerHkzduIeviKGmDNtYbKs2AeXV4yO8FU5Aj
-         7jHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IL3VVCy6HeFE+SU5i9MQx2mEMpgSKX2XiM1AgerOcGg=;
-        fh=dDVk8YJg1r99SrnclgINI0D3V+lIGlZ8Y3a5cTP+F2I=;
-        b=kjhROLRfV1zR3mbfDbRmN5EEVPlqdpATy/7EyG+EBZ2YVRjaiKCxWP7XMu1wc/HtCf
-         JEU/13PgYwe103LGntBqn4m5sHNxlAq9CWoKtZ13ym0GsUWYxg5BzkaVwWdw+d13CDrw
-         atauwE16LCGz5psOP583dxKhlAraM05bXMY7Zhlce/yz00Jji3Q71mv3SVh4IAiaU3Gw
-         TvmAC31kg3bwuM9lx5yvre63JINtaJBxM7OE+s6nRUvauciZYvVB1YppXme8y8uI5CKY
-         x7JYetEVZNavQ8JgqHYkaC1aVT4XidrQQ1Nl1/7qO8uhbrPmPjRmvYDJZKcxpLtBV42E
-         hCFA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23232E972B
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 03:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770089027; cv=none; b=cEcvKCOEfKDYQuHLhqajHk1+NLYgOAryxQvFulL0Plby3oCA1cm45+4f9svLV+Ueu3BoPH790+mcdMzR2OGyFUGXPGCv+JbtE58BDfIHcUWgL0avGw6t5JdUo+KLcyYQIRWEj6YyVCtT1AH48XMBZrngr0Ohm3qDKuVPZMX772Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770089027; c=relaxed/simple;
+	bh=6ElrO55Og8Plmd9KRwBV3wRAIZ/+Foks3OuMDg0VN+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cH3ePYB3LCT7zYsE5XZDHmZjHAIvKBJROrpKtyqH3wvccpmdTBDf5Q/kG+J1P6/UZFVppCvFJ2CkFNFcQSYJn6+nQM78tpuhdsvoL653v+tZJWiDzgVKrDZehQr+SjkFn4wcqre/wqNmQtffolSpmlo5qZNdEIp1q6W76omfz9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNVfBLEi; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-66106a2f8d1so3590927eaf.1
+        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 19:23:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770088993; x=1770693793; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770089024; x=1770693824; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IL3VVCy6HeFE+SU5i9MQx2mEMpgSKX2XiM1AgerOcGg=;
-        b=F+XPtfnFEPiAtLUOeFjcJm5aOGyEN3ETvJNsoqO5IxkuylYFtMEE3kba96qVoaQfak
-         1/fnmMu/qtFjp3V5coYCpELXNauKraB85tU4krN1rharJ5pZ2WERkboTbi5BjD8BuRZ5
-         i8QukhcL14jlgKxy5pylbULlKjpG+skhllxfm6Sw3gWyN1vTUvKghFO/Rk+OzcraKg0M
-         wTjlXR+1gpI9eYNM1zkYT0dp+xHrtdej3/vgHyW67j8sZI4vZhoLafJY5DxdKRQcNmzP
-         FGccmImA51USSnFZtVh5i7aW2OzrZWtKZIDecR8dmK/DuCq0aE9MmBkQCvrukeWF7fkh
-         2asQ==
+        bh=yqF7j9+NtH77eRf3A06joazi3wU3U3ry+bHbamRYbTw=;
+        b=XNVfBLEixbkKJIJzIk5pXKUwtULH1mXcq7UnQildgnUNaEyuXH0A7Ok9FkUpoGehFg
+         rZTWGNxNz2QrB92CWDhCnizc9LduwZWpatBr2VnyLQWXcYLriNkqU1UMtwpVe2UZSQFf
+         0cl5EWo/b4ZlZJME006eHISnbiRZi2LUUWHKS8Ej5Gep6EXT+coFFIkFAU5dTpZhVEch
+         bWblzYDyFj9fpVLcL0FUoeFErJVinWVGzSXeSFhiN0JLTP5D3wt1yTSiqZu27Er9F3il
+         tPlBilaKWToQUH1RA6KGlQnsTVHvzXkJ4YcI6VOhk0ZmifQan+753IilNButHfg7yFvV
+         Gw8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770088993; x=1770693793;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770089024; x=1770693824;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=IL3VVCy6HeFE+SU5i9MQx2mEMpgSKX2XiM1AgerOcGg=;
-        b=SDEgDenO2T9qknrSLWDzt5FVYdcBiHEgOPjZrtn6GeQz1y3HTYQwjMsyB5ISDLsp7P
-         HYl0UW0HcE6bQWETXyBtGQxM01ScUGYoK8umecA6GjgcrfGYvIqOyRsVrea02Qmm/Kne
-         e7bFtFvGVJEytvJyGpJ32w9eKQKJhwZ9yTpBN2nxciVp6tDmBxuZEwx7ABcxqeeRpgzJ
-         ZIcehnKZihlFrnoLX7L0EzWGHwzRsiEqqPYU19SK/ZuKCiBpyYLVdmhVID7UNn82s3hB
-         CLfqc92NaqZAyn28RtDw0LJ9CJjTC8BiUoQJGaaTjH53hIPjt0ZnAMw7w6lgWzlFgIw8
-         Lo9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW9mNX7b8FJDe5TXkmrHxpRPUPpxVrlgGdHmMS1mYT7itiMpx+UcIO2FXiJM5WbSi7xZjUo8hg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/631wbamHlmP2s5XJSXTuV0ZmtbnDMj2tcIE8wKEkRMirNRMT
-	B0NaCp/vLxXAnyBqYE+vTuD1S0FjfdjITUf+uFQjDcfzFM5z/i97+9tPudDg+EzmqJ89TRQqxZP
-	+b/op+ewhNyLmdy4mw2g+8RFneEsZxI/rzYUUB6fH+c37p//QBjLM4oB4ugNxkDBrblD9kn9O2H
-	qmZeapqT4SNR/jmfese71s6cmsWJbhCQe2
-X-Gm-Gg: AZuq6aK36WqTGbTufAiDramzi8UWTHHylQdqYrfnQ+JNYnZ9MelGimKhFLk29DQGkJh
-	AgkTYdUY7p5EjrBfsDd5Z1kzFcuAZ+Afw7DrRsuZd/Uj54c+vGh1hOOfTMEPSOX0p3Cl8/Tc7kW
-	TuZffPPidaogJux91+qlPZR6E74k++KMFPKhaqm8e6VXzKAt3dsuMJOITyRD9AonLHXnI=
-X-Received: by 2002:a17:903:2b0c:b0:295:8c51:64ff with SMTP id d9443c01a7336-2a8d9919237mr141235205ad.29.1770088993352;
-        Mon, 02 Feb 2026 19:23:13 -0800 (PST)
-X-Received: by 2002:a17:903:2b0c:b0:295:8c51:64ff with SMTP id
- d9443c01a7336-2a8d9919237mr141234955ad.29.1770088992952; Mon, 02 Feb 2026
- 19:23:12 -0800 (PST)
+        bh=yqF7j9+NtH77eRf3A06joazi3wU3U3ry+bHbamRYbTw=;
+        b=jGd1b1Xdi77JKn0n95FljfqL97CEKNQIovxjfyOJ12YcBseX37HCqvrmFkZuF2KJBc
+         WDemVEQ6Bu2W9JwCCxS/Lm3ucem0xoYmddzDgjHrDqrB39Dov7eA76isQh2XNKXjDDGF
+         YJZB2BmJrdqt5rHc36/zxNQ/sfsEMOSpTce/xhTpYJLFbYyf1Qf2K5lUvvrFugsl0Dyw
+         Bgx9/xxRZcMdl8El/OsMTDATCJuLu3aVcS5a+pEBF2ODx21Xrb6KKdFg6N2cdO5z8BzU
+         E42yfLVWJ6S0yBUmk0AGQjsJ2oStA5W55RleBnmR2YWuYq3WrRX6zRLwNFnBSG8w4PDp
+         jCTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXflFXh7h8+lgLbQkTstaSZvWgVw7H+7qVmie1gc6+j7XQQyqmZjspxHEQ/QK0OeRkTl6CdUOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+16NAGMSLLMsaa/70Wjrlev4QyCbsEzQ4ENTiM9CQ++n8be7a
+	M3tRMBc/0q29Toe6DsdYBNj7Msl+zz5gYlZEmSqHflrekdM3alUqLYYK
+X-Gm-Gg: AZuq6aLJA39apiRdV7NvxcjfBtQYhPYYH7RaIL8iLtYtQEsi6HkbkhOgW/MbTHHSBWy
+	d1S1DeMp7cMKKHh+hEI7TPQKMgr5NG8fGn5Ign8kzueyKTk+FGOWH9cryoOsACEStZvmEfKn5HJ
+	ek5tPnqjHrnegvgXGkC4jwTE6u2NflSXqw/FsAdjxf7FrE0yfSV/ZAC7uLkm7XXLBdU2dIDVhNR
+	yrY52YiTuwojPmkX0aUxnULkP2mCxXD1TEVefqFpBgn8520zMiAuiESM7R7QCj2ZUoevncHvJs4
+	0vma5mXIBmpiFd0gCx3wY8TAgtgdeXgelqz8geGaWWDj5cXnCNCSg+weq09NvKBzd5M8yED+Btz
+	RdbBRstdHoG5KlhKTLgFPdhss46FvI7pIPBRgmpFr+HVuzzPZRFBbq5lll4Ntu6liBSUU2PXNb3
+	bEl1bemXx4nA==
+X-Received: by 2002:a05:6820:1528:b0:662:c161:206e with SMTP id 006d021491bc7-6630f3cdb13mr5166424eaf.82.1770089024432;
+        Mon, 02 Feb 2026 19:23:44 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:40::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4095717052bsm12915115fac.8.2026.02.02.19.23.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 19:23:43 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/hugetlb: Restore failed global reservations to subpool
+Date: Mon,  2 Feb 2026 19:23:40 -0800
+Message-ID: <20260203032340.1861093-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260202183918.057dac34b3a1819328814fc9@linux-foundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260202031212.26871-1-zhangtianci.1997@bytedance.com>
-In-Reply-To: <20260202031212.26871-1-zhangtianci.1997@bytedance.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 3 Feb 2026 11:23:01 +0800
-X-Gm-Features: AZwV_QiXK5cVba8qXcynunVqAEqDCvgPd9117zHmBgehD1PDOxYKFN17tYOeGKo
-Message-ID: <CACGkMEvrMC6Lh42aX=4D3yZVWx6mxpHZAw+Z6djPBw2yrLEOrw@mail.gmail.com>
-Subject: Re: [PATCH v2] vduse: Fix race in vduse_dev_msg_sync and vduse_dev_read_iter
-To: Zhang Tianci <zhangtianci.1997@bytedance.com>
-Cc: mst@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
-	marco.crivellari@suse.com, anders.roxell@linaro.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Xie Yongji <xieyongji@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213162-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213161-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jasowang@redhat.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[joshuahahnjy@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lkml.org:url,bytedance.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 1D8BBD416B
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 60121D4183
 X-Rspamd-Action: no action
 
-On Mon, Feb 2, 2026 at 11:13=E2=80=AFAM Zhang Tianci
-<zhangtianci.1997@bytedance.com> wrote:
->
-> There is one race case in vduse_dev_msg_sync and vduse_dev_read_iter:
->
-> vduse_dev_read_iter():
->     lock(msg_lock);
->     dequeue_msg(send_list);
->     unlock(msg_lock);
-> vduse_dev_msg_sync():
->     wait_timeout() finish
->     lock(msg_lock);
->     check msg->complete is false
->         list_del(msg);   <- double list_del() crash!
->
-> To fix this case, we shall ensure vduse_msg is on send_list or recv_list
-> outside the msg_lock critical section.
->
-> Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhang Tianci <zhangtianci.1997@bytedance.com>
-> Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-> ---
-> v2:
->  - Rewrite commit message.                        [Michael]
->  - Add Fixes tag and cc stable email list.        [Eugenio]
->  - Rewrite one comment.                           [Michael]
->
-> v1: https://lkml.org/lkml/2026/1/30/323
->
->  drivers/vdpa/vdpa_user/vduse_dev.c | 30 ++++++++++++++++++++++--------
->  1 file changed, 22 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/=
-vduse_dev.c
-> index ae357d014564c..a70d0580d54e8 100644
-> --- a/drivers/vdpa/vdpa_user/vduse_dev.c
-> +++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-> @@ -325,6 +325,7 @@ static ssize_t vduse_dev_read_iter(struct kiocb *iocb=
-, struct iov_iter *to)
->         struct file *file =3D iocb->ki_filp;
->         struct vduse_dev *dev =3D file->private_data;
->         struct vduse_dev_msg *msg;
-> +       struct vduse_dev_request req;
->         int size =3D sizeof(struct vduse_dev_request);
->         ssize_t ret;
->
-> @@ -339,7 +340,7 @@ static ssize_t vduse_dev_read_iter(struct kiocb *iocb=
-, struct iov_iter *to)
->
->                 ret =3D -EAGAIN;
->                 if (file->f_flags & O_NONBLOCK)
-> -                       goto unlock;
-> +                       break;
->
->                 spin_unlock(&dev->msg_lock);
->                 ret =3D wait_event_interruptible_exclusive(dev->waitq,
-> @@ -349,17 +350,30 @@ static ssize_t vduse_dev_read_iter(struct kiocb *io=
-cb, struct iov_iter *to)
->
->                 spin_lock(&dev->msg_lock);
->         }
-> +       if (!msg) {
-> +               spin_unlock(&dev->msg_lock);
-> +               return ret;
-> +       }
+On Mon, 2 Feb 2026 18:39:18 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-Nit: this check seems to be redundant, I'd suggest to
+> On Wed, 21 Jan 2026 09:47:54 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+> 
+> > On Fri, 16 Jan 2026 15:40:36 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> > 
+> > > Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+> > > fixed an underflow error for hstate->resv_huge_pages caused by
+> > > incorrectly attributing globally requested pages to the subpool's
+> > > reservation.
+> > > 
+> > > Unfortunately, this fix also introduced the opposite problem, which would
+> > > leave spool->used_hpages elevated if the globally requested pages could
+> > > not be acquired. This is because while a subpool's reserve pages only
+> > > accounts for what is requested and allocated from the subpool, its
+> > > "used" counter keeps track of what is consumed in total, both from the
+> > > subpool and globally. Thus, we need to adjust spool->used_hpages in the
+> > > other direction, and make sure that globally requested pages are
+> > > uncharged from the subpool's used counter.
+> > > 
+> > > ...
+> > > 
+> > > Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+> > > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > > Cc: stable@vger.kernel.org
+> > 
+> > This (simple, cc:stable) patch presently has no reviews, if someone
+> > could please be so kind.
+> 
+> Oh.
+> 
+> Joshua, it's unclear from the changelog - what are the userspace-visible
+> effects of the bug?
 
-1) move the spin_unlock() before the check of file->f_flags & O_NONBLOCK
-2) then we can simply do "return ret" when it's a nonblocking read.
+Hello Andrew,
 
-> +
-> +       memcpy(&req, &msg->req, sizeof(req));
-> +       /*
-> +        * We must ensure vduse_msg is on send_list or recv_list before u=
-nlock
-> +        * dev->msg_lock. Because vduse_dev_msg_sync() may be timeout whe=
-n we
-> +        * copy data to userspace, and will call list_del() for this msg.
-> +        */
-> +       vduse_enqueue_msg(&dev->recv_list, msg);
->         spin_unlock(&dev->msg_lock);
-> -       ret =3D copy_to_iter(&msg->req, size, to);
-> -       spin_lock(&dev->msg_lock);
-> +
-> +       ret =3D copy_to_iter(&req, size, to);
->         if (ret !=3D size) {
-> +               spin_lock(&dev->msg_lock);
-> +               /* Roll back: move msg back to send_list if still pending=
-. */
-> +               msg =3D vduse_find_msg(&dev->recv_list, req.request_id);
-> +               if (msg)
-> +                       vduse_enqueue_msg(&dev->send_list, msg);
-> +               spin_unlock(&dev->msg_lock);
->                 ret =3D -EFAULT;
-> -               vduse_enqueue_msg(&dev->send_list, msg);
-> -               goto unlock;
->         }
-> -       vduse_enqueue_msg(&dev->recv_list, msg);
-> -unlock:
-> -       spin_unlock(&dev->msg_lock);
->
->         return ret;
->  }
-> --
-> 2.39.5
->
+Sorry about that, I definitely could have been more explicit with the
+userspace behavior. What ends up happening is that the subpool will
+imagine that all of its hugeTLB pages are consumed, so it will be
+unable to service allocations trying to get hugeTLB pages from it,
+despite none of the hugeTLB pages in the system really being used.
 
-Thanks
+Maybe we can reword the following block:
 
+> > > Repeating this process will ultimately render the subpool unable to
+> > > allocate any hugepages, since it believes that it is using the maximum
+> > > number of hugepages that the subpool has been allotted.
+
+Into this block, to make it more explicit?
+
+With each failed allocation attempt incrementing the used counter, the
+subpool eventually reaches a point where its used counter equals its
+max counter. At that point, any future allocations that try to allocate
+hugeTLB pages from the subpool will fail, despite the subpool not having
+any of its hugeTLB pages consumed by any user.
+
+Once this happens, there is no way to make the subpool usable again,
+since there is no way to decrement the used counter as no process
+is really consuming the hugeTLB pages.
+
+
+I hope this makes it a bit more clear, and please let me know if there is
+anything else I can do! I hope you have a great evening,
+
+Joshua
 
