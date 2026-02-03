@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADhrOW9OgWlMFgMAu9opvQ
-	(envelope-from <stable+bounces-213142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 02:25:03 +0100
+	id cFW/FmxOgWlMFgMAu9opvQ
+	(envelope-from <stable+bounces-213143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 02:25:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A18DD35BC
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 02:25:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84311D35B5
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 02:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 512DA3025911
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 01:22:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A59130312C4
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 01:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385D6225A34;
-	Tue,  3 Feb 2026 01:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C741221FBA;
+	Tue,  3 Feb 2026 01:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="at36EiaG"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FQwOZ57B"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4E31B4223
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 01:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D4E17C21C
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 01:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770081756; cv=none; b=cQl4KQpNt2NHwk/QRL2X2QBXmVBfnooyxFYm7C4zv9I5ynkHHQL9iL5iuEadM4q8ZVcMiUu0FudRjPPkABK0bz+xj5zkhKtYWRyJzD5myzmn4GB/nw2vjYk+g+8zoQ8IgCvb8pzuSlSyZZqAfJGW2RlDvtXpzS6QsCY3jPWsPuM=
+	t=1770081877; cv=none; b=HWGJw09PUZyqI2dsBt6D1H8LlbiE1TPn9cIEVz7VDF7UGMwURJlaTTQxsBe701gNqjOMWOyV6TxG/iWuBGOFZCiquCj1RweTgGnW+ueb4frHRKLiUwzrdfiCJNkVJlmx6S62VIJzq1hxvam1dVX0mMKq3G/l0tkxthrAvyElzic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770081756; c=relaxed/simple;
-	bh=tOWgdQ+SSNrdHvQjeFI/zMdLkmetivEMKwQR04trjwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AvfED4Q323zv0zUwwMfJqz00A3Y/5me1iiLnXqSi4XRTBkx+vIoyq8Cy5dYBMwb5EW9FZvRAeYq+VK1fe85C027p+/O3nMtflKm/2R8iWvp9ifTyCttpQnCXv/XwVCWnPgG81m9DFpX26RM2mY816+2p5qKveL+B/SsH1jMKDoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=at36EiaG; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1770081877; c=relaxed/simple;
+	bh=rul6O4hlFHiiejZFOF9sFnQUdVywQ77Dl8U0F80+gZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n7DJxULJbtpoV1DXHRVcOTc037bJw+KSMvpdxpgS408ICSqUKElLRzvovMcGYdjLQY9Pn9LiBPupxC8bfCNlNuSwpDuUKe0n2FhKTxeVq3+cMuZL0nEuPAqKk09L8xnaR9rciaU04u/YkHeLqXq9LrpLyTpnkpa/ji8fDsiem3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FQwOZ57B; arc=none smtp.client-ip=117.135.210.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=FU
-	Y//9efrwe/mUihSMNPvVmHkaeUq0H/+SPX8UvhvL0=; b=at36EiaGuUf+Tui+k1
-	3pJaV0Z9QCTtcNx3tE1K2AVeLJjxLuPJWkxBhyn62wiqKnv/VYErftgqJHKbXTe/
-	z8fPA46MZAJgxKLtjt2R7pxIUCo7jhZB02nweJkuU3FMS6rfl+UM9LMx++YzTxcO
-	C0Wt4PvYY9x7IJNkcT6pqWAaE=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=z4
+	lvX9b/wpHzUUDc4cM8nQsXE3dBaZhyGhbp9VzrFls=; b=FQwOZ57BKKP7gnY+Uf
+	TGkCDe/AAPk3HDH3wCxyHd9K8Hy57FC5vGKsc0jH+q/EyMoFvfE315rq1iCGspb7
+	2Z+YukrpBD1squdUS6049C6pgHTwJuNZuyNvf1rvRQHOXkUVbR8Army7nH7stxmR
+	cGnKZaXiA9G8a1/Eh4v74immU=
 Received: from ubuntu24.corp.ad.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3lwquTYFpoZcAJA--.30698S4;
-	Tue, 03 Feb 2026 09:21:55 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3lwquTYFpoZcAJA--.30698S5;
+	Tue, 03 Feb 2026 09:21:57 +0800 (CST)
 From: jetlan9@163.com
 To: stable@vger.kernel.org
-Cc: Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-	syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+Cc: Henry Martin <bsdhenrymartin@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 5.15.y 1/2] HID: uclogic: Correct devm device reference for hidinput input_dev name
-Date: Tue,  3 Feb 2026 01:21:43 +0000
-Message-ID: <20260203012144.4215-1-jetlan9@163.com>
+Subject: [PATCH 5.15.y 2/2] HID: uclogic: Add NULL check in uclogic_input_configured()
+Date: Tue,  3 Feb 2026 01:21:44 +0000
+Message-ID: <20260203012144.4215-2-jetlan9@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260203012144.4215-1-jetlan9@163.com>
+References: <20260203012144.4215-1-jetlan9@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,105 +61,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3lwquTYFpoZcAJA--.30698S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1xZF4fXry8Cw1rXw4Utwb_yoW5GFWxpF
-	WfGanYkr4IgrnFkw4q9ay5Za4Yv397Gr15Way7Xw1rZw1avFyxKr9ayr9Fqr98JrWvkFs0
-	yF4SvF48Ka4UX37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zNNtIwUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbCxBM6A2mBTbP7UwAA3Q
+X-CM-TRANSID:_____wD3lwquTYFpoZcAJA--.30698S5
+X-Coremail-Antispam: 1Uf129KBjvJXoWrtryfAryUCFW5tF4fZF4Dtwb_yoW8JrW8pF
+	WrGFWIyr4kWF1UKw4qva45Za45ua97Gr95uryDuw4UZrn5Xa4kKryak34qqryYyrZYyrnx
+	AF95ta1xGa4DGaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRI31_UUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7BU7BGmBTbXi4gAA3W
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[protonmail.com,syzkaller.appspotmail.com,kernel.org,gmail.com,163.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213142-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213143-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,suse.com,163.com];
+	DKIM_TRACE(0.00)[163.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,3a0ebe8a52b89c63739d];
+	FREEMAIL_FROM(0.00)[163.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[protonmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 6A18DD35BC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 84311D35B5
 X-Rspamd-Action: no action
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit dd613a4e45f8d35f49a63a2064e5308fa5619e29 ]
+[ Upstream commit bd07f751208ba190f9b0db5e5b7f35d5bb4a8a1e ]
 
-Reference the HID device rather than the input device for the devm
-allocation of the input_dev name. Referencing the input_dev would lead to a
-use-after-free when the input_dev was unregistered and subsequently fires a
-uevent that depends on the name. At the point of firing the uevent, the
-name would be freed by devres management.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+uclogic_input_configured() does not check for this case, which results
+in a NULL pointer dereference.
 
-Use devm_kasprintf to simplify the logic for allocating memory and
-formatting the input_dev name string.
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-Reported-by: syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/
-Reported-by: Maxime Ripard <mripard@kernel.org>
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
-Fixes: cce2dbdf258e ("HID: uclogic: name the input nodes based on their tool")
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230824061308.222021-2-sergeantsagara@protonmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: dd613a4e45f8 ("HID: uclogic: Correct devm device reference for hidinput input_dev name")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 [ Adjust context ]
 Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
- drivers/hid/hid-uclogic-core.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/hid/hid-uclogic-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
-index 785d81d61ba4..47d88cd95fc0 100644
+index 47d88cd95fc0..340f92cfc812 100644
 --- a/drivers/hid/hid-uclogic-core.c
 +++ b/drivers/hid/hid-uclogic-core.c
-@@ -104,10 +104,8 @@ static int uclogic_input_configured(struct hid_device *hdev,
- {
- 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
- 	struct uclogic_params *params = &drvdata->params;
--	char *name;
- 	const char *suffix = NULL;
- 	struct hid_field *field;
--	size_t len;
- 
- 	/* no report associated (HID_QUIRK_MULTI_INPUT not set) */
- 	if (!hi->report)
-@@ -145,14 +143,9 @@ static int uclogic_input_configured(struct hid_device *hdev,
+@@ -143,9 +143,12 @@ static int uclogic_input_configured(struct hid_device *hdev,
  		break;
  	}
  
--	if (suffix) {
--		len = strlen(hdev->name) + 2 + strlen(suffix);
--		name = devm_kzalloc(&hi->input->dev, len, GFP_KERNEL);
--		if (name) {
--			snprintf(name, len, "%s %s", hdev->name, suffix);
--			hi->input->name = name;
--		}
--	}
-+	if (suffix)
-+		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
-+						 "%s %s", hdev->name, suffix);
+-	if (suffix)
++	if (suffix) {
+ 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
+ 						 "%s %s", hdev->name, suffix);
++		if (!hi->input->name)
++			return -ENOMEM;
++	}
  
  	return 0;
  }
