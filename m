@@ -1,171 +1,219 @@
-Return-Path: <stable+bounces-213257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OE9UH7YGgmn2OAMAu9opvQ
-	(envelope-from <stable+bounces-213257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:31:18 +0100
+	id SPt2J+gIgmmCOQMAu9opvQ
+	(envelope-from <stable+bounces-213258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:40:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC70DA9D4
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:31:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06ED1DAB5B
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5F013300C542
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 14:31:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9DF0C3015CAF
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 14:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5A73AA183;
-	Tue,  3 Feb 2026 14:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FAC3AA1A4;
+	Tue,  3 Feb 2026 14:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDzF6qxJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ckCF3gUV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E3E3AA18E
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 14:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F093A63FA
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 14:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770129055; cv=none; b=BgbHRuOjfzVoxaHScTBPpbGnSLwYFKNxI7j7l5VSBTIOHHjE8OXyW6MeLerjZ/LU2S3IJf0sobt7TyHcTDSXm4TgzrbmRvDrXLVhTeZy5jhy2n352ll6hBrzIIpXVexviTFoOZoRHbV65Me3eAVvFEAbLUjW6p10S7IrQ3FP8MQ=
+	t=1770129321; cv=none; b=SPbMB8eaTLn/7notRNfV42+DG0ueE6mXkEtg2Ve494PE2nHPXUbMd99XPQ+7wGsnMSdntE+ZsLwrHBhldUFc/CSYCOGPFfWLa+QzxDvozfZLz5Yn1wstqwAdgLRe/HFkisq6pNo35gJcKSX1SyUTPrHhRrWO4nN/OByDQ40MvPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770129055; c=relaxed/simple;
-	bh=v7rfXc6y9erjZR4HSi7e48KhA3I3thquocEh1z/pBmA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BMTcSR9mcZ2ZbBPS0CUlbrsksOK8A61tS58vZw5TJMJ8Gd8bkjsUC1VAQJZKLuwuLAh6NHrNm1g9rGkMqYvkY8idnK8KD0bBdsVm5G18mjgKx5Z3GIYt39GgsSmNhHEyODK1o4yXl6/xTDPgDWPvR7CM79e9Bo6t7/tdx25YO7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDzF6qxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F63C16AAE;
-	Tue,  3 Feb 2026 14:30:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770129055;
-	bh=v7rfXc6y9erjZR4HSi7e48KhA3I3thquocEh1z/pBmA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=EDzF6qxJJTNjrhHdZv60Lw673DqQPoI8ij+jxbQR76IDFPlOjhzhHMIDNYGEFGBW+
-	 soF6uY3XXdsj63aE35qhs9r7WSeP0v/l8zluxlCMHBxKzzbyLGGjDQPgaxEL3drxRY
-	 a4McqR+DxcasOOoziqvKkxWzLxY9cwCHDJ3RswiU=
-Subject: FAILED: patch "[PATCH] kho: init alloc tags when restoring pages from reserved" failed to apply to 6.18-stable tree
-To: ran.xiaokai@zte.com.cn,akpm@linux-foundation.org,graf@amazon.com,kent.overstreet@linux.dev,pasha.tatashin@soleen.com,pratyush@kernel.org,rppt@kernel.org,stable@vger.kernel.org,surenb@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 15:30:03 +0100
-Message-ID: <2026020303-drippy-appliance-a74c@gregkh>
+	s=arc-20240116; t=1770129321; c=relaxed/simple;
+	bh=gHhxN6CXwkf40kYnaBa2r/QM0E1cp8eHB6SFVk3SDEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OkcmTaEb1dH1/oFkWMXFuDSrhD9MxtUjRuutV/tDfar3CMNKOV3CXOyaXTBWC2JK99sCkKpPVutFvhTuIVr5J1mX+5Uy72xwYk4SHZf2GVSmqBN4ptYmKK0YHrr9YInWHvEIYaD/RTxyPwHBdCUriGMvWtmcVZl4dqA2TQc2YcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ckCF3gUV; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770129320; x=1801665320;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gHhxN6CXwkf40kYnaBa2r/QM0E1cp8eHB6SFVk3SDEs=;
+  b=ckCF3gUViI6BlpuSWfhqgC+TNg7LkTu41jCGAxPmAGqfwGMzIgF7uoCC
+   muA/Gq/JWb9KDVqXY82Kri9pk8u2BjPgWY5cHsHdfIZha6NRYvsRYYagw
+   98YGwAu2f3V/m7/A7sSbVxMjCaTQNIAF1bIsJPLXdC3kSKlQku4caFsM8
+   Cic3iJUWgsAxx4SgurA8olFGBpfXdPYcPT4da+dPWB1Fcu6pbgxOrLGCG
+   04IlMvd8E4MND8DV+ap3ZPN8i1shX/Hi9LZ8Hx0xu1waDGyeCF4j6j0Q9
+   fHMwBlgVSlt0vZe7rZ99TMwDDe/N1vgMETJT+BQyFX+0er183xpm/+MUS
+   Q==;
+X-CSE-ConnectionGUID: hTi8V1rUStemTlyv6kJr8Q==
+X-CSE-MsgGUID: 0sbRb7n+TriCQrsPk8BbDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="88722753"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="88722753"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 06:35:19 -0800
+X-CSE-ConnectionGUID: ZwOGZvpDT8mZPEX1B4OqYQ==
+X-CSE-MsgGUID: lxzhFc3nRnyKll0zH2HsWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="209574218"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO fedora) ([10.245.245.55])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 06:35:15 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Tue,  3 Feb 2026 15:34:34 +0100
+Message-ID: <20260203143434.16349-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213257-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-213258-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,zte.com.cn:email]
-X-Rspamd-Queue-Id: 8FC70DA9D4
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,kvack.org:email,mellanox.com:email,lst.de:email,intel.com:email,intel.com:dkim,linux.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 06ED1DAB5B
 X-Rspamd-Action: no action
 
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+The lru_add_drain_all() function requires a short work-item
+to be run on all online cpus to complete.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x e86436ad0ad2a9aaf88802d69b68f02cbd1f04a9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020303-drippy-appliance-a74c@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
 
-Possible dependencies:
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
 
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in the do_swap_page() function.
 
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
 
-thanks,
+v2:
+- Instead of a cond_resched() in the hmm_range_fault() function,
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
 
-greg k-h
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+---
+ include/linux/migrate.h | 6 ++++++
+ mm/memory.c             | 3 ++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
------------------- original commit in Linus's tree ------------------
-
-From e86436ad0ad2a9aaf88802d69b68f02cbd1f04a9 Mon Sep 17 00:00:00 2001
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Date: Thu, 22 Jan 2026 13:27:40 +0000
-Subject: [PATCH] kho: init alloc tags when restoring pages from reserved
- memory
-
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator.  When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and below warning message:
-
-alloc_tag was not set
-WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-RIP: 0010:___free_pages+0xb8/0x260
- kho_restore_vmalloc+0x187/0x2e0
- kho_test_init+0x3c4/0xa30
- do_one_initcall+0x62/0x2b0
- kernel_init_freeable+0x25b/0x480
- kernel_init+0x1a/0x1c0
- ret_from_fork+0x2d1/0x360
-
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
-
-Link: https://lkml.kernel.org/r/20260122132740.176468-1-ranxiaokai627@163.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index d4482b6e3cae..96767b106cac 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -255,6 +255,14 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
- 	if (is_folio && info.order)
- 		prep_compound_page(page, info.order);
- 
-+	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
-+	clear_page_tag_ref(page);
-+	if (!is_folio) {
-+		/* Also do that for the non-compound tail pages */
-+		for (unsigned int i = 1; i < nr_pages; i++)
-+			clear_page_tag_ref(page + i);
-+	}
-+
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..800ec174b601 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -97,6 +97,12 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ 	return -ENOSYS;
  }
+ 
++static inline void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+diff --git a/mm/memory.c b/mm/memory.c
+index da360a6eb8a4..ed20da5570d5 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				migration_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+-- 
+2.52.0
 
 
