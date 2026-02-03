@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-213302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLCsMcpWgmntSQMAu9opvQ
-	(envelope-from <stable+bounces-213302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:12:58 +0100
+	id 2LgJKQBXgmntSQMAu9opvQ
+	(envelope-from <stable+bounces-213303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:13:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0BEDE62B
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:12:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E4CDE648
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 21:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 066A130A70BE
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 20:12:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3E42305E320
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 20:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8674936997D;
-	Tue,  3 Feb 2026 20:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7FF368294;
+	Tue,  3 Feb 2026 20:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNsbNWJn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0pWiY1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155F4368294
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 20:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81DF7261C
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 20:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770149576; cv=none; b=emQg++NlLqCn8kQfcnpX0c9MaM3tMLct1CUhSZAmQy8X7TMFnLp7pZ0Yp6ed968W+mWe2HaMGUpuiCiJsn3OWPT7lz0tjJaW0n5X3+UysY7dMGFm9acqS8ibMhLqjTS0jwNd9LZ0G+kY/Ih+txVTaPqoOhOQeXTN3V0dM8Juwj8=
+	t=1770149626; cv=none; b=lCB650SToA2NR2Fg8QIEOZmP1uoJQQS4dZ9jYhkFfesq3O3RFfzVEJrn+jO9AY1xsx92RF5dxndbq7gVdsGZlX+ByeeQrhow0hybXvv2Wh4a9reZ0ovnIEQHLqOX4u+QVMNj9Mia9m9Ww/T0bNCUGk3n6xjL7scS5gTsLJO/Tok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770149576; c=relaxed/simple;
-	bh=JbrEjWohCf8J/nWyLoFrmYJldxd8NrXGLI6mqW5zXYw=;
+	s=arc-20240116; t=1770149626; c=relaxed/simple;
+	bh=Q46r51HdIJB5o5l7hsYvpTB08Qu1AP/8OX8zaJIRsAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJ2B3PDaNiNZmSUAfFQY3s6nbCCjH/3jvNYU/KBlR6VLFaDylcIP9zLz6V6gdHm0a/NU4QbS29W5ZvvAD8GEFYMCGr3xo5IosI4tWND5ba+OnD+F9h80ESh4fBrnj3dwTL9tY7ZDjVqHUPpOC1kNExGfdkVGlfOyyCswIXL81OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNsbNWJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21A5C116D0;
-	Tue,  3 Feb 2026 20:12:54 +0000 (UTC)
+	 MIME-Version; b=QGVGELHYIQkHredzPZMVkn++pV8daZfBlxAR7H7gmNq+yhf4SiFuVwY00oLYTo/i0oF1qOHWPlPPfeMLdCxlUKJCF27IYZ+9Jt6jRU1jKXP2RVJlPKb6/iNh41rruyXWwx+CmU9v48CDro6hacAfUCaHvRzQ3NslqYXnP03jiAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0pWiY1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92872C116D0;
+	Tue,  3 Feb 2026 20:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770149575;
-	bh=JbrEjWohCf8J/nWyLoFrmYJldxd8NrXGLI6mqW5zXYw=;
+	s=k20201202; t=1770149625;
+	bh=Q46r51HdIJB5o5l7hsYvpTB08Qu1AP/8OX8zaJIRsAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNsbNWJn5pnK6ewQVXkB0Vuqy9rE7o+R6YMZhk35C7v0TD/FTANj9F8st1c21e4LI
-	 5f2miN0L4wYnNO0a5uHetYUVinLj9E/9CYwt3+BTBu2nRKbd29VEoqv+ZECmMWviAJ
-	 KWBdiJlzOXySvnBMxqTj6y/lqtwjhDGjQtuKwEyn6lEXjozZXlqakpinYNIynzheP/
-	 XRzCiM0pilyVUcJOLBSgNfKkGO6ICWXat8px8EDBHqr3oMghOLidZS1As3lEbSWVTA
-	 rgxMRkKYrYOAmZiQHftF8/dHg9s+l1Msg+WxL3AItqGD3BqX9DTVjCGy5cya69eBRC
-	 +DTWm6sUcIXVw==
+	b=p0pWiY1ZhxvkclmLrs8fpp8oKTarRxbNPIdwoe+fYIIIR9saIXDMwEDrffMk4Y6Hx
+	 5e+I/ZdOVma37tBDRD0ux49THE9pY74Qk+c58ubFXI8XvpzQCLW/1TIQEtWWSPDQRt
+	 66h0/0T7NE16KpHpPZNpsv5AuxRce1QWhNIUUQoHhhfaQEsnl/ot6ElxnZrbJ0dTAG
+	 noVMOe0birTDlZW7B+JGYE6A5p8AH0k8NWRfB4ozxEFW+ifLXCrKh4UTLbovND2l40
+	 J4qPxNhcwY/QEpYdX1ot7VIxepXxpnqOUZQubwPi/gMXr153pj/in3Fms94G2XghhX
+	 4igcexHqc+WaA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Marco Angaroni <marco.angaroni@italtel.com>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Pimyn Girgis <pimyn@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: avoid dup SUB_CLOSED events after disconnect
-Date: Tue,  3 Feb 2026 15:12:53 -0500
-Message-ID: <20260203201253.1382543-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] mm/kfence: randomize the freelist on initialization
+Date: Tue,  3 Feb 2026 15:13:42 -0500
+Message-ID: <20260203201342.1383528-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020301-obscurity-amazingly-b0be@gregkh>
-References: <2026020301-obscurity-amazingly-b0be@gregkh>
+In-Reply-To: <2026020339-buddhism-daytime-9e95@gregkh>
+References: <2026020339-buddhism-daytime-9e95@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,84 +70,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213302-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213303-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,italtel.com:email]
-X-Rspamd-Queue-Id: 2A0BEDE62B
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 28E4CDE648
 X-Rspamd-Action: no action
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Pimyn Girgis <pimyn@google.com>
 
-[ Upstream commit 280d654324e33f8e6e3641f76764694c7b64c5db ]
+[ Upstream commit 870ff19251bf3910dda7a7245da826924045fedd ]
 
-In case of subflow disconnect(), which can also happen with the first
-subflow in case of errors like timeout or reset, mptcp_subflow_ctx_reset
-will reset most fields from the mptcp_subflow_context structure,
-including close_event_done. Then, when another subflow is closed, yet
-another SUB_CLOSED event for the disconnected initial subflow is sent.
-Because of the previous reset, there are no source address and
-destination port.
+Randomize the KFENCE freelist during pool initialization to make
+allocation patterns less predictable.  This is achieved by shuffling the
+order in which metadata objects are added to the freelist using
+get_random_u32_below().
 
-A solution is then to also check the subflow's local id: it shouldn't be
-negative anyway.
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-Another solution would be not to reset subflow->close_event_done at
-disconnect time, but when reused. But then, probably the whole reset
-could be done when being reused. Let's not change this logic, similar
-to TCP with tcp_disconnect().
-
-Fixes: d82809b6c5f2 ("mptcp: avoid duplicated SUB_CLOSED events")
-Cc: stable@vger.kernel.org
-Reported-by: Marco Angaroni <marco.angaroni@italtel.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/603
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-1-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
+Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ replaced kfence_metadata_init with kfence_metadata ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/kfence/core.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 423243d0d27ab..4e3cad26b3b01 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2568,8 +2568,8 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- 		     struct mptcp_subflow_context *subflow)
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 799d8503f35f0..edf6deb382b67 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -542,7 +542,7 @@ static unsigned long kfence_init_pool(void)
  {
--	/* The first subflow can already be closed and still in the list */
--	if (subflow->close_event_done)
-+	/* The first subflow can already be closed or disconnected */
-+	if (subflow->close_event_done || READ_ONCE(subflow->local_id) < 0)
- 		return;
+ 	unsigned long addr = (unsigned long)__kfence_pool;
+ 	struct page *pages;
+-	int i;
++	int i, rand;
  
- 	subflow->close_event_done = true;
+ 	if (!arch_kfence_init_pool())
+ 		return addr;
+@@ -590,19 +590,34 @@ static unsigned long kfence_init_pool(void)
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
+ 
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
+ 			goto reset_slab;
++	}
++
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32_below(i);
++		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
++	}
+ 
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
+ 	}
+ 
+ 	return 0;
+ 
+ reset_slab:
++	addr += 2 * i * PAGE_SIZE;
+ 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+ 		struct slab *slab = page_slab(nth_page(pages, i));
+ 
 -- 
 2.51.0
 
