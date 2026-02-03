@@ -1,173 +1,192 @@
-Return-Path: <stable+bounces-213271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEA4OhYggmlIPgMAu9opvQ
-	(envelope-from <stable+bounces-213271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:19:34 +0100
+	id GOruLLQegmmhPQMAu9opvQ
+	(envelope-from <stable+bounces-213272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:13:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A21FDBD0B
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:19:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1824DBBEC
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 17:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05527315E138
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 16:11:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03C513014936
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 16:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDA23D1CB0;
-	Tue,  3 Feb 2026 16:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC41B3D1CAC;
+	Tue,  3 Feb 2026 16:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="qKAWEqHg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dHCHn4Fv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umGqVXhB"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534843D1CA0;
-	Tue,  3 Feb 2026 16:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7D23C1998
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 16:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770135113; cv=none; b=GiRCj7THaS/aDKjh1nZyBM782VhIyVgJgIteZXrn12zIFVKRmedW+PwgTrPT74M8MMKTun/iGY7syv16JuYCvrgIlwO+fqz4clEnEIVvtClsbRTT5CbPWfQ8x7l/CeJPTTfyof+4vx6t1D+uoVgQWdWFDU0RMN+yMOMdmoqsgJY=
+	t=1770135156; cv=none; b=otmMf4RzY96Ak6Gu4Gf3pzvV857kS2VLIQ4tCjizmUm1Hm+4b13epI4MD4tXUh+6l7tVXJhu36s7Km7PdS80iTWt1xiz9CQCmyaa52y/E2J/8f/G93XU7HN3rTLD0okk9duwmAAy/rCKbqQ4Qv/w7/RWl5xSOtaeOvzHwtz2/JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770135113; c=relaxed/simple;
-	bh=9a6MDBZBr2S7DTcvsZmMvwhafM53LBpFJ/OzmyZ9jzo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M4N2Hzyx7mKELZJTx29IxWIrgh3p2QiyjDbj2PizUxQJe/MIYw/OlQh6gzXZLjdZEQ765O03PCpEcGFafyhm8bpGwJ5YrkJ8zJtQNvcDcCM0yGxwEbeBhc2Q3QXMOAYgN7xSGtc+EZR2iylLbYjsDCoqP7Te3kP9/sZIke1rRfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=qKAWEqHg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dHCHn4Fv; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfout.phl.internal (Postfix) with ESMTP id 548C0EC008E;
-	Tue,  3 Feb 2026 11:11:50 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Tue, 03 Feb 2026 11:11:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1770135110; x=1770221510; bh=S8DdY7OHjj
-	q7ubDcTpspMFvxxPIy4NvGM1w3tP/IR74=; b=qKAWEqHgEgF3XeY8GPtEyZ7xwV
-	NTNMWTYphp6Diolc0wISxvpiKowIU9G2cSFmAl0oewdtfFUnl/ccD2gxr900ze1X
-	fnMWAHPsPIdYB96/2v5YW9EYrL7IQUW4wXgVPIdEALiBVwTv33LmZ0BefBTsC7kW
-	kXNBbsfq/dvMvOoyCU5Xb2SpXz7040mbvrAYuPXx3+AWOMurIPDneHTsuRd3l0QA
-	Tf0jzZEdd1B5zbykggsw6aAiwZzJcC5ohj+ueIQJb0mKkN1Rdla4Lo1b074VYq2z
-	l4jpYTYjB4Aacla9P2okZRFzVk4Oz1YVooDWgxhOmQPhDnXL2QVhklUd2WGg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1770135110; x=1770221510; bh=S8DdY7OHjjq7ubDcTpspMFvxxPIy4NvGM1w
-	3tP/IR74=; b=dHCHn4Fv8UUl8m5HwfBsUZbsNj9ZhzNjcrgwmKOr3omviw+dDvg
-	Ferm8XdTRRohnx4jV5zGqQm1k1I2HcaTEpXB1C0mY1H5PZjRHvDJPPUwOAw2rFaG
-	/8DF5YxRh2xTazJ8yJpGM1DBWdS63B81E3PDuMGybGOdXQ4b7ZrOLMCcYqJmGbL5
-	RaGEhq663nLtHawjELkoI3hH1yP/HyRxWNS2P7QUsewiiwpsgXdUy1JhawFGOQO2
-	wazvyz/2G7MHsg90RaZKU8MoX0tXMgh7kxmq/RetBhkYf2OWXpphiJqN+6Hgp+U0
-	hvvSi70YWq0hM7WCeGkN8A7k5UuqCsYjizA==
-X-ME-Sender: <xms:Rh6CacqcbCiZ3bhfjRp--M10Xmg_q3Y0Ty2v5id4A8CgS0bxEX4_-A>
-    <xme:Rh6CaU5CIoBj2tJgntsTHS_cnKHvWgphqB3M5lXTWAXROj47_EnGArubbIhv5eqoP
-    xJblqwH07bO6jhWYRPi2-F5QwWYvAolERNE3w22mfRAocig>
-X-ME-Received: <xmr:Rh6CaTcrVAUkYar6KD6ReAEmQByLDIKbwOdzszkgIkYqk85MA5MdQoiewbUBGZB551e5ECW-B6Ww_OfATJTHSX2SdrGhwOsGqZ3BCw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukedthedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepjeetueehte
-    ekuefhleehkeffffeiffeftedtieegkedviefggfefueffkefgueffnecuffhomhgrihhn
-    pehmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepiedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhklhesphgvnhhguhhtrhhonhhigi
-    druggvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqtggrnhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:Rh6CaZ4-DfsGWh1HZUdBAiHK4mSxtM68QBkHdwae-Wcz6N8iRkLs9Q>
-    <xmx:Rh6CaatxQtCqyugr_ydtE0ghdYSAKAB_ArR4589ZFaYzDpTuRpUjaQ>
-    <xmx:Rh6CaZhnW8Q7bZexgi2L6lcrUbqrQv3PwS__56mCynADQG9PWDXUOg>
-    <xmx:Rh6CaVoH-H0nw21lQ0C2udsTVpnlcNDn3du2zZr9PMQUOEJlBWrbnw>
-    <xmx:Rh6Cae7xe2OeTO1dDX5MLfghkYySUYZlfTGcPc8w1hQJezuv9ArTC2OG>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Feb 2026 11:11:49 -0500 (EST)
-Date: Tue, 3 Feb 2026 17:11:47 +0100
-From: Greg KH <greg@kroah.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: stable@vger.kernel.org, linux-can@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
-Message-ID: <2026020342-eats-clamor-2b83@gregkh>
-References: <2026012023-ranged-machinist-edb4@gregkh>
- <20260120132156.746174-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1770135156; c=relaxed/simple;
+	bh=HOvYjbQ4C6SigHIrNrzwonuL7NZ6DSLnVpm6tfjALDQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cgfxatZ89CARJVo9B0vrLXZgtF9WctHx3cF201UyEZWlghFlJjM8MketnO7f2Xx3YLuzyZ0C5dcG79pp8t3Dv/ScGWaQ6KX1DhRKM/VQLOS7hNMU2M1K2AhSnx7jyUnOOmI2Y3blFAIQgyNfQID9lSKFX7zaJiNzAkWVUizUrFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umGqVXhB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821E0C19421;
+	Tue,  3 Feb 2026 16:12:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770135156;
+	bh=HOvYjbQ4C6SigHIrNrzwonuL7NZ6DSLnVpm6tfjALDQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=umGqVXhBo66Ab5rLGJHVLqGQF7/jxWBq+RyHYykKAZXmUKdn9AWjNHvw/mHPOflHH
+	 a5N9kEUA85eQwc9c1EjApt/BR62Q8mvniFRwoIi1ki8oasD7euINyq/mYLv1gk38La
+	 ILNaubbdlNxPwHeeCW11OWaq5T2f3lluJIQVHrb8p/WdjpLZSJQ1tIzYxFSznIZ7MA
+	 U4PXkmigOv8gv6vwKy0OyIcYibmvlAq3ArgpzzYK9Ih2+qB9CA5TDxmoLuuX4eTPtc
+	 hmMSxZkvVku4z1InNsq2AWn25o9MInuUH0WlgeA/8YeZdyYxOj4KBLL70rwZy8McoC
+	 TeDq8J4ULbucw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] pinctrl: meson: mark the GPIO controller as sleeping
+Date: Tue,  3 Feb 2026 11:12:34 -0500
+Message-ID: <20260203161234.1303241-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026020330-update-residual-b2f7@gregkh>
+References: <2026020330-update-residual-b2f7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120132156.746174-1-mkl@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm3,messagingengine.com:s=fm3];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213271-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,samsung.com,googlemail.com,linaro.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-213272-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 8A21FDBD0B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: D1824DBBEC
 X-Rspamd-Action: no action
 
-On Tue, Jan 20, 2026 at 02:21:56PM +0100, Marc Kleine-Budde wrote:
-> In gs_can_open(), the URBs for USB-in transfers are allocated, added to the
-> parent->rx_submitted anchor and submitted. In the complete callback
-> gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
-> gs_can_close() the URBs are freed by calling
-> usb_kill_anchored_urbs(parent->rx_submitted).
-> 
-> However, this does not take into account that the USB framework unanchors
-> the URB before the complete function is called. This means that once an
-> in-URB has been completed, it is no longer anchored and is ultimately not
-> released in gs_can_close().
-> 
-> Fix the memory leak by anchoring the URB in the
-> gs_usb_receive_bulk_callback() to the parent->rx_submitted anchor.
-> 
-> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-> Cc: stable@vger.kernel.org
-> Link: https://patch.msgid.link/20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> (cherry picked from commit 7352e1d5932a0e777e39fa4b619801191f57e603)
-> ---
->  drivers/net/can/usb/gs_usb.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-> index ffa2a4d92d01..e36745fd2d3b 100644
-> --- a/drivers/net/can/usb/gs_usb.c
-> +++ b/drivers/net/can/usb/gs_usb.c
-> @@ -402,6 +402,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
->  			  usbcan
->  			  );
->  
-> +	usb_anchor_urb(urb, &parent->rx_submitted);
-> +
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Breaks the build :(
+[ Upstream commit 28f24068387169722b508bba6b5257cb68b86e74 ]
+
+The GPIO controller is configured as non-sleeping but it uses generic
+pinctrl helpers which use a mutex for synchronization.
+
+This can cause the following lockdep splat with shared GPIOs enabled on
+boards which have multiple devices using the same GPIO:
+
+BUG: sleeping function called from invalid context at
+kernel/locking/mutex.c:591
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
+kworker/u25:3
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+INFO: lockdep is turned off.
+irq event stamp: 46379
+hardirqs last  enabled at (46379): [<ffff8000813acb24>]
+_raw_spin_unlock_irqrestore+0x74/0x78
+hardirqs last disabled at (46378): [<ffff8000813abf38>]
+_raw_spin_lock_irqsave+0x84/0x88
+softirqs last  enabled at (46330): [<ffff8000800c71b4>]
+handle_softirqs+0x4c4/0x4dc
+softirqs last disabled at (46295): [<ffff800080010674>]
+__do_softirq+0x14/0x20
+CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
+6.19.0-rc4-next-20260105+ #11963 PREEMPT
+Tainted: [C]=CRAP
+Hardware name: Khadas VIM3 (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  __might_resched+0x144/0x248
+  __might_sleep+0x48/0x98
+  __mutex_lock+0x5c/0x894
+  mutex_lock_nested+0x24/0x30
+  pinctrl_get_device_gpio_range+0x44/0x128
+  pinctrl_gpio_set_config+0x40/0xdc
+  gpiochip_generic_config+0x28/0x3c
+  gpio_do_set_config+0xa8/0x194
+  gpiod_set_config+0x34/0xfc
+  gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
+  gpio_do_set_config+0xa8/0x194
+  gpiod_set_transitory+0x4c/0xf0
+  gpiod_configure_flags+0xa4/0x480
+  gpiod_find_and_request+0x1a0/0x574
+  gpiod_get_index+0x58/0x84
+  devm_gpiod_get_index+0x20/0xb4
+  devm_gpiod_get+0x18/0x24
+  mmc_pwrseq_emmc_probe+0x40/0xb8
+  platform_probe+0x5c/0xac
+  really_probe+0xbc/0x298
+  __driver_probe_device+0x78/0x12c
+  driver_probe_device+0xdc/0x164
+  __device_attach_driver+0xb8/0x138
+  bus_for_each_drv+0x80/0xdc
+  __device_attach+0xa8/0x1b0
+
+Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
+Cc: stable@vger.kernel.org
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@samsung.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
+index d239ad85a510d..8fe1f08f1a01f 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson.c
++++ b/drivers/pinctrl/meson/pinctrl-meson.c
+@@ -617,7 +617,7 @@ static int meson_gpiolib_register(struct meson_pinctrl *pc)
+ 	pc->chip.set = meson_gpio_set;
+ 	pc->chip.base = -1;
+ 	pc->chip.ngpio = pc->data->num_pins;
+-	pc->chip.can_sleep = false;
++	pc->chip.can_sleep = true;
+ 	pc->chip.of_node = pc->of_node;
+ 	pc->chip.of_gpio_n_cells = 2;
+ 
+-- 
+2.51.0
+
 
