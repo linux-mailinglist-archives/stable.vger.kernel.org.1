@@ -1,114 +1,136 @@
-Return-Path: <stable+bounces-213145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPiJLPhTgWnhFgMAu9opvQ
-	(envelope-from <stable+bounces-213145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 02:48:40 +0100
+	id IMhnI8JYgWkFFwMAu9opvQ
+	(envelope-from <stable+bounces-213146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:09:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053B2D3784
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 02:48:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6A8D39FB
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 03:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3A833033225
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 01:48:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 711E0300A8F6
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 02:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD8928CF50;
-	Tue,  3 Feb 2026 01:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7753F2F12D9;
+	Tue,  3 Feb 2026 02:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pVJ6iT5t"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Jd8m1RH/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FBD28690;
-	Tue,  3 Feb 2026 01:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1232F12C3;
+	Tue,  3 Feb 2026 02:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770083315; cv=none; b=MfpkrSVDoI8867f8kTwH5b4JO60aVGUOk7wDAP56D4WFEeu09QCDqbMqhgsxqY3MP/SoS5uj842PeZOWC39V5g92o+Jcft2RIlC9x0Uo68iqhD6Vq0ncEv+EOn5dyvQrZIPqDgRJ9vAIvvrpadaYoLvWrBlnWqujHA+pVA6GHVs=
+	t=1770084477; cv=none; b=h33JwfQvjMjzandLF4TT2ovmKFJLmUPOR+MzUE6Sz3MCPF3evpHsHfGnVFV80eFWjUX4ueKg0LQCaS0plFBEcSA+AH+6xYjLoyMFkAVLpZ9kEJ58RDpcHt5QIK2dvy/CInKEuUBNXyGwGVFaZ6sI2eyUVJw+mUA6JxgPElr9ye0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770083315; c=relaxed/simple;
-	bh=9lzm8SI5baCzlelXKFMWtlw5t0GVxqCRKrOPDGdPFSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tZ4VSO5R8OBtRbPeHervL4YDqybhjsgA8qqLUWi7kFJiJZ0lUKieVfdq+I/n91cqFIdiHuLkcidrtGOG9PZkwwnOHE2clQnci/QRBS3qUT8ctVwkDXREXQbYNbhmJYZndxoQ/BIdk+ALNulNTXN4I4HhSc6+ers6tNssa517i34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pVJ6iT5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB26CC116C6;
-	Tue,  3 Feb 2026 01:48:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770083315;
-	bh=9lzm8SI5baCzlelXKFMWtlw5t0GVxqCRKrOPDGdPFSw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pVJ6iT5te8A2jWaV7UIiNClb3Sdrtbju0KzzxJe+aPoIszTbl4/ugZd0Ds8PhVnXw
-	 qUebo9tifhYidps/b/G/nmqyrchIPWkCSHTbycnBDXFQmujBC7IkQro5ok64N+zxpS
-	 wWXtmdoD0BrQ9sfvNjele/1J61gA4i88hLkjap4U5q+nX9u1j6fSv04Absiy1/uEri
-	 WAPid4VDynvaOmTJHWvnKfT1r/40iutw7+M9LAsasVLQwpWB943T931WAWW9sKHSFH
-	 rwafdAcjkq+5Gc3arvWAh3OzeFApxA3W0BuVjTFOOVRBWweFsVMk5La1inYIMyG5GV
-	 HoAYn7T11g69w==
-Date: Mon, 2 Feb 2026 17:48:33 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Hodges <hodgesd@meta.com>
-Cc: Jon Maloy <jmaloy@redhat.com>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Ying Xue <ying.xue@windreiver.com>, Tuong Lien
- <tuong.t.lien@dektech.com.au>, <netdev@vger.kernel.org>,
- <tipc-discussion@lists.sourceforge.net>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] tipc: fix RCU dereference race in tipc_aead_users_dec()
-Message-ID: <20260202174833.3e0ea821@kernel.org>
-In-Reply-To: <20260201022128.2658251-1-hodgesd@meta.com>
-References: <20260201022128.2658251-1-hodgesd@meta.com>
+	s=arc-20240116; t=1770084477; c=relaxed/simple;
+	bh=jFKza2X4gHVxNwPsHqjcoR6OhiKUqCsSj+WN6ieXtww=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mmQXP0RrIr+BvlUP1c1s9CgBahhwPHpC/rmAkfLkS4t5wbXYlf26Ib5kTVFUGXjo035uS6ExT3i2c/GuuVEx8fChJE0jrtNvfzHXaOh5XLbacXkY241XWWysqxLGEEFgFvCUgR+Y80yIqa0tCy3Gr4EDs0BahIruj7if20zZ0vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Jd8m1RH/; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ci
+	U4ATNB9aX0EL3qFSGEVr2hVOabS7xQU44FB8uyVDI=; b=Jd8m1RH/qXKlrJYI5O
+	zv5rUx31vU9ZMSPuq1cwDgkOwWgkYAHM1uJFw+07F1dl522ixZ8rh2zZV3Dfcj8F
+	ZRNMqmumANd/ChYF34U/W3fUo/YJR/hUdKweZQ9rqlpirkCdi//kSBHFBGiQH6fh
+	cS6WsyCojYp+HbK8A3X96tByI=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDHPMdTWIFpOcoGJA--.140S2;
+	Tue, 03 Feb 2026 10:07:17 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Gyeyoung Baek <gye976@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15.y] genirq/irq_sim: Initialize work context pointers properly
+Date: Tue,  3 Feb 2026 10:07:14 +0800
+Message-Id: <20260203020714.799655-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHPMdTWIFpOcoGJA--.140S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Aw43try5Zr4xXry7JFW8Zwb_yoW8JFyfpF
+	WfGw1Ivr4DWF10ga4UGrn2v34Yg3WDXw47Wan8uFyfXrZ0qwnrXF1DKrWaqry0vrWFgFWj
+	vF1Fqa10v3WDAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEc_-sUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+hflf2mBWFf68QAA3b
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-213146-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213145-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[163.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 053B2D3784
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linutronix.de,163.com];
+	DKIM_TRACE(0.00)[163.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email]
+X-Rspamd-Queue-Id: DE6A8D39FB
 X-Rspamd-Action: no action
 
-On Sat, 31 Jan 2026 18:21:28 -0800 Daniel Hodges wrote:
-> tipc_aead_users_dec() calls rcu_dereference(aead) twice: once to store
-> in 'tmp' for the NULL check, and again inside the atomic_add_unless()
-> call.
-> 
-> Use the already-dereferenced 'tmp' pointer consistently, matching the
-> correct pattern used in tipc_aead_users_inc() and tipc_aead_users_set().
-> 
-> Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-> Cc: stable@vger.kernel.org
-> 
-> Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+From: Gyeyoung Baek <gye976@gmail.com>
 
-Somehow this didn't reach patchwork, please resend, and while you do
-that please remove the empty line between cc stable and you sob.
+[ Upstream commit 8a2277a3c9e4cc5398f80821afe7ecbe9bdf2819 ]
+
+Initialize `ops` member's pointers properly by using kzalloc() instead of
+kmalloc() when allocating the simulation work context. Otherwise the
+pointers contain random content leading to invalid dereferencing.
+
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250612124827.63259-1-gye976@gmail.com
+[ The context change is due to the commit 011f583781fa
+("genirq/irq_sim: add an extended irq_sim initializer")
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ kernel/irq/irq_sim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/irq/irq_sim.c b/kernel/irq/irq_sim.c
+index 0cd02efa3a74..12a1b951341f 100644
+--- a/kernel/irq/irq_sim.c
++++ b/kernel/irq/irq_sim.c
+@@ -166,7 +166,7 @@ struct irq_domain *irq_domain_create_sim(struct fwnode_handle *fwnode,
+ {
+ 	struct irq_sim_work_ctx *work_ctx;
+ 
+-	work_ctx = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
++	work_ctx = kzalloc(sizeof(*work_ctx), GFP_KERNEL);
+ 	if (!work_ctx)
+ 		goto err_out;
+ 
+-- 
+2.34.1
+
 
