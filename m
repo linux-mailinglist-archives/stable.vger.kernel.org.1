@@ -1,200 +1,287 @@
-Return-Path: <stable+bounces-213162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oA/oA3hqgWmwGAMAu9opvQ
-	(envelope-from <stable+bounces-213162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:24:40 +0100
+	id qBvOLF1rgWmwGAMAu9opvQ
+	(envelope-from <stable+bounces-213163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:28:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60121D4183
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:24:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F46CD41F2
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 04:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBC7A304A665
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 03:23:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 550143051C8B
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 03:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414922F25E4;
-	Tue,  3 Feb 2026 03:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B290321F54;
+	Tue,  3 Feb 2026 03:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNVfBLEi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i5jhRDzu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="owg/QCAJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23232E972B
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 03:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770089027; cv=none; b=cEcvKCOEfKDYQuHLhqajHk1+NLYgOAryxQvFulL0Plby3oCA1cm45+4f9svLV+Ueu3BoPH790+mcdMzR2OGyFUGXPGCv+JbtE58BDfIHcUWgL0avGw6t5JdUo+KLcyYQIRWEj6YyVCtT1AH48XMBZrngr0Ohm3qDKuVPZMX772Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770089027; c=relaxed/simple;
-	bh=6ElrO55Og8Plmd9KRwBV3wRAIZ/+Foks3OuMDg0VN+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cH3ePYB3LCT7zYsE5XZDHmZjHAIvKBJROrpKtyqH3wvccpmdTBDf5Q/kG+J1P6/UZFVppCvFJ2CkFNFcQSYJn6+nQM78tpuhdsvoL653v+tZJWiDzgVKrDZehQr+SjkFn4wcqre/wqNmQtffolSpmlo5qZNdEIp1q6W76omfz9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNVfBLEi; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-66106a2f8d1so3590927eaf.1
-        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 19:23:45 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C622F290E
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 03:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770089255; cv=pass; b=Rz1PuVGu89iv4T1N0B08+x37mAh0CcPCyIz95teYb7YN5HiA9I8Qr5/g1i6RvZbiTQtzZkEpTDk/dZncbgIVCyUZFhvAUhaB8xTAWK5mQ1meMjt0mcJ20vVhf6hI39pzcscrccpg1CeMFMUGgRGTb6p7IHHgDYsas6DvKk9oPRA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770089255; c=relaxed/simple;
+	bh=bqV1HCkMw7DPpKkuYjfIWhuCizBWLcm2EGFb73XZkxs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XJ6jEst333o+CWouA41fs//CZ5XvMOk6KS68z0VbBztK+sUnID+etksFfhdE2uHHJafTPdR/E/2573jRRQDpFUqG473enV1CJUdQlEteES/wIGGm8TnnUnhW2dU0tvwdZQS6snoBFvrkJBFzah6GvquZ3fGd+ly2wVsP0jxFC5Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i5jhRDzu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=owg/QCAJ; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770089252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F2quDjTQjJ7BxLhnVltyHuyk8k/++sE68ucbkbgciiU=;
+	b=i5jhRDzu2UQBBVF2OJtlZr6ORftM3r3BtcYn9p+8kXY6NOVlBP19508q5TCEETFbEh8vZu
+	+JeXaJrdcX1jV4D/9n+NyrFCovt7tPNrWQ0InPt+/NHThFQXHB9zUs6lLPXq1zFWmnljAc
+	VZdsR+S7AGwhDI6u8OGtvWKaNWA3K+Q=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-108-ef1K4oT0MaGSCYVcnahC8g-1; Mon, 02 Feb 2026 22:27:29 -0500
+X-MC-Unique: ef1K4oT0MaGSCYVcnahC8g-1
+X-Mimecast-MFC-AGG-ID: ef1K4oT0MaGSCYVcnahC8g_1770089248
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-34c314af2d4so3937438a91.3
+        for <stable@vger.kernel.org>; Mon, 02 Feb 2026 19:27:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770089248; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QnJ9oAb8LGp281NJ+TXUcsmjcIoCVMeh9vgiGHMABNm4Un3nA5euZwq9aGtisK6vEa
+         CwU6UUznj1OEswxFFtdjObvhj9vJBCWoxPb12+us24T2tetz5uBTWPcdGhE7L2V8SZ25
+         PZHzGHhkki4en907FcGVGaXw401kRWAKzxhw3OAccJ3rtSD+tTOZ0VhYFlEQ+jhj99Sq
+         C2aAsc88bTPwYqa5aXGeXYAb0OBpAw6eMbFtY0gl/X2j3WYOsuee3GZEEA6XS2FeBDTj
+         QDtCcHJraiMZ+WexcVCd6k5i2f8jSq5ZgzXEgoDjmHAfLxzU+JvxOBlogqYpnHroJn4O
+         nEwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=F2quDjTQjJ7BxLhnVltyHuyk8k/++sE68ucbkbgciiU=;
+        fh=EfiW4rsLHQZ05GJUP+3fZDZYTjDuwd4ToH3cDughbKY=;
+        b=IMf41at6Bz428r9orPiEr2Rv94uNTs+G5q/yz8siFX3Rc0BJAdx0QrBWlAfrjSYUHV
+         COFplF0hLEJBZmlA7c+IiZT3Psx5vkTdZ0pmPcvIZIN3JIdshp21fehNOUX5t+k0hYVK
+         rfGnNZ3Tyxp1QEj2Y7R7yeDDqKc00uVfp6EyMvJhGEaLxO4HU9sZVLm6Fc1DuqKYrtn2
+         xGLouhMXOKHWQZvEWAFDj2dFkEk4GPNAkP7GIyMSA9gDUUprgtA43dRWfSdHsPoJczn4
+         +eqJAUE+fRIMVmHJU+H6mpCA+j1IfoS0R6GDs+jH7297Xo0twpbKvGRIaRvsxN6utpvR
+         uFew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770089024; x=1770693824; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1770089248; x=1770694048; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yqF7j9+NtH77eRf3A06joazi3wU3U3ry+bHbamRYbTw=;
-        b=XNVfBLEixbkKJIJzIk5pXKUwtULH1mXcq7UnQildgnUNaEyuXH0A7Ok9FkUpoGehFg
-         rZTWGNxNz2QrB92CWDhCnizc9LduwZWpatBr2VnyLQWXcYLriNkqU1UMtwpVe2UZSQFf
-         0cl5EWo/b4ZlZJME006eHISnbiRZi2LUUWHKS8Ej5Gep6EXT+coFFIkFAU5dTpZhVEch
-         bWblzYDyFj9fpVLcL0FUoeFErJVinWVGzSXeSFhiN0JLTP5D3wt1yTSiqZu27Er9F3il
-         tPlBilaKWToQUH1RA6KGlQnsTVHvzXkJ4YcI6VOhk0ZmifQan+753IilNButHfg7yFvV
-         Gw8A==
+        bh=F2quDjTQjJ7BxLhnVltyHuyk8k/++sE68ucbkbgciiU=;
+        b=owg/QCAJT56f9La4qbj3B7Jq7gPP2lA7eQrNoNtbnUPaasV9lwjJu/nwiQ6cd9eMrY
+         xXxxFNm3wyzV3AC33/wLMTh3uZxThgx2yNuCRbep8EowiC9T/yyF79DRLlTOwnGbCUUK
+         sV0ScjrR67KjW3XZxi/LOwP9tJ/mmv/9a8V/2xSnc8Zw6bJfGj/t2HNBNZiv2aozrqu8
+         Gafv+zIlg8ZXUBetRGbbRNXXCS7g97JbbDznwbDV6LcBocVUHgjDUbbRrCDxIk9ScNie
+         a/HTYO63JrQbtd8fqFGHpIlL5hF4DhLLJOtZSWBxcKJIafMBfWQVFH2tOLje0aQ7u55H
+         56Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770089024; x=1770693824;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770089248; x=1770694048;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yqF7j9+NtH77eRf3A06joazi3wU3U3ry+bHbamRYbTw=;
-        b=jGd1b1Xdi77JKn0n95FljfqL97CEKNQIovxjfyOJ12YcBseX37HCqvrmFkZuF2KJBc
-         WDemVEQ6Bu2W9JwCCxS/Lm3ucem0xoYmddzDgjHrDqrB39Dov7eA76isQh2XNKXjDDGF
-         YJZB2BmJrdqt5rHc36/zxNQ/sfsEMOSpTce/xhTpYJLFbYyf1Qf2K5lUvvrFugsl0Dyw
-         Bgx9/xxRZcMdl8El/OsMTDATCJuLu3aVcS5a+pEBF2ODx21Xrb6KKdFg6N2cdO5z8BzU
-         E42yfLVWJ6S0yBUmk0AGQjsJ2oStA5W55RleBnmR2YWuYq3WrRX6zRLwNFnBSG8w4PDp
-         jCTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXflFXh7h8+lgLbQkTstaSZvWgVw7H+7qVmie1gc6+j7XQQyqmZjspxHEQ/QK0OeRkTl6CdUOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+16NAGMSLLMsaa/70Wjrlev4QyCbsEzQ4ENTiM9CQ++n8be7a
-	M3tRMBc/0q29Toe6DsdYBNj7Msl+zz5gYlZEmSqHflrekdM3alUqLYYK
-X-Gm-Gg: AZuq6aLJA39apiRdV7NvxcjfBtQYhPYYH7RaIL8iLtYtQEsi6HkbkhOgW/MbTHHSBWy
-	d1S1DeMp7cMKKHh+hEI7TPQKMgr5NG8fGn5Ign8kzueyKTk+FGOWH9cryoOsACEStZvmEfKn5HJ
-	ek5tPnqjHrnegvgXGkC4jwTE6u2NflSXqw/FsAdjxf7FrE0yfSV/ZAC7uLkm7XXLBdU2dIDVhNR
-	yrY52YiTuwojPmkX0aUxnULkP2mCxXD1TEVefqFpBgn8520zMiAuiESM7R7QCj2ZUoevncHvJs4
-	0vma5mXIBmpiFd0gCx3wY8TAgtgdeXgelqz8geGaWWDj5cXnCNCSg+weq09NvKBzd5M8yED+Btz
-	RdbBRstdHoG5KlhKTLgFPdhss46FvI7pIPBRgmpFr+HVuzzPZRFBbq5lll4Ntu6liBSUU2PXNb3
-	bEl1bemXx4nA==
-X-Received: by 2002:a05:6820:1528:b0:662:c161:206e with SMTP id 006d021491bc7-6630f3cdb13mr5166424eaf.82.1770089024432;
-        Mon, 02 Feb 2026 19:23:44 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:40::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4095717052bsm12915115fac.8.2026.02.02.19.23.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 19:23:43 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/hugetlb: Restore failed global reservations to subpool
-Date: Mon,  2 Feb 2026 19:23:40 -0800
-Message-ID: <20260203032340.1861093-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260202183918.057dac34b3a1819328814fc9@linux-foundation.org>
-References: 
+        bh=F2quDjTQjJ7BxLhnVltyHuyk8k/++sE68ucbkbgciiU=;
+        b=aSP0/57vuinKPJFUtgI60oQfBv/SH6ZqtseIAVFoAG6W+jFg4a5HiEZ6FAKVWLgm7j
+         rWqrALyVUsJT2lNepyw9xFBqRMv+SDLLkT7xcVvxGA00DRJuvsiuR6PK392tfqgpU8/W
+         FoyxD7WBtFGi3637JkfPVPHvcbQHfDXVhIZeAilhBkpyCPsYyjpPF5ErhA8XYAzhG+d6
+         Lo3L9cWv2bcKh+Rr7yesIteT1+BdtC40AmGy4hwYkelHb4PkR0W+LQM3f5NL+l7dOcqg
+         VsovdCa9OcuQf27v5yNySDNY2Yn/2PJ6b+Pont3+CJmtI6zW2DWxsKAQIXHaEWTYC4W3
+         hdVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVG/MFlQYs5tpml70wgrp4xV7phCNnpSxH4JwFlgoASPzhA01uHww3QbA+UMt32wZGp4zd1R9I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaXIsoPBLCic/+sM+42fCYDkagm9RMM7Eknyyh/C2oYbDgT41O
+	BMgUMpjVW4xBfxaKRHYANbCmJcMGWdMc3oAYa0IH7rFrsNG9rXNtKVwnXZNIhMxeMTk4ZZlOjSI
+	2yS9aD+YljtCqLoiOCBH/uxo5xin4DWj5x6wiXxbhmBEtWwV0e4OjpqkUjDtvNtN17EnxP3Ggbi
+	3y75AgjsjEfXKGHeOKdwg3NMHZ3IuD9jf6
+X-Gm-Gg: AZuq6aITLdmGtQm3aiLt17mcfv3aJgPnu1CbaT5Sqf6b5i4ndoe7C8zSoKwb03oW9/r
+	zjeen3z1mQIP315Pm2TwiOsMBFpxRW6iDKS2fvd6uewUBRF0b+lxBu5CvJ0werv8eao1zL0a6Lz
+	gSHAlTeDlSfbz93BiLR8BsOOcuum8nKa3g6AA54HblO2g8EOZSVuafGLgtKlz4n/O64xk=
+X-Received: by 2002:a17:90b:4a8b:b0:340:d578:f2a2 with SMTP id 98e67ed59e1d1-3543b2ebe3fmr15675336a91.6.1770089248481;
+        Mon, 02 Feb 2026 19:27:28 -0800 (PST)
+X-Received: by 2002:a17:90b:4a8b:b0:340:d578:f2a2 with SMTP id
+ 98e67ed59e1d1-3543b2ebe3fmr15675320a91.6.1770089248079; Mon, 02 Feb 2026
+ 19:27:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260202031212.26871-1-zhangtianci.1997@bytedance.com> <CACGkMEvrMC6Lh42aX=4D3yZVWx6mxpHZAw+Z6djPBw2yrLEOrw@mail.gmail.com>
+In-Reply-To: <CACGkMEvrMC6Lh42aX=4D3yZVWx6mxpHZAw+Z6djPBw2yrLEOrw@mail.gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 3 Feb 2026 11:27:17 +0800
+X-Gm-Features: AZwV_QiKKY-5UkTSgbJkQAvhtHyGWUXcQKc1MXlJ_r2iGovgZKzRic-YeJ64iDg
+Message-ID: <CACGkMEtKZE2NQMoY8quO=Y+g=b0fMrkzg64AZ3O5w901yU9bFQ@mail.gmail.com>
+Subject: Re: [PATCH v2] vduse: Fix race in vduse_dev_msg_sync and vduse_dev_read_iter
+To: Zhang Tianci <zhangtianci.1997@bytedance.com>
+Cc: mst@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
+	marco.crivellari@suse.com, anders.roxell@linaro.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Xie Yongji <xieyongji@bytedance.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213162-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213163-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshuahahnjy@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jasowang@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 60121D4183
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,lkml.org:url,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1F46CD41F2
 X-Rspamd-Action: no action
 
-On Mon, 2 Feb 2026 18:39:18 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Tue, Feb 3, 2026 at 11:23=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> On Mon, Feb 2, 2026 at 11:13=E2=80=AFAM Zhang Tianci
+> <zhangtianci.1997@bytedance.com> wrote:
+> >
+> > There is one race case in vduse_dev_msg_sync and vduse_dev_read_iter:
+> >
+> > vduse_dev_read_iter():
+> >     lock(msg_lock);
+> >     dequeue_msg(send_list);
+> >     unlock(msg_lock);
+> > vduse_dev_msg_sync():
+> >     wait_timeout() finish
+> >     lock(msg_lock);
+> >     check msg->complete is false
+> >         list_del(msg);   <- double list_del() crash!
+> >
+> > To fix this case, we shall ensure vduse_msg is on send_list or recv_lis=
+t
+> > outside the msg_lock critical section.
+> >
+> > Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace=
+")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Zhang Tianci <zhangtianci.1997@bytedance.com>
+> > Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+> > ---
+> > v2:
+> >  - Rewrite commit message.                        [Michael]
+> >  - Add Fixes tag and cc stable email list.        [Eugenio]
+> >  - Rewrite one comment.                           [Michael]
+> >
+> > v1: https://lkml.org/lkml/2026/1/30/323
+> >
+> >  drivers/vdpa/vdpa_user/vduse_dev.c | 30 ++++++++++++++++++++++--------
+> >  1 file changed, 22 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_use=
+r/vduse_dev.c
+> > index ae357d014564c..a70d0580d54e8 100644
+> > --- a/drivers/vdpa/vdpa_user/vduse_dev.c
+> > +++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+> > @@ -325,6 +325,7 @@ static ssize_t vduse_dev_read_iter(struct kiocb *io=
+cb, struct iov_iter *to)
+> >         struct file *file =3D iocb->ki_filp;
+> >         struct vduse_dev *dev =3D file->private_data;
+> >         struct vduse_dev_msg *msg;
+> > +       struct vduse_dev_request req;
+> >         int size =3D sizeof(struct vduse_dev_request);
+> >         ssize_t ret;
+> >
+> > @@ -339,7 +340,7 @@ static ssize_t vduse_dev_read_iter(struct kiocb *io=
+cb, struct iov_iter *to)
+> >
+> >                 ret =3D -EAGAIN;
+> >                 if (file->f_flags & O_NONBLOCK)
+> > -                       goto unlock;
+> > +                       break;
+> >
+> >                 spin_unlock(&dev->msg_lock);
+> >                 ret =3D wait_event_interruptible_exclusive(dev->waitq,
+> > @@ -349,17 +350,30 @@ static ssize_t vduse_dev_read_iter(struct kiocb *=
+iocb, struct iov_iter *to)
+> >
+> >                 spin_lock(&dev->msg_lock);
+> >         }
+> > +       if (!msg) {
+> > +               spin_unlock(&dev->msg_lock);
+> > +               return ret;
+> > +       }
+>
+> Nit: this check seems to be redundant, I'd suggest to
+>
+> 1) move the spin_unlock() before the check of file->f_flags & O_NONBLOCK
+> 2) then we can simply do "return ret" when it's a nonblocking read.
+>
+> > +
+> > +       memcpy(&req, &msg->req, sizeof(req));
+> > +       /*
+> > +        * We must ensure vduse_msg is on send_list or recv_list before=
+ unlock
+> > +        * dev->msg_lock. Because vduse_dev_msg_sync() may be timeout w=
+hen we
+> > +        * copy data to userspace, and will call list_del() for this ms=
+g.
+> > +        */
+> > +       vduse_enqueue_msg(&dev->recv_list, msg);
+> >         spin_unlock(&dev->msg_lock);
+> > -       ret =3D copy_to_iter(&msg->req, size, to);
+> > -       spin_lock(&dev->msg_lock);
+> > +
+> > +       ret =3D copy_to_iter(&req, size, to);
+> >         if (ret !=3D size) {
 
-> On Wed, 21 Jan 2026 09:47:54 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > On Fri, 16 Jan 2026 15:40:36 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > 
-> > > Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-> > > fixed an underflow error for hstate->resv_huge_pages caused by
-> > > incorrectly attributing globally requested pages to the subpool's
-> > > reservation.
-> > > 
-> > > Unfortunately, this fix also introduced the opposite problem, which would
-> > > leave spool->used_hpages elevated if the globally requested pages could
-> > > not be acquired. This is because while a subpool's reserve pages only
-> > > accounts for what is requested and allocated from the subpool, its
-> > > "used" counter keeps track of what is consumed in total, both from the
-> > > subpool and globally. Thus, we need to adjust spool->used_hpages in the
-> > > other direction, and make sure that globally requested pages are
-> > > uncharged from the subpool's used counter.
-> > > 
-> > > ...
-> > > 
-> > > Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-> > > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > > Cc: stable@vger.kernel.org
-> > 
-> > This (simple, cc:stable) patch presently has no reviews, if someone
-> > could please be so kind.
-> 
-> Oh.
-> 
-> Joshua, it's unclear from the changelog - what are the userspace-visible
-> effects of the bug?
+Btw, I would like to explain why it's still safe if a (malicious)
+userspace writes in this window in either commit log or here.
 
-Hello Andrew,
+> > +               spin_lock(&dev->msg_lock);
+> > +               /* Roll back: move msg back to send_list if still pendi=
+ng. */
+> > +               msg =3D vduse_find_msg(&dev->recv_list, req.request_id)=
+;
+> > +               if (msg)
+> > +                       vduse_enqueue_msg(&dev->send_list, msg);
+> > +               spin_unlock(&dev->msg_lock);
+> >                 ret =3D -EFAULT;
+> > -               vduse_enqueue_msg(&dev->send_list, msg);
+> > -               goto unlock;
+> >         }
+> > -       vduse_enqueue_msg(&dev->recv_list, msg);
+> > -unlock:
+> > -       spin_unlock(&dev->msg_lock);
+> >
+> >         return ret;
+> >  }
+> > --
+> > 2.39.5
+> >
+>
+> Thanks
 
-Sorry about that, I definitely could have been more explicit with the
-userspace behavior. What ends up happening is that the subpool will
-imagine that all of its hugeTLB pages are consumed, so it will be
-unable to service allocations trying to get hugeTLB pages from it,
-despite none of the hugeTLB pages in the system really being used.
+Thanks
 
-Maybe we can reword the following block:
-
-> > > Repeating this process will ultimately render the subpool unable to
-> > > allocate any hugepages, since it believes that it is using the maximum
-> > > number of hugepages that the subpool has been allotted.
-
-Into this block, to make it more explicit?
-
-With each failed allocation attempt incrementing the used counter, the
-subpool eventually reaches a point where its used counter equals its
-max counter. At that point, any future allocations that try to allocate
-hugeTLB pages from the subpool will fail, despite the subpool not having
-any of its hugeTLB pages consumed by any user.
-
-Once this happens, there is no way to make the subpool usable again,
-since there is no way to decrement the used counter as no process
-is really consuming the hugeTLB pages.
-
-
-I hope this makes it a bit more clear, and please let me know if there is
-anything else I can do! I hope you have a great evening,
-
-Joshua
 
