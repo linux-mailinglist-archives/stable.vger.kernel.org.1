@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-213208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHJQFnbvgWlAMwMAu9opvQ
-	(envelope-from <stable+bounces-213208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:52:06 +0100
+	id 6PGhJEnugWlAMwMAu9opvQ
+	(envelope-from <stable+bounces-213209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:47:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8F9D960B
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:52:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1797FD9425
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10FCE307D7C6
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:44:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A1C2830A6350
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8189634026B;
-	Tue,  3 Feb 2026 12:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925DA34676B;
+	Tue,  3 Feb 2026 12:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYBK3oKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ze9YgD0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45245284B2F
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5600D345CCE
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770122658; cv=none; b=ktyeRUhW9MRNaJxIml/D1iN3roWjnqOcwHUoL8CjJd2XHLoQcwBcknHOExK5v6MLgCdyPJ0QXoplsNd686c54DoByGS7aHA9yar7ER7WZjp6ARfh82ZVAYEjzzaOQXKCu978ed7ub+pcTF7xNCHpj6Fi2nL8dpO6jLGjbY3LCJM=
+	t=1770122752; cv=none; b=u0cnsdXl8Mx0apuV0aNxw93TJLekW/EwTA3gsOnbmiSniDmAtP+FkH+MCBxIgg6ILg4elNC7ce9/fcRzDhXdCvYHg6qP4rnaLDRKU4ysoGqzpkb/m2gvg8AKAsQsnQeUvMYQZgdfybh/O/R2jiLmhdBQNQxhYEIwlx8N7y2d94w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770122658; c=relaxed/simple;
-	bh=/O2jF1rWdvlEOVrHSfUrq1wiT/M3YZ8CbNxS3YNPLmw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZBzNzTgNkJ/+5H6v3EYXKiQMk6d3UFyV5e9aQySeN90DINs4pt67Cp3tQnvSu0660drJcjAJJJoWZhGDLYUpnLTmWFpX/SCqBvrcCUxoWe6wjt85ErVb0U2oVEoGnwR9xysDQzof/+cTvO41KvTEc4GcdrGOWys9FFGll5cpdNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYBK3oKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B12C116D0;
-	Tue,  3 Feb 2026 12:44:17 +0000 (UTC)
+	s=arc-20240116; t=1770122752; c=relaxed/simple;
+	bh=YB6DWbH0j2U6rdZPCrnipvYiElFlXTOboIfvpH9KowE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hFmAal5QMbOU78VSBUjDxHU0l6LT8SwI6IHYPvZ6uG8D4icEkSbONvDH4qXwLALLpWefoEH1ce5+DZLGJB0j6aDxEKS/d64jveQIq3/r0WuvsqkkUWAi91nr9s94Z5XOSwK7RiDcTCz5/ptlihVAiKZ7SrgSbeGD1pRh4e1SLAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ze9YgD0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B881C116D0;
+	Tue,  3 Feb 2026 12:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770122658;
-	bh=/O2jF1rWdvlEOVrHSfUrq1wiT/M3YZ8CbNxS3YNPLmw=;
+	s=korg; t=1770122752;
+	bh=YB6DWbH0j2U6rdZPCrnipvYiElFlXTOboIfvpH9KowE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rYBK3oKACZuHI1ng4pniXxi5yaACZMR0gOLs/9JTOE28AtpulqsjMlyQdLgPHsLi5
-	 cXeoOqszrrg2gMbVZctcvh2OeU3EVin0pTDn9iFj+clyc8nIDz0LRiGJI8x4NlxCDb
-	 compaeI9QCB9sfbY6eBuprMkx/7eU/IVmmlvPjKg=
-Subject: FAILED: patch "[PATCH] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi`" failed to apply to 6.1-stable tree
-To: ojeda@kernel.org,aliceryhl@google.com,gary@garyguo.net,nathan@kernel.org
+	b=ze9YgD0u8JfsAZfYJuigadGaRXLYlUbll96GhWzCnfPDnjZi4r/xGreX9/Nog7cXf
+	 ONcDXSNmH2c0UIRszhI4E1qdSoe50rfkmlQAsAu6KJyFJPjVT8MPxo3ytntzqsBFqN
+	 7D7aw0m1Tux26gKpNZ7NUwGSPnU4npXN5W5dRvjk=
+Subject: FAILED: patch "[PATCH] gpio: rockchip: Stop calling pinctrl for set_direction" failed to apply to 6.6-stable tree
+To: robin.murphy@arm.com,bartosz.golaszewski@oss.qualcomm.com,heiko@sntech.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 13:44:14 +0100
-Message-ID: <2026020314-retool-immobile-ceeb@gregkh>
+Date: Tue, 03 Feb 2026 13:45:49 +0100
+Message-ID: <2026020348-relatable-riverboat-7e23@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,16 +60,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213208-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213209-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -77,29 +77,29 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,linuxfoundation.org:dkim,rust-lang.org:url,msgid.link:url,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BA8F9D960B
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,qualcomm.com:email,arm.com:email,sntech.de:email]
+X-Rspamd-Queue-Id: 1797FD9425
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x af20ae33e7dd949f2e770198e74ac8f058cb299d
+git cherry-pick -x 7ca497be00163610afb663867db24ac408752f13
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020314-retool-immobile-ceeb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020348-relatable-riverboat-7e23@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,66 +111,89 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From af20ae33e7dd949f2e770198e74ac8f058cb299d Mon Sep 17 00:00:00 2001
-From: Miguel Ojeda <ojeda@kernel.org>
-Date: Thu, 15 Jan 2026 19:38:32 +0100
-Subject: [PATCH] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi`
- target
+From 7ca497be00163610afb663867db24ac408752f13 Mon Sep 17 00:00:00 2001
+From: Robin Murphy <robin.murphy@arm.com>
+Date: Mon, 26 Jan 2026 12:12:26 +0000
+Subject: [PATCH] gpio: rockchip: Stop calling pinctrl for set_direction
 
-`rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
-and we apply `rustfmt` to the macro expanded sources generated by the
-`.rsi` target.
+Marking the whole controller as sleeping due to the pinctrl calls in the
+.direction_{input,output} callbacks has the unfortunate side effect that
+legitimate invocations of .get and .set, which cannot themselves sleep,
+in atomic context now spew WARN()s from gpiolib.
 
-However, under an `O=` pointing to an external folder (i.e. not just
-a subdir), `rustfmt` will not find the file when checking the parent
-folders. Since the edition is configured in this file, this can lead to
-errors when it encounters newer syntax, e.g.
+However, as Heiko points out, the driver doing this is a bit silly to
+begin with, as the pinctrl .gpio_set_direction hook doesn't even care
+about the direction, the hook is only used to claim the mux. And sure
+enough, the .gpio_request_enable hook exists to serve this very purpose,
+so switch to that and remove the problematic business entirely.
 
-    error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an operator, found `"rust_minimal"`
-      --> samples/rust/rust_minimal.rsi:29:49
-       |
-    28 | impl ::kernel::ModuleMetadata for RustMinimal {
-       |                                               - while parsing this item list starting here
-    29 |     const NAME: &'static ::kernel::str::CStr = c"rust_minimal";
-       |                                                 ^^^^^^^^^^^^^^ expected one of 8 possible tokens
-    30 | }
-       | - the item list ends here
-       |
-       = note: you may be trying to write a c-string literal
-       = note: c-string literals require Rust 2021 or later
-       = help: pass `--edition 2024` to `rustc`
-       = note: for more on editions, read https://doc.rust-lang.org/edition-guide
-
-A workaround is to use `RUSTFMT=n`, which is documented in the `Makefile`
-help for cases where macro expanded source may happen to break `rustfmt`
-for other reasons, but this is not one of those cases.
-
-One solution would be to pass `--edition`, but we want `rustfmt` to
-use the entire configuration, even if currently we essentially use the
-default configuration.
-
-Thus explicitly give the path to the config file to `rustfmt` instead.
-
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260115183832.46595-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 20cf2aed89ac ("gpio: rockchip: mark the GPIO controller as sleeping")
+Suggested-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/bddc0469f25843ca5ae0cf578ab3671435ae98a7.1769429546.git.robin.murphy@arm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 5037f4715d74..0c838c467c76 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -356,7 +356,7 @@ $(obj)/%.o: $(obj)/%.rs FORCE
- quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_rsi_rs = \
- 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
--	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
-+	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) --config-path $(srctree)/.rustfmt.toml $@
+diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+index bae2061f15fc..0fff4a699f12 100644
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -18,7 +18,6 @@
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/pinctrl/consumer.h>
+ #include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+@@ -164,12 +163,6 @@ static int rockchip_gpio_set_direction(struct gpio_chip *chip,
+ 	unsigned long flags;
+ 	u32 data = input ? 0 : 1;
  
- $(obj)/%.rsi: $(obj)/%.rs FORCE
- 	+$(call if_changed_dep,rustc_rsi_rs)
+-
+-	if (input)
+-		pinctrl_gpio_direction_input(chip, offset);
+-	else
+-		pinctrl_gpio_direction_output(chip, offset);
+-
+ 	raw_spin_lock_irqsave(&bank->slock, flags);
+ 	rockchip_gpio_writel_bit(bank, offset, data, bank->gpio_regs->port_ddr);
+ 	raw_spin_unlock_irqrestore(&bank->slock, flags);
+@@ -593,7 +586,6 @@ static int rockchip_gpiolib_register(struct rockchip_pin_bank *bank)
+ 	gc->ngpio = bank->nr_pins;
+ 	gc->label = bank->name;
+ 	gc->parent = bank->dev;
+-	gc->can_sleep = true;
+ 
+ 	ret = gpiochip_add_data(gc, bank);
+ 	if (ret) {
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index e44ef262beec..2fc67aeafdb3 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -3545,10 +3545,9 @@ static int rockchip_pmx_set(struct pinctrl_dev *pctldev, unsigned selector,
+ 	return 0;
+ }
+ 
+-static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+-					   struct pinctrl_gpio_range *range,
+-					   unsigned offset,
+-					   bool input)
++static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
++					    struct pinctrl_gpio_range *range,
++					    unsigned int offset)
+ {
+ 	struct rockchip_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
+ 	struct rockchip_pin_bank *bank;
+@@ -3562,7 +3561,7 @@ static const struct pinmux_ops rockchip_pmx_ops = {
+ 	.get_function_name	= rockchip_pmx_get_func_name,
+ 	.get_function_groups	= rockchip_pmx_get_groups,
+ 	.set_mux		= rockchip_pmx_set,
+-	.gpio_set_direction	= rockchip_pmx_gpio_set_direction,
++	.gpio_request_enable	= rockchip_pmx_gpio_request_enable,
+ };
+ 
+ /*
 
 
