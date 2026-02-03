@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-213203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AYaK5/ugWlAMwMAu9opvQ
-	(envelope-from <stable+bounces-213203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:48:31 +0100
+	id ONO6NBzvgWlAMwMAu9opvQ
+	(envelope-from <stable+bounces-213204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:50:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132DAD94BB
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:48:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F542D9547
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF71E313BCD5
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:42:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6487D30E629F
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D6F284B2F;
-	Tue,  3 Feb 2026 12:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2722A340A63;
+	Tue,  3 Feb 2026 12:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMcqvkWr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mur9Kms/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A461C69D
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2EC1C69D
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770122569; cv=none; b=V/OZuHBmixvW5iV+fpOQWW8EGRLpG70HqVTVHZWUu0tRga+qN76XlN6cVn6/B5snAcu0qzO1PnaEcAIrQ8tllNI1gBCP9rRjDPShRcXnNpQBTmdRyxAIblXbuYad47N5JeUvXUB38ILxkElxmB4S+hXc4FfPmD6jOYVpkFLEGxw=
+	t=1770122577; cv=none; b=VmX8QMhD+hsuHYSK7omI7gX1053x/3eyMAnUq6B60/GMkqE3wcOd0JPd1b28M6aRbw7Z+bN36qQ9r9m2K7+WCO+lTOm1T/WcO6L9/h8H8Fzxef1jyNAPm8BUW+dzVe4uxQeOb87GSo+v6RI3THgl2Oens8VAe/vOwPtexZajG2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770122569; c=relaxed/simple;
-	bh=qGaOplk0lbsC3skAdgFtsTVjszRGQj7TkuDi0XtDOeY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AOwC5BMaCA+mTRYeIQh7wHBHihFrlt+LeXarCaqT4erMhiCgb6Fv5H6pWcb7ZZl+fjWSFJEJWfxrNQsgSECAn+LqdkTzL7C4pilsoa0hV/tTImTw8+58faA8feiAzh0IW433QarTl99ScIxrftmki0g9QMBJOfJDD2/g9SfGitk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMcqvkWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1F5C116D0;
-	Tue,  3 Feb 2026 12:42:47 +0000 (UTC)
+	s=arc-20240116; t=1770122577; c=relaxed/simple;
+	bh=KOBFcUykY4TWu3W5vdF2k7NxtjRsJ0Etta+h+BpJTeQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nuI9NhzbfWFga/gXbgdDyk0Zb4V7LGrQ1FrbTNd48/lsbxxRSYFiSd5Yecp7odJ0Ax8jot6nE0hZdO8R+i9418oiHJKyF2SUKeo/bsUwwUBOToutWPELa2brFjzHqtJHlxT5EnaiMHR9sQYFSpksEHZhUkwLUpbn84Pp/nE96Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mur9Kms/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8919C116D0;
+	Tue,  3 Feb 2026 12:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770122568;
-	bh=qGaOplk0lbsC3skAdgFtsTVjszRGQj7TkuDi0XtDOeY=;
+	s=korg; t=1770122577;
+	bh=KOBFcUykY4TWu3W5vdF2k7NxtjRsJ0Etta+h+BpJTeQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bMcqvkWr8DP+ky+kEdtA3OloHeJtD9UoNoS0i90wufk9YCDGK1idiZhWYIoSn1MLV
-	 iwEA7bgvMksCXI60uoMREgHoBwf2j70+YUc7jUIvPGEVf7Ed7NCliaElAdSfXlCRI/
-	 1SMJ8neAUQ0NpUQnprKyjv8Lqaub+Q7rOw4qu79M=
-Subject: FAILED: patch "[PATCH] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix" failed to apply to 6.12-stable tree
+	b=Mur9Kms/DXsjs4pweRkcqca2789AJrjqmSgeyrj1w1Cb3givBHcJ/ZxpWonXKirZn
+	 DP3r3dl0mbX1MXThwCfa2XG0Omltm9U2XWB/2O3uJbgtrjYTtwYMXGkg9BekFytsig
+	 amcmvCra9wuncqqSsEhfaSY9CHDO48YQSUy+KhGo=
+Subject: FAILED: patch "[PATCH] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix" failed to apply to 6.6-stable tree
 To: krzysztof.kozlowski@oss.qualcomm.com,bartosz.golaszewski@oss.qualcomm.com,konrad.dybcio@oss.qualcomm.com,linusw@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 13:42:45 +0100
-Message-ID: <2026020345-excuse-herbs-b8f8@gregkh>
+Date: Tue, 03 Feb 2026 13:42:46 +0100
+Message-ID: <2026020346-reappoint-divided-0018@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,13 +60,13 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213203-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213204-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -79,27 +79,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 132DAD94BB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 2F542D9547
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1fbe3abb449c5ef2178e1c3e3e8b9a43a7a410ac
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020345-excuse-herbs-b8f8@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020346-reappoint-divided-0018@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
