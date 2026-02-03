@@ -1,187 +1,170 @@
-Return-Path: <stable+bounces-213296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCxXJao3gmmVQgMAu9opvQ
-	(envelope-from <stable+bounces-213296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 19:00:10 +0100
+	id WBWaJZ05gmmVQgMAu9opvQ
+	(envelope-from <stable+bounces-213297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 19:08:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FF1DD3BB
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 19:00:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE62EDD568
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 19:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7AE2930C1BE9
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 17:59:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38FE730C792A
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 18:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8DA3B8D50;
-	Tue,  3 Feb 2026 17:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19682798ED;
+	Tue,  3 Feb 2026 18:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="s05iVkkB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBtkhiPp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516563ACF05
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 17:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C451FE47C
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 18:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770141546; cv=none; b=hw+IA/hf8mzqyZK2ux/2MqyEOJjSKDhRQ7ySZwplP6UZqwr6IhnMD0smaASpSCZw4MdKDYy4i9Gzjh+2MENlkKTVRoBVTDzk1CymU1AIBQ9jZpOlFGqiixqoSxBFK1e4OTHCDZbdURkx1I7JuS/7omsAiO1T5FsATyYTJq3byr0=
+	t=1770141868; cv=none; b=MuFL8pt/kVsepCs+u/TyBpGp4w62Q0wwj5rkSERHBlmwvDJ8+sMAGQPfXswccL4p7IuRmVrM6Ngfsq4byEzX/GNLGT+41ol1gwhVdOZZXw3b8v8KeQyRknWJFuCL+E/a3yoQfiREzDMLH6gXOsUnOxHAGxu7gX9FH76hXPm/FeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770141546; c=relaxed/simple;
-	bh=XyWZczExm45ykrDNsIZJQY1HHlgOxOuAa0/evf4GJCo=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=fI4I/BwIjZsBpjX7a4puHUoLeLGOzElVw0xqB8dEjw5SRCSj92lB16CuP8OAD38YRgAOxVk6UwqJ1vx6ooJObgeDvc6vX4j7/L2AlrOZWPnutxbsE1rwdyUBtgLQZnw1q6jAafcxCDEibmAXiNEU7RtLXSPxkVwSZ2HjYss7N6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=s05iVkkB; arc=none smtp.client-ip=74.125.82.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-2b7070acfdcso6481082eec.0
-        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 09:59:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1770141544; x=1770746344; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t8a2bkMJxQyEDYKpv6oEfCaHQ73f+UNmaq0QY6Na+Ms=;
-        b=s05iVkkBIR3MSyvF9T1Uz85p52MnlsjoGQPwUmvwTf0D5chharLYydj7IgtBa9bkok
-         dMdmRPiXlXwm8y2DwWbPsXGnfCz5CnSLZDfeoEr/ervtLusH7BoR/V+quPrQOBvqZtNr
-         drSZtYIwkhUmf4WvEznqKNludl/asOeMe4l2ydxUvFguY84LashGNSZ84XmRBgfu7O9/
-         o/Rsg2FiVFnzjpYuxGYGEvZrKgauOrES5gwOqChY6nUdUUy5bsb/meMmEIiTU/lxFb0F
-         7l31kurCv1fPxce3Oz0b+Ekb5QiEmHP0NtGPyp86DgHVNrZ/sIuCPcJs4KUWo3s2iIeZ
-         MXOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770141544; x=1770746344;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t8a2bkMJxQyEDYKpv6oEfCaHQ73f+UNmaq0QY6Na+Ms=;
-        b=UoGp2hwKQ4lVk3Bz7P4Rmmm5RggoUPJK7RrsuHEiGFFRcKoxT+lh4SSXAHhHpv8E8W
-         J2waPD50BgU5ZBwXIf/a++IwowXEtw4457wuxo4wu6Y3wlvhNHMK1ucZddhLR5WBvCZX
-         D7j5tT0vyvchR7CESUxTHG+RNra/TyaRng/1ta0KaDBisLYsGrwIcvhdxJR0Its5O6jU
-         O2S8YecW2ib6AMHL6KB2iWAchhx/5UmYQVRiXBCI6oS9Ur6tneF6j0D1hO5moAeiRIdJ
-         Z2mabMte+C54kiUXRg9tQ0QJEff6tTHzPmEF8RYofisADpBt15cBCfy4UcNdG/WnxsXA
-         9mnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmGj8y0EvtYsDa8q3bHrQhuPDWfAF+rBCpUi6o2jDZn/d97wkmknQqtnZQyCoeXVrnrnoUZGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHNn+Nkj8dEws8TeO2jUzV9dkxka2M2AEe6uTILkAilMnSdMvd
-	7hGA1VKProKH+CHH+rVZ3/e4tB9M5mc+lWy8DGzIR5VopcfE338imzwoPsQZw24rdKo=
-X-Gm-Gg: AZuq6aKJbfQPY1eyvhtkybuZ4vJBjQqBgwBzVKeSKTXNzCJiKwSmy7SbXy7mZnDKdNE
-	91WteUYAEjKfwBEcIRmEEF9++Au+d+hP+g4k1THy+8Bj98HFS11dgCe+ivVxM8pCVMB2/edEA5j
-	A3wucyqtGMw3LsmfYuM7mBV+74g2eZJOg5fN6gOgRkz1a43tMZ0EER+j7vt+8TnCOCOQaF/Ze8v
-	6/r6QwkbZblmrpZQqnzbNZ2WSeLjlqwYLyoSzSVGsiklDwjldFydFqpAKCDZhtimkfFIcXdFQM6
-	17xwX0YIRfcByRBcJUqVo8P3PRnt0yeH9VHPlPZsrMpOUDSxPirYJvilU7tQKN7/K5BwQLF+9LD
-	4MiRihyPY7FiWX6Viht/CAgWTyUrxwJnX7Re7bACJl9hsRRFnVjzeLnZiIZII8o0BzqBPcQe4f3
-	lp6vvx
-X-Received: by 2002:a05:7301:1296:b0:2b6:af85:dd2d with SMTP id 5a478bee46e88-2b8329826fcmr135588eec.32.1770141544275;
-        Tue, 03 Feb 2026 09:59:04 -0800 (PST)
-Received: from 22d5995788c3 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b832e12893sm155408eec.7.2026.02.03.09.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 09:59:03 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1770141868; c=relaxed/simple;
+	bh=nWUjrIYaNm4WgSuRij5xZdObXpWnZVcD46eza0+8NCM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ucOPs5A/wg4CpeB18Lb1FRM4A7d5OwJ9B53FmjmuZ9oAAf2D+EPcQS2mBW7oXGbXEPD85MIGDY+DYdKWB30vrQqXQzg1fimsuUL7cgOr7DGTG6brsh+YEsLwop1TMWZWrTauIv7EEK9Zb6JPzf0bkGglLZ6oG2R26vK1oSRTPY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBtkhiPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29ACC116D0;
+	Tue,  3 Feb 2026 18:04:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770141868;
+	bh=nWUjrIYaNm4WgSuRij5xZdObXpWnZVcD46eza0+8NCM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mBtkhiPp5m3lbv9QupepUnaOylt7RwiK9YbEhuwW9qAFohRFIlBPZoYJ9LcGIo5aS
+	 EUeDuEdWIepH61wHULsT7kCP/esoaU8xmYzYmUwQVNttIJE+zvAwFwDlxYPktjvQo6
+	 tP61snyEDnbuencJHH4ySJYA7GkM3oFgqD82i5JOu89cJSqXKnEyOqAuaFM6HXaVfj
+	 mzVBtDAGTqQRV8b+f0ZCKw6lezxMqRCf/lTPeKhnQ8qi6klQykGPuhoNNUAe+qmfpj
+	 ERbMN9mj/blL6itEhkNUBzzDLZJl1S9A2p2gRUwwyQ5b9VZUJfuIonhoYOuvhbdKEG
+	 zLE9YrrAT2G7A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Laveesh Bansal <laveeshb@laveeshbansal.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] writeback: fix 100% CPU usage when dirtytime_expire_interval is 0
+Date: Tue,  3 Feb 2026 13:04:25 -0500
+Message-ID: <20260203180425.1352516-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026020303-ammonia-active-e64f@gregkh>
+References: <2026020303-ammonia-active-e64f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) use of undeclared
- identifier
- 'atslave' in drivers/dma/at_hdmac.o (...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Tue, 03 Feb 2026 17:59:02 -0000
-Message-ID: <177014154246.6516.17535917950939771335@22d5995788c3>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-arm-69822ef7a1ae387ffbbb4653/.config];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213296-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernelci.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213297-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 01FF1DD3BB
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email]
+X-Rspamd-Queue-Id: EE62EDD568
 X-Rspamd-Action: no action
 
+From: Laveesh Bansal <laveeshb@laveeshbansal.com>
 
+[ Upstream commit 543467d6fe97e27e22a26e367fda972dbefebbff ]
 
+When vm.dirtytime_expire_seconds is set to 0, wakeup_dirtytime_writeback()
+schedules delayed work with a delay of 0, causing immediate execution.
+The function then reschedules itself with 0 delay again, creating an
+infinite busy loop that causes 100% kworker CPU usage.
 
+Fix by:
+- Only scheduling delayed work in wakeup_dirtytime_writeback() when
+  dirtytime_expire_interval is non-zero
+- Cancelling the delayed work in dirtytime_interval_handler() when
+  the interval is set to 0
+- Adding a guard in start_dirtytime_writeback() for defensive coding
 
-Hello,
+Tested by booting kernel in QEMU with virtme-ng:
+- Before fix: kworker CPU spikes to ~73%
+- After fix: CPU remains at normal levels
+- Setting interval back to non-zero correctly resumes writeback
 
-New build issue found on stable-rc/linux-5.10.y:
-
+Fixes: a2f4870697a5 ("fs: make sure the timestamps for lazytime inodes eventually get written")
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220227
+Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
+Link: https://patch.msgid.link/20260106145059.543282-2-laveeshb@laveeshbansal.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ adapted system_percpu_wq to system_wq for the workqueue used in dirtytime_interval_handler() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- use of undeclared identifier 'atslave' in drivers/dma/at_hdmac.o (drivers/dma/at_hdmac.c) [logspec:kbuild,kbuild.compiler.error]
----
+ fs/fs-writeback.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-- dashboard: https://d.kernelci.org/i/maestro:7783e800918bc9eb672f98d44d530380f7a7dd6c
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  0933d10990a439172d82dc5edc4cde22cca590a1
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 28edfad85c628..45e90338fbb2d 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2418,12 +2418,14 @@ static void wakeup_dirtytime_writeback(struct work_struct *w)
+ 				wb_wakeup(wb);
+ 	}
+ 	rcu_read_unlock();
+-	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
++	if (dirtytime_expire_interval)
++		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
+ }
+ 
+ static int __init start_dirtytime_writeback(void)
+ {
+-	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
++	if (dirtytime_expire_interval)
++		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
+ 	return 0;
+ }
+ __initcall(start_dirtytime_writeback);
+@@ -2434,8 +2436,12 @@ int dirtytime_interval_handler(const struct ctl_table *table, int write,
+ 	int ret;
+ 
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+-	if (ret == 0 && write)
+-		mod_delayed_work(system_wq, &dirtytime_work, 0);
++	if (ret == 0 && write) {
++		if (dirtytime_expire_interval)
++			mod_delayed_work(system_wq, &dirtytime_work, 0);
++		else
++			cancel_delayed_work_sync(&dirtytime_work);
++	}
+ 	return ret;
+ }
+ 
+-- 
+2.51.0
 
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-drivers/dma/at_hdmac.c:1583:2: error: use of undeclared identifier 'atslave'
- 1583 |         atslave = chan->private;
-      |         ^~~~~~~
-drivers/dma/at_hdmac.c:1584:6: error: use of undeclared identifier 'atslave'
- 1584 |         if (atslave) {
-      |             ^~~~~~~
-drivers/dma/at_hdmac.c:1585:14: error: use of undeclared identifier 'atslave'
- 1585 |                 put_device(atslave->dma_dev);
-      |                            ^~~~~~~
-  CC      drivers/soc/bcm/brcmstb/biuctrl.o
-drivers/dma/at_hdmac.c:1586:9: error: use of undeclared identifier 'atslave'
- 1586 |                 kfree(atslave);
-      |                       ^~~~~~~
-1 warning and 4 errors generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## multi_v7_defconfig on (arm):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-arm-69822ef7a1ae387ffbbb4653/.config
-- dashboard: https://d.kernelci.org/build/maestro:69822ef7a1ae387ffbbb4653
-
-
-#kernelci issue maestro:7783e800918bc9eb672f98d44d530380f7a7dd6c
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
