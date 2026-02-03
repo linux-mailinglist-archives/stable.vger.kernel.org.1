@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-213206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAKoOTzugWlAMwMAu9opvQ
-	(envelope-from <stable+bounces-213206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:46:52 +0100
+	id uHJQFnbvgWlAMwMAu9opvQ
+	(envelope-from <stable+bounces-213208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:52:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057FED9414
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:46:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8F9D960B
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3AC283013781
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:43:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10FCE307D7C6
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F53344D8F;
-	Tue,  3 Feb 2026 12:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8189634026B;
+	Tue,  3 Feb 2026 12:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyZFjEy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYBK3oKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BD81C69D
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45245284B2F
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770122605; cv=none; b=qMIFZ8FMcg/4rbJPw4gfaINT6fmLCxXHzHDQ4jaa7pNSyljQgUROZhjtXANUbIM3JFO6F4qpLHI8w93p3LoDv1pSqdGJQ5PUByz4R2XqYwKAJddhAD7xmgofLMo+6s4lidOTsuFJ2uRt2f9v1Lq5IVqur5K6wYPIthjdVrH6E5w=
+	t=1770122658; cv=none; b=ktyeRUhW9MRNaJxIml/D1iN3roWjnqOcwHUoL8CjJd2XHLoQcwBcknHOExK5v6MLgCdyPJ0QXoplsNd686c54DoByGS7aHA9yar7ER7WZjp6ARfh82ZVAYEjzzaOQXKCu978ed7ub+pcTF7xNCHpj6Fi2nL8dpO6jLGjbY3LCJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770122605; c=relaxed/simple;
-	bh=ia+BHuQqHJUmVnJ9TD9huvjKcSk+yArOm/vevUwdIkM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F0Z6OKQdJ9WNhYB8zVSG69qgnjLOBCmR2YBEQtupNDrGfeLTCeZIEBMr0+PGtOqgzXqwldemE/U0uoC7SKZYtbE1poo/9aqWwDIIPqQX16k4ylTrIEeDp5l+mP3w/8etsqS76w75KPA0XL9cI6xoOWqU/DLiVq0BWndJB2p79IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyZFjEy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F078FC116D0;
-	Tue,  3 Feb 2026 12:43:24 +0000 (UTC)
+	s=arc-20240116; t=1770122658; c=relaxed/simple;
+	bh=/O2jF1rWdvlEOVrHSfUrq1wiT/M3YZ8CbNxS3YNPLmw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZBzNzTgNkJ/+5H6v3EYXKiQMk6d3UFyV5e9aQySeN90DINs4pt67Cp3tQnvSu0660drJcjAJJJoWZhGDLYUpnLTmWFpX/SCqBvrcCUxoWe6wjt85ErVb0U2oVEoGnwR9xysDQzof/+cTvO41KvTEc4GcdrGOWys9FFGll5cpdNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYBK3oKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B12C116D0;
+	Tue,  3 Feb 2026 12:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770122605;
-	bh=ia+BHuQqHJUmVnJ9TD9huvjKcSk+yArOm/vevUwdIkM=;
+	s=korg; t=1770122658;
+	bh=/O2jF1rWdvlEOVrHSfUrq1wiT/M3YZ8CbNxS3YNPLmw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RyZFjEy0knY0AJaFMnoJn5q+I7WRqcQcdXjOCMELxOazdxZ2+k1GED7w6BVh9EYfb
-	 dGqB+HJLEjKCeGFEi87TC4R+gWOXSA3p9iFr5yenauYw/3KbiNRAY//dFzC23blWRT
-	 aPLzxg1QcHxQ54qV1dOwjT/amIyh8nRTMKBg35Os=
-Subject: FAILED: patch "[PATCH] perf: sched: Fix perf crash with new is_user_task() helper" failed to apply to 6.6-stable tree
-To: rostedt@goodmis.org,linux@roeck-us.net,peterz@infradead.org
+	b=rYBK3oKACZuHI1ng4pniXxi5yaACZMR0gOLs/9JTOE28AtpulqsjMlyQdLgPHsLi5
+	 cXeoOqszrrg2gMbVZctcvh2OeU3EVin0pTDn9iFj+clyc8nIDz0LRiGJI8x4NlxCDb
+	 compaeI9QCB9sfbY6eBuprMkx/7eU/IVmmlvPjKg=
+Subject: FAILED: patch "[PATCH] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi`" failed to apply to 6.1-stable tree
+To: ojeda@kernel.org,aliceryhl@google.com,gary@garyguo.net,nathan@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 13:43:14 +0100
-Message-ID: <2026020314-bazooka-gauntlet-ce30@gregkh>
+Date: Tue, 03 Feb 2026 13:44:14 +0100
+Message-ID: <2026020314-retool-immobile-ceeb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,16 +60,16 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213206-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213208-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -77,29 +77,29 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,infradead.org:email]
-X-Rspamd-Queue-Id: 057FED9414
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,linuxfoundation.org:dkim,rust-lang.org:url,msgid.link:url,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BA8F9D960B
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 76ed27608f7dd235b727ebbb12163438c2fbb617
+git cherry-pick -x af20ae33e7dd949f2e770198e74ac8f058cb299d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020314-bazooka-gauntlet-ce30@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020314-retool-immobile-ceeb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,112 +111,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 76ed27608f7dd235b727ebbb12163438c2fbb617 Mon Sep 17 00:00:00 2001
-From: Steven Rostedt <rostedt@goodmis.org>
-Date: Thu, 29 Jan 2026 10:28:21 -0500
-Subject: [PATCH] perf: sched: Fix perf crash with new is_user_task() helper
+From af20ae33e7dd949f2e770198e74ac8f058cb299d Mon Sep 17 00:00:00 2001
+From: Miguel Ojeda <ojeda@kernel.org>
+Date: Thu, 15 Jan 2026 19:38:32 +0100
+Subject: [PATCH] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi`
+ target
 
-In order to do a user space stacktrace the current task needs to be a user
-task that has executed in user space. It use to be possible to test if a
-task is a user task or not by simply checking the task_struct mm field. If
-it was non NULL, it was a user task and if not it was a kernel task.
+`rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
+and we apply `rustfmt` to the macro expanded sources generated by the
+`.rsi` target.
 
-But things have changed over time, and some kernel tasks now have their
-own mm field.
+However, under an `O=` pointing to an external folder (i.e. not just
+a subdir), `rustfmt` will not find the file when checking the parent
+folders. Since the edition is configured in this file, this can lead to
+errors when it encounters newer syntax, e.g.
 
-An idea was made to instead test PF_KTHREAD and two functions were used to
-wrap this check in case it became more complex to test if a task was a
-user task or not[1]. But this was rejected and the C code simply checked
-the PF_KTHREAD directly.
+    error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an operator, found `"rust_minimal"`
+      --> samples/rust/rust_minimal.rsi:29:49
+       |
+    28 | impl ::kernel::ModuleMetadata for RustMinimal {
+       |                                               - while parsing this item list starting here
+    29 |     const NAME: &'static ::kernel::str::CStr = c"rust_minimal";
+       |                                                 ^^^^^^^^^^^^^^ expected one of 8 possible tokens
+    30 | }
+       | - the item list ends here
+       |
+       = note: you may be trying to write a c-string literal
+       = note: c-string literals require Rust 2021 or later
+       = help: pass `--edition 2024` to `rustc`
+       = note: for more on editions, read https://doc.rust-lang.org/edition-guide
 
-It was later found that not all kernel threads set PF_KTHREAD. The io-uring
-helpers instead set PF_USER_WORKER and this needed to be added as well.
+A workaround is to use `RUSTFMT=n`, which is documented in the `Makefile`
+help for cases where macro expanded source may happen to break `rustfmt`
+for other reasons, but this is not one of those cases.
 
-But checking the flags is still not enough. There's a very small window
-when a task exits that it frees its mm field and it is set back to NULL.
-If perf were to trigger at this moment, the flags test would say its a
-user space task but when perf would read the mm field it would crash with
-at NULL pointer dereference.
+One solution would be to pass `--edition`, but we want `rustfmt` to
+use the entire configuration, even if currently we essentially use the
+default configuration.
 
-Now there are flags that can be used to test if a task is exiting, but
-they are set in areas that perf may still want to profile the user space
-task (to see where it exited). The only real test is to check both the
-flags and the mm field.
+Thus explicitly give the path to the config file to `rustfmt` instead.
 
-Instead of making this modification in every location, create a new
-is_user_task() helper function that does all the tests needed to know if
-it is safe to read the user space memory or not.
-
-[1] https://lore.kernel.org/all/20250425204120.639530125@goodmis.org/
-
-Fixes: 90942f9fac05 ("perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL")
-Closes: https://lore.kernel.org/all/0d877e6f-41a7-4724-875d-0b0a27b8a545@roeck-us.net/
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260129102821.46484722@gandalf.local.home
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260115183832.46595-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index da0133524d08..5f00b5ed0f3b 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1776,6 +1776,11 @@ static __always_inline bool is_percpu_thread(void)
- 		(current->nr_cpus_allowed  == 1);
- }
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 5037f4715d74..0c838c467c76 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -356,7 +356,7 @@ $(obj)/%.o: $(obj)/%.rs FORCE
+ quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+       cmd_rustc_rsi_rs = \
+ 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
+-	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
++	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) --config-path $(srctree)/.rustfmt.toml $@
  
-+static __always_inline bool is_user_task(struct task_struct *task)
-+{
-+	return task->mm && !(task->flags & (PF_KTHREAD | PF_USER_WORKER));
-+}
-+
- /* Per-process atomic flags. */
- #define PFA_NO_NEW_PRIVS		0	/* May not gain new privileges. */
- #define PFA_SPREAD_PAGE			1	/* Spread page cache over cpuset */
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 1f6589578703..9d24b6e0c91f 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -246,7 +246,7 @@ get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
- 
- 	if (user && !crosstask) {
- 		if (!user_mode(regs)) {
--			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
-+			if (!is_user_task(current))
- 				goto exit_put;
- 			regs = task_pt_regs(current);
- 		}
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index a0fa488bce84..8cca80094624 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7460,7 +7460,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
- 	if (user_mode(regs)) {
- 		regs_user->abi = perf_reg_abi(current);
- 		regs_user->regs = regs;
--	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
-+	} else if (is_user_task(current)) {
- 		perf_get_regs_user(regs_user, regs);
- 	} else {
- 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
-@@ -8100,7 +8100,7 @@ static u64 perf_virt_to_phys(u64 virt)
- 		 * Try IRQ-safe get_user_page_fast_only first.
- 		 * If failed, leave phys_addr as 0.
- 		 */
--		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
-+		if (is_user_task(current)) {
- 			struct page *p;
- 
- 			pagefault_disable();
-@@ -8215,7 +8215,7 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
- {
- 	bool kernel = !event->attr.exclude_callchain_kernel;
- 	bool user   = !event->attr.exclude_callchain_user &&
--		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
-+		is_user_task(current);
- 	/* Disallow cross-task user callchains. */
- 	bool crosstask = event->ctx->task && event->ctx->task != current;
- 	bool defer_user = IS_ENABLED(CONFIG_UNWIND_USER) && user &&
+ $(obj)/%.rsi: $(obj)/%.rs FORCE
+ 	+$(call if_changed_dep,rustc_rsi_rs)
 
 
