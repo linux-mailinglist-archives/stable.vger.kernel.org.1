@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-213294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAudABM2gmmVQgMAu9opvQ
-	(envelope-from <stable+bounces-213294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:53:23 +0100
+	id cEFvFsY1gmmVQgMAu9opvQ
+	(envelope-from <stable+bounces-213295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:52:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69378DD288
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:53:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC89DD225
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 18:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 677BB30D7C0B
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 17:51:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D10E3030E51
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 17:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A4631B100;
-	Tue,  3 Feb 2026 17:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554E2333438;
+	Tue,  3 Feb 2026 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfmATMS0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5jbmSju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DC530DD1C
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 17:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3E5194C96
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 17:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770141075; cv=none; b=jy/2hp3CiKflx2VQ7h7wkIZlHbZidNiMXUuGfIQGk948A5xrLHLixFE9cWhrelhdVXbn6BKYu+7U4CgRyiF/1MRToOyQq6bhGZi0owqhFBKWevqH03NPmqIpIUSui2wSE4C5JjFuzx7xOpeTnqMjlilMxZu+UDQxapB8uqYI560=
+	t=1770141075; cv=none; b=WM9m+gL7EJcQfsvhzq/sL0c6Cex0tLHZIg9DvNli61f5jymKbCKBOLeP+NHVTWe32s3S7ezsjsCEjFDmnhsii/idIL1xl/BMPZoKyTU//ZCdtTVBADy8TVA0CZW/oAT3A0XslKr26XEyMefnrfS8eL82J2QyoWEEUwgRMq/06RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770141075; c=relaxed/simple;
-	bh=pKqUhlLuCVmDgflJ53Ki+Dx5KCURS3Z1Od62WaoGW1w=;
+	bh=93rtJnWH+oPDtXUwS9Xm3yxpqhadRtDnAdHqdYAZu5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sA2Zdot1a2bri1AJ1PC5etwG0Vm6pdBqmqLTp19mkSxdKEeEGD1wEhG1Wy2MjyGsz3HOnHgaFzL9lrcL6w45QRHM58GCK61k5Ui7198eTyDe2pJyQmdZWW3JPOIA3kPC9cs22dTEI37ccBUM194qyfRv1qEpQ+d0vyUUCDoY1po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfmATMS0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BF7C116D0;
-	Tue,  3 Feb 2026 17:51:13 +0000 (UTC)
+	 MIME-Version; b=ETsA0MQ49PNccBzqk8cWz2seO+UpcfZPMS2lsRLNKfoSMarpO6Nc3LB61Ip/GFkRR/4grvs0SEK38ibLB5FaRCb2/kp3tneCzh0OezkoOItDT6bLIP+lxn09lhDzFreVuJzIC4QAt1HzB7MSSZ+y+pqnwXMKdFcRjTl7aaWhcZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5jbmSju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A9CC16AAE;
+	Tue,  3 Feb 2026 17:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770141074;
-	bh=pKqUhlLuCVmDgflJ53Ki+Dx5KCURS3Z1Od62WaoGW1w=;
+	s=k20201202; t=1770141075;
+	bh=93rtJnWH+oPDtXUwS9Xm3yxpqhadRtDnAdHqdYAZu5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OfmATMS0T5wCICYrwuj7KOTYVbrIgwpcN7AcVB/0Api4KY0d/Z+CK2UargkUNnoJ9
-	 D8w5upxnnXa/wO8QbVXehEaKHP3ZyBATwblzzGHbenWfy5R+gZWQalTXvSfMsSRv1O
-	 BL1GuiAxIAAxGYON9EKsXo5YQ6gCShbfr8hqrrWQCAb0U26ynqpAS/KHQinJbRdXqT
-	 EAWyoFSk67u0oOx77LpUDeN9bUWYf59CIxM8x5E6eCo2jKncR3oiEBv5Ea/VmOZ42b
-	 5rzI5MDWX7iczgKJJSpxpKf6u+DT/SbSR2df4qIw3yjA77RKJblfNs3D7ExeaiGNTI
-	 09sJ6EGRYAKCA==
+	b=G5jbmSjulBOrTvrlmR2SBMOAMux3PIMlS1xHoUZ9AiFxXW5SPH1/YvyvHoxwGZzdS
+	 hzdB3EXa6HeFG1FiHe6dxTwvW6XSVPqXpT9l6sSvu6rE1wl8wzbbj8P8RpdBkCDmMZ
+	 rOsuCvkOCcJd97Rf/CsNfJX6KlroFHjlSYXtD/g7K2I02A1sn2IF/c3JBcY3ecm3Aq
+	 ZB3XGuZacRXphwRgfj7ZYQMzb8w2ZC5s23o2I/Zg8a78Agxs7UWYcWG5BFF8XmaNJ7
+	 I8cOvIR/SQhbZgCnHJeSOAFjCT3LfnwFJzWiqXMWYYZ+sYcs6s5mdYfmCVJ7bGSHBC
+	 i5B5FcvrOMkCA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/2] perf: Simplify get_perf_callchain() user logic
-Date: Tue,  3 Feb 2026 12:51:11 -0500
-Message-ID: <20260203175112.1341936-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/2] perf: sched: Fix perf crash with new is_user_task() helper
+Date: Tue,  3 Feb 2026 12:51:12 -0500
+Message-ID: <20260203175112.1341936-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020313-shone-sister-6db5@gregkh>
+In-Reply-To: <20260203175112.1341936-1-sashal@kernel.org>
 References: <2026020313-shone-sister-6db5@gregkh>
+ <20260203175112.1341936-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213294-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213295-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,63 +90,123 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,goodmis.org:email]
-X-Rspamd-Queue-Id: 69378DD288
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,goodmis.org:email,roeck-us.net:email,infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ECC89DD225
 X-Rspamd-Action: no action
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit d77e3319e31098a6cb97b7ce4e71ba676e327fd7 ]
+[ Upstream commit 76ed27608f7dd235b727ebbb12163438c2fbb617 ]
 
-Simplify the get_perf_callchain() user logic a bit.  task_pt_regs()
-should never be NULL.
+In order to do a user space stacktrace the current task needs to be a user
+task that has executed in user space. It use to be possible to test if a
+task is a user task or not by simply checking the task_struct mm field. If
+it was non NULL, it was a user task and if not it was a kernel task.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+But things have changed over time, and some kernel tasks now have their
+own mm field.
+
+An idea was made to instead test PF_KTHREAD and two functions were used to
+wrap this check in case it became more complex to test if a task was a
+user task or not[1]. But this was rejected and the C code simply checked
+the PF_KTHREAD directly.
+
+It was later found that not all kernel threads set PF_KTHREAD. The io-uring
+helpers instead set PF_USER_WORKER and this needed to be added as well.
+
+But checking the flags is still not enough. There's a very small window
+when a task exits that it frees its mm field and it is set back to NULL.
+If perf were to trigger at this moment, the flags test would say its a
+user space task but when perf would read the mm field it would crash with
+at NULL pointer dereference.
+
+Now there are flags that can be used to test if a task is exiting, but
+they are set in areas that perf may still want to profile the user space
+task (to see where it exited). The only real test is to check both the
+flags and the mm field.
+
+Instead of making this modification in every location, create a new
+is_user_task() helper function that does all the tests needed to know if
+it is safe to read the user space memory or not.
+
+[1] https://lore.kernel.org/all/20250425204120.639530125@goodmis.org/
+
+Fixes: 90942f9fac05 ("perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL")
+Closes: https://lore.kernel.org/all/0d877e6f-41a7-4724-875d-0b0a27b8a545@roeck-us.net/
+Reported-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20250820180428.760066227@kernel.org
-Stable-dep-of: 76ed27608f7d ("perf: sched: Fix perf crash with new is_user_task() helper")
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260129102821.46484722@gandalf.local.home
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/callchain.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ include/linux/sched.h     | 5 +++++
+ kernel/events/callchain.c | 2 +-
+ kernel/events/core.c      | 6 +++---
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 0d1d70aded38f..af143d3af85fa 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1739,6 +1739,11 @@ static __always_inline bool is_percpu_thread(void)
+ #endif
+ }
+ 
++static __always_inline bool is_user_task(struct task_struct *task)
++{
++	return task->mm && !(task->flags & (PF_KTHREAD | PF_USER_WORKER));
++}
++
+ /* Per-process atomic flags. */
+ #define PFA_NO_NEW_PRIVS		0	/* May not gain new privileges. */
+ #define PFA_SPREAD_PAGE			1	/* Spread page cache over cpuset */
 diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 677901f456a94..012a2c9a9babe 100644
+index 012a2c9a9babe..ed16884ceb46e 100644
 --- a/kernel/events/callchain.c
 +++ b/kernel/events/callchain.c
-@@ -246,21 +246,19 @@ get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
+@@ -245,7 +245,7 @@ get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
+ 
  	if (user && !crosstask) {
  		if (!user_mode(regs)) {
- 			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
--				regs = NULL;
--			else
--				regs = task_pt_regs(current);
-+				goto exit_put;
-+			regs = task_pt_regs(current);
+-			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
++			if (!is_user_task(current))
+ 				goto exit_put;
+ 			regs = task_pt_regs(current);
  		}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 6bc8b84f12156..01a87cd9b5cce 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7095,7 +7095,7 @@ static void perf_sample_regs_user(struct perf_regs *regs_user,
+ 	if (user_mode(regs)) {
+ 		regs_user->abi = perf_reg_abi(current);
+ 		regs_user->regs = regs;
+-	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++	} else if (is_user_task(current)) {
+ 		perf_get_regs_user(regs_user, regs);
+ 	} else {
+ 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
+@@ -7735,7 +7735,7 @@ static u64 perf_virt_to_phys(u64 virt)
+ 		 * Try IRQ-safe get_user_page_fast_only first.
+ 		 * If failed, leave phys_addr as 0.
+ 		 */
+-		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++		if (is_user_task(current)) {
+ 			struct page *p;
  
--		if (regs) {
--			if (add_mark)
--				perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
-+		if (add_mark)
-+			perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
- 
--			start_entry_idx = entry->nr;
--			perf_callchain_user(&ctx, regs);
--			fixup_uretprobe_trampoline_entries(entry, start_entry_idx);
--		}
-+		start_entry_idx = entry->nr;
-+		perf_callchain_user(&ctx, regs);
-+		fixup_uretprobe_trampoline_entries(entry, start_entry_idx);
- 	}
- 
-+exit_put:
- 	put_callchain_entry(rctx);
- 
- 	return entry;
+ 			pagefault_disable();
+@@ -7848,7 +7848,7 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
+ {
+ 	bool kernel = !event->attr.exclude_callchain_kernel;
+ 	bool user   = !event->attr.exclude_callchain_user &&
+-		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
++		is_user_task(current);
+ 	/* Disallow cross-task user callchains. */
+ 	bool crosstask = event->ctx->task && event->ctx->task != current;
+ 	const u32 max_stack = event->attr.sample_max_stack;
 -- 
 2.51.0
 
