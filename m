@@ -1,157 +1,223 @@
-Return-Path: <stable+bounces-213194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLQLBLDhgWmDLQMAu9opvQ
-	(envelope-from <stable+bounces-213194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 12:53:20 +0100
+	id aEVCKQ3ngWl0LwMAu9opvQ
+	(envelope-from <stable+bounces-213195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:16:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1BDD8A15
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 12:53:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1657BD8E0C
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 13:16:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5377F3030B19
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 11:53:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1CFC30692C6
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 12:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DB033A9E4;
-	Tue,  3 Feb 2026 11:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC7F33F8A2;
+	Tue,  3 Feb 2026 12:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SwJjMnHr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QmXap9PL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F90922339;
-	Tue,  3 Feb 2026 11:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D003346B9
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 12:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770119587; cv=none; b=pGjP+gLuTwdn8HXQbCqGCwd1/WBSjx0lN559jd/3hxtqMd45adFmT//2A6zZEI+v1Da72wfACHXUJUyXvIpilSiL4QHrCEkH0RQ3f8emHgX0G414iC/+CDkmPXl+PhpURZA+iJ9vO4m2t55/YQefLIFBVdQ57FgOPVPgaiMRq7Q=
+	t=1770120971; cv=none; b=e+o81f/EioYfSfBpl+1DL713f61/a1NAYWqXwq9AGVVSfmjKtzhrkF+BmOR4i5FcVDK8gqIfgwa1IoUlJ5zOz84SULd3JZ/RtO21TWecIy+bkcSOMxDFLUEfqAIVRYZx4+8vAOvZ6zJSCCzzHQYRV3bxZ6otKJ82lJlhgCYNJ94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770119587; c=relaxed/simple;
-	bh=+Cv82bqvFKaJG3yiPoUug7CoIWqw/Hg7MAUS9jZ9UN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F2OQii1epqxUn2B8WH+EHsXUdogZUeuNYnDM4j124UuN2dOzICXkEYPJmejxye6hXqZEOyI4rKqoSGCb/2XrhHH8xmC3afNs8asjjHjt5zGOayJguANVGC1v9LbpKQ/2i6HRYy2MT5g+s2P2tTR7xmb7uO383/rPzzpqhA0qtt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SwJjMnHr; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770119586; x=1801655586;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+Cv82bqvFKaJG3yiPoUug7CoIWqw/Hg7MAUS9jZ9UN4=;
-  b=SwJjMnHrhkp3iy97zWa1ohr29hGUozfJH2nZK2ncB1jq+FgwCUQZhENg
-   M/xzStI5NK8WLuI5fItGBp1eF/Mjhm65K33n94wOFLI7128s/SogeEDb3
-   GGoX/QYvRklNyxudTRcy5lV0yf/LwUIxV6C1wNlKrOFU7NGoZ0vOm3u+b
-   kmkquINkwkUvMwhImqoW6wHGRVQCNm//xIdqiRaw63FJDi9SGTSgrlvhI
-   bTP8QLOOFisKfVV48Jzc4kfhhoUI44cL5eWC+DC5mdZ3IAryGBAekufmq
-   Z9H2wtu6U8vDflSkmls4MMk0s8NCtf8PVKfMWksiKRWnNrqDkAx4VeEl3
-   g==;
-X-CSE-ConnectionGUID: jU08Vi8uRqi14QoOuVFkew==
-X-CSE-MsgGUID: PePXCSl3QiaINVU3E6RO1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="93940225"
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="93940225"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 03:53:05 -0800
-X-CSE-ConnectionGUID: EE5CKyI8SHaMopnW+BfB1Q==
-X-CSE-MsgGUID: 9irpcCcFQCWik0iINrUH2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="214786053"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.99])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 03:53:02 -0800
-Date: Tue, 3 Feb 2026 13:52:59 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	kernel@pengutronix.de, David Jander <david@protonic.nl>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v4 01/13] iio: dac: ds4424: reject -128 RAW value
-Message-ID: <aYHhm03Jsv0zsyZ0@smile.fi.intel.com>
-References: <20260203093434.2548978-1-o.rempel@pengutronix.de>
- <20260203093434.2548978-2-o.rempel@pengutronix.de>
- <aYHF29ZR9mdi6Pqx@smile.fi.intel.com>
- <aYHN3YfKCgEnAfD5@pengutronix.de>
+	s=arc-20240116; t=1770120971; c=relaxed/simple;
+	bh=oBNlv8tpYIAfycUufaW2kqcNJPt0+IY20m9BXQcCGbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XKLWWn/on8DfwfAykx5rbi9Rao1h0c//pM4onEZbMMPPfZ6U1oLrKLDLI6ZElzVPm4VDHff80MRZZxS340Yi3/KXR1Uvc7zsNToTTXOM9ac+QXlLnKxCKODz4fvt0/wRhbC8X9qsG/R3Uk06VV436HImsOq39Uh5hRjvLJCqdyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QmXap9PL; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-81dab89f286so2760019b3a.2
+        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 04:16:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770120969; x=1770725769; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ibRrXpgw1lU51ODUe8Kbvxi0SMmu3MLTIurVFgESCMQ=;
+        b=QmXap9PLs4e9k2Ck8cvMq/l+QVIdgig/sfrpTF05+SKiJq0/kOCfLjp0yFnV5NO2jn
+         2T0O0C3wrQVYKah+5qLf5JkbAdWWVWlUepvhxW2lIcN7N7NkVjC3BtFbMUrmaX7A+YBt
+         T3GrlnVWscAtFnUS3nfkEPD43doQ4kxcEeP6kpBWp/n7TVG9SLL8JYRik8sujwRKYi++
+         YQx/DinXD4AUOTq13LMYQVx4UIShP6uO5VS5TVFZwU3u/jfNZd0w0gmNETK6gPi4/Ulm
+         4P8ooZLcyk3WuY0hdAdeJHodROOUSjP/6Ti2nCnWLEDH/eYz1qWm1VuRKtB5vbAqLsu/
+         u8qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770120969; x=1770725769;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ibRrXpgw1lU51ODUe8Kbvxi0SMmu3MLTIurVFgESCMQ=;
+        b=YuKz0eOM2B+mFIk+ps5VKJOnnuR8WE3JQn3QBnz5KvvGMd+Op6vxBNZMqEV/tfUq4m
+         tZfpqh1xexHjKZTXAmQ5ypsCczyFQAk7WiaDke7fu1vP1DItpveHVxCh28IK62aB5Jnv
+         h/KROcuJeoJBwfTwVRJGslEMJ7SVSIKxk/7HKW4gjfqfA0g41Qs6f/gnLSY6z2eSeZTz
+         82OgOSTkCLSgTe47ChUACcux/QONt35j9uXJ4mBV9FprRYwfSP7PkYyFCUxirNjuSwni
+         A8s2JIESoDqrQgBd57iRSKLnfFgiQGoSImyVEFGfbYzv41fy9pPzPJ768jdl/Z4NXA5A
+         qUyA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0nuEYng9zP/TUXG3dfldZ2cegoJlkvQ5YVTZbu3ALDSFzhb5lkXFPKbT8CQRDVxTo1SEcXZE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMzswE+Vl9Tef9OaWwHwlzMEyT6o0vfcKG8szxu5t3rE0+lVL3
+	T9JR0IH3GXRvzFzsfcmAlqnzG9DYaAxnGHnUNN440ajmaPEk2ym63nSN
+X-Gm-Gg: AZuq6aJZogBGJMPPC6BgjN06Z4aDhvAn1BXG7jijugeERvZnFkT15J8CFJl+7ltJW/f
+	LsICuaW5bO1ylGzlNOQJy5SkPqHkAf3dyPW6f/O6ClMYdNrE94FIw+didB9ngjkAmaFrDrWHnPp
+	RpbFKeobIK+K+1cFCQSwSdCM9Q3YQ0aiQPNtDp2QogwG+qM0VGCMJypatmCieRGwMas8KV0nR/W
+	jwYkRHtILmjzl/qZMkPS3Bcz0mR2Dh3Fq8s94IJ3os4JZZaljzNPuOmFWN+oZTfQnqe790ydPBj
+	ECQy2Il/kFz9a04YCttbrAZGMpvn6hU1wEQrB61ltLRW5mqi3llRfggb+hEcrais+L5ADtsbCC7
+	/qlufNd8aYK07szULeGQW6uwJbh//q42878AcchzInVT/eRemUhLYJ8G2b6O+4TQi4ALvGPRoRe
+	GxpKqOdVNG6r5kLI9SUsO15VjUnyDOGaDWRVmj1btA813IFwEo1mZ6MIw/JDSXGYVRPxqzwCfe5
+	nFMv/cbZVIcyhb/cxbteADJ9XcrXLkgB+iJmctE0bWUAe85Vw/5tmjYFtoCRtrrzwag
+X-Received: by 2002:aa7:9064:0:b0:81f:50b1:51f2 with SMTP id d2e1a72fcca58-823aa71118cmr12594872b3a.41.1770120968901;
+        Tue, 03 Feb 2026 04:16:08 -0800 (PST)
+Received: from 2045D.localdomain (120.sub-75-226-39.myvzw.com. [75.226.39.120])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379bfb924sm19339481b3a.34.2026.02.03.04.16.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 04:16:08 -0800 (PST)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: linux@roeck-us.net
+Cc: linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	stable@vger.kernel.org
+Subject: [PATCH] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race
+Date: Tue,  3 Feb 2026 20:14:43 +0800
+Message-ID: <20260203121443.5482-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYHN3YfKCgEnAfD5@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213194-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,decadent.org.uk];
+	TAGGED_FROM(0.00)[bounces-213195-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hanguidong02@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,smile.fi.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5B1BDD8A15
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,decadent.org.uk:email]
+X-Rspamd-Queue-Id: 1657BD8E0C
 X-Rspamd-Action: no action
 
-On Tue, Feb 03, 2026 at 11:28:45AM +0100, Oleksij Rempel wrote:
-> On Tue, Feb 03, 2026 at 11:54:35AM +0200, Andy Shevchenko wrote:
-> > On Tue, Feb 03, 2026 at 10:34:21AM +0100, Oleksij Rempel wrote:
+Simply copying shared data to a local variable cannot prevent data
+races. The compiler is allowed to optimize away the local copy and
+re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
+issue if the data changes between the check and the usage.
 
-...
+To enforce the use of the local variable, use READ_ONCE() when reading
+the shared data and WRITE_ONCE() when updating it. Apply these macros to
+the three identified locations (curr_sense, adc, and fault) where local
+variables are used for error validation, ensuring the value remains
+consistent.
 
-> > >  	case IIO_CHAN_INFO_RAW:
-> > > -		if (val < S8_MIN || val > S8_MAX)
-> > > +		if (val <= S8_MIN || val > S8_MAX)
-> > >  			return -EINVAL;
-> > 
-> > I still consider using -127, 127 is better than type _MIN/_MAX.
-> > This is all due to '='.
-> 
-> The use of S8_MIN here is intentional to satisfy the requirement for a minimal
-> stable backport, as requested by Jonathan:
-> https://lore.kernel.org/all/20260201144226.218a43cb@jic23-huawei/
-> 
-> This patch: Strict "Fix only" for stable. Uses minimal logic changes (<=
-> S8_MIN) to avoid introducing new bugs during backporting.
-> 
-> N++ patch: Full refactoring.
-> 
-> Can we accept this temporary state to facilitate the stable process?
+Reported-by: Ben Hutchings <ben@decadent.org.uk>
+Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+---
+ drivers/hwmon/max16065.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-Ah, if it's request by the maintainer, I can't and won't overrule it.
-
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index 4c9e7892a73c..43fbb9b26b10 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -151,27 +151,27 @@ static struct max16065_data *max16065_update_device(struct device *dev)
+ 		int i;
+ 
+ 		for (i = 0; i < data->num_adc; i++)
+-			data->adc[i]
+-			  = max16065_read_adc(client, MAX16065_ADC(i));
++			WRITE_ONCE(data->adc[i],
++				   max16065_read_adc(client, MAX16065_ADC(i)));
+ 
+ 		if (data->have_current) {
+-			data->adc[MAX16065_NUM_ADC]
+-			  = max16065_read_adc(client, MAX16065_CSP_ADC);
+-			data->curr_sense
+-			  = i2c_smbus_read_byte_data(client,
+-						     MAX16065_CURR_SENSE);
++			WRITE_ONCE(data->adc[MAX16065_NUM_ADC],
++				   max16065_read_adc(client, MAX16065_CSP_ADC));
++			WRITE_ONCE(data->curr_sense,
++				   i2c_smbus_read_byte_data(client, MAX16065_CURR_SENSE));
+ 		}
+ 
+ 		for (i = 0; i < 2; i++)
+-			data->fault[i]
+-			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
++			WRITE_ONCE(data->fault[i],
++				   i2c_smbus_read_byte_data(client, MAX16065_FAULT(i)));
+ 
+ 		/*
+ 		 * MAX16067 and MAX16068 have separate undervoltage and
+ 		 * overvoltage alarm bits. Squash them together.
+ 		 */
+ 		if (data->chip == max16067 || data->chip == max16068)
+-			data->fault[0] |= data->fault[1];
++			WRITE_ONCE(data->fault[0],
++				   data->fault[0] | data->fault[1]);
+ 
+ 		data->last_updated = jiffies;
+ 		data->valid = true;
+@@ -185,7 +185,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int val = data->fault[attr2->nr];
++	int val = READ_ONCE(data->fault[attr2->nr]);
+ 
+ 	if (val < 0)
+ 		return val;
+@@ -203,7 +203,7 @@ static ssize_t max16065_input_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int adc = data->adc[attr->index];
++	int adc = READ_ONCE(data->adc[attr->index]);
+ 
+ 	if (unlikely(adc < 0))
+ 		return adc;
+@@ -216,7 +216,7 @@ static ssize_t max16065_current_show(struct device *dev,
+ 				     struct device_attribute *da, char *buf)
+ {
+ 	struct max16065_data *data = max16065_update_device(dev);
+-	int curr_sense = data->curr_sense;
++	int curr_sense = READ_ONCE(data->curr_sense);
+ 
+ 	if (unlikely(curr_sense < 0))
+ 		return curr_sense;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
