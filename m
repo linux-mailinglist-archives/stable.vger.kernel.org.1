@@ -1,261 +1,338 @@
-Return-Path: <stable+bounces-213182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JsuEHTAgWm7JAMAu9opvQ
-	(envelope-from <stable+bounces-213182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 10:31:32 +0100
+	id +NhxEtPAgWm7JAMAu9opvQ
+	(envelope-from <stable+bounces-213183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 10:33:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A07FD6C97
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 10:31:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CC4D6CC3
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 10:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B69C83006992
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 09:31:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C9D73046529
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 09:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001BA30FC1F;
-	Tue,  3 Feb 2026 09:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dkruFm8L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7379C2BF00D;
+	Tue,  3 Feb 2026 09:31:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75C0225788
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 09:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359831DFE12;
+	Tue,  3 Feb 2026 09:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770111086; cv=none; b=Jf8UOrBrXIidZMekopz2OzAUonfN097w2v3lCYIEDJcUfTNRN+WItQ1cub61dF1VhLfZGNH4K5SgWwNY+G98UPWZFxkq1nSXrkHJXQYdQ7OzY8RpGr7N3a2Quyvu7H1zEsZz9Uj63K3BzEL99sRMldz6Pj6SoNVrn43xVfMfqQA=
+	t=1770111108; cv=none; b=GnQ8L9LXRuKpLGtn+/LMLj2+tqbnp5XGaMBpoFyByUCs2KjcPpC2aLMsYeHDoLALprRr9uBB+98ZHU7002MhuB7jxKR+b64tdy1EHgYgLpJZg93Z9hdELL7y4d7xImC3mtOMPEjxyg988DUedOqky4G6HZbs4n2oaSoFVCaBm3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770111086; c=relaxed/simple;
-	bh=9ZCbCekETf/Hc7H9g6zabuW31iHCCcdMboCzlVHoOOY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qevTK7tkkjFUdO6g+jlC+z2pim6AQrk7epC8YUHXP3SH/KlDb6AZjEQ9Z8ci4j37S76mqoblN9/eAPKEoHsNIUo9kPft/kEUYWbz1uBKZNspSoFvzG0/Sm62FuvCyNKjuqNS33JMX5xv0Z/G2vLsz2QRHIUme4GvBtGsT2T84Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dkruFm8L; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770111084; x=1801647084;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=9ZCbCekETf/Hc7H9g6zabuW31iHCCcdMboCzlVHoOOY=;
-  b=dkruFm8LB1uWUa5bOHOo3MeXo3fyiKK70ai+X2MEfxhjVloYoww2DqEt
-   bTvTQnWKmkoeE5/P3ml9Sr6PdznKujPR7vk1CkLlIsDQUzUykzfRav1fK
-   iF4pr3e9S6Le/EzBiWxO2DMZoPhdsBEFzdjxjS3BKMIXWOUTBvMBnRQ6a
-   v6HaBtNKxK9hbAcnfBfkwXR3danRlLE5S6NpIUkYl47sVlzmwT1gfchoe
-   HU2dIeeNKvg/pPfbmqv3vDZ7zbYOcLYzCYYbyRKEnj3XDva6Hlt2Asqq9
-   z1l36LB2KFQCiCTwctNtpbJC7q1n+ISH2BtgZYKREl/wsvWRuAJ4oXN5N
-   g==;
-X-CSE-ConnectionGUID: sEomnNKQQ5mgONw0E9letA==
-X-CSE-MsgGUID: A0bcg1R7TUqQWB/GHoXY1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="82385804"
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="82385804"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 01:31:23 -0800
-X-CSE-ConnectionGUID: lG5quSw+RHGTOlWRbhDFtw==
-X-CSE-MsgGUID: lZ/yXG0gRkCAAQSG3/jopw==
-X-ExtLoop1: 1
-Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.245.55]) ([10.245.245.55])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 01:31:20 -0800
-Message-ID: <9a9853a320a30802ff35803a574aab037aa2fd92.camel@linux.intel.com>
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: John Hubbard <jhubbard@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- intel-xe@lists.freedesktop.org,  Ralph Campbell <rcampbell@nvidia.com>,
- Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,  Jason
- Gunthorpe	 <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- linux-mm@kvack.org, 	stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-Date: Tue, 03 Feb 2026 10:31:04 +0100
-In-Reply-To: <a5b71dbc-9e3a-4098-8821-21a9a02ec235@nvidia.com>
-References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
-	 <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-	 <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
-	 <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
-	 <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
-	 <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
-	 <a459f147b461c6e6e806282956b7931f74a0aa93.camel@linux.intel.com>
-	 <a5b71dbc-9e3a-4098-8821-21a9a02ec235@nvidia.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	s=arc-20240116; t=1770111108; c=relaxed/simple;
+	bh=e3sfQYnOGO2DjibUbMN9/Ori0jRxDDPKihNZ7PwltqQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oPYM2vs+uAhSSJNiBQf334pfQzBRHeg6LJQPEx/c15jYQa2yQq+ZicJ8C45rgl4lbg+OfpxHNLthavKHnehFSbIyrs3b70Q2uAopqOlBujh2A+4exc39Rs/ZgsFLEIosYcZ8a85WESFW6nRB5BenF7UgYdNU4c6X2Qhh+ngy8lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3DC27339;
+	Tue,  3 Feb 2026 01:31:39 -0800 (PST)
+Received: from [10.57.68.168] (unknown [10.57.68.168])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 834A43F632;
+	Tue,  3 Feb 2026 01:31:43 -0800 (PST)
+Message-ID: <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com>
+Date: Tue, 3 Feb 2026 09:31:41 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Doug Smythies <dsmythies@telus.net>
+Cc: Sasha Levin <sashal@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
+ stable@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
+ <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com>
+ <005401dc64a4$75f1d770$61d58650$@telus.net>
+ <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com>
+ <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
+ <849ee0ff-e15b-4b69-84de-6503e3b3168d@oracle.com>
+ <003e01dc9013$e3bc5060$ab34f120$@telus.net>
+ <004e01dc90b1$4b28f9e0$e17aeda0$@telus.net>
+ <002601dc916e$6acbe650$4063b2f0$@telus.net>
+ <CAJZ5v0gcSb_6QPMfHkjSMJ6OOF+PaCZrUKOafYQ++tHE2jBB4w@mail.gmail.com>
+ <3b0720d2-9b72-48d0-998a-1fd091cec44f@arm.com>
+ <5d4b624c-f993-49aa-95ab-5f279f7f6599@oracle.com>
+ <8fd5a9d4-e555-4db1-aa02-8fe5b8a2962c@arm.com>
+ <3395ad0b-425e-40f5-844c-627cff471353@oracle.com>
+Content-Language: en-US
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <3395ad0b-425e-40f5-844c-627cff471353@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-213182-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213183-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	REDIRECTOR_URL(0.00)[urldefense.com];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6A07FD6C97
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christian.loehle@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A3CC4D6CC3
 X-Rspamd-Action: no action
 
+On 2/3/26 09:16, Harshvardhan Jha wrote:
+> 
+> On 03/02/26 2:37 PM, Christian Loehle wrote:
+>> On 2/2/26 17:31, Harshvardhan Jha wrote:
+>>> On 02/02/26 12:50 AM, Christian Loehle wrote:
+>>>> On 1/30/26 19:28, Rafael J. Wysocki wrote:
+>>>>> On Thu, Jan 29, 2026 at 11:27 PM Doug Smythies <dsmythies@telus.net> wrote:
+>>>>>> On 2026.01.28 15:53 Doug Smythies wrote:
+>>>>>>> On 2026.01.27 21:07 Doug Smythies wrote:
+>>>>>>>> On 2026.01.27 07:45 Harshvardhan Jha wrote:
+>>>>>>>>> On 08/12/25 6:17 PM, Christian Loehle wrote:
+>>>>>>>>>> On 12/8/25 11:33, Harshvardhan Jha wrote:
+>>>>>>>>>>> On 04/12/25 4:00 AM, Doug Smythies wrote:
+>>>>>>>>>>>> On 2025.12.03 08:45 Christian Loehle wrote:
+>>>>>>>>>>>>> On 12/3/25 16:18, Harshvardhan Jha wrote:
+>>>>>>> ... snip ...
+>>>>>>>
+>>>>>>>>>> It would be nice to get the idle states here, ideally how the states' usage changed
+>>>>>>>>>> from base to revert.
+>>>>>>>>>> The mentioned thread did this and should show how it can be done, but a dump of
+>>>>>>>>>> cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
+>>>>>>>>>> before and after the workload is usually fine to work with:
+>>>>>>>>>> https://urldefense.com/v3/__https://lore.kernel.org/linux-pm/8da42386-282e-4f97-af93-4715ae206361@arm.com/__;!!ACWV5N9M2RV99hQ!PEhkFcO7emFLMaNxWEoE2Gtnw3zSkpghP17iuEvZM3W6KUpmkbgKw_tr91FwGfpzm4oA5f7c5sz8PkYvKiEVwI_iLIPpMt53$
+>>>>>>>>> Apologies for the late reply, I'm attaching a tar ball which has the cpu
+>>>>>>>>> states for the test suites before and after tests. The folders with the
+>>>>>>>>> name of the test contain two folders good-kernel and bad-kernel
+>>>>>>>>> containing two files having the before and after states. Please note
+>>>>>>>>> that different machines were used for different test suites due to
+>>>>>>>>> compatibility reasons. The jbb test was run using containers.
+>>>>>>> Please provide the results of the test runs that were done for
+>>>>>>> the supplied before and after idle data.
+>>>>>>> In particular, what is the "fio" test and it results. Its idle data is not very revealing.
+>>>>>>> Is it a test I can run on my test computer?
+>>>>>> I see that I have fio installed on my test computer.
+>>>>>>
+>>>>>>>> It is a considerable amount of work to manually extract and summarize the data.
+>>>>>>>> I have only done it for the phoronix-sqlite data.
+>>>>>>> I have done the rest now, see below.
+>>>>>>> I have also attached the results, in case the formatting gets screwed up.
+>>>>>>>
+>>>>>>>> There seems to be 40 CPUs, 5 idle states, with idle state 3 defaulting to disabled.
+>>>>>>>> I remember seeing a Linux-pm email about why but couldn't find it just now.
+>>>>>>>> Summary (also attached as a PNG file, in case the formatting gets messed up):
+>>>>>>>> The total idle entries (usage)  and time seem low to me, which is why the ???.
+>>>>>>>>
+>>>>>>>> phoronix-sqlite
+>>>>>>>>      Good Kernel: Time between samples 4 seconds (estimated and ???)
+>>>>>>>>              Usage   Above   Below   Above   Below
+>>>>>>>> state 0      220     0       218     0.00%   99.09%
+>>>>>>>> state 1      70212   5213    34602   7.42%   49.28%
+>>>>>>>> state 2      30273   5237    1806    17.30%  5.97%
+>>>>>>>> state 3      0       0       0       0.00%   0.00%
+>>>>>>>> state 4      11824   2120    0       17.93%  0.00%
+>>>>>>>>
+>>>>>>>> total                112529  12570   36626   43.72%   <<< Misses %
+>>>>>>>>
+>>>>>>>>      Bad Kernel: Time between samples 3.8 seconds (estimated and ???)
+>>>>>>>>              Usage   Above   Below   Above   Below
+>>>>>>>> state 0      262     0       260     0.00%   99.24%
+>>>>>>>> state 1      62751   3985    35588   6.35%   56.71%
+>>>>>>>> state 2      24941   7896    1433    31.66%  5.75%
+>>>>>>>> state 3      0       0       0       0.00%   0.00%
+>>>>>>>> state 4      24489   11543   0       47.14%  0.00%
+>>>>>>>>
+>>>>>>>> total                112443  23424   37281   53.99%   <<< Misses %
+>>>>>>>>
+>>>>>>>> Observe 2X use of idle state 4 for the "Bad Kernel"
+>>>>>>>>
+>>>>>>>> I have a template now, and can summarize the other 40 CPU data
+>>>>>>>> faster, but I would have to rework the template for the 56 CPU data,
+>>>>>>>> and is it a 64 CPU data set at 4 idle states per CPU?
+>>>>>>> jbb: 40 CPU's; 5 idle states, with idle state 3 defaulting to disabled.
+>>>>>>> POLL, C1, C1E, C3 (disabled), C6
+>>>>>>>
+>>>>>>>       Good Kernel: Time between samples > 2 hours (estimated)
+>>>>>>>       Usage           Above           Below           Above   Below
+>>>>>>> state 0       297550          0               296084          0.00%   99.51%
+>>>>>>> state 1       8062854 341043          4962635 4.23%   61.55%
+>>>>>>> state 2       56708358        12688379        6252051 22.37%  11.02%
+>>>>>>> state 3       0               0               0               0.00%   0.00%
+>>>>>>> state 4       54624476        15868752        0               29.05%  0.00%
+>>>>>>>
+>>>>>>> total 119693238       28898174        11510770        33.76%  <<< Misses
+>>>>>>>
+>>>>>>>       Bad Kernel: Time between samples > 2 hours (estimated)
+>>>>>>>       Usage           Above           Below           Above   Below
+>>>>>>> state 0       90715           0               75134           0.00%   82.82%
+>>>>>>> state 1       8878738 312970          6082180 3.52%   68.50%
+>>>>>>> state 2       12048728        2576251 603316          21.38%  5.01%
+>>>>>>> state 3       0               0               0               0.00%   0.00%
+>>>>>>> state 4       85999424        44723273        0               52.00%  0.00%
+>>>>>>>
+>>>>>>> total 107017605       47612494        6760630 50.81%  <<< Misses
+>>>>>>>
+>>>>>>> As with the previous test, observe 1.6X use of idle state 4 for the "Bad Kernel"
+>>>>>>>
+>>>>>>> fio: 64 CPUs; 4 idle states; POLL, C1, C1E, C6.
+>>>>>>>
+>>>>>>> fio
+>>>>>>>       Good Kernel: Time between samples ~ 1 minute (estimated)
+>>>>>>>       Usage           Above   Below   Above   Below
+>>>>>>> state 0       3822            0       3818    0.00%   99.90%
+>>>>>>> state 1       148640          4406    68956   2.96%   46.39%
+>>>>>>> state 2       593455          45344   105675  7.64%   17.81%
+>>>>>>> state 3       3209648 807014  0       25.14%  0.00%
+>>>>>>>
+>>>>>>> total 3955565 856764  178449  26.17%  <<< Misses
+>>>>>>>
+>>>>>>>       Bad Kernel: Time between samples ~ 1 minute (estimated)
+>>>>>>>       Usage           Above   Below   Above   Below
+>>>>>>> state 0       916             0       756     0.00%   82.53%
+>>>>>>> state 1       80230           2028    42791   2.53%   53.34%
+>>>>>>> state 2       59231           6888    6791    11.63%  11.47%
+>>>>>>> state 3       2455784 564797  0       23.00%  0.00%
+>>>>>>>
+>>>>>>> total 2596161 573713  50338   24.04%  <<< Misses
+>>>>>>>
+>>>>>>> It is not clear why the number of idle entries differs so much
+>>>>>>> between the tests, but there is a bit of a different distribution
+>>>>>>> of the workload among the CPUs.
+>>>>>>>
+>>>>>>> rds-stress: 56 CPUs; 5 idle states, with idle state 3 defaulting to disabled.
+>>>>>>> POLL, C1, C1E, C3 (disabled), C6
+>>>>>>>
+>>>>>>> rds-stress-test
+>>>>>>>       Good Kernel: Time between samples ~70 Seconds (estimated)
+>>>>>>>       Usage   Above   Below   Above   Below
+>>>>>>> state 0       1561    0       1435    0.00%   91.93%
+>>>>>>> state 1       13855   899     2410    6.49%   17.39%
+>>>>>>> state 2       467998  139254  23679   29.76%  5.06%
+>>>>>>> state 3       0       0       0       0.00%   0.00%
+>>>>>>> state 4       213132  107417  0       50.40%  0.00%
+>>>>>>>
+>>>>>>> total 696546  247570  27524   39.49%  <<< Misses
+>>>>>>>
+>>>>>>>       Bad Kernel: Time between samples ~ 70 Seconds (estimated)
+>>>>>>>       Usage   Above   Below   Above   Below
+>>>>>>> state 0       231     0       231     0.00%   100.00%
+>>>>>>> state 1       5413    266     1186    4.91%   21.91%
+>>>>>>> state 2       54365   719     3789    1.32%   6.97%
+>>>>>>> state 3       0       0       0       0.00%   0.00%
+>>>>>>> state 4       267055  148327  0       55.54%  0.00%
+>>>>>>>
+>>>>>>> total 327064  149312  5206    47.24%  <<< Misses
+>>>>>>>
+>>>>>>> Again, differing numbers of idle entries between tests.
+>>>>>>> This time the load distribution between CPUs is more
+>>>>>>> obvious. In the "Bad" case most work is done on 2 or 3 CPU's.
+>>>>>>> In the "Good" case the work is distributed over more CPUs.
+>>>>>>> I assume without proof, that the scheduler is deciding not to migrate
+>>>>>>> the next bit of work to another CPU in the one case verses the other.
+>>>>>> The above is incorrect. The CPUs involved between the "Good"
+>>>>>> and "Bad" tests are very similar, mainly 2 CPUs with a little of
+>>>>>> a 3rd and 4th. See the attached graph for more detail / clarity.
+>>>>>>
+>>>>>> All of the tests show higher usage of shallower idle states with
+>>>>>> the "Good" verses the "Bad", which was the expectation of the
+>>>>>> original patch, as has been mentioned a few times in the emails.
+>>>>>>
+>>>>>> My input is to revert the reversion.
+>>>>> OK, noted, thanks!
+>>>>>
+>>>>> Christian, what do you think?
+>>>> I've attached readable diffs of the values provided the tldr is:
+>>>>
+>>>> +--------------------+-----------+-----------+
+>>>> | Workload           | Δ above % | Δ below % |
+>>>> +--------------------+-----------+-----------+
+>>>> | fio                |  -10.11   |  +2.36    |
+>>>> | rds-stress-test    |   -0.44   |  +2.57    |
+>>>> | jbb                |  -20.35   |  +3.30    |
+>>>> | phoronix-sqlite    |   -9.66   |  -0.61    |
+>>>> +--------------------+-----------+-----------+
+>>>>
+>>>> I think the overall trend however is clear, the commit
+>>>> 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+>>>> improved menu on many systems and workloads, I'd dare to say most.
+>>>>
+>>>> Even on the reported regression introduced by it, the cpuidle governor
+>>>> performed better on paper, system metrics regressed because other
+>>>> CPUs' P-states weren't available due to being in a shallower state.
+>>>> https://urldefense.com/v3/__https://lore.kernel.org/linux-pm/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/__;!!ACWV5N9M2RV99hQ!KSEGRBOHs7E_E4fRenT3y3MovrhDewsTY-E4lu1JCX0Py-r4GiEJefoLfcHrummpmvmeO_vp1beh-OO_MYxG9xLU0BuBunAS$ 
+>>>> (+CC Sergey)
+>>>> It could be argued that this is a limitation of a per-CPU cpuidle
+>>>> governor and a more holistic approach would be needed for that platform
+>>>> (i.e. power/thermal-budget-sharing-CPUs want to use higher P-states,
+>>>> skew towards deeper cpuidle states).
+>>>>
+>>>> I also think that the change made sense, for small residency values
+>>>> with a bit of random noise mixed in, performing the same statistical
+>>>> test doesn't seem sensible, the short intervals will look noisier.
+>>>>
+>>>> So options are:
+>>>> 1. Revert revert on mainline+stable
+>>>> 2. Revert revert on mainline only
+>>>> 3. Keep revert, miss out on the improvement for many.
+>>>> 4. Revert only when we have a good solution for the platforms like
+>>>> Sergey's.
+>>>>
+>>>> I'd lean towards 2 because 4 won't be easy, unless of course a minor
+>>>> hack like playing with the deep idle state residency values would
+>>>> be enough to mitigate.
+>>> Wouldn't it be better to choose option 1 as reverting the revert has
+>>> even more pronounced improvements on older kernels? I've tested this on
+>>> 6.12, 5.15 and 5.4 stable based kernels and found massive improvements.
+>>> Since the revert has optimizations present only in Jasper Lake Systems
+>>> which is new, isn't reverting the revert more relevant on stable
+>>> kernels? It's more likely that older hardware runs older kernels than
+>>> newer hardware although not always necessary imo.
+>>>
+>> FWIW Jasper Lake seems to be supported from 5.6 on, see
+>> b2d32af0bff4 ("x86/cpu: Add Jasper Lake to Intel family")
+> 
+> Oh I see, but shouldn't avoiding regressions on established platforms be
+> a priority over further optimizing for specific newer platforms like
+> Jasper Lake?
+> 
 
-On Mon, 2026-02-02 at 14:28 -0800, John Hubbard wrote:
-> On 2/2/26 1:13 AM, Thomas Hellstr=C3=B6m wrote:
-> > On Sat, 2026-01-31 at 13:42 -0800, John Hubbard wrote:
-> > > On 1/31/26 11:00 AM, Matthew Brost wrote:
-> > > > On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas Hellstr=C3=B6m
-> > > > wrote:
-> > > > > On Fri, 2026-01-30 at 19:01 -0800, John Hubbard wrote:
-> > > > > > On 1/30/26 10:00 AM, Andrew Morton wrote:
-> > > > > > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellstr=C3=B6m
-> > > > > > > <thomas.hellstrom@linux.intel.com> wrote:
-> > > > > > ...
-> > >=20
-> > > >=20
-> > > > > I'm also not sure a folio refcount should block migration
-> > > > > after
-> > > > > the
-> > > > > introduction of pinned (like in pin_user_pages) pages. Rather
-> > > > > perhaps a
-> > > > > folio pin-count should block migration and in that case
-> > > > > do_swap_page()
-> > > > > can definitely do a sleeping folio lock and the problem is
-> > > > > gone.
-> > >=20
-> > > A problem for that specific point is that pincount and refcount
-> > > both
-> > > mean, "the page is pinned" (which in turn literally means "not
-> > > allowed
-> > > to migrate/move").
-> >=20
-> > Yeah this is what I actually want to challenge since this is what
-> > blocks us from doing a clean robust solution here. From brief
-> > reading
-> > of the docs around the pin-count implementation, I understand it as
-> > "If
-> > you want to access the struct page metadata, get a refcount, If you
-> > want to access the actual memory of a page, take a pin-count"
-> >=20
-> > I guess that might still not be true for all old instances in the
-> > kernel using get_user_pages() instead of pin_user_pages() for
-> > things
-> > like DMA, but perhaps we can set that in stone and document it at
-> > least
-> > for device-private pages for now which would be sufficient for the
-> > do_swap_pages() refcount not to block migration.
-> >=20
->=20
-> It's an interesting direction to go...
->=20
-> >=20
-> > >=20
-> > > (In fact, pincount is implemented in terms of refcount, in most
-> > > configurations still.)
-> >=20
-> > Yes but that's only a space optimization never intended to
-> > conflict,
-> > right? Meaning a pin-count will imply a refcount but a refcount
-> > will
-> > never imply a pin-count?
-> >=20
-> Unfortunately, they are more tightly linked than that today, at least
-> until
-> someday when specialized folios are everywhere (at which point
-> pincount
-> gets its own field).
->=20
-> Until then, it's not just a "space optimization", it's "overload
-> refcount
-> to also do pincounting". And "let core mm continue to treat refcounts
-> as
-> meaning that the page is pinned".
-
-So this is what I had in mind:
-
-I think certainly this would work regardless of whether pincount is
-implemented by means of refcount with a bias or not, and AFAICT it's
-also consistent with=20
-
-https://docs.kernel.org/core-api/pin_user_pages.html
-
-But it would not work if some part of core mm grabs a page refcount and
-*expects* that to pin a page in the sense that it should not be
-migrated. But you're suggesting that's actually the case?
-
-Thanks,
-Thomas
-
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index a101a187e6da..c07a79995128 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -534,33 +534,15 @@ static void migrate_vma_collect(struct
-migrate_vma *migrate)
-  * migrate_vma_check_page() - check if page is pinned or not
-  * @page: struct page to check
-  *
-- * Pinned pages cannot be migrated. This is the same test as in
-- * folio_migrate_mapping(), except that here we allow migration of a
-- * ZONE_DEVICE page.
-+ * Pinned pages cannot be migrated.
-  */
- static bool migrate_vma_check_page(struct page *page, struct page
-*fault_page)
- {
-        struct folio *folio =3D page_folio(page);
-=20
--       /*
--        * One extra ref because caller holds an extra reference,
-either from
--        * folio_isolate_lru() for a regular folio, or
-migrate_vma_collect() for
--        * a device folio.
--        */
--       int extra =3D 1 + (page =3D=3D fault_page);
--
--       /* Page from ZONE_DEVICE have one extra reference */
--       if (folio_is_zone_device(folio))
--               extra++;
--
--       /* For file back page */
--       if (folio_mapping(folio))
--               extra +=3D 1 + folio_has_private(folio);
--
--       if ((folio_ref_count(folio) - extra) > folio_mapcount(folio))
--               return false;
-+       VM_WARN_ON_FOLIO(folio_test_lru(folio) || folio_mapped(folio),
-folio);
-=20
--       return true;
-+       return !folio_maybe_dma_pinned(folio);
- }
-=20
-
-
-
->=20
->=20
-> thanks,
+Well avoiding regressions on established platforms is what lead to
+10fad4012234 Revert "cpuidle: menu: Avoid discarding useful information"
+being applied and backported.
+The expectation for stable is that we avoid regressions and potentially
+miss out on improvements. If you want the latest greatest performance you
+should probably run a latest greatest kernel.
+The original
+85975daeaa4d cpuidle: menu: Avoid discarding useful information
+was seen as a fix and overall improvement, that's why it was backported,
+but Sergey's regression report contradicted that.
+What is "established" and "newer" for a stable kernel is quite handwavy
+IMO but even here Sergey's regression report is a clear data point...
+Your report is only restoring 5.15 (and others) performance to 5.15
+upstream-ish levels which is within the expectations of running a stable
+kernel. No doubt it's frustrating either way!
 
