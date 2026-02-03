@@ -1,159 +1,184 @@
-Return-Path: <stable+bounces-213314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IY3AIBmgmlOTgMAu9opvQ
-	(envelope-from <stable+bounces-213314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 22:20:00 +0100
+	id yFkeLk1zgmnBUgMAu9opvQ
+	(envelope-from <stable+bounces-213315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 23:14:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93449DECB3
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 22:19:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF04DF239
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 23:14:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F85E30A65BA
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 21:18:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A4403068564
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 22:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37DD2DF6F6;
-	Tue,  3 Feb 2026 21:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F2D36EABF;
+	Tue,  3 Feb 2026 22:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MX+BoD+Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="USm5cm8L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EC327A123
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 21:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566983242D2;
+	Tue,  3 Feb 2026 22:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770153510; cv=none; b=AiNY2+Whb+K0IMTbfDu3LBxvlVc6oNa74RHobKzJ019kVpIqbI0IAbR42o+/EcpH6JlGVCrViv2O/CENzezwLlLakoRkRdYxu1MCy891Q29gJcTh+X5h9jXs+MrPrBi9aPKUbBUn5lPGODLXzcWG2JkxuORrEjGdKZSh0xsAD70=
+	t=1770156751; cv=none; b=e2TUFrzpf+q9hV/IxOdV2mgJHk6RnAnR4M0AlCTBYiSVfzPWHBYgsgF7LEkQLfMmVkndGa6waOjXREpdBd5op3ZOxTvOwCMtIxwCGDM997IInqEYnNgg69M+X1wOQa5bBDaD4j/2D1iUklQOWUwUw0l1Il4kIgzly4sArTQ9MEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770153510; c=relaxed/simple;
-	bh=MEeQSn2jPwz6D8Xmb6toTPXIKj+BfWpKk7FnN7z97sI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SV3vQHckjRLG1yIOS9swY+kvfbA2rD88Zcgv+6vQiXIOPl6VW0LVcMURJDEUK9I2+G5VibacCB9VL0RbRtLQhq80FAZAPnvWCJjs+UnDSgGKxLa8UrjI0dBqbUo+wtx444T4ghMrUO/O52umls0s0PT9rvvGX2sS7JIJFfzov9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MX+BoD+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E73C116D0;
-	Tue,  3 Feb 2026 21:18:29 +0000 (UTC)
+	s=arc-20240116; t=1770156751; c=relaxed/simple;
+	bh=lZ8fLajBaBKfxqRgm1/CsQg35IImhyp3WoJlRneemVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i8KYgOUJ0ZziqKJnYMbDIVzIxif/pWCOJm/PHVrubRuwz+JvJZTNePqNfcOrVIrSUURFdJrq4BWPovmqkkD1Ctljq4C1QPJabpr0OVRCnUkV9b+2XoD0pFVLYDJ+gvBh0WOj++cQFZEicV9Q69bz3JO8GPeP3Hl6Vd3hXTSDwog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=USm5cm8L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4123AC116D0;
+	Tue,  3 Feb 2026 22:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770153510;
-	bh=MEeQSn2jPwz6D8Xmb6toTPXIKj+BfWpKk7FnN7z97sI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MX+BoD+Z1e50YmftVp/8HhsS0F+WoJOOiQ4GgMwMYo6K+ueyjiSNbuTFdLsDsp+Ws
-	 kYfnLod6cYkL+bGXD5B+NxyM5L+4XJmvu/2DUPRna0rCTGjlJXevWfAGivIcQY2eFA
-	 YEYhwU2NoovhuYpZCkvzirjT6Wj4IESBUgf8qfNRV5DxV0gMmIFXI828sJYJJXN2Jd
-	 laDBGHsZ8yqb9r5ivZKYUEct9MOkL/3VyhgLYXayFKi51HOHd0yDEDcUPPngnvz6J0
-	 1DBxZDWLYjtHJXCpdgUN0n3q7OE2kB/IoF9WvwyKGZT2eLM6szeF0JaolI5dxWMtxk
-	 zHpTtMdBLjzrQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] pinctrl: lpass-lpi: implement .get_direction() for the GPIO driver
-Date: Tue,  3 Feb 2026 16:18:27 -0500
-Message-ID: <20260203211827.1414472-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020310-bulk-spool-db7b@gregkh>
-References: <2026020310-bulk-spool-db7b@gregkh>
+	s=k20201202; t=1770156750;
+	bh=lZ8fLajBaBKfxqRgm1/CsQg35IImhyp3WoJlRneemVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=USm5cm8LNFz7Zpvvr/WC/z9iJEDDkb8V3Cyxo1LI1WmLyMzXA4oKVJZyuas1CgaKY
+	 PpMNh1Sk0dn/mxa0vbvjKHD7DCXnllbVOXBghDQ+IRdfOyz0akw1SIoy6ZAA6Jwnd4
+	 hGupHwZer3dXRy35+1tEXGlqppADY/e9s4OtvqvIQ870n1Wib0lRq6k7Dwt/eNxreK
+	 FOAdrcppaWnJVqKFD2ilNl+0NixHLyQHch5hyk48aIDJv+c6hmhCRUHOFUMdJLYPlH
+	 rFpLsbmNIY/dXx0G1KpSDlWfi7DJ349Q3wgxtTWnAZk/Cl2KsTJvTbb2WeQEEhML7h
+	 UOrs0pL4FLJ7Q==
+Date: Tue, 3 Feb 2026 15:12:24 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: HeeSu Kim <mlksvender@gmail.com>
+Cc: a.hindborg@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com,
+	boqun@google.com, charmitro@posteo.net, dakr@kernel.org,
+	gary@garyguo.net, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lossin@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, nsc@kernel.org, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] rust: Makefile: bound rustdoc workaround to affected
+ versions
+Message-ID: <20260203221224.GA2703490@ax162>
+References: <20260203005627.GB52989@ax162>
+ <20260203234843.2834885-1-mlksvender@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203234843.2834885-1-mlksvender@gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213314-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213315-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,gmail.com,umich.edu];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 93449DECB3
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5DF04DF239
 X-Rspamd-Action: no action
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On Wed, Feb 04, 2026 at 08:48:43AM +0900, HeeSu Kim wrote:
+> The `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround was added to
+> handle a rustdoc bug where target modifiers were not properly saved [1].
+> 
+> This bug was fixed in Rust 1.90.0 [2]. Restrict the workaround to only
+> apply for Rust 1.88.x and 1.89.x versions that are affected by the
+> bug, preserving ABI compatibility checks on newer compiler versions.
+> 
+> Add `rustc-max-version` macro to `scripts/Makefile.compiler` for
+> version upper bound checks, mirroring the existing `rustc-min-version`.
+> 
+> Link: https://github.com/rust-lang/rust/issues/144521 [1]
+> Link: https://github.com/rust-lang/rust/pull/144523 [2]
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Link: https://lore.kernel.org/rust-for-linux/DG4JM9PU51M0.1YRGM9HVTY24U@garyguo.net/
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com/
+> Cc: stable@vger.kernel.org # Useful in 6.18.y and later.
+> Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
 
-[ Upstream commit 4f0d22ec60cee420125f4055af76caa0f373a3fe ]
+Acked-by: Nathan Chancellor <nathan@kernel.org>
 
-GPIO controller driver should typically implement the .get_direction()
-callback as GPIOLIB internals may try to use it to determine the state
-of a pin. Add it for the LPASS LPI driver.
+I assume Miguel will pick this up.
 
-Reported-by: Abel Vesa <abelvesa@kernel.org>
-Cc: stable@vger.kernel.org
-Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # X1E CRD
-Tested-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-[ PIN_CONFIG_LEVEL => PIN_CONFIG_OUTPUT ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/pinctrl/qcom/pinctrl-lpass-lpi.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+> ---
+> Changes in v4:
+> - Add rustc-max-version macro for cleaner version bounds
+> - Use rustc-max-version instead of test-lt for readability
+> 
+> Changes in v3:
+> - Remove Fixes: tag (this is a feature, not a fix)
+> - Use full URLs with Link: tags instead of GitHub-style references
+> - Add Link: to lore.kernel.org for Suggested-by attribution
+> - Add Cc: stable for potential backporting to 6.18.y
+> 
+> Changes in v2:
+> - Change approach: bound to affected Rust versions instead of ARM64-only
+>   (the flag is simply ignored on non-ARM64 architectures)
+> 
+>  rust/Makefile             | 3 ++-
+>  scripts/Makefile.compiler | 4 ++++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 5c0155b83454..1e8a75bc2878 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -136,7 +136,8 @@ pin_init-flags := \
+>  
+>  # `rustdoc` did not save the target modifiers, thus workaround for
+>  # the time being (https://github.com/rust-lang/rust/issues/144521).
+> -rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
+> +# The bug was fixed in Rust 1.90.0, so only apply for 1.88.x and 1.89.x.
+> +rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),$(if $(call rustc-max-version,108999),-Cunsafe-allow-abi-mismatch=fixed-x18))
+>  
+>  # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
+>  doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
+> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+> index ef91910de265..85268f6f1494 100644
+> --- a/scripts/Makefile.compiler
+> +++ b/scripts/Makefile.compiler
+> @@ -71,6 +71,10 @@ clang-min-version = $(call test-ge, $(CONFIG_CLANG_VERSION), $1)
+>  # Usage: rustc-$(call rustc-min-version, 108500) += -Cfoo
+>  rustc-min-version = $(call test-ge, $(CONFIG_RUSTC_VERSION), $1)
+>  
+> +# rustc-max-version
+> +# Usage: rustc-$(call rustc-max-version, 109000) += -Cfoo
+> +rustc-max-version = $(call test-le, $(CONFIG_RUSTC_VERSION), $1)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-index 4a9dfa267df51..4c805ad57b1cb 100644
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -298,6 +298,22 @@ static const struct pinconf_ops lpi_gpio_pinconf_ops = {
- 	.pin_config_group_set		= lpi_config_set,
- };
- 
-+static int lpi_gpio_get_direction(struct gpio_chip *chip, unsigned int pin)
-+{
-+	unsigned long config = pinconf_to_config_packed(PIN_CONFIG_OUTPUT, 0);
-+	struct lpi_pinctrl *state = gpiochip_get_data(chip);
-+	unsigned long arg;
-+	int ret;
-+
-+	ret = lpi_config_get(state->ctrl, pin, &config);
-+	if (ret)
-+		return ret;
-+
-+	arg = pinconf_to_config_argument(config);
-+
-+	return arg ? GPIO_LINE_DIRECTION_OUT : GPIO_LINE_DIRECTION_IN;
-+}
-+
- static int lpi_gpio_direction_input(struct gpio_chip *chip, unsigned int pin)
- {
- 	struct lpi_pinctrl *state = gpiochip_get_data(chip);
-@@ -395,6 +411,7 @@ static void lpi_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
- #endif
- 
- static const struct gpio_chip lpi_gpio_template = {
-+	.get_direction		= lpi_gpio_get_direction,
- 	.direction_input	= lpi_gpio_direction_input,
- 	.direction_output	= lpi_gpio_direction_output,
- 	.get			= lpi_gpio_get,
--- 
-2.51.0
+Minor meta comment: It is generally perferred to add a macro like this
+in a separate change to make it easier to backport if it is needed in
+the future.
 
+>  # ld-option
+>  # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
+>  ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
+> -- 
+> 2.52.0
+> 
 
