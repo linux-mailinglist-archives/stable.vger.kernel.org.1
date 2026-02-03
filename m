@@ -1,169 +1,182 @@
-Return-Path: <stable+bounces-213246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOHNIrABgmmYNgMAu9opvQ
-	(envelope-from <stable+bounces-213246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:09:52 +0100
+	id OA5EIHUCgmmYNgMAu9opvQ
+	(envelope-from <stable+bounces-213247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:13:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4353DA5BD
-	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:09:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBBFDA67C
+	for <lists+stable@lfdr.de>; Tue, 03 Feb 2026 15:13:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E732D302C93A
-	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 14:08:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4A21E30055E6
+	for <lists+stable@lfdr.de>; Tue,  3 Feb 2026 14:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179813A4F58;
-	Tue,  3 Feb 2026 14:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F783A63E1;
+	Tue,  3 Feb 2026 14:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wa0dU3lv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nwishdt0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF85B32D7F1
-	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 14:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD64039E6EF
+	for <stable@vger.kernel.org>; Tue,  3 Feb 2026 14:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770127679; cv=none; b=T33BvYAiCQ08Y2ZLQtcDZhPd8p0950qHoHiSr1qoSCP3mvPkD9SRBGrOzw06hMXIrukbkfOgeMsoHx/cQt9X/jCNJExPwfLBNtC33qGKtYd5LDexPnnoYVX63lxlPXTQ2sOBSkOOQoiJvQlF0OGgngmzjKeaH5hT+fpSgebWZjc=
+	t=1770127981; cv=none; b=GdAyKPnQL9jsfL2hUVws2I/ruu/qTcZ8s4z/NmO5g2lZUhDfhfRud6rjIrYF+Q+pZ5Mt+re6OFBWJWoL4F0ULSn3UOKEX/g/jDp6HAy9bchOBdo+AQ8Zq7YPpP3gZeP0qfrvHMHCv001d3vdnlinnezn7MGkeBriOz8+xVA7Yv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770127679; c=relaxed/simple;
-	bh=izQKh9ySY6dgS5+f5T5ciWeFQTcRUQSv3JznF9i1a5Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pomx+hVbereX8x89SCUGRsa7eDWhhGaFqVdraO9QQEdkQZUCOqP71kqK2l83OHnT1TlDCbtiNWXAU0V5wJZui3lM/v0vH9MR0bSv8IEzBbzBnPCDenyoRqRaGdYDgVWjBQe4qo18seCXjUYiBJUJ+CtYhaQL/SjVPzFKaSSlJVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wa0dU3lv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014F2C116D0;
-	Tue,  3 Feb 2026 14:07:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770127679;
-	bh=izQKh9ySY6dgS5+f5T5ciWeFQTcRUQSv3JznF9i1a5Y=;
-	h=Subject:To:Cc:From:Date:From;
-	b=wa0dU3lvIajtzzSvf8utPCXZ2ZzYq+K3NRDAid2jbqpCCp5MgAPVvyZBkxchEPV9/
-	 FFVADXe+UGVi8oxl0HV5aAizpzl5k3J4YwDLyNggejPagWG8ArZ5Y4zRfTSWGMhCq3
-	 gY3a5A9IiIt51WHsPuj5PWMdzXF9kF4ecXUWflZU=
-Subject: FAILED: patch "[PATCH] pinctrl: lpass-lpi: implement .get_direction() for the GPIO" failed to apply to 5.15-stable tree
-To: bartosz.golaszewski@oss.qualcomm.com,abel.vesa@oss.qualcomm.com,abelvesa@kernel.org,konrad.dybcio@oss.qualcomm.com,linusw@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 15:07:47 +0100
-Message-ID: <2026020347-unwoven-unfounded-f900@gregkh>
+	s=arc-20240116; t=1770127981; c=relaxed/simple;
+	bh=7RlcyS573VQ5uGYzpZXgAvbLBtMc8WK66jeTo0p1dEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u4EZBQZ7BhJXsJ+F5mwkftTysurtzbr/aNh/elv8J2hVR9VIU7EvdCl2Xmy6jeCIp1euuRNLUst+l7U04ryxuzAwdlqhCL5zBd6ji+u/mcsNq+58vUIgt4IePmwA1fVDJiR8jMc/V/pQH9fQ9qmC+O84H2Y1hH5p+zq+3DrHu+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nwishdt0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770127979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sJEv2TlFY7kRX1pL8U9xnH/aTc0GZj1kkuKxt7AjSMU=;
+	b=Nwishdt0oTkcQUPI0HnoLX13d4A33hx0kLZo3gfCCsY4oBSRkbKzyn2hUNa+QQrX7NmXVR
+	FnAjiW+rnDdFQQebp/HwuMXrYSpKPk3dkJrQiPFt4Zgbnd2VLmTMn5mMGY2opRCXk/7N7v
+	zgRxXIECQukYcp3ypxLXGl9mPL4j2iI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-u4WCP6f_MhaZa6cDpI8f3w-1; Tue,
+ 03 Feb 2026 09:12:55 -0500
+X-MC-Unique: u4WCP6f_MhaZa6cDpI8f3w-1
+X-Mimecast-MFC-AGG-ID: u4WCP6f_MhaZa6cDpI8f3w_1770127974
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B5EC0180063F;
+	Tue,  3 Feb 2026 14:12:54 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.35])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0377A18008FF;
+	Tue,  3 Feb 2026 14:12:52 +0000 (UTC)
+From: Ming Lei <ming.lei@redhat.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org
+Cc: Ming Lei <ming.lei@redhat.com>,
+	stable@vger.kernel.org,
+	Jay Shin <jaeshin@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	coregee2000@gmail.com
+Subject: [PATCH] blk-cgroup: fix UAF in __blkcg_rstat_flush()
+Date: Tue,  3 Feb 2026 22:12:39 +0800
+Message-ID: <20260203141239.73274-1-ming.lei@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213246-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213247-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[redhat.com,vger.kernel.org,kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ming.lei@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E4353DA5BD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DEBBFDA67C
 X-Rspamd-Action: no action
 
+When multiple blkgs in the same blkcg are released concurrently,
+a use-after-free can occur. The race happens when one blkg's
+__blkcg_rstat_flush() removes another blkg's iostat entries via
+llist_del_all(). The second blkg sees an empty list and proceeds
+to free itself while the first is still iterating over its entries.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Fix by deferring blkg_free() via an additional call_rcu(). The second
+RCU grace period ensures any concurrent flush holding rcu_read_lock()
+has completed before the blkg memory is freed.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 4f0d22ec60cee420125f4055af76caa0f373a3fe
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020347-unwoven-unfounded-f900@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 4f0d22ec60cee420125f4055af76caa0f373a3fe Mon Sep 17 00:00:00 2001
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Date: Mon, 26 Jan 2026 14:56:27 +0100
-Subject: [PATCH] pinctrl: lpass-lpi: implement .get_direction() for the GPIO
- driver
-
-GPIO controller driver should typically implement the .get_direction()
-callback as GPIOLIB internals may try to use it to determine the state
-of a pin. Add it for the LPASS LPI driver.
-
-Reported-by: Abel Vesa <abelvesa@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # X1E CRD
-Tested-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Cc: Jay Shin <jaeshin@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
+Reported-by: coregee2000@gmail.com
+Closes: https://lore.kernel.org/linux-block/CAHPqNmwT9oRpem3J3erS_W0uSQND47LGGSBsNxP8E6uSUish1w@mail.gmail.com/
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+---
+ block/blk-cgroup.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-index 78212f992843..76aed3296279 100644
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -312,6 +312,22 @@ static const struct pinconf_ops lpi_gpio_pinconf_ops = {
- 	.pin_config_group_set		= lpi_config_set,
- };
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 3cffb68ba5d8..dc0cccfdca68 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -160,6 +160,20 @@ static void blkg_free(struct blkcg_gq *blkg)
+ 	schedule_work(&blkg->free_work);
+ }
  
-+static int lpi_gpio_get_direction(struct gpio_chip *chip, unsigned int pin)
++/*
++ * RCU callback to free blkg after an additional grace period.
++ * This ensures any concurrent __blkcg_rstat_flush() that might have
++ * removed our iostat entries via llist_del_all() has completed.
++ */
++static void __blkg_release_free_rcu(struct rcu_head *rcu)
 +{
-+	unsigned long config = pinconf_to_config_packed(PIN_CONFIG_LEVEL, 0);
-+	struct lpi_pinctrl *state = gpiochip_get_data(chip);
-+	unsigned long arg;
-+	int ret;
++	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
 +
-+	ret = lpi_config_get(state->ctrl, pin, &config);
-+	if (ret)
-+		return ret;
-+
-+	arg = pinconf_to_config_argument(config);
-+
-+	return arg ? GPIO_LINE_DIRECTION_OUT : GPIO_LINE_DIRECTION_IN;
++	/* release the blkcg and parent blkg refs this blkg has been holding */
++	css_put(&blkg->blkcg->css);
++	blkg_free(blkg);
 +}
 +
- static int lpi_gpio_direction_input(struct gpio_chip *chip, unsigned int pin)
+ static void __blkg_release(struct rcu_head *rcu)
  {
- 	struct lpi_pinctrl *state = gpiochip_get_data(chip);
-@@ -409,6 +425,7 @@ static void lpi_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
- #endif
+ 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
+@@ -178,9 +192,14 @@ static void __blkg_release(struct rcu_head *rcu)
+ 	for_each_possible_cpu(cpu)
+ 		__blkcg_rstat_flush(blkcg, cpu);
  
- static const struct gpio_chip lpi_gpio_template = {
-+	.get_direction		= lpi_gpio_get_direction,
- 	.direction_input	= lpi_gpio_direction_input,
- 	.direction_output	= lpi_gpio_direction_output,
- 	.get			= lpi_gpio_get,
+-	/* release the blkcg and parent blkg refs this blkg has been holding */
+-	css_put(&blkg->blkcg->css);
+-	blkg_free(blkg);
++	/*
++	 * Defer freeing via another call_rcu() to ensure any concurrent
++	 * __blkcg_rstat_flush() (under rcu_read_lock) that might have removed
++	 * our iostat entries via llist_del_all() has completed its iteration.
++	 * The second grace period guarantees those RCU read-side critical
++	 * sections have finished.
++	 */
++	call_rcu(&blkg->rcu_head, __blkg_release_free_rcu);
+ }
+ 
+ /*
+-- 
+2.47.0
 
 
