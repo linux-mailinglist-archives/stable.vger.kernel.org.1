@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-214200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACOAAtlng2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:01 +0100
+	id gJPnJ+Fog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729BBE9018
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB33E92C2
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F1043114DA7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1745830420A2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42DB41B358;
-	Wed,  4 Feb 2026 15:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B7041322A;
+	Wed,  4 Feb 2026 15:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpGw2eio"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAliCEiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E1E40FD81;
-	Wed,  4 Feb 2026 15:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C111A3F076C;
+	Wed,  4 Feb 2026 15:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218898; cv=none; b=YQji5zGCIfKtaS6UvKs3+t9IeE5APRDavcbatTajGq6yDDZlX2tUPFKcSBaZx3KqjpIW/vqXgKv8jqEIpDwOTC+E2pTiqJF2ftI4iJKiqrjy3CFuGhfQ6CLQRI6fzxBW5nYl1hIHT/heDQoRqOFv00Vu92pr8bJw7c62xEjPePk=
+	t=1770219310; cv=none; b=AxUaNEHK3okDGz5dLcJN74iCsxJOAOUWdpBlWiQThH6iEC8T0UvtJcOTU9vO+etoc00UlHkWGm0Szlgzy+slBIg0ocYrhpcZ0zeHwOp5XTdtupHOTJGx+OgAHt/ZHyPXBFW/VScLw9WnYUIzBy9sSDZXErUtoYl1H/9UuRU53zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218898; c=relaxed/simple;
-	bh=5eJLNObIloBjI8rjHIphd9xQ29JcGenpLuGDcLRXN7E=;
+	s=arc-20240116; t=1770219310; c=relaxed/simple;
+	bh=FWtSHNZ16WuwizBP16mIc9b5oUkq/ovx/5wkfl0oEkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tGwe3gEZ94tiy02Poe6yg7pDL8yvpb0UwXtPux8mQjfc3tdYZnAg4TQVTLcPq3tGYnntCWYakT1x7EGHarxPNZ3gPgjgtJEsfP5mzGZ6IoQXYz9nBdeXaemrGOnKCa0bn2RK/hy/XS0FXogpPgcVdxU/1H8jQXpuq6zKRZQJW/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpGw2eio; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31CFC116C6;
-	Wed,  4 Feb 2026 15:28:17 +0000 (UTC)
+	 MIME-Version; b=RdZKDB2VAz0Fb8Qgj4vY3+rf7OVSbtRLy4hxVwkh56bx5LIwIPzMVtjUAi1mzdturLtOjY0M3Yz8TYs+gYrn8NW6/8B9QL5MuQw+WdcDfhHtnBd/cmQllFp29JiMfwnlO+6Izb83PAzabhwBXM3cXDylEU1mtoIE3tM3JN8lNUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAliCEiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B80C4CEF7;
+	Wed,  4 Feb 2026 15:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218898;
-	bh=5eJLNObIloBjI8rjHIphd9xQ29JcGenpLuGDcLRXN7E=;
+	s=korg; t=1770219310;
+	bh=FWtSHNZ16WuwizBP16mIc9b5oUkq/ovx/5wkfl0oEkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpGw2eioHvKY9oWju/28ruF7TRW5jNdKQ+VWhYq8lD3KTNdRS+Y2b57Oe+rObuRrQ
-	 qRahVS579UhtixU6coH7vksNXIpTmLjEhnp7UZlNIZt4M9t+V/pmk8q5Rj3cbDdF2S
-	 Parz8JpxAPoyLjjzlymk9ivgnSx1whpPmJS18uUk=
+	b=HAliCEiqn+ij8pFis2ZrKWkWY5Y9JkNgvZXKeK5vKHQi8xay5K4vYHHEGPwbqNxR9
+	 KwCI+N6nQPbfxU/YILJ0UuRWM14xuEZBIfit7+4TTlMujPyXTugTOK7iNgqEvV+2yz
+	 hE/fqAV8Z7Y9vyZtlSwlshiQ5dbpliKXgUI9OrxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 87/87] bpf/selftests: test_select_reuseport_kern: Remove unused header
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>
+Subject: [PATCH 6.18 103/122] drm/msm/a6xx: fix bogus hwcg register updates
 Date: Wed,  4 Feb 2026 15:41:25 +0100
-Message-ID: <20260204143850.061076726@linuxfoundation.org>
+Message-ID: <20260204143855.558139635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +66,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214200-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214324-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url,suse.com:email]
-X-Rspamd-Queue-Id: 729BBE9018
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 5DB33E92C2
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 93cf4e537ed0c5bd9ba6cbdb2c33864547c1442f upstream.
+commit dedb897f11c5d7e32c0e0a0eff7cec23a8047167 upstream.
 
-test_select_reuseport_kern.c is currently including <stdlib.h>, but it
-does not use any definition from there.
+The hw clock gating register sequence consists of register value pairs
+that are written to the GPU during initialisation.
 
-Remove stdlib.h inclusion from test_select_reuseport_kern.c
+The a690 hwcg sequence has two GMU registers in it that used to amount
+to random writes in the GPU mapping, but since commit 188db3d7fe66
+("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
+the updated offsets now lie outside the mapping. This in turn breaks
+boot of machines like the Lenovo ThinkPad X13s.
 
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250227-remove_wrong_header-v1-1-bc94eb4e2f73@bootlin.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[shung-hsi.yu: Fix compilation error mentioned in footer of Alexis'
-patch with newer glibc header:
+Note that the updates of these GMU registers is already taken care of
+properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
+properties on a6xx too"), but for some reason these two entries were
+left in the table.
 
-  [...]
-    CLNG-BPF [test_progs-cpuv4] test_select_reuseport_kern.bpf.o
-  In file included from progs/test_select_reuseport_kern.c:4:
-  /usr/include/bits/floatn.h:83:52: error: unsupported machine mode
-  '__TC__'
-     83 | typedef _Complex float __cfloat128 __attribute__ ((__mode__
-  (__TC__)));
-        |                                                    ^
-  /usr/include/bits/floatn.h:97:9: error: __float128 is not supported on
-  this target
-     97 | typedef __float128 _Float128;
-
-I'm not certain when the problem starts to occur, but I'm quite sure
-test_select_reuseport_kern.c were not meant to be using the C standard
-library in the first place.]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
+Cc: stable@vger.kernel.org	# 6.5
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
+Patchwork: https://patchwork.freedesktop.org/patch/695778/
+Message-ID: <20251221164552.19990-1-johan@kernel.org>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+(cherry picked from commit dcbd2f8280eea2c965453ed8c3c69d6f121e950b)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_catalog.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright (c) 2018 Facebook */
+--- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+@@ -501,8 +501,6 @@ static const struct adreno_reglist a690_
+ 	{REG_A6XX_RBBM_CLOCK_CNTL_GMU_GX, 0x00000222},
+ 	{REG_A6XX_RBBM_CLOCK_DELAY_GMU_GX, 0x00000111},
+ 	{REG_A6XX_RBBM_CLOCK_HYST_GMU_GX, 0x00000555},
+-	{REG_A6XX_GPU_GMU_AO_GMU_CGC_DELAY_CNTL, 0x10111},
+-	{REG_A6XX_GPU_GMU_AO_GMU_CGC_HYST_CNTL, 0x5555},
+ 	{}
+ };
  
--#include <stdlib.h>
- #include <linux/in.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
 
 
 
