@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-213472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BJYANBcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:56 +0100
+	id IAPwI2Ffg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A4EE7753
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F00DE7C47
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B6FB303BB24
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C4343302935B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112D9274B39;
-	Wed,  4 Feb 2026 14:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7E24218A5;
+	Wed,  4 Feb 2026 14:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVADDEz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T34pblz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CC3244675;
-	Wed,  4 Feb 2026 14:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5BC413254;
+	Wed,  4 Feb 2026 14:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216453; cv=none; b=aC2z3wafIwQJZES5/swa4cQItaSmYOY6tMVI5aIV6gG/7dX1Y6P1SqiLQeKCw1KPUrE7cpBoxkwQp39gEmIE/k85l52TyHjr5sXUPI/knoXy8kNgBH5HxKcXUBJ/PTrwxX7UWNw6QjdEfCVzvQ0zfn9SOWDB1CSBhxbST27YWBQ=
+	t=1770217103; cv=none; b=Try70vuL3jKwD3FVJefYQUoy/VKSV6XvevEVgMvOiW+8dunxWlNeKhRBYR0d/QPX8m/xy09uDERSV6274I4eGKE5fWiSl0iz0wLzEQ+Qp9Q0n5thFGYVy+wYmU9Bq5LnjvHdfeaWCjpwcpGSW4bvysvvwvSgs6bSOBMw1kKBZoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216453; c=relaxed/simple;
-	bh=HLRAy30et5aVHBLvzIoXybDCq5FEwiUZZS/z6Jy7UV0=;
+	s=arc-20240116; t=1770217103; c=relaxed/simple;
+	bh=vJP5m2f3khQBEgmgs+9+twt8C4ydITpqEKXX1NFAMJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p0kAtPYk1rss9TxbXfXiJMIMvnJ1kbgFoQPGJz8FU/NhOyia2ziUuQCgAQVSjrjgzry7QYsWW9kgsPhQb1emDfcof6VWwYG4PFG+gdgrstrE/Fxoh5xO3DSC+790Xqp3Tb0JmLCYrMCt1DJ4WdpFBut52i1b/IElgFSyGJxmtX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVADDEz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB0CC4CEF7;
-	Wed,  4 Feb 2026 14:47:33 +0000 (UTC)
+	 MIME-Version; b=ZpUI0+I6XdWfZiw/LCSI5pRBo6pqww5UU6oIx5ZSSvad2uzgjdqHYd/juL9h8/nOn5bQC8aGPye9iSgH6OVTEbKZFsOIf47zltechgYbl1GyFCnvEUNsgtV2jz6joVR5oYjlHWNcF/rUyJMjh/ZDOqFAX2p1NLiczL4PfqjU8LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T34pblz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E0EC4CEF7;
+	Wed,  4 Feb 2026 14:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216453;
-	bh=HLRAy30et5aVHBLvzIoXybDCq5FEwiUZZS/z6Jy7UV0=;
+	s=korg; t=1770217103;
+	bh=vJP5m2f3khQBEgmgs+9+twt8C4ydITpqEKXX1NFAMJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVADDEz7KkdnHMDxO6sTA76WwjJCsvWBWhmUWTTOR+lQS3MZPzA/kS7kUN0YUN4RW
-	 KwWm4c9Lj8CsTAwbYKf1YOe2bXkQ21UZfDsU8/I/xY0b2b9msVXDra4nYjz060IU5u
-	 psesHHQ6zwMe/QDXVdnvL8jouJn19F3C/sXaY+WE=
+	b=1T34pblzHjHyAE1vJombcfHG+srsZ4Gr55VVyad/T+gws8/AyrVgKgx+Lwrpn9Ex/
+	 3jKe1fuwG4qYTfKqPoWB36CYW8EDeMvp22Q/xfzRwEzKCpkOfaKAQURdxJle429+3R
+	 rq99freju0ib/Cc28YPrRxhbOc/ZHypffeeOMDIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andreas=20K=C3=BCbrich?= <andreas.kuebrich@spektra-dresden.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 091/161] iio: dac: ad5686: add AD5695R to ad5686_chip_info_tbl
+	Yang Shen <shenyang39@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 5.15 123/206] uacce: implement mremap in uacce_vm_ops to return -EPERM
 Date: Wed,  4 Feb 2026 15:39:14 +0100
-Message-ID: <20260204143855.019784167@linuxfoundation.org>
+Message-ID: <20260204143902.633218047@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213472-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213667-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 78A4EE7753
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7F00DE7C47
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kübrich, Andreas <andreas.kuebrich@spektra-dresden.de>
+From: Yang Shen <shenyang39@huawei.com>
 
-commit 441ac29923c9172bc5e4b2c4f52ae756192f5715 upstream.
+commit 02695347be532b628f22488300d40c4eba48b9b7 upstream.
 
-The chip info for this variant (I2C, four channels, 14 bit, internal
-reference) seems to have been left out due to oversight, so
-ad5686_chip_info_tbl[ID_AD5695R] is all zeroes. Initialisation of an
-AD5695R still succeeds, but the resulting IIO device has no channels and no
-/dev/iio:device* node.
+The current uacce_vm_ops does not support the mremap operation of
+vm_operations_struct. Implement .mremap to return -EPERM to remind
+users.
 
-Add the missing chip info to the table.
+The reason we need to explicitly disable mremap is that when the
+driver does not implement .mremap, it uses the default mremap
+method. This could lead to a risk scenario:
 
-Fixes: 4177381b4401 ("iio:dac:ad5686: Add AD5671R/75R/94/94R/95R/96/96R support")
-Signed-off-by: Andreas Kübrich <andreas.kuebrich@spektra-dresden.de>
+An application might first mmap address p1, then mremap to p2,
+followed by munmap(p1), and finally munmap(p2). Since the default
+mremap copies the original vma's vm_private_data (i.e., q) to the
+new vma, both munmap operations would trigger vma_close, causing
+q->qfr to be freed twice(qfr will be set to null here, so repeated
+release is ok).
+
+Fixes: 015d239ac014 ("uacce: add uacce driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Yang Shen <shenyang39@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-4-huangchenghai2@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5686.c |    6 ++++++
+ drivers/misc/uacce/uacce.c |    6 ++++++
  1 file changed, 6 insertions(+)
 
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -402,6 +402,12 @@ static const struct ad5686_chip_info ad5
- 		.num_channels = 4,
- 		.regmap_type = AD5686_REGMAP,
- 	},
-+	[ID_AD5695R] = {
-+		.channels = ad5685r_channels,
-+		.int_vref_mv = 2500,
-+		.num_channels = 4,
-+		.regmap_type = AD5686_REGMAP,
-+	},
- 	[ID_AD5696] = {
- 		.channels = ad5686_channels,
- 		.num_channels = 4,
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -208,8 +208,14 @@ static void uacce_vma_close(struct vm_ar
+ 	kfree(qfr);
+ }
+ 
++static int uacce_vma_mremap(struct vm_area_struct *area)
++{
++	return -EPERM;
++}
++
+ static const struct vm_operations_struct uacce_vm_ops = {
+ 	.close = uacce_vma_close,
++	.mremap = uacce_vma_mremap,
+ };
+ 
+ static int uacce_fops_mmap(struct file *filep, struct vm_area_struct *vma)
 
 
 
