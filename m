@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-213583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFArMGBfg2lzmAMAu9opvQ
-	(envelope-from <stable+bounces-213583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:52 +0100
+	id qEukCCJkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:22:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDADE7C45
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8B6E85FA
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 618CD3100A3C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38ED93064501
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA723D413D;
-	Wed,  4 Feb 2026 14:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F52428492;
+	Wed,  4 Feb 2026 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGOaSFpm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqBSf6A9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C687741B37D;
-	Wed,  4 Feb 2026 14:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0907642848B;
+	Wed,  4 Feb 2026 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216819; cv=none; b=lDQ8qH4sGci8IwtBr9qrmdmRgLlvKgkDf1E8FdNeYn5Im0SHXouW/TlymlZWUexLCXEQXbGAgAsR0ydyQa9DNRsCOVOv0dCj16eZzwgWdJ7eTMUe7Ryi2hwO7gzRZpSwP0v5gwa1NhTqPe47lBod8PxUgDRCJ0Wfqb7UYy/qy/Q=
+	t=1770217716; cv=none; b=nxVzBuEGpRKSchNAzz3NbuheWVyNga/dFa1yTBStQ+SZTkFH8WrNuWi5n4E/8Q1m4cm7YdUPG17nfa7xBGGtQsrrgw5/917Gwwa5oBpG2XN0tMjBXn8uj2PlcwlgOH95tk5gYJ25wY7z0LxQZIRR8PXjQyh6b77+EAyxY3CEvgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216819; c=relaxed/simple;
-	bh=I+o0vftEQaFbL6S8I852RiKbbQOYeOBI0IuWq0FLiCU=;
+	s=arc-20240116; t=1770217716; c=relaxed/simple;
+	bh=EfNSAKmyAQfVuP6mZh69QsHEKJ0MRIFFcWbBBNDkldI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEkqGc9whatY6pCn2afHT4RqZUlcVDmisFU7j83tNxvui8eS8DiJinPhORnbLOwbj3q8/yzaZlszhSwvbiq9ydLf9t0jzPmzam7FwMG6rKkbEnYgYtT9Z0s832O640U1b+DZ5w26OnWg1L7DyQcttIbW8sKjWLeUKP4QP9L9Nd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGOaSFpm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47713C4CEF7;
-	Wed,  4 Feb 2026 14:53:39 +0000 (UTC)
+	 MIME-Version; b=krwl8dqsz2sSECACEYS4aEdX4PL9Jyc0gC4pQpWz65hiBqKTsurGe94xo5SJWUg6jB9IxKuQv8ivrCEjEfHQhRXrPO92oU+IxpK7j75rAvgZiAdRJYeFuYTdAaVd30h6HzdEiStaehCkSxzwkfj0Jk4zqKjiTrMf9Tor+YfLBhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqBSf6A9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6914AC4CEF7;
+	Wed,  4 Feb 2026 15:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216819;
-	bh=I+o0vftEQaFbL6S8I852RiKbbQOYeOBI0IuWq0FLiCU=;
+	s=korg; t=1770217715;
+	bh=EfNSAKmyAQfVuP6mZh69QsHEKJ0MRIFFcWbBBNDkldI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGOaSFpmGlr3jqUbEixeVXIHZBskXLZjNoD7GQLpUlRhZ7AN3c2dxzELW1dzjlQ5u
-	 igzM0vdPmX6UCI+UYl4ZElYDVlySvXUaGEYkJvtuxz9c+u+E/115N0Zb24HBy2KSyR
-	 RaqFj1b4OHKz9jVLU9eTNNOuSaQne++/vppTSIk8=
+	b=iqBSf6A90qLQ272sQFpqj62Xti80WzjC7LcByJgW4d6PjeSuk7x9WeYux00boUK5f
+	 CINCXPCmPNOlp2eR+nZbJd7+UUGxw6yyXe3504ICMplPMOEmWNqFBSHwS76X2BprRL
+	 xjVVFetVoFGY3aKcaqxO+vr+amW610BMK64iT71g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 040/206] mm/page_alloc: make percpu_pagelist_high_fraction reads lock-free
-Date: Wed,  4 Feb 2026 15:37:51 +0100
-Message-ID: <20260204143859.655562836@linuxfoundation.org>
+	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 098/280] bonding: limit BOND_MODE_8023AD to Ethernet devices
+Date: Wed,  4 Feb 2026 15:37:52 +0100
+Message-ID: <20260204143913.179457754@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,97 +68,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213583-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[suse.cz:query timed out,linux-foundation.org:query timed out];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213848-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[hannes.cmpxchg.org:query timed out,jackmanb.google.com:query timed out,ziy.nvidia.com:query timed out,aboorvad.linux.ibm.com:query timed out,akpm.linux-foundation.org:query timed out,surenb.google.com:query timed out,mhocko.suse.com:query timed out];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email]
-X-Rspamd-Queue-Id: 5EDADE7C45
+	TAGGED_RCPT(0.00)[stable,9c081b17773615f24672,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,jvosburgh.net:email]
+X-Rspamd-Queue-Id: 3A8B6E85FA
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b9efe36b5e3eb2e91aa3d706066428648af034fc upstream.
+[ Upstream commit c84fcb79e5dbde0b8d5aeeaf04282d2149aebcf6 ]
 
-When page isolation loops indefinitely during memory offline, reading
-/proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_lock,
-causing hung task warnings.
+BOND_MODE_8023AD makes sense for ARPHRD_ETHER only.
 
-Make procfs reads lock-free since percpu_pagelist_high_fraction is a
-simple integer with naturally atomic reads, writers still serialize via
-the mutex.
+syzbot reported:
 
-This prevents hung task warnings when reading the procfs file during
-long-running memory offline operations.
+ BUG: KASAN: global-out-of-bounds in __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+ BUG: KASAN: global-out-of-bounds in __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+Read of size 16 at addr ffffffff8bf94040 by task syz.1.3580/19497
 
-[akpm@linux-foundation.org: add comment, per Michal]
-  Link: https://lkml.kernel.org/r/aS_y9AuJQFydLEXo@tiehlicka
-Link: https://lkml.kernel.org/r/20251201060009.1420792-1-aboorvad@linux.ibm.com
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 1 UID: 0 PID: 19497 Comm: syz.1.3580 Tainted: G             L      syzkaller #0 PREEMPT(full)
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Call Trace:
+ <TASK>
+  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xca/0x240 mm/kasan/report.c:482
+  kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+  kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+  __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
+  __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+  __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+  __dev_mc_add net/core/dev_addr_lists.c:868 [inline]
+  dev_mc_add+0xa1/0x120 net/core/dev_addr_lists.c:886
+  bond_enslave+0x2b8b/0x3ac0 drivers/net/bonding/bond_main.c:2180
+  do_set_master+0x533/0x6d0 net/core/rtnetlink.c:2963
+  do_setlink+0xcf0/0x41c0 net/core/rtnetlink.c:3165
+  rtnl_changelink net/core/rtnetlink.c:3776 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3935 [inline]
+  rtnl_newlink+0x161c/0x1c90 net/core/rtnetlink.c:4072
+  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6958
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2550
+  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1344
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1894
+  sock_sendmsg_nosec net/socket.c:727 [inline]
+  __sock_sendmsg+0x21c/0x270 net/socket.c:742
+  ____sys_sendmsg+0x505/0x820 net/socket.c:2592
+  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2646
+  __sys_sendmsg+0x164/0x220 net/socket.c:2678
+  do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+  __do_fast_syscall_32+0x1dc/0x560 arch/x86/entry/syscall_32.c:307
+  do_fast_syscall_32+0x34/0x80 arch/x86/entry/syscall_32.c:332
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+ </TASK>
+
+The buggy address belongs to the variable:
+ lacpdu_mcast_addr+0x0/0x40
+
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Reported-by: syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6966946b.a70a0220.245e30.0002.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20260113191201.3970737-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -8764,11 +8764,19 @@ int percpu_pagelist_high_fraction_sysctl
- 	int old_percpu_pagelist_high_fraction;
- 	int ret;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index cefe37c447a26..dd0ea86d7934a 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1906,6 +1906,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	 */
+ 	if (!bond_has_slaves(bond)) {
+ 		if (bond_dev->type != slave_dev->type) {
++			if (slave_dev->type != ARPHRD_ETHER &&
++			    BOND_MODE(bond) == BOND_MODE_8023AD) {
++				SLAVE_NL_ERR(bond_dev, slave_dev, extack,
++					     "8023AD mode requires Ethernet devices");
++				return -EINVAL;
++			}
+ 			slave_dbg(bond_dev, slave_dev, "change device type from %d to %d\n",
+ 				  bond_dev->type, slave_dev->type);
  
-+	/*
-+	 * Avoid using pcp_batch_high_lock for reads as the value is read
-+	 * atomically and a race with offlining is harmless.
-+	 */
-+
-+	if (!write)
-+		return proc_dointvec_minmax(table, write, buffer, length, ppos);
-+
- 	mutex_lock(&pcp_batch_high_lock);
- 	old_percpu_pagelist_high_fraction = percpu_pagelist_high_fraction;
- 
- 	ret = proc_dointvec_minmax(table, write, buffer, length, ppos);
--	if (!write || ret < 0)
-+	if (ret < 0)
- 		goto out;
- 
- 	/* Sanity checking to avoid pcp imbalance */
+-- 
+2.51.0
+
 
 
 
