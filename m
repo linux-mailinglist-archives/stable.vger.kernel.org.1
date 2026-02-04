@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-214046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MPzDAJpg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:58 +0100
+	id QFZXK55og2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F767E9324
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422BFE9239
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8685A30E6D70
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:21:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A602319B06D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E112D593E;
-	Wed,  4 Feb 2026 15:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A134E29AB1D;
+	Wed,  4 Feb 2026 15:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2diM6+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xhmu4uqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF23529993F;
-	Wed,  4 Feb 2026 15:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656FC1E520C;
+	Wed,  4 Feb 2026 15:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218380; cv=none; b=tejChqO+IhqWQT+vigXAsxwNJzQMwrPEpLkWivnCy9YJqjndoTM75hUAhWF3cS/yQYwL++K8f9/WBR03dOqC+5kEr3rP5WxBFOVQKgretAGoJeHxceLTWtKTzOu7RqY6YNylV8+R/cYjMjQwW3SBeonCcFRAr7clkKqBfL6wlGw=
+	t=1770218990; cv=none; b=TISiAyPFDtDliUEF+7OE5zNerxophjolXiE367SL83SwFpOFKXE9YA0EKVuOf1N+7SLUYxL/O/EBV25uPIpS/QlL+ieNR3YCDhgHPf7enIuJiJqeQFFG3PDbnNIxzal1INOFWygSdPxH7rxJgbiApHZTJbDfliNw7JyQVVo+AJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218380; c=relaxed/simple;
-	bh=BaTNUOnM1ukr2lfLTwya4RELFm6sqwucgez0azHTjcs=;
+	s=arc-20240116; t=1770218990; c=relaxed/simple;
+	bh=mDOAlQVeArNbws+JEPXAr/VFQbyn5+Glqv3uuAiVqdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zsh3y9W2qPlX085Jz7WBCB9mVa3D14/eJiBHhriRoxLasNVoAymQC8+NT/1l8a0ueNF4XxHkrJLROEsnvBf7/0MHX37j455oQiA7FqPUHq2KVo0YpuvdGKoS34+7zDit+D0Htsb4CWBt/jLoKx+h2I4cD6yYjGmXYpzWvmOyRZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2diM6+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53749C116C6;
-	Wed,  4 Feb 2026 15:19:40 +0000 (UTC)
+	 MIME-Version; b=q9ezd7oJUTkyxQkppq+4la+TPYnDvgWvBH0Hfsqv/gV/JgQ7x7n00++mPzCJKZYhZoi5DlZmhmhpOFtW9li7LmyZ3365WPDkJEvJ8zok9wEp3gRboWrXRR35vnrFl6K5XSfDxL2n33+ykWj/rrVAeTlbOhRouOAw8dkv2XokpBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xhmu4uqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDBDC4CEF7;
+	Wed,  4 Feb 2026 15:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218380;
-	bh=BaTNUOnM1ukr2lfLTwya4RELFm6sqwucgez0azHTjcs=;
+	s=korg; t=1770218990;
+	bh=mDOAlQVeArNbws+JEPXAr/VFQbyn5+Glqv3uuAiVqdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2diM6+Y2pHzhQi1uz2uymNTqhVujEQ64S4f1hZjnuAkBpiFtZXG5AZ9WAyktlXid
-	 BsaMPQx8zYJeDzWOadoabcyWFGxhOlcf/8wC2lXw/oh9ll1GLROR611zy5ao1HJBLz
-	 61suA/qQbvtBS2ylV3nK/vg4M9SZvzNQBo1/wllg=
+	b=Xhmu4uqnwNHQGxGb4F3nWH+P89JQkUwk99y8zU4OGzebrsMGQEyjamGI2xd+ksT03
+	 nm0AynPQqt5RbniSR+uBimuZyyQpRp9u8QxY0Rh7a+upt6t+r4b0uUS52NURL3LXTR
+	 2cLhYTv4TwInV0xBPn8XaRFGEWeOuMSs4613RgLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Gal Pressman <gal@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 14/72] net/mlx5e: Report rx_discards_phy via rx_dropped
+Subject: [PATCH 6.18 035/122] wifi: mac80211: parse all TTLM entries
 Date: Wed,  4 Feb 2026 15:40:17 +0100
-Message-ID: <20260204143846.134096846@linuxfoundation.org>
+Message-ID: <20260204143853.124338264@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +65,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,nvidia.com];
-	TAGGED_FROM(0.00)[bounces-214046-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214228-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4F767E9324
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 422BFE9239
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit c9cfced17365b1df8c6ae6cd5db56aebd7ed9b57 ]
+[ Upstream commit 3fa2886d11d4545dc0dcfd0759ffbd03f88b5410 ]
 
-We noticed a high number of rx_discards_phy events on certain servers while
-running `ethtool -S`. However, this critical counter is not currently
-included in the standard /proc/net/dev statistics file, making it difficult
-to monitor effectively—especially given the diversity of vendors across a
-large fleet of servers.
+For the follow up patch, we need to properly parse TTLM entries that do
+not have a switch time. Change the logic so that ieee80211_parse_adv_t2l
+returns usable values in all non-error cases. Before the values filled
+in were technically incorrect but enough for ieee80211_process_adv_ttlm.
 
-Let's report it via the standard rx_dropped metric.
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241210022706.6665-1-laoar.shao@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 476681f10cc1 ("net/mlx5e: Account for netdev stats in ndo_get_stats64")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260118093904.ccd324e2dd59.I69f0bee0a22e9b11bb95beef313e305dab17c051@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 1eab33aa63c9 ("wifi: mac80211: correctly decode TTLM with default link map")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/mlme.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 03201bcda1a68..c72c085be603c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3760,6 +3760,7 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f3138d1585353..d70163c0b9e32 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7014,10 +7014,6 @@ ieee80211_parse_adv_t2l(struct ieee80211_sub_if_data *sdata,
+ 	pos = (void *)ttlm->optional;
+ 	control	= ttlm->control;
+ 
+-	if ((control & IEEE80211_TTLM_CONTROL_DEF_LINK_MAP) ||
+-	    !(control & IEEE80211_TTLM_CONTROL_SWITCH_TIME_PRESENT))
+-		return 0;
+-
+ 	if ((control & IEEE80211_TTLM_CONTROL_DIRECTION) !=
+ 	    IEEE80211_TTLM_DIRECTION_BOTH) {
+ 		sdata_info(sdata, "Invalid advertised T2L map direction\n");
+@@ -7027,21 +7023,28 @@ ieee80211_parse_adv_t2l(struct ieee80211_sub_if_data *sdata,
+ 	link_map_presence = *pos;
+ 	pos++;
+ 
+-	ttlm_info->switch_time = get_unaligned_le16(pos);
++	if (control & IEEE80211_TTLM_CONTROL_SWITCH_TIME_PRESENT) {
++		ttlm_info->switch_time = get_unaligned_le16(pos);
+ 
+-	/* Since ttlm_info->switch_time == 0 means no switch time, bump it
+-	 * by 1.
+-	 */
+-	if (!ttlm_info->switch_time)
+-		ttlm_info->switch_time = 1;
++		/* Since ttlm_info->switch_time == 0 means no switch time, bump
++		 * it by 1.
++		 */
++		if (!ttlm_info->switch_time)
++			ttlm_info->switch_time = 1;
+ 
+-	pos += 2;
++		pos += 2;
++	}
+ 
+ 	if (control & IEEE80211_TTLM_CONTROL_EXPECTED_DUR_PRESENT) {
+ 		ttlm_info->duration = pos[0] | pos[1] << 8 | pos[2] << 16;
+ 		pos += 3;
  	}
  
- 	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
-+	stats->rx_dropped = PPORT_2863_GET(pstats, if_in_discards);
- 
- 	stats->rx_length_errors =
- 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
++	if (control & IEEE80211_TTLM_CONTROL_DEF_LINK_MAP) {
++		ttlm_info->map = 0xffff;
++		return 0;
++	}
++
+ 	if (control & IEEE80211_TTLM_CONTROL_LINK_MAP_SIZE)
+ 		map_size = 1;
+ 	else
 -- 
 2.51.0
 
