@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-213522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GK1EQ5dg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:58 +0100
+	id EKw/GJtjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6544E77C2
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA65CE84D1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E79A730333E4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D8A4318C328
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958843BFE35;
-	Wed,  4 Feb 2026 14:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F743421887;
+	Wed,  4 Feb 2026 14:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzjPD9nq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwJfXWqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C153AEF30;
-	Wed,  4 Feb 2026 14:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536C541C31D;
+	Wed,  4 Feb 2026 14:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216617; cv=none; b=ncTd4eeI9Gl0h1uH4FTUafUK4/sTuFdyysz0/4DFcpu2nmHqZIsjFrS+9/5HKPUnwjnImInk/UYZk0k8TDU8RtHrl/dbJWIU/oo6wvDlNyh3dtXybibE9vnS2owTBH6Tz3350ny91P9nNmjN0vy4MTcEFC2tsOMXw6inkaAHUzE=
+	t=1770217144; cv=none; b=XUwfBI210v/6/C6lQlg2et9fvXChUbsoGmj+kBjb+YxznsFspdHeOO2h1YAqIaLmh/BZC7coHm+q/H0GvvoQiZdGNj06gXoODg9pqsicDWa/okhXKeq/YCbj9rwfn5/3m+r6L5/WMVe2O0FPGlXoes8l+dS1c/7/vw/6f1PP+08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216617; c=relaxed/simple;
-	bh=BPLrvK+JeSAvScJ067qQXKqskXGXYwQTs2bNKxRL7AM=;
+	s=arc-20240116; t=1770217144; c=relaxed/simple;
+	bh=vJqTQ9nUOlod3uG684xUKSHZgccBP7CDl0gRJbt2Bds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8knThegqdFk/ZWOv9DacUiP2u3KrHdzWqemQFi5orsEcsBFq9kZbDTcV/SnePEI9dxe8rR2Nb1LRf8nDs3QM90vRUdXlOgdnix0ZNVTFPW3f57DHAWKaW6frfbjo7PZMOJtztHdfLKuxlZzZWl+cjj932xRixtLRSVY8uK/LZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzjPD9nq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D747CC4CEF7;
-	Wed,  4 Feb 2026 14:50:16 +0000 (UTC)
+	 MIME-Version; b=EXqPfiTl9Qt10gULo5DRGsTS/0evA+Jta7q+VNHQHECdZIdute51QbSn55T5XT8aVBzmhTEtsHm0Y3zgXUuE75JDgkHr3wUYOCpj2xBfmr4twLkEoVSoJo1sNy2hAdCdfP2nlS19720EA//8XUECBHcRxiAA6Sbac0OUVKWuCBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwJfXWqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A16C116C6;
+	Wed,  4 Feb 2026 14:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216617;
-	bh=BPLrvK+JeSAvScJ067qQXKqskXGXYwQTs2bNKxRL7AM=;
+	s=korg; t=1770217143;
+	bh=vJqTQ9nUOlod3uG684xUKSHZgccBP7CDl0gRJbt2Bds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzjPD9nq3s3BSZ8ES0ELIXIKfqXqle/dBs6t37fLTpwbAf1mkHUrEQhWAes8z9Jp7
-	 cVrCPWx/e6CFrTSOXEn3kkmmyASC2xXTr1I4WpcmMEZo6qxFXwvG0WOL6PCkZDffb/
-	 YAEKWTEWKoLpZ/0mNimeqQw3Xb/cxKLaYKlyaJfw=
+	b=zwJfXWqMtrwWdWCWxb8eZW10CoJl0HZcsQ64ueZQrZl7iXmCBwSBjm6DLbgHF29P0
+	 h40wCWxWikj3AnJNTlWKqiHO3ZsJeqNZiXdSxL5fQnkvaqUA5GBXSgjtdg6B3UTrcc
+	 3BFvIr8SwyFZAN8H91q7Yew+JrEHcmtI1hZpAk30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10 097/161] wifi: rsi: Fix memory corruption due to not set vif driver data size
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 129/206] can: kvaser_usb: kvaser_usb_read_bulk_callback(): fix URB memory leak
 Date: Wed,  4 Feb 2026 15:39:20 +0100
-Message-ID: <20260204143855.233392898@linuxfoundation.org>
+Message-ID: <20260204143902.845911696@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,88 +67,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213679-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213522-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,nabladev.com:email,intel.com:email]
-X-Rspamd-Queue-Id: B6544E77C2
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: AA65CE84D1
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 4f431d88ea8093afc7ba55edf4652978c5a68f33 upstream.
+commit 248e8e1a125fa875158df521b30f2cc7e27eeeaa upstream.
 
-The struct ieee80211_vif contains trailing space for vif driver data,
-when struct ieee80211_vif is allocated, the total memory size that is
-allocated is sizeof(struct ieee80211_vif) + size of vif driver data.
-The size of vif driver data is set by each WiFi driver as needed.
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-The RSI911x driver does not set vif driver data size, no trailing space
-for vif driver data is therefore allocated past struct ieee80211_vif .
-The RSI911x driver does however use the vif driver data to store its
-vif driver data structure "struct vif_priv". An access to vif->drv_priv
-leads to access out of struct ieee80211_vif bounds and corruption of
-some memory.
+In kvaser_usb_set_{,data_}bittiming() -> kvaser_usb_setup_rx_urbs(), the
+URBs for USB-in transfers are allocated, added to the dev->rx_submitted
+anchor and submitted. In the complete callback
+kvaser_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
+kvaser_usb_remove_interfaces() the URBs are freed by calling
+usb_kill_anchored_urbs(&dev->rx_submitted).
 
-In case of the failure observed locally, rsi_mac80211_add_interface()
-would write struct vif_priv *vif_info = (struct vif_priv *)vif->drv_priv;
-vif_info->vap_id = vap_idx. This write corrupts struct fq_tin member
-struct list_head new_flows . The flow = list_first_entry(head, struct
-fq_flow, flowchain); in fq_tin_reset() then reports non-NULL bogus
-address, which when accessed causes a crash.
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in usb_kill_anchored_urbs().
 
-The trigger is very simple, boot the machine with init=/bin/sh , mount
-devtmpfs, sysfs, procfs, and then do "ip link set wlan0 up", "sleep 1",
-"ip link set wlan0 down" and the crash occurs.
+Fix the memory leak by anchoring the URB in the
+kvaser_usb_read_bulk_callback() to the dev->rx_submitted anchor.
 
-Fix this by setting the correct size of vif driver data, which is the
-size of "struct vif_priv", so that memory is allocated and the driver
-can store its driver data in it, instead of corrupting memory around
-it.
-
+Fixes: 080f40a6fa28 ("can: kvaser_usb: Add support for Kvaser CAN/USB devices")
 Cc: stable@vger.kernel.org
-Fixes: dad0d04fa7ba ("rsi: Add RS9113 wireless driver")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260109235817.150330-1-marex@nabladev.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-3-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/rsi/rsi_91x_mac80211.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -2005,6 +2005,7 @@ int rsi_mac80211_attach(struct rsi_commo
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -350,7 +350,14 @@ resubmit_urb:
+ 			  urb->transfer_buffer, KVASER_USB_RX_BUFFER_SIZE,
+ 			  kvaser_usb_read_bulk_callback, dev);
  
- 	hw->queues = MAX_HW_QUEUES;
- 	hw->extra_tx_headroom = RSI_NEEDED_HEADROOM;
-+	hw->vif_data_size = sizeof(struct vif_priv);
++	usb_anchor_urb(urb, &dev->rx_submitted);
++
+ 	err = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!err)
++		return;
++
++	usb_unanchor_urb(urb);
++
+ 	if (err == -ENODEV) {
+ 		for (i = 0; i < dev->nchannels; i++) {
+ 			if (!dev->nets[i])
+@@ -358,7 +365,7 @@ resubmit_urb:
  
- 	hw->max_rates = 1;
- 	hw->max_rate_tries = MAX_RETRIES;
+ 			netif_device_detach(dev->nets[i]->netdev);
+ 		}
+-	} else if (err) {
++	} else {
+ 		dev_err(&dev->intf->dev,
+ 			"Failed resubmitting read bulk urb: %d\n", err);
+ 	}
 
 
 
