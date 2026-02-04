@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213584-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sA4eCmtbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:59 +0100
+	id qEGOBYVeg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213584-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA862E74CD
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7926BE7A94
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EB4E301C8B0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3092230779A1
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C9E410D10;
-	Wed,  4 Feb 2026 14:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C42141B367;
+	Wed,  4 Feb 2026 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Teuz+8/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UISTYtxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F2F280A3B;
-	Wed,  4 Feb 2026 14:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39D4223323;
+	Wed,  4 Feb 2026 14:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216244; cv=none; b=nu6JFxS9lYOfdv9XxtGKQC8Ql2d8xtxx8bwU6t6wV4NZTPmXa2ca3C3fo6P7qCJW2Fm032PyCeEX5H28/bKHoaSVGElO13t+/sEqAUbWmosEMVIMAY6D43ZOVU2k63VRaqn6vhVebMkT+uhuLIRe+St1PuScHAkOPF7tVzzWRGw=
+	t=1770216823; cv=none; b=iPhOZK3CVyLneHBBLXDMhyjD67S6XfhITlm4/M4zkAl4PhfvH3OvQ3gl5vTIMH0JMRf6V38PZwoDupBJEGFUo/ybKd6k/vL63ktMjrkT1rVDQTjT+daCoHNR+6GXJNxnS9RjS+m11aH2KNtNxJO4rOTPNYakPi6TxYDdsAcuO10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216244; c=relaxed/simple;
-	bh=L29BDY4vsYn0h8ZxwJFLVZK1eRwLCICwvJtCCblp7Ns=;
+	s=arc-20240116; t=1770216823; c=relaxed/simple;
+	bh=RaWDu2BHUtigv1V6wdi5qocO/zwieVbCTiglU0ZSG1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TuMBNzfA/ivRYhpfD51XULweLItrMyryKWI6z7DezpO5rEJ3okkV3nCEiFihkgHi2nucqazS/0for5xjJFYvhpuU0EpOy3+Se3ZVCq2sWVRML1UAikkmPX3eZsXXIiJtTh6uRJBGq1ECkMZcHkyl8JLsmL9jr2lk+CFg66fVtu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Teuz+8/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C73EC4CEF7;
-	Wed,  4 Feb 2026 14:44:03 +0000 (UTC)
+	 MIME-Version; b=BD5gaT8n/PM6MuL6lUnYlfGVaFrpT7fz+nriFfOzU/qfAXUsyB3zSs+7WBwp0QZ8t191Ulc1kD00A2/oGdgP0ZwccSgqpyBsz6msW/dpwsoonUpi0T+4IZm0Fn5J3uZesr03e2PZNuISop440DFf2RyVLfykqFstWYwz4rYcoGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UISTYtxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6186EC4CEF7;
+	Wed,  4 Feb 2026 14:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216244;
-	bh=L29BDY4vsYn0h8ZxwJFLVZK1eRwLCICwvJtCCblp7Ns=;
+	s=korg; t=1770216822;
+	bh=RaWDu2BHUtigv1V6wdi5qocO/zwieVbCTiglU0ZSG1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Teuz+8/SZonDDQRV48038BeTrs8UYCAuvP2M22C/w8/7PGONVFuZdVytoKwhgxopH
-	 61WRfdfHWtCAiofXcapLByH/mXIAjSnhqeeQQfWnuR4nAixqn2yjCnDCqW16BtDsaw
-	 NPdI5FBZjgqXtjzmYPGrIfL/XKMDnjvmrd4fmDP8=
+	b=UISTYtxrICM9npqB1pKasL7t2K7VLXvX7/53nmHYKUPuMEDg3fLI/Jv2NbTdHLlUV
+	 SXV0M2mztd2RQ5+6MslE2BJHeRVb3Zjk8so3XvUXkb0e33wu5jd18V7I9cGbF5IJnF
+	 6xDIUAS1/QiepCy1eduvxW82Nk/iYwq4Jdc1cRbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/161] ipv4: ip_gre: make ipgre_header() robust
+	kent.russell@amd.com,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 041/206] drm/amd: Clean up kfd node on surprise disconnect
 Date: Wed,  4 Feb 2026 15:37:52 +0100
-Message-ID: <20260204143852.099808600@linuxfoundation.org>
+Message-ID: <20260204143859.691255047@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213410-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-213584-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7c134e1c3aa3283790b9];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,spinics.net:url]
-X-Rspamd-Queue-Id: DA862E74CD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7926BE7A94
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit e67c577d89894811ce4dcd1a9ed29d8b63476667 ]
+commit 28695ca09d326461f8078332aa01db516983e8a2 upstream.
 
-Analog to commit db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
+When an eGPU is unplugged the KFD topology should also be destroyed
+for that GPU. This never happens because the fini_sw callbacks never
+get to run. Run them manually before calling amdgpu_device_ip_fini_early()
+when a device has already been disconnected.
 
-Over the years, syzbot found many ways to crash the kernel
-in ipgre_header() [1].
+This location is intentionally chosen to make sure that the kfd locking
+refcount doesn't get incremented unintentionally.
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
-
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ipgre device.
-
-[1]
-skbuff: skb_under_panic: text:ffffffff89ea3cb7 len:2030915468 put:2030915372 head:ffff888058b43000 data:ffff887fdfa6e194 tail:0x120 end:0x6c0 dev:team0
- kernel BUG at net/core/skbuff.c:213 !
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 1322 Comm: kworker/1:9 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: mld mld_ifc_work
- RIP: 0010:skb_panic+0x157/0x160 net/core/skbuff.c:213
-Call Trace:
- <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ipgre_header+0x67/0x290 net/ipv4/ip_gre.c:897
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Reported-by: syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
-Closes: https://www.spinics.net/lists/netdev/msg1147302.html
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260108190214.1667040-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: kent.russell@amd.com
+Closes: https://community.frame.work/t/amd-egpu-on-linux/8691/33
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6a23e7b4332c10f8b56c33a9c5431b52ecff9aab)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_gre.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index ae0189828aa92..c56848f36298d 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -852,10 +852,17 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 			const void *daddr, const void *saddr, unsigned int len)
- {
- 	struct ip_tunnel *t = netdev_priv(dev);
--	struct iphdr *iph;
- 	struct gre_base_hdr *greh;
-+	struct iphdr *iph;
-+	int needed;
-+
-+	needed = t->hlen + sizeof(*iph);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3999,6 +3999,14 @@ void amdgpu_device_fini_hw(struct amdgpu
  
--	iph = skb_push(skb, t->hlen + sizeof(*iph));
-+	iph = skb_push(skb, needed);
- 	greh = (struct gre_base_hdr *)(iph+1);
- 	greh->flags = gre_tnl_flags_to_gre_flags(t->parms.o_flags);
- 	greh->protocol = htons(type);
--- 
-2.51.0
-
+ 	amdgpu_irq_fini_hw(adev);
+ 
++	/*
++	 * device went through surprise hotplug; we need to destroy topology
++	 * before ip_fini_early to prevent kfd locking refcount issues by calling
++	 * amdgpu_amdkfd_suspend()
++	 */
++	if (drm_dev_is_unplugged(adev_to_drm(adev)))
++		amdgpu_amdkfd_device_fini_sw(adev);
++
+ 	amdgpu_device_ip_fini_early(adev);
+ 
+ 	amdgpu_gart_dummy_page_fini(adev);
 
 
 
