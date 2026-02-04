@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-214133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLk4Go1ug2lNmwMAu9opvQ
-	(envelope-from <stable+bounces-214133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:37 +0100
+	id aL66IzFlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0937CE9E01
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C37CE8918
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 26A6130C88F3
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5CCB307B324
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA17D2BEFED;
-	Wed,  4 Feb 2026 15:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917BD2D8768;
+	Wed,  4 Feb 2026 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK5FxnUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsnBRnml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D73E18859B;
-	Wed,  4 Feb 2026 15:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558E91E520C;
+	Wed,  4 Feb 2026 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218675; cv=none; b=dR3rlaNeZSa7Dl3BVP92VsXvvl81jkgobyirzdxQZqwXneofreIXtTvggL2kDUtECvetQRScZ1PCi3YZkgmaeq2sM3e8CAtJzkaUlujUGp2ByEWxNQ06khAa4Vo3WAOa8Fbx40xYdP0dI2OPd6iBXmPztSjA2FO+2C2Yp+3GnxQ=
+	t=1770218237; cv=none; b=nq59WmMN1qZeCx3rsszGXEyNoWcb89dTXkS0qU9L0TbHezHRn8OS1ydCVgrIJbKyPpFV5dfNdtC0TWRgabj83Aqb8P6YrcNg2pIYQ2j+MMnmMI5fHqvCT/d0Q3RtPt2Y0r+MKhb/FT+iSXzpg4EzMgimYzL29SLVzOTp6BtfboI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218675; c=relaxed/simple;
-	bh=rw/gnlC8RB1TksdLUUXTqPKNbHdPi7+YxFbdq5jmXk0=;
+	s=arc-20240116; t=1770218237; c=relaxed/simple;
+	bh=9tlklgjFSXr7X5LFVtLSZJb+uMAw+lZ96yA1H0eeWB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtYXsKfU5FFrlqqt2CzDi9iwzNh47XezDhBV+eSDDTsEx/n6M76l9bmI37eSaY+YGTsr5CWJSK7LxHkfh5P5pwLWf0lm4U64klX3zG6yyYXlunqHq8VqeWvjZUie7wWQlAwMDmCBAXr51L+fi2Yf5A3Ua/U3+9qi9fPip5TkSj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK5FxnUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172B3C4CEF7;
-	Wed,  4 Feb 2026 15:24:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AWIJR2C57d3n0aljkevzriEg2WqSvxgcxVgPR7vgQEhLeMjP7d/Jnd8j8P8zPTjdTnkraPcXrhDpXrLqBgF6AzMrEMHONinWG/fHfpEOMUM2N0YY3G5iGeFELx41mzRQMxUiD7TpUWqPsab2lRD7iaiJB30TM55sSWp21m2ygv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsnBRnml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6998C4CEF7;
+	Wed,  4 Feb 2026 15:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218675;
-	bh=rw/gnlC8RB1TksdLUUXTqPKNbHdPi7+YxFbdq5jmXk0=;
+	s=korg; t=1770218237;
+	bh=9tlklgjFSXr7X5LFVtLSZJb+uMAw+lZ96yA1H0eeWB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iK5FxnUsv0j9JO85TL9B+8AIfSTMZMp4yVSHxDN7m4M6E5alFe01f3yOTOxav55It
-	 LnA2ODwLzRQVp+lkOQlz5gpL+2wivGrcGyZ6SJOyDhnK7qjIWXb6OLXXB9tij0//Ea
-	 7MZFXOf2wG4wWOUczeqQqnXxV7m2gv3GJzGilwI0=
+	b=OsnBRnmle9ToTevFbLqXOm4eUlXw1NjMhp8PIInJ3zrMSY03/XaI/tAdckKjLl84b
+	 Viv9FZr5vJGx5bL1x+sKZdv0M25PbOnPaaVahgv65VAafNDpTJKwXPQ+b3HaUHlEQp
+	 CpXeHNDAYmZLAGtef3VQamkcH54Rge0fGLJDSAJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@infradead.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Shida Zhang <zhangshida@kylinos.cn>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 28/87] bcache: fix improper use of bi_end_io
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 6.1 252/280] wifi: mac80211: move TDLS work to wiphy work
 Date: Wed,  4 Feb 2026 15:40:26 +0100
-Message-ID: <20260204143847.923976606@linuxfoundation.org>
+Message-ID: <20260204143918.711363407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +63,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214133-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214004-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel.dk:email,lst.de:email]
-X-Rspamd-Queue-Id: 0937CE9E01
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1C37CE8918
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shida Zhang <zhangshida@kylinos.cn>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 53280e398471f0bddbb17b798a63d41264651325 ]
+[ Upstream commit 777b26002b73127e81643d9286fadf3d41e0e477 ]
 
-Don't call bio->bi_end_io() directly. Use the bio_endio() helper
-function instead, which handles completion more safely and uniformly.
+Again, to have the wiphy locked for it.
 
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 4da7c5c3ec34 ("bcache: fix I/O accounting leak in detached_dev_do_request")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Summary of conflict resolutions:
+  - In mlme.c, move only tdls_peer_del_work
+    to wiphy work, and none the other works ]
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/request.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mac80211/ieee80211_i.h |    4 ++--
+ net/mac80211/mlme.c        |    7 ++++---
+ net/mac80211/tdls.c        |   11 ++++++-----
+ 3 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
-index af345dc6fde14..82fdea7dea7aa 100644
---- a/drivers/md/bcache/request.c
-+++ b/drivers/md/bcache/request.c
-@@ -1104,7 +1104,7 @@ static void detached_dev_end_io(struct bio *bio)
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -531,7 +531,7 @@ struct ieee80211_if_managed {
+ 
+ 	/* TDLS support */
+ 	u8 tdls_peer[ETH_ALEN] __aligned(2);
+-	struct delayed_work tdls_peer_del_work;
++	struct wiphy_delayed_work tdls_peer_del_work;
+ 	struct sk_buff *orig_teardown_skb; /* The original teardown skb */
+ 	struct sk_buff *teardown_skb; /* A copy to send through the AP */
+ 	spinlock_t teardown_lock; /* To lock changing teardown_skb */
+@@ -2525,7 +2525,7 @@ int ieee80211_tdls_mgmt(struct wiphy *wi
+ 			size_t extra_ies_len);
+ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 			const u8 *peer, enum nl80211_tdls_operation oper);
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk);
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk);
+ int ieee80211_tdls_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 				  const u8 *addr, u8 oper_class,
+ 				  struct cfg80211_chan_def *chandef);
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6517,8 +6517,8 @@ void ieee80211_sta_setup_sdata(struct ie
+ 		  ieee80211_beacon_connection_loss_work);
+ 	INIT_WORK(&ifmgd->csa_connection_drop_work,
+ 		  ieee80211_csa_connection_drop_work);
+-	INIT_DELAYED_WORK(&ifmgd->tdls_peer_del_work,
+-			  ieee80211_tdls_peer_del_work);
++	wiphy_delayed_work_init(&ifmgd->tdls_peer_del_work,
++				ieee80211_tdls_peer_del_work);
+ 	timer_setup(&ifmgd->timer, ieee80211_sta_timer, 0);
+ 	timer_setup(&ifmgd->bcn_mon_timer, ieee80211_sta_bcn_mon_timer, 0);
+ 	timer_setup(&ifmgd->conn_mon_timer, ieee80211_sta_conn_mon_timer, 0);
+@@ -7524,7 +7524,8 @@ void ieee80211_mgd_stop(struct ieee80211
+ 	cancel_work_sync(&ifmgd->monitor_work);
+ 	cancel_work_sync(&ifmgd->beacon_connection_loss_work);
+ 	cancel_work_sync(&ifmgd->csa_connection_drop_work);
+-	cancel_delayed_work_sync(&ifmgd->tdls_peer_del_work);
++	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++				  &ifmgd->tdls_peer_del_work);
+ 
+ 	sdata_lock(sdata);
+ 	if (ifmgd->assoc_data)
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -21,7 +21,7 @@
+ /* give usermode some time for retries in setting up the TDLS session */
+ #define TDLS_PEER_SETUP_TIMEOUT	(15 * HZ)
+ 
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk)
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_local *local;
+@@ -1128,9 +1128,9 @@ ieee80211_tdls_mgmt_setup(struct wiphy *
+ 		return ret;
  	}
  
- 	kfree(ddip);
--	bio->bi_end_io(bio);
-+	bio_endio(bio);
- }
+-	ieee80211_queue_delayed_work(&sdata->local->hw,
+-				     &sdata->u.mgd.tdls_peer_del_work,
+-				     TDLS_PEER_SETUP_TIMEOUT);
++	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
++				 &sdata->u.mgd.tdls_peer_del_work,
++				 TDLS_PEER_SETUP_TIMEOUT);
+ 	return 0;
  
- static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
-@@ -1121,7 +1121,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
- 	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
- 	if (!ddip) {
- 		bio->bi_status = BLK_STS_RESOURCE;
--		bio->bi_end_io(bio);
-+		bio_endio(bio);
- 		return;
+ out_unlock:
+@@ -1427,7 +1427,8 @@ int ieee80211_tdls_oper(struct wiphy *wi
  	}
  
-@@ -1136,7 +1136,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
+ 	if (ret == 0 && ether_addr_equal(sdata->u.mgd.tdls_peer, peer)) {
+-		cancel_delayed_work(&sdata->u.mgd.tdls_peer_del_work);
++		wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++					  &sdata->u.mgd.tdls_peer_del_work);
+ 		eth_zero_addr(sdata->u.mgd.tdls_peer);
+ 	}
  
- 	if ((bio_op(bio) == REQ_OP_DISCARD) &&
- 	    !bdev_max_discard_sectors(dc->bdev))
--		bio->bi_end_io(bio);
-+		detached_dev_end_io(bio);
- 	else
- 		submit_bio_noacct(bio);
- }
--- 
-2.51.0
-
 
 
 
