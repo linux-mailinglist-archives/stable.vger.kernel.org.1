@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHrfAUFbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:17 +0100
+	id 8PI1GQJeg2kHmAMAu9opvQ
+	(envelope-from <stable+bounces-213577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8966EE7486
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E30DE799B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA6EF300B051
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C6943300E186
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C26E40F8C6;
-	Wed,  4 Feb 2026 14:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF5941B367;
+	Wed,  4 Feb 2026 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF76QtGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPgGI/3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600BB280A3B;
-	Wed,  4 Feb 2026 14:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5285C410D10;
+	Wed,  4 Feb 2026 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216208; cv=none; b=UmzsXFPlFbYPUGPkFvgGD/DoczbAriAsj/zRXE1o292+dq6v31bgMSYuJ5e+uO8BlErOZvc/MquHY06ik0h7N3ovD6/3SwWHB2pUjMQ8mBQOp5we6QySPtUw74RowPxZ35LkriZfHp7CHKJe/+gKWxzmUrzSi1NyjUmrrVbZ8WE=
+	t=1770216799; cv=none; b=mkVuk2RJQaB6cUvWHYqutK+Qs9dcepb3a4/ao4vKCkyNVqyMrw1bQTR+YldA/HdsV8W0vw9LZWnSImzvNOkSoia0j0y8lKAHmScTy1UNfyHun+3muxZHhI4VgbCYwRjJCOBpx2ijLNCK3KTniJMJslarr4KKahzDdQqY/HEzs5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216208; c=relaxed/simple;
-	bh=VvtFOLHLJiRka/Xbo7FwGM2NZiLUilW1M40IUJ3+6UA=;
+	s=arc-20240116; t=1770216799; c=relaxed/simple;
+	bh=FTMcjKgQA2RRBlqGa7VrNed7hsMUAe7PrFYW63UXwCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7cRqup5iyPDc0mJYJGDsfe5EYWMNjzHZvqMsgYc5GcOa78yalMwLLG0aYMBDtf7YLTsGLhqGgUlNendNtNhhBqC0+iRJa0tPhZgAmhplQ97O7AjlePn0bq5i2cxk6hI913Rz3+CnmEuyXnwgqIvtviK+Trx0ITsG/t4A3dGEqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wF76QtGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EADC4CEF7;
-	Wed,  4 Feb 2026 14:43:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S7hwd7Hee35quqpLIF8mQLTz7nw8uakpkwmLgw2Zkuv9B6ELPVsBjeeTdfoLC5j9rQcvAcjgSu5xNVBCrXSM90kjUTt5qVcKq1G6WYUnk/vmEaWRx+FsSzsGdsQliQNi+Gu8dL48rqmv5d183t955P9103m8Ol3HValNQh2xlpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPgGI/3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5989C4CEF7;
+	Wed,  4 Feb 2026 14:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216208;
-	bh=VvtFOLHLJiRka/Xbo7FwGM2NZiLUilW1M40IUJ3+6UA=;
+	s=korg; t=1770216799;
+	bh=FTMcjKgQA2RRBlqGa7VrNed7hsMUAe7PrFYW63UXwCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wF76QtGo1D6rgi8U+7dAJcXlrcOHVvkv2pJZUBQQg51C7pbaAUQYj/EQ+Bi3yDfev
-	 76UXztVY0bWLEYQpP8fYy/u0k+l3BQHDZR+MLInUDlsu+ptiAPG5jSF4wKVmrC53DO
-	 l/0QX41Xns/HX7dOQZwh61Ek8fUOmElf+hKDHuc8=
+	b=WPgGI/3V3vzbWNrmxrZBe7qsoyTb8R2I98YC6P7Y9qx9zntSgE4awbGnfeajiJipX
+	 eax8+XcD/uKVoWLxbILtLGf3fGD/vuEo01Os6fo7xR2woFnPRPUEa/c8m9ZA8VHxKn
+	 UmaOp+llAtfVPFHTznygnacNjKd3BvbWA0zlT86c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/161] nvmet-tcp: remove boilerplate code
-Date: Wed,  4 Feb 2026 15:37:45 +0100
-Message-ID: <20260204143851.848546164@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 5.15 035/206] hrtimer: Fix softirq base check in update_needs_ipi()
+Date: Wed,  4 Feb 2026 15:37:46 +0100
+Message-ID: <20260204143859.473006048@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213399-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213577-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,grimberg.me:email]
-X-Rspamd-Queue-Id: 8966EE7486
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6E30DE799B
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 75011bd0f9c55db523242f9f9a0b0b826165f14b ]
+commit 05dc4a9fc8b36d4c99d76bbc02aa9ec0132de4c2 upstream.
 
-Simplify the nvmet_tcp_handle_h2c_data_pdu() function by removing
-boilerplate code.
+The 'clockid' field is not the correct way to check for a softirq base.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: 32b63acd78f5 ("nvme-tcp: fix NULL pointer dereferences in nvmet_tcp_build_pdu_iovec")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the check to correctly compare the base type instead of the clockid.
+
+Fixes: 1e7f7fbcd40c ("hrtimer: Avoid more SMP function calls in clock_was_set()")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260107-hrtimer-clock-base-check-v1-1-afb5dbce94a1@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/time/hrtimer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 6019eee1f9bdf..d7b368102ad9a 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -933,8 +933,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
- 			pr_err("queue %d: received out of bound ttag %u, nr_cmds %u\n",
- 				queue->idx, data->ttag, queue->nr_cmds);
--			nvmet_tcp_fatal_error(queue);
--			return -EPROTO;
-+			goto err_proto;
- 		}
- 		cmd = &queue->cmds[data->ttag];
- 	} else {
-@@ -945,9 +944,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		pr_err("ttag %u unexpected data offset %u (expected %u)\n",
- 			data->ttag, le32_to_cpu(data->data_offset),
- 			cmd->rbytes_done);
--		/* FIXME: use path and transport errors */
--		nvmet_tcp_fatal_error(queue);
--		return -EPROTO;
-+		goto err_proto;
- 	}
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -903,7 +903,7 @@ static bool update_needs_ipi(struct hrti
+ 			return true;
  
- 	exp_data_len = le32_to_cpu(data->hdr.plen) -
-@@ -960,9 +957,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		     cmd->pdu_len == 0 ||
- 		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
- 		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
--		/* FIXME: use proper transport errors */
--		nvmet_tcp_fatal_error(queue);
--		return -EPROTO;
-+		goto err_proto;
- 	}
- 	cmd->pdu_recv = 0;
- 	nvmet_tcp_map_pdu_iovec(cmd);
-@@ -970,6 +965,11 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
- 
- 	return 0;
-+
-+err_proto:
-+	/* FIXME: use proper transport errors */
-+	nvmet_tcp_fatal_error(queue);
-+	return -EPROTO;
- }
- 
- static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
--- 
-2.51.0
-
+ 		/* Extra check for softirq clock bases */
+-		if (base->clockid < HRTIMER_BASE_MONOTONIC_SOFT)
++		if (base->index < HRTIMER_BASE_MONOTONIC_SOFT)
+ 			continue;
+ 		if (cpu_base->softirq_activated)
+ 			continue;
 
 
 
