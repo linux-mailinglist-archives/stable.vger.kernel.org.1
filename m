@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAjSKxxbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:40 +0100
+	id AOj3AaVeg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF68E7425
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CC4E7AEC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B9A743004939
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 749093039A97
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B5C40F8C6;
-	Wed,  4 Feb 2026 14:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A13841B371;
+	Wed,  4 Feb 2026 14:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgBKwNIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+7B+P10"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED51A280A3B;
-	Wed,  4 Feb 2026 14:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12CE27F749;
+	Wed,  4 Feb 2026 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216218; cv=none; b=FKI1dd65slnbdOYdtM8lYn+S70YDO1CHNATI/pHM1Rkbpw2/uZ2DbYwPWts6guAEVG04wmwjC2r/T6k7mueXQjEp0mwcpKPuSUEMW6HyO2UYoHezhcYjYcfUnVKgRHskM39DcbQClqmeRdoog/me18F+AkX6IoO/iPSowdRq4d4=
+	t=1770216869; cv=none; b=llj49GiHHrshd35nC0qFVXBxW9NsSk27wbNqHwRJaawe02FYGEetar/sesK6ndepL9Q0c7mKu+/J7ytt3jRZ0pqFjuaQN6s/pY/RKpV0LMOYbiBpNjofZqKpTlKD+ldBy85mdOxzXub8Bljzw3cDrH/0gJGG8T5OWvqBPnw9R20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216218; c=relaxed/simple;
-	bh=ryUG+DAngtHih/4Xm6jvNj4NRYvcOjnG5PlIAHqNBg4=;
+	s=arc-20240116; t=1770216869; c=relaxed/simple;
+	bh=MQcS2ggLBHiC/3mzrOylQnohmZMJtaQ10ihVrcpetcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LBMVBEDlTH1XquqHUCchhwrc1QY5w5psVFQ+P6BnttURTK6eO5ypIZuV+oobjmcYg86E8js4DfeXS9qE+Wz3+2DhTIWk0nEX1yDWc4CauHJ7WBcQccaAg3JrhdeowL5Yazhp28gPoQieaSI8+sthfrfvxs+BHQwx4tPVNAt7qug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgBKwNIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F716C4CEF7;
-	Wed,  4 Feb 2026 14:43:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YrQkLz66Y+kfprZb3nyzM/OHD7IKdTXa1K/Mp/xDb4EDUhY2ML08fCoTVEy5G1dn3X88kt8j0XMu6T0S7dmCYlvH9tLegk2+iBPvJTvV7YViKbBbFK5O085/9TbAtcJ5/8WWmKB+tTTA+DJnUFOSRrzxjs84Aiv8f7vqY2DU7OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+7B+P10; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF39C4CEF7;
+	Wed,  4 Feb 2026 14:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216217;
-	bh=ryUG+DAngtHih/4Xm6jvNj4NRYvcOjnG5PlIAHqNBg4=;
+	s=korg; t=1770216869;
+	bh=MQcS2ggLBHiC/3mzrOylQnohmZMJtaQ10ihVrcpetcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KgBKwNIbpHrYHkjwTlk3oDKNpBgWfJwdZ5g6H9/fzehiUELOsp0mRew950MKmwIbx
-	 VRI4AYlreFo22Pvfw4kbDI0JY9s57fRuESpq6K93+YVoaG4IrzMZ8DDYsMEp5HHSEG
-	 AeOYAztT/ZpP9yjOTI9HxzE9ut3kyfv7FFTXvero=
+	b=y+7B+P102Ue8Dh2q1Bxr6Wt+TEd5xItSr8gsUzs+Yhnl6aovg19O9qgNKTfsS5/RI
+	 jAfdY9kME7u6aGiK5MKrtuMpzGX2yZp8D6/U+2tl0C3S4DsxNjr8UBkHv7dfNuy/I/
+	 z3NyRd225B95JHIsAHbxAztHYhV6JYZZNB6dgZp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 022/161] phy: rockchip: inno-usb2: fix communication disruption in gadget mode
+	Filipe Manana <fdmanana@suse.com>,
+	Robbie Ko <robbieko@synology.com>,
+	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
+Subject: [PATCH 5.15 054/206] btrfs: fix deadlock in wait_current_trans() due to ignored transaction type
 Date: Wed,  4 Feb 2026 15:38:05 +0100
-Message-ID: <20260204143852.563376077@linuxfoundation.org>
+Message-ID: <20260204143900.164187684@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,108 +70,185 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-213598-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213402-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
-X-Rspamd-Queue-Id: 5EF68E7425
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D8CC4E7AEC
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Robbie Ko <robbieko@synology.com>
 
-commit 7d8f725b79e35fa47e42c88716aad8711e1168d8 upstream.
+commit 5037b342825df7094a4906d1e2a9674baab50cb2 upstream.
 
-When the OTG USB port is used to power to SoC, configured as peripheral and
-used in gadget mode, communication stops without notice about 6 seconds
-after the gadget is configured and enumerated.
+When wait_current_trans() is called during start_transaction(), it
+currently waits for a blocked transaction without considering whether
+the given transaction type actually needs to wait for that particular
+transaction state. The btrfs_blocked_trans_types[] array already defines
+which transaction types should wait for which transaction states, but
+this check was missing in wait_current_trans().
 
-The problem was observed on a Radxa Rock Pi S board, which can only be
-powered by the only USB-C connector. That connector is the only one usable
-in gadget mode. This implies the USB cable is connected from before boot
-and never disconnects while the kernel runs.
+This can lead to a deadlock scenario involving two transactions and
+pending ordered extents:
 
-The related code flow in the PHY driver code can be summarized as:
+  1. Transaction A is in TRANS_STATE_COMMIT_DOING state
 
- * the first time chg_detect_work starts (6 seconds after gadget is
-   configured and enumerated)
-   -> rockchip_chg_detect_work():
-       if chg_state is UNDEFINED:
-          property_enable(base, &rphy->phy_cfg->chg_det.opmode, false); [Y]
+  2. A worker processing an ordered extent calls start_transaction()
+     with TRANS_JOIN
 
- * rockchip_chg_detect_work() changes state and re-triggers itself a few
-   times until it reaches the DETECTED state:
-   -> rockchip_chg_detect_work():
-       if chg_state is DETECTED:
-          property_enable(base, &rphy->phy_cfg->chg_det.opmode, true); [Z]
+  3. join_transaction() returns -EBUSY because Transaction A is in
+     TRANS_STATE_COMMIT_DOING
 
-At [Y] all existing communications stop. E.g. using a CDC serial gadget,
-the /dev/tty* devices are still present on both host and device, but no
-data is transferred anymore. The later call with a 'true' argument at [Z]
-does not restore it.
+  4. Transaction A moves to TRANS_STATE_UNBLOCKED and completes
 
-Due to the lack of documentation, what chg_det.opmode does exactly is not
-clear, however by code inspection it seems reasonable that is disables
-something needed to keep the communication working, and testing proves that
-disabling these lines lets gadget mode keep working. So prevent changes to
-chg_det.opmode when there is a cable connected (VBUS present).
+  5. A new Transaction B is created (TRANS_STATE_RUNNING)
 
-Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://patch.msgid.link/20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-2-dac8a02cd2ca@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+  6. The ordered extent from step 2 is added to Transaction B's
+     pending ordered extents
+
+  7. Transaction B immediately starts commit by another task and
+     enters TRANS_STATE_COMMIT_START
+
+  8. The worker finally reaches wait_current_trans(), sees Transaction B
+     in TRANS_STATE_COMMIT_START (a blocked state), and waits
+     unconditionally
+
+  9. However, TRANS_JOIN should NOT wait for TRANS_STATE_COMMIT_START
+     according to btrfs_blocked_trans_types[]
+
+  10. Transaction B is waiting for pending ordered extents to complete
+
+  11. Deadlock: Transaction B waits for ordered extent, ordered extent
+      waits for Transaction B
+
+This can be illustrated by the following call stacks:
+  CPU0                              CPU1
+                                    btrfs_finish_ordered_io()
+                                      start_transaction(TRANS_JOIN)
+                                        join_transaction()
+                                          # -EBUSY (Transaction A is
+                                          # TRANS_STATE_COMMIT_DOING)
+  # Transaction A completes
+  # Transaction B created
+  # ordered extent added to
+  # Transaction B's pending list
+  btrfs_commit_transaction()
+    # Transaction B enters
+    # TRANS_STATE_COMMIT_START
+    # waiting for pending ordered
+    # extents
+                                        wait_current_trans()
+                                          # waits for Transaction B
+                                          # (should not wait!)
+
+Task bstore_kv_sync in btrfs_commit_transaction waiting for ordered
+extents:
+
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  btrfs_commit_transaction+0xbf7/0xda0 [btrfs]
+  btrfs_sync_file+0x342/0x4d0 [btrfs]
+  __x64_sys_fdatasync+0x4b/0x80
+  do_syscall_64+0x33/0x40
+  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Task kworker in wait_current_trans waiting for transaction commit:
+
+  Workqueue: btrfs-syno_nocow btrfs_work_helper [btrfs]
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  wait_current_trans+0xb0/0x110 [btrfs]
+  start_transaction+0x346/0x5b0 [btrfs]
+  btrfs_finish_ordered_io.isra.0+0x49b/0x9c0 [btrfs]
+  btrfs_work_helper+0xe8/0x350 [btrfs]
+  process_one_work+0x1d3/0x3c0
+  worker_thread+0x4d/0x3e0
+  kthread+0x12d/0x150
+  ret_from_fork+0x1f/0x30
+
+Fix this by passing the transaction type to wait_current_trans() and
+checking btrfs_blocked_trans_types[cur_trans->state] against the given
+type before deciding to wait. This ensures that transaction types which
+are allowed to join during certain blocked states will not unnecessarily
+wait and cause deadlocks.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Robbie Ko <robbieko@synology.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Motiejus Jakštys <motiejus@jakstys.lt>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/transaction.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-@@ -699,7 +699,8 @@ static void rockchip_chg_detect_work(str
- 		if (!rport->suspended)
- 			rockchip_usb2phy_power_off(rport->phy);
- 		/* put the controller in non-driving mode */
--		property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
-+		if (!vbus_attach)
-+			property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
- 		/* Start DCD processing stage 1 */
- 		rockchip_chg_enable_dcd(rphy, true);
- 		rphy->chg_state = USB_CHG_STATE_WAIT_FOR_DCD;
-@@ -763,7 +764,8 @@ static void rockchip_chg_detect_work(str
- 		fallthrough;
- 	case USB_CHG_STATE_DETECTED:
- 		/* put the controller in normal mode */
--		property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
-+		if (!vbus_attach)
-+			property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
- 		rockchip_usb2phy_otg_sm_work(&rport->otg_sm_work.work);
- 		dev_dbg(&rport->phy->dev, "charger = %s\n",
- 			 chg_to_string(rphy->chg_type));
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -528,13 +528,14 @@ static inline int is_transaction_blocked
+  * when this is done, it is safe to start a new transaction, but the current
+  * transaction might not be fully on disk.
+  */
+-static void wait_current_trans(struct btrfs_fs_info *fs_info)
++static void wait_current_trans(struct btrfs_fs_info *fs_info, unsigned int type)
+ {
+ 	struct btrfs_transaction *cur_trans;
+ 
+ 	spin_lock(&fs_info->trans_lock);
+ 	cur_trans = fs_info->running_transaction;
+-	if (cur_trans && is_transaction_blocked(cur_trans)) {
++	if (cur_trans && is_transaction_blocked(cur_trans) &&
++	    (btrfs_blocked_trans_types[cur_trans->state] & type)) {
+ 		refcount_inc(&cur_trans->use_count);
+ 		spin_unlock(&fs_info->trans_lock);
+ 
+@@ -680,12 +681,12 @@ again:
+ 		sb_start_intwrite(fs_info->sb);
+ 
+ 	if (may_wait_transaction(fs_info, type))
+-		wait_current_trans(fs_info);
++		wait_current_trans(fs_info, type);
+ 
+ 	do {
+ 		ret = join_transaction(fs_info, type);
+ 		if (ret == -EBUSY) {
+-			wait_current_trans(fs_info);
++			wait_current_trans(fs_info, type);
+ 			if (unlikely(type == TRANS_ATTACH ||
+ 				     type == TRANS_JOIN_NOSTART))
+ 				ret = -ENOENT;
+@@ -952,7 +953,7 @@ out:
+ 
+ void btrfs_throttle(struct btrfs_fs_info *fs_info)
+ {
+-	wait_current_trans(fs_info);
++	wait_current_trans(fs_info, TRANS_START);
+ }
+ 
+ static bool should_end_transaction(struct btrfs_trans_handle *trans)
 
 
 
