@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLBcAu1rg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213913-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:25 +0100
+	id 6OArC6Fbg2mYlwMAu9opvQ
+	(envelope-from <stable+bounces-213419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86000E9992
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C2AE752D
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A1DD3308152B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6A293010170
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278744219F6;
-	Wed,  4 Feb 2026 15:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F57410D10;
+	Wed,  4 Feb 2026 14:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCAKWhvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyJ9FF4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5133D994;
-	Wed,  4 Feb 2026 15:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49458280A3B;
+	Wed,  4 Feb 2026 14:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217932; cv=none; b=N5AuE3albtzonk96D5+l1kPWty53fEgt6p1fNgVZL94HImtTnVb/S3wL9O32Ry9ZWXJN7VSGZ9zJk+MziDhYQaVmPNeRc2UoEtXyR4+2aGU7/vwQpunBV0I+X8DOSlv9iWmunmpLm+swiUbGHfZ4neZm2k8JwEEp3W4XKpPvutg=
+	t=1770216274; cv=none; b=TBfPR/ImqpwD/XQfkRqn+zfEofYt6F49Wb/DN3K474ZroWg0/1xR1o3bNkM4ATX559aLzi+5lWS2ril16YWwYTJT8mZMIMFvFzJYFqiZ8xTL9rhCdXgRPDwoqO33JWS8X5xnvKD9WgxiWa2vVvztrPD7Sw2Uh+F6EF6LCndjqN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217932; c=relaxed/simple;
-	bh=VW9Ayz1QQiDtFWuWrf8EaklQHzqixiuuJ+x2+SVsOu0=;
+	s=arc-20240116; t=1770216274; c=relaxed/simple;
+	bh=dWX8Po6kHgUmMzWuVYS7RPoEi2zdfuiapwGamTqV3B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8UbSIjoaznuOBm0Q8aH+3HO1idGqFcnfOfMsQZx9dkqttUAce03S/zLL6hMVVD/doLZjq2TniWnHjUjpi1IYvqZJUJ5XCwooRAstKAHq8CoFwegM/MiD3LwEJ/28EExqUxhWXiOTM5+431B5uHbhbqQ+60vx2g0cmWommbEBRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCAKWhvd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C9BC4CEF7;
-	Wed,  4 Feb 2026 15:12:12 +0000 (UTC)
+	 MIME-Version; b=ZNnQDwT9KMiwMO697S7A13b1g0wIvagUm0jcxb7T0kSVj4RpB9mLE3NJC1to0NPz88k6/U3GsA+8EYQrXM04hxGTZFf/F/57ckUMLOrUan8BbWKOJYlL6vRSQ1DHNCf/z3g8qSIerjPH1fddb+RmfTKEF7NXduiODZOfBWacoyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyJ9FF4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B269C4CEF7;
+	Wed,  4 Feb 2026 14:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217932;
-	bh=VW9Ayz1QQiDtFWuWrf8EaklQHzqixiuuJ+x2+SVsOu0=;
+	s=korg; t=1770216273;
+	bh=dWX8Po6kHgUmMzWuVYS7RPoEi2zdfuiapwGamTqV3B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCAKWhvdhMCFB5gEdcrQod9cPC05hakuAVJFI1sZHxDhZRS9UB8ANjHYvuGA4rC6t
-	 +o3JasZqzQan8k6zqnyEUgjWY6F7gGfWHW+BGORxiUeDmJXEXWpBdUhjCHSuDIOyp0
-	 kloD+b6C/R7hq2xtIeThdpg+yiTANERZlQSsQvMc=
+	b=GyJ9FF4j154a7zlrsVVxclOHfaHbvJb77P4GH39BVyji6e51eUNWOjjI0xvvd7s1t
+	 X/cXRFnA+fn1wWY64aYOJd4N/ZMGr3Zk1fyIXtdiC4bDWAM2D0Q4OfwEnl6xmt72MI
+	 bOp18JlO6iDRwBxw8yFs8EWk04KnkRpOROs2BSSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/280] spi: sprd-adi: Use devm_platform_get_and_ioremap_resource()
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 040/161] dmaengine: ti: dma-crossbar: fix device leak on dra7x route allocation
 Date: Wed,  4 Feb 2026 15:38:23 +0100
-Message-ID: <20260204143914.277004404@linuxfoundation.org>
+Message-ID: <20260204143853.206054775@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,73 +70,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ti.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213419-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213913-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email]
-X-Rspamd-Queue-Id: 86000E9992
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 26C2AE752D
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8499d4b5970f5fd135ee8860075768562a5efe70 ]
+commit dc7e44db01fc2498644e3106db3e62a9883a93d5 upstream.
 
-According to commit 890cc39a8799 ("drivers: provide
-devm_platform_get_and_ioremap_resource()"), convert
-platform_get_resource(), devm_ioremap_resource() to a single
-call to devm_platform_get_and_ioremap_resource(), as this is exactly
-what this function does.
+Make sure to drop the reference taken when looking up the crossbar
+platform device during dra7x route allocation.
 
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230327060516.93509-1-yang.lee@linux.alibaba.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 383d4f5cffcc ("spi: spi-sprd-adi: Fix double free in probe error path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that commit 615a4bfc426e ("dmaengine: ti: Add missing put_device in
+ti_dra7_xbar_route_allocate") fixed the leak in the error paths but the
+reference is still leaking on successful allocation.
+
+Fixes: a074ae38f859 ("dmaengine: Add driver for TI DMA crossbar on DRA7x")
+Fixes: 615a4bfc426e ("dmaengine: ti: Add missing put_device in ti_dra7_xbar_route_allocate")
+Cc: stable@vger.kernel.org	# 4.2: 615a4bfc426e
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-14-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sprd-adi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/ti/dma-crossbar.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 3b158124d79f7..22e39c4c12c4e 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -541,8 +541,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	dev_set_drvdata(&pdev->dev, ctlr);
- 	sadi = spi_controller_get_devdata(ctlr);
+--- a/drivers/dma/ti/dma-crossbar.c
++++ b/drivers/dma/ti/dma-crossbar.c
+@@ -287,6 +287,8 @@ static void *ti_dra7_xbar_route_allocate
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	sadi->base = devm_ioremap_resource(&pdev->dev, res);
-+	sadi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(sadi->base)) {
- 		ret = PTR_ERR(sadi->base);
- 		goto put_ctlr;
--- 
-2.51.0
-
+ 	ti_dra7_xbar_write(xbar->iomem, map->xbar_out, map->xbar_in);
+ 
++	put_device(&pdev->dev);
++
+ 	return map;
+ }
+ 
 
 
 
