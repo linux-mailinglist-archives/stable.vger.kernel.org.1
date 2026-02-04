@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-213870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGFqFGNpg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:35 +0100
+	id kDThCQdfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C7AE941F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CA1E7BB7
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F2CD30CFD04
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 125573036546
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F9241C2F0;
-	Wed,  4 Feb 2026 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3029421F0B;
+	Wed,  4 Feb 2026 14:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBc9o8h+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFOZUSNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C2941B36C;
-	Wed,  4 Feb 2026 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963A73D3CF2;
+	Wed,  4 Feb 2026 14:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217789; cv=none; b=H/04kTZSsOxBacwPVkuPTFHaJ7faFuJuI78JeTWZlmQRNJmdbenA3XPtKAgFKW8TWfs9UE28T8LeW+Ld4ygE4Phj8cSSZiy5+RivfsBWo5R1GHi4krNbHK9zjMbK9nOo3SbdZ7Xy4df7m7S3KJC+xIBX0clJJzYf+NJ0tcgeor8=
+	t=1770217002; cv=none; b=X/q5VdOjeyrwM+sMieC63Erk9Mk3pRMv4qaI5KWrjwOdlxNFq66lQ0RH3nghrVv6x7WHjXUFdVn+m+PltxfnLz+uSBUHL+hjeN8I4duNARRd2QrlyAvGp8xOQ9zulFmrMuZxMTSL+kl5smChu3HnhnZGrKnu4Fiuw8NTKFbiYxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217789; c=relaxed/simple;
-	bh=RtF8vSQR9qJo6QZmYWHj4buzWJ7E4axj3b7p+bdJVog=;
+	s=arc-20240116; t=1770217002; c=relaxed/simple;
+	bh=TSIMWbg+YwbE9WYd711TOOhKdFHfKOG1JmR75JkXuak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqkJIzKHkot4Nc1Vg4YtBuRz/tEQCMI4rNu+tvTmL2Uvb8KKD/PY3yFPeV4eaYt1KzFCtuQaXPvzQSFo4qPTrUr9l/QSvxYGrOan6Q+3eYklbR3Lx1b18TzAc50wTBJO6OOB1tjncYxw7/kHGctUjYgG6CqzUGJYx73t+c6BeKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBc9o8h+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47ADC4CEF7;
-	Wed,  4 Feb 2026 15:09:48 +0000 (UTC)
+	 MIME-Version; b=b0Vp91tSxLreWWRBxUW3PRxLDGhwo/FsH1a5B5ZE7ThA8ASY7pMOAG+44yUyr4MnKg9xhotHdtUKOtmf6q87sYQORNcvwWcNrJ8vfAgH/FpYp/RfZt2FmURtG1QfxtMKLgUesO+r3JS/D6yFq3vkcjEMfEjgIL0xxXv1xqssm/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFOZUSNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3094C4CEF7;
+	Wed,  4 Feb 2026 14:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217789;
-	bh=RtF8vSQR9qJo6QZmYWHj4buzWJ7E4axj3b7p+bdJVog=;
+	s=korg; t=1770217002;
+	bh=TSIMWbg+YwbE9WYd711TOOhKdFHfKOG1JmR75JkXuak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BBc9o8h+RTSFjXUrR6pZPcvcFakYS39wziF33BLzDtuHe4+TkCRZssYkKLVd1lz39
-	 JJYqiFbevmwOPA+TWOGPhL9yqDzBC7klPdjSErgfwXmegZvnkZ0Bl8eIIelHPgJIOp
-	 ZXiqH5DqEimagMsbeIKy5VdkOrY+jTp0F9B3mptU=
+	b=jFOZUSNyT/dnOt3jmMpj4QMJDiAYM5x/jq9EX5xYwookUuIQiSRKQ7CaCryZmAlRq
+	 ov0OYOrLuzGWUnoAvxD4u10yR8Q0eOhlU2DwqvmXXbHNjSwgg8sLmq9bDL47DQIQka
+	 85eC7814HM7fgg9Iq3iyV7VJnTipFh7QEirshb/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 6.1 118/280] w1: fix redundant counter decrement in w1_attach_slave_device()
+	Alex Maftei <alex.maftei@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 061/206] selftests/ptp: Add -x option for testing PTP_SYS_OFFSET_EXTENDED
 Date: Wed,  4 Feb 2026 15:38:12 +0100
-Message-ID: <20260204143913.885551322@linuxfoundation.org>
+Message-ID: <20260204143900.414061705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,57 +79,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213870-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213638-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: A9C7AE941F
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,davemloft.net:email,amd.com:email]
+X-Rspamd-Queue-Id: C2CA1E7BB7
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Alex Maftei <alex.maftei@amd.com>
 
-commit cc8f92e41eb76f450f05234fef2054afc3633100 upstream.
+[ Upstream commit c8ba75c4eb846888f8f2730690b99cb5bf7b337c ]
 
-In w1_attach_slave_device(), if __w1_attach_slave_device() fails,
-put_device() -> w1_slave_release() is called to do the cleanup job.
-In w1_slave_release(), sl->family->refcnt and sl->master->slave_count
-have already been decremented. There is no need to decrement twice
-in w1_attach_slave_device().
+The -x option (where 'x' stands for eXtended) takes an argument which
+represents the number of samples to request from the PTP device.
+The help message will display the maximum number of samples allowed.
+Providing an invalid argument will also display the maximum number of
+samples allowed.
 
-Fixes: 2c927c0c73fd ("w1: Fix slave count on 1-Wire bus (resend)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Link: https://patch.msgid.link/20251218111414.564403-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Maftei <alex.maftei@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/w1.c |    2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/ptp/testptp.c | 44 +++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
---- a/drivers/w1/w1.c
-+++ b/drivers/w1/w1.c
-@@ -767,8 +767,6 @@ int w1_attach_slave_device(struct w1_mas
- 	if (err < 0) {
- 		dev_err(&dev->dev, "%s: Attaching %s failed.\n", __func__,
- 			 sl->name);
--		dev->slave_count--;
--		w1_family_put(sl->family);
- 		atomic_dec(&sl->master->refcnt);
- 		kfree(sl);
- 		return err;
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index eec05f659950a..d3cbd254a196d 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -143,8 +143,9 @@ static void usage(char *progname)
+ 		" -S         set the system time from the ptp clock time\n"
+ 		" -t val     shift the ptp clock time by 'val' seconds\n"
+ 		" -T val     set the ptp clock time to 'val' seconds\n"
++		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
+ 		" -z         test combinations of rising/falling external time stamp flags\n",
+-		progname);
++		progname, PTP_MAX_SAMPLES);
+ }
+ 
+ int main(int argc, char *argv[])
+@@ -158,6 +159,7 @@ int main(int argc, char *argv[])
+ 	struct timex tx;
+ 	struct ptp_clock_time *pct;
+ 	struct ptp_sys_offset *sysoff;
++	struct ptp_sys_offset_extended *soe;
+ 
+ 	char *progname;
+ 	unsigned int i;
+@@ -176,6 +178,7 @@ int main(int argc, char *argv[])
+ 	int index = 0;
+ 	int list_pins = 0;
+ 	int pct_offset = 0;
++	int getextended = 0;
+ 	int n_samples = 0;
+ 	int pin_index = -1, pin_func;
+ 	int pps = -1;
+@@ -190,7 +193,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:z"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:z"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -255,6 +258,15 @@ int main(int argc, char *argv[])
+ 		case 'w':
+ 			pulsewidth = atoi(optarg);
+ 			break;
++		case 'x':
++			getextended = atoi(optarg);
++			if (getextended < 1 || getextended > PTP_MAX_SAMPLES) {
++				fprintf(stderr,
++					"number of extended timestamp samples must be between 1 and %d; was asked for %d\n",
++					PTP_MAX_SAMPLES, getextended);
++				return -1;
++			}
++			break;
+ 		case 'z':
+ 			flagtest = 1;
+ 			break;
+@@ -533,6 +545,34 @@ int main(int argc, char *argv[])
+ 		free(sysoff);
+ 	}
+ 
++	if (getextended) {
++		soe = calloc(1, sizeof(*soe));
++		if (!soe) {
++			perror("calloc");
++			return -1;
++		}
++
++		soe->n_samples = getextended;
++
++		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
++			perror("PTP_SYS_OFFSET_EXTENDED");
++		} else {
++			printf("extended timestamp request returned %d samples\n",
++			       getextended);
++
++			for (i = 0; i < getextended; i++) {
++				printf("sample #%2d: system time before: %lld.%09u\n",
++				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
++				printf("            phc time: %lld.%09u\n",
++				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
++				printf("            system time after: %lld.%09u\n",
++				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
++			}
++		}
++
++		free(soe);
++	}
++
+ 	close(fd);
+ 	return 0;
+ }
+-- 
+2.51.0
+
 
 
 
