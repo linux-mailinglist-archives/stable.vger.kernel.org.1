@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-213552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPr+Ealdg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:33 +0100
+	id WOGtMWxdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9334BE78F8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F0BE7873
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD2BC304B838
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D6C2B300EBE5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D1F413234;
-	Wed,  4 Feb 2026 14:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EA9413234;
+	Wed,  4 Feb 2026 14:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjIH6twZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maakpKfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6DF40FDAE;
-	Wed,  4 Feb 2026 14:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF002E92BC;
+	Wed,  4 Feb 2026 14:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216716; cv=none; b=gZpNiZzVnapBNluLOW2NC946moM3O2TWHdYzn7EwYcpeG2cUxYP9sPi/OKEEQtsmiRnoSiKWbjFWDeHp1/c6ncLOSBfpePKQCPyK2TZgpZFj7nTjGIQ3b600dM78alu9bui5stCxkqWNexZUqi8EOfk32zp83DJf1LRIcf6M9H8=
+	t=1770216720; cv=none; b=JSEyfv6iwBeGUWvucmoQtHi8sWVq7R6i5yEOBd5bs15SXZGfj9g8bw3PQDVTqrRrjtMWwBRxRPCOMuLWTMq5h4ynDLiUakVER1iSyHlG4khuyZwZFDYmEY3DTSgBlfVfflUgqLruMg7QdmocHRkKoP/b9z51BM5AZa6hfEKcfkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216716; c=relaxed/simple;
-	bh=YG3f9gxnXOAykY+vDUGv2/kaBjOjARc7cNJjxbb9pyM=;
+	s=arc-20240116; t=1770216720; c=relaxed/simple;
+	bh=xJQn0D4YQ/Bz1Mzg1uKT5vwiJl4r1wDgqb9YbtXikEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrtgJSZ3KI/vUaMhilgmycmDPukSw6ZsSs5QPlrO744QvlH01ejlrWHK9H3Nn7yUTH1EqVYdwBfJMze/zRbcCH76nJg6/ATr/RjRZ+zVPLXTDB8b1cGOE9Du3kXHNei4cnVNDekToGJLOUHOE3NvPRg66N+oWC6k6PpyCiFHtqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjIH6twZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE2DC4CEF7;
-	Wed,  4 Feb 2026 14:51:55 +0000 (UTC)
+	 MIME-Version; b=b6419Oyed+rGYaUnNm2in4MD46NwSqsNxn7EWrjmtkahBjptUep6vlJMPi0k/DhY8TP+histHRNm10ZJACAqEEADojVKEWNIueknuKmLSAqBh0REcfvMVKfenDTbsKiwJdWTFEqmt5+1JdpBSORynFkBYh5AzDarwSI1Va8ZIHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maakpKfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E05CC19423;
+	Wed,  4 Feb 2026 14:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216716;
-	bh=YG3f9gxnXOAykY+vDUGv2/kaBjOjARc7cNJjxbb9pyM=;
+	s=korg; t=1770216719;
+	bh=xJQn0D4YQ/Bz1Mzg1uKT5vwiJl4r1wDgqb9YbtXikEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjIH6twZOypvhuKDGc2ALYlojGTNNQDpBAzt8UJ/+E53jvn2JGPNmOBvpcRzM5VST
-	 VU+v79UaQey8lgdRhbdmecuj+IGbkaS3dNB4plP/0JTLIQJ973jE/9hgkozalxyj9I
-	 +gFW83u+RkUy/IKzWrUFAcIfGTwQ3R6IticYzCnA=
+	b=maakpKfCjw7bFojfR0t/Q6vkORDniNlyCcuMaZ0ToMNkRmwALrk35tGk/OnfIEcCd
+	 2m8/jizs9AkLmsZ6I5yuUAg28N3xJRUiU+ZQLDmUN3TkAtWJtyzBDATKKvM3a4EWGs
+	 Sh+sEVBmuOdWrG+uIdpN+8jRmteVbETxvUp1mFos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/206] vsock/test: add a final full barrier after run all tests
-Date: Wed,  4 Feb 2026 15:37:21 +0100
-Message-ID: <20260204143858.573006387@linuxfoundation.org>
+Subject: [PATCH 5.15 011/206] net/mlx5e: Restore destroying state bit after profile cleanup
+Date: Wed,  4 Feb 2026 15:37:22 +0100
+Message-ID: <20260204143858.611427249@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
 References: <20260204143858.193781818@linuxfoundation.org>
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213552-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213553-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,63 +87,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9334BE78F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 13F0BE7873
 X-Rspamd-Action: no action
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit c39a6a277e0e67ffff6a8efcbbf7e7e23ce9e38c ]
+[ Upstream commit 5629f8859dca7ef74d7314b60de6a957f23166c0 ]
 
-If the last test fails, the other side still completes correctly,
-which could lead to false positives.
+Profile rollback can fail in mlx5e_netdev_change_profile() and we will
+end up with invalid mlx5e_priv memset to 0, we must maintain the
+'destroying' bit in order to gracefully shutdown even if the
+profile/priv are not valid.
 
-Let's add a final barrier that ensures that the last test has finished
-correctly on both sides, but also that the two sides agree on the
-number of tests to be performed.
+This patch maintains the previous state of the 'destroying' state of
+mlx5e_priv after priv cleanup, to allow the remove flow to cleanup
+common resources from mlx5_core to avoid FW fatal errors as seen below:
 
-Fixes: 2f65b44e199c ("VSOCK: add full barrier between test cases")
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260108114419.52747-1-sgarzare@redhat.com
+$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
+    Error: mlx5_core: Failed setting eswitch to offloads.
+dmesg: mlx5_core 0000:00:03.0 enp0s3np0: failed to rollback to orig profile, ...
+
+$ devlink dev reload pci/0000:00:03.0
+
+mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
+mlx5_core 0000:00:03.0: poll_health:803:(pid 519): Fatal error 3 detected
+mlx5_core 0000:00:03.0: firmware version: 28.41.1000
+mlx5_core 0000:00:03.0: 0.000 Gb/s available PCIe bandwidth (Unknown x255 link)
+mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
+mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
+mlx5_core 0000:00:03.0: mlx5_health_try_recover:340:(pid 141): handling bad device here
+mlx5_core 0000:00:03.0: mlx5_handle_bad_state:285:(pid 141): Expected to see disabled NIC but it is full driver
+mlx5_core 0000:00:03.0: mlx5_error_sw_reset:236:(pid 141): start
+mlx5_core 0000:00:03.0: NIC IFC still 0 after 4000ms.
+
+Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260108212657.25090-5-saeed@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/vsock/util.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
-index 2acbb7703c6a0..259d33ae6293b 100644
---- a/tools/testing/vsock/util.c
-+++ b/tools/testing/vsock/util.c
-@@ -360,6 +360,18 @@ void run_tests(const struct test_case *test_cases,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 321441e6ad328..ba36e500c1ff1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -4856,6 +4856,7 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
  
- 		printf("ok\n");
- 	}
-+
-+	printf("All tests have been executed. Waiting other peer...");
-+	fflush(stdout);
-+
-+	/*
-+	 * Final full barrier, to ensure that all tests have been run and
-+	 * that even the last one has been successful on both sides.
-+	 */
-+	control_writeln("COMPLETED");
-+	control_expectln("COMPLETED");
-+
-+	printf("ok\n");
+ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+ {
++	bool destroying = test_bit(MLX5E_STATE_DESTROYING, &priv->state);
+ 	int i;
+ 
+ 	/* bail if change profile failed and also rollback failed */
+@@ -4870,6 +4871,8 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+ 	kvfree(priv->htb.qos_sq_stats);
+ 
+ 	memset(priv, 0, sizeof(*priv));
++	if (destroying) /* restore destroying bit, to allow unload */
++		set_bit(MLX5E_STATE_DESTROYING, &priv->state);
  }
  
- void list_tests(const struct test_case *test_cases)
+ struct net_device *
 -- 
 2.51.0
 
