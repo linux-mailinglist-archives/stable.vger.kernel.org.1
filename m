@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-214225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214078-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CABCGp1og2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:17 +0100
+	id SJSLFZZrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214078-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:53:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4819E9232
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9C1E98AC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6693C319818C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEEEF30FE416
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269172D5926;
-	Wed,  4 Feb 2026 15:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FCD2D594F;
+	Wed,  4 Feb 2026 15:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ttv4ptA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqIKtEJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC87121FF4C;
-	Wed,  4 Feb 2026 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09B118859B;
+	Wed,  4 Feb 2026 15:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218980; cv=none; b=XNhqPNFw5hvZQdwIwgiGOpJ+0lmILJbn+YsdVnLQcLH05iIhwQKlZXajhn+vh+b+HJrZl8b0/D8v8hw/IFiFapkRWcsbk8EfB6XBFSPNSgVu3bDXzzNegScuflYVa+INd3YgI8TYDziTFwv4TPuuSzzhM9cg/Cfzg9Xm1N6JYPA=
+	t=1770218489; cv=none; b=b13b/AaWxusKjMbSF/OfsAVOaqUWYoK3oVdJ4/NuWHtCH02NZy4RThstSJ2Be2O55ae/FO23fHxRnMA4njTKGa5sm3A7LXN/BZRWLisWUMFm+MuNIQ/gdrqrSgXSKI30QZg+15NfTHu6gRXiZ92kVdZXeB7j3OrOvW3QoHiB1i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218980; c=relaxed/simple;
-	bh=3Fh1ShpVoLJnyGwZmS3nODR1f5jkQJKCiStZCxX2J0U=;
+	s=arc-20240116; t=1770218489; c=relaxed/simple;
+	bh=vqik6w5edCh0DoTdDrrx3k4kD1iMpQV0nPFqADaHHfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2MX01bgIMgIjUlgy0lN0qI+Ua6jjOiM4jjRetGfKT7dvw1ROWIgNlTQ4nShPm29tLcySu0dGM3lBOuXBnPjBENA9dTQ/keBqf+/Z9R52gvLRCvsazWoQl8lCLi7h6K55K3uyP3oMKW7ynfuEMbbIigEWPv/fHttfguGEh8HpJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ttv4ptA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2AFC4CEF7;
-	Wed,  4 Feb 2026 15:29:39 +0000 (UTC)
+	 MIME-Version; b=CRIUQLfbckRuAXaYMPwHLpPfLCplU0Xp1cq+Ptt0jb3Z/mIMW8Pso+KXXMKgfhozXN+Klnc45NyusqtWxsT8XWoZtWVDhz8++cocj/K9UCnerSb7u9ZnEXP1xfjEF4bBXgHQKhekRKSM/D8YzFciLsYwsMQqSPoajGkJPbyNbEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqIKtEJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A236C4CEF7;
+	Wed,  4 Feb 2026 15:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218980;
-	bh=3Fh1ShpVoLJnyGwZmS3nODR1f5jkQJKCiStZCxX2J0U=;
+	s=korg; t=1770218489;
+	bh=vqik6w5edCh0DoTdDrrx3k4kD1iMpQV0nPFqADaHHfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ttv4ptAskCs3tPZRqNGJMknkwYjoW0j5F+7wDzZdsAw0XrqUltablRnbJE8f3T4R
-	 lyYteM+hf/MezXH5s0RGOuHFF0lwOV5mwVDePdh5rLa9TzdU5KB80i9gGOj80A7x5Q
-	 /7SaKmEMTkh+VP+T+43TA8oQZi5ckJq6c3tVP+rI=
+	b=JqIKtEJaBED1TpRYl7iFoX8cgXzbmTF6JBM7+r9UslaoVtHbqmN5sAyFwc4iPR9Lg
+	 HCYPZSGilAEcVhWchkDuYDO8FJAa2q0pF7w1o2v4V542kwAs7ww8kjllsPejYGV7Ef
+	 TOVcsl9gQ4bxdVPJsEw8v0Y3rCGzTtZGvpJdmCyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	syzbot+f2d245f1d76bbfa50e4c@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 032/122] net/mlx5: Initialize events outside devlink lock
+Subject: [PATCH 6.6 11/72] nfc: llcp: Fix memleak in nfc_llcp_send_ui_frame().
 Date: Wed,  4 Feb 2026 15:40:14 +0100
-Message-ID: <20260204143853.017599349@linuxfoundation.org>
+Message-ID: <20260204143846.024663720@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,147 +67,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-214078-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214225-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: C4819E9232
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,f2d245f1d76bbfa50e4c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A9C1E98AC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit b6b03097f9826db72aeb3f751774c5e9edd9a5b3 ]
+[ Upstream commit 165c34fb6068ff153e3fc99a932a80a9d5755709 ]
 
-Move event init/cleanup outside of mlx5_init_one() / mlx5_uninit_one()
-and into the mlx5_mdev_init() / mlx5_mdev_uninit() functions.
+syzbot reported various memory leaks related to NFC, struct
+nfc_llcp_sock, sk_buff, nfc_dev, etc. [0]
 
-By doing this, we avoid the events being reinitialized on devlink reload
-and, more importantly, the events->sw_nh notifier chain becomes
-available earlier in the init procedure, which will be used in
-subsequent patches. This makes sense because the events struct is pure
-software, independent of any HW details.
+The leading log hinted that nfc_llcp_send_ui_frame() failed
+to allocate skb due to sock_error(sk) being -ENXIO.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1763325940-1231508-2-git-send-email-tariqt@nvidia.com
+ENXIO is set by nfc_llcp_socket_release() when struct
+nfc_llcp_local is destroyed by local_cleanup().
+
+The problem is that there is no synchronisation between
+nfc_llcp_send_ui_frame() and local_cleanup(), and skb
+could be put into local->tx_queue after it was purged in
+local_cleanup():
+
+  CPU1                          CPU2
+  ----                          ----
+  nfc_llcp_send_ui_frame()      local_cleanup()
+  |- do {                       '
+     |- pdu = nfc_alloc_send_skb(..., &err)
+     |                          .
+     |                          |- nfc_llcp_socket_release(local, false, ENXIO);
+     |                          |- skb_queue_purge(&local->tx_queue);      |
+     |                          '                                          |
+     |- skb_queue_tail(&local->tx_queue, pdu);                             |
+    ...                                                                    |
+     |- pdu = nfc_alloc_send_skb(..., &err)                                |
+                                       ^._________________________________.'
+
+local_cleanup() is called for struct nfc_llcp_local only
+after nfc_llcp_remove_local() unlinks it from llcp_devices.
+
+If we hold local->tx_queue.lock then, we can synchronise
+the thread and nfc_llcp_send_ui_frame().
+
+Let's do that and check list_empty(&local->list) before
+queuing skb to local->tx_queue in nfc_llcp_send_ui_frame().
+
+[0]:
+[   56.074943][ T6096] llcp: nfc_llcp_send_ui_frame: Could not allocate PDU (error=-6)
+[   64.318868][ T5813] kmemleak: 6 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+BUG: memory leak
+unreferenced object 0xffff8881272f6800 (size 1024):
+  comm "syz.0.17", pid 6096, jiffies 4294942766
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    27 00 03 40 00 00 00 00 00 00 00 00 00 00 00 00  '..@............
+  backtrace (crc da58d84d):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4979 [inline]
+    slab_alloc_node mm/slub.c:5284 [inline]
+    __do_kmalloc_node mm/slub.c:5645 [inline]
+    __kmalloc_noprof+0x3e3/0x6b0 mm/slub.c:5658
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    sk_prot_alloc+0x11a/0x1b0 net/core/sock.c:2239
+    sk_alloc+0x36/0x360 net/core/sock.c:2295
+    nfc_llcp_sock_alloc+0x37/0x130 net/nfc/llcp_sock.c:979
+    llcp_sock_create+0x71/0xd0 net/nfc/llcp_sock.c:1044
+    nfc_sock_create+0xc9/0xf0 net/nfc/af_nfc.c:31
+    __sock_create+0x1a9/0x340 net/socket.c:1605
+    sock_create net/socket.c:1663 [inline]
+    __sys_socket_create net/socket.c:1700 [inline]
+    __sys_socket+0xb9/0x1a0 net/socket.c:1747
+    __do_sys_socket net/socket.c:1761 [inline]
+    __se_sys_socket net/socket.c:1759 [inline]
+    __x64_sys_socket+0x1b/0x30 net/socket.c:1759
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+BUG: memory leak
+unreferenced object 0xffff88810fbd9800 (size 240):
+  comm "syz.0.17", pid 6096, jiffies 4294942850
+  hex dump (first 32 bytes):
+    68 f0 ff 08 81 88 ff ff 68 f0 ff 08 81 88 ff ff  h.......h.......
+    00 00 00 00 00 00 00 00 00 68 2f 27 81 88 ff ff  .........h/'....
+  backtrace (crc 6cc652b1):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4979 [inline]
+    slab_alloc_node mm/slub.c:5284 [inline]
+    kmem_cache_alloc_node_noprof+0x36f/0x5e0 mm/slub.c:5336
+    __alloc_skb+0x203/0x240 net/core/skbuff.c:660
+    alloc_skb include/linux/skbuff.h:1383 [inline]
+    alloc_skb_with_frags+0x69/0x3f0 net/core/skbuff.c:6671
+    sock_alloc_send_pskb+0x379/0x3e0 net/core/sock.c:2965
+    sock_alloc_send_skb include/net/sock.h:1859 [inline]
+    nfc_alloc_send_skb+0x45/0x80 net/nfc/core.c:724
+    nfc_llcp_send_ui_frame+0x162/0x360 net/nfc/llcp_commands.c:766
+    llcp_sock_sendmsg+0x14c/0x1d0 net/nfc/llcp_sock.c:814
+    sock_sendmsg_nosec net/socket.c:727 [inline]
+    __sock_sendmsg net/socket.c:742 [inline]
+    __sys_sendto+0x2d8/0x2f0 net/socket.c:2244
+    __do_sys_sendto net/socket.c:2251 [inline]
+    __se_sys_sendto net/socket.c:2247 [inline]
+    __x64_sys_sendto+0x28/0x30 net/socket.c:2247
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 94f418a20664 ("NFC: UI frame sending routine implementation")
+Reported-by: syzbot+f2d245f1d76bbfa50e4c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/697569c7.a00a0220.33ccc7.0014.GAE@google.com/T/#u
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260125010214.1572439-1-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a8f930b7be7b ("net/mlx5: Fix vhca_id access call trace use before alloc")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/main.c    | 34 +++++++++++++------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ net/nfc/llcp_commands.c | 17 ++++++++++++++++-
+ net/nfc/llcp_core.c     |  4 +++-
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 9e0c9e6266a47..236cb1eb98c82 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -999,16 +999,10 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
- 		goto err_irq_cleanup;
- 	}
+diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
+index e2680a3bef799..b652323bc2c12 100644
+--- a/net/nfc/llcp_commands.c
++++ b/net/nfc/llcp_commands.c
+@@ -778,8 +778,23 @@ int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock, u8 ssap, u8 dsap,
+ 		if (likely(frag_len > 0))
+ 			skb_put_data(pdu, msg_ptr, frag_len);
  
--	err = mlx5_events_init(dev);
--	if (err) {
--		mlx5_core_err(dev, "failed to initialize events\n");
--		goto err_eq_cleanup;
--	}
--
- 	err = mlx5_fw_reset_init(dev);
- 	if (err) {
- 		mlx5_core_err(dev, "failed to initialize fw reset events\n");
--		goto err_events_cleanup;
-+		goto err_eq_cleanup;
- 	}
- 
- 	mlx5_cq_debugfs_init(dev);
-@@ -1110,8 +1104,6 @@ static int mlx5_init_once(struct mlx5_core_dev *dev)
- 	mlx5_cleanup_reserved_gids(dev);
- 	mlx5_cq_debugfs_cleanup(dev);
- 	mlx5_fw_reset_cleanup(dev);
--err_events_cleanup:
--	mlx5_events_cleanup(dev);
- err_eq_cleanup:
- 	mlx5_eq_table_cleanup(dev);
- err_irq_cleanup:
-@@ -1144,7 +1136,6 @@ static void mlx5_cleanup_once(struct mlx5_core_dev *dev)
- 	mlx5_cleanup_reserved_gids(dev);
- 	mlx5_cq_debugfs_cleanup(dev);
- 	mlx5_fw_reset_cleanup(dev);
--	mlx5_events_cleanup(dev);
- 	mlx5_eq_table_cleanup(dev);
- 	mlx5_irq_table_cleanup(dev);
- 	mlx5_devcom_unregister_device(dev->priv.devc);
-@@ -1822,6 +1813,24 @@ static int vhca_id_show(struct seq_file *file, void *priv)
- 
- DEFINE_SHOW_ATTRIBUTE(vhca_id);
- 
-+static int mlx5_notifiers_init(struct mlx5_core_dev *dev)
-+{
-+	int err;
++		spin_lock(&local->tx_queue.lock);
 +
-+	err = mlx5_events_init(dev);
-+	if (err) {
-+		mlx5_core_err(dev, "failed to initialize events\n");
-+		return err;
-+	}
++		if (list_empty(&local->list)) {
++			spin_unlock(&local->tx_queue.lock);
 +
-+	return 0;
-+}
++			kfree_skb(pdu);
 +
-+static void mlx5_notifiers_cleanup(struct mlx5_core_dev *dev)
-+{
-+	mlx5_events_cleanup(dev);
-+}
++			len -= remaining_len;
++			if (len == 0)
++				len = -ENXIO;
++			break;
++		}
 +
- int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
- {
- 	struct mlx5_priv *priv = &dev->priv;
-@@ -1877,6 +1886,10 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
- 	if (err)
- 		goto err_hca_caps;
+ 		/* No need to check for the peer RW for UI frames */
+-		skb_queue_tail(&local->tx_queue, pdu);
++		__skb_queue_tail(&local->tx_queue, pdu);
++
++		spin_unlock(&local->tx_queue.lock);
  
-+	err = mlx5_notifiers_init(dev);
-+	if (err)
-+		goto err_hca_caps;
-+
- 	/* The conjunction of sw_vhca_id with sw_owner_id will be a global
- 	 * unique id per function which uses mlx5_core.
- 	 * Those values are supplied to FW as part of the init HCA command to
-@@ -1919,6 +1932,7 @@ void mlx5_mdev_uninit(struct mlx5_core_dev *dev)
- 	if (priv->sw_vhca_id > 0)
- 		ida_free(&sw_vhca_ida, dev->priv.sw_vhca_id);
- 
-+	mlx5_notifiers_cleanup(dev);
- 	mlx5_hca_caps_free(dev);
- 	mlx5_adev_cleanup(dev);
- 	mlx5_pagealloc_cleanup(dev);
+ 		remaining_len -= frag_len;
+ 		msg_ptr += frag_len;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index 18be13fb9b75a..ced99d2a90cc1 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -314,7 +314,9 @@ static struct nfc_llcp_local *nfc_llcp_remove_local(struct nfc_dev *dev)
+ 	spin_lock(&llcp_devices_lock);
+ 	list_for_each_entry_safe(local, tmp, &llcp_devices, list)
+ 		if (local->dev == dev) {
+-			list_del(&local->list);
++			spin_lock(&local->tx_queue.lock);
++			list_del_init(&local->list);
++			spin_unlock(&local->tx_queue.lock);
+ 			spin_unlock(&llcp_devices_lock);
+ 			return local;
+ 		}
 -- 
 2.51.0
 
