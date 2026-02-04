@@ -1,121 +1,146 @@
-Return-Path: <stable+bounces-213349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMnXL9TLgmkYbgMAu9opvQ
-	(envelope-from <stable+bounces-213349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 05:32:20 +0100
+	id iIEKHnHXgml5cQMAu9opvQ
+	(envelope-from <stable+bounces-213350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 06:21:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07897E18D4
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 05:32:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2532BE1E9D
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 06:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5113D30C271A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 04:32:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF4EE3015849
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 05:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F756334C11;
-	Wed,  4 Feb 2026 04:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6305356A1F;
+	Wed,  4 Feb 2026 05:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I28tFzjC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58D534DB56
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 04:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7343431BCAE;
+	Wed,  4 Feb 2026 05:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770179533; cv=none; b=p791WMQbK9HQS8CEqr8r/VuekrLZmswebRxaeikZ/WLjCbjgobUtfzDIXvHnTY4f+Ss6cVXpS8WHQ3p6lGOuGgenwfrjpH0JJgIDgIdI+vNv6JtFdyNe8M+pXdqEPMqpGgr9i7loFKSBVcre3moQsVX3Qq2juJBDiDehNIjMjSo=
+	t=1770182501; cv=none; b=HaWXQZrvse5Al0ecLdyyOK+raiFgDSbL+Hsnq61/UuWlcxiI45+m3z2H0JpK7L/rLlWa0T+Q2jxI1U9lvvfz4lmNFjohvbee95OJqdgmyBXBjc+KPrBp/eRKYML0hho83T/X/Hg3JZ5OzyFtCGO94XJG/isM4u1PoQPqlB3ww1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770179533; c=relaxed/simple;
-	bh=X1Kr1OyHHYSD1JHZHZgyBsiAnsBVF3CxR/1W8MyYNW0=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=pEJS8FE2HAvTXlyhUy+ZfMVLoxJUg4F9KvYl3WZZKmLQKibcSfTT+yOz37j1EyXEiniNIaEirLMaccnU0zDUmAgUACEOJvKeopBDhFjOIuN6Ny5V9+Hz6nyXusRYu2rxMJ2N1PuR1il8pKPu2t/a7WLjBwj+e8rsUttSIFXXzss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-66304fd62ebso2077352eaf.3
-        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 20:32:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770179522; x=1770784322;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vLOIj5H519mZHspqU5zX/aCaORqG7D8dhrXyLXEpUVk=;
-        b=N9bPtb5lmeI9xTYd5LBLAcq/GO0+odJRSghHa84/xCtMVLbjr4L+rfBNh6mH3RvcDy
-         uhwf1Gu3GszVT9/lHrUi58yu64RrD71wBhhQOY5bUp/oOG8B9rAz3T8jbQsuMp7LJQJS
-         Y2LuwrYDu9DjnLZB3z5i+I1rFWWH3YY6xwpeqkwCmKHfC+uDAMs330qtQsib2zblF+co
-         HsFSFWh4EIwRAua8UENzymVX6a3klvG1+/sPhzyEaSR+8x/CLSmHmsC7Wn8gDfuquGz1
-         MphchN+w3ABAcxnGYXqWySZjBU1QjlZtahzkAl1gPcWnjJK6MKSwESmjJAN4qCYCpJ3A
-         uO1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUZzhMCTpyJFyKwhM6KxILTYTRLnDBmas919y6ZLZjih+HGnDBRxF2ZmLyfpnqBDkYALXqSXmk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywr2dA31a+wVPVmpSHMrChpYYYau8ng7if99LcBstrgjmL0jM1H
-	jFTGxtutO0VANmCcYibsPy59F3Xxk7tmbwgQz1qdVWE6zxsotz3k6KesEM0VnOQ5esqOrVvh9kA
-	Va8bqU/t/6CkDC1dHB1cbLv6sfGH3RfnGCc9DoKlbj4oqhcJgZUnyQ7VETqI=
+	s=arc-20240116; t=1770182501; c=relaxed/simple;
+	bh=6T+Q+snv83Lq/o2B97GAk1EUnXxhea2+cmBgwylekjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=twOdYb+qeqStYs1lp1DP+5Uh9Fg5a3JpO4frHK5JyLayLrVN9YyCmqEHM+3HqnwFJxo1TaoPKVKTfwkzhRCN9jUaUPqJw8jNj+xzGwqGFe+d74zjCafFpLC7vHnJX8AfNaAlpeSQcRUsAe1N1+h/Z01rWBFTcDvJFLc64Mz+J50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I28tFzjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6F4C4CEF7;
+	Wed,  4 Feb 2026 05:21:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770182501;
+	bh=6T+Q+snv83Lq/o2B97GAk1EUnXxhea2+cmBgwylekjM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I28tFzjClOF5i7r1K38160PRvLL0HVeelkisbujYu7leyunDTVWjJOGbKKc8SzTnp
+	 Bw6dO+7dJ+X0MEHj1IgZxLDxyoflUgenpXRlsSd71FUCeVg6SxKxIc1WNnQb7Wqxoa
+	 upE0BGJmiBIBQVf4Ntp1i+3VJdKvZNAZhiD7xYB4=
+Date: Wed, 4 Feb 2026 06:21:37 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Tomasz =?utf-8?Q?Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>
+Cc: jikos@kernel.org, bentiss@kernel.org, sashal@kernel.org,
+	oleg@makarenk.ooo, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] HID: pidff: Fix condition effect bit clearing
+Message-ID: <2026020430-evergreen-unsubtle-7c48@gregkh>
+References: <20260203174241.2863219-1-tomasz.pakula.oficjalny@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2291:b0:662:f74d:69f5 with SMTP id
- 006d021491bc7-66a2113d4bamr1021474eaf.31.1770179522145; Tue, 03 Feb 2026
- 20:32:02 -0800 (PST)
-Date: Tue, 03 Feb 2026 20:32:02 -0800
-In-Reply-To: <20260204032856.2561-1-hdanton@sina.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6982cbc2.a00a0220.37c87e.001b.GAE@google.com>
-Subject: Re: [syzbot] [sound?] KASAN: slab-use-after-free Read in snd_pcm_stop
-From: syzbot <syzbot+5f8f3acdee1ec7a7ef7b@syzkaller.appspotmail.com>
-To: hdanton@sina.com, linux-kernel@vger.kernel.org, 
-	linux-sound@vger.kernel.org, perex@perex.cz, stable@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, tiwai@suse.com, tiwai@suse.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260203174241.2863219-1-tomasz.pakula.oficjalny@gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=151a39927f1e10b4];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213349-lists,stable=lfdr.de,5f8f3acdee1ec7a7ef7b];
+	TAGGED_FROM(0.00)[bounces-213350-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[sina.com,vger.kernel.org,perex.cz,googlegroups.com,suse.com,suse.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	SUBJECT_HAS_QUESTION(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[linuxfoundation.org:query timed out];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 07897E18D4
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2532BE1E9D
 X-Rspamd-Action: no action
 
-Hello,
+On Tue, Feb 03, 2026 at 06:42:41PM +0100, Tomasz Pakuła wrote:
+> As reported by MPDarkGuy on discord, NULL pointer dereferences were
+> happening because not all the conditional effects bits were cleared.
+> 
+> Properly clear all conditional effect bits from ffbit
+> 
+> Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+> ---
+> 
+> Urgent for 6.19 rc period and backports for 6.18
+> 
+>  drivers/hid/usbhid/hid-pidff.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+> index a4e700b40ba9..56d6af39ba81 100644
+> --- a/drivers/hid/usbhid/hid-pidff.c
+> +++ b/drivers/hid/usbhid/hid-pidff.c
+> @@ -1452,10 +1452,13 @@ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
+>  		hid_warn(pidff->hid, "unknown ramp effect layout\n");
+>  
+>  	if (PIDFF_FIND_FIELDS(set_condition, PID_SET_CONDITION, 1)) {
+> -		if (test_and_clear_bit(FF_SPRING, dev->ffbit)   ||
+> -		    test_and_clear_bit(FF_DAMPER, dev->ffbit)   ||
+> -		    test_and_clear_bit(FF_FRICTION, dev->ffbit) ||
+> -		    test_and_clear_bit(FF_INERTIA, dev->ffbit))
+> +		bool test = false;
+> +
+> +		test |= test_and_clear_bit(FF_SPRING, dev->ffbit);
+> +		test |= test_and_clear_bit(FF_DAMPER, dev->ffbit);
+> +		test |= test_and_clear_bit(FF_FRICTION, dev->ffbit);
+> +		test |= test_and_clear_bit(FF_INERTIA, dev->ffbit);
+> +		if (test)
+>  			hid_warn(pidff->hid, "unknown condition effect layout\n");
+>  	}
+>  
+> -- 
+> 2.52.0
+> 
+> 
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+<formletter>
 
-Reported-by: syzbot+5f8f3acdee1ec7a7ef7b@syzkaller.appspotmail.com
-Tested-by: syzbot+5f8f3acdee1ec7a7ef7b@syzkaller.appspotmail.com
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Tested on:
-
-commit:         5fd0a1df Merge tag 'v6.19rc8-smb3-client-fixes' of git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1582153a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=151a39927f1e10b4
-dashboard link: https://syzkaller.appspot.com/bug?extid=5f8f3acdee1ec7a7ef7b
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=11a30b22580000
-
-Note: testing is done by a robot and is best-effort only.
+</formletter>
 
