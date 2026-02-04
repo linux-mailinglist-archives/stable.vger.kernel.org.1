@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOz9G2Rcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:08 +0100
+	id IEatFA5lg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF799E7640
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98531E88B5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C68DE3012CFA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0032631395B3
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0E529D260;
-	Wed,  4 Feb 2026 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02C4423A7F;
+	Wed,  4 Feb 2026 15:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r62/5/Jn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPGGKgJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A9228CF49;
-	Wed,  4 Feb 2026 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E4D3C1963;
+	Wed,  4 Feb 2026 15:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216545; cv=none; b=O0TH8YpA4suBcgXNClVLX+flkj4KTX0QgLIHSh4F45Gy03qEgAEhD3wje6V0y9VwpnfrP45wUCr8/za8n923GalcjCLFRZHnjSZ02EYNG/rQfRorxgFHcGgmZwpE4N3GgU7D7A35NtRXgyZQIpLQ05kthlf2VqdI1wcpvVsi/kc=
+	t=1770218088; cv=none; b=SqnRhd5aiHIAUVNgcPziHbqu8xau4fXP5oUJlsSlY3i4bJvWdmgTHA2z47eFuRvmOYZQlYwmSdKy4uH2bKVdCEfUPXZAij4KF24lxg/Eaevh9zpXAa8nCt/YsjDiSen9MmcGetwzsRiiYWNytLNpXONcSnzYYISplo1Krx07Obk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216545; c=relaxed/simple;
-	bh=ti7yJwUqYAC/+4Ul8IfCrS3zTtM7nf690GxLXC9zxXY=;
+	s=arc-20240116; t=1770218088; c=relaxed/simple;
+	bh=EXMhfTRz0ciSezjh0Wd97lKCu3icnboPdM7zI88bK3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlO/1FWVjACWHv8LCiUIACzIdRyn7wkntR1FJT7q/rw/9xYlOTR8HbhVR+r9tmw5T2MYDdEBak9LMdatl/D8373qcI/jw8dDgyxiCCjbZKKkcwB6/tZjzMBLsnZb1R+MzQPp/S7nzvRAYZQI57CChlRN2pQsoCdb1CodqYIklSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r62/5/Jn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D39C116C6;
-	Wed,  4 Feb 2026 14:49:04 +0000 (UTC)
+	 MIME-Version; b=T/HBedYKHSpmPkMyzr0XxgnqdMZ8HHpfoAEZi/xn81gGJVuYNhCNyjMOZ54H1ZpuglIcfp9AWo4GMhBub5hrxg4M7d+5ee/xnIcFwnNk6oZ1pFD72/Vi2oLFBUylJNTwul38dQhWclSyIOPzhpnoDPQ3qDF3qbsZ5wd0XreZV8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPGGKgJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BFCC4CEF7;
+	Wed,  4 Feb 2026 15:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216545;
-	bh=ti7yJwUqYAC/+4Ul8IfCrS3zTtM7nf690GxLXC9zxXY=;
+	s=korg; t=1770218088;
+	bh=EXMhfTRz0ciSezjh0Wd97lKCu3icnboPdM7zI88bK3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r62/5/JnpJjKx+dCuX7S/igddweefI+IJ2ikP7JpUTE8ICH22dqeH7P9pZnwnTtS2
-	 Rt/ZHFbJ2Vl72B4GIGpdD7sreAR27S3DHEqOou5eJYKY0FxbRk3I3H+oyIl76Uce1n
-	 BQU6YjTzco9W8JZ1ukPEpkw126vxTFglL2fYE2OQ=
+	b=fPGGKgJGIvQGJ8bKiHslor+ZMA1xX/KJKLpciQIQEFOv5UtV1C342U+zOSH29wvrz
+	 bytbV7JcD2CMv1Z+b0wp2jYDoekiHSwQdXmjk5SNO9qAwoazVaxtsKzBaaNs3uJFGF
+	 kjlxZC6maqpE4PDoQkL33tEitk9gD2Zz4jU1aPbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/161] net/mlx5: Fix memory leak in esw_acl_ingress_lgcy_setup()
-Date: Wed,  4 Feb 2026 15:39:42 +0100
-Message-ID: <20260204143856.028898923@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 209/280] scsi: be2iscsi: Fix a memory leak in beiscsi_boot_get_sinfo()
+Date: Wed,  4 Feb 2026 15:39:43 +0100
+Message-ID: <20260204143917.121005178@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +68,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213499-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213960-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CF799E7640
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 98531E88B5
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 108948f723b13874b7ebf6b3f1cc598a7de38622 ]
+commit 4747bafaa50115d9667ece446b1d2d4aba83dc7f upstream.
 
-In esw_acl_ingress_lgcy_setup(), if esw_acl_table_create() fails,
-the function returns directly without releasing the previously
-created counter, leading to a memory leak.
+If nonemb_cmd->va fails to be allocated, free the allocation previously
+made by alloc_mcc_wrb().
 
-Fix this by jumping to the out label instead of returning directly,
-which aligns with the error handling logic of other paths in this
-function.
-
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: 07bab9502641 ("net/mlx5: E-Switch, Refactor eswitch ingress acl codes")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260120134640.2717808-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 50a4b824be9e ("scsi: be2iscsi: Fix to make boot discovery non-blocking")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251213083643.301240-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/be2iscsi/be_mgmt.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c
-index 45570d0a58d2f..02b2ab7958543 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c
-@@ -185,7 +185,7 @@ int esw_acl_ingress_lgcy_setup(struct mlx5_eswitch *esw,
- 		if (IS_ERR(vport->ingress.acl)) {
- 			err = PTR_ERR(vport->ingress.acl);
- 			vport->ingress.acl = NULL;
--			return err;
-+			goto out;
- 		}
- 
- 		err = esw_acl_ingress_lgcy_groups_create(esw, vport);
--- 
-2.51.0
-
+--- a/drivers/scsi/be2iscsi/be_mgmt.c
++++ b/drivers/scsi/be2iscsi/be_mgmt.c
+@@ -1025,6 +1025,7 @@ unsigned int beiscsi_boot_get_sinfo(stru
+ 					      &nonemb_cmd->dma,
+ 					      GFP_KERNEL);
+ 	if (!nonemb_cmd->va) {
++		free_mcc_wrb(ctrl, tag);
+ 		mutex_unlock(&ctrl->mbox_lock);
+ 		return 0;
+ 	}
 
 
 
