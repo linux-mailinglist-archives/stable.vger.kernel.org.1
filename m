@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-213531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKgnAMheg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:20 +0100
+	id wO8cGlNlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:15 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EBAE7B12
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A306EE895F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C144230D1697
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 138F6315BFDF
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2514C3AEF30;
-	Wed,  4 Feb 2026 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715DA421884;
+	Wed,  4 Feb 2026 15:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhIoBkWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsipeoJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC7F281530;
-	Wed,  4 Feb 2026 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351DC2D8763;
+	Wed,  4 Feb 2026 15:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216645; cv=none; b=rnotvMmP4kRu7JKS90pYeQxzBQ+lZHA+OQmVbnY3dvgN/nFhh5g8BDO83tkJQTrJeb7m/sWsEtBZGUUGktbpdNBO6ZCk6YwwKNUoZIqZNsieAjBzyyPpMLVz+8V0fuZ0Xk+7g0g50TutOHHoz/++4ifQyOzDq/kJ5gIZrRUVyDg=
+	t=1770218197; cv=none; b=n+ODwVwhMrSyi8NUCuWsx3C5j+cQ45zvPU82SG4k/8rJdteJUhZU5wD7vq1HFtR8YADEDQdQlMait91n1nbrunV6a12eg9TvERHt2Je90dx4RH7gR31XbJ8teodcxnDGYuR+2kWguLUUfZnopyvF9jKWNVJMu+BSaYEzat6V3Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216645; c=relaxed/simple;
-	bh=gV1JhdC8MSUKC+wzR3t90b7tbLeH+SbLl2DsGlP5NhI=;
+	s=arc-20240116; t=1770218197; c=relaxed/simple;
+	bh=oN+2V/PZOZYWi/uqvDCXcGW9uFENmkrrkKcFhlNNM6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHdMoGVlSjEjQ4P4TwEtZugGWaXsbXWU7E2tUDCv/cb91HY8n0c9aVS8w/XhcwNLmjGvM17R5lkdqQap9gbO7PruuqbxZmxVLTTDPsCTSkHJg28LDEYtjt4GA1wzSn9GMVttTx3EgAs3yDuN75txPhqat1liH2fs559/Rujv398=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhIoBkWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177B8C4CEF7;
-	Wed,  4 Feb 2026 14:50:44 +0000 (UTC)
+	 MIME-Version; b=U3gzoWmUgfwtPjn2efO4PFYgWkncRE3HaoxmI/pbV91zgcFYaKXzxbbTTzYqEHiPP8wepiDd8cWseOIQyonhYGbmTgfjSJHWb4AQYmjNTGdZMC1JeGpLNq260DPyHw9hJp0DsTS4L+LhIAfaT5+3Eym6aD4KizMyfJEpkV0x0fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsipeoJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35EEC4CEF7;
+	Wed,  4 Feb 2026 15:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216645;
-	bh=gV1JhdC8MSUKC+wzR3t90b7tbLeH+SbLl2DsGlP5NhI=;
+	s=korg; t=1770218197;
+	bh=oN+2V/PZOZYWi/uqvDCXcGW9uFENmkrrkKcFhlNNM6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhIoBkWCeylYUSB/DRheM2dTyX2KuuaHVX6QeIu37hgxAyVzPOQFBEZBKzIVYosYa
-	 MbKanVBm61DWN4SJQP6DYj6JXJE4E9TvvWlQKAAxgnYe9bAe7dKt13oq9jeMXKZWk0
-	 NcJkyihVsgqI/7fPu2pxpq5S7ZLysbtRp6DijmEA=
+	b=MsipeoJT6WiNZCj5VCkV0bXePmewW34Sc2XOapRJV/UJyL5uwnVHzMCXlkxXnmcot
+	 7tjFdcGpiMeTwbWLtkan3+tMYdaaQbXV3i4Z+XeveBdCNlKuT6tOXWqSYc7a2MqVFq
+	 GTUPDd8ReEZN6Id4s/Urp/qXjLal6z0HdKhQiwQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.10 151/161] of: platform: Use default match table for /firmware
-Date: Wed,  4 Feb 2026 15:40:14 +0100
-Message-ID: <20260204143857.181912448@linuxfoundation.org>
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 241/280] phy: phy-rockchip-inno-usb2: simplify phy clock handling
+Date: Wed,  4 Feb 2026 15:40:15 +0100
+Message-ID: <20260204143918.301429980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213531-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213992-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,51 +88,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 66EBAE7B12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email]
+X-Rspamd-Queue-Id: A306EE895F
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 48e6a9c4a20870e09f85ff1a3628275d6bce31c0 upstream.
+[ Upstream commit b43511233c6e34b9c0d9a55e41b078d10e7d9ea6 ]
 
-Calling of_platform_populate() without a match table will only populate
-the immediate child nodes under /firmware. This is usually fine, but in
-the case of something like a "simple-mfd" node such as
-"raspberrypi,bcm2835-firmware", those child nodes will not be populated.
-And subsequent calls won't work either because the /firmware node is
-marked as processed already.
+Simplify phyclk handling by using devm_clk_get_optional_enabled to
+acquire and enable the optional clock. This also fixes a resource
+leak in driver remove path and adds proper error handling.
 
-Switch the call to of_platform_default_populate() to solve this problem.
-It should be a nop for existing cases.
-
-Fixes: 3aa0582fdb82 ("of: platform: populate /firmware/ node from of_platform_default_populate_init()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://patch.msgid.link/20260114015158.692170-2-robh@kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20230522170324.61349-6-sebastian.reichel@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: e07dea3de508 ("phy: rockchip: inno-usb2: Fix a double free bug in rockchip_usb2phy_probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/platform.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |   17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -533,7 +533,7 @@ static int __init of_platform_default_po
- 
- 	node = of_find_node_by_path("/firmware");
- 	if (node) {
--		of_platform_populate(node, NULL, NULL, NULL);
-+		of_platform_default_populate(node, NULL, NULL);
- 		of_node_put(node);
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -1273,18 +1273,16 @@ static int rockchip_usb2phy_probe(struct
+ 		return -EINVAL;
  	}
+ 
+-	rphy->clk = of_clk_get_by_name(np, "phyclk");
+-	if (!IS_ERR(rphy->clk)) {
+-		clk_prepare_enable(rphy->clk);
+-	} else {
+-		dev_info(&pdev->dev, "no phyclk specified\n");
+-		rphy->clk = NULL;
++	rphy->clk = devm_clk_get_optional_enabled(dev, "phyclk");
++	if (IS_ERR(rphy->clk)) {
++		return dev_err_probe(&pdev->dev, PTR_ERR(rphy->clk),
++				     "failed to get phyclk\n");
+ 	}
+ 
+ 	ret = rockchip_usb2phy_clk480m_register(rphy);
+ 	if (ret) {
+ 		dev_err(dev, "failed to register 480m output clock\n");
+-		goto disable_clks;
++		return ret;
+ 	}
+ 
+ 	index = 0;
+@@ -1347,11 +1345,6 @@ next_child:
+ 
+ put_child:
+ 	of_node_put(child_np);
+-disable_clks:
+-	if (rphy->clk) {
+-		clk_disable_unprepare(rphy->clk);
+-		clk_put(rphy->clk);
+-	}
+ 	return ret;
+ }
  
 
 
