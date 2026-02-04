@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-213925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mP8oIfplg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:02 +0100
+	id EPcYErdcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FCAE8B74
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94BBBE7715
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85B763072A62
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67B17303714B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4DD42188E;
-	Wed,  4 Feb 2026 15:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C50274B39;
+	Wed,  4 Feb 2026 14:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gouy/MXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBKBDYJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3F9421EE8;
-	Wed,  4 Feb 2026 15:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26206221F17;
+	Wed,  4 Feb 2026 14:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217973; cv=none; b=QBk0IPoS7GNovueGlzfmp+LxhEzafk8lWv5inn6GdPdX7ToIaEsDCDr08g1PaLbayD5YscYDmXyRlSH8b3E3sT3cxwxQ6+dnivAjDd4HXX2y+Ib0deLZ73+VNxgXJaay0NyQQFVAxgNi/8Gq4zC0ZtM87mKJ9Vm+2yCMU2G7sy8=
+	t=1770216433; cv=none; b=DMeltVghkEGxGnegL1DiXEJIot8/KBjpFSVBAMp/D0U/OjXi2I7sMmtTol2xatgl05QItbM0l0jhWqQmamDzQzu7h3um2ReB6AiquWMaUMgk77ZX1YpRXxS4gTRYWqfI1G0PAbGAupl3LEOYuOADP1Kkm9hBv3cgAJKRMUtP0xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217973; c=relaxed/simple;
-	bh=eMFPkUoH4EYa87nEJJmEK3mz8c0RFHuUB/2iM+S+3a0=;
+	s=arc-20240116; t=1770216433; c=relaxed/simple;
+	bh=vkkytA5sH0ENL6wZJDCIXZiU1Fv5vM3Cujg3+sB2mew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZDfNgfAqSljJ+YXD+J4wznt0wHpF30SFLM4jKq4iDqnpCOLNXVVgMzLRKZhyw1CXRMbgTRrfY2oM3mYodqklqIxHegQ1oDby7DoAOA8DR+itKqcLNFB0HOd8gdoFxt+/aXVbPMQ4Yvc/8InTNsxO/J1lUyRVgBaOZ+G57rkBlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gouy/MXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF54C116C6;
-	Wed,  4 Feb 2026 15:12:52 +0000 (UTC)
+	 MIME-Version; b=pCxnjSa7QFqyx4iw8RqvkETODU7P8sumTSt+RuPTxew/nWApMq1KnUVoF2U+6R5n1s+Zlx+fjR8l4NNtcSoUe0sjMfeg8pTCLnDSJhW4QOPsT7nHI/ohJr6qFvgA2Rs5elpKLFaLhgv1toLTsJxipxAcpAi8HeMDZXmR2x/ytuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBKBDYJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2317C4CEF7;
+	Wed,  4 Feb 2026 14:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217973;
-	bh=eMFPkUoH4EYa87nEJJmEK3mz8c0RFHuUB/2iM+S+3a0=;
+	s=korg; t=1770216433;
+	bh=vkkytA5sH0ENL6wZJDCIXZiU1Fv5vM3Cujg3+sB2mew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gouy/MXn4ZQaoFSGDUd1uRMN2JJKjjsDQrKJMQhOOm4NXXP2D/ParoGWm9ddskdTm
-	 JWGyFCt70NqUjp8OxzK1pkrAduZg3E3Y9e9ronuuK4kUfozwmfCy2iOfiLPi+5Q1fJ
-	 yZhFOE+R8gbBu+feDR+GE9m1lhJFz6f37rWt4AKo=
+	b=UBKBDYJOck0MHEKbSdCKuRRJGfEyz62nlv189mc21MbPiXXArc7L9DFV1gW+RdCwb
+	 YYx+GAQ2xcIxTGd+EDzjZXX+YBUhGVwhlK1X7kJBtcUIAYE4uZn8p5DxCtPQulWtVa
+	 lZrQozlrHQMwyetv3YcRbELWlvjx+YTtv3/UdhNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Yang Shen <shenyang39@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.1 175/280] uacce: ensure safe queue release with state management
+	syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Yotam Gigi <yotam.gi@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 086/161] net/sched: act_ife: avoid possible NULL deref
 Date: Wed,  4 Feb 2026 15:39:09 +0100
-Message-ID: <20260204143915.918278583@linuxfoundation.org>
+Message-ID: <20260204143854.842733342@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +68,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213925-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213466-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,gmail.com,mojatatu.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,5cf914f193dffde3bd3c];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 43FCAE8B74
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mojatatu.com:email]
+X-Rspamd-Queue-Id: 94BBBE7715
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 26c08dabe5475d99a13f353d8dd70e518de45663 upstream.
+[ Upstream commit 27880b0b0d35ad1c98863d09788254e36f874968 ]
 
-Directly calling `put_queue` carries risks since it cannot
-guarantee that resources of `uacce_queue` have been fully released
-beforehand. So adding a `stop_queue` operation for the
-UACCE_CMD_PUT_Q command and leaving the `put_queue` operation to
-the final resource release ensures safety.
+tcf_ife_encode() must make sure ife_encode() does not return NULL.
 
-Queue states are defined as follows:
-- UACCE_Q_ZOMBIE: Initial state
-- UACCE_Q_INIT: After opening `uacce`
-- UACCE_Q_STARTED: After `start` is issued via `ioctl`
+syzbot reported:
 
-When executing `poweroff -f` in virt while accelerator are still
-working, `uacce_fops_release` and `uacce_remove` may execute
-concurrently. This can cause `uacce_put_queue` within
-`uacce_fops_release` to access a NULL `ops` pointer. Therefore, add
-state checks to prevent accessing freed pointers.
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:ife_tlv_meta_encode+0x41/0xa0 net/ife/ife.c:166
+CPU: 3 UID: 0 PID: 8990 Comm: syz.0.696 Not tainted syzkaller #0 PREEMPT(full)
+Call Trace:
+ <TASK>
+  ife_encode_meta_u32+0x153/0x180 net/sched/act_ife.c:101
+  tcf_ife_encode net/sched/act_ife.c:841 [inline]
+  tcf_ife_act+0x1022/0x1de0 net/sched/act_ife.c:877
+  tc_act include/net/tc_wrapper.h:130 [inline]
+  tcf_action_exec+0x1c0/0xa20 net/sched/act_api.c:1152
+  tcf_exts_exec include/net/pkt_cls.h:349 [inline]
+  mall_classify+0x1a0/0x2a0 net/sched/cls_matchall.c:42
+  tc_classify include/net/tc_wrapper.h:197 [inline]
+  __tcf_classify net/sched/cls_api.c:1764 [inline]
+  tcf_classify+0x7f2/0x1380 net/sched/cls_api.c:1860
+  multiq_classify net/sched/sch_multiq.c:39 [inline]
+  multiq_enqueue+0xe0/0x510 net/sched/sch_multiq.c:66
+  dev_qdisc_enqueue+0x45/0x250 net/core/dev.c:4147
+  __dev_xmit_skb net/core/dev.c:4262 [inline]
+  __dev_queue_xmit+0x2998/0x46c0 net/core/dev.c:4798
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Yang Shen <shenyang39@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-5-huangchenghai2@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 295a6e06d21e ("net/sched: act_ife: Change to use ife module")
+Reported-by: syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6970d61d.050a0220.706b.0010.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yotam Gigi <yotam.gi@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260121133724.3400020-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/uacce/uacce.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ net/sched/act_ife.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -37,20 +37,34 @@ static int uacce_start_queue(struct uacc
- 	return 0;
- }
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 892d4824d81d5..a953d29c1892e 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -820,6 +820,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 	/* could be stupid policy setup or mtu config
+ 	 * so lets be conservative.. */
+ 	if ((action == TC_ACT_SHOT) || exceed_mtu) {
++drop:
+ 		qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
+ 		return TC_ACT_SHOT;
+ 	}
+@@ -828,6 +829,8 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 		skb_push(skb, skb->dev->hard_header_len);
  
--static int uacce_put_queue(struct uacce_queue *q)
-+static int uacce_stop_queue(struct uacce_queue *q)
- {
- 	struct uacce_device *uacce = q->uacce;
+ 	ife_meta = ife_encode(skb, metalen);
++	if (!ife_meta)
++		goto drop;
  
--	if ((q->state == UACCE_Q_STARTED) && uacce->ops->stop_queue)
-+	if (q->state != UACCE_Q_STARTED)
-+		return 0;
-+
-+	if (uacce->ops->stop_queue)
- 		uacce->ops->stop_queue(q);
+ 	spin_lock(&ife->tcf_lock);
  
--	if ((q->state == UACCE_Q_INIT || q->state == UACCE_Q_STARTED) &&
--	     uacce->ops->put_queue)
-+	q->state = UACCE_Q_INIT;
-+
-+	return 0;
-+}
-+
-+static void uacce_put_queue(struct uacce_queue *q)
-+{
-+	struct uacce_device *uacce = q->uacce;
-+
-+	uacce_stop_queue(q);
-+
-+	if (q->state != UACCE_Q_INIT)
-+		return;
-+
-+	if (uacce->ops->put_queue)
- 		uacce->ops->put_queue(q);
- 
- 	q->state = UACCE_Q_ZOMBIE;
--
--	return 0;
- }
- 
- static long uacce_fops_unl_ioctl(struct file *filep,
-@@ -77,7 +91,7 @@ static long uacce_fops_unl_ioctl(struct
- 		ret = uacce_start_queue(q);
- 		break;
- 	case UACCE_CMD_PUT_Q:
--		ret = uacce_put_queue(q);
-+		ret = uacce_stop_queue(q);
- 		break;
- 	default:
- 		if (uacce->ops->ioctl)
+@@ -843,8 +846,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 		if (err < 0) {
+ 			/* too corrupt to keep around if overwritten */
+ 			spin_unlock(&ife->tcf_lock);
+-			qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
+-			return TC_ACT_SHOT;
++			goto drop;
+ 		}
+ 		skboff += err;
+ 	}
+-- 
+2.51.0
+
 
 
 
