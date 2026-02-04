@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-213957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Y1sXDS5mg2nSmQMAu9opvQ
-	(envelope-from <stable+bounces-213957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:54 +0100
+	id YN6oDqhdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC7BE8BED
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B163EE78F1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1F6FB30845E5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 966ED30796F6
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E3D3D3CEB;
-	Wed,  4 Feb 2026 15:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8253AEF30;
+	Wed,  4 Feb 2026 14:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAqjf2T6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pb+sO1vi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FAB2BE03C;
-	Wed,  4 Feb 2026 15:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4E92C08AC;
+	Wed,  4 Feb 2026 14:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218078; cv=none; b=bwgBXQqGB3NB5Nd7WFqCAQQwmvn8kIYQ1Oe4Xn57gwsJcC8IHWtsooymhlLiOvpzhekbmOyFehO9OvibH0bZtNECV2xyi5vqP0OaNSCX2sxC6FpN5XvHvl3gKYjIpHDG2C5xrG6rKR0VyNvhfSyIDdcYLQqg7Znx8mAJiOwsu78=
+	t=1770216541; cv=none; b=my8ZTxCZlg3M0FVeY9tDqw2Ps5yPTJFTQxFM5i25o2DI1Xz+8A8fq4qSsF54z/LaDx5Woj2klx3OypBDSfaG1yBnvxOiN8pm9JXc8f/KKyWl8aFn6Nqrg+s/QmNEj0eLkXpzzqQZmLvAwHmA5CmotbZ00GXNhlK94tcqv10e2nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218078; c=relaxed/simple;
-	bh=whnWarVCekQqeykREQkr+oifLYMtJLeUCVFDckMnf54=;
+	s=arc-20240116; t=1770216541; c=relaxed/simple;
+	bh=i77LEJQcugac6NGynHcYc0q5IFrTRWi/xcgU6J2nsn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzN1walkn8ggpdCbtFd9lvLMDbMMEII1PF2NRrXc+nDckVbm1elBXfU45PK1aiDpiO0ux8VU1dqIufBLGMZt3KO1Dcng2D+rTLDIhIJUoNGXX/1INuVpLzhyT81hkJhBqxS6cUYWNKY5GX7WvQXZpdoF+Tk+7FKT6dPVPGSWeKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAqjf2T6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1E1C4CEF7;
-	Wed,  4 Feb 2026 15:14:37 +0000 (UTC)
+	 MIME-Version; b=d95JVmsg0RGWV3qk24yTAuGLx11Hyey7QQc+xx5p3rvbhnfMBALruuSrns0Wx49GAi5+pmhqUp42y1Ij0hH+BIFQcElNF6kB50CbZzfC/7CnErgaQBC2rrKurruSUFYgmqw5KB74vn2WbXmRMjIAjZ3EfJlxlzFSYzh0xUUy2Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pb+sO1vi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3A1C4CEF7;
+	Wed,  4 Feb 2026 14:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218078;
-	bh=whnWarVCekQqeykREQkr+oifLYMtJLeUCVFDckMnf54=;
+	s=korg; t=1770216541;
+	bh=i77LEJQcugac6NGynHcYc0q5IFrTRWi/xcgU6J2nsn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAqjf2T6i/8Os/3StYFCc+8+EE62Eszf1eF1NVmpwAjabt4iaiyZI9FR0DsxEfQxa
-	 RiQf6Xb/6sUtNidPWpEQG0TW0OHKIW/D/1bmZGuPCwjFPQmDPFHrvdtJDIuf0tX+1A
-	 kxbpRqHAgurvmFNE6m0M6Sp66Nzs2KfblRcT+ilg=
+	b=Pb+sO1vi7Wiq8PIq4kVWFLoSqfPre7fIyjgqtpzkkMNekKNwWB2Syc6mM563B9EZo
+	 esXSGjQzbgzlGi/0svoZH1E+WJPkXcVro438uHzI1IrytJWz7jkQw+uorlPnPyR/jy
+	 SKKwivbhZYKb0RUGjUEHCq0+KJwDrZ8UfG/y+d6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.1 206/280] pinctrl: meson: mark the GPIO controller as sleeping
-Date: Wed,  4 Feb 2026 15:39:40 +0100
-Message-ID: <20260204143917.013694262@linuxfoundation.org>
+	Jia-Hong Su <s11242586@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 118/161] Bluetooth: hci_uart: fix null-ptr-deref in hci_uart_write_work
+Date: Wed,  4 Feb 2026 15:39:41 +0100
+Message-ID: <20260204143855.993027063@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,127 +65,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-213498-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213957-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,samsung.com,oss.qualcomm.com,googlemail.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3DC7BE8BED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B163EE78F1
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Jia-Hong Su <s11242586@gmail.com>
 
-commit 28f24068387169722b508bba6b5257cb68b86e74 upstream.
+[ Upstream commit 0c3cd7a0b862c37acbee6d9502107146cc944398 ]
 
-The GPIO controller is configured as non-sleeping but it uses generic
-pinctrl helpers which use a mutex for synchronization.
+hci_uart_set_proto() sets HCI_UART_PROTO_INIT before calling
+hci_uart_register_dev(), which calls proto->open() to initialize
+hu->priv. However, if a TTY write wakeup occurs during this window,
+hci_uart_tx_wakeup() may schedule write_work before hu->priv is
+initialized, leading to a NULL pointer dereference in
+hci_uart_write_work() when proto->dequeue() accesses hu->priv.
 
-This can cause the following lockdep splat with shared GPIOs enabled on
-boards which have multiple devices using the same GPIO:
+The race condition is:
 
-BUG: sleeping function called from invalid context at
-kernel/locking/mutex.c:591
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
-kworker/u25:3
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-INFO: lockdep is turned off.
-irq event stamp: 46379
-hardirqs last  enabled at (46379): [<ffff8000813acb24>]
-_raw_spin_unlock_irqrestore+0x74/0x78
-hardirqs last disabled at (46378): [<ffff8000813abf38>]
-_raw_spin_lock_irqsave+0x84/0x88
-softirqs last  enabled at (46330): [<ffff8000800c71b4>]
-handle_softirqs+0x4c4/0x4dc
-softirqs last disabled at (46295): [<ffff800080010674>]
-__do_softirq+0x14/0x20
-CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
-6.19.0-rc4-next-20260105+ #11963 PREEMPT
-Tainted: [C]=CRAP
-Hardware name: Khadas VIM3 (DT)
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x24
-  __might_resched+0x144/0x248
-  __might_sleep+0x48/0x98
-  __mutex_lock+0x5c/0x894
-  mutex_lock_nested+0x24/0x30
-  pinctrl_get_device_gpio_range+0x44/0x128
-  pinctrl_gpio_set_config+0x40/0xdc
-  gpiochip_generic_config+0x28/0x3c
-  gpio_do_set_config+0xa8/0x194
-  gpiod_set_config+0x34/0xfc
-  gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
-  gpio_do_set_config+0xa8/0x194
-  gpiod_set_transitory+0x4c/0xf0
-  gpiod_configure_flags+0xa4/0x480
-  gpiod_find_and_request+0x1a0/0x574
-  gpiod_get_index+0x58/0x84
-  devm_gpiod_get_index+0x20/0xb4
-  devm_gpiod_get+0x18/0x24
-  mmc_pwrseq_emmc_probe+0x40/0xb8
-  platform_probe+0x5c/0xac
-  really_probe+0xbc/0x298
-  __driver_probe_device+0x78/0x12c
-  driver_probe_device+0xdc/0x164
-  __device_attach_driver+0xb8/0x138
-  bus_for_each_drv+0x80/0xdc
-  __device_attach+0xa8/0x1b0
+  CPU0                              CPU1
+  ----                              ----
+  hci_uart_set_proto()
+    set_bit(HCI_UART_PROTO_INIT)
+    hci_uart_register_dev()
+                                    tty write wakeup
+                                      hci_uart_tty_wakeup()
+                                        hci_uart_tx_wakeup()
+                                          schedule_work(&hu->write_work)
+      proto->open(hu)
+        // initializes hu->priv
+                                    hci_uart_write_work()
+                                      hci_uart_dequeue()
+                                        proto->dequeue(hu)
+                                          // accesses hu->priv (NULL!)
 
-Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
-Cc: stable@vger.kernel.org
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@samsung.com/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by moving set_bit(HCI_UART_PROTO_INIT) after proto->open()
+succeeds, ensuring hu->priv is initialized before any work can be
+scheduled.
+
+Fixes: 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during initialization")
+Link: https://lore.kernel.org/linux-bluetooth/6969764f.170a0220.2b9fc4.35a7@mx.google.com/
+
+Signed-off-by: Jia-Hong Su <s11242586@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/hci_ldisc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/meson/pinctrl-meson.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson.c
-@@ -619,7 +619,7 @@ static int meson_gpiolib_register(struct
- 	pc->chip.set = meson_gpio_set;
- 	pc->chip.base = -1;
- 	pc->chip.ngpio = pc->data->num_pins;
--	pc->chip.can_sleep = false;
-+	pc->chip.can_sleep = true;
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index 93bb58971dbe6..436d82a7f5871 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -684,6 +684,8 @@ static int hci_uart_register_dev(struct hci_uart *hu)
+ 		return err;
+ 	}
  
- 	ret = gpiochip_add_data(&pc->chip, pc);
- 	if (ret) {
++	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
++
+ 	if (test_bit(HCI_UART_INIT_PENDING, &hu->hdev_flags))
+ 		return 0;
+ 
+@@ -711,8 +713,6 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
+ 
+ 	hu->proto = p;
+ 
+-	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
+-
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
+-- 
+2.51.0
+
 
 
 
