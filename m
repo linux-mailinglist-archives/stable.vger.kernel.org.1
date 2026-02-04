@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-213888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBfOGr5lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:02 +0100
+	id kJ0NH9Beg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1110DE8AD0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF48E7B28
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7458D3064933
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CA9EA3004F25
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D9742189E;
-	Wed,  4 Feb 2026 15:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A941E4218BD;
+	Wed,  4 Feb 2026 14:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EK4Hfwum"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hHYBs3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B843F41C318;
-	Wed,  4 Feb 2026 15:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5AF41B37C;
+	Wed,  4 Feb 2026 14:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217848; cv=none; b=fg580RQjEcR2gndRCF7fkCFdCqY5yqLwoch26IGRQy/f1NtOGecoe0Cfvf5ZRSNyFYfgY+FGAdBLfMC9PZJHJF97br8bD8SRCYTLQfRjZS04WHJlo320GuXxQdu+RHgTgjO0yj9Y0siXE8YgNoZaWdFMXFCA2mSellHZtw2wnJ0=
+	t=1770216957; cv=none; b=ufrhluCnTLhfIA1WU2pyhP9qyhIhn5u415XvfzRqQB/jqBRlJJWbGF1nPqb5Gt09zOJ52liL8XLDdTSl/YFU+vwX4eACMqJON0ICW7CCrLIansrJQdlv6TsQWUq4rvvol8UhO7ngC73kn4FMVbBBi3r5DmIJaLEkMjvChmtLN6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217848; c=relaxed/simple;
-	bh=gHBdVOE1mqeZ4LN7oF1n6SQ1927A5UFhuF7rj2lITfU=;
+	s=arc-20240116; t=1770216957; c=relaxed/simple;
+	bh=n7D1oKPLnhtUw3UFy/+ZzDYdKJQ2bRZaIE8OB0x3fII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNxP8mUf79gY5bxDvvDQRunRuoIzCoyeyFUw3Fd5/Z6z9nXsZ7YijVoReL7nNswBzmaDvYbKYd7Lt8Pby2jahh0eB4d7ExHXT0CBGnTumT33oY69tD+wCt4jHwfz+aaot93wNF7YvY9DrtOYXI5wZzeZ3yj036Te3KvLMZXRb5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EK4Hfwum; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294ABC4CEF7;
-	Wed,  4 Feb 2026 15:10:47 +0000 (UTC)
+	 MIME-Version; b=Ol4E9+4NmE7oiQZkTMYcyLc17TEHFVO0lhV+a3STacBufe4QF0ucOTFC/bTQkyyg+Sij/9/hyEPj8MLIbwowJ/PVLK7enhCFvbcYPXcok33Lj0BRzMme9sAcuKCTMbMpdhIbCII/AnPhxGqHAbxLA2QaTkoD6Nbd1gVGLkkcgqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hHYBs3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C6AC4CEF7;
+	Wed,  4 Feb 2026 14:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217848;
-	bh=gHBdVOE1mqeZ4LN7oF1n6SQ1927A5UFhuF7rj2lITfU=;
+	s=korg; t=1770216957;
+	bh=n7D1oKPLnhtUw3UFy/+ZzDYdKJQ2bRZaIE8OB0x3fII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EK4Hfwum27Fzn7BlaLBLr+kx5tSHheljs6N17t2M4ZZ7/PN1WtwJJIV1JGkFD7Lmo
-	 6wx5dTz180fjmHdgmubchfFDiMjQSvTRwqBrTOhDq9IoFL8DhTTW0er7AlF/21ISD/
-	 OgakmirEpE8Q2f/P8Nwr/XHmWHuxKLokthefTfE0=
+	b=0hHYBs3BW68j9RGSwhAax5iX2/64uHgtWNfRxOkbyrzsrHOaahO4CT9jx6KuUNDSj
+	 6Flpy/llXUGSJTaCTS2T58P4hUf5PAHTFtC+UdrVxGsMZjMBrAoYfn5lwbynxIOpVY
+	 +yvfCl31162tEgBL4/WC6SppNqtgOkPmJpJAurWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Arun Raghavan <arunr@valvesoftware.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/280] ALSA: usb: Increase volume range that triggers a warning
-Date: Wed,  4 Feb 2026 15:38:32 +0100
-Message-ID: <20260204143914.604946628@linuxfoundation.org>
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.15 082/206] comedi: dmm32at: serialize use of paged registers
+Date: Wed,  4 Feb 2026 15:38:33 +0100
+Message-ID: <20260204143901.164707998@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,78 +67,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213888-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213625-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,perex.cz:email,valvesoftware.com:email]
-X-Rspamd-Queue-Id: 1110DE8AD0
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mev.co.uk:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1EF48E7B28
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Raghavan <arunr@valvesoftware.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62 ]
+commit e03b29b55f2b7c345a919a6ee36633b06bf3fb56 upstream.
 
-On at least the HyperX Cloud III, the range is 18944 (-18944 -> 0 in
-steps of 1), so the original check for 255 steps is definitely obsolete.
-Let's give ourselves a little more headroom before we emit a warning.
+Some of the hardware registers of the DMM-32-AT board are multiplexed,
+using the least significant two bits of the Miscellaneous Control
+register to select the function of registers at offsets 12 to 15:
 
-Fixes: 80acefff3bc7 ("ALSA: usb-audio - Add volume range check and warn if it too big")
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org
-Signed-off-by: Arun Raghavan <arunr@valvesoftware.com>
-Link: https://patch.msgid.link/20260116225804.3845935-1-arunr@valvesoftware.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ 00 => 8254 timer/counter registers are accessible
+ 01 => 8255 digital I/O registers are accessible
+ 10 => Reserved
+ 11 => Calibration registers are accessible
+
+The interrupt service routine (`dmm32at_isr()`) clobbers the bottom two
+bits of the register with value 00, which would interfere with access to
+the 8255 registers by the `dm32at_8255_io()` function (used for Comedi
+instruction handling on the digital I/O subdevice).
+
+Make use of the generic Comedi device spin-lock `dev->spinlock` (which
+is otherwise unused by this driver) to serialize access to the
+miscellaneous control register and paged registers.
+
+Fixes: 3c501880ac44 ("Staging: comedi: add dmm32at driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260112162835.91688-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/comedi/drivers/dmm32at.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 1540e9f1c2e3f..ec6aad748cd4b 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1807,11 +1807,10 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
+--- a/drivers/comedi/drivers/dmm32at.c
++++ b/drivers/comedi/drivers/dmm32at.c
+@@ -331,6 +331,7 @@ static int dmm32at_ai_cmdtest(struct com
  
- 	range = (cval->max - cval->min) / cval->res;
+ static void dmm32at_setaitimer(struct comedi_device *dev, unsigned int nansec)
+ {
++	unsigned long irq_flags;
+ 	unsigned char lo1, lo2, hi2;
+ 	unsigned short both2;
+ 
+@@ -343,6 +344,9 @@ static void dmm32at_setaitimer(struct co
+ 	/* set counter clocks to 10MHz, disable all aux dio */
+ 	outb(0, dev->iobase + DMM32AT_CTRDIO_CFG_REG);
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the clock regs */
+ 	outb(DMM32AT_CTRL_PAGE_8254, dev->iobase + DMM32AT_CTRL_REG);
+ 
+@@ -355,6 +359,8 @@ static void dmm32at_setaitimer(struct co
+ 	outb(lo2, dev->iobase + DMM32AT_CLK2);
+ 	outb(hi2, dev->iobase + DMM32AT_CLK2);
+ 
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
+ 	/* enable the ai conversion interrupt and the clock to start scans */
+ 	outb(DMM32AT_INTCLK_ADINT |
+ 	     DMM32AT_INTCLK_CLKEN | DMM32AT_INTCLK_CLKSEL,
+@@ -364,13 +370,19 @@ static void dmm32at_setaitimer(struct co
+ static int dmm32at_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
+ {
+ 	struct comedi_cmd *cmd = &s->async->cmd;
++	unsigned long irq_flags;
+ 	int ret;
+ 
+ 	dmm32at_ai_set_chanspec(dev, s, cmd->chanlist[0], cmd->chanlist_len);
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* reset the interrupt just in case */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
+ 
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
  	/*
--	 * Are there devices with volume range more than 255? I use a bit more
--	 * to be sure. 384 is a resolution magic number found on Logitech
--	 * devices. It will definitively catch all buggy Logitech devices.
-+	 * There are definitely devices with a range of ~20,000, so let's be
-+	 * conservative and allow for a bit more.
- 	 */
--	if (range > 384) {
-+	if (range > 65535) {
- 		usb_audio_warn(mixer->chip,
- 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
- 			       range);
--- 
-2.51.0
-
+ 	 * wait for circuit to settle
+ 	 * we don't have the 'insn' here but it's not needed
+@@ -430,8 +442,13 @@ static irqreturn_t dmm32at_isr(int irq,
+ 		comedi_handle_events(dev, s);
+ 	}
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock(&dev->spinlock);
++
+ 	/* reset the interrupt */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
++
++	spin_unlock(&dev->spinlock);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -482,14 +499,25 @@ static int dmm32at_ao_insn_write(struct
+ static int dmm32at_8255_io(struct comedi_device *dev,
+ 			   int dir, int port, int data, unsigned long regbase)
+ {
++	unsigned long irq_flags;
++	int ret;
++
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the DIO regs */
+ 	outb(DMM32AT_CTRL_PAGE_8255, dev->iobase + DMM32AT_CTRL_REG);
+ 
+ 	if (dir) {
+ 		outb(data, dev->iobase + regbase + port);
+-		return 0;
++		ret = 0;
++	} else {
++		ret = inb(dev->iobase + regbase + port);
+ 	}
+-	return inb(dev->iobase + regbase + port);
++
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
++	return ret;
+ }
+ 
+ /* Make sure the board is there and put it to a known state */
 
 
 
