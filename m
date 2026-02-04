@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFupAPVng2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:29 +0100
+	id ACsMI65sg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:58:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600BFE904A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842A8E9B18
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE52032238F7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5C12330B4AD4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B144219EB;
-	Wed,  4 Feb 2026 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39442BD02A;
+	Wed,  4 Feb 2026 15:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBZxjEQg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTWkoQo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB382D8763;
-	Wed,  4 Feb 2026 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B5E41B362;
+	Wed,  4 Feb 2026 15:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218721; cv=none; b=EJJ1dClvAnmTeICaB+J/sOqJyjribpx2OJZVNnIi1Q8letBWIU6nWj7eqxnxZZP1F4I6cwCSIn2O6mrXgE8na6QvEHFEf8aAcHpL9EC9ROuog+SQPk+9fMcsBXWCcRQ+ouqgAkFhc5ra86mNRwJMohOIZY7RjTn5Pvj4RdDgqjk=
+	t=1770218286; cv=none; b=MjXqB9etWn3NQBpwmgW8lsniIkns4NSj2RqBKwwo0tpN4M8qDPiZF5AY2OzEJ3cCwygXM0tjgOLDx0BthUNcK6gdpetzVEQsHMhBKps+QjcGWu6sEFVEic9psdOdZ2qYYo/NV3xGTEMx6Z4Dv44z3DDJ095oBR9Cgrqsh8gRRE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218721; c=relaxed/simple;
-	bh=4hASMqAiwQ3/jhwKuC5iXe9kLVqLOsI0edLFpwKBcyc=;
+	s=arc-20240116; t=1770218286; c=relaxed/simple;
+	bh=rCRHCOttSsxRTvHt0DAc8tzvh0zsoaGW/v8gueAmleY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNoIes2tU3m2V2XNUiTVfNk6UMxw8UP3WPoJHKxYdvrwstkh8P40EtkFrpBOpfS3KT5gQm4GVxmN2Dl1dm2i+Hli/WlmPgk7pcgY5DDuPfeArQ36+L1XgRe+JbWxjBnsRCUl1pmuMZpC2HXGCs0JVfpxtt0mjnHd5NoosPS53Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBZxjEQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A28CC4CEF7;
-	Wed,  4 Feb 2026 15:25:20 +0000 (UTC)
+	 MIME-Version; b=XMs0wqpKduZMFRI45aLzx8gEwA4mgtMPSb2+qdvXRml/Wh06EMXz02KduIdH+XI4Egm1ZDmr9XSeYJnPFCON725PON0rxopWq3hiFSPSly4hAKvdYzrLhpEkRdkoL+gGB3hshNayMXHxxd8JyhDqkDuKPbmo2jnNqmvMc4GGy08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTWkoQo+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99024C4CEF7;
+	Wed,  4 Feb 2026 15:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218721;
-	bh=4hASMqAiwQ3/jhwKuC5iXe9kLVqLOsI0edLFpwKBcyc=;
+	s=korg; t=1770218286;
+	bh=rCRHCOttSsxRTvHt0DAc8tzvh0zsoaGW/v8gueAmleY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBZxjEQgqqZXwcDM4eAxmyMKsB7TKuFqzhF6/aN59bB8XfPCFav+KQLn4Hmh+uCDh
-	 Vp+q9mngvI/nr1eMRHFmNweFW+LMhDyXulwGsy5WBCdkoN2rEflWrXu6NoKi6kepcs
-	 kJNYKKV5N7vyI/tGy1sFlvuDR91nbBvmXHsqVMGk=
+	b=XTWkoQo+S0Fw8LGcS21FWVYMMwcrfxxaxu2mySPu412KLyMzYCVwFM1Wo48HrDNOT
+	 6vT0jjnMvPqCW4EAYHfamtjURYCBp8WlbAELEgEzRWUgygt0rXrUiJfAxqRXPVwDm/
+	 kpYV5pBMRWPYCDcRmShXir9VhqJD+4gRJjV6PEig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Larsson <martin.larsson@actia.se>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.12 41/87] gpio: pca953x: mask interrupts in irq shutdown
+	Jakub Kicinski <kuba@kernel.org>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 265/280] usbnet: Fix using smp_processor_id() in preemptible code warnings
 Date: Wed,  4 Feb 2026 15:40:39 +0100
-Message-ID: <20260204143848.393128979@linuxfoundation.org>
+Message-ID: <20260204143919.234889816@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,65 +70,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.dev,redhat.com,163.com];
+	TAGGED_FROM(0.00)[bounces-214018-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214147-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,actia.se:email]
-X-Rspamd-Queue-Id: 600BFE904A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,msgid.link:url]
+X-Rspamd-Queue-Id: 842A8E9B18
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Larsson <martin.larsson@actia.se>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit d02f20a4de0c498fbba2b0e3c1496e72c630a91e upstream.
+[ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
 
-In the existing implementation irq_shutdown does not mask the interrupts
-in hardware. This can cause spurious interrupts from the IO expander.
-Add masking to irq_shutdown to prevent spurious interrupts.
+Syzbot reported the following warning:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Larsson <martin.larsson@actia.se>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Link: https://lore.kernel.org/r/20260121125631.2758346-1-martin.larsson@actia.se
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
+caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
+ usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+ usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
+ usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
+ __dev_set_mtu net/core/dev.c:9443 [inline]
+ netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
+ netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
+ dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
+ dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
+ dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
+ sock_do_ioctl+0x19d/0x280 net/socket.c:1204
+ sock_ioctl+0x42f/0x6a0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+For historical and portability reasons, the netif_rx() is usually
+run in the softirq or interrupt context, this commit therefore add
+local_bh_disable/enable() protection in the usbnet_resume_rx().
+
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ The context change is due to the commit 2c04d279e857
+("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
+in v6.17 which is irrelevant to the logic of this patch.]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-pca953x.c |    2 ++
+ drivers/net/usb/usbnet.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -817,6 +817,8 @@ static void pca953x_irq_shutdown(struct
- 	clear_bit(hwirq, chip->irq_trig_fall);
- 	clear_bit(hwirq, chip->irq_trig_level_low);
- 	clear_bit(hwirq, chip->irq_trig_level_high);
-+
-+	pca953x_irq_mask(d);
- }
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -704,6 +704,7 @@ void usbnet_resume_rx(struct usbnet *dev
+ 	struct sk_buff *skb;
+ 	int num = 0;
  
- static void pca953x_irq_print_chip(struct irq_data *data, struct seq_file *p)
++	local_bh_disable();
+ 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+ 
+ 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
+@@ -712,6 +713,7 @@ void usbnet_resume_rx(struct usbnet *dev
+ 	}
+ 
+ 	tasklet_schedule(&dev->bh);
++	local_bh_enable();
+ 
+ 	netif_dbg(dev, rx_status, dev->net,
+ 		  "paused rx queue disabled, %d skbs requeued\n", num);
 
 
 
