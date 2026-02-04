@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-213530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCcCKTJdg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:34 +0100
+	id aFGrLPVng2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6D5E7801
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19389E9051
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F562301CFC5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED9EC3010B95
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8CB3BFE35;
-	Wed,  4 Feb 2026 14:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671064219EF;
+	Wed,  4 Feb 2026 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHJb9Lvz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn6Y+LpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5B327B359;
-	Wed,  4 Feb 2026 14:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8F841B37C;
+	Wed,  4 Feb 2026 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216642; cv=none; b=MUWiL359K69ObUL+uO/4btflvc7UGSxzcBlAxXCp2kFzuC1zUSjTBmTfTkZCrffB0WBrnS5EuFMLJBs75AcrLfFTe6gLKcB65mlpSiDHHGNNQOP5BQhyrBF9pBUQFhef7vz2ElZdWgYWlGX7A4SiGQqoYSbr1UlM3KKiqumkGQg=
+	t=1770218724; cv=none; b=BWBeRudnBmPEb3wi7J0l72u6IvTfl3B4j9v71328v6fmT8rg4d0S4oxWmupcDvPSjUnpPqQqbE8x1yovfV/4GP942HZKRbMPAqee0n6aN/Lw+UpMt28HoToyj0ldvD2UsWTzt5Im3mNWZ0bvPqtUsS62w9plDQjULJDLZf8w540=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216642; c=relaxed/simple;
-	bh=dekjgBspRktqjgcLl7wNkO30w1nhJ59FGAGh79z/JTg=;
+	s=arc-20240116; t=1770218724; c=relaxed/simple;
+	bh=sPUmy/Bko9pv9VH3Dtytvm5wYL3M/xEe7g3hGF2PaH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQne/DN9qzvxOT5mwfaOrszLKGheB0MazeOJCzmAPFGjZT3I2IfphbunhbVSbHDwechNVV34940Bi8lWNxmvQp0q6diiaFZB+RfU3YVdlClo/BauXPThdpGe4RAc9xL1LQq23psf5mwf0I+O5xNvfoddKj38ketPuYkRHAurwoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHJb9Lvz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B41C4CEF7;
-	Wed,  4 Feb 2026 14:50:41 +0000 (UTC)
+	 MIME-Version; b=lfjkV0mILhV5SrmZJqUyUROT98eL1Iqswq4LmYkhcelk3NDLH9cbG38sKdn2MYV7bYS7aAeZT0cYeKMo7uoXfZAoNHJEYFthsXJIFbh24OYNiVffzAEqhCcuUG8sHd/NA70+qHffq+MDlCGT1KIvH4nHbgSlUAC8O6RUCLESr8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn6Y+LpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7549C4CEF7;
+	Wed,  4 Feb 2026 15:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216642;
-	bh=dekjgBspRktqjgcLl7wNkO30w1nhJ59FGAGh79z/JTg=;
+	s=korg; t=1770218724;
+	bh=sPUmy/Bko9pv9VH3Dtytvm5wYL3M/xEe7g3hGF2PaH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHJb9Lvz1BemRUshqjRcYU+hccLfDncTpOqgGTllo3+TRoZfRJQLTGe1Pefo7RSbt
-	 8TlhypZjA0T+c9OFGLSnAojuU/q1i8mXkJRjjN42cK2hguxC/ian9iwledAEqAmOE/
-	 tLRVjyQGfdtrqN1hoWIXM0xVa0Xvny2aAWjgyxl4=
+	b=Cn6Y+LpPph/DhdAH7YgvIhKAwFxXPm9uz2+BnVs8p7lTqymw251BC85rIE+knPBwi
+	 0qdpHQacPjKG3OKkB5CSd/gPjiWuXGdUdi0e4t04f8eeyIkAZkEDO6ytga5bb4JgI6
+	 R2tavMOl9A8PTFYTZJBWL7wyI7CIP/00E2kVU67Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 150/161] can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jake Keller <jacob.e.keller@intel.com>,
+	IWL <intel-wired-lan@lists.osuosl.org>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 15/87] ice: stop counting UDP csum mismatch as rx_errors
 Date: Wed,  4 Feb 2026 15:40:13 +0100
-Message-ID: <20260204143857.146561155@linuxfoundation.org>
+Message-ID: <20260204143847.460660010@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +71,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213530-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214148-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1E6D5E7801
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,osuosl.org:email,cloudflare.com:email,intel.com:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 19389E9051
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
 
-commit 5a4391bdc6c8357242f62f22069c865b792406b3 upstream.
+[ Upstream commit 05faf2c0a76581d0a7fdbb8ec46477ba183df95b ]
 
-Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
-gs_usb_receive_bulk_callback(): fix URB memory leak").
+Since the beginning, the Intel ice driver has counted receive checksum
+offload mismatches into the rx_errors member of the rtnl_link_stats64
+struct. In ethtool -S these show up as rx_csum_bad.nic.
 
-In esd_usb_open(), the URBs for USB-in transfers are allocated, added to
-the dev->rx_submitted anchor and submitted. In the complete callback
-esd_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-esd_usb_close() the URBs are freed by calling
-usb_kill_anchored_urbs(&dev->rx_submitted).
+I believe counting these in rx_errors is fundamentally wrong, as it's
+pretty clear from the comments in if_link.h and from every other statistic
+the driver is summing into rx_errors, that all of them would cause a
+"hardware drop" except for the UDP checksum mismatch, as well as the fact
+that all the other causes for rx_errors are L2 reasons, and this L4 UDP
+"mismatch" is an outlier.
 
-However, this does not take into account that the USB framework unanchors
-the URB before the complete function is called. This means that once an
-in-URB has been completed, it is no longer anchored and is ultimately not
-released in esd_usb_close().
+A last nail in the coffin is that rx_errors is monitored in production and
+can indicate a bad NIC/cable/Switch port, but instead some random series of
+UDP packets with bad checksums will now trigger this alert. This false
+positive makes the alert useless and affects us as well as other companies.
 
-Fix the memory leak by anchoring the URB in the
-esd_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+This packet with presumably a bad UDP checksum is *already* passed to the
+stack, just not marked as offloaded by the hardware/driver. If it is
+dropped by the stack it will show up as UDP_MIB_CSUMERRORS.
 
-Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-2-4b8cb2915571@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+And one more thing, none of the other Intel drivers, and at least bnxt_en
+and mlx5 both don't appear to count UDP offload mismatches as rx_errors.
+
+Here is a related customer complaint:
+https://community.intel.com/t5/Ethernet-Products/ice-rx-errros-is-too-sensitive-to-IP-TCP-attack-packets-Intel/td-p/1662125
+
+Fixes: 4f1fe43c920b ("ice: Add more Rx errors to netdev's rx_error counter")
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Jake Keller <jacob.e.keller@intel.com>
+Cc: IWL <intel-wired-lan@lists.osuosl.org>
+Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/esd_usb2.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/can/usb/esd_usb2.c
-+++ b/drivers/net/can/usb/esd_usb2.c
-@@ -441,13 +441,20 @@ resubmit_urb:
- 			  urb->transfer_buffer, RX_BUFFER_SIZE,
- 			  esd_usb2_read_bulk_callback, dev);
- 
-+	usb_anchor_urb(urb, &dev->rx_submitted);
-+
- 	retval = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!retval)
-+		return;
-+
-+	usb_unanchor_urb(urb);
-+
- 	if (retval == -ENODEV) {
- 		for (i = 0; i < dev->net_count; i++) {
- 			if (dev->nets[i])
- 				netif_device_detach(dev->nets[i]->netdev);
- 		}
--	} else if (retval) {
-+	} else {
- 		dev_err(dev->udev->dev.parent,
- 			"failed resubmitting read bulk urb: %d\n", retval);
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index d024e71722de3..8e0f180ec38e1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -6974,7 +6974,6 @@ void ice_update_vsi_stats(struct ice_vsi *vsi)
+ 		cur_ns->rx_errors = pf->stats.crc_errors +
+ 				    pf->stats.illegal_bytes +
+ 				    pf->stats.rx_undersize +
+-				    pf->hw_csum_rx_error +
+ 				    pf->stats.rx_jabber +
+ 				    pf->stats.rx_fragments +
+ 				    pf->stats.rx_oversize;
+-- 
+2.51.0
+
 
 
 
