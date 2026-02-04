@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-214051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDjpMddqg2m3mgMAu9opvQ
-	(envelope-from <stable+bounces-214051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:50:47 +0100
+	id gHvfKXJmg2nSmQMAu9opvQ
+	(envelope-from <stable+bounces-213999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:32:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D9CE9760
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:50:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAF9E8CC8
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:32:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 904E931C6EB9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:21:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ADAEF3023326
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5DE41C303;
-	Wed,  4 Feb 2026 15:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBC73D994;
+	Wed,  4 Feb 2026 15:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITCSIPjc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKOabvZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA992D877F;
-	Wed,  4 Feb 2026 15:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C09421898;
+	Wed,  4 Feb 2026 15:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218397; cv=none; b=IU0ycKTD+vlqryuRcAMkvXn2MvfcLFeb+fYQleas8Svos7NVwHG8Z68TJQhOq5fGCO3SMgHAzFkx3hmrqfSVEVVq878Yy0AIzADsnvrgglbRZTOywNitrNdmGIapQ3i6Tb9yNrmL0r87prAuPcKOhPDKw7LQz7yes2oz8XAoCjs=
+	t=1770218220; cv=none; b=CdfOV3KU9r19q6KL03CACQdo4xlRMTstZPNV9z2lj7oFoogT6TiQ+ltiQWAflFpUsYPoUWMiLHqx6ffckHSs5PFnZ7xjicD5gwGbn5of+uxDie45XRlvuNm4/f6VoiwkSJU7L4G9V5LRNLAQ3Mqffhu5/bDDAF5/DhBcFfA+vEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218397; c=relaxed/simple;
-	bh=F88QJ+A04mZgX9sBBxQQNp4h2Mm0kBqwe5Gg1yF9I3U=;
+	s=arc-20240116; t=1770218220; c=relaxed/simple;
+	bh=MxGKHJiEtqPDqBrteinioS1/NY7xYjlSaNfNXAcNl1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smbk29P85mGMbaK9Zzbn1giwHyHbHAoGSF94i4G1Xk82Q+JLAWfcK5v7FgKFexpSRMZYcKoKmG4n7Odss2ok+retfEXedXgupSmUnLuQdOn7xedt4YTBnRhNsWgxs53Gz7yOLAVnFepRh4lUJft5vBC+66UQ8HJ9vRByP44syOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITCSIPjc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C85C4CEF7;
-	Wed,  4 Feb 2026 15:19:56 +0000 (UTC)
+	 MIME-Version; b=q/gotSWvuJaCWoQyUhDiUvvlwpnQAj87saeQvEXeV5QLnekM0RfNPIxKB77P/xOt/rjKfD0kDw/nA7jQq06nmdjHkftAdhmu/qBlSdMkvPrnyGYiZ+YaLLqzsd3e648N6zWRwaCaU6xk2+bPB3GjP9YKGJq8VjbUDiqH0DJE+BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKOabvZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A745C19423;
+	Wed,  4 Feb 2026 15:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218397;
-	bh=F88QJ+A04mZgX9sBBxQQNp4h2Mm0kBqwe5Gg1yF9I3U=;
+	s=korg; t=1770218220;
+	bh=MxGKHJiEtqPDqBrteinioS1/NY7xYjlSaNfNXAcNl1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITCSIPjclyDj+f3FogrHz0AUXCVqjN7bOT5VWYo+o5HppToBhyOWqfQvnA8rAHOpt
-	 Do+0kp50r6JJUu6znoEIQQ1mjMwJOz3ss5dVzjFe7NXLAnanayiL6teRQaJ4CaVur/
-	 BojzXuBtGzTEJ44i8MWn1GdesyjNP/94yrhxFHlI=
+	b=UKOabvZ/j5PyuG8JcFR8x6cVQcf5IPR3GwaQ5UTNFB/fujGilTR1KDFNob9kPLbeb
+	 PBOCS1CE/xNotehVVCx3gFeJeJoKeCvUCe6m5eV5TaIgJ6FVwcz0YQ2Jn9EmQo/qyb
+	 HzAz9yej0UeaKIheZ6hzAXwG/IGHqHPS0kWq5sfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 19/72] scsi: firewire: sbp-target: Fix overflow in sbp_make_tpg()
+Subject: [PATCH 6.1 248/280] ASoC: codecs: wsa883x: fix unnecessary initialisation
 Date: Wed,  4 Feb 2026 15:40:22 +0100
-Message-ID: <20260204143846.319386012@linuxfoundation.org>
+Message-ID: <20260204143918.563308904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +70,110 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214051-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213999-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: 23D9CE9760
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
+X-Rspamd-Queue-Id: EEAF9E8CC8
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit b2d6b1d443009ed4da2d69f5423ab38e5780505a ]
+[ Upstream commit 49aadf830eb048134d33ad7329d92ecff45d8dbb ]
 
-The code in sbp_make_tpg() limits "tpgt" to UINT_MAX but the data type of
-"tpg->tport_tpgt" is u16. This causes a type truncation issue.
+The soundwire update_status() callback may be called multiple times with
+the same ATTACHED status but initialisation should only be done when
+transitioning from UNATTACHED to ATTACHED.
 
-When a user creates a TPG via configfs mkdir, for example:
+This avoids repeated initialisation of the codecs during boot of
+machines like the Lenovo ThinkPad X13s:
 
-    mkdir /sys/kernel/config/target/sbp/<wwn>/tpgt_70000
+[   11.614523] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.618022] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.621377] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.624065] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.631382] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.634424] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
 
-The value 70000 passes the "tpgt > UINT_MAX" check since 70000 is far less
-than 4294967295. However, when assigned to the u16 field tpg->tport_tpgt,
-the value is silently truncated to 4464 (70000 & 0xFFFF). This causes the
-value the user specified to differ from what is actually stored, leading to
-confusion and potential unexpected behavior.
-
-Fix this by changing the type of "tpgt" to u16 and using kstrtou16() which
-will properly reject values outside the u16 range.
-
-Fixes: a511ce339780 ("sbp-target: Initial merge of firewire/ieee-1394 target mode support")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Link: https://patch.msgid.link/20260121114515.1829-2-qikeyu2017@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Srinivas Kandagatla <srini@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260102111413.9605-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/sbp/sbp_target.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/wsa883x.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
-index 2a761bc091938..ac20c3cd71061 100644
---- a/drivers/target/sbp/sbp_target.c
-+++ b/drivers/target/sbp/sbp_target.c
-@@ -1961,12 +1961,12 @@ static struct se_portal_group *sbp_make_tpg(struct se_wwn *wwn,
- 		container_of(wwn, struct sbp_tport, tport_wwn);
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -448,6 +448,7 @@ struct wsa883x_priv {
+ 	int active_ports;
+ 	int dev_mode;
+ 	int comp_offset;
++	bool hw_init;
+ };
  
- 	struct sbp_tpg *tpg;
--	unsigned long tpgt;
-+	u16 tpgt;
- 	int ret;
+ enum {
+@@ -1007,6 +1008,9 @@ static int wsa883x_init(struct wsa883x_p
+ 	struct regmap *regmap = wsa883x->regmap;
+ 	int variant, version, ret;
  
- 	if (strstr(name, "tpgt_") != name)
- 		return ERR_PTR(-EINVAL);
--	if (kstrtoul(name + 5, 10, &tpgt) || tpgt > UINT_MAX)
-+	if (kstrtou16(name + 5, 10, &tpgt))
- 		return ERR_PTR(-EINVAL);
++	if (wsa883x->hw_init)
++		return 0;
++
+ 	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
+ 	if (ret)
+ 		return ret;
+@@ -1050,6 +1054,8 @@ static int wsa883x_init(struct wsa883x_p
+ 				   wsa883x->comp_offset);
+ 	}
  
- 	if (tport->tpg) {
--- 
-2.51.0
-
++	wsa883x->hw_init = true;
++
+ 	return 0;
+ }
+ 
+@@ -1058,6 +1064,9 @@ static int wsa883x_update_status(struct
+ {
+ 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
+ 
++	if (status == SDW_SLAVE_UNATTACHED)
++		wsa883x->hw_init = false;
++
+ 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
+ 		return wsa883x_init(wsa883x);
+ 
 
 
 
