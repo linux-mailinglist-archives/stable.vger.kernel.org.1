@@ -1,163 +1,185 @@
-Return-Path: <stable+bounces-213361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WM+lHgARg2kPhQMAu9opvQ
-	(envelope-from <stable+bounces-213361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:27:28 +0100
+	id MG+JE5IVg2nihQMAu9opvQ
+	(envelope-from <stable+bounces-213362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:46:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52ECE3D20
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E55E408E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F94A302A057
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 09:23:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43584301C175
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 09:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AC63A4F23;
-	Wed,  4 Feb 2026 09:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED773AEF5D;
+	Wed,  4 Feb 2026 09:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6mgO+17"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="MmeNrHPO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AFC3A1E66;
-	Wed,  4 Feb 2026 09:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45AD3B52ED
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 09:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770196981; cv=none; b=O0SXN2PcL0ArWG2LIjuQoLxjCpwhAHL4wAEX/igXceAkK5/WlGJDlLtz53CJUO/7JVTEcTPVlzrUR7jRadSbIZSiKJadYCu0xmed9l5XXd6/DmD/IRc2LNCsgiSO6bLr/NdPzWnI95UU8df4i8rfaOOLxvxj92eM7dEbod/NjOw=
+	t=1770198138; cv=none; b=fQwg7rb6iJQPgvdKecyH7Btw0A12HiwSWs6CSTnkcls8HQF+rcFFUlBLjCsB91VkMQ+p5q1CXrvfP0WTHv1m4HEF1qE9DwAtqH7AH8OtvXLL21Rh7otfettRSQs1UqixrzfeRd3GNKT+XKXi4pwDVcqA4dnwNF4dvhD7cK11nhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770196981; c=relaxed/simple;
-	bh=xpBNHLw1ybQAm9G2QR0TrOLsIa2kQxFTbxJgZSQ8QvI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iO8ghjqJpm2XgYySSRJ7xua8vqmLjaTn3cA/hiyutJ5U3eGvJrwhUXZLQzbH1Y9tarnVjb7QvOjntgTJyRt6mTqzmlyUR1/zm/gZSruW340YSeyIGNfpsB0OuoJfmdgnLBgSbyzcwGZ+qVOi3fjM+eR2dyCK3J2qNKq+7uGOPUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6mgO+17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0CEC4CEF7;
-	Wed,  4 Feb 2026 09:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770196980;
-	bh=xpBNHLw1ybQAm9G2QR0TrOLsIa2kQxFTbxJgZSQ8QvI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=c6mgO+179ipCFsaJ3+MxLIojtjIeuMwGB9/lhzbLg2stnjYZ5nSM9o+NAy7A+gjdq
-	 2qkudYPJEngZSWNlzsFI2m+qhiPL/l9/Ihei+igdFS2AUPsDRCeMXu4VSwGIVu7rSQ
-	 6M0hc6zBDp2v7k4MCzpGpTFWKE9LU0WGjm1Feq2oCyjKtAfHIxoDXuzu0tjqfcaqD0
-	 bCpK6eey8PVoZAJ5PSbbnSwY3MMQay3TOjP382smn4mI+nx8cu1VIjbGLbtC3pilD+
-	 ej3jLhObd/3JLwEqBNdJFCOCFcparqdF98hv85zYTR06iiR9Fc/p3j4KYoj90AXgk4
-	 qo/1kKWe2Kg+Q==
-From: syzbot <syzbot@kernel.org>
-To: jfs-discussion@lists.sourceforge.net,
-	shaggy@kernel.org,
-	ghandatmanas@gmail.com
-Cc: syzbot <syzbot@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	syzbot+1afe7ef2d0062e19eeb3@syzkaller.appspotmail.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] jfs: fix array-index-out-of-bounds in dbFindLeaf
-Date: Wed,  4 Feb 2026 10:22:30 +0100
-Message-ID: <20260204092230.2540042-1-syzbot@kernel.org>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
+	s=arc-20240116; t=1770198138; c=relaxed/simple;
+	bh=QesFt8iErxBn3nRuBgd05moqI8DkVzMhGodxtxv9cGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MAs7/gpn5l1G55GXkBxOT+Xol69pFMYdf3s+W5uVRvSst7E5/uyIjtvD8q0rIOW48Cf477ZQzfasbMnHdryQvntZKxZ2vdIx3lIyjWOw6VkuSefubPCKt6At1fgaNvuIk0wKevuLEqhrtsAvOWfe9aTleXn7U+LMpIoGIW6MSdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=MmeNrHPO; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=asSU9RKFguHXa4TgGLQdlPOVGmTm5EniivYaV065EMM=; b=MmeNrHPOeF64VE76RsowyeaJWc
+	Xo+aR9r4rjndRXOFm1m7a70+z4Vk2vRXfTDxhLK1IroW5QlKyCWCXzvx2otyAzcktegCShen/RMXb
+	Z7fZkpQ0DtXITNJauDF5lCkDpJ9+fvwlIIIC05qTg1ya5B5GYEVplv+NErcU/C9rt9Bq2SDC3h6xG
+	Gilu9R78Z65z8V3Q7zeLdB/mvEuXhGwwEaHhYZhoQyVQPPIh9xmy7MI32sPBH35DQY6lxN8WH0Dak
+	jA7W2vLxE27XaNhh8r1XGtYLIpky3ACxUAvhvSQ8X2ARZf2eX2J++dAiUghl/rjB4fLLk75U9Hzos
+	IVIGYuWg==;
+Received: from ppp-27-55-95-245.revip3.asianet.co.th ([27.55.95.245] helo=[10.37.212.43])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vnZOQ-00DfHM-Ni; Wed, 04 Feb 2026 10:41:51 +0100
+Message-ID: <32c28997-b4ae-4842-bf5b-307f0b4d01b5@igalia.com>
+Date: Wed, 4 Feb 2026 17:41:40 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/huge_memory: fix early failure try_to_migrate()
+ when split huge pmd for shared thp
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
+ stable@vger.kernel.org
+References: <20260204004219.6524-1-richard.weiyang@gmail.com>
+Content-Language: en-US
+From: Gavin Guo <gavinguo@igalia.com>
+In-Reply-To: <20260204004219.6524-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [1.14 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213362-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[lists.sourceforge.net,kernel.org,gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com,linux-foundation.org,kernel.org,oracle.com,surriel.com,suse.cz,google.com,nvidia.com,linux.alibaba.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213361-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,1afe7ef2d0062e19eeb3];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.985];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gavinguo@igalia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B52ECE3D20
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email]
+X-Rspamd-Queue-Id: 73E55E408E
 X-Rspamd-Action: no action
 
-UBSAN reported an array-index-out-of-bounds issue in dbFindLeaf:
+On 2/4/26 08:42, Wei Yang wrote:
+> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+> split_huge_pmd_locked()") return false unconditionally after
+> split_huge_pmd_locked() which may fail early during try_to_migrate() for
+> shared thp. This will lead to unexpected folio split failure.
+> 
+> One way to reproduce:
+> 
+>      Create an anonymous thp range and fork 512 children, so we have a
+>      thp shared mapped in 513 processes. Then trigger folio split with
+>      /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
+>      order 0.
+> 
+> Without the above commit, we can successfully split to order 0.
+> With the above commit, the folio is still a large folio.
+> 
+> The reason is the above commit return false after split pmd
+> unconditionally in the first process and break try_to_migrate().
+> 
+> The tricky thing in above reproduce method is current debugfs interface
+> leverage function split_huge_pages_pid(), which will iterate the whole
+> pmd range and do folio split on each base page address. This means it
+> will try 512 times, and each time split one pmd from pmd mapped to pte
+> mapped thp. If there are less than 512 shared mapped process,
+> the folio is still split successfully at last. But in real world, we
+> usually try it for once.
+> 
+> This patch fixes this by restart page_vma_mapped_walk() after
+> split_huge_pmd_locked(). Because split_huge_pmd_locked() may fall back to
+> (freeze = false) if folio_try_share_anon_rmap_pmd() fails and the PMD is
+> just split instead of split to migration entry. Restart
+> page_vma_mapped_walk() and let try_to_migrate_one() try on each PTE
+> again and fail try_to_migrate() early if it fails.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+> Cc: Gavin Guo <gavinguo@igalia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: <stable@vger.kernel.org>
+> 
+> ---
+> v2:
+>    * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+> ---
+>   mm/rmap.c | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 618df3385c8b..5b853ec8901d 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2446,11 +2446,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>   			__maybe_unused pmd_t pmdval;
+>   
+>   			if (flags & TTU_SPLIT_HUGE_PMD) {
+> +				/*
+> +				 * After split_huge_pmd_locked(), restart the
+> +				 * walk to detect PageAnonExclusive handling
+> +				 * failure in __split_huge_pmd_locked().
+> +				 */
+>   				split_huge_pmd_locked(vma, pvmw.address,
+>   						      pvmw.pmd, true);
+> -				ret = false;
+> -				page_vma_mapped_walk_done(&pvmw);
+> -				break;
+> +				flags &= ~TTU_SPLIT_HUGE_PMD;
+> +				page_vma_mapped_walk_restart(&pvmw);
+> +				continue;
+>   			}
+>   #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>   			pmdval = pmdp_get(pvmw.pmd);
 
-  index 1365 is out of range for type 's8[1365]' (aka 'signed char[1365]')
-  CPU: 0 UID: 0 PID: 6287 Comm: syz-executor268 Not tainted ...
-  Call Trace:
-   ...
-   __ubsan_handle_out_of_bounds+0x115/0x140 lib/ubsan.c:455
-   dbFindLeaf+0x308/0x520 fs/jfs/jfs_dmap.c:2976
-   dbFindCtl+0x267/0x520 fs/jfs/jfs_dmap.c:1717
-   ...
-
-The issue is caused by an off-by-one error in the bounds check within
-dbFindLeaf. The function traverses the dmap tree to find free blocks.
-It uses a loop to iterate through the levels of the tree, calculating
-the index `x + n` to access the `tp->dmt_stree` array. The variable
-`max_size` represents the size of this array (CTLTREESIZE (1365) for
-dmapctl or TREESIZE (341) for dmaptree).
-
-The bounds check `if (x + n > max_size)` allows `x + n` to be equal to
-`max_size`. However, since the array size is `max_size`, the valid
-indices are `0` to `max_size - 1`. Accessing `tp->dmt_stree[max_size]`
-results in an array-index-out-of-bounds access.
-
-This can occur when the `dmt_height` field in the on-disk structure is
-corrupted or fuzzed to be larger than the fixed height supported by the
-`dmt_stree` array.
-
-Fix this by changing the condition to `>=` to correctly reject indices
-equal to or greater than the array size.
-
-Signed-off-by: syzbot@kernel.org
-Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
-Fixes: 22cad8bc1d36 ("jfs: fix array-index-out-of-bounds in dbFindLeaf")
-Reported-by: syzbot+1afe7ef2d0062e19eeb3@syzkaller.appspotmail.com
-To: <jfs-discussion@lists.sourceforge.net>
-To: "Dave Kleikamp" <shaggy@kernel.org>
-To: "Manas Ghandat" <ghandatmanas@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>
-Cc: <stable@vger.kernel.org>
----
-This patch was generated by Google Gemini LLM model.
-It was pre-reviewed and Signed-off-by a human, but please review carefully.
-
-Gerrit code review with full side-by-side diffs:
-https://linux-review.git.corp.google.com/c/linux/kernel/git/torvalds/linux/+/26122
-
-Change-Id: I92f694e86518349eafa132b2ba314d8dfff6c86e
----
-
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index cdfa699..18a7dc5 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2971,7 +2971,7 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
- 			/* sufficient free space found.  move to the next
- 			 * level (or quit if this is the last level).
- 			 */
--			if (x + n > max_size)
-+			if (x + n >= max_size)
- 				return -ENOSPC;
- 			if (l2nb <= tp->dmt_stree[x + n])
- 				break;
-
-base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+It looks good to me. Thanks!
+Reviewed-by: Gavin Guo <gavinguo@igalia.com>
 
