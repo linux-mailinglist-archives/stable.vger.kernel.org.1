@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGK8DgNbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:15 +0100
+	id 8DUpAVteg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:57:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2F5E7408
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8B2E7A43
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1148C300441C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 320DB302FCEE
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ADB40F8C6;
-	Wed,  4 Feb 2026 14:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D41B41C2E9;
+	Wed,  4 Feb 2026 14:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9J0Ur/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFXu6f5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF61EA84;
-	Wed,  4 Feb 2026 14:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5035941C2E3;
+	Wed,  4 Feb 2026 14:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216189; cv=none; b=U8IdSC98SCwOyVHkBqYrnkEuK0+AfhRisgsobxbPUNJ3twrpeqEWuB9DnO1P5XCdaROGwa5UVAD1maIidUDO9qzVEN4ZmaLlh2BRrLPCxCp1jfV42NpBLte7gv+00xyAnf+RrYMW+ZhoZKtS+yFTPbaocdvVRqyNLrqDUftBAHw=
+	t=1770216839; cv=none; b=pIb9QhxjEcPEs5yR/CDUHRxZT2G2t7ynKFGAJPORkEyNE5fmck+9IcE+Y3lXu38+ggKompIq6ubrXd4HwIoMWDidm1tmxSZUG5Q+Cs6y3k9P9aYJfQtwAOVCM/hwMabrs9hXSQnNRHCOLHZkcIUbuHdsjEZ94JfFRdIw3FeLMyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216189; c=relaxed/simple;
-	bh=UpX8iYCwAEcJi/Gw4V1IZ1WN1gbDXzRFgwVLzjZzw7I=;
+	s=arc-20240116; t=1770216839; c=relaxed/simple;
+	bh=ZUsHFXNKPUZm3+mTay4giV24c/CwqjM5foQ1GzZaRXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfPIn4Ow0ARVs6kMoPP5YfrueAR/QJfE+gD0wrpHRqPO/E++Pn3v9tp4ga12qiTQezxvs7DqWKs3co/airjzcPjuKjUy3bB99icQL46yVcr7OFc2Cm9rZ8qePKVwAnPK4KhFt4dHGgPBoxNwjY8kC8lTt0Cq0UDR5FGxgG9iMHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9J0Ur/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97959C4CEF7;
-	Wed,  4 Feb 2026 14:43:08 +0000 (UTC)
+	 MIME-Version; b=W4WUYLoU8J6Pc3fhkriNgjVdkpcvtV2R+urAzWa35VgiZGtnwLznH3HWuyu61Wf59sP399RjM1RiV76CAjXJnEjvP8Vc++hTws9gDqAiWj/Y9kAAGkzDOGwyovbdLeDNRGaQ6c+oVk1srdmbW1iVoRWPodhTbMPd3oGRY2l7ZAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFXu6f5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDBCC116C6;
+	Wed,  4 Feb 2026 14:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216189;
-	bh=UpX8iYCwAEcJi/Gw4V1IZ1WN1gbDXzRFgwVLzjZzw7I=;
+	s=korg; t=1770216839;
+	bh=ZUsHFXNKPUZm3+mTay4giV24c/CwqjM5foQ1GzZaRXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9J0Ur/C7crFYBh3AeW1pT6LouShRVHmZNvo2BUfJu+VOqC9PxfntlZUDu/cZ7uUs
-	 oT8tvE/7CLvvuoi+Io/hixV1qezuOE+ZUr8+i/HsmmhvJpWokA3wkYKQvfpGqtsX4u
-	 zdwlJCudeIAkrek35DhiFaSCggIRRyPp4Cg6NRbo=
+	b=fFXu6f5tkfwlvnWaXrA0Zfe9jk41mJAnlt73cFUT68VhYH7HvdEqvZOnf02VqHSi2
+	 WD+eVRXeW2sAXIWLXrveTMAXaGMNQFvZzMyCTPeYuKynCq9VqNzx5f+mA8BcF7JZ6G
+	 wdnR1lA1+EWglZzsaJWPPhyCxKcZNWq+h4J9slZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheetal <sheetal@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/161] dmaengine: tegra-adma: Fix use-after-free
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 046/206] dmaengine: bcm-sba-raid: fix device leak on probe
 Date: Wed,  4 Feb 2026 15:37:57 +0100
-Message-ID: <20260204143852.278622273@linuxfoundation.org>
+Message-ID: <20260204143859.872384416@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,141 +68,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213393-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213589-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 4F2F5E7408
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 1F8B2E7A43
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheetal <sheetal@nvidia.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2efd07a7c36949e6fa36a69183df24d368bf9e96 ]
+commit 7c3a46ebf15a9796b763a54272407fdbf945bed8 upstream.
 
-A use-after-free bug exists in the Tegra ADMA driver when audio streams
-are terminated, particularly during XRUN conditions. The issue occurs
-when the DMA buffer is freed by tegra_adma_terminate_all() before the
-vchan completion tasklet finishes accessing it.
+Make sure to drop the reference taken when looking up the mailbox device
+during probe on probe failures and on driver unbind.
 
-The race condition follows this sequence:
-
-  1. DMA transfer completes, triggering an interrupt that schedules the
-     completion tasklet (tasklet has not executed yet)
-  2. Audio playback stops, calling tegra_adma_terminate_all() which
-     frees the DMA buffer memory via kfree()
-  3. The scheduled tasklet finally executes, calling vchan_complete()
-     which attempts to access the already-freed memory
-
-Since tasklets can execute at any time after being scheduled, there is
-no guarantee that the buffer will remain valid when vchan_complete()
-runs.
-
-Fix this by properly synchronizing the virtual channel completion:
- - Calling vchan_terminate_vdesc() in tegra_adma_stop() to mark the
-   descriptors as terminated instead of freeing the descriptor.
- - Add the callback tegra_adma_synchronize() that calls
-   vchan_synchronize() which kills any pending tasklets and frees any
-   terminated descriptors.
-
-Crash logs:
-[  337.427523] BUG: KASAN: use-after-free in vchan_complete+0x124/0x3b0
-[  337.427544] Read of size 8 at addr ffff000132055428 by task swapper/0/0
-
-[  337.427562] Call trace:
-[  337.427564]  dump_backtrace+0x0/0x320
-[  337.427571]  show_stack+0x20/0x30
-[  337.427575]  dump_stack_lvl+0x68/0x84
-[  337.427584]  print_address_description.constprop.0+0x74/0x2b8
-[  337.427590]  kasan_report+0x1f4/0x210
-[  337.427598]  __asan_load8+0xa0/0xd0
-[  337.427603]  vchan_complete+0x124/0x3b0
-[  337.427609]  tasklet_action_common.constprop.0+0x190/0x1d0
-[  337.427617]  tasklet_action+0x30/0x40
-[  337.427623]  __do_softirq+0x1a0/0x5c4
-[  337.427628]  irq_exit+0x110/0x140
-[  337.427633]  handle_domain_irq+0xa4/0xe0
-[  337.427640]  gic_handle_irq+0x64/0x160
-[  337.427644]  call_on_irq_stack+0x20/0x4c
-[  337.427649]  do_interrupt_handler+0x7c/0x90
-[  337.427654]  el1_interrupt+0x30/0x80
-[  337.427659]  el1h_64_irq_handler+0x18/0x30
-[  337.427663]  el1h_64_irq+0x7c/0x80
-[  337.427667]  cpuidle_enter_state+0xe4/0x540
-[  337.427674]  cpuidle_enter+0x54/0x80
-[  337.427679]  do_idle+0x2e0/0x380
-[  337.427685]  cpu_startup_entry+0x2c/0x70
-[  337.427690]  rest_init+0x114/0x130
-[  337.427695]  arch_call_rest_init+0x18/0x24
-[  337.427702]  start_kernel+0x380/0x3b4
-[  337.427706]  __primary_switched+0xc0/0xc8
-
-Fixes: f46b195799b5 ("dmaengine: tegra-adma: Add support for Tegra210 ADMA")
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20251110142445.3842036-1-sheetal@nvidia.com
+Fixes: 743e1c8ffe4e ("dmaengine: Add Broadcom SBA RAID driver")
+Cc: stable@vger.kernel.org	# 4.13
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-4-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/tegra210-adma.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/dma/bcm-sba-raid.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/tegra210-adma.c b/drivers/dma/tegra210-adma.c
-index d84010c2e4bf1..bcd1deb082615 100644
---- a/drivers/dma/tegra210-adma.c
-+++ b/drivers/dma/tegra210-adma.c
-@@ -344,10 +344,17 @@ static void tegra_adma_stop(struct tegra_adma_chan *tdc)
- 		return;
- 	}
+--- a/drivers/dma/bcm-sba-raid.c
++++ b/drivers/dma/bcm-sba-raid.c
+@@ -1707,7 +1707,7 @@ static int sba_probe(struct platform_dev
+ 	/* Prealloc channel resource */
+ 	ret = sba_prealloc_channel_resources(sba);
+ 	if (ret)
+-		goto fail_free_mchan;
++		goto fail_put_mbox;
  
--	kfree(tdc->desc);
-+	vchan_terminate_vdesc(&tdc->desc->vd);
- 	tdc->desc = NULL;
- }
+ 	/* Check availability of debugfs */
+ 	if (!debugfs_initialized())
+@@ -1737,6 +1737,8 @@ skip_debugfs:
+ fail_free_resources:
+ 	debugfs_remove_recursive(sba->root);
+ 	sba_freeup_channel_resources(sba);
++fail_put_mbox:
++	put_device(sba->mbox_dev);
+ fail_free_mchan:
+ 	mbox_free_channel(sba->mchan);
+ 	return ret;
+@@ -1752,6 +1754,8 @@ static int sba_remove(struct platform_de
  
-+static void tegra_adma_synchronize(struct dma_chan *dc)
-+{
-+	struct tegra_adma_chan *tdc = to_tegra_adma_chan(dc);
+ 	sba_freeup_channel_resources(sba);
+ 
++	put_device(sba->mbox_dev);
 +
-+	vchan_synchronize(&tdc->vc);
-+}
-+
- static void tegra_adma_start(struct tegra_adma_chan *tdc)
- {
- 	struct virt_dma_desc *vd = vchan_next_desc(&tdc->vc);
-@@ -893,6 +900,7 @@ static int tegra_adma_probe(struct platform_device *pdev)
- 	tdma->dma_dev.device_config = tegra_adma_slave_config;
- 	tdma->dma_dev.device_tx_status = tegra_adma_tx_status;
- 	tdma->dma_dev.device_terminate_all = tegra_adma_terminate_all;
-+	tdma->dma_dev.device_synchronize = tegra_adma_synchronize;
- 	tdma->dma_dev.src_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_4_BYTES);
- 	tdma->dma_dev.dst_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_4_BYTES);
- 	tdma->dma_dev.directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
--- 
-2.51.0
-
+ 	mbox_free_channel(sba->mchan);
+ 
+ 	return 0;
 
 
 
