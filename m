@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-213662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKHQBjhhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:44 +0100
+	id yEmkJvplg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F38E8078
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AFC2E8B75
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D44C730CA64F
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9460B306ECB5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F97C421898;
-	Wed,  4 Feb 2026 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9450D2BD012;
+	Wed,  4 Feb 2026 15:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbvjHSSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8MXYQo4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6338641C2E7;
-	Wed,  4 Feb 2026 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D6C41B343;
+	Wed,  4 Feb 2026 15:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217086; cv=none; b=gVZTkaOCZrZ9A2lAaaQnZ4bcrEHtObe95H0lJEF2etCT4tlhtlR1ETR3gSHwANyCjO7STtc36q8o51pQiAKos5sJHBp+/XQSSWTJG3CBNF5jzz21e0FFTSr9B2kYyntNRp/lw+Q/1h0q4n7of2F8uIz3nnDdDg1poPOGH0cuZzA=
+	t=1770217977; cv=none; b=trg53G6qTOGHrv4/sq7xUoM51Npr3S2r+LDCe/tkXXQ5Uq3bxK43Gx0A7aEjTjXBMgm9E2bC/YEFeBiZ7OldVt4YHW5lE3iabDrV9XAPmva03WY+hqnUz38hY3j91vmA6AnQ9Pt0QDGxFkG0m1F6yi1ywlRxJEy5Id4Pk/l4Jb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217086; c=relaxed/simple;
-	bh=mTesv2jhU43MT3sxnGI66gWVuBfQFdN5srQ7ZQbpMd4=;
+	s=arc-20240116; t=1770217977; c=relaxed/simple;
+	bh=aA3isW+DId5+bHii3xhffj3eRftk++zW1sTCBs4oEk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VvGv5uA3lyRmiIOK8urEbgbRO59ojYbyq7mxq4NvkqR8bhe82cZIa38j2zoR2ezPvahrkXpVcUzgSDsBFpbkbz40gcJpwTrx4MaIIz7ltP+Q1TTkhsekPUwjzR+2/vGUtOgnofO7g5Jq+LlOEiRAv2AJNKFpcLhqPfbKAn4B/3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbvjHSSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2774C4CEF7;
-	Wed,  4 Feb 2026 14:58:05 +0000 (UTC)
+	 MIME-Version; b=qJWl7n/E4DlB2Rr8byuCH6biEfyqbwDnvRgUUBam948i7msYrlLzmhQwegLSpOaefuahn1z4IcIFOkHClfP7FMvMc9ULufk3dE3RMooas7ZvHKzsdjzlKsEzoDJyHM3ED+QKLpNr2xXXpbHXXaPH/VtCwfPP5mCdv5h9sRLynJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8MXYQo4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DD1C4CEF7;
+	Wed,  4 Feb 2026 15:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217086;
-	bh=mTesv2jhU43MT3sxnGI66gWVuBfQFdN5srQ7ZQbpMd4=;
+	s=korg; t=1770217976;
+	bh=aA3isW+DId5+bHii3xhffj3eRftk++zW1sTCBs4oEk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kbvjHSSInL3/qx6Gm3s0HcgehER+E2IPsqTmVWfmWK8IQR636ovJhYQELhOcQj/+m
-	 0dgkCb3e80Hl49Wn6HLaOyQAeG/YV5qlGAMcxmlJfQibIlHYuNSRUL7T5pO2DtX80B
-	 9QisKTQ2A+2o4+a3d3x3OM0WqX36AjTxG7NDofAE=
+	b=L8MXYQo4KfhNriXtdTqf4vPpicgPPUs6q+WRbdnejJtr8z1tC/qdS3fXDBnrrkgOH
+	 SoiObZgDOhXyBT4N1lddYQPYDiJykYx+c1RP8CFt2CnFGJ3JELWfxkAqnBE3HWCVJB
+	 Hs50IORSFu6pEgujmc7Czx+QQgSGcZxqELSOzVK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 119/206] slimbus: core: fix runtime PM imbalance on report present
+	syzbot+999115c3bf275797dc27@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 176/280] netrom: fix double-free in nr_route_frame()
 Date: Wed,  4 Feb 2026 15:39:10 +0100
-Message-ID: <20260204143902.487214742@linuxfoundation.org>
+Message-ID: <20260204143915.953340230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +65,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213662-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213926-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,999115c3bf275797dc27];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 95F38E8078
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5AFC2E8B75
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 0eb4ff6596114aabba1070a66afa2c2f5593739f upstream.
+commit ba1096c315283ee3292765f6aea4cca15816c4f7 upstream.
 
-Make sure to balance the runtime PM usage count in case slimbus device
-or address allocation fails on report present, which would otherwise
-prevent the controller from suspending.
+In nr_route_frame(), old_skb is immediately freed without checking if
+nr_neigh->ax25 pointer is NULL. Therefore, if nr_neigh->ax25 is NULL,
+the caller function will free old_skb again, causing a double-free bug.
 
-Fixes: 4b14e62ad3c9 ("slimbus: Add support for 'clock-pause' feature")
-Cc: stable@vger.kernel.org	# 4.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251126145329.5022-3-johan@kernel.org
+Therefore, to prevent this, we need to modify it to check whether
+nr_neigh->ax25 is NULL before freeing old_skb.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+999115c3bf275797dc27@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0029.GAE@google.com/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://patch.msgid.link/20260119063359.10604-1-aha310510@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/core.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ net/netrom/nr_route.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/slimbus/core.c
-+++ b/drivers/slimbus/core.c
-@@ -496,21 +496,23 @@ int slim_device_report_present(struct sl
- 	if (ctrl->sched.clk_state != SLIM_CLK_ACTIVE) {
- 		dev_err(ctrl->dev, "slim ctrl not active,state:%d, ret:%d\n",
- 				    ctrl->sched.clk_state, ret);
--		goto slimbus_not_active;
-+		goto out_put_rpm;
+--- a/net/netrom/nr_route.c
++++ b/net/netrom/nr_route.c
+@@ -752,7 +752,7 @@ int nr_route_frame(struct sk_buff *skb,
+ 	unsigned char *dptr;
+ 	ax25_cb *ax25s;
+ 	int ret;
+-	struct sk_buff *skbn;
++	struct sk_buff *nskb, *oskb;
+ 
+ 	/*
+ 	 * Reject malformed packets early. Check that it contains at least 2
+@@ -811,14 +811,16 @@ int nr_route_frame(struct sk_buff *skb,
+ 	/* We are going to change the netrom headers so we should get our
+ 	   own skb, we also did not know until now how much header space
+ 	   we had to reserve... - RXQ */
+-	if ((skbn=skb_copy_expand(skb, dev->hard_header_len, 0, GFP_ATOMIC)) == NULL) {
++	nskb = skb_copy_expand(skb, dev->hard_header_len, 0, GFP_ATOMIC);
++
++	if (!nskb) {
+ 		nr_node_unlock(nr_node);
+ 		nr_node_put(nr_node);
+ 		dev_put(dev);
+ 		return 0;
  	}
+-	kfree_skb(skb);
+-	skb=skbn;
++	oskb = skb;
++	skb = nskb;
+ 	skb->data[14]--;
  
- 	sbdev = slim_get_device(ctrl, e_addr);
--	if (IS_ERR(sbdev))
--		return -ENODEV;
-+	if (IS_ERR(sbdev)) {
-+		ret = -ENODEV;
-+		goto out_put_rpm;
-+	}
+ 	dptr  = skb_push(skb, 1);
+@@ -837,6 +839,9 @@ int nr_route_frame(struct sk_buff *skb,
+ 	nr_node_unlock(nr_node);
+ 	nr_node_put(nr_node);
  
- 	if (sbdev->is_laddr_valid) {
- 		*laddr = sbdev->laddr;
--		return 0;
-+		ret = 0;
-+	} else {
-+		ret = slim_device_alloc_laddr(sbdev, true);
- 	}
- 
--	ret = slim_device_alloc_laddr(sbdev, true);
--
--slimbus_not_active:
-+out_put_rpm:
- 	pm_runtime_mark_last_busy(ctrl->dev);
- 	pm_runtime_put_autosuspend(ctrl->dev);
++	if (ret)
++		kfree_skb(oskb);
++
  	return ret;
+ }
+ 
 
 
 
