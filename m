@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-213754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBRhJMhhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:08 +0100
+	id +G/dNwprg2m3mgMAu9opvQ
+	(envelope-from <stable+bounces-214247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F14FE816A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2556E97ED
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1A8830576C9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:05:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E38A23152596
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C52425CCD;
-	Wed,  4 Feb 2026 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4641B2D738F;
+	Wed,  4 Feb 2026 15:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+OHSyTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXHEgmj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE258423A97;
-	Wed,  4 Feb 2026 15:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098922BD012;
+	Wed,  4 Feb 2026 15:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217395; cv=none; b=dXGttkPPHDPDd6cUCEiu6EbZN7u9BLy0mtZ5VtMOPgKqXqIKyxen3m7mWhpLeQBEUPFACqA82JsQb5Lc+F4siB6htrUFB8TUGUpnbcSIDEjAAVMxN6h5X1NDY7Qzcd2L6T+lq1sLLj63loJBQkcqu1up4Dq83zfmrn7d3lg6jbc=
+	t=1770219054; cv=none; b=SJJHBF9xpZNSK0hPNXFoJZGokquBliW1JGUUbv37GMla9Ah8XVXJ2FgCaPT1PcR4DCkaiozSRZtdzFeqaFggHpRpGHVas8W6Wne4DgoixTU4j5UuvjVELKfgIr5rw91TMV9K173b9pgM4xJBB5btiWWSORF8nJ37RYIuf/8vKIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217395; c=relaxed/simple;
-	bh=58fBoT+WzU0p9Hcl5z7b9wbOZGL9fpdtlbXd0288OBQ=;
+	s=arc-20240116; t=1770219054; c=relaxed/simple;
+	bh=9hPi2L0mhSIE/SLy4Av5LP3QFOG9nohFZi044rmolCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIZdPm6wgKRPUqn8hcifi9ph6EdGysgWi2iwc9dNjVVx1n8UEERIpJibm6PL4/YBnheT92xMMVWMO1Sri60cHXlVTalkk6tdZgYJtfNO6sjxp3+rSrtcHi/BtXlfj8GKr7H34WiIUz85if7HAYhHe282ib/a2YdNwAmJvpbN5PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+OHSyTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5EEC2BCAF;
-	Wed,  4 Feb 2026 15:03:13 +0000 (UTC)
+	 MIME-Version; b=uzHrXpFHtK9SMdZKoGYe0W445DEXfK+oaVMYJdGVeulKYNRIBE+vJQDYdqwwHQ3KUWWf0g7/KwXmxJt+ia8rxHVsgKf8NPKMBAlIm2OIO6zJzuN773STnhM0Etst3fCZZSSxItu/VC9/IOLl55iE9I/v8jA6ffrl0GVUQVIFbCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXHEgmj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A1FC116C6;
+	Wed,  4 Feb 2026 15:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217394;
-	bh=58fBoT+WzU0p9Hcl5z7b9wbOZGL9fpdtlbXd0288OBQ=;
+	s=korg; t=1770219053;
+	bh=9hPi2L0mhSIE/SLy4Av5LP3QFOG9nohFZi044rmolCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+OHSyTpf+1aKKrWDPFHVrLTRUiqbkRi5Y8sdywBsy9KuXvKlQNSQeeCp03IvCV3Q
-	 DfX99IuLC+Yd6w7c3zJ2iEFbk9YlNiPbP7QxgPI+vHwKnKTtBINnmgNCsHqn756yIt
-	 osW8E1vQshEi1wbf6HTEZoUyG3i1uoOXZgnqNTv4=
+	b=vXHEgmj6jbONryX765V+9aCIaXdyQuDOFtGsLwtX43hKWgdwd/ohGiYg4qZzub/3J
+	 rblDDlsVgHsFfrTJ9rGLlQDGVwqyyTDuri1B8kDN8BiY88sDhGVvRFJaaPNf5D7wEn
+	 2HfyXkwpTdFQqs56oO3KgJ6NZPDX4mmzwaGEFjJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jouni Malinen <j@w1.fi>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 203/206] wifi: cfg80211: fix wiphy delayed work queueing
+	Shida Zhang <zhangshida@kylinos.cn>,
+	Coly Li <colyli@fnnas.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 052/122] bcache: fix I/O accounting leak in detached_dev_do_request
 Date: Wed,  4 Feb 2026 15:40:34 +0100
-Message-ID: <20260204143905.540805147@linuxfoundation.org>
+Message-ID: <20260204143853.727442698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +71,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214247-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213754-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sipsolutions.net:email,msgid.link:url,w1.fi:email]
-X-Rspamd-Queue-Id: 1F14FE816A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,lst.de:email,kernel.dk:email,kylinos.cn:email]
+X-Rspamd-Queue-Id: B2556E97ED
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-commit b743287d7a0007493f5cada34ed2085d475050b4 upstream.
+[ Upstream commit 4da7c5c3ec34d839bba6e035c3d05c447a2f9d4f ]
 
-When a wiphy work is queued with timer, and then again
-without a delay, it's started immediately but *also*
-started again after the timer expires. This can lead,
-for example, to warnings in mac80211's offchannel code
-as reported by Jouni. Running the same work twice isn't
-expected, of course. Fix this by deleting the timer at
-this point, when queuing immediately due to delay=0.
+When a bcache device is detached, discard requests are completed
+immediately. However, the I/O accounting started in
+cached_dev_make_request() is not ended, leading to 100% disk
+utilization reports in iostat. Add the missing bio_end_io_acct() call.
 
-Cc: stable@vger.kernel.org
-Reported-by: Jouni Malinen <j@w1.fi>
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Link: https://msgid.link/20240125095108.2feb0eaaa446.I4617f3210ed0e7f252290d5970dac6a876aa595b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cafe56359144 ("bcache: A block layer cache")
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Acked-by: Coly Li <colyli@fnnas.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/bcache/request.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2015-2017	Intel Deutschland GmbH
-- * Copyright (C) 2018-2022 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
+diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
+index a02aecac05cdf..6cba1180be8aa 100644
+--- a/drivers/md/bcache/request.c
++++ b/drivers/md/bcache/request.c
+@@ -1107,6 +1107,7 @@ static void detached_dev_do_request(struct bcache_device *d,
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -1624,6 +1624,7 @@ void wiphy_delayed_work_queue(struct wip
- 			      unsigned long delay)
- {
- 	if (!delay) {
-+		del_timer(&dwork->timer);
- 		wiphy_work_queue(wiphy, &dwork->work);
+ 	if (bio_op(orig_bio) == REQ_OP_DISCARD &&
+ 	    !bdev_max_discard_sectors(dc->bdev)) {
++		bio_end_io_acct(orig_bio, start_time);
+ 		bio_endio(orig_bio);
  		return;
  	}
+-- 
+2.51.0
+
 
 
 
