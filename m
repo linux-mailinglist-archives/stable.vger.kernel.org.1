@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qA+IOHRcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:24 +0100
+	id +LXrED9sg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59065E7673
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E1AE9A29
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4AD7E3014101
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EA9FB305EACA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236652C0263;
-	Wed,  4 Feb 2026 14:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E13C423A93;
+	Wed,  4 Feb 2026 15:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWZ5eIRe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvYNXjXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA7928B7EA;
-	Wed,  4 Feb 2026 14:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A2D423A8F;
+	Wed,  4 Feb 2026 15:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216561; cv=none; b=D0IcDtjglrOBUBewf+OLCHe+cCHASsIyN68nd1VqUys2iTRjjt7qshSgkVa/NScUaau19VvDzAuPMFh4AxcDj2SdUk8DOpeqZBqdeGDNNeZ5nL/Yf9gLjLDu5uOCPXkUq3/vTgDRHgJXNwVQRXRvD0BbsIGZSlIfcBGSlzoB95c=
+	t=1770218102; cv=none; b=FrvCvDQtRe7Es65XPHDfnDLeeqX7lR/PbRt2iZKClatyCOGitQnqiPXuFIpGGLg5HlMZYZUAcp3VeWgeOzHYo4IRuPrRvkrTHDxp3hjDQOwX0qlvjIlZkpyiqJwfI/riiZWHKnZGnTBsW7EnF3lDkA1jBTwuuZph+XY2yS6KFFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216561; c=relaxed/simple;
-	bh=//9KM3w2ybjMBU9saNbAplFdkauI4N/pPqLMuBKBK+c=;
+	s=arc-20240116; t=1770218102; c=relaxed/simple;
+	bh=Ofsnj6Z+55NU9fsE9hH9VXaliwguit/sBRh5JBDm1HU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2M78SQDjNujS0viwwOdH389FpIRCPJxjjv9wluYMqIk0WTF7/FOsx5pl1c0i4Mr5ndNi08kqjmv5WLZF3wGOq5USNXqM2pXH/I6ka0I+t+fjfyp0RhXHzyiJDQ3Ntb6NRqHPfcRYIM/jyGM3F8zVSwRQ+n/b8YFJAK258SajMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWZ5eIRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB28AC4CEF7;
-	Wed,  4 Feb 2026 14:49:20 +0000 (UTC)
+	 MIME-Version; b=q51HqTdrtlpPBAkDSG2kOswCKlmklfFrbOf6tnCvNFIhsrA7+0c4NLys8OzqSUmHIaJbOg+zbW9fs8bfm2ED0MR/HIMMne8klhhZMoQGSPHe4LzigGFD50l/Zmgn0DMk18/ev3K20HI3WB2RbWrBdoofApDmxhv4+pa4kwW+pyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvYNXjXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF1BC4CEF7;
+	Wed,  4 Feb 2026 15:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216561;
-	bh=//9KM3w2ybjMBU9saNbAplFdkauI4N/pPqLMuBKBK+c=;
+	s=korg; t=1770218102;
+	bh=Ofsnj6Z+55NU9fsE9hH9VXaliwguit/sBRh5JBDm1HU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWZ5eIReK8nraUiT8Yf/g9fw5UCiD0bNdS/cp0G4Gk3IVlwoXW7OBv5s2lASOsF/z
-	 MFPYGwlK6+eGKIHDyqXBfGYTiVz0awAHFTQJ0x5TWcpXp4D9Wgqv9s0qRESXJHHATX
-	 sLumQoOZUy7XqZGs3eDbHRV7t64EA+yhRGWFOVGY=
+	b=gvYNXjXIT9t+Ihj07deaQxQR+T5kCBoQrE0pbXilL86YOlVhDXabIegUeoZ3zS2R4
+	 W3dJ0UBRVQo3BkpaUYXQhLMymlGPvvIIWnVJnNK43l7gWg+32kR4GGXN3g2JAyIN22
+	 DR5XB0A67piZxD6NsHGRpUrP3OnRCsu688+Zhq9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 124/161] net/mlx5: Add HW definitions of vport debug counters
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 213/280] mptcp: only reset subflow errors when propagated
 Date: Wed,  4 Feb 2026 15:39:47 +0100
-Message-ID: <20260204143856.206678314@linuxfoundation.org>
+Message-ID: <20260204143917.274721942@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213504-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213964-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,103 +90,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 59065E7673
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 72E1AE9A29
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 3e94e61bd44d90070dcda53b647fdc826097ef26 ]
+commit dccf46179ddd6c04c14be8ed584dc54665f53f0e upstream.
 
-total_q_under_processor_handle - number of queues in error state due to an
-async error or errored command.
+Some subflow socket errors need to be reported to the MPTCP socket: the
+initial subflow connect (MP_CAPABLE), and the ones from the fallback
+sockets. The others are not propagated.
 
-send_queue_priority_update_flow - number of QP/SQ priority/SL update
-events.
+The issue is that sock_error() was used to retrieve the error, which was
+also resetting the sk_err field. Because of that, when notifying the
+userspace about subflow close events later on from the MPTCP worker, the
+ssk->sk_err field was always 0.
 
-cq_overrun - number of times CQ entered an error state due to an
-overflow.
+Now, the error (sk_err) is only reset when propagating it to the msk.
 
-async_eq_overrun -number of time an EQ mapped to async events was
-overrun.
-
-comp_eq_overrun - number of time an EQ mapped to completion events was
-overrun.
-
-quota_exceeded_command - number of commands issued and failed due to quota
-exceeded.
-
-invalid_command - number of commands issued and failed dues to any reason
-other than quota exceeded.
-
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: 476681f10cc1 ("net/mlx5e: Account for netdev stats in ndo_get_stats64")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 15cc10453398 ("mptcp: deliver ssk errors to msk")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-3-7f71e1bc4feb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mlx5/mlx5_ifc.h | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 88dbb20090805..303cbf0355a2e 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -1282,7 +1282,8 @@ struct mlx5_ifc_cmd_hca_cap_bits {
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -807,11 +807,8 @@ static bool __mptcp_ofo_queue(struct mpt
  
- 	u8         reserved_at_120[0xa];
- 	u8         log_max_ra_req_dc[0x6];
--	u8         reserved_at_130[0xa];
-+	u8         reserved_at_130[0x9];
-+	u8         vnic_env_cq_overrun[0x1];
- 	u8         log_max_ra_res_dc[0x6];
+ static bool __mptcp_subflow_error_report(struct sock *sk, struct sock *ssk)
+ {
+-	int err = sock_error(ssk);
+ 	int ssk_state;
+-
+-	if (!err)
+-		return false;
++	int err;
  
- 	u8         reserved_at_140[0x6];
-@@ -1472,7 +1473,11 @@ struct mlx5_ifc_cmd_hca_cap_bits {
- 	u8         nic_receive_steering_discard[0x1];
- 	u8         receive_discard_vport_down[0x1];
- 	u8         transmit_discard_vport_down[0x1];
--	u8         reserved_at_343[0x5];
-+	u8         eq_overrun_count[0x1];
-+	u8         reserved_at_344[0x1];
-+	u8         invalid_command_count[0x1];
-+	u8         quota_exceeded_count[0x1];
-+	u8         reserved_at_347[0x1];
- 	u8         log_max_flow_counter_bulk[0x8];
- 	u8         max_flow_counter_15_0[0x10];
+ 	/* only propagate errors on fallen-back sockets or
+ 	 * on MPC connect
+@@ -819,6 +816,10 @@ static bool __mptcp_subflow_error_report
+ 	if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(mptcp_sk(sk)))
+ 		return false;
  
-@@ -3128,11 +3133,21 @@ struct mlx5_ifc_vnic_diagnostic_statistics_bits {
- 
- 	u8         transmit_discard_vport_down[0x40];
- 
--	u8         reserved_at_140[0xa0];
-+	u8         async_eq_overrun[0x20];
++	err = sock_error(ssk);
++	if (!err)
++		return false;
 +
-+	u8         comp_eq_overrun[0x20];
-+
-+	u8         reserved_at_180[0x20];
-+
-+	u8         invalid_command[0x20];
-+
-+	u8         quota_exceeded_command[0x20];
- 
- 	u8         internal_rq_out_of_buffer[0x20];
- 
--	u8         reserved_at_200[0xe00];
-+	u8         cq_overrun[0x20];
-+
-+	u8         reserved_at_220[0xde0];
- };
- 
- struct mlx5_ifc_traffic_counter_bits {
--- 
-2.51.0
-
+ 	/* We need to propagate only transition to CLOSE state.
+ 	 * Orphaned socket will see such state change via
+ 	 * subflow_sched_work_if_closed() and that path will properly
 
 
 
