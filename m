@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-214068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEbIN6Npg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:39 +0100
+	id 2JyXIPNng2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16F3E9512
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6673E9043
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EC59C3111C5D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A822D3223345
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B804218BB;
-	Wed,  4 Feb 2026 15:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42E24218A0;
+	Wed,  4 Feb 2026 15:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rutUbvkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yon4PdKu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758A2261B91;
-	Wed,  4 Feb 2026 15:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875D341B37C;
+	Wed,  4 Feb 2026 15:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218455; cv=none; b=rm6WIhpYVjqb4HYrR5Hgd/6VSaWSpY8Oc1FFrOFgu4bIWbUmbHTXGUxdfjljOhb7KSx+lwKqDenkugBFEKRFriuvlTUAEq6PkvagQI8sRT1FYt78wgG6MgQozbnSP7A2iAQhHQm/CjPaYQaQjwouGQXfUnlTYMYvPWccq4TJPbM=
+	t=1770218714; cv=none; b=sDTYkOLx5MzQQs+OvK6hy0HC2SPQwM2XKg9hEw+ig5oCHaUHsUZTT3NCeKLQYzqiX4kcNaMRlqyHEXZzeqtu8KCSzXO8pACundxv102ybEEdowa1HfZw2CFH1m+bEeOWzUDF6W1UqpvHdy+QLLfEq4kWEe2ncAhNFo9F4B1FzhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218455; c=relaxed/simple;
-	bh=Z3F7Ni/n3u4U3do6mFXGKKtefgDVbvUix0rpU7VGjy0=;
+	s=arc-20240116; t=1770218714; c=relaxed/simple;
+	bh=2WB49iVBKYJyh1VUsQEa0nEI7PNqyZAUW4GcK/WEcHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckKe4sYyeJs+0+80OaUii68KCdJK0Jn822oT90jgFEgdPvPXF3RzgKS82sCOEoyeJ0NB7UQU787IA0ev/HgWMsEWOFEdqd+7q09FQTxzoz+7JAbdcqDK0ykoVGrd/NaC1Ucc5yMg5aoIf0Bxf8fepqh613Jaf0/fqaLQ9Uz6j8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rutUbvkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB58BC4CEF7;
-	Wed,  4 Feb 2026 15:20:54 +0000 (UTC)
+	 MIME-Version; b=Qc+Uog+7ZxAYSg0zkvnOthEaw3tkJnFOOEq6QaJvL/PgwZ+iopoBn+vQDEfn1J4MF7lCnxWDPdHgdIbJRW/beM//RxKfsJJJC8rNubrIXtlvI4g428hgrld8m1ihiPAkEP6MoyhZzSPotmuBHKt09rASn2w4d2Baw/TueEB9TrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yon4PdKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3E7C4CEF7;
+	Wed,  4 Feb 2026 15:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218455;
-	bh=Z3F7Ni/n3u4U3do6mFXGKKtefgDVbvUix0rpU7VGjy0=;
+	s=korg; t=1770218714;
+	bh=2WB49iVBKYJyh1VUsQEa0nEI7PNqyZAUW4GcK/WEcHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rutUbvkhlwI2LXneTUCFJfNNXOfZUHZAnUvtYKx8x9MdC/fFBrdLS1f94LMgLi6v+
-	 ZGE2xKTvJNAgLDz1gD0p/24rsxZRtDq7jXoabR3vYQEDqMOHx8+i5nKMILVkE6WXe4
-	 luririnlnL/kcDLdsBQU6d23VNPyb3AGkK0jTlnQ=
+	b=Yon4PdKuKGjTX47zBjJVVOHt5us29Rtg/tg4sTr8Km6VvCfKyoF1fwF7PrxSO1m32
+	 DnE3ncW+iHuSLPafJzNgAlTfLxrcSxH31ft1ZFZch1OzLAddBKf9/EaxJDFR34fUhd
+	 PFnXGDI4ftnPyqkY/Po/fUhy+AdN2n4ZLXyTtF8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 34/72] selftests: mptcp: check subflow errors in close events
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 39/87] scsi: be2iscsi: Fix a memory leak in beiscsi_boot_get_sinfo()
 Date: Wed,  4 Feb 2026 15:40:37 +0100
-Message-ID: <20260204143846.861412255@linuxfoundation.org>
+Message-ID: <20260204143848.320332758@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214068-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214145-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,105 +87,44 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F16F3E9512
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: D6673E9043
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit 2ef9e3a3845d0a20b62b01f5b731debd0364688d upstream.
+commit 4747bafaa50115d9667ece446b1d2d4aba83dc7f upstream.
 
-This validates the previous commit: subflow closed events should contain
-an error field when a subflow got closed with an error, e.g. reset or
-timeout.
+If nonemb_cmd->va fails to be allocated, free the allocation previously
+made by alloc_mcc_wrb().
 
-For this test, the chk_evt_nr helper has been extended to check
-attributes in the matched events.
-
-In this test, the 2 subflow closed events should have an error.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 15cc10453398 ("mptcp: deliver ssk errors to msk")
+Fixes: 50a4b824be9e ("scsi: be2iscsi: Fix to make boot discovery non-blocking")
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-4-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251213083643.301240-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/scsi/be2iscsi/be_mgmt.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3544,21 +3544,28 @@ userspace_pm_chk_get_addr()
- 	fi
- }
- 
--# $1: ns ; $2: event type ; $3: count
-+# $1: ns ; $2: event type ; $3: count ; [ $4: attr ; $5: attr count ]
- chk_evt_nr()
- {
- 	local ns=${1}
- 	local evt_name="${2}"
- 	local exp="${3}"
-+	local attr="${4}"
-+	local attr_exp="${5}"
- 
- 	local evts="${evts_ns1}"
- 	local evt="${!evt_name}"
-+	local attr_name
- 	local count
- 
-+	if [ -n "${attr}" ]; then
-+		attr_name=", ${attr}: ${attr_exp}"
-+	fi
-+
- 	evt_name="${evt_name:16}" # without MPTCP_LIB_EVENT_
- 	[ "${ns}" == "ns2" ] && evts="${evts_ns2}"
- 
--	print_check "event ${ns} ${evt_name} (${exp})"
-+	print_check "event ${ns} ${evt_name} (${exp}${attr_name})"
- 
- 	if [[ "${evt_name}" = "LISTENER_"* ]] &&
- 	   ! mptcp_lib_kallsyms_has "mptcp_event_pm_listener$"; then
-@@ -3570,6 +3577,16 @@ chk_evt_nr()
- 	if [ "${count}" != "${exp}" ]; then
- 		fail_test "got ${count} events, expected ${exp}"
- 		cat "${evts}"
-+		return
-+	elif [ -z "${attr}" ]; then
-+		print_ok
-+		return
-+	fi
-+
-+	count=$(grep -w "type:${evt}" "${evts}" | grep -c ",${attr}:")
-+	if [ "${count}" != "${attr_exp}" ]; then
-+		fail_test "got ${count} event attributes, expected ${attr_exp}"
-+		grep -w "type:${evt}" "${evts}"
- 	else
- 		print_ok
- 	fi
-@@ -3776,7 +3793,7 @@ userspace_tests()
- 			chk_subflows_total 1 1
- 			userspace_pm_add_sf $ns2 10.0.1.2 0
- 			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
--			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2 error 2
- 		fi
- 		kill_events_pids
- 		mptcp_lib_kill_group_wait $tests_pid
+--- a/drivers/scsi/be2iscsi/be_mgmt.c
++++ b/drivers/scsi/be2iscsi/be_mgmt.c
+@@ -1025,6 +1025,7 @@ unsigned int beiscsi_boot_get_sinfo(stru
+ 					      &nonemb_cmd->dma,
+ 					      GFP_KERNEL);
+ 	if (!nonemb_cmd->va) {
++		free_mcc_wrb(ctrl, tag);
+ 		mutex_unlock(&ctrl->mbox_lock);
+ 		return 0;
+ 	}
 
 
 
