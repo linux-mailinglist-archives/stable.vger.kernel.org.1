@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOj3AaVeg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:45 +0100
+	id 8F1ELFxkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8CC4E7AEC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D1AE8678
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 749093039A97
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4911130ADBF7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A13841B371;
-	Wed,  4 Feb 2026 14:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C4F425CD2;
+	Wed,  4 Feb 2026 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+7B+P10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDUH5P2q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12CE27F749;
-	Wed,  4 Feb 2026 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE6741B34E;
+	Wed,  4 Feb 2026 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216869; cv=none; b=llj49GiHHrshd35nC0qFVXBxW9NsSk27wbNqHwRJaawe02FYGEetar/sesK6ndepL9Q0c7mKu+/J7ytt3jRZ0pqFjuaQN6s/pY/RKpV0LMOYbiBpNjofZqKpTlKD+ldBy85mdOxzXub8Bljzw3cDrH/0gJGG8T5OWvqBPnw9R20=
+	t=1770217766; cv=none; b=Y4EV+5Ubz2Ox7HK+MD6Z6LwF6LXa4oMSyhEOCl5Y3na5bcn+A7VTvipBTw6/PK1NqHdAG7iN43dDsv8oGdh/a39TZbhDsByUA+7svX87Sj57U2QeNsm9yH9nc+2Z8pr2QhZDVnO7x30Gt2x4kglbKVSVgItYTIemTLpjgGpY8Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216869; c=relaxed/simple;
-	bh=MQcS2ggLBHiC/3mzrOylQnohmZMJtaQ10ihVrcpetcc=;
+	s=arc-20240116; t=1770217766; c=relaxed/simple;
+	bh=SzSB6DFSzJXisTnr4tU7dh+jg7SbkktjzqS6RQf9KLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YrQkLz66Y+kfprZb3nyzM/OHD7IKdTXa1K/Mp/xDb4EDUhY2ML08fCoTVEy5G1dn3X88kt8j0XMu6T0S7dmCYlvH9tLegk2+iBPvJTvV7YViKbBbFK5O085/9TbAtcJ5/8WWmKB+tTTA+DJnUFOSRrzxjs84Aiv8f7vqY2DU7OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+7B+P10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF39C4CEF7;
-	Wed,  4 Feb 2026 14:54:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XSuDe5FxIVl/HZNO5cejAICc7FX1Z2heL5KDrWhVkTlxirqDfQn6uB0jSs4f9Le9CbtT2E9B2Xlg3gx9IzAzQR21Du5P70SuRPL34Coa6h+lCwRVecGSEe57/GXd1HwdgmNPjkv3aVDOBpKGxFmLUMcMioKE9xf0MwUjAh0ITIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDUH5P2q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830D1C4CEF7;
+	Wed,  4 Feb 2026 15:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216869;
-	bh=MQcS2ggLBHiC/3mzrOylQnohmZMJtaQ10ihVrcpetcc=;
+	s=korg; t=1770217766;
+	bh=SzSB6DFSzJXisTnr4tU7dh+jg7SbkktjzqS6RQf9KLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+7B+P102Ue8Dh2q1Bxr6Wt+TEd5xItSr8gsUzs+Yhnl6aovg19O9qgNKTfsS5/RI
-	 jAfdY9kME7u6aGiK5MKrtuMpzGX2yZp8D6/U+2tl0C3S4DsxNjr8UBkHv7dfNuy/I/
-	 z3NyRd225B95JHIsAHbxAztHYhV6JYZZNB6dgZp8=
+	b=DDUH5P2qd3+5tsBQmhSDTfM87atQcfdn9gmhxoVUdIibSZLuNMG8vftJKncVhlHRG
+	 U4LMw8vvU4pnnft3M68xB604d7WPOJNY365C+gLS9kWx/7nN6dzPduuT4vbXXO04ra
+	 pdz0KXUWbuMJxbeyo1V/6Whu6ZR2PgRGhs/kUSVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Robbie Ko <robbieko@synology.com>,
-	David Sterba <dsterba@suse.com>,
-	=?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
-Subject: [PATCH 5.15 054/206] btrfs: fix deadlock in wait_current_trans() due to ignored transaction type
-Date: Wed,  4 Feb 2026 15:38:05 +0100
-Message-ID: <20260204143900.164187684@linuxfoundation.org>
+	GangMin Kim <km.kim1503@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/280] net/sched: Enforce that teql can only be used as root qdisc
+Date: Wed,  4 Feb 2026 15:38:06 +0100
+Message-ID: <20260204143913.674757815@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,188 +68,101 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213598-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213863-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D8CC4E7AEC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: 30D1AE8678
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robbie Ko <robbieko@synology.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit 5037b342825df7094a4906d1e2a9674baab50cb2 upstream.
+[ Upstream commit 50da4b9d07a7a463e2cfb738f3ad4cff6b2c9c3b ]
 
-When wait_current_trans() is called during start_transaction(), it
-currently waits for a blocked transaction without considering whether
-the given transaction type actually needs to wait for that particular
-transaction state. The btrfs_blocked_trans_types[] array already defines
-which transaction types should wait for which transaction states, but
-this check was missing in wait_current_trans().
+Design intent of teql is that it is only supposed to be used as root qdisc.
+We need to check for that constraint.
 
-This can lead to a deadlock scenario involving two transactions and
-pending ordered extents:
+Although not important, I will describe the scenario that unearthed this
+issue for the curious.
 
-  1. Transaction A is in TRANS_STATE_COMMIT_DOING state
+GangMin Kim <km.kim1503@gmail.com> managed to concot a scenario as follows:
 
-  2. A worker processing an ordered extent calls start_transaction()
-     with TRANS_JOIN
+ROOT qdisc 1:0 (QFQ)
+  ├── class 1:1 (weight=15, lmax=16384) netem with delay 6.4s
+  └── class 1:2 (weight=1, lmax=1514) teql
 
-  3. join_transaction() returns -EBUSY because Transaction A is in
-     TRANS_STATE_COMMIT_DOING
+GangMin sends a packet which is enqueued to 1:1 (netem).
+Any invocation of dequeue by QFQ from this class will not return a packet
+until after 6.4s. In the meantime, a second packet is sent and it lands on
+1:2. teql's enqueue will return success and this will activate class 1:2.
+Main issue is that teql only updates the parent visible qlen (sch->q.qlen)
+at dequeue. Since QFQ will only call dequeue if peek succeeds (and teql's
+peek always returns NULL), dequeue will never be called and thus the qlen
+will remain as 0. With that in mind, when GangMin updates 1:2's lmax value,
+the qfq_change_class calls qfq_deact_rm_from_agg. Since the child qdisc's
+qlen was not incremented, qfq fails to deactivate the class, but still
+frees its pointers from the aggregate. So when the first packet is
+rescheduled after 6.4 seconds (netem's delay), a dangling pointer is
+accessed causing GangMin's causing a UAF.
 
-  4. Transaction A moves to TRANS_STATE_UNBLOCKED and completes
-
-  5. A new Transaction B is created (TRANS_STATE_RUNNING)
-
-  6. The ordered extent from step 2 is added to Transaction B's
-     pending ordered extents
-
-  7. Transaction B immediately starts commit by another task and
-     enters TRANS_STATE_COMMIT_START
-
-  8. The worker finally reaches wait_current_trans(), sees Transaction B
-     in TRANS_STATE_COMMIT_START (a blocked state), and waits
-     unconditionally
-
-  9. However, TRANS_JOIN should NOT wait for TRANS_STATE_COMMIT_START
-     according to btrfs_blocked_trans_types[]
-
-  10. Transaction B is waiting for pending ordered extents to complete
-
-  11. Deadlock: Transaction B waits for ordered extent, ordered extent
-      waits for Transaction B
-
-This can be illustrated by the following call stacks:
-  CPU0                              CPU1
-                                    btrfs_finish_ordered_io()
-                                      start_transaction(TRANS_JOIN)
-                                        join_transaction()
-                                          # -EBUSY (Transaction A is
-                                          # TRANS_STATE_COMMIT_DOING)
-  # Transaction A completes
-  # Transaction B created
-  # ordered extent added to
-  # Transaction B's pending list
-  btrfs_commit_transaction()
-    # Transaction B enters
-    # TRANS_STATE_COMMIT_START
-    # waiting for pending ordered
-    # extents
-                                        wait_current_trans()
-                                          # waits for Transaction B
-                                          # (should not wait!)
-
-Task bstore_kv_sync in btrfs_commit_transaction waiting for ordered
-extents:
-
-  __schedule+0x2e7/0x8a0
-  schedule+0x64/0xe0
-  btrfs_commit_transaction+0xbf7/0xda0 [btrfs]
-  btrfs_sync_file+0x342/0x4d0 [btrfs]
-  __x64_sys_fdatasync+0x4b/0x80
-  do_syscall_64+0x33/0x40
-  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-Task kworker in wait_current_trans waiting for transaction commit:
-
-  Workqueue: btrfs-syno_nocow btrfs_work_helper [btrfs]
-  __schedule+0x2e7/0x8a0
-  schedule+0x64/0xe0
-  wait_current_trans+0xb0/0x110 [btrfs]
-  start_transaction+0x346/0x5b0 [btrfs]
-  btrfs_finish_ordered_io.isra.0+0x49b/0x9c0 [btrfs]
-  btrfs_work_helper+0xe8/0x350 [btrfs]
-  process_one_work+0x1d3/0x3c0
-  worker_thread+0x4d/0x3e0
-  kthread+0x12d/0x150
-  ret_from_fork+0x1f/0x30
-
-Fix this by passing the transaction type to wait_current_trans() and
-checking btrfs_blocked_trans_types[cur_trans->state] against the given
-type before deciding to wait. This ensures that transaction types which
-are allowed to join during certain blocked states will not unnecessarily
-wait and cause deadlocks.
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Robbie Ko <robbieko@synology.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Cc: Motiejus Jakštys <motiejus@jakstys.lt>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260114160243.913069-2-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/sched/sch_teql.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -528,13 +528,14 @@ static inline int is_transaction_blocked
-  * when this is done, it is safe to start a new transaction, but the current
-  * transaction might not be fully on disk.
-  */
--static void wait_current_trans(struct btrfs_fs_info *fs_info)
-+static void wait_current_trans(struct btrfs_fs_info *fs_info, unsigned int type)
- {
- 	struct btrfs_transaction *cur_trans;
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 7721239c185fb..0a7856e14a975 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -178,6 +178,11 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 	if (m->dev == dev)
+ 		return -ELOOP;
  
- 	spin_lock(&fs_info->trans_lock);
- 	cur_trans = fs_info->running_transaction;
--	if (cur_trans && is_transaction_blocked(cur_trans)) {
-+	if (cur_trans && is_transaction_blocked(cur_trans) &&
-+	    (btrfs_blocked_trans_types[cur_trans->state] & type)) {
- 		refcount_inc(&cur_trans->use_count);
- 		spin_unlock(&fs_info->trans_lock);
++	if (sch->parent != TC_H_ROOT) {
++		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
++		return -EOPNOTSUPP;
++	}
++
+ 	q->m = m;
  
-@@ -680,12 +681,12 @@ again:
- 		sb_start_intwrite(fs_info->sb);
- 
- 	if (may_wait_transaction(fs_info, type))
--		wait_current_trans(fs_info);
-+		wait_current_trans(fs_info, type);
- 
- 	do {
- 		ret = join_transaction(fs_info, type);
- 		if (ret == -EBUSY) {
--			wait_current_trans(fs_info);
-+			wait_current_trans(fs_info, type);
- 			if (unlikely(type == TRANS_ATTACH ||
- 				     type == TRANS_JOIN_NOSTART))
- 				ret = -ENOENT;
-@@ -952,7 +953,7 @@ out:
- 
- void btrfs_throttle(struct btrfs_fs_info *fs_info)
- {
--	wait_current_trans(fs_info);
-+	wait_current_trans(fs_info, TRANS_START);
- }
- 
- static bool should_end_transaction(struct btrfs_trans_handle *trans)
+ 	skb_queue_head_init(&q->q);
+-- 
+2.51.0
+
 
 
 
