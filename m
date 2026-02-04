@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-214101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEQCJ9drg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:03 +0100
+	id 6DcrKPpog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA9FE993F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 215E7E930C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BC2631243CD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 727EE319BAA8
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DC841C309;
-	Wed,  4 Feb 2026 15:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED342DBF75;
+	Wed,  4 Feb 2026 15:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnKTl9NF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzY1pNjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365812BD012;
-	Wed,  4 Feb 2026 15:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B2327702D;
+	Wed,  4 Feb 2026 15:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218567; cv=none; b=p2JIirptrKnxAdygpn/AsD5pY9UE+NdXDSrHdI1XD+JzwQfYmy5+SAwE/ZpOQCA2An1O2ZtzjxgNblN7y7kO+JEFrko4oLSBuVKDBkaYZQzu7L+L/GxwzowQnj7U+W4nJVUBJmWygelBZEGL9TP7oFHYJoo1LXfd7ks8SnzNoSU=
+	t=1770219177; cv=none; b=FypfUE1QSh5g7aZm2iu/2vupIlDHnE+88Qt0BpM5IpsWn2FMH3VtslsJDIA4jBmuU8ICAZxHoF05Z19bhdQn0a7B5H5Q14EozVODhOAcnX/bg7ryA9QEiHw2RvpEjSHyD7AvUiVez6BhmkweCbmVxRYIxaAVxxhs11pIjazNNk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218567; c=relaxed/simple;
-	bh=2Tmx5KMSnK4IlxjG84fxrTpP2KaVQLh0szaLTQ4Wt0g=;
+	s=arc-20240116; t=1770219177; c=relaxed/simple;
+	bh=v7htO4GSCqmKrKy6QRiLaXvn2yz6Iog72WyfcjfjeKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ct48kyWRmnQVWOySyivP8W2iK3nuaS3daneC+zE+SXGkQF71VNsTJ5IGhG+Xpqbtlu8mSW7p1c+I/VGLbHJJofdVIrWfHYHVlmXc7yhzcaaSKZL/GMOitrd1HAEugGA7WxDw3WbAQyozmd7WwkQyW4Id89wNzs/nHwl0V2eVj44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnKTl9NF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9670FC4CEF7;
-	Wed,  4 Feb 2026 15:22:46 +0000 (UTC)
+	 MIME-Version; b=tn4qdMS/JPMU8DFbYhUbl3SeZ5yQWHbhFwfYccl7a5ff0vr6Pq+TAGW7q9p00mHhXVkYRQI6n2RenWlmkc7K91bJ4TaoFDjCTOa5QnZ9Mk0InBpQxvUZfKFAlpR6kKyvAA5AtVzHqNhFrn8BLq7kb3JrgPtAsyAXgR8+1nN3cz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzY1pNjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513EBC4CEF7;
+	Wed,  4 Feb 2026 15:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218567;
-	bh=2Tmx5KMSnK4IlxjG84fxrTpP2KaVQLh0szaLTQ4Wt0g=;
+	s=korg; t=1770219177;
+	bh=v7htO4GSCqmKrKy6QRiLaXvn2yz6Iog72WyfcjfjeKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnKTl9NFxKWGrbC3Slts18gHKXoRtLz3v+OiUb3emRAyUw4GgZLdFiDS4eA9WbbkK
-	 3CyKOsC64ZDMGOK0dZMAis0+a9RdZjIkffDy/vAXvNh9lVaHmVfe+VNVfosvRcpEBx
-	 MXn+Z8kSKHMksRZ2k8CBGDv9aeI7TfJvVsAGMhG0=
+	b=ZzY1pNjP1C184UwS2TKAj3Q+xuqPsPwxn3fPabYsyebbbGtT6SIDefFoq8O5slhQM
+	 99R2e+yvfkbVWSPyhaj6tnXl3zvxIYyPvsfLKqUfomezxJp9lq2Acl8aArkVv49L2/
+	 T2G8pHQ528ZMKm7mAFk2uLtwt0ktRxdFRcHuKN+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f56a5c5eac2b28439810@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 68/72] ptr_ring: do not block hard interrupts in ptr_ring_resize_multiple()
+	Kairui Song <kasong@tencent.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chris Li <chrisl@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 089/122] mm/shmem, swap: fix race of truncate and swap entry split
 Date: Wed,  4 Feb 2026 15:41:11 +0100
-Message-ID: <20260204143848.106234102@linuxfoundation.org>
+Message-ID: <20260204143855.054517475@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,226 +71,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214285-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tencent.com,gmail.com,kernel.org,linux.alibaba.com,redhat.com,google.com,huaweicloud.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214101-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,redhat.com,kernel.org,foxmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,f56a5c5eac2b28439810];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,foxmail.com:email]
-X-Rspamd-Queue-Id: EAA9FE993F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,huaweicloud.com:email,tencent.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email]
+X-Rspamd-Queue-Id: 215E7E930C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kairui Song <kasong@tencent.com>
 
-[ Upstream commit a126061c80d5efb4baef4bcf346094139cd81df6 ]
+commit 8a1968bd997f45a9b11aefeabdd1232e1b6c7184 upstream.
 
-Jakub added a lockdep_assert_no_hardirq() check in __page_pool_put_page()
-to increase test coverage.
+The helper for shmem swap freeing is not handling the order of swap
+entries correctly.  It uses xa_cmpxchg_irq to erase the swap entry, but it
+gets the entry order before that using xa_get_order without lock
+protection, and it may get an outdated order value if the entry is split
+or changed in other ways after the xa_get_order and before the
+xa_cmpxchg_irq.
 
-syzbot found a splat caused by hard irq blocking in
-ptr_ring_resize_multiple() [1]
+And besides, the order could grow and be larger than expected, and cause
+truncation to erase data beyond the end border.  For example, if the
+target entry and following entries are swapped in or freed, then a large
+folio was added in place and swapped out, using the same entry, the
+xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
 
-As current users of ptr_ring_resize_multiple() do not require
-hard irqs being masked, replace it to only block BH.
+To fix that, open code the Xarray cmpxchg and put the order retrieval and
+value checking in the same critical section.  Also, ensure the order won't
+exceed the end border, skip it if the entry goes across the border.
 
-Rename helpers to better reflect they are safe against BH only.
+Skipping large swap entries crosses the end border is safe here.  Shmem
+truncate iterates the range twice, in the first iteration,
+find_lock_entries already filtered such entries, and shmem will swapin the
+entries that cross the end border and partially truncate the folio (split
+the folio or at least zero part of it).  So in the second loop here, if we
+see a swap entry that crosses the end order, it must at least have its
+content erased already.
 
-- ptr_ring_resize_multiple() to ptr_ring_resize_multiple_bh()
-- skb_array_resize_multiple() to skb_array_resize_multiple_bh()
+I observed random swapoff hangs and kernel panics when stress testing
+ZSWAP with shmem.  After applying this patch, all problems are gone.
 
-[1]
-
-WARNING: CPU: 1 PID: 9150 at net/core/page_pool.c:709 __page_pool_put_page net/core/page_pool.c:709 [inline]
-WARNING: CPU: 1 PID: 9150 at net/core/page_pool.c:709 page_pool_put_unrefed_netmem+0x157/0xa40 net/core/page_pool.c:780
-Modules linked in:
-CPU: 1 UID: 0 PID: 9150 Comm: syz.1.1052 Not tainted 6.11.0-rc3-syzkaller-00202-gf8669d7b5f5d #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-RIP: 0010:__page_pool_put_page net/core/page_pool.c:709 [inline]
-RIP: 0010:page_pool_put_unrefed_netmem+0x157/0xa40 net/core/page_pool.c:780
-Code: 74 0e e8 7c aa fb f7 eb 43 e8 75 aa fb f7 eb 3c 65 8b 1d 38 a8 6a 76 31 ff 89 de e8 a3 ae fb f7 85 db 74 0b e8 5a aa fb f7 90 <0f> 0b 90 eb 1d 65 8b 1d 15 a8 6a 76 31 ff 89 de e8 84 ae fb f7 85
-RSP: 0018:ffffc9000bda6b58 EFLAGS: 00010083
-RAX: ffffffff8997e523 RBX: 0000000000000000 RCX: 0000000000040000
-RDX: ffffc9000fbd0000 RSI: 0000000000001842 RDI: 0000000000001843
-RBP: 0000000000000000 R08: ffffffff8997df2c R09: 1ffffd40003a000d
-R10: dffffc0000000000 R11: fffff940003a000e R12: ffffea0001d00040
-R13: ffff88802e8a4000 R14: dffffc0000000000 R15: 00000000ffffffff
-FS:  00007fb7aaf716c0(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fa15a0d4b72 CR3: 00000000561b0000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- tun_ptr_free drivers/net/tun.c:617 [inline]
- __ptr_ring_swap_queue include/linux/ptr_ring.h:571 [inline]
- ptr_ring_resize_multiple_noprof include/linux/ptr_ring.h:643 [inline]
- tun_queue_resize drivers/net/tun.c:3694 [inline]
- tun_device_event+0xaaf/0x1080 drivers/net/tun.c:3714
- notifier_call_chain+0x19f/0x3e0 kernel/notifier.c:93
- call_netdevice_notifiers_extack net/core/dev.c:2032 [inline]
- call_netdevice_notifiers net/core/dev.c:2046 [inline]
- dev_change_tx_queue_len+0x158/0x2a0 net/core/dev.c:9024
- do_setlink+0xff6/0x41f0 net/core/rtnetlink.c:2923
- rtnl_setlink+0x40d/0x5a0 net/core/rtnetlink.c:3201
- rtnetlink_rcv_msg+0x73f/0xcf0 net/core/rtnetlink.c:6647
- netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2550
-
-Fixes: ff4e538c8c3e ("page_pool: add a lockdep check for recycling in hardirq")
-Reported-by: syzbot+f56a5c5eac2b28439810@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/671e10df.050a0220.2b8c0f.01cf.GAE@google.com/T/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20241217135121.326370-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ 2c321f3f70bc ("mm: change inlined allocation helpers to account at the call site")
-  is not ported to Linux-6.6.y. So remove the suffix "_noprof". ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Link: https://lkml.kernel.org/r/20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Chris Li <chrisl@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tap.c         |    6 +++---
- drivers/net/tun.c         |    6 +++---
- include/linux/ptr_ring.h  |   17 ++++++++---------
- include/linux/skb_array.h |   14 ++++++++------
- net/sched/sch_generic.c   |    4 ++--
- 5 files changed, 24 insertions(+), 23 deletions(-)
+ mm/shmem.c |   45 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 34 insertions(+), 11 deletions(-)
 
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -1330,9 +1330,9 @@ int tap_queue_resize(struct tap_dev *tap
- 	list_for_each_entry(q, &tap->queue_list, next)
- 		rings[i++] = &q->ring;
- 
--	ret = ptr_ring_resize_multiple(rings, n,
--				       dev->tx_queue_len, GFP_KERNEL,
--				       __skb_array_destroy_skb);
-+	ret = ptr_ring_resize_multiple_bh(rings, n,
-+					  dev->tx_queue_len, GFP_KERNEL,
-+					  __skb_array_destroy_skb);
- 
- 	kfree(rings);
- 	return ret;
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3682,9 +3682,9 @@ static int tun_queue_resize(struct tun_s
- 	list_for_each_entry(tfile, &tun->disabled, next)
- 		rings[i++] = &tfile->tx_ring;
- 
--	ret = ptr_ring_resize_multiple(rings, n,
--				       dev->tx_queue_len, GFP_KERNEL,
--				       tun_ptr_free);
-+	ret = ptr_ring_resize_multiple_bh(rings, n,
-+					  dev->tx_queue_len, GFP_KERNEL,
-+					  tun_ptr_free);
- 
- 	kfree(rings);
- 	return ret;
---- a/include/linux/ptr_ring.h
-+++ b/include/linux/ptr_ring.h
-@@ -613,15 +613,14 @@ static inline int ptr_ring_resize(struct
- /*
-  * Note: producer lock is nested within consumer lock, so if you
-  * resize you must make sure all uses nest correctly.
-- * In particular if you consume ring in interrupt or BH context, you must
-- * disable interrupts/BH when doing so.
-+ * In particular if you consume ring in BH context, you must
-+ * disable BH when doing so.
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -944,17 +944,29 @@ static void shmem_delete_from_page_cache
+  * being freed).
   */
--static inline int ptr_ring_resize_multiple(struct ptr_ring **rings,
--					   unsigned int nrings,
--					   int size,
--					   gfp_t gfp, void (*destroy)(void *))
-+static inline int ptr_ring_resize_multiple_bh(struct ptr_ring **rings,
-+						     unsigned int nrings,
-+						     int size, gfp_t gfp,
-+						     void (*destroy)(void *))
+ static long shmem_free_swap(struct address_space *mapping,
+-			    pgoff_t index, void *radswap)
++			    pgoff_t index, pgoff_t end, void *radswap)
  {
--	unsigned long flags;
- 	void ***queues;
- 	int i;
- 
-@@ -636,12 +635,12 @@ static inline int ptr_ring_resize_multip
- 	}
- 
- 	for (i = 0; i < nrings; ++i) {
--		spin_lock_irqsave(&(rings[i])->consumer_lock, flags);
-+		spin_lock_bh(&(rings[i])->consumer_lock);
- 		spin_lock(&(rings[i])->producer_lock);
- 		queues[i] = __ptr_ring_swap_queue(rings[i], queues[i],
- 						  size, gfp, destroy);
- 		spin_unlock(&(rings[i])->producer_lock);
--		spin_unlock_irqrestore(&(rings[i])->consumer_lock, flags);
-+		spin_unlock_bh(&(rings[i])->consumer_lock);
- 	}
- 
- 	for (i = 0; i < nrings; ++i)
---- a/include/linux/skb_array.h
-+++ b/include/linux/skb_array.h
-@@ -198,16 +198,18 @@ static inline int skb_array_resize(struc
- 	return ptr_ring_resize(&a->ring, size, gfp, __skb_array_destroy_skb);
- }
- 
--static inline int skb_array_resize_multiple(struct skb_array **rings,
--					    int nrings, unsigned int size,
--					    gfp_t gfp)
-+static inline int skb_array_resize_multiple_bh(struct skb_array **rings,
-+						      int nrings,
-+						      unsigned int size,
-+						      gfp_t gfp)
- {
- 	BUILD_BUG_ON(offsetof(struct skb_array, ring));
--	return ptr_ring_resize_multiple((struct ptr_ring **)rings,
--					nrings, size, gfp,
--					__skb_array_destroy_skb);
-+	return ptr_ring_resize_multiple_bh((struct ptr_ring **)rings,
-+					          nrings, size, gfp,
-+					          __skb_array_destroy_skb);
- }
- 
+-	int order = xa_get_order(&mapping->i_pages, index);
+-	void *old;
++	XA_STATE(xas, &mapping->i_pages, index);
++	unsigned int nr_pages = 0;
++	pgoff_t base;
++	void *entry;
 +
- static inline void skb_array_cleanup(struct skb_array *a)
- {
- 	ptr_ring_cleanup(&a->ring, __skb_array_destroy_skb);
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -910,8 +910,8 @@ static int pfifo_fast_change_tx_queue_le
- 		bands[prio] = q;
- 	}
++	xas_lock_irq(&xas);
++	entry = xas_load(&xas);
++	if (entry == radswap) {
++		nr_pages = 1 << xas_get_order(&xas);
++		base = round_down(xas.xa_index, nr_pages);
++		if (base < index || base + nr_pages - 1 > end)
++			nr_pages = 0;
++		else
++			xas_store(&xas, NULL);
++	}
++	xas_unlock_irq(&xas);
  
--	return skb_array_resize_multiple(bands, PFIFO_FAST_BANDS, new_len,
--					 GFP_KERNEL);
-+	return skb_array_resize_multiple_bh(bands, PFIFO_FAST_BANDS, new_len,
-+					    GFP_KERNEL);
+-	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+-	if (old != radswap)
+-		return 0;
+-	free_swap_and_cache_nr(radix_to_swp_entry(radswap), 1 << order);
++	if (nr_pages)
++		free_swap_and_cache_nr(radix_to_swp_entry(radswap), nr_pages);
+ 
+-	return 1 << order;
++	return nr_pages;
  }
  
- struct Qdisc_ops pfifo_fast_ops __read_mostly = {
+ /*
+@@ -1106,8 +1118,8 @@ static void shmem_undo_range(struct inod
+ 			if (xa_is_value(folio)) {
+ 				if (unfalloc)
+ 					continue;
+-				nr_swaps_freed += shmem_free_swap(mapping,
+-							indices[i], folio);
++				nr_swaps_freed += shmem_free_swap(mapping, indices[i],
++								  end - 1, folio);
+ 				continue;
+ 			}
+ 
+@@ -1173,12 +1185,23 @@ whole_folios:
+ 			folio = fbatch.folios[i];
+ 
+ 			if (xa_is_value(folio)) {
++				int order;
+ 				long swaps_freed;
+ 
+ 				if (unfalloc)
+ 					continue;
+-				swaps_freed = shmem_free_swap(mapping, indices[i], folio);
++				swaps_freed = shmem_free_swap(mapping, indices[i],
++							      end - 1, folio);
+ 				if (!swaps_freed) {
++					/*
++					 * If found a large swap entry cross the end border,
++					 * skip it as the truncate_inode_partial_folio above
++					 * should have at least zerod its content once.
++					 */
++					order = shmem_confirm_swap(mapping, indices[i],
++								   radix_to_swp_entry(folio));
++					if (order > 0 && indices[i] + (1 << order) > end)
++						continue;
+ 					/* Swap was replaced by page: retry */
+ 					index = indices[i];
+ 					break;
 
 
 
