@@ -1,57 +1,72 @@
-Return-Path: <stable+bounces-213792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKBzBmVlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:33 +0100
+	id 8JaMFJtkg2l1mQMAu9opvQ
+	(envelope-from <stable+bounces-213794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B86E89B6
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB62DE8720
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B41A3189A30
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:11:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 01B5E306BA22
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5274B42317A;
-	Wed,  4 Feb 2026 15:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7840542317C;
+	Wed,  4 Feb 2026 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eE3nZWuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvdoA4xt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164B22D738F;
-	Wed,  4 Feb 2026 15:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7DA2D5950;
+	Wed,  4 Feb 2026 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217526; cv=none; b=M3Emrv8+lLRAKWsAWMMIY5k3ljgSA10NzO2AJ4AYgkRMaKJ5C+QamDTpSngm8Ut66JA6iVztoRHwDBDzFSZFs0NTVX73cSJ2TBgwaVtQ8Sv7BKRvgnZI2eGbiULLsGcU/qu2DwfPPJ0pdEN34ApPEi7wHi15s4ViC3nzPJ/mqIc=
+	t=1770217533; cv=none; b=pPcqCQVORLokWgWSvYvkhtLfJ/d5pq81bk/jBhGrPEroe7CPaITWtSfGOm6IGM32tYT/suwoXm07KB4Bycx+NJh5/6AaAl/cVBeoDUX/a9SoJMPb/T1kkpFqNMcqD6GSm8HhvBl4JrxogOslWYQwz4BU8Rh+4Xn1j4neuqRGtJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217526; c=relaxed/simple;
-	bh=Pfl9TIzKhGSFcjeCjGJuAqHmqXAq2E2c/Ed1Egke+U4=;
+	s=arc-20240116; t=1770217533; c=relaxed/simple;
+	bh=R1j9yhtAOGYexbF5vLKSA3mApGXFiZwdOJp4h6U4X3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQFEKYxEr5xJs6FTWsYoAAgi02tbtpViin3aVlgzKHfJwF43gLeFcBrjO/UTXkHlDqq1m181gosMYw5xVnB0iEEdVnGbB11F1ToWOsfKU4gSAA6ODPInTXa8zmDgLb1capaWDPqRXSvuaO8ttUjQ7kEm+MR2y6x6M3Z0zv6ka5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eE3nZWuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDF0C4CEF7;
-	Wed,  4 Feb 2026 15:05:25 +0000 (UTC)
+	 MIME-Version; b=pPPCMYcSpdbq1tZ16FvjJM20ES12JDUFoZaI5AOhFVgW/2z7ZkgF+TBvBCzuOP7vG0OhRY1L6uSG+IDlFZeD5B6jJWsyn7SIZLw5Jkehff7eZH1xvkh6pGyGnAIm7pP2wO0I4QyZNCB89bbAB4Uu3Vb/aYJTQiWugp5Ez2+zUxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvdoA4xt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736EBC4CEF7;
+	Wed,  4 Feb 2026 15:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217526;
-	bh=Pfl9TIzKhGSFcjeCjGJuAqHmqXAq2E2c/Ed1Egke+U4=;
+	s=korg; t=1770217533;
+	bh=R1j9yhtAOGYexbF5vLKSA3mApGXFiZwdOJp4h6U4X3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eE3nZWuwRYaPCHXLW+ldES1475fV8Ctr3KUt6MIa20C2UDoZCqKxUa9HG/COHcLGg
-	 /NBg3GUSaYWt68q5m4Aqi8nWcXQ/3fKKC9qtJgms30HLp11MKbMU6N9jbqGmoNNgKi
-	 fbpCHEKnyJhbIwMo/noFpx/3iBUDHDY170nslH+4=
+	b=PvdoA4xtJZeY9Mfa/hIVpiKKyg8WaxfJDB9E31HvGSDJD+UIgRiltPfKCiRvKMfeQ
+	 GN5abq3b0X6hRh1Cixw3d0eChlvculX51ZeE/UCyhbrCmVytXHQezLQ/bSUy8sbOQg
+	 FRbXGHTm9kIMsXWGTZbOKzWHQRFJrOLJDO7/nkxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 041/280] net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts
-Date: Wed,  4 Feb 2026 15:36:55 +0100
-Message-ID: <20260204143911.115950855@linuxfoundation.org>
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Yasunori Goto <y-goto@fujitsu.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 6.1 042/280] x86/kaslr: Recognize all ZONE_DEVICE users as physaddr consumers
+Date: Wed,  4 Feb 2026 15:36:56 +0100
+Message-ID: <20260204143911.152130954@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -66,88 +81,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213792-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-213794-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,881d65229ca4f9ae8c84];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email]
-X-Rspamd-Queue-Id: 81B86E89B6
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,suse.com:email,intel.com:email,oracle.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,suse.cz:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,deltatee.com:email]
+X-Rspamd-Queue-Id: BB62DE8720
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Dan Williams <dan.j.williams@intel.com>
 
-commit 1809c82aa073a11b7d335ae932d81ce51a588a4a upstream.
+commit 269031b15c1433ff39e30fa7ea3ab8f0be9d6ae2 upstream.
 
-Since j1939_session_deactivate_activate_next() in j1939_tp_rxtimer() is
-called only when the timer is enabled, we need to call
-j1939_session_deactivate_activate_next() if we cancelled the timer.
-Otherwise, refcount for j1939_session leaks, which will later appear as
+Commit 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+is too narrow. The effect being mitigated in that commit is caused by
+ZONE_DEVICE which PCI_P2PDMA has a dependency. ZONE_DEVICE, in general,
+lets any physical address be added to the direct-map. I.e. not only ACPI
+hotplug ranges, CXL Memory Windows, or EFI Specific Purpose Memory, but
+also any PCI MMIO range for the DEVICE_PRIVATE and PCI_P2PDMA cases. Update
+the mitigation, limit KASLR entropy, to apply in all ZONE_DEVICE=y cases.
 
-| unregister_netdevice: waiting for vcan0 to become free. Usage count = 2.
+Distro kernels typically have PCI_P2PDMA=y, so the practical exposure of
+this problem is limited to the PCI_P2PDMA=n case.
 
-problem.
+A potential path to recover entropy would be to walk ACPI and determine the
+limits for hotplug and PCI MMIO before kernel_randomize_memory(). On
+smaller systems that could yield some KASLR address bits. This needs
+additional investigation to determine if some limited ACPI table scanning
+can happen this early without an open coded solution like
+arch/x86/boot/compressed/acpi.c needs to deploy.
 
-Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Link: https://patch.msgid.link/b1212653-8fa1-44e1-be9d-12f950fb3a07@I-love.SAKURA.ne.jp
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Yasunori Goto <y-goto@fujitsu.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: http://patch.msgid.link/692e08b2516d4_261c1100a3@dwillia2-mobl4.notmuch
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/x86/mm/kaslr.c |   10 +++++-----
+ drivers/pci/Kconfig |    6 ------
+ mm/Kconfig          |   10 +++++++---
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1699,8 +1699,16 @@ static int j1939_xtp_rx_rts_session_acti
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -111,12 +111,12 @@ void __init kernel_randomize_memory(void
  
- 		j1939_session_timers_cancel(session);
- 		j1939_session_cancel(session, J1939_XTP_ABORT_BUSY);
--		if (session->transmission)
-+		if (session->transmission) {
- 			j1939_session_deactivate_activate_next(session);
-+		} else if (session->state == J1939_SESSION_WAITING_ABORT) {
-+			/* Force deactivation for the receiver.
-+			 * If we rely on the timer starting in j1939_session_cancel,
-+			 * a second RTS call here will cancel that timer and fail
-+			 * to restart it because the state is already WAITING_ABORT.
-+			 */
-+			j1939_session_deactivate_activate_next(session);
-+		}
+ 	/*
+ 	 * Adapt physical memory region size based on available memory,
+-	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
+-	 * device BAR space assuming the direct map space is large enough
+-	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
+-	 * to the physical BAR address.
++	 * except when CONFIG_ZONE_DEVICE is enabled. ZONE_DEVICE wants to map
++	 * any physical address into the direct-map. KASLR wants to reliably
++	 * steal some physical address bits. Those design choices are in direct
++	 * conflict.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
++	if (!IS_ENABLED(CONFIG_ZONE_DEVICE) && (memory_tb < kaslr_regions[0].size_tb))
+ 		kaslr_regions[0].size_tb = memory_tb;
  
- 		return -EBUSY;
- 	}
+ 	/*
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -184,12 +184,6 @@ config PCI_P2PDMA
+ 	  P2P DMA transactions must be between devices behind the same root
+ 	  port.
+ 
+-	  Enabling this option will reduce the entropy of x86 KASLR memory
+-	  regions. For example - on a 46 bit system, the entropy goes down
+-	  from 16 bits to 15 bits. The actual reduction in entropy depends
+-	  on the physical address bits, on processor features, kernel config
+-	  (5 level page table) and physical memory present on the system.
+-
+ 	  If unsure, say N.
+ 
+ config PCI_LABEL
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -994,10 +994,14 @@ config ZONE_DEVICE
+ 	  Device memory hotplug support allows for establishing pmem,
+ 	  or other device driver discovered memory regions, in the
+ 	  memmap. This allows pfn_to_page() lookups of otherwise
+-	  "device-physical" addresses which is needed for using a DAX
+-	  mapping in an O_DIRECT operation, among other things.
++	  "device-physical" addresses which is needed for DAX, PCI_P2PDMA, and
++	  DEVICE_PRIVATE features among others.
+ 
+-	  If FS_DAX is enabled, then say Y.
++	  Enabling this option will reduce the entropy of x86 KASLR memory
++	  regions. For example - on a 46 bit system, the entropy goes down
++	  from 16 bits to 15 bits. The actual reduction in entropy depends
++	  on the physical address bits, on processor features, kernel config
++	  (5 level page table) and physical memory present on the system.
+ 
+ #
+ # Helpers to mirror range of the CPU page tables of a process into device page
 
 
 
