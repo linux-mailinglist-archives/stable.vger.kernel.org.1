@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-213960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEatFA5lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:06 +0100
+	id qCd4Osphg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98531E88B5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B920E8178
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0032631395B3
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9266E3049EFB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02C4423A7F;
-	Wed,  4 Feb 2026 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6635341B371;
+	Wed,  4 Feb 2026 14:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPGGKgJG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEoFQ4bo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E4D3C1963;
-	Wed,  4 Feb 2026 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B9D3D3CEB;
+	Wed,  4 Feb 2026 14:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218088; cv=none; b=SqnRhd5aiHIAUVNgcPziHbqu8xau4fXP5oUJlsSlY3i4bJvWdmgTHA2z47eFuRvmOYZQlYwmSdKy4uH2bKVdCEfUPXZAij4KF24lxg/Eaevh9zpXAa8nCt/YsjDiSen9MmcGetwzsRiiYWNytLNpXONcSnzYYISplo1Krx07Obk=
+	t=1770217197; cv=none; b=o8wqKCLQoyjQM70DSOCe03Fw0S768syRoYgZQnrf0OJEM+HTZWqh70e2XSFrssHr7uyzZRKPJLhdG58bOZaHJdJj+zs5vTC5COebYPYNiYmuGn94kdjG03bmlVrgCjJShkzCAv9P3XZctxwRVtP2/AUPcd4VteXAhN2hApTlH3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218088; c=relaxed/simple;
-	bh=EXMhfTRz0ciSezjh0Wd97lKCu3icnboPdM7zI88bK3o=;
+	s=arc-20240116; t=1770217197; c=relaxed/simple;
+	bh=l/O2jpFVYUYOfYNW5LVNO2DEbzrHB+bTgb/TC6WS4wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/HBedYKHSpmPkMyzr0XxgnqdMZ8HHpfoAEZi/xn81gGJVuYNhCNyjMOZ54H1ZpuglIcfp9AWo4GMhBub5hrxg4M7d+5ee/xnIcFwnNk6oZ1pFD72/Vi2oLFBUylJNTwul38dQhWclSyIOPzhpnoDPQ3qDF3qbsZ5wd0XreZV8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPGGKgJG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BFCC4CEF7;
-	Wed,  4 Feb 2026 15:14:47 +0000 (UTC)
+	 MIME-Version; b=n0nVStf1A275uY68RIXJ5W8MMrlvOojluyIZAVz3cd6ZloFHImAfSPh4SUeEdC8wSTR248Hj+5WrtQke93TOyTtLlkqY7TgRfu3qm09hl6IoN6gZtgGJHryfVDuVx6oontZV+8ZiJLb11XYjOxA5BNB1ALOsLT35EUNRRBN5sVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEoFQ4bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45077C4CEF7;
+	Wed,  4 Feb 2026 14:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218088;
-	bh=EXMhfTRz0ciSezjh0Wd97lKCu3icnboPdM7zI88bK3o=;
+	s=korg; t=1770217196;
+	bh=l/O2jpFVYUYOfYNW5LVNO2DEbzrHB+bTgb/TC6WS4wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPGGKgJGIvQGJ8bKiHslor+ZMA1xX/KJKLpciQIQEFOv5UtV1C342U+zOSH29wvrz
-	 bytbV7JcD2CMv1Z+b0wp2jYDoekiHSwQdXmjk5SNO9qAwoazVaxtsKzBaaNs3uJFGF
-	 kjlxZC6maqpE4PDoQkL33tEitk9gD2Zz4jU1aPbE=
+	b=gEoFQ4bomlm2LXFdh9IzsGmVzHfbOyyzGmXL0yU5P+lWZh/0VMwm17LO7oT7uK1ZR
+	 r0WmJpLbnvb+cHiFtOYbjzQ7TDpehZGjPZme30OV1eQFCtBJeziQa9ltSENBL2JP+F
+	 bLiO6O2rwEzA5wJC0v1cQGBN0Jlk2/P9a/wZs89U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 209/280] scsi: be2iscsi: Fix a memory leak in beiscsi_boot_get_sinfo()
+Subject: [PATCH 5.15 152/206] scsi: be2iscsi: Fix a memory leak in beiscsi_boot_get_sinfo()
 Date: Wed,  4 Feb 2026 15:39:43 +0100
-Message-ID: <20260204143917.121005178@linuxfoundation.org>
+Message-ID: <20260204143903.677770387@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213960-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213695-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,12 +89,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 98531E88B5
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2B920E8178
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
