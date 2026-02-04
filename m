@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-213493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECOVCo1dg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:05 +0100
+	id 8PKgHMdfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B81E78BC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D381E7D25
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1EFA3069D55
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C3F4304CCCA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7B62C0323;
-	Wed,  4 Feb 2026 14:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C42A41C2F1;
+	Wed,  4 Feb 2026 14:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkL0yGPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mC6dB96q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF302BE037;
-	Wed,  4 Feb 2026 14:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E288C413221;
+	Wed,  4 Feb 2026 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216524; cv=none; b=lCNACL02ESut1AiU4NHvcMcgncmdQnaAn3AHzWQoRa2L4L+zi03qXhtj0WwIrX385EJWIkxwejMhyApJa9s9SNxkh/maWa976Sb8q0Sc+Zh/CJgLcWQeHVjTbM+6RCWnPsA2vJhJ0HVLyKLo/8TTyac+g8aXBLdZCftPXzW0Al0=
+	t=1770217173; cv=none; b=Cx/VXXymfQ/fmMV5K3imun/yZlMTiiCQxPIty5pDDSVNiF6k3SmMZBJQHt/E/y74Fng75bgXp1MK3k4GrtUs3m0gDsjP/tX9R7U2SqmWyIVso5WtHb+y3hWuFQlThKRULXff+1jpOdxR0u8e2bp5O7E1HJpHLP4kvP9ohjuq4mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216524; c=relaxed/simple;
-	bh=53NXDstsln4orSu/t9f4P+7+z5B+00sYXooITS/J3YE=;
+	s=arc-20240116; t=1770217173; c=relaxed/simple;
+	bh=rjt5Wd+lQD0//NdzlQbyaV+OFMvj0ZE/lhhc/OT06HU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgfeNCeNadI9o5w1h5mJ4RojDy3b1SmsRAJBsn6WXm4xXIFMTOOy1Am1IilK0VgEELjCVhPznOK9MK1fh5vo+BIKLMb15EUpEklu9OjZt36HLK2L7+AF/d0RhExOZlnks0BcQYHCRyNwOHoVW5y++IJsxgCQPz31OSr4GB1qQRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkL0yGPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CA3C19423;
-	Wed,  4 Feb 2026 14:48:43 +0000 (UTC)
+	 MIME-Version; b=s3ArtL0XIKnPKvtYb6iAZLg+jNVGlOxVre0Y5DTkNXYNMgLeqpdox8tnzcxXnePCxKr0Esg3dqoFgWQtKzN1PvI/xwTn03Frd0Z53OcEbFSmxzxgeDMoSWcLO1uo7UPLgmU6cRSrma5//fmbtdlLyg2PZfv1uNqKrvz+4YUZeKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mC6dB96q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2668EC4CEF7;
+	Wed,  4 Feb 2026 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216524;
-	bh=53NXDstsln4orSu/t9f4P+7+z5B+00sYXooITS/J3YE=;
+	s=korg; t=1770217172;
+	bh=rjt5Wd+lQD0//NdzlQbyaV+OFMvj0ZE/lhhc/OT06HU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkL0yGPhHfULNpPqMT0POXwYt3QhFmiVClRMH+XFQEZtYeA+Qy8d4SbtRMFC8+wWs
-	 EGlH20neBPorpjgJA0r+Z9yuArxt0bDFvs7dC0gdj0qSrFm3cjGxgjj79VZ7FUS1+g
-	 vtxUo5czR7dj+JQ35DcZqSunCLWZRRnn7q5EovY0=
+	b=mC6dB96q1FBOdPfODyUdOXN0nPzcUDSrEHHj3QqogaXgJOzwC/MtpeUgn+cy1RKVm
+	 l0l+b/HDy4E0Qzua6oVOSrjcX3hSunC6QGuyzFzPzJDt7BoXj7XllWqUpjHjKfBIjY
+	 h1vgQ6U+rTYGWxW+REkOU32FzE2nFDPJ3qhnKRxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 5.10 114/161] bpf: Reject narrower access to pointer ctx fields
+	syzbot+f9c5fd1a0874f9069dce@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 146/206] nfc: nci: Fix race between rfkill and nci_unregister_device().
 Date: Wed,  4 Feb 2026 15:39:37 +0100
-Message-ID: <20260204143855.845699240@linuxfoundation.org>
+Message-ID: <20260204143903.464229614@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,189 +73,227 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213493-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213688-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,suse.com];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,0ef84a7bdf5301d4cbec];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,appspotmail.com:email,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 77B81E78BC
+	TAGGED_RCPT(0.00)[stable,f9c5fd1a0874f9069dce];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 8D381E7D25
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit e09299225d5ba3916c91ef70565f7d2187e4cca0 upstream.
+[ Upstream commit d2492688bb9fed6ab6e313682c387ae71a66ebae ]
 
-The following BPF program, simplified from a syzkaller repro, causes a
-kernel warning:
+syzbot reported the splat below [0] without a repro.
 
-    r0 = *(u8 *)(r1 + 169);
-    exit;
+It indicates that struct nci_dev.cmd_wq had been destroyed before
+nci_close_device() was called via rfkill.
 
-With pointer field sk being at offset 168 in __sk_buff. This access is
-detected as a narrower read in bpf_skb_is_valid_access because it
-doesn't match offsetof(struct __sk_buff, sk). It is therefore allowed
-and later proceeds to bpf_convert_ctx_access. Note that for the
-"is_narrower_load" case in the convert_ctx_accesses(), the insn->off
-is aligned, so the cnt may not be 0 because it matches the
-offsetof(struct __sk_buff, sk) in the bpf_convert_ctx_access. However,
-the target_size stays 0 and the verifier errors with a kernel warning:
+nci_dev.cmd_wq is only destroyed in nci_unregister_device(), which
+(I think) was called from virtual_ncidev_close() when syzbot close()d
+an fd of virtual_ncidev.
 
-    verifier bug: error during ctx access conversion(1)
+The problem is that nci_unregister_device() destroys nci_dev.cmd_wq
+first and then calls nfc_unregister_device(), which removes the
+device from rfkill by rfkill_unregister().
 
-This patch fixes that to return a proper "invalid bpf_context access
-off=X size=Y" error on the load instruction.
+So, the device is still visible via rfkill even after nci_dev.cmd_wq
+is destroyed.
 
-The same issue affects multiple other fields in context structures that
-allow narrow access. Some other non-affected fields (for sk_msg,
-sk_lookup, and sockopt) were also changed to use bpf_ctx_range_ptr for
-consistency.
+Let's unregister the device from rfkill first in nci_unregister_device().
 
-Note this syzkaller crash was reported in the "Closes" link below, which
-used to be about a different bug, fixed in
-commit fce7bd8e385a ("bpf/verifier: Handle BPF_LOAD_ACQ instructions
-in insn_def_regno()"). Because syzbot somehow confused the two bugs,
-the new crash and repro didn't get reported to the mailing list.
+Note that we cannot call nfc_unregister_device() before
+nci_close_device() because
 
-Fixes: f96da09473b52 ("bpf: simplify narrower ctx access")
-Fixes: 0df1a55afa832 ("bpf: Warn on internal verifier errors")
-Reported-by: syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0ef84a7bdf5301d4cbec
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://patch.msgid.link/3b8dcee67ff4296903351a974ddd9c4dca768b64.1753194596.git.paul.chaignon@gmail.com
-[shung-hsi.yu: offset(struct bpf_sock_ops, skb_hwtstamp) case was
-dropped becasuse it was only added in v6.2 with commit 9bb053490f1a
-("bpf: Add hwtstamp field for the sockops prog")]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  1) nfc_unregister_device() calls device_del() which frees
+     all memory allocated by devm_kzalloc() and linked to
+     ndev->conn_info_list
+
+  2) nci_rx_work() could try to queue nci_conn_info to
+     ndev->conn_info_list which could be leaked
+
+Thus, nfc_unregister_device() is split into two functions so we
+can remove rfkill interfaces only before nci_close_device().
+
+[0]:
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: kernel/locking/lockdep.c:238 at hlock_class kernel/locking/lockdep.c:238 [inline], CPU#0: syz.0.8675/6349
+WARNING: kernel/locking/lockdep.c:238 at check_wait_context kernel/locking/lockdep.c:4854 [inline], CPU#0: syz.0.8675/6349
+WARNING: kernel/locking/lockdep.c:238 at __lock_acquire+0x39d/0x2cf0 kernel/locking/lockdep.c:5187, CPU#0: syz.0.8675/6349
+Modules linked in:
+CPU: 0 UID: 0 PID: 6349 Comm: syz.0.8675 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/13/2026
+RIP: 0010:hlock_class kernel/locking/lockdep.c:238 [inline]
+RIP: 0010:check_wait_context kernel/locking/lockdep.c:4854 [inline]
+RIP: 0010:__lock_acquire+0x3a4/0x2cf0 kernel/locking/lockdep.c:5187
+Code: 18 00 4c 8b 74 24 08 75 27 90 e8 17 f2 fc 02 85 c0 74 1c 83 3d 50 e0 4e 0e 00 75 13 48 8d 3d 43 f7 51 0e 48 c7 c6 8b 3a de 8d <67> 48 0f b9 3a 90 31 c0 0f b6 98 c4 00 00 00 41 8b 45 20 25 ff 1f
+RSP: 0018:ffffc9000c767680 EFLAGS: 00010046
+RAX: 0000000000000001 RBX: 0000000000040000 RCX: 0000000000080000
+RDX: ffffc90013080000 RSI: ffffffff8dde3a8b RDI: ffffffff8ff24ca0
+RBP: 0000000000000003 R08: ffffffff8fef35a3 R09: 1ffffffff1fde6b4
+R10: dffffc0000000000 R11: fffffbfff1fde6b5 R12: 00000000000012a2
+R13: ffff888030338ba8 R14: ffff888030338000 R15: ffff888030338b30
+FS:  00007fa5995f66c0(0000) GS:ffff8881256f8000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f7e72f842d0 CR3: 00000000485a0000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
+ touch_wq_lockdep_map+0xcb/0x180 kernel/workqueue.c:3940
+ __flush_workqueue+0x14b/0x14f0 kernel/workqueue.c:3982
+ nci_close_device+0x302/0x630 net/nfc/nci/core.c:567
+ nci_dev_down+0x3b/0x50 net/nfc/nci/core.c:639
+ nfc_dev_down+0x152/0x290 net/nfc/core.c:161
+ nfc_rfkill_set_block+0x2d/0x100 net/nfc/core.c:179
+ rfkill_set_block+0x1d2/0x440 net/rfkill/core.c:346
+ rfkill_fop_write+0x461/0x5a0 net/rfkill/core.c:1301
+ vfs_write+0x29a/0xb90 fs/read_write.c:684
+ ksys_write+0x150/0x270 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa59b39acb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa5995f6028 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007fa59b615fa0 RCX: 00007fa59b39acb9
+RDX: 0000000000000008 RSI: 0000200000000080 RDI: 0000000000000007
+RBP: 00007fa59b408bf7 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa59b616038 R14: 00007fa59b615fa0 R15: 00007ffc82218788
+ </TASK>
+
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-by: syzbot+f9c5fd1a0874f9069dce@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/695e7f56.050a0220.1c677c.036c.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260127040411.494931-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cgroup.c |    8 ++++----
- net/core/filter.c   |   18 +++++++++---------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ include/net/nfc/nfc.h |  2 ++
+ net/nfc/core.c        | 27 ++++++++++++++++++++++++---
+ net/nfc/nci/core.c    |  4 +++-
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -1915,22 +1915,22 @@ static bool cg_sockopt_is_valid_access(i
+diff --git a/include/net/nfc/nfc.h b/include/net/nfc/nfc.h
+index 5dee575fbe86a..b82f4f2a27fb8 100644
+--- a/include/net/nfc/nfc.h
++++ b/include/net/nfc/nfc.h
+@@ -215,6 +215,8 @@ static inline void nfc_free_device(struct nfc_dev *dev)
+ 
+ int nfc_register_device(struct nfc_dev *dev);
+ 
++void nfc_unregister_rfkill(struct nfc_dev *dev);
++void nfc_remove_device(struct nfc_dev *dev);
+ void nfc_unregister_device(struct nfc_dev *dev);
+ 
+ /**
+diff --git a/net/nfc/core.c b/net/nfc/core.c
+index c2dab6e2c283e..99f7300497c80 100644
+--- a/net/nfc/core.c
++++ b/net/nfc/core.c
+@@ -1147,14 +1147,14 @@ int nfc_register_device(struct nfc_dev *dev)
+ EXPORT_SYMBOL(nfc_register_device);
+ 
+ /**
+- * nfc_unregister_device - unregister a nfc device in the nfc subsystem
++ * nfc_unregister_rfkill - unregister a nfc device in the rfkill subsystem
+  *
+  * @dev: The nfc device to unregister
+  */
+-void nfc_unregister_device(struct nfc_dev *dev)
++void nfc_unregister_rfkill(struct nfc_dev *dev)
+ {
+-	int rc;
+ 	struct rfkill *rfk = NULL;
++	int rc;
+ 
+ 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
+ 
+@@ -1175,7 +1175,16 @@ void nfc_unregister_device(struct nfc_dev *dev)
+ 		rfkill_unregister(rfk);
+ 		rfkill_destroy(rfk);
+ 	}
++}
++EXPORT_SYMBOL(nfc_unregister_rfkill);
+ 
++/**
++ * nfc_remove_device - remove a nfc device in the nfc subsystem
++ *
++ * @dev: The nfc device to remove
++ */
++void nfc_remove_device(struct nfc_dev *dev)
++{
+ 	if (dev->ops->check_presence) {
+ 		del_timer_sync(&dev->check_pres_timer);
+ 		cancel_work_sync(&dev->check_pres_work);
+@@ -1188,6 +1197,18 @@ void nfc_unregister_device(struct nfc_dev *dev)
+ 	device_del(&dev->dev);
+ 	mutex_unlock(&nfc_devlist_mutex);
+ }
++EXPORT_SYMBOL(nfc_remove_device);
++
++/**
++ * nfc_unregister_device - unregister a nfc device in the nfc subsystem
++ *
++ * @dev: The nfc device to unregister
++ */
++void nfc_unregister_device(struct nfc_dev *dev)
++{
++	nfc_unregister_rfkill(dev);
++	nfc_remove_device(dev);
++}
+ EXPORT_SYMBOL(nfc_unregister_device);
+ 
+ static int __init nfc_init(void)
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 905452006d2d1..c26914ca40aff 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1295,6 +1295,8 @@ void nci_unregister_device(struct nci_dev *ndev)
+ {
+ 	struct nci_conn_info *conn_info, *n;
+ 
++	nfc_unregister_rfkill(ndev->nfc_dev);
++
+ 	/* This set_bit is not protected with specialized barrier,
+ 	 * However, it is fine because the mutex_lock(&ndev->req_lock);
+ 	 * in nci_close_device() will help to emit one.
+@@ -1312,7 +1314,7 @@ void nci_unregister_device(struct nci_dev *ndev)
+ 		/* conn_info is allocated with devm_kzalloc */
  	}
  
- 	switch (off) {
--	case offsetof(struct bpf_sockopt, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, sk):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	case offsetof(struct bpf_sockopt, optval):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, optval):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_PACKET;
- 		break;
--	case offsetof(struct bpf_sockopt, optval_end):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, optval_end):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_PACKET_END;
- 		break;
--	case offsetof(struct bpf_sockopt, retval):
-+	case bpf_ctx_range(struct bpf_sockopt, retval):
- 		if (size != size_default)
- 			return false;
- 		return prog->expected_attach_type == BPF_CGROUP_GETSOCKOPT;
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7634,7 +7634,7 @@ static bool bpf_skb_is_valid_access(int
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct __sk_buff, sk):
-+	case bpf_ctx_range_ptr(struct __sk_buff, sk):
- 		if (type == BPF_WRITE || size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCK_COMMON_OR_NULL;
-@@ -8151,7 +8151,7 @@ static bool sock_addr_is_valid_access(in
- 				return false;
- 		}
- 		break;
--	case offsetof(struct bpf_sock_addr, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sock_addr, sk):
- 		if (type != BPF_READ)
- 			return false;
- 		if (size != sizeof(__u64))
-@@ -8205,17 +8205,17 @@ static bool sock_ops_is_valid_access(int
- 			if (size != sizeof(__u64))
- 				return false;
- 			break;
--		case offsetof(struct bpf_sock_ops, sk):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, sk):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_SOCKET_OR_NULL;
- 			break;
--		case offsetof(struct bpf_sock_ops, skb_data):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_PACKET;
- 			break;
--		case offsetof(struct bpf_sock_ops, skb_data_end):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data_end):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_PACKET_END;
-@@ -8289,17 +8289,17 @@ static bool sk_msg_is_valid_access(int o
- 		return false;
+-	nfc_unregister_device(ndev->nfc_dev);
++	nfc_remove_device(ndev->nfc_dev);
+ }
+ EXPORT_SYMBOL(nci_unregister_device);
  
- 	switch (off) {
--	case offsetof(struct sk_msg_md, data):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, data):
- 		info->reg_type = PTR_TO_PACKET;
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct sk_msg_md, data_end):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, data_end):
- 		info->reg_type = PTR_TO_PACKET_END;
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct sk_msg_md, sk):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, sk):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
-@@ -10324,7 +10324,7 @@ static bool sk_lookup_is_valid_access(in
- 		return false;
- 
- 	switch (off) {
--	case offsetof(struct bpf_sk_lookup, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sk_lookup, sk):
- 		info->reg_type = PTR_TO_SOCKET_OR_NULL;
- 		return size == sizeof(__u64);
- 
+-- 
+2.51.0
+
 
 
 
