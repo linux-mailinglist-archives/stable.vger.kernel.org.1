@@ -1,149 +1,154 @@
-Return-Path: <stable+bounces-213353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLkyEezvgmmWfQMAu9opvQ
-	(envelope-from <stable+bounces-213353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 08:06:20 +0100
+	id wDUuMaP3gmlVfwMAu9opvQ
+	(envelope-from <stable+bounces-213354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 08:39:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23BEE2854
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 08:06:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A271E2C08
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 08:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47C31303A6EA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 07:02:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFBC73018597
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 07:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4514537F755;
-	Wed,  4 Feb 2026 07:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A0138E114;
+	Wed,  4 Feb 2026 07:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugOvYQpu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvS0dvoi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074F3284B2F
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 07:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FBA2E7BD6;
+	Wed,  4 Feb 2026 07:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770188568; cv=none; b=FNJqd+/NS5MiY7Pp25ylhWFZkxPwY+yVwx+cXs7oW8KN0Y15fiRUUg9tdU/y6+G10b28vVtgOQzsL+uKym3Un1tUtLBmVWIkx9X+eR68faszMoND9tZYYv2cu7VyF+rYKyWMcULsqUmizFx1LHegeUbmN1kC+ES/aIWhhl8v9Yo=
+	t=1770190748; cv=none; b=YC9uct/MAW+jsbAjQhqKH+Au4lYSTrKSIYS9Ms7u84gPR4IHmk+PXSXW+8EwMg7qd6IPVBfQGtrvsbdVyHJ4GOCNjNasl2vJtQxscFImtlJXvJ6ZZY/eE94jhxqT0HBfGL4tacYoPR9KTKwgNmMYNr/68sKOuGUkNRzwzrrKeJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770188568; c=relaxed/simple;
-	bh=ESKGnMFTtSk4a+8/Q1DI02wtrLJUyqKthKtZoMbFZEI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AqUPN8SyZ4TDQKc53Ie4SY4mou/0m23moHdNfxDCvvcdS/7J9VIBIeMDoRsnW0BNwGV+rqQu5TCyaBSr4w2a6OTICzMK8TF+MGJ72r7otR4CVdlHDE9XrxPmcOvKD1yiJIelL6B/YYIAFbjTVAygudD9EgkVMSDQvNtDP57HGkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugOvYQpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A22C2BC87
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 07:02:47 +0000 (UTC)
+	s=arc-20240116; t=1770190748; c=relaxed/simple;
+	bh=jm8ETM88T1Nh7wj9NJT4Pb7+gDCX0n49jTCaPgtkxqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AdPnUSybo8XvN5oPNs9lOI85K/m8eUozIcS5FYQfyft+bRHcS1OWIgdyhXUcXvH3Mcbobu313+rj9RPV9UK2qdsBH/Pd5sy4FvAty3ErLMnJVupTufFQzCbmQ76gyttvV/BCsof4Sk4UlwcGXi63CzcU/G4MbBuLvyZzadIJlEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvS0dvoi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C97C4CEF7;
+	Wed,  4 Feb 2026 07:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770188567;
-	bh=ESKGnMFTtSk4a+8/Q1DI02wtrLJUyqKthKtZoMbFZEI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ugOvYQpu0fNo7A0EvEPhiSVQCuWzbKrFZsjMsRH2ODl9I2LPrvHgr5BJGFgRk+w/e
-	 ylKVRR6UMA3HMW4z59rbEL+sluPcRUaCQD51KwB07TBnNrXv8+d3Z5o81MJrlqBGKS
-	 p+XZ/l7YIIhVktkajVcN8R6Q44Q0Mn8Xurj7sutkrXoix8v34RJoPpdfhdxGWlUR0G
-	 lFcAq598GapIxTytwIE11FHi29kDc6SWIqP3JOIiBQbLXi5RB5U/3jlek8WxlnXEfD
-	 pD59EM2uklkqG18DQurmtc1TGHRQKQ/JWSRkrIfEaiI9e5Of65B76XLZDYriAjoUX5
-	 BRpwhaAJ0xklA==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-382fea4a160so56954041fa.2
-        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 23:02:47 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUENyFN+6LQcAadDKgygor4jlryH9icmwZ7n5CwqQYKDdMM/oUw6IBZJQnbTRgneFTW0Br+A6o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfIaRS3mE0k35ki+0oQJLUtoDSyZPDOi1C+L8ixYtw2LJ/lXtm
-	WtykEOHeO/eW09vZJ0rKSexdtiMzjsCDK+juNnfUaIGkcHVtNwlyvvwL7rJ5y7wZDifaHwdTemd
-	IC++LaMW3iustp/oMG1Ky4HRZdjF9beQ=
-X-Received: by 2002:a05:651c:f0f:b0:385:cf70:1400 with SMTP id
- 38308e7fff4ca-38691ccd570mr9009701fa.15.1770188566415; Tue, 03 Feb 2026
- 23:02:46 -0800 (PST)
+	s=k20201202; t=1770190748;
+	bh=jm8ETM88T1Nh7wj9NJT4Pb7+gDCX0n49jTCaPgtkxqY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JvS0dvoilM1BQ2JE50/FGbPUF7Dn3azlQBfnPFERwmBSaf/BZhKxYNycqw4iV1LrB
+	 QrLVw+EO/omaEUq36t4pVWCfKpl65+hR0ImV/t7UgioCIDQE47FwXQSmEC+pixrJoD
+	 JwITZc2y8K6Hxe2qIeiTG2SqQpNpDGo0qy1bBW4TU5qhM35A5rmQeKUJmPISZMTkGy
+	 8O+x5nwIJKh9I12YeUbWcYJPhStavmxO867oMJzA32/3StBwqPNEhVobuH1UTBPBdc
+	 dKdkZMPLXbxt1qa2dsSx72y4ERvA1PdItBBXfAgOhlhFzpy7m+SHxd4mCmi3iRByvV
+	 wtJ3HvS/Hit0w==
+Date: Wed, 4 Feb 2026 00:39:03 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nsc@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Rong Zhang <i@rong.moe>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: Re: [PATCH] kbuild: Do not run kernel-doc when building external
+ modules
+Message-ID: <20260204073903.GA1632007@ax162>
+References: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
+ <176987242178.1743608.5094531752561489739.b4-ty@kernel.org>
+ <CAK7LNARR9bZQ9t9emcVzmL+P7xYemu=8s8v_LshQ0-m_zEE9mA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
- <176987242178.1743608.5094531752561489739.b4-ty@kernel.org>
-In-Reply-To: <176987242178.1743608.5094531752561489739.b4-ty@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 4 Feb 2026 16:02:10 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARR9bZQ9t9emcVzmL+P7xYemu=8s8v_LshQ0-m_zEE9mA@mail.gmail.com>
-X-Gm-Features: AZwV_QgQL3IrroPkThQ9P6FtuElBQJN7HO9hgPM6xPyuY6IEtSep6KQECkd5XfI
-Message-ID: <CAK7LNARR9bZQ9t9emcVzmL+P7xYemu=8s8v_LshQ0-m_zEE9mA@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: Do not run kernel-doc when building external modules
-To: Nicolas Schier <nsc@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Rong Zhang <i@rong.moe>, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK7LNARR9bZQ9t9emcVzmL+P7xYemu=8s8v_LshQ0-m_zEE9mA@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-213354-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213353-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[masahiroy@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E23BEE2854
+	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8A271E2C08
 X-Rspamd-Action: no action
 
-On Sun, Feb 1, 2026 at 12:15=E2=80=AFAM Nicolas Schier <nsc@kernel.org> wro=
-te:
->
-> On Fri, 30 Jan 2026 14:37:47 -0700, Nathan Chancellor wrote:
-> > After commit 778b8ebe5192 ("docs: Move the python libraries to
-> > tools/lib/python"), building an external module with any value of W=3D
-> > against the output of install-extmod-build fails with:
+Hi Masahiro,
+
+Good to see you around.
+
+On Wed, Feb 04, 2026 at 04:02:10PM +0900, Masahiro Yamada wrote:
+> On Sun, Feb 1, 2026 at 12:15 AM Nicolas Schier <nsc@kernel.org> wrote:
 > >
-> >   $ make -C /usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build M=3D$=
-PWD W=3D1
-> >   make: Entering directory '/usr/lib/modules/6.19.0-rc7-00108-g4d310797=
-262f/build'
-> >   make[1]: Entering directory '...'
-> >     CC [M] ...
-> >   Traceback (most recent call last):
-> >     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts=
-/kernel-doc.py", line 339, in <module>
-> >       main()
-> >       ~~~~^^
-> >     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts=
-/kernel-doc.py", line 295, in main
-> >       from kdoc.kdoc_files import KernelFiles             # pylint: dis=
-able=3DC0415
-> >       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> >   ModuleNotFoundError: No module named 'kdoc'
+> > On Fri, 30 Jan 2026 14:37:47 -0700, Nathan Chancellor wrote:
+> > > After commit 778b8ebe5192 ("docs: Move the python libraries to
+> > > tools/lib/python"), building an external module with any value of W=
+> > > against the output of install-extmod-build fails with:
+> > >
+> > >   $ make -C /usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build M=$PWD W=1
+> > >   make: Entering directory '/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build'
+> > >   make[1]: Entering directory '...'
+> > >     CC [M] ...
+> > >   Traceback (most recent call last):
+> > >     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 339, in <module>
+> > >       main()
+> > >       ~~~~^^
+> > >     File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 295, in main
+> > >       from kdoc.kdoc_files import KernelFiles             # pylint: disable=C0415
+> > >       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > >   ModuleNotFoundError: No module named 'kdoc'
+> > >
+> > > [...]
 > >
-> > [...]
->
-> Applied to kbuild/linux.git (kbuild-fixes-unstable), thanks!
+> > Applied to kbuild/linux.git (kbuild-fixes-unstable), thanks!
+> 
+> 
+> I believe this is a wrong direction to go.
+> 
+> Since kernel-doc is a part of Kbuild,
+> all dependent libraries should exist under scripts/.
 
+Is this around the recent moves such as 778b8ebe5192? I guess Kbuild was
+never consulted on that change and I missed eba6ffd126cd, despite being
+CC'd, so that is on me.
 
-I believe this is a wrong direction to go.
+I did wonder if it was worth it to package these files in a previous
+change but Mauro seemed somewhat opposed to it (but maybe I
+misinterpreted something):
 
-Since kernel-doc is a part of Kbuild,
-all dependent libraries should exist under scripts/.
+  https://lore.kernel.org/20260130063056.72fbe458@foz.lan/
 
+Perhaps tools/docs could be moved to scripts/docs and tools/lib/python
+could be moved to just lib/python to have everything live logically
+outside of tools/ and make it easier to package?
 
---
-Best Regards
-Masahiro Yamada
+Cheers,
+Nathan
 
