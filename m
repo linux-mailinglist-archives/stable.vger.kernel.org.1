@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-214306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPVqFOhvg2lgmwMAu9opvQ
-	(envelope-from <stable+bounces-214306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:12:24 +0100
+	id qFzZF3Jug2lNmwMAu9opvQ
+	(envelope-from <stable+bounces-214307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A025E9FF1
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:12:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940F8E9DDC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 23AB730228C1
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:34:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEBC130D2FF2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EDF2D879E;
-	Wed,  4 Feb 2026 15:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B442DEA7A;
+	Wed,  4 Feb 2026 15:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1HnbfSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me0CZRfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD942DBF75;
-	Wed,  4 Feb 2026 15:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A102D6611;
+	Wed,  4 Feb 2026 15:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219249; cv=none; b=LvhdsJuhD2Jr/8XuVou3czV+78KusVZPMwvG5Y3ilG8RK/Xr/mxEwUxyIGvT4Os8wYgGvP7U9t3guYsSMXmvkCzRYJ8vtsSoxV2CtcJTTZzZc1VMLEDxymKhVSunZR2Ei7w9dAFtRB993xmTz+D69mNJ5xkoiaFqW4FcmLxhEiw=
+	t=1770219253; cv=none; b=jdVXn903vghU5ihnQxWDrqaJXVET3ictFU4FmKoCObC48biQ/7XKT0kflNsTmDOabq62OG01xm7MCZmh8tTUM6ZtCnIMYe7Yrnm30BD+icMasGz5ocsy2nSlEnHGmRX8k1dQ5Jq8eRPrX7rVqwNmdfwEk+zhT4apF9WbcAG2e4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219249; c=relaxed/simple;
-	bh=G72Npa8tZEWy3UthssYqi1JErU2CWWC7B3NvXsEW71g=;
+	s=arc-20240116; t=1770219253; c=relaxed/simple;
+	bh=algKnUc2p23iKeoz5aKi+d3+gcxxxDAKkmqQccYCwYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U5iLwRjFcXnTLDDzdSMqZEn+iPAzrI4TMMPLnOLa7hTFRlTN7F9NE940Vh0/mCqNgPT6UddbRZgeFWJujziGt0Hdz6jp3JsBYWHxRkCFyhug98saEserjL6YgWXZeK5sF2vS4M4xst16vUwDcYAuE2uWqTVexDp4F12uwr0E7t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1HnbfSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BA3C116C6;
-	Wed,  4 Feb 2026 15:34:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TisIul37t4BA2+Q8eeQxl+eRyAGXDJ6N3HCe42FHHQZbJ2wahDh8kpsh9cvWZaGJkCKqIJ59xoi/tNIlGe2TlXienxyvnvKHnEnaiGPROzfklV+EOMHXKwIHlywd4WEb617Qtj7HyaJKXW52I2Xd1WS5J7Y9Bm/Ud+vSe6G+MAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me0CZRfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D49DC4CEF7;
+	Wed,  4 Feb 2026 15:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219249;
-	bh=G72Npa8tZEWy3UthssYqi1JErU2CWWC7B3NvXsEW71g=;
+	s=korg; t=1770219252;
+	bh=algKnUc2p23iKeoz5aKi+d3+gcxxxDAKkmqQccYCwYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1HnbfSxzvYAVYluCm4pp9Lb3yShruvtneIvoKz+aZXG0XbFppn7gsqfcrAefktpg
-	 x2G6W52tFTFXUXezUYjHO27erU8Wu9p7PO8xwCC0pvQbwKjq7VaBoN03InEh//jUwg
-	 2EYH48ma5oTI4qDqNilsWx4xkGyczQSeK5lLXC84=
+	b=Me0CZRfc3GigKt9+G+S4sRs5BBwImSsIaDbv4F1kZwv+fNotKahSfT6o06Mhklt9i
+	 lAjKdo+1bKIT9NJSSlUIjKakFC6tji4xoLMheDYSBwi2N1pmwYhVOGdJV4ymUReGAr
+	 N66pHWnh61RI7uxfnwSAANhyHWln7QGJA8qtpKSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Jon Doron <jond@wiz.io>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 112/122] drm/amdgpu/gfx12: adjust KGQ reset sequence
-Date: Wed,  4 Feb 2026 15:41:34 +0100
-Message-ID: <20260204143855.883049930@linuxfoundation.org>
+Subject: [PATCH 6.18 113/122] drm/amdgpu: fix NULL pointer dereference in amdgpu_gmc_filter_faults_remove
+Date: Wed,  4 Feb 2026 15:41:35 +0100
+Message-ID: <20260204143855.919264468@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
 References: <20260204143851.857060534@linuxfoundation.org>
@@ -70,98 +72,106 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214306-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,wiz.io];
+	TAGGED_FROM(0.00)[bounces-214307-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4A025E9FF1
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wiz.io:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 940F8E9DDC
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jon Doron <jond@wiz.io>
 
-commit dfd64f6e8cd7b59238cdaf8af7a55711f13a89db upstream.
+commit 8b1ecc9377bc641533cd9e76dfa3aee3cd04a007 upstream.
 
-Kernel gfx queues do not need to be reinitialized or
-remapped after a reset.  Align with gfx11.
+On APUs such as Raven and Renoir (GC 9.1.0, 9.2.2, 9.3.0), the ih1 and
+ih2 interrupt ring buffers are not initialized. This is by design, as
+these secondary IH rings are only available on discrete GPUs. See
+vega10_ih_sw_init() which explicitly skips ih1/ih2 initialization when
+AMD_IS_APU is set.
 
-v2: preserve init and remap for MMIO case.
+However, amdgpu_gmc_filter_faults_remove() unconditionally uses ih1 to
+get the timestamp of the last interrupt entry. When retry faults are
+enabled on APUs (noretry=0), this function is called from the SVM page
+fault recovery path, resulting in a NULL pointer dereference when
+amdgpu_ih_decode_iv_ts_helper() attempts to access ih->ring[].
 
+The crash manifests as:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000004
+  RIP: 0010:amdgpu_ih_decode_iv_ts_helper+0x22/0x40 [amdgpu]
+  Call Trace:
+   amdgpu_gmc_filter_faults_remove+0x60/0x130 [amdgpu]
+   svm_range_restore_pages+0xae5/0x11c0 [amdgpu]
+   amdgpu_vm_handle_fault+0xc8/0x340 [amdgpu]
+   gmc_v9_0_process_interrupt+0x191/0x220 [amdgpu]
+   amdgpu_irq_dispatch+0xed/0x2c0 [amdgpu]
+   amdgpu_ih_process+0x84/0x100 [amdgpu]
+
+This issue was exposed by commit 1446226d32a4 ("drm/amdgpu: Remove GC HW
+IP 9.3.0 from noretry=1") which changed the default for Renoir APU from
+noretry=1 to noretry=0, enabling retry fault handling and thus
+exercising the buggy code path.
+
+Fix this by adding a check for ih1.ring_size before attempting to use
+it. Also restore the soft_ih support from commit dd299441654f ("drm/amdgpu:
+Rework retry fault removal").  This is needed if the hardware doesn't
+support secondary HW IH rings.
+
+v2: additional updates (Alex)
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3814
+Fixes: dd299441654f ("drm/amdgpu: Rework retry fault removal")
 Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Jon Doron <jond@wiz.io>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0a6d6ed694d72b66b0ed7a483d5effa01acd3951)
+(cherry picked from commit 6ce8d536c80aa1f059e82184f0d1994436b1d526)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |   23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-@@ -5296,11 +5296,12 @@ static int gfx_v12_0_reset_kgq(struct am
- 			       struct amdgpu_fence *timedout_fence)
- {
- 	struct amdgpu_device *adev = ring->adev;
-+	bool use_mmio = false;
- 	int r;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -498,8 +498,13 @@ void amdgpu_gmc_filter_faults_remove(str
  
- 	amdgpu_ring_reset_helper_begin(ring, timedout_fence);
+ 	if (adev->irq.retry_cam_enabled)
+ 		return;
++	else if (adev->irq.ih1.ring_size)
++		ih = &adev->irq.ih1;
++	else if (adev->irq.ih_soft.enabled)
++		ih = &adev->irq.ih_soft;
++	else
++		return;
  
--	r = amdgpu_mes_reset_legacy_queue(ring->adev, ring, vmid, false);
-+	r = amdgpu_mes_reset_legacy_queue(ring->adev, ring, vmid, use_mmio);
- 	if (r) {
- 		dev_warn(adev->dev, "reset via MES failed and try pipe reset %d\n", r);
- 		r = gfx_v12_reset_gfx_pipe(ring);
-@@ -5308,16 +5309,18 @@ static int gfx_v12_0_reset_kgq(struct am
- 			return r;
- 	}
- 
--	r = gfx_v12_0_kgq_init_queue(ring, true);
--	if (r) {
--		dev_err(adev->dev, "failed to init kgq\n");
--		return r;
--	}
-+	if (use_mmio) {
-+		r = gfx_v12_0_kgq_init_queue(ring, true);
-+		if (r) {
-+			dev_err(adev->dev, "failed to init kgq\n");
-+			return r;
-+		}
- 
--	r = amdgpu_mes_map_legacy_queue(adev, ring);
--	if (r) {
--		dev_err(adev->dev, "failed to remap kgq\n");
--		return r;
-+		r = amdgpu_mes_map_legacy_queue(adev, ring);
-+		if (r) {
-+			dev_err(adev->dev, "failed to remap kgq\n");
-+			return r;
-+		}
- 	}
- 
- 	return amdgpu_ring_reset_helper_end(ring, timedout_fence);
+-	ih = &adev->irq.ih1;
+ 	/* Get the WPTR of the last entry in IH ring */
+ 	last_wptr = amdgpu_ih_get_wptr(adev, ih);
+ 	/* Order wptr with ring data. */
 
 
 
