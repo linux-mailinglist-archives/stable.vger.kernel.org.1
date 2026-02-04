@@ -1,60 +1,73 @@
-Return-Path: <stable+bounces-214100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UD7bNg1ng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214100-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:37 +0100
+	id oO6yLFFog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F9DE8E4D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B08E9138
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51BCF3090AE5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 93BF73047A15
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A61421EE7;
-	Wed,  4 Feb 2026 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85112D738F;
+	Wed,  4 Feb 2026 15:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lXyJui0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFGR6TcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9551642188D;
-	Wed,  4 Feb 2026 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD6A2D8798;
+	Wed,  4 Feb 2026 15:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218563; cv=none; b=IiLzNMIGXSOSha7R890zskovmXjPasrJUlL3ccC/iMnhYlonqmpNF/8fvorQMh4SD10bw2JTXwj17LZrP39cictTHfQP0e4ubdZQ3dtI0nkLvk8hB2AcrZZXKwg5tXFwlSTYTa1M3S57CnJDRRZYx2jrEls3R/z5cx7fvQWU3z4=
+	t=1770219174; cv=none; b=T3+oqRMrk+2rK4edQPcrJcnuejJqV15PTEjQoWh1NW58nr51tIz5OSJbBlG1S418CpBCV5q+lekxxUNvQ8ERAiXIG3QtugBfiSfCIpNkoOwqsbW0A9jR7UonUyzfm2NGrhQK1BGEibvH3uaVuN7Njmo2Xc0VBC+f4q8THmM++lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218563; c=relaxed/simple;
-	bh=bMkEpfz59UE83EY+szsmkWFahSkJl2VSp7ONwXjKPyI=;
+	s=arc-20240116; t=1770219174; c=relaxed/simple;
+	bh=KVVOQyf2Bv6ZvyhF/5tDXb1jDgI1VUIa30flrdXJ9LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NemaGdjUOq5JsUcobPvxAMoMGhOyb5Ew4unUfDW+cl6BdjEscVm/3Z8H8Q/8SgLOoXZgCHpmwaEQABrY5Oul0uHdUYqA7n4WC2+lGrFEGWkf1wcRJgnP19u2NLlqcdCbEhpdI0LTVzdsRo7YP5NysuI0WfM4hUUNMgfD7u/sq8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lXyJui0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0497EC4CEF7;
-	Wed,  4 Feb 2026 15:22:42 +0000 (UTC)
+	 MIME-Version; b=Jzy8nWMP8TyEvEI6NAGd0kdQTtXCM4mFPatg+PziDi0F95VhTMI+4ZkefIqkwhrL8Sg/06OjJJT3Z0lAgSbRmIFWO0TL7lmlsNHa85KN+SvK9MLMZ+vAifilUNxNj7Gip0k0wH0GS6EptTSIvDniFZXXWWxPsPLr/Ysx0r8kH+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFGR6TcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77DFC116C6;
+	Wed,  4 Feb 2026 15:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218563;
-	bh=bMkEpfz59UE83EY+szsmkWFahSkJl2VSp7ONwXjKPyI=;
+	s=korg; t=1770219174;
+	bh=KVVOQyf2Bv6ZvyhF/5tDXb1jDgI1VUIa30flrdXJ9LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lXyJui0KpC3PEZCtllnehAU9pUxb+P3MOLNopbrrcrkLx6bhkHaHtCEliZsNJzUF
-	 FPZ4xY1GtgJ7f2AAvcOZN/qDoDNyKeNRBAvH8E1q7YDkwgaFHp1WDJcknRjZ0fq/Ve
-	 rrAEETx8VXK1rYOEBtYWAhMglGXiLv3+SGHUscJk=
+	b=sFGR6TcT2eij0ggvF9MEYPT69fEEK+WkPxIghwUzZZqiKVO9VTTqG84b6B5+2nRJ/
+	 tz1omaizJhA/i35aetLxzBlOlSEQy5jS4za0SbPLyuwzBjeANj49mM6dW5uYHItRcB
+	 GI+P+DDrp8C7Uq2UW1xZS170qXwnt00Dh1mUA/64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 67/72] ksmbd: fix recursive locking in RPC handle list access
+	Jane Chu <jane.chu@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Chris Mason <clm@meta.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	William Roche <william.roche@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 088/122] mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
 Date: Wed,  4 Feb 2026 15:41:10 +0100
-Message-ID: <20260204143848.069797467@linuxfoundation.org>
+Message-ID: <20260204143855.018435887@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,191 +79,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,freebox.fr,kernel.org,microsoft.com,139.com];
-	TAGGED_FROM(0.00)[bounces-214100-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-214284-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,huawei.com,meta.com,kernel.org,google.com,infradead.org,suse.com,linux.dev,gmail.com,suse.de,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,freebox.fr:email]
-X-Rspamd-Queue-Id: 56F9DE8E4D
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,meta.com:email,infradead.org:email,linux-foundation.org:email,suse.com:email,oracle.com:email,suse.de:email,linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 81B08E9138
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Jane Chu <jane.chu@oracle.com>
 
-[ Upstream commit 88f170814fea74911ceab798a43cbd7c5599bed4 ]
+commit 057a6f2632c956483e2b2628477f0fcd1cd8a844 upstream.
 
-Since commit 305853cce3794 ("ksmbd: Fix race condition in RPC handle list
-access"), ksmbd_session_rpc_method() attempts to lock sess->rpc_lock.
+When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
+passed head pfn to kill_accessing_process(), that is not right.  The
+precise pfn of the poisoned page should be used in order to determine the
+precise vaddr as the SIGBUS payload.
 
-This causes hung connections / tasks when a client attempts to open
-a named pipe. Using Samba's rpcclient tool:
+This issue has already been taken care of in the normal path, that is,
+hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
+correctly in the hugetlb repoisoning case, it's essential to inform VM the
+precise poisoned page, not the head page.
 
- $ rpcclient //192.168.1.254 -U user%password
- $ rpcclient $> srvinfo
- <connection hung here>
+[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
+[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
 
-Kernel side:
-  "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-  task:kworker/0:0 state:D stack:0 pid:5021 tgid:5021 ppid:2 flags:0x00200000
-  Workqueue: ksmbd-io handle_ksmbd_work
-  Call trace:
-  __schedule from schedule+0x3c/0x58
-  schedule from schedule_preempt_disabled+0xc/0x10
-  schedule_preempt_disabled from rwsem_down_read_slowpath+0x1b0/0x1d8
-  rwsem_down_read_slowpath from down_read+0x28/0x30
-  down_read from ksmbd_session_rpc_method+0x18/0x3c
-  ksmbd_session_rpc_method from ksmbd_rpc_open+0x34/0x68
-  ksmbd_rpc_open from ksmbd_session_rpc_open+0x194/0x228
-  ksmbd_session_rpc_open from create_smb2_pipe+0x8c/0x2c8
-  create_smb2_pipe from smb2_open+0x10c/0x27ac
-  smb2_open from handle_ksmbd_work+0x238/0x3dc
-  handle_ksmbd_work from process_scheduled_works+0x160/0x25c
-  process_scheduled_works from worker_thread+0x16c/0x1e8
-  worker_thread from kthread+0xa8/0xb8
-  kthread from ret_from_fork+0x14/0x38
-  Exception stack(0x8529ffb0 to 0x8529fff8)
-
-The task deadlocks because the lock is already held:
-  ksmbd_session_rpc_open
-    down_write(&sess->rpc_lock)
-    ksmbd_rpc_open
-      ksmbd_session_rpc_method
-        down_read(&sess->rpc_lock)   <-- deadlock
-
-Adjust ksmbd_session_rpc_method() callers to take the lock when necessary.
-
-Fixes: 305853cce3794 ("ksmbd: Fix race condition in RPC handle list access")
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Link: https://lkml.kernel.org/r/20260120232234.3462258-2-jane.chu@oracle.com
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Chris Mason <clm@meta.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: William Roche <william.roche@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |    7 ++-----
- fs/smb/server/smb2pdu.c           |    9 ++++++++-
- fs/smb/server/transport_ipc.c     |   12 ++++++++++++
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ mm/memory-failure.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -147,14 +147,11 @@ void ksmbd_session_rpc_close(struct ksmb
- int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -684,6 +684,8 @@ static int check_hwpoisoned_entry(pte_t
+ 				unsigned long poisoned_pfn, struct to_kill *tk)
  {
- 	struct ksmbd_session_rpc *entry;
--	int method;
+ 	unsigned long pfn = 0;
++	unsigned long hwpoison_vaddr;
++	unsigned long mask;
  
--	down_read(&sess->rpc_lock);
-+	lockdep_assert_held(&sess->rpc_lock);
- 	entry = xa_load(&sess->rpc_handle_list, id);
--	method = entry ? entry->method : 0;
--	up_read(&sess->rpc_lock);
+ 	if (pte_present(pte)) {
+ 		pfn = pte_pfn(pte);
+@@ -694,10 +696,12 @@ static int check_hwpoisoned_entry(pte_t
+ 			pfn = swp_offset_pfn(swp);
+ 	}
  
--	return method;
-+	return entry ? entry->method : 0;
+-	if (!pfn || pfn != poisoned_pfn)
++	mask = ~((1UL << (shift - PAGE_SHIFT)) - 1);
++	if (!pfn || pfn != (poisoned_pfn & mask))
+ 		return 0;
+ 
+-	set_to_kill(tk, addr, shift);
++	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
++	set_to_kill(tk, hwpoison_vaddr, shift);
+ 	return 1;
  }
  
- void ksmbd_session_destroy(struct ksmbd_session *sess)
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4614,8 +4614,15 @@ static int smb2_get_info_file_pipe(struc
- 	 * pipe without opening it, checking error condition here
- 	 */
- 	id = req->VolatileFileId;
--	if (!ksmbd_session_rpc_method(sess, id))
-+
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
-+	if (!ksmbd_session_rpc_method(sess, id)) {
-+		up_read(&sess->rpc_lock);
- 		return -ENOENT;
-+	}
-+	up_read(&sess->rpc_lock);
- 
- 	ksmbd_debug(SMB, "FileInfoClass %u, FileId 0x%llx\n",
- 		    req->FileInfoClass, req->VolatileFileId);
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -778,6 +778,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_writ
- 	if (!msg)
- 		return NULL;
- 
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
- 	msg->type = KSMBD_EVENT_RPC_REQUEST;
- 	req = (struct ksmbd_rpc_command *)msg->payload;
- 	req->handle = handle;
-@@ -786,6 +789,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_writ
- 	req->flags |= KSMBD_RPC_WRITE_METHOD;
- 	req->payload_sz = payload_sz;
- 	memcpy(req->payload, payload, payload_sz);
-+	up_read(&sess->rpc_lock);
- 
- 	resp = ipc_msg_send_request(msg, req->handle);
- 	ipc_msg_free(msg);
-@@ -802,6 +806,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_read
- 	if (!msg)
- 		return NULL;
- 
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
- 	msg->type = KSMBD_EVENT_RPC_REQUEST;
- 	req = (struct ksmbd_rpc_command *)msg->payload;
- 	req->handle = handle;
-@@ -809,6 +816,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_read
- 	req->flags |= rpc_context_flags(sess);
- 	req->flags |= KSMBD_RPC_READ_METHOD;
- 	req->payload_sz = 0;
-+	up_read(&sess->rpc_lock);
- 
- 	resp = ipc_msg_send_request(msg, req->handle);
- 	ipc_msg_free(msg);
-@@ -829,6 +837,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioct
- 	if (!msg)
- 		return NULL;
- 
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
- 	msg->type = KSMBD_EVENT_RPC_REQUEST;
- 	req = (struct ksmbd_rpc_command *)msg->payload;
- 	req->handle = handle;
-@@ -837,6 +848,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioct
- 	req->flags |= KSMBD_RPC_IOCTL_METHOD;
- 	req->payload_sz = payload_sz;
- 	memcpy(req->payload, payload, payload_sz);
-+	up_read(&sess->rpc_lock);
- 
- 	resp = ipc_msg_send_request(msg, req->handle);
- 	ipc_msg_free(msg);
+@@ -2042,10 +2046,8 @@ retry:
+ 	case MF_HUGETLB_FOLIO_PRE_POISONED:
+ 	case MF_HUGETLB_PAGE_PRE_POISONED:
+ 		rv = -EHWPOISON;
+-		if (flags & MF_ACTION_REQUIRED) {
+-			folio = page_folio(p);
+-			rv = kill_accessing_process(current, folio_pfn(folio), flags);
+-		}
++		if (flags & MF_ACTION_REQUIRED)
++			rv = kill_accessing_process(current, pfn, flags);
+ 		if (res == MF_HUGETLB_PAGE_PRE_POISONED)
+ 			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+ 		else
 
 
 
