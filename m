@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Ew/FXlcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213453-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:29 +0100
+	id SLJhMNNgg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B8CE768A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6F9E7F8F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A99473023368
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1B0303015B80
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D577A2773E5;
-	Wed,  4 Feb 2026 14:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5599F41B36C;
+	Wed,  4 Feb 2026 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9SlRHU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEicPZtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D07271A9A;
-	Wed,  4 Feb 2026 14:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194D241C2F6;
+	Wed,  4 Feb 2026 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216388; cv=none; b=EPTU9Bz5ol3aYHztj5V5z7BEvPdFTzHQi9B4qPnGnA+XTINdg33vvPRQu3u8TJTGNd3WCnKQRizsG1v3kZgbnv6teLmEMQM0+tjGb8bkL1Pb3M8j686rHjV4JK8Oewl7ckG6lR0izJASLj2csinWaY91J7J7/HvMfqn8rfermGY=
+	t=1770217040; cv=none; b=j2fD1eS/C+st7tL5Y+3+ouK2OiXTrxBymeZayTs2th03By6EJ51gjVRgy1NRLb6GlT1HKXDJLFH2sFjEIheIor43C8CO4Kq8oac1DVok0v2kFrFFmFqHwlb5vP4zuqH5jJ+peB3QsBIK5J5Ar1DZCx0lCQLc4F/P42h6HPc1Pyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216388; c=relaxed/simple;
-	bh=3e1ooq9sl/MtxfamVXFVP4zGDEzuFLGad77lwpbgDVg=;
+	s=arc-20240116; t=1770217040; c=relaxed/simple;
+	bh=Cz/65JQ+fB6G7rStYgIRIrKU8z5twFrbNjT++k0F8RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3PMcxO9Ag/+3wtYe+nYLaOaIlEnkRtQ4M7P/eOsy5B6MYwmlmeBubbBM/o7idyP/io9cfncO5PMMogmy53+7XNMFGE0Yz0WtjRx5/OS6IWv4bEwfKjtCYTIjEqg5QGRL4Q3Wn0Ydo8MVgpQlstcgszJJUYQcMUMR6w3VFgJ2cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9SlRHU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A31C4CEF7;
-	Wed,  4 Feb 2026 14:46:27 +0000 (UTC)
+	 MIME-Version; b=JcMsrParLqCoVmDdDkybVj4VzP/WASvdP14q8OEwuxi8aeeVTBbpRecKN3/me//HZS1E67d4H99IGdwscv4GouChTgj2+BFhLufMO9Sfd/EQ+SdGyuAmeqtB/BZy8BPUmLVEyCU1IznhV0WxUpI4fERt9DPk7E+BP+sHCJFJlrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEicPZtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C054C4CEF7;
+	Wed,  4 Feb 2026 14:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216388;
-	bh=3e1ooq9sl/MtxfamVXFVP4zGDEzuFLGad77lwpbgDVg=;
+	s=korg; t=1770217040;
+	bh=Cz/65JQ+fB6G7rStYgIRIrKU8z5twFrbNjT++k0F8RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9SlRHU5bZk6OSa42gPh7cSAFqem1hiVpXb7O/6K65QaG8yvB31lIDULg4he5PDUb
-	 mNxPRHSA0RSO3DY/O8juXdNzrlbl2NMcFiJUEFNmGjXjjYfGMX3M5Pp2bBfXOCy915
-	 cm2g+PV1LBIK3J1n7KpIupIzRO9ECWmJAEKNfmFE=
+	b=bEicPZtHBs1NunfIhBWFx1bImG2KDS9Ps8wS/o3QNX8u0ruejtIey31SU5NcagdTo
+	 MtsQ2rc1a6duhZa8R+N+0OboFM/DmkfOYIQC1GHJUb8yNr57OFA5h30S81CfKYmVcH
+	 8UX6Zg4nIg1fV5VjKWZlWA1BNcDXD8z+Ce2BzZoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 074/161] scsi: core: Wake up the error handler when final completions race against each other
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 106/206] leds: led-class: Only Add LED to leds_list when it is fully ready
 Date: Wed,  4 Feb 2026 15:38:57 +0100
-Message-ID: <20260204143854.417132309@linuxfoundation.org>
+Message-ID: <20260204143902.026512138@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,126 +69,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213453-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213648-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,acm.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: 95B8CE768A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DB6F9E7F8F
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Jeffery <djeffery@redhat.com>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-[ Upstream commit fe2f8ad6f0999db3b318359a01ee0108c703a8c3 ]
+commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
 
-The fragile ordering between marking commands completed or failed so
-that the error handler only wakes when the last running command
-completes or times out has race conditions. These race conditions can
-cause the SCSI layer to fail to wake the error handler, leaving I/O
-through the SCSI host stuck as the error state cannot advance.
+Before this change the LED was added to leds_list before led_init_core()
+gets called adding it the list before led_classdev.set_brightness_work gets
+initialized.
 
-First, there is an memory ordering issue within scsi_dec_host_busy().
-The write which clears SCMD_STATE_INFLIGHT may be reordered with reads
-counting in scsi_host_busy(). While the local CPU will see its own
-write, reordering can allow other CPUs in scsi_dec_host_busy() or
-scsi_eh_inc_host_failed() to see a raised busy count, causing no CPU to
-see a host busy equal to the host_failed count.
+This leaves a window where led_trigger_register() of a LED's default
+trigger will call led_trigger_set() which calls led_set_brightness()
+which in turn will end up queueing the *uninitialized*
+led_classdev.set_brightness_work.
 
-This race condition can be prevented with a memory barrier on the error
-path to force the write to be visible before counting host busy
-commands.
+This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+succession. The first led_classdev_register() causes an async modprobe of
+snd_ctl_led to run and that async modprobe manages to exactly hit
+the window where the second LED is on the leds_list without led_init_core()
+being called for it, resulting in:
 
-Second, there is a general ordering issue with scsi_eh_inc_host_failed(). By
-counting busy commands before incrementing host_failed, it can race with a
-final command in scsi_dec_host_busy(), such that scsi_dec_host_busy() does
-not see host_failed incremented but scsi_eh_inc_host_failed() counts busy
-commands before SCMD_STATE_INFLIGHT is cleared by scsi_dec_host_busy(),
-resulting in neither waking the error handler task.
+ ------------[ cut here ]------------
+ WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
+ Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
+ ...
+ Call trace:
+  __flush_work+0x344/0x390 (P)
+  flush_work+0x2c/0x50
+  led_trigger_set+0x1c8/0x340
+  led_trigger_register+0x17c/0x1c0
+  led_trigger_register_simple+0x84/0xe8
+  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+  do_one_initcall+0x5c/0x318
+  do_init_module+0x9c/0x2b8
+  load_module+0x7e0/0x998
 
-This needs the call to scsi_host_busy() to be moved after host_failed is
-incremented to close the race condition.
+Close the race window by moving the adding of the LED to leds_list to
+after the led_init_core() call.
 
-Fixes: 6eb045e092ef ("scsi: core: avoid host-wide host_busy counter for scsi_mq")
-Signed-off-by: David Jeffery <djeffery@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260113161036.6730-1-djeffery@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_error.c | 11 ++++++++++-
- drivers/scsi/scsi_lib.c   |  8 ++++++++
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ drivers/leds/led-class.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index ffc6f3031e82b..4e9114f069832 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -241,11 +241,20 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
- {
- 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
- 	struct Scsi_Host *shost = scmd->device->host;
--	unsigned int busy = scsi_host_busy(shost);
-+	unsigned int busy;
- 	unsigned long flags;
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -412,11 +412,6 @@ int led_classdev_register_ext(struct dev
+ #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
+ 	led_cdev->brightness_hw_changed = -1;
+ #endif
+-	/* add to the list of leds */
+-	down_write(&leds_list_lock);
+-	list_add_tail(&led_cdev->node, &leds_list);
+-	up_write(&leds_list_lock);
+-
+ 	if (!led_cdev->max_brightness)
+ 		led_cdev->max_brightness = LED_FULL;
  
- 	spin_lock_irqsave(shost->host_lock, flags);
- 	shost->host_failed++;
-+	spin_unlock_irqrestore(shost->host_lock, flags);
-+	/*
-+	 * The counting of busy requests needs to occur after adding to
-+	 * host_failed or after the lock acquire for adding to host_failed
-+	 * to prevent a race with host unbusy and missing an eh wakeup.
-+	 */
-+	busy = scsi_host_busy(shost);
-+
-+	spin_lock_irqsave(shost->host_lock, flags);
- 	scsi_eh_wakeup(shost, busy);
- 	spin_unlock_irqrestore(shost->host_lock, flags);
- }
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index fb48d47e9183e..8d570632982f3 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -310,6 +310,14 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
- 	rcu_read_lock();
- 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
- 	if (unlikely(scsi_host_in_recovery(shost))) {
-+		/*
-+		 * Ensure the clear of SCMD_STATE_INFLIGHT is visible to
-+		 * other CPUs before counting busy requests. Otherwise,
-+		 * reordering can cause CPUs to race and miss an eh wakeup
-+		 * when no CPU sees all busy requests as done or timed out.
-+		 */
-+		smp_mb();
-+
- 		unsigned int busy = scsi_host_busy(shost);
+@@ -424,6 +419,11 @@ int led_classdev_register_ext(struct dev
  
- 		spin_lock_irqsave(shost->host_lock, flags);
--- 
-2.51.0
-
+ 	led_init_core(led_cdev);
+ 
++	/* add to the list of leds */
++	down_write(&leds_list_lock);
++	list_add_tail(&led_cdev->node, &leds_list);
++	up_write(&leds_list_lock);
++
+ #ifdef CONFIG_LEDS_TRIGGERS
+ 	led_trigger_set_default(led_cdev);
+ #endif
 
 
 
