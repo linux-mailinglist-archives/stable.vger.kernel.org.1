@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213513-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PqxIBVlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:13 +0100
+	id cOPzOpBcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213513-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EE8E88C6
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A43E76C6
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 352573073518
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5DFE43002F47
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564C541B375;
-	Wed,  4 Feb 2026 15:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AD82C08DC;
+	Wed,  4 Feb 2026 14:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wXcW+Jz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3/g1o71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EA4413249;
-	Wed,  4 Feb 2026 15:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49113219301;
+	Wed,  4 Feb 2026 14:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218125; cv=none; b=GjVxCaxGonraA0v6kso/TWxjT/r9DKpaZyQ4prgCQQbx6TKpJ4lioCgCHOShySbT9ppyjJOASBIP0Uk8EfE7DKls1H9GVq/EKHrGGS/IF1JBYGooQYFUaGnG7gi4dekvTCYkKIlfK9y2HWnt9Yx5dJ81sGRFG5F/uWJKP9czFxg=
+	t=1770216588; cv=none; b=bExVfM+EaUZ7iNVhAnfEbbUSparB3HkXoIgeeXwKdUhOYUC72zEu89Tp9F57L88lJE11Ee+9K8sHM9dckyLCv+1Yn1oL5Mfe1tiRWHpZ4Doo8OZdXKxHvrGB4lFvhyYx9ISyAYREbAlwQk66WFR11k4qJS3Nree9S6b52fknRVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218125; c=relaxed/simple;
-	bh=k4KmYauBPxdzD8lr9oiLJmZhgVGj0mjbSaF92AIpbp8=;
+	s=arc-20240116; t=1770216588; c=relaxed/simple;
+	bh=Ld1d69TiqeuMuNxbSE3FIefMMmRmZUa/3qm6ljFSwcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVZjabb29T0iLRFmkvlIhLr0mTorSBbfaWLREpKG85L7NZ8ibRSQvSQkNlMHYBEWLkFqvF6n4PVj5EziqWU+mh6SSKbRe0PVJcRJxrvL7z3M2Vl5XYCuEJtH2dSHUTn/OpUumGjSYQy30YVXpJFT+3ZOQCbi8Ziub2VIfKWqe8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wXcW+Jz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C94FC4CEF7;
-	Wed,  4 Feb 2026 15:15:24 +0000 (UTC)
+	 MIME-Version; b=SvNPOq5ew2bLMWesRyKeHgvVtRzEQL4jBufcyUb0ARRASStxXjINKXKSJhnOVQE//aJE4QiU1ja5/hkOy82O1PbdWvExtWZnlVrNPiUe06Zq30u87zVnFp2B8TCf9IIBXozJu7/okuHW6d/gq1OB66tGwyPHcvSLNXuE02Y8In8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3/g1o71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD836C4CEF7;
+	Wed,  4 Feb 2026 14:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218125;
-	bh=k4KmYauBPxdzD8lr9oiLJmZhgVGj0mjbSaF92AIpbp8=;
+	s=korg; t=1770216588;
+	bh=Ld1d69TiqeuMuNxbSE3FIefMMmRmZUa/3qm6ljFSwcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wXcW+JzKAcG7or7OBew+fyuZ04tLJONvdwrMSM31rPPEjGbG3B1DmY+8L59zb9HM
-	 fJAjCfwX/xhOzw4DDl8sEEAW/+eGcN9nOkAskWfGeUTm6y1U8vdi0j7mu9g/eEvafw
-	 rAQlI3GLi8l6OylSYeKdJreTk/n5rBZpfsaE+8o4=
+	b=z3/g1o71QwEKm17wXa74qonnOcICQbELgUm6iTG8mEnbec5B34zU1JFiGIFjNJXy7
+	 dQ7jKRSIJY95E1e0W2blrm/JKczuA6eAC2zVC5V8mZGW6lc3joOgL6IhHROkZLp2Br
+	 tCDJDpC8eqAvSAkRK7a8slRh1ASZwlAWHv/PkR1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
+	Sai Sree Kartheek Adivi <s-adivi@ti.com>,
 	Robin Murphy <robin.murphy@arm.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.1 219/280] gpio: rockchip: Stop calling pinctrl for set_direction
-Date: Wed,  4 Feb 2026 15:39:53 +0100
-Message-ID: <20260204143917.487486356@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 131/161] dma/pool: distinguish between missing and exhausted atomic pools
+Date: Wed,  4 Feb 2026 15:39:54 +0100
+Message-ID: <20260204143856.456488383@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +70,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213513-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213971-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 01EE8E88C6
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ti.com:email,samsung.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
+X-Rspamd-Queue-Id: F0A43E76C6
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Sai Sree Kartheek Adivi <s-adivi@ti.com>
 
-commit 7ca497be00163610afb663867db24ac408752f13 upstream.
+[ Upstream commit 56c430c7f06d838fe3b2077dbbc4cc0bf992312b ]
 
-Marking the whole controller as sleeping due to the pinctrl calls in the
-.direction_{input,output} callbacks has the unfortunate side effect that
-legitimate invocations of .get and .set, which cannot themselves sleep,
-in atomic context now spew WARN()s from gpiolib.
+Currently, dma_alloc_from_pool() unconditionally warns and dumps a stack
+trace when an allocation fails, with the message "Failed to get suitable
+pool".
 
-However, as Heiko points out, the driver doing this is a bit silly to
-begin with, as the pinctrl .gpio_set_direction hook doesn't even care
-about the direction, the hook is only used to claim the mux. And sure
-enough, the .gpio_request_enable hook exists to serve this very purpose,
-so switch to that and remove the problematic business entirely.
+This conflates two distinct failure modes:
+1. Configuration error: No atomic pool is available for the requested
+   DMA mask (a fundamental system setup issue)
+2. Resource Exhaustion: A suitable pool exists but is currently full (a
+   recoverable runtime state)
 
-Cc: stable@vger.kernel.org
-Fixes: 20cf2aed89ac ("gpio: rockchip: mark the GPIO controller as sleeping")
-Suggested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/bddc0469f25843ca5ae0cf578ab3671435ae98a7.1769429546.git.robin.murphy@arm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-[ Backport past pinctrl API change for the deleted calls ]
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This lack of distinction prevents drivers from using __GFP_NOWARN to
+suppress error messages during temporary pressure spikes, such as when
+awaiting synchronous reclaim of descriptors.
+
+Refactor the error handling to distinguish these cases:
+- If no suitable pool is found, keep the unconditional WARN regarding
+  the missing pool.
+- If a pool was found but is exhausted, respect __GFP_NOWARN and update
+  the warning message to explicitly state "DMA pool exhausted".
+
+Fixes: 9420139f516d ("dma-pool: fix coherent pool allocations for IOMMU mappings")
+Signed-off-by: Sai Sree Kartheek Adivi <s-adivi@ti.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260128133554.3056582-1-s-adivi@ti.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rockchip.c       |    8 --------
- drivers/pinctrl/pinctrl-rockchip.c |    9 ++++-----
- 2 files changed, 4 insertions(+), 13 deletions(-)
+ kernel/dma/pool.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -19,7 +19,6 @@
- #include <linux/of_address.h>
- #include <linux/of_device.h>
- #include <linux/of_irq.h>
--#include <linux/pinctrl/consumer.h>
- #include <linux/pinctrl/pinconf-generic.h>
- #include <linux/regmap.h>
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -271,15 +271,20 @@ struct page *dma_alloc_from_pool(struct
+ {
+ 	struct gen_pool *pool = NULL;
+ 	struct page *page;
++	bool pool_found = false;
  
-@@ -157,12 +156,6 @@ static int rockchip_gpio_set_direction(s
- 	unsigned long flags;
- 	u32 data = input ? 0 : 1;
+ 	while ((pool = dma_guess_pool(pool, gfp))) {
++		pool_found = true;
+ 		page = __dma_alloc_from_pool(dev, size, pool, cpu_addr,
+ 					     phys_addr_ok);
+ 		if (page)
+ 			return page;
+ 	}
  
--
--	if (input)
--		pinctrl_gpio_direction_input(bank->pin_base + offset);
--	else
--		pinctrl_gpio_direction_output(bank->pin_base + offset);
--
- 	raw_spin_lock_irqsave(&bank->slock, flags);
- 	rockchip_gpio_writel_bit(bank, offset, data, bank->gpio_regs->port_ddr);
- 	raw_spin_unlock_irqrestore(&bank->slock, flags);
-@@ -584,7 +577,6 @@ static int rockchip_gpiolib_register(str
- 	gc->ngpio = bank->nr_pins;
- 	gc->label = bank->name;
- 	gc->parent = bank->dev;
--	gc->can_sleep = true;
- 
- 	ret = gpiochip_add_data(gc, bank);
- 	if (ret) {
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -2750,10 +2750,9 @@ static int rockchip_pmx_set(struct pinct
- 	return 0;
+-	WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
++	if (pool_found)
++		WARN(!(gfp & __GFP_NOWARN), "DMA pool exhausted for %s\n", dev_name(dev));
++	else
++		WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
+ 	return NULL;
  }
  
--static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
--					   struct pinctrl_gpio_range *range,
--					   unsigned offset,
--					   bool input)
-+static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
-+					    struct pinctrl_gpio_range *range,
-+					    unsigned int offset)
- {
- 	struct rockchip_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
- 	struct rockchip_pin_bank *bank;
-@@ -2767,7 +2766,7 @@ static const struct pinmux_ops rockchip_
- 	.get_function_name	= rockchip_pmx_get_func_name,
- 	.get_function_groups	= rockchip_pmx_get_groups,
- 	.set_mux		= rockchip_pmx_set,
--	.gpio_set_direction	= rockchip_pmx_gpio_set_direction,
-+	.gpio_request_enable	= rockchip_pmx_gpio_request_enable,
- };
- 
- /*
 
 
 
