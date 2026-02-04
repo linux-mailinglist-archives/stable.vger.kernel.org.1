@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-214199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFHHI0Nog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:47 +0100
+	id UP3kCcpug2lNmwMAu9opvQ
+	(envelope-from <stable+bounces-214323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD59E910C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE33EE9E90
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CE20305E31E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01B7B30FE779
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9E941B37C;
-	Wed,  4 Feb 2026 15:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CEA2D8DA8;
+	Wed,  4 Feb 2026 15:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofuqefuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5ZOKmqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B46352937;
-	Wed,  4 Feb 2026 15:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A01018859B;
+	Wed,  4 Feb 2026 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218895; cv=none; b=NOYsArcflGn2eWPB241UVVkI7LlbGDxD7CrJTvaHC2FNGZmkVuJAVjhVQiVv2pFpmZBPX47aDPNFs45GI/61RhTAf5m5+0qNpJe4HsGQ6KArOVWyc2bmHfA1OUMhoRTK8JveXBk1qAf1Ft+ypa8d2kn5NgtncxBlV2zt3j0gLLY=
+	t=1770219307; cv=none; b=UvNsGh13BR2Yu4fFHYcAY6/FnMzRVA87gwIoTcIIJtCSn2EyrJlnkJ4r0K0H5+ZNTk8fD3iRuL5D7/K+ftNGwQdCurE2yLvmLkz4rSqPzgsXX7sW+HBgFojk8upEcYOA72KFeFh86Cz97OmaLOMzebXIvAheUOb5W2nYMef1gjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218895; c=relaxed/simple;
-	bh=quqLLKWChKEdqeKBbDzdMgQtuKmCE1b1Cf+N1zI6WBo=;
+	s=arc-20240116; t=1770219307; c=relaxed/simple;
+	bh=u/Hxs4YRf/pTi0oLOo5Eu0FWIdqnqsXUff0+PgPs+ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NupIkL8Mi39jYq1/xlDPPfzbNw6od5Mg+NnYROGnYqj8ieuLUnff1os/YVE4qrfQx8KC0HORTsDHkZ5deWRSvqrEfpqiXERUDEPAf6CAV5GtEjFBFHStxcDQGsxA9Ev3stisRUTPHu5PWTBxdEKMdOFhxMZAUflWucCYnUhXOzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofuqefuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E2AC4CEF7;
-	Wed,  4 Feb 2026 15:28:14 +0000 (UTC)
+	 MIME-Version; b=tSx5O/hP5YBBMSC4E7psYkSe9sKnl0PbVr2kuPlbBUT3XJlE9O5g+mIlf4L1Zx+q2zlyOBLAnNzGNATkAQdldUQJnBU68hK3Lal+5zms0rkTU+R0gM8ZnSpLXEzzJLwMUD/hIMIdxtBngDjcDo+MKzIFJbr+KDIONbJD8IbOcTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5ZOKmqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD82C4CEF7;
+	Wed,  4 Feb 2026 15:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218895;
-	bh=quqLLKWChKEdqeKBbDzdMgQtuKmCE1b1Cf+N1zI6WBo=;
+	s=korg; t=1770219306;
+	bh=u/Hxs4YRf/pTi0oLOo5Eu0FWIdqnqsXUff0+PgPs+ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofuqefuLwv2KEP3oI1C+E9+njr/pugk+C4V6dldDmNY3pdRBrYcJY8D9PDd1Z4k+L
-	 7rSkM0oDlGDtTbSfyBfGucIHAVzbXE9GmTarqMfYkdzh97W3zTIueiplIy5my/HCyl
-	 1vRzpw0TmeRHuGih0ltnw9rUyrRz5lMB9NkeWGzA=
+	b=D5ZOKmqFaqgFtD2qvxAOUt9xDfgvoUjzLzjA4qMECNg13SDlMnmMV7fwR2LcW0Di3
+	 9qRZW1POms94iv9eYckRrWuGMmnCltRGYYISMPnAMHPH1W+o/YU7dXReAmY4jLzf8f
+	 cc9oYiB9bb47l2QuhsM8dKKQCW5dLQZDvWGtfQoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.12 86/87] RDMA/mana_ib: Handle net event for pointing to the current netdev
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 102/122] drm/tyr: depend on `COMMON_CLK` to fix build error
 Date: Wed,  4 Feb 2026 15:41:24 +0100
-Message-ID: <20260204143850.024294683@linuxfoundation.org>
+Message-ID: <20260204143855.519621613@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214199-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214323-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,135 +87,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2FD59E910C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AE33EE9E90
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit bee35b7161aaaed9831e2f14876c374b9c566952 upstream.
+commit b0581f6ab952ffd135ca4402d2ee3da641538d6b upstream.
 
-When running under Hyper-V, the master device to the RDMA device is always
-bonded to this RDMA device. This is not user-configurable.
+Tyr needs `CONFIG_COMMON_CLK` to build:
 
-The master device can be unbind/bind from the kernel. During those events,
-the RDMA device should set to the current netdev to reflect the change of
-master device from those events.
+    error[E0432]: unresolved import `kernel::clk::Clk`
+     --> drivers/gpu/drm/tyr/driver.rs:3:5
+      |
+    3 | use kernel::clk::Clk;
+      |     ^^^^^^^^^^^^^^^^ no `Clk` in `clk`
 
-Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/1741821332-9392-2-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Fixes: 1df03a4b4414 ("RDMA/mana_ib: Set correct device into ib")
-Cc: stable@kernel.org
+    error[E0432]: unresolved import `kernel::clk::OptionalClk`
+     --> drivers/gpu/drm/tyr/driver.rs:4:5
+      |
+    4 | use kernel::clk::OptionalClk;
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^ no `OptionalClk` in `clk`
+
+Thus add the dependency to fix it.
+
+Fixes: cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali GPUs")
+Cc: stable@vger.kernel.org
+Acked-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260124160948.67508-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/device.c  |   47 +++++++++++++++++++++++++++++++++--
- drivers/infiniband/hw/mana/mana_ib.h |    1 
- 2 files changed, 46 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tyr/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/hw/mana/device.c
-+++ b/drivers/infiniband/hw/mana/device.c
-@@ -51,6 +51,38 @@ static const struct ib_device_ops mana_i
- 			   ib_ind_table),
- };
- 
-+static int mana_ib_netdev_event(struct notifier_block *this,
-+				unsigned long event, void *ptr)
-+{
-+	struct mana_ib_dev *dev = container_of(this, struct mana_ib_dev, nb);
-+	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
-+	struct gdma_context *gc = dev->gdma_dev->gdma_context;
-+	struct mana_context *mc = gc->mana.driver_data;
-+	struct net_device *ndev;
-+
-+	/* Only process events from our parent device */
-+	if (event_dev != mc->ports[0])
-+		return NOTIFY_DONE;
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		ndev = mana_get_primary_netdev(mc, 0, &dev->dev_tracker);
-+		/*
-+		 * RDMA core will setup GID based on updated netdev.
-+		 * It's not possible to race with the core as rtnl lock is being
-+		 * held.
-+		 */
-+		ib_device_set_netdev(&dev->ib_dev, ndev, 1);
-+
-+		/* mana_get_primary_netdev() returns ndev with refcount held */
-+		netdev_put(ndev, &dev->dev_tracker);
-+
-+		return NOTIFY_OK;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+}
-+
- static int mana_ib_probe(struct auxiliary_device *adev,
- 			 const struct auxiliary_device_id *id)
- {
-@@ -108,17 +140,25 @@ static int mana_ib_probe(struct auxiliar
- 	}
- 	dev->gdma_dev = &mdev->gdma_context->mana_ib;
- 
-+	dev->nb.notifier_call = mana_ib_netdev_event;
-+	ret = register_netdevice_notifier(&dev->nb);
-+	if (ret) {
-+		ibdev_err(&dev->ib_dev, "Failed to register net notifier, %d",
-+			  ret);
-+		goto deregister_device;
-+	}
-+
- 	ret = mana_ib_gd_query_adapter_caps(dev);
- 	if (ret) {
- 		ibdev_err(&dev->ib_dev, "Failed to query device caps, ret %d",
- 			  ret);
--		goto deregister_device;
-+		goto deregister_net_notifier;
- 	}
- 
- 	ret = mana_ib_create_eqs(dev);
- 	if (ret) {
- 		ibdev_err(&dev->ib_dev, "Failed to create EQs, ret %d", ret);
--		goto deregister_device;
-+		goto deregister_net_notifier;
- 	}
- 
- 	ret = mana_ib_gd_create_rnic_adapter(dev);
-@@ -147,6 +187,8 @@ destroy_rnic:
- 	mana_ib_gd_destroy_rnic_adapter(dev);
- destroy_eqs:
- 	mana_ib_destroy_eqs(dev);
-+deregister_net_notifier:
-+	unregister_netdevice_notifier(&dev->nb);
- deregister_device:
- 	mana_gd_deregister_device(dev->gdma_dev);
- free_ib_device:
-@@ -162,6 +204,7 @@ static void mana_ib_remove(struct auxili
- 	xa_destroy(&dev->qp_table_wq);
- 	mana_ib_gd_destroy_rnic_adapter(dev);
- 	mana_ib_destroy_eqs(dev);
-+	unregister_netdevice_notifier(&dev->nb);
- 	mana_gd_deregister_device(dev->gdma_dev);
- 	ib_dealloc_device(&dev->ib_dev);
- }
---- a/drivers/infiniband/hw/mana/mana_ib.h
-+++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -65,6 +65,7 @@ struct mana_ib_dev {
- 	struct xarray qp_table_wq;
- 	struct mana_ib_adapter_caps adapter_caps;
- 	netdevice_tracker dev_tracker;
-+	struct notifier_block nb;
- };
- 
- struct mana_ib_wq {
+--- a/drivers/gpu/drm/tyr/Kconfig
++++ b/drivers/gpu/drm/tyr/Kconfig
+@@ -6,6 +6,7 @@ config DRM_TYR
+ 	depends on RUST
+ 	depends on ARM || ARM64 || COMPILE_TEST
+ 	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
++	depends on COMMON_CLK
+ 	default n
+ 	help
+ 	  Rust DRM driver for ARM Mali CSF-based GPUs.
 
 
 
