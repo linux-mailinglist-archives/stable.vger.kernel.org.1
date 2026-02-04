@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NxMCNdig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:16:39 +0100
+	id ICLiIeBlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB61E8383
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:16:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F9E8B2A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3059130A7063
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:56:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 188113068AB2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A08642315C;
-	Wed,  4 Feb 2026 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082404219FD;
+	Wed,  4 Feb 2026 15:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fN4Ql4U6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrMWc7RA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FE342314D;
-	Wed,  4 Feb 2026 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C060D3D994;
+	Wed,  4 Feb 2026 15:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216898; cv=none; b=YBOSoTADx8xgVROaOOMqdPcVV2txMUpm8G0X1ES+HQYvhfl7fv9ySmWxcW2wB+Q9GS09i/61apjI6HSJsiKQ58InE6oX4QGx7DO4umXZ8XPDTouvVr+7e0KHhO67u85TMEHk6fvFWh9dLUb/PMm8ledmfUqLuLCHJZDOZv+lGh4=
+	t=1770217943; cv=none; b=QzD4yLhZqj7Q+uyYJSBf/rGY6Vzo6GL1bNuOq1B0muh4b0wV89P9lSs1rt9LluacnFsItPfPTsO7UX+je8frZVWAWLWLcyKvN70yqGwZO521oyVns0TUElu8UOWLHFoTNr+UFc1z3jz/auPAff79yLVE/g9A6lIrJNHQKNb/Mog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216898; c=relaxed/simple;
-	bh=5YsJei5woJuxThfSRBtyGYMc87U/Kll13AGG3mIsmE0=;
+	s=arc-20240116; t=1770217943; c=relaxed/simple;
+	bh=Yi96/XQthGPDrVLccWV7DSNC59xBmouYuhTAMLgQnxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=og7QZVpXWT4UkrFKJmkVIMPWBY1cyPnw+1wWz6DQsD5SINIbW3woRtmbxocXxmKOoV5KyP9W6cZENps3b0lSdT2RZjJ9MqezH2NL1P7Vu8MVy9FXw8r3urnZ7RTXBxZmPiCMZu1oukLYeP0mhOMcG5FkJPofxvQeMhOT/r4S0fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fN4Ql4U6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD3BC4CEF7;
-	Wed,  4 Feb 2026 14:54:57 +0000 (UTC)
+	 MIME-Version; b=SehAVTnNpI8rsUJMQfI4rqh6fLgl45qbq/cCZXlNvTCbkmugrqYXIinLPJ2AflM0j1dTaDDwE2fFLJySjUR6U32IrJfLCTaZhLE4GQDgC5+Ta+aJBEjXsNE2jzI9hEqF64GErWZsKBlHkl/0DED9X5MbIWCG7+7KoHTuQ2PgkEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrMWc7RA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D674CC4CEF7;
+	Wed,  4 Feb 2026 15:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216898;
-	bh=5YsJei5woJuxThfSRBtyGYMc87U/Kll13AGG3mIsmE0=;
+	s=korg; t=1770217943;
+	bh=Yi96/XQthGPDrVLccWV7DSNC59xBmouYuhTAMLgQnxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fN4Ql4U65sRXbumlcKy/LEBsfXpx9Ow+TJD87sZG8bDUVci+e9nWp8ODdLGgFCX86
-	 0TvE3Sm80deRwk89qoB0ZYS/Tp8VV7LK/07rOVOAnRrzov7rwyNbMEGDI4zJixjHu7
-	 vStuOAURrJkhC+PHgyGiBlDTezOJFS9b0UtI6U+o=
+	b=qrMWc7RAB/bdZ61ZMuV6rPD6hdNnWHIq1LowxrDu8p6Z7J5lg9rDpFlJZsLF4tLOR
+	 Fbzpjdi3ae2xGTDXO38dKgYOcd7i7zj3Ak/WaBfOHtWcKcW3B6aijC/VEFzL+kcEnv
+	 OttMud9429XyPxhnv2TFbI6OlO5KyA1ucZwSa+Vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Wojtek Wasko <wwasko@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/206] testptp: Add option to open PHC in readonly mode
+	stable@kernel.org,
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 122/280] scsi: storvsc: Process unsupported MODE_SENSE_10
 Date: Wed,  4 Feb 2026 15:38:16 +0100
-Message-ID: <20260204143900.555706528@linuxfoundation.org>
+Message-ID: <20260204143914.026295165@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,152 +70,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,davemloft.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213607-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-213916-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,davemloft.net:email]
-X-Rspamd-Queue-Id: 7CB61E8383
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: 2E2F9E8B2A
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojtek Wasko <wwasko@nvidia.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit 76868642e42795353106197abf9c607ad80f4c9e ]
+commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
 
-PTP Hardware Clocks no longer require WRITE permission to perform
-readonly operations, such as listing device capabilities or listening to
-EXTTS events once they have been enabled by a process with WRITE
-permissions.
+The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
+driver handles MODE_SENSE as unsupported command, but not for
+MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
+correct code to SCSI layer.
 
-Add '-r' option to testptp to open the PHC in readonly mode instead of
-the default read-write mode. Skip enabling EXTTS if readonly mode is
-requested.
-
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
+Cc: stable@kernel.org
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 37 +++++++++++++++++----------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+ drivers/scsi/storvsc_drv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index d3922e3c437f1..89b4f43a7ba45 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -140,6 +140,7 @@ static void usage(char *progname)
- 		" -H val     set output phase to 'val' nanoseconds (requires -p)\n"
- 		" -w val     set output pulse width to 'val' nanoseconds (requires -p)\n"
- 		" -P val     enable or disable (val=1|0) the system clock PPS\n"
-+		" -r         open the ptp clock in readonly mode\n"
- 		" -s         set the ptp clock time from the system time\n"
- 		" -S         set the system time from the ptp clock time\n"
- 		" -t val     shift the ptp clock time by 'val' seconds\n"
-@@ -188,6 +189,7 @@ int main(int argc, char *argv[])
- 	int pin_index = -1, pin_func;
- 	int pps = -1;
- 	int seconds = 0;
-+	int readonly = 0;
- 	int settime = 0;
- 	int channel = -1;
- 	clockid_t ext_clockid = CLOCK_REALTIME;
-@@ -200,7 +202,7 @@ int main(int argc, char *argv[])
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1136,7 +1136,7 @@ static void storvsc_on_io_completion(str
+ 	 * The current SCSI handling on the host side does
+ 	 * not correctly handle:
+ 	 * INQUIRY command with page code parameter set to 0x80
+-	 * MODE_SENSE command with cmd[2] == 0x1c
++	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
+ 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
+ 	 *
+ 	 * Setup srb and scsi status so this won't be fatal.
+@@ -1146,6 +1146,7 @@ static void storvsc_on_io_completion(str
  
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -252,6 +254,9 @@ int main(int argc, char *argv[])
- 		case 'P':
- 			pps = atoi(optarg);
- 			break;
-+		case 'r':
-+			readonly = 1;
-+			break;
- 		case 's':
- 			settime = 1;
- 			break;
-@@ -308,7 +313,7 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
--	fd = open(device, O_RDWR);
-+	fd = open(device, readonly ? O_RDONLY : O_RDWR);
- 	if (fd < 0) {
- 		fprintf(stderr, "opening %s: %s\n", device, strerror(errno));
- 		return -1;
-@@ -422,14 +427,16 @@ int main(int argc, char *argv[])
- 	}
- 
- 	if (extts) {
--		memset(&extts_request, 0, sizeof(extts_request));
--		extts_request.index = index;
--		extts_request.flags = PTP_ENABLE_FEATURE;
--		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
--			perror("PTP_EXTTS_REQUEST");
--			extts = 0;
--		} else {
--			puts("external time stamp request okay");
-+		if (!readonly) {
-+			memset(&extts_request, 0, sizeof(extts_request));
-+			extts_request.index = index;
-+			extts_request.flags = PTP_ENABLE_FEATURE;
-+			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
-+				perror("PTP_EXTTS_REQUEST");
-+				extts = 0;
-+			} else {
-+				puts("external time stamp request okay");
-+			}
- 		}
- 		for (; extts; extts--) {
- 			cnt = read(fd, &event, sizeof(event));
-@@ -441,10 +448,12 @@ int main(int argc, char *argv[])
- 			       event.t.sec, event.t.nsec);
- 			fflush(stdout);
- 		}
--		/* Disable the feature again. */
--		extts_request.flags = 0;
--		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
--			perror("PTP_EXTTS_REQUEST");
-+		if (!readonly) {
-+			/* Disable the feature again. */
-+			extts_request.flags = 0;
-+			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
-+				perror("PTP_EXTTS_REQUEST");
-+			}
- 		}
- 	}
- 
--- 
-2.51.0
-
+ 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
+ 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
++	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
+ 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
+ 	   hv_dev_is_fc(device))) {
+ 		vstor_packet->vm_srb.scsi_status = 0;
 
 
 
