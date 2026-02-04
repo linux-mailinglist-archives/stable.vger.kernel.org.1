@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214256-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOmEAuRtg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:48 +0100
+	id gDM4Mp1tg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214256-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07947E9CC1
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 138F5E9C34
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D88FF3042658
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4E0131BBC93
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D753E41B37C;
-	Wed,  4 Feb 2026 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FBE273D77;
+	Wed,  4 Feb 2026 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5yevt5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u55SCBaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC922C028C;
-	Wed,  4 Feb 2026 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A2F19E96D;
+	Wed,  4 Feb 2026 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218476; cv=none; b=G8BRBbL+yjyXc1TTtMpD/2UxHlimM0FFDVqLTAghCoI3vIlbIHmChUjjThc9O1ZQBL5E5mbsJpKnZLMoZ2FsH0wJvEElkyhiVs/3jmYO/0motwQ34/Aw+6vgjcJ2NwZ7b5I8gMpCW28f7Tk8lGRCcB6OeQKbFlCC3xf/DW0Ihng=
+	t=1770219084; cv=none; b=Ffko4izOK4lEzM9m6d2i/ad9moKKlT/SfJk3FD+HpFSQn0b7BPbdgGL3SiRggAaAZRp3V2jd6Ktzb9TVPNP7For7uAHgvJ1HORPKvhvwJyRnw7ojkBvq0/fUfL7qVfayZdNHdFLKtS8A9T/0akkwLLL4PczgnfVX++Wo8TAI7Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218476; c=relaxed/simple;
-	bh=eBf88BVkRJt7f48fuUo/BwlgpZvuL7+QbgG5eOTDnbY=;
+	s=arc-20240116; t=1770219084; c=relaxed/simple;
+	bh=Ka343KXpa7rYpr6s1g0Egi9dZzJnDSDGZBOk9EKEBDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7gsb6J627P29PnPocTKyaSUPDnRi7TOAKsk+Sw64VTpQhGDXXqcUgQhzxheVQqsqxHaHrKAoZP5FltkMrPPcdL4/hfD/rUBPw7MOQlZ8uLfGWKzjHEbubENLjjxR9x/G1weTcEbhcLBH08NpIKQ96tweDbyMA9LeJhL89SD/qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5yevt5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CBFC4CEF7;
-	Wed,  4 Feb 2026 15:21:15 +0000 (UTC)
+	 MIME-Version; b=CmGhJ9bYdntbXUbDNepQ8DC3SGCJdRLW1RKA+cs97G0vRhBj8NnvwTqCXjbRS19pVOOCvYUM2rX+0iNf3u8yXap/Lq9ndmeSJFEegR6A04XvSbEOq2pEX+rHgQqw6vuiR+O1SC27TqxvxrFxFCm9ehv/An+Igs2bt5mPvsDEUUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u55SCBaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E0AC4CEF7;
+	Wed,  4 Feb 2026 15:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218476;
-	bh=eBf88BVkRJt7f48fuUo/BwlgpZvuL7+QbgG5eOTDnbY=;
+	s=korg; t=1770219084;
+	bh=Ka343KXpa7rYpr6s1g0Egi9dZzJnDSDGZBOk9EKEBDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5yevt5IJ3mMRhsaPpZeX7ai11xGclr4N8iD0HzaZ524Gj3SDze+oLatDsSmxLCZt
-	 0MPWUEv58TYlQrZe6RUORXOcIQw6Wftgqpi0ZmuP0nG9cJByqmHgMrXJ47Z/vJCtqS
-	 45nOQrNzAEWbT1JQkq4ISJCJtKC3qlwxKfk9tNxQ=
+	b=u55SCBaXiojLXbcsaFkxtpo0Jl8k5m6KhK0nvQoSpfVtHCfOJGGHyRnuWVKCaNax4
+	 icHYCgosVt/chQGYfWnnmNthdPGUsCd8mbZp1uD+0J8BPW8/pc/7UgTcJwXKujc2Vj
+	 1pEQY9bqPYqCNAknZ4hvVRt8vEW2lR7z/khZrjgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 07/72] net: mvpp2: cls: Fix memory leak in mvpp2_ethtool_cls_rule_ins()
-Date: Wed,  4 Feb 2026 15:40:10 +0100
-Message-ID: <20260204143845.877702476@linuxfoundation.org>
+Subject: [PATCH 6.18 029/122] net/mlx5e: dont assume psp tx skbs are ipv6 csum handling
+Date: Wed,  4 Feb 2026 15:40:11 +0100
+Message-ID: <20260204143852.911167001@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +67,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214074-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214256-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,nvidia.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 07947E9CC1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 138F5E9C34
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Daniel Zahka <daniel.zahka@gmail.com>
 
-[ Upstream commit 09f979d1f312627b31d2ee1e46f9692e442610cd ]
+[ Upstream commit a62f7d62d2b115e67c7224e36ace4ef12a9650b4 ]
 
-In mvpp2_ethtool_cls_rule_ins(), the ethtool_rule is allocated by
-ethtool_rx_flow_rule_create(). If the subsequent conversion to flow
-type fails, the function jumps to the clean_rule label.
+mlx5e_psp_handle_tx_skb() assumes skbs are ipv6 when doing a partial
+TCP checksum with tso. Make correctly mlx5e_psp_handle_tx_skb() handle
+ipv4 packets.
 
-However, the clean_rule label only frees efs, skipping the cleanup
-of ethtool_rule, which leads to a memory leak.
-
-Fix this by jumping to the clean_eth_rule label, which properly calls
-ethtool_rx_flow_rule_destroy() before freeing efs.
-
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: f4f1ba18195d ("net: mvpp2: cls: Report an error for unsupported flow types")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260123065716.2248324-1-zilin@seu.edu.cn
+Fixes: e5a1861a298e ("net/mlx5e: Implement PSP Tx data path")
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Link: https://patch.msgid.link/20260126-dzahka-fix-tx-csum-partial-v2-1-0a905590ea5f@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../mellanox/mlx5/core/en_accel/psp_rxtx.c      | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-index d2757cc116139..038382a0b8e9f 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-@@ -1389,7 +1389,7 @@ int mvpp2_ethtool_cls_rule_ins(struct mvpp2_port *port,
- 	efs->rule.flow_type = mvpp2_cls_ethtool_flow_to_type(info->fs.flow_type);
- 	if (efs->rule.flow_type < 0) {
- 		ret = efs->rule.flow_type;
--		goto clean_rule;
-+		goto clean_eth_rule;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
+index 828bff1137aff..fa98d0074531b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
+@@ -177,8 +177,6 @@ bool mlx5e_psp_handle_tx_skb(struct net_device *netdev,
+ {
+ 	struct mlx5e_priv *priv = netdev_priv(netdev);
+ 	struct net *net = sock_net(skb->sk);
+-	const struct ipv6hdr *ip6;
+-	struct tcphdr *th;
+ 
+ 	if (!mlx5e_psp_set_state(priv, skb, psp_st))
+ 		return true;
+@@ -189,11 +187,18 @@ bool mlx5e_psp_handle_tx_skb(struct net_device *netdev,
+ 		return false;
+ 	}
+ 	if (skb_is_gso(skb)) {
+-		ip6 = ipv6_hdr(skb);
+-		th = inner_tcp_hdr(skb);
++		int len = skb_shinfo(skb)->gso_size + inner_tcp_hdrlen(skb);
++		struct tcphdr *th = inner_tcp_hdr(skb);
+ 
+-		th->check = ~tcp_v6_check(skb_shinfo(skb)->gso_size + inner_tcp_hdrlen(skb), &ip6->saddr,
+-					  &ip6->daddr, 0);
++		if (skb->protocol == htons(ETH_P_IP)) {
++			const struct iphdr *ip = ip_hdr(skb);
++
++			th->check = ~tcp_v4_check(len, ip->saddr, ip->daddr, 0);
++		} else {
++			const struct ipv6hdr *ip6 = ipv6_hdr(skb);
++
++			th->check = ~tcp_v6_check(len, &ip6->saddr, &ip6->daddr, 0);
++		}
  	}
  
- 	ret = mvpp2_cls_rfs_parse_rule(&efs->rule);
+ 	return true;
 -- 
 2.51.0
 
