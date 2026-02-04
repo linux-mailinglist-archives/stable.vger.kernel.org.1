@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-213664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFd0Ajxhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:48 +0100
+	id ECq/KeBkg2l1mQMAu9opvQ
+	(envelope-from <stable+bounces-213930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B1E807F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03664E87F0
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0476331B9BCD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E3F6311BE93
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501C242189A;
-	Wed,  4 Feb 2026 14:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8854423145;
+	Wed,  4 Feb 2026 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFchV/kW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEfEL8az"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1033342189E;
-	Wed,  4 Feb 2026 14:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C632421F1C;
+	Wed,  4 Feb 2026 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217093; cv=none; b=Et4t2Mrw/CARhmljFViKgd+XoYo/1obHIV99RLsUOrphADyOCCXKW/r5l+YEhpjIIb22YegZ2Smb4z6Rn6gH4kY94YhMpHKW0FqyygNud8NAmCkUuTfSDfn9A8Xz7BZn96/3ePmW45DyDsBz15JVcrHh1wD0Kzg9KMWCSsZSQk0=
+	t=1770217990; cv=none; b=YrN75D82EaO6oaLZC+wCxLfTx101yqWGK6QFc6oeE7RtTNpXuz+jOOD6Jm+YNw9Tm0bmHLACCP3cbdtffbttbyeUTmcKsTv4+gAspyoXzc8SIegldcGD4mol0/n0vm4lhCPqVRofb+s5KakdNe9g0pPFDndv/2p8fkOWd/CSevo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217093; c=relaxed/simple;
-	bh=cFUWboxcQWUu2I1/fbBFGI1MRO+A11JOtvwLJPaHiOw=;
+	s=arc-20240116; t=1770217990; c=relaxed/simple;
+	bh=JdbzGt5k/op9cywIESTsPHBOMYMFwiz1PC7KQ/yZtlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqQvRdjKQQ1HyvZCh1LJ1pEBUujcrwSqzhXUvCaaxiTRzA4jkrKoBjUf156nvi3kpKxUdp1/zRf5ApWLJYDFV86A1Hg/Q2KigwItqmvE/lOJ10YM6zMCTyASs6nUMurWvve94dfb5g7lHYrmKN7OamafJmJ1hJKZdMPGC5w+muY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFchV/kW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6EEC4CEF7;
-	Wed,  4 Feb 2026 14:58:12 +0000 (UTC)
+	 MIME-Version; b=qlTwXfQhhSeIwm/W2TgmXvQcp/PzVRv7qTcdt2t1o1CPmreVLFwlEgV9YG1RfYPCKgBprtklVpFk28gtEmb2RSIH6W3GEBbv7LYXY5z7fBfoppXhn11qT+erHNh1SiDAQZ+/mbkMxTpg4KmP9KIQ9B9uyaXmC8X3L1q5pTNbkRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEfEL8az; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F042AC4CEF7;
+	Wed,  4 Feb 2026 15:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217092;
-	bh=cFUWboxcQWUu2I1/fbBFGI1MRO+A11JOtvwLJPaHiOw=;
+	s=korg; t=1770217990;
+	bh=JdbzGt5k/op9cywIESTsPHBOMYMFwiz1PC7KQ/yZtlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFchV/kWdWeEANTYUdOnkGgJ/pJXvVxXx1Y8yrRMFl2/wfuFJ2bHHTRa8FZVq+QEh
-	 MwIyIIqoA/K/PvaPMfdWg3P7V5YIZ65A+YH/1ZWEE3Ug9vGYlyP1aegmfmGyrBxjqI
-	 CEAJ4d95AfY+bblwZrYoOfoWT9cMvClA+6UzpaRA=
+	b=uEfEL8azVJilxJZoS7YWj/BHWvWl1yY5u4WBMcxw3vfBQ/m6zFyX5FxHZtvqxtKW+
+	 d+zkZJNDhN4NaKvksjuPy+pPCCboSdCRVTrfDyzU/D8iOp9pqk55lUmoLLah9l9mK+
+	 om9zjJlXPRswAzqx4LfAz4EA5nRxjbuTsAAsXgew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ma Ke <make24@iscas.ac.cn>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 121/206] intel_th: fix device leak on output open()
-Date: Wed,  4 Feb 2026 15:39:12 +0100
-Message-ID: <20260204143902.559841597@linuxfoundation.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 179/280] can: ems_usb: ems_usb_read_bulk_callback(): fix URB memory leak
+Date: Wed,  4 Feb 2026 15:39:13 +0100
+Message-ID: <20260204143916.059164956@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,95 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213930-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213664-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 8F3B1E807F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 03664E87F0
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 95fc36a234da24bbc5f476f8104a5a15f99ed3e3 upstream.
+commit 0ce73a0eb5a27070957b67fd74059b6da89cc516 upstream.
 
-Make sure to drop the reference taken when looking up the th device
-during output device open() on errors and on close().
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-Note that a recent commit fixed the leak in a couple of open() error
-paths but not all of them, and the reference is still leaking on
-successful open().
+In ems_usb_open(), the URBs for USB-in transfers are allocated, added to
+the dev->rx_submitted anchor and submitted. In the complete callback
+ems_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
+ems_usb_close() the URBs are freed by calling
+usb_kill_anchored_urbs(&dev->rx_submitted).
 
-Fixes: 39f4034693b7 ("intel_th: Add driver infrastructure for Intel(R) Trace Hub devices")
-Fixes: 6d5925b667e4 ("intel_th: Fix error handling in intel_th_output_open")
-Cc: stable@vger.kernel.org	# 4.4: 6d5925b667e4
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251208153524.68637-2-johan@kernel.org
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in ems_usb_close().
+
+Fix the memory leak by anchoring the URB in the
+ems_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+
+Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-1-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/core.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/can/usb/ems_usb.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/hwtracing/intel_th/core.c
-+++ b/drivers/hwtracing/intel_th/core.c
-@@ -810,9 +810,12 @@ static int intel_th_output_open(struct i
- 	int err;
+--- a/drivers/net/can/usb/ems_usb.c
++++ b/drivers/net/can/usb/ems_usb.c
+@@ -486,11 +486,17 @@ resubmit_urb:
+ 			  urb->transfer_buffer, RX_BUFFER_SIZE,
+ 			  ems_usb_read_bulk_callback, dev);
  
- 	dev = bus_find_device_by_devt(&intel_th_bus, inode->i_rdev);
--	if (!dev || !dev->driver) {
-+	if (!dev)
-+		return -ENODEV;
++	usb_anchor_urb(urb, &dev->rx_submitted);
 +
-+	if (!dev->driver) {
- 		err = -ENODEV;
--		goto out_no_device;
-+		goto out_put_device;
- 	}
- 
- 	thdrv = to_intel_th_driver(dev->driver);
-@@ -836,12 +839,22 @@ static int intel_th_output_open(struct i
- 
- out_put_device:
- 	put_device(dev);
--out_no_device:
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
++		return;
 +
- 	return err;
++	usb_unanchor_urb(urb);
+ 
+ 	if (retval == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (retval)
++	else
+ 		netdev_err(netdev,
+ 			   "failed resubmitting read bulk urb: %d\n", retval);
  }
- 
-+static int intel_th_output_release(struct inode *inode, struct file *file)
-+{
-+	struct intel_th_device *thdev = file->private_data;
-+
-+	put_device(&thdev->dev);
-+
-+	return 0;
-+}
-+
- static const struct file_operations intel_th_output_fops = {
- 	.open	= intel_th_output_open,
-+	.release = intel_th_output_release,
- 	.llseek	= noop_llseek,
- };
- 
 
 
 
