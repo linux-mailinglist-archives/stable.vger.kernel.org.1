@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHXuBp1pg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:33 +0100
+	id kbu0CCtgg2mfmAMAu9opvQ
+	(envelope-from <stable+bounces-213615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEDDE94FE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FE6E7DD0
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3A3530FDD57
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D3464305C2F1
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1724219F9;
-	Wed,  4 Feb 2026 15:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6402B421882;
+	Wed,  4 Feb 2026 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8ay2gLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNZu+/5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E033D994;
-	Wed,  4 Feb 2026 15:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274BB41C2E4;
+	Wed,  4 Feb 2026 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217936; cv=none; b=s2SjB8e9l321/kco+bkTidLN6xhu6HHnOyyNgM8gE5ar3SW5XSlgiFpLHqFQpdgRfdOaGfJ81Tz3rfbF8uprpIkaWd2wXUqC+lvKFF5BoMfPHO0eDYnNk5kcpzn9NB12SQK3G/NQm9DgZN4xKJmGL0hF/2sQUQu3s/vDGPXBJHA=
+	t=1770216924; cv=none; b=ZySncB1b+41VUM2jV+c4kId/Z0F6YL0kZu1LT6NlhGB6IRfe0Tcrv095IE+4r1wxR2GIBWNxpQqcEq+t5yIsoZxJRHWPEqSutwQDf91sQw45+sQRAqSLKBWv2f57gsCeGKXbXv4+3+adLRSl6nDUK7wrXxHpMeYw5EJ8qBynZvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217936; c=relaxed/simple;
-	bh=N957M9e2gbafWxJ8J2tfYEakRXcsrs96sg+nfiKVfT8=;
+	s=arc-20240116; t=1770216924; c=relaxed/simple;
+	bh=wN1MG5WrY7p3JbcBNZibV3jNPAL2ZmBq/t7KRflEBSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKqWMUElQMjwYEpGMPz5CRU/9uH/FiufLJykLI2RgnO28Bs2nCQIejdU7FjT8qli424Pb7FBB9dzuZoxUxPwWLP3t+NiF/K5ceOAA2enPQ8Kr6NTc0KHPbbyUU8vmDp//9tIwJFLjxVra6YkK6DshHRYpgFG0j+lvvUj+fZE9TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8ay2gLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC338C116C6;
-	Wed,  4 Feb 2026 15:12:15 +0000 (UTC)
+	 MIME-Version; b=BeldNZ7Ngh0fooKctSlsQdlfrCcQ8PvdRqMqskfbuNKUeCgJABEjdA6KwmE4QHyipY6GiHXhVwPZZ1YFH6UTyMUw7zvouH5ijmnEOcxNf2tsyqqNb7cjiGB8Mc4sGFy2JlbqTnKidnsEbXvcJ46+2JwCTbGk27lacYLnmiQybno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNZu+/5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A036FC4CEF7;
+	Wed,  4 Feb 2026 14:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217936;
-	bh=N957M9e2gbafWxJ8J2tfYEakRXcsrs96sg+nfiKVfT8=;
+	s=korg; t=1770216924;
+	bh=wN1MG5WrY7p3JbcBNZibV3jNPAL2ZmBq/t7KRflEBSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8ay2gLB2dpB3KIowOnoq045AFRHLOJ3YcZKU0LZBdZRiZcwHjRWsiVlJXuNIS9w/
-	 6l2Uu0nDyybTcLLygSpXuQigWh9uUviNdv7U7/m0wYGD64j259o1a1dOYNTJX1V5GV
-	 qnmNm3CaeU6v8Z+kk1qp7GfC2jkvGM+p3U8lZgyk=
+	b=nNZu+/5FN+q7p/S4SgLyqzUPY4sAfEvgG9pNA1aXv8pFgl9gR5SisSYh1LU4vbfj2
+	 vbxDBl95DBwrL17oBI3YTVsPcHlk8k70+M0g3zdNc7EbikF0c07S2zbY5hOz8YTcdn
+	 c+6sCI6bQeEdr14vhIPBXmfwsI1vIpXet5UZl2Sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/280] spi: sprd: adi: Use devm_register_restart_handler()
+Subject: [PATCH 5.15 073/206] netlink: add a proto specification for FOU
 Date: Wed,  4 Feb 2026 15:38:24 +0100
-Message-ID: <20260204143914.312290670@linuxfoundation.org>
+Message-ID: <20260204143900.843332856@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +70,186 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213615-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213914-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8CEDDE94FE
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 21FE6E7DD0
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 8e6a43961f24cf841d3c0d199521d0b284d948b9 ]
+[ Upstream commit 4eb77b4ecd3c5eaab83adf76e67e0a7ed2a24418 ]
 
-Use device life-cycle managed register function to simplify probe error
-path and eliminate need for explicit remove function.
+FOU has a reasonably modern Genetlink family. Add a spec.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20231117161006.87734-5-afd@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 383d4f5cffcc ("spi: spi-sprd-adi: Fix double free in probe error path")
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sprd-adi.c | 30 ++++++++----------------------
- 1 file changed, 8 insertions(+), 22 deletions(-)
+ Documentation/netlink/specs/fou.yaml | 128 +++++++++++++++++++++++++++
+ 1 file changed, 128 insertions(+)
+ create mode 100644 Documentation/netlink/specs/fou.yaml
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 22e39c4c12c4e..24f1358e7e8ba 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -139,8 +139,7 @@ struct sprd_adi_data {
- 	u32 slave_offset;
- 	u32 slave_addr_size;
- 	int (*read_check)(u32 val, u32 reg);
--	int (*restart)(struct notifier_block *this,
--		       unsigned long mode, void *cmd);
-+	int (*restart)(struct sys_off_data *data);
- 	void (*wdg_rst)(void *p);
- };
- 
-@@ -151,7 +150,6 @@ struct sprd_adi {
- 	struct hwspinlock	*hwlock;
- 	unsigned long		slave_vbase;
- 	unsigned long		slave_pbase;
--	struct notifier_block	restart_handler;
- 	const struct sprd_adi_data *data;
- };
- 
-@@ -371,11 +369,9 @@ static void sprd_adi_set_wdt_rst_mode(void *p)
- #endif
- }
- 
--static int sprd_adi_restart(struct notifier_block *this, unsigned long mode,
--				  void *cmd, struct sprd_adi_wdg *wdg)
-+static int sprd_adi_restart(struct sprd_adi *sadi, unsigned long mode,
-+			    const char *cmd, struct sprd_adi_wdg *wdg)
- {
--	struct sprd_adi *sadi = container_of(this, struct sprd_adi,
--					     restart_handler);
- 	u32 val, reboot_mode = 0;
- 
- 	if (!cmd)
-@@ -449,8 +445,7 @@ static int sprd_adi_restart(struct notifier_block *this, unsigned long mode,
- 	return NOTIFY_DONE;
- }
- 
--static int sprd_adi_restart_sc9860(struct notifier_block *this,
--					   unsigned long mode, void *cmd)
-+static int sprd_adi_restart_sc9860(struct sys_off_data *data)
- {
- 	struct sprd_adi_wdg wdg = {
- 		.base = PMIC_WDG_BASE,
-@@ -459,7 +454,7 @@ static int sprd_adi_restart_sc9860(struct notifier_block *this,
- 		.wdg_clk = PMIC_CLK_EN,
- 	};
- 
--	return sprd_adi_restart(this, mode, cmd, &wdg);
-+	return sprd_adi_restart(data->cb_data, data->mode, data->cmd, &wdg);
- }
- 
- static void sprd_adi_hw_init(struct sprd_adi *sadi)
-@@ -591,9 +586,9 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	}
- 
- 	if (sadi->data->restart) {
--		sadi->restart_handler.notifier_call = sadi->data->restart;
--		sadi->restart_handler.priority = 128;
--		ret = register_restart_handler(&sadi->restart_handler);
-+		ret = devm_register_restart_handler(&pdev->dev,
-+						    sadi->data->restart,
-+						    sadi);
- 		if (ret) {
- 			dev_err(&pdev->dev, "can not register restart handler\n");
- 			goto put_ctlr;
-@@ -607,14 +602,6 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static void sprd_adi_remove(struct platform_device *pdev)
--{
--	struct spi_controller *ctlr = dev_get_drvdata(&pdev->dev);
--	struct sprd_adi *sadi = spi_controller_get_devdata(ctlr);
--
--	unregister_restart_handler(&sadi->restart_handler);
--}
--
- static struct sprd_adi_data sc9860_data = {
- 	.slave_offset = ADI_10BIT_SLAVE_OFFSET,
- 	.slave_addr_size = ADI_10BIT_SLAVE_ADDR_SIZE,
-@@ -658,7 +645,6 @@ static struct platform_driver sprd_adi_driver = {
- 		.of_match_table = sprd_adi_of_match,
- 	},
- 	.probe = sprd_adi_probe,
--	.remove_new = sprd_adi_remove,
- };
- module_platform_driver(sprd_adi_driver);
- 
+diff --git a/Documentation/netlink/specs/fou.yaml b/Documentation/netlink/specs/fou.yaml
+new file mode 100644
+index 0000000000000..266c386eedf3a
+--- /dev/null
++++ b/Documentation/netlink/specs/fou.yaml
+@@ -0,0 +1,128 @@
++name: fou
++
++protocol: genetlink-legacy
++
++doc: |
++  Foo-over-UDP.
++
++c-family-name: fou-genl-name
++c-version-name: fou-genl-version
++max-by-define: true
++kernel-policy: global
++
++definitions:
++  -
++    type: enum
++    name: encap_type
++    name-prefix: fou-encap-
++    enum-name:
++    entries: [ unspec, direct, gue ]
++
++attribute-sets:
++  -
++    name: fou
++    name-prefix: fou-attr-
++    attributes:
++      -
++        name: unspec
++        type: unused
++      -
++        name: port
++        type: u16
++        byte-order: big-endian
++      -
++        name: af
++        type: u8
++      -
++        name: ipproto
++        type: u8
++      -
++        name: type
++        type: u8
++      -
++        name: remcsum_nopartial
++        type: flag
++      -
++        name: local_v4
++        type: u32
++      -
++        name: local_v6
++        type: binary
++        checks:
++          min-len: 16
++      -
++        name: peer_v4
++        type: u32
++      -
++        name: peer_v6
++        type: binary
++        checks:
++          min-len: 16
++      -
++        name: peer_port
++        type: u16
++        byte-order: big-endian
++      -
++        name: ifindex
++        type: s32
++
++operations:
++  list:
++    -
++      name: unspec
++      doc: unused
++
++    -
++      name: add
++      doc: Add port.
++      attribute-set: fou
++
++      dont-validate: [ strict, dump ]
++      flags: [ admin-perm ]
++
++      do:
++        request: &all_attrs
++          attributes:
++            - port
++            - ipproto
++            - type
++            - remcsum_nopartial
++            - local_v4
++            - peer_v4
++            - local_v6
++            - peer_v6
++            - peer_port
++            - ifindex
++
++    -
++      name: del
++      doc: Delete port.
++      attribute-set: fou
++
++      dont-validate: [ strict, dump ]
++      flags: [ admin-perm ]
++
++      do:
++        request:  &select_attrs
++          attributes:
++          - af
++          - ifindex
++          - port
++          - peer_port
++          - local_v4
++          - peer_v4
++          - local_v6
++          - peer_v6
++
++    -
++      name: get
++      doc: Get tunnel info.
++      attribute-set: fou
++      dont-validate: [ strict, dump ]
++
++      do:
++        request: *select_attrs
++        reply: *all_attrs
++
++      dump:
++        reply: *all_attrs
 -- 
 2.51.0
 
