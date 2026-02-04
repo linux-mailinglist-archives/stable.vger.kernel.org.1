@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNdTOVBfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:36 +0100
+	id gNAbLzNpg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEBEE7C1B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBF3E93BD
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D13430FAB46
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A70C83020038
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF9941B34E;
-	Wed,  4 Feb 2026 14:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C343428851;
+	Wed,  4 Feb 2026 15:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bSdjK6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lujtk9dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEA3410D10;
-	Wed,  4 Feb 2026 14:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36D442884B;
+	Wed,  4 Feb 2026 15:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216782; cv=none; b=pboO12P0gVtTh+W5IhXczPHEnrQDzciha3NOaMKM4HhUxMvswT3/lkegEuYznBTaisWtpq0s7cjzbZ7febCEH4mJLy5Afw/CoEtF+DlkNJmts5rDqfqLNVlSaMpXwBqySA4wyGTT/d+pif7BEXdEmm9BHi4DCIduamKtmFxBc20=
+	t=1770217740; cv=none; b=lJ1nxEihswFPdAB4kvdzPrzSXVOdiJAtXFG69RKxOTE9sDaLGfQLNRd8SVSsYuLHUop5BODACoBqVNCkoRzTkWt/GYxdsMR9g8AOkSTbpb0J/H9BnwDyFHUV7NRqlA6hlAqgr+oCLEPCcKCoWvw9wbgFaL7MKsFQd/6GUKJefRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216782; c=relaxed/simple;
-	bh=A7jFytY3VROcsRnMmWsw6WKvKdd6KChKtW+hG6mwVYQ=;
+	s=arc-20240116; t=1770217740; c=relaxed/simple;
+	bh=bjxRVlM19aB2RZf5V5zaXk8DPYNQt6f+SsDiK7mcVns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=az0UZ/hIfvkTVoNsY0fqfPY52bOnwLQ75FI1n67ofoP4On5aSYIZM+jCrLmydlUGEC+T//8DSSsp+nBnG5Ig2vyM2qD2Vz7J612I+ig00JMG0GZoUNQQe68Ffu4gadhCJhjWoH46HxeERZhJXzhXwFCG4/kLb4j2TUWjaB+B7Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bSdjK6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB56DC19423;
-	Wed,  4 Feb 2026 14:53:01 +0000 (UTC)
+	 MIME-Version; b=AEmSXJpu+i+zd9K9U1+Z/5MHX+5zDQtr2ClK0Xpo3aY/WDzdWjJ1PJHeEErI6ovuUn1cdkfVJuCeCLy6ZWopoNByF9odKXlv43Vm7pO5j6naXiCKANYq6DoxDPVd7PmI5uLDLhpO0zNRQ1wZRVq0xWsrMNEyGz27QoZeOmieeTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lujtk9dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F47C19423;
+	Wed,  4 Feb 2026 15:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216782;
-	bh=A7jFytY3VROcsRnMmWsw6WKvKdd6KChKtW+hG6mwVYQ=;
+	s=korg; t=1770217739;
+	bh=bjxRVlM19aB2RZf5V5zaXk8DPYNQt6f+SsDiK7mcVns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bSdjK6sI6fIRtthu3uuL2p3ewJDDGdyBOhrtOf3yO5U50jPghaj8az7CvIq4AswJ
-	 0JQoyR+8MX/sV8/9hbopAR59FQTeM4BNgMYxE1X7mzmYHW5YspHMPV1JPJld1w6Jv+
-	 VgtoYFs/TxvrceUbQYuRczG9mE17zIzZnkLRma3o=
+	b=Lujtk9dkd9VrXPfZ0f/AloApN8EdLG/FJZnFEYcGRg82QoJWS4wpejsnfyJjBG4er
+	 v82c2oD/9dO/nCmY7FLL4VGj3vyu/GPNm9Col1QASgEoAZCStcDH/zq1F/mMJTgih/
+	 mEN0u8f6/L/pfKwB5SKW+a+LJQENfX78SrI5ihg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Shengwen Xiao <atzlinux@sina.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 030/206] USB: OHCI/UHCI: Add soft dependencies on ehci_platform
+	Mahesh Bandewar <maheshb@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 087/280] selftest/ptp: update ptp selftest to exercise the gettimex options
 Date: Wed,  4 Feb 2026 15:37:41 +0100
-Message-ID: <20260204143859.288510302@linuxfoundation.org>
+Message-ID: <20260204143912.789320824@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,125 +69,177 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,sina.com,loongson.cn,rowland.harvard.edu];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RSPAMD_URIBL_FAIL(0.00)[0.152.150.128:query timed out];
-	TAGGED_FROM(0.00)[bounces-213572-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213855-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[chenhuacai.loongson.cn:server fail,stable.kernel.org:server fail];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.152.150.128:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,harvard.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sina.com:email,loongson.cn:email]
-X-Rspamd-Queue-Id: 7FEBEE7C1B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0EBF3E93BD
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Mahesh Bandewar <maheshb@google.com>
 
-commit 01ef7f1b8713a78ab1a9512cf8096d2474c70633 upstream.
+[ Upstream commit 3d07b691ee707c00afaf365440975e81bb96cd9b ]
 
-Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
-loaded first") said that ehci-hcd should be loaded before ohci-hcd and
-uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
-dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
-pci, which is not enough and we may still see the warnings in boot log.
+With the inclusion of commit c259acab839e ("ptp/ioctl: support
+MONOTONIC{,_RAW} timestamps for PTP_SYS_OFFSET_EXTENDED") clock_gettime()
+now allows retrieval of pre/post timestamps for CLOCK_MONOTONIC and
+CLOCK_MONOTONIC_RAW timebases along with the previously supported
+CLOCK_REALTIME.
 
-To eliminate the warnings we should make ohci-hcd/uhci-hcd depend on
-ehci-hcd. But Alan said that the warning introduced by 9beeee6584b9aa4f
-is bogus, we only need the soft dependencies in the PCI level rather
-than the HCD level.
+This patch adds a command line option 'y' to the testptp program to
+choose one of the allowed timebases [realtime aka system, monotonic,
+and monotonic-raw).
 
-However, there is really another neccessary soft dependencies between
-ohci-platform/uhci-platform and ehci-platform, which is added by this
-patch. The boot logs are below.
-
-1. ohci-platform loaded before ehci-platform:
-
- ohci-platform 1f058000.usb: Generic Platform OHCI controller
- ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 1
- ohci-platform 1f058000.usb: irq 28, io mem 0x1f058000
- hub 1-0:1.0: USB hub found
- hub 1-0:1.0: 4 ports detected
- Warning! ehci_hcd should always be loaded before uhci_hcd and ohci_hcd, not after
- usb 1-4: new low-speed USB device number 2 using ohci-platform
- ehci-platform 1f050000.usb: EHCI Host Controller
- ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 2
- ehci-platform 1f050000.usb: irq 29, io mem 0x1f050000
- ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
- usb 1-4: device descriptor read/all, error -62
- hub 2-0:1.0: USB hub found
- hub 2-0:1.0: 4 ports detected
- usb 1-4: new low-speed USB device number 3 using ohci-platform
- input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb1/1-4/1-4:1.0/0003:10C4:8105.0001/input/input0
- hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
-
-2. ehci-platform loaded before ohci-platform:
-
- ehci-platform 1f050000.usb: EHCI Host Controller
- ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 1
- ehci-platform 1f050000.usb: irq 28, io mem 0x1f050000
- ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
- hub 1-0:1.0: USB hub found
- hub 1-0:1.0: 4 ports detected
- ohci-platform 1f058000.usb: Generic Platform OHCI controller
- ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 2
- ohci-platform 1f058000.usb: irq 29, io mem 0x1f058000
- hub 2-0:1.0: USB hub found
- hub 2-0:1.0: 4 ports detected
- usb 2-4: new low-speed USB device number 2 using ohci-platform
- input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb2/2-4/2-4:1.0/0003:10C4:8105.0001/input/input0
- hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
-
-In the later case, there is no re-connection for USB-1.0/1.1 devices,
-which is expected.
-
-Cc: stable <stable@kernel.org>
-Reported-by: Shengwen Xiao <atzlinux@sina.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20260112084802.1995923-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mahesh Bandewar <maheshb@google.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20241003101506.769418-1-maheshb@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ohci-platform.c |    1 +
- drivers/usb/host/uhci-platform.c |    1 +
- 2 files changed, 2 insertions(+)
+ tools/testing/selftests/ptp/testptp.c | 62 ++++++++++++++++++++++++---
+ 1 file changed, 57 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/host/ohci-platform.c
-+++ b/drivers/usb/host/ohci-platform.c
-@@ -359,3 +359,4 @@ MODULE_DESCRIPTION(DRIVER_DESC);
- MODULE_AUTHOR("Hauke Mehrtens");
- MODULE_AUTHOR("Alan Stern");
- MODULE_LICENSE("GPL");
-+MODULE_SOFTDEP("pre: ehci_platform");
---- a/drivers/usb/host/uhci-platform.c
-+++ b/drivers/usb/host/uhci-platform.c
-@@ -190,3 +190,4 @@ static struct platform_driver uhci_platf
- 		.of_match_table = platform_uhci_ids,
- 	},
- };
-+MODULE_SOFTDEP("pre: ehci_platform");
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index b609efbdea55d..2323a3329b298 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -146,6 +146,7 @@ static void usage(char *progname)
+ 		" -T val     set the ptp clock time to 'val' seconds\n"
+ 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
+ 		" -X         get a ptp clock cross timestamp\n"
++		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
+ 		" -z         test combinations of rising/falling external time stamp flags\n",
+ 		progname, PTP_MAX_SAMPLES);
+ }
+@@ -189,6 +190,7 @@ int main(int argc, char *argv[])
+ 	int seconds = 0;
+ 	int settime = 0;
+ 	int channel = -1;
++	clockid_t ext_clockid = CLOCK_REALTIME;
+ 
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -198,7 +200,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -278,6 +280,21 @@ int main(int argc, char *argv[])
+ 		case 'X':
+ 			getcross = 1;
+ 			break;
++		case 'y':
++			if (!strcasecmp(optarg, "realtime"))
++				ext_clockid = CLOCK_REALTIME;
++			else if (!strcasecmp(optarg, "monotonic"))
++				ext_clockid = CLOCK_MONOTONIC;
++			else if (!strcasecmp(optarg, "monotonic-raw"))
++				ext_clockid = CLOCK_MONOTONIC_RAW;
++			else {
++				fprintf(stderr,
++					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
++					optarg);
++				return -1;
++			}
++			break;
++
+ 		case 'z':
+ 			flagtest = 1;
+ 			break;
+@@ -564,6 +581,7 @@ int main(int argc, char *argv[])
+ 		}
+ 
+ 		soe->n_samples = getextended;
++		soe->clockid = ext_clockid;
+ 
+ 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
+ 			perror("PTP_SYS_OFFSET_EXTENDED");
+@@ -572,12 +590,46 @@ int main(int argc, char *argv[])
+ 			       getextended);
+ 
+ 			for (i = 0; i < getextended; i++) {
+-				printf("sample #%2d: system time before: %lld.%09u\n",
+-				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
++				switch (ext_clockid) {
++				case CLOCK_REALTIME:
++					printf("sample #%2d: real time before: %lld.%09u\n",
++					       i, soe->ts[i][0].sec,
++					       soe->ts[i][0].nsec);
++					break;
++				case CLOCK_MONOTONIC:
++					printf("sample #%2d: monotonic time before: %lld.%09u\n",
++					       i, soe->ts[i][0].sec,
++					       soe->ts[i][0].nsec);
++					break;
++				case CLOCK_MONOTONIC_RAW:
++					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
++					       i, soe->ts[i][0].sec,
++					       soe->ts[i][0].nsec);
++					break;
++				default:
++					break;
++				}
+ 				printf("            phc time: %lld.%09u\n",
+ 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
+-				printf("            system time after: %lld.%09u\n",
+-				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
++				switch (ext_clockid) {
++				case CLOCK_REALTIME:
++					printf("            real time after: %lld.%09u\n",
++					       soe->ts[i][2].sec,
++					       soe->ts[i][2].nsec);
++					break;
++				case CLOCK_MONOTONIC:
++					printf("            monotonic time after: %lld.%09u\n",
++					       soe->ts[i][2].sec,
++					       soe->ts[i][2].nsec);
++					break;
++				case CLOCK_MONOTONIC_RAW:
++					printf("            monotonic-raw time after: %lld.%09u\n",
++					       soe->ts[i][2].sec,
++					       soe->ts[i][2].nsec);
++					break;
++				default:
++					break;
++				}
+ 			}
+ 		}
+ 
+-- 
+2.51.0
+
 
 
 
