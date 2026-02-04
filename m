@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-213441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFcZCiJcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:02 +0100
+	id iHDCJpFjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A54DE75F0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8636E84BD
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9829C300EF97
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6749F31296F6
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC4D274B5F;
-	Wed,  4 Feb 2026 14:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBA241C30D;
+	Wed,  4 Feb 2026 14:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERo0ASil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdNiuk7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CDD1C5D77;
-	Wed,  4 Feb 2026 14:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04BE41C305;
+	Wed,  4 Feb 2026 14:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216348; cv=none; b=BNg5/6+YClyDogozVPfEvf58oikxIbFEgYrMB/Jr3R0SU6C/dsSWdlnCUY+MvqaPgGsd+RZOO4eF8qSKnRpeNqpWkle3q0JJHjLdFqMec5YKTCcQ8SdJICbaeE4sUuSUUDDN3eTnz4FRkviSvx6luSPi/c102AwZfAb87Q0ZAPI=
+	t=1770217140; cv=none; b=DBqaqIevIJBBniKGzKGcTVCfiQNQ536KQhX/PW3oCk7o+8mlxoPZ+S7pDEr/5YjkLJGCnRoYzdYh7v8WszeAIjFeFk4qvpZG+FYPU2hRX6xiT85ba9KZEzk3ZJaGvuYmIKijbG4Ry9xaN4M/DMU4dOfy5L/vmblpLFOaPxpG2xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216348; c=relaxed/simple;
-	bh=EIS1rme7bdlgErepST7FVChKkLLpk5n3Cxx9vP8BwMI=;
+	s=arc-20240116; t=1770217140; c=relaxed/simple;
+	bh=ViaJJA8cS9Zn15SPF0Ps2e+ezusPp5sKmnY6qkL5JLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4LyhRFpTCRcFb/94KeljmWiQG/8dFQ4eRE4x8eR/MyC+CRzF2BwV1jQ6L5Q0vheD/aRZ/S+h5Zi0ZsMGGBInRba0E5nZJetlRL5+qvnP1otS9kYlzcOIknc4OhOiC4BBm81OeCUb4XrnpDUiAcnAWuuQAVSjOYVROJ3A4+AGUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERo0ASil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496DDC4CEF7;
-	Wed,  4 Feb 2026 14:45:48 +0000 (UTC)
+	 MIME-Version; b=OEXViib/cjRdEnb3hBDTgaHFIizQvBWX9Zi3xD/SUPNzjuYrdb7MEUDDjwrP2+68Z79F1r0MrzQXSplz3ccnOSfYOFp5ZeXa3vBW7QRXO1CWhhjLhpjM2G/O1kUBXKAiGhkHfGGi3KitICf63FLB5otSQF+VVICqkIshnVj/KDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdNiuk7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C4CC4CEF7;
+	Wed,  4 Feb 2026 14:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216348;
-	bh=EIS1rme7bdlgErepST7FVChKkLLpk5n3Cxx9vP8BwMI=;
+	s=korg; t=1770217140;
+	bh=ViaJJA8cS9Zn15SPF0Ps2e+ezusPp5sKmnY6qkL5JLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERo0ASilAV4lNqOQQSsEgBjNDmnz484aAYDM+uprI1i9WAgqmscDPkb7swkVc7R5t
-	 HDWwR7EWkXcekhgXD2PHIcmuTj6wbZQG54VyHze+QKqgmLIjljAzWpkz0JX1ZdoRyI
-	 ZfMu0NtweOiSI+UZHZrpYhzoueMtC6KqFJhcyiq0=
+	b=pdNiuk7A3KDe+KhhgjeeY58WsmYCdIdUZMibUMJkjUQK5frAtInqTqnHX7JX255yL
+	 Psz9V3dXGisuCID5B6Tb7RuZiXlj7iEukp5bbdJv39FuhqofPe/eKjTbF4mGtrCIlw
+	 VyEY/L/gwWlPgOuDyZJBpCFBgQlW2zQRK0zxSuP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cheng-Yu Lee <cylee12@realtek.com>,
+	Yu-Chun Lin <eleanor.lin@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/161] l2tp: avoid one data-race in l2tp_tunnel_del_work()
+Subject: [PATCH 5.15 092/206] regmap: Fix race condition in hwspinlock irqsave routine
 Date: Wed,  4 Feb 2026 15:38:43 +0100
-Message-ID: <20260204143853.919806996@linuxfoundation.org>
+Message-ID: <20260204143901.521872302@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,118 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213441-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213678-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7312e82745f7fa2526db];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 7A54DE75F0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,realtek.com:email]
+X-Rspamd-Queue-Id: E8636E84BD
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Cheng-Yu Lee <cylee12@realtek.com>
 
-[ Upstream commit 7a29f6bf60f2590fe5e9c4decb451e19afad2bcf ]
+[ Upstream commit 4b58aac989c1e3fafb1c68a733811859df388250 ]
 
-We should read sk->sk_socket only when dealing with kernel sockets.
+Previously, the address of the shared member '&map->spinlock_flags' was
+passed directly to 'hwspin_lock_timeout_irqsave'. This creates a race
+condition where multiple contexts contending for the lock could overwrite
+the shared flags variable, potentially corrupting the state for the
+current lock owner.
 
-syzbot reported the following data-race:
+Fix this by using a local stack variable 'flags' to store the IRQ state
+temporarily.
 
-BUG: KCSAN: data-race in l2tp_tunnel_del_work / sk_common_release
-
-write to 0xffff88811c182b20 of 8 bytes by task 5365 on cpu 0:
-  sk_set_socket include/net/sock.h:2092 [inline]
-  sock_orphan include/net/sock.h:2118 [inline]
-  sk_common_release+0xae/0x230 net/core/sock.c:4003
-  udp_lib_close+0x15/0x20 include/net/udp.h:325
-  inet_release+0xce/0xf0 net/ipv4/af_inet.c:437
-  __sock_release net/socket.c:662 [inline]
-  sock_close+0x6b/0x150 net/socket.c:1455
-  __fput+0x29b/0x650 fs/file_table.c:468
-  ____fput+0x1c/0x30 fs/file_table.c:496
-  task_work_run+0x131/0x1a0 kernel/task_work.c:233
-  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
-  __exit_to_user_mode_loop kernel/entry/common.c:44 [inline]
-  exit_to_user_mode_loop+0x1fe/0x740 kernel/entry/common.c:75
-  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
-  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
-  syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
-  syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
-  do_syscall_64+0x1e1/0x2b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff88811c182b20 of 8 bytes by task 827 on cpu 1:
-  l2tp_tunnel_del_work+0x2f/0x1a0 net/l2tp/l2tp_core.c:1418
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0x4ce/0x9d0 kernel/workqueue.c:3340
-  worker_thread+0x582/0x770 kernel/workqueue.c:3421
-  kthread+0x489/0x510 kernel/kthread.c:463
-  ret_from_fork+0x149/0x290 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-value changed: 0xffff88811b818000 -> 0x0000000000000000
-
-Fixes: d00fa9adc528 ("l2tp: fix races with tunnel socket close")
-Reported-by: syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6968b029.050a0220.58bed.0016.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20260115092139.3066180-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8698b9364710 ("regmap: Add hardware spinlock support")
+Signed-off-by: Cheng-Yu Lee <cylee12@realtek.com>
+Co-developed-by: Yu-Chun Lin <eleanor.lin@realtek.com>
+Signed-off-by: Yu-Chun Lin <eleanor.lin@realtek.com>
+Link: https://patch.msgid.link/20260109032633.8732-1-eleanor.lin@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/regmap/regmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index b6dcfca740c1c..83615f5968dd5 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1252,8 +1252,6 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 35cfbec6bf9ac..e1380b08685f4 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -473,9 +473,11 @@ static void regmap_lock_hwlock_irq(void *__map)
+ static void regmap_lock_hwlock_irqsave(void *__map)
  {
- 	struct l2tp_tunnel *tunnel = container_of(work, struct l2tp_tunnel,
- 						  del_work);
--	struct sock *sk = tunnel->sock;
--	struct socket *sock = sk->sk_socket;
+ 	struct regmap *map = __map;
++	unsigned long flags = 0;
  
- 	l2tp_tunnel_closeall(tunnel);
+ 	hwspin_lock_timeout_irqsave(map->hwlock, UINT_MAX,
+-				    &map->spinlock_flags);
++				    &flags);
++	map->spinlock_flags = flags;
+ }
  
-@@ -1261,6 +1259,8 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
- 	 * the sk API to release it here.
- 	 */
- 	if (tunnel->fd < 0) {
-+		struct socket *sock = tunnel->sock->sk_socket;
-+
- 		if (sock) {
- 			kernel_sock_shutdown(sock, SHUT_RDWR);
- 			sock_release(sock);
+ static void regmap_unlock_hwlock(void *__map)
 -- 
 2.51.0
 
