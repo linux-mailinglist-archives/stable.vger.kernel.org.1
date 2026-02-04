@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-213771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFs5DnZkg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:34 +0100
+	id mK4yLAVkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A2DE86C9
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FAE4E85A1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F6C7316830F
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:11:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C34330586E0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7872B421EEF;
-	Wed,  4 Feb 2026 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B6C423152;
+	Wed,  4 Feb 2026 15:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd/OE2OW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVWlSid8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA0B421EF0;
-	Wed,  4 Feb 2026 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6527D42314E;
+	Wed,  4 Feb 2026 15:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217455; cv=none; b=sJpUGuzzfD1AbyQ6YzG7q3fuE49pEclbjnMn4UAAFkLEpcGaIIJwKFY5+YlDKUtpeq2DoOfczXTS7x7hDBhGnZyZPlqhZ13aCsCPgywKRnOueMB2GbicK3DoxAlLDlxlITe17Is9RYlV8tfmWzaYWXa7mriiJWZVvjwI15R0KdE=
+	t=1770217493; cv=none; b=Vd2gszo92NtYBqe13NsxARYx70ftRJOcPbux4GCvUQcs0XJlSARCvUeTiw2qcvIT371jlKEv79xr21wKcFgl/WzQETXzZnWtpmmzH5SbsgDA7xEhYFL855X093iI5Y/WvA/ZdRjU4YIvFZiUgKzRX2gLQH8J+/TTW84RtkUXC3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217455; c=relaxed/simple;
-	bh=toPw79wJtNUqaIWqahcYgFxTMMVWRxZOSnDq4jGA7As=;
+	s=arc-20240116; t=1770217493; c=relaxed/simple;
+	bh=2LE8zAJ+/vC3Fv0WquBjOQZxyQMlxxUXzZSWnIftcQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBHTU3+2Y0ukUtKBS6RksQI++iShXtHo64Ll3KgRYKME2VQWjMD6EgclO/vii14wti11FDVtkUQCNG3IU5PDssesTTsA/lbRFP8mNAf2i65AIAQDLIOQqL6rFGgmCvZ0PqLcMVi84f8y2BH1ZRwvWzIf2XcYGwLq/ZHDHNnz0Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd/OE2OW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49ADC4CEF7;
-	Wed,  4 Feb 2026 15:04:14 +0000 (UTC)
+	 MIME-Version; b=dRuZl8NhV3ug2Hl5MiwQYP2JORAd1jAB6lAgLLwcn9C7FwM8Stlp8vklvEqkrOMCRidgnACd5Wkwdf6/rz22sx6+e+gZk1YYi3u1OwuQISpqdTpw7HfWEQGf0ywTUZJpmv6KBk5PSM6hlwYEKd5R2cOJUZ4aHzBDVE1U/oyL/iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVWlSid8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE687C4CEF7;
+	Wed,  4 Feb 2026 15:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217455;
-	bh=toPw79wJtNUqaIWqahcYgFxTMMVWRxZOSnDq4jGA7As=;
+	s=korg; t=1770217493;
+	bh=2LE8zAJ+/vC3Fv0WquBjOQZxyQMlxxUXzZSWnIftcQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jd/OE2OWtiRyF2KDwSySI5xncc1uEUrmsSf92h7dDLVeKIepVX4fOFwfcvoI7vG6/
-	 EvTljgj1dYYoIHLceRE4G+GDIL0vqp0eC45dtWmkHQBw6gLGxGp7cq38X4pMz4xWar
-	 5MW5ZO4OE3+FxmZvi2JFQ6aaE0X/hTrlYKpNZQa0=
+	b=xVWlSid8o6VMpqNvxIpY767W6hTbAfhdZiVDOct7DK0hVxS4dXLfqZs0gYNtFfy0D
+	 wrmPgOX8VxAvB6uhYBGFjlGVwSPBCi/KCXYizU9JxovTZ9ZacEjL22XHbceaNDAQ/B
+	 slsBaMVSr9iLgsgMw3DyBSvI28PmKs+Q4eK8WzHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/280] ipv4: ip_gre: make ipgre_header() robust
-Date: Wed,  4 Feb 2026 15:36:27 +0100
-Message-ID: <20260204143910.105520045@linuxfoundation.org>
+Subject: [PATCH 6.1 014/280] vsock/test: add a final full barrier after run all tests
+Date: Wed,  4 Feb 2026 15:36:28 +0100
+Message-ID: <20260204143910.143907528@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -66,120 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213771-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213782-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7c134e1c3aa3283790b9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,spinics.net:url]
-X-Rspamd-Queue-Id: B9A2DE86C9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4FAE4E85A1
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit e67c577d89894811ce4dcd1a9ed29d8b63476667 ]
+[ Upstream commit c39a6a277e0e67ffff6a8efcbbf7e7e23ce9e38c ]
 
-Analog to commit db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
+If the last test fails, the other side still completes correctly,
+which could lead to false positives.
 
-Over the years, syzbot found many ways to crash the kernel
-in ipgre_header() [1].
+Let's add a final barrier that ensures that the last test has finished
+correctly on both sides, but also that the two sides agree on the
+number of tests to be performed.
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
-
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ipgre device.
-
-[1]
-skbuff: skb_under_panic: text:ffffffff89ea3cb7 len:2030915468 put:2030915372 head:ffff888058b43000 data:ffff887fdfa6e194 tail:0x120 end:0x6c0 dev:team0
- kernel BUG at net/core/skbuff.c:213 !
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 1322 Comm: kworker/1:9 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: mld mld_ifc_work
- RIP: 0010:skb_panic+0x157/0x160 net/core/skbuff.c:213
-Call Trace:
- <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ipgre_header+0x67/0x290 net/ipv4/ip_gre.c:897
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Reported-by: syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
-Closes: https://www.spinics.net/lists/netdev/msg1147302.html
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260108190214.1667040-1-edumazet@google.com
+Fixes: 2f65b44e199c ("VSOCK: add full barrier between test cases")
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260108114419.52747-1-sgarzare@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/testing/vsock/util.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 2c311ed84a3b3..b90241aff93c3 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -854,10 +854,17 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 			const void *daddr, const void *saddr, unsigned int len)
- {
- 	struct ip_tunnel *t = netdev_priv(dev);
--	struct iphdr *iph;
- 	struct gre_base_hdr *greh;
-+	struct iphdr *iph;
-+	int needed;
-+
-+	needed = t->hlen + sizeof(*iph);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
+diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+index 2acbb7703c6a0..259d33ae6293b 100644
+--- a/tools/testing/vsock/util.c
++++ b/tools/testing/vsock/util.c
+@@ -360,6 +360,18 @@ void run_tests(const struct test_case *test_cases,
  
--	iph = skb_push(skb, t->hlen + sizeof(*iph));
-+	iph = skb_push(skb, needed);
- 	greh = (struct gre_base_hdr *)(iph+1);
- 	greh->flags = gre_tnl_flags_to_gre_flags(t->parms.o_flags);
- 	greh->protocol = htons(type);
+ 		printf("ok\n");
+ 	}
++
++	printf("All tests have been executed. Waiting other peer...");
++	fflush(stdout);
++
++	/*
++	 * Final full barrier, to ensure that all tests have been run and
++	 * that even the last one has been successful on both sides.
++	 */
++	control_writeln("COMPLETED");
++	control_expectln("COMPLETED");
++
++	printf("ok\n");
+ }
+ 
+ void list_tests(const struct test_case *test_cases)
 -- 
 2.51.0
 
