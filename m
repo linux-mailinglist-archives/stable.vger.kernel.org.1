@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGkfJ4Vig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:17 +0100
+	id yL41Fu9jg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3644E8318
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758F4E8555
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B79B93116E9B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B3A23047009
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2706F41C2E7;
-	Wed,  4 Feb 2026 14:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014D0426EDD;
+	Wed,  4 Feb 2026 15:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBE5m485"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yi89KBSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE91A41B379;
-	Wed,  4 Feb 2026 14:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760F426ED8;
+	Wed,  4 Feb 2026 15:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216891; cv=none; b=kavbhWPLKawZpZuxLAEZjZqsBV7kRc1T6kX4siWVS6N5Rq1WrrkT2CJfVmJ+RVfR48Sev4c/gTVe7NdUxN22iiDOpIBarnNBdXLGZ01xOmHBrLq+pMixUz2/z5RiR8o4viqU0+GFnr2Hm/P1R/ft44woGNjEBAPkXgTdviYDm2s=
+	t=1770217643; cv=none; b=h+H1GCouP4CliagnafbVAje/obItIZPvo5J0kDohzNRZ3ugrOT0KCKb7ek8LrfRe4svSviDALQA+1PP6HB4U0bsfF9yoVpFlcqBwcjsUVnXEk5COYxYXfGN/3iEGP5nij/SPTkqdsWkfQQep4ilh7A2OvDoRcY6N0om5ZSpzU2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216891; c=relaxed/simple;
-	bh=SedTDsa8ebpaI+npEa5HRGvLalRwXIzZI0U9sGcqBbY=;
+	s=arc-20240116; t=1770217643; c=relaxed/simple;
+	bh=aSY8GlUWf3QsJCmI/MZG+OQIdlqgPyhwUykqYKPVRb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5a9qG/sJQXmbCfDfMTaKKNFxDfT44NDXz8KXOwXs3V34qeZ15CnEzi6AEgc7vFWWlOMspZHJbzdz6kkqFcyr1m2Qr97LPjSi3VtvSgomZnY2stUaCX38lqDgFHxZUcJftKG70nL/YJMuimA8ElMS//V6/ZDwZX8qb6CRzfuOMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBE5m485; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605EFC116C6;
-	Wed,  4 Feb 2026 14:54:51 +0000 (UTC)
+	 MIME-Version; b=Z87okUYJCBKLEvdYzEzPr7zNIgWkSlbkb4tJABKsdENFyzW5IQsp73s0GC/d4kbJyezaDF1do7A4EF4KtUYZtDaKVWZqprtZfMe8TOznVoxb5v9q6V7qmUJVCfeqG+ogNk2l81wTfaRI+H9jaDLubKWKmuUyE93DjXYD5VZjID0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yi89KBSo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C3CC116C6;
+	Wed,  4 Feb 2026 15:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216891;
-	bh=SedTDsa8ebpaI+npEa5HRGvLalRwXIzZI0U9sGcqBbY=;
+	s=korg; t=1770217643;
+	bh=aSY8GlUWf3QsJCmI/MZG+OQIdlqgPyhwUykqYKPVRb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBE5m485uPHRn/v7jCvczk+XnS69ma7yhQIzKS2ptLhWpvRMuuYcieIJMVq27FQOw
-	 D9djAdZe8wlzt+Epxf+9YB2lVROSN8FIe4wuep9wFmPL9FfluT6cYJLS4dQ+8+FGXk
-	 MMTbD62On/yfHyCK/Yf4oY+jio/WPMHTYdy293NY=
+	b=yi89KBSo9mhoRexUvcgSps86SDJ00VZAMb30OacX8dl8IEqtFRUKa+9YKHpcHikBM
+	 IzXyYPv7vtATg5sQkmmTs+XO7U+aMASeRV2Wy8WUAp4s4oQA/JhfBBaca+95w191Ye
+	 M8pw6B19dM1GPfsEKbiOdhn46rIGzc17Nr2TkO/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/206] phy: stm32-usphyc: Fix off by one in probe()
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 076/280] dmaengine: ti: k3-udma: fix device leak on udma lookup
 Date: Wed,  4 Feb 2026 15:37:30 +0100
-Message-ID: <20260204143858.895216872@linuxfoundation.org>
+Message-ID: <20260204143912.391114629@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213605-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213827-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,50 +92,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,st.com:email]
-X-Rspamd-Queue-Id: E3644E8318
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 758F4E8555
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit cabd25b57216ddc132efbcc31f972baa03aad15a ]
+commit 430f7803b69cd5e5694e5dfc884c6628870af36e upstream.
 
-The "index" variable is used as an index into the usbphyc->phys[] array
-which has usbphyc->nphys elements.  So if it is equal to usbphyc->nphys
-then it is one element out of bounds.  The "index" comes from the
-device tree so it's data that we trust and it's unlikely to be wrong,
-however it's obviously still worth fixing the bug.  Change the > to >=.
+Make sure to drop the reference taken when looking up the UDMA platform
+device.
 
-Fixes: 94c358da3a05 ("phy: stm32: add support for STM32 USB PHY Controller (USBPHYC)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/aTfHcMJK1wFVnvEe@stanley.mountain
+Note that holding a reference to a platform device does not prevent its
+driver data from going away so there is no point in keeping the
+reference after the lookup helper returns.
+
+Fixes: d70241913413 ("dmaengine: ti: k3-udma: Add glue layer for non DMAengine users")
+Fixes: 1438cde8fe9c ("dmaengine: ti: k3-udma: add missing put_device() call in of_xudma_dev_get()")
+Cc: stable@vger.kernel.org	# 5.6: 1438cde8fe9c
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-17-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/st/phy-stm32-usbphyc.c | 2 +-
+ drivers/dma/ti/k3-udma-private.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/st/phy-stm32-usbphyc.c b/drivers/phy/st/phy-stm32-usbphyc.c
-index 27f7e2292cf0b..1e3f73cee9efd 100644
---- a/drivers/phy/st/phy-stm32-usbphyc.c
-+++ b/drivers/phy/st/phy-stm32-usbphyc.c
-@@ -530,7 +530,7 @@ static int stm32_usbphyc_probe(struct platform_device *pdev)
- 		}
+--- a/drivers/dma/ti/k3-udma-private.c
++++ b/drivers/dma/ti/k3-udma-private.c
+@@ -40,9 +40,9 @@ struct udma_dev *of_xudma_dev_get(struct
+ 	}
  
- 		ret = of_property_read_u32(child, "reg", &index);
--		if (ret || index > usbphyc->nphys) {
-+		if (ret || index >= usbphyc->nphys) {
- 			dev_err(&phy->dev, "invalid reg property: %d\n", ret);
- 			if (!ret)
- 				ret = -EINVAL;
--- 
-2.51.0
-
+ 	ud = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!ud) {
+ 		pr_debug("UDMA has not been probed\n");
+-		put_device(&pdev->dev);
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 	}
+ 
 
 
 
