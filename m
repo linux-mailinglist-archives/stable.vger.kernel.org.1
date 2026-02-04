@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BERBulkg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:29 +0100
+	id FdTmJtJdg2kHmAMAu9opvQ
+	(envelope-from <stable+bounces-213604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:55:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FC3E8805
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B04E7958
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 394B63060976
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 42FCB3012874
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C7941C311;
-	Wed,  4 Feb 2026 15:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF7541B367;
+	Wed,  4 Feb 2026 14:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6C2mWea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+yOhqW2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE33928853A;
-	Wed,  4 Feb 2026 15:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B7841B34E;
+	Wed,  4 Feb 2026 14:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217821; cv=none; b=VY5osKq1BwjntnVgIXtb01Udpsj2xnrLL09Iaxbis4qC0FHMoYzHTQmPeafU0VlPlyk6unRiv2kJDCZdqIexQDY1sK/WA0IE+KB3Uv3lrqqvN0f49XMWAe7CiEa+OpQsPccmB4EOuukxiFrOTAzMlGNuHKJOKddopQYG6m06AKU=
+	t=1770216889; cv=none; b=Sj1HGpBLoPrGVtJFAcJF1rbM7S2jMpDCHN0KstvRvyOKa6hdl+6hzeBmpsGTnz18YsQnwY5phm/a1WgLDlBMgsapcPAipyJKljL/FycgbCHuMBEed6KycR40ZIoemK1BfLCoLxoA2gZPruh5ClbTiEBDqj5Mb/I+72O890BXdCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217821; c=relaxed/simple;
-	bh=lTDa1fEUeQW2GdWJ6R7BuLAlTtq+iOfTpyvDWZA+wIo=;
+	s=arc-20240116; t=1770216889; c=relaxed/simple;
+	bh=TAmvoTHtwkOnA53lmXkZHpcJKU3LRm2JaYnq7mi/tb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6fiawA5x8/n/5z6muuKqcm+0NGAkVu0f3fSPikgcuyCDKz6Y5a62LjBnN6/iHVoVCdSxu5hblmVvzkwygZ01f5FlD+W1enH0OpCaSkaVWShF7JBQFhHmOQaFfyp4TFEtMyFJnAQNz717k4PkMTaN0c7sHomJfDNB6xIzXpDhCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6C2mWea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68352C4CEF7;
-	Wed,  4 Feb 2026 15:10:21 +0000 (UTC)
+	 MIME-Version; b=HUm9bwaac5s8/EnP5AIeoWx8JUG3h8+mAow/l8vk8alaguW6uM+TZrK3Ghcvom1XMSg+zwVz1lbZOYGPOpzo+wSul0zQ2x65qRv78wY6QBVAlmjpt57yD6SHys4+tuol8guxeV+7uOo9lp/ZA2T7In7WU71mvkeA0xCGEf3RYGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+yOhqW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E0EC4CEF7;
+	Wed,  4 Feb 2026 14:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217821;
-	bh=lTDa1fEUeQW2GdWJ6R7BuLAlTtq+iOfTpyvDWZA+wIo=;
+	s=korg; t=1770216888;
+	bh=TAmvoTHtwkOnA53lmXkZHpcJKU3LRm2JaYnq7mi/tb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6C2mWeafNL3j5v5STh8S0+ouhLealUfIsXVC/Zyp8Pt0oOiP0kegoa9aVgBS2w0I
-	 bZxMbvUFg+nWhlEzT8qWr/5mfwJAhiaKxRFVu8E90yc94ah6baw2ybpo+IkvgsvJSg
-	 zj576grs0fYeMpjTfkq6LYqYkPweB34+0WxGZNMs=
+	b=P+yOhqW2paGeiz+SUFnrWamGwNlU2z79ZS6Dp/pkrW4CuCWp8wGMeNNNfD6QTOWV7
+	 AsTu38P/YMsB4y1IVUGwW++RIi7uhU7kHRgLP0LyT23DbWEH4yXOayDXMYzgR/T+Gu
+	 yZAjoSkf7VyT2vk+cndxTFBEoQR3Zc4TPlcU7DbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Maftei <alex.maftei@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/280] selftests/ptp: Add -X option for testing PTP_SYS_OFFSET_PRECISE
+	Wayne Chang <waynec@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 028/206] phy: tegra: xusb: Explicitly configure HS_DISCON_LEVEL to 0x7
 Date: Wed,  4 Feb 2026 15:37:39 +0100
-Message-ID: <20260204143912.717506242@linuxfoundation.org>
+Message-ID: <20260204143859.217687166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,121 +78,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213880-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213604-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C7FC3E8805
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D0B04E7958
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Maftei <alex.maftei@amd.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit 3cf119ad5dc2b5c11385106d6d0ba86fbb47324c ]
+commit b246caa68037aa495390a60d080acaeb84f45fff upstream.
 
-The -X option was chosen because X looks like a cross, and the underlying
-callback is 'get cross timestamp'.
+The USB2 Bias Pad Control register manages analog parameters for signal
+detection. Previously, the HS_DISCON_LEVEL relied on hardware reset
+values, which may lead to the detection failure.
 
-Signed-off-by: Alex Maftei <alex.maftei@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Explicitly configure HS_DISCON_LEVEL to 0x7. This ensures the disconnect
+threshold is sufficient to guarantee reliable detection.
+
+Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Link: https://patch.msgid.link/20251212032116.768307-1-waynec@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 31 ++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ drivers/phy/tegra/xusb-tegra186.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 2db6ff0316e7a..863699434296a 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -144,6 +144,7 @@ static void usage(char *progname)
- 		" -t val     shift the ptp clock time by 'val' seconds\n"
- 		" -T val     set the ptp clock time to 'val' seconds\n"
- 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
-+		" -X         get a ptp clock cross timestamp\n"
- 		" -z         test combinations of rising/falling external time stamp flags\n",
- 		progname, PTP_MAX_SAMPLES);
- }
-@@ -160,6 +161,7 @@ int main(int argc, char *argv[])
- 	struct ptp_clock_time *pct;
- 	struct ptp_sys_offset *sysoff;
- 	struct ptp_sys_offset_extended *soe;
-+	struct ptp_sys_offset_precise *xts;
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -84,6 +84,7 @@
+ #define XUSB_PADCTL_USB2_BIAS_PAD_CTL0		0x284
+ #define  BIAS_PAD_PD				BIT(11)
+ #define  HS_SQUELCH_LEVEL(x)			(((x) & 0x7) << 0)
++#define  HS_DISCON_LEVEL(x)			(((x) & 0x7) << 3)
  
- 	char *progname;
- 	unsigned int i;
-@@ -179,6 +181,7 @@ int main(int argc, char *argv[])
- 	int list_pins = 0;
- 	int pct_offset = 0;
- 	int getextended = 0;
-+	int getcross = 0;
- 	int n_samples = 0;
- 	int pin_index = -1, pin_func;
- 	int pps = -1;
-@@ -193,7 +196,7 @@ int main(int argc, char *argv[])
+ #define XUSB_PADCTL_USB2_BIAS_PAD_CTL1		0x288
+ #define  USB2_TRK_START_TIMER(x)		(((x) & 0x7f) << 12)
+@@ -601,6 +602,8 @@ static void tegra186_utmi_bias_pad_power
+ 	value &= ~BIAS_PAD_PD;
+ 	value &= ~HS_SQUELCH_LEVEL(~0);
+ 	value |= HS_SQUELCH_LEVEL(priv->calib.hs_squelch);
++	value &= ~HS_DISCON_LEVEL(~0);
++	value |= HS_DISCON_LEVEL(0x7);
+ 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL0);
  
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -267,6 +270,9 @@ int main(int argc, char *argv[])
- 				return -1;
- 			}
- 			break;
-+		case 'X':
-+			getcross = 1;
-+			break;
- 		case 'z':
- 			flagtest = 1;
- 			break;
-@@ -573,6 +579,29 @@ int main(int argc, char *argv[])
- 		free(soe);
- 	}
- 
-+	if (getcross) {
-+		xts = calloc(1, sizeof(*xts));
-+		if (!xts) {
-+			perror("calloc");
-+			return -1;
-+		}
-+
-+		if (ioctl(fd, PTP_SYS_OFFSET_PRECISE, xts)) {
-+			perror("PTP_SYS_OFFSET_PRECISE");
-+		} else {
-+			puts("system and phc crosstimestamping request okay");
-+
-+			printf("device time: %lld.%09u\n",
-+			       xts->device.sec, xts->device.nsec);
-+			printf("system time: %lld.%09u\n",
-+			       xts->sys_realtime.sec, xts->sys_realtime.nsec);
-+			printf("monoraw time: %lld.%09u\n",
-+			       xts->sys_monoraw.sec, xts->sys_monoraw.nsec);
-+		}
-+
-+		free(xts);
-+	}
-+
- 	close(fd);
- 	return 0;
- }
--- 
-2.51.0
-
+ 	udelay(1);
 
 
 
