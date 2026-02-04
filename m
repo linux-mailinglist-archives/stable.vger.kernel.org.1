@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-213727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMo6DgRgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:36 +0100
+	id cIGHLCZvg2lNmwMAu9opvQ
+	(envelope-from <stable+bounces-214226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:09:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DE8E7D86
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CF7E9EE2
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 900E6304A2C7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ACABE311652C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F51D29BD80;
-	Wed,  4 Feb 2026 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235D428853E;
+	Wed,  4 Feb 2026 15:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y04N6Jqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NerQec5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AA7285404;
-	Wed,  4 Feb 2026 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5C621FF4C;
+	Wed,  4 Feb 2026 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217303; cv=none; b=GhwPSgiRta5dmYWtObS5dcGAeHZN4dmkdcoG3maCDCIO/51tLnZal5bcuWTfpO+k9BAP5/MoNRli505vBF/FlRmtfxOGOyoJogBTEFY4+pTuE7I5sdQ0I+Ai5yq6aLDDs9QisDCO7V99VuWcozdvpe+ni6bJVfCfO7/0t1OoLkQ=
+	t=1770218983; cv=none; b=XTKMraEeHY6SjDYsd+vA31pnDR053bbLoIeb1z1iSBfMnxj8Lb/BAT6kDXWHP0MskenNMRAa2qquejG9ZSK2LhOKWHDE4UHtlYLYkJWd+zAPW878kGrMqZKBqab5kEZO7/jwC24Fn9slU1zlEPiwTiDzPhKfn9mKD/G47uietfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217303; c=relaxed/simple;
-	bh=8V8D4l2dzhmg6/GRhObbgTrF+syftXFtWre9W8aFE60=;
+	s=arc-20240116; t=1770218983; c=relaxed/simple;
+	bh=MQquqfJ7U+bn8onvwBK8GTBqejkMztzVXok3NpFe2Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5FxPaWyBmbWgXS8N3mhEzqPn7UGQ4o1lID/JVlgwwcSfYxqln6e7MnAoAPqEVWEO9s9GkMmy+cB2UIiipXgpZKj1HcmA7Y3vXzbGfJGCiHHXJV0/A/E9nsA9yZoazDQ5ngCh2FElURUjRq0zG73nL2Yumc/k5IrbdyjSFJSAoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y04N6Jqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41269C4CEF7;
-	Wed,  4 Feb 2026 15:01:41 +0000 (UTC)
+	 MIME-Version; b=s57DFo5vL+J1hc0y7mo8uolZQQ+VVmbcMDzhotLFcZeWtlckKdNO42NqbjGPMvTMD9hg7f4+1/wg+eJ6vzHyJTvUv1I+fpQJ2sWQs4YWoeD28v7eMQJPBTFB/Z2DJFIUReGXqpHrCM0FMLJpmdhUVTvPapPxdqzuirXDpMTskPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NerQec5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603F4C19424;
+	Wed,  4 Feb 2026 15:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217302;
-	bh=8V8D4l2dzhmg6/GRhObbgTrF+syftXFtWre9W8aFE60=;
+	s=korg; t=1770218983;
+	bh=MQquqfJ7U+bn8onvwBK8GTBqejkMztzVXok3NpFe2Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y04N6Jqz5BGSpb6M4Pju8/vTnvpDbfNosL9rMzhrOQpsniDVdfkFNst+dqY31JbaL
-	 MF1nmOip+7f2XFz3z7tbDDJl10oe6Xg9e5L/ReGlUAY5Mu/cnHEASWmM3VJMth/X6/
-	 tg3cmbAbv1mjjqWD8aII57kxSb3osSySGATTcYoQ=
+	b=NerQec5rN/IvQqZYfSCGgn2mVe9gyiQSRhVLeeH4UO2cxb1qi6DwethfnNZxNLrz5
+	 glK6GCpNysHfxsd5W3PQ4b/XW1Pe9H6HOXchxb+cHtO+cZ3SWJdWjbkvSGrVmiF9mo
+	 CHzCUW0PX3Cz1zQG9gqsA+lxnxubU4HvLJjR8fAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Hsu <yinghsu@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 5.15 184/206] Bluetooth: Fix hci_suspend_sync crash
+	Parav Pandit <parav@nvidia.com>,
+	Shay Drori <shayd@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 033/122] net/mlx5: Fix vhca_id access call trace use before alloc
 Date: Wed,  4 Feb 2026 15:40:15 +0100
-Message-ID: <20260204143904.847167191@linuxfoundation.org>
+Message-ID: <20260204143853.053050551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,97 +70,191 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213727-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,chromium.org,intel.com,163.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214226-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
-X-Rspamd-Queue-Id: 98DE8E7D86
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C4CF7E9EE2
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit 573ebae162111063eedc6c838a659ba628f66a0f ]
+[ Upstream commit a8f930b7be7be3f18f14446df461e17137400407 ]
 
-If hci_unregister_dev() frees the hci_dev object but hci_suspend_notifier
-may still be accessing it, it can cause the program to crash.
-Here's the call trace:
-  <4>[102152.653246] Call Trace:
-  <4>[102152.653254]  hci_suspend_sync+0x109/0x301 [bluetooth]
-  <4>[102152.653259]  hci_suspend_dev+0x78/0xcd [bluetooth]
-  <4>[102152.653263]  hci_suspend_notifier+0x42/0x7a [bluetooth]
-  <4>[102152.653268]  notifier_call_chain+0x43/0x6b
-  <4>[102152.653271]  __blocking_notifier_call_chain+0x48/0x69
-  <4>[102152.653273]  __pm_notifier_call_chain+0x22/0x39
-  <4>[102152.653276]  pm_suspend+0x287/0x57c
-  <4>[102152.653278]  state_store+0xae/0xe5
-  <4>[102152.653281]  kernfs_fop_write+0x109/0x173
-  <4>[102152.653284]  __vfs_write+0x16f/0x1a2
-  <4>[102152.653287]  ? selinux_file_permission+0xca/0x16f
-  <4>[102152.653289]  ? security_file_permission+0x36/0x109
-  <4>[102152.653291]  vfs_write+0x114/0x21d
-  <4>[102152.653293]  __x64_sys_write+0x7b/0xdb
-  <4>[102152.653296]  do_syscall_64+0x59/0x194
-  <4>[102152.653299]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+HCA CAP structure is allocated in mlx5_hca_caps_alloc().
+mlx5_mdev_init()
+  mlx5_hca_caps_alloc()
 
-This patch holds the reference count of the hci_dev object while
-processing it in hci_suspend_notifier to avoid potential crash
-caused by the race condition.
+And HCA CAP is read from the device in mlx5_init_one().
 
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[ Adjust context ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The vhca_id's debugfs file is published even before above two
+operations are done.
+Due to this when user reads the vhca id before the initialization,
+following call trace is observed.
+
+Fix this by deferring debugfs publication until the HCA CAP is
+allocated and read from the device.
+
+BUG: kernel NULL pointer dereference, address: 0000000000000004
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 23 UID: 0 PID: 6605 Comm: cat Kdump: loaded Not tainted 6.18.0-rc7-sf+ #110 PREEMPT(full)
+Hardware name: Supermicro SYS-6028U-TR4+/X10DRU-i+, BIOS 2.0b 08/09/2016
+RIP: 0010:vhca_id_show+0x17/0x30 [mlx5_core]
+Code: cb 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 8b 47 70 48 c7 c6 45 f0 12 c1 48 8b 80 70 03 00 00 <8b> 50 04 0f ca 0f b7 d2 e8 8c 82 47 cb 31 c0 c3 cc cc cc cc 0f 1f
+RSP: 0018:ffffd37f4f337d40 EFLAGS: 00010203
+RAX: 0000000000000000 RBX: ffff8f18445c9b40 RCX: 0000000000000001
+RDX: ffff8f1109825180 RSI: ffffffffc112f045 RDI: ffff8f18445c9b40
+RBP: 0000000000000000 R08: 0000645eac0d2928 R09: 0000000000000006
+R10: ffffd37f4f337d48 R11: 0000000000000000 R12: ffffd37f4f337dd8
+R13: ffffd37f4f337db0 R14: ffff8f18445c9b68 R15: 0000000000000001
+FS:  00007f3eea099580(0000) GS:ffff8f2090f1f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000004 CR3: 00000008b64e4006 CR4: 00000000003726f0
+Call Trace:
+ <TASK>
+ seq_read_iter+0x11f/0x4f0
+ ? _raw_spin_unlock+0x15/0x30
+ ? do_anonymous_page+0x104/0x810
+ seq_read+0xf6/0x120
+ ? srso_alias_untrain_ret+0x1/0x10
+ full_proxy_read+0x5c/0x90
+ vfs_read+0xad/0x320
+ ? handle_mm_fault+0x1ab/0x290
+ ksys_read+0x52/0xd0
+ do_syscall_64+0x61/0x11e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: dd3dd7263cde ("net/mlx5: Expose vhca_id to debugfs")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1769503961-124173-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/debugfs.c    | 16 ++++++++++++++++
+ drivers/net/ethernet/mellanox/mlx5/core/main.c   | 14 +++-----------
+ .../net/ethernet/mellanox/mlx5/core/mlx5_core.h  |  1 +
+ .../ethernet/mellanox/mlx5/core/sf/dev/driver.c  |  1 +
+ 4 files changed, 21 insertions(+), 11 deletions(-)
 
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3706,6 +3706,9 @@ static int hci_suspend_notifier(struct n
- 	int ret = 0;
- 	u8 state = BT_RUNNING;
- 
-+	/* To avoid a potential race with hci_unregister_dev. */
-+	hci_dev_hold(hdev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
+index 36806e813c33c..1301c56e20d65 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
+@@ -613,3 +613,19 @@ void mlx5_debug_cq_remove(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq)
+ 		cq->dbg = NULL;
+ 	}
+ }
 +
- 	/* If powering down, wait for completion. */
- 	if (mgmt_powering_down(hdev)) {
- 		set_bit(SUSPEND_POWERING_DOWN, hdev->suspend_tasks);
-@@ -3757,6 +3760,7 @@ done:
- 		bt_dev_err(hdev, "Suspend notifier action (%lu) failed: %d",
- 			   action, ret);
- 
-+	hci_dev_put(hdev);
- 	return NOTIFY_DONE;
++static int vhca_id_show(struct seq_file *file, void *priv)
++{
++	struct mlx5_core_dev *dev = file->private;
++
++	seq_printf(file, "0x%x\n", MLX5_CAP_GEN(dev, vhca_id));
++	return 0;
++}
++
++DEFINE_SHOW_ATTRIBUTE(vhca_id);
++
++void mlx5_vhca_debugfs_init(struct mlx5_core_dev *dev)
++{
++	debugfs_create_file("vhca_id", 0400, dev->priv.dbg.dbg_root, dev,
++			    &vhca_id_fops);
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 236cb1eb98c82..14c57d4372802 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1803,16 +1803,6 @@ static int mlx5_hca_caps_alloc(struct mlx5_core_dev *dev)
+ 	return -ENOMEM;
  }
  
+-static int vhca_id_show(struct seq_file *file, void *priv)
+-{
+-	struct mlx5_core_dev *dev = file->private;
+-
+-	seq_printf(file, "0x%x\n", MLX5_CAP_GEN(dev, vhca_id));
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(vhca_id);
+-
+ static int mlx5_notifiers_init(struct mlx5_core_dev *dev)
+ {
+ 	int err;
+@@ -1855,7 +1845,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
+ 	priv->numa_node = dev_to_node(mlx5_core_dma_dev(dev));
+ 	priv->dbg.dbg_root = debugfs_create_dir(dev_name(dev->device),
+ 						mlx5_debugfs_root);
+-	debugfs_create_file("vhca_id", 0400, priv->dbg.dbg_root, dev, &vhca_id_fops);
++
+ 	INIT_LIST_HEAD(&priv->traps);
+ 
+ 	err = mlx5_cmd_init(dev);
+@@ -1993,6 +1983,8 @@ static int probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_init_one;
+ 	}
+ 
++	mlx5_vhca_debugfs_init(dev);
++
+ 	pci_save_state(pdev);
+ 	return 0;
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index 082259b56816c..da5345e19082d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -258,6 +258,7 @@ int mlx5_wait_for_pages(struct mlx5_core_dev *dev, int *pages);
+ void mlx5_cmd_flush(struct mlx5_core_dev *dev);
+ void mlx5_cq_debugfs_init(struct mlx5_core_dev *dev);
+ void mlx5_cq_debugfs_cleanup(struct mlx5_core_dev *dev);
++void mlx5_vhca_debugfs_init(struct mlx5_core_dev *dev);
+ 
+ int mlx5_query_pcam_reg(struct mlx5_core_dev *dev, u32 *pcam, u8 feature_group,
+ 			u8 access_reg_group);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index b706f1486504a..c45540fe7d9d9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -76,6 +76,7 @@ static int mlx5_sf_dev_probe(struct auxiliary_device *adev, const struct auxilia
+ 		goto init_one_err;
+ 	}
+ 
++	mlx5_vhca_debugfs_init(mdev);
+ 	return 0;
+ 
+ init_one_err:
+-- 
+2.51.0
+
 
 
 
