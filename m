@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJNhAdlcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:05 +0100
+	id oJSwGm5fg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:02:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD70E7779
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D169E7C73
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 66B2A300F6B5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77A623016810
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AED641B379;
-	Wed,  4 Feb 2026 14:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DD028853E;
+	Wed,  4 Feb 2026 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnYyEh5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLCLOm0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C26241C2EE;
-	Wed,  4 Feb 2026 14:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951BB285404;
+	Wed,  4 Feb 2026 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216611; cv=none; b=FVMItSufRkbOrh3maYCB6HQeTxZKjjP5MZKJSx6JGdCSSUqaIpNeMHs0cpUyoq+6IEHgvF0jnBXCW5oxb0TAJa1M0bQbkTpBRH/66mYLxJx1FNgYA+r4WJDmPwZLGIpD91wkc5ceVAMCmyx7Cat7Mx60zzqX8OW7FQhYuPa6YHg=
+	t=1770217261; cv=none; b=cVqmhtq5U/yFb1465FUVjWG3Hvxw3OS0/KRlDzpWltAq6E2PureEUeT9qZ1xqG/A0f05CZfycdy89OrTRyspOkNfwPDCqgjz6c8EvqWWRRY9bsraVL2qKv8F4XlDz6+6ANOLQItfPWvmputhzsiBEFqByyaPAX4ngO3jOEW4u4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216611; c=relaxed/simple;
-	bh=BmPu70FUvvdLkDs1rep3FTOT9edKzMX1/dvSc3Uxfeo=;
+	s=arc-20240116; t=1770217261; c=relaxed/simple;
+	bh=BP5Db284pz1HA+kXGrbyi9fg6qpRVeDTlw2JU4VTopw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UnvEXutrS1s7z5aT0Rhsx1sVqPsvNgymK/DH3SuU7BpYzK3J76TUpFbeZrGMYmafNfjVE+QjOHu+U8ake53m3HAt8dKXzvVG55sWKUHXy39gsoDQr7pY3xwGiuIs7G/3T8RP6AG/VeXO79ePEYlHROTa8Pbn0tRW5iAzliWkStY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnYyEh5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83301C116C6;
-	Wed,  4 Feb 2026 14:50:10 +0000 (UTC)
+	 MIME-Version; b=AQMhFwj1QVctZTxe8BqNVvuyACfJgnjHq99Mw0VEokilZuyf4vq5N7uOEO5gHq00VRhLlxNTAwBROlJ9RkFsUf3vuFQ0TTRiB1vavluIHtYFVLIa7deSna94xAqSGXYIg2iwZwwPtCY+ScoD2D/+rvZljmAD48avOAaJFagOxOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLCLOm0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4022C116C6;
+	Wed,  4 Feb 2026 15:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216611;
-	bh=BmPu70FUvvdLkDs1rep3FTOT9edKzMX1/dvSc3Uxfeo=;
+	s=korg; t=1770217261;
+	bh=BP5Db284pz1HA+kXGrbyi9fg6qpRVeDTlw2JU4VTopw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnYyEh5EQeCV8ZoPspvsFf3gleW3ucDS0jEBZ07DyGtxhNoQQw/rxTb4D/yxbG76U
-	 UP2R+Tg/bgwmtHr7wYUGAsGA5YDkrU8Jyl9pi/MUbWLyYPKvZUwmWbYmJNZARYomEW
-	 gIYA7OMPzahFB5YxlBozb7x8WdXlw5H+csfqVKxY=
+	b=kLCLOm0/2cKgOi5CqEg9NJ/QXyX3GLd/H/4KVzcgLT5R8NuMkP/LYzidZBigQAgC/
+	 Mw4iRKAsKNdt51Ik83/zcvNzEKrWHXkTFAFCUeOAtc1Nk8A66OB/FWScWsrAi/mSST
+	 C8u3niQqLSaD4cRkzK+0D2Xob9CzmJbyVhWm7MkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+999115c3bf275797dc27@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 105/161] netrom: fix double-free in nr_route_frame()
+	Zilin Guan <zilin@seu.edu.cn>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 137/206] net: mvpp2: cls: Fix memory leak in mvpp2_ethtool_cls_rule_ins()
 Date: Wed,  4 Feb 2026 15:39:28 +0100
-Message-ID: <20260204143855.524479489@linuxfoundation.org>
+Message-ID: <20260204143903.141123902@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +66,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213520-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213714-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,999115c3bf275797dc27];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2DD70E7779
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 2D169E7C73
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit ba1096c315283ee3292765f6aea4cca15816c4f7 upstream.
+[ Upstream commit 09f979d1f312627b31d2ee1e46f9692e442610cd ]
 
-In nr_route_frame(), old_skb is immediately freed without checking if
-nr_neigh->ax25 pointer is NULL. Therefore, if nr_neigh->ax25 is NULL,
-the caller function will free old_skb again, causing a double-free bug.
+In mvpp2_ethtool_cls_rule_ins(), the ethtool_rule is allocated by
+ethtool_rx_flow_rule_create(). If the subsequent conversion to flow
+type fails, the function jumps to the clean_rule label.
 
-Therefore, to prevent this, we need to modify it to check whether
-nr_neigh->ax25 is NULL before freeing old_skb.
+However, the clean_rule label only frees efs, skipping the cleanup
+of ethtool_rule, which leads to a memory leak.
 
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+999115c3bf275797dc27@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0029.GAE@google.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://patch.msgid.link/20260119063359.10604-1-aha310510@gmail.com
+Fix this by jumping to the clean_eth_rule label, which properly calls
+ethtool_rx_flow_rule_destroy() before freeing efs.
+
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
+
+Fixes: f4f1ba18195d ("net: mvpp2: cls: Report an error for unsupported flow types")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260123065716.2248324-1-zilin@seu.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_route.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netrom/nr_route.c
-+++ b/net/netrom/nr_route.c
-@@ -749,7 +749,7 @@ int nr_route_frame(struct sk_buff *skb,
- 	unsigned char *dptr;
- 	ax25_cb *ax25s;
- 	int ret;
--	struct sk_buff *skbn;
-+	struct sk_buff *nskb, *oskb;
- 
- 	/*
- 	 * Reject malformed packets early. Check that it contains at least 2
-@@ -808,14 +808,16 @@ int nr_route_frame(struct sk_buff *skb,
- 	/* We are going to change the netrom headers so we should get our
- 	   own skb, we also did not know until now how much header space
- 	   we had to reserve... - RXQ */
--	if ((skbn=skb_copy_expand(skb, dev->hard_header_len, 0, GFP_ATOMIC)) == NULL) {
-+	nskb = skb_copy_expand(skb, dev->hard_header_len, 0, GFP_ATOMIC);
-+
-+	if (!nskb) {
- 		nr_node_unlock(nr_node);
- 		nr_node_put(nr_node);
- 		dev_put(dev);
- 		return 0;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+index d2757cc116139..038382a0b8e9f 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+@@ -1389,7 +1389,7 @@ int mvpp2_ethtool_cls_rule_ins(struct mvpp2_port *port,
+ 	efs->rule.flow_type = mvpp2_cls_ethtool_flow_to_type(info->fs.flow_type);
+ 	if (efs->rule.flow_type < 0) {
+ 		ret = efs->rule.flow_type;
+-		goto clean_rule;
++		goto clean_eth_rule;
  	}
--	kfree_skb(skb);
--	skb=skbn;
-+	oskb = skb;
-+	skb = nskb;
- 	skb->data[14]--;
  
- 	dptr  = skb_push(skb, 1);
-@@ -834,6 +836,9 @@ int nr_route_frame(struct sk_buff *skb,
- 	nr_node_unlock(nr_node);
- 	nr_node_put(nr_node);
- 
-+	if (ret)
-+		kfree_skb(oskb);
-+
- 	return ret;
- }
- 
+ 	ret = mvpp2_cls_rfs_parse_rule(&efs->rule);
+-- 
+2.51.0
+
 
 
 
