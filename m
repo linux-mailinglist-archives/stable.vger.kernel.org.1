@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFqbMgFgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:33 +0100
+	id YPkYBhReg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581F6E7D7F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F4EE79B9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 50C653037A71
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6689F302A2DB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3AE286890;
-	Wed,  4 Feb 2026 15:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DBD2BF006;
+	Wed,  4 Feb 2026 14:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUYVOFJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puXoj6hF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F56A2405EC;
-	Wed,  4 Feb 2026 15:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFD0219301;
+	Wed,  4 Feb 2026 14:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217234; cv=none; b=geeE/wJqcKYi19cK40FKhwQElac++6LeYaT4M87HBcLivI/Tnzmpa1ZpZzxvz/JAbsSZCG2pfMNVLaDdr+DNZ0Is+THFo6u0l6lF/BPuca8WLORSBB5ZOmDQXuVfZYoOTs6GjPENq/iYkEgy3Nk4qnBuzGvtgXxCQzt1r9mFyKg=
+	t=1770216584; cv=none; b=VlaRiffWNISRP5XW3e0H9D53TQYQHWDj1KzWqtN2N0oEz7lK9BFcrDuAGXmYBcTYcjx1DfhUdDFk6nFCe72QgzyxqWoFCceV5xHO1mRt7Ww3QS8L5N1zkKkly7i9abydFJTDwBjaqKbhJXW63UuEl4ggMbVkvl+zjexEA0Nf9IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217234; c=relaxed/simple;
-	bh=BJA16gHOz2oOsEAI3mSUv1gw9bvXHAUhCyNqqkP9yLo=;
+	s=arc-20240116; t=1770216584; c=relaxed/simple;
+	bh=xtb4Yg1NQnFbabo4vF5AjqgyHVuG4VbZzV/4zpZxE5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEHuZfVKu2zprK7ucJ5FtZq0okkQOoCMVZ7ljTHkRP+9lL1OYXwx9ClvS0tqBM5q84Q/+FTFa1SUq8qBCoZ6bU/Go5ToPmSiV9W6OuG7BLIIu+RQ9VBKkr6YtePLT/IDvO7uhtUxCTVjLNF2BhCbqIDbn76G9ozTFrNMK653+lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUYVOFJd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA48BC4CEF7;
-	Wed,  4 Feb 2026 15:00:33 +0000 (UTC)
+	 MIME-Version; b=t723G7NCI6RHJPl8cPdNMWahm/renvvSSPCjtJIX46gUg7MroHZMgTJMKGdxfKGP23BWdmL8sHCInxs/cvVlW1OATpxrVjRYorx+xQ6jDSKgOcPgNFX9rDxT5nalnGI+8NmIOkf+fJ8W9zQ6T5MNfd7c3Ckrb6p0Ob5tbcYb5Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puXoj6hF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294E0C4CEF7;
+	Wed,  4 Feb 2026 14:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217234;
-	bh=BJA16gHOz2oOsEAI3mSUv1gw9bvXHAUhCyNqqkP9yLo=;
+	s=korg; t=1770216584;
+	bh=xtb4Yg1NQnFbabo4vF5AjqgyHVuG4VbZzV/4zpZxE5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUYVOFJdB2bkeFI6Yc5pQyBbLAgPs+Q04Dkl37ycR3MuaI/rLEEWJ62Q27LZzoTt7
-	 0jooR4jEgZU0Hjwe/1Jik9rHavtT/3eQ7TJLN7EA60S2qfWxvvVA+/HZ2ximBA40Na
-	 nrxUh/a3IU76uahUrLcm62CrBWpzymMA8ct9fIB4=
+	b=puXoj6hFIpYDnKlMHC5aksz8Y249EEcYPUM8qc0IpmRF7QIm9hSbdeIKWliIFEaJU
+	 ZFfHg3dTJ3wusx+UUtQmfRTqxrpl+/M03JPrGPyc7R5KfcY3coPlEkyOc7bZWKNdLi
+	 PEMk8fydizmW3tLw+bzmWO3K4SmHzTg6y2Xn/V2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeal Robot <zealci@zte.com.cn>,
-	David Yang <davidcomponentone@gmail.com>,
-	Yang Guang <yang.guang5@zte.com.cn>,
+	Kery Qi <qikeyu2017@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 162/206] w1: w1_therm: use swap() to make code cleaner
+Subject: [PATCH 5.10 130/161] scsi: firewire: sbp-target: Fix overflow in sbp_make_tpg()
 Date: Wed,  4 Feb 2026 15:39:53 +0100
-Message-ID: <20260204143904.040923510@linuxfoundation.org>
+Message-ID: <20260204143856.419562830@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +67,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,zte.com.cn,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213706-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213512-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zte.com.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 581F6E7D7F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 61F4EE79B9
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Guang <yang.guang5@zte.com.cn>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-[ Upstream commit e233897b1f7a859092bd20b10bfd412013381a10 ]
+[ Upstream commit b2d6b1d443009ed4da2d69f5423ab38e5780505a ]
 
-Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-opencoding it.
+The code in sbp_make_tpg() limits "tpgt" to UINT_MAX but the data type of
+"tpg->tport_tpgt" is u16. This causes a type truncation issue.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: David Yang <davidcomponentone@gmail.com>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
-Link: https://lore.kernel.org/r/cb14f9e6e86cf8494ed2ddce6eec8ebd988908d9.1640077704.git.yang.guang5@zte.com.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 761fcf46a1bd ("w1: therm: Fix off-by-one buffer overflow in alarms_store")
+When a user creates a TPG via configfs mkdir, for example:
+
+    mkdir /sys/kernel/config/target/sbp/<wwn>/tpgt_70000
+
+The value 70000 passes the "tpgt > UINT_MAX" check since 70000 is far less
+than 4294967295. However, when assigned to the u16 field tpg->tport_tpgt,
+the value is silently truncated to 4464 (70000 & 0xFFFF). This causes the
+value the user specified to differ from what is actually stored, leading to
+confusion and potential unexpected behavior.
+
+Fix this by changing the type of "tpgt" to u16 and using kstrtou16() which
+will properly reject values outside the u16 range.
+
+Fixes: a511ce339780 ("sbp-target: Initial merge of firewire/ieee-1394 target mode support")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Link: https://patch.msgid.link/20260121114515.1829-2-qikeyu2017@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/w1/slaves/w1_therm.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/target/sbp/sbp_target.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1782,7 +1782,7 @@ static ssize_t alarms_store(struct devic
- 	u8 new_config_register[3];	/* array of data to be written */
- 	int temp, ret;
- 	char *token = NULL;
--	s8 tl, th, tt;	/* 1 byte per value + temp ring order */
-+	s8 tl, th;	/* 1 byte per value + temp ring order */
- 	char *p_args, *orig;
+diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
+index e4a9b9fe3dfb0..9445bf3409fd1 100644
+--- a/drivers/target/sbp/sbp_target.c
++++ b/drivers/target/sbp/sbp_target.c
+@@ -1989,12 +1989,12 @@ static struct se_portal_group *sbp_make_tpg(struct se_wwn *wwn,
+ 		container_of(wwn, struct sbp_tport, tport_wwn);
  
- 	p_args = orig = kmalloc(size, GFP_KERNEL);
-@@ -1833,9 +1833,8 @@ static ssize_t alarms_store(struct devic
- 	th = int_to_short(temp);
+ 	struct sbp_tpg *tpg;
+-	unsigned long tpgt;
++	u16 tpgt;
+ 	int ret;
  
- 	/* Reorder if required th and tl */
--	if (tl > th) {
--		tt = tl; tl = th; th = tt;
--	}
-+	if (tl > th)
-+		swap(tl, th);
+ 	if (strstr(name, "tpgt_") != name)
+ 		return ERR_PTR(-EINVAL);
+-	if (kstrtoul(name + 5, 10, &tpgt) || tpgt > UINT_MAX)
++	if (kstrtou16(name + 5, 10, &tpgt))
+ 		return ERR_PTR(-EINVAL);
  
- 	/*
- 	 * Read the scratchpad to change only the required bits
+ 	if (tport->tpg) {
+-- 
+2.51.0
+
 
 
 
