@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8F1ELFxkg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:08 +0100
+	id SFBEACNbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D1AE8678
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EB6E7439
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4911130ADBF7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6980E300440D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C4F425CD2;
-	Wed,  4 Feb 2026 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA7040F8C6;
+	Wed,  4 Feb 2026 14:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDUH5P2q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYJTqFBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE6741B34E;
-	Wed,  4 Feb 2026 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2489280A3B;
+	Wed,  4 Feb 2026 14:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217766; cv=none; b=Y4EV+5Ubz2Ox7HK+MD6Z6LwF6LXa4oMSyhEOCl5Y3na5bcn+A7VTvipBTw6/PK1NqHdAG7iN43dDsv8oGdh/a39TZbhDsByUA+7svX87Sj57U2QeNsm9yH9nc+2Z8pr2QhZDVnO7x30Gt2x4kglbKVSVgItYTIemTLpjgGpY8Ss=
+	t=1770216221; cv=none; b=ff2QMSvZZ9QbnQ9c0qwHguIencc1QKGsYH+pyq5zlfUKxHfBlCXEDSf840cM/hiwlJWR0gC1FWJKJumsYyySY6J2rAIPUQrDalDS76UyAukZIO9IxTD6koVwIO9xWOTm2QIP8uyJmZi4xfun/3oz/nNPnwoDohNRU+egOcGEooU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217766; c=relaxed/simple;
-	bh=SzSB6DFSzJXisTnr4tU7dh+jg7SbkktjzqS6RQf9KLo=;
+	s=arc-20240116; t=1770216221; c=relaxed/simple;
+	bh=rhyWxOTn/GJebW9gNnC/DNfhjfhQQIILcRqZKSQTJ/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XSuDe5FxIVl/HZNO5cejAICc7FX1Z2heL5KDrWhVkTlxirqDfQn6uB0jSs4f9Le9CbtT2E9B2Xlg3gx9IzAzQR21Du5P70SuRPL34Coa6h+lCwRVecGSEe57/GXd1HwdgmNPjkv3aVDOBpKGxFmLUMcMioKE9xf0MwUjAh0ITIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDUH5P2q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830D1C4CEF7;
-	Wed,  4 Feb 2026 15:09:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U0ydP5OPdrDqonw2j9oWl0h4bO8OctKLnwkc5CUKgS74V+8waV9lWYuW8dQ2BGkJalH65aVu3/o8knZZGpJnhwJrehY661LXGZu9aJ5nX/BEd9hlZx7CFa/u9U1JHIXW0bOpuVkwvmqeE0rpkgvJ7Xwg2dTiKEQal+zHRfrYwvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYJTqFBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6F9C4CEF7;
+	Wed,  4 Feb 2026 14:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217766;
-	bh=SzSB6DFSzJXisTnr4tU7dh+jg7SbkktjzqS6RQf9KLo=;
+	s=korg; t=1770216220;
+	bh=rhyWxOTn/GJebW9gNnC/DNfhjfhQQIILcRqZKSQTJ/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDUH5P2qd3+5tsBQmhSDTfM87atQcfdn9gmhxoVUdIibSZLuNMG8vftJKncVhlHRG
-	 U4LMw8vvU4pnnft3M68xB604d7WPOJNY365C+gLS9kWx/7nN6dzPduuT4vbXXO04ra
-	 pdz0KXUWbuMJxbeyo1V/6Whu6ZR2PgRGhs/kUSVA=
+	b=zYJTqFBi7A2dW2mzB+gOlKRRLws3v9mZEk4gZNPr+DGg1hfmV5aWlWTKIGHp9UqsB
+	 s3wIqmN79W5zsKFG2arObFzsdwi+brjzepen/kU12LpnRW1vnRutgRvUfWw1TVLq5F
+	 UE4Po6eyd1MXgLGu2wB4wQb+3pujuz40Fm2npkVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/280] net/sched: Enforce that teql can only be used as root qdisc
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 023/161] phy: rockchip: inno-usb2: fix disconnection in gadget mode
 Date: Wed,  4 Feb 2026 15:38:06 +0100
-Message-ID: <20260204143913.674757815@linuxfoundation.org>
+Message-ID: <20260204143852.598881289@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +67,119 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213863-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213403-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
-X-Rspamd-Queue-Id: 30D1AE8678
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,chg_work.work:url]
+X-Rspamd-Queue-Id: 13EB6E7439
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-[ Upstream commit 50da4b9d07a7a463e2cfb738f3ad4cff6b2c9c3b ]
+commit 028e8ca7b20fb7324f3e5db34ba8bd366d9d3acc upstream.
 
-Design intent of teql is that it is only supposed to be used as root qdisc.
-We need to check for that constraint.
+When the OTG USB port is used to power the SoC, configured as peripheral
+and used in gadget mode, there is a disconnection about 6 seconds after the
+gadget is configured and enumerated.
 
-Although not important, I will describe the scenario that unearthed this
-issue for the curious.
+The problem was observed on a Radxa Rock Pi S board, which can only be
+powered by the only USB-C connector. That connector is the only one usable
+in gadget mode. This implies the USB cable is connected from before boot
+and never disconnects while the kernel runs.
 
-GangMin Kim <km.kim1503@gmail.com> managed to concot a scenario as follows:
+The problem happens because of the PHY driver code flow, summarized as:
 
-ROOT qdisc 1:0 (QFQ)
-  ├── class 1:1 (weight=15, lmax=16384) netem with delay 6.4s
-  └── class 1:2 (weight=1, lmax=1514) teql
+ * UDC start code (triggered via configfs at any time after boot)
+   -> phy_init
+       -> rockchip_usb2phy_init
+           -> schedule_delayed_work(otg_sm_work [A], 6 sec)
+   -> phy_power_on
+       -> rockchip_usb2phy_power_on
+           -> enable clock
+           -> rockchip_usb2phy_reset
 
-GangMin sends a packet which is enqueued to 1:1 (netem).
-Any invocation of dequeue by QFQ from this class will not return a packet
-until after 6.4s. In the meantime, a second packet is sent and it lands on
-1:2. teql's enqueue will return success and this will activate class 1:2.
-Main issue is that teql only updates the parent visible qlen (sch->q.qlen)
-at dequeue. Since QFQ will only call dequeue if peek succeeds (and teql's
-peek always returns NULL), dequeue will never be called and thus the qlen
-will remain as 0. With that in mind, when GangMin updates 1:2's lmax value,
-the qfq_change_class calls qfq_deact_rm_from_agg. Since the child qdisc's
-qlen was not incremented, qfq fails to deactivate the class, but still
-frees its pointers from the aggregate. So when the first packet is
-rescheduled after 6.4 seconds (netem's delay), a dangling pointer is
-accessed causing GangMin's causing a UAF.
+ * Now the gadget interface is up and running.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260114160243.913069-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ * 6 seconds later otg_sm_work starts [A]
+   -> rockchip_usb2phy_otg_sm_work():
+       if (B_IDLE state && VBUS present && ...):
+           schedule_delayed_work(&rport->chg_work [B], 0);
+
+ * immediately the chg_detect_work starts [B]
+   -> rockchip_chg_detect_work():
+       if chg_state is UNDEFINED:
+           if (!rport->suspended):
+               rockchip_usb2phy_power_off() <--- [X]
+
+At [X], the PHY is powered off, causing a disconnection. This quickly
+triggers a new connection and following re-enumeration, but any connection
+that had been established during the 6 seconds is broken.
+
+The code already checks for !rport->suspended (which, somewhat
+counter-intuitively, means the PHY is powered on), so add a guard for VBUS
+as well to avoid a disconnection when a cable is connected.
+
+Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Co-developed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-1-dac8a02cd2ca@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_teql.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index 7721239c185fb..0a7856e14a975 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -178,6 +178,11 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
- 	if (m->dev == dev)
- 		return -ELOOP;
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -689,14 +689,16 @@ static void rockchip_chg_detect_work(str
+ 		container_of(work, struct rockchip_usb2phy_port, chg_work.work);
+ 	struct rockchip_usb2phy *rphy = dev_get_drvdata(rport->phy->dev.parent);
+ 	struct regmap *base = get_reg_base(rphy);
+-	bool is_dcd, tmout, vout;
++	bool is_dcd, tmout, vout, vbus_attach;
+ 	unsigned long delay;
  
-+	if (sch->parent != TC_H_ROOT) {
-+		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
-+		return -EOPNOTSUPP;
-+	}
++	vbus_attach = property_enabled(rphy->grf, &rport->port_cfg->utmi_bvalid);
 +
- 	q->m = m;
- 
- 	skb_queue_head_init(&q->q);
--- 
-2.51.0
-
+ 	dev_dbg(&rport->phy->dev, "chg detection work state = %d\n",
+ 		rphy->chg_state);
+ 	switch (rphy->chg_state) {
+ 	case USB_CHG_STATE_UNDEFINED:
+-		if (!rport->suspended)
++		if (!rport->suspended && !vbus_attach)
+ 			rockchip_usb2phy_power_off(rport->phy);
+ 		/* put the controller in non-driving mode */
+ 		if (!vbus_attach)
 
 
 
