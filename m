@@ -1,62 +1,75 @@
-Return-Path: <stable+bounces-213834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGkDJ4xlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:12 +0100
+	id uECfJoxfg2lzmAMAu9opvQ
+	(envelope-from <stable+bounces-213601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:02:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBC4E8A2A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5181E7CA6
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C30DC304C0B0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3CC53080FF5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EB94279F2;
-	Wed,  4 Feb 2026 15:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E67F41C2EA;
+	Wed,  4 Feb 2026 14:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEleGiqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppeJvXGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC8E4279EA;
-	Wed,  4 Feb 2026 15:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EC03D413D;
+	Wed,  4 Feb 2026 14:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217667; cv=none; b=HuQ1LGaE1tLuIkQ06jG3t7/GAv0ifOXd1e6xv2skXxOpRd1KEXErsj2LiPAt/etxW0K7cWv47ApH7yikOmwUVor6J5gKaYGhO0S0v56+xY6KZUqUbg+lrrcP+z3/ZisTlvtffzgOwr82nD5jHXHVA7B7bfIoo86NS8qq/EOkAwM=
+	t=1770216879; cv=none; b=IvOzgxOcjeIicaqihTw1fxXkv5ov61WmJ11j0cD/HRLn6psH9XmIbbz21RSysJDXwqg7PaNI7KvVKOdCSYZx3K0hlxgHg9kKxOPwZ7ACqXtVHKTtq3rKPEuHhfvCe+Ie748e5NFHqMPJgo686rXHiF5DDGvsPMaNfnFb8Ke7170=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217667; c=relaxed/simple;
-	bh=nAB+WM9Xt+43G35jMkfmpfRhsSm4InGfuqqhnzyQ/hk=;
+	s=arc-20240116; t=1770216879; c=relaxed/simple;
+	bh=rv4fEyW1BVD5bPcbxtQDubNQZqEBgDVWIqgGuUQc/Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KpbOpVSx5KT/ne+Ov1O/Lz7Y+KkUL3PIjrEsD5ookEOAfYyNGmJz2JTprMk6PuXWiDEa1mYOyplkK/kPwtqoskYtt7wQsBVqBrzMeTbmIB73BY7ZSgQkqurkQZp9kGKQ15NmxZtNKTBrI1V7BwcYZDgkcb82CXR31JTmcZkZeYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEleGiqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99473C4CEF7;
-	Wed,  4 Feb 2026 15:07:46 +0000 (UTC)
+	 MIME-Version; b=eYfPl6TjDQl74OWmyzsCu46qL9byTNIHrIEnpk0m3P3HGNounOJheGCjW4mFS/UuivthS5jhQANrtNVbRcDWxc4loQ4jcqQzD1pyNyBhNGoc4oU4+8RrIUE3AfP9R3Az23db2CkZmxI/YoJntJEG42vp8I17sfXzImQeXEQ2Pco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppeJvXGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B3DC4CEF7;
+	Wed,  4 Feb 2026 14:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217667;
-	bh=nAB+WM9Xt+43G35jMkfmpfRhsSm4InGfuqqhnzyQ/hk=;
+	s=korg; t=1770216879;
+	bh=rv4fEyW1BVD5bPcbxtQDubNQZqEBgDVWIqgGuUQc/Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wEleGiqJIgcsWbXW9GLbeaNcF/sQbnzw1VfUTvMLVgzL31UsoEjxhUSLf3oIk8RZk
-	 XumU8L/BO3C4acrRdWTt0F0SI3o1DN0JmhKqr89fPWMTWxn/cboNsx6ofj2sPjssnF
-	 352/lpxW3p6RmXlaYraqznvpmVpzTyzj9Ai/LQyw=
+	b=ppeJvXGDw81cVbcjjk/kb5rdMIr4Ob1uzhdVXciH+hEhJZOQqmV9IupTGzOSnhm35
+	 xA0VOAWza2EusaaDJ/5upv4zvIP8NHP0COaVHUR2oiJ4VeWaW37eHqqkd56UB5WSf7
+	 53F4eKkEG8yKi/5Arak2e2dPlUHFZRMdt/oGyb18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Wojtek Wasko <wwasko@nvidia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/280] ptp: Add PHC file mode checks. Allow RO adjtime() without FMODE_WRITE.
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Yasunori Goto <y-goto@fujitsu.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 5.15 025/206] x86/kaslr: Recognize all ZONE_DEVICE users as physaddr consumers
 Date: Wed,  4 Feb 2026 15:37:36 +0100
-Message-ID: <20260204143912.610224577@linuxfoundation.org>
+Message-ID: <20260204143859.110578042@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,149 +79,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,linutronix.de,davemloft.net,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213834-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213601-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davemloft.net:email,nvidia.com:email,nwtime.org:url]
-X-Rspamd-Queue-Id: 1EBC4E8A2A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,infradead.org:email,linux-foundation.org:email,suse.com:email,oracle.com:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,deltatee.com:email,fujitsu.com:email]
+X-Rspamd-Queue-Id: C5181E7CA6
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojtek Wasko <wwasko@nvidia.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit b4e53b15c04e3852949003752f48f7a14ae39e86 ]
+commit 269031b15c1433ff39e30fa7ea3ab8f0be9d6ae2 upstream.
 
-Many devices implement highly accurate clocks, which the kernel manages
-as PTP Hardware Clocks (PHCs). Userspace applications rely on these
-clocks to timestamp events, trace workload execution, correlate
-timescales across devices, and keep various clocks in sync.
+Commit 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+is too narrow. The effect being mitigated in that commit is caused by
+ZONE_DEVICE which PCI_P2PDMA has a dependency. ZONE_DEVICE, in general,
+lets any physical address be added to the direct-map. I.e. not only ACPI
+hotplug ranges, CXL Memory Windows, or EFI Specific Purpose Memory, but
+also any PCI MMIO range for the DEVICE_PRIVATE and PCI_P2PDMA cases. Update
+the mitigation, limit KASLR entropy, to apply in all ZONE_DEVICE=y cases.
 
-The kernel’s current implementation of PTP clocks does not enforce file
-permissions checks for most device operations except for POSIX clock
-operations, where file mode is verified in the POSIX layer before
-forwarding the call to the PTP subsystem. Consequently, it is common
-practice to not give unprivileged userspace applications any access to
-PTP clocks whatsoever by giving the PTP chardevs 600 permissions. An
-example of users running into this limitation is documented in [1].
-Additionally, POSIX layer requires WRITE permission even for readonly
-adjtime() calls which are used in PTP layer to return current frequency
-offset applied to the PHC.
+Distro kernels typically have PCI_P2PDMA=y, so the practical exposure of
+this problem is limited to the PCI_P2PDMA=n case.
 
-Add permission checks for functions that modify the state of a PTP
-device. Continue enforcing permission checks for POSIX clock operations
-(settime, adjtime) in the POSIX layer. Only require WRITE access for
-dynamic clocks adjtime() if any flags are set in the modes field.
+A potential path to recover entropy would be to walk ACPI and determine the
+limits for hotplug and PCI MMIO before kernel_randomize_memory(). On
+smaller systems that could yield some KASLR address bits. This needs
+additional investigation to determine if some limited ACPI table scanning
+can happen this early without an open coded solution like
+arch/x86/boot/compressed/acpi.c needs to deploy.
 
-[1] https://lists.nwtime.org/sympa/arc/linuxptp-users/2024-01/msg00036.html
-
-Changes in v4:
-- Require FMODE_WRITE in ajtime() only for calls modifying the clock in
-  any way.
-
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Yasunori Goto <y-goto@fujitsu.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: http://patch.msgid.link/692e08b2516d4_261c1100a3@dwillia2-mobl4.notmuch
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_chardev.c | 16 ++++++++++++++++
- kernel/time/posix-clock.c |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ arch/x86/mm/kaslr.c |   10 +++++-----
+ drivers/pci/Kconfig |    6 ------
+ mm/Kconfig          |   10 +++++++---
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index fcee202f4484c..aa38a518e3d7b 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -150,6 +150,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -98,12 +98,12 @@ void __init kernel_randomize_memory(void
  
- 	case PTP_EXTTS_REQUEST:
- 	case PTP_EXTTS_REQUEST2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
+ 	/*
+ 	 * Adapt physical memory region size based on available memory,
+-	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
+-	 * device BAR space assuming the direct map space is large enough
+-	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
+-	 * to the physical BAR address.
++	 * except when CONFIG_ZONE_DEVICE is enabled. ZONE_DEVICE wants to map
++	 * any physical address into the direct-map. KASLR wants to reliably
++	 * steal some physical address bits. Those design choices are in direct
++	 * conflict.
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
++	if (!IS_ENABLED(CONFIG_ZONE_DEVICE) && (memory_tb < kaslr_regions[0].size_tb))
+ 		kaslr_regions[0].size_tb = memory_tb;
  
- 		if (copy_from_user(&req.extts, (void __user *)arg,
-@@ -191,6 +195,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ 	/*
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -176,12 +176,6 @@ config PCI_P2PDMA
+ 	  P2P DMA transactions must be between devices behind the same root
+ 	  port.
  
- 	case PTP_PEROUT_REQUEST:
- 	case PTP_PEROUT_REQUEST2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
+-	  Enabling this option will reduce the entropy of x86 KASLR memory
+-	  regions. For example - on a 46 bit system, the entropy goes down
+-	  from 16 bits to 15 bits. The actual reduction in entropy depends
+-	  on the physical address bits, on processor features, kernel config
+-	  (5 level page table) and physical memory present on the system.
+-
+ 	  If unsure, say N.
  
- 		if (copy_from_user(&req.perout, (void __user *)arg,
-@@ -259,6 +267,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ config PCI_LABEL
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -790,10 +790,14 @@ config ZONE_DEVICE
+ 	  Device memory hotplug support allows for establishing pmem,
+ 	  or other device driver discovered memory regions, in the
+ 	  memmap. This allows pfn_to_page() lookups of otherwise
+-	  "device-physical" addresses which is needed for using a DAX
+-	  mapping in an O_DIRECT operation, among other things.
++	  "device-physical" addresses which is needed for DAX, PCI_P2PDMA, and
++	  DEVICE_PRIVATE features among others.
  
- 	case PTP_ENABLE_PPS:
- 	case PTP_ENABLE_PPS2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
+-	  If FS_DAX is enabled, then say Y.
++	  Enabling this option will reduce the entropy of x86 KASLR memory
++	  regions. For example - on a 46 bit system, the entropy goes down
++	  from 16 bits to 15 bits. The actual reduction in entropy depends
++	  on the physical address bits, on processor features, kernel config
++	  (5 level page table) and physical memory present on the system.
  
- 		if (!capable(CAP_SYS_TIME))
-@@ -397,6 +409,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
- 
- 	case PTP_PIN_SETFUNC:
- 	case PTP_PIN_SETFUNC2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		if (copy_from_user(&pd, (void __user *)arg, sizeof(pd))) {
- 			err = -EFAULT;
- 			break;
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index b130bb56cc4e0..827abede72745 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -253,7 +253,7 @@ static int pc_clock_adjtime(clockid_t id, struct __kernel_timex *tx)
- 	if (err)
- 		return err;
- 
--	if ((cd.fp->f_mode & FMODE_WRITE) == 0) {
-+	if (tx->modes && (cd.fp->f_mode & FMODE_WRITE) == 0) {
- 		err = -EACCES;
- 		goto out;
- 	}
--- 
-2.51.0
-
+ config DEV_PAGEMAP_OPS
+ 	bool
 
 
 
