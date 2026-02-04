@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KgbK7Bhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:44 +0100
+	id kIADHlhcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C995E814D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74E4E7637
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2AA2831A5C1D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D18CA3011C42
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE823B52F5;
-	Wed,  4 Feb 2026 14:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F622BE037;
+	Wed,  4 Feb 2026 14:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwfu1GqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/mIH73S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3296141C2F0;
-	Wed,  4 Feb 2026 14:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B87D28B7EA;
+	Wed,  4 Feb 2026 14:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217182; cv=none; b=gm1FVNE01c9RIulruwDX2fLKSEClNsnp6GoWK6O1gCGgSMFZN06kDLRpsH6pjGt/0VMVNGfmYCy9/ntdg/lSr47WAYeAXWe/Q/H1H6+tHCpqC4bVCLkXBoKFrAlfPcC5w17ShB6vlBMiqxL6OD9C3tZ5pAroVDmW95NRaORxVJE=
+	t=1770216531; cv=none; b=RkIdWe5zTeglCxJ6gN6evKAkWKxufXbMjo+kXGPfhCjR0sScuayZfA38mVi7Nezdl+/GHK6g+0ZFrVwIN9T9QNIOvUQralK0wNKCVkPQPAGu4cfPCDsCA/knuuZlQ1iNQtn//Ce0du7WEteKLMdGrXPgOlR8NspNmt3q3QgfJxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217182; c=relaxed/simple;
-	bh=7Dui+O+ZWgco3ZR/EpGxkmIt24qlIQ9d16qFn6ee70U=;
+	s=arc-20240116; t=1770216531; c=relaxed/simple;
+	bh=Vc0gcnIoJ9Wx1GMtdwgpYpAJyI/EKukIxixcDnpMPFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iy5ICxTvUwTiPNq9aPwt0PxgWLSMXlvySfAUPKj7UMOgHHz4w/DBckmgSYafjXdFCyWhs8cD3o++GQDDDTYzgTxIP5ISsNf5z+YzWZ2nMM4eM0xRQShkJbyosNNdf8eVOSjtp+WYmC6uPqclm6fOnuPhJrHKK8WPvSO2dILGmfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwfu1GqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C30BC4CEF7;
-	Wed,  4 Feb 2026 14:59:41 +0000 (UTC)
+	 MIME-Version; b=J/jbRBKBVHzU+i0N45JS6Ui3MST+B8kgdTkx/IjXkxcqD5ktRzckFJXzNb3Wl2jHbFriAq09TRXoFGBnQB0iUrzhkU7CcS1FOn9vG5T2sMOjn4LSnrUoTLgnz5rfvrtKSGPDhI/VPBrXKeV5lFTJWb40Sd6/rA8y6C4MaYJkn3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/mIH73S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742B2C4CEF7;
+	Wed,  4 Feb 2026 14:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217182;
-	bh=7Dui+O+ZWgco3ZR/EpGxkmIt24qlIQ9d16qFn6ee70U=;
+	s=korg; t=1770216530;
+	bh=Vc0gcnIoJ9Wx1GMtdwgpYpAJyI/EKukIxixcDnpMPFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wwfu1GqOlB2B2dvz7KBxovKxOifig4zFKCHH7yQl54c37AGCQIAgSMoZ4Y4E/MGX+
-	 PYQ0JKumPLCbsu3PKbjmgD55ZwKZDt8I7O5pY+HclxovlBKHX7tCEfu0dXCQ0tnCIF
-	 I5Bh4ZqyAMwWUeL9YVfRMIXpaZH96ffJUmbAASH8=
+	b=n/mIH73SxrlX9NljtZRr+T8rc4+jCB7VcWN4HrqAHS1j7LCojaGs4DCc4JwQQNJdp
+	 tWg7U7KG9WqnChnJ3Yf1C2gQbEyfDVtOUkpfYVzDToz8E9bv3DhPx7aar/34/dXo0V
+	 nJ51u2Yn6p/tdEnPhM2dhgQOdbJOqmknlZkZErbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/206] scsi: firewire: sbp-target: Fix overflow in sbp_make_tpg()
+	syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	"Barry K. Nathan" <barryn@pobox.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 116/161] fbdev: fbcon: release buffer when fbcon_do_set_font() failed
 Date: Wed,  4 Feb 2026 15:39:39 +0100
-Message-ID: <20260204143903.534911182@linuxfoundation.org>
+Message-ID: <20260204143855.920815817@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213691-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213495-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,I-love.SAKURA.ne.jp,pobox.com,gmx.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,25bdb7b1703639abd498];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1C995E814D
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,i-love.sakura.ne.jp:email,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pobox.com:email,gmx.de:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: C74E4E7637
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit b2d6b1d443009ed4da2d69f5423ab38e5780505a ]
+commit 3c3bfb8586f848317ceba5d777e11204ba3e5758 upstream.
 
-The code in sbp_make_tpg() limits "tpgt" to UINT_MAX but the data type of
-"tpg->tport_tpgt" is u16. This causes a type truncation issue.
+syzbot is reporting memory leak at fbcon_do_set_font() [1], for
+commit a5a923038d70 ("fbdev: fbcon: Properly revert changes when
+vc_resize() failed") missed that the buffer might be newly allocated
+by fbcon_set_font().
 
-When a user creates a TPG via configfs mkdir, for example:
-
-    mkdir /sys/kernel/config/target/sbp/<wwn>/tpgt_70000
-
-The value 70000 passes the "tpgt > UINT_MAX" check since 70000 is far less
-than 4294967295. However, when assigned to the u16 field tpg->tport_tpgt,
-the value is silently truncated to 4464 (70000 & 0xFFFF). This causes the
-value the user specified to differ from what is actually stored, leading to
-confusion and potential unexpected behavior.
-
-Fix this by changing the type of "tpgt" to u16 and using kstrtou16() which
-will properly reject values outside the u16 range.
-
-Fixes: a511ce339780 ("sbp-target: Initial merge of firewire/ieee-1394 target mode support")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Link: https://patch.msgid.link/20260121114515.1829-2-qikeyu2017@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://syzkaller.appspot.com/bug?extid=25bdb7b1703639abd498 [1]
+Reported-by: syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
+Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
+Cc: "Barry K. Nathan" <barryn@pobox.com>
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/sbp/sbp_target.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/fbcon.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
-index b9f9fb5d7e63e..7e7d32669dfbc 100644
---- a/drivers/target/sbp/sbp_target.c
-+++ b/drivers/target/sbp/sbp_target.c
-@@ -1986,12 +1986,12 @@ static struct se_portal_group *sbp_make_tpg(struct se_wwn *wwn,
- 		container_of(wwn, struct sbp_tport, tport_wwn);
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2473,7 +2473,8 @@ err_out:
  
- 	struct sbp_tpg *tpg;
--	unsigned long tpgt;
-+	u16 tpgt;
- 	int ret;
+ 	if (userfont) {
+ 		p->userfont = old_userfont;
+-		REFCOUNT(data)--;
++		if (--REFCOUNT(data) == 0)
++			kfree(data - FONT_EXTRA_WORDS * sizeof(int));
+ 	}
  
- 	if (strstr(name, "tpgt_") != name)
- 		return ERR_PTR(-EINVAL);
--	if (kstrtoul(name + 5, 10, &tpgt) || tpgt > UINT_MAX)
-+	if (kstrtou16(name + 5, 10, &tpgt))
- 		return ERR_PTR(-EINVAL);
- 
- 	if (tport->tpg) {
--- 
-2.51.0
-
+ 	vc->vc_font.width = old_width;
 
 
 
