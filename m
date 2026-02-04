@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAA7Julng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:17 +0100
+	id 6CFCCXBog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B490E9034
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90910E91A4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 787D5300DCF9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C9F7630C680B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1492BD012;
-	Wed,  4 Feb 2026 15:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0963529993F;
+	Wed,  4 Feb 2026 15:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNi+qvIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jD5NAota"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3619261B91;
-	Wed,  4 Feb 2026 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C111C18859B;
+	Wed,  4 Feb 2026 15:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219030; cv=none; b=d0YGiEOqSjv3XjOqzGWBdthYRDdTe69ZMXt4RQ+M8A0BIcEKcZav8GBdwqxyoMlkYHgLxD/Pw2Ij0qJLczWxgOyiCtkjWC5ao7C/8IMBMd5UdL1IrcoEt2tGV1e+dMNxk0ROhGjrojvuaCHqlSzYrVKnQRter60Fyjq9kRP1Imo=
+	t=1770218681; cv=none; b=XbFy3vWwp4x0snEWFWvqWyidUjlF3t3QFmsI0bUaPonaFmoXAZZbUCnC9xGL2elKG0mgjxJSjCpaQv6u1KhzLvCBe463Jlczq1qDCfwVmQtKVCKgHZljOkAdZHpZlIFz96vE0/ezFoXbHZ5v4tyF2d+s2WV+VDTuB2ld342ncKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219030; c=relaxed/simple;
-	bh=Ylyf5DCCueSe27sPGfvsDOQt5k/JNbPx9xhLBYpzfq4=;
+	s=arc-20240116; t=1770218681; c=relaxed/simple;
+	bh=W+Jw5Q/paeESKLSoTUf6FZRHAoSqvqEGo+m9bln4XqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzHzt5YZ6VVSrTFGQISNu+OpF7/w1g/luxc3V9aD/ZKH00PMLyKwkuhGv4h8/0GAlvMDVHJbiLHViOJMpaqSMmphbvJc+3RcHsZG2gNLHvW7YPG9B4z+I21zQuQ6nrGT1ntHDoZMvuQfAMiYmHKNIDvLXxf+ZzFAyHTKFvCLdqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNi+qvIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A701C4CEF7;
-	Wed,  4 Feb 2026 15:30:29 +0000 (UTC)
+	 MIME-Version; b=aB0LqRi3KP47yPHwY8KxbnbJ3f8YRILVIzg1nGAErnObHOu4cuXvugy+CxZuXZpt23reWxmeuqU2i7+jvVEe5bK9tcyxg8LZGS5jnwZGAcErGlQ0RPeURhyNQ0mKozhopcqTzDANrHzayFe6EQXo0bKS1sK30zZPdg16k6GywCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jD5NAota; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E220C4CEF7;
+	Wed,  4 Feb 2026 15:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219030;
-	bh=Ylyf5DCCueSe27sPGfvsDOQt5k/JNbPx9xhLBYpzfq4=;
+	s=korg; t=1770218681;
+	bh=W+Jw5Q/paeESKLSoTUf6FZRHAoSqvqEGo+m9bln4XqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNi+qvIbhaDb5UQsbnSnXC5Y17T2bvgjcNPl7UaNGOXmsL3Enn58IFQElaqD3jKuV
-	 blfxtRxEdh62t2sFVBQQd0U1XZ8RdPyAKK9ji3r9ToNaOg5k+zuJ2cIvxDWPHx09Wr
-	 EOkqWalt9J39r1qbVu8NC2bSaShA15pk7YoMOJBc=
+	b=jD5NAotaBmvIiXzux4aQtMKfQ/HWR+p6mkshoVqqYIwMcjZsN7fhA/gkmJWW4AcS/
+	 XnRPab5z+i13TeQr5BCVHuy/cmy2pJffaFk9aX74SSA/+soqeDaQfu26qevPRHd63L
+	 I683iZdJ4yZhdadIOecFgwwVlGC8+dUzh5Hh/gCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Holger Kiehl <Holger.Kiehl@dwd.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
+	Shida Zhang <zhangshida@kylinos.cn>,
+	Coly Li <colyli@fnnas.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 046/122] kbuild: rpm-pkg: Generate debuginfo package manually
+Subject: [PATCH 6.12 30/87] bcache: fix I/O accounting leak in detached_dev_do_request
 Date: Wed,  4 Feb 2026 15:40:28 +0100
-Message-ID: <20260204143853.515965893@linuxfoundation.org>
+Message-ID: <20260204143847.995871393@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214240-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214135-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,157 +88,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,system.map:url,find-debuginfo.sh:url,dwd.de:email]
-X-Rspamd-Queue-Id: 3B490E9034
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lst.de:email,kylinos.cn:email,fnnas.com:email,kernel.dk:email]
+X-Rspamd-Queue-Id: 90910E91A4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-[ Upstream commit 62089b804895e845f82e132ea9d46a1fc53ed5a7 ]
+[ Upstream commit 4da7c5c3ec34d839bba6e035c3d05c447a2f9d4f ]
 
-Commit a7c699d090a1 ("kbuild: rpm-pkg: build a debuginfo RPM") adjusted
-the __spec_install_post macro to include __os_install_post, which runs
-brp-strip. This ends up stripping module signatures, breaking loading
-modules with lockdown enabled.
+When a bcache device is detached, discard requests are completed
+immediately. However, the I/O accounting started in
+cached_dev_make_request() is not ended, leading to 100% disk
+utilization reports in iostat. Add the missing bio_end_io_acct() call.
 
-Undo most of the changes of the aforementioned debuginfo patch and
-mirror commit 16c36f8864e3 ("kbuild: deb-pkg: use build ID instead of
-debug link for dbg package") in kernel.spec to generate a functionally
-equivalent debuginfo package while avoiding touching the modules after
-they have already been signed during modules_install.
-
-Fixes: a7c699d090a1 ("kbuild: rpm-pkg: build a debuginfo RPM")
-Reported-by: Holger Kiehl <Holger.Kiehl@dwd.de>
-Closes: https://lore.kernel.org/68c375f6-e07e-fec-434d-6a45a4f1390@praktifix.dwd.de/
-Tested-by: Holger Kiehl <Holger.Kiehl@dwd.de>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20260121-fix-module-signing-binrpm-pkg-v1-1-8fc5832b6cbc@kernel.org
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+Fixes: cafe56359144 ("bcache: A block layer cache")
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Acked-by: Coly Li <colyli@fnnas.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/kernel.spec | 65 +++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 35 deletions(-)
+ drivers/md/bcache/request.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 98f206cb7c607..0f1c8de1bd95f 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -2,6 +2,8 @@
- %{!?_arch: %define _arch dummy}
- %{!?make: %define make make}
- %define makeflags %{?_smp_mflags} ARCH=%{ARCH}
-+%define __spec_install_post /usr/lib/rpm/brp-compress || :
-+%define debug_package %{nil}
+diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
+index a02aecac05cdf..6cba1180be8aa 100644
+--- a/drivers/md/bcache/request.c
++++ b/drivers/md/bcache/request.c
+@@ -1107,6 +1107,7 @@ static void detached_dev_do_request(struct bcache_device *d,
  
- Name: kernel
- Summary: The Linux Kernel
-@@ -46,34 +48,12 @@ against the %{version} kernel package.
- %endif
- 
- %if %{with_debuginfo}
--# list of debuginfo-related options taken from distribution kernel.spec
--# files
--%undefine _include_minidebuginfo
--%undefine _find_debuginfo_dwz_opts
--%undefine _unique_build_ids
--%undefine _unique_debug_names
--%undefine _unique_debug_srcs
--%undefine _debugsource_packages
--%undefine _debuginfo_subpackages
--%global _find_debuginfo_opts -r
--%global _missing_build_ids_terminate_build 1
--%global _no_recompute_build_ids 1
--%{debug_package}
-+%package debuginfo
-+Summary: Debug information package for the Linux kernel
-+%description debuginfo
-+This package provides debug information for the kernel image and modules from the
-+%{version} package.
- %endif
--# some (but not all) versions of rpmbuild emit %%debug_package with
--# %%install. since we've already emitted it manually, that would cause
--# a package redefinition error. ensure that doesn't happen
--%define debug_package %{nil}
--
--# later, we make all modules executable so that find-debuginfo.sh strips
--# them up. but they don't actually need to be executable, so remove the
--# executable bit, taking care to do it _after_ find-debuginfo.sh has run
--%define __spec_install_post \
--	%{?__debug_package:%{__debug_install_post}} \
--	%{__arch_install_post} \
--	%{__os_install_post} \
--	find %{buildroot}/lib/modules/%{KERNELRELEASE} -name "*.ko" -type f \\\
--		| xargs --no-run-if-empty chmod u-x
- 
- %prep
- %setup -q -n linux
-@@ -87,7 +67,7 @@ patch -p1 < %{SOURCE2}
- mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
- cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
- # DEPMOD=true makes depmod no-op. We do not package depmod-generated files.
--%{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} DEPMOD=true modules_install
-+%{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} INSTALL_MOD_STRIP=1 DEPMOD=true modules_install
- %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
- cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
- cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
-@@ -118,22 +98,31 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
- 	echo "%exclude /lib/modules/%{KERNELRELEASE}/build"
- } > %{buildroot}/kernel.list
- 
--# make modules executable so that find-debuginfo.sh strips them. this
--# will be undone later in %%__spec_install_post
--find %{buildroot}/lib/modules/%{KERNELRELEASE} -name "*.ko" -type f \
--	| xargs --no-run-if-empty chmod u+x
--
- %if %{with_debuginfo}
- # copying vmlinux directly to the debug directory means it will not get
- # stripped (but its source paths will still be collected + fixed up)
- mkdir -p %{buildroot}/usr/lib/debug/lib/modules/%{KERNELRELEASE}
- cp vmlinux %{buildroot}/usr/lib/debug/lib/modules/%{KERNELRELEASE}
-+
-+echo /usr/lib/debug/lib/modules/%{KERNELRELEASE}/vmlinux > %{buildroot}/debuginfo.list
-+
-+while read -r mod; do
-+	mod="${mod%.o}.ko"
-+	dbg="%{buildroot}/usr/lib/debug/lib/modules/%{KERNELRELEASE}/kernel/${mod}"
-+	buildid=$("${READELF}" -n "${mod}" | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
-+	link="%{buildroot}/usr/lib/debug/.build-id/${buildid}.debug"
-+
-+	mkdir -p "${dbg%/*}" "${link%/*}"
-+	"${OBJCOPY}" --only-keep-debug "${mod}" "${dbg}"
-+	ln -sf --relative "${dbg}" "${link}"
-+
-+	echo "${dbg#%{buildroot}}" >> %{buildroot}/debuginfo.list
-+	echo "${link#%{buildroot}}" >> %{buildroot}/debuginfo.list
-+done < modules.order
- %endif
- 
- %clean
- rm -rf %{buildroot}
--rm -f debugfiles.list debuglinks.list debugsourcefiles.list debugsources.list \
--	elfbins.list
- 
- %post
- if [ -x /usr/bin/kernel-install ]; then
-@@ -172,3 +161,9 @@ fi
- /usr/src/kernels/%{KERNELRELEASE}
- /lib/modules/%{KERNELRELEASE}/build
- %endif
-+
-+%if %{with_debuginfo}
-+%files -f %{buildroot}/debuginfo.list debuginfo
-+%defattr (-, root, root)
-+%exclude /debuginfo.list
-+%endif
+ 	if (bio_op(orig_bio) == REQ_OP_DISCARD &&
+ 	    !bdev_max_discard_sectors(dc->bdev)) {
++		bio_end_io_acct(orig_bio, start_time);
+ 		bio_endio(orig_bio);
+ 		return;
+ 	}
 -- 
 2.51.0
 
