@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMdtAs9fg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213720-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:43 +0100
+	id 8P9eON1tg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DF3E7D3A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC0BE9CB1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF6AD301A401
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0838330A9153
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6668328853E;
-	Wed,  4 Feb 2026 15:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703ED41B367;
+	Wed,  4 Feb 2026 15:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VshDzm4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nsS9he/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA74285404;
-	Wed,  4 Feb 2026 15:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B9040FD81;
+	Wed,  4 Feb 2026 15:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217282; cv=none; b=Ci7zxcL4HP+USmWCcdr7hVXQHR2pJBynNdHVYxb38ZW9H30sKT0FMiYnJi0JRO9CFbDtSdpLOZVBMP6MR6ceey9VwzVuso//osTDjVfFOH8ahJ9988pWcLP1HCENcl3FoNwISg2rzKmx6uKJJRPR7JmtsmAokQDEBe8ckHlAlmQ=
+	t=1770218449; cv=none; b=DAOgfRFKaiGshIS5Au8RixxpVGS7Mhv49J+nSAIwqIdDE9Xz6gazdKW/KT9yc5u3yW60f02P3STBsxJX2In4XOGgXQTyGy2fSa/i/QuOO7VGWh2airYgcJq81pb+lG8Z33rxPBQLCJIx19zgrgA93DAlBZ5yfUlvpPEzncwYH98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217282; c=relaxed/simple;
-	bh=NaW6EObdiHgyAEAV2NKMLdAdVFgEiFeVDwoH2+iXNco=;
+	s=arc-20240116; t=1770218449; c=relaxed/simple;
+	bh=26jhqweaYrU6H/V/7isz4ylCuMaAt9R5Vaqq0O9rAgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHQeVGSWTZVvIrCCld6YzHGqIQ3lm5okVvi1IXfkfkuYjYindZDjHckns+yVy1g0nr5/Q/HZ8yjGEMTt11tC/TXSh8UtL9KLYvUOiwDVXeKG1UZusOonsYlZchFjKEkzo9XIE4/+hj4Pae3nLg5Lk2F3N+8dJRItlVpCkYlauBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VshDzm4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F974C4CEF7;
-	Wed,  4 Feb 2026 15:01:21 +0000 (UTC)
+	 MIME-Version; b=h7VkRj4PDe42BXQrjtGlXEQEI2XS6Rd5+Vl/vsolEr/yrW1hHI74buiPZQDsNLQ8w3qAYKS2EFi/fSWxLHNpVJW8cGSYi1dUIot3gT1aWFSTVDWl81O5RnqQFdZ56HOZYf3svP9V3F9dhvW6lg8JhwbDoukusaQbBBXKNbJGLlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nsS9he/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31B4C4CEF7;
+	Wed,  4 Feb 2026 15:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217282;
-	bh=NaW6EObdiHgyAEAV2NKMLdAdVFgEiFeVDwoH2+iXNco=;
+	s=korg; t=1770218448;
+	bh=26jhqweaYrU6H/V/7isz4ylCuMaAt9R5Vaqq0O9rAgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VshDzm4Fvq9nbeJSAzRMfBJ4/FVwgZsAd9Ew+y6N9rxp15AMj/mTBnQpY2C+H8ApJ
-	 8wgKuBn4EH4kFOQ5nWt9Kf3JfwdLCf+zsAka5OrqReiu2Cs33C6/3yBQGVzXlDaAJZ
-	 nbMSisnBGoXvSPmq9spcodYIWARkCyw8Fd7B4a9M=
+	b=0nsS9he/HwPrvdZ14Ymc17FUqS7ysQrN3AiMXfSBUmZ0UW9/ZoIGa6BcxeA7TPfnh
+	 HZ/Z36YDWjuZeDdWfQA59VmGN855ef1tvs4V1mRba0mQ6EwwzlCLDkV3tVCsViG2LU
+	 5BvX40ah44xN9qxmdscCAejyQCFqD/UN9OyinWug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15 178/206] blk-cgroup: Reinit blkg_iostat_set after clearing in blkcg_reset_stats()
+	Eric Dumazet <edumazet@google.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 06/72] bonding: annotate data-races around slave->last_rx
 Date: Wed,  4 Feb 2026 15:40:09 +0100
-Message-ID: <20260204143904.625973281@linuxfoundation.org>
+Message-ID: <20260204143845.841095243@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,87 +70,209 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,kernel.dk,foxmail.com];
-	TAGGED_FROM(0.00)[bounces-213720-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214066-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,foxmail.com:email,kernel.dk:email]
-X-Rspamd-Queue-Id: 89DF3E7D3A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,googlegroups.com:email]
+X-Rspamd-Queue-Id: DDC0BE9CB1
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3d2af77e31ade05ff7ccc3658c3635ec1bea0979 ]
+[ Upstream commit f6c3665b6dc53c3ab7d31b585446a953a74340ef ]
 
-When blkg_alloc() is called to allocate a blkcg_gq structure
-with the associated blkg_iostat_set's, there are 2 fields within
-blkg_iostat_set that requires proper initialization - blkg & sync.
-The former field was introduced by commit 3b8cc6298724 ("blk-cgroup:
-Optimize blkcg_rstat_flush()") while the later one was introduced by
-commit f73316482977 ("blk-cgroup: reimplement basic IO stats using
-cgroup rstat").
+slave->last_rx and slave->target_last_arp_rx[...] can be read and written
+locklessly. Add READ_ONCE() and WRITE_ONCE() annotations.
 
-Unfortunately those fields in the blkg_iostat_set's are not properly
-re-initialized when they are cleared in v1's blkcg_reset_stats(). This
-can lead to a kernel panic due to NULL pointer access of the blkg
-pointer. The missing initialization of sync is less problematic and
-can be a problem in a debug kernel due to missing lockdep initialization.
+syzbot reported:
 
-Fix these problems by re-initializing them after memory clearing.
+BUG: KCSAN: data-race in bond_rcv_validate / bond_rcv_validate
 
-Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
-Fixes: f73316482977 ("blk-cgroup: reimplement basic IO stats using cgroup rstat")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20230606180724.2455066-1-longman@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ Remove this line: bis -> blkg = blkg for blkg was introduced by commit
-  3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()") since v6.2. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 1:
+  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
+  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
+  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
+  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
+  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
+  netif_receive_skb_internal net/core/dev.c:6351 [inline]
+  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
+...
+
+write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 0:
+  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
+  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
+  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
+  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
+  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
+  netif_receive_skb_internal net/core/dev.c:6351 [inline]
+  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
+  br_netif_receive_skb net/bridge/br_input.c:30 [inline]
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+...
+
+value changed: 0x0000000100005365 -> 0x0000000100005366
+
+Fixes: f5b2b966f032 ("[PATCH] bonding: Validate probe replies in ARP monitor")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Link: https://patch.msgid.link/20260122162914.2299312-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/bonding/bond_main.c    | 18 ++++++++++--------
+ drivers/net/bonding/bond_options.c |  8 ++++----
+ include/net/bonding.h              | 13 +++++++------
+ 3 files changed, 21 insertions(+), 18 deletions(-)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -491,8 +491,12 @@ static int blkcg_reset_stats(struct cgro
- 			struct blkg_iostat_set *bis =
- 				per_cpu_ptr(blkg->iostat_cpu, cpu);
- 			memset(bis, 0, sizeof(*bis));
-+
-+			/* Re-initialize the cleared blkg_iostat_set */
-+			u64_stats_init(&bis->sync);
- 		}
- 		memset(&blkg->iostat, 0, sizeof(blkg->iostat));
-+		u64_stats_init(&blkg->iostat.sync);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 9385c3ac0c83c..4373e300879d9 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3137,8 +3137,8 @@ static void bond_validate_arp(struct bonding *bond, struct slave *slave, __be32
+ 			   __func__, &sip);
+ 		return;
+ 	}
+-	slave->last_rx = jiffies;
+-	slave->target_last_arp_rx[i] = jiffies;
++	WRITE_ONCE(slave->last_rx, jiffies);
++	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
+ }
  
- 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
- 			struct blkcg_policy *pol = blkcg_policy[i];
+ static int bond_arp_rcv(const struct sk_buff *skb, struct bonding *bond,
+@@ -3357,8 +3357,8 @@ static void bond_validate_na(struct bonding *bond, struct slave *slave,
+ 			  __func__, saddr);
+ 		return;
+ 	}
+-	slave->last_rx = jiffies;
+-	slave->target_last_arp_rx[i] = jiffies;
++	WRITE_ONCE(slave->last_rx, jiffies);
++	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
+ }
+ 
+ static int bond_na_rcv(const struct sk_buff *skb, struct bonding *bond,
+@@ -3428,7 +3428,7 @@ int bond_rcv_validate(const struct sk_buff *skb, struct bonding *bond,
+ 		    (slave_do_arp_validate_only(bond) && is_ipv6) ||
+ #endif
+ 		    !slave_do_arp_validate_only(bond))
+-			slave->last_rx = jiffies;
++			WRITE_ONCE(slave->last_rx, jiffies);
+ 		return RX_HANDLER_ANOTHER;
+ 	} else if (is_arp) {
+ 		return bond_arp_rcv(skb, bond, slave);
+@@ -3496,7 +3496,7 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
+ 
+ 		if (slave->link != BOND_LINK_UP) {
+ 			if (bond_time_in_interval(bond, last_tx, 1) &&
+-			    bond_time_in_interval(bond, slave->last_rx, 1)) {
++			    bond_time_in_interval(bond, READ_ONCE(slave->last_rx), 1)) {
+ 
+ 				bond_propose_link_state(slave, BOND_LINK_UP);
+ 				slave_state_changed = 1;
+@@ -3520,8 +3520,10 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
+ 			 * when the source ip is 0, so don't take the link down
+ 			 * if we don't know our ip yet
+ 			 */
+-			if (!bond_time_in_interval(bond, last_tx, bond->params.missed_max) ||
+-			    !bond_time_in_interval(bond, slave->last_rx, bond->params.missed_max)) {
++			if (!bond_time_in_interval(bond, last_tx,
++						   bond->params.missed_max) ||
++			    !bond_time_in_interval(bond, READ_ONCE(slave->last_rx),
++						   bond->params.missed_max)) {
+ 
+ 				bond_propose_link_state(slave, BOND_LINK_DOWN);
+ 				slave_state_changed = 1;
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index a2fa068193e3b..5a2a935945c4c 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1124,7 +1124,7 @@ static void _bond_options_arp_ip_target_set(struct bonding *bond, int slot,
+ 
+ 	if (slot >= 0 && slot < BOND_MAX_ARP_TARGETS) {
+ 		bond_for_each_slave(bond, slave, iter)
+-			slave->target_last_arp_rx[slot] = last_rx;
++			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
+ 		targets[slot] = target;
+ 	}
+ }
+@@ -1193,8 +1193,8 @@ static int bond_option_arp_ip_target_rem(struct bonding *bond, __be32 target)
+ 	bond_for_each_slave(bond, slave, iter) {
+ 		targets_rx = slave->target_last_arp_rx;
+ 		for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
+-			targets_rx[i] = targets_rx[i+1];
+-		targets_rx[i] = 0;
++			WRITE_ONCE(targets_rx[i], READ_ONCE(targets_rx[i+1]));
++		WRITE_ONCE(targets_rx[i], 0);
+ 	}
+ 	for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
+ 		targets[i] = targets[i+1];
+@@ -1349,7 +1349,7 @@ static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
+ 
+ 	if (slot >= 0 && slot < BOND_MAX_NS_TARGETS) {
+ 		bond_for_each_slave(bond, slave, iter) {
+-			slave->target_last_arp_rx[slot] = last_rx;
++			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
+ 			slave_set_ns_maddr(bond, slave, target, &targets[slot]);
+ 		}
+ 		targets[slot] = *target;
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index 95f67b308c19a..9fb40a5920209 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -519,13 +519,14 @@ static inline int bond_is_ip6_target_ok(struct in6_addr *addr)
+ static inline unsigned long slave_oldest_target_arp_rx(struct bonding *bond,
+ 						       struct slave *slave)
+ {
++	unsigned long tmp, ret = READ_ONCE(slave->target_last_arp_rx[0]);
+ 	int i = 1;
+-	unsigned long ret = slave->target_last_arp_rx[0];
+-
+-	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++)
+-		if (time_before(slave->target_last_arp_rx[i], ret))
+-			ret = slave->target_last_arp_rx[i];
+ 
++	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++) {
++		tmp = READ_ONCE(slave->target_last_arp_rx[i]);
++		if (time_before(tmp, ret))
++			ret = tmp;
++	}
+ 	return ret;
+ }
+ 
+@@ -535,7 +536,7 @@ static inline unsigned long slave_last_rx(struct bonding *bond,
+ 	if (bond->params.arp_all_targets == BOND_ARP_TARGETS_ALL)
+ 		return slave_oldest_target_arp_rx(bond, slave);
+ 
+-	return slave->last_rx;
++	return READ_ONCE(slave->last_rx);
+ }
+ 
+ static inline void slave_update_last_tx(struct slave *slave)
+-- 
+2.51.0
+
 
 
 
