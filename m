@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wExLLzJqg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:02 +0100
+	id SOTvEOtqg2m3mgMAu9opvQ
+	(envelope-from <stable+bounces-214229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1584CE9621
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 440E8E97A3
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D735315D670
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8106B303C0D9
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636B342188B;
-	Wed,  4 Feb 2026 15:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44742D97BB;
+	Wed,  4 Feb 2026 15:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T0k3yE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLUZ8hVr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2772C3D994;
-	Wed,  4 Feb 2026 15:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D9F2D5950;
+	Wed,  4 Feb 2026 15:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218207; cv=none; b=GVdI/1REzpkLEiX2GvT0Ck0o614vzZZ1wgzWiIhCUGQsARyGSlbCN7Z23FxFIemC3l12yMQo0MKk+3gJuEv4n05PQwbKytsZ3H9B8rb9MSJLkp/c9qTmn8IUY9ZrnwAxh/gp5a7XcKRb5ORhgEnfNVMOaLH74d7R1Gm9ExCsM1A=
+	t=1770218993; cv=none; b=lVldJqa6Hmsf2sH1b4bQT3SlaQ2vELSZ23tMr9baoDmgW7AWGf+8ukCkS2XLg923bjq2utvgspYPY+eSgH9JCW44HgAVtiy5yZc6qosLvGVMfA0CPHIXfAzSD+lmGevr0GiX0DJFUZA6i48VADUUO9lgYPQQUvU/kb91F55/NG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218207; c=relaxed/simple;
-	bh=8iG9jwoaDmvP+1qdngvGDGqGMj28/6lsKm/FaEp4a/U=;
+	s=arc-20240116; t=1770218993; c=relaxed/simple;
+	bh=iuks9tEdsIt0NEPZkvpQ/KKbjx0eoLS/Db85tekHcB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3uauMPHDwgCn4/OUEN3NfF64oHcwObqhi1hZY3uwvqPdZmFPop4UpUnwnEGqQj4yrM0fr109Hexi/p/ECPORGicM2xbNCJEG9nAXDboiNc15BsZ0QLi/U10aKntBaa3UVrlVBHy0eZW2CuaXA55LTNhWKC4q0yRC8b03xz0w0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T0k3yE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895B7C4CEF7;
-	Wed,  4 Feb 2026 15:16:46 +0000 (UTC)
+	 MIME-Version; b=X5S+kmGThfBSXQepP0aPW4POjslIO34eR1UAC89dQ6K6GiQmGeTjms7w4h9cSqDbW+neQV9bZh2m+wSnRMyyryzW1KXv+upP75xLYZdc9LhX5emQWUREC3Bkc6oEhY1oJx5rpaYMG3HNo+nLDkzFbFuEAyA94ZNCNMm3mf55Ixg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLUZ8hVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6EFC19423;
+	Wed,  4 Feb 2026 15:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218207;
-	bh=8iG9jwoaDmvP+1qdngvGDGqGMj28/6lsKm/FaEp4a/U=;
+	s=korg; t=1770218993;
+	bh=iuks9tEdsIt0NEPZkvpQ/KKbjx0eoLS/Db85tekHcB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0T0k3yE+d9Zcvw1VPmo7QdkCC6lwdi/B1iX7KROYAXtHVB+qX/KtG5cdHeSCR/agt
-	 IUJx83J3QIU2qhWGwuBwkxJqBUBNqQH29x4eOeq3qGNi5fxJNdli4H/L5i32e8noJh
-	 W9jvDemVSRjylpuF9rbM/IiIJZyEs0c2oJzdlmrg=
+	b=QLUZ8hVrSnowYemePyzxOS5avtQnVFMy/bIZ+zlLwsqgi2h1GLecRL/xHjETIF014
+	 bO5U/6yk1NBiEdu+WJegtraFgPhpqPfbuNlke36lXVtUAR2K722b21qg7zLfgcDBd6
+	 JF7hHIW0IOXmmjHd6vqfcNz5TdsfNo0EB8oKOKqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/280] ASoC: codecs: wsa881x: Simplify &pdev->dev in probe
+Subject: [PATCH 6.18 036/122] wifi: mac80211: apply advertised TTLM from association response
 Date: Wed,  4 Feb 2026 15:40:18 +0100
-Message-ID: <20260204143918.416382563@linuxfoundation.org>
+Message-ID: <20260204143853.160652211@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +70,346 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214229-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213995-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email]
-X-Rspamd-Queue-Id: 1584CE9621
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 440E8E97A3
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit c617c9e7024d152426acf9f1aaf01070b6852f13 ]
+[ Upstream commit aebc29dec67aa998a9ea6d34aacba7b5c6a74d33 ]
 
-The probe already stores pointer to &pdev->dev, so use it to make the
-code a bit easier to read.
+When the AP has a disabled link that the station can include in the
+association, the fact that the link is dormant needs to be advertised
+in the TID to Link Mapping (TTLM). Section 35.3.7.2.3 ("Negotiation of
+TTLM") of Draft P802.11REVmf_D1.0 also states that the mapping needs to
+be included in the association response frame.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230102114152.297305-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 29d71b8a5a40 ("ASoC: codecs: wsa881x: fix unnecessary initialisation")
+As such, we can simply rely on the TTLM from the association response.
+Before this change mac80211 would not properly track that an advertised
+TTLM was effectively active, resulting in it not enabling the link once
+it became available again.
+
+For the link reconfiguration case, the data was not used at all. This
+behaviour is actually correct because Draft P802.11REVmf_D1.0 states in
+section 35.3.6.4 that we "shall operate with all the TIDs mapped to the
+newly added links ..."
+
+Fixes: 6d543b34dbcf ("wifi: mac80211: Support disabled links during association")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260118093904.43c861424543.I067f702ac46b84ac3f8b4ea16fb0db9cbbfae7e2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 1eab33aa63c9 ("wifi: mac80211: correctly decode TTLM with default link map")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wsa881x.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/mac80211/ieee80211_i.h |   2 -
+ net/mac80211/mlme.c        | 216 ++++++++++++++++++++-----------------
+ 2 files changed, 119 insertions(+), 99 deletions(-)
 
---- a/sound/soc/codecs/wsa881x.c
-+++ b/sound/soc/codecs/wsa881x.c
-@@ -1112,20 +1112,20 @@ static int wsa881x_probe(struct sdw_slav
- 	struct wsa881x_priv *wsa881x;
- 	struct device *dev = &pdev->dev;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 878c3b14aeb80..5c0c833fcf7a9 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -451,8 +451,6 @@ struct ieee80211_mgd_assoc_data {
+ 		struct ieee80211_conn_settings conn;
  
--	wsa881x = devm_kzalloc(&pdev->dev, sizeof(*wsa881x), GFP_KERNEL);
-+	wsa881x = devm_kzalloc(dev, sizeof(*wsa881x), GFP_KERNEL);
- 	if (!wsa881x)
- 		return -ENOMEM;
+ 		u16 status;
+-
+-		bool disabled;
+ 	} link[IEEE80211_MLD_MAX_NUM_LINKS];
  
--	wsa881x->sd_n = devm_gpiod_get_optional(&pdev->dev, "powerdown",
-+	wsa881x->sd_n = devm_gpiod_get_optional(dev, "powerdown",
- 						GPIOD_FLAGS_BIT_NONEXCLUSIVE);
- 	if (IS_ERR(wsa881x->sd_n)) {
- 		dev_err(&pdev->dev, "Shutdown Control GPIO not found\n");
- 		return PTR_ERR(wsa881x->sd_n);
+ 	u8 ap_addr[ETH_ALEN] __aligned(2);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d70163c0b9e32..21c73a65f73f9 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6161,6 +6161,98 @@ static bool ieee80211_get_dtim(const struct cfg80211_bss_ies *ies,
+ 	return true;
+ }
+ 
++static u16 ieee80211_get_ttlm(u8 bm_size, u8 *data)
++{
++	if (bm_size == 1)
++		return *data;
++
++	return get_unaligned_le16(data);
++}
++
++static int
++ieee80211_parse_adv_t2l(struct ieee80211_sub_if_data *sdata,
++			const struct ieee80211_ttlm_elem *ttlm,
++			struct ieee80211_adv_ttlm_info *ttlm_info)
++{
++	/* The element size was already validated in
++	 * ieee80211_tid_to_link_map_size_ok()
++	 */
++	u8 control, link_map_presence, map_size, tid;
++	u8 *pos;
++
++	memset(ttlm_info, 0, sizeof(*ttlm_info));
++	pos = (void *)ttlm->optional;
++	control	= ttlm->control;
++
++	if ((control & IEEE80211_TTLM_CONTROL_DIRECTION) !=
++	    IEEE80211_TTLM_DIRECTION_BOTH) {
++		sdata_info(sdata, "Invalid advertised T2L map direction\n");
++		return -EINVAL;
++	}
++
++	link_map_presence = *pos;
++	pos++;
++
++	if (control & IEEE80211_TTLM_CONTROL_SWITCH_TIME_PRESENT) {
++		ttlm_info->switch_time = get_unaligned_le16(pos);
++
++		/* Since ttlm_info->switch_time == 0 means no switch time, bump
++		 * it by 1.
++		 */
++		if (!ttlm_info->switch_time)
++			ttlm_info->switch_time = 1;
++
++		pos += 2;
++	}
++
++	if (control & IEEE80211_TTLM_CONTROL_EXPECTED_DUR_PRESENT) {
++		ttlm_info->duration = pos[0] | pos[1] << 8 | pos[2] << 16;
++		pos += 3;
++	}
++
++	if (control & IEEE80211_TTLM_CONTROL_DEF_LINK_MAP) {
++		ttlm_info->map = 0xffff;
++		return 0;
++	}
++
++	if (control & IEEE80211_TTLM_CONTROL_LINK_MAP_SIZE)
++		map_size = 1;
++	else
++		map_size = 2;
++
++	/* According to Draft P802.11be_D3.0 clause 35.3.7.1.7, an AP MLD shall
++	 * not advertise a TID-to-link mapping that does not map all TIDs to the
++	 * same link set, reject frame if not all links have mapping
++	 */
++	if (link_map_presence != 0xff) {
++		sdata_info(sdata,
++			   "Invalid advertised T2L mapping presence indicator\n");
++		return -EINVAL;
++	}
++
++	ttlm_info->map = ieee80211_get_ttlm(map_size, pos);
++	if (!ttlm_info->map) {
++		sdata_info(sdata,
++			   "Invalid advertised T2L map for TID 0\n");
++		return -EINVAL;
++	}
++
++	pos += map_size;
++
++	for (tid = 1; tid < 8; tid++) {
++		u16 map = ieee80211_get_ttlm(map_size, pos);
++
++		if (map != ttlm_info->map) {
++			sdata_info(sdata, "Invalid advertised T2L map for tid %d\n",
++				   tid);
++			return -EINVAL;
++		}
++
++		pos += map_size;
++	}
++	return 0;
++}
++
+ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 				    struct ieee80211_mgmt *mgmt,
+ 				    struct ieee802_11_elems *elems,
+@@ -6192,8 +6284,6 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 				continue;
+ 
+ 			valid_links |= BIT(link_id);
+-			if (assoc_data->link[link_id].disabled)
+-				dormant_links |= BIT(link_id);
+ 
+ 			if (link_id != assoc_data->assoc_link_id) {
+ 				err = ieee80211_sta_allocate_link(sta, link_id);
+@@ -6202,6 +6292,33 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 
++		/*
++		 * We do not support setting a negotiated TTLM during
++		 * association. As such, we can assume that if there is a TTLM,
++		 * then it is the currently active advertised TTLM.
++		 * In that case, there must be exactly one TTLM that does not
++		 * have a switch time set. This mapping should also leave us
++		 * with at least one usable link.
++		 */
++		if (elems->ttlm_num > 1) {
++			sdata_info(sdata,
++				   "More than one advertised TTLM in association response\n");
++			goto out_err;
++		} else if (elems->ttlm_num == 1) {
++			if (ieee80211_parse_adv_t2l(sdata, elems->ttlm[0],
++						    &sdata->u.mgd.ttlm_info) ||
++			    sdata->u.mgd.ttlm_info.switch_time != 0 ||
++			    !(valid_links & sdata->u.mgd.ttlm_info.map)) {
++				sdata_info(sdata,
++					   "Invalid advertised TTLM in association response\n");
++				goto out_err;
++			}
++
++			sdata->u.mgd.ttlm_info.active = true;
++			dormant_links =
++				valid_links & ~sdata->u.mgd.ttlm_info.map;
++		}
++
+ 		ieee80211_vif_set_links(sdata, valid_links, dormant_links);
  	}
  
--	dev_set_drvdata(&pdev->dev, wsa881x);
-+	dev_set_drvdata(dev, wsa881x);
- 	wsa881x->slave = pdev;
--	wsa881x->dev = &pdev->dev;
-+	wsa881x->dev = dev;
- 	wsa881x->sconfig.ch_count = 1;
- 	wsa881x->sconfig.bps = 1;
- 	wsa881x->sconfig.frame_rate = 48000;
-@@ -1148,7 +1148,7 @@ static int wsa881x_probe(struct sdw_slav
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
+@@ -6991,98 +7108,6 @@ static void ieee80211_tid_to_link_map_work(struct wiphy *wiphy,
+ 	sdata->u.mgd.ttlm_info.switch_time = 0;
+ }
  
--	return devm_snd_soc_register_component(&pdev->dev,
-+	return devm_snd_soc_register_component(dev,
- 					       &wsa881x_component_drv,
- 					       wsa881x_dais,
- 					       ARRAY_SIZE(wsa881x_dais));
+-static u16 ieee80211_get_ttlm(u8 bm_size, u8 *data)
+-{
+-	if (bm_size == 1)
+-		return *data;
+-	else
+-		return get_unaligned_le16(data);
+-}
+-
+-static int
+-ieee80211_parse_adv_t2l(struct ieee80211_sub_if_data *sdata,
+-			const struct ieee80211_ttlm_elem *ttlm,
+-			struct ieee80211_adv_ttlm_info *ttlm_info)
+-{
+-	/* The element size was already validated in
+-	 * ieee80211_tid_to_link_map_size_ok()
+-	 */
+-	u8 control, link_map_presence, map_size, tid;
+-	u8 *pos;
+-
+-	memset(ttlm_info, 0, sizeof(*ttlm_info));
+-	pos = (void *)ttlm->optional;
+-	control	= ttlm->control;
+-
+-	if ((control & IEEE80211_TTLM_CONTROL_DIRECTION) !=
+-	    IEEE80211_TTLM_DIRECTION_BOTH) {
+-		sdata_info(sdata, "Invalid advertised T2L map direction\n");
+-		return -EINVAL;
+-	}
+-
+-	link_map_presence = *pos;
+-	pos++;
+-
+-	if (control & IEEE80211_TTLM_CONTROL_SWITCH_TIME_PRESENT) {
+-		ttlm_info->switch_time = get_unaligned_le16(pos);
+-
+-		/* Since ttlm_info->switch_time == 0 means no switch time, bump
+-		 * it by 1.
+-		 */
+-		if (!ttlm_info->switch_time)
+-			ttlm_info->switch_time = 1;
+-
+-		pos += 2;
+-	}
+-
+-	if (control & IEEE80211_TTLM_CONTROL_EXPECTED_DUR_PRESENT) {
+-		ttlm_info->duration = pos[0] | pos[1] << 8 | pos[2] << 16;
+-		pos += 3;
+-	}
+-
+-	if (control & IEEE80211_TTLM_CONTROL_DEF_LINK_MAP) {
+-		ttlm_info->map = 0xffff;
+-		return 0;
+-	}
+-
+-	if (control & IEEE80211_TTLM_CONTROL_LINK_MAP_SIZE)
+-		map_size = 1;
+-	else
+-		map_size = 2;
+-
+-	/* According to Draft P802.11be_D3.0 clause 35.3.7.1.7, an AP MLD shall
+-	 * not advertise a TID-to-link mapping that does not map all TIDs to the
+-	 * same link set, reject frame if not all links have mapping
+-	 */
+-	if (link_map_presence != 0xff) {
+-		sdata_info(sdata,
+-			   "Invalid advertised T2L mapping presence indicator\n");
+-		return -EINVAL;
+-	}
+-
+-	ttlm_info->map = ieee80211_get_ttlm(map_size, pos);
+-	if (!ttlm_info->map) {
+-		sdata_info(sdata,
+-			   "Invalid advertised T2L map for TID 0\n");
+-		return -EINVAL;
+-	}
+-
+-	pos += map_size;
+-
+-	for (tid = 1; tid < 8; tid++) {
+-		u16 map = ieee80211_get_ttlm(map_size, pos);
+-
+-		if (map != ttlm_info->map) {
+-			sdata_info(sdata, "Invalid advertised T2L map for tid %d\n",
+-				   tid);
+-			return -EINVAL;
+-		}
+-
+-		pos += map_size;
+-	}
+-	return 0;
+-}
+-
+ static void ieee80211_process_adv_ttlm(struct ieee80211_sub_if_data *sdata,
+ 					  struct ieee802_11_elems *elems,
+ 					  u64 beacon_ts)
+@@ -9729,7 +9754,6 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 							       req, true, i,
+ 							       &assoc_data->link[i].conn);
+ 			assoc_data->link[i].bss = link_cbss;
+-			assoc_data->link[i].disabled = req->links[i].disabled;
+ 
+ 			if (!bss->uapsd_supported)
+ 				uapsd_supported = false;
+@@ -10711,8 +10735,6 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
+ 							 &data->link[link_id].conn);
+ 
+ 			data->link[link_id].bss = link_cbss;
+-			data->link[link_id].disabled =
+-				req->add_links[link_id].disabled;
+ 			data->link[link_id].elems =
+ 				(u8 *)req->add_links[link_id].elems;
+ 			data->link[link_id].elems_len =
+-- 
+2.51.0
+
 
 
 
