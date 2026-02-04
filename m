@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-214209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEWoL/Fng2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:25 +0100
+	id wIDeHDNlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBE1E903C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE40E8926
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C2893125741
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A48F7314BF69
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238692D978A;
-	Wed,  4 Feb 2026 15:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868F641C2EC;
+	Wed,  4 Feb 2026 15:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWJTWjqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xU3MKW6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB79D261B91;
-	Wed,  4 Feb 2026 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3EA18859B;
+	Wed,  4 Feb 2026 15:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218928; cv=none; b=IB3g6lIEyW3byyljE0z5yJQIljGH44U6UEl1rf1pLuQGwIcuL6wmqA9FSn0ycDjXdF27orvFiHzLlGEnY33tcvm91sQT5+XGpIYhAPviaoYB2vBkpcNRwuvQDKnqdvpi0cDSKtD5947Q6bYVwc0hP8ajcoTeX+MhmYvf/evePfc=
+	t=1770218149; cv=none; b=WJROKyfSohjnnDL2JGnCf5ge4XOlA8dU6XepZOgQcoMtTt2NBAvXZ6lWWCn8FnKCsu171pdDPdfSGUqQo6fez8Qn74NpZsS4sKBYb/gdBGiMiG02AeerB/jICGkm9cPVzk8qU+STKrmvKPJLJqS3XqVMaPFqMOEZ4TU6X1LJ4iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218928; c=relaxed/simple;
-	bh=onO1zxNOudpklcCbFDcagFQPh4GjaiMAzHK2KBewA2c=;
+	s=arc-20240116; t=1770218149; c=relaxed/simple;
+	bh=kJjHXV9UfGGZwGaPBdPG8DFq+miDiL/eTC9UuCdH9Mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqrcVc4h6Kwoi96MjAVydrTbQnlrY24i1pkFpuzt6qqhZT6u3dB63RiDblgW11iAI2rn4nUNJD3qGmctOFDAdqpp6shAhAX4vJ/iE5oGHGOWofVL1pQWT/pkrRp5nKXxq75a5xj6uDyZrKu8g0D/fsJnxalC4gUuSuEJY05Zkww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWJTWjqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BEFC4CEF7;
-	Wed,  4 Feb 2026 15:28:47 +0000 (UTC)
+	 MIME-Version; b=ZH1MrfUwyLBuV2Z40FQ20oUKxyWcIVxlMwoFY7l/dw5kJJeJAeswHzJhQi1durXi67F6CfjAQZooKBeKAVrObG+p2Bnx/IZHrGhoIlrJ8Mc9gLJIREGyEgWjOqzB8pQoL0sqeZrgm7H2MGykTUmtmkDIlUEE5IKci98RZz0DQeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU3MKW6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1B8C4CEF7;
+	Wed,  4 Feb 2026 15:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218928;
-	bh=onO1zxNOudpklcCbFDcagFQPh4GjaiMAzHK2KBewA2c=;
+	s=korg; t=1770218149;
+	bh=kJjHXV9UfGGZwGaPBdPG8DFq+miDiL/eTC9UuCdH9Mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zWJTWjqZjKzSNct/pqqKkJALznixws2infxIrjTBNl5MPWbqG52uAMz0DK8MwACnU
-	 46IQOEMqx023nbLlvjtTsrMn9wf47s6ep4UW0gYMqYfGdKm1Atec13FVCYalUrIRu2
-	 PZme4F0hFr/3d+Crj32JAHvVdENaIGxuYQ3PXtRQ=
+	b=xU3MKW6HPtVjRLJ9RmegmTtfCpPV7GDJYKrU2+oRGEKR5vpUoGRUXLsxbysG4kpAZ
+	 t7Oosc1JxAEjoZ7eQY0wQ008lE9GG5avCW1Sb/eHrMjNHC28VnEu9YXImSJZCCk/kH
+	 W52YzFZ29XyMkPeJoFECKXuDmLpJnbbrA2daIve4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 016/122] rocker: fix memory leak in rocker_world_port_post_fini()
-Date: Wed,  4 Feb 2026 15:39:58 +0100
-Message-ID: <20260204143852.451331169@linuxfoundation.org>
+	Vlastimil Babka <vbabka@suse.cz>,
+	kernel test robot <oliver.sang@intel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH 6.1 225/280] mm/page_alloc: prevent pcp corruption with SMP=n
+Date: Wed,  4 Feb 2026 15:39:59 +0100
+Message-ID: <20260204143917.709818674@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,88 +79,199 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-214209-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-213978-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 3CBE1E903C
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.com:email,infradead.org:email,linux-foundation.org:email,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,goodmis.org:email,nvidia.com:email]
+X-Rspamd-Queue-Id: CAE40E8926
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 8d7ba71e46216b8657a82ca2ec118bc93812a4d0 ]
+[ Upstream commit 038a102535eb49e10e93eafac54352fcc5d78847 ]
 
-In rocker_world_port_pre_init(), rocker_port->wpriv is allocated with
-kzalloc(wops->port_priv_size, GFP_KERNEL). However, in
-rocker_world_port_post_fini(), the memory is only freed when
-wops->port_post_fini callback is set:
+The kernel test robot has reported:
 
-    if (!wops->port_post_fini)
-        return;
-    wops->port_post_fini(rocker_port);
-    kfree(rocker_port->wpriv);
+ BUG: spinlock trylock failure on UP on CPU#0, kcompactd0/28
+  lock: 0xffff888807e35ef0, .magic: dead4ead, .owner: kcompactd0/28, .owner_cpu: 0
+ CPU: 0 UID: 0 PID: 28 Comm: kcompactd0 Not tainted 6.18.0-rc5-00127-ga06157804399 #1 PREEMPT  8cc09ef94dcec767faa911515ce9e609c45db470
+ Call Trace:
+  <IRQ>
+  __dump_stack (lib/dump_stack.c:95)
+  dump_stack_lvl (lib/dump_stack.c:123)
+  dump_stack (lib/dump_stack.c:130)
+  spin_dump (kernel/locking/spinlock_debug.c:71)
+  do_raw_spin_trylock (kernel/locking/spinlock_debug.c:?)
+  _raw_spin_trylock (include/linux/spinlock_api_smp.h:89 kernel/locking/spinlock.c:138)
+  __free_frozen_pages (mm/page_alloc.c:2973)
+  ___free_pages (mm/page_alloc.c:5295)
+  __free_pages (mm/page_alloc.c:5334)
+  tlb_remove_table_rcu (include/linux/mm.h:? include/linux/mm.h:3122 include/asm-generic/tlb.h:220 mm/mmu_gather.c:227 mm/mmu_gather.c:290)
+  ? __cfi_tlb_remove_table_rcu (mm/mmu_gather.c:289)
+  ? rcu_core (kernel/rcu/tree.c:?)
+  rcu_core (include/linux/rcupdate.h:341 kernel/rcu/tree.c:2607 kernel/rcu/tree.c:2861)
+  rcu_core_si (kernel/rcu/tree.c:2879)
+  handle_softirqs (arch/x86/include/asm/jump_label.h:36 include/trace/events/irq.h:142 kernel/softirq.c:623)
+  __irq_exit_rcu (arch/x86/include/asm/jump_label.h:36 kernel/softirq.c:725)
+  irq_exit_rcu (kernel/softirq.c:741)
+  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1052)
+  </IRQ>
+  <TASK>
+ RIP: 0010:_raw_spin_unlock_irqrestore (arch/x86/include/asm/preempt.h:95 include/linux/spinlock_api_smp.h:152 kernel/locking/spinlock.c:194)
+  free_pcppages_bulk (mm/page_alloc.c:1494)
+  drain_pages_zone (include/linux/spinlock.h:391 mm/page_alloc.c:2632)
+  __drain_all_pages (mm/page_alloc.c:2731)
+  drain_all_pages (mm/page_alloc.c:2747)
+  kcompactd (mm/compaction.c:3115)
+  kthread (kernel/kthread.c:465)
+  ? __cfi_kcompactd (mm/compaction.c:3166)
+  ? __cfi_kthread (kernel/kthread.c:412)
+  ret_from_fork (arch/x86/kernel/process.c:164)
+  ? __cfi_kthread (kernel/kthread.c:412)
+  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+  </TASK>
 
-Since rocker_ofdpa_ops does not implement port_post_fini callback
-(it is NULL), the wpriv memory allocated for each port is never freed
-when ports are removed. This leads to a memory leak of
-sizeof(struct ofdpa_port) bytes per port on every device removal.
+Matthew has analyzed the report and identified that in drain_page_zone()
+we are in a section protected by spin_lock(&pcp->lock) and then get an
+interrupt that attempts spin_trylock() on the same lock.  The code is
+designed to work this way without disabling IRQs and occasionally fail the
+trylock with a fallback.  However, the SMP=n spinlock implementation
+assumes spin_trylock() will always succeed, and thus it's normally a
+no-op.  Here the enabled lock debugging catches the problem, but otherwise
+it could cause a corruption of the pcp structure.
 
-Fix this by always calling kfree(rocker_port->wpriv) regardless of
-whether the port_post_fini callback exists.
+The problem has been introduced by commit 574907741599 ("mm/page_alloc:
+leave IRQs enabled for per-cpu page allocations").  The pcp locking scheme
+recognizes the need for disabling IRQs to prevent nesting spin_trylock()
+sections on SMP=n, but the need to prevent the nesting in spin_lock() has
+not been recognized.  Fix it by introducing local wrappers that change the
+spin_lock() to spin_lock_iqsave() with SMP=n and use them in all places
+that do spin_lock(&pcp->lock).
 
-Fixes: e420114eef4a ("rocker: introduce worlds infrastructure")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260123211030.2109-2-qikeyu2017@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[vbabka@suse.cz: add pcp_ prefix to the spin_lock_irqsave wrappers, per Steven]
+Link: https://lkml.kernel.org/r/20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz
+Fixes: 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202512101320.e2f2dd6f-lkp@intel.com
+Analyzed-by: Matthew Wilcox <willy@infradead.org>
+Link: https://lore.kernel.org/all/aUW05pyc9nZkvY-1@casper.infradead.org/
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ drop changes to decay_pcp_high() and zone_pcp_update_cacheinfo() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/rocker/rocker_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/page_alloc.c |   37 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index 36af94a2e062a..2794f75df8fcb 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -1524,9 +1524,8 @@ static void rocker_world_port_post_fini(struct rocker_port *rocker_port)
- {
- 	struct rocker_world_ops *wops = rocker_port->rocker->wops;
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -198,6 +198,33 @@ static DEFINE_MUTEX(pcp_batch_high_lock)
+ #define pcp_spin_unlock(ptr)						\
+ 	pcpu_spin_unlock(lock, ptr)
  
--	if (!wops->port_post_fini)
--		return;
--	wops->port_post_fini(rocker_port);
-+	if (wops->port_post_fini)
-+		wops->port_post_fini(rocker_port);
- 	kfree(rocker_port->wpriv);
++/*
++ * With the UP spinlock implementation, when we spin_lock(&pcp->lock) (for i.e.
++ * a potentially remote cpu drain) and get interrupted by an operation that
++ * attempts pcp_spin_trylock(), we can't rely on the trylock failure due to UP
++ * spinlock assumptions making the trylock a no-op. So we have to turn that
++ * spin_lock() to a spin_lock_irqsave(). This works because on UP there are no
++ * remote cpu's so we can only be locking the only existing local one.
++ */
++#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
++static inline void __flags_noop(unsigned long *flags) { }
++#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
++({							\
++	 __flags_noop(&(flags));			\
++	 spin_lock(&(ptr)->lock);			\
++})
++#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
++({							\
++	 spin_unlock(&(ptr)->lock);			\
++	 __flags_noop(&(flags));			\
++})
++#else
++#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
++		spin_lock_irqsave(&(ptr)->lock, flags)
++#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
++		spin_unlock_irqrestore(&(ptr)->lock, flags)
++#endif
++
+ #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
+ DEFINE_PER_CPU(int, numa_node);
+ EXPORT_PER_CPU_SYMBOL(numa_node);
+@@ -3174,14 +3201,15 @@ static int rmqueue_bulk(struct zone *zon
+  */
+ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
+ {
++	unsigned long UP_flags;
+ 	int to_drain, batch;
+ 
+ 	batch = READ_ONCE(pcp->batch);
+ 	to_drain = min(pcp->count, batch);
+ 	if (to_drain > 0) {
+-		spin_lock(&pcp->lock);
++		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
+ 		free_pcppages_bulk(zone, to_drain, pcp, 0);
+-		spin_unlock(&pcp->lock);
++		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
+ 	}
+ }
+ #endif
+@@ -3192,10 +3220,11 @@ void drain_zone_pages(struct zone *zone,
+ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ {
+ 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
++	unsigned long UP_flags;
+ 	int count;
+ 
+ 	do {
+-		spin_lock(&pcp->lock);
++		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
+ 		count = pcp->count;
+ 		if (count) {
+ 			int to_drain = min(count,
+@@ -3204,7 +3233,7 @@ static void drain_pages_zone(unsigned in
+ 			free_pcppages_bulk(zone, to_drain, pcp, 0);
+ 			count -= to_drain;
+ 		}
+-		spin_unlock(&pcp->lock);
++		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
+ 	} while (count);
  }
  
--- 
-2.51.0
-
 
 
 
