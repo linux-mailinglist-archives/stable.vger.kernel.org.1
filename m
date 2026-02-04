@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KH4pCLJcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:26 +0100
+	id WAuLDM5kg2l1mQMAu9opvQ
+	(envelope-from <stable+bounces-213924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BFAE7700
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BD6E87C5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BCEB3035AB7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EED37310EFD8
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8E1274B5F;
-	Wed,  4 Feb 2026 14:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D0C421EE1;
+	Wed,  4 Feb 2026 15:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liS/vvPY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0VsPQaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FA2221F17;
-	Wed,  4 Feb 2026 14:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256C6421EE8;
+	Wed,  4 Feb 2026 15:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216429; cv=none; b=PXDZ87MDybm8G6VL/zQSqRNfxjw3204bq8hVWrm+I6+YYetTcDB3+Jmpv+V+Ew5Gcr5icrwRL+2LYa9hZLQm5UdW7/IXo52P5uBbTeTbgX2f0kP+jb271OTws3dIqa9j53KaeoNXj5NpslnSrqM7FTcWB5qLFjSGoKK5bqdiIbU=
+	t=1770217970; cv=none; b=n6czAA2tbWk3GaXIqfqCNokUL55SGKsX9mvrEd6VjGNu44TTMB2yWcF9PXM/V330KMBr9dG5B/ain4JId1/xrTMvD0KkiUEe/Eu7OZ9hSsGsJEyvcsHNeXjrMEJgTHIdxtia5g/ovQhITBa7mYkGhNTnFUES5Ttxda6V8VxdhmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216429; c=relaxed/simple;
-	bh=eNTPvV2VVsri2BWC9Y8meyCjEJgSXTsAtcmipV++uuo=;
+	s=arc-20240116; t=1770217970; c=relaxed/simple;
+	bh=/m/QuuAU5m9sqmowDRwaPbfCK9ZB2ybjrx6CyakX/BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfWoRZLv4Rc9q6ueMOVKckSjnYZ8eYinFb0j1f5t/8xgIfsrWXKnSjyk/t0SBcTJJHwkInyYqZNUfNXoLtganfCJwc2zIr6lx85wS5h9NIM07y1c2+l+VbktC2ej82Ppnf+t9OuFJjC5tpNR/YuOJBGmH2w+AMRQSKH9nSBxsGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liS/vvPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C8BC4CEF7;
-	Wed,  4 Feb 2026 14:47:09 +0000 (UTC)
+	 MIME-Version; b=DHTHMZqPG3aqBPz8qu8Nq5eWaKjSicsYbUf2P74efF2Yv+4FillzSORrYSA239/baZl/CE0hUQVssKpySm4Wdk8whIThka5+uKYMfMpnF4NPbwYJ9SufwgGzPPfq7SvB+Woj7X+cXIfbvYfCfPTNNzovN6HBX0vT34+yPbO/IqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0VsPQaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A675CC4CEF7;
+	Wed,  4 Feb 2026 15:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216429;
-	bh=eNTPvV2VVsri2BWC9Y8meyCjEJgSXTsAtcmipV++uuo=;
+	s=korg; t=1770217970;
+	bh=/m/QuuAU5m9sqmowDRwaPbfCK9ZB2ybjrx6CyakX/BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=liS/vvPYn/uQbfuJb5EjkLhXVbZ/FRWArWig8EPTBJeY+RAyao6U5f33nrGvw+0Xn
-	 2Ow0CtwLYIO1x0DVDnHzEFS8/bm18URPuoc2Gjk+/hCpnapLe9fUAoDr0Wh8afLevT
-	 hEFaued6MmUb3unTGbPhq+FnbY2HYlWrWRHcgYj8=
+	b=e0VsPQaNdJU2EXynwUT8qYNz3S7DOQ6U94Frguo77pkghXYERka4NGV8J5XRnz9ib
+	 TUMk6zHo4MrMqFU4fbKAYhl0WgqclHFpMqgQUlM6PIw+3GQAE42a6jOutCr6owoYAu
+	 m5WQuDYgK8CGcm1DksqnB5S8wo4FV6wsBYG8N1zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/161] octeontx2-af: Fix error handling
+	Yang Shen <shenyang39@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 6.1 174/280] uacce: implement mremap in uacce_vm_ops to return -EPERM
 Date: Wed,  4 Feb 2026 15:39:08 +0100
-Message-ID: <20260204143854.807048551@linuxfoundation.org>
+Message-ID: <20260204143915.882336753@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213465-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213924-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,198 +90,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 96BFAE7700
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linaro.org:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 83BD6E87C5
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Yang Shen <shenyang39@huawei.com>
 
-[ Upstream commit 19e4175e997a5b85eab97d522f00cc99abd1873c ]
+commit 02695347be532b628f22488300d40c4eba48b9b7 upstream.
 
-This commit adds error handling and rollback logic to
-rvu_mbox_handler_attach_resources() to properly clean up partially
-attached resources when rvu_attach_block() fails.
+The current uacce_vm_ops does not support the mremap operation of
+vm_operations_struct. Implement .mremap to return -EPERM to remind
+users.
 
-Fixes: 746ea74241fa0 ("octeontx2-af: Add RVU block LF provisioning support")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Link: https://patch.msgid.link/20260121033934.1900761-1-rkannoth@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason we need to explicitly disable mremap is that when the
+driver does not implement .mremap, it uses the default mremap
+method. This could lead to a risk scenario:
+
+An application might first mmap address p1, then mremap to p2,
+followed by munmap(p1), and finally munmap(p2). Since the default
+mremap copies the original vma's vm_private_data (i.e., q) to the
+new vma, both munmap operations would trigger vma_close, causing
+q->qfr to be freed twice(qfr will be set to null here, so repeated
+release is ok).
+
+Fixes: 015d239ac014 ("uacce: add uacce driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yang Shen <shenyang39@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-4-huangchenghai2@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 86 ++++++++++++++-----
- 1 file changed, 64 insertions(+), 22 deletions(-)
+ drivers/misc/uacce/uacce.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index f8e86f2535635..3514564e2cc60 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1273,8 +1273,8 @@ static int rvu_get_attach_blkaddr(struct rvu *rvu, int blktype,
- 	return -ENODEV;
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -208,8 +208,14 @@ static void uacce_vma_close(struct vm_ar
+ 	kfree(qfr);
  }
  
--static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
--			     int num_lfs, struct rsrc_attach *attach)
-+static int rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
-+			    int num_lfs, struct rsrc_attach *attach)
- {
- 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
- 	struct rvu_hwinfo *hw = rvu->hw;
-@@ -1284,21 +1284,21 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
- 	u64 cfg;
- 
- 	if (!num_lfs)
--		return;
-+		return -EINVAL;
- 
- 	blkaddr = rvu_get_attach_blkaddr(rvu, blktype, pcifunc, attach);
- 	if (blkaddr < 0)
--		return;
-+		return -EFAULT;
- 
- 	block = &hw->block[blkaddr];
- 	if (!block->lf.bmap)
--		return;
-+		return -ESRCH;
- 
- 	for (slot = 0; slot < num_lfs; slot++) {
- 		/* Allocate the resource */
- 		lf = rvu_alloc_rsrc(&block->lf);
- 		if (lf < 0)
--			return;
-+			return -EFAULT;
- 
- 		cfg = (1ULL << 63) | (pcifunc << 8) | slot;
- 		rvu_write64(rvu, blkaddr, block->lfcfg_reg |
-@@ -1309,6 +1309,8 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
- 		/* Set start MSIX vector for this LF within this PF/VF */
- 		rvu_set_msix_offset(rvu, pfvf, block, lf);
- 	}
++static int uacce_vma_mremap(struct vm_area_struct *area)
++{
++	return -EPERM;
++}
 +
-+	return 0;
- }
+ static const struct vm_operations_struct uacce_vm_ops = {
+ 	.close = uacce_vma_close,
++	.mremap = uacce_vma_mremap,
+ };
  
- static int rvu_check_rsrc_availability(struct rvu *rvu,
-@@ -1446,22 +1448,31 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
- 	int err;
- 
- 	/* If first request, detach all existing attached resources */
--	if (!attach->modify)
--		rvu_detach_rsrcs(rvu, NULL, pcifunc);
-+	if (!attach->modify) {
-+		err = rvu_detach_rsrcs(rvu, NULL, pcifunc);
-+		if (err)
-+			return err;
-+	}
- 
- 	mutex_lock(&rvu->rsrc_lock);
- 
- 	/* Check if the request can be accommodated */
- 	err = rvu_check_rsrc_availability(rvu, attach, pcifunc);
- 	if (err)
--		goto exit;
-+		goto fail1;
- 
- 	/* Now attach the requested resources */
--	if (attach->npalf)
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
-+	if (attach->npalf) {
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
-+		if (err)
-+			goto fail1;
-+	}
- 
--	if (attach->nixlf)
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
-+	if (attach->nixlf) {
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
-+		if (err)
-+			goto fail2;
-+	}
- 
- 	if (attach->sso) {
- 		/* RVU func doesn't know which exact LF or slot is attached
-@@ -1471,33 +1482,64 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
- 		 */
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
--				 attach->sso, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
-+				       attach->sso, attach);
-+		if (err)
-+			goto fail3;
- 	}
- 
- 	if (attach->ssow) {
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
--				 attach->ssow, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
-+				       attach->ssow, attach);
-+		if (err)
-+			goto fail4;
- 	}
- 
- 	if (attach->timlfs) {
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
--				 attach->timlfs, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
-+				       attach->timlfs, attach);
-+		if (err)
-+			goto fail5;
- 	}
- 
- 	if (attach->cptlfs) {
- 		if (attach->modify &&
- 		    rvu_attach_from_same_block(rvu, BLKTYPE_CPT, attach))
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_CPT);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
--				 attach->cptlfs, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
-+				       attach->cptlfs, attach);
-+		if (err)
-+			goto fail6;
- 	}
- 
--exit:
-+	mutex_unlock(&rvu->rsrc_lock);
-+	return 0;
-+
-+fail6:
-+	if (attach->timlfs)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
-+
-+fail5:
-+	if (attach->ssow)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
-+
-+fail4:
-+	if (attach->sso)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
-+
-+fail3:
-+	if (attach->nixlf)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_NIX);
-+
-+fail2:
-+	if (attach->npalf)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_NPA);
-+
-+fail1:
- 	mutex_unlock(&rvu->rsrc_lock);
- 	return err;
- }
--- 
-2.51.0
-
+ static int uacce_fops_mmap(struct file *filep, struct vm_area_struct *vma)
 
 
 
