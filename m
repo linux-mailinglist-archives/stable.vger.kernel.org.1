@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAPwI2Ffg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:53 +0100
+	id EK1NJ9Ncg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F00DE7C47
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198D4E776A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4343302935B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 763B5303CC01
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7E24218A5;
-	Wed,  4 Feb 2026 14:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F462773EE;
+	Wed,  4 Feb 2026 14:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T34pblz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zKYe2Ij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5BC413254;
-	Wed,  4 Feb 2026 14:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D92A221F17;
+	Wed,  4 Feb 2026 14:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217103; cv=none; b=Try70vuL3jKwD3FVJefYQUoy/VKSV6XvevEVgMvOiW+8dunxWlNeKhRBYR0d/QPX8m/xy09uDERSV6274I4eGKE5fWiSl0iz0wLzEQ+Qp9Q0n5thFGYVy+wYmU9Bq5LnjvHdfeaWCjpwcpGSW4bvysvvwvSgs6bSOBMw1kKBZoo=
+	t=1770216457; cv=none; b=cxbRfZqbLqGyAOMM4IJk0T/uA0IUpromK3C9veYCPjvtCVpbaGXUuBWtP5WUswVJmnX1B5Mq2E0FRt4whQJ5im546w1l9/ue5049/eqby03k7b4t8Rykpw49tooex3TxbUUsOYvFd6i0vEpdLd4G7FElrR2cLt6w59W9gKTeQJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217103; c=relaxed/simple;
-	bh=vJP5m2f3khQBEgmgs+9+twt8C4ydITpqEKXX1NFAMJ4=;
+	s=arc-20240116; t=1770216457; c=relaxed/simple;
+	bh=lUQqjUfi1OlME1FKaHTcsqp+a5OlC3FCaegi4Ncdjv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpUI0+I6XdWfZiw/LCSI5pRBo6pqww5UU6oIx5ZSSvad2uzgjdqHYd/juL9h8/nOn5bQC8aGPye9iSgH6OVTEbKZFsOIf47zltechgYbl1GyFCnvEUNsgtV2jz6joVR5oYjlHWNcF/rUyJMjh/ZDOqFAX2p1NLiczL4PfqjU8LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T34pblz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E0EC4CEF7;
-	Wed,  4 Feb 2026 14:58:22 +0000 (UTC)
+	 MIME-Version; b=uVCcNwUu7MBK+gC1RLoaxkKvjIWhdSlDuSdZU1nBRs/xDZHyni7abIK4KXUqzyzd7r1SVI31M9coqbezaEbBAW15kDtV3xMiQk0Ei8Sim6uj9rnzqFlkiZWLeILbAkepLezXMdlJhLkiSyHjeqRzPtCPO7XeZLwXKB0rhBGcTxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zKYe2Ij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997D0C4CEF7;
+	Wed,  4 Feb 2026 14:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217103;
-	bh=vJP5m2f3khQBEgmgs+9+twt8C4ydITpqEKXX1NFAMJ4=;
+	s=korg; t=1770216457;
+	bh=lUQqjUfi1OlME1FKaHTcsqp+a5OlC3FCaegi4Ncdjv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1T34pblzHjHyAE1vJombcfHG+srsZ4Gr55VVyad/T+gws8/AyrVgKgx+Lwrpn9Ex/
-	 3jKe1fuwG4qYTfKqPoWB36CYW8EDeMvp22Q/xfzRwEzKCpkOfaKAQURdxJle429+3R
-	 rq99freju0ib/Cc28YPrRxhbOc/ZHypffeeOMDIY=
+	b=0zKYe2Ij5qzMjro2th0rJnnmU08L0FZdLxzKC2xYMZMtr2zMs7KyMd6tZhR5BCSej
+	 +9hH9I224uIJfRcW/EtSavfiiWfhgNjhqm5zIcsVithEk+DYvgXKjYks+U+xQkiwJE
+	 0wtTrNy8jo1CAE9wpQfoVM42eYuofSW8PvUM9vBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Shen <shenyang39@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 5.15 123/206] uacce: implement mremap in uacce_vm_ops to return -EPERM
-Date: Wed,  4 Feb 2026 15:39:14 +0100
-Message-ID: <20260204143902.633218047@linuxfoundation.org>
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Karsten Hohmeier <linux@hohmatik.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 092/161] ALSA: ctxfi: Fix potential OOB access in audio mixer handling
+Date: Wed,  4 Feb 2026 15:39:15 +0100
+Message-ID: <20260204143855.055475328@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213667-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213473-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,62 +90,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7F00DE7C47
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,hohmatik.de:email]
+X-Rspamd-Queue-Id: 198D4E776A
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shen <shenyang39@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 02695347be532b628f22488300d40c4eba48b9b7 upstream.
+commit 61006c540cbdedea83b05577dc7fb7fa18fe1276 upstream.
 
-The current uacce_vm_ops does not support the mremap operation of
-vm_operations_struct. Implement .mremap to return -EPERM to remind
-users.
+In the audio mixer handling code of ctxfi driver, the conf field is
+used as a kind of loop index, and it's referred in the index callbacks
+(amixer_index() and sum_index()).
 
-The reason we need to explicitly disable mremap is that when the
-driver does not implement .mremap, it uses the default mremap
-method. This could lead to a risk scenario:
+As spotted recently by fuzzers, the current code causes OOB access at
+those functions.
+| UBSAN: array-index-out-of-bounds in /build/reproducible-path/linux-6.17.8/sound/pci/ctxfi/ctamixer.c:347:48
+| index 8 is out of range for type 'unsigned char [8]'
 
-An application might first mmap address p1, then mremap to p2,
-followed by munmap(p1), and finally munmap(p2). Since the default
-mremap copies the original vma's vm_private_data (i.e., q) to the
-new vma, both munmap operations would trigger vma_close, causing
-q->qfr to be freed twice(qfr will be set to null here, so repeated
-release is ok).
+After the analysis, the cause was found to be the lack of the proper
+(re-)initialization of conj field.
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yang Shen <shenyang39@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-4-huangchenghai2@huawei.com
+This patch addresses those OOB accesses by adding the proper
+initializations of the loop indices.
+
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Tested-by: Karsten Hohmeier <linux@hohmatik.de>
+Closes: https://bugs.debian.org/1121535
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/aSk8KJI35H7gFru6@eldamar.lan/
+Link: https://patch.msgid.link/20260119133212.189129-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/pci/ctxfi/ctamixer.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -208,8 +208,14 @@ static void uacce_vma_close(struct vm_ar
- 	kfree(qfr);
+--- a/sound/pci/ctxfi/ctamixer.c
++++ b/sound/pci/ctxfi/ctamixer.c
+@@ -205,6 +205,7 @@ static int amixer_rsc_init(struct amixer
+ 
+ 	/* Set amixer specific operations */
+ 	amixer->rsc.ops = &amixer_basic_rsc_ops;
++	amixer->rsc.conj = 0;
+ 	amixer->ops = &amixer_ops;
+ 	amixer->input = NULL;
+ 	amixer->sum = NULL;
+@@ -369,6 +370,7 @@ static int sum_rsc_init(struct sum *sum,
+ 		return err;
+ 
+ 	sum->rsc.ops = &sum_basic_rsc_ops;
++	sum->rsc.conj = 0;
+ 
+ 	return 0;
  }
- 
-+static int uacce_vma_mremap(struct vm_area_struct *area)
-+{
-+	return -EPERM;
-+}
-+
- static const struct vm_operations_struct uacce_vm_ops = {
- 	.close = uacce_vma_close,
-+	.mremap = uacce_vma_mremap,
- };
- 
- static int uacce_fops_mmap(struct file *filep, struct vm_area_struct *vma)
 
 
 
