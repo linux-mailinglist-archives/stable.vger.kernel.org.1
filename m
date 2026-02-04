@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-214241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iH7ZBkJvg2lqmwMAu9opvQ
-	(envelope-from <stable+bounces-214241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:09:38 +0100
+	id WHx7D6Ztg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D521E9F0E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 940DAE9C3B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 47020308D0F4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 88C683128832
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827282BE621;
-	Wed,  4 Feb 2026 15:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8C14266B2;
+	Wed,  4 Feb 2026 15:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl0JLDv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCu5PlD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4749F273D77;
-	Wed,  4 Feb 2026 15:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5E642189D;
+	Wed,  4 Feb 2026 15:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219034; cv=none; b=VrsDTvECjiKvGP2Us8vuBL0Jqqjg+Yy/+2/Uji3JSRc7FT4zvwNZ29o6dyjL38jzDxDVgDZe5FWaTc9JqR4gOdNx1wRsebQQ6hXVykaS2mnNti4KEiJN8DtloRTEdIj1K4zHbU9yFIe86N7sC7NPuGefpMfN/7cxvG67NqSMRlM=
+	t=1770218424; cv=none; b=uapKxciFeQZESsPBB5+L4P2U3MgX8I56EY0QOTnwqG+Y4r52Uv6+cQyKRik9V3+TKj63rnZ7X5knBIFv0quj+edKqkj59PLvvZJ0YRgnMI/cZc+D8pDztvbOgKp5BFJoUKglWXY2rukH08Ral+MsUqPrtdrmggV2YrOKAbrKu1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219034; c=relaxed/simple;
-	bh=61J0WJ5JaDV0poKgm4GTRENn3u8RR7D+2g8vVMaQmaY=;
+	s=arc-20240116; t=1770218424; c=relaxed/simple;
+	bh=rneGumcGLSl/rPcDY+0xI+N0i8FGhcC5zWWACzQf7n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIa6HYxOLhwB0Gi1Mc9o7YiX2weV3DdI4qH5tq68NaWrcRW+NiALGUzAJ+mxudIW/Igi/m4ymxhW3PTXdXsKBQV+DebCgftiBIypUW0XG+m462lEbpM/E8UI/K7vt1ICLc+5XX2YwRjXwVd0wfOje+UD8lnZQQ+TipZCk/jfPtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl0JLDv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717A6C4CEF7;
-	Wed,  4 Feb 2026 15:30:33 +0000 (UTC)
+	 MIME-Version; b=drjJp1vl1evfit2rApAl5dEs9jSGEitmRg3yYxBTj4bRUkJsfw6DvIvGOgt/L+lGwaAE0A6WzH3xr5KxZClnXM0VjrWSEKr89xbIqqowGaB4Nfb6MCu404PCaYewpd0mgnlCmr7BG2LKgZ8j6e1di6mHKAD8vzZ1j9Ixz2i4tcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCu5PlD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B861EC4CEF7;
+	Wed,  4 Feb 2026 15:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219033;
-	bh=61J0WJ5JaDV0poKgm4GTRENn3u8RR7D+2g8vVMaQmaY=;
+	s=korg; t=1770218424;
+	bh=rneGumcGLSl/rPcDY+0xI+N0i8FGhcC5zWWACzQf7n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zl0JLDv5BYwkO5NfpNoSF4G522G7Rd6rMVHAlaZpHQQ9KgJI2Gjhh2YQm+LmdjCV8
-	 JHKF+ChvYhrin2yRBtEOzkEif02oQ9zz0hQ0h42oKdjlvfTyYujBRmwKVrg1eRS5R3
-	 QxiL0J5h69uZFnnGwhBL5MBqBoPcxopcP4i8CgIg=
+	b=cCu5PlD40LFjraH9Jpt+90uQwwTKRjzpkVwMAqpJfMR0m1xTlm0N0aXkOfMHz6ww5
+	 62NDUIKVtgDQM82gXSGGtXXzYEUWHampTUYicwHuqOhfqHOaOuw2wuFFagxEtB9B70
+	 wTbxdixajvEk4FzQVCu8U0b6pbFxzzNAuNdHgeIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Zuo <yuxuan.zuo@outlook.com>,
-	Nicolas Schier <nsc@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 047/122] kbuild: Fix permissions of modules.builtin.modinfo
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 26/72] ASoC: fsl: imx-card: Do not force slot width to sample width
 Date: Wed,  4 Feb 2026 15:40:29 +0100
-Message-ID: <20260204143853.551510845@linuxfoundation.org>
+Message-ID: <20260204143846.573371497@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,24 +65,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214241-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214059-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[broonie.kernel.org:query timed out];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,57 +92,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4D521E9F0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 940DAE9C3B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Zuo <yuxuan.zuo@outlook.com>
+From: Fabio Estevam <festevam@gmail.com>
 
-[ Upstream commit 6d60354ea2f90352b22039ed8371c4f4321df90e ]
+commit 9210f5ff6318163835d9e42ee68006be4da0f531 upstream.
 
-Currently, modules.builtin.modinfo is created with executable permissions
-(0755). This is because after commit 39cfd5b12160 ("kbuild: extract
-modules.builtin.modinfo from vmlinux.unstripped"), modules.builtin.modinfo
-is extracted from vmlinux.unstripped using objcopy. When extracting
-sections, objcopy inherits attributes from the source ELF file.
+imx-card currently sets the slot width to the physical sample width
+for I2S links. This breaks controllers that use fixed-width slots
+(e.g. 32-bit FIFO words), causing the unused bits in the slot to
+contain undefined data when playing 16-bit streams.
 
-Since modules.builtin.modinfo is a data file and not an executable,
-it should have regular file permissions (0644). The executable bit
-can trigger warnings in Debian's Lintian tool.
+Do not override the slot width in the machine driver and let the CPU
+DAI select an appropriate default instead. This matches the behavior
+of simple-audio-card and avoids embedding controller-specific policy
+in the machine driver.
 
-Explicitly remove the executable bit after generation.
+On an i.MX8MP-based board using SAI as the I2S master with 32-bit slots,
+playing 16-bit audio resulted in spurious frequencies and an incorrect
+SAI data waveform, as the slot width was forced to 16 bits. After this
+change, audio artifacts are eliminated and the 16-bit samples correctly
+occupy the first half of the 32-bit slot, with the remaining bits padded
+with zeroes.
 
-Fixes: 39cfd5b12160 ("kbuild: extract modules.builtin.modinfo from vmlinux.unstripped")
-Signed-off-by: Ethan Zuo <yuxuan.zuo@outlook.com>
-Link: https://patch.msgid.link/SY0P300MB0609F6916B24ADF65502940B9C91A@SY0P300MB0609.AUSP300.PROD.OUTLOOK.COM
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://patch.msgid.link/20260118205030.1532696-1-festevam@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.vmlinux | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/fsl/imx-card.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index cd788cac9d91d..276c3134a563a 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -113,7 +113,8 @@ vmlinux: vmlinux.unstripped FORCE
- # what kmod expects to parse.
- quiet_cmd_modules_builtin_modinfo = GEN     $@
-       cmd_modules_builtin_modinfo = $(cmd_objcopy); \
--                                    sed -i 's/\x00\+$$/\x00/g' $@
-+                                    sed -i 's/\x00\+$$/\x00/g' $@; \
-+                                    chmod -x $@
- 
- OBJCOPYFLAGS_modules.builtin.modinfo := -j .modinfo -O binary
- 
--- 
-2.51.0
-
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -314,7 +314,6 @@ static int imx_aif_hw_params(struct snd_
+ 			      SND_SOC_DAIFMT_PDM;
+ 		} else {
+ 			slots = 2;
+-			slot_width = params_physical_width(params);
+ 			fmt = (rtd->dai_link->dai_fmt & ~SND_SOC_DAIFMT_FORMAT_MASK) |
+ 			      SND_SOC_DAIFMT_I2S;
+ 		}
 
 
 
