@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFlHITpbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:10 +0100
+	id 4C1QC1lkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:05 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE693E7466
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8167FE8671
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0276D3018288
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D33F430A6E19
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62F340F8C6;
-	Wed,  4 Feb 2026 14:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD53F426ED1;
+	Wed,  4 Feb 2026 15:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwlDC5jE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiLwVMtT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE59280A3B;
-	Wed,  4 Feb 2026 14:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8123D410D16;
+	Wed,  4 Feb 2026 15:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216202; cv=none; b=bGH1D4okaE6gk/O+OxtRJWuxiU7jThsc5VKGzzC0ljgZpuLD0jNQIFeIn/lCS4Xdylbx1RxhfSPJdMCfCerkCAx1lCAtwkfsucKpkYliD6fYP41NDq1se6qHxuoo+rtWcvE4V7ELCHRRXc2+aFl6WTHY4S1YfNw63JFuUeNHEwQ=
+	t=1770217753; cv=none; b=g+MvmPYo1uQcvmGZjtVfJdqT1W6pIWCwWpv3pjVVGb1+B+aZ1HdQItKm6LXDEcxPCowQg3l+01TJLXGNybwkMoArFoLnyrzl3KRGRg/jSZAcx9a7+bjvCF+u5MwXhwAvx5cDs1eGDnG+3mxssKDDod5fhvjDrCmJ7zA7adPd6k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216202; c=relaxed/simple;
-	bh=04t4UzSMDHRoWrv21fmiH6JWSuMM984bS4f6LXajl3Y=;
+	s=arc-20240116; t=1770217753; c=relaxed/simple;
+	bh=sU974zhQPlRQtKjVnAuEySW7yDArV7oYlAxCfgSY6LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdMD4JzTKA11zrr+9w3EfLDQoB8V4RQoGGEDDcLXY+z996DaR9mm+07JLZP9/abAEqyOCEzAS/89QZmzsvCaj54bboClIhN6uhgh4X8pNKxN7LcAjxd6YfkiW5EiYnx65Qp7gQsmdq0DOER6nb0qeDTTb7aSEwqpXJX+BjzA5vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwlDC5jE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841E5C4CEF7;
-	Wed,  4 Feb 2026 14:43:21 +0000 (UTC)
+	 MIME-Version; b=SFJqlyUFDg3iAi/yC4advAPH42Pxyjuyq1kT8TJ8JiBkwLNUosmiljKSox8qsrZNMWNIjKwyZKgUUuXFqkdC3qdSiL+igpsRgJZkujXjVv+Yc0SoAaDwciq92I9lBaDU4lT5tqgwIH2JE2hUH94Q/3AMVE8+tkEMh2+LqgQn/NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiLwVMtT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12C1C4CEF7;
+	Wed,  4 Feb 2026 15:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216202;
-	bh=04t4UzSMDHRoWrv21fmiH6JWSuMM984bS4f6LXajl3Y=;
+	s=korg; t=1770217753;
+	bh=sU974zhQPlRQtKjVnAuEySW7yDArV7oYlAxCfgSY6LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwlDC5jEpluKWhP51MQsXVpY6DrhksChPZ4WE8ia07W5EFXzIRXl01s3kDkabPnsn
-	 XmJWApbF8J6nXW8UCZT302N4XrZsb1SO8Eo68rLVhexTXXmwNZW2LfbmCRbXIUrKr6
-	 xBkdnRsqbCM766iazLA31mi9B+D1k3SEpU+YFNPM=
+	b=WiLwVMtT5PqQxHjAnNUIC6HD9cfzYCF3+G3yM2OMy/eSqAwF7d/hR+lmGfx/D7+WV
+	 GTwLy119BxPc70yxXsIh1d1KaisevaK8puG/zNe2/8hEok6C9GHoa8Qop4e3njgMn2
+	 I/QxHiz/TPCgz4XFVpE4tha6jKbgCmyUigANs7Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Vinod Koul <vkoul@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/161] dmaengine: omap-dma: fix dma_pool resource leak in error paths
-Date: Wed,  4 Feb 2026 15:38:01 +0100
-Message-ID: <20260204143852.420325645@linuxfoundation.org>
+Subject: [PATCH 6.1 108/280] fou: Dont allow 0 for FOU_ATTR_IPPROTO.
+Date: Wed,  4 Feb 2026 15:38:02 +0100
+Message-ID: <20260204143913.533518977@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,73 +75,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213859-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213397-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: CE693E7466
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8167FE8671
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 2e1136acf8a8887c29f52e35a77b537309af321f ]
+[ Upstream commit 7a9bc9e3f42391e4c187e099263cf7a1c4b69ff5 ]
 
-The dma_pool created by dma_pool_create() is not destroyed when
-dma_async_device_register() or of_dma_controller_register() fails,
-causing a resource leak in the probe error paths.
+fou_udp_recv() has the same problem mentioned in the previous
+patch.
 
-Add dma_pool_destroy() in both error paths to properly release the
-allocated dma_pool resource.
+If FOU_ATTR_IPPROTO is set to 0, skb is not freed by
+fou_udp_recv() nor "resubmit"-ted in ip_protocol_deliver_rcu().
 
-Fixes: 7bedaa553760 ("dmaengine: add OMAP DMA engine driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251103073018.643-1-vulab@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Let's forbid 0 for FOU_ATTR_IPPROTO.
+
+Fixes: 23461551c0062 ("fou: Support for foo-over-udp RX path")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260115172533.693652-4-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/omap-dma.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/netlink/specs/fou.yaml | 2 ++
+ net/ipv4/fou_nl.c                    | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-index 268a080587149..6c6a34265b063 100644
---- a/drivers/dma/ti/omap-dma.c
-+++ b/drivers/dma/ti/omap-dma.c
-@@ -1803,6 +1803,8 @@ static int omap_dma_probe(struct platform_device *pdev)
- 	if (rc) {
- 		pr_warn("OMAP-DMA: failed to register slave DMA engine device: %d\n",
- 			rc);
-+		if (od->ll123_supported)
-+			dma_pool_destroy(od->desc_pool);
- 		omap_dma_free(od);
- 		return rc;
- 	}
-@@ -1818,6 +1820,8 @@ static int omap_dma_probe(struct platform_device *pdev)
- 		if (rc) {
- 			pr_warn("OMAP-DMA: failed to register DMA controller\n");
- 			dma_async_device_unregister(&od->ddev);
-+			if (od->ll123_supported)
-+				dma_pool_destroy(od->desc_pool);
- 			omap_dma_free(od);
- 		}
- 	}
+diff --git a/Documentation/netlink/specs/fou.yaml b/Documentation/netlink/specs/fou.yaml
+index 266c386eedf3a..e5753a30a29a2 100644
+--- a/Documentation/netlink/specs/fou.yaml
++++ b/Documentation/netlink/specs/fou.yaml
+@@ -36,6 +36,8 @@ attribute-sets:
+       -
+         name: ipproto
+         type: u8
++        checks:
++          min: 1
+       -
+         name: type
+         type: u8
+diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
+index 6c3820f41dd5d..5bb8133ed7a89 100644
+--- a/net/ipv4/fou_nl.c
++++ b/net/ipv4/fou_nl.c
+@@ -14,7 +14,7 @@
+ const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
+ 	[FOU_ATTR_PORT] = { .type = NLA_U16, },
+ 	[FOU_ATTR_AF] = { .type = NLA_U8, },
+-	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, },
++	[FOU_ATTR_IPPROTO] = NLA_POLICY_MIN(NLA_U8, 1),
+ 	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
+ 	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
+ 	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
 -- 
 2.51.0
 
