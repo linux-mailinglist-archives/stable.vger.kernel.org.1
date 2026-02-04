@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-214049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJYuINBqg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:50:40 +0100
+	id UEZ9AClqg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76D6E9751
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:50:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC14E9612
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 388D8304CA76
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:21:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A994330C200E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C369141C2EF;
-	Wed,  4 Feb 2026 15:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50A4426D07;
+	Wed,  4 Feb 2026 15:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2IiyQ9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pece0cCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8786E41B359;
-	Wed,  4 Feb 2026 15:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772504266BD;
+	Wed,  4 Feb 2026 15:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218390; cv=none; b=Q7CjTuU9DgbLCzRZnkwqVLd3zzguETl9w9k3lpd4h/QjwmoVecrLFtRAa34A33a3MxGRmd0+7zY5qtCaNQgqQX5qMS65VV8MYVIJOFTUvxJvE9mzzB7udwR0Ppw4vpVVw0+RDRGeIF25qTMNjI0fqj/hL+6klpvSCdKgWHbje4Y=
+	t=1770218656; cv=none; b=YeNwpdiieQhmhrg1wmn5Ik7xDYyvn/7kYhQLP32FRWq6Vra0SvJhkmYlG/jF80V9Vrc2rLH9Guck0WGRMsM1jH2h3x+rB/o159n4bxokMTU3ajMejWRBlJJxmMP8mTe7CpxTPrW9/BKLjPndsC2DmnWS+8iDaHwFZk9ZgdWyThM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218390; c=relaxed/simple;
-	bh=tL7RuOzMQLx08XwTNjQyWMMBFrRTCoU4/lj+05bzjUw=;
+	s=arc-20240116; t=1770218656; c=relaxed/simple;
+	bh=yFjIO+ZwVG2Oqs0QBWyvp4p275B4FyQ9LQWJkdGWpP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ffopo5DB6hxvNSVC1590x0i5NGf9PH7BqH4vrqyALNMrT7+J+58cuHPWmAJwZe51FTZVxBOY3SfxqYBIq8ag/fN8ijtIBBXVVtRncIPyf/fQNsFE7EIrYBTGXpr64nYMfRJ3S1TTRdvLAOBYEVbaXS4DQ7oEJMLPzDVMpky5qbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2IiyQ9Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09664C19423;
-	Wed,  4 Feb 2026 15:19:49 +0000 (UTC)
+	 MIME-Version; b=G662UgmsXa1k2rcKWOkiXlhumQYZiNFvw6sUsmeTuBIh/7QIt+ckVsGe5AcvU9cU4uXPtyOUIz0zAwlwW5kve6pM18Qx8iVqEIVPa4ejMr9aexlTIP413ehT8CUMIqtro4TLIbU46fzGJkkCKKjVFyxLO/W0YM5pckIOYq2Qrpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pece0cCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0111CC116C6;
+	Wed,  4 Feb 2026 15:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218390;
-	bh=tL7RuOzMQLx08XwTNjQyWMMBFrRTCoU4/lj+05bzjUw=;
+	s=korg; t=1770218656;
+	bh=yFjIO+ZwVG2Oqs0QBWyvp4p275B4FyQ9LQWJkdGWpP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p2IiyQ9YOWUqIjZo1642SfVfWVw8ycnp9TWozwZrhga3v83gB/kQCKJLK15IsvlIZ
-	 EE33jiniJu6YLNP+mmWB+rq0SQChu+mDWvo+78OaSRPQt6E8rF4utxrem7PsqNc/5f
-	 4kyEpHBBEDuKrC+RsW9m91JN6KTNwz98iW5D8r2s=
+	b=Pece0cCiKH0js+mm1ruyvhu+dqhOCeNcdNJ0Jp5+e5WgXXlH+vSenD/lTDmJ2o5+M
+	 QBB7yyoLqcqC34Rql9v3H0c3f4FV/f6ShTgNvZ7RBhGQG0d3VkVXr17H4nXsAoDF27
+	 Kfo0/nhxAKh8WBGzM3y6DG2sVMrtUPGIxHgrb/jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaiser <martin@kaiser.cx>,
-	Florian Westphal <fw@strlen.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Parav Pandit <parav@nvidia.com>,
+	Shay Drori <shayd@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/72] net: bridge: fix static key check
+Subject: [PATCH 6.12 22/87] net/mlx5: Fix vhca_id access call trace use before alloc
 Date: Wed,  4 Feb 2026 15:40:20 +0100
-Message-ID: <20260204143846.245776625@linuxfoundation.org>
+Message-ID: <20260204143847.709182345@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214049-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214127-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,51 +89,169 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kaiser.cx:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,blackwall.org:email,strlen.de:email]
-X-Rspamd-Queue-Id: C76D6E9751
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 0EC14E9612
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit cc0cf10fdaeadf5542d64a55b5b4120d3df90b7d ]
+[ Upstream commit a8f930b7be7be3f18f14446df461e17137400407 ]
 
-Fix the check if netfilter's static keys are available. netfilter defines
-and exports static keys if CONFIG_JUMP_LABEL is enabled. (HAVE_JUMP_LABEL
-is never defined.)
+HCA CAP structure is allocated in mlx5_hca_caps_alloc().
+mlx5_mdev_init()
+  mlx5_hca_caps_alloc()
 
-Fixes: 971502d77faa ("bridge: netfilter: unroll NF_HOOK helper in bridge input path")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260127101925.1754425-1-martin@kaiser.cx
+And HCA CAP is read from the device in mlx5_init_one().
+
+The vhca_id's debugfs file is published even before above two
+operations are done.
+Due to this when user reads the vhca id before the initialization,
+following call trace is observed.
+
+Fix this by deferring debugfs publication until the HCA CAP is
+allocated and read from the device.
+
+BUG: kernel NULL pointer dereference, address: 0000000000000004
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 23 UID: 0 PID: 6605 Comm: cat Kdump: loaded Not tainted 6.18.0-rc7-sf+ #110 PREEMPT(full)
+Hardware name: Supermicro SYS-6028U-TR4+/X10DRU-i+, BIOS 2.0b 08/09/2016
+RIP: 0010:vhca_id_show+0x17/0x30 [mlx5_core]
+Code: cb 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 8b 47 70 48 c7 c6 45 f0 12 c1 48 8b 80 70 03 00 00 <8b> 50 04 0f ca 0f b7 d2 e8 8c 82 47 cb 31 c0 c3 cc cc cc cc 0f 1f
+RSP: 0018:ffffd37f4f337d40 EFLAGS: 00010203
+RAX: 0000000000000000 RBX: ffff8f18445c9b40 RCX: 0000000000000001
+RDX: ffff8f1109825180 RSI: ffffffffc112f045 RDI: ffff8f18445c9b40
+RBP: 0000000000000000 R08: 0000645eac0d2928 R09: 0000000000000006
+R10: ffffd37f4f337d48 R11: 0000000000000000 R12: ffffd37f4f337dd8
+R13: ffffd37f4f337db0 R14: ffff8f18445c9b68 R15: 0000000000000001
+FS:  00007f3eea099580(0000) GS:ffff8f2090f1f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000004 CR3: 00000008b64e4006 CR4: 00000000003726f0
+Call Trace:
+ <TASK>
+ seq_read_iter+0x11f/0x4f0
+ ? _raw_spin_unlock+0x15/0x30
+ ? do_anonymous_page+0x104/0x810
+ seq_read+0xf6/0x120
+ ? srso_alias_untrain_ret+0x1/0x10
+ full_proxy_read+0x5c/0x90
+ vfs_read+0xad/0x320
+ ? handle_mm_fault+0x1ab/0x290
+ ksys_read+0x52/0xd0
+ do_syscall_64+0x61/0x11e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: dd3dd7263cde ("net/mlx5: Expose vhca_id to debugfs")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1769503961-124173-4-git-send-email-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/debugfs.c    | 16 ++++++++++++++++
+ drivers/net/ethernet/mellanox/mlx5/core/main.c   | 14 +++-----------
+ .../net/ethernet/mellanox/mlx5/core/mlx5_core.h  |  1 +
+ .../ethernet/mellanox/mlx5/core/sf/dev/driver.c  |  1 +
+ 4 files changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index 2d5b81ebbaa6d..847fe03a08ee8 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -260,7 +260,7 @@ static int nf_hook_bridge_pre(struct sk_buff *skb, struct sk_buff **pskb)
- 	int ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
+index 36806e813c33c..1301c56e20d65 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
+@@ -613,3 +613,19 @@ void mlx5_debug_cq_remove(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq)
+ 		cq->dbg = NULL;
+ 	}
+ }
++
++static int vhca_id_show(struct seq_file *file, void *priv)
++{
++	struct mlx5_core_dev *dev = file->private;
++
++	seq_printf(file, "0x%x\n", MLX5_CAP_GEN(dev, vhca_id));
++	return 0;
++}
++
++DEFINE_SHOW_ATTRIBUTE(vhca_id);
++
++void mlx5_vhca_debugfs_init(struct mlx5_core_dev *dev)
++{
++	debugfs_create_file("vhca_id", 0400, dev->priv.dbg.dbg_root, dev,
++			    &vhca_id_fops);
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 4ed23d19c0eca..8bfa95cda0063 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1810,16 +1810,6 @@ static int mlx5_hca_caps_alloc(struct mlx5_core_dev *dev)
+ 	return -ENOMEM;
+ }
  
- 	net = dev_net(skb->dev);
--#ifdef HAVE_JUMP_LABEL
-+#ifdef CONFIG_JUMP_LABEL
- 	if (!static_key_false(&nf_hooks_needed[NFPROTO_BRIDGE][NF_BR_PRE_ROUTING]))
- 		goto frame_finish;
- #endif
+-static int vhca_id_show(struct seq_file *file, void *priv)
+-{
+-	struct mlx5_core_dev *dev = file->private;
+-
+-	seq_printf(file, "0x%x\n", MLX5_CAP_GEN(dev, vhca_id));
+-	return 0;
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(vhca_id);
+-
+ static int mlx5_notifiers_init(struct mlx5_core_dev *dev)
+ {
+ 	int err;
+@@ -1862,7 +1852,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
+ 	priv->numa_node = dev_to_node(mlx5_core_dma_dev(dev));
+ 	priv->dbg.dbg_root = debugfs_create_dir(dev_name(dev->device),
+ 						mlx5_debugfs_root);
+-	debugfs_create_file("vhca_id", 0400, priv->dbg.dbg_root, dev, &vhca_id_fops);
++
+ 	INIT_LIST_HEAD(&priv->traps);
+ 
+ 	err = mlx5_cmd_init(dev);
+@@ -2000,6 +1990,8 @@ static int probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_init_one;
+ 	}
+ 
++	mlx5_vhca_debugfs_init(dev);
++
+ 	pci_save_state(pdev);
+ 	return 0;
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index dc6965f6746ec..6b82a494bd323 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -251,6 +251,7 @@ int mlx5_wait_for_pages(struct mlx5_core_dev *dev, int *pages);
+ void mlx5_cmd_flush(struct mlx5_core_dev *dev);
+ void mlx5_cq_debugfs_init(struct mlx5_core_dev *dev);
+ void mlx5_cq_debugfs_cleanup(struct mlx5_core_dev *dev);
++void mlx5_vhca_debugfs_init(struct mlx5_core_dev *dev);
+ 
+ int mlx5_query_pcam_reg(struct mlx5_core_dev *dev, u32 *pcam, u8 feature_group,
+ 			u8 access_reg_group);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index b706f1486504a..c45540fe7d9d9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -76,6 +76,7 @@ static int mlx5_sf_dev_probe(struct auxiliary_device *adev, const struct auxilia
+ 		goto init_one_err;
+ 	}
+ 
++	mlx5_vhca_debugfs_init(mdev);
+ 	return 0;
+ 
+ init_one_err:
 -- 
 2.51.0
 
