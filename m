@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK9WOI9fg2lzmAMAu9opvQ
-	(envelope-from <stable+bounces-213677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:02:39 +0100
+	id kPtkAB1dg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810B6E7CB5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:02:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443AEE77E5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 66D11301A87C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 135F2300FEF6
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBBB41C2F9;
-	Wed,  4 Feb 2026 14:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69F5293C44;
+	Wed,  4 Feb 2026 14:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9xdZq3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnS55Ai/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39D941323E;
-	Wed,  4 Feb 2026 14:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B14228B7EA;
+	Wed,  4 Feb 2026 14:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217136; cv=none; b=Ffo4JRKEWHD3pc6r50UiX6af4BK/sVSiAPWBHrRoReCKCUu8Uz28Lzj3OAFr4Jb/Ox+xhIiUEf0v4rZAuP7lhk2PLGdApa/Ae7795YW8JM9T6fRav6vQOPSAwK6lyM6t94r+4byXe7dXPjEKYhpjbiTC+K9pVwED2HYUjq9GRn4=
+	t=1770216487; cv=none; b=ngSL3rsrXP2p2VMdYZVUkSkMA9KvffJvkylgfFX/n4/FjBiZrsy1YlZNgvHemFbPfwmEWC3VqYarx5sX07akTc5FclsgzXSlKX1r3KoZ+I7uKLSDssSGL2aJUbl5fzp2PRKDv3hZy5JG47B2JUeLnYsZQqKSQwFfzXzR+wYFNbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217136; c=relaxed/simple;
-	bh=f6Gl/4T4RxLlCimGiMWEZpM2ckll4uPOQw2wHDj2Jh0=;
+	s=arc-20240116; t=1770216487; c=relaxed/simple;
+	bh=0HzR3i9abPaTRDApo3qiniaRW/IJvZkMCAtwdwVUDPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dV06bxuqZMT87DpS8K0oOz2gGPtJ8s9gtDIVD+XU0qn1nCBgXWhkAaCFFA7nRi7Z4cY506nXdI/5qaUXQ1vmxuqcNAFtTiank7YRccRvOCAEpv6iQGtK4HMn+huEUTQ6OqYYPF6WyCKByWFx5DggEuxQFbtx57M5UmgzNUk7LCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9xdZq3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A28AC4CEF7;
-	Wed,  4 Feb 2026 14:58:55 +0000 (UTC)
+	 MIME-Version; b=SAxo4BI7Fb4RocQqZ35opTP7V5JXUvMnbX6RJWYjVTv/M172HY9SDlkZV7YedCzlmD62ygt5NG3C4dVCqwks3B+CQD9C/2GjMLWGnUkIE02+TqYKbRwtO7H63dyw0y7sI9PTWHYvG7Vq11vKppu+H8kcmkhu2uNwEVBklOvABgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnS55Ai/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067BDC116C6;
+	Wed,  4 Feb 2026 14:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217136;
-	bh=f6Gl/4T4RxLlCimGiMWEZpM2ckll4uPOQw2wHDj2Jh0=;
+	s=korg; t=1770216487;
+	bh=0HzR3i9abPaTRDApo3qiniaRW/IJvZkMCAtwdwVUDPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9xdZq3DhVFhQ2FJKsmsKkzx6HSoy41lGHD+itfLUHxSmSJG2gvqT2kctCUW4UMKY
-	 wlPtkY/V9Fge23goHNNJlKDjXMxTi9WXujYoJsb+Fzq5SO98puSO2Lwz42yPG/2rIR
-	 eZZzl52ZEUKkS+WEguO9ZvcURdgKCuZxQ/rnA7ww=
+	b=AnS55Ai/JhXUGEGa0Qb7EpX+6nYyv80B02uzgjagqtT/PYmm2xdv1lTA8Ox3WZ5IX
+	 TbaFqskp2QdoAV38inCJVa1CgutB2Ft/snle3bQhdJ6HNlLylVxl5q9XgcBR08eNAF
+	 NhUNyKCkcgR7w+N6XNSyd+fJdCnneAMvrPZ+i83g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 101/206] be2net: Fix NULL pointer dereference in be_cmd_get_mac_from_list
+	stable@kernel.org,
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 069/161] scsi: storvsc: Process unsupported MODE_SENSE_10
 Date: Wed,  4 Feb 2026 15:38:52 +0100
-Message-ID: <20260204143901.849705069@linuxfoundation.org>
+Message-ID: <20260204143854.239661696@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +70,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-213482-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213677-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 810B6E7CB5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 443AEE77E5
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit 8215794403d264739cc676668087512950b2ff31 ]
+commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
 
-When the parameter pmac_id_valid argument of be_cmd_get_mac_from_list() is
-set to false, the driver may request the PMAC_ID from the firmware of the
-network card, and this function will store that PMAC_ID at the provided
-address pmac_id. This is the contract of this function.
+The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
+driver handles MODE_SENSE as unsupported command, but not for
+MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
+correct code to SCSI layer.
 
-However, there is a location within the driver where both
-pmac_id_valid == false and pmac_id == NULL are being passed. This could
-result in dereferencing a NULL pointer.
-
-To resolve this issue, it is necessary to pass the address of a stub
-variable to the function.
-
-Fixes: 95046b927a54 ("be2net: refactor MAC-addr setup code")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://patch.msgid.link/20260120113734.20193-1-a.vatoropin@crpt.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
+Cc: stable@kernel.org
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 3 ++-
+ drivers/scsi/storvsc_drv.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index 96a8749cf34fb..92ee82d4b18f1 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -3796,6 +3796,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
- {
- 	int status;
- 	bool pmac_valid = false;
-+	u32 pmac_id;
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1154,7 +1154,7 @@ static void storvsc_on_io_completion(str
+ 	 * The current SCSI handling on the host side does
+ 	 * not correctly handle:
+ 	 * INQUIRY command with page code parameter set to 0x80
+-	 * MODE_SENSE command with cmd[2] == 0x1c
++	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
+ 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
+ 	 *
+ 	 * Setup srb and scsi status so this won't be fatal.
+@@ -1164,6 +1164,7 @@ static void storvsc_on_io_completion(str
  
- 	eth_zero_addr(mac);
- 
-@@ -3808,7 +3809,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
- 						       adapter->if_handle, 0);
- 	} else {
- 		status = be_cmd_get_mac_from_list(adapter, mac, &pmac_valid,
--						  NULL, adapter->if_handle, 0);
-+						  &pmac_id, adapter->if_handle, 0);
- 	}
- 
- 	return status;
--- 
-2.51.0
-
+ 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
+ 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
++	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
+ 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
+ 	   hv_dev_is_fc(device))) {
+ 		vstor_packet->vm_srb.scsi_status = 0;
 
 
 
