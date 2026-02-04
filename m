@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-213482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPtkAB1dg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:13 +0100
+	id OEimFTBfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443AEE77E5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E89E7BDE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 135F2300FEF6
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 320C23024DE4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69F5293C44;
-	Wed,  4 Feb 2026 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0132741C2F3;
+	Wed,  4 Feb 2026 14:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnS55Ai/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai/2VrHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B14228B7EA;
-	Wed,  4 Feb 2026 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82AA41C2F2;
+	Wed,  4 Feb 2026 14:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216487; cv=none; b=ngSL3rsrXP2p2VMdYZVUkSkMA9KvffJvkylgfFX/n4/FjBiZrsy1YlZNgvHemFbPfwmEWC3VqYarx5sX07akTc5FclsgzXSlKX1r3KoZ+I7uKLSDssSGL2aJUbl5fzp2PRKDv3hZy5JG47B2JUeLnYsZQqKSQwFfzXzR+wYFNbc=
+	t=1770217025; cv=none; b=ZQEmM5c/3/ogSdSyCimKgAgAeWp5U1aAibDcIajgA8cisg15DOkS3xKQSF1p9ZWlTOmW7kyLNxQYDLUC1kml5h9FcFDf81b4EqJbQITWuNVaVfKI/VQa2vAfqMgkiXXkUopcWmIOGiBgabhnsavP6V0mA7h/3o//j3z55VzLllY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216487; c=relaxed/simple;
-	bh=0HzR3i9abPaTRDApo3qiniaRW/IJvZkMCAtwdwVUDPY=;
+	s=arc-20240116; t=1770217025; c=relaxed/simple;
+	bh=+aP2uwaZqwSO6wGc9wRrDnPQ6joqhT2hzZP74205G7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SAxo4BI7Fb4RocQqZ35opTP7V5JXUvMnbX6RJWYjVTv/M172HY9SDlkZV7YedCzlmD62ygt5NG3C4dVCqwks3B+CQD9C/2GjMLWGnUkIE02+TqYKbRwtO7H63dyw0y7sI9PTWHYvG7Vq11vKppu+H8kcmkhu2uNwEVBklOvABgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnS55Ai/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067BDC116C6;
-	Wed,  4 Feb 2026 14:48:06 +0000 (UTC)
+	 MIME-Version; b=QagsNe0rClVeMrSiPgZwse7OzXV36E+Tm5Ymxmgy5GtHtSZUV4M0BWP0i2DDcGHIyjqw0h8/H6yW/QoyJPUJ9LCGPiYLh/gn8ngvv2WpBwBP2NFbCWTiYJ/E7qU02OPH3ttnTCv3KV3+Fu73fHoZLOk293jg1rdYeq5Wx0w53BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai/2VrHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0FCC4CEF7;
+	Wed,  4 Feb 2026 14:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216487;
-	bh=0HzR3i9abPaTRDApo3qiniaRW/IJvZkMCAtwdwVUDPY=;
+	s=korg; t=1770217025;
+	bh=+aP2uwaZqwSO6wGc9wRrDnPQ6joqhT2hzZP74205G7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AnS55Ai/JhXUGEGa0Qb7EpX+6nYyv80B02uzgjagqtT/PYmm2xdv1lTA8Ox3WZ5IX
-	 TbaFqskp2QdoAV38inCJVa1CgutB2Ft/snle3bQhdJ6HNlLylVxl5q9XgcBR08eNAF
-	 NhUNyKCkcgR7w+N6XNSyd+fJdCnneAMvrPZ+i83g=
+	b=Ai/2VrHoS4hZJ18TZkNEzGCEkgD5WqvGhv7I99HVxCQss/PLJMy7fW+o8vXIei0FI
+	 OaByGQR3SBmLx0FqIRZ1SzSxMlGCqk0LdiOa5HHIIbYGZksPT5j0iY5theESKhtKQ4
+	 34Cx6D2KEdVE8FpUsiQY/k2zSXcLbu4vOyTx6nnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 069/161] scsi: storvsc: Process unsupported MODE_SENSE_10
-Date: Wed,  4 Feb 2026 15:38:52 +0100
-Message-ID: <20260204143854.239661696@linuxfoundation.org>
+	syzbot+c46409299c70a221415e@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Matteo Croce <mcroce@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 102/206] bonding: provide a net pointer to __skb_flow_dissect()
+Date: Wed,  4 Feb 2026 15:38:53 +0100
+Message-ID: <20260204143901.885390521@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +68,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-213482-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RSPAMD_URIBL_FAIL(0.00)[fomichev.me:query timed out];
+	TAGGED_FROM(0.00)[bounces-213644-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 443AEE77E5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[mcroce.redhat.com:query timed out,sdf.fomichev.me:query timed out];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,c46409299c70a221415e];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fomichev.me:email]
+X-Rspamd-Queue-Id: 38E89E7BDE
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
+[ Upstream commit 5f9b329096596b7e53e07d041d7fca4cbe1be752 ]
 
-The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
-driver handles MODE_SENSE as unsupported command, but not for
-MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
-correct code to SCSI layer.
+After 3cbf4ffba5ee ("net: plumb network namespace into __skb_flow_dissect")
+we have to provide a net pointer to __skb_flow_dissect(),
+either via skb->dev, skb->sk, or a user provided pointer.
 
-Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
-Cc: stable@kernel.org
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the following case, syzbot was able to cook a bare skb.
+
+WARNING: net/core/flow_dissector.c:1131 at __skb_flow_dissect+0xb57/0x68b0 net/core/flow_dissector.c:1131, CPU#1: syz.2.1418/11053
+Call Trace:
+ <TASK>
+  bond_flow_dissect drivers/net/bonding/bond_main.c:4093 [inline]
+  __bond_xmit_hash+0x2d7/0xba0 drivers/net/bonding/bond_main.c:4157
+  bond_xmit_hash_xdp drivers/net/bonding/bond_main.c:4208 [inline]
+  bond_xdp_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5139 [inline]
+  bond_xdp_get_xmit_slave+0x1fd/0x710 drivers/net/bonding/bond_main.c:5515
+  xdp_master_redirect+0x13f/0x2c0 net/core/filter.c:4388
+  bpf_prog_run_xdp include/net/xdp.h:700 [inline]
+  bpf_test_run+0x6b2/0x7d0 net/bpf/test_run.c:421
+  bpf_prog_test_run_xdp+0x795/0x10e0 net/bpf/test_run.c:1390
+  bpf_prog_test_run+0x2c7/0x340 kernel/bpf/syscall.c:4703
+  __sys_bpf+0x562/0x860 kernel/bpf/syscall.c:6182
+  __do_sys_bpf kernel/bpf/syscall.c:6274 [inline]
+  __se_sys_bpf kernel/bpf/syscall.c:6272 [inline]
+  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6272
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
+
+Fixes: 58deb77cc52d ("bonding: balance ICMP echoes in layer3+4 mode")
+Reported-by: syzbot+c46409299c70a221415e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/696faa23.050a0220.4cb9c.001f.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Matteo Croce <mcroce@redhat.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20260120161744.1893263-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1154,7 +1154,7 @@ static void storvsc_on_io_completion(str
- 	 * The current SCSI handling on the host side does
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
--	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
- 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
-@@ -1164,6 +1164,7 @@ static void storvsc_on_io_completion(str
- 
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
- 	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 86be928b210a2..e6394fd45f6df 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3811,8 +3811,9 @@ static bool bond_flow_dissect(struct bonding *bond, struct sk_buff *skb, const v
+ 	case BOND_XMIT_POLICY_ENCAP23:
+ 	case BOND_XMIT_POLICY_ENCAP34:
+ 		memset(fk, 0, sizeof(*fk));
+-		return __skb_flow_dissect(NULL, skb, &flow_keys_bonding,
+-					  fk, data, l2_proto, nhoff, hlen, 0);
++		return __skb_flow_dissect(dev_net(bond->dev), skb,
++					  &flow_keys_bonding, fk, data,
++					  l2_proto, nhoff, hlen, 0);
+ 	default:
+ 		break;
+ 	}
+-- 
+2.51.0
+
 
 
 
