@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-213471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNePHcxcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:52 +0100
+	id iJHNBOVrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0959E7742
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8746FE997C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 472C3303AB50
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E7BEF31AD880
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD358274B39;
-	Wed,  4 Feb 2026 14:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3789F41C301;
+	Wed,  4 Feb 2026 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afnbd1Ul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iDD9P37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71754221F17;
-	Wed,  4 Feb 2026 14:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAE825776;
+	Wed,  4 Feb 2026 15:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216450; cv=none; b=sG85tG17X75GZ2OCHHjThVPh3ynrhQym7q81zkla/SsHK3Gbk2GeNAa6/lT8r4veP6S2WbuwmrPnzFA2bOd1foO4FIbvZGmUgbZFK5zzA5Rrel5cxPzoYLZQe1mi6liHRTYoOjcpgokiQB5JQRma9EPdZ6Rj6UaUYVOyneGsyJg=
+	t=1770217906; cv=none; b=MRkOuQEE/PT+rW0AoNPEVc3F/1rRtjGeX8m3eLB8/SZsegKGUC0RSf9h5Yakbpe5WXTXXlkPKJgKITGCH0BqXRCcC9BU9BTRbVcqsihafY1e8hSsQPR0/YKRCsIA+guzYYXYCZIVCmWAP2oDShCTRXlvIuIdfKM1z8VSaC8YmGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216450; c=relaxed/simple;
-	bh=ubQbNfenF+7WltOzB5ZtlocwFsGhSTpktGuFeDdgEhA=;
+	s=arc-20240116; t=1770217906; c=relaxed/simple;
+	bh=/R15nxl8D5qmeuvKDzf+D6mNXMyLy/WL/Zbve4NMazc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5HEM5fT6h+mr5bFe/iejH/8sbV/WdyNcdVDU6Tai3wlz1+OaL02QZU8kRlsEi0gfVpOQT+E7ZDmufHIzRQEri/tGxpW9l2wNZUTTay4NbgwcPtIthZ9yiLjOscQjCewM6ujNP3Ks8iK0vEn+P5Stw52jWBIOCOxbcXJ9F1ZCXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afnbd1Ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD94FC4CEF7;
-	Wed,  4 Feb 2026 14:47:29 +0000 (UTC)
+	 MIME-Version; b=Udo4q3lQiFx4NbglMrYkQU8z25alMmZ84PP02CdAJaVBFC+wolWxBLSIxS9w5vfibjrB6yVj3m0LxApLPD6jMc0jO02qLB2tDTKjzMtuMeVsmKj9+MPHXU5UoPjD3bNmAQtTIpW6bu6W+2FcjCvqbtbo1nudKhydq4W11ROO0D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iDD9P37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64789C4CEF7;
+	Wed,  4 Feb 2026 15:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216450;
-	bh=ubQbNfenF+7WltOzB5ZtlocwFsGhSTpktGuFeDdgEhA=;
+	s=korg; t=1770217905;
+	bh=/R15nxl8D5qmeuvKDzf+D6mNXMyLy/WL/Zbve4NMazc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afnbd1UllwCycNYtPPIblK9qzY3MZA6CgvZbqeXhRpFFLx0ydlU9HqCjXl6KXBgOF
-	 ZhxpgeymYGKC6PPBLFALlMOrRGMODqGl8N36lauu/jOt9eVS/gg8vvbtpVgVyNy7pw
-	 1vhmhJgIESYCJKjGGAcKNx/L5qSi3gLTMWYZd9RU=
+	b=1iDD9P37kcKL/AgaNFLKlW42fnV69chRbeg6/rHoksdnG+QyemsU5Zq3upcymXxHQ
+	 YdkzqyHz9ty3nrSLgFR0z05VefeTVQCUPALmzg3kO0EhxLIEYp9VwM9EmurQv5hrYS
+	 k5TQLbaGpnVZToT+cs4rY4WDtXTkvp8NfDHq0KeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taeyang Lee <0wn@theori.io>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Yotam Gigi <yotam.gi@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/161] crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
+Subject: [PATCH 6.1 153/280] net/sched: act_ife: avoid possible NULL deref
 Date: Wed,  4 Feb 2026 15:38:47 +0100
-Message-ID: <20260204143854.061220241@linuxfoundation.org>
+Message-ID: <20260204143915.135094778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +68,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213471-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213905-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,gmail.com,mojatatu.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,5cf914f193dffde3bd3c];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[theori.io:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email]
-X-Rspamd-Queue-Id: D0959E7742
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,mojatatu.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 8746FE997C
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taeyang Lee <0wn@theori.io>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2397e9264676be7794f8f7f1e9763d90bd3c7335 ]
+[ Upstream commit 27880b0b0d35ad1c98863d09788254e36f874968 ]
 
-authencesn assumes an ESP/ESN-formatted AAD. When assoclen is shorter than
-the minimum expected length, crypto_authenc_esn_decrypt() can advance past
-the end of the destination scatterlist and trigger a NULL pointer dereference
-in scatterwalk_map_and_copy(), leading to a kernel panic (DoS).
+tcf_ife_encode() must make sure ife_encode() does not return NULL.
 
-Add a minimum AAD length check to fail fast on invalid inputs.
+syzbot reported:
 
-Fixes: 104880a6b470 ("crypto: authencesn - Convert to new AEAD interface")
-Reported-By: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:ife_tlv_meta_encode+0x41/0xa0 net/ife/ife.c:166
+CPU: 3 UID: 0 PID: 8990 Comm: syz.0.696 Not tainted syzkaller #0 PREEMPT(full)
+Call Trace:
+ <TASK>
+  ife_encode_meta_u32+0x153/0x180 net/sched/act_ife.c:101
+  tcf_ife_encode net/sched/act_ife.c:841 [inline]
+  tcf_ife_act+0x1022/0x1de0 net/sched/act_ife.c:877
+  tc_act include/net/tc_wrapper.h:130 [inline]
+  tcf_action_exec+0x1c0/0xa20 net/sched/act_api.c:1152
+  tcf_exts_exec include/net/pkt_cls.h:349 [inline]
+  mall_classify+0x1a0/0x2a0 net/sched/cls_matchall.c:42
+  tc_classify include/net/tc_wrapper.h:197 [inline]
+  __tcf_classify net/sched/cls_api.c:1764 [inline]
+  tcf_classify+0x7f2/0x1380 net/sched/cls_api.c:1860
+  multiq_classify net/sched/sch_multiq.c:39 [inline]
+  multiq_enqueue+0xe0/0x510 net/sched/sch_multiq.c:66
+  dev_qdisc_enqueue+0x45/0x250 net/core/dev.c:4147
+  __dev_xmit_skb net/core/dev.c:4262 [inline]
+  __dev_queue_xmit+0x2998/0x46c0 net/core/dev.c:4798
+
+Fixes: 295a6e06d21e ("net/sched: act_ife: Change to use ife module")
+Reported-by: syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6970d61d.050a0220.706b.0010.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yotam Gigi <yotam.gi@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260121133724.3400020-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/authencesn.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sched/act_ife.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/authencesn.c b/crypto/authencesn.c
-index b60e61b1904cb..6487b35851d54 100644
---- a/crypto/authencesn.c
-+++ b/crypto/authencesn.c
-@@ -191,6 +191,9 @@ static int crypto_authenc_esn_encrypt(struct aead_request *req)
- 	struct scatterlist *src, *dst;
- 	int err;
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index a4505b926a1e4..2e2283ce2d886 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -820,6 +820,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 	/* could be stupid policy setup or mtu config
+ 	 * so lets be conservative.. */
+ 	if ((action == TC_ACT_SHOT) || exceed_mtu) {
++drop:
+ 		qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
+ 		return TC_ACT_SHOT;
+ 	}
+@@ -828,6 +829,8 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 		skb_push(skb, skb->dev->hard_header_len);
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	sg_init_table(areq_ctx->src, 2);
- 	src = scatterwalk_ffwd(areq_ctx->src, req->src, assoclen);
- 	dst = src;
-@@ -284,6 +287,9 @@ static int crypto_authenc_esn_decrypt(struct aead_request *req)
- 	u32 tmp[2];
- 	int err;
+ 	ife_meta = ife_encode(skb, metalen);
++	if (!ife_meta)
++		goto drop;
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	cryptlen -= authsize;
+ 	spin_lock(&ife->tcf_lock);
  
- 	if (req->src != dst) {
+@@ -843,8 +846,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 		if (err < 0) {
+ 			/* too corrupt to keep around if overwritten */
+ 			spin_unlock(&ife->tcf_lock);
+-			qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
+-			return TC_ACT_SHOT;
++			goto drop;
+ 		}
+ 		skboff += err;
+ 	}
 -- 
 2.51.0
 
