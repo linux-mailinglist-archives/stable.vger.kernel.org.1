@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-214238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8E9aBv9qg2m3mgMAu9opvQ
-	(envelope-from <stable+bounces-214238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:27 +0100
+	id IGMJMl9gg2mfmAMAu9opvQ
+	(envelope-from <stable+bounces-213740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E7FE97C9
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49977E7E54
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 21F1431385EF
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 648D8302B507
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC282D5950;
-	Wed,  4 Feb 2026 15:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF272BD02A;
+	Wed,  4 Feb 2026 15:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNIVX6Gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyW+66lT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BC9273D77;
-	Wed,  4 Feb 2026 15:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7183228853A;
+	Wed,  4 Feb 2026 15:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219024; cv=none; b=LL7sIUgo7xi5SYpLfPeWdrW0cvsOvKOPqrUlC08i2mkYWnkOC7nyGKoYVR6UOK8cG7b+N61zGYRmBnvbTwSngomwaCEgbajtezfryG4VUkCS6zlhiAalKlmWa9WCbvK4go5SN2T9FDr4uOQCqOHKISFkWtVjSIgsaUEww5tAL8k=
+	t=1770217346; cv=none; b=CTaC7mTbaX34gVoptfbHkxzLgwmBRqrJzcamPDzyIRHACce7r71W9TuVnTqRQ/a768UX8yEBWGXJIWVHp0aDIjI1+SUGFShAyPyrScX/jQPpm4PqsntMzdOzGBno/KHed+VktmIgEC1+ccmiIiRlDMB8RQILpWjBW2TYSbddRDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219024; c=relaxed/simple;
-	bh=+5UhERIv2JRpCJV3K0CRepvp8IgnZGaSnxdcQkkfNag=;
+	s=arc-20240116; t=1770217346; c=relaxed/simple;
+	bh=kEkPiNE+AixBrHdwwHh70fsQk+okmkuwAnzPb6v5yf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHIKfyUY+IfHPjy1o/xfVE7y+zfe4MuITCLK7IBTY/cdCtIHgh7I6XSRNPW+ghqRIIcPYSI8o6t84XPJWIwkPM8AwMnpFhl/i9oOm73iFqSI1i4N+n22WmG3AmlS08r7PokPOwb9LC0NqxSOQvjsU+KUQEWq8aAFHFb+c/++yzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNIVX6Gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DD5C4CEF7;
-	Wed,  4 Feb 2026 15:30:23 +0000 (UTC)
+	 MIME-Version; b=FXNBuDoyIAYnfOgtLC/xmYB9lg41cKMvdlMilqM1Zo/iAxiz1U+IH+vTjHvRLTSyagYOVJ6F+UHAF6xduZOq8mmtAv/of06UzD2sKH+5eKLUq74r0UKf1ePPJX5l9y5LWj9m49FobVy8HBhISjpReg+W/7W8FkAT8uRmhqIdoig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyW+66lT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B39C19423;
+	Wed,  4 Feb 2026 15:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219024;
-	bh=+5UhERIv2JRpCJV3K0CRepvp8IgnZGaSnxdcQkkfNag=;
+	s=korg; t=1770217346;
+	bh=kEkPiNE+AixBrHdwwHh70fsQk+okmkuwAnzPb6v5yf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNIVX6GxqSoK+kRv9uobbNdpV6FahLBHuSS/9dHIUNuaLQtc29AsHSlxikL6n9QWm
-	 8Q4Pf9g4a2rqPtw/12RJLCE+E4p+tKSbi3IQVfTK6GXI7jAllDZ7M7PTwAeYdTMO6r
-	 YR42+CU/v+RC4CrK19HASsNJG5NFF9DTONub7jig=
+	b=WyW+66lTcLQO+W1SMNKFgWinIRioxOYFy70FgzKXsU1lzFP9PBhqcQDxqkCWrNbmB
+	 SF+qK3wfqSvP8v4gDqaucLJkRYn0V+phf4uZLWpztIfQxP+gs8DWaenIOSrZmv13df
+	 uFWEkuFKOzuOUGN1csIa1zfnA873RG6992CQfjys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 044/122] drm/amd/pm: fix race in power state check before mutex lock
+	Pimyn Girgis <pimyn@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 195/206] mm/kfence: randomize the freelist on initialization
 Date: Wed,  4 Feb 2026 15:40:26 +0100
-Message-ID: <20260204143853.443947825@linuxfoundation.org>
+Message-ID: <20260204143905.245830999@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214238-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213740-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,76 +90,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 20E7FE97C9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tugraz.at:email]
+X-Rspamd-Queue-Id: 49977E7E54
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Pimyn Girgis <pimyn@google.com>
 
-[ Upstream commit ee8d07cd5730038e33bf5e551448190bbd480eb8 ]
+commit 870ff19251bf3910dda7a7245da826924045fedd upstream.
 
-The power state check in amdgpu_dpm_set_powergating_by_smu() is done
-before acquiring the pm mutex, leading to a race condition where:
-1. Thread A checks state and thinks no change is needed
-2. Thread B acquires mutex and modifies the state
-3. Thread A returns without updating state, causing inconsistency
+Randomize the KFENCE freelist during pool initialization to make
+allocation patterns less predictable.  This is achieved by shuffling the
+order in which metadata objects are added to the freelist using
+get_random_u32_below().
 
-Fix this by moving the mutex lock before the power state check,
-ensuring atomicity of the state check and modification.
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-Fixes: 6ee27ee27ba8 ("drm/amd/pm: avoid duplicate powergate/ungate setting")
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7a3fbdfd19ec5992c0fc2d0bd83888644f5f2f38)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_dpm.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/kfence/core.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-index bc29a923fa6e5..8253d2977408d 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
-@@ -80,15 +80,15 @@ int amdgpu_dpm_set_powergating_by_smu(struct amdgpu_device *adev,
- 	enum ip_power_state pwr_state = gate ? POWER_STATE_OFF : POWER_STATE_ON;
- 	bool is_vcn = block_type == AMD_IP_BLOCK_TYPE_VCN;
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -520,7 +520,7 @@ static bool __init kfence_init_pool(void
+ {
+ 	unsigned long addr = (unsigned long)__kfence_pool;
+ 	struct page *pages;
+-	int i;
++	int i, rand;
+ 	char *p;
  
-+	mutex_lock(&adev->pm.mutex);
+ 	if (!__kfence_pool)
+@@ -576,13 +576,28 @@ static bool __init kfence_init_pool(void
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
+ 
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
+ 			goto err;
++	}
 +
- 	if (atomic_read(&adev->pm.pwr_state[block_type]) == pwr_state &&
- 			(!is_vcn || adev->vcn.num_vcn_inst == 1)) {
- 		dev_dbg(adev->dev, "IP block%d already in the target %s state!",
- 				block_type, gate ? "gate" : "ungate");
--		return 0;
-+		goto out_unlock;
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32() % i;
++		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
++	}
++
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
+ 
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
  	}
  
--	mutex_lock(&adev->pm.mutex);
--
- 	switch (block_type) {
- 	case AMD_IP_BLOCK_TYPE_UVD:
- 	case AMD_IP_BLOCK_TYPE_VCE:
-@@ -115,6 +115,7 @@ int amdgpu_dpm_set_powergating_by_smu(struct amdgpu_device *adev,
- 	if (!ret)
- 		atomic_set(&adev->pm.pwr_state[block_type], pwr_state);
+@@ -597,6 +612,7 @@ static bool __init kfence_init_pool(void
+ 	return true;
  
-+out_unlock:
- 	mutex_unlock(&adev->pm.mutex);
- 
- 	return ret;
--- 
-2.51.0
-
+ err:
++	addr += 2 * i * PAGE_SIZE;
+ 	/*
+ 	 * Only release unprotected pages, and do not try to go back and change
+ 	 * page attributes due to risk of failing to do so as well. If changing
 
 
 
