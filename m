@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONM9NAJfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:18 +0100
+	id EAPgL6Fbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93909E7BA2
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18454E752E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A55B3034EFD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D69B3005169
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DF4421EFD;
-	Wed,  4 Feb 2026 14:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B952773E5;
+	Wed,  4 Feb 2026 14:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIjw7Q5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGdXOHTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA9841C2E9;
-	Wed,  4 Feb 2026 14:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498BB1C5D77;
+	Wed,  4 Feb 2026 14:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216991; cv=none; b=BPe4STt8E3kpNPlPSyRGBbndywk0tdJYnvinHRF6TZ3NHhn1uAgYfVNf3jfJWcWKoqeQ6HQeMeCcxCgaPxOWyQnGWlevo4qZ1OETbAM4R9A4A99dE4UCVQYq9qFiv/VdQZ3LjJ1dNh0xubNrxsSbMgezEXnR7T95NGoir4zX9zA=
+	t=1770216345; cv=none; b=jwbm1y7jlgXuoNZPYJnYLFwdjDtSnwOlGIIsfmZ86N7AG1qCcxhUlp+xebd2ZnIUPTdurPVMAHbYzhUyAINSFf1RZJEE1Se+NYiDZoy0D61SMkvF6IFnDOhhUO5CM5keu6uBjOxWJfQq7r/HLE4eEJOAaR/xgfj56xlN4qAxWfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216991; c=relaxed/simple;
-	bh=wIIk0VWnbDHrBBAjHFzdGSKx9ryhECoEl/2TYwaRFok=;
+	s=arc-20240116; t=1770216345; c=relaxed/simple;
+	bh=ZKrtPj7aG+gMXdfu6v4iiKAmRqG4lfBbQcK7O/AgdT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1z2g5Zgus/zYnXPvoQVRTDVyYk3mj/SQIUHBTat7o/NQHCoO6DshJy7hwuFkCUVmFhOqGoWMCrtQ+k292OJWpo9rdqGReXO3EMT2oFQFN5i7rrqIKaYcIUV43QiddwxyMif78KuINyotOpMDqAZsn/OXzXRhOb7VMu0lD7yX2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIjw7Q5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99A9C4CEF7;
-	Wed,  4 Feb 2026 14:56:30 +0000 (UTC)
+	 MIME-Version; b=VwjJq0OVuF1zql0j5p9Z5h0zGnmdsV/XeD9/TKucBymZg5y7qrQ+geRo62se3e9+UwryJHeYl3zI7+374tggBNP6Y3+5FYkLG8XEWGipPvRET5LqcnSaPjkuzi5vfaT2bezp2i86F7s9Ht22sEp2V+n/eKyjbpAj+We2i6H6x7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGdXOHTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03D7C4CEF7;
+	Wed,  4 Feb 2026 14:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216991;
-	bh=wIIk0VWnbDHrBBAjHFzdGSKx9ryhECoEl/2TYwaRFok=;
+	s=korg; t=1770216345;
+	bh=ZKrtPj7aG+gMXdfu6v4iiKAmRqG4lfBbQcK7O/AgdT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NIjw7Q5MxtBJexuKhSBozyJ+vQRYVkJVVyIGlXsn33zEOudfyCo7xEa17eul6D2Cz
-	 bYCrIgQOu/468VQD2E+OxcoEJAfAhDVN887I7KmT67Nl0cSMwIzS1EI4q09gvGmIe+
-	 1NaH5+gVZbP9JeFCsNwsy+LN0v0UrrEnU2ThrsHw=
+	b=YGdXOHTt8peKHXd5wiqRgrkyDonDbeUS9qdeyz5bldyKQ3gsJ2KEKZ00qiq3BSmxc
+	 SjJ0q3Jurs87sShMJljgVG/HkP6PzUEcc3xZAxg8oSTXd9WPjAofHr9+gG6mA0jWv7
+	 QMTHGLAfX1oubfOHP++OESGe85gCO7LRlsLvUOyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/206] iio: adc: ad7280a: handle spi_setup() errors in probe()
+Subject: [PATCH 5.10 059/161] fou: Dont allow 0 for FOU_ATTR_IPPROTO.
 Date: Wed,  4 Feb 2026 15:38:42 +0100
-Message-ID: <20260204143901.486606317@linuxfoundation.org>
+Message-ID: <20260204143853.884081205@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213635-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213440-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,56 +87,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 93909E7BA2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 18454E752E
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
+[ Upstream commit 7a9bc9e3f42391e4c187e099263cf7a1c4b69ff5 ]
 
-The probe() function ignored the return value of spi_setup(), leaving SPI
-configuration failures undetected. If spi_setup() fails, the driver should
-stop initialization and propagate the error to the caller.
+fou_udp_recv() has the same problem mentioned in the previous
+patch.
 
-Add proper error handling: check the return value of spi_setup() and return
-it on failure.
+If FOU_ATTR_IPPROTO is set to 0, skb is not freed by
+fou_udp_recv() nor "resubmit"-ted in ip_protocol_deliver_rcu().
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Let's forbid 0 for FOU_ATTR_IPPROTO.
 
-Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 23461551c0062 ("fou: Support for foo-over-udp RX path")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260115172533.693652-4-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/adc/ad7280a.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/netlink/specs/fou.yaml | 2 ++
+ net/ipv4/fou_nl.c                    | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
-index 0f64b2fbfa7aa..cc66c3d7141aa 100644
---- a/drivers/staging/iio/adc/ad7280a.c
-+++ b/drivers/staging/iio/adc/ad7280a.c
-@@ -964,7 +964,9 @@ static int ad7280_probe(struct spi_device *spi)
- 
- 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
- 	st->spi->mode = SPI_MODE_1;
--	spi_setup(st->spi);
-+	ret = spi_setup(st->spi);
-+	if (ret < 0)
-+		return ret;
- 
- 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, pdata->acquisition_time) |
- 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, pdata->thermistor_term_en);
+diff --git a/Documentation/netlink/specs/fou.yaml b/Documentation/netlink/specs/fou.yaml
+index 266c386eedf3a..e5753a30a29a2 100644
+--- a/Documentation/netlink/specs/fou.yaml
++++ b/Documentation/netlink/specs/fou.yaml
+@@ -36,6 +36,8 @@ attribute-sets:
+       -
+         name: ipproto
+         type: u8
++        checks:
++          min: 1
+       -
+         name: type
+         type: u8
+diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
+index 6c3820f41dd5d..5bb8133ed7a89 100644
+--- a/net/ipv4/fou_nl.c
++++ b/net/ipv4/fou_nl.c
+@@ -14,7 +14,7 @@
+ const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
+ 	[FOU_ATTR_PORT] = { .type = NLA_U16, },
+ 	[FOU_ATTR_AF] = { .type = NLA_U8, },
+-	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, },
++	[FOU_ATTR_IPPROTO] = NLA_POLICY_MIN(NLA_U8, 1),
+ 	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
+ 	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
+ 	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
 -- 
 2.51.0
 
