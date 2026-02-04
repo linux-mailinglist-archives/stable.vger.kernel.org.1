@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-214176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HWnFLZng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:26 +0100
+	id oADUJiNng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70F9E8FAC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C14E8E95
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 31B1B3105363
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 71E5C308CE0C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94AF41B358;
-	Wed,  4 Feb 2026 15:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19425423152;
+	Wed,  4 Feb 2026 15:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cbg7EKWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0+oysgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7C140FDAE;
-	Wed,  4 Feb 2026 15:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1453421EE4;
+	Wed,  4 Feb 2026 15:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218818; cv=none; b=FA6Q9oLd+nrv1a/A5D0Xm37vRJuuiaklmXbc8nW1FfbPdND7umWvoUXNYzZVZ786J11U79dOHkhEthVmykJU3yt6iLi6epMi9nhEQSe40DB7k8rD98betsSZ9YOISqsEGHW8GNM53qEEQsnE6HMyqbLNxuqj0OiGHWN6OCflkes=
+	t=1770218556; cv=none; b=Ha8FMd9jWnUVStYbHyBFJ43x4J6mtoyUozYea+fJ1GaauyOnG01A46QqVTOgZv97Uk7ZnukogVpYpJDRz/lf/gShDwPBhEh0s41ToJLCphEuuXfswIAjRp+Qq6PbacVkru/PpTZtnq/BmBxbJ6F38PzGKv26N9072rRuiaFg6Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218818; c=relaxed/simple;
-	bh=dNzBueu0BvOGI4iv+j9+qrCTWhhPMrYqALkAqPvPPlU=;
+	s=arc-20240116; t=1770218556; c=relaxed/simple;
+	bh=O3YfBDcgvcoqAL0uKbubhc3+yhMMtR2W4zBgdpg9PmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JThKaSU+UVoyOqRFo2g0ml+W3HvcBJ5qdRjpqAEaTeZVNGT5A/u2yghsJ8Wd56HY3x2I3YoLZvT65zWTDIXQPHQPS9GqqlxzR6ITR5E94LB9dxftW7hr8sglayCJH9z/Yz2Ky2XM9jTWLW+bZZifrk9NrU1wJ4sUnJtmj0OTf0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cbg7EKWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094AAC4CEF7;
-	Wed,  4 Feb 2026 15:26:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FiaK1fw+686HrMACvkvBms3928kl0wUwmUbbUQZ8gOsrg5UvjOjbFau5lw91WqA1plA9LYFYHZZSlvGQoVjf9XXwmp7VPAXegOLGcfdPqU2wmVxGy90i9lfRiAxYwh/udt2Kipuuo+BOdWyttMPSOJJwNX1rjNDIBewA8J9M/sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0+oysgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E3EC4CEF7;
+	Wed,  4 Feb 2026 15:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218818;
-	bh=dNzBueu0BvOGI4iv+j9+qrCTWhhPMrYqALkAqPvPPlU=;
+	s=korg; t=1770218556;
+	bh=O3YfBDcgvcoqAL0uKbubhc3+yhMMtR2W4zBgdpg9PmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cbg7EKWfqeWv0ic2A1Z3bU7gKV+CC4kiYm1JBf5GdZexqpoHOO4l8Ezklg1aHoZaB
-	 IOPLKVkYV5KjNQGK5TYrn8CXGZ6aG4MkUUxuQQMp5qBpmmyc52y4r5jH/KQGAysPl8
-	 1nd31Q7TiYHvXsT8MaEx/7R5/M2f+ko/8Bh8YqNc=
+	b=l0+oysgOn18XV9agwfXPLww4ezKazfNpGxzjsUh6HYUAcgk29Po0YKR/zanyg33aw
+	 yasJSRA6tiMDUDmWDHHOaJ/gYvMPqto4qu6hS76WmyY0u6WXUyG5jirwXRK7t+y4Kw
+	 ewffvXuy+KhkPqMwZo21/K8wF3EDiYOiVqC/hPCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6182afad5045e6703b3d@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Jon Doron <jond@wiz.io>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 70/87] rxrpc: Fix data-race warning and potential load/store tearing
+Subject: [PATCH 6.6 65/72] drm/amdgpu: fix NULL pointer dereference in amdgpu_gmc_filter_faults_remove
 Date: Wed,  4 Feb 2026 15:41:08 +0100
-Message-ID: <20260204143849.436984832@linuxfoundation.org>
+Message-ID: <20260204143847.994211614@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,247 +65,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214176-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,wiz.io,kernel.org];
+	TAGGED_FROM(0.00)[bounces-214098-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6182afad5045e6703b3d];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B70F9E8FAC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,wiz.io:email]
+X-Rspamd-Queue-Id: 21C14E8E95
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Jon Doron <jond@wiz.io>
 
-[ Upstream commit 5d5fe8bcd331f1e34e0943ec7c18432edfcf0e8b ]
+[ Upstream commit 8b1ecc9377bc641533cd9e76dfa3aee3cd04a007 ]
 
-Fix the following:
+On APUs such as Raven and Renoir (GC 9.1.0, 9.2.2, 9.3.0), the ih1 and
+ih2 interrupt ring buffers are not initialized. This is by design, as
+these secondary IH rings are only available on discrete GPUs. See
+vega10_ih_sw_init() which explicitly skips ih1/ih2 initialization when
+AMD_IS_APU is set.
 
-        BUG: KCSAN: data-race in rxrpc_peer_keepalive_worker / rxrpc_send_data_packet
+However, amdgpu_gmc_filter_faults_remove() unconditionally uses ih1 to
+get the timestamp of the last interrupt entry. When retry faults are
+enabled on APUs (noretry=0), this function is called from the SVM page
+fault recovery path, resulting in a NULL pointer dereference when
+amdgpu_ih_decode_iv_ts_helper() attempts to access ih->ring[].
 
-which is reporting an issue with the reads and writes to ->last_tx_at in:
+The crash manifests as:
 
-        conn->peer->last_tx_at = ktime_get_seconds();
+  BUG: kernel NULL pointer dereference, address: 0000000000000004
+  RIP: 0010:amdgpu_ih_decode_iv_ts_helper+0x22/0x40 [amdgpu]
+  Call Trace:
+   amdgpu_gmc_filter_faults_remove+0x60/0x130 [amdgpu]
+   svm_range_restore_pages+0xae5/0x11c0 [amdgpu]
+   amdgpu_vm_handle_fault+0xc8/0x340 [amdgpu]
+   gmc_v9_0_process_interrupt+0x191/0x220 [amdgpu]
+   amdgpu_irq_dispatch+0xed/0x2c0 [amdgpu]
+   amdgpu_ih_process+0x84/0x100 [amdgpu]
 
-and:
+This issue was exposed by commit 1446226d32a4 ("drm/amdgpu: Remove GC HW
+IP 9.3.0 from noretry=1") which changed the default for Renoir APU from
+noretry=1 to noretry=0, enabling retry fault handling and thus
+exercising the buggy code path.
 
-        keepalive_at = peer->last_tx_at + RXRPC_KEEPALIVE_TIME;
+Fix this by adding a check for ih1.ring_size before attempting to use
+it. Also restore the soft_ih support from commit dd299441654f ("drm/amdgpu:
+Rework retry fault removal").  This is needed if the hardware doesn't
+support secondary HW IH rings.
 
-The lockless accesses to these to values aren't actually a problem as the
-read only needs an approximate time of last transmission for the purposes
-of deciding whether or not the transmission of a keepalive packet is
-warranted yet.
+v2: additional updates (Alex)
 
-Also, as ->last_tx_at is a 64-bit value, tearing can occur on a 32-bit
-arch.
-
-Fix both of these by switching to an unsigned int for ->last_tx_at and only
-storing the LSW of the time64_t.  It can then be reconstructed at need
-provided no more than 68 years has elapsed since the last transmission.
-
-Fixes: ace45bec6d77 ("rxrpc: Fix firewall route keepalive")
-Reported-by: syzbot+6182afad5045e6703b3d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/695e7cfb.050a0220.1c677c.036b.GAE@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/1107124.1768903985@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ different struct fields (peer->mtu, peer->srtt_us, peer->rto_us) and different output.c code structure ]
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3814
+Fixes: dd299441654f ("drm/amdgpu: Rework retry fault removal")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Jon Doron <jond@wiz.io>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6ce8d536c80aa1f059e82184f0d1994436b1d526)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/ar-internal.h |    9 ++++++++-
- net/rxrpc/conn_event.c  |    2 +-
- net/rxrpc/output.c      |   10 +++++-----
- net/rxrpc/peer_event.c  |   17 ++++++++++++++++-
- net/rxrpc/proc.c        |    4 ++--
- net/rxrpc/rxkad.c       |    4 ++--
- 6 files changed, 34 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -335,7 +335,7 @@ struct rxrpc_peer {
- 	struct hlist_head	error_targets;	/* targets for net error distribution */
- 	struct rb_root		service_conns;	/* Service connections */
- 	struct list_head	keepalive_link;	/* Link in net->peer_keepalive[] */
--	time64_t		last_tx_at;	/* Last time packet sent here */
-+	unsigned int		last_tx_at;	/* Last time packet sent here (time64_t LSW) */
- 	seqlock_t		service_conn_lock;
- 	spinlock_t		lock;		/* access lock */
- 	unsigned int		if_mtu;		/* interface MTU for this peer */
-@@ -1161,6 +1161,13 @@ void rxrpc_transmit_one(struct rxrpc_cal
- void rxrpc_input_error(struct rxrpc_local *, struct sk_buff *);
- void rxrpc_peer_keepalive_worker(struct work_struct *);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -454,8 +454,13 @@ void amdgpu_gmc_filter_faults_remove(str
  
-+/* Update the last transmission time on a peer for keepalive purposes. */
-+static inline void rxrpc_peer_mark_tx(struct rxrpc_peer *peer)
-+{
-+	/* To avoid tearing on 32-bit systems, we only keep the LSW. */
-+	WRITE_ONCE(peer->last_tx_at, ktime_get_seconds());
-+}
-+
- /*
-  * peer_object.c
-  */
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -180,7 +180,7 @@ void rxrpc_conn_retransmit_call(struct r
- 	}
+ 	if (adev->irq.retry_cam_enabled)
+ 		return;
++	else if (adev->irq.ih1.ring_size)
++		ih = &adev->irq.ih1;
++	else if (adev->irq.ih_soft.enabled)
++		ih = &adev->irq.ih_soft;
++	else
++		return;
  
- 	ret = kernel_sendmsg(conn->local->socket, &msg, iov, ioc, len);
--	conn->peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(conn->peer);
- 	if (ret < 0)
- 		trace_rxrpc_tx_fail(chan->call_debug_id, serial, ret,
- 				    rxrpc_tx_point_call_final_resend);
---- a/net/rxrpc/output.c
-+++ b/net/rxrpc/output.c
-@@ -209,7 +209,7 @@ static void rxrpc_send_ack_packet(struct
- 	iov_iter_kvec(&msg.msg_iter, WRITE, txb->kvec, txb->nr_kvec, txb->len);
- 	rxrpc_local_dont_fragment(conn->local, false);
- 	ret = do_udp_sendmsg(conn->local->socket, &msg, txb->len);
--	call->peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(call->peer);
- 	if (ret < 0) {
- 		trace_rxrpc_tx_fail(call->debug_id, txb->serial, ret,
- 				    rxrpc_tx_point_call_ack);
-@@ -310,7 +310,7 @@ int rxrpc_send_abort_packet(struct rxrpc
- 
- 	iov_iter_kvec(&msg.msg_iter, WRITE, iov, 1, sizeof(pkt));
- 	ret = do_udp_sendmsg(conn->local->socket, &msg, sizeof(pkt));
--	conn->peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(conn->peer);
- 	if (ret < 0)
- 		trace_rxrpc_tx_fail(call->debug_id, serial, ret,
- 				    rxrpc_tx_point_call_abort);
-@@ -486,7 +486,7 @@ retry:
- 	 */
- 	rxrpc_inc_stat(call->rxnet, stat_tx_data_send);
- 	ret = do_udp_sendmsg(conn->local->socket, &msg, len);
--	conn->peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(conn->peer);
- 
- 	if (ret < 0) {
- 		rxrpc_inc_stat(call->rxnet, stat_tx_data_send_fail);
-@@ -573,7 +573,7 @@ void rxrpc_send_conn_abort(struct rxrpc_
- 
- 	trace_rxrpc_tx_packet(conn->debug_id, &whdr, rxrpc_tx_point_conn_abort);
- 
--	conn->peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(conn->peer);
- }
- 
- /*
-@@ -692,7 +692,7 @@ void rxrpc_send_keepalive(struct rxrpc_p
- 		trace_rxrpc_tx_packet(peer->debug_id, &whdr,
- 				      rxrpc_tx_point_version_keepalive);
- 
--	peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(peer);
- 	_leave("");
- }
- 
---- a/net/rxrpc/peer_event.c
-+++ b/net/rxrpc/peer_event.c
-@@ -225,6 +225,21 @@ static void rxrpc_distribute_error(struc
- }
- 
- /*
-+ * Reconstruct the last transmission time.  The difference calculated should be
-+ * valid provided no more than ~68 years elapsed since the last transmission.
-+ */
-+static time64_t rxrpc_peer_get_tx_mark(const struct rxrpc_peer *peer, time64_t base)
-+{
-+	s32 last_tx_at = READ_ONCE(peer->last_tx_at);
-+	s32 base_lsw = base;
-+	s32 diff = last_tx_at - base_lsw;
-+
-+	diff = clamp(diff, -RXRPC_KEEPALIVE_TIME, RXRPC_KEEPALIVE_TIME);
-+
-+	return diff + base;
-+}
-+
-+/*
-  * Perform keep-alive pings.
-  */
- static void rxrpc_peer_keepalive_dispatch(struct rxrpc_net *rxnet,
-@@ -252,7 +267,7 @@ static void rxrpc_peer_keepalive_dispatc
- 		spin_unlock_bh(&rxnet->peer_hash_lock);
- 
- 		if (use) {
--			keepalive_at = peer->last_tx_at + RXRPC_KEEPALIVE_TIME;
-+			keepalive_at = rxrpc_peer_get_tx_mark(peer, base) + RXRPC_KEEPALIVE_TIME;
- 			slot = keepalive_at - base;
- 			_debug("%02x peer %u t=%d {%pISp}",
- 			       cursor, peer->debug_id, slot, &peer->srx.transport);
---- a/net/rxrpc/proc.c
-+++ b/net/rxrpc/proc.c
-@@ -299,13 +299,13 @@ static int rxrpc_peer_seq_show(struct se
- 	now = ktime_get_seconds();
- 	seq_printf(seq,
- 		   "UDP   %-47.47s %-47.47s %3u"
--		   " %3u %5u %6llus %8u %8u\n",
-+		   " %3u %5u %6ds %8u %8u\n",
- 		   lbuff,
- 		   rbuff,
- 		   refcount_read(&peer->ref),
- 		   peer->cong_ssthresh,
- 		   peer->mtu,
--		   now - peer->last_tx_at,
-+		   (s32)now - (s32)READ_ONCE(peer->last_tx_at),
- 		   peer->srtt_us >> 3,
- 		   peer->rto_us);
- 
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -676,7 +676,7 @@ static int rxkad_issue_challenge(struct
- 		return -EAGAIN;
- 	}
- 
--	conn->peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(conn->peer);
- 	trace_rxrpc_tx_packet(conn->debug_id, &whdr,
- 			      rxrpc_tx_point_rxkad_challenge);
- 	_leave(" = 0");
-@@ -734,7 +734,7 @@ static int rxkad_send_response(struct rx
- 		return -EAGAIN;
- 	}
- 
--	conn->peer->last_tx_at = ktime_get_seconds();
-+	rxrpc_peer_mark_tx(conn->peer);
- 	_leave(" = 0");
- 	return 0;
- }
+-	ih = &adev->irq.ih1;
+ 	/* Get the WPTR of the last entry in IH ring */
+ 	last_wptr = amdgpu_ih_get_wptr(adev, ih);
+ 	/* Order wptr with ring data. */
 
 
 
