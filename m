@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-214034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFYkA99og2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:23 +0100
+	id CC0sEt9rg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B6CE92BB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37490E995C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8031D30D258C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54511308F6B0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0024F4218BF;
-	Wed,  4 Feb 2026 15:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65993423162;
+	Wed,  4 Feb 2026 15:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LLm+bLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfqQKOsN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E3C4218BB;
-	Wed,  4 Feb 2026 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E5F2D97BB;
+	Wed,  4 Feb 2026 15:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218339; cv=none; b=CSckQAAnRvohNGekqGEn5cWtymWkiRlAbzRuGImhcFcx93mLNaMqtLxW+cRchsK7zbD5OMJ6WyzZ4Vry7FGM9XBWExoxRu6nKdUbNKBvurbDzHIB8zQULXV9/6dh6YlMMGcSIL91LZvhokoaNep+CA2XTG/nsBEmbF1WwyNPiZE=
+	t=1770218588; cv=none; b=MopXKNJVXzrb1BpdVx3j1mALDpwspOw72jbzZ54cgsB63jK42I3iSJ9MVKEds3860qswYl9zXi9rFDQ5K5bx0fjHef7+Y+3EBiI4KTN/wwNDeaf1XwsONSYSUFdrC/EazezH4+XDh4iKdB/eVch3CCqVI5rLCxAuuK08cV/+o/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218339; c=relaxed/simple;
-	bh=U/gbr35QwpxH9lraSR0PCUkRUGRKETwGRVR2ZjO6ctI=;
+	s=arc-20240116; t=1770218588; c=relaxed/simple;
+	bh=uAoLLUki/dgPHiCMqW2UzFuyKwB8jNwoEJMHBJrLXKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5D7u64iSizz6FFC1bDJIQzPUs9RgWXIhteVJHhH24mPqBxpOxchYN0zRkXcEv49UiRykZxNb3I3y2T3JKkjZfo1fTTUOt/M9owxzFAExSSePHdUsc/DPQ7TJOc8BXqh1e0MdoyViGLvOaDikTU57hvhgxH7ZEIQc96aIhZzCVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LLm+bLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439E2C4CEF7;
-	Wed,  4 Feb 2026 15:18:59 +0000 (UTC)
+	 MIME-Version; b=hEgKnJlawSpJNg1JmhEZcXPfFecS33dhc0mH9yaOXTZxZ1ljg9zBHJZO/WRWz40Jlcvwv2KYehEiYNPO6HTDt9Y/tfPduV8yXb9p4XHqij+S6UXWwk3oaSvGGgqjz3h9ikqX4AllAYiOeFz1n7AAFXv3jDpKEF32ZhTAOyLurQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfqQKOsN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F446C4CEF7;
+	Wed,  4 Feb 2026 15:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218339;
-	bh=U/gbr35QwpxH9lraSR0PCUkRUGRKETwGRVR2ZjO6ctI=;
+	s=korg; t=1770218588;
+	bh=uAoLLUki/dgPHiCMqW2UzFuyKwB8jNwoEJMHBJrLXKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LLm+bLRcflKLhlIFHsk11gxKiS5J2KZAroDwYL0cDsH25husM6ok4V4foid5KRGg
-	 WOrZWIlkjwncDrsjdSYWXmnUc2bLN12qWQFm2ctTo6JtJSNMpRKLLUD7FfE9oChjL/
-	 x6bfpL/NkvVglatFIHKuQBTrDgUzJGCfSq22avjc=
+	b=sfqQKOsNt52usHDUXRSd5TgbKfHEq4ILP1hn5JuQ9Weg+Z+w1hj3Yr05towRhbUD/
+	 PyfZtqYSWMIw5o1zROf0ltyqw7DU3S1K6AiHsn2jzqeOYVx7OjRn7rEpkEhuzyKUez
+	 dg3atebQkESxXX7165zweeu4Qdz+np+GZBtbhFmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Robert McClinton <rbmccav@gmail.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.1 272/280] drm/radeon: delete radeon_fence_process in is_signaled, no deadlock
-Date: Wed,  4 Feb 2026 15:40:46 +0100
-Message-ID: <20260204143919.491312198@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 44/72] arm64/fpsimd: signal: Mandate SVE payload for streaming-mode state
+Date: Wed,  4 Feb 2026 15:40:47 +0100
+Message-ID: <20260204143847.224605489@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +70,117 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214034-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,139.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214107-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gitlab.freedesktop.org:url,139.com:email]
-X-Rspamd-Queue-Id: 19B6CE92BB
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,pstate.sm:url]
+X-Rspamd-Queue-Id: 37490E995C
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert McClinton <rbmccav@gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 9eb00b5f5697bd56baa3222c7a1426fa15bacfb5 ]
+[ Upstream commit b465ace42620970e840c7aeb2c44a6e3b1002fec ]
 
-Delete the attempt to progress the queue when checking if fence is
-signaled. This avoids deadlock.
+Non-streaming SVE state may be preserved without an SVE payload, in
+which case the SVE context only has a header with VL==0, and all state
+can be restored from the FPSIMD context. Streaming SVE state is always
+preserved with an SVE payload, where the SVE context header has VL!=0,
+and the SVE_SIG_FLAG_SM flag is set.
 
-dma-fence_ops::signaled can be called with the fence lock in unknown
-state. For radeon, the fence lock is also the wait queue lock. This can
-cause a self deadlock when signaled() tries to make forward progress on
-the wait queue. But advancing the queue is unneeded because incorrectly
-returning false from signaled() is perfectly acceptable.
+The kernel never preserves an SVE context where SVE_SIG_FLAG_SM is set
+without an SVE payload. However, restore_sve_fpsimd_context() doesn't
+forbid restoring such a context, and will handle this case by clearing
+PSTATE.SM and restoring the FPSIMD context into non-streaming mode,
+which isn't consistent with the SVE_SIG_FLAG_SM flag.
 
-Link: https://github.com/brave/brave-browser/issues/49182
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4641
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Robert McClinton <rbmccav@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 527ba26e50ec2ca2be9c7c82f3ad42998a75d0db)
-Cc: stable@vger.kernel.org
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Forbid this case, and mandate an SVE payload when the SVE_SIG_FLAG_SM
+flag is set. This avoids an awkward ABI quirk and reduces the risk that
+later rework to this code permits configuring a task with PSTATE.SM==1
+and fp_type==FP_STATE_FPSIMD.
+
+I've marked this as a fix given that we never intended to support this
+case, and we don't want anyone to start relying upon the old behaviour
+once we re-enable SME.
+
+Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250508132644.1395904-4-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: d2907cbe9ea0 ("arm64/fpsimd: signal: Fix restoration of SVE context")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_fence.c |    8 --------
- 1 file changed, 8 deletions(-)
+ arch/arm64/kernel/signal.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/radeon/radeon_fence.c
-+++ b/drivers/gpu/drm/radeon/radeon_fence.c
-@@ -362,14 +362,6 @@ static bool radeon_fence_is_signaled(str
- 		return true;
- 	}
+--- a/arch/arm64/kernel/signal.c
++++ b/arch/arm64/kernel/signal.c
+@@ -276,6 +276,7 @@ static int restore_sve_fpsimd_context(st
+ 	unsigned int vl, vq;
+ 	struct user_fpsimd_state fpsimd;
+ 	u16 user_vl, flags;
++	bool sm;
  
--	if (down_read_trylock(&rdev->exclusive_lock)) {
--		radeon_fence_process(rdev, ring);
--		up_read(&rdev->exclusive_lock);
--
--		if (atomic64_read(&rdev->fence_drv[ring].last_seq) >= seq) {
--			return true;
--		}
--	}
- 	return false;
- }
+ 	if (user->sve_size < sizeof(*user->sve))
+ 		return -EINVAL;
+@@ -285,7 +286,8 @@ static int restore_sve_fpsimd_context(st
+ 	if (err)
+ 		return err;
  
+-	if (flags & SVE_SIG_FLAG_SM) {
++	sm = flags & SVE_SIG_FLAG_SM;
++	if (sm) {
+ 		if (!system_supports_sme())
+ 			return -EINVAL;
+ 
+@@ -305,7 +307,16 @@ static int restore_sve_fpsimd_context(st
+ 	if (user_vl != vl)
+ 		return -EINVAL;
+ 
+-	if (user->sve_size == sizeof(*user->sve)) {
++	/*
++	 * Non-streaming SVE state may be preserved without an SVE payload, in
++	 * which case the SVE context only has a header with VL==0, and all
++	 * state can be restored from the FPSIMD context.
++	 *
++	 * Streaming SVE state is always preserved with an SVE payload. For
++	 * consistency and robustness, reject restoring streaming SVE state
++	 * without an SVE payload.
++	 */
++	if (!sm && user->sve_size == sizeof(*user->sve)) {
+ 		clear_thread_flag(TIF_SVE);
+ 		current->thread.svcr &= ~SVCR_SM_MASK;
+ 		current->thread.fp_type = FP_STATE_FPSIMD;
 
 
 
