@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMCuI6Jpg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:38 +0100
+	id aBHZNJBcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D31E950B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451FFE76C7
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 292DA3019BBB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2409B302BA7E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AB6421A03;
-	Wed,  4 Feb 2026 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257471C5D77;
+	Wed,  4 Feb 2026 14:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dd6ExQC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMKtDjrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5F63D994;
-	Wed,  4 Feb 2026 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCF7221F17;
+	Wed,  4 Feb 2026 14:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217950; cv=none; b=c7mbvMpv/cPmewzej8UM2mTo2z+JMvGGIER094Fx4AJiskwx/eRtDGUlZnTNBvrDNSq5ZllbQqUgSl3BO+T+8f0VUkZnWIFb4aL/YrhMxVX+Ko6O1wGFRtdFvg95cWWmaViXt0sJTV4ZEn3WQjheZ5bC+jpV6RTIYMEseE8ynt8=
+	t=1770216405; cv=none; b=ZJBkajDSzYfBqEyTzObjQepRyu4Pas1G0zTGRbki15DswbdSX+FXvFSsYwHo173np84FlFyE5/Gv9MNc7o0TtEMpbrDDyD6rpd6NHxMrzaZiynuV2NirGE+zEXT0hW5+G+hGKwYMwMgbCC/NumPt4uFnu+PcMZzAbjvJc/kuTEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217950; c=relaxed/simple;
-	bh=J0V61IvU+kkV7g3mjRL9e0fPJ/G+8IoHYvckBxVBxkk=;
+	s=arc-20240116; t=1770216405; c=relaxed/simple;
+	bh=rPsruh6xD5uDPIEMvTKGK3ULoNEfUxwDeEz/u8+QjIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtGlKnO/sri9BYQKoAY/UEW3ONWzuaPiqoJQNL4+TflpC8LBwJPYW2hxCpuqGMF993Tdb9FTMUbAOanQ77RHBeQQDPlBUVvrxXd9gHozPSa1ltaOrwPfhX/CWGaLyq3RmsYiMEUaPQwsx0gurewc5377cD0gtO8f0YdeKmWBXnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dd6ExQC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2EEC19423;
-	Wed,  4 Feb 2026 15:12:29 +0000 (UTC)
+	 MIME-Version; b=VlpAK591p2LtH+bYzBwGep9ablj61CQPLTY6elel3DCXT4I390xGUvJAlsGyuKlQXvjvrwoU8yEZ3DiY7JjvaRGoVDqQFES3OPx1mjbkT5YnTa9sK3YCDstRI7LPgk1Q+bxmHOj9Q7l2bIqMIjU566QKy7uWXF7qOtEFZ6nCEWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMKtDjrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E02EC4CEF7;
+	Wed,  4 Feb 2026 14:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217950;
-	bh=J0V61IvU+kkV7g3mjRL9e0fPJ/G+8IoHYvckBxVBxkk=;
+	s=korg; t=1770216405;
+	bh=rPsruh6xD5uDPIEMvTKGK3ULoNEfUxwDeEz/u8+QjIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dd6ExQC7V3tDKUh88+b8q+gNPGwAkxtvIA1K/G1/UfBt4UYNiu9JIJJeM+/qISEbx
-	 TTw7/EAJq2HZWJvURwgBTmguvJdrJA9ua959vBdPoz0qRxjIk8m1+q+7X+op48ZapA
-	 UrTr1xRqlkOkOXdxDkw4MdTApsDkcnLMRrjZwGj0=
+	b=IMKtDjrrsu9jH1AsETTmFyXz8X7T6disWncvDHfGz1ZsSbjIZN6+ILgo1TYqb5V/O
+	 Jxl8SGasC+Co+XqaIC3n2sbJk2iVs3ATu6MrpSNTwtJqySioub6cJ3pAtxr9PzAJnU
+	 H3zpJM3VY4+f3p5uT5LaSzaNjgaveV/1DH1XWU34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeson Gao <jeson.gao@unisoc.com>,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.1 168/280] arm64: Set __nocfi on swsusp_arch_resume()
+	Laurent Vivier <lvivier@redhat.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 079/161] usbnet: limit max_mtu based on devices hard_mtu
 Date: Wed,  4 Feb 2026 15:39:02 +0100
-Message-ID: <20260204143915.667000017@linuxfoundation.org>
+Message-ID: <20260204143854.593546229@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213918-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213458-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,108 +87,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E6D31E950B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,passt.top:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.com:url]
+X-Rspamd-Queue-Id: 451FFE76C7
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+From: Laurent Vivier <lvivier@redhat.com>
 
-commit e2f8216ca2d8e61a23cb6ec355616339667e0ba6 upstream.
+[ Upstream commit c7159e960f1472a5493ac99aff0086ab1d683594 ]
 
-A DABT is reported[1] on an android based system when resume from hiberate.
-This happens because swsusp_arch_suspend_exit() is marked with SYM_CODE_*()
-and does not have a CFI hash, but swsusp_arch_resume() will attempt to
-verify the CFI hash when calling a copy of swsusp_arch_suspend_exit().
+The usbnet driver initializes net->max_mtu to ETH_MAX_MTU before calling
+the device's bind() callback. When the bind() callback sets
+dev->hard_mtu based the device's actual capability (from CDC Ethernet's
+wMaxSegmentSize descriptor), max_mtu is never updated to reflect this
+hardware limitation).
 
-Given that there's an existing requirement that the entrypoint to
-swsusp_arch_suspend_exit() is the first byte of the .hibernate_exit.text
-section, we cannot fix this by marking swsusp_arch_suspend_exit() with
-SYM_FUNC_*(). The simplest fix for now is to disable the CFI check in
-swsusp_arch_resume().
+This allows userspace (DHCP or IPv6 RA) to configure MTU larger than the
+device can handle, leading to silent packet drops when the backend sends
+packet exceeding the device's buffer size.
 
-Mark swsusp_arch_resume() as __nocfi to disable the CFI check.
+Fix this by limiting net->max_mtu to the device's hard_mtu after the
+bind callback returns.
 
-[1]
-[   22.991934][    T1] Unable to handle kernel paging request at virtual address 0000000109170ffc
-[   22.991934][    T1] Mem abort info:
-[   22.991934][    T1]   ESR = 0x0000000096000007
-[   22.991934][    T1]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   22.991934][    T1]   SET = 0, FnV = 0
-[   22.991934][    T1]   EA = 0, S1PTW = 0
-[   22.991934][    T1]   FSC = 0x07: level 3 translation fault
-[   22.991934][    T1] Data abort info:
-[   22.991934][    T1]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
-[   22.991934][    T1]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   22.991934][    T1]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   22.991934][    T1] [0000000109170ffc] user address but active_mm is swapper
-[   22.991934][    T1] Internal error: Oops: 0000000096000007 [#1] PREEMPT SMP
-[   22.991934][    T1] Dumping ftrace buffer:
-[   22.991934][    T1]    (ftrace buffer empty)
-[   22.991934][    T1] Modules linked in:
-[   22.991934][    T1] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.98-android15-8-g0b1d2aee7fc3-dirty-4k #1 688c7060a825a3ac418fe53881730b355915a419
-[   22.991934][    T1] Hardware name: Unisoc UMS9360-base Board (DT)
-[   22.991934][    T1] pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   22.991934][    T1] pc : swsusp_arch_resume+0x2ac/0x344
-[   22.991934][    T1] lr : swsusp_arch_resume+0x294/0x344
-[   22.991934][    T1] sp : ffffffc08006b960
-[   22.991934][    T1] x29: ffffffc08006b9c0 x28: 0000000000000000 x27: 0000000000000000
-[   22.991934][    T1] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000820
-[   22.991934][    T1] x23: ffffffd0817e3000 x22: ffffffd0817e3000 x21: 0000000000000000
-[   22.991934][    T1] x20: ffffff8089171000 x19: ffffffd08252c8c8 x18: ffffffc080061058
-[   22.991934][    T1] x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 0000000000000004
-[   22.991934][    T1] x14: ffffff8178c88000 x13: 0000000000000006 x12: 0000000000000000
-[   22.991934][    T1] x11: 0000000000000015 x10: 0000000000000001 x9 : ffffffd082533000
-[   22.991934][    T1] x8 : 0000000109171000 x7 : 205b5d3433393139 x6 : 392e32322020205b
-[   22.991934][    T1] x5 : 000000010916f000 x4 : 000000008164b000 x3 : ffffff808a4e0530
-[   22.991934][    T1] x2 : ffffffd08058e784 x1 : 0000000082326000 x0 : 000000010a283000
-[   22.991934][    T1] Call trace:
-[   22.991934][    T1]  swsusp_arch_resume+0x2ac/0x344
-[   22.991934][    T1]  hibernation_restore+0x158/0x18c
-[   22.991934][    T1]  load_image_and_restore+0xb0/0xec
-[   22.991934][    T1]  software_resume+0xf4/0x19c
-[   22.991934][    T1]  software_resume_initcall+0x34/0x78
-[   22.991934][    T1]  do_one_initcall+0xe8/0x370
-[   22.991934][    T1]  do_initcall_level+0xc8/0x19c
-[   22.991934][    T1]  do_initcalls+0x70/0xc0
-[   22.991934][    T1]  do_basic_setup+0x1c/0x28
-[   22.991934][    T1]  kernel_init_freeable+0xe0/0x148
-[   22.991934][    T1]  kernel_init+0x20/0x1a8
-[   22.991934][    T1]  ret_from_fork+0x10/0x20
-[   22.991934][    T1] Code: a9400a61 f94013e0 f9438923 f9400a64 (b85fc110)
+See https://gitlab.com/qemu-project/qemu/-/issues/3268 and
+    https://bugs.passt.top/attachment.cgi?bugid=189
 
-Co-developed-by: Jeson Gao <jeson.gao@unisoc.com>
-Signed-off-by: Jeson Gao <jeson.gao@unisoc.com>
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Acked-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Cc: <stable@vger.kernel.org>
-[catalin.marinas@arm.com: commit log updated by Mark Rutland]
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Link: https://bugs.passt.top/show_bug.cgi?id=189
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Link: https://patch.msgid.link/20260119075518.2774373-1-lvivier@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/hibernate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/usbnet.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kernel/hibernate.c
-+++ b/arch/arm64/kernel/hibernate.c
-@@ -397,7 +397,7 @@ int swsusp_arch_suspend(void)
-  * Memory allocated by get_safe_page() will be dealt with by the hibernate code,
-  * we don't need to free it here.
-  */
--int swsusp_arch_resume(void)
-+int __nocfi swsusp_arch_resume(void)
- {
- 	int rc;
- 	void *zero_page;
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 9ac9fbdad5c08..4a83228a2db57 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1745,9 +1745,12 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
+ 			net->flags |= IFF_NOARP;
+ 
+-		/* maybe the remote can't receive an Ethernet MTU */
+-		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
+-			net->mtu = dev->hard_mtu - net->hard_header_len;
++		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
++			net->max_mtu = dev->hard_mtu - net->hard_header_len;
++
++		if (net->mtu > net->max_mtu)
++			net->mtu = net->max_mtu;
++
+ 	} else if (!info->in || !info->out)
+ 		status = usbnet_get_endpoints (dev, udev);
+ 	else {
+-- 
+2.51.0
+
 
 
 
