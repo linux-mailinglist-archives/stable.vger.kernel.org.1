@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-214027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFRxEstsg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:07 +0100
+	id YBfeDjJog2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A3DE9B3D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6C4E90DA
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 080E630C5361
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C339314D623
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F2C2D877F;
-	Wed,  4 Feb 2026 15:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0052DEA7A;
+	Wed,  4 Feb 2026 15:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvJjtXj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKCcYAnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7222BF002;
-	Wed,  4 Feb 2026 15:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF95413254;
+	Wed,  4 Feb 2026 15:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218316; cv=none; b=dLMFbiSxRdpddTErp1y7GE36wDp3PIR1tDoZhErp7FumcSb5ixIvqQ+1qIJlZ5pjUNVih8LUVbpUKjGd/aBR3Nn0zQXdDptaz/vouoTTmLsjqespLfAERj3i7bxWP5FiI2aJgvFUPyqaIn5VJwgTFMsl3bJdIUn6rjVXCTe8nsA=
+	t=1770219010; cv=none; b=K//rQZZ0TxB4lRmWtV5aGpk9mDtilpJjuoQke/STOYp6TTydTc1NX9J/ARr14MVwpC4/mma9rdcpCxe4CqXhcDn2wYFnfe/vN4zJfq5gYMCE/cLfB9ELVG/DhQWVFFYkRyw7aXRreOJmabTmX8HpWZOqu7YPVzHiEPBwBlfrG3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218316; c=relaxed/simple;
-	bh=AEXuzJ548Ujwg0sBy8YxfEQLamGC/CPeUcPaEvt+oBU=;
+	s=arc-20240116; t=1770219010; c=relaxed/simple;
+	bh=z9T+ZmVRoGbI6KJhngZmTtrmTm87Mq6/SadWlmcj574=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzLjC7NHWQssTd0swFNPsum2yKYD6coqEWLqkEAQTuWLVhcNFwWgzlfhdi2RinfxzmAIvMAUFM+/hLamNytUbBpOI6rH/cM23yO8fQIGw8Lq2oKuao5NC+VQC9UAMlxiYuOkDcUn0kISubMT97/t8MhDUII0GXkZqQPToUrYlYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvJjtXj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8C1C4CEF7;
-	Wed,  4 Feb 2026 15:18:35 +0000 (UTC)
+	 MIME-Version; b=ZKBL4Z9m28KpDjPHGFemBKsntmwAKtizoD5IVlpLR/CTA0vmZThTTpZp5Tdt2xzOIBKPcGH6D9/6HFBw/bahj7sZfqx/Do1sIK5sVuVpvieqX/909O+C/BNFWr4uTRx1LkMZ7EZtgTFfN/qiDhDUrO7Xm0zoOkTCo8QTkHjw1DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKCcYAnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40C1C4CEF7;
+	Wed,  4 Feb 2026 15:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218316;
-	bh=AEXuzJ548Ujwg0sBy8YxfEQLamGC/CPeUcPaEvt+oBU=;
+	s=korg; t=1770219010;
+	bh=z9T+ZmVRoGbI6KJhngZmTtrmTm87Mq6/SadWlmcj574=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvJjtXj7AQYMAaQWR1iosgOJtjX6VQV0kUHOPVbQCOu7J0bmzizwUyQ2w0mzVykks
-	 j+smeT8YmcrLggnc5vsLDdubmqSRyAKqhZRuCFbqSWHSy79MfayomiEhb9EhcPn7oo
-	 pFpbzFuiNGZQX0qSUXwVRHPD0r7qUkUO16E9xTCg=
+	b=vKCcYAnS8MJcpfLHiD7w215wTOBAMVxAunaeNyK/dL8Pl/4T9dCpW8cTZ9OMqHfnN
+	 /seD52qPqN3U9yAazlj+YYKmRx3LsuDJdHrJ0yLiPPApIDRvwfyCsNMeX7ctdApKPW
+	 KajYpbiIwF8bQgJ/kM5KqT1K0+ivaM2TO7uwtImA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Aaron Ma <aaron.ma@canonical.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 231/280] mei: trace: treat reg parameter as string
+Subject: [PATCH 6.18 023/122] ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues
 Date: Wed,  4 Feb 2026 15:40:05 +0100
-Message-ID: <20260204143917.932850516@linuxfoundation.org>
+Message-ID: <20260204143852.699328069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,132 +71,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214234-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214027-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 44A3DE9B3D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: AE6C4E90DA
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Aaron Ma <aaron.ma@canonical.com>
 
-[ Upstream commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 ]
+[ Upstream commit 9bb30be4d89ff9a8d7ab1aa0eb2edaca83431f85 ]
 
-The commit
-afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
-forbids to emit event with a plain char* without a wrapper.
+Add NULL pointer checks in ice_vsi_set_napi_queues() to prevent crashes
+during resume from suspend when rings[q_idx]->q_vector is NULL.
 
-The reg parameter always passed as static string and wrapper
-is not strictly required, contrary to dev parameter.
-Use the string wrapper anyway to check sanity of the reg parameters,
-store it value independently and prevent internal kernel data leaks.
+Tested adaptor:
+60:00.0 Ethernet controller [0200]: Intel Corporation Ethernet Controller E810-XXV for SFP [8086:159b] (rev 02)
+        Subsystem: Intel Corporation Ethernet Network Adapter E810-XXV-2 [8086:4003]
 
-Since some code refactoring has taken place, explicit backporting may
-be needed for kernels older than 6.10.
+SR-IOV state: both disabled and enabled can reproduce this issue.
 
-Cc: stable@vger.kernel.org  # v6.11+
-Fixes: a0a927d06d79 ("mei: me: add io register tracing")
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted __assign_str() calls to use two arguments ]
+kernel version: v6.18
+
+Reproduce steps:
+Boot up and execute suspend like systemctl suspend or rtcwake.
+
+Log:
+<1>[  231.443607] BUG: kernel NULL pointer dereference, address: 0000000000000040
+<1>[  231.444052] #PF: supervisor read access in kernel mode
+<1>[  231.444484] #PF: error_code(0x0000) - not-present page
+<6>[  231.444913] PGD 0 P4D 0
+<4>[  231.445342] Oops: Oops: 0000 [#1] SMP NOPTI
+<4>[  231.446635] RIP: 0010:netif_queue_set_napi+0xa/0x170
+<4>[  231.447067] Code: 31 f6 31 ff c3 cc cc cc cc 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 85 c9 74 0b <48> 83 79 30 00 0f 84 39 01 00 00 55 41 89 d1 49 89 f8 89 f2 48 89
+<4>[  231.447513] RSP: 0018:ffffcc780fc078c0 EFLAGS: 00010202
+<4>[  231.447961] RAX: ffff8b848ca30400 RBX: ffff8b848caf2028 RCX: 0000000000000010
+<4>[  231.448443] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8b848dbd4000
+<4>[  231.448896] RBP: ffffcc780fc078e8 R08: 0000000000000000 R09: 0000000000000000
+<4>[  231.449345] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
+<4>[  231.449817] R13: ffff8b848dbd4000 R14: ffff8b84833390c8 R15: 0000000000000000
+<4>[  231.450265] FS:  00007c7b29e9d740(0000) GS:ffff8b8c068e2000(0000) knlGS:0000000000000000
+<4>[  231.450715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[  231.451179] CR2: 0000000000000040 CR3: 000000030626f004 CR4: 0000000000f72ef0
+<4>[  231.451629] PKRU: 55555554
+<4>[  231.452076] Call Trace:
+<4>[  231.452549]  <TASK>
+<4>[  231.452996]  ? ice_vsi_set_napi_queues+0x4d/0x110 [ice]
+<4>[  231.453482]  ice_resume+0xfd/0x220 [ice]
+<4>[  231.453977]  ? __pfx_pci_pm_resume+0x10/0x10
+<4>[  231.454425]  pci_pm_resume+0x8c/0x140
+<4>[  231.454872]  ? __pfx_pci_pm_resume+0x10/0x10
+<4>[  231.455347]  dpm_run_callback+0x5f/0x160
+<4>[  231.455796]  ? dpm_wait_for_superior+0x107/0x170
+<4>[  231.456244]  device_resume+0x177/0x270
+<4>[  231.456708]  dpm_resume+0x209/0x2f0
+<4>[  231.457151]  dpm_resume_end+0x15/0x30
+<4>[  231.457596]  suspend_devices_and_enter+0x1da/0x2b0
+<4>[  231.458054]  enter_state+0x10e/0x570
+
+Add defensive checks for both the ring pointer and its q_vector
+before dereferencing, allowing the system to resume successfully even when
+q_vectors are unmapped.
+
+Fixes: 2a5dc090b92cf ("ice: move netif_queue_set_napi to rtnl-protected sections")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/mei-trace.h |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/misc/mei/mei-trace.h
-+++ b/drivers/misc/mei/mei-trace.h
-@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 5a3e7d6697325..3d14932871c58 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2784,12 +2784,14 @@ void ice_vsi_set_napi_queues(struct ice_vsi *vsi)
+ 		return;
  
- TRACE_EVENT(mei_reg_write,
-@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] write %s[%#x] = %#x",
--		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
- );
+ 	ice_for_each_rxq(vsi, q_idx)
+-		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
+-				     &vsi->rx_rings[q_idx]->q_vector->napi);
++		if (vsi->rx_rings[q_idx] && vsi->rx_rings[q_idx]->q_vector)
++			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
++					     &vsi->rx_rings[q_idx]->q_vector->napi);
  
- TRACE_EVENT(mei_pci_cfg_read,
-@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
- 
- #endif /* _MEI_TRACE_H_ */
+ 	ice_for_each_txq(vsi, q_idx)
+-		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
+-				     &vsi->tx_rings[q_idx]->q_vector->napi);
++		if (vsi->tx_rings[q_idx] && vsi->tx_rings[q_idx]->q_vector)
++			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
++					     &vsi->tx_rings[q_idx]->q_vector->napi);
+ 	/* Also set the interrupt number for the NAPI */
+ 	ice_for_each_q_vector(vsi, v_idx) {
+ 		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
+-- 
+2.51.0
+
 
 
 
