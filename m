@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBVfI5Vbg2mWlwMAu9opvQ
-	(envelope-from <stable+bounces-213415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:41 +0100
+	id KGmgFJpeg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB21E751D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA410E7ACF
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3254B300C593
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 591D430246CA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA77410D18;
-	Wed,  4 Feb 2026 14:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAEE41C2F7;
+	Wed,  4 Feb 2026 14:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASsij59p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cj6ETjLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034AD40758D;
-	Wed,  4 Feb 2026 14:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002A441B37D;
+	Wed,  4 Feb 2026 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216261; cv=none; b=de46Fvo5mncxMgJDY9/PEvqQ+PMD8P0PoTNg2rxg9rLdEQLFSU7n6l3/1BnxOu6WxhQ88rdyoIYuzjvG1RrpxKWsVjUQiNTM1NsztWi0GTBQr6RDNynnWtY5houlqts1UIWx4pvW1BaJFmHNBCpWz5lb4/xfefHl5DQDUJZCrII=
+	t=1770216908; cv=none; b=DltjMYZCpE1+gvcK8V3mRTyUSHBUlfOb2TRLAE+SQcOPySZFGZt3Z6AyGz30muB/m3UWYZhTjLpMF4hCOk2WD9t2lcTiuxNjAvBpXu5mNKALApJR2iqdZpDYSsFaJ3fQNhRQTiRbdO2UxveZ1XcLoWTKceHuqa4C+72U3wuxWC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216261; c=relaxed/simple;
-	bh=zMSBq7o2e4IzndI5jOqK1JGVDICq3uPSMrUz8nbzfE0=;
+	s=arc-20240116; t=1770216908; c=relaxed/simple;
+	bh=y/oOAhnZjcHCdv1+fVtqnDRVr0fmfK/1TUJXwDAjTRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDX1p5boGnm5zHvHDkpFBYZgkJt602Kq56i5p2629hjSb0zQ39UrHQMgSZwKJDQ0tXujz7mJMmOR2fECLsxZKAI5xpp08FFk1LvBAlLPD5mUZaBsjpy9leqb/lt11EayjyieKVHRslGiYYlAC4WshQoZRDxsO5xxftpKULPgwVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASsij59p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7BFC4CEF7;
-	Wed,  4 Feb 2026 14:44:20 +0000 (UTC)
+	 MIME-Version; b=oZcJNXcgjHJPqSd9yoO9mx37VAe0UKiLiKjTEF8qNUDjvaEk0fi7iwdQRNPUYHwH6JHdhN2PO89QNwYNY/7YvGvG2bA3WWFVc9DFq6BoLGuHhBrpkE7VJNgvGcxM9zvWwTaI3B/7g3vMpCBzvQX2Kdq2MgPk/vCKfDTMwjlRZnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cj6ETjLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EFFC4CEF7;
+	Wed,  4 Feb 2026 14:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216260;
-	bh=zMSBq7o2e4IzndI5jOqK1JGVDICq3uPSMrUz8nbzfE0=;
+	s=korg; t=1770216907;
+	bh=y/oOAhnZjcHCdv1+fVtqnDRVr0fmfK/1TUJXwDAjTRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASsij59p237Caz/cs6DXWzMFCNkidR9avhGL0aoQDI0kLtnB7iwC89bVcHU5MLIlz
-	 Lr5SbdLayC7GRYPTW/pfYET511l/WLOvJR0tX1NagOr4J+1HqaiPbM5pqnejbjYzUA
-	 JsOTUPGmf9jRMK2fZU5rtq1JSQi0vfBo4eKdLpCA=
+	b=cj6ETjLEiIPFEwpu/jL+bJLSmk/k1vlvoBfVWcBmG9pJ3j1/pbFi2s8ujdJlShF9m
+	 ilpVGzXRWc60lTjdp4rGyh49SL8hZ5QgfDvv6ZPxZKbjgBZjOQkr2TdSHIivRduaGL
+	 QUFIj5nSBAd5KQ8Ux3V7P+eozXLKVfZLOvFD43mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH 5.10 036/161] drm/vmwgfx: Fix an error return check in vmw_compat_shader_add()
+	David Ahern <dsahern@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 068/206] selftests/net: convert fib-onlink-tests.sh to run it in unique namespace
 Date: Wed,  4 Feb 2026 15:38:19 +0100
-Message-ID: <20260204143853.060594609@linuxfoundation.org>
+Message-ID: <20260204143900.662437485@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +70,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213610-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213415-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,broadcom.com:email,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DDB21E751D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EA410E7ACF
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit bf72b4b7bb7dbb643d204fa41e7463894a95999f upstream.
+[ Upstream commit 3a06833b2adc0a902f2469ad4ce41ccd64f1f3ab ]
 
-In vmw_compat_shader_add(), the return value check of vmw_shader_alloc()
-is not proper. Modify the check for the return pointer 'res'.
+Remove PEER_CMD, which is not used in this test
 
-Found by code review and compiled on ubuntu 20.04.
+Here is the test result after conversion.
 
-Fixes: 18e4a4669c50 ("drm/vmwgfx: Fix compat shader namespace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20251224091105.1569464-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ ]# ./fib-onlink-tests.sh
+ Error: ipv4: FIB table does not exist.
+ Flush terminated
+ Error: ipv6: FIB table does not exist.
+ Flush terminated
+
+ ########################################
+ Configuring interfaces
+
+   ...
+
+     TEST: Gateway resolves to wrong nexthop device - VRF      [ OK ]
+
+ Tests passed:  38
+ Tests failed:   0
+
+Acked-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231213060856.4030084-11-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4f5f148dd7c0 ("selftests: net: fib-onlink-tests: Convert to use namespaces by default")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/fib-onlink-tests.sh | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -1004,8 +1004,10 @@ int vmw_compat_shader_add(struct vmw_pri
- 	ttm_bo_unreserve(&buf->base);
+diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+index c287b90b8af80..ec2d6ceb1f08d 100755
+--- a/tools/testing/selftests/net/fib-onlink-tests.sh
++++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+@@ -3,6 +3,7 @@
  
- 	res = vmw_shader_alloc(dev_priv, buf, size, 0, shader_type);
--	if (unlikely(ret != 0))
-+	if (IS_ERR(res)) {
-+		ret = PTR_ERR(res);
- 		goto no_reserve;
-+	}
+ # IPv4 and IPv6 onlink tests
  
- 	ret = vmw_cmdbuf_res_add(man, vmw_cmdbuf_res_shader,
- 				 vmw_shader_key(user_key, shader_type),
++source lib.sh
+ PAUSE_ON_FAIL=${PAUSE_ON_FAIL:=no}
+ VERBOSE=0
+ 
+@@ -74,9 +75,6 @@ TEST_NET4IN6[2]=10.2.1.254
+ # mcast address
+ MCAST6=ff02::1
+ 
+-
+-PEER_NS=bart
+-PEER_CMD="ip netns exec ${PEER_NS}"
+ VRF=lisa
+ VRF_TABLE=1101
+ PBR_TABLE=101
+@@ -176,8 +174,7 @@ setup()
+ 	set -e
+ 
+ 	# create namespace
+-	ip netns add ${PEER_NS}
+-	ip -netns ${PEER_NS} li set lo up
++	setup_ns PEER_NS
+ 
+ 	# add vrf table
+ 	ip li add ${VRF} type vrf table ${VRF_TABLE}
+@@ -219,7 +216,7 @@ setup()
+ cleanup()
+ {
+ 	# make sure we start from a clean slate
+-	ip netns del ${PEER_NS} 2>/dev/null
++	cleanup_ns ${PEER_NS} 2>/dev/null
+ 	for n in 1 3 5 7; do
+ 		ip link del ${NETIFS[p${n}]} 2>/dev/null
+ 	done
+-- 
+2.51.0
+
 
 
 
