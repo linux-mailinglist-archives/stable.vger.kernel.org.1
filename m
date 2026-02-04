@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-213752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEzrMYhgg2mfmAMAu9opvQ
-	(envelope-from <stable+bounces-213752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:48 +0100
+	id gORCIWVog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F20E7EC8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAF6E917F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E6D903035C64
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:03:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E8043252510
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2382BE621;
-	Wed,  4 Feb 2026 15:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242B43ACF06;
+	Wed,  4 Feb 2026 15:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKSSbiOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxmAQsbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D698A28853A;
-	Wed,  4 Feb 2026 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAE22417E0;
+	Wed,  4 Feb 2026 15:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217387; cv=none; b=H4xALg8vmEBPBVug6FK1GtBaz9D4jACdyHZK5ARzruXSxI7yLMZfGa4jgIANCckcWQ47nz+bsDG2trC0Q/qcBsuLHoYePK2tw3fMtSB4UoipMNB1dbtDmpnZv2azYetz3mBd0uYs2jZUM8FVMIHdhzmhDjr6rTY/8vFzSP9QD4E=
+	t=1770218921; cv=none; b=Cy+KC9J0n7cLLDYA2qoKiJ+ljLdP6GnSSXU8o21+8mniN0eGzY9imGtOjc7MjwIagXSawXH7733R38kkcp3Lx8c2iHT/JHeXQjcSDuy97UctnWr3f/JTjEyA6KsTmG9CnIvQUp+cAPptFHe3Y/VFPT0kN79EUeneRqxKA/rUQME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217387; c=relaxed/simple;
-	bh=CZ/z1wxChZnufxPQRYZO11LqyTh30R+NoBPKYgpMncA=;
+	s=arc-20240116; t=1770218921; c=relaxed/simple;
+	bh=zKhwJ1V3chboRiTIy7EQE6Zmgr3fU3bS3FLtlHy2a9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1DdYkomNA9fEKpB67w9aKDAjVxa+2b5/MmBoUu+/PtTX+nBALj0I7f7NFz5aoiMx98ATm0uU5l8fdV5kF6KuNysd3bQm8kxaY+ieohNwUvokUyL3TNjQIIgSAvKnSLTQiu7gnktBwnlmpt18VgwjT6lmdvUx+VMXtqIFKkNlL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKSSbiOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1282EC2BC87;
-	Wed,  4 Feb 2026 15:03:06 +0000 (UTC)
+	 MIME-Version; b=L9mHVhSNrC0vhBZgumXS510YFvfr0n6CAHRrbfKPF2FwLeFyB9TRGx2VM3MPQ0dceg/rVWMIu6WysamWFX42jQfIZJadNtY0hlG7jGAe/SASx6/P9QO56RFVuMGpu5hG4yHK/vLdmeNdKiOCX1Dv2Zvb6AdtUyFCNUrMT6sXxog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxmAQsbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521F1C4CEF7;
+	Wed,  4 Feb 2026 15:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217387;
-	bh=CZ/z1wxChZnufxPQRYZO11LqyTh30R+NoBPKYgpMncA=;
+	s=korg; t=1770218921;
+	bh=zKhwJ1V3chboRiTIy7EQE6Zmgr3fU3bS3FLtlHy2a9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKSSbiOZj4jlUAuEhRrwLDStN40aHFVJGXKWRnXTz5Xgv7z6l/Q1Khpz9e94m8a+p
-	 6SjBPnUb57xHA8CChb2ryTbhy00neuX6SIkTCJoQjtFUt837Egqq2hc2RJgJ+wi7e1
-	 9PgR8lH6pHVi+JybneoqMGGWcq9XYhvb5jaFirVo=
+	b=MxmAQsbLpv9OpqWmvoh5406HlKAUz8Zeaveb9nK0rde+Eg4LF2Yzyb7QS+YaRlr1k
+	 atfO6EjV/1l5NPRNXT+2Rz70s4UBDMrOFcsc8tmMzD1PJmd9R2qWxaiFCoS3YceXAT
+	 RkaMxO6qPm6w8tmbmdKJ6aKym91YvSZjMKXhqxmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Johan Hovold <johan@kernel.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Kery Qi <qikeyu2017@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 165/206] dmaengine: stm32: dmamux: fix device leak on route allocation
+Subject: [PATCH 6.18 014/122] net: wwan: t7xx: fix potential skb->frags overflow in RX path
 Date: Wed,  4 Feb 2026 15:39:56 +0100
-Message-ID: <20260204143904.148929349@linuxfoundation.org>
+Message-ID: <20260204143852.379776197@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,121 +67,117 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214207-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213752-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,st.com:email]
-X-Rspamd-Queue-Id: 56F20E7EC8
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: DBAF6E917F
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-[ Upstream commit dd6e4943889fb354efa3f700e42739da9bddb6ef ]
+[ Upstream commit f0813bcd2d9d97fdbdf2efb9532ab03ae92e99e6 ]
 
-Make sure to drop the reference taken when looking up the DMA mux
-platform device during route allocation.
+When receiving data in the DPMAIF RX path,
+the t7xx_dpmaif_set_frag_to_skb() function adds
+page fragments to an skb without checking if the number of
+fragments has exceeded MAX_SKB_FRAGS. This could lead to a buffer overflow
+in skb_shinfo(skb)->frags[] array, corrupting adjacent memory and
+potentially causing kernel crashes or other undefined behavior.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+This issue was identified through static code analysis by comparing with a
+similar vulnerability fixed in the mt76 driver commit b102f0c522cf ("mt76:
+fix array overflow on receiving too many fragments for a packet").
 
-Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org	# 4.15
-Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-11-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The vulnerability could be triggered if the modem firmware sends packets
+with excessive fragments. While under normal protocol conditions (MTU 3080
+bytes, BAT buffer 3584 bytes),
+a single packet should not require additional
+fragments, the kernel should not blindly trust firmware behavior.
+Malicious, buggy, or compromised firmware could potentially craft packets
+with more fragments than the kernel expects.
+
+Fix this by adding a bounds check before calling skb_add_rx_frag() to
+ensure nr_frags does not exceed MAX_SKB_FRAGS.
+
+The check must be performed before unmapping to avoid a page leak
+and double DMA unmap during device teardown.
+
+Fixes: d642b012df70a ("net: wwan: t7xx: Add data path interface")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Link: https://patch.msgid.link/20260122170401.1986-2-qikeyu2017@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32-dmamux.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/stm32-dmamux.c
-+++ b/drivers/dma/stm32-dmamux.c
-@@ -88,23 +88,25 @@ static void *stm32_dmamux_route_allocate
- 	struct stm32_dmamux_data *dmamux = platform_get_drvdata(pdev);
- 	struct stm32_dmamux *mux;
- 	u32 i, min, max;
--	int ret;
-+	int ret = -EINVAL;
- 	unsigned long flags;
+diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+index 2310493203d3c..d9f10df03a5db 100644
+--- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
++++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+@@ -395,6 +395,7 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
+ 				       struct sk_buff *skb)
+ {
+ 	unsigned long long data_bus_addr, data_base_addr;
++	struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 	struct device *dev = rxq->dpmaif_ctrl->dev;
+ 	struct dpmaif_bat_page *page_info;
+ 	unsigned int data_len;
+@@ -402,18 +403,22 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
  
- 	if (dma_spec->args_count != 3) {
- 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
+ 	page_info = rxq->bat_frag->bat_skb;
+ 	page_info += t7xx_normal_pit_bid(pkt_info);
+-	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
  
- 	if (dma_spec->args[0] > dmamux->dmamux_requests) {
- 		dev_err(&pdev->dev, "invalid mux request number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
+ 	if (!page_info->page)
+ 		return -EINVAL;
  
- 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
--	if (!mux)
--		return ERR_PTR(-ENOMEM);
-+	if (!mux) {
-+		ret = -ENOMEM;
-+		goto err_put_pdev;
-+	}
- 
- 	spin_lock_irqsave(&dmamux->lock, flags);
- 	mux->chan_id = find_first_zero_bit(dmamux->dma_inuse,
-@@ -131,7 +133,6 @@ static void *stm32_dmamux_route_allocate
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", i - 1);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "can't get dma master\n");
--		ret = -EINVAL;
- 		goto error;
- 	}
- 
-@@ -158,6 +159,8 @@ static void *stm32_dmamux_route_allocate
- 	dev_dbg(&pdev->dev, "Mapping DMAMUX(%u) to DMA%u(%u)\n",
- 		mux->request, mux->master, mux->chan_id);
- 
-+	put_device(&pdev->dev);
++	if (shinfo->nr_frags >= MAX_SKB_FRAGS)
++		return -EINVAL;
 +
- 	return mux;
- 
- err_put_dma_spec_np:
-@@ -167,6 +170,9 @@ error:
- 
- error_chan_id:
- 	kfree(mux);
-+err_put_pdev:
-+	put_device(&pdev->dev);
++	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
 +
- 	return ERR_PTR(ret);
- }
+ 	data_bus_addr = le32_to_cpu(pkt_info->pd.data_addr_h);
+ 	data_bus_addr = (data_bus_addr << 32) + le32_to_cpu(pkt_info->pd.data_addr_l);
+ 	data_base_addr = page_info->data_bus_addr;
+ 	data_offset = data_bus_addr - data_base_addr;
+ 	data_offset += page_info->offset;
+ 	data_len = FIELD_GET(PD_PIT_DATA_LEN, le32_to_cpu(pkt_info->header));
+-	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page_info->page,
++	skb_add_rx_frag(skb, shinfo->nr_frags, page_info->page,
+ 			data_offset, data_len, page_info->data_len);
  
+ 	page_info->page = NULL;
+-- 
+2.51.0
+
 
 
 
