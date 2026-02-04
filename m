@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-213734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GONGIkpgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:46 +0100
+	id +E1VHjVqg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04487E7E1C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C805BE9629
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54E873025C62
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C5CD302DB7A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08752BD012;
-	Wed,  4 Feb 2026 15:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84D1421893;
+	Wed,  4 Feb 2026 15:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDA3/L7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJ+QZYDq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A2E285404;
-	Wed,  4 Feb 2026 15:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF203D994;
+	Wed,  4 Feb 2026 15:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217326; cv=none; b=pP4Lp3/Sk0yq4oIZ70kB5ZOte0A0d63BLlDVFQ3KTS9bOVW+BVc4e8nOtPqLg9Wr4mjQ9Buv3UAf0m2jSoBpH2KxrxetPZmpzhlOIm6Po/GrNmO6LrovJCSvmJf5lUHc/myCnzH2C8VcukVETMyakwv6aghVem7YiOAHJN/96aQ=
+	t=1770218217; cv=none; b=eL3jQYvD7TW4XcZaaFdGN9MXExVOxVm14U1pvfoxV4LMyAmZENdFGn6f2j+kgeJZxkw42KV3mOuHwqlDx4xsE3hVWIfdZqUkioRWbBATZfgK0VN2Dj+1mIKdIEU2RVmbKHXi8K9r8K93+N7UF4h+IIkQ5SpFMmPwnlurDZCyyoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217326; c=relaxed/simple;
-	bh=P2BELcVbfinIBkMoEun56XN8FehbiMZ2mTp9yRwjOUo=;
+	s=arc-20240116; t=1770218217; c=relaxed/simple;
+	bh=8qTrFQQDnm75LH/wCmIW55cCmTbN9jLmz4aYo6tcTsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XEhwRYlzItwZwxY0pb6CBguGza6wqVxZku4F3sAnosTuM4HpC7nlY7qNhaXuhPQbGMT6//RV42sP0xdaT0yTD8hauZgCEKhxbtcH9T7cqztsBy71r1xldFaR0QKa7r5sNvXqpFWZ5ykGn/3iCAKm1QM59wiP9ZsliYEXxUzPS/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDA3/L7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B0DC4CEF7;
-	Wed,  4 Feb 2026 15:02:05 +0000 (UTC)
+	 MIME-Version; b=r2ghDRKC2ozBO4i+/ClCNlYZ11obD+jy19lVp9+RDZ9EPYh23bdnkgAXY0FCnGVKvDpexrltO3Gdwh6yuSoRhrVpPM/z8U/EpRAbJt3Stq1m3YzUNqIlmhP9pbtEN7TJ/4kQMJ/2EVlCqvhcy8WeYOcYJFwVR9V+8IJYrK1QMII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJ+QZYDq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3EEC4CEF7;
+	Wed,  4 Feb 2026 15:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217326;
-	bh=P2BELcVbfinIBkMoEun56XN8FehbiMZ2mTp9yRwjOUo=;
+	s=korg; t=1770218217;
+	bh=8qTrFQQDnm75LH/wCmIW55cCmTbN9jLmz4aYo6tcTsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDA3/L7TmYlxI8ThXbfIXatX+Kn+yMKrByqWylkj6WPDBbu5xQIBrBfQFWLF5zE4Q
-	 1IOECgEbBXmm6MKeOz338fFY5uYb/M4FJCKUdXXYTDysPWWNTeutbv69fcBCSineKj
-	 bVrak61X5Y+x+vkbwNkdOag8y/rwcA1wgnaUvePA=
+	b=wJ+QZYDqXVAkP50SuFQCMq0BR7gVzDol7ygr4ol2QdZE6Jdh52XhXcvRpEOPDi188
+	 1V15Be8vt6q9QCQodsspMayAU+qf0BKU9gAL2dFK6pMiLV1Y3631n+6mtg5XAtSoBd
+	 hzyWbxLVn2nDj0w99aWwFha0vaPVg+MrVkk1xrjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gyeyoung Baek <gye976@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 5.15 190/206] genirq/irq_sim: Initialize work context pointers properly
+	Srinivas Kandagatla <srini@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 247/280] ASoC: codecs: wsa881x: fix unnecessary initialisation
 Date: Wed,  4 Feb 2026 15:40:21 +0100
-Message-ID: <20260204143905.067939066@linuxfoundation.org>
+Message-ID: <20260204143918.527380933@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,69 +70,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213734-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linutronix.de,163.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213998-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:email]
-X-Rspamd-Queue-Id: 04487E7E1C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C805BE9629
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gyeyoung Baek <gye976@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8a2277a3c9e4cc5398f80821afe7ecbe9bdf2819 ]
+[ Upstream commit 29d71b8a5a40708b3eed9ba4953bfc2312c9c776 ]
 
-Initialize `ops` member's pointers properly by using kzalloc() instead of
-kmalloc() when allocating the simulation work context. Otherwise the
-pointers contain random content leading to invalid dereferencing.
+The soundwire update_status() callback may be called multiple times with
+the same ATTACHED status but initialisation should only be done when
+transitioning from UNATTACHED to ATTACHED.
 
-Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250612124827.63259-1-gye976@gmail.com
-[ The context change is due to the commit 011f583781fa
-("genirq/irq_sim: add an extended irq_sim initializer")
-which is irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Fixes: a0aab9e1404a ("ASoC: codecs: add wsa881x amplifier support")
+Cc: stable@vger.kernel.org	# 5.6
+Cc: Srinivas Kandagatla <srini@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260102111413.9605-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/irq/irq_sim.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/wsa881x.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/irq/irq_sim.c
-+++ b/kernel/irq/irq_sim.c
-@@ -166,7 +166,7 @@ struct irq_domain *irq_domain_create_sim
- {
- 	struct irq_sim_work_ctx *work_ctx;
+--- a/sound/soc/codecs/wsa881x.c
++++ b/sound/soc/codecs/wsa881x.c
+@@ -684,6 +684,7 @@ struct wsa881x_priv {
+ 	 */
+ 	unsigned int sd_n_val;
+ 	int active_ports;
++	bool hw_init;
+ 	bool port_prepared[WSA881X_MAX_SWR_PORTS];
+ 	bool port_enable[WSA881X_MAX_SWR_PORTS];
+ };
+@@ -693,6 +694,9 @@ static void wsa881x_init(struct wsa881x_
+ 	struct regmap *rm = wsa881x->regmap;
+ 	unsigned int val = 0;
  
--	work_ctx = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
-+	work_ctx = kzalloc(sizeof(*work_ctx), GFP_KERNEL);
- 	if (!work_ctx)
- 		goto err_out;
++	if (wsa881x->hw_init)
++		return;
++
+ 	regmap_register_patch(wsa881x->regmap, wsa881x_rev_2_0,
+ 			      ARRAY_SIZE(wsa881x_rev_2_0));
+ 
+@@ -730,6 +734,8 @@ static void wsa881x_init(struct wsa881x_
+ 	regmap_update_bits(rm, WSA881X_OTP_REG_28, 0x3F, 0x3A);
+ 	regmap_update_bits(rm, WSA881X_BONGO_RESRV_REG1, 0xFF, 0xB2);
+ 	regmap_update_bits(rm, WSA881X_BONGO_RESRV_REG2, 0xFF, 0x05);
++
++	wsa881x->hw_init = true;
+ }
+ 
+ static int wsa881x_component_probe(struct snd_soc_component *comp)
+@@ -1074,6 +1080,9 @@ static int wsa881x_update_status(struct
+ {
+ 	struct wsa881x_priv *wsa881x = dev_get_drvdata(&slave->dev);
+ 
++	if (status == SDW_SLAVE_UNATTACHED)
++		wsa881x->hw_init = false;
++
+ 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
+ 		wsa881x_init(wsa881x);
  
 
 
