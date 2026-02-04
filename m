@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-213751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMJKB4Vgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:45 +0100
+	id aD42BTtgg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83827E7EC1
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD806E7E00
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9457B3034796
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:03:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 111083025D2E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308362BE621;
-	Wed,  4 Feb 2026 15:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CB82C3254;
+	Wed,  4 Feb 2026 15:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOyT75RC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTRxUVfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70EF28853A;
-	Wed,  4 Feb 2026 15:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6579B2BEFED;
+	Wed,  4 Feb 2026 15:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217384; cv=none; b=DAEzw2F1czWUyrH26c/rtI7tdq4pPmWmjBV/czGMc+7EUqGLYDWRqRze1qsJQUOvCj2P+Sy8awLr+a8xDeVaJEPyYZUJ7usiVynfeFSK/IpML0/PkRjhVct1CEy43V7/ymI6HwBa742gFAS/h5FkuW5KHm6DDp4kA4crDq/4jlI=
+	t=1770217272; cv=none; b=O3wowQp5rLpnY+CM8v4BcFwey4QhDw4khuWSrTH8Vxag9L7PoKZwjWC7SOnLXb3Z41KzdaPxDc+WbAMjGmW/+VJgKRX3PrZ/BHzP2Epa2QGfUc3Saih8iLql4N6js1fCBak7/PiZWpenNMs1kniJubyUgg5daYmIB3W1o6zLuQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217384; c=relaxed/simple;
-	bh=siHnWQ88A6aNOVMjDYXIpFRLAi5z3hE0qIRVjLW0YZo=;
+	s=arc-20240116; t=1770217272; c=relaxed/simple;
+	bh=chxGI0Wj+tr9zJIxzjXbY2Dsafi0QQE4zqEhCWXiLmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rtNvvVmbz/tLKPfbKpqFFK22j2Ds0OcXjrgqQd+2mQU7C689r+xxyKSUyMsvz0K7bO+ZrKHtX+FdkBIud7DL+vI4120RDauATxQSZNqUgU+r3OFVrM7B1+4dfR25sxnkwxEjgayS2LGEiYuz/ywblxFMCAZCEIf/XcqMyFlgSDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOyT75RC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4168FC4CEF7;
-	Wed,  4 Feb 2026 15:03:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yqw41VDY2m7c3i6yvxA7IMvIbLjPsL/yESA2OhySqzQ3WgV3SK0TTuRKCRXQfY9hesAlGwF9cuJespePLeKOIK9UJO32i3o3hjcRjLKnEgOeSH/kqyRqcwmBqaTo0Jq3pryuJfdtRVo4P9opZAKVjG1iEeswE9jtl2fq45W85nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTRxUVfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DF9C2BC86;
+	Wed,  4 Feb 2026 15:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217383;
-	bh=siHnWQ88A6aNOVMjDYXIpFRLAi5z3hE0qIRVjLW0YZo=;
+	s=korg; t=1770217272;
+	bh=chxGI0Wj+tr9zJIxzjXbY2Dsafi0QQE4zqEhCWXiLmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOyT75RCmtAFQi0MAcyynYbQy+m0MjxsCBKRpErhL2bc5+Xi7zQ25kXn3y3IsAj3o
-	 qsvnvwHSGXLtv1xf1FJ6lE+nU5ivVSJLq2pIHhXHM3K8OrugGcFWL5aqNJzZuPJk4t
-	 z/DwYr7CCsr1AxIHJdkjcPZD2Sb0Zx7MB4RjSPTM=
+	b=JTRxUVfprZtmax2VEUMQ/8w2rS0MqIwaxMo3BoJQMETizQKixSN0UAhlQJHLvVYSs
+	 WsFZcwolJ1cfkE5WyhS+bhBnMTY+bLUzC3KG5H26sNTbufDk0omrjgHsb3T7hiBCHt
+	 lDBjOy544Y+T+Vs1D1J71mNQAdSgxEwSHVr1ov9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	craftfever <craftfever@airmail.cc>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 174/206] ksm: use range-walk function to jump over holes in scan_get_next_rmap_item
-Date: Wed,  4 Feb 2026 15:40:05 +0100
-Message-ID: <20260204143904.478616966@linuxfoundation.org>
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15 175/206] drm/ttm: fix undefined behavior in bit shift for TTM_TT_FLAG_PRIV_POPULATED
+Date: Wed,  4 Feb 2026 15:40:06 +0100
+Message-ID: <20260204143904.515368980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
 References: <20260204143858.193781818@linuxfoundation.org>
@@ -66,266 +63,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,airmail.cc,linux.dev,zte.com.cn,linux-foundation.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213751-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213717-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,amd.com,163.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DM_SURBL(0.00)[airmail.cc:email];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zte.com.cn:email,linux-foundation.org:email,linux.dev:email,airmail.cc:email]
-X-Rspamd-Queue-Id: 83827E7EC1
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: AD806E7E00
 X-Rspamd-Action: no action
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit f5548c318d6520d4fa3c5ed6003eeb710763cbc5 ]
+[ Upstream 387659939c00156f8d6bab0fbc55b4eaf2b6bc5b commit ]
 
-Currently, scan_get_next_rmap_item() walks every page address in a VMA to
-locate mergeable pages.  This becomes highly inefficient when scanning
-large virtual memory areas that contain mostly unmapped regions, causing
-ksmd to use large amount of cpu without deduplicating much pages.
+Shifting signed 32-bit value by 31 bits is undefined, so changing
+significant bit to unsigned. The UBSAN warning calltrace like below:
 
-This patch replaces the per-address lookup with a range walk using
-walk_page_range().  The range walker allows KSM to skip over entire
-unmapped holes in a VMA, avoiding unnecessary lookups.  This problem was
-previously discussed in [1].
+UBSAN: shift-out-of-bounds in ./include/drm/ttm/ttm_tt.h:122:26
+left shift of 1 by 31 places cannot be represented in type 'int'
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x7d/0xa5
+ dump_stack+0x15/0x1b
+ ubsan_epilogue+0xe/0x4e
+ __ubsan_handle_shift_out_of_bounds+0x1e7/0x20c
+ ttm_bo_move_memcpy+0x3b4/0x460 [ttm]
+ bo_driver_move+0x32/0x40 [drm_vram_helper]
+ ttm_bo_handle_move_mem+0x118/0x200 [ttm]
+ ttm_bo_validate+0xfa/0x220 [ttm]
+ drm_gem_vram_pin_locked+0x70/0x1b0 [drm_vram_helper]
+ drm_gem_vram_pin+0x48/0xb0 [drm_vram_helper]
+ drm_gem_vram_plane_helper_prepare_fb+0x53/0xe0 [drm_vram_helper]
+ drm_gem_vram_simple_display_pipe_prepare_fb+0x26/0x30 [drm_vram_helper]
+ drm_simple_kms_plane_prepare_fb+0x4d/0xe0 [drm_kms_helper]
+ drm_atomic_helper_prepare_planes+0xda/0x210 [drm_kms_helper]
+ drm_atomic_helper_commit+0xc3/0x1e0 [drm_kms_helper]
+ drm_atomic_commit+0x9c/0x160 [drm]
+ drm_client_modeset_commit_atomic+0x33a/0x380 [drm]
+ drm_client_modeset_commit_locked+0x77/0x220 [drm]
+ drm_client_modeset_commit+0x31/0x60 [drm]
+ __drm_fb_helper_restore_fbdev_mode_unlocked+0xa7/0x170 [drm_kms_helper]
+ drm_fb_helper_set_par+0x51/0x90 [drm_kms_helper]
+ fbcon_init+0x316/0x790
+ visual_init+0x113/0x1d0
+ do_bind_con_driver+0x2a3/0x5c0
+ do_take_over_console+0xa9/0x270
+ do_fbcon_takeover+0xa1/0x170
+ do_fb_registered+0x2a8/0x340
+ fbcon_fb_registered+0x47/0xe0
+ register_framebuffer+0x294/0x4a0
+ __drm_fb_helper_initial_config_and_unlock+0x43c/0x880 [drm_kms_helper]
+ drm_fb_helper_initial_config+0x52/0x80 [drm_kms_helper]
+ drm_fbdev_client_hotplug+0x156/0x1b0 [drm_kms_helper]
+ drm_fbdev_generic_setup+0xfc/0x290 [drm_kms_helper]
+ bochs_pci_probe+0x6ca/0x772 [bochs]
+ local_pci_probe+0x4d/0xb0
+ pci_device_probe+0x119/0x320
+ really_probe+0x181/0x550
+ __driver_probe_device+0xc6/0x220
+ driver_probe_device+0x32/0x100
+ __driver_attach+0x195/0x200
+ bus_for_each_dev+0xbb/0x120
+ driver_attach+0x27/0x30
+ bus_add_driver+0x22e/0x2f0
+ driver_register+0xa9/0x190
+ __pci_register_driver+0x90/0xa0
+ bochs_pci_driver_init+0x52/0x1000 [bochs]
+ do_one_initcall+0x76/0x430
+ do_init_module+0x61/0x28a
+ load_module+0x1f82/0x2e50
+ __do_sys_finit_module+0xf8/0x190
+ __x64_sys_finit_module+0x23/0x30
+ do_syscall_64+0x58/0x80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+ </TASK>
 
-Consider the following test program which creates a 32 TiB mapping in the
-virtual address space but only populates a single page:
-
-/* 32 TiB */
-const size_t size = 32ul * 1024 * 1024 * 1024 * 1024;
-
-int main() {
-        char *area = mmap(NULL, size, PROT_READ | PROT_WRITE,
-                          MAP_NORESERVE | MAP_PRIVATE | MAP_ANON, -1, 0);
-
-        if (area == MAP_FAILED) {
-                perror("mmap() failed\n");
-                return -1;
-        }
-
-        /* Populate a single page such that we get an anon_vma. */
-        *area = 0;
-
-        /* Enable KSM. */
-        madvise(area, size, MADV_MERGEABLE);
-        pause();
-        return 0;
-}
-
-$ ./ksm-sparse  &
-$ echo 1 > /sys/kernel/mm/ksm/run
-
-Without this patch ksmd uses 100% of the cpu for a long time (more then 1
-hour in my test machine) scanning all the 32 TiB virtual address space
-that contain only one mapped page.  This makes ksmd essentially deadlocked
-not able to deduplicate anything of value.  With this patch ksmd walks
-only the one mapped page and skips the rest of the 32 TiB virtual address
-space, making the scan fast using little cpu.
-
-Link: https://lkml.kernel.org/r/20251023035841.41406-1-pedrodemargomes@gmail.com
-Link: https://lkml.kernel.org/r/20251022153059.22763-1-pedrodemargomes@gmail.com
-Link: https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/ [1]
-Fixes: 31dbd01f3143 ("ksm: Kernel SamePage Merging")
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Co-developed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: craftfever <craftfever@airmail.cc>
-Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ change folio to page, replace pmdp_get_lockless with pmd_read_atomic and pmdp_get with
- READ_ONCE(*pmdp) ]
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Fixes: 3312be8f6fc8 ("drm/ttm: move populated state into page flags")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20221031113350.4180975-1-cuigaosheng1@huawei.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+[ The context change is due to the commit 43d46f0b78bb
+("drm/ttm: s/FLAG_SG/FLAG_EXTERNAL/") in v5.16
+which is irrelevant to the logic of this patch.
+In addition, v6.1 has included the fix. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/ksm.c |  115 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 105 insertions(+), 10 deletions(-)
+ include/drm/ttm/ttm_tt.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -38,6 +38,7 @@
- #include <linux/freezer.h>
- #include <linux/oom.h>
- #include <linux/numa.h>
-+#include <linux/pagewalk.h>
+--- a/include/drm/ttm/ttm_tt.h
++++ b/include/drm/ttm/ttm_tt.h
+@@ -43,7 +43,7 @@ struct ttm_operation_ctx;
+ #define TTM_PAGE_FLAG_SG              (1 << 8)
+ #define TTM_PAGE_FLAG_NO_RETRY	      (1 << 9)
  
- #include <asm/tlbflush.h>
- #include "internal.h"
-@@ -2214,6 +2215,89 @@ static struct rmap_item *get_next_rmap_i
- 	return rmap_item;
- }
+-#define TTM_PAGE_FLAG_PRIV_POPULATED  (1 << 31)
++#define TTM_PAGE_FLAG_PRIV_POPULATED  (1U << 31)
  
-+struct ksm_next_page_arg {
-+	struct page *page;
-+	unsigned long addr;
-+};
-+
-+static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long end,
-+		struct mm_walk *walk)
-+{
-+	struct ksm_next_page_arg *private = walk->private;
-+	struct vm_area_struct *vma = walk->vma;
-+	pte_t *start_ptep = NULL, *ptep, pte;
-+	struct mm_struct *mm = walk->mm;
-+	struct page *page;
-+	spinlock_t *ptl;
-+	pmd_t pmd;
-+
-+	if (ksm_test_exit(mm))
-+		return 0;
-+
-+	cond_resched();
-+
-+	pmd = pmd_read_atomic(pmdp);
-+	if (!pmd_present(pmd))
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && pmd_leaf(pmd)) {
-+		ptl = pmd_lock(mm, pmdp);
-+		pmd = READ_ONCE(*pmdp);
-+
-+		if (!pmd_present(pmd)) {
-+			goto not_found_unlock;
-+		} else if (pmd_leaf(pmd)) {
-+			page = vm_normal_page_pmd(vma, addr, pmd);
-+			if (!page)
-+				goto not_found_unlock;
-+
-+			if (is_zone_device_page(page) || !PageAnon(page))
-+				goto not_found_unlock;
-+
-+			page += ((addr & (PMD_SIZE - 1)) >> PAGE_SHIFT);
-+			goto found_unlock;
-+		}
-+		spin_unlock(ptl);
-+	}
-+
-+	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-+	if (!start_ptep)
-+		return 0;
-+
-+	for (ptep = start_ptep; addr < end; ptep++, addr += PAGE_SIZE) {
-+		pte = ptep_get(ptep);
-+
-+		if (!pte_present(pte))
-+			continue;
-+
-+		page = vm_normal_page(vma, addr, pte);
-+		if (!page)
-+			continue;
-+
-+		if (is_zone_device_page(page) || !PageAnon(page))
-+			continue;
-+		goto found_unlock;
-+	}
-+
-+not_found_unlock:
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	return 0;
-+found_unlock:
-+	get_page(page);
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	private->page = page;
-+	private->addr = addr;
-+	return 1;
-+}
-+
-+static struct mm_walk_ops ksm_next_page_ops = {
-+	.pmd_entry = ksm_next_page_pmd_entry,
-+};
-+
- static struct rmap_item *scan_get_next_rmap_item(struct page **page)
- {
- 	struct mm_struct *mm;
-@@ -2293,29 +2377,40 @@ next_mm:
- 			ksm_scan.address = vma->vm_end;
- 
- 		while (ksm_scan.address < vma->vm_end) {
-+			struct ksm_next_page_arg ksm_next_page_arg;
-+			struct page *tmp_page = NULL;
-+			int found;
-+
- 			if (ksm_test_exit(mm))
- 				break;
--			*page = follow_page(vma, ksm_scan.address, FOLL_GET);
--			if (IS_ERR_OR_NULL(*page)) {
--				ksm_scan.address += PAGE_SIZE;
--				cond_resched();
--				continue;
-+
-+			found = walk_page_range_vma(vma, ksm_scan.address,
-+						    vma->vm_end,
-+						    &ksm_next_page_ops,
-+						    &ksm_next_page_arg);
-+
-+			if (found > 0) {
-+				tmp_page = ksm_next_page_arg.page;
-+				ksm_scan.address = ksm_next_page_arg.addr;
-+			} else {
-+				VM_WARN_ON_ONCE(found < 0);
-+				ksm_scan.address = vma->vm_end - PAGE_SIZE;
- 			}
--			if (PageAnon(*page)) {
--				flush_anon_page(vma, *page, ksm_scan.address);
--				flush_dcache_page(*page);
-+			if (tmp_page) {
-+				flush_anon_page(vma, tmp_page, ksm_scan.address);
-+				flush_dcache_page(tmp_page);
- 				rmap_item = get_next_rmap_item(slot,
- 					ksm_scan.rmap_list, ksm_scan.address);
- 				if (rmap_item) {
- 					ksm_scan.rmap_list =
- 							&rmap_item->rmap_list;
- 					ksm_scan.address += PAGE_SIZE;
-+					*page = tmp_page;
- 				} else
--					put_page(*page);
-+					put_page(tmp_page);
- 				mmap_read_unlock(mm);
- 				return rmap_item;
- 			}
--			put_page(*page);
- 			ksm_scan.address += PAGE_SIZE;
- 			cond_resched();
- 		}
+ /**
+  * struct ttm_tt
 
 
 
