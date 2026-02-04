@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gETTMEhng2kFmgMAu9opvQ
-	(envelope-from <stable+bounces-214044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:36 +0100
+	id iGcsILleg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F68E8ECE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EB9E7AFC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C6DA53159BF8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:21:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DE2D30C7926
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCEA421EE2;
-	Wed,  4 Feb 2026 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40B041B360;
+	Wed,  4 Feb 2026 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewaBusPZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4od8URP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F11D421A0F;
-	Wed,  4 Feb 2026 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9779E2C0263;
+	Wed,  4 Feb 2026 14:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218374; cv=none; b=XHNTAkH+EoNOMNfCDRmLYgcAcbF0UsmgWLMlDQHL1U6ZDqkomXmVJbXRH2itTV6bVVs8shQzyq2Eo2Hv5S+Yh7QYgbwogrSPFkyX0vk3lMZJ887awPuS9JuvEu/VKWSyKbSbURGEoMnRLKQkVr8e1x1u1rnf7jvMze/dLzuBD3Y=
+	t=1770216623; cv=none; b=evB/zPGt3Or1bbUTFf/UMvYVpAnLtlYZC3K+LUVnGWdVISvzE+pkd6AVTcUkWrJv31FubkAl9WkFuheHQxlvuz6Vchm/poIGnXrkw3FZhKkZbXaSE9FIYFrwp9YFTXxdUKCuS4+VJ3NJjJvS2EyQRAP99Y2y6K3apnNVwK9NAz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218374; c=relaxed/simple;
-	bh=lE3RDGumcQmjlfBAreFq7SFaWem8mNBhttOuThz6Cds=;
+	s=arc-20240116; t=1770216623; c=relaxed/simple;
+	bh=+D9acfTw+UOarThg/eAiE++XkUMgujvfLHtbPc0J9t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gD23oWIVQjCKXpB3McH0zuM6KaM1FACYiukI4gkhAbi1EawDbqVSAQojm0uVAl0PlKwMyZ4CRkSJxhtwWdokIoU7A+u0W1SmGSDlfOPVYDEggIgKeGmP3BqnWCRPl8PsyyhtMizYl+enmlEILkscUhbkRcIUopQOWIX+SBkjDDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewaBusPZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB33C4CEF7;
-	Wed,  4 Feb 2026 15:19:33 +0000 (UTC)
+	 MIME-Version; b=UyQtUMSLRMcJSPKSdIs6fh2HdKUNjuhJKq1RQVMIb0QTHoGg2WA3xi4Y0/vWwxPaYr2HuqrhaxqxkDv97Hkj3/dIn6HWIZQPu7cNu124q48xG5cbGyf9AL6hik/F3QzD/v3RmDgXuzsfasKuR5cnvyLhntWLzZkKD89HrWWaGns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4od8URP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F2FC4CEF7;
+	Wed,  4 Feb 2026 14:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218374;
-	bh=lE3RDGumcQmjlfBAreFq7SFaWem8mNBhttOuThz6Cds=;
+	s=korg; t=1770216623;
+	bh=+D9acfTw+UOarThg/eAiE++XkUMgujvfLHtbPc0J9t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewaBusPZodwu289Jg8FLsOvcG2NYGHX0PN0RHoOxIg9Xmx+cTemWzjcwMIbgr/Coq
-	 QlVls0wocwSkoXaKSAmdESSKWj3kesi7WJ38M2ntaw/NGXq1nJdH3Yzj94VBbJODXo
-	 kLyFzb8tcr1Oc2N4Yiu6vVViwDflhl/3Wy3hi1oE=
+	b=u4od8URPkc56GYLxf5dgMC0hVR5VUHrrCq9KN4hC/sAkbrQaPOhikltXK1X/+hYnD
+	 gXY/HyAAcqYi21s+TZZfG9HcIo/DNcvZvKDKDKRQBgytG0qP42tn5fcrRpzeXgPR9g
+	 SJLPLG9t4y4SoFtpYbzIVvzmiPzuRepvvlRgkivI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/72] net: bcmasp: fix early exit leak with fixed phy
+Subject: [PATCH 5.10 144/161] mei: trace: treat reg parameter as string
 Date: Wed,  4 Feb 2026 15:40:07 +0100
-Message-ID: <20260204143845.769182905@linuxfoundation.org>
+Message-ID: <20260204143856.929031980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,79 +68,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214044-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213524-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 64F68E8ECE
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D8EB9E7AFC
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 6de4436bf369e1444606445e4cd5df5bcfc74b48 ]
+[ Upstream commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 ]
 
-We are not deregistering the fixed phy link when hitting the early
-exit condition. Add the correct early exit sequence.
+The commit
+afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
+forbids to emit event with a plain char* without a wrapper.
 
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260122194001.1098859-1-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The reg parameter always passed as static string and wrapper
+is not strictly required, contrary to dev parameter.
+Use the string wrapper anyway to check sanity of the reg parameters,
+store it value independently and prevent internal kernel data leaks.
+
+Since some code refactoring has taken place, explicit backporting may
+be needed for kernels older than 6.10.
+
+Cc: stable@vger.kernel.org  # v6.11+
+Fixes: a0a927d06d79 ("mei: me: add io register tracing")
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted single-argument __assign_str() calls to two-argument form ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/misc/mei/mei-trace.h |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index f0647286c68b2..3127f335e0b7b 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -1272,7 +1272,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
- 		netdev_err(intf->ndev, "invalid PHY mode: %s for port %d\n",
- 			   phy_modes(intf->phy_interface), intf->port);
- 		ret = -EINVAL;
--		goto err_free_netdev;
-+		goto err_deregister_fixed_link;
- 	}
+--- a/drivers/misc/mei/mei-trace.h
++++ b/drivers/misc/mei/mei-trace.h
+@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev))
+-		__entry->reg  = reg;
++		__assign_str(reg, reg)
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
  
- 	ret = of_get_ethdev_address(ndev_dn, ndev);
-@@ -1295,6 +1295,9 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ TRACE_EVENT(mei_reg_write,
+@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev))
+-		__entry->reg = reg;
++		__assign_str(reg, reg)
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] write %s[%#x] = %#x",
+-		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
+ );
  
- 	return intf;
+ TRACE_EVENT(mei_pci_cfg_read,
+@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev))
+-		__entry->reg  = reg;
++		__assign_str(reg, reg)
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
  
-+err_deregister_fixed_link:
-+	if (of_phy_is_fixed_link(ndev_dn))
-+		of_phy_deregister_fixed_link(ndev_dn);
- err_free_netdev:
- 	free_netdev(ndev);
- err:
--- 
-2.51.0
-
+ #endif /* _MEI_TRACE_H_ */
 
 
 
