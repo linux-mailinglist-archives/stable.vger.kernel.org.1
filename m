@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-213936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IPojJhBmg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:24 +0100
+	id mHfZKuJcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FF5E8BA6
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32793E778E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA0DD30195EB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90ADB3040232
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4848D42315C;
-	Wed,  4 Feb 2026 15:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED591274B39;
+	Wed,  4 Feb 2026 14:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2X5Fhp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMKp72SY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B65D421F1C;
-	Wed,  4 Feb 2026 15:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2116221F17;
+	Wed,  4 Feb 2026 14:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218011; cv=none; b=rLl706uo82RIMpEA+FlPAo+BTDATfp/TAQrMks1EDBGBpd92NZfQQYqygA0YRStC+H0yEOE127Jmf3TMaMoWEc9nqFcp1xQl0Ek4GFx5uu1H5H53rWP/hAC2Jpr2c7ztYGGPWLI9ZYyh8ms0V0IxBRvlGsNF5gHnpdQ7iiFnNk4=
+	t=1770216470; cv=none; b=NDjuH1WflLRk80ZKgDHCKbwxO2W4dvz6DuMNtaGbSE6bUezQiwIhCPdX9kh6va9GcfK/6KpOciloLbPsSL0lwb5hEpD95eEs8GSH80RsQ6bzeuamnwX+PUKkjiIwqdEqWxgANw49jICspSxZDKgdhgopvrnlrWp/afGWvvj87JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218011; c=relaxed/simple;
-	bh=NkRzTTgp5749KvN6w9LKEQNOxVAjmHxHrzZvL7pkvz8=;
+	s=arc-20240116; t=1770216470; c=relaxed/simple;
+	bh=gERMgZCqStClJnMP25wmHuKB88fZOCItuknWK5Pq1hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ogfcLfX1kvKO65/GOJbtptPPL0hDbTanlFqnpRNaOzwjZXrMCZfSt3qLD/aUmYXuVHDJPuKEnrTGr1BcBUegnwSeRzqzHcaGqVNc2QccM0ifZ8wpMWLhYegmbG0kCqocZ8ekA4+AF5oXuHOOH8FGkKb9uwz2W1Lq/3s3rHC32I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2X5Fhp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73344C4CEF7;
-	Wed,  4 Feb 2026 15:13:30 +0000 (UTC)
+	 MIME-Version; b=Tv0R5U1QECgVQ/IdKlstK/JNO20WmzFbtdjgAj8nkTqfUEGJZz1KvXiH+UHk+MW0lHc1eE3JePKHXT3hQKYjV8MasJGMJp3A8jzEmQsZhGd4iM2k+gBpYfDrxmxMEhA3+IResjCUc3yunFVRzusB5d1b8YRzNW42dEK6YLITdQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMKp72SY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358FEC4CEF7;
+	Wed,  4 Feb 2026 14:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218010;
-	bh=NkRzTTgp5749KvN6w9LKEQNOxVAjmHxHrzZvL7pkvz8=;
+	s=korg; t=1770216470;
+	bh=gERMgZCqStClJnMP25wmHuKB88fZOCItuknWK5Pq1hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2X5Fhp8+u7fm7OIFT7oOof8WqiEPgWwp6JRFZjjYmmeUSHLpyiwWETiM/3LOTdgn
-	 mkWeXz6grZZYp5QGvXZ2X3lT7dOLRB2K9FAtwFPgVmg+k+FEJZA9Hr8MNA7yDVlowm
-	 yRnWK92bnoTq1W+Ru7UbVgPSGj84eOrhOv8X7Fok=
+	b=IMKp72SYBeQ0JSifanBtfQBcBdHr89kGi7GgnGdKDMy6kRoyZbWYoYBHlCcNjl9VL
+	 zYZ+9jbcRtUQluvH1yOCJ4NN1yuX5MWS+tLJ8+V6UDg0zwCWZf5lqigoQIg89ArJoi
+	 nGOJeKnPk/E/2OeH0YFJCcDxG8g7jYZ5PoN5xwBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.1 185/280] bpf: Reject narrower access to pointer ctx fields
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 096/161] wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
 Date: Wed,  4 Feb 2026 15:39:19 +0100
-Message-ID: <20260204143916.269224948@linuxfoundation.org>
+Message-ID: <20260204143855.197413139@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,195 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213936-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,suse.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213477-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,0ef84a7bdf5301d4cbec];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 37FF5E8BA6
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 32793E778E
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit e09299225d5ba3916c91ef70565f7d2187e4cca0 upstream.
+commit 2120f3a3738a65730c81bf10447b1ff776078915 upstream.
 
-The following BPF program, simplified from a syzkaller repro, causes a
-kernel warning:
+The "i" iterator variable is used to count two different things but
+unfortunately we can't store two different numbers in the same variable.
+Use "i" for the outside loop and "j" for the inside loop.
 
-    r0 = *(u8 *)(r1 + 169);
-    exit;
-
-With pointer field sk being at offset 168 in __sk_buff. This access is
-detected as a narrower read in bpf_skb_is_valid_access because it
-doesn't match offsetof(struct __sk_buff, sk). It is therefore allowed
-and later proceeds to bpf_convert_ctx_access. Note that for the
-"is_narrower_load" case in the convert_ctx_accesses(), the insn->off
-is aligned, so the cnt may not be 0 because it matches the
-offsetof(struct __sk_buff, sk) in the bpf_convert_ctx_access. However,
-the target_size stays 0 and the verifier errors with a kernel warning:
-
-    verifier bug: error during ctx access conversion(1)
-
-This patch fixes that to return a proper "invalid bpf_context access
-off=X size=Y" error on the load instruction.
-
-The same issue affects multiple other fields in context structures that
-allow narrow access. Some other non-affected fields (for sk_msg,
-sk_lookup, and sockopt) were also changed to use bpf_ctx_range_ptr for
-consistency.
-
-Note this syzkaller crash was reported in the "Closes" link below, which
-used to be about a different bug, fixed in
-commit fce7bd8e385a ("bpf/verifier: Handle BPF_LOAD_ACQ instructions
-in insn_def_regno()"). Because syzbot somehow confused the two bugs,
-the new crash and repro didn't get reported to the mailing list.
-
-Fixes: f96da09473b52 ("bpf: simplify narrower ctx access")
-Fixes: 0df1a55afa832 ("bpf: Warn on internal verifier errors")
-Reported-by: syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0ef84a7bdf5301d4cbec
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://patch.msgid.link/3b8dcee67ff4296903351a974ddd9c4dca768b64.1753194596.git.paul.chaignon@gmail.com
-[shung-hsi.yu: offset(struct bpf_sock_ops, skb_hwtstamp) case was
-dropped becasuse it was only added in v6.2 with commit 9bb053490f1a
-("bpf: Add hwtstamp field for the sockops prog")]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: d219b7eb3792 ("mwifiex: handle BT coex event to adjust Rx BA window size")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/aWAM2MGUWRP0zWUd@stanley.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/cgroup.c |    8 ++++----
- net/core/filter.c   |   18 +++++++++---------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -2384,22 +2384,22 @@ static bool cg_sockopt_is_valid_access(i
- 	}
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -839,7 +839,7 @@ void mwifiex_update_rxreor_flags(struct
+ static void mwifiex_update_ampdu_rxwinsize(struct mwifiex_adapter *adapter,
+ 					   bool coex_flag)
+ {
+-	u8 i;
++	u8 i, j;
+ 	u32 rx_win_size;
+ 	struct mwifiex_private *priv;
  
- 	switch (off) {
--	case offsetof(struct bpf_sockopt, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, sk):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
- 		break;
--	case offsetof(struct bpf_sockopt, optval):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, optval):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_PACKET;
- 		break;
--	case offsetof(struct bpf_sockopt, optval_end):
-+	case bpf_ctx_range_ptr(struct bpf_sockopt, optval_end):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_PACKET_END;
- 		break;
--	case offsetof(struct bpf_sockopt, retval):
-+	case bpf_ctx_range(struct bpf_sockopt, retval):
- 		if (size != size_default)
- 			return false;
- 		return prog->expected_attach_type == BPF_CGROUP_GETSOCKOPT;
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -8522,7 +8522,7 @@ static bool bpf_skb_is_valid_access(int
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct __sk_buff, sk):
-+	case bpf_ctx_range_ptr(struct __sk_buff, sk):
- 		if (type == BPF_WRITE || size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCK_COMMON_OR_NULL;
-@@ -9106,7 +9106,7 @@ static bool sock_addr_is_valid_access(in
- 				return false;
+@@ -879,8 +879,8 @@ static void mwifiex_update_ampdu_rxwinsi
+ 		if (rx_win_size != priv->add_ba_param.rx_win_size) {
+ 			if (!priv->media_connected)
+ 				continue;
+-			for (i = 0; i < MAX_NUM_TID; i++)
+-				mwifiex_11n_delba(priv, i);
++			for (j = 0; j < MAX_NUM_TID; j++)
++				mwifiex_11n_delba(priv, j);
  		}
- 		break;
--	case offsetof(struct bpf_sock_addr, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sock_addr, sk):
- 		if (type != BPF_READ)
- 			return false;
- 		if (size != sizeof(__u64))
-@@ -9160,17 +9160,17 @@ static bool sock_ops_is_valid_access(int
- 			if (size != sizeof(__u64))
- 				return false;
- 			break;
--		case offsetof(struct bpf_sock_ops, sk):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, sk):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_SOCKET_OR_NULL;
- 			break;
--		case offsetof(struct bpf_sock_ops, skb_data):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_PACKET;
- 			break;
--		case offsetof(struct bpf_sock_ops, skb_data_end):
-+		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data_end):
- 			if (size != sizeof(__u64))
- 				return false;
- 			info->reg_type = PTR_TO_PACKET_END;
-@@ -9245,17 +9245,17 @@ static bool sk_msg_is_valid_access(int o
- 		return false;
- 
- 	switch (off) {
--	case offsetof(struct sk_msg_md, data):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, data):
- 		info->reg_type = PTR_TO_PACKET;
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct sk_msg_md, data_end):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, data_end):
- 		info->reg_type = PTR_TO_PACKET_END;
- 		if (size != sizeof(__u64))
- 			return false;
- 		break;
--	case offsetof(struct sk_msg_md, sk):
-+	case bpf_ctx_range_ptr(struct sk_msg_md, sk):
- 		if (size != sizeof(__u64))
- 			return false;
- 		info->reg_type = PTR_TO_SOCKET;
-@@ -11444,7 +11444,7 @@ static bool sk_lookup_is_valid_access(in
- 		return false;
- 
- 	switch (off) {
--	case offsetof(struct bpf_sk_lookup, sk):
-+	case bpf_ctx_range_ptr(struct bpf_sk_lookup, sk):
- 		info->reg_type = PTR_TO_SOCKET_OR_NULL;
- 		return size == sizeof(__u64);
- 
+ 	}
+ }
 
 
 
