@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214318-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPJjFzJog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:30 +0100
+	id oJG5I7dug2lNmwMAu9opvQ
+	(envelope-from <stable+bounces-214318-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA7DE90DB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F4EE9E55
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6F0F3058B93
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B7F431C41F5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492562D8773;
-	Wed,  4 Feb 2026 15:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706202D8773;
+	Wed,  4 Feb 2026 15:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6m//PY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHuqGwHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBAE2D8763;
-	Wed,  4 Feb 2026 15:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349DE19E96D;
+	Wed,  4 Feb 2026 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218859; cv=none; b=Rf18S9/xxMw7W5xZ9Jm63swRXpTykbd6muzP0JKXN7w69jzZ27ubf5844HjIrgxwwH7RyaCBs8KxD+1ZlSDHWbeW7CJ5Km3WwDeGOersGDJY6rf7Nnnn0x3obAj+LMo8P/dNBwssr3PRPs/0gAuMjnOGUNYDaxj8qzS4V4FtQ8E=
+	t=1770219290; cv=none; b=JxjtwzcbvTj0A9mLRYIiiVEivHW95nE5IHF3kr9OzGTUfdEP6vIvISDb+5otal6pkk+THxfqJhunrEZ0Fa7GkwR9ZeNTo9ma2lZVhRDdnqdrACo85DgJeKlhrx1mnmncSFd5ODd+8BUVI7/P497z2TSIRPq0EtNs6q4eP6zF1Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218859; c=relaxed/simple;
-	bh=2l5GvwXLTFMNnbxdbfRjXiMHoQtCP5+E6OEJ7WocKwA=;
+	s=arc-20240116; t=1770219290; c=relaxed/simple;
+	bh=MoCDGd7eipsPWD738KHhSv+0WAx9HZV2KYGIWe0SjEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dta//uTDiXa0npzrOHz/Vi3/baW2JYU9Y42xZMTBW2DKfZ9kdDnAsderxU5kRzbdF3renMGZUiU0BfKNaOr2ZIfOWRW6NRsBHKRDVCx8qjygrJGv1J7QkfwTNMP/6ntm3Pj5+494+vR8wTA7twd0gT2HrN3jXeMyJaZ6Xl1OyI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6m//PY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7070BC4CEF7;
-	Wed,  4 Feb 2026 15:27:38 +0000 (UTC)
+	 MIME-Version; b=LDlyZuTbHKD84qKvFHNcIZa1qpIoG/02FD1aeL64yl8W0yqHWtVK8tGiw+hNZIa7EsqJuMtaLatbKvYY+UPDirujMTdt8feZcjtuIB1oIVlnW5SD1eFhYiFGKZPMdS5FisJwivspEuioie5KgwZJoMYGtwSlp8CBjvvGdtHBgPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHuqGwHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F18AC4CEF7;
+	Wed,  4 Feb 2026 15:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218858;
-	bh=2l5GvwXLTFMNnbxdbfRjXiMHoQtCP5+E6OEJ7WocKwA=;
+	s=korg; t=1770219289;
+	bh=MoCDGd7eipsPWD738KHhSv+0WAx9HZV2KYGIWe0SjEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6m//PY2iqPbKV4Ef4O321ecEvfOU1pEVrp7Q0eY06/lc+CtwP3Ep9rsljlK2+/MK
-	 cDCl3QrcHWhKa7YaOuRNKxoNPf36OiV9mToFpQkNvLcy+MrpbtnbeQJvu6TXCksmjr
-	 zVenpkfLp/hWfqg4vhkn9gqzjJgVjYemN3z2KRc8=
+	b=XHuqGwHveRtm/Dz1reAShFam/EeoGCrWkqH8mcPxe9fnxyKyaWAgK2ut2F/1MUBzI
+	 I+k+LbC3yC4i4rK8CYeZuyKlmSkuQszWhZIDpTJNxk/DPbJMBO2CkV5RcvdGI4dZlT
+	 mEsMetEY9Ln1ZFY42jS/sbrsZhZxoIAt4JXJqBUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 81/87] perf: sched: Fix perf crash with new is_user_task() helper
+	Tamir Duberstein <tamird@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 097/122] scripts: generate_rust_analyzer: compile sysroot with correct edition
 Date: Wed,  4 Feb 2026 15:41:19 +0100
-Message-ID: <20260204143849.839718611@linuxfoundation.org>
+Message-ID: <20260204143855.340114444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,143 +68,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214188-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214318-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: BCA7DE90DB
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 23F4EE9E55
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Tamir Duberstein <tamird@kernel.org>
 
-[ Upstream commit 76ed27608f7dd235b727ebbb12163438c2fbb617 ]
+commit ac3c50b9a24e9ebeb585679078d6c47922034bb6 upstream.
 
-In order to do a user space stacktrace the current task needs to be a user
-task that has executed in user space. It use to be possible to test if a
-task is a user task or not by simply checking the task_struct mm field. If
-it was non NULL, it was a user task and if not it was a kernel task.
+Use `core_edition` for all sysroot crates rather than just core as all
+were updated to edition 2024 in Rust 1.87.
 
-But things have changed over time, and some kernel tasks now have their
-own mm field.
-
-An idea was made to instead test PF_KTHREAD and two functions were used to
-wrap this check in case it became more complex to test if a task was a
-user task or not[1]. But this was rejected and the C code simply checked
-the PF_KTHREAD directly.
-
-It was later found that not all kernel threads set PF_KTHREAD. The io-uring
-helpers instead set PF_USER_WORKER and this needed to be added as well.
-
-But checking the flags is still not enough. There's a very small window
-when a task exits that it frees its mm field and it is set back to NULL.
-If perf were to trigger at this moment, the flags test would say its a
-user space task but when perf would read the mm field it would crash with
-at NULL pointer dereference.
-
-Now there are flags that can be used to test if a task is exiting, but
-they are set in areas that perf may still want to profile the user space
-task (to see where it exited). The only real test is to check both the
-flags and the mm field.
-
-Instead of making this modification in every location, create a new
-is_user_task() helper function that does all the tests needed to know if
-it is safe to read the user space memory or not.
-
-[1] https://lore.kernel.org/all/20250425204120.639530125@goodmis.org/
-
-Fixes: 90942f9fac05 ("perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL")
-Closes: https://lore.kernel.org/all/0d877e6f-41a7-4724-875d-0b0a27b8a545@roeck-us.net/
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: f4daa80d6be7 ("rust: compile libcore with edition 2024 for 1.87+")
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260129102821.46484722@gandalf.local.home
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20260116-rust-analyzer-sysroot-v2-1-094aedc33208@kernel.org
+[ Added `>`s to make the quote a single block. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched.h     |    5 +++++
- kernel/events/callchain.c |    2 +-
- kernel/events/core.c      |    6 +++---
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ scripts/generate_rust_analyzer.py |   29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1739,6 +1739,11 @@ static __always_inline bool is_percpu_th
- #endif
- }
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -61,7 +61,6 @@ def generate_crates(srctree, objtree, sy
+         display_name,
+         deps,
+         cfg=[],
+-        edition="2021",
+     ):
+         append_crate(
+             display_name,
+@@ -69,13 +68,37 @@ def generate_crates(srctree, objtree, sy
+             deps,
+             cfg,
+             is_workspace_member=False,
+-            edition=edition,
++            # Miguel Ojeda writes:
++            #
++            # > ... in principle even the sysroot crates may have different
++            # > editions.
++            # >
++            # > For instance, in the move to 2024, it seems all happened at once
++            # > in 1.87.0 in these upstream commits:
++            # >
++            # >     0e071c2c6a58 ("Migrate core to Rust 2024")
++            # >     f505d4e8e380 ("Migrate alloc to Rust 2024")
++            # >     0b2489c226c3 ("Migrate proc_macro to Rust 2024")
++            # >     993359e70112 ("Migrate std to Rust 2024")
++            # >
++            # > But in the previous move to 2021, `std` moved in 1.59.0, while
++            # > the others in 1.60.0:
++            # >
++            # >     b656384d8398 ("Update stdlib to the 2021 edition")
++            # >     06a1c14d52a8 ("Switch all libraries to the 2021 edition")
++            #
++            # Link: https://lore.kernel.org/all/CANiq72kd9bHdKaAm=8xCUhSHMy2csyVed69bOc4dXyFAW4sfuw@mail.gmail.com/
++            #
++            # At the time of writing all rust versions we support build the
++            # sysroot crates with the same edition. We may need to relax this
++            # assumption if future edition moves span multiple rust versions.
++            edition=core_edition,
+         )
  
-+static __always_inline bool is_user_task(struct task_struct *task)
-+{
-+	return task->mm && !(task->flags & (PF_KTHREAD | PF_USER_WORKER));
-+}
-+
- /* Per-process atomic flags. */
- #define PFA_NO_NEW_PRIVS		0	/* May not gain new privileges. */
- #define PFA_SPREAD_PAGE			1	/* Spread page cache over cpuset */
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -245,7 +245,7 @@ get_perf_callchain(struct pt_regs *regs,
- 
- 	if (user && !crosstask) {
- 		if (!user_mode(regs)) {
--			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
-+			if (!is_user_task(current))
- 				goto exit_put;
- 			regs = task_pt_regs(current);
- 		}
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7095,7 +7095,7 @@ static void perf_sample_regs_user(struct
- 	if (user_mode(regs)) {
- 		regs_user->abi = perf_reg_abi(current);
- 		regs_user->regs = regs;
--	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
-+	} else if (is_user_task(current)) {
- 		perf_get_regs_user(regs_user, regs);
- 	} else {
- 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
-@@ -7735,7 +7735,7 @@ static u64 perf_virt_to_phys(u64 virt)
- 		 * Try IRQ-safe get_user_page_fast_only first.
- 		 * If failed, leave phys_addr as 0.
- 		 */
--		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
-+		if (is_user_task(current)) {
- 			struct page *p;
- 
- 			pagefault_disable();
-@@ -7848,7 +7848,7 @@ perf_callchain(struct perf_event *event,
- {
- 	bool kernel = !event->attr.exclude_callchain_kernel;
- 	bool user   = !event->attr.exclude_callchain_user &&
--		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
-+		is_user_task(current);
- 	/* Disallow cross-task user callchains. */
- 	bool crosstask = event->ctx->task && event->ctx->task != current;
- 	const u32 max_stack = event->attr.sample_max_stack;
+     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
+     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
+     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
+-    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
++    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
+     append_sysroot_crate("alloc", ["core"])
+     append_sysroot_crate("std", ["alloc", "core"])
+     append_sysroot_crate("proc_macro", ["core", "std"])
 
 
 
