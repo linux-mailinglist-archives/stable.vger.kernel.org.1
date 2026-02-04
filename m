@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DDhN1tbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:43 +0100
+	id AKnaEipig2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F50E74B7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8362E8268
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C38113011F23
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAB80301C88F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996F3410D10;
-	Wed,  4 Feb 2026 14:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65C23D413D;
+	Wed,  4 Feb 2026 14:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bm/QEqgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgKgCbDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D598280A3B;
-	Wed,  4 Feb 2026 14:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B18627F749;
+	Wed,  4 Feb 2026 14:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216234; cv=none; b=M0mT/rhfs7UwhkLqQI1EVtyrTtC2QY+f5w+LbiUyQaB8eBFvAZrqONFafISs+apYlybueNwJfdfAO4Fj3PUUWkKF+XBIKKofX4VyWKO1yv3c23zsOaUa/lDXs53ALKtGiNU565kNXkJSYAdkss9+zaP3A2frJGQFvvxZUia7C00=
+	t=1770216809; cv=none; b=bD1VzZr7QTkLOG6X9Lx3xfWHGnAjvORSSREIAEiP3Hgwfg5k3At3Az36J9oCBjbbb3cxyNtpqSC/zAp+gPz3cLiHHRd7LTLy4QVC7t7xQgihhkAnW/KAZXKuDiB3pMmlW8ipMcPZCyLZROIBuBcyHDbSiIvWuG+txnfNeIAsUCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216234; c=relaxed/simple;
-	bh=6UJp3PJhuu5LsX2SZQCAcmlvVyNWuXhMU9PhzL6Ro4k=;
+	s=arc-20240116; t=1770216809; c=relaxed/simple;
+	bh=VsJ1PxU+c6a4ksC/+U1y4JWeFKBfIZXcnYxGy12Lv+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tj5MZFDykAFBT0edIjXzSX1LJWirDKW8WZJ0P2BdXRGXqLu3/jwT9wcehgZyXunjpYd0zNNpc3IjY3Qv7WnBywSTSoPlWk49i+F2Emq04FtWZlo484pXV6/wiqxKNf7XPEMpMdZ2l4cc2bZ5umtkZVMzzPdD9aLdnUzw4U37NJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bm/QEqgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4D9C4CEF7;
-	Wed,  4 Feb 2026 14:43:53 +0000 (UTC)
+	 MIME-Version; b=EYCPEocF7RdW+n1Yz7GfxpKUxS4VT6RCoS/eDH4vMNtLNVZvDs0x/CxTfmQ9CvnW3pD/ukeTsGLt6caFFrC3t3DOGYLXkJwKXOg3DTI6/szgb2JcXO3EIrr2HV6Q+BttGYnUIw717vRtgAsU/cLSNQd51tcxEbvvQioIZszCIC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgKgCbDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC7BC4CEF7;
+	Wed,  4 Feb 2026 14:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216234;
-	bh=6UJp3PJhuu5LsX2SZQCAcmlvVyNWuXhMU9PhzL6Ro4k=;
+	s=korg; t=1770216809;
+	bh=VsJ1PxU+c6a4ksC/+U1y4JWeFKBfIZXcnYxGy12Lv+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bm/QEqgnYkocqIUMPJp1eIr1sl/TNgGVgIyIZ2/bQXGFWNzvldhggOhjj9/yO7a7D
-	 zDkBrqv2TnnaL3C+qKSaRDSWsFeFksiVCOVomU4roqwJDP6yLm6XXpXh3rWt3plNo+
-	 B4oR+Rd0CFbVCv+Gp06NaxDPwsBnJgNBnI+9A5o8=
+	b=WgKgCbDZVVmKnEh15LEzcU0EFR4KsyE7Bezwa/1P4q5+Dimhy561AQDcr1T3fpKD7
+	 jUvrMWGBISJ1NgM7oZBWwgTXOnpVFiXOLRxAGXA9ilteMt3lZC467I1HWH5CoYK3SL
+	 oiLxrHbgIhuIoA8dissTdcPz50KTSGnX8arBo+Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Beekman <kernel@jbeekman.nl>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 006/161] macvlan: Add nodst option to macvlan type source
+	Xiaochen Shen <shenxiaochen@open-hieco.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Reinette Chatre <reinette.chatre@intel.com>
+Subject: [PATCH 5.15 038/206] x86/resctrl: Add missing resctrl initialization for Hygon
 Date: Wed,  4 Feb 2026 15:37:49 +0100
-Message-ID: <20260204143851.991798543@linuxfoundation.org>
+Message-ID: <20260204143859.584350952@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213407-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213580-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,114 +91,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,jbeekman.nl:email]
-X-Rspamd-Queue-Id: 43F50E74B7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:email,open-hieco.net:email,intel.com:email]
+X-Rspamd-Queue-Id: A8362E8268
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jethro Beekman <kernel@jbeekman.nl>
+From: Xiaochen Shen <shenxiaochen@open-hieco.net>
 
-[ Upstream commit 427f0c8c194b22edcafef1b0a42995ddc5c2227d ]
+commit 6ee98aabdc700b5705e4f1833e2edc82a826b53b upstream.
 
-The default behavior for source MACVLAN is to duplicate packets to
-appropriate type source devices, and then do the normal destination MACVLAN
-flow. This patch adds an option to skip destination MACVLAN processing if
-any matching source MACVLAN device has the option set.
+Hygon CPUs supporting Platform QoS features currently undergo partial resctrl
+initialization through resctrl_cpu_detect() in the Hygon BSP init helper and
+AMD/Hygon common initialization code. However, several critical data
+structures remain uninitialized for Hygon CPUs in the following paths:
 
-This allows setting up a "catch all" device for source MACVLAN: create one
-or more devices with type source nodst, and one device with e.g. type vepa,
-and incoming traffic will be received on exactly one device.
+ - get_mem_config()-> __rdt_get_mem_config_amd():
+     rdt_resource::membw,alloc_capable
+     hw_res::num_closid
 
-v2: netdev wants non-standard line length
+ - rdt_init_res_defs()->rdt_init_res_defs_amd():
+     rdt_resource::cache
+     hw_res::msr_base,msr_update
 
-Signed-off-by: Jethro Beekman <kernel@jbeekman.nl>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7470a7a63dc1 ("macvlan: fix possible UAF in macvlan_forward_source()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing AMD/Hygon common initialization to ensure proper Platform QoS
+functionality on Hygon CPUs.
+
+Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
+Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251209062650.1536952-2-shenxiaochen@open-hieco.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/macvlan.c        | 19 ++++++++++++++-----
- include/uapi/linux/if_link.h |  1 +
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/resctrl/core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 9c77e6ab2b307..9a6d31cdc4ce6 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -421,18 +421,24 @@ static void macvlan_forward_source_one(struct sk_buff *skb,
- 	macvlan_count_rx(vlan, len, ret == NET_RX_SUCCESS, false);
- }
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -769,7 +769,8 @@ static __init bool get_mem_config(void)
  
--static void macvlan_forward_source(struct sk_buff *skb,
-+static bool macvlan_forward_source(struct sk_buff *skb,
- 				   struct macvlan_port *port,
- 				   const unsigned char *addr)
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
+ 		return __get_mem_config_intel(&hw_res->r_resctrl);
+-	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
++	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
+ 		return __rdt_get_mem_config_amd(&hw_res->r_resctrl);
+ 
+ 	return false;
+@@ -904,7 +905,8 @@ static __init void rdt_init_res_defs(voi
  {
- 	struct macvlan_source_entry *entry;
- 	u32 idx = macvlan_eth_hash(addr);
- 	struct hlist_head *h = &port->vlan_source_hash[idx];
-+	bool consume = false;
- 
- 	hlist_for_each_entry_rcu(entry, h, hlist) {
--		if (ether_addr_equal_64bits(entry->addr, addr))
-+		if (ether_addr_equal_64bits(entry->addr, addr)) {
-+			if (entry->vlan->flags & MACVLAN_FLAG_NODST)
-+				consume = true;
- 			macvlan_forward_source_one(skb, entry->vlan);
-+		}
- 	}
-+
-+	return consume;
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
+ 		rdt_init_res_defs_intel();
+-	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
++	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
+ 		rdt_init_res_defs_amd();
  }
  
- /* called under rcu_read_lock() from netif_receive_skb */
-@@ -461,7 +467,8 @@ static rx_handler_result_t macvlan_handle_frame(struct sk_buff **pskb)
- 			return RX_HANDLER_CONSUMED;
- 		*pskb = skb;
- 		eth = eth_hdr(skb);
--		macvlan_forward_source(skb, port, eth->h_source);
-+		if (macvlan_forward_source(skb, port, eth->h_source))
-+			return RX_HANDLER_CONSUMED;
- 		src = macvlan_hash_lookup(port, eth->h_source);
- 		if (src && src->mode != MACVLAN_MODE_VEPA &&
- 		    src->mode != MACVLAN_MODE_BRIDGE) {
-@@ -480,7 +487,8 @@ static rx_handler_result_t macvlan_handle_frame(struct sk_buff **pskb)
- 		return RX_HANDLER_PASS;
- 	}
- 
--	macvlan_forward_source(skb, port, eth->h_source);
-+	if (macvlan_forward_source(skb, port, eth->h_source))
-+		return RX_HANDLER_CONSUMED;
- 	if (macvlan_passthru(port))
- 		vlan = list_first_or_null_rcu(&port->vlans,
- 					      struct macvlan_dev, list);
-@@ -1283,7 +1291,8 @@ static int macvlan_validate(struct nlattr *tb[], struct nlattr *data[],
- 		return 0;
- 
- 	if (data[IFLA_MACVLAN_FLAGS] &&
--	    nla_get_u16(data[IFLA_MACVLAN_FLAGS]) & ~MACVLAN_FLAG_NOPROMISC)
-+	    nla_get_u16(data[IFLA_MACVLAN_FLAGS]) & ~(MACVLAN_FLAG_NOPROMISC |
-+						      MACVLAN_FLAG_NODST))
- 		return -EINVAL;
- 
- 	if (data[IFLA_MACVLAN_MODE]) {
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index 9334f2128bb2e..33c3b684f6de4 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -609,6 +609,7 @@ enum macvlan_macaddr_mode {
- };
- 
- #define MACVLAN_FLAG_NOPROMISC	1
-+#define MACVLAN_FLAG_NODST	2 /* skip dst macvlan if matching src macvlan */
- 
- /* VRF section */
- enum {
--- 
-2.51.0
-
 
 
 
