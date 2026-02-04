@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIVBBSNjg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:17:55 +0100
+	id 8HRiFYFpg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F50FE83E1
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:17:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B536DE94C1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00C6730D134B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3586B30E76FF
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353414219FD;
-	Wed,  4 Feb 2026 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F594218B4;
+	Wed,  4 Feb 2026 15:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDi/OyhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bi3hRy4h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE6E4219F9;
-	Wed,  4 Feb 2026 14:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A9E2C026F;
+	Wed,  4 Feb 2026 15:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216971; cv=none; b=OeGt/Tx6BXhcJU4zYAijrH5ARPli/32M2FHU1j4RJoIQV0yZrdIe56alJ0viC2yfhlT9c3yem6lBtuuHNZn2Ul37E3bkYnefe2iW0DngtiogrP2VNVu/UChah4YmsIjaR46ptPMRsflWW1I5R7CsD0hqQNdm2xEiWQdI64DzSC0=
+	t=1770217865; cv=none; b=laZXsx/j9TOxlhkrTIjhuqIPEJ2c2Emi2zNw0mClOM0TwBpQSaJzGy55oN+8+ipk6E23NclCewoytAa8XUKnEZ/t48UjaidcleIBN/in0ytCPtDnSalT7h0XhPdb2D59Jlu8deVDr+ksBH/qORS1nxb2xxmAgtkPD63ZPTKpvKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216971; c=relaxed/simple;
-	bh=bYrV2WwF39+d2qu5vBRNcT/NV8IAepGuwnwocjpgIls=;
+	s=arc-20240116; t=1770217865; c=relaxed/simple;
+	bh=+AMiyjSY2D0KV6tPwVQyUESI9mB1ew+K6GPAWIqA/qI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlrNwwyCHYvl7IRVRmC0wa/x9rbFpiUXQPTyno4Fv0b8aC6tt7BuF5X4t3sVBNFhMu90svDvmCWqwWuVX7tB3raUs1Pj67Zgx19HWBsL1Jo9jqWOmvGGO2VVYKlL8vSPl7K2gB4DGnCyaAYeuVigiHYzNE4CBadZkMiHj1l3a+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDi/OyhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C43C4CEF7;
-	Wed,  4 Feb 2026 14:56:10 +0000 (UTC)
+	 MIME-Version; b=X4FKET4vz6Ih1txMaV4Yjg3Q4VQdR/+/d2WcBrVOwd/5aIHPU+UXRgkmz7lp+ZLlUKhANFyoQIdSG81++ID579r0r9uR6RO3tTvSwI+d5xcDwqAzLmgKB8UuobLH2OlcSsLUcTA0JqWXgTHze3H3YBZqAtZ6DzQAkqtK0dx0yAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bi3hRy4h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB33C4CEF7;
+	Wed,  4 Feb 2026 15:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216970;
-	bh=bYrV2WwF39+d2qu5vBRNcT/NV8IAepGuwnwocjpgIls=;
+	s=korg; t=1770217865;
+	bh=+AMiyjSY2D0KV6tPwVQyUESI9mB1ew+K6GPAWIqA/qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDi/OyhHVUQv12DPyVjt/C7JWqKkilAFYTZJitgYML9ZMJIgwmUN4lC0oCq8NutVm
-	 l6H7EdERBB1vbIRwd6rlGEgDrotxsdeplP7rMz0W0iHWtUk+POaW+y/F8ZqWP8RrIP
-	 RtOoHBnbl0raQeizpBr82GJANyr8Fnz1R8tEZcls=
+	b=Bi3hRy4hWmNSsarXU46wBseofCIEV8pI8acwSmvy3xADXz0PgG1lPc686vQOwBGnN
+	 APTpgADQFbfDLaBN4oM5rIpq/+EoMRlZxUdKyoyXpeY1FXPrQhBJF+pHzLevDqtoym
+	 2T1vZR0rPrv/mdKdQ3ucpUcNwBBIwGEV5bb73CHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gongqi <550230171hxy@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 085/206] Input: i8042 - add quirks for MECHREVO Wujie 15X Pro
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 142/280] mISDN: annotate data-race around dev->work
 Date: Wed,  4 Feb 2026 15:38:36 +0100
-Message-ID: <20260204143901.272224160@linuxfoundation.org>
+Message-ID: <20260204143914.746772904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +66,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213629-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213893-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 6F50FE83E1
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,googlegroups.com:email]
+X-Rspamd-Queue-Id: B536DE94C1
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gongqi <550230171hxy@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 19a5d9ba6208e9006a2a9d5962aea4d6e427d8ab upstream.
+[ Upstream commit 8175dbf174d487afab81e936a862a8d9b8a1ccb6 ]
 
-The MECHREVO Wujie 15X Pro requires several i8042 quirks to function
-correctly. Specifically, NOMUX, RESET_ALWAYS, NOLOOP, and NOPNP are
-needed to ensure the keyboard and touchpad work reliably.
+dev->work can re read locklessly in mISDN_read()
+and mISDN_poll(). Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Signed-off-by: gongqi <550230171hxy@gmail.com>
-Link: https://patch.msgid.link/20260122155501.376199-3-550230171hxy@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KCSAN: data-race in mISDN_ioctl / mISDN_read
+
+write to 0xffff88812d848280 of 4 bytes by task 10864 on cpu 1:
+  misdn_add_timer drivers/isdn/mISDN/timerdev.c:175 [inline]
+  mISDN_ioctl+0x2fb/0x550 drivers/isdn/mISDN/timerdev.c:233
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:597 [inline]
+  __se_sys_ioctl+0xce/0x140 fs/ioctl.c:583
+  __x64_sys_ioctl+0x43/0x50 fs/ioctl.c:583
+  x64_sys_call+0x14b0/0x3000 arch/x86/include/generated/asm/syscalls_64.h:17
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff88812d848280 of 4 bytes by task 10857 on cpu 0:
+  mISDN_read+0x1f2/0x470 drivers/isdn/mISDN/timerdev.c:112
+  do_loop_readv_writev fs/read_write.c:847 [inline]
+  vfs_readv+0x3fb/0x690 fs/read_write.c:1020
+  do_readv+0xe7/0x210 fs/read_write.c:1080
+  __do_sys_readv fs/read_write.c:1165 [inline]
+  __se_sys_readv fs/read_write.c:1162 [inline]
+  __x64_sys_readv+0x45/0x50 fs/read_write.c:1162
+  x64_sys_call+0x2831/0x3000 arch/x86/include/generated/asm/syscalls_64.h:20
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000000 -> 0x00000001
+
+Fixes: 1b2b03f8e514 ("Add mISDN core files")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260118132528.2349573-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/isdn/mISDN/timerdev.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1168,6 +1168,13 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with nomux + reset + noloop + nopnp. Luckily,
+diff --git a/drivers/isdn/mISDN/timerdev.c b/drivers/isdn/mISDN/timerdev.c
+index abdf36ac3bee5..74d6ed49dc368 100644
+--- a/drivers/isdn/mISDN/timerdev.c
++++ b/drivers/isdn/mISDN/timerdev.c
+@@ -109,14 +109,14 @@ mISDN_read(struct file *filep, char __user *buf, size_t count, loff_t *off)
+ 		spin_unlock_irq(&dev->lock);
+ 		if (filep->f_flags & O_NONBLOCK)
+ 			return -EAGAIN;
+-		wait_event_interruptible(dev->wait, (dev->work ||
++		wait_event_interruptible(dev->wait, (READ_ONCE(dev->work) ||
+ 						     !list_empty(list)));
+ 		if (signal_pending(current))
+ 			return -ERESTARTSYS;
+ 		spin_lock_irq(&dev->lock);
+ 	}
+ 	if (dev->work)
+-		dev->work = 0;
++		WRITE_ONCE(dev->work, 0);
+ 	if (!list_empty(list)) {
+ 		timer = list_first_entry(list, struct mISDNtimer, list);
+ 		list_del(&timer->list);
+@@ -141,13 +141,16 @@ mISDN_poll(struct file *filep, poll_table *wait)
+ 	if (*debug & DEBUG_TIMER)
+ 		printk(KERN_DEBUG "%s(%p, %p)\n", __func__, filep, wait);
+ 	if (dev) {
++		u32 work;
++
+ 		poll_wait(filep, &dev->wait, wait);
+ 		mask = 0;
+-		if (dev->work || !list_empty(&dev->expired))
++		work = READ_ONCE(dev->work);
++		if (work || !list_empty(&dev->expired))
+ 			mask |= (EPOLLIN | EPOLLRDNORM);
+ 		if (*debug & DEBUG_TIMER)
+ 			printk(KERN_DEBUG "%s work(%d) empty(%d)\n", __func__,
+-			       dev->work, list_empty(&dev->expired));
++			       work, list_empty(&dev->expired));
+ 	}
+ 	return mask;
+ }
+@@ -172,7 +175,7 @@ misdn_add_timer(struct mISDNtimerdev *dev, int timeout)
+ 	struct mISDNtimer	*timer;
+ 
+ 	if (!timeout) {
+-		dev->work = 1;
++		WRITE_ONCE(dev->work, 1);
+ 		wake_up_interruptible(&dev->wait);
+ 		id = 0;
+ 	} else {
+-- 
+2.51.0
+
 
 
 
