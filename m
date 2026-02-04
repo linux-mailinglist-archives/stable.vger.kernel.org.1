@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIADHlhcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:56 +0100
+	id cKXaMgtlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74E4E7637
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5EBE88A7
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D18CA3011C42
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1992230824E8
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F622BE037;
-	Wed,  4 Feb 2026 14:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1A0423A70;
+	Wed,  4 Feb 2026 15:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/mIH73S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uV50p0jJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B87D28B7EA;
-	Wed,  4 Feb 2026 14:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DACD2BE03C;
+	Wed,  4 Feb 2026 15:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216531; cv=none; b=RkIdWe5zTeglCxJ6gN6evKAkWKxufXbMjo+kXGPfhCjR0sScuayZfA38mVi7Nezdl+/GHK6g+0ZFrVwIN9T9QNIOvUQralK0wNKCVkPQPAGu4cfPCDsCA/knuuZlQ1iNQtn//Ce0du7WEteKLMdGrXPgOlR8NspNmt3q3QgfJxU=
+	t=1770218075; cv=none; b=TPrClety76+Hwkc3CbjD/oDOqsBJobacWLYt8ZcwCokBeow3ZKuapOdF13XVnqs/cAWnV9eWrGsp1fqSMku3KiaPnZsr2whii/Q1J7ZUKuyzhRz9wRA4sP2HDZLiBrx0Un2E/QP0xaQw1iJHK6HpFdIH4llpmqDq1McLv0e1Idw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216531; c=relaxed/simple;
-	bh=Vc0gcnIoJ9Wx1GMtdwgpYpAJyI/EKukIxixcDnpMPFE=;
+	s=arc-20240116; t=1770218075; c=relaxed/simple;
+	bh=DBvbAyevE239JXESMDYh6N6RY29fNAh1rR8jnOH4Ln0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/jbRBKBVHzU+i0N45JS6Ui3MST+B8kgdTkx/IjXkxcqD5ktRzckFJXzNb3Wl2jHbFriAq09TRXoFGBnQB0iUrzhkU7CcS1FOn9vG5T2sMOjn4LSnrUoTLgnz5rfvrtKSGPDhI/VPBrXKeV5lFTJWb40Sd6/rA8y6C4MaYJkn3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/mIH73S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742B2C4CEF7;
-	Wed,  4 Feb 2026 14:48:50 +0000 (UTC)
+	 MIME-Version; b=awCg4lUCu2gBdjDxnXugrxdCa2ZSyy/o19RDeNb3uduM+iMCLJDZHuLLqpkkshmEgnCwGI+tm7uJELHiAS3gZeXu6Ducz6H/DDwNBubvX3GMJXuP+YePVXrylCbqD1iVhbdEoaStGA9qNqJZjG0Cz/xGF15gfjGZdRekDC8MXr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uV50p0jJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC0FC4CEF7;
+	Wed,  4 Feb 2026 15:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216530;
-	bh=Vc0gcnIoJ9Wx1GMtdwgpYpAJyI/EKukIxixcDnpMPFE=;
+	s=korg; t=1770218074;
+	bh=DBvbAyevE239JXESMDYh6N6RY29fNAh1rR8jnOH4Ln0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/mIH73SxrlX9NljtZRr+T8rc4+jCB7VcWN4HrqAHS1j7LCojaGs4DCc4JwQQNJdp
-	 tWg7U7KG9WqnChnJ3Yf1C2gQbEyfDVtOUkpfYVzDToz8E9bv3DhPx7aar/34/dXo0V
-	 nJ51u2Yn6p/tdEnPhM2dhgQOdbJOqmknlZkZErbs=
+	b=uV50p0jJv3AR+XM98nKBmie9THyM0AnR4Hr2b1nriaVyRSjINanhrwcfTYUu70ZRF
+	 EgbIDT3f29icDMCqW9idCS2gG7eRT26QeKCtkzEQmjKwbYLUyAnTcLOX8tEc4kIDgW
+	 f6Kytsnr/M9r+tkBWZQp0TVz3OTRQsrfLOSrEr7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	"Barry K. Nathan" <barryn@pobox.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 116/161] fbdev: fbcon: release buffer when fbcon_do_set_font() failed
+	Sai Sree Kartheek Adivi <s-adivi@ti.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 205/280] dma/pool: distinguish between missing and exhausted atomic pools
 Date: Wed,  4 Feb 2026 15:39:39 +0100
-Message-ID: <20260204143855.920815817@linuxfoundation.org>
+Message-ID: <20260204143916.977969320@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213495-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,I-love.SAKURA.ne.jp,pobox.com,gmx.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213956-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,25bdb7b1703639abd498];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,i-love.sakura.ne.jp:email,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pobox.com:email,gmx.de:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: C74E4E7637
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: 9A5EBE88A7
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Sai Sree Kartheek Adivi <s-adivi@ti.com>
 
-commit 3c3bfb8586f848317ceba5d777e11204ba3e5758 upstream.
+[ Upstream commit 56c430c7f06d838fe3b2077dbbc4cc0bf992312b ]
 
-syzbot is reporting memory leak at fbcon_do_set_font() [1], for
-commit a5a923038d70 ("fbdev: fbcon: Properly revert changes when
-vc_resize() failed") missed that the buffer might be newly allocated
-by fbcon_set_font().
+Currently, dma_alloc_from_pool() unconditionally warns and dumps a stack
+trace when an allocation fails, with the message "Failed to get suitable
+pool".
 
-Link: https://syzkaller.appspot.com/bug?extid=25bdb7b1703639abd498 [1]
-Reported-by: syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
-Cc: "Barry K. Nathan" <barryn@pobox.com>
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This conflates two distinct failure modes:
+1. Configuration error: No atomic pool is available for the requested
+   DMA mask (a fundamental system setup issue)
+2. Resource Exhaustion: A suitable pool exists but is currently full (a
+   recoverable runtime state)
+
+This lack of distinction prevents drivers from using __GFP_NOWARN to
+suppress error messages during temporary pressure spikes, such as when
+awaiting synchronous reclaim of descriptors.
+
+Refactor the error handling to distinguish these cases:
+- If no suitable pool is found, keep the unconditional WARN regarding
+  the missing pool.
+- If a pool was found but is exhausted, respect __GFP_NOWARN and update
+  the warning message to explicitly state "DMA pool exhausted".
+
+Fixes: 9420139f516d ("dma-pool: fix coherent pool allocations for IOMMU mappings")
+Signed-off-by: Sai Sree Kartheek Adivi <s-adivi@ti.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260128133554.3056582-1-s-adivi@ti.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/dma/pool.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2473,7 +2473,8 @@ err_out:
+diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+index 1e9d4cb018693..8fc6e3b8f8372 100644
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -268,15 +268,20 @@ struct page *dma_alloc_from_pool(struct device *dev, size_t size,
+ {
+ 	struct gen_pool *pool = NULL;
+ 	struct page *page;
++	bool pool_found = false;
  
- 	if (userfont) {
- 		p->userfont = old_userfont;
--		REFCOUNT(data)--;
-+		if (--REFCOUNT(data) == 0)
-+			kfree(data - FONT_EXTRA_WORDS * sizeof(int));
+ 	while ((pool = dma_guess_pool(pool, gfp))) {
++		pool_found = true;
+ 		page = __dma_alloc_from_pool(dev, size, pool, cpu_addr,
+ 					     phys_addr_ok);
+ 		if (page)
+ 			return page;
  	}
  
- 	vc->vc_font.width = old_width;
+-	WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
++	if (pool_found)
++		WARN(!(gfp & __GFP_NOWARN), "DMA pool exhausted for %s\n", dev_name(dev));
++	else
++		WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
+ 	return NULL;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
