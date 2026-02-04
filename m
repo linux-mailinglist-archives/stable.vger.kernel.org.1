@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EsqHPRjg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:24 +0100
+	id oC3jAx5bg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7E9E8574
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7484AE7432
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E85EE3045890
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 957A7300EA89
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DAB42849F;
-	Wed,  4 Feb 2026 15:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE65040F8C6;
+	Wed,  4 Feb 2026 14:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3rR2Mgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLy0wuW2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F093C1963;
-	Wed,  4 Feb 2026 15:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3143280A3B;
+	Wed,  4 Feb 2026 14:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217728; cv=none; b=K30guO/LRUTdOrUc4roRJN9sfjtecaFuzKXG5iMaQyqG9otE62YWFH6WqN7fxjon1zzhe0CWdnKMH3LZ7Jfh3b6oM5mVttxgTMiHTHLMJKNyI8MaqLtbwA+gaK9VD2y5dKorStaR5TZmX739EeDXYn8SDl6xVF49PO2E6Q6Grzs=
+	t=1770216185; cv=none; b=J4r410DgalYnYvrJf9Wsgm19ewKPuP0IEHhb6x8YWtclpiHfHuhYhJfxSenq+D/vQPuBhiFCVeZxFfc3SOzSbbXER9xsYwkigDOcJ5R1ASgwwy1PZEWrc6L+G9ZdhHEVwvT20mur92UmlX+igCm+G8lYD7j37jE4zEMNwGT8XYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217728; c=relaxed/simple;
-	bh=fHf8nom3iJEDacwBX1O+ka4JJAc+M1AeNSmZGypVrwE=;
+	s=arc-20240116; t=1770216185; c=relaxed/simple;
+	bh=izc3osVD0R35hxaTUjCovLcHFR1YrpcWcLEH5uuwbqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2d+Lx/uHCY1X4MjjE8f+/Qm3JqoYPTusG+BDTvqPRAR7117+ZFGHbiqbuPPXR/o/dKBVI2iWVi/ZKlPPg7u9t7tMTbQ3587cM9aIeMNwspvkAr0RVfZpAp5pbQXn5OKvQp50znpKrllqaJDKFMM2+ozzSWdvRFb9F0sumSC6+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3rR2Mgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB4CC116C6;
-	Wed,  4 Feb 2026 15:08:47 +0000 (UTC)
+	 MIME-Version; b=QMDqOWw9aC2Uy0hAszvYW88pOwPW/O4pce9QD2vpU/TTsINcD4lR6Uz96mOoQfAJKD1fFA9L9a3ovd0Tnx4dfTmB064UUxWxZj9pKCidxV1YJQ/yH8M8E5GI4BEHLCzt07SnOZpjyzEbXgI2ANsd/B1XK/0qhn3VnElrc0a3btU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLy0wuW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A97DC4CEF7;
+	Wed,  4 Feb 2026 14:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217728;
-	bh=fHf8nom3iJEDacwBX1O+ka4JJAc+M1AeNSmZGypVrwE=;
+	s=korg; t=1770216185;
+	bh=izc3osVD0R35hxaTUjCovLcHFR1YrpcWcLEH5uuwbqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3rR2Mgt7VYZAp8MVxct+wcEMcLyKMMaUVUarSTmde6Xdz6ffPMIGH6lYKy25O3l5
-	 kk43RP8jekJAylOMb4iYewDRA2spAtVsHaFCbaZ+GmBuc0ALuyIrG5kyesG0rhAFS1
-	 jVjx/cdSrW5K9xZYrBYpFv0R5AQcyA8J25WNBvxc=
+	b=cLy0wuW2Wq266l/0fBlEE+U6in53TLaoeXcJIr9oiys5DCqsFYo/cyoyoh+M3s3eh
+	 RAO1w+krIyZuhTWfMqsNxo11xdfJrBvSXJvD4LygXYasudH9fTFLA5tE/yiNH+4YHI
+	 3DUFpclrDRIH+YRRsH4yi/hHLV0AbyfAtx1INItI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Chen <chenzhen126@huawei.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Thomas Graf <tgraf@suug.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/280] sctp: move SCTP_CMD_ASSOC_SHKEY right after SCTP_CMD_PEER_INIT
+Subject: [PATCH 5.10 013/161] textsearch: describe @list member in ts_ops search
 Date: Wed,  4 Feb 2026 15:37:56 +0100
-Message-ID: <20260204143913.320979851@linuxfoundation.org>
+Message-ID: <20260204143852.242377476@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,135 +67,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213852-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suug.ch,davemloft.net,linux-foundation.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213392-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DA7E9E8574
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,davemloft.net:email]
+X-Rspamd-Queue-Id: 7484AE7432
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-[ Upstream commit a80c9d945aef55b23b54838334345f20251dad83 ]
+[ Upstream commit f26528478bb102c28e7ac0cbfc8ec8185afdafc7 ]
 
-A null-ptr-deref was reported in the SCTP transmit path when SCTP-AUTH key
-initialization fails:
+Sphinx reports kernel-doc warning:
 
-  ==================================================================
-  KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-  CPU: 0 PID: 16 Comm: ksoftirqd/0 Tainted: G W 6.6.0 #2
-  RIP: 0010:sctp_packet_bundle_auth net/sctp/output.c:264 [inline]
-  RIP: 0010:sctp_packet_append_chunk+0xb36/0x1260 net/sctp/output.c:401
-  Call Trace:
+WARNING: ./include/linux/textsearch.h:49 struct member 'list' not described in 'ts_ops'
 
-  sctp_packet_transmit_chunk+0x31/0x250 net/sctp/output.c:189
-  sctp_outq_flush_data+0xa29/0x26d0 net/sctp/outqueue.c:1111
-  sctp_outq_flush+0xc80/0x1240 net/sctp/outqueue.c:1217
-  sctp_cmd_interpreter.isra.0+0x19a5/0x62c0 net/sctp/sm_sideeffect.c:1787
-  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
-  sctp_do_sm+0x1a3/0x670 net/sctp/sm_sideeffect.c:1169
-  sctp_assoc_bh_rcv+0x33e/0x640 net/sctp/associola.c:1052
-  sctp_inq_push+0x1dd/0x280 net/sctp/inqueue.c:88
-  sctp_rcv+0x11ae/0x3100 net/sctp/input.c:243
-  sctp6_rcv+0x3d/0x60 net/sctp/ipv6.c:1127
+Describe @list member to fix it.
 
-The issue is triggered when sctp_auth_asoc_init_active_key() fails in
-sctp_sf_do_5_1C_ack() while processing an INIT_ACK. In this case, the
-command sequence is currently:
-
-- SCTP_CMD_PEER_INIT
-- SCTP_CMD_TIMER_STOP (T1_INIT)
-- SCTP_CMD_TIMER_START (T1_COOKIE)
-- SCTP_CMD_NEW_STATE (COOKIE_ECHOED)
-- SCTP_CMD_ASSOC_SHKEY
-- SCTP_CMD_GEN_COOKIE_ECHO
-
-If SCTP_CMD_ASSOC_SHKEY fails, asoc->shkey remains NULL, while
-asoc->peer.auth_capable and asoc->peer.peer_chunks have already been set by
-SCTP_CMD_PEER_INIT. This allows a DATA chunk with auth = 1 and shkey = NULL
-to be queued by sctp_datamsg_from_user().
-
-Since command interpretation stops on failure, no COOKIE_ECHO should been
-sent via SCTP_CMD_GEN_COOKIE_ECHO. However, the T1_COOKIE timer has already
-been started, and it may enqueue a COOKIE_ECHO into the outqueue later. As
-a result, the DATA chunk can be transmitted together with the COOKIE_ECHO
-in sctp_outq_flush_data(), leading to the observed issue.
-
-Similar to the other places where it calls sctp_auth_asoc_init_active_key()
-right after sctp_process_init(), this patch moves the SCTP_CMD_ASSOC_SHKEY
-immediately after SCTP_CMD_PEER_INIT, before stopping T1_INIT and starting
-T1_COOKIE. This ensures that if shared key generation fails, authenticated
-DATA cannot be sent. It also allows the T1_INIT timer to retransmit INIT,
-giving the client another chance to process INIT_ACK and retry key setup.
-
-Fixes: 730fc3d05cd4 ("[SCTP]: Implete SCTP-AUTH parameter processing")
-Reported-by: Zhen Chen <chenzhen126@huawei.com>
-Tested-by: Zhen Chen <chenzhen126@huawei.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/44881224b375aa8853f5e19b4055a1a56d895813.1768324226.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20251219014006.16328-4-bagasdotme@gmail.com
+Fixes: 2de4ff7bd658 ("[LIB]: Textsearch infrastructure.")
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Thomas Graf <tgraf@suug.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/textsearch.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index beae92ad25bb0..80a6b9fc964e5 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -602,6 +602,11 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_PEER_INIT,
- 			SCTP_PEER_INIT(initchunk));
- 
-+	/* SCTP-AUTH: generate the association shared keys so that
-+	 * we can potentially sign the COOKIE-ECHO.
-+	 */
-+	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
-+
- 	/* Reset init error count upon receipt of INIT-ACK.  */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_INIT_COUNTER_RESET, SCTP_NULL());
- 
-@@ -616,11 +621,6 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_NEW_STATE,
- 			SCTP_STATE(SCTP_STATE_COOKIE_ECHOED));
- 
--	/* SCTP-AUTH: generate the association shared keys so that
--	 * we can potentially sign the COOKIE-ECHO.
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
--
- 	/* 5.1 C) "A" shall then send the State Cookie received in the
- 	 * INIT ACK chunk in a COOKIE ECHO chunk, ...
- 	 */
+diff --git a/include/linux/textsearch.h b/include/linux/textsearch.h
+index 13770cfe33ad8..1389959b68422 100644
+--- a/include/linux/textsearch.h
++++ b/include/linux/textsearch.h
+@@ -35,6 +35,7 @@ struct ts_state
+  * @get_pattern: return head of pattern
+  * @get_pattern_len: return length of pattern
+  * @owner: module reference to algorithm
++ * @list: list to search
+  */
+ struct ts_ops
+ {
 -- 
 2.51.0
 
