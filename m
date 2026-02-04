@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-214134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHmHA0Bsg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:48 +0100
+	id 4Av1KG9ig2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BB6E9A30
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA208E82F8
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B28B315A3E8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 834FF302740E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36382C3254;
-	Wed,  4 Feb 2026 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99AB2BD012;
+	Wed,  4 Feb 2026 15:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qa4K/obv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufGt1U/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968D818859B;
-	Wed,  4 Feb 2026 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E24E28853A;
+	Wed,  4 Feb 2026 15:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218678; cv=none; b=IjtyqiGLuVyzXskFf5qwFrafXMJ07n8B49IKlYvjYsD9QwIPa4xNshitqWnoQxNKoLAljWLt/yaEmP98lWrjpogqhDxQxtM4shQmQDs7OykPUUou6PFmxkcWxvO2qwqGeR89wFO9o46CSKPYM34nmcAQD5N1hB0HQvqByLKKo84=
+	t=1770217353; cv=none; b=HUo0AjxLlZiThEL/tXmHPSa4XCBhgN02Q+6oUKmKue1qMcb+VgBmvui/SByTEpLYtfDImvR6Lq2jOnYkdUeJL6SsQI+0X/OQybkXvqr20hsxq1nXw5VF0129ljwVpMIGyaEab9C2ciJECBlB3BI1aTbu0uuOB44yXi9oZ/vifjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218678; c=relaxed/simple;
-	bh=Kssxkspp02RSOV3ilZ4iJujUUw19lwF4MkBpqK1Ai+Q=;
+	s=arc-20240116; t=1770217353; c=relaxed/simple;
+	bh=Gh9y1WeDdKVqZKKfrLblFLpIVrXOqp2GhvpUHL4U0XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrT1rp5cSWxu2zaBg4vkDZ17pzzBvdx35jQP1c58QQkOxkCBFCmdsRVn7Y0Nz+GFbPfVyYfo67KoByJqhpMybwx6zY2Dp4lfl/UqQJB+nAVpoLeijVxJYY4Wyy6kJafO1HqTCgYGjKERekpPKWMGHQu0RXObSPpCFDnyQ4fmWls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qa4K/obv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257A4C4CEF7;
-	Wed,  4 Feb 2026 15:24:37 +0000 (UTC)
+	 MIME-Version; b=HqNd1mXJI1tE4JYP14jNeeOPwDDRM08HeuHB8mGNebXmqklpQNhNrcO442bjej+uPWnjeaScL+a3kw/mpxQTKl7pbG2sI0bzO5T9SX9UZdM8GAfHd/xyo2NCAst2gYjBDdTPKcL3CBD2p1agL6jtYHkOYkoBF3oK1afGWRLKsBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufGt1U/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A14C4CEF7;
+	Wed,  4 Feb 2026 15:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218678;
-	bh=Kssxkspp02RSOV3ilZ4iJujUUw19lwF4MkBpqK1Ai+Q=;
+	s=korg; t=1770217353;
+	bh=Gh9y1WeDdKVqZKKfrLblFLpIVrXOqp2GhvpUHL4U0XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qa4K/obvp6ccUijTcDt+/pstqg6oPKroS3iLqvGGlrDA+k/cESPCGy8W8D2y6eutq
-	 DGHXOxHH9mkW3+HVJqPp50pnAS/DI2Vc+VNky0BoymXegSraZI0j5H5MlqPsAeqk2u
-	 K0Hnj5FX00vyY/PdQzKAMo1+BodjrTsB0cpngNQ4=
+	b=ufGt1U/B3Wb7zNjs9nJhPhQmmnn8SHgrfeFCccr+AXAyJN2sIc1GkiuFWZ3lHcsQj
+	 Uv1vtxO5OSq5KMo4lybwblMEhiY0kkt381rSjfwctjLcKbqc8wR1Z/fh+Sl/bmUyMt
+	 LcMtrtpCRCfFsMMt7OKpCl4gv+T2n1afBXCv3eY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Shida Zhang <zhangshida@kylinos.cn>,
-	Coly Li <colyli@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 29/87] bcache: use bio cloning for detached device requests
-Date: Wed,  4 Feb 2026 15:40:27 +0100
-Message-ID: <20260204143847.959339388@linuxfoundation.org>
+Subject: [PATCH 5.15 197/206] drm/imx/tve: fix probe device leak
+Date: Wed,  4 Feb 2026 15:40:28 +0100
+Message-ID: <20260204143905.321196795@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214134-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213742-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,248 +88,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: 56BB6E9A30
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email]
+X-Rspamd-Queue-Id: AA208E82F8
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shida Zhang <zhangshida@kylinos.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 3ef825dfd4e487d6f92b23ee2df2455814583ef4 ]
+[ Upstream commit e535c23513c63f02f67e3e09e0787907029efeaf ]
 
-Previously, bcache hijacked the bi_end_io and bi_private fields of
-the incoming bio when the backing device was in a detached state.
-This is fragile and breaks if the bio is needed to be processed by
-other layers.
+Make sure to drop the reference taken to the DDC device during probe on
+probe failure (e.g. probe deferral) and on driver unbind.
 
-This patch transitions to using a cloned bio embedded within a private
-structure. This ensures the original bio's metadata remains untouched.
-
-Fixes: 53280e398471 ("bcache: fix improper use of bi_end_io")
-Co-developed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
-Acked-by: Coly Li <colyli@fnnas.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 4da7c5c3ec34 ("bcache: fix I/O accounting leak in detached_dev_do_request")
+Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television Encoder (TVEv2)")
+Cc: stable@vger.kernel.org	# 3.10
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251030163456.15807-1-johan@kernel.org
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/bcache.h  |  9 +++++
- drivers/md/bcache/request.c | 79 ++++++++++++++++---------------------
- drivers/md/bcache/super.c   | 12 +++++-
- 3 files changed, 54 insertions(+), 46 deletions(-)
+ drivers/gpu/drm/imx/imx-tve.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
-index 1d33e40d26ea5..cca5756030d71 100644
---- a/drivers/md/bcache/bcache.h
-+++ b/drivers/md/bcache/bcache.h
-@@ -273,6 +273,8 @@ struct bcache_device {
- 
- 	struct bio_set		bio_split;
- 
-+	struct bio_set		bio_detached;
-+
- 	unsigned int		data_csum:1;
- 
- 	int (*cache_miss)(struct btree *b, struct search *s,
-@@ -755,6 +757,13 @@ struct bbio {
- 	struct bio		bio;
+--- a/drivers/gpu/drm/imx/imx-tve.c
++++ b/drivers/gpu/drm/imx/imx-tve.c
+@@ -521,6 +521,13 @@ static const struct component_ops imx_tv
+ 	.bind	= imx_tve_bind,
  };
  
-+struct detached_dev_io_private {
-+	struct bcache_device	*d;
-+	unsigned long		start_time;
-+	struct bio		*orig_bio;
-+	struct bio              bio;
-+};
++static void imx_tve_put_device(void *_dev)
++{
++	struct device *dev = _dev;
 +
- #define BTREE_PRIO		USHRT_MAX
- #define INITIAL_PRIO		32768U
- 
-diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
-index 82fdea7dea7aa..a02aecac05cdf 100644
---- a/drivers/md/bcache/request.c
-+++ b/drivers/md/bcache/request.c
-@@ -1077,68 +1077,58 @@ static CLOSURE_CALLBACK(cached_dev_nodata)
- 	continue_at(cl, cached_dev_bio_complete, NULL);
- }
- 
--struct detached_dev_io_private {
--	struct bcache_device	*d;
--	unsigned long		start_time;
--	bio_end_io_t		*bi_end_io;
--	void			*bi_private;
--	struct block_device	*orig_bdev;
--};
--
- static void detached_dev_end_io(struct bio *bio)
++	put_device(dev);
++}
++
+ static int imx_tve_probe(struct platform_device *pdev)
  {
--	struct detached_dev_io_private *ddip;
--
--	ddip = bio->bi_private;
--	bio->bi_end_io = ddip->bi_end_io;
--	bio->bi_private = ddip->bi_private;
-+	struct detached_dev_io_private *ddip =
-+		container_of(bio, struct detached_dev_io_private, bio);
-+	struct bio *orig_bio = ddip->orig_bio;
- 
- 	/* Count on the bcache device */
--	bio_end_io_acct_remapped(bio, ddip->start_time, ddip->orig_bdev);
-+	bio_end_io_acct(orig_bio, ddip->start_time);
- 
- 	if (bio->bi_status) {
--		struct cached_dev *dc = container_of(ddip->d,
--						     struct cached_dev, disk);
-+		struct cached_dev *dc = bio->bi_private;
-+
- 		/* should count I/O error for backing device here */
- 		bch_count_backing_io_errors(dc, bio);
-+		orig_bio->bi_status = bio->bi_status;
+ 	struct device *dev = &pdev->dev;
+@@ -543,6 +550,12 @@ static int imx_tve_probe(struct platform
+ 	if (ddc_node) {
+ 		tve->ddc = of_find_i2c_adapter_by_node(ddc_node);
+ 		of_node_put(ddc_node);
++		if (tve->ddc) {
++			ret = devm_add_action_or_reset(dev, imx_tve_put_device,
++						       &tve->ddc->dev);
++			if (ret)
++				return ret;
++		}
  	}
  
--	kfree(ddip);
--	bio_endio(bio);
-+	bio_put(bio);
-+	bio_endio(orig_bio);
- }
- 
--static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
--		struct block_device *orig_bdev, unsigned long start_time)
-+static void detached_dev_do_request(struct bcache_device *d,
-+		struct bio *orig_bio, unsigned long start_time)
- {
- 	struct detached_dev_io_private *ddip;
- 	struct cached_dev *dc = container_of(d, struct cached_dev, disk);
-+	struct bio *clone_bio;
- 
--	/*
--	 * no need to call closure_get(&dc->disk.cl),
--	 * because upper layer had already opened bcache device,
--	 * which would call closure_get(&dc->disk.cl)
--	 */
--	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
--	if (!ddip) {
--		bio->bi_status = BLK_STS_RESOURCE;
--		bio_endio(bio);
-+	if (bio_op(orig_bio) == REQ_OP_DISCARD &&
-+	    !bdev_max_discard_sectors(dc->bdev)) {
-+		bio_endio(orig_bio);
- 		return;
- 	}
- 
--	ddip->d = d;
-+	clone_bio = bio_alloc_clone(dc->bdev, orig_bio, GFP_NOIO,
-+				    &d->bio_detached);
-+	if (!clone_bio) {
-+		orig_bio->bi_status = BLK_STS_RESOURCE;
-+		bio_endio(orig_bio);
-+		return;
-+	}
-+
-+	ddip = container_of(clone_bio, struct detached_dev_io_private, bio);
- 	/* Count on the bcache device */
--	ddip->orig_bdev = orig_bdev;
-+	ddip->d = d;
- 	ddip->start_time = start_time;
--	ddip->bi_end_io = bio->bi_end_io;
--	ddip->bi_private = bio->bi_private;
--	bio->bi_end_io = detached_dev_end_io;
--	bio->bi_private = ddip;
--
--	if ((bio_op(bio) == REQ_OP_DISCARD) &&
--	    !bdev_max_discard_sectors(dc->bdev))
--		detached_dev_end_io(bio);
--	else
--		submit_bio_noacct(bio);
-+	ddip->orig_bio = orig_bio;
-+
-+	clone_bio->bi_end_io = detached_dev_end_io;
-+	clone_bio->bi_private = dc;
-+
-+	submit_bio_noacct(clone_bio);
- }
- 
- static void quit_max_writeback_rate(struct cache_set *c,
-@@ -1214,10 +1204,10 @@ void cached_dev_submit_bio(struct bio *bio)
- 
- 	start_time = bio_start_io_acct(bio);
- 
--	bio_set_dev(bio, dc->bdev);
- 	bio->bi_iter.bi_sector += dc->sb.data_offset;
- 
- 	if (cached_dev_get(dc)) {
-+		bio_set_dev(bio, dc->bdev);
- 		s = search_alloc(bio, d, orig_bdev, start_time);
- 		trace_bcache_request_start(s->d, bio);
- 
-@@ -1237,9 +1227,10 @@ void cached_dev_submit_bio(struct bio *bio)
- 			else
- 				cached_dev_read(dc, s);
- 		}
--	} else
-+	} else {
- 		/* I/O request sent to backing device */
--		detached_dev_do_request(d, bio, orig_bdev, start_time);
-+		detached_dev_do_request(d, bio, start_time);
-+	}
- }
- 
- static int cached_dev_ioctl(struct bcache_device *d, blk_mode_t mode,
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 1084b3f0dfe71..017a1ef42f1b0 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -887,6 +887,7 @@ static void bcache_device_free(struct bcache_device *d)
- 	}
- 
- 	bioset_exit(&d->bio_split);
-+	bioset_exit(&d->bio_detached);
- 	kvfree(d->full_dirty_stripes);
- 	kvfree(d->stripe_sectors_dirty);
- 
-@@ -949,6 +950,11 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
- 		goto out_ida_remove;
- 
-+	if (bioset_init(&d->bio_detached, 4,
-+			offsetof(struct detached_dev_io_private, bio),
-+			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
-+		goto out_bioset_split_exit;
-+
- 	if (lim.logical_block_size > PAGE_SIZE && cached_bdev) {
- 		/*
- 		 * This should only happen with BCACHE_SB_VERSION_BDEV.
-@@ -964,7 +970,7 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 
- 	d->disk = blk_alloc_disk(&lim, NUMA_NO_NODE);
- 	if (IS_ERR(d->disk))
--		goto out_bioset_exit;
-+		goto out_bioset_detach_exit;
- 
- 	set_capacity(d->disk, sectors);
- 	snprintf(d->disk->disk_name, DISK_NAME_LEN, "bcache%i", idx);
-@@ -976,7 +982,9 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 	d->disk->private_data	= d;
- 	return 0;
- 
--out_bioset_exit:
-+out_bioset_detach_exit:
-+	bioset_exit(&d->bio_detached);
-+out_bioset_split_exit:
- 	bioset_exit(&d->bio_split);
- out_ida_remove:
- 	ida_free(&bcache_device_idx, idx);
--- 
-2.51.0
-
+ 	tve->mode = of_get_tve_mode(np);
 
 
 
