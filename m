@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EBUMMdgg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:07:51 +0100
+	id qMR1Ccdlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276ABE7F72
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:07:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5D1E8ADE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B4743192CBC
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B21A130655FA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBC9421A08;
-	Wed,  4 Feb 2026 14:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFEB4218BC;
+	Wed,  4 Feb 2026 15:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDPlYYev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bC8RwElt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0551421A02;
-	Wed,  4 Feb 2026 14:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910432C3254;
+	Wed,  4 Feb 2026 15:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216977; cv=none; b=IxNvz8Ctlw0Ma44DaxwLbdFIWIrajVabQSU6bYeo9X6dbYYxJhdBPQMxiBtIDWXNRnaycP9uz3lh9AXW/SACr+6m9Wat8Ass8hANw0pe72NfxaILziVusz0CRvC/fL9PYZQJsOcmCltTCPW5ljbt3UBLPCIGjZbS05uRPA4VjwY=
+	t=1770217875; cv=none; b=OZxuaYpS5j7Mqx/UbmyyswDJnHMaC2v4hHv8b7fQwVx3g7Wig1eAsE+MGeFj29A7OwGaNI294YqhYDVT/945T1vZzVBMu8/ydkcBEeoUGOKqwOI5f5ok+XpQ8WW4LmbScLbsqDDsjL1QyRWYLgHYKzh16R2GgrdtOsJZPWAmtx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216977; c=relaxed/simple;
-	bh=jBcjopp3ngF2qef8WFKt+F7lgIJk3GBmmwmGAyfmIFQ=;
+	s=arc-20240116; t=1770217875; c=relaxed/simple;
+	bh=5rpBH4CHDvcnpg/Gar2LZABjVJtQzeXk93oXJqp3598=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVEySHIwwguJVG5ESSfgF+nw3f7K8E7yR9ZjEKC7gKO/011zD9+8OBlmHGdf+5wM2YoGOFsRVjoW3iY5YGVf3bIbXzlethVxo63WDM8qgSNao9KeK3HGpkAv05tvQO0jE19v5ZyLfDCojyUaLiqMT6FR7FIrWRTiHrKUDkjbIw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDPlYYev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394C1C4CEF7;
-	Wed,  4 Feb 2026 14:56:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=reYzoBmMm8jUJhIcwBhl7hZK+k+GZ3dPTFAJ7eZzL5GHMJg0emCTkOD9JEf4oXKRZtflr0yH6qTmnO/iASpsVPaH57h3uVGSTHXQuFrFd8Js57oogJOYrppugeAwcEzAJfIUR5fif7w9JbWqEdyB19LKSTAry1q84PJOAaxT1zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bC8RwElt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19283C4CEF7;
+	Wed,  4 Feb 2026 15:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216977;
-	bh=jBcjopp3ngF2qef8WFKt+F7lgIJk3GBmmwmGAyfmIFQ=;
+	s=korg; t=1770217875;
+	bh=5rpBH4CHDvcnpg/Gar2LZABjVJtQzeXk93oXJqp3598=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PDPlYYevBSCVKE5pnftgxqOMRLwexeId1a+dRxM63kjQaWDSNLN8/hYcHAUtZ5u+e
-	 mztf/LrV3EBKxDJZ7prs+xP/QLLp1X2SSIv/fDAYSAio31TD7pHCeT3NBSKIQzRZrE
-	 78KNlMGB76H3kdc/6XI0B7xHE/+4ARZD9C1IJuuQ=
+	b=bC8RwEltMLyxjOvxJrqVFPDutk89RWc3Pzf7zGVJeBHXvzskmjqLvPsJ2FWPljYMf
+	 H0a9suqm0K9CmcWUEtT/0miw0dqzIb2IXYyJNMc7dXoHbei3HNNM0mlwJJaNrFFFel
+	 7ewcevEPruA4myOUHpTLgXtS7Tffqdm/bbZL/a2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 087/206] scsi: storvsc: Process unsupported MODE_SENSE_10
-Date: Wed,  4 Feb 2026 15:38:38 +0100
-Message-ID: <20260204143901.344121619@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 145/280] drm/amd/pm: Dont clear SI SMC table when setting power limit
+Date: Wed,  4 Feb 2026 15:38:39 +0100
+Message-ID: <20260204143914.852519550@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-213896-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-213631-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email]
-X-Rspamd-Queue-Id: 276ABE7F72
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: BA5D1E8ADE
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
+[ Upstream commit d5077426e1a76d269e518e048bde2e9fc49b32ad ]
 
-The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
-driver handles MODE_SENSE as unsupported command, but not for
-MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
-correct code to SCSI layer.
+There is no reason to clear the SMC table.
+We also don't need to recalculate the power limit then.
 
-Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
-Cc: stable@kernel.org
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e214d626253f5b180db10dedab161b7caa41f5e9)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1199,7 +1199,7 @@ static void storvsc_on_io_completion(str
- 	 * The current SCSI handling on the host side does
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
--	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
- 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
-@@ -1209,6 +1209,7 @@ static void storvsc_on_io_completion(str
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 2395d0a831846..a8278fa75ff9a 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -2257,8 +2257,6 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
+ 		if (scaling_factor == 0)
+ 			return -EINVAL;
  
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
- 	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
+-		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
+-
+ 		ret = si_calculate_adjusted_tdp_limits(adev,
+ 						       false, /* ??? */
+ 						       adev->pm.dpm.tdp_adjustment,
+@@ -2312,16 +2310,8 @@ static int si_populate_smc_tdp_limits_2(struct amdgpu_device *adev,
+ 
+ 	if (ni_pi->enable_power_containment) {
+ 		SISLANDS_SMC_STATETABLE *smc_table = &si_pi->smc_statetable;
+-		u32 scaling_factor = si_get_smc_power_scaling_factor(adev);
+ 		int ret;
+ 
+-		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
+-
+-		smc_table->dpm2Params.NearTDPLimit =
+-			cpu_to_be32(si_scale_power_for_smc(adev->pm.dpm.near_tdp_limit_adjusted, scaling_factor) * 1000);
+-		smc_table->dpm2Params.SafePowerLimit =
+-			cpu_to_be32(si_scale_power_for_smc((adev->pm.dpm.near_tdp_limit_adjusted * SISLANDS_DPM2_TDP_SAFE_LIMIT_PERCENT) / 100, scaling_factor) * 1000);
+-
+ 		ret = amdgpu_si_copy_bytes_to_smc(adev,
+ 						  (si_pi->state_table_start +
+ 						   offsetof(SISLANDS_SMC_STATETABLE, dpm2Params) +
+-- 
+2.51.0
+
 
 
 
