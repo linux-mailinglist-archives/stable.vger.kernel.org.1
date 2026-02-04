@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLL2GXdgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:31 +0100
+	id AKctIe5rg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A13E7E88
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88872E99A4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A66F316882A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 56306307E933
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5357F41C2F9;
-	Wed,  4 Feb 2026 14:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8164219EF;
+	Wed,  4 Feb 2026 15:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNnSK7rJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xh1eeeOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171D841C2E4;
-	Wed,  4 Feb 2026 14:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128603D994;
+	Wed,  4 Feb 2026 15:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216911; cv=none; b=DoG0MgFM2QR0dHEhRwOqAJTpdvy2d71wq4JP6u8vEWZxAe6E95QMfwRbWG4HcJWa3EZ8CQVPL9naimB3D+D2koRqzA2NHa8Jk1jKqrUvUQ/15j3FLOfcxHrbnCyt/mNS+rXo/zOaaG5QFm09Pt9bOHuasHfNfPVjNQXXJrp2QLY=
+	t=1770217926; cv=none; b=csFDHslT8/cimU7QtZL8c16IZvjXADiVuUudzUWcfVyakDzavBVKpPmvmnMMsGZHATOhqvFlsbcQYxLxvLizu9ZSFNe2E+g06qysTgpd2P6+f/6tJqP0hqBPr12AcaN1G0nDnfAA6sXsZjCWfXIVdzgjCZaWwOeBeETiMaaVjPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216911; c=relaxed/simple;
-	bh=NrdpF7I9Jc/NhK2sqPIdLHk2EztU+zx5zsAzdO7wMgs=;
+	s=arc-20240116; t=1770217926; c=relaxed/simple;
+	bh=QrY7Mj5AKqaLwBO7ly2fg1nBp9f2ny7VQr25fq64i7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=grRCXpk45RzHbEkm6NWlNDo6TvZutGbuyh07WeV0OyC+TBrkvdAye5BbZM6vBOWNqdnAubJSNRg3bJofFTpzSUHeCTUZp4X67lkUmpD0XQl9Pajrbro/uHR9LBH+wwnY6ouxdSw+0M49PLf2z8uQcDsiZlAOI2U05/rOMNohWH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNnSK7rJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E672C4CEF7;
-	Wed,  4 Feb 2026 14:55:10 +0000 (UTC)
+	 MIME-Version; b=ojOVQsOOKJzQULZTYgaS7Y9OSPL1GekssMicVFfsWJzyc9/DTm1lQsIcaWWIvwuREXhbE0sUmLcTyYSqabMfQAUFQ0kTxTU360krpKjxb2gNQZhsbNxTDrvjSBbuDYHHV/ff9xPLEg6fK40nakzuQHijYmpUnLQpkOhkCctKPRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xh1eeeOd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769B5C4CEF7;
+	Wed,  4 Feb 2026 15:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216911;
-	bh=NrdpF7I9Jc/NhK2sqPIdLHk2EztU+zx5zsAzdO7wMgs=;
+	s=korg; t=1770217926;
+	bh=QrY7Mj5AKqaLwBO7ly2fg1nBp9f2ny7VQr25fq64i7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNnSK7rJqDv+6N3tbiaCi+MlU6/jqWAYGa1mtpLd3hawhr9nqspANxOfZR2ZUOrOV
-	 H2YspCX4JGpym0ZckWeSuXYpX2hB+gBJ6kNdlvIFN+IoPBFdiW7IDRphGbyTk5UfpA
-	 uVBrtAs3QP7QXfvOEM44MQLOjaScDC2gCOlJl9NE=
+	b=xh1eeeOdGC4UA4/+WyZs/SGSsz+Ir0gO1NsOgajvz9hSHu61XO7ZlGaD1LeVgmtUQ
+	 w4jB+cItdLJIEZNW5n/Hxg26xyOQ1nv57AIrx08BQ97QUMSPSMGjLCcVPfA33CcTGb
+	 uOir3JId2UbT6K2a4E2mtKnlOfVpAAtPjIYjRrvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/206] selftests: net: fib-onlink-tests: Convert to use namespaces by default
-Date: Wed,  4 Feb 2026 15:38:20 +0100
-Message-ID: <20260204143900.699047060@linuxfoundation.org>
+Subject: [PATCH 6.1 127/280] iio: adc: ad7280a: handle spi_setup() errors in probe()
+Date: Wed,  4 Feb 2026 15:38:21 +0100
+Message-ID: <20260204143914.206822501@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,215 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213611-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213911-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B9A13E7E88
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,kaspersky.com:email,analog.com:email]
+X-Rspamd-Queue-Id: 88872E99A4
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit 4f5f148dd7c0459229d2ab9a769b2e820f9ee6a2 ]
+[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
 
-Currently, the test breaks if the SUT already has a default route
-configured for IPv6. Fix by avoiding the use of the default namespace.
+The probe() function ignored the return value of spi_setup(), leaving SPI
+configuration failures undetected. If spi_setup() fails, the driver should
+stop initialization and propagate the error to the caller.
 
-Fixes: 4ed591c8ab44 ("net/ipv6: Allow onlink routes to have a device mismatch if it is the default route")
-Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260113-selftests-net-fib-onlink-v2-1-89de2b931389@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add proper error handling: check the return value of spi_setup() and return
+it on failure.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/fib-onlink-tests.sh | 71 ++++++++-----------
- 1 file changed, 30 insertions(+), 41 deletions(-)
+ drivers/iio/adc/ad7280a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
-index ec2d6ceb1f08d..c01be076b210d 100755
---- a/tools/testing/selftests/net/fib-onlink-tests.sh
-+++ b/tools/testing/selftests/net/fib-onlink-tests.sh
-@@ -120,7 +120,7 @@ log_subsection()
+diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
+index 9080c795dcb7e..10cc623bf62a3 100644
+--- a/drivers/iio/adc/ad7280a.c
++++ b/drivers/iio/adc/ad7280a.c
+@@ -1028,7 +1028,9 @@ static int ad7280_probe(struct spi_device *spi)
  
- run_cmd()
- {
--	local cmd="$*"
-+	local cmd="$1"
- 	local out
- 	local rc
+ 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
+ 	st->spi->mode = SPI_MODE_1;
+-	spi_setup(st->spi);
++	ret = spi_setup(st->spi);
++	if (ret < 0)
++		return ret;
  
-@@ -145,7 +145,7 @@ get_linklocal()
- 	local pfx
- 	local addr
- 
--	addr=$(${pfx} ip -6 -br addr show dev ${dev} | \
-+	addr=$(${pfx} ${IP} -6 -br addr show dev ${dev} | \
- 	awk '{
- 		for (i = 3; i <= NF; ++i) {
- 			if ($i ~ /^fe80/)
-@@ -173,58 +173,48 @@ setup()
- 
- 	set -e
- 
--	# create namespace
--	setup_ns PEER_NS
-+	# create namespaces
-+	setup_ns ns1
-+	IP="ip -netns $ns1"
-+	setup_ns ns2
- 
- 	# add vrf table
--	ip li add ${VRF} type vrf table ${VRF_TABLE}
--	ip li set ${VRF} up
--	ip ro add table ${VRF_TABLE} unreachable default metric 8192
--	ip -6 ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} li add ${VRF} type vrf table ${VRF_TABLE}
-+	${IP} li set ${VRF} up
-+	${IP} ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} -6 ro add table ${VRF_TABLE} unreachable default metric 8192
- 
- 	# create test interfaces
--	ip li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
--	ip li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
--	ip li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
--	ip li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
-+	${IP} li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
-+	${IP} li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
-+	${IP} li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
-+	${IP} li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
- 
- 	# enslave vrf interfaces
- 	for n in 5 7; do
--		ip li set ${NETIFS[p${n}]} vrf ${VRF}
-+		${IP} li set ${NETIFS[p${n}]} vrf ${VRF}
- 	done
- 
- 	# add addresses
- 	for n in 1 3 5 7; do
--		ip li set ${NETIFS[p${n}]} up
--		ip addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} up
-+		${IP} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		${IP} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
- 	# move peer interfaces to namespace and add addresses
- 	for n in 2 4 6 8; do
--		ip li set ${NETIFS[p${n}]} netns ${PEER_NS} up
--		ip -netns ${PEER_NS} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip -netns ${PEER_NS} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} netns ${ns2} up
-+		ip -netns $ns2 addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		ip -netns $ns2 addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
--	ip -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
--	ip -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
-+	${IP} -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
-+	${IP} -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
- 
- 	set +e
- }
- 
--cleanup()
--{
--	# make sure we start from a clean slate
--	cleanup_ns ${PEER_NS} 2>/dev/null
--	for n in 1 3 5 7; do
--		ip link del ${NETIFS[p${n}]} 2>/dev/null
--	done
--	ip link del ${VRF} 2>/dev/null
--	ip ro flush table ${VRF_TABLE}
--	ip -6 ro flush table ${VRF_TABLE}
--}
--
- ################################################################################
- # IPv4 tests
- #
-@@ -241,7 +231,7 @@ run_ip()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -257,8 +247,8 @@ run_ip_mpath()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -339,7 +329,7 @@ run_ip6()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -353,8 +343,8 @@ run_ip6_mpath()
- 	local exp_rc="$6"
- 	local desc="$7"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 "${opts}" \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 ${opts} \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -491,10 +481,9 @@ do
- 	esac
- done
- 
--cleanup
- setup
- run_onlink_tests
--cleanup
-+cleanup_ns ${ns1} ${ns2}
- 
- if [ "$TESTS" != "none" ]; then
- 	printf "\nTests passed: %3d\n" ${nsuccess}
+ 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, st->acquisition_time) |
+ 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, st->thermistor_term_en);
 -- 
 2.51.0
 
