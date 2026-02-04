@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDS7OYxcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:48 +0100
+	id GMCuI6Jpg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B03AE76B8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D31E950B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 827CB302AC1A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 292DA3019BBB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00652271A9A;
-	Wed,  4 Feb 2026 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AB6421A03;
+	Wed,  4 Feb 2026 15:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYP9Ca7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dd6ExQC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A311C5D77;
-	Wed,  4 Feb 2026 14:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5F63D994;
+	Wed,  4 Feb 2026 15:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216402; cv=none; b=nAtKMxSQOBCasDvCJIXa2bYJn07u77PqldfQXvApi3J6In5cNZ68wgo4TcD4dPCTlIWQDM2xCDDKEEXgRZ39mFAwtedGQlF/KeunXTgElqYEGDd2ZGNKrWvMBL15Tj17g7TpzywMNYw1/HFUfSWZHZTVm08eWO1txnyLKJ39aKg=
+	t=1770217950; cv=none; b=c7mbvMpv/cPmewzej8UM2mTo2z+JMvGGIER094Fx4AJiskwx/eRtDGUlZnTNBvrDNSq5ZllbQqUgSl3BO+T+8f0VUkZnWIFb4aL/YrhMxVX+Ko6O1wGFRtdFvg95cWWmaViXt0sJTV4ZEn3WQjheZ5bC+jpV6RTIYMEseE8ynt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216402; c=relaxed/simple;
-	bh=N/aK6n/k1U6fsvDvQy+WZ0GY9mKkOBx6gb7GHqDEWNc=;
+	s=arc-20240116; t=1770217950; c=relaxed/simple;
+	bh=J0V61IvU+kkV7g3mjRL9e0fPJ/G+8IoHYvckBxVBxkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xd8ksn1jTJ98DFvCxKWHvgwmr5xfkuBM9om2yvOUfzKKQu1UplNb/DPkgiZguFQupFLUdE7Xg5JlojBWse2gD3e0dMrb5pFbOaUh3HVt7t4dDnXpZEiUePhQCqJPNSqalzsm2NqAwqB6IoHoxUhkjDmgjUuFiZX4PRR9A9iqpBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYP9Ca7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231F4C19423;
-	Wed,  4 Feb 2026 14:46:41 +0000 (UTC)
+	 MIME-Version; b=JtGlKnO/sri9BYQKoAY/UEW3ONWzuaPiqoJQNL4+TflpC8LBwJPYW2hxCpuqGMF993Tdb9FTMUbAOanQ77RHBeQQDPlBUVvrxXd9gHozPSa1ltaOrwPfhX/CWGaLyq3RmsYiMEUaPQwsx0gurewc5377cD0gtO8f0YdeKmWBXnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dd6ExQC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2EEC19423;
+	Wed,  4 Feb 2026 15:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216402;
-	bh=N/aK6n/k1U6fsvDvQy+WZ0GY9mKkOBx6gb7GHqDEWNc=;
+	s=korg; t=1770217950;
+	bh=J0V61IvU+kkV7g3mjRL9e0fPJ/G+8IoHYvckBxVBxkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYP9Ca7udA0gdjDiJRF0t5Fb5ipvyGKADdOsDJSSfBlQWKjadEU+g4jPToipWRd9t
-	 VaeWvdT/zGmrt0biQREt+a8uawvmX2pMLUIKTSlVt3YMlUIXDU7b8cGS8xPJ3L6PwN
-	 J1kovveOWYrqFGfcfPI0rLeN2B8/yqv1P2Uf4/AA=
+	b=Dd6ExQC7V3tDKUh88+b8q+gNPGwAkxtvIA1K/G1/UfBt4UYNiu9JIJJeM+/qISEbx
+	 TTw7/EAJq2HZWJvURwgBTmguvJdrJA9ua959vBdPoz0qRxjIk8m1+q+7X+op48ZapA
+	 UrTr1xRqlkOkOXdxDkw4MdTApsDkcnLMRrjZwGj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/161] mISDN: annotate data-race around dev->work
-Date: Wed,  4 Feb 2026 15:39:01 +0100
-Message-ID: <20260204143854.558409734@linuxfoundation.org>
+	Jeson Gao <jeson.gao@unisoc.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1 168/280] arm64: Set __nocfi on swsusp_arch_resume()
+Date: Wed,  4 Feb 2026 15:39:02 +0100
+Message-ID: <20260204143915.667000017@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213457-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213918-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,117 +88,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 2B03AE76B8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E6D31E950B
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-[ Upstream commit 8175dbf174d487afab81e936a862a8d9b8a1ccb6 ]
+commit e2f8216ca2d8e61a23cb6ec355616339667e0ba6 upstream.
 
-dev->work can re read locklessly in mISDN_read()
-and mISDN_poll(). Add READ_ONCE()/WRITE_ONCE() annotations.
+A DABT is reported[1] on an android based system when resume from hiberate.
+This happens because swsusp_arch_suspend_exit() is marked with SYM_CODE_*()
+and does not have a CFI hash, but swsusp_arch_resume() will attempt to
+verify the CFI hash when calling a copy of swsusp_arch_suspend_exit().
 
-BUG: KCSAN: data-race in mISDN_ioctl / mISDN_read
+Given that there's an existing requirement that the entrypoint to
+swsusp_arch_suspend_exit() is the first byte of the .hibernate_exit.text
+section, we cannot fix this by marking swsusp_arch_suspend_exit() with
+SYM_FUNC_*(). The simplest fix for now is to disable the CFI check in
+swsusp_arch_resume().
 
-write to 0xffff88812d848280 of 4 bytes by task 10864 on cpu 1:
-  misdn_add_timer drivers/isdn/mISDN/timerdev.c:175 [inline]
-  mISDN_ioctl+0x2fb/0x550 drivers/isdn/mISDN/timerdev.c:233
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:597 [inline]
-  __se_sys_ioctl+0xce/0x140 fs/ioctl.c:583
-  __x64_sys_ioctl+0x43/0x50 fs/ioctl.c:583
-  x64_sys_call+0x14b0/0x3000 arch/x86/include/generated/asm/syscalls_64.h:17
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Mark swsusp_arch_resume() as __nocfi to disable the CFI check.
 
-read to 0xffff88812d848280 of 4 bytes by task 10857 on cpu 0:
-  mISDN_read+0x1f2/0x470 drivers/isdn/mISDN/timerdev.c:112
-  do_loop_readv_writev fs/read_write.c:847 [inline]
-  vfs_readv+0x3fb/0x690 fs/read_write.c:1020
-  do_readv+0xe7/0x210 fs/read_write.c:1080
-  __do_sys_readv fs/read_write.c:1165 [inline]
-  __se_sys_readv fs/read_write.c:1162 [inline]
-  __x64_sys_readv+0x45/0x50 fs/read_write.c:1162
-  x64_sys_call+0x2831/0x3000 arch/x86/include/generated/asm/syscalls_64.h:20
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[1]
+[   22.991934][    T1] Unable to handle kernel paging request at virtual address 0000000109170ffc
+[   22.991934][    T1] Mem abort info:
+[   22.991934][    T1]   ESR = 0x0000000096000007
+[   22.991934][    T1]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   22.991934][    T1]   SET = 0, FnV = 0
+[   22.991934][    T1]   EA = 0, S1PTW = 0
+[   22.991934][    T1]   FSC = 0x07: level 3 translation fault
+[   22.991934][    T1] Data abort info:
+[   22.991934][    T1]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+[   22.991934][    T1]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   22.991934][    T1]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   22.991934][    T1] [0000000109170ffc] user address but active_mm is swapper
+[   22.991934][    T1] Internal error: Oops: 0000000096000007 [#1] PREEMPT SMP
+[   22.991934][    T1] Dumping ftrace buffer:
+[   22.991934][    T1]    (ftrace buffer empty)
+[   22.991934][    T1] Modules linked in:
+[   22.991934][    T1] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.98-android15-8-g0b1d2aee7fc3-dirty-4k #1 688c7060a825a3ac418fe53881730b355915a419
+[   22.991934][    T1] Hardware name: Unisoc UMS9360-base Board (DT)
+[   22.991934][    T1] pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   22.991934][    T1] pc : swsusp_arch_resume+0x2ac/0x344
+[   22.991934][    T1] lr : swsusp_arch_resume+0x294/0x344
+[   22.991934][    T1] sp : ffffffc08006b960
+[   22.991934][    T1] x29: ffffffc08006b9c0 x28: 0000000000000000 x27: 0000000000000000
+[   22.991934][    T1] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000820
+[   22.991934][    T1] x23: ffffffd0817e3000 x22: ffffffd0817e3000 x21: 0000000000000000
+[   22.991934][    T1] x20: ffffff8089171000 x19: ffffffd08252c8c8 x18: ffffffc080061058
+[   22.991934][    T1] x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 0000000000000004
+[   22.991934][    T1] x14: ffffff8178c88000 x13: 0000000000000006 x12: 0000000000000000
+[   22.991934][    T1] x11: 0000000000000015 x10: 0000000000000001 x9 : ffffffd082533000
+[   22.991934][    T1] x8 : 0000000109171000 x7 : 205b5d3433393139 x6 : 392e32322020205b
+[   22.991934][    T1] x5 : 000000010916f000 x4 : 000000008164b000 x3 : ffffff808a4e0530
+[   22.991934][    T1] x2 : ffffffd08058e784 x1 : 0000000082326000 x0 : 000000010a283000
+[   22.991934][    T1] Call trace:
+[   22.991934][    T1]  swsusp_arch_resume+0x2ac/0x344
+[   22.991934][    T1]  hibernation_restore+0x158/0x18c
+[   22.991934][    T1]  load_image_and_restore+0xb0/0xec
+[   22.991934][    T1]  software_resume+0xf4/0x19c
+[   22.991934][    T1]  software_resume_initcall+0x34/0x78
+[   22.991934][    T1]  do_one_initcall+0xe8/0x370
+[   22.991934][    T1]  do_initcall_level+0xc8/0x19c
+[   22.991934][    T1]  do_initcalls+0x70/0xc0
+[   22.991934][    T1]  do_basic_setup+0x1c/0x28
+[   22.991934][    T1]  kernel_init_freeable+0xe0/0x148
+[   22.991934][    T1]  kernel_init+0x20/0x1a8
+[   22.991934][    T1]  ret_from_fork+0x10/0x20
+[   22.991934][    T1] Code: a9400a61 f94013e0 f9438923 f9400a64 (b85fc110)
 
-value changed: 0x00000000 -> 0x00000001
-
-Fixes: 1b2b03f8e514 ("Add mISDN core files")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260118132528.2349573-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Co-developed-by: Jeson Gao <jeson.gao@unisoc.com>
+Signed-off-by: Jeson Gao <jeson.gao@unisoc.com>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Cc: <stable@vger.kernel.org>
+[catalin.marinas@arm.com: commit log updated by Mark Rutland]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/isdn/mISDN/timerdev.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/kernel/hibernate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/isdn/mISDN/timerdev.c b/drivers/isdn/mISDN/timerdev.c
-index abdf36ac3bee5..74d6ed49dc368 100644
---- a/drivers/isdn/mISDN/timerdev.c
-+++ b/drivers/isdn/mISDN/timerdev.c
-@@ -109,14 +109,14 @@ mISDN_read(struct file *filep, char __user *buf, size_t count, loff_t *off)
- 		spin_unlock_irq(&dev->lock);
- 		if (filep->f_flags & O_NONBLOCK)
- 			return -EAGAIN;
--		wait_event_interruptible(dev->wait, (dev->work ||
-+		wait_event_interruptible(dev->wait, (READ_ONCE(dev->work) ||
- 						     !list_empty(list)));
- 		if (signal_pending(current))
- 			return -ERESTARTSYS;
- 		spin_lock_irq(&dev->lock);
- 	}
- 	if (dev->work)
--		dev->work = 0;
-+		WRITE_ONCE(dev->work, 0);
- 	if (!list_empty(list)) {
- 		timer = list_first_entry(list, struct mISDNtimer, list);
- 		list_del(&timer->list);
-@@ -141,13 +141,16 @@ mISDN_poll(struct file *filep, poll_table *wait)
- 	if (*debug & DEBUG_TIMER)
- 		printk(KERN_DEBUG "%s(%p, %p)\n", __func__, filep, wait);
- 	if (dev) {
-+		u32 work;
-+
- 		poll_wait(filep, &dev->wait, wait);
- 		mask = 0;
--		if (dev->work || !list_empty(&dev->expired))
-+		work = READ_ONCE(dev->work);
-+		if (work || !list_empty(&dev->expired))
- 			mask |= (EPOLLIN | EPOLLRDNORM);
- 		if (*debug & DEBUG_TIMER)
- 			printk(KERN_DEBUG "%s work(%d) empty(%d)\n", __func__,
--			       dev->work, list_empty(&dev->expired));
-+			       work, list_empty(&dev->expired));
- 	}
- 	return mask;
- }
-@@ -172,7 +175,7 @@ misdn_add_timer(struct mISDNtimerdev *dev, int timeout)
- 	struct mISDNtimer	*timer;
- 
- 	if (!timeout) {
--		dev->work = 1;
-+		WRITE_ONCE(dev->work, 1);
- 		wake_up_interruptible(&dev->wait);
- 		id = 0;
- 	} else {
--- 
-2.51.0
-
+--- a/arch/arm64/kernel/hibernate.c
++++ b/arch/arm64/kernel/hibernate.c
+@@ -397,7 +397,7 @@ int swsusp_arch_suspend(void)
+  * Memory allocated by get_safe_page() will be dealt with by the hibernate code,
+  * we don't need to free it here.
+  */
+-int swsusp_arch_resume(void)
++int __nocfi swsusp_arch_resume(void)
+ {
+ 	int rc;
+ 	void *zero_page;
 
 
 
