@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-214120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPUsGpxng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:00 +0100
+	id eHSPFaptg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B082CE8F6F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5274EE9C43
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4899131FFBE2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B008331BD5E8
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6E22DCF61;
-	Wed,  4 Feb 2026 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3694A273D77;
+	Wed,  4 Feb 2026 15:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khxaShv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNVjGdzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA8E1C84D0;
-	Wed,  4 Feb 2026 15:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B219E96D;
+	Wed,  4 Feb 2026 15:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218633; cv=none; b=AOTQDiihYiTyt8QEzyWikiRF9Ibg91kXII2fsMOQnoJ/reVPtT5q4A8gBU7G8e7RxcfAbQtRzSvrCsssIunsTENPqXmLW0/QJpegVfJaDx5hgSF7tFsldae/I2rZhnPGW3KxMs/EzIGDnn6z9UwfabhCVTGrf8QGMsDw00bu7FY=
+	t=1770219091; cv=none; b=pfjJJZzClFZvH0xxvu+w2GatYcGAnwygtZqxtQYViVz9HlSlT2hh8rpST/Gtn7nMUfl2O8Y9j+h4NYjz6Gj0LdHOPugxQae+HotCMjuQo0EuckcLnqIULjmES9Qck3frxqyU6In1EzkUhnGLA8bhqPTnoar7L4wTTAVQ4DucTOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218633; c=relaxed/simple;
-	bh=nJK95Jq+ikcFUbshmCNV8Gn6WQGqejlYitt2RKH5RVg=;
+	s=arc-20240116; t=1770219091; c=relaxed/simple;
+	bh=L9YCclQGQmuLi2eND9meB35oRSCLXh9bd4iPVwpTrls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5e2cmKtu5zzQzrqSXNuGKwiHD0DNWr9A4zTNNCv9VgNJf8aZ3zduGTovxhG2LT5nUsr/HXuu/0Ji6VlivhiUIIdLpjZu+Y8tMtgQGlUSqTZp7MCjlvXfsyHvN4N3OKG3vPsMMLdE+Sn+fPkadH67A6PUU8zGIZCPClxG92MOAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khxaShv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EB9C4CEF7;
-	Wed,  4 Feb 2026 15:23:52 +0000 (UTC)
+	 MIME-Version; b=WuE34ZutcakfX4eArnn4tNuHVc+E4HKcmzTnUO23mUmj6OyjSfdVdT9QXe67miRCOQ1a1pcXDoFHVRSLC4kq+WM43xQ0jlyXRWIvvgruj93ysXmvMw0wUAqIa6zIFwQ3S1rwy0ZUCN8D6qbn7tPPAQtnupGuNuZ85DD+hG95WGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNVjGdzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4C3C4CEF7;
+	Wed,  4 Feb 2026 15:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218633;
-	bh=nJK95Jq+ikcFUbshmCNV8Gn6WQGqejlYitt2RKH5RVg=;
+	s=korg; t=1770219090;
+	bh=L9YCclQGQmuLi2eND9meB35oRSCLXh9bd4iPVwpTrls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khxaShv0C7/FjjcC4TbQCGaIcNd1uXTZ9PI1gsSMj47JpolZ+QkOnmVn6AkAKEoGT
-	 0/v4DmQJMMOU21U6MLiK3T6A1Dp/inKLkzj36o/+e9eEzeb0qvpCypRtCUsgMzkeLh
-	 AGjdqqK0BqLWFKnFQ0oLrZhlq3ONCqoF5VSFoBuc=
+	b=WNVjGdzWJOpu9Bvg6aBqPMacsox/wOitBNW03VtLheSEoIbVRCkakNXO319n++lB0
+	 z9LE4+0T8vm8ji+JFoMZ0OSqPh7Whsn71Ob0hPF9Pl8UDueE84HmITm8XTYSKinyxY
+	 9WJI6cXgb6MN1oECbUx1YpN3xuphPck4XJtDuqaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Kohei Enju <enjuk@amazon.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 05/87] can: gs_usb: gs_usb_receive_bulk_callback(): fix error message
+Subject: [PATCH 6.18 021/122] ixgbe: fix memory leaks in the ixgbe_recovery_probe() path
 Date: Wed,  4 Feb 2026 15:40:03 +0100
-Message-ID: <20260204143847.106248105@linuxfoundation.org>
+Message-ID: <20260204143852.628766341@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214120-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214258-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,59 +90,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: B082CE8F6F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5274EE9C43
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 494fc029f662c331e06b7c2031deff3c64200eed ]
+[ Upstream commit 638344712aefeba97b6e0d90f560815fd88abd0f ]
 
-Sinc commit 79a6d1bfe114 ("can: gs_usb: gs_usb_receive_bulk_callback():
-unanchor URL on usb_submit_urb() error") a failing resubmit URB will print
-an info message.
+When ixgbe_recovery_probe() is invoked and this function fails,
+allocated resources in advance are not completely freed, because
+ixgbe_probe() returns ixgbe_recovery_probe() directly and
+ixgbe_recovery_probe() only frees partial resources, resulting in memory
+leaks including:
+- adapter->io_addr
+- adapter->jump_tables[0]
+- adapter->mac_table
+- adapter->rss_key
+- adapter->af_xdp_zc_qps
 
-In the case of a short read where netdev has not yet been assigned,
-initialize as NULL to avoid dereferencing an undefined value. Also report
-the error value of the failed resubmit.
+The leaked MMIO region can be observed in /proc/vmallocinfo, and the
+remaining leaks are reported by kmemleak.
 
-Fixes: 79a6d1bfe114 ("can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL on usb_submit_urb() error")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/all/20260119181904.1209979-1-kuba@kernel.org/
-Link: https://patch.msgid.link/20260120-gs_usb-fix-error-message-v1-1-6be04de572bc@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Don't return ixgbe_recovery_probe() directly, and instead let
+ixgbe_probe() to clean up resources on failures.
+
+Fixes: 29cb3b8d95c7 ("ixgbe: add E610 implementation of FW recovery mode")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 20 ++++++++-----------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index e63e77f21801c..d1d1412c65659 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -607,7 +607,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 3190ce7e44c74..ee1007e9b6355 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -11468,14 +11468,12 @@ static void ixgbe_set_fw_version(struct ixgbe_adapter *adapter)
+  */
+ static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
  {
- 	struct gs_usb *parent = urb->context;
- 	struct gs_can *dev;
--	struct net_device *netdev;
-+	struct net_device *netdev = NULL;
- 	int rc;
- 	struct net_device_stats *stats;
- 	struct gs_host_frame *hf = urb->transfer_buffer;
-@@ -765,7 +765,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 		}
- 	} else if (rc != -ESHUTDOWN && net_ratelimit()) {
- 		netdev_info(netdev, "failed to re-submit IN URB: %pe\n",
--			    ERR_PTR(urb->status));
-+			    ERR_PTR(rc));
- 	}
+-	struct net_device *netdev = adapter->netdev;
+ 	struct pci_dev *pdev = adapter->pdev;
+ 	struct ixgbe_hw *hw = &adapter->hw;
+-	bool disable_dev;
+ 	int err = -EIO;
+ 
+ 	if (hw->mac.type != ixgbe_mac_e610)
+-		goto clean_up_probe;
++		return err;
+ 
+ 	ixgbe_get_hw_control(adapter);
+ 	mutex_init(&hw->aci.lock);
+@@ -11507,13 +11505,6 @@ static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
+ shutdown_aci:
+ 	mutex_destroy(&adapter->hw.aci.lock);
+ 	ixgbe_release_hw_control(adapter);
+-clean_up_probe:
+-	disable_dev = !test_and_set_bit(__IXGBE_DISABLED, &adapter->state);
+-	free_netdev(netdev);
+-	devlink_free(adapter->devlink);
+-	pci_release_mem_regions(pdev);
+-	if (disable_dev)
+-		pci_disable_device(pdev);
+ 	return err;
  }
  
+@@ -11655,8 +11646,13 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (err)
+ 		goto err_sw_init;
+ 
+-	if (ixgbe_check_fw_error(adapter))
+-		return ixgbe_recovery_probe(adapter);
++	if (ixgbe_check_fw_error(adapter)) {
++		err = ixgbe_recovery_probe(adapter);
++		if (err)
++			goto err_sw_init;
++
++		return 0;
++	}
+ 
+ 	if (adapter->hw.mac.type == ixgbe_mac_e610) {
+ 		err = ixgbe_get_caps(&adapter->hw);
 -- 
 2.51.0
 
