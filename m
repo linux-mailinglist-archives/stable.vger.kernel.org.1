@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCeHOnBog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:32 +0100
+	id ECOVCo1dg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34AEAE91AC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B81E78BC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4EDD131B8533
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1EFA3069D55
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B770527F163;
-	Wed,  4 Feb 2026 15:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7B62C0323;
+	Wed,  4 Feb 2026 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pO+Tiii5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkL0yGPh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3682D8798;
-	Wed,  4 Feb 2026 15:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF302BE037;
+	Wed,  4 Feb 2026 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218183; cv=none; b=eT4++JDRY1e8bUttlTJRbqPYfuMRlWt8vpGlXgTOrORjWejKaI+SVhya14nov0p5WPu0bBNYtiFerDhxToGn4q+mbMSWoP6yU6r7ZKRTyzLzOEWBJBfpi8LBcsTe9QMXa8fzlLLr48OPBiZGUk3XnaeXOeGKb2H8GE51gp5lUQM=
+	t=1770216524; cv=none; b=lCNACL02ESut1AiU4NHvcMcgncmdQnaAn3AHzWQoRa2L4L+zi03qXhtj0WwIrX385EJWIkxwejMhyApJa9s9SNxkh/maWa976Sb8q0Sc+Zh/CJgLcWQeHVjTbM+6RCWnPsA2vJhJ0HVLyKLo/8TTyac+g8aXBLdZCftPXzW0Al0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218183; c=relaxed/simple;
-	bh=wNMa3y/Dm8dHnF/GSh8kei7z6goi3uYGgyTzpPvnok0=;
+	s=arc-20240116; t=1770216524; c=relaxed/simple;
+	bh=53NXDstsln4orSu/t9f4P+7+z5B+00sYXooITS/J3YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6RuD18BJ75YBXwm4t45ix88hW0LyRk6GcK5pydXIAara2h4brQmbKQwklorxLLeDV1fYw3FMh4I2s++W/ZomBAsc2UkLAvReLqko5SaSTizvfn75+Fw2Pb6eiIg5WrWLn7ylaq+fOjcaib7Xlo6rOdGoQxxSjQWcENnBkIQVcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pO+Tiii5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76391C4CEF7;
-	Wed,  4 Feb 2026 15:16:22 +0000 (UTC)
+	 MIME-Version; b=fgfeNCeNadI9o5w1h5mJ4RojDy3b1SmsRAJBsn6WXm4xXIFMTOOy1Am1IilK0VgEELjCVhPznOK9MK1fh5vo+BIKLMb15EUpEklu9OjZt36HLK2L7+AF/d0RhExOZlnks0BcQYHCRyNwOHoVW5y++IJsxgCQPz31OSr4GB1qQRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkL0yGPh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CA3C19423;
+	Wed,  4 Feb 2026 14:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218183;
-	bh=wNMa3y/Dm8dHnF/GSh8kei7z6goi3uYGgyTzpPvnok0=;
+	s=korg; t=1770216524;
+	bh=53NXDstsln4orSu/t9f4P+7+z5B+00sYXooITS/J3YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pO+Tiii5YqoLZAvvpjooUEg6HN8wMYOmfYJQXUcA/E7pQbEZac2A9GBMBUMWqtV2g
-	 nYpNaQ+d+vTMBEifSH+2oCSObT027+8LOJTCJkG8lH4QK37VbgQ/WKnRiBfrvg/DGS
-	 jhy5xuYT3lD5EvdN94w9DcJbpQYZif7Z41Vn1mGI=
+	b=SkL0yGPhHfULNpPqMT0POXwYt3QhFmiVClRMH+XFQEZtYeA+Qy8d4SbtRMFC8+wWs
+	 EGlH20neBPorpjgJA0r+Z9yuArxt0bDFvs7dC0gdj0qSrFm3cjGxgjj79VZ7FUS1+g
+	 vtxUo5czR7dj+JQ35DcZqSunCLWZRRnn7q5EovY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tagir Garaev <tgaraev653@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 203/280] ASoC: Intel: sof_es8336: fix headphone GPIO logic inversion
+	syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 5.10 114/161] bpf: Reject narrower access to pointer ctx fields
 Date: Wed,  4 Feb 2026 15:39:37 +0100
-Message-ID: <20260204143916.907073892@linuxfoundation.org>
+Message-ID: <20260204143855.845699240@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +67,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213988-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213493-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,suse.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,0ef84a7bdf5301d4cbec];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 34AEAE91AC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,appspotmail.com:email,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 77B81E78BC
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tagir Garaev <tgaraev653@gmail.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 213c4e51267fd825cd21a08a055450cac7e0b7fb ]
+commit e09299225d5ba3916c91ef70565f7d2187e4cca0 upstream.
 
-The headphone GPIO should be set to the inverse of speaker_en.
-When speakers are enabled, headphones should be disabled and vice versa.
+The following BPF program, simplified from a syzkaller repro, causes a
+kernel warning:
 
-Currently both GPIOs are set to the same value (speaker_en), causing
-audio to play through both speakers and headphones simultaneously
-when headphones are plugged in.
+    r0 = *(u8 *)(r1 + 169);
+    exit;
 
-Tested on Huawei Matebook (BOD-WXX9) with ES8336 codec.
+With pointer field sk being at offset 168 in __sk_buff. This access is
+detected as a narrower read in bpf_skb_is_valid_access because it
+doesn't match offsetof(struct __sk_buff, sk). It is therefore allowed
+and later proceeds to bpf_convert_ctx_access. Note that for the
+"is_narrower_load" case in the convert_ctx_accesses(), the insn->off
+is aligned, so the cnt may not be 0 because it matches the
+offsetof(struct __sk_buff, sk) in the bpf_convert_ctx_access. However,
+the target_size stays 0 and the verifier errors with a kernel warning:
 
-Fixes: 6e1ff1459e00 ("ASoC: Intel: sof_es8336: support a separate gpio to control headphone")
-Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
-Link: https://patch.msgid.link/20260121152435.101698-1-tgaraev653@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    verifier bug: error during ctx access conversion(1)
+
+This patch fixes that to return a proper "invalid bpf_context access
+off=X size=Y" error on the load instruction.
+
+The same issue affects multiple other fields in context structures that
+allow narrow access. Some other non-affected fields (for sk_msg,
+sk_lookup, and sockopt) were also changed to use bpf_ctx_range_ptr for
+consistency.
+
+Note this syzkaller crash was reported in the "Closes" link below, which
+used to be about a different bug, fixed in
+commit fce7bd8e385a ("bpf/verifier: Handle BPF_LOAD_ACQ instructions
+in insn_def_regno()"). Because syzbot somehow confused the two bugs,
+the new crash and repro didn't get reported to the mailing list.
+
+Fixes: f96da09473b52 ("bpf: simplify narrower ctx access")
+Fixes: 0df1a55afa832 ("bpf: Warn on internal verifier errors")
+Reported-by: syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0ef84a7bdf5301d4cbec
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://patch.msgid.link/3b8dcee67ff4296903351a974ddd9c4dca768b64.1753194596.git.paul.chaignon@gmail.com
+[shung-hsi.yu: offset(struct bpf_sock_ops, skb_hwtstamp) case was
+dropped becasuse it was only added in v6.2 with commit 9bb053490f1a
+("bpf: Add hwtstamp field for the sockops prog")]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_es8336.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/cgroup.c |    8 ++++----
+ net/core/filter.c   |   18 +++++++++---------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index e22d767b6e97a..41dab5dcf79a3 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -120,7 +120,7 @@ static void pcm_pop_work_events(struct work_struct *work)
- 	gpiod_set_value_cansleep(priv->gpio_speakers, priv->speaker_en);
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -1915,22 +1915,22 @@ static bool cg_sockopt_is_valid_access(i
+ 	}
  
- 	if (quirk & SOF_ES8336_HEADPHONE_GPIO)
--		gpiod_set_value_cansleep(priv->gpio_headphone, priv->speaker_en);
-+		gpiod_set_value_cansleep(priv->gpio_headphone, !priv->speaker_en);
+ 	switch (off) {
+-	case offsetof(struct bpf_sockopt, sk):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, sk):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+ 		break;
+-	case offsetof(struct bpf_sockopt, optval):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, optval):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_PACKET;
+ 		break;
+-	case offsetof(struct bpf_sockopt, optval_end):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, optval_end):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_PACKET_END;
+ 		break;
+-	case offsetof(struct bpf_sockopt, retval):
++	case bpf_ctx_range(struct bpf_sockopt, retval):
+ 		if (size != size_default)
+ 			return false;
+ 		return prog->expected_attach_type == BPF_CGROUP_GETSOCKOPT;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7634,7 +7634,7 @@ static bool bpf_skb_is_valid_access(int
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct __sk_buff, sk):
++	case bpf_ctx_range_ptr(struct __sk_buff, sk):
+ 		if (type == BPF_WRITE || size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCK_COMMON_OR_NULL;
+@@ -8151,7 +8151,7 @@ static bool sock_addr_is_valid_access(in
+ 				return false;
+ 		}
+ 		break;
+-	case offsetof(struct bpf_sock_addr, sk):
++	case bpf_ctx_range_ptr(struct bpf_sock_addr, sk):
+ 		if (type != BPF_READ)
+ 			return false;
+ 		if (size != sizeof(__u64))
+@@ -8205,17 +8205,17 @@ static bool sock_ops_is_valid_access(int
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, sk):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, sk):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_SOCKET_OR_NULL;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, skb_data):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_PACKET;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, skb_data_end):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data_end):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_PACKET_END;
+@@ -8289,17 +8289,17 @@ static bool sk_msg_is_valid_access(int o
+ 		return false;
  
- }
+ 	switch (off) {
+-	case offsetof(struct sk_msg_md, data):
++	case bpf_ctx_range_ptr(struct sk_msg_md, data):
+ 		info->reg_type = PTR_TO_PACKET;
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct sk_msg_md, data_end):
++	case bpf_ctx_range_ptr(struct sk_msg_md, data_end):
+ 		info->reg_type = PTR_TO_PACKET_END;
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct sk_msg_md, sk):
++	case bpf_ctx_range_ptr(struct sk_msg_md, sk):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+@@ -10324,7 +10324,7 @@ static bool sk_lookup_is_valid_access(in
+ 		return false;
  
--- 
-2.51.0
-
+ 	switch (off) {
+-	case offsetof(struct bpf_sk_lookup, sk):
++	case bpf_ctx_range_ptr(struct bpf_sk_lookup, sk):
+ 		info->reg_type = PTR_TO_SOCKET_OR_NULL;
+ 		return size == sizeof(__u64);
+ 
 
 
 
