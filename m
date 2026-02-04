@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCjXEOlog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:33 +0100
+	id mBW/OF1ng2kFmgMAu9opvQ
+	(envelope-from <stable+bounces-214093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D117EE92EE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F08E8EEE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7BC13084BEA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1813A311A26D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9A241B34E;
-	Wed,  4 Feb 2026 15:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935142D8763;
+	Wed,  4 Feb 2026 15:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8yyYmiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcsX+o3F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12341322E;
-	Wed,  4 Feb 2026 15:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56ECB421EE3;
+	Wed,  4 Feb 2026 15:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219147; cv=none; b=Jb+CZAya0iZ+XHybKjFb8V03IU4tMo8/91mU9r6IaQwvYSbOC10PHw1izimy6WPGu6jgoc7om4ytw2MYtwiB3h8PcGFEVS9lUVHQ7l3HTJX5Zh96H4cdDGivq0Jg9i8b/vmO3tjrYndTcjirpQOdOY1qXcnCyz9aSKnaM2qzpIo=
+	t=1770218539; cv=none; b=HUgBmHo415VL2hUBa7NIwk2i+2vIFOD2bdIbu59tO9UwJefd2iaEDeyRin+fDX8Q3t0z+jyzxtlQ1NapFhuMLdFXul1HnkEwzWHcT5ZxdBK8s1Fu4LPzJfqXJJFeonKqDy+lAhpCM+4Dr85u3t8mLZKsHUI54PT7UgnNj6BabxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219147; c=relaxed/simple;
-	bh=ASvOPFK+4y/THfHKY5WXz+Uv1LWkyU3MwvMt8laZ2Mw=;
+	s=arc-20240116; t=1770218539; c=relaxed/simple;
+	bh=zpNb8GM7KOxYLQcL8ZBW3R+fPavljUizfqlrgdyXCA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8ZYq25XN0JnCyn8jrzSHQp4TWGyhgQJVLSobE5vLRR/MRSruw5XJiVRT2q5oObkoO0L24mp/EpcW0JJYGszFFWa99Ss2ahuUK65ILRk6Q4g2gftSiRea4G8b7wn9Sw5SYtHR+ZwhJcgAKKiszzxoZ4hbCWKnS5gSpDS3Lrc9fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8yyYmiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15B7C19423;
-	Wed,  4 Feb 2026 15:32:26 +0000 (UTC)
+	 MIME-Version; b=qpOU9xL5Xdx0CkBsllsKLH3UEBJ0shKI04l72YD/42dvLEJCSStryd8WJPDHiulem1JwmttZ35WMVcbADo41SWT8ftI9qAVQioLhzStrHqkNW/hhgG7Cb8aOt1/sTXXWEZ3tA63Rz2DqnKx5RoTTtWABOuVmkBywCa8pK90v8LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcsX+o3F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD61FC19423;
+	Wed,  4 Feb 2026 15:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219147;
-	bh=ASvOPFK+4y/THfHKY5WXz+Uv1LWkyU3MwvMt8laZ2Mw=;
+	s=korg; t=1770218539;
+	bh=zpNb8GM7KOxYLQcL8ZBW3R+fPavljUizfqlrgdyXCA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8yyYmiJpnU2IjMidvUELFNrB4jBqODqtYx28oex7ciNVHNGAT6dlc8HB4a9G6dDx
-	 BH0p1mrwGbHmaudggUwIwsL++vHkQntZwsj7KFAh4mok4jxh3iBWyvghg0Mfjl5Qlb
-	 RogcjTSLgCT3Q9RzQVEhe87YpknaNcRE2gYmdca8=
+	b=XcsX+o3Fv34CskTeTTh+WRSSjh1eYdbsuo2mXrD9FrnUdHth353JwhJgNBU4LBE9b
+	 PKrO2KnTBR0J50FDFY9DaKzDtHTL/MOdeGtH2QtPz1zlP0yPwp+e5EK4NALxREzPIq
+	 DhEodmZAr5L2lM7mleJdDcl6XdiC6eKstJjP+utM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 081/122] selftests: mptcp: check subflow errors in close events
+	Guenter Roeck <linux@roeck-us.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 60/72] perf: sched: Fix perf crash with new is_user_task() helper
 Date: Wed,  4 Feb 2026 15:41:03 +0100
-Message-ID: <20260204143854.766520613@linuxfoundation.org>
+Message-ID: <20260204143847.810154630@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +70,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214093-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214276-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D117EE92EE
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 45F08E8EEE
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 2ef9e3a3845d0a20b62b01f5b731debd0364688d upstream.
+[ Upstream commit 76ed27608f7dd235b727ebbb12163438c2fbb617 ]
 
-This validates the previous commit: subflow closed events should contain
-an error field when a subflow got closed with an error, e.g. reset or
-timeout.
+In order to do a user space stacktrace the current task needs to be a user
+task that has executed in user space. It use to be possible to test if a
+task is a user task or not by simply checking the task_struct mm field. If
+it was non NULL, it was a user task and if not it was a kernel task.
 
-For this test, the chk_evt_nr helper has been extended to check
-attributes in the matched events.
+But things have changed over time, and some kernel tasks now have their
+own mm field.
 
-In this test, the 2 subflow closed events should have an error.
+An idea was made to instead test PF_KTHREAD and two functions were used to
+wrap this check in case it became more complex to test if a task was a
+user task or not[1]. But this was rejected and the C code simply checked
+the PF_KTHREAD directly.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+It was later found that not all kernel threads set PF_KTHREAD. The io-uring
+helpers instead set PF_USER_WORKER and this needed to be added as well.
 
-Fixes: 15cc10453398 ("mptcp: deliver ssk errors to msk")
+But checking the flags is still not enough. There's a very small window
+when a task exits that it frees its mm field and it is set back to NULL.
+If perf were to trigger at this moment, the flags test would say its a
+user space task but when perf would read the mm field it would crash with
+at NULL pointer dereference.
+
+Now there are flags that can be used to test if a task is exiting, but
+they are set in areas that perf may still want to profile the user space
+task (to see where it exited). The only real test is to check both the
+flags and the mm field.
+
+Instead of making this modification in every location, create a new
+is_user_task() helper function that does all the tests needed to know if
+it is safe to read the user space memory or not.
+
+[1] https://lore.kernel.org/all/20250425204120.639530125@goodmis.org/
+
+Fixes: 90942f9fac05 ("perf: Use current->flags & PF_KTHREAD|PF_USER_WORKER instead of current->mm == NULL")
+Closes: https://lore.kernel.org/all/0d877e6f-41a7-4724-875d-0b0a27b8a545@roeck-us.net/
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-4-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20260129102821.46484722@gandalf.local.home
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ include/linux/sched.h     |    5 +++++
+ kernel/events/callchain.c |    2 +-
+ kernel/events/core.c      |    6 +++---
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3692,21 +3692,28 @@ userspace_pm_chk_get_addr()
- 	fi
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1800,6 +1800,11 @@ static __always_inline bool is_percpu_th
+ #endif
  }
  
--# $1: ns ; $2: event type ; $3: count
-+# $1: ns ; $2: event type ; $3: count ; [ $4: attr ; $5: attr count ]
- chk_evt_nr()
++static __always_inline bool is_user_task(struct task_struct *task)
++{
++	return task->mm && !(task->flags & (PF_KTHREAD | PF_USER_WORKER));
++}
++
+ /* Per-process atomic flags. */
+ #define PFA_NO_NEW_PRIVS		0	/* May not gain new privileges. */
+ #define PFA_SPREAD_PAGE			1	/* Spread page cache over cpuset */
+--- a/kernel/events/callchain.c
++++ b/kernel/events/callchain.c
+@@ -206,7 +206,7 @@ get_perf_callchain(struct pt_regs *regs,
+ 
+ 	if (user && !crosstask) {
+ 		if (!user_mode(regs)) {
+-			if (current->flags & (PF_KTHREAD | PF_USER_WORKER))
++			if (!is_user_task(current))
+ 				regs = NULL;
+ 			else
+ 				regs = task_pt_regs(current);
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6985,7 +6985,7 @@ static void perf_sample_regs_user(struct
+ 	if (user_mode(regs)) {
+ 		regs_user->abi = perf_reg_abi(current);
+ 		regs_user->regs = regs;
+-	} else if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++	} else if (is_user_task(current)) {
+ 		perf_get_regs_user(regs_user, regs);
+ 	} else {
+ 		regs_user->abi = PERF_SAMPLE_REGS_ABI_NONE;
+@@ -7612,7 +7612,7 @@ static u64 perf_virt_to_phys(u64 virt)
+ 		 * Try IRQ-safe get_user_page_fast_only first.
+ 		 * If failed, leave phys_addr as 0.
+ 		 */
+-		if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER))) {
++		if (is_user_task(current)) {
+ 			struct page *p;
+ 
+ 			pagefault_disable();
+@@ -7725,7 +7725,7 @@ perf_callchain(struct perf_event *event,
  {
- 	local ns=${1}
- 	local evt_name="${2}"
- 	local exp="${3}"
-+	local attr="${4}"
-+	local attr_exp="${5}"
- 
- 	local evts="${evts_ns1}"
- 	local evt="${!evt_name}"
-+	local attr_name
- 	local count
- 
-+	if [ -n "${attr}" ]; then
-+		attr_name=", ${attr}: ${attr_exp}"
-+	fi
-+
- 	evt_name="${evt_name:16}" # without MPTCP_LIB_EVENT_
- 	[ "${ns}" == "ns2" ] && evts="${evts_ns2}"
- 
--	print_check "event ${ns} ${evt_name} (${exp})"
-+	print_check "event ${ns} ${evt_name} (${exp}${attr_name})"
- 
- 	if [[ "${evt_name}" = "LISTENER_"* ]] &&
- 	   ! mptcp_lib_kallsyms_has "mptcp_event_pm_listener$"; then
-@@ -3718,6 +3725,16 @@ chk_evt_nr()
- 	if [ "${count}" != "${exp}" ]; then
- 		fail_test "got ${count} events, expected ${exp}"
- 		cat "${evts}"
-+		return
-+	elif [ -z "${attr}" ]; then
-+		print_ok
-+		return
-+	fi
-+
-+	count=$(grep -w "type:${evt}" "${evts}" | grep -c ",${attr}:")
-+	if [ "${count}" != "${attr_exp}" ]; then
-+		fail_test "got ${count} event attributes, expected ${attr_exp}"
-+		grep -w "type:${evt}" "${evts}"
- 	else
- 		print_ok
- 	fi
-@@ -3976,7 +3993,7 @@ userspace_tests()
- 			chk_subflows_total 1 1
- 			userspace_pm_add_sf $ns2 10.0.1.2 0
- 			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
--			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2 error 2
- 		fi
- 		kill_events_pids
- 		mptcp_lib_kill_group_wait $tests_pid
+ 	bool kernel = !event->attr.exclude_callchain_kernel;
+ 	bool user   = !event->attr.exclude_callchain_user &&
+-		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
++		is_user_task(current);
+ 	/* Disallow cross-task user callchains. */
+ 	bool crosstask = event->ctx->task && event->ctx->task != current;
+ 	const u32 max_stack = event->attr.sample_max_stack;
 
 
 
