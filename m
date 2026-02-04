@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKnaEipig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:46 +0100
+	id yA4EKqlkg2l1mQMAu9opvQ
+	(envelope-from <stable+bounces-213845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8362E8268
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCA4E876E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAB80301C88F
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05E663030334
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65C23D413D;
-	Wed,  4 Feb 2026 14:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E426428471;
+	Wed,  4 Feb 2026 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgKgCbDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+n3HPAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B18627F749;
-	Wed,  4 Feb 2026 14:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51282DCF61;
+	Wed,  4 Feb 2026 15:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216809; cv=none; b=bD1VzZr7QTkLOG6X9Lx3xfWHGnAjvORSSREIAEiP3Hgwfg5k3At3Az36J9oCBjbbb3cxyNtpqSC/zAp+gPz3cLiHHRd7LTLy4QVC7t7xQgihhkAnW/KAZXKuDiB3pMmlW8ipMcPZCyLZROIBuBcyHDbSiIvWuG+txnfNeIAsUCc=
+	t=1770217707; cv=none; b=HRvlzUGN/i1FvNljATHVqFWlGONg8A4wtAYxdrGCYCiHVpFhD8nGJng47qBSnNZoxF5xDtIOzOm20EfMTvzEV+R1/WYWRB0h6V7ZEFgzL366WGi5P5QRowfgxD2Kg60FenviDLEXBZovkc/g53LT+FNXzUA8l98ANBepCsrIMJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216809; c=relaxed/simple;
-	bh=VsJ1PxU+c6a4ksC/+U1y4JWeFKBfIZXcnYxGy12Lv+A=;
+	s=arc-20240116; t=1770217707; c=relaxed/simple;
+	bh=I94jVX0DJTshUsH6Wg5jJ6aEBo9tKAcRLnzJlpHBDSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYCPEocF7RdW+n1Yz7GfxpKUxS4VT6RCoS/eDH4vMNtLNVZvDs0x/CxTfmQ9CvnW3pD/ukeTsGLt6caFFrC3t3DOGYLXkJwKXOg3DTI6/szgb2JcXO3EIrr2HV6Q+BttGYnUIw717vRtgAsU/cLSNQd51tcxEbvvQioIZszCIC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgKgCbDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC7BC4CEF7;
-	Wed,  4 Feb 2026 14:53:28 +0000 (UTC)
+	 MIME-Version; b=XzQtlOsuE4OASc+6kBfxmu530+4Gb58XBIgpwzcshlnielquX9/uSsTSCg8+7RURUdI9fkxm0Gp6g346cdhlpMajoYQFxiyjz5WbXB1obf21QpCjJ4VR8GeBNuTpmbyJ+WWBTLgoopkCRbTcnx3kiS+ePBC18DnWx0f/3JD3/2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+n3HPAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F29C19424;
+	Wed,  4 Feb 2026 15:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216809;
-	bh=VsJ1PxU+c6a4ksC/+U1y4JWeFKBfIZXcnYxGy12Lv+A=;
+	s=korg; t=1770217706;
+	bh=I94jVX0DJTshUsH6Wg5jJ6aEBo9tKAcRLnzJlpHBDSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgKgCbDZVVmKnEh15LEzcU0EFR4KsyE7Bezwa/1P4q5+Dimhy561AQDcr1T3fpKD7
-	 jUvrMWGBISJ1NgM7oZBWwgTXOnpVFiXOLRxAGXA9ilteMt3lZC467I1HWH5CoYK3SL
-	 oiLxrHbgIhuIoA8dissTdcPz50KTSGnX8arBo+Vk=
+	b=j+n3HPAXCGNE4WWsp2ZFCX3mASRXlsyGyBsiklFrJR0HyskqoGI2R0+cRhS82eQ2C
+	 QpmY8UxBBLaBOMuNrpyvICVcTNm2XFSI7pbnOIUWHdV1pnIy30iIb/FHApFkR/YjwE
+	 LTf60poZZIizkE/ELTYh8DI89WXSavFT9qQ+xUB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaochen Shen <shenxiaochen@open-hieco.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Reinette Chatre <reinette.chatre@intel.com>
-Subject: [PATCH 5.15 038/206] x86/resctrl: Add missing resctrl initialization for Hygon
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/280] ata: libata: Call ata_dev_config_lpm() for ATAPI devices
 Date: Wed,  4 Feb 2026 15:37:49 +0100
-Message-ID: <20260204143859.584350952@linuxfoundation.org>
+Message-ID: <20260204143913.072241669@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +70,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213845-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213580-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:email,open-hieco.net:email,intel.com:email]
-X-Rspamd-Queue-Id: A8362E8268
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4CCA4E876E
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaochen Shen <shenxiaochen@open-hieco.net>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 6ee98aabdc700b5705e4f1833e2edc82a826b53b upstream.
+[ Upstream commit 8f3fb33f8f3f825c708ece800c921977c157f9b6 ]
 
-Hygon CPUs supporting Platform QoS features currently undergo partial resctrl
-initialization through resctrl_cpu_detect() in the Hygon BSP init helper and
-AMD/Hygon common initialization code. However, several critical data
-structures remain uninitialized for Hygon CPUs in the following paths:
+Commit d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
+introduced ata_dev_config_lpm(). However, it only called this function for
+ATA_DEV_ATA and ATA_DEV_ZAC devices, not for ATA_DEV_ATAPI devices.
 
- - get_mem_config()-> __rdt_get_mem_config_amd():
-     rdt_resource::membw,alloc_capable
-     hw_res::num_closid
+Additionally, commit d99a9142e782 ("ata: libata-core: Move device LPM quirk
+settings to ata_dev_config_lpm()") moved the LPM quirk application from
+ata_dev_configure() to ata_dev_config_lpm(), causing LPM quirks for ATAPI
+devices to no longer be applied.
 
- - rdt_init_res_defs()->rdt_init_res_defs_amd():
-     rdt_resource::cache
-     hw_res::msr_base,msr_update
+Call ata_dev_config_lpm() also for ATAPI devices, such that LPM quirks are
+applied for ATAPI devices with an entry in __ata_dev_quirks once again.
 
-Add the missing AMD/Hygon common initialization to ensure proper Platform QoS
-functionality on Hygon CPUs.
-
-Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
-Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209062650.1536952-2-shenxiaochen@open-hieco.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
+Fixes: d99a9142e782 ("ata: libata-core: Move device LPM quirk settings to ata_dev_config_lpm()")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Stable-dep-of: c8c6fb886f57 ("ata: libata: Print features also for ATAPI devices")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/resctrl/core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ata/libata-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -769,7 +769,8 @@ static __init bool get_mem_config(void)
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 1277b80726535..3fb7f7a5181a9 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -2882,6 +2882,8 @@ int ata_dev_configure(struct ata_device *dev)
+ 				     ata_mode_string(xfer_mask),
+ 				     cdb_intr_string, atapi_an_string,
+ 				     dma_dir_string);
++
++		ata_dev_config_lpm(dev);
+ 	}
  
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		return __get_mem_config_intel(&hw_res->r_resctrl);
--	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
- 		return __rdt_get_mem_config_amd(&hw_res->r_resctrl);
- 
- 	return false;
-@@ -904,7 +905,8 @@ static __init void rdt_init_res_defs(voi
- {
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		rdt_init_res_defs_intel();
--	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
- 		rdt_init_res_defs_amd();
- }
- 
+ 	/* determine max_sectors */
+-- 
+2.51.0
+
 
 
 
