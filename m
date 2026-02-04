@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-214024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECMWNONlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-214024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:39 +0100
+	id sMXYGhpog2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE5EE8B38
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1321E90AE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C90C30180A7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 458C3300E3C7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3802D879A;
-	Wed,  4 Feb 2026 15:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCFF3C196E;
+	Wed,  4 Feb 2026 15:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8Faxn4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzoTzzPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716B128853E;
-	Wed,  4 Feb 2026 15:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5171D21FF4C;
+	Wed,  4 Feb 2026 15:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218306; cv=none; b=mXjpp6YL0Q06PEPnxWl7ai5OcmqoXC/Fbfn3wtNcEvC0KOK0zVff/ViXTKUWyVjwwmVcZ883iuzYdDeJn8JmBmQgDq4Kd8wC+lxqXuSIouC9w6/EnXHDVlopmSyUPg0uTQh5M9IAxR/JyFAQux+Yd04aNGeOTgGDFY7oDJ/yxWw=
+	t=1770218977; cv=none; b=gSNKhxFi2TcbBYlZ66wDY06kgzufY7aQ/2pqKhJGywHLw02Htk6xI9ouLzpYblbz1B4Jm8xgR6phsXocW8c+8QLtwdtHNpVps00syAnXH7qxhy1xheKP7PDWz1wLRxabXcZsTb2vdkEOdlr1aBCunyBo3Z0MQWpm5M3GIEcCw+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218306; c=relaxed/simple;
-	bh=577+cu04M7gN50x954ZOVAYvqfB6xWfUzRQ3YE0/ZHM=;
+	s=arc-20240116; t=1770218977; c=relaxed/simple;
+	bh=gbTgvC2hGwFHkztrYQQaw1jqGzun+kDVol23iNcsYtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3XorWaTZgDuctfr4aZr8xxvvTMtKTVQrKXgwI6IqjZfSDYE4PK1wfL5H68/976uMdARlgshFDr3ZImhr/hMligxSAQrG7jkGhUK1+o1IRhZBC23Hb1TvupfrK1NNn83BZhLhhoHZT3VaBhv6M37YyZj/2yKNCoHdeN98TtBawI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8Faxn4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E06FC4CEF7;
-	Wed,  4 Feb 2026 15:18:25 +0000 (UTC)
+	 MIME-Version; b=GqnsTf8bsIm4ujkkhN95WNpx1EBXdEbkEpzTIAiizTnUrUh6r3R8HNeDLDvKVCkHDV2nZG5BoNWXi3sXVqDCBBdDtpZJYhGEMTm3W7qBuGaPiKwJh/d9XTF1/5uvTHSQgw8i32f4mBQLR7JD43bCgD1groN1c4ginIKeJDVZpnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzoTzzPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50BBC116C6;
+	Wed,  4 Feb 2026 15:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218306;
-	bh=577+cu04M7gN50x954ZOVAYvqfB6xWfUzRQ3YE0/ZHM=;
+	s=korg; t=1770218977;
+	bh=gbTgvC2hGwFHkztrYQQaw1jqGzun+kDVol23iNcsYtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8Faxn4Jmgo76JDvEH3TIWCGRPg2miz9KUT8u7wzAe4T7apzJGk6IYT4vESRhWOHc
-	 gZ1OaiPrXTYC9/5ipvvHvDbKKst8GK+mbL4/zyj/Gnktc6h4EOaNpZn+FX1v/AvYA+
-	 ZFNqGZ4j7OVyILYvVAUtvijgCjTVnbYFi9PaQ1zo=
+	b=QzoTzzPAFglF/cJmFGG25LVGo9pUFCeWPjubVYCoKTGImwG0ynDMLwclGMXytPbWp
+	 vc1UFbTlsj6o1tExv8OHwWJcjo97yok33r+IlUXY6qwr2exyvZ0w+qallMIp/ymRJ+
+	 2RLlXUDMXYpWdWqCVIMd3vqoPQAnuOYc888UuDcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 238/280] nvme-fc: rename free_ctrl callback to match name pattern
-Date: Wed,  4 Feb 2026 15:40:12 +0100
-Message-ID: <20260204143918.190534970@linuxfoundation.org>
+Subject: [PATCH 6.18 031/122] net/mlx5: fs, Fix inverted cap check in tx flow table root disconnect
+Date: Wed,  4 Feb 2026 15:40:13 +0100
+Message-ID: <20260204143852.982469683@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214024-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214224-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,58 +89,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,grimberg.me:email]
-X-Rspamd-Queue-Id: 2AE5EE8B38
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: D1321E90AE
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 205fb5fa6fde1b5b426015eb1ff69f2ff25ef5bb ]
+[ Upstream commit 2610a3d65691a1301ab10c92ff6ebab0bedf9199 ]
 
-Rename nvme_fc_nvme_ctrl_freed to nvme_fc_free_ctrl to match the name
-pattern for the callback.
+The capability check for reset_root_to_default was inverted, causing
+the function to return -EOPNOTSUPP when the capability IS supported,
+rather than when it is NOT supported.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: 0edb475ac0a7 ("nvme: fix PCIe subsystem reset controller state transition")
+Fix the capability check condition.
+
+Fixes: 3c9c34c32bc6 ("net/mlx5: fs, Command to control TX flow table root")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1769503961-124173-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/fc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -2417,7 +2417,7 @@ nvme_fc_ctrl_get(struct nvme_fc_ctrl *ct
-  * controller. Called after last nvme_put_ctrl() call
-  */
- static void
--nvme_fc_nvme_ctrl_freed(struct nvme_ctrl *nctrl)
-+nvme_fc_free_ctrl(struct nvme_ctrl *nctrl)
- {
- 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+index 1af76da8b1320..b79544134e2a2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+@@ -1167,7 +1167,8 @@ int mlx5_fs_cmd_set_tx_flow_table_root(struct mlx5_core_dev *dev, u32 ft_id, boo
+ 	u32 out[MLX5_ST_SZ_DW(set_flow_table_root_out)] = {};
+ 	u32 in[MLX5_ST_SZ_DW(set_flow_table_root_in)] = {};
  
-@@ -3362,7 +3362,7 @@ static const struct nvme_ctrl_ops nvme_f
- 	.reg_read32		= nvmf_reg_read32,
- 	.reg_read64		= nvmf_reg_read64,
- 	.reg_write32		= nvmf_reg_write32,
--	.free_ctrl		= nvme_fc_nvme_ctrl_freed,
-+	.free_ctrl		= nvme_fc_free_ctrl,
- 	.submit_async_event	= nvme_fc_submit_async_event,
- 	.delete_ctrl		= nvme_fc_delete_ctrl,
- 	.get_address		= nvmf_get_address,
+-	if (disconnect && MLX5_CAP_FLOWTABLE_NIC_TX(dev, reset_root_to_default))
++	if (disconnect &&
++	    !MLX5_CAP_FLOWTABLE_NIC_TX(dev, reset_root_to_default))
+ 		return -EOPNOTSUPP;
+ 
+ 	MLX5_SET(set_flow_table_root_in, in, opcode,
+-- 
+2.51.0
+
 
 
 
