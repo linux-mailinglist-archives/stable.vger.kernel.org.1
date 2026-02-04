@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-214137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDhRL3log2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:41 +0100
+	id SNCSJ5Jrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:53:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E5CE91D5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0054BE98A3
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 97CCE30E095D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F28F31CB987
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48E42D5950;
-	Wed,  4 Feb 2026 15:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402BD40B6FF;
+	Wed,  4 Feb 2026 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKpzxyOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4UFin/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A2A18859B;
-	Wed,  4 Feb 2026 15:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D50285404;
+	Wed,  4 Feb 2026 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218688; cv=none; b=CsPPSE8ziTB0kLbUPOzO8ThAgSopAt+t9p0G9fY25UtCPjqq0Mq9FvNofxda5//ZDMD6KicOG0bQINTighu5rRhSAJjJfxWw3k2bas8AgrVPDIHnQsz5SKCrweMvFDyYPP15DzhhZHPahZQ2VGmOi/g0FCXA1zXpugAJwPGW6fU=
+	t=1770218483; cv=none; b=UI7Gxz3WnP4+tIerAY6AKQ86AMPKN9gDhGlI/W4Ex2pp9D7XgrxGtvemdUerUYKETrJMiZPDNdsJWxMt1dkqAObcxAcujEiE8gvZgtDdS9fmKaLLZs1lpkxrx7jB93XWT7WgDN49UIQuu2qdxMBmGo5Jmrc97lDC46ftogl2QKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218688; c=relaxed/simple;
-	bh=E3T0erTom1gXfdo3Bjokg8CqcFiaMirtzDurCmdnOqM=;
+	s=arc-20240116; t=1770218483; c=relaxed/simple;
+	bh=mzj78Mh3Pp01pAXUsmGCY6hE9PWkky26z6VCU05+i4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtTn7tIrxsovrmRLwtHBSp6C194KxBYJ9FRF+FpGobEuZZOhE8VxCtJfe0d7u4rfAqI8li52NCv6zXpatVReoxgAdBEOQYkULehfEQvNZoz5tUnax7pBGqLLgSbqKJUY5SB+0F5pCeJ3v3mdm9gBm7L4XT+xiEPEKVuxMVPHP2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKpzxyOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E13DC4CEF7;
-	Wed,  4 Feb 2026 15:24:47 +0000 (UTC)
+	 MIME-Version; b=QU95EVW+wKPrLbWFj67rQcC3vZ/tNbhrRJ3SI1DeGxnOCLGb4jBiVWoHLmjFcGnhJHpb9OiYKO1hbeIdhYMBrobxbr8K/XTFuEDC02IikfRRvhrP20XyqtmwTzRJuMfvwtcZLLVqCXhXi1HadccRpQFTlQAR11ruag6URH8MNc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4UFin/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686DAC4CEF7;
+	Wed,  4 Feb 2026 15:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218688;
-	bh=E3T0erTom1gXfdo3Bjokg8CqcFiaMirtzDurCmdnOqM=;
+	s=korg; t=1770218482;
+	bh=mzj78Mh3Pp01pAXUsmGCY6hE9PWkky26z6VCU05+i4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKpzxyODex66FUFDPw+D/nTzTRDFtQEqkwWVN1nn+6StMR39Bs2HzvzM8CkUJiNG4
-	 7gXshOCrTT8l6x0Rzz2xUC34/KVoUvFKhwBIRjw9iD8yqSlE5AKMlcIKqd0d7D3u8o
-	 4T0Wtr07nIqeFfHd9lDG6Zsse5/voKpUXw1MxDrE=
+	b=J4UFin/+xbci/pQDeecO54j94in3MwdoYoqD6bNeU4tNIy68Zu5fV/w+Kevb+Aorr
+	 lUB743VysIXNr1iHxg3Wcn3oBEn0qt9Ka6EUwtuJCJ2AQkVM//qS2VGjbG3Z0aDiIE
+	 GOXqiE54ACC4tBCHsfIRRsqu3Dz0g+eX2FLzAUFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Aaron Ma <aaron.ma@canonical.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Kery Qi <qikeyu2017@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 14/87] ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues
+Subject: [PATCH 6.6 09/72] net: wwan: t7xx: fix potential skb->frags overflow in RX path
 Date: Wed,  4 Feb 2026 15:40:12 +0100
-Message-ID: <20260204143847.425894413@linuxfoundation.org>
+Message-ID: <20260204143845.951119864@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +67,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214076-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214137-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mpg.de:email,intel.com:email,canonical.com:email]
-X-Rspamd-Queue-Id: 34E5CE91D5
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0054BE98A3
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Ma <aaron.ma@canonical.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-[ Upstream commit 9bb30be4d89ff9a8d7ab1aa0eb2edaca83431f85 ]
+[ Upstream commit f0813bcd2d9d97fdbdf2efb9532ab03ae92e99e6 ]
 
-Add NULL pointer checks in ice_vsi_set_napi_queues() to prevent crashes
-during resume from suspend when rings[q_idx]->q_vector is NULL.
+When receiving data in the DPMAIF RX path,
+the t7xx_dpmaif_set_frag_to_skb() function adds
+page fragments to an skb without checking if the number of
+fragments has exceeded MAX_SKB_FRAGS. This could lead to a buffer overflow
+in skb_shinfo(skb)->frags[] array, corrupting adjacent memory and
+potentially causing kernel crashes or other undefined behavior.
 
-Tested adaptor:
-60:00.0 Ethernet controller [0200]: Intel Corporation Ethernet Controller E810-XXV for SFP [8086:159b] (rev 02)
-        Subsystem: Intel Corporation Ethernet Network Adapter E810-XXV-2 [8086:4003]
+This issue was identified through static code analysis by comparing with a
+similar vulnerability fixed in the mt76 driver commit b102f0c522cf ("mt76:
+fix array overflow on receiving too many fragments for a packet").
 
-SR-IOV state: both disabled and enabled can reproduce this issue.
+The vulnerability could be triggered if the modem firmware sends packets
+with excessive fragments. While under normal protocol conditions (MTU 3080
+bytes, BAT buffer 3584 bytes),
+a single packet should not require additional
+fragments, the kernel should not blindly trust firmware behavior.
+Malicious, buggy, or compromised firmware could potentially craft packets
+with more fragments than the kernel expects.
 
-kernel version: v6.18
+Fix this by adding a bounds check before calling skb_add_rx_frag() to
+ensure nr_frags does not exceed MAX_SKB_FRAGS.
 
-Reproduce steps:
-Boot up and execute suspend like systemctl suspend or rtcwake.
+The check must be performed before unmapping to avoid a page leak
+and double DMA unmap during device teardown.
 
-Log:
-<1>[  231.443607] BUG: kernel NULL pointer dereference, address: 0000000000000040
-<1>[  231.444052] #PF: supervisor read access in kernel mode
-<1>[  231.444484] #PF: error_code(0x0000) - not-present page
-<6>[  231.444913] PGD 0 P4D 0
-<4>[  231.445342] Oops: Oops: 0000 [#1] SMP NOPTI
-<4>[  231.446635] RIP: 0010:netif_queue_set_napi+0xa/0x170
-<4>[  231.447067] Code: 31 f6 31 ff c3 cc cc cc cc 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 85 c9 74 0b <48> 83 79 30 00 0f 84 39 01 00 00 55 41 89 d1 49 89 f8 89 f2 48 89
-<4>[  231.447513] RSP: 0018:ffffcc780fc078c0 EFLAGS: 00010202
-<4>[  231.447961] RAX: ffff8b848ca30400 RBX: ffff8b848caf2028 RCX: 0000000000000010
-<4>[  231.448443] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8b848dbd4000
-<4>[  231.448896] RBP: ffffcc780fc078e8 R08: 0000000000000000 R09: 0000000000000000
-<4>[  231.449345] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
-<4>[  231.449817] R13: ffff8b848dbd4000 R14: ffff8b84833390c8 R15: 0000000000000000
-<4>[  231.450265] FS:  00007c7b29e9d740(0000) GS:ffff8b8c068e2000(0000) knlGS:0000000000000000
-<4>[  231.450715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-<4>[  231.451179] CR2: 0000000000000040 CR3: 000000030626f004 CR4: 0000000000f72ef0
-<4>[  231.451629] PKRU: 55555554
-<4>[  231.452076] Call Trace:
-<4>[  231.452549]  <TASK>
-<4>[  231.452996]  ? ice_vsi_set_napi_queues+0x4d/0x110 [ice]
-<4>[  231.453482]  ice_resume+0xfd/0x220 [ice]
-<4>[  231.453977]  ? __pfx_pci_pm_resume+0x10/0x10
-<4>[  231.454425]  pci_pm_resume+0x8c/0x140
-<4>[  231.454872]  ? __pfx_pci_pm_resume+0x10/0x10
-<4>[  231.455347]  dpm_run_callback+0x5f/0x160
-<4>[  231.455796]  ? dpm_wait_for_superior+0x107/0x170
-<4>[  231.456244]  device_resume+0x177/0x270
-<4>[  231.456708]  dpm_resume+0x209/0x2f0
-<4>[  231.457151]  dpm_resume_end+0x15/0x30
-<4>[  231.457596]  suspend_devices_and_enter+0x1da/0x2b0
-<4>[  231.458054]  enter_state+0x10e/0x570
-
-Add defensive checks for both the ring pointer and its q_vector
-before dereferencing, allowing the system to resume successfully even when
-q_vectors are unmapped.
-
-Fixes: 2a5dc090b92cf ("ice: move netif_queue_set_napi to rtnl-protected sections")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: d642b012df70a ("net: wwan: t7xx: Add data path interface")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Link: https://patch.msgid.link/20260122170401.1986-2-qikeyu2017@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 4e022de9e4bbd..4ad21c21c5c57 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2731,12 +2731,14 @@ void ice_vsi_set_napi_queues(struct ice_vsi *vsi)
- 		return;
+diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+index 7c4a11f60f911..52b036fe6cfea 100644
+--- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
++++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+@@ -394,6 +394,7 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
+ 				       struct sk_buff *skb)
+ {
+ 	unsigned long long data_bus_addr, data_base_addr;
++	struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 	struct device *dev = rxq->dpmaif_ctrl->dev;
+ 	struct dpmaif_bat_page *page_info;
+ 	unsigned int data_len;
+@@ -401,18 +402,22 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
  
- 	ice_for_each_rxq(vsi, q_idx)
--		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
--				     &vsi->rx_rings[q_idx]->q_vector->napi);
-+		if (vsi->rx_rings[q_idx] && vsi->rx_rings[q_idx]->q_vector)
-+			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
-+					     &vsi->rx_rings[q_idx]->q_vector->napi);
+ 	page_info = rxq->bat_frag->bat_skb;
+ 	page_info += t7xx_normal_pit_bid(pkt_info);
+-	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
  
- 	ice_for_each_txq(vsi, q_idx)
--		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
--				     &vsi->tx_rings[q_idx]->q_vector->napi);
-+		if (vsi->tx_rings[q_idx] && vsi->tx_rings[q_idx]->q_vector)
-+			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
-+					     &vsi->tx_rings[q_idx]->q_vector->napi);
- 	/* Also set the interrupt number for the NAPI */
- 	ice_for_each_q_vector(vsi, v_idx) {
- 		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
+ 	if (!page_info->page)
+ 		return -EINVAL;
+ 
++	if (shinfo->nr_frags >= MAX_SKB_FRAGS)
++		return -EINVAL;
++
++	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
++
+ 	data_bus_addr = le32_to_cpu(pkt_info->pd.data_addr_h);
+ 	data_bus_addr = (data_bus_addr << 32) + le32_to_cpu(pkt_info->pd.data_addr_l);
+ 	data_base_addr = page_info->data_bus_addr;
+ 	data_offset = data_bus_addr - data_base_addr;
+ 	data_offset += page_info->offset;
+ 	data_len = FIELD_GET(PD_PIT_DATA_LEN, le32_to_cpu(pkt_info->header));
+-	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page_info->page,
++	skb_add_rx_frag(skb, shinfo->nr_frags, page_info->page,
+ 			data_offset, data_len, page_info->data_len);
+ 
+ 	page_info->page = NULL;
 -- 
 2.51.0
 
