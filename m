@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-214307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFzZF3Jug2lNmwMAu9opvQ
-	(envelope-from <stable+bounces-214307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:10 +0100
+	id OEdnI4Bug2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940F8E9DDC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84BDE9DEA
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEBC130D2FF2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:34:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4483D30D8583
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B442DEA7A;
-	Wed,  4 Feb 2026 15:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2582DBF75;
+	Wed,  4 Feb 2026 15:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me0CZRfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIYub/J3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A102D6611;
-	Wed,  4 Feb 2026 15:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918E22D6611;
+	Wed,  4 Feb 2026 15:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219253; cv=none; b=jdVXn903vghU5ihnQxWDrqaJXVET3ictFU4FmKoCObC48biQ/7XKT0kflNsTmDOabq62OG01xm7MCZmh8tTUM6ZtCnIMYe7Yrnm30BD+icMasGz5ocsy2nSlEnHGmRX8k1dQ5Jq8eRPrX7rVqwNmdfwEk+zhT4apF9WbcAG2e4w=
+	t=1770219259; cv=none; b=bydMuR4fAdWQZqqxjRVNKb0axa3gBoS1a3kwfJE1kEZmSD8K+HrQsLGiWvjEewgbOl8KLf++VkaDa7fV25deqKwF+YQxm9Vqf8ZgW2AFQR9qiQuE19/4rmTDnLHe9TdDQ2a52zbBbBav/kMYzjEV+2/HYF6cSybXxjOemNEMruM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219253; c=relaxed/simple;
-	bh=algKnUc2p23iKeoz5aKi+d3+gcxxxDAKkmqQccYCwYw=;
+	s=arc-20240116; t=1770219259; c=relaxed/simple;
+	bh=ydqz8MTILKryS+L4pDy3YONvp8VxMHgfnv4nGpMtdaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TisIul37t4BA2+Q8eeQxl+eRyAGXDJ6N3HCe42FHHQZbJ2wahDh8kpsh9cvWZaGJkCKqIJ59xoi/tNIlGe2TlXienxyvnvKHnEnaiGPROzfklV+EOMHXKwIHlywd4WEb617Qtj7HyaJKXW52I2Xd1WS5J7Y9Bm/Ud+vSe6G+MAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me0CZRfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D49DC4CEF7;
-	Wed,  4 Feb 2026 15:34:12 +0000 (UTC)
+	 MIME-Version; b=deZ8AQbSZ0ci8XbSRMhYH3AkVPl6mS3haqQU0Fqb/eP0YKy1vSj1n0w4sudxkyg36Mz/EOzDxz2jWzPBBn1GqF/0sKv0XJSEk+NXclsoqROMUyS0TBp53i0R2tErsFQLjGu6xsckAv4+FE63Eff4po/t5JQSWXWATs7neLvy49Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIYub/J3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6B8C4CEF7;
+	Wed,  4 Feb 2026 15:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219252;
-	bh=algKnUc2p23iKeoz5aKi+d3+gcxxxDAKkmqQccYCwYw=;
+	s=korg; t=1770219259;
+	bh=ydqz8MTILKryS+L4pDy3YONvp8VxMHgfnv4nGpMtdaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Me0CZRfc3GigKt9+G+S4sRs5BBwImSsIaDbv4F1kZwv+fNotKahSfT6o06Mhklt9i
-	 lAjKdo+1bKIT9NJSSlUIjKakFC6tji4xoLMheDYSBwi2N1pmwYhVOGdJV4ymUReGAr
-	 N66pHWnh61RI7uxfnwSAANhyHWln7QGJA8qtpKSE=
+	b=xIYub/J3KRspcK62BNcevwwTIYYjYQQX9rxBY3sope3/IocKJeeisXu1OkMwTB8Om
+	 22xhvFp7h6TQMR1q7R1sRKH2i0t3j0W45T5U7YGaUEQPA1njQ9BS9vfwblRTlLpsx3
+	 0qj8JsrkPN8l2FTm/xJZVI1MAAi8wdGav4TdD8Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Jon Doron <jond@wiz.io>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 113/122] drm/amdgpu: fix NULL pointer dereference in amdgpu_gmc_filter_faults_remove
-Date: Wed,  4 Feb 2026 15:41:35 +0100
-Message-ID: <20260204143855.919264468@linuxfoundation.org>
+Subject: [PATCH 6.18 114/122] drm/amdgpu: Fix cond_exec handling in amdgpu_ib_schedule()
+Date: Wed,  4 Feb 2026 15:41:36 +0100
+Message-ID: <20260204143855.954698840@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
 References: <20260204143851.857060534@linuxfoundation.org>
@@ -64,114 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,wiz.io];
-	TAGGED_FROM(0.00)[bounces-214307-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214309-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wiz.io:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 940F8E9DDC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A84BDE9DEA
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Doron <jond@wiz.io>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 8b1ecc9377bc641533cd9e76dfa3aee3cd04a007 upstream.
+commit b1defcdc4457649db236415ee618a7151e28788c upstream.
 
-On APUs such as Raven and Renoir (GC 9.1.0, 9.2.2, 9.3.0), the ih1 and
-ih2 interrupt ring buffers are not initialized. This is by design, as
-these secondary IH rings are only available on discrete GPUs. See
-vega10_ih_sw_init() which explicitly skips ih1/ih2 initialization when
-AMD_IS_APU is set.
+The EXEC_COUNT field must be > 0.  In the gfx shadow
+handling we always emit a cond_exec packet after the gfx_shadow
+packet, but the EXEC_COUNT never gets patched.  This leads
+to a hang when we try and reset queues on gfx11 APUs.
 
-However, amdgpu_gmc_filter_faults_remove() unconditionally uses ih1 to
-get the timestamp of the last interrupt entry. When retry faults are
-enabled on APUs (noretry=0), this function is called from the SVM page
-fault recovery path, resulting in a NULL pointer dereference when
-amdgpu_ih_decode_iv_ts_helper() attempts to access ih->ring[].
-
-The crash manifests as:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000004
-  RIP: 0010:amdgpu_ih_decode_iv_ts_helper+0x22/0x40 [amdgpu]
-  Call Trace:
-   amdgpu_gmc_filter_faults_remove+0x60/0x130 [amdgpu]
-   svm_range_restore_pages+0xae5/0x11c0 [amdgpu]
-   amdgpu_vm_handle_fault+0xc8/0x340 [amdgpu]
-   gmc_v9_0_process_interrupt+0x191/0x220 [amdgpu]
-   amdgpu_irq_dispatch+0xed/0x2c0 [amdgpu]
-   amdgpu_ih_process+0x84/0x100 [amdgpu]
-
-This issue was exposed by commit 1446226d32a4 ("drm/amdgpu: Remove GC HW
-IP 9.3.0 from noretry=1") which changed the default for Renoir APU from
-noretry=1 to noretry=0, enabling retry fault handling and thus
-exercising the buggy code path.
-
-Fix this by adding a check for ih1.ring_size before attempting to use
-it. Also restore the soft_ih support from commit dd299441654f ("drm/amdgpu:
-Rework retry fault removal").  This is needed if the hardware doesn't
-support secondary HW IH rings.
-
-v2: additional updates (Alex)
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3814
-Fixes: dd299441654f ("drm/amdgpu: Rework retry fault removal")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Jon Doron <jond@wiz.io>
+Fixes: c68cbbfd54c6 ("drm/amdgpu: cleanup conditional execution")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4789
+Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6ce8d536c80aa1f059e82184f0d1994436b1d526)
+(cherry picked from commit ba205ac3d6e83f56c4f824f23f1b4522cb844ff3)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -498,8 +498,13 @@ void amdgpu_gmc_filter_faults_remove(str
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+@@ -228,7 +228,7 @@ int amdgpu_ib_schedule(struct amdgpu_rin
  
- 	if (adev->irq.retry_cam_enabled)
- 		return;
-+	else if (adev->irq.ih1.ring_size)
-+		ih = &adev->irq.ih1;
-+	else if (adev->irq.ih_soft.enabled)
-+		ih = &adev->irq.ih_soft;
-+	else
-+		return;
+ 	amdgpu_ring_ib_begin(ring);
  
--	ih = &adev->irq.ih1;
- 	/* Get the WPTR of the last entry in IH ring */
- 	last_wptr = amdgpu_ih_get_wptr(adev, ih);
- 	/* Order wptr with ring data. */
+-	if (ring->funcs->emit_gfx_shadow)
++	if (ring->funcs->emit_gfx_shadow && adev->gfx.cp_gfx_shadow)
+ 		amdgpu_ring_emit_gfx_shadow(ring, shadow_va, csa_va, gds_va,
+ 					    init_shadow, vmid);
+ 
+@@ -284,7 +284,8 @@ int amdgpu_ib_schedule(struct amdgpu_rin
+ 				       fence_flags | AMDGPU_FENCE_FLAG_64BIT);
+ 	}
+ 
+-	if (ring->funcs->emit_gfx_shadow && ring->funcs->init_cond_exec) {
++	if (ring->funcs->emit_gfx_shadow && ring->funcs->init_cond_exec &&
++	    adev->gfx.cp_gfx_shadow) {
+ 		amdgpu_ring_emit_gfx_shadow(ring, 0, 0, 0, false, 0);
+ 		amdgpu_ring_init_cond_exec(ring, ring->cond_exe_gpu_addr);
+ 	}
 
 
 
