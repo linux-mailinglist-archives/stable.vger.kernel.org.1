@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-213819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJHHIbZlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:54 +0100
+	id KJ3wIfNjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2342DE8AAC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD53E856C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7591E30EACE7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E79A3049155
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169D9426D1C;
-	Wed,  4 Feb 2026 15:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068194279E1;
+	Wed,  4 Feb 2026 15:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUDrpsmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+IfPQGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEFB426D06;
-	Wed,  4 Feb 2026 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3EC2D8DA8;
+	Wed,  4 Feb 2026 15:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217616; cv=none; b=lGC1F3epY1FqAl0hyegbYTvKXbYZDgtKh4660aOUto2BGp6mVZnLGBpS40MtUVcNCJRYVwPZ53RZ5jT3JhRmg9qR6XxfjlL3wM9V9VpelNa4Ti6dm/2Thb2rknRSzx0ATueTh6jQaOUrNX3lSBALLEtn70aPo6ZAdjkIZ+aa+uc=
+	t=1770217653; cv=none; b=EvxnsunnKcTTMTZgWjrJpCe7LN0WksWNRwNzTD1SGE6WMXhcsOpfxOYmTXzPLyt+yPtcKVHqz6i2FlL07g3xUz38LQt8Tjke00z4gxd85ftBPaVbq8q24YiMpUmxRoo4JyOZXFo6WwUm3av9ZMwAVSrOFlgiEYNPkMSY+di18+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217616; c=relaxed/simple;
-	bh=HK7SEUurOWBW6Jaa9EwQAyjE66JUtagCOKfOYhzE+rg=;
+	s=arc-20240116; t=1770217653; c=relaxed/simple;
+	bh=NUSy2l20IVwmDnyAgHn6A2zWGEZmza5rQ2pty/vwaxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/5+ICU5WweGYvJ+4QUoMRkT7uGwvZNf0ifqmDhbCYErrGPx2yJ2tLfK43F2tHJnI400eIZ4wXMgHS0M7WtF4bgDZVrYKq5/kBf1nrBmAoVPPl4EuJL2esPP3J4Yt00C4qekTQ9YpnCtHYDZLG2FSrayNX+xy5eb+Slv/K9XzYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUDrpsmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36825C4CEF7;
-	Wed,  4 Feb 2026 15:06:55 +0000 (UTC)
+	 MIME-Version; b=ukSIWdw58LQSG2CGuPDQjI1/4E3non3tdMc19mdTOIPkCUw8XSK3WIZzNoUwItTISH0c9UAOIMwR4xyysHT0dte99arJuNJ7p8iR8iXsnBTPn9tUtj2HA6w+n1qdDDoJmaTd7TqpCAgCZRUIEn0tLTYbUc/mu1VroWitRU+b/ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+IfPQGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30410C4CEF7;
+	Wed,  4 Feb 2026 15:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217616;
-	bh=HK7SEUurOWBW6Jaa9EwQAyjE66JUtagCOKfOYhzE+rg=;
+	s=korg; t=1770217653;
+	bh=NUSy2l20IVwmDnyAgHn6A2zWGEZmza5rQ2pty/vwaxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUDrpsmpwCTptyVmsSD4ciV1EoGT6z9yJ/LSsZ0DKsqSX5DFSn34ENCNbfl8xRo6N
-	 ipXFeRs099aolKYXcxzpEyU4/YIgEg9MwQJBnR/ROCrDNDKQn2vFFuih32uFIR4WT1
-	 OMk7DsS1XB27ddOwaQDl5b8q6ZIrOsxdF4gzPfV8=
+	b=h+IfPQGQbi8yehcLmlYEvg52wt57oQBZGuHhK+zx3ABt5JwUE+qAHvF2hFbgsCY1w
+	 58LOebgRDf4VmOrvQGpp/Mj7b61x23bQYhJs8D+4w7r2apDbXvE7hyz81kbMAWqTSl
+	 kqyebyh4J2G7KhqSry2bY7nAaMztgCJ0u2TuC7Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 051/280] USB: serial: ftdi_sio: add support for PICAXE AXE027 cable
-Date: Wed,  4 Feb 2026 15:37:05 +0100
-Message-ID: <20260204143911.475529157@linuxfoundation.org>
+	Wu Haotian <rigoligo03@gmail.com>,
+	Ilikara Zheng <ilikara@aosc.io>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 052/280] nvme-pci: disable secondary temp for Wodposit WPBSNM8
+Date: Wed,  4 Feb 2026 15:37:06 +0100
+Message-ID: <20260204143911.513021358@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -69,20 +70,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213819-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213830-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,aosc.io,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,52 +92,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,picaxe.com:url,opendcc.de:url]
-X-Rspamd-Queue-Id: 2342DE8AAC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DBD53E856C
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Ilikara Zheng <ilikara@aosc.io>
 
-commit c0afe95e62984ceea171c3ea319beaf84a21181c upstream.
+commit 340f4fc5508c2905a1f30de229e2a4b299d55735 upstream.
 
-The vendor provides instructions to write "0403 bd90" to
-/sys/bus/usb-serial/drivers/ftdi_sio/new_id; see:
-https://picaxe.com/docs/picaxe_linux_instructions.pdf
+Secondary temperature thresholds (temp2_{min,max}) were not reported
+properly on this NVMe SSD. This resulted in an error while attempting to
+read these values with sensors(1):
+
+  ERROR: Can't get value of subfeature temp2_min: I/O error
+  ERROR: Can't get value of subfeature temp2_max: I/O error
+
+Add the device to the nvme_id_table with the
+NVME_QUIRK_NO_SECONDARY_TEMP_THRESH flag to suppress access to all non-
+composite temperature thresholds.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Tested-by: Wu Haotian <rigoligo03@gmail.com>
+Signed-off-by: Ilikara Zheng <ilikara@aosc.io>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    1 +
- drivers/usb/serial/ftdi_sio_ids.h |    2 ++
- 2 files changed, 3 insertions(+)
+ drivers/nvme/host/pci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -850,6 +850,7 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID, 1) },
-+	{ USB_DEVICE(FTDI_VID, FTDI_AXE027_PID) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TURTELIZER_PID, 1) },
- 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_USB60F) },
- 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_SCU18) },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -96,6 +96,8 @@
- #define LMI_LM3S_EVAL_BOARD_PID		0xbcd9
- #define LMI_LM3S_ICDI_BOARD_PID		0xbcda
- 
-+#define FTDI_AXE027_PID		0xBD90 /* PICAXE AXE027 USB download cable */
-+
- #define FTDI_TURTELIZER_PID	0xBDC8 /* JTAG/RS-232 adapter by egnite GmbH */
- 
- /* OpenDCC (www.opendcc.de) product id */
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3594,6 +3594,8 @@ static const struct pci_device_id nvme_i
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0x1e49, 0x0041),   /* ZHITAI TiPro7000 NVMe SSD */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
++	{ PCI_DEVICE(0x1fa0, 0x2283),   /* Wodposit WPBSNM8-256GTP */
++		.driver_data = NVME_QUIRK_NO_SECONDARY_TEMP_THRESH, },
+ 	{ PCI_DEVICE(0x025e, 0xf1ac),   /* SOLIDIGM  P44 pro SSDPFKKW020X7  */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0xc0a9, 0x540a),   /* Crucial P2 */
 
 
 
