@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANpEO2plg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:38 +0100
+	id OLj3NcZdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:55:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685B5E89D3
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572D9E7949
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5A673018756
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 794C93052E98
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FEF426D2A;
-	Wed,  4 Feb 2026 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C1541B360;
+	Wed,  4 Feb 2026 14:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OAj8Mzx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2sEFwF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB98426D20;
-	Wed,  4 Feb 2026 15:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EA641B372;
+	Wed,  4 Feb 2026 14:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217626; cv=none; b=JOOPa6Z8NIPdT/xzIMw9T7JRLgSmXZJYy1OI2ljdBhF61vZpiooMeiIjDT+gRo08FdFM3LfguGPHJz3nszjUYdScsqy30AIDDjEWW+Fml27xA0Au2NM0mEA3YkQ80PUoZCLYW6Fn6/tcEc0EdHX7JbJ+UBWvC5lUcYpyw1NHaJ0=
+	t=1770216733; cv=none; b=HxbBs2vBPc+gTkeg+C6cRH6oP6p0Giw+ZsyRTuOkQeVnxBComI1JT406DllsQTNJLc7c3SbdIpRKARFSfsBbrurbxTGONkhXDyHjdhtY/5kjiEV77XDoS4oTD4cfhujqGd1OO+eysjp61eeP+lYbzr2jVobpyIy76h8j5iylK60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217626; c=relaxed/simple;
-	bh=FB9BblkcWaDJWPV3LLcbZ9/QcbztOl1uKSdHIPK/JNg=;
+	s=arc-20240116; t=1770216733; c=relaxed/simple;
+	bh=bOZS9Jg6JC02su8P9oVRNMCMKurk2SULp0wWDIwPlyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFd6g7u8xmTCAM6ib7s7bP9Ph8DsTAWIUIZHvPrQS0SXAaoPaBFLYq40IIn6y6N4BKwxoxopdO27QskTmR96UHzmvb7L7x/0Gkv4lywYrJ8ut0BmeEI6RyMF+3TS7EIHkJUpUXPjISlPUQte7HsM4y/PXxvmdc2NQTqaxV9HE4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OAj8Mzx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C17C4CEF7;
-	Wed,  4 Feb 2026 15:07:05 +0000 (UTC)
+	 MIME-Version; b=QYrzNjKc+/wsueJo702wlvL5oUiRvPOXpiqNbks7CjHNPjS4yl0TJN8U+25BPfO08SdGrNQQxTXzZVB1qHG2Mv8laZVQLwNUTz7ql6uoqiqqWsgbURNCa5ZcAabKV7qECoWTRbYimkpxSwCXcZlT23eeURZH8121+o1q4fGveYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2sEFwF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620D1C19424;
+	Wed,  4 Feb 2026 14:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217626;
-	bh=FB9BblkcWaDJWPV3LLcbZ9/QcbztOl1uKSdHIPK/JNg=;
+	s=korg; t=1770216732;
+	bh=bOZS9Jg6JC02su8P9oVRNMCMKurk2SULp0wWDIwPlyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OAj8Mzx1YHN0GwXX667jqECafABmMtuL8brHhUrxgM480+DZH2UJxf3c7imgGvZC
-	 ZadshH1gIw+UiC3lBS27s0FTB+T1tSisKLL2dPfvqyxt+PEET537JPXvrCr1AwpM+z
-	 9yk5rvcNX19WoHDhKcnqi2OuKShwJ9HkbeVE0EDk=
+	b=V2sEFwF4H4mWpKwQ2uW3//Mr5PECZ5phvozDNlNsROEqUkOG9f358ja+6PkvGuity
+	 5oEiJMNZYpQavD2w5PHf68GIDkd5/73oGg6wanz9CJJirHeMMRY4YAlJp8iyYE6N+K
+	 nCIntD4WtAtzn4n4nbt4Wwy4GtUSbsa2+ScPqySI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 071/280] dmaengine: lpc18xx-dmamux: fix device leak on route allocation
-Date: Wed,  4 Feb 2026 15:37:25 +0100
-Message-ID: <20260204143912.211578956@linuxfoundation.org>
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Thomas Graf <tgraf@suug.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 015/206] textsearch: describe @list member in ts_ops search
+Date: Wed,  4 Feb 2026 15:37:26 +0100
+Message-ID: <20260204143858.752474186@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +71,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suug.ch,davemloft.net,linux-foundation.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213557-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213822-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 685B5E89D3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suug.ch:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 572D9E7949
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-commit d4d63059dee7e7cae0c4d9a532ed558bc90efb55 upstream.
+[ Upstream commit f26528478bb102c28e7ac0cbfc8ec8185afdafc7 ]
 
-Make sure to drop the reference taken when looking up the DMA mux
-platform device during route allocation.
+Sphinx reports kernel-doc warning:
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+WARNING: ./include/linux/textsearch.h:49 struct member 'list' not described in 'ts_ops'
 
-Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
-Cc: stable@vger.kernel.org	# 4.3
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251117161258.10679-8-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Describe @list member to fix it.
+
+Link: https://lkml.kernel.org/r/20251219014006.16328-4-bagasdotme@gmail.com
+Fixes: 2de4ff7bd658 ("[LIB]: Textsearch infrastructure.")
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Thomas Graf <tgraf@suug.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/lpc18xx-dmamux.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ include/linux/textsearch.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/dma/lpc18xx-dmamux.c
-+++ b/drivers/dma/lpc18xx-dmamux.c
-@@ -55,30 +55,31 @@ static void *lpc18xx_dmamux_reserve(stru
- 	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
- 	unsigned long flags;
- 	unsigned mux;
-+	int ret = -EINVAL;
- 
- 	if (dma_spec->args_count != 3) {
- 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	mux = dma_spec->args[0];
- 	if (mux >= dmamux->dma_master_requests) {
- 		dev_err(&pdev->dev, "invalid mux number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
- 		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
- 			dma_spec->args[1]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	/* The of_node_put() will be done in the core for the node */
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "can't get dma master\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	spin_lock_irqsave(&dmamux->lock, flags);
-@@ -87,7 +88,8 @@ static void *lpc18xx_dmamux_reserve(stru
- 		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
- 			mux, mux, dmamux->muxes[mux].value);
- 		of_node_put(dma_spec->np);
--		return ERR_PTR(-EBUSY);
-+		ret = -EBUSY;
-+		goto err_put_pdev;
- 	}
- 
- 	dmamux->muxes[mux].busy = true;
-@@ -104,7 +106,14 @@ static void *lpc18xx_dmamux_reserve(stru
- 	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
- 		dmamux->muxes[mux].value, mux);
- 
-+	put_device(&pdev->dev);
-+
- 	return &dmamux->muxes[mux];
-+
-+err_put_pdev:
-+	put_device(&pdev->dev);
-+
-+	return ERR_PTR(ret);
- }
- 
- static int lpc18xx_dmamux_probe(struct platform_device *pdev)
+diff --git a/include/linux/textsearch.h b/include/linux/textsearch.h
+index 6673e4d4ac2e1..4933777404d61 100644
+--- a/include/linux/textsearch.h
++++ b/include/linux/textsearch.h
+@@ -35,6 +35,7 @@ struct ts_state
+  * @get_pattern: return head of pattern
+  * @get_pattern_len: return length of pattern
+  * @owner: module reference to algorithm
++ * @list: list to search
+  */
+ struct ts_ops
+ {
+-- 
+2.51.0
+
 
 
 
