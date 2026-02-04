@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-214038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IG2oM51qg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:49 +0100
+	id uBUaLK9tg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E736E9700
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C0BE9C57
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C821331AE654
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB43B31C177E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155452D8DA3;
-	Wed,  4 Feb 2026 15:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB0E273D77;
+	Wed,  4 Feb 2026 15:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkXo5vjw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsAD3XOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1293ACF06;
-	Wed,  4 Feb 2026 15:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0311519E96D;
+	Wed,  4 Feb 2026 15:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218353; cv=none; b=kOUB7qQvE1fUqYBZWimJ/L5Viw5wgGLyDxlijmUoe4iFHUpOQX3O/cgZ+6JCtosI92/f5IDbRTkD5pMkOls5A+edZPsTMv0BkeoAjeMDMvfVdtcATCrIl63Gd/pgBWNbQIFx0qLECP7/M+o5NK23S28uwgalRu0gXR11RA7fWh0=
+	t=1770219101; cv=none; b=E9KsRSSY/VBE2OBGGBDDDGvwxEC9ZqYlR2RFHuOGGKVh7Pkn+Wwr7weA+Ufs5muf7D20o5OPqM98Vmeui2LpIEq89PO1t2o6uioQv6/gEHichUWbAwUiU2OujxNYPYep/xgJjO+RCzXhYyFhFvAeUhJCAIp7mWGVNcYry7wLYVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218353; c=relaxed/simple;
-	bh=IKIJEQ5OFo0XgMxH+A0D660rb6QFLBhvl6vdGIkf6x0=;
+	s=arc-20240116; t=1770219101; c=relaxed/simple;
+	bh=oApIlc4Mp8QBeR6qYmc7XTkXUHR/BWWLJ0HTiahXVnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZS3lEjm+0YfMp98y9ukHnniHxJ2i51ih2wwsOjfdg3+1KJyrzRJfWDhk0VyXhgLBBNH0L/NgJuvGNyzoBcu6CuUkAGXWVL5NYdcHfesH1kOt4uwhyufvZa2LK8UluMFNmEQo5mxT9kOqCc+2JkdIBPDmO0W24R3RANlDXALm+Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkXo5vjw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7CAC116C6;
-	Wed,  4 Feb 2026 15:19:13 +0000 (UTC)
+	 MIME-Version; b=jSvnopwqQQc61fUyOT7xOeGbx4gsWQoQPRxltv4yojoPENCDtdLbB4o1dSJQYwn/cPDkCCWATq/aWiQD0L3t3z8l7lQYg1SZveUKQEfXg9cTTpzEIDJ7cQ5wse/2+oKWYJx2H34iAkE/p/SrGyFRNHOLfSpoYkyk10Qd9zM7U68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsAD3XOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2EAC116C6;
+	Wed,  4 Feb 2026 15:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218353;
-	bh=IKIJEQ5OFo0XgMxH+A0D660rb6QFLBhvl6vdGIkf6x0=;
+	s=korg; t=1770219100;
+	bh=oApIlc4Mp8QBeR6qYmc7XTkXUHR/BWWLJ0HTiahXVnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TkXo5vjwpnv+oplgv0LJSu/FzdUpbZD1Yn/w1Emt5lJUvC8TiOKKB2BEw+1Ef581J
-	 YueOB88j8E21ItB6xhZhqlwu2dSJ7XnLYAhKy8JZcL2xNXpGn6hdGjS/drojD8feuI
-	 TPcgZpelNWIVYGmYZJNhCg0lYz5/KfPWI3jFbw0Q=
+	b=HsAD3XOR0X1XnwVsctC7Z+c4A1PLYtRtZoOdp4scEHk2xlBnkXMW3kF9aU+J+1Sot
+	 V/+Mz8oQCaLkO+DnV1cTk03xnMy+/AIJ720cyMDOobqrJgIfIY23s7/sNy9WkiSIu0
+	 65WuALb3eSa8D4gKCrw5RG9Ji7zO5JZXhgcNK39U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pimyn Girgis <pimyn@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 276/280] mm/kfence: randomize the freelist on initialization
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 068/122] ASoC: fsl: imx-card: Do not force slot width to sample width
 Date: Wed,  4 Feb 2026 15:40:50 +0100
-Message-ID: <20260204143919.636646321@linuxfoundation.org>
+Message-ID: <20260204143854.301892063@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,120 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214038-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214261-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tugraz.at:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3E736E9700
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 17C0BE9C57
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pimyn Girgis <pimyn@google.com>
+From: Fabio Estevam <festevam@gmail.com>
 
-[ Upstream commit 870ff19251bf3910dda7a7245da826924045fedd ]
+commit 9210f5ff6318163835d9e42ee68006be4da0f531 upstream.
 
-Randomize the KFENCE freelist during pool initialization to make
-allocation patterns less predictable.  This is achieved by shuffling the
-order in which metadata objects are added to the freelist using
-get_random_u32_below().
+imx-card currently sets the slot width to the physical sample width
+for I2S links. This breaks controllers that use fixed-width slots
+(e.g. 32-bit FIFO words), causing the unused bits in the slot to
+contain undefined data when playing 16-bit streams.
 
-Additionally, ensure the error path correctly calculates the address range
-to be reset if initialization fails, as the address increment logic has
-been moved to a separate loop.
+Do not override the slot width in the machine driver and let the CPU
+DAI select an appropriate default instead. This matches the behavior
+of simple-audio-card and avoids embedding controller-specific policy
+in the machine driver.
 
-Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Pimyn Girgis <pimyn@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ replaced kfence_metadata_init with kfence_metadata ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On an i.MX8MP-based board using SAI as the I2S master with 32-bit slots,
+playing 16-bit audio resulted in spurious frequencies and an incorrect
+SAI data waveform, as the slot width was forced to 16 bits. After this
+change, audio artifacts are eliminated and the 16-bit samples correctly
+occupy the first half of the 32-bit slot, with the remaining bits padded
+with zeroes.
+
+Cc: stable@vger.kernel.org
+Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://patch.msgid.link/20260118205030.1532696-1-festevam@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kfence/core.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ sound/soc/fsl/imx-card.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -542,7 +542,7 @@ static unsigned long kfence_init_pool(vo
- {
- 	unsigned long addr = (unsigned long)__kfence_pool;
- 	struct page *pages;
--	int i;
-+	int i, rand;
- 
- 	if (!arch_kfence_init_pool())
- 		return addr;
-@@ -590,19 +590,34 @@ static unsigned long kfence_init_pool(vo
- 		INIT_LIST_HEAD(&meta->list);
- 		raw_spin_lock_init(&meta->lock);
- 		meta->state = KFENCE_OBJECT_UNUSED;
--		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
--		list_add_tail(&meta->list, &kfence_freelist);
-+		/* Use addr to randomize the freelist. */
-+		meta->addr = i;
- 
- 		/* Protect the right redzone. */
--		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
-+		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
- 			goto reset_slab;
-+	}
-+
-+	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
-+		rand = get_random_u32_below(i);
-+		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
-+	}
- 
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		struct kfence_metadata *meta_1 = &kfence_metadata[i];
-+		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
-+
-+		list_add_tail(&meta_2->list, &kfence_freelist);
-+	}
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		kfence_metadata[i].addr = addr;
- 		addr += 2 * PAGE_SIZE;
- 	}
- 
- 	return 0;
- 
- reset_slab:
-+	addr += 2 * i * PAGE_SIZE;
- 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
- 		struct slab *slab = page_slab(nth_page(pages, i));
- 
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -346,7 +346,6 @@ static int imx_aif_hw_params(struct snd_
+ 			      SND_SOC_DAIFMT_PDM;
+ 		} else {
+ 			slots = 2;
+-			slot_width = params_physical_width(params);
+ 			fmt = (rtd->dai_link->dai_fmt & ~SND_SOC_DAIFMT_FORMAT_MASK) |
+ 			      SND_SOC_DAIFMT_I2S;
+ 		}
 
 
 
