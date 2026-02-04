@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-213986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABCoKV1mg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:41 +0100
+	id CFTOKoxhg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517C9E8C81
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7714E8113
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B259930D7713
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7028F30A578B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637D02D321B;
-	Wed,  4 Feb 2026 15:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD7D4218AD;
+	Wed,  4 Feb 2026 14:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfLx0BYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQrnR2HH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27813284B37;
-	Wed,  4 Feb 2026 15:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621714218A5;
+	Wed,  4 Feb 2026 14:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218176; cv=none; b=GbnCfTqaQQrCUDCApg4Y35ohYu30qAXCze2+3+phviTViBo+GJy5Wq506JKJKwTK3evHSulLo6xjPUZdXZcr5Yae9ZwrceucaqZIBgHLIOavFe2qM8Pia99XFi8idlwBCvFVhpiZx2ssHN2WZo4pSmJiaKCOv0FxL7lYKQz9rMM=
+	t=1770217167; cv=none; b=ObqZ1nS09P6HZoo755+5vox2HOyJ7LQAfrccpIbNQVejdmjE3fImgNZf+UJXGFdmfeyeEDLu1dF9+HfHNi376sJ9yWRKAaCh9SBeoITnWfUEicJipLhFMbrc4s8w3mjGngzj045z3x65JADQG8kyDIU/Rf/VOr5NG3dvqgoOCOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218176; c=relaxed/simple;
-	bh=GhTpcLHMS/gQe/x+EMFxqKInbDW074tbQKOOgA7clNE=;
+	s=arc-20240116; t=1770217167; c=relaxed/simple;
+	bh=slgEEcRvI2AHfxS3XIGEcliVdduOzYepx0KbPnUh/XM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hccIaraDKdgJidBjsKT+E+8uLOGjUdC/0PxfONDCd628UkZYNEi1hQ83lywsugApKrT2Z3BryNL49HgGKSfELU21f5hK/uSmOeP3wQB1ie7lEdGJlnBOifn/mPE/jxbffu01xOjT+GlPhUIlbS9DxobAZ9+RfypxNTt7bCvqMak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfLx0BYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C95FC4CEF7;
-	Wed,  4 Feb 2026 15:16:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZBfmf4eNY8wbmBtsA2J9Aq8SKQ5OCQRudPwTP33NZVUbxsYjl63qeS/uErqQ7lUXMbVKRU/Qwt/qAV7ztWc6jtv0MUcXJ9/DY1/UPGPP1ZJh+zqn3DYS1iXu1lcJgk3Sed6xoLgrajAcRWiWr30hxcozreKksnLbdGzMWmHJPqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQrnR2HH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800ECC4CEF7;
+	Wed,  4 Feb 2026 14:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218176;
-	bh=GhTpcLHMS/gQe/x+EMFxqKInbDW074tbQKOOgA7clNE=;
+	s=korg; t=1770217166;
+	bh=slgEEcRvI2AHfxS3XIGEcliVdduOzYepx0KbPnUh/XM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZfLx0BYqauxHoeiDrKabfzS6IHkVxiEpHeQHljWhDvR0YbCEhFK4fM9S2Hb/AQZUc
-	 LkTga2BuXxh7YEj8b6s5/LC5QKl3FgvbMui7mhNVNbWn8R4klGWTs6paUN8ioI1a+X
-	 11Q1j52vKqJOVAVBscc4Lf/ACNzVzg+iaNe6r7O0=
+	b=mQrnR2HH7zwri1r2n7zPugtVoEgaxm5cma/OUOocM7RxJApl9gzD7qNdCKVKdUQOK
+	 eFncktZZ32jZlhfJI5B6oN76YLICR3dQIztk8k6pRphoD5xlrFjLIeM/OvfxaDdsIh
+	 jBCeVuzI2X9xdX6SfmqbpjNMFN46kUBrkqXoil48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaiser <martin@kaiser.cx>,
-	Florian Westphal <fw@strlen.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/280] net: bridge: fix static key check
+Subject: [PATCH 5.15 144/206] net/mlx5e: Report rx_discards_phy via rx_dropped
 Date: Wed,  4 Feb 2026 15:39:35 +0100
-Message-ID: <20260204143916.836463652@linuxfoundation.org>
+Message-ID: <20260204143903.392071375@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +68,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213986-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-213686-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,blackwall.org:email,kaiser.cx:email]
-X-Rspamd-Queue-Id: 517C9E8C81
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B7714E8113
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit cc0cf10fdaeadf5542d64a55b5b4120d3df90b7d ]
+[ Upstream commit c9cfced17365b1df8c6ae6cd5db56aebd7ed9b57 ]
 
-Fix the check if netfilter's static keys are available. netfilter defines
-and exports static keys if CONFIG_JUMP_LABEL is enabled. (HAVE_JUMP_LABEL
-is never defined.)
+We noticed a high number of rx_discards_phy events on certain servers while
+running `ethtool -S`. However, this critical counter is not currently
+included in the standard /proc/net/dev statistics file, making it difficult
+to monitor effectively—especially given the diversity of vendors across a
+large fleet of servers.
 
-Fixes: 971502d77faa ("bridge: netfilter: unroll NF_HOOK helper in bridge input path")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260127101925.1754425-1-martin@kaiser.cx
+Let's report it via the standard rx_dropped metric.
+
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20241210022706.6665-1-laoar.shao@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 476681f10cc1 ("net/mlx5e: Account for netdev stats in ndo_get_stats64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index f11345720c275..e33500771b30f 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -243,7 +243,7 @@ static int nf_hook_bridge_pre(struct sk_buff *skb, struct sk_buff **pskb)
- 	int ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index b4e6a467409be..5504b7b3b3f90 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3186,6 +3186,7 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
+ 	}
  
- 	net = dev_net(skb->dev);
--#ifdef HAVE_JUMP_LABEL
-+#ifdef CONFIG_JUMP_LABEL
- 	if (!static_key_false(&nf_hooks_needed[NFPROTO_BRIDGE][NF_BR_PRE_ROUTING]))
- 		goto frame_finish;
- #endif
+ 	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
++	stats->rx_dropped = PPORT_2863_GET(pstats, if_in_discards);
+ 
+ 	stats->rx_length_errors =
+ 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
 -- 
 2.51.0
 
