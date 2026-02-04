@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGpCBnFsg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:57:37 +0100
+	id kO3cHZpdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC90E9AA3
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:57:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF526E78C4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF29A3018B8E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D38523072423
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0425741C311;
-	Wed,  4 Feb 2026 15:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E642BE037;
+	Wed,  4 Feb 2026 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ot8kw1nq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ebjv2TOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB57284B37;
-	Wed,  4 Feb 2026 15:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7C627FD56;
+	Wed,  4 Feb 2026 14:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218186; cv=none; b=UVI3hIrmEBf2e0eLfgXU6APon8aXweo6JknX4RPDwt/2CvU1bY0finizgbUB+MStS/U03/c0GSdvz15kyil8tDutT5pa68NkSj5D2AryHMs2HozAzteKqRB7Pe8mOF095FJnUbb3jnlw1UOXvpijBbVKLkKkq5B2KN5vmpWNOwc=
+	t=1770216527; cv=none; b=lX4gLuJWE8GsVYOGiGMVo5+5Fzl7Pn8gRLnPNDoTziPg8YHniUopS7nMh5KsSm3Oulp/K13c8tU5qzDjxwWj2o0/jI9uVifj4csd225w3Wr4BiEahnltSVnnu3JyPNxFDA9kJd9JD/axKK99bSRkFPm4PdUUjDv8nHcH80AONyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218186; c=relaxed/simple;
-	bh=d/sg6Oz+wt6PM8Q2mWu5IkoFRWH/ZLG70y4xCefDom8=;
+	s=arc-20240116; t=1770216527; c=relaxed/simple;
+	bh=bpm3nLfgkTF7ihDh8jbQgpGlYOaLz/tCl3vgQRwgM5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tX72/qP0UMfRf6V4ny1D5RGqiK9KnOvyqqjz1rlZYO/3cNfB5yfx/NvLkQAvJSUT7B9xkdXvDDOTVSOJkuupVWz8m/VP1HE6TL9JYCQyUExLVy+KmI9ZWApd0egSdGkCwSEvNdBVtNk1tUbqJt1E6stpGi+2AaVrZ3/LEvPnzDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ot8kw1nq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F35DC4CEF7;
-	Wed,  4 Feb 2026 15:16:25 +0000 (UTC)
+	 MIME-Version; b=AUhsSgVxR0I/KIBDZ1K2SabBdlNbQnCHiG806WreQhsinWb9KuFvZKrQCAM1cfOC3DqovRoJbuUMkWlIrh36TmLMNMDQdAq7RNmtneonXLzwyurpQ1PzP8YJfqLuPZpHxeiNuu7e1nj97KZD23ZFMkEEfaTvYb6k3ve31FNSMKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ebjv2TOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E914C4CEF7;
+	Wed,  4 Feb 2026 14:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218186;
-	bh=d/sg6Oz+wt6PM8Q2mWu5IkoFRWH/ZLG70y4xCefDom8=;
+	s=korg; t=1770216527;
+	bh=bpm3nLfgkTF7ihDh8jbQgpGlYOaLz/tCl3vgQRwgM5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ot8kw1nqs7IczaQjNIw3eUCuDH+v+T34l3CDrhBTY9DsKZsooU6/nbVZjXmqrw97z
-	 rPNOh99EFrvoUVcHkG6RUdAwjeUdsBkyyEuB0HxwwF1KcATHa+rza2X++5TsPBWt6T
-	 WDSSefsOhizzVOlAsu5//d7WxwPfCGXhxuMVacWk=
+	b=Ebjv2TOBteXySqI/TiJc3j6/NcLH7T2g20Ik9lELU10msLFcGLRZRdW96VvKblpCS
+	 c1Ypxrhv7Qb17xbgr78QNeAk8YtIyAtBTlKLH0KhNodgJeU3iXAI6tOfA8+lxxgCM2
+	 2mJV/TuRj4Fu92htSh3IhzasGCBPAnR6tP86oVig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Sergeev <denserg.edu@gmail.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/280] gpiolib: acpi: use BIT_ULL() for u64 mask in address space handler
+	syzbot+a168dbeaaa7778273c1b@syzkaller.appspotmail.com,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Helge Deller <deller@gmx.de>,
+	"Barry K. Nathan" <barryn@pobox.com>
+Subject: [PATCH 5.10 115/161] fbdev: fbcon: Properly revert changes when vc_resize() failed
 Date: Wed,  4 Feb 2026 15:39:38 +0100
-Message-ID: <20260204143916.942018489@linuxfoundation.org>
+Message-ID: <20260204143855.882128016@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,16 +72,16 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213989-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213494-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oss.qualcomm.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,redhat.com,gmx.de,pobox.com];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,58 +90,102 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,a168dbeaaa7778273c1b];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxtesting.org:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2FC90E9AA3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: CF526E78C4
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Sergeev <denserg.edu@gmail.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit c0ae43d303e45764918fa8c1dc13d6a5db59c479 ]
+commit a5a923038d70d2d4a86cb4e3f32625a5ee6e7e24 upstream.
 
-The BIT() macro uses unsigned long, which is 32 bits on 32-bit
-architectures. When iterating over GPIO pins with index >= 32,
-the expression (*value & BIT(i)) causes undefined behavior due
-to shifting by a value >= type width.
+fbcon_do_set_font() calls vc_resize() when font size is changed.
+However, if if vc_resize() failed, current implementation doesn't
+revert changes for font size, and this causes inconsistent state.
 
-Since 'value' is a pointer to u64, use BIT_ULL() to ensure correct
-64-bit mask on all architectures.
+syzbot reported unable to handle page fault due to this issue [1].
+syzbot's repro uses fault injection which cause failure for memory
+allocation, so vc_resize() failed.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+This patch fixes this issue by properly revert changes for font
+related date when vc_resize() failed.
 
-Fixes: 2c4d00cb8fc5 ("gpiolib: acpi: Use BIT() macro to increase readability")
-Signed-off-by: Denis Sergeev <denserg.edu@gmail.com>
-Reviewed-by: Mika Westerberg <westeri@kernel.org>
-Link: https://lore.kernel.org/r/20260126035914.16586-1-denserg.edu@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://syzkaller.appspot.com/bug?id=3443d3a1fa6d964dd7310a0cb1696d165a3e07c4 [1]
+Reported-by: syzbot+a168dbeaaa7778273c1b@syzkaller.appspotmail.com
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: "Barry K. Nathan" <barryn@pobox.com>
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c |   27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index baa77a8e83652..11338f47d884d 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1184,7 +1184,7 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
- 		mutex_unlock(&achip->conn_lock);
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2424,15 +2424,21 @@ static int fbcon_do_set_font(struct vc_d
+ 	struct fb_info *info = registered_fb[con2fb_map[vc->vc_num]];
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fbcon_display *p = &fb_display[vc->vc_num];
+-	int resize;
++	int resize, ret, old_userfont, old_width, old_height, old_charcount;
+ 	char *old_data = NULL;
  
- 		if (function == ACPI_WRITE)
--			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT(i)));
-+			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT_ULL(i)));
- 		else
- 			*value |= (u64)gpiod_get_raw_value_cansleep(desc) << i;
- 	}
--- 
-2.51.0
-
+ 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
+ 	if (p->userfont)
+ 		old_data = vc->vc_font.data;
+ 	vc->vc_font.data = (void *)(p->fontdata = data);
++	old_userfont = p->userfont;
+ 	if ((p->userfont = userfont))
+ 		REFCOUNT(data)++;
++
++	old_width = vc->vc_font.width;
++	old_height = vc->vc_font.height;
++	old_charcount = vc->vc_font.charcount;
++
+ 	vc->vc_font.width = w;
+ 	vc->vc_font.height = h;
+ 	vc->vc_font.charcount = charcount;
+@@ -2448,7 +2454,9 @@ static int fbcon_do_set_font(struct vc_d
+ 		rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
+ 		cols /= w;
+ 		rows /= h;
+-		vc_resize(vc, cols, rows);
++		ret = vc_resize(vc, cols, rows);
++		if (ret)
++			goto err_out;
+ 	} else if (con_is_visible(vc)
+ 		   && vc->vc_mode == KD_TEXT) {
+ 		fbcon_clear_margins(vc, 0);
+@@ -2458,6 +2466,21 @@ static int fbcon_do_set_font(struct vc_d
+ 	if (old_data && (--REFCOUNT(old_data) == 0))
+ 		kfree(old_data - FONT_EXTRA_WORDS * sizeof(int));
+ 	return 0;
++
++err_out:
++	p->fontdata = old_data;
++	vc->vc_font.data = (void *)old_data;
++
++	if (userfont) {
++		p->userfont = old_userfont;
++		REFCOUNT(data)--;
++	}
++
++	vc->vc_font.width = old_width;
++	vc->vc_font.height = old_height;
++	vc->vc_font.charcount = old_charcount;
++
++	return ret;
+ }
+ 
+ /*
 
 
 
