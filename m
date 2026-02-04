@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-213628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213868-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id RsT0CcBgg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:07:44 +0100
+	id 0OA2LGBpg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213868-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783CFE7F5B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D472E9411
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEEE3318D9D2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 233D230CC69D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF1541B367;
-	Wed,  4 Feb 2026 14:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFD341C2EE;
+	Wed,  4 Feb 2026 15:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDe1+G06"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="do5vSlb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A0741B37E;
-	Wed,  4 Feb 2026 14:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EC941B36C;
+	Wed,  4 Feb 2026 15:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216968; cv=none; b=nG1AA4gqEFUJfLeNmB6PwPaBF1+t0ZD7jpiTZrpCDAucY/P2bP2mf4/uqDGCeJ27F5aZ+wASt6fIOZiUhNgJFQSr+9Z2Yy0E6NAY+c7FfwTAaQvDfQImbDXe3b6FQx7xiYaltf/RjpCKSlaFFgeblp/FmRWTGyS+mB/MWvCAJNs=
+	t=1770217783; cv=none; b=f3JFNNigUdaWgvaV+/fwDHrujn8cc4IQedvLBSb+gBqYly0CcCspCSvkFXpjEPS8rq4E4zfx8rxPEETSCQD7dQonly8Kp1sDbbGDDD2VstuA3eZqaQAV+/sEG+RK4x+3GeGlMW3+4oikazTz48x0ZkdXiC/fk5QeX4vm/aldB3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216968; c=relaxed/simple;
-	bh=QrBd5knwn6EoCWXlnPZFv3n4QJXZKG2YMuocrwFXwBc=;
+	s=arc-20240116; t=1770217783; c=relaxed/simple;
+	bh=Q9zya9JzxxAPzgjcGZtA7QmDMdT8QWyBDJO9cxesbk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XU9YPfcQfcTthBdcvP8sW+LoTgXa9XwkYKtdShIgT6j5I2z20laoUgPwmOgcvBbYMvBscT+iGfYVF8EY3fxHrkSXfJOeXtjFzjgpMHEjVLjiXbNqh7b8NDlyn8J+DzoMbZ+dA4T6LUE9AYozf4YIZJ97ibeioUfyfwIHVHoiO7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDe1+G06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E31C4CEF7;
-	Wed,  4 Feb 2026 14:56:07 +0000 (UTC)
+	 MIME-Version; b=TqfXyJbJT6MYn6UgqWKl0Q5RxxkPBOjcYUShX7kF1WjI8KBMDIrk5fhuZ0k5JOoN8YByDI1uSENZs3tlFRy0y75S0vCNEVTUkTvbClCRYsQ8fGsu8/1BKAnpQXpxi8y/fwlheX+qkhALvT5vEoeKLq88w72WeOdOkKBwoJDnBTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=do5vSlb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E60CC4CEF7;
+	Wed,  4 Feb 2026 15:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216967;
-	bh=QrBd5knwn6EoCWXlnPZFv3n4QJXZKG2YMuocrwFXwBc=;
+	s=korg; t=1770217782;
+	bh=Q9zya9JzxxAPzgjcGZtA7QmDMdT8QWyBDJO9cxesbk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDe1+G06TzKEY/EXGNVpfA8IjLSYh94nKipW44WW+NYcpirIwUXj0ZHp3UruzgNBX
-	 CZGOnYSDIpyXImMyinyTvbgQxVYdGXT8Mabjf55W/nUWaeCyiexQ3QVdrBfiohr7Yp
-	 uvZBwT7o3AkvxI3QhPfpSactsAzhj05m45BTW1v4=
+	b=do5vSlb2FYyziDFAYDQ/X5FIWP9GXalpBPNrLb+Oad1RV8iUtbEHgB2ypphcs/7jI
+	 3QkXbXcL6MDp9VTGog4ub9H72s/C0WdaWm+tvF8MH7oRJmkEy1vNN+8fJNQ4gEwnrC
+	 dKrMWUO4UURkmoWsTyx7hH4N+mHaLnGsIDbRb6xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Wojtek Wasko <wwasko@nvidia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/206] ptp: Add PHC file mode checks. Allow RO adjtime() without FMODE_WRITE.
-Date: Wed,  4 Feb 2026 15:38:09 +0100
-Message-ID: <20260204143900.306986741@linuxfoundation.org>
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 116/280] comedi: dmm32at: serialize use of paged registers
+Date: Wed,  4 Feb 2026 15:38:10 +0100
+Message-ID: <20260204143913.815595197@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,149 +61,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,linutronix.de,davemloft.net,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213628-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-213868-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nwtime.org:url,davemloft.net:email,linutronix.de:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 783CFE7F5B
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 1D472E9411
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojtek Wasko <wwasko@nvidia.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit b4e53b15c04e3852949003752f48f7a14ae39e86 ]
+commit e03b29b55f2b7c345a919a6ee36633b06bf3fb56 upstream.
 
-Many devices implement highly accurate clocks, which the kernel manages
-as PTP Hardware Clocks (PHCs). Userspace applications rely on these
-clocks to timestamp events, trace workload execution, correlate
-timescales across devices, and keep various clocks in sync.
+Some of the hardware registers of the DMM-32-AT board are multiplexed,
+using the least significant two bits of the Miscellaneous Control
+register to select the function of registers at offsets 12 to 15:
 
-The kernel’s current implementation of PTP clocks does not enforce file
-permissions checks for most device operations except for POSIX clock
-operations, where file mode is verified in the POSIX layer before
-forwarding the call to the PTP subsystem. Consequently, it is common
-practice to not give unprivileged userspace applications any access to
-PTP clocks whatsoever by giving the PTP chardevs 600 permissions. An
-example of users running into this limitation is documented in [1].
-Additionally, POSIX layer requires WRITE permission even for readonly
-adjtime() calls which are used in PTP layer to return current frequency
-offset applied to the PHC.
+ 00 => 8254 timer/counter registers are accessible
+ 01 => 8255 digital I/O registers are accessible
+ 10 => Reserved
+ 11 => Calibration registers are accessible
 
-Add permission checks for functions that modify the state of a PTP
-device. Continue enforcing permission checks for POSIX clock operations
-(settime, adjtime) in the POSIX layer. Only require WRITE access for
-dynamic clocks adjtime() if any flags are set in the modes field.
+The interrupt service routine (`dmm32at_isr()`) clobbers the bottom two
+bits of the register with value 00, which would interfere with access to
+the 8255 registers by the `dm32at_8255_io()` function (used for Comedi
+instruction handling on the digital I/O subdevice).
 
-[1] https://lists.nwtime.org/sympa/arc/linuxptp-users/2024-01/msg00036.html
+Make use of the generic Comedi device spin-lock `dev->spinlock` (which
+is otherwise unused by this driver) to serialize access to the
+miscellaneous control register and paged registers.
 
-Changes in v4:
-- Require FMODE_WRITE in ajtime() only for calls modifying the clock in
-  any way.
-
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3c501880ac44 ("Staging: comedi: add dmm32at driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260112162835.91688-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_chardev.c | 16 ++++++++++++++++
- kernel/time/posix-clock.c |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/comedi/drivers/dmm32at.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index fcee202f4484c..aa38a518e3d7b 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -150,6 +150,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+--- a/drivers/comedi/drivers/dmm32at.c
++++ b/drivers/comedi/drivers/dmm32at.c
+@@ -330,6 +330,7 @@ static int dmm32at_ai_cmdtest(struct com
  
- 	case PTP_EXTTS_REQUEST:
- 	case PTP_EXTTS_REQUEST2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
+ static void dmm32at_setaitimer(struct comedi_device *dev, unsigned int nansec)
+ {
++	unsigned long irq_flags;
+ 	unsigned char lo1, lo2, hi2;
+ 	unsigned short both2;
  
- 		if (copy_from_user(&req.extts, (void __user *)arg,
-@@ -191,6 +195,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+@@ -342,6 +343,9 @@ static void dmm32at_setaitimer(struct co
+ 	/* set counter clocks to 10MHz, disable all aux dio */
+ 	outb(0, dev->iobase + DMM32AT_CTRDIO_CFG_REG);
  
- 	case PTP_PEROUT_REQUEST:
- 	case PTP_PEROUT_REQUEST2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the clock regs */
+ 	outb(DMM32AT_CTRL_PAGE_8254, dev->iobase + DMM32AT_CTRL_REG);
  
- 		if (copy_from_user(&req.perout, (void __user *)arg,
-@@ -259,6 +267,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+@@ -354,6 +358,8 @@ static void dmm32at_setaitimer(struct co
+ 	outb(lo2, dev->iobase + DMM32AT_CLK2);
+ 	outb(hi2, dev->iobase + DMM32AT_CLK2);
  
- 	case PTP_ENABLE_PPS:
- 	case PTP_ENABLE_PPS2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
+ 	/* enable the ai conversion interrupt and the clock to start scans */
+ 	outb(DMM32AT_INTCLK_ADINT |
+ 	     DMM32AT_INTCLK_CLKEN | DMM32AT_INTCLK_CLKSEL,
+@@ -363,13 +369,19 @@ static void dmm32at_setaitimer(struct co
+ static int dmm32at_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
+ {
+ 	struct comedi_cmd *cmd = &s->async->cmd;
++	unsigned long irq_flags;
+ 	int ret;
  
- 		if (!capable(CAP_SYS_TIME))
-@@ -397,6 +409,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ 	dmm32at_ai_set_chanspec(dev, s, cmd->chanlist[0], cmd->chanlist_len);
  
- 	case PTP_PIN_SETFUNC:
- 	case PTP_PIN_SETFUNC2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		if (copy_from_user(&pd, (void __user *)arg, sizeof(pd))) {
- 			err = -EFAULT;
- 			break;
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index b130bb56cc4e0..827abede72745 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -253,7 +253,7 @@ static int pc_clock_adjtime(clockid_t id, struct __kernel_timex *tx)
- 	if (err)
- 		return err;
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* reset the interrupt just in case */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
  
--	if ((cd.fp->f_mode & FMODE_WRITE) == 0) {
-+	if (tx->modes && (cd.fp->f_mode & FMODE_WRITE) == 0) {
- 		err = -EACCES;
- 		goto out;
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
+ 	/*
+ 	 * wait for circuit to settle
+ 	 * we don't have the 'insn' here but it's not needed
+@@ -429,8 +441,13 @@ static irqreturn_t dmm32at_isr(int irq,
+ 		comedi_handle_events(dev, s);
  	}
--- 
-2.51.0
-
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock(&dev->spinlock);
++
+ 	/* reset the interrupt */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
++
++	spin_unlock(&dev->spinlock);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -481,14 +498,25 @@ static int dmm32at_ao_insn_write(struct
+ static int dmm32at_8255_io(struct comedi_device *dev,
+ 			   int dir, int port, int data, unsigned long regbase)
+ {
++	unsigned long irq_flags;
++	int ret;
++
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the DIO regs */
+ 	outb(DMM32AT_CTRL_PAGE_8255, dev->iobase + DMM32AT_CTRL_REG);
+ 
+ 	if (dir) {
+ 		outb(data, dev->iobase + regbase + port);
+-		return 0;
++		ret = 0;
++	} else {
++		ret = inb(dev->iobase + regbase + port);
+ 	}
+-	return inb(dev->iobase + regbase + port);
++
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
++	return ret;
+ }
+ 
+ /* Make sure the board is there and put it to a known state */
 
 
 
