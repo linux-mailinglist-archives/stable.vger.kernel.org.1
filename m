@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HWjArlvg2lgmwMAu9opvQ
-	(envelope-from <stable+bounces-214325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:11:37 +0100
+	id YI80JzBog2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E92E9FA2
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:11:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1564E90D3
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B19A9306AFD9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:35:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 850703236742
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350FD41B34E;
-	Wed,  4 Feb 2026 15:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699A32D594F;
+	Wed,  4 Feb 2026 15:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0lL9gFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5tqFeOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5DC286890;
-	Wed,  4 Feb 2026 15:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9FB21FF4C;
+	Wed,  4 Feb 2026 15:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219314; cv=none; b=RLbNF2EeMnmNKC66eHicD+OzDhBQhM5HxNeRjeCM/Vu7EUBnbNSHdo+L+mrtm1djoazo4R1O//Ss1orWb3oPUxy+tHNz0hnPM5mwute+rem0hGNNXcP4IAelyNZgGpG5BaL6uFPZWPwjdUeI4OVCqt5Mv3DUZJTFi/Rj842b+Xw=
+	t=1770218852; cv=none; b=PqTN1LwAfrtNOU3g/451uTmLai8ZDbVEUKJr4S+0uwyBc9wh8f1hdLCtsV3iQvGLhbFPgqWFsVKrybzsn8Th2tT9a5S1YKW8/CHs93xU0CvHybcqBfHoHcjhyASeA/XzKPIVfu2vzRNSoPZ+gco+Ee6YjmhPCeD79iyjOrBbVnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219314; c=relaxed/simple;
-	bh=UZpKw81lL08Dj7hYLOPj/oqTjkz0jiSQlPH1+uJk+Rg=;
+	s=arc-20240116; t=1770218852; c=relaxed/simple;
+	bh=n9XOavn3+XIU3IrrPKhSCYLenAH4HUND+s84snbLsw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swYy7sqCbP2uJxVhLRscD33rIvTVpIJcaSN5L7CrC5rEmN3ntWdaKIZyUoLtZyCL0/44qT1pbKk+aJaE7o/C2FIphbZiwwGUP0ngeKw874LxdfvLvF/OTsJ/IjNdfQMgt08gWCtB/5zni3DspoO4vg1yUjZumLhPdwEm4msnb6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0lL9gFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34253C4CEF7;
-	Wed,  4 Feb 2026 15:35:13 +0000 (UTC)
+	 MIME-Version; b=a65H1pAvWOj7KhUZf7qskSrNqro8eu3QlJ+BJ9X7rtzf0Eajs3MZxlcn2GbjxcUdlaG1s+dIpIdmbLdjOVLbMuNYEojXMm9lMLcV8zXFoP2BEgH7FcKhuegQzH0b9P7X3Vc5XIrKgl3IvftUHd+KnHq7ReBAqQZmDzI27SBay9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5tqFeOV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9604DC4CEF7;
+	Wed,  4 Feb 2026 15:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219313;
-	bh=UZpKw81lL08Dj7hYLOPj/oqTjkz0jiSQlPH1+uJk+Rg=;
+	s=korg; t=1770218852;
+	bh=n9XOavn3+XIU3IrrPKhSCYLenAH4HUND+s84snbLsw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0lL9gFUtyshpHoRs6UmBXApMBxjGTaTzTOC/2G3tJXWvLbWL4K3vw6coXJsJu3pB
-	 Gw+IyiOD/fKz1BugD2I90pSv4wN/E+2ma4UzDvOUpBqK7atNDzE0r44cRjj6KmIi9O
-	 DzfJr0RBnaD9cFvSEcVJnJTk2ObGrylOkNA2ZBuM=
+	b=P5tqFeOVRo1D2R9hHxKQU3iowp13P5h4iXNagSumZD0Gw8bwPpxpBSC2dr9q+42/j
+	 5txJ6p3x7MNQhzra4fjINHZDN21qu1wRn7qH+cDKI44jex9dL1UF2vqbTdn8k7GXcr
+	 n0hgUQt7ZpbupODzwYJS42muwxU+V69fZwjHUF4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@kernel.org>,
-	Jesung Yang <y.j3ms.n@gmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.18 094/122] scripts: generate_rust_analyzer: Add pin_init -> compiler_builtins dep
-Date: Wed,  4 Feb 2026 15:41:16 +0100
-Message-ID: <20260204143855.233218970@linuxfoundation.org>
+	Marco Angaroni <marco.angaroni@italtel.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 79/87] mptcp: avoid dup SUB_CLOSED events after disconnect
+Date: Wed,  4 Feb 2026 15:41:17 +0100
+Message-ID: <20260204143849.765435919@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +67,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214325-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214186-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 47E92E9FA2
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: F1564E90D3
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 98dcca855343512a99432224447f07c5988753ad upstream.
+[ Upstream commit 280d654324e33f8e6e3641f76764694c7b64c5db ]
 
-Add a dependency edge from `pin_init` to `compiler_builtins` to
-`scripts/generate_rust_analyzer.py` to match `rust/Makefile`. This has
-been incorrect since commit d7659acca7a3 ("rust: add pin-init crate
-build infrastructure").
+In case of subflow disconnect(), which can also happen with the first
+subflow in case of errors like timeout or reset, mptcp_subflow_ctx_reset
+will reset most fields from the mptcp_subflow_context structure,
+including close_event_done. Then, when another subflow is closed, yet
+another SUB_CLOSED event for the disconnected initial subflow is sent.
+Because of the previous reset, there are no source address and
+destination port.
 
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-Reviewed-by: Jesung Yang <y.j3ms.n@gmail.com>
-Acked-by: Benno Lossin <lossin@kernel.org>
-Fixes: d7659acca7a3 ("rust: add pin-init crate build infrastructure")
+A solution is then to also check the subflow's local id: it shouldn't be
+negative anyway.
+
+Another solution would be not to reset subflow->close_event_done at
+disconnect time, but when reused. But then, probably the whole reset
+could be done when being reused. Let's not change this logic, similar
+to TCP with tcp_disconnect().
+
+Fixes: d82809b6c5f2 ("mptcp: avoid duplicated SUB_CLOSED events")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250723-rust-analyzer-pin-init-v1-2-3c6956173c78@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reported-by: Marco Angaroni <marco.angaroni@italtel.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/603
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-1-7f71e1bc4feb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -110,7 +110,7 @@ def generate_crates(srctree, objtree, sy
-     append_crate(
-         "pin_init",
-         srctree / "rust" / "pin-init" / "src" / "lib.rs",
--        ["core", "pin_init_internal", "macros"],
-+        ["core", "compiler_builtins", "pin_init_internal", "macros"],
-         cfg=["kernel"],
-     )
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2591,8 +2591,8 @@ out:
+ void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 		     struct mptcp_subflow_context *subflow)
+ {
+-	/* The first subflow can already be closed and still in the list */
+-	if (subflow->close_event_done)
++	/* The first subflow can already be closed or disconnected */
++	if (subflow->close_event_done || READ_ONCE(subflow->local_id) < 0)
+ 		return;
  
+ 	subflow->close_event_done = true;
 
 
 
