@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIZ9FSlig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:45 +0100
+	id QED3ClRbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88FFE8261
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAFAE74A2
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC02E30FCD1B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A925E301051B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B7341B36A;
-	Wed,  4 Feb 2026 14:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A27240F8C6;
+	Wed,  4 Feb 2026 14:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dD97PvOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL1vwJFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4EA41B360;
-	Wed,  4 Feb 2026 14:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1723280A3B;
+	Wed,  4 Feb 2026 14:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216802; cv=none; b=RnPZ3n/+zXdsImFmBR5T8Cbuyr6eA88IuseZMJUgoHuI2Ki8wYizXznscs/NbDcG1USv5j0PuIh9SBy4WY35puunRwhBIQdUb8MfXdVQSSoU2PmEYmvMLyJ6UknAz47BmTt4TmJ7SZMPecVXf8psmRtE6bWiFa0acjl5/mx+hzo=
+	t=1770216228; cv=none; b=U2wkicP/uIeViOCxN8tjYFGeV0CjBgTKoELsbPUWRba7rf/atRUqughJgA5KeNLiy3d2LrKMmkrRiIfjqJuGQ4XxsKUK97pUbH/HHc7xfRLE8sRKzsAs+7ItrJmNxuESpMU7kgiaXdcG/lRZVdKAXXNqoyS+NYfK6g2GOi5E7WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216802; c=relaxed/simple;
-	bh=qiHk+c1XPwUt83e003wExTR7/zK0cTydjRS4rpX15BY=;
+	s=arc-20240116; t=1770216228; c=relaxed/simple;
+	bh=ojvybpUOVABD/T8gQD28sGV2jGI5unZxtdSfJ9Gi6Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5w0DAEKoh/5+YuJDG+u1mPyknRZoqMOaoXX0XjvK1rS5NYa9qN84Vl0oxwjq54bnLLz1oQYwaCnS6xv/c6EeyWxTCKmKEbzi1f5EbPi8GcDdWNxdMc9ryVGnDjKg0xmvOQ5Ptbexy5VE2g74qXmjBGy2XE3ws6zR2RA0zzNTWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dD97PvOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4CEC116C6;
-	Wed,  4 Feb 2026 14:53:22 +0000 (UTC)
+	 MIME-Version; b=UTcbvZTcVpxjYN9NVZxP21XbNfcFo2I0c91p61TK3a+RrunEhGZ1RUMu7wBr+KWw6nWpKcQroOigyqsGs1p0rtVoNk0tc1GZaOyaU7fXGCKjXBOjjWRpZzo6we20DP1hp8KRkPPbQASJid4RbGe+OK3hb5+rO6Q8CRp+Q6Z4hFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL1vwJFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27224C4CEF7;
+	Wed,  4 Feb 2026 14:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216802;
-	bh=qiHk+c1XPwUt83e003wExTR7/zK0cTydjRS4rpX15BY=;
+	s=korg; t=1770216227;
+	bh=ojvybpUOVABD/T8gQD28sGV2jGI5unZxtdSfJ9Gi6Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dD97PvOH3oj+JQdXzJSzddj6kvje3sfyVDUKBQN2qUbH11P/flzDtPth2hrY36CDi
-	 uDQYYZBEZQV757owaHz+g1dLwt+GjSQBttw+tRlWy9vyMAzq/p5agESJIdFOvkM+3W
-	 kl2iyhl/In7+ACVhq9Z1mrvlcQd6BVbSGTqU/bQ0=
+	b=PL1vwJFBVu4GDHNTSlZy5We19qE3t5DYbQYsIOzB+qzW9W3fzCIQlcNgjd4QaYJ0V
+	 P5jysMTHmlns7upeo+e09BvcTIuRP+iWOT3XKQmARdHMTnjS7KH9f6/fdaIR9bkEwg
+	 5qNf8nzc7r3yECGrtv3KBUeTFP8MXLkGkl7QKtEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 036/206] EDAC/x38: Fix a resource leak in x38_probe1()
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 004/161] btrfs: send: check for inline extents in range_is_hole_in_parent()
 Date: Wed,  4 Feb 2026 15:37:47 +0100
-Message-ID: <20260204143859.509434744@linuxfoundation.org>
+Message-ID: <20260204143851.919366239@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,77 +75,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213405-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213578-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,alien8.de:email]
-X-Rspamd-Queue-Id: A88FFE8261
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 8CAFAE74A2
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 0ff7c44106b4715fc27a2e455d9f57f1dfcfd54f upstream.
+[ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
 
-If edac_mc_alloc() fails, also unmap the window.
+Before accessing the disk_bytenr field of a file extent item we need
+to check if we are dealing with an inline extent.
+This is because for inline extents their data starts at the offset of
+the disk_bytenr field. So accessing the disk_bytenr
+means we are accessing inline data or in case the inline data is less
+than 8 bytes we can actually cause an invalid
+memory access if this inline extent item is the first item in the leaf
+or access metadata from other items.
 
-  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
-
-Fixes: df8bc08c192f ("edac x38: new MC driver module")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223124350.1496325-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/x38_edac.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/btrfs/send.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/edac/x38_edac.c
-+++ b/drivers/edac/x38_edac.c
-@@ -341,9 +341,12 @@ static int x38_probe1(struct pci_dev *pd
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = x38_channel_num;
- 	layers[1].is_virt_csrow = false;
-+
-+
-+	rc = -ENOMEM;
- 	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, 0);
- 	if (!mci)
--		return -ENOMEM;
-+		goto unmap;
- 
- 	edac_dbg(3, "MC: init mci\n");
- 
-@@ -403,9 +406,9 @@ static int x38_probe1(struct pci_dev *pd
- 	return 0;
- 
- fail:
-+	edac_mc_free(mci);
-+unmap:
- 	iounmap(window);
--	if (mci)
--		edac_mc_free(mci);
- 
- 	return rc;
- }
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index d86b4d13cae48..f144171ed6b7e 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -5892,6 +5892,8 @@ static int range_is_hole_in_parent(struct send_ctx *sctx,
+ 		extent_end = btrfs_file_extent_end(path);
+ 		if (extent_end <= start)
+ 			goto next;
++		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE)
++			return 0;
+ 		if (btrfs_file_extent_disk_bytenr(leaf, fi) == 0) {
+ 			search_start = extent_end;
+ 			goto next;
+-- 
+2.51.0
+
 
 
 
