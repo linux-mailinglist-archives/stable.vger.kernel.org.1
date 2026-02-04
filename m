@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-214246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHF/IPZng2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:30 +0100
+	id yElMCztlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2031CE9058
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5239E8949
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 91F24301C510
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1DC92308018C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A512D8777;
-	Wed,  4 Feb 2026 15:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080B54219F7;
+	Wed,  4 Feb 2026 15:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqzzyYmT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNpqejFq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9352BD012;
-	Wed,  4 Feb 2026 15:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01312BE7C0;
+	Wed,  4 Feb 2026 15:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219050; cv=none; b=mOkakpOSwOhK+/0IOID1S5HIrs6fuE8T3gXkTLpDAaY4n7OY1hsbc7NvI10P1w8Vr3vJDwu2Uh4N1moM89CjI/nsg9n1f0Bvy+p7R7IXes0CWnPg1hRPac30Db7sDZt7PtXKbnrH1/3gygO29/h5um1CgXTwRKcFI9SVuellqVI=
+	t=1770218265; cv=none; b=iMmKeasSoDk/uppyLK/9/wE/MZgNM7ICnEPz+jck6sxFvjSyXesmS+9sk2QRn2yT/pp1tQzcT9AAj2ajbHHLN+IzPi0on8tukps/Uj+oJbRAA1TnDYWIgf4kcnSVHNDN3pny06pMLafriEqB60hxgQeKl9ZKbBcoaOeHGBzWz6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219050; c=relaxed/simple;
-	bh=vOZk9XFidI8jn2Y5SNPY/yXhF+gEhxjn9MH1g4rkemQ=;
+	s=arc-20240116; t=1770218265; c=relaxed/simple;
+	bh=r6rEZUqso2UNF5OWHXB/6OqyFYD9igul1k/WsROAvlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWxiNE0VTEfIgXIZjTTD+hfIEY8UBx9BMqWMemqZ9pikRjFJqEpHDi+S9PiJD0GK9e6KXOBgqKtAA1H4FVByS3gdJsAYvKuS/wZARnJ+LuJ5xhBcB1i/E0D8ndFjVa6omMT9hrBVHEzY/ftHtanr9IqwSdGW7+h9Hh++8Opt26s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqzzyYmT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D14CC4CEF7;
-	Wed,  4 Feb 2026 15:30:50 +0000 (UTC)
+	 MIME-Version; b=oqjBrM8zXmk4JA/nBfxwTgyT+26RR4x52PoDZAkt11veBdEfCb4P/i7wE/X9jtAXPJ9GG613KZHd0fWX20acUfNHepUrNX3WHhuIehKzfBDEF7xK5e3ispWWhqQS8dyP4n4/cAnwQzvDuGUy+WYzS3yiR2n72rOJyadAn6zeofI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNpqejFq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66A4C4CEF7;
+	Wed,  4 Feb 2026 15:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219050;
-	bh=vOZk9XFidI8jn2Y5SNPY/yXhF+gEhxjn9MH1g4rkemQ=;
+	s=korg; t=1770218265;
+	bh=r6rEZUqso2UNF5OWHXB/6OqyFYD9igul1k/WsROAvlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqzzyYmTVyLVvjJkZnNYc4QmYi/z5+y+4fMtm9RhJMnQMWBExlHjDOBiWJ0a9O/Cr
-	 x9VWv4kmLxA017n6uOmrsKe89EjjzrRfDLRWyjMp98C8+4+S8eNmacE1h9Vl+orqke
-	 oczshNGf7g5VoXvFV5arDuE5rh3cimxwuymxfAr0=
+	b=aNpqejFqJU/7nuJGfkofzu0wZAKYXwcYUQMyoZBb9baIafD9QjtJVlTUWMvt4SWHG
+	 lfuxh46/JZrGFPMEG6PsjN0lGW74lPxvge8tidW1H+z/jZ8b49p4+gZVxp6u8eCmfM
+	 ijVV/w5OCg3MsHqQw1Ew80k200hXnSxPKmDC3QTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Shida Zhang <zhangshida@kylinos.cn>,
-	Coly Li <colyli@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 051/122] bcache: use bio cloning for detached device requests
-Date: Wed,  4 Feb 2026 15:40:33 +0100
-Message-ID: <20260204143853.692314234@linuxfoundation.org>
+	syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com,
+	syzbot+0399100e525dd9696764@syzkaller.appspotmail.com,
+	Khalid Aziz <khalid@kernel.org>,
+	Bartlomiej Kubik <kubik.bartlomiej@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 260/280] fs/ntfs3: Initialize allocated memory before use
+Date: Wed,  4 Feb 2026 15:40:34 +0100
+Message-ID: <20260204143919.053961151@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,269 +68,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214246-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214012-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,paragon-software.com,139.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,kernel.dk:email]
-X-Rspamd-Queue-Id: 2031CE9058
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,332bd4e9d148f11a87dc,0399100e525dd9696764];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,paragon-software.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,139.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: C5239E8949
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shida Zhang <zhangshida@kylinos.cn>
+From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
 
-[ Upstream commit 3ef825dfd4e487d6f92b23ee2df2455814583ef4 ]
+[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
 
-Previously, bcache hijacked the bi_end_io and bi_private fields of
-the incoming bio when the backing device was in a detached state.
-This is fragile and breaks if the bio is needed to be processed by
-other layers.
+KMSAN reports: Multiple uninitialized values detected:
 
-This patch transitions to using a cloned bio embedded within a private
-structure. This ensures the original bio's metadata remains untouched.
+- KMSAN: uninit-value in ntfs_read_hdr (3)
+- KMSAN: uninit-value in bcmp (3)
 
-Fixes: 53280e398471 ("bcache: fix improper use of bi_end_io")
-Co-developed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
-Acked-by: Coly Li <colyli@fnnas.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 4da7c5c3ec34 ("bcache: fix I/O accounting leak in detached_dev_do_request")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Memory is allocated by __getname(), which is a wrapper for
+kmem_cache_alloc(). This memory is used before being properly
+cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
+properly allocate and clear memory before use.
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
+Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
+Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
+Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
+Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
+
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/bcache.h  |  9 +++++
- drivers/md/bcache/request.c | 79 ++++++++++++++++---------------------
- drivers/md/bcache/super.c   | 12 +++++-
- 3 files changed, 54 insertions(+), 46 deletions(-)
+ fs/ntfs3/inode.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
-index 1d33e40d26ea5..cca5756030d71 100644
---- a/drivers/md/bcache/bcache.h
-+++ b/drivers/md/bcache/bcache.h
-@@ -273,6 +273,8 @@ struct bcache_device {
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1294,7 +1294,7 @@ struct inode *ntfs_create_inode(struct u
+ 		fa |= FILE_ATTRIBUTE_READONLY;
  
- 	struct bio_set		bio_split;
+ 	/* Allocate PATH_MAX bytes. */
+-	new_de = __getname();
++	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!new_de) {
+ 		err = -ENOMEM;
+ 		goto out1;
+@@ -1698,10 +1698,9 @@ int ntfs_link_inode(struct inode *inode,
+ 	struct NTFS_DE *de;
  
-+	struct bio_set		bio_detached;
-+
- 	unsigned int		data_csum:1;
+ 	/* Allocate PATH_MAX bytes. */
+-	de = __getname();
++	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!de)
+ 		return -ENOMEM;
+-	memset(de, 0, PATH_MAX);
  
- 	int (*cache_miss)(struct btree *b, struct search *s,
-@@ -755,6 +757,13 @@ struct bbio {
- 	struct bio		bio;
- };
+ 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
+ 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
+@@ -1737,7 +1736,7 @@ int ntfs_unlink_inode(struct inode *dir,
+ 		return -EINVAL;
  
-+struct detached_dev_io_private {
-+	struct bcache_device	*d;
-+	unsigned long		start_time;
-+	struct bio		*orig_bio;
-+	struct bio              bio;
-+};
-+
- #define BTREE_PRIO		USHRT_MAX
- #define INITIAL_PRIO		32768U
+ 	/* Allocate PATH_MAX bytes. */
+-	de = __getname();
++	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!de)
+ 		return -ENOMEM;
  
-diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
-index 82fdea7dea7aa..a02aecac05cdf 100644
---- a/drivers/md/bcache/request.c
-+++ b/drivers/md/bcache/request.c
-@@ -1077,68 +1077,58 @@ static CLOSURE_CALLBACK(cached_dev_nodata)
- 	continue_at(cl, cached_dev_bio_complete, NULL);
- }
- 
--struct detached_dev_io_private {
--	struct bcache_device	*d;
--	unsigned long		start_time;
--	bio_end_io_t		*bi_end_io;
--	void			*bi_private;
--	struct block_device	*orig_bdev;
--};
--
- static void detached_dev_end_io(struct bio *bio)
- {
--	struct detached_dev_io_private *ddip;
--
--	ddip = bio->bi_private;
--	bio->bi_end_io = ddip->bi_end_io;
--	bio->bi_private = ddip->bi_private;
-+	struct detached_dev_io_private *ddip =
-+		container_of(bio, struct detached_dev_io_private, bio);
-+	struct bio *orig_bio = ddip->orig_bio;
- 
- 	/* Count on the bcache device */
--	bio_end_io_acct_remapped(bio, ddip->start_time, ddip->orig_bdev);
-+	bio_end_io_acct(orig_bio, ddip->start_time);
- 
- 	if (bio->bi_status) {
--		struct cached_dev *dc = container_of(ddip->d,
--						     struct cached_dev, disk);
-+		struct cached_dev *dc = bio->bi_private;
-+
- 		/* should count I/O error for backing device here */
- 		bch_count_backing_io_errors(dc, bio);
-+		orig_bio->bi_status = bio->bi_status;
- 	}
- 
--	kfree(ddip);
--	bio_endio(bio);
-+	bio_put(bio);
-+	bio_endio(orig_bio);
- }
- 
--static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
--		struct block_device *orig_bdev, unsigned long start_time)
-+static void detached_dev_do_request(struct bcache_device *d,
-+		struct bio *orig_bio, unsigned long start_time)
- {
- 	struct detached_dev_io_private *ddip;
- 	struct cached_dev *dc = container_of(d, struct cached_dev, disk);
-+	struct bio *clone_bio;
- 
--	/*
--	 * no need to call closure_get(&dc->disk.cl),
--	 * because upper layer had already opened bcache device,
--	 * which would call closure_get(&dc->disk.cl)
--	 */
--	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
--	if (!ddip) {
--		bio->bi_status = BLK_STS_RESOURCE;
--		bio_endio(bio);
-+	if (bio_op(orig_bio) == REQ_OP_DISCARD &&
-+	    !bdev_max_discard_sectors(dc->bdev)) {
-+		bio_endio(orig_bio);
- 		return;
- 	}
- 
--	ddip->d = d;
-+	clone_bio = bio_alloc_clone(dc->bdev, orig_bio, GFP_NOIO,
-+				    &d->bio_detached);
-+	if (!clone_bio) {
-+		orig_bio->bi_status = BLK_STS_RESOURCE;
-+		bio_endio(orig_bio);
-+		return;
-+	}
-+
-+	ddip = container_of(clone_bio, struct detached_dev_io_private, bio);
- 	/* Count on the bcache device */
--	ddip->orig_bdev = orig_bdev;
-+	ddip->d = d;
- 	ddip->start_time = start_time;
--	ddip->bi_end_io = bio->bi_end_io;
--	ddip->bi_private = bio->bi_private;
--	bio->bi_end_io = detached_dev_end_io;
--	bio->bi_private = ddip;
--
--	if ((bio_op(bio) == REQ_OP_DISCARD) &&
--	    !bdev_max_discard_sectors(dc->bdev))
--		detached_dev_end_io(bio);
--	else
--		submit_bio_noacct(bio);
-+	ddip->orig_bio = orig_bio;
-+
-+	clone_bio->bi_end_io = detached_dev_end_io;
-+	clone_bio->bi_private = dc;
-+
-+	submit_bio_noacct(clone_bio);
- }
- 
- static void quit_max_writeback_rate(struct cache_set *c,
-@@ -1214,10 +1204,10 @@ void cached_dev_submit_bio(struct bio *bio)
- 
- 	start_time = bio_start_io_acct(bio);
- 
--	bio_set_dev(bio, dc->bdev);
- 	bio->bi_iter.bi_sector += dc->sb.data_offset;
- 
- 	if (cached_dev_get(dc)) {
-+		bio_set_dev(bio, dc->bdev);
- 		s = search_alloc(bio, d, orig_bdev, start_time);
- 		trace_bcache_request_start(s->d, bio);
- 
-@@ -1237,9 +1227,10 @@ void cached_dev_submit_bio(struct bio *bio)
- 			else
- 				cached_dev_read(dc, s);
- 		}
--	} else
-+	} else {
- 		/* I/O request sent to backing device */
--		detached_dev_do_request(d, bio, orig_bdev, start_time);
-+		detached_dev_do_request(d, bio, start_time);
-+	}
- }
- 
- static int cached_dev_ioctl(struct bcache_device *d, blk_mode_t mode,
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 6d250e366412c..9218b9dbd4af2 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -887,6 +887,7 @@ static void bcache_device_free(struct bcache_device *d)
- 	}
- 
- 	bioset_exit(&d->bio_split);
-+	bioset_exit(&d->bio_detached);
- 	kvfree(d->full_dirty_stripes);
- 	kvfree(d->stripe_sectors_dirty);
- 
-@@ -949,6 +950,11 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
- 		goto out_ida_remove;
- 
-+	if (bioset_init(&d->bio_detached, 4,
-+			offsetof(struct detached_dev_io_private, bio),
-+			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
-+		goto out_bioset_split_exit;
-+
- 	if (lim.logical_block_size > PAGE_SIZE && cached_bdev) {
- 		/*
- 		 * This should only happen with BCACHE_SB_VERSION_BDEV.
-@@ -964,7 +970,7 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 
- 	d->disk = blk_alloc_disk(&lim, NUMA_NO_NODE);
- 	if (IS_ERR(d->disk))
--		goto out_bioset_exit;
-+		goto out_bioset_detach_exit;
- 
- 	set_capacity(d->disk, sectors);
- 	snprintf(d->disk->disk_name, DISK_NAME_LEN, "bcache%i", idx);
-@@ -976,7 +982,9 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 	d->disk->private_data	= d;
- 	return 0;
- 
--out_bioset_exit:
-+out_bioset_detach_exit:
-+	bioset_exit(&d->bio_detached);
-+out_bioset_split_exit:
- 	bioset_exit(&d->bio_split);
- out_ida_remove:
- 	ida_free(&bcache_device_idx, idx);
--- 
-2.51.0
-
 
 
 
