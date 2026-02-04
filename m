@@ -1,425 +1,237 @@
-Return-Path: <stable+bounces-213355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNZ7Ib4Cg2l8ggMAu9opvQ
-	(envelope-from <stable+bounces-213355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 09:26:38 +0100
+	id +KOTNAIFg2njggMAu9opvQ
+	(envelope-from <stable+bounces-213356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 09:36:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80368E3209
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 09:26:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671B1E3366
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 09:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 005AB300847E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 08:26:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BC2E3055CAA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 08:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7425392835;
-	Wed,  4 Feb 2026 08:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E56394465;
+	Wed,  4 Feb 2026 08:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="w8/VX9vg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+1AKEB5V";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="w8/VX9vg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+1AKEB5V"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="xA1DKfwT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-76.sinamail.sina.com.cn (mail115-76.sinamail.sina.com.cn [218.30.115.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF8737B3E1
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 08:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05C3393DF8
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 08:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770193590; cv=none; b=AvzUZni5urJpnB4bJCUcukkmotVU9Q7YKLwPE/+oCuNGb0CSc3qBjN8ZDDPogYE+t0EyXGCeS2lg98/W0FoFKowMHyUSp0L7Ye5kk8z3b9M1orhzd05JTlUItVmGQuJLZcdiTkD1Z2Xi2EIDr2ms4c83BhK4tMAGjT3SIlX24xE=
+	t=1770194023; cv=none; b=Rk0Scy3q5YPvaEnivApzCNvlWyt36h+ufm1BfIgAdvAxKvjEGLTzy+EPHW66hKFllKtdpCKRz02IDoWOBBhv6Pf1xci33M2UYih1i7HoodW1A3aCUCHWu7u4qdnkaavTWF1trxKOKDeWeEKItUtn4qXxWPh6qoZp5hWKWIMx7/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770193590; c=relaxed/simple;
-	bh=tFB3jqHFQrnwjr/erDTS8qu2NE9tQnfeUYyvtZPlvO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gk/7UcYRPU2U6BPEM6YiMTRidnsH39CXA8NYGfuHBekg/P88kEOhU/XiUQuKqnV2d3FE1whuKjcv8fScQBT2axgWoiVIyk340R6zz+u3CMXFepk/HsOcxQJAavYs2J1gWTD+kJ+yl9tItp7dWppzJqxbxTkdnHLirkJiwLvpsqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=w8/VX9vg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+1AKEB5V; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=w8/VX9vg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+1AKEB5V; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5F59D3E6D0;
-	Wed,  4 Feb 2026 08:26:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770193588; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSKgrbjzSnZOXxy542d2OT6kP3uewV6DnRK962bvPBs=;
-	b=w8/VX9vgbbXmnEl0EmgWXu+vuPRtBVLwxzbWZ4mu7TaIQV157ORssGEl8UlTDEuvRxOpOb
-	n17aCfIfGzHVqwisZzs6ATBDtGJ2SRDhONn2F9oj7mopy3eyTkYLr5SfgPAKGZFqaUiI9H
-	Ft0fOX5HB1oOM+2DYkl59+Tpmch4H7A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770193588;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSKgrbjzSnZOXxy542d2OT6kP3uewV6DnRK962bvPBs=;
-	b=+1AKEB5Vqg+4iMNmZ0V3nMeMtyk2w5a4oCaTWqzMrAb5tWKRdecAOcgcjN7ErcJc5cwp0n
-	HGW9WTXCLgDr11BA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770193588; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSKgrbjzSnZOXxy542d2OT6kP3uewV6DnRK962bvPBs=;
-	b=w8/VX9vgbbXmnEl0EmgWXu+vuPRtBVLwxzbWZ4mu7TaIQV157ORssGEl8UlTDEuvRxOpOb
-	n17aCfIfGzHVqwisZzs6ATBDtGJ2SRDhONn2F9oj7mopy3eyTkYLr5SfgPAKGZFqaUiI9H
-	Ft0fOX5HB1oOM+2DYkl59+Tpmch4H7A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770193588;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XSKgrbjzSnZOXxy542d2OT6kP3uewV6DnRK962bvPBs=;
-	b=+1AKEB5Vqg+4iMNmZ0V3nMeMtyk2w5a4oCaTWqzMrAb5tWKRdecAOcgcjN7ErcJc5cwp0n
-	HGW9WTXCLgDr11BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0CF913EA63;
-	Wed,  4 Feb 2026 08:26:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EAn5AbQCg2nqZQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 04 Feb 2026 08:26:28 +0000
-Message-ID: <86379c0b-670e-4ef7-8d48-a23d41d8d231@suse.de>
-Date: Wed, 4 Feb 2026 09:26:27 +0100
+	s=arc-20240116; t=1770194023; c=relaxed/simple;
+	bh=uplR7d3QakXfcEJNewTanDErx51xxSFSLq7fHMlabBM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CvmIWAtYExKOZbgliH9BaLfOfHy27OJp2rIUBZR9yzBnEjqwXaiyxml16lxORwjGfmIziK/i/jYtzOzd4AfUdlIR/hzBIvfLHCFgK7bxe9PqlJWRuvdfrTUnTfHec2RUiOnyaI0FjmMm6uVzPYt+SKSTK9EkXWDQZQBgVjYWAi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=xA1DKfwT; arc=none smtp.client-ip=218.30.115.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770194021;
+	bh=2zHdAh87Ti9W34qJ1WNtQAawfLP9VlEp26E3MqcNpIM=;
+	h=From:Subject:Date:Message-Id;
+	b=xA1DKfwTsfQvcxQ5ju0cbiTl65ZKh73UdSrU5hvujZkj20x4JC6UC4s9zKU4bFC+9
+	 X+NovD5PGTFxnk3pw7QOdBCCIy56XqzA4Ao0cH6ZJMVDLTIytdHwjwbAIr20L1ed8m
+	 6xwzPjF4kz43TIgXELGYELRctr/Xa80S4w5gHhM0=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.22) with ESMTP
+	id 6983036000004828; Wed, 4 Feb 2026 16:29:23 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 2766697602236
+X-SMAIL-UIID: CC369951ADE5458180804BB2A1C452BE-20260204-162923-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	e.kubanski@partner.samsung.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	i.maximets@samsung.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH 6.6.y] xsk: Fix race condition in AF_XDP generic RX path
+Date: Wed,  4 Feb 2026 16:29:20 +0800
+Message-Id: <20260204082920.3304571-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/mgag200: fix mgag200_bmc_stop_scanout()
-To: Jacob Keller <jacob.e.keller@intel.com>, Dave Airlie
- <airlied@redhat.com>, Jocelyn Falempe <jfalempe@redhat.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>
-Cc: Pasi Vaananen <pvaanane@redhat.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260202-jk-mgag200-fix-bad-udelay-v2-1-ce1e9665987d@intel.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260202-jk-mgag200-fix-bad-udelay-v2-1-ce1e9665987d@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,intel.com,gmail.com,davemloft.net,google.com,redhat.com,iogearbox.net,samsung.com];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213355-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213356-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.cn];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,suse.de:dkim,suse.de:mid,suse.com:url,intel.com:email]
-X-Rspamd-Queue-Id: 80368E3209
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sina.cn:email,sina.cn:dkim,sina.cn:mid,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 671B1E3366
 X-Rspamd-Action: no action
 
-Merged into drm-misc-fixes
+From: "e.kubanski" <e.kubanski@partner.samsung.com>
 
-Am 03.02.26 um 01:16 schrieb Jacob Keller:
-> The mgag200_bmc_stop_scanout() function is called by the .atomic_disable()
-> handler for the MGA G200 VGA BMC encoder. This function performs a few
-> register writes to inform the BMC of an upcoming mode change, and then
-> polls to wait until the BMC actually stops.
->
-> The polling is implemented using a busy loop with udelay() and an iteration
-> timeout of 300, resulting in the function blocking for 300 milliseconds.
->
-> The function gets called ultimately by the output_poll_execute work thread
-> for the DRM output change polling thread of the mgag200 driver:
->
-> kworker/0:0-mm_    3528 [000]  4555.315364:
->          ffffffffaa0e25b3 delay_halt.part.0+0x33
->          ffffffffc03f6188 mgag200_bmc_stop_scanout+0x178
->          ffffffffc087ae7a disable_outputs+0x12a
->          ffffffffc087c12a drm_atomic_helper_commit_tail+0x1a
->          ffffffffc03fa7b6 mgag200_mode_config_helper_atomic_commit_tail+0x26
->          ffffffffc087c9c1 commit_tail+0x91
->          ffffffffc087d51b drm_atomic_helper_commit+0x11b
->          ffffffffc0509694 drm_atomic_commit+0xa4
->          ffffffffc05105e8 drm_client_modeset_commit_atomic+0x1e8
->          ffffffffc0510ce6 drm_client_modeset_commit_locked+0x56
->          ffffffffc0510e24 drm_client_modeset_commit+0x24
->          ffffffffc088a743 __drm_fb_helper_restore_fbdev_mode_unlocked+0x93
->          ffffffffc088a683 drm_fb_helper_hotplug_event+0xe3
->          ffffffffc050f8aa drm_client_dev_hotplug+0x9a
->          ffffffffc088555a output_poll_execute+0x29a
->          ffffffffa9b35924 process_one_work+0x194
->          ffffffffa9b364ee worker_thread+0x2fe
->          ffffffffa9b3ecad kthread+0xdd
->          ffffffffa9a08549 ret_from_fork+0x29
->
-> On a server running ptp4l with the mgag200 driver loaded, we found that
-> ptp4l would sometimes get blocked from execution because of this busy
-> waiting loop.
->
-> Every so often, approximately once every 20 minutes -- though with large
-> variance -- the output_poll_execute() thread would detect some sort of
-> change that required performing a hotplug event which results in attempting
-> to stop the BMC scanout, resulting in a 300msec delay on one CPU.
->
-> On this system, ptp4l was pinned to a single CPU. When the
-> output_poll_execute() thread ran on that CPU, it blocked ptp4l from
-> executing for its 300 millisecond duration.
->
-> This resulted in PTP service disruptions such as failure to send a SYNC
-> message on time, failure to handle ANNOUNCE messages on time, and clock
-> check warnings from the application. All of this despite the application
-> being configured with FIFO_RT and a higher priority than the background
-> workqueue tasks. (However, note that the kernel did not use
-> CONFIG_PREEMPT...)
->
-> It is unclear if the event is due to a faulty VGA connection, another bug,
-> or actual events causing a change in the connection. At least on the system
-> under test it is not a one-time event and consistently causes disruption to
-> the time sensitive applications.
->
-> The function has some helpful comments explaining what steps it is
-> attempting to take. In particular, step 3a and 3b are explained as such:
->
->    3a - The third step is to verify if there is an active scan. We are
->         waiting on a 0 on remhsyncsts (<XSPAREREG<0>.
->
->    3b - This step occurs only if the remove is actually scanning. We are
->         waiting for the end of the frame which is a 1 on remvsyncsts
->         (<XSPAREREG<1>).
->
-> The actual steps 3a and 3b are implemented as while loops with a
-> non-sleeping udelay(). The first step iterates while the tmp value at
-> position 0 is *not* set. That is, it keeps iterating as long as the bit is
-> zero. If the bit is already 0 (because there is no active scan), it will
-> iterate the entire 300 attempts which wastes 300 milliseconds in total.
-> This is opposite of what the description claims.
->
-> The step 3b logic only executes if we do not iterate over the entire 300
-> attempts in the first loop. If it does trigger, it is trying to check and
-> wait for a 1 on the remvsyncsts. However, again the condition is actually
-> inverted and it will loop as long as the bit is 1, stopping once it hits
-> zero (rather than the explained attempt to wait until we see a 1).
->
-> Worse, both loops are implemented using non-sleeping waits which spin
-> instead of allowing the scheduler to run other processes. If the kernel is
-> not configured to allow arbitrary preemption, it will waste valuable CPU
-> time doing nothing.
->
-> There does not appear to be any documentation for the BMC register
-> interface, beyond what is in the comments here. It seems more probable that
-> the comment here is correct and the implementation accidentally got
-> inverted from the intended logic.
->
-> Reading through other DRM driver implementations, it does not appear that
-> the .atomic_enable or .atomic_disable handlers need to delay instead of
-> sleep. For example, the ast_astdp_encoder_helper_atomic_disable() function
-> calls ast_dp_set_phy_sleep() which uses msleep(). The "atomic" in the name
-> is referring to the atomic modesetting support, which is the support to
-> enable atomic configuration from userspace, and not to the "atomic context"
-> of the kernel. There is no reason to use udelay() here if a sleep would be
-> sufficient.
->
-> Replace the while loops with a read_poll_timeout() based implementation
-> that will sleep between iterations, and which stops polling once the
-> condition is met (instead of looping as long as the condition is met). This
-> aligns with the commented behavior and avoids blocking on the CPU while
-> doing nothing.
->
-> Note the RREG_DAC is implemented using a statement expression to allow
-> working properly with the read_poll_timeout family of functions. The other
-> RREG_<TYPE> macros ought to be cleaned up to have better semantics, and
-> several places in the mgag200 driver could make use of RREG_DAC or similar
-> RREG_* macros should likely be cleaned up for better semantics as well, but
-> that task has been left as a future cleanup for a non-bugfix.
->
-> Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-> Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> ---
-> We still do not know if the reconfiguration is caused by a different
-> bug or by a faulty VGA connector or something else. However, there is no
-> reason that this function should be spinning instead of sleeping while
-> waiting for the BMC scan to stop.
->
-> It is known that removing the mgag200 module avoids the issue. It is also
-> likely that use of CONFIG_PREEMPT (or CONFIG_PREEMPT_RT) could allow the
-> high priority process to preempt the kernel thread even while it is
-> delaying. However, it is better to let the process sleep() so that other
-> tasks can execute even if these steps are not taken.
->
-> There are multiple other udelay() which likely could safely be converted to
-> usleep_range(). However they are all short, and I felt that the smallest
-> targeted fix made the most sense. They could perhaps be cleaned up in a
-> non-fix commit or series along with other improvements like fixing the
-> other RREG_* macros.
->
-> Thanks to Thomas Zimmermann for catching the originally unintended flipping
-> of the loop condition, and for helping determine this seems to actually be
-> correct. It seems likely that we are blocking for 300 milliseconds every
-> time unintentionally because we loop until there is an active scan instead
-> of looping until there is no more active scan.
-> ---
-> Changes in v2:
-> - Update the description after the insights from Thomas, and the testing
->    from Jocelyn.
-> - Fix some minor typos in the comments.
-> - No functional change from v1, though we now explain why we're changing
->    the conditions in the commit message properly.
-> - Link to v1: https://patch.msgid.link/20260128-jk-mgag200-fix-bad-udelay-v1-1-db02e04c343d@intel.com
-> ---
->   drivers/gpu/drm/mgag200/mgag200_drv.h |  6 ++++++
->   drivers/gpu/drm/mgag200/mgag200_bmc.c | 31 ++++++++++++-------------------
->   2 files changed, 18 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
-> index f4bf40cd7c88..a875c4bf8cbe 100644
-> --- a/drivers/gpu/drm/mgag200/mgag200_drv.h
-> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-> @@ -111,6 +111,12 @@
->   #define DAC_INDEX 0x3c00
->   #define DAC_DATA 0x3c0a
->   
-> +#define RREG_DAC(reg)						\
-> +	({							\
-> +		WREG8(DAC_INDEX, reg);				\
-> +		RREG8(DAC_DATA);				\
-> +	})							\
-> +
->   #define WREG_DAC(reg, v)					\
->   	do {							\
->   		WREG8(DAC_INDEX, reg);				\
-> diff --git a/drivers/gpu/drm/mgag200/mgag200_bmc.c b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-> index a689c71ff165..bbdeb791c5b3 100644
-> --- a/drivers/gpu/drm/mgag200/mgag200_bmc.c
-> +++ b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-> @@ -1,6 +1,7 @@
->   // SPDX-License-Identifier: GPL-2.0-only
->   
->   #include <linux/delay.h>
-> +#include <linux/iopoll.h>
->   
->   #include <drm/drm_atomic_helper.h>
->   #include <drm/drm_edid.h>
-> @@ -12,7 +13,7 @@
->   void mgag200_bmc_stop_scanout(struct mga_device *mdev)
->   {
->   	u8 tmp;
-> -	int iter_max;
-> +	int ret;
->   
->   	/*
->   	 * 1 - The first step is to inform the BMC of an upcoming mode
-> @@ -42,30 +43,22 @@ void mgag200_bmc_stop_scanout(struct mga_device *mdev)
->   
->   	/*
->   	 * 3a- The third step is to verify if there is an active scan.
-> -	 * We are waiting for a 0 on remhsyncsts <XSPAREREG<0>).
-> +	 * We are waiting for a 0 on remhsyncsts (<XSPAREREG<0>).
->   	 */
-> -	iter_max = 300;
-> -	while (!(tmp & 0x1) && iter_max) {
-> -		WREG8(DAC_INDEX, MGA1064_SPAREREG);
-> -		tmp = RREG8(DAC_DATA);
-> -		udelay(1000);
-> -		iter_max--;
-> -	}
-> +	ret = read_poll_timeout(RREG_DAC, tmp, !(tmp & 0x1),
-> +				1000, 300000, false,
-> +				MGA1064_SPAREREG);
-> +	if (ret == -ETIMEDOUT)
-> +		return;
->   
->   	/*
-> -	 * 3b- This step occurs only if the remove is actually
-> +	 * 3b- This step occurs only if the remote BMC is actually
->   	 * scanning. We are waiting for the end of the frame which is
->   	 * a 1 on remvsyncsts (XSPAREREG<1>)
->   	 */
-> -	if (iter_max) {
-> -		iter_max = 300;
-> -		while ((tmp & 0x2) && iter_max) {
-> -			WREG8(DAC_INDEX, MGA1064_SPAREREG);
-> -			tmp = RREG8(DAC_DATA);
-> -			udelay(1000);
-> -			iter_max--;
-> -		}
-> -	}
-> +	(void)read_poll_timeout(RREG_DAC, tmp, (tmp & 0x2),
-> +				1000, 300000, false,
-> +				MGA1064_SPAREREG);
->   }
->   
->   void mgag200_bmc_start_scanout(struct mga_device *mdev)
->
-> ---
-> base-commit: e535c23513c63f02f67e3e09e0787907029efeaf
-> change-id: 20260127-jk-mgag200-fix-bad-udelay-409133777e3a
->
-> Best regards,
-> --
-> Jacob Keller <jacob.e.keller@intel.com>
->
+[ Upstream commit a1356ac7749cafc4e27aa62c0c4604b5dca4983e ]
 
+Move rx_lock from xsk_socket to xsk_buff_pool.
+Fix synchronization for shared umem mode in
+generic RX path where multiple sockets share
+single xsk_buff_pool.
+
+RX queue is exclusive to xsk_socket, while FILL
+queue can be shared between multiple sockets.
+This could result in race condition where two
+CPU cores access RX path of two different sockets
+sharing the same umem.
+
+Protect both queues by acquiring spinlock in shared
+xsk_buff_pool.
+
+Lock contention may be minimized in the future by some
+per-thread FQ buffering.
+
+It's safe and necessary to move spin_lock_bh(rx_lock)
+after xsk_rcv_check():
+* xs->pool and spinlock_init is synchronized by
+  xsk_bind() -> xsk_is_bound() memory barriers.
+* xsk_rcv_check() may return true at the moment
+  of xsk_release() or xsk_unbind_dev(),
+  however this will not cause any data races or
+  race conditions. xsk_unbind_dev() removes xdp
+  socket from all maps and waits for completion
+  of all outstanding rx operations. Packets in
+  RX path will either complete safely or drop.
+
+Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
+Fixes: bf0bdd1343efb ("xdp: fix race on generic receive path")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Link: https://patch.msgid.link/20250416101908.10919-1-e.kubanski@partner.samsung.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict is resolved when backporting this fix. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+---
+ include/net/xdp_sock.h      | 3 ---
+ include/net/xsk_buff_pool.h | 2 ++
+ net/xdp/xsk.c               | 6 +++---
+ net/xdp/xsk_buff_pool.c     | 1 +
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+index 69b472604b86..660c22521a29 100644
+--- a/include/net/xdp_sock.h
++++ b/include/net/xdp_sock.h
+@@ -63,9 +63,6 @@ struct xdp_sock {
+ 
+ 	struct xsk_queue *tx ____cacheline_aligned_in_smp;
+ 	struct list_head tx_list;
+-	/* Protects generic receive. */
+-	spinlock_t rx_lock;
+-
+ 	/* Statistics */
+ 	u64 rx_dropped;
+ 	u64 rx_queue_full;
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index b0bdff26fc88..f0d6ce4bda7a 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -54,6 +54,8 @@ struct xsk_buff_pool {
+ 	refcount_t users;
+ 	struct xdp_umem *umem;
+ 	struct work_struct work;
++	/* Protects generic receive in shared and non-shared umem mode. */
++	spinlock_t rx_lock;
+ 	struct list_head free_list;
+ 	struct list_head xskb_list;
+ 	u32 heads_cnt;
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 93c802cfb9c6..569d39f19c56 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -339,13 +339,14 @@ int xsk_generic_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
+ 	u32 len = xdp_get_buff_len(xdp);
+ 	int err;
+ 
+-	spin_lock_bh(&xs->rx_lock);
+ 	err = xsk_rcv_check(xs, xdp, len);
+ 	if (!err) {
++		spin_lock_bh(&xs->pool->rx_lock);
+ 		err = __xsk_rcv(xs, xdp, len);
+ 		xsk_flush(xs);
++		spin_unlock_bh(&xs->pool->rx_lock);
+ 	}
+-	spin_unlock_bh(&xs->rx_lock);
++
+ 	return err;
+ }
+ 
+@@ -1647,7 +1648,6 @@ static int xsk_create(struct net *net, struct socket *sock, int protocol,
+ 	xs = xdp_sk(sk);
+ 	xs->state = XSK_READY;
+ 	mutex_init(&xs->mutex);
+-	spin_lock_init(&xs->rx_lock);
+ 
+ 	INIT_LIST_HEAD(&xs->map_list);
+ 	spin_lock_init(&xs->map_list_lock);
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index e83b707da25b..380b0b3f3d8d 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -85,6 +85,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
+ 		XDP_PACKET_HEADROOM;
+ 	pool->umem = umem;
+ 	pool->addrs = umem->addrs;
++	spin_lock_init(&pool->rx_lock);
+ 	INIT_LIST_HEAD(&pool->free_list);
+ 	INIT_LIST_HEAD(&pool->xskb_list);
+ 	INIT_LIST_HEAD(&pool->xsk_tx_list);
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+2.34.1
 
 
