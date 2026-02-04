@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJTgJW9hg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:39 +0100
+	id YFffE2Ndg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5631E80D9
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB3FE785E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57763303F09A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3DBE30616C4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5BD41C2E7;
-	Wed,  4 Feb 2026 14:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF831295D90;
+	Wed,  4 Feb 2026 14:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0HgGyWi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMizNWZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8160B35029F;
-	Wed,  4 Feb 2026 14:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D6B27FD56;
+	Wed,  4 Feb 2026 14:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217151; cv=none; b=TETDrZpaudxxKHQadg/dasa+ENoAXKXEBJT1SWso6VxEhKPN8UvuwxdsJTM+Sb8VUPw0asYn7/+VW9KkLG3p223Y70I9aD4swjrURFkLT1kCapeytMX4JOjT3lQyYoe7eE/oIuqK7frZRUEBLzwkvTqRs7I5wzUp5svLlWOzNUs=
+	t=1770216500; cv=none; b=QfR0BHkAOGQE9qAjeV3HtcODkmia1cHxkoXICd3mdBRJPRHZYHHXxr+oy3NQePYXJo6K13eHm2x4TKDpmPtCw45VGWMnuHZygkw3bSe7ud2d76IL2NL5QBvnS76DaT5aQi4CMdK3HGGMTT4xOyPzl6zm7mD5JtfCuBEBTy7Aleg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217151; c=relaxed/simple;
-	bh=Ab/ipPPR0/WSKS6m7KKETOPMl2d7bTLkZlmvZM/ODfA=;
+	s=arc-20240116; t=1770216500; c=relaxed/simple;
+	bh=OUHYiHeXnW9ieoTYq0TCyXTUnqAJwadtPLUffGMQ8A8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntuoiHoeDgvMVIkWzqg1x1spRB9+ZfLBVcrKPqo1GsPM+5RpF+PzGtrNZy+ZAKPwivkuqaTpzB8ql2sPS8J1rRqQmxWRwWnG+Bhy3ty0OSEu6euxnJx09yZda9ykrXbhEX9cA/rH7DtjncL9yL6+AqiGNAeS6EnKrT2gkHJOovw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0HgGyWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB298C4CEF7;
-	Wed,  4 Feb 2026 14:59:10 +0000 (UTC)
+	 MIME-Version; b=pvw82oWKxt966ty19USPy3aUmXWASdFt9z+ZY7eTU9wRFNXCGXJkvKzRDgz7D7ZWBcGWk4bo0clkssIz/4M54JdKyo/48Y+dQtZPTfMRODHZLYUpC+CBEQSBLMR+HSoHgcHwET6NG85ladOynwWoelHxFLBYl8lTsoBQj1I+ZS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMizNWZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5B5C116C6;
+	Wed,  4 Feb 2026 14:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217151;
-	bh=Ab/ipPPR0/WSKS6m7KKETOPMl2d7bTLkZlmvZM/ODfA=;
+	s=korg; t=1770216500;
+	bh=OUHYiHeXnW9ieoTYq0TCyXTUnqAJwadtPLUffGMQ8A8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0HgGyWi2jWYHU+mt25rRT2cDl5sHw8jZ2tS7+cZrBnq4hvsou/ZZ/b1RS0g6vNbN
-	 L6EJw1iKtSBxAvpF3eztG24idZ//K59/m+opOX9MsuEQX1gMZF1/X1Oo2etWroUlHM
-	 SyqUmgCGDlrRGApTQTpVtPVxlG65rlEHSxLbpb4k=
+	b=qMizNWZmGeeGxXKY7W9TtrqtmvbWc+zQbfE8gzU+hNpOF6bPgzY4O5R1+irNboiEx
+	 Rpx7Qsp5wDNeq26jt94Eb6XrbQa5MK5hIp41AYw/3Vjf95o6ZJiaXvXAPn99wfqxq8
+	 +4wItBwl3bcEAhUX9EqWjPVHFBaZDjn8X83CNAQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/206] rocker: fix memory leak in rocker_world_port_post_fini()
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.10 107/161] irqchip/gic-v3-its: Avoid truncating memory addresses
 Date: Wed,  4 Feb 2026 15:39:30 +0100
-Message-ID: <20260204143903.211948729@linuxfoundation.org>
+Message-ID: <20260204143855.595223646@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,88 +69,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213681-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-213486-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: A5631E80D9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email]
+X-Rspamd-Queue-Id: 9DB3FE785E
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8d7ba71e46216b8657a82ca2ec118bc93812a4d0 ]
+commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
 
-In rocker_world_port_pre_init(), rocker_port->wpriv is allocated with
-kzalloc(wops->port_priv_size, GFP_KERNEL). However, in
-rocker_world_port_post_fini(), the memory is only freed when
-wops->port_post_fini callback is set:
+On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
+allocations to be backed by addresses physical memory above the 32-bit
+address limit, as found while experimenting with larger VMSPLIT
+configurations.
 
-    if (!wops->port_post_fini)
-        return;
-    wops->port_post_fini(rocker_port);
-    kfree(rocker_port->wpriv);
+This caused the qemu virt model to crash in the GICv3 driver, which
+allocates the 'itt' object using GFP_KERNEL. Since all memory below
+the 4GB physical address limit is in ZONE_DMA in this configuration,
+kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
+ITS driver stores the physical address in a 32-bit 'unsigned long'
+variable.
 
-Since rocker_ofdpa_ops does not implement port_post_fini callback
-(it is NULL), the wpriv memory allocated for each port is never freed
-when ports are removed. This leads to a memory leak of
-sizeof(struct ofdpa_port) bytes per port on every device removal.
+Change the itt_addr variable to the correct phys_addr_t type instead,
+along with all other variables in this driver that hold a physical
+address.
 
-Fix this by always calling kfree(rocker_port->wpriv) regardless of
-whether the port_post_fini callback exists.
+The gicv5 driver correctly uses u64 variables, while all other irqchip
+drivers don't call virt_to_phys or similar interfaces. It's expected that
+other device drivers have similar issues, but fixing this one is
+sufficient for booting a virtio based guest.
 
-Fixes: e420114eef4a ("rocker: introduce worlds infrastructure")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260123211030.2109-2-qikeyu2017@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/rocker/rocker_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index e1509becb7536..a7495a46d0943 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -1525,9 +1525,8 @@ static void rocker_world_port_post_fini(struct rocker_port *rocker_port)
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -609,7 +609,7 @@ static struct its_collection *its_build_
+ 						 struct its_cmd_block *cmd,
+ 						 struct its_cmd_desc *desc)
  {
- 	struct rocker_world_ops *wops = rocker_port->rocker->wops;
+-	unsigned long itt_addr;
++	phys_addr_t itt_addr;
+ 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
  
--	if (!wops->port_post_fini)
--		return;
--	wops->port_post_fini(rocker_port);
-+	if (wops->port_post_fini)
-+		wops->port_post_fini(rocker_port);
- 	kfree(rocker_port->wpriv);
- }
+ 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
+@@ -780,7 +780,7 @@ static struct its_vpe *its_build_vmapp_c
+ 					   struct its_cmd_desc *desc)
+ {
+ 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
+-	unsigned long vpt_addr, vconf_addr;
++	phys_addr_t vpt_addr, vconf_addr;
+ 	u64 target;
+ 	bool alloc;
  
--- 
-2.51.0
-
+@@ -2408,10 +2408,10 @@ retry_baser:
+ 	baser->psz = psz;
+ 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
+ 
+-	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
++	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
+ 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
+ 		its_base_type_string[type],
+-		(unsigned long)virt_to_phys(base),
++		(u64)virt_to_phys(base),
+ 		indirect ? "indirect" : "flat", (int)esz,
+ 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
+ 
 
 
 
