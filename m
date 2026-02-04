@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-214116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBkHLftrg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:39 +0100
+	id 4OGpDOpcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1523FE99B9
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E66E779E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF9DA31FEF99
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DE763010929
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B86423A83;
-	Wed,  4 Feb 2026 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076B241B360;
+	Wed,  4 Feb 2026 14:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqdS01xC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMgIIJw5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349294218AB;
-	Wed,  4 Feb 2026 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECD4413224;
+	Wed,  4 Feb 2026 14:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218619; cv=none; b=dnLu/Nfgqbjr+EJpMXRzWgUjeL0EOqbsFF8I0F4a+X//WIjmYdyAcUfhsoHdltE369Lnk9BuixiVfdfVKXuQClthmLFEfX0niFdyU+6eGEkIUy86QNxLc1k7JSf7SZzZrX6EBnrWqMOeQvc/DDYZo5zVYX7oXKntJeCkal+DoLE=
+	t=1770216629; cv=none; b=MmRAY5iLSyauuqKPuKqxl1QoccBmohTYl4wcZB/W0IawVARWc+vwpwa8xAI9KQJr2GDg/KaB7YCBOs7jYdCRwWzxi09a5WQVKo3zXSyqXmuxsk0dy6It69qPK3SMf9pUE4isUSfOctClJVsPOEUxvmkOT2yheZA6vGRnN4OGefE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218619; c=relaxed/simple;
-	bh=4h670GeaaOa2gaXJIEDuiDGxm5BeVr4B6NIBKEXTBdE=;
+	s=arc-20240116; t=1770216629; c=relaxed/simple;
+	bh=zw7GOsJ5EdVvusk8DGMnYif0MCBTX23LsviIuXUOg7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ONSn8VcPMr9LfrqQQ5aR5CW295ayWhmdWiLv7jatYZfo+8OBSu87sZ5nsVcx2VKEnBxthOaXF+VEhZdLKnGlXcNQhW514+7y6XotSP56irDHTBv5jQxa5Ha61IgbXXZcQzzpT15BPbWNbV7c71lirP8tPpyMnAjcREZ5inP4Amg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqdS01xC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99599C4CEF7;
-	Wed,  4 Feb 2026 15:23:38 +0000 (UTC)
+	 MIME-Version; b=jpoMYHuRbSp0gQfjfyrwt1rHBmxcxTtUpvxeAqGfwiFgZtE1yxlCshUsZvTcxVY0ej3aToo3xBHeixtZnX4Vng2p203wDztMxab51eAfDR1eb4MLQubvCnq1Jl0AeZ2qfRmAbSaJ9QVP/i45iU0IH5i5SgITmSenlbynfSNliF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMgIIJw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E873AC4CEF7;
+	Wed,  4 Feb 2026 14:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218619;
-	bh=4h670GeaaOa2gaXJIEDuiDGxm5BeVr4B6NIBKEXTBdE=;
+	s=korg; t=1770216629;
+	bh=zw7GOsJ5EdVvusk8DGMnYif0MCBTX23LsviIuXUOg7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqdS01xCpQ2/cwEjy2bNju2JZ1AU8qruCU2G6nqzRtm4gj+JN3paIebJ1zU+p6o2x
-	 IAJY3Iw0/73ESEt7hnhuFqFrJ3epAgfA9Z6QaXRCTgfDmonYKorfho7QDvBlV8yOX6
-	 xIrPwJAR9C8H3E0Th8gVrOr6aDI/FhMShbQpxBM8=
+	b=zMgIIJw5z1gzbZK0QrkkhrWhEZwbNWfGPMa2KxZM0QBzshJutdbzGBsq3HBrykvSn
+	 EDmKgX2bN1krASdpGhEWnNHlQFTrrkxGb0mGMPPZToZB2qCSLFGphOIgrK6bNNW5FC
+	 TB8kfGGrShWAjmHtCdhSi/RSoGPmMCSIdkDNyp3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 11/87] net: wwan: t7xx: fix potential skb->frags overflow in RX path
+	David Hildenbrand <david@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Subject: [PATCH 5.10 146/161] mm/pagewalk: add walk_page_range_vma()
 Date: Wed,  4 Feb 2026 15:40:09 +0100
-Message-ID: <20260204143847.319238338@linuxfoundation.org>
+Message-ID: <20260204143857.001106418@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,20 +78,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214116-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213526-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,google.com,nvidia.com,infradead.org,kernel.org,suse.cz,linux-foundation.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,92 +100,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1523FE99B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.cz:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,walk.mm:url]
+X-Rspamd-Queue-Id: 50E66E779E
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit f0813bcd2d9d97fdbdf2efb9532ab03ae92e99e6 ]
+[ Upstream commit e07cda5f232fac4de0925d8a4c92e51e41fa2f6e ]
 
-When receiving data in the DPMAIF RX path,
-the t7xx_dpmaif_set_frag_to_skb() function adds
-page fragments to an skb without checking if the number of
-fragments has exceeded MAX_SKB_FRAGS. This could lead to a buffer overflow
-in skb_shinfo(skb)->frags[] array, corrupting adjacent memory and
-potentially causing kernel crashes or other undefined behavior.
+Let's add walk_page_range_vma(), which is similar to walk_page_vma(),
+however, is only interested in a subset of the VMA range.
 
-This issue was identified through static code analysis by comparing with a
-similar vulnerability fixed in the mt76 driver commit b102f0c522cf ("mt76:
-fix array overflow on receiving too many fragments for a packet").
+To be used in KSM code to stop using follow_page() next.
 
-The vulnerability could be triggered if the modem firmware sends packets
-with excessive fragments. While under normal protocol conditions (MTU 3080
-bytes, BAT buffer 3584 bytes),
-a single packet should not require additional
-fragments, the kernel should not blindly trust firmware behavior.
-Malicious, buggy, or compromised firmware could potentially craft packets
-with more fragments than the kernel expects.
-
-Fix this by adding a bounds check before calling skb_add_rx_frag() to
-ensure nr_frags does not exceed MAX_SKB_FRAGS.
-
-The check must be performed before unmapping to avoid a page leak
-and double DMA unmap during device teardown.
-
-Fixes: d642b012df70a ("net: wwan: t7xx: Add data path interface")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Link: https://patch.msgid.link/20260122170401.1986-2-qikeyu2017@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20221021101141.84170-8-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: f5548c318d6 ("ksm: use range-walk function to jump over holes in scan_get_next_rmap_item")
+Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/linux/pagewalk.h |    3 +++
+ mm/pagewalk.c            |   20 ++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-index 7a9c09cd4fdcf..6b0df637afeb8 100644
---- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-@@ -394,6 +394,7 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
- 				       struct sk_buff *skb)
- {
- 	unsigned long long data_bus_addr, data_base_addr;
-+	struct skb_shared_info *shinfo = skb_shinfo(skb);
- 	struct device *dev = rxq->dpmaif_ctrl->dev;
- 	struct dpmaif_bat_page *page_info;
- 	unsigned int data_len;
-@@ -401,18 +402,22 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -99,6 +99,9 @@ int walk_page_range_novma(struct mm_stru
+ 			  unsigned long end, const struct mm_walk_ops *ops,
+ 			  pgd_t *pgd,
+ 			  void *private);
++int walk_page_range_vma(struct vm_area_struct *vma, unsigned long start,
++			unsigned long end, const struct mm_walk_ops *ops,
++			void *private);
+ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+ 		void *private);
+ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -461,6 +461,26 @@ int walk_page_range_novma(struct mm_stru
+ 	return walk_pgd_range(start, end, &walk);
+ }
  
- 	page_info = rxq->bat_frag->bat_skb;
- 	page_info += t7xx_normal_pit_bid(pkt_info);
--	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
- 
- 	if (!page_info->page)
- 		return -EINVAL;
- 
-+	if (shinfo->nr_frags >= MAX_SKB_FRAGS)
++int walk_page_range_vma(struct vm_area_struct *vma, unsigned long start,
++			unsigned long end, const struct mm_walk_ops *ops,
++			void *private)
++{
++	struct mm_walk walk = {
++		.ops		= ops,
++		.mm		= vma->vm_mm,
++		.vma		= vma,
++		.private	= private,
++	};
++
++	if (start >= end || !walk.mm)
++		return -EINVAL;
++	if (start < vma->vm_start || end > vma->vm_end)
 +		return -EINVAL;
 +
-+	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
++	mmap_assert_locked(walk.mm);
++	return __walk_page_range(start, end, &walk);
++}
 +
- 	data_bus_addr = le32_to_cpu(pkt_info->pd.data_addr_h);
- 	data_bus_addr = (data_bus_addr << 32) + le32_to_cpu(pkt_info->pd.data_addr_l);
- 	data_base_addr = page_info->data_bus_addr;
- 	data_offset = data_bus_addr - data_base_addr;
- 	data_offset += page_info->offset;
- 	data_len = FIELD_GET(PD_PIT_DATA_LEN, le32_to_cpu(pkt_info->header));
--	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page_info->page,
-+	skb_add_rx_frag(skb, shinfo->nr_frags, page_info->page,
- 			data_offset, data_len, page_info->data_len);
- 
- 	page_info->page = NULL;
--- 
-2.51.0
-
+ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+ 		void *private)
+ {
 
 
 
