@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-213600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGkhIndig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:03 +0100
+	id GNgFAItlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2400E8301
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F294E8A1C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60D2D307EC75
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A34A63016EC0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ABB41B376;
-	Wed,  4 Feb 2026 14:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332334279ED;
+	Wed,  4 Feb 2026 15:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHV5Pdnz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCoZ1VQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276FC41B34E;
-	Wed,  4 Feb 2026 14:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB62E2C21ED;
+	Wed,  4 Feb 2026 15:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216876; cv=none; b=h7lxYWlZB2XESWM9KyhsTkP/g0khG+7G9wK06+z7BL9uIJN5bpSs3GZrtRL7EfyDNBIuXzpATM+qCaC2RpV0xXNv/AaghmI62TwveQh/EsmZQO5q68JpIE/hwkdR7rYWG9v3s+H6iV78DyhWFqyqSaycBBngU0htJ3UW8s4ZH64=
+	t=1770217664; cv=none; b=nq5IoPaYlzquMXanftyUDxOVVVm6vcLAj5JUbNnI5brpVNcI36gfQAT9PHkOY2fRJwy/zmjiSnT4Q/g8Zc9stTEk9EFpOY7fl8C0Na3iS0c9A0raABsL84mmkD7GQgJq1jvawQ4KZpBqcsBZ9DfDNMy/d+xsnKwOSalqgZJGZaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216876; c=relaxed/simple;
-	bh=oOuSaxByOUwjFNjmjW6/ogCuduDjOG/fLb1EdOB+7mY=;
+	s=arc-20240116; t=1770217664; c=relaxed/simple;
+	bh=ExQPEfmxo033Y29hLiCtj4r39Z0c59SDL93nBJeDOpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEvvrBtY/h4/WhjO368uin3dLdrv/C5spAhWtTfxMmdc/tbOWDlLC2ebH/rpb1AS9dVuLKjlqkL5/UG0j4E6xag7JusCkZdUNWyOecfCHxaU6GBwzkPEJCes6wHD4r0SDWKPtMZWIVOTIJfcCw45l25EEdu9mAgKDCJ/ORPioT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHV5Pdnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C61C4CEF7;
-	Wed,  4 Feb 2026 14:54:35 +0000 (UTC)
+	 MIME-Version; b=AGyEKP+cM7uz/+MtpWM4nayYLxOlFwIZLDCzczv/ACWsg3kVceKGFJNDPe+cSd/3JbHGWtGXqMmoINmeMBL3o8E8nzmsgEV2eBVUsVSxwBwwh2PCgoSQZROBqp23kVIbFYXn3xyRFqfnkJr2/RHtS45chCZztSiISPAiAtplKl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCoZ1VQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8A9C4CEF7;
+	Wed,  4 Feb 2026 15:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216876;
-	bh=oOuSaxByOUwjFNjmjW6/ogCuduDjOG/fLb1EdOB+7mY=;
+	s=korg; t=1770217663;
+	bh=ExQPEfmxo033Y29hLiCtj4r39Z0c59SDL93nBJeDOpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHV5PdnzpYNx7NuEHxQ/2Bpxs53Vk3/zvEQfX1+H4gHtdZKXZareAc4pATeUA32OR
-	 L5hlenrLzbBI3Lh+8FBFgsf5QmhrlgDIS3w3PCgdBp7xijSyawLa6gXm3UjE34EFto
-	 HuoTJ9KavIF0lttKVi/ufMHN7O8iEdtOghN7/FGc=
+	b=yCoZ1VQkR63pKqGyN6ss+xxbWu3vNlBrUyxPMFrE2ewjQGPACvEPuRY2t3+lNmeBK
+	 56z0G5j4DRkM7IpDQrr5tCSWTptXY4fCrdCidpNsJJVAeyjFE1yhIkeyWwvJ6Sl3Yz
+	 H+jtpjp2wF/Q6Sy7JOMZOyZ8dxnixNHXKnagr1Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15 024/206] net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Wojtek Wasko <wwasko@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/280] posix-clock: Store file pointer in struct posix_clock_context
 Date: Wed,  4 Feb 2026 15:37:35 +0100
-Message-ID: <20260204143859.075070199@linuxfoundation.org>
+Message-ID: <20260204143912.573688570@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +68,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213600-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,linutronix.de,nvidia.com,davemloft.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213833-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,881d65229ca4f9ae8c84];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[i-love.sakura.ne.jp:email,appspotmail.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A2400E8301
+	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 7F294E8A1C
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Wojtek Wasko <wwasko@nvidia.com>
 
-commit 1809c82aa073a11b7d335ae932d81ce51a588a4a upstream.
+[ Upstream commit e859d375d1694488015e6804bfeea527a0b25b9f ]
 
-Since j1939_session_deactivate_activate_next() in j1939_tp_rxtimer() is
-called only when the timer is enabled, we need to call
-j1939_session_deactivate_activate_next() if we cancelled the timer.
-Otherwise, refcount for j1939_session leaks, which will later appear as
+File descriptor based pc_clock_*() operations of dynamic posix clocks
+have access to the file pointer and implement permission checks in the
+generic code before invoking the relevant dynamic clock callback.
 
-| unregister_netdevice: waiting for vcan0 to become free. Usage count = 2.
+Character device operations (open, read, poll, ioctl) do not implement a
+generic permission control and the dynamic clock callbacks have no
+access to the file pointer to implement them.
 
-problem.
+Extend struct posix_clock_context with a struct file pointer and
+initialize it in posix_clock_open(), so that all dynamic clock callbacks
+can access it.
 
-Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Link: https://patch.msgid.link/b1212653-8fa1-44e1-be9d-12f950fb3a07@I-love.SAKURA.ne.jp
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/j1939/transport.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/posix-clock.h | 6 +++++-
+ kernel/time/posix-clock.c   | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1699,8 +1699,16 @@ static int j1939_xtp_rx_rts_session_acti
+diff --git a/include/linux/posix-clock.h b/include/linux/posix-clock.h
+index ef8619f489203..a500d3160fe8c 100644
+--- a/include/linux/posix-clock.h
++++ b/include/linux/posix-clock.h
+@@ -95,10 +95,13 @@ struct posix_clock {
+  * struct posix_clock_context - represents clock file operations context
+  *
+  * @clk:              Pointer to the clock
++ * @fp:               Pointer to the file used to open the clock
+  * @private_clkdata:  Pointer to user data
+  *
+  * Drivers should use struct posix_clock_context during specific character
+- * device file operation methods to access the posix clock.
++ * device file operation methods to access the posix clock. In particular,
++ * the file pointer can be used to verify correct access mode for ioctl()
++ * calls.
+  *
+  * Drivers can store a private data structure during the open operation
+  * if they have specific information that is required in other file
+@@ -106,6 +109,7 @@ struct posix_clock {
+  */
+ struct posix_clock_context {
+ 	struct posix_clock *clk;
++	struct file *fp;
+ 	void *private_clkdata;
+ };
  
- 		j1939_session_timers_cancel(session);
- 		j1939_session_cancel(session, J1939_XTP_ABORT_BUSY);
--		if (session->transmission)
-+		if (session->transmission) {
- 			j1939_session_deactivate_activate_next(session);
-+		} else if (session->state == J1939_SESSION_WAITING_ABORT) {
-+			/* Force deactivation for the receiver.
-+			 * If we rely on the timer starting in j1939_session_cancel,
-+			 * a second RTS call here will cancel that timer and fail
-+			 * to restart it because the state is already WAITING_ABORT.
-+			 */
-+			j1939_session_deactivate_activate_next(session);
-+		}
- 
- 		return -EBUSY;
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index a6487a9d60853..b130bb56cc4e0 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -129,6 +129,7 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 		goto out;
  	}
+ 	pccontext->clk = clk;
++	pccontext->fp = fp;
+ 	if (clk->ops.open) {
+ 		err = clk->ops.open(pccontext, fp->f_mode);
+ 		if (err) {
+-- 
+2.51.0
+
 
 
 
