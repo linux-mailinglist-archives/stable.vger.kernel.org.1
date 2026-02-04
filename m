@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMSjIrlng2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:29 +0100
+	id SAQbArdvg2lgmwMAu9opvQ
+	(envelope-from <stable+bounces-214286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:11:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28635E8FCE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1352AE9F9B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4605230263C0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 547F630170AD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601262BD02A;
-	Wed,  4 Feb 2026 15:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AE82D738F;
+	Wed,  4 Feb 2026 15:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlS/IVls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VC5cvuA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BB742AA9;
-	Wed,  4 Feb 2026 15:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9670A2BE7C0;
+	Wed,  4 Feb 2026 15:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218832; cv=none; b=KCA6QFGttPIPV8RRExM7NA5CqHNZTykhsxwA8EXy58OTFycYwHXDwUAzDPRG+jdbG1ywVHMAtSPVHBEWKHUOPEzB2kX1AzY+g22zGD3bTnOM9gfZm2nFwcoXtwuK/7NfD8qwYHXbVIXwYNGzuGmSaebWXvqyt2PtvLsoZrtQ9wA=
+	t=1770219181; cv=none; b=ORU18gB6up8v6CPM1bBVgxfFRI/+pqKwZIuhb4HvWl7noz1RuJpCUgja9g+BddfHC7arm3CR5Hdr7hbPZHzOm9AnMO6Aj/t/x9WssNbHyDAufeM9TFOpBJG0eeRKE2YddL60Fiabwx8If/Hg80ubMCBtD4m5HLMVyIpfRaPozuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218832; c=relaxed/simple;
-	bh=dablZuk6fpVxFzFWO4B6e0agK8fmDjSHzPrblNQ1NaA=;
+	s=arc-20240116; t=1770219181; c=relaxed/simple;
+	bh=+5TO9k74+KFTwIhLTgLjSJ0V3E3mFxzepDJ7MiuF/bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKLpKXK+MU45fSvv7EwcTUdR8CBAoWOd9y8KoQx0kyASjiJWjVjUSQxCzRfFWT1+kCzsB+1sXoKNJLN2m7zyfSzJBkb9ubqggRTfCgfW270It1uOcemckYUt77Atl06gtqWvseS61x8khYf+i/Gk8NoODh3d2KerKu/27A9lyiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlS/IVls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F027C4CEF7;
-	Wed,  4 Feb 2026 15:27:11 +0000 (UTC)
+	 MIME-Version; b=EeNtAL1lVdK3FgW4lIf9QH3afqNR+LeJ8hRi91JzCHvuTghdL/dyQMcj+Is8DSaZIQEDZaHkiiTkYAkmQSra3EAQaeeIGtgdV8b3f80hyQJTWjvabRCGKBE6nom7f068HAgohZz5to3jI3qvlbSGmqO2KE9QiomBBbHRpHq0ms4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VC5cvuA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3915C4CEF7;
+	Wed,  4 Feb 2026 15:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218832;
-	bh=dablZuk6fpVxFzFWO4B6e0agK8fmDjSHzPrblNQ1NaA=;
+	s=korg; t=1770219181;
+	bh=+5TO9k74+KFTwIhLTgLjSJ0V3E3mFxzepDJ7MiuF/bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlS/IVlstZ70wfXTPmFJ5t+V3XiWnd8X6X1KifUTvSaSoJhGvnVJQRoFTyy9EDCzP
-	 UtuKupCJapj/O4hzamK0Q/tanxW+IWvbgwVf46IsINSthk04mKMceBz8JX0AkLIOvY
-	 n333+sqnenLvnQgKTA2tGNIlUrEMrHhQbG+sBnus=
+	b=2VC5cvuArsfFGXAwT6W6NkLYPWv6qYK34EjuFLUf3BlI09lyEKQkqKBRjA2EjeU/e
+	 TC9Wl5NZnsoNdb4DJv3V3TORLi8OdCfBJEOmppwEZw7v/x+YGasWqGaZe3QQasNCOC
+	 cgNVdGwuz/VUYudfw6zcGPcbDo7nCeYbAiTO36N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.12 74/87] wifi: ath11k: add srng->lock for ath11k_hal_srng_* in monitor mode
+	Jibin Zhang <jibin.zhang@mediatek.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 090/122] net: fix segmentation of forwarding fraglist GRO
 Date: Wed,  4 Feb 2026 15:41:12 +0100
-Message-ID: <20260204143849.582422397@linuxfoundation.org>
+Message-ID: <20260204143855.090203126@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,134 +68,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,quicinc.com,oss.qualcomm.com,139.com];
-	TAGGED_FROM(0.00)[bounces-214180-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-214286-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,quicinc.com:email,139.com:email]
-X-Rspamd-Queue-Id: 28635E8FCE
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1352AE9F9B
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Jibin Zhang <jibin.zhang@mediatek.com>
 
-[ Upstream commit 63b7af49496d0e32f7a748b6af3361ec138b1bd3 ]
+commit 426ca15c7f6cb6562a081341ca88893a50c59fa2 upstream.
 
-ath11k_hal_srng_* should be used with srng->lock to protect srng data.
+This patch enhances GSO segment handling by properly checking
+the SKB_GSO_DODGY flag for frag_list GSO packets, addressing
+low throughput issues observed when a station accesses IPv4
+servers via hotspots with an IPv6-only upstream interface.
 
-For ath11k_dp_rx_mon_dest_process() and ath11k_dp_full_mon_process_rx(),
-they use ath11k_hal_srng_* for many times but never call srng->lock.
+Specifically, it fixes a bug in GSO segmentation when forwarding
+GRO packets containing a frag_list. The function skb_segment_list
+cannot correctly process GRO skbs that have been converted by XLAT,
+since XLAT only translates the header of the head skb. Consequently,
+skbs in the frag_list may remain untranslated, resulting in protocol
+inconsistencies and reduced throughput.
 
-So when running (full) monitor mode, warning will occur:
-RIP: 0010:ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
-Call Trace:
- ? ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
- ath11k_dp_rx_process_mon_status+0xc45/0x1190 [ath11k]
- ? idr_alloc_u32+0x97/0xd0
- ath11k_dp_rx_process_mon_rings+0x32a/0x550 [ath11k]
- ath11k_dp_service_srng+0x289/0x5a0 [ath11k]
- ath11k_pcic_ext_grp_napi_poll+0x30/0xd0 [ath11k]
- __napi_poll+0x30/0x1f0
- net_rx_action+0x198/0x320
- __do_softirq+0xdd/0x319
+To address this, the patch explicitly sets the SKB_GSO_DODGY flag
+for GSO packets in XLAT's IPv4/IPv6 protocol translation helpers
+(bpf_skb_proto_4_to_6 and bpf_skb_proto_6_to_4). This marks GSO
+packets as potentially modified after protocol translation. As a
+result, GSO segmentation will avoid using skb_segment_list and
+instead falls back to skb_segment for packets with the SKB_GSO_DODGY
+flag. This ensures that only safe and fully translated frag_list
+packets are processed by skb_segment_list, resolving protocol
+inconsistencies and improving throughput when forwarding GRO packets
+converted by XLAT.
 
-So add srng->lock for them to avoid such warnings.
-
-Inorder to fetch the srng->lock, should change srng's definition from
-'void' to 'struct hal_srng'. And initialize them elsewhere to prevent
-one line of code from being too long. This is consistent with other ring
-process functions, such as ath11k_dp_process_rx().
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241219110531.2096-3-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Jibin Zhang <jibin.zhang@mediatek.com>
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260126152114.1211-1-jibin.zhang@mediatek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/core/filter.c        |    2 ++
+ net/ipv4/tcp_offload.c   |    3 ++-
+ net/ipv4/udp_offload.c   |    3 ++-
+ net/ipv6/tcpv6_offload.c |    3 ++-
+ 4 files changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -5142,7 +5142,7 @@ static void ath11k_dp_rx_mon_dest_proces
- 	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
- 	const struct ath11k_hw_hal_params *hal_params;
- 	void *ring_entry;
--	void *mon_dst_srng;
-+	struct hal_srng *mon_dst_srng;
- 	u32 ppdu_id;
- 	u32 rx_bufs_used;
- 	u32 ring_id;
-@@ -5159,6 +5159,7 @@ static void ath11k_dp_rx_mon_dest_proces
- 
- 	spin_lock_bh(&pmon->mon_lock);
- 
-+	spin_lock_bh(&mon_dst_srng->lock);
- 	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
- 
- 	ppdu_id = pmon->mon_ppdu_info.ppdu_id;
-@@ -5217,6 +5218,7 @@ static void ath11k_dp_rx_mon_dest_proces
- 								mon_dst_srng);
- 	}
- 	ath11k_hal_srng_access_end(ar->ab, mon_dst_srng);
-+	spin_unlock_bh(&mon_dst_srng->lock);
- 
- 	spin_unlock_bh(&pmon->mon_lock);
- 
-@@ -5606,7 +5608,7 @@ static int ath11k_dp_full_mon_process_rx
- 	struct hal_sw_mon_ring_entries *sw_mon_entries;
- 	struct ath11k_pdev_mon_stats *rx_mon_stats;
- 	struct sk_buff *head_msdu, *tail_msdu;
--	void *mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
-+	struct hal_srng *mon_dst_srng;
- 	void *ring_entry;
- 	u32 rx_bufs_used = 0, mpdu_rx_bufs_used;
- 	int quota = 0, ret;
-@@ -5622,6 +5624,9 @@ static int ath11k_dp_full_mon_process_rx
- 		goto reap_status_ring;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3352,6 +3352,7 @@ static int bpf_skb_proto_4_to_6(struct s
+ 			shinfo->gso_type &= ~SKB_GSO_TCPV4;
+ 			shinfo->gso_type |=  SKB_GSO_TCPV6;
+ 		}
++		shinfo->gso_type |=  SKB_GSO_DODGY;
  	}
  
-+	mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
-+	spin_lock_bh(&mon_dst_srng->lock);
-+
- 	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
- 	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
- 		head_msdu = NULL;
-@@ -5665,6 +5670,7 @@ next_entry:
+ 	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+@@ -3382,6 +3383,7 @@ static int bpf_skb_proto_6_to_4(struct s
+ 			shinfo->gso_type &= ~SKB_GSO_TCPV6;
+ 			shinfo->gso_type |=  SKB_GSO_TCPV4;
+ 		}
++		shinfo->gso_type |=  SKB_GSO_DODGY;
  	}
  
- 	ath11k_hal_srng_access_end(ar->ab, mon_dst_srng);
-+	spin_unlock_bh(&mon_dst_srng->lock);
- 	spin_unlock_bh(&pmon->mon_lock);
+ 	bpf_skb_change_protocol(skb, ETH_P_IP);
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -107,7 +107,8 @@ static struct sk_buff *tcp4_gso_segment(
+ 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
+ 		struct tcphdr *th = tcp_hdr(skb);
  
- 	if (rx_bufs_used) {
+-		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
++		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
+ 			return __tcp4_gso_segment_list(skb, features);
+ 
+ 		skb->ip_summed = CHECKSUM_NONE;
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -514,7 +514,8 @@ struct sk_buff *__udp_gso_segment(struct
+ 
+ 	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
+ 		 /* Detect modified geometry and pass those to skb_segment. */
+-		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
++		if ((skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size) &&
++		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY))
+ 			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
+ 
+ 		ret = __skb_linearize(gso_skb);
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -170,7 +170,8 @@ static struct sk_buff *tcp6_gso_segment(
+ 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
+ 		struct tcphdr *th = tcp_hdr(skb);
+ 
+-		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
++		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
+ 			return __tcp6_gso_segment_list(skb, features);
+ 
+ 		skb->ip_summed = CHECKSUM_NONE;
 
 
 
