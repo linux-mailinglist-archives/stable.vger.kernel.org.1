@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8E5oHEZfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:26 +0100
+	id AGsDAGJkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2B5E7C13
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4170E8690
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11A7030547DD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 33D293058F32
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F5F41B36A;
-	Wed,  4 Feb 2026 14:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BE1426D0C;
+	Wed,  4 Feb 2026 15:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIGJ0T/4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqQlGDea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F153C41B343;
-	Wed,  4 Feb 2026 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A41426D02;
+	Wed,  4 Feb 2026 15:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216759; cv=none; b=QIg6bsBcPyMFT7DI4v4Oj+sNhNChylkzp3TJ6kpOtV7pGC+YniZGAs2kx+OH8na4sqHCSYzwTw45I2GMwD9P21bTFXW9iapT6q8/4oO9Mmfe+XmmdPGiTx2Vd7Ou4NzGZtvO6yNOETb90RuDdG0qjdyEcfYAuarSWOUpHBGhzYc=
+	t=1770217599; cv=none; b=OvzAzK5VnQES8hNM4OOKOdluugIB9en0914mLbCYz+pO1NTYKB3WPWrZ/aZfDRuW4ResbjH03V2neLULah4s4Qw+7T3vv9xT1DaQqQx0EDRrNjC9mKD42CShbNLcfoouX6zBH7nt3XRTx47UGVrgHk1KwvG8DwoajYJWvzKv6U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216759; c=relaxed/simple;
-	bh=lEJkcqPhPbP6nNOWUEan0Uc6CIwP5FlX/W1uAXEeiDc=;
+	s=arc-20240116; t=1770217599; c=relaxed/simple;
+	bh=0XaFGF3nx2X+QMfECckchm5CJ93d9u+8T6L4I/sCp5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLMY6ZDLrX//GJJEQ2weujUbYSVhaSE89mDUuJJXklkAkgg3FtlH4OJuo8+KX/EIPEtcHviui3wAoXXDdwyWbXbhlK/B+ZwCwGpJnEU2RtdyWiQInTfrrC1vaxr11SaDyhd/dWZTITWgGlK+0/ro/dQ5N/G+YO1cdYiG+CyB8xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIGJ0T/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6459FC4CEF7;
-	Wed,  4 Feb 2026 14:52:38 +0000 (UTC)
+	 MIME-Version; b=V/CpZnOwdBF14gHzzgQcDNSh+JAdS+LMtLr9pmD2zdTc55SbLBu+sGPwIoEXpgSb5aJVAAcMmOl91tac4zi6Omv+DJ5UYOf4JUH7jlGL+/WpcUFgG28rsbsB0TONxKrdYssod2y3VUEMo7pvMIMhmplvASYtjWrZ6oZqw9cVI98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqQlGDea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDB9C4CEF7;
+	Wed,  4 Feb 2026 15:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216758;
-	bh=lEJkcqPhPbP6nNOWUEan0Uc6CIwP5FlX/W1uAXEeiDc=;
+	s=korg; t=1770217599;
+	bh=0XaFGF3nx2X+QMfECckchm5CJ93d9u+8T6L4I/sCp5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIGJ0T/4rpDqlM/zAThQQwT0kLEP90BfReKIRFwrmUx5OlKJdbfVi4OsA04I8EZMQ
-	 cB9ejjeXHKS0IwHq1SCz8Pp4VHwtGu4h8HTrLMm8EV2bL9MKMqKnZwsFfJOIcDSGlD
-	 U6y1X3r2+h9VnxsszaUERpbOu+Ip5NCr43VqyV6o=
+	b=DqQlGDeaXC1WAX8joHrNwHt0Hu+V6B9GV95x6RTKNAOB98UTpTIv3bsCwOW3mpdsb
+	 JoCuy/Dyif/xyLGdd9qjdFz5+P9TgHRJ78sHqbmRvynoCi9rG38N+9YayYUBm6j3+G
+	 LLgoxj5mdvz3zhnrcbTvnMBu59rA5XTlYCkeJovo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/206] ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()
-Date: Wed,  4 Feb 2026 15:37:17 +0100
-Message-ID: <20260204143858.427827108@linuxfoundation.org>
+	Marek Vasut <marex@nabladev.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 064/280] drm/panel-simple: fix connector type for DataImage SCF0700C48GGU18 panel
+Date: Wed,  4 Feb 2026 15:37:18 +0100
+Message-ID: <20260204143911.957946057@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,141 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213565-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-213814-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d4dda070f833dc5dc89a];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0D2B5E7C13
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,nabladev.com:email]
+X-Rspamd-Queue-Id: B4170E8690
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit 81c734dae203757fb3c9eee6f9896386940776bd ]
+commit 6ab3d4353bf75005eaa375677c9fed31148154d6 upstream.
 
-Blamed commit did not take care of VLAN encapsulations
-as spotted by syzbot [1].
+The connector type for the DataImage SCF0700C48GGU18 panel is missing and
+devm_drm_panel_bridge_add() requires connector type to be set. This leads
+to a warning and a backtrace in the kernel log and panel does not work:
+"
+WARNING: CPU: 3 PID: 38 at drivers/gpu/drm/bridge/panel.c:379 devm_drm_of_get_bridge+0xac/0xb8
+"
+The warning is triggered by a check for valid connector type in
+devm_drm_panel_bridge_add(). If there is no valid connector type
+set for a panel, the warning is printed and panel is not added.
+Fill in the missing connector type to fix the warning and make
+the panel operational once again.
 
-Use skb_vlan_inet_prepare() instead of pskb_inet_may_pull().
-
-[1]
- BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
- BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
- BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
-  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
-  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
-  IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
-  ip6ip6_dscp_ecn_decapsulate+0x16f/0x1b0 net/ipv6/ip6_tunnel.c:729
-  __ip6_tnl_rcv+0xed9/0x1b50 net/ipv6/ip6_tunnel.c:860
-  ip6_tnl_rcv+0xc3/0x100 net/ipv6/ip6_tunnel.c:903
- gre_rcv+0x1529/0x1b90 net/ipv6/ip6_gre.c:-1
-  ip6_protocol_deliver_rcu+0x1c89/0x2c60 net/ipv6/ip6_input.c:438
-  ip6_input_finish+0x1f4/0x4a0 net/ipv6/ip6_input.c:489
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ip6_input+0x9c/0x330 net/ipv6/ip6_input.c:500
-  ip6_mc_input+0x7ca/0xc10 net/ipv6/ip6_input.c:590
-  dst_input include/net/dst.h:474 [inline]
-  ip6_rcv_finish+0x958/0x990 net/ipv6/ip6_input.c:79
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ipv6_rcv+0xf1/0x3c0 net/ipv6/ip6_input.c:311
-  __netif_receive_skb_one_core net/core/dev.c:6139 [inline]
-  __netif_receive_skb+0x1df/0xac0 net/core/dev.c:6252
-  netif_receive_skb_internal net/core/dev.c:6338 [inline]
-  netif_receive_skb+0x57/0x630 net/core/dev.c:6397
-  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
-  tun_get_user+0x5c0e/0x6c60 drivers/net/tun.c:1953
-  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
-  new_sync_write fs/read_write.c:593 [inline]
-  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
-  ksys_write fs/read_write.c:738 [inline]
-  __do_sys_write fs/read_write.c:749 [inline]
-  __se_sys_write fs/read_write.c:746 [inline]
-  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
-  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:4960 [inline]
-  slab_alloc_node mm/slub.c:5263 [inline]
-  kmem_cache_alloc_node_noprof+0x9e7/0x17a0 mm/slub.c:5315
-  kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:586
-  __alloc_skb+0x805/0x1040 net/core/skbuff.c:690
-  alloc_skb include/linux/skbuff.h:1383 [inline]
-  alloc_skb_with_frags+0xc5/0xa60 net/core/skbuff.c:6712
-  sock_alloc_send_pskb+0xacc/0xc60 net/core/sock.c:2995
-  tun_alloc_skb drivers/net/tun.c:1461 [inline]
-  tun_get_user+0x1142/0x6c60 drivers/net/tun.c:1794
-  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
-  new_sync_write fs/read_write.c:593 [inline]
-  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
-  ksys_write fs/read_write.c:738 [inline]
-  __do_sys_write fs/read_write.c:749 [inline]
-  __se_sys_write fs/read_write.c:746 [inline]
-  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
-  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 0 UID: 0 PID: 6465 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(none)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-
-Fixes: 8d975c15c0cd ("ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()")
-Reported-by: syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/695e88b2.050a0220.1c677c.036d.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260107163109.4188620-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 97ceb1fb08b6 ("drm/panel: simple: Add support for DataImage SCF0700C48GGU18")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260110152750.73848-1-marex@nabladev.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_tunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-simple.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index ccdea44438940..553851e3aca14 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -846,7 +846,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1518,6 +1518,7 @@ static const struct panel_desc dataimage
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ 	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
++	.connector_type = DRM_MODE_CONNECTOR_DPI,
+ };
  
- 	skb_reset_network_header(skb);
- 
--	if (!pskb_inet_may_pull(skb)) {
-+	if (skb_vlan_inet_prepare(skb, true)) {
- 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
- 		DEV_STATS_INC(tunnel->dev, rx_errors);
- 		goto drop;
--- 
-2.51.0
-
+ static const struct display_timing dlc_dlc0700yzg_1_timing = {
 
 
 
