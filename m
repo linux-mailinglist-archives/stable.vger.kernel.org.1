@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-214029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ML1dLYtqg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:31 +0100
+	id UEsBGC9ng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:11 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19804E96CD
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF69E8EAA
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B607C319E6A7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26F1730A30BC
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78AE42188D;
-	Wed,  4 Feb 2026 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA05321ABC9;
+	Wed,  4 Feb 2026 15:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRluMFPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdjEZEzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8752BD012;
-	Wed,  4 Feb 2026 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD8E2D877F;
+	Wed,  4 Feb 2026 15:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218323; cv=none; b=J0A4o39rWkm4xtTlx0ZShZDMxAN4RSuunaWr7/WrpRahXr6cvtmgUiTpNrSiUIa6lSoGM47LWFDKBbs2zy3gxQEhI1ap5uZPuykXhg8lDHayqNtkZw/VLh6bZgVp3yviQS718Dk/Klwcq/T0YlDQPXcH2byLPnqa0vgbncir7Js=
+	t=1770218503; cv=none; b=GQtVcutub74zpYzGE2816TacW7k1msIAz4p/1tpBd9e+xhNx1pXtat+VW7x1Mgh7oS28besKiYN7SftoKw7Ufp9p0MqbBYz5D5qgkIY4gHuVhosW55Z9f4S2VW/hWAWbEfzRCNJFWLYZ/IGt3rtCV4vEQXGIBz3tuRNvMgMe4pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218323; c=relaxed/simple;
-	bh=m4rPtjOGspYILChpynzt/3roVAqSHeaKJ1EADyV/JZQ=;
+	s=arc-20240116; t=1770218503; c=relaxed/simple;
+	bh=eWqWNFS9rWubQ2jyT4v5NJrIht+/F1nvb5ZjEaPJ9/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bW4+0+EilUtrqn3Y5xVWgh3Hv2hBXsaZP0HO7mhcJqmbaAFqCIeALwLHl3VJPlV1bv+90oDt226nqKM8MgH3FuJ6vuJoXIChPREKK91LQeGnruQuygArmM47xC3vpL+6ta3jQRF7L2gAF1yiCB97hTUeBJXNAahflWixVvjIbSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRluMFPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92521C4CEF7;
-	Wed,  4 Feb 2026 15:18:42 +0000 (UTC)
+	 MIME-Version; b=lAGzLKsia9GrTd8EOHB05vn4buxRrAd3VFT+y78GzuRjodqzo++ZQl12ATkBnHypWo2HIFiTEzyKTo+iqlcW8bNbPxAxod8HjUpVJehLG3QuFgrd3/FeuEFcpjYWhRMzYdJyn5uPfaTIZWWa/zO7l5tQ4itOBZeNsnRDEVvI7Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdjEZEzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC575C19424;
+	Wed,  4 Feb 2026 15:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218323;
-	bh=m4rPtjOGspYILChpynzt/3roVAqSHeaKJ1EADyV/JZQ=;
+	s=korg; t=1770218503;
+	bh=eWqWNFS9rWubQ2jyT4v5NJrIht+/F1nvb5ZjEaPJ9/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRluMFPK9TABnl7PahwZPDjR2HC5XQet0jGi7dFLqN3QCFeDKrka5PqXn2BtjJeqh
-	 Lf8KxtWECkIHJP92pFOVTXBqAF95g2HQQmfPLJNl1ZjeIgLN+J0AU+DjTnEOQv/4dW
-	 2oJgAt9PwWYGWYJsjepvcpWqnfeDFYkaORnztITE=
+	b=cdjEZEzFmg5F4TARqulBUC8rInTpyuC9TOvc7N7Ngb9Y8gJ+MB/3CbxJ1N89MFAZo
+	 y5XammEtnboLKOHT5xIvL5qSiLorV3p2NAvmRt/fEcmKZhmOzcY0ZOhSl+MG28S/ZC
+	 4tdozcME8K7WC2ktLdNxnHCn+5mo5R3uLgR19F/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 278/280] drm/imx/tve: fix probe device leak
-Date: Wed,  4 Feb 2026 15:40:52 +0100
-Message-ID: <20260204143919.708360263@linuxfoundation.org>
+	Yunseong Kim <ysk@kzalloc.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 50/72] ksmbd: Fix race condition in RPC handle list access
+Date: Wed,  4 Feb 2026 15:40:53 +0100
+Message-ID: <20260204143847.444222325@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,80 +75,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kzalloc.com,kernel.org,microsoft.com,139.com];
+	TAGGED_FROM(0.00)[bounces-214082-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214029-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 19804E96CD
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CAF69E8EAA
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yunseong Kim <ysk@kzalloc.com>
 
-[ Upstream commit e535c23513c63f02f67e3e09e0787907029efeaf ]
+[ Upstream commit 305853cce379407090a73b38c5de5ba748893aee ]
 
-Make sure to drop the reference taken to the DDC device during probe on
-probe failure (e.g. probe deferral) and on driver unbind.
+The 'sess->rpc_handle_list' XArray manages RPC handles within a ksmbd
+session. Access to this list is intended to be protected by
+'sess->rpc_lock' (an rw_semaphore). However, the locking implementation was
+flawed, leading to potential race conditions.
 
-Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television Encoder (TVEv2)")
-Cc: stable@vger.kernel.org	# 3.10
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251030163456.15807-1-johan@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In ksmbd_session_rpc_open(), the code incorrectly acquired only a read lock
+before calling xa_store() and xa_erase(). Since these operations modify
+the XArray structure, a write lock is required to ensure exclusive access
+and prevent data corruption from concurrent modifications.
+
+Furthermore, ksmbd_session_rpc_method() accessed the list using xa_load()
+without holding any lock at all. This could lead to reading inconsistent
+data or a potential use-after-free if an entry is concurrently removed and
+the pointer is dereferenced.
+
+Fix these issues by:
+1. Using down_write() and up_write() in ksmbd_session_rpc_open()
+   to ensure exclusive access during XArray modification, and ensuring
+   the lock is correctly released on error paths.
+2. Adding down_read() and up_read() in ksmbd_session_rpc_method()
+   to safely protect the lookup.
+
+Fixes: a1f46c99d9ea ("ksmbd: fix use-after-free in ksmbd_session_rpc_open")
+Fixes: b685757c7b08 ("ksmbd: Implements sess->rpc_handle_list as xarray")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imx/imx-tve.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/smb/server/mgmt/user_session.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/imx/imx-tve.c
-+++ b/drivers/gpu/drm/imx/imx-tve.c
-@@ -522,6 +522,13 @@ static const struct component_ops imx_tv
- 	.bind	= imx_tve_bind,
- };
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -104,29 +104,32 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ 	if (!entry)
+ 		return -ENOMEM;
  
-+static void imx_tve_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
+-	down_read(&sess->rpc_lock);
+ 	entry->method = method;
+ 	entry->id = id = ksmbd_ipc_id_alloc();
+ 	if (id < 0)
+ 		goto free_entry;
 +
-+	put_device(dev);
-+}
-+
- static int imx_tve_probe(struct platform_device *pdev)
++	down_write(&sess->rpc_lock);
+ 	old = xa_store(&sess->rpc_handle_list, id, entry, GFP_KERNEL);
+-	if (xa_is_err(old))
++	if (xa_is_err(old)) {
++		up_write(&sess->rpc_lock);
+ 		goto free_id;
++	}
+ 
+ 	resp = ksmbd_rpc_open(sess, id);
+-	if (!resp)
+-		goto erase_xa;
++	if (!resp) {
++		xa_erase(&sess->rpc_handle_list, entry->id);
++		up_write(&sess->rpc_lock);
++		goto free_id;
++	}
+ 
+-	up_read(&sess->rpc_lock);
++	up_write(&sess->rpc_lock);
+ 	kvfree(resp);
+ 	return id;
+-erase_xa:
+-	xa_erase(&sess->rpc_handle_list, entry->id);
+ free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
+-	up_read(&sess->rpc_lock);
+ 	return -EINVAL;
+ }
+ 
+@@ -144,9 +147,14 @@ void ksmbd_session_rpc_close(struct ksmb
+ int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
  {
- 	struct device *dev = &pdev->dev;
-@@ -543,6 +550,12 @@ static int imx_tve_probe(struct platform
- 	if (ddc_node) {
- 		tve->ddc = of_find_i2c_adapter_by_node(ddc_node);
- 		of_node_put(ddc_node);
-+		if (tve->ddc) {
-+			ret = devm_add_action_or_reset(dev, imx_tve_put_device,
-+						       &tve->ddc->dev);
-+			if (ret)
-+				return ret;
-+		}
- 	}
+ 	struct ksmbd_session_rpc *entry;
++	int method;
  
- 	tve->mode = of_get_tve_mode(np);
++	down_read(&sess->rpc_lock);
+ 	entry = xa_load(&sess->rpc_handle_list, id);
+-	return entry ? entry->method : 0;
++	method = entry ? entry->method : 0;
++	up_read(&sess->rpc_lock);
++
++	return method;
+ }
+ 
+ void ksmbd_session_destroy(struct ksmbd_session *sess)
 
 
 
