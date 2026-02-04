@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-213860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEPXDI1lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213860-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:13 +0100
+	id mA+6OYVeg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA56E8A31
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A47E7A9B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1604A3034EFB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6F1A83036863
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC5C41324E;
-	Wed,  4 Feb 2026 15:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C3F41B360;
+	Wed,  4 Feb 2026 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYcDZGDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQLx8OPa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A051540B6FF;
-	Wed,  4 Feb 2026 15:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BFB41B345;
+	Wed,  4 Feb 2026 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217756; cv=none; b=nbl2qfSTiyfamYbwKLaRK6ZMk1nSSjOAt2h6zazRU+VeuAI7LUCR4dA0CSiTURVaihGXop354v6/Vi/2OHb/22sX/RhwkHFYfWQp4TfmApQ+pRlVZX9pOqdCHP3Iu2OI8nukzvInFjD3YWKDQW+/izb6R7tMw1SdXRagH+ccWr4=
+	t=1770216863; cv=none; b=pZJQYPbzH39GOgIYTEGL1QkuRdCNb9H/pzd97ghd3kCYypNL6EYmzwHOivGVE+jqs2EtW6EyHqprmz8iIuO4zELkx7b30BwyKFbU5xlEMvLg1yiY4vwYJOd9cwjOy/R81yxmWwdj3saA15O0LSuVQvPQQ4kV2HymzWA5f6ILm3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217756; c=relaxed/simple;
-	bh=uZ5NlLSiwP+B42rKP/rk0Iyot1WilerXAJQ0XkK30SU=;
+	s=arc-20240116; t=1770216863; c=relaxed/simple;
+	bh=edRjcmOzBu5B+YlWIRihahdZhJ21/E1Bs5q+VL6D00E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9EhmH2Z3Dd0PDI1NYL1J+5wcytlDohjzGdn8EEr/BK4n3pxzke7dFFJU/6+CSI9hK35aQoYlp+e8SpjxlravqNQAqutBH28yMEHnTWiuoaH5nkEWwKd8MTJiMivPxQ0hgBcfFsJFFQimP+3TgBikf6qdOchKNG0nEJ7KxDog6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYcDZGDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA02CC4CEF7;
-	Wed,  4 Feb 2026 15:09:15 +0000 (UTC)
+	 MIME-Version; b=cIx6qeOOCssRXVECS7xKCAnV5D9KCwZr4JIz67yUwldQX7YSOlx4xosvlCYKa7eJ7zz4Mo5/u3b0dwH6D3FgIK23vaqDrDdvLiwGrGSp5nK/h9vULAtUqHyBra6hw4ryM77u6kTn32uegS33djPb+7eTIGnM+0mUlcMaUsxBtxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQLx8OPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C28C116C6;
+	Wed,  4 Feb 2026 14:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217756;
-	bh=uZ5NlLSiwP+B42rKP/rk0Iyot1WilerXAJQ0XkK30SU=;
+	s=korg; t=1770216863;
+	bh=edRjcmOzBu5B+YlWIRihahdZhJ21/E1Bs5q+VL6D00E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYcDZGDJfyXqiYjvZUpkD9Bq1HgyNBGpW00thj7ohBTzz+l4QFKxY4Qp2rvdTqNuf
-	 oVkCm3zgfrNKBt3H9801idtulroapYHIRgJp7O68Lv2Dx9Ni5FYCSDmc+lZzTj7Jor
-	 0TRmW1W2GcuB2zEsZP0gSJTmONarZIckwNtFVRhY=
+	b=hQLx8OPaAiTYX8GhrtPTh6W70WRCVro+HYdQ52grV8mQM3Ww3fjPmEN9NBGbqkDdv
+	 K/O3oOD1wa/yjwTZmN9/LX+wOmspDEBZFW6blIvZ3RDlsiPphMFT/CS1fdTSgpw04L
+	 /AJLT96y9pT9K4jwX9t8wDz8i2QNIErsGnlHXqSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/280] l2tp: avoid one data-race in l2tp_tunnel_del_work()
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 052/206] dmaengine: ti: dma-crossbar: fix device leak on am335x route allocation
 Date: Wed,  4 Feb 2026 15:38:03 +0100
-Message-ID: <20260204143913.569505186@linuxfoundation.org>
+Message-ID: <20260204143900.090698676@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,121 +65,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213860-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-213596-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7312e82745f7fa2526db];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[katalix.com:email,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CCA56E8A31
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ti.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 46A47E7A9B
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 7a29f6bf60f2590fe5e9c4decb451e19afad2bcf ]
+commit 4fc17b1c6d2e04ad13fd6c21cfbac68043ec03f9 upstream.
 
-We should read sk->sk_socket only when dealing with kernel sockets.
+Make sure to drop the reference taken when looking up the crossbar
+platform device during am335x route allocation.
 
-syzbot reported the following data-race:
-
-BUG: KCSAN: data-race in l2tp_tunnel_del_work / sk_common_release
-
-write to 0xffff88811c182b20 of 8 bytes by task 5365 on cpu 0:
-  sk_set_socket include/net/sock.h:2092 [inline]
-  sock_orphan include/net/sock.h:2118 [inline]
-  sk_common_release+0xae/0x230 net/core/sock.c:4003
-  udp_lib_close+0x15/0x20 include/net/udp.h:325
-  inet_release+0xce/0xf0 net/ipv4/af_inet.c:437
-  __sock_release net/socket.c:662 [inline]
-  sock_close+0x6b/0x150 net/socket.c:1455
-  __fput+0x29b/0x650 fs/file_table.c:468
-  ____fput+0x1c/0x30 fs/file_table.c:496
-  task_work_run+0x131/0x1a0 kernel/task_work.c:233
-  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
-  __exit_to_user_mode_loop kernel/entry/common.c:44 [inline]
-  exit_to_user_mode_loop+0x1fe/0x740 kernel/entry/common.c:75
-  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
-  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
-  syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
-  syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
-  do_syscall_64+0x1e1/0x2b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff88811c182b20 of 8 bytes by task 827 on cpu 1:
-  l2tp_tunnel_del_work+0x2f/0x1a0 net/l2tp/l2tp_core.c:1418
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0x4ce/0x9d0 kernel/workqueue.c:3340
-  worker_thread+0x582/0x770 kernel/workqueue.c:3421
-  kthread+0x489/0x510 kernel/kthread.c:463
-  ret_from_fork+0x149/0x290 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-value changed: 0xffff88811b818000 -> 0x0000000000000000
-
-Fixes: d00fa9adc528 ("l2tp: fix races with tunnel socket close")
-Reported-by: syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6968b029.050a0220.58bed.0016.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20260115092139.3066180-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
+Cc: stable@vger.kernel.org	# 4.4
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-15-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/ti/dma-crossbar.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 70da78ab95202..e0ca08ebd16a9 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1250,8 +1250,6 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
+--- a/drivers/dma/ti/dma-crossbar.c
++++ b/drivers/dma/ti/dma-crossbar.c
+@@ -78,34 +78,35 @@ static void *ti_am335x_xbar_route_alloca
  {
- 	struct l2tp_tunnel *tunnel = container_of(work, struct l2tp_tunnel,
- 						  del_work);
--	struct sock *sk = tunnel->sock;
--	struct socket *sock = sk->sk_socket;
+ 	struct platform_device *pdev = of_find_device_by_node(ofdma->of_node);
+ 	struct ti_am335x_xbar_data *xbar = platform_get_drvdata(pdev);
+-	struct ti_am335x_xbar_map *map;
++	struct ti_am335x_xbar_map *map = ERR_PTR(-EINVAL);
  
- 	l2tp_tunnel_closeall(tunnel);
+ 	if (dma_spec->args_count != 3)
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
  
-@@ -1259,6 +1257,8 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
- 	 * the sk API to release it here.
- 	 */
- 	if (tunnel->fd < 0) {
-+		struct socket *sock = tunnel->sock->sk_socket;
+ 	if (dma_spec->args[2] >= xbar->xbar_events) {
+ 		dev_err(&pdev->dev, "Invalid XBAR event number: %d\n",
+ 			dma_spec->args[2]);
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
+ 	}
+ 
+ 	if (dma_spec->args[0] >= xbar->dma_requests) {
+ 		dev_err(&pdev->dev, "Invalid DMA request line number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
+ 	}
+ 
+ 	/* The of_node_put() will be done in the core for the node */
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "Can't get DMA master\n");
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
+ 	}
+ 
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+ 	if (!map) {
+ 		of_node_put(dma_spec->np);
+-		return ERR_PTR(-ENOMEM);
++		map = ERR_PTR(-ENOMEM);
++		goto out_put_pdev;
+ 	}
+ 
+ 	map->dma_line = (u16)dma_spec->args[0];
+@@ -119,6 +120,9 @@ static void *ti_am335x_xbar_route_alloca
+ 
+ 	ti_am335x_xbar_write(xbar->iomem, map->dma_line, map->mux_val);
+ 
++out_put_pdev:
++	put_device(&pdev->dev);
 +
- 		if (sock) {
- 			kernel_sock_shutdown(sock, SHUT_RDWR);
- 			sock_release(sock);
--- 
-2.51.0
-
+ 	return map;
+ }
+ 
 
 
 
