@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-213614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213914-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLX1Bitgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:15 +0100
+	id uHXuBp1pg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213914-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C2BE7DCF
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEDDE94FE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 27F0C305C2DC
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3A3530FDD57
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D7041B36C;
-	Wed,  4 Feb 2026 14:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1724219F9;
+	Wed,  4 Feb 2026 15:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eD1Vg9zs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8ay2gLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD62B41C2E4;
-	Wed,  4 Feb 2026 14:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E033D994;
+	Wed,  4 Feb 2026 15:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216920; cv=none; b=WyEz1al4/i5HzrkibbHq1Kawoahwb5gfLb1mMFXQ7pXyPkZmQLDSdLQwlcizgHfyqj2QzDiaJORugw4cvTIaRn4AqCuU6Yqs/O9kB7Lu7jzuXtB2CtGI+SnCV3i7wXeijgBV71hmMN+DQtdjE0+nLBHDOLIfOIVG4gr7vN7T0A4=
+	t=1770217936; cv=none; b=s2SjB8e9l321/kco+bkTidLN6xhu6HHnOyyNgM8gE5ar3SW5XSlgiFpLHqFQpdgRfdOaGfJ81Tz3rfbF8uprpIkaWd2wXUqC+lvKFF5BoMfPHO0eDYnNk5kcpzn9NB12SQK3G/NQm9DgZN4xKJmGL0hF/2sQUQu3s/vDGPXBJHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216920; c=relaxed/simple;
-	bh=KlgOEaccsPzsfrYdofs0Pgmfk7dfN8YGRlmJvVVg9jE=;
+	s=arc-20240116; t=1770217936; c=relaxed/simple;
+	bh=N957M9e2gbafWxJ8J2tfYEakRXcsrs96sg+nfiKVfT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SSk5S4EngRsWvYLusWx8Yx8riUGjEvXvEvDChtLhC8j/kNPcQ6b5ufkAT/Go479OjPZN92kYq5h37fsZVknBQzhl9HCcHXEoKDnK/udpGGYKR6faMHrBRk0FCeoUquQOYZrlQfm5a8lVexWmaV8m5fq8wlYu4Hd5ije1P25W0f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eD1Vg9zs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F21C19423;
-	Wed,  4 Feb 2026 14:55:20 +0000 (UTC)
+	 MIME-Version; b=uKqWMUElQMjwYEpGMPz5CRU/9uH/FiufLJykLI2RgnO28Bs2nCQIejdU7FjT8qli424Pb7FBB9dzuZoxUxPwWLP3t+NiF/K5ceOAA2enPQ8Kr6NTc0KHPbbyUU8vmDp//9tIwJFLjxVra6YkK6DshHRYpgFG0j+lvvUj+fZE9TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8ay2gLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC338C116C6;
+	Wed,  4 Feb 2026 15:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216920;
-	bh=KlgOEaccsPzsfrYdofs0Pgmfk7dfN8YGRlmJvVVg9jE=;
+	s=korg; t=1770217936;
+	bh=N957M9e2gbafWxJ8J2tfYEakRXcsrs96sg+nfiKVfT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eD1Vg9zszpZlE8C9KloDIgt+vSEFvtuewvu5FbeITGoJO9oF808aqtybMY7LS58OB
-	 m5SrKX/o429GuNvNHsD8ancJ3/3/2G5gOSpJnh24bNjd32n6clo3hmaIoEoOI6PkSK
-	 eEaljVtmK5NUgbmdK9Lh2uiV5u1J/VQHp4KJ8fhk=
+	b=C8ay2gLB2dpB3KIowOnoq045AFRHLOJ3YcZKU0LZBdZRiZcwHjRWsiVlJXuNIS9w/
+	 6l2Uu0nDyybTcLLygSpXuQigWh9uUviNdv7U7/m0wYGD64j259o1a1dOYNTJX1V5GV
+	 qnmNm3CaeU6v8Z+kk1qp7GfC2jkvGM+p3U8lZgyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/206] gue: Fix skb memleak with inner IP protocol 0.
-Date: Wed,  4 Feb 2026 15:38:23 +0100
-Message-ID: <20260204143900.807469735@linuxfoundation.org>
+Subject: [PATCH 6.1 130/280] spi: sprd: adi: Use devm_register_restart_handler()
+Date: Wed,  4 Feb 2026 15:38:24 +0100
+Message-ID: <20260204143914.312290670@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +65,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213614-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-213914-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,4d8c7d16b0e95c0d0f0d];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74C2BE7DCF
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8CEDDE94FE
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 9a56796ad258786d3624eef5aefba394fc9bdded ]
+[ Upstream commit 8e6a43961f24cf841d3c0d199521d0b284d948b9 ]
 
-syzbot reported skb memleak below. [0]
+Use device life-cycle managed register function to simplify probe error
+path and eliminate need for explicit remove function.
 
-The repro generated a GUE packet with its inner protocol 0.
-
-gue_udp_recv() returns -guehdr->proto_ctype for "resubmit"
-in ip_protocol_deliver_rcu(), but this only works with
-non-zero protocol number.
-
-Let's drop such packets.
-
-Note that 0 is a valid number (IPv6 Hop-by-Hop Option).
-
-I think it is not practical to encap HOPOPT in GUE, so once
-someone starts to complain, we could pass down a resubmit
-flag pointer to distinguish two zeros from the upper layer:
-
-  * no error
-  * resubmit HOPOPT
-
-[0]
-BUG: memory leak
-unreferenced object 0xffff888109695a00 (size 240):
-  comm "syz.0.17", pid 6088, jiffies 4294943096
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 40 c2 10 81 88 ff ff 00 00 00 00 00 00 00 00  .@..............
-  backtrace (crc a84b336f):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4958 [inline]
-    slab_alloc_node mm/slub.c:5263 [inline]
-    kmem_cache_alloc_noprof+0x3b4/0x590 mm/slub.c:5270
-    __build_skb+0x23/0x60 net/core/skbuff.c:474
-    build_skb+0x20/0x190 net/core/skbuff.c:490
-    __tun_build_skb drivers/net/tun.c:1541 [inline]
-    tun_build_skb+0x4a1/0xa40 drivers/net/tun.c:1636
-    tun_get_user+0xc12/0x2030 drivers/net/tun.c:1770
-    tun_chr_write_iter+0x71/0x120 drivers/net/tun.c:1999
-    new_sync_write fs/read_write.c:593 [inline]
-    vfs_write+0x45d/0x710 fs/read_write.c:686
-    ksys_write+0xa7/0x170 fs/read_write.c:738
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 37dd0247797b1 ("gue: Receive side for Generic UDP Encapsulation")
-Reported-by: syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6965534b.050a0220.38aacd.0001.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260115172533.693652-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20231117161006.87734-5-afd@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 383d4f5cffcc ("spi: spi-sprd-adi: Fix double free in probe error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fou.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-sprd-adi.c | 30 ++++++++----------------------
+ 1 file changed, 8 insertions(+), 22 deletions(-)
 
-diff --git a/net/ipv4/fou.c b/net/ipv4/fou.c
-index b1a8e4eec3f6e..e63aa6b52460c 100644
---- a/net/ipv4/fou.c
-+++ b/net/ipv4/fou.c
-@@ -213,6 +213,9 @@ static int gue_udp_recv(struct sock *sk, struct sk_buff *skb)
- 		return gue_control_message(skb, guehdr);
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 22e39c4c12c4e..24f1358e7e8ba 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -139,8 +139,7 @@ struct sprd_adi_data {
+ 	u32 slave_offset;
+ 	u32 slave_addr_size;
+ 	int (*read_check)(u32 val, u32 reg);
+-	int (*restart)(struct notifier_block *this,
+-		       unsigned long mode, void *cmd);
++	int (*restart)(struct sys_off_data *data);
+ 	void (*wdg_rst)(void *p);
+ };
  
- 	proto_ctype = guehdr->proto_ctype;
-+	if (unlikely(!proto_ctype))
-+		goto drop;
-+
- 	__skb_pull(skb, sizeof(struct udphdr) + hdrlen);
- 	skb_reset_transport_header(skb);
+@@ -151,7 +150,6 @@ struct sprd_adi {
+ 	struct hwspinlock	*hwlock;
+ 	unsigned long		slave_vbase;
+ 	unsigned long		slave_pbase;
+-	struct notifier_block	restart_handler;
+ 	const struct sprd_adi_data *data;
+ };
+ 
+@@ -371,11 +369,9 @@ static void sprd_adi_set_wdt_rst_mode(void *p)
+ #endif
+ }
+ 
+-static int sprd_adi_restart(struct notifier_block *this, unsigned long mode,
+-				  void *cmd, struct sprd_adi_wdg *wdg)
++static int sprd_adi_restart(struct sprd_adi *sadi, unsigned long mode,
++			    const char *cmd, struct sprd_adi_wdg *wdg)
+ {
+-	struct sprd_adi *sadi = container_of(this, struct sprd_adi,
+-					     restart_handler);
+ 	u32 val, reboot_mode = 0;
+ 
+ 	if (!cmd)
+@@ -449,8 +445,7 @@ static int sprd_adi_restart(struct notifier_block *this, unsigned long mode,
+ 	return NOTIFY_DONE;
+ }
+ 
+-static int sprd_adi_restart_sc9860(struct notifier_block *this,
+-					   unsigned long mode, void *cmd)
++static int sprd_adi_restart_sc9860(struct sys_off_data *data)
+ {
+ 	struct sprd_adi_wdg wdg = {
+ 		.base = PMIC_WDG_BASE,
+@@ -459,7 +454,7 @@ static int sprd_adi_restart_sc9860(struct notifier_block *this,
+ 		.wdg_clk = PMIC_CLK_EN,
+ 	};
+ 
+-	return sprd_adi_restart(this, mode, cmd, &wdg);
++	return sprd_adi_restart(data->cb_data, data->mode, data->cmd, &wdg);
+ }
+ 
+ static void sprd_adi_hw_init(struct sprd_adi *sadi)
+@@ -591,9 +586,9 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	if (sadi->data->restart) {
+-		sadi->restart_handler.notifier_call = sadi->data->restart;
+-		sadi->restart_handler.priority = 128;
+-		ret = register_restart_handler(&sadi->restart_handler);
++		ret = devm_register_restart_handler(&pdev->dev,
++						    sadi->data->restart,
++						    sadi);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "can not register restart handler\n");
+ 			goto put_ctlr;
+@@ -607,14 +602,6 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static void sprd_adi_remove(struct platform_device *pdev)
+-{
+-	struct spi_controller *ctlr = dev_get_drvdata(&pdev->dev);
+-	struct sprd_adi *sadi = spi_controller_get_devdata(ctlr);
+-
+-	unregister_restart_handler(&sadi->restart_handler);
+-}
+-
+ static struct sprd_adi_data sc9860_data = {
+ 	.slave_offset = ADI_10BIT_SLAVE_OFFSET,
+ 	.slave_addr_size = ADI_10BIT_SLAVE_ADDR_SIZE,
+@@ -658,7 +645,6 @@ static struct platform_driver sprd_adi_driver = {
+ 		.of_match_table = sprd_adi_of_match,
+ 	},
+ 	.probe = sprd_adi_probe,
+-	.remove_new = sprd_adi_remove,
+ };
+ module_platform_driver(sprd_adi_driver);
  
 -- 
 2.51.0
