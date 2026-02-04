@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BghLtNng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214130-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:55 +0100
+	id EI0cN0Ztg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:01:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBDBE900F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D9E5E9BC5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B67C3158B00
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 22EB330F2F4C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC5B42AA9;
-	Wed,  4 Feb 2026 15:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996F521FF4C;
+	Wed,  4 Feb 2026 15:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W444WRwm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvwNW21r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0288B41B36C;
-	Wed,  4 Feb 2026 15:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEA9423147;
+	Wed,  4 Feb 2026 15:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218666; cv=none; b=TRtYo66qehuiI3rs1pLV73kxjLICwslB6gUPIt6hEJhane2hRVxmBqOce97emeAekenXv67eKYu5VHsDSx3TCBt4hU7qwi9ZzY+2/0+2YZFC+YYWXxyvVIgPQ79O1KguMNYuux4/yhuM3vrLP6c863IhGCwSh/a0Uq5F0fdF06o=
+	t=1770218404; cv=none; b=D6gq/7IKnm1x2N6mo6K7hSZnXPYDVTVB81sld8Zvi7XhUxewiOKUsV8OEvbr4cKO6AE4634rcjWgyzdeYnCm3Of73Q2hmbjBODOeXo8MkG25s3qtVH74fgsalRqECNEpP1KtMdG/M5WRuFzi68BPF4gGAkORRDqaqTzdpjtmYqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218666; c=relaxed/simple;
-	bh=TtloezVzmq+FnQ+zC1tXXvadb9OJI3q6gdHQpl++igA=;
+	s=arc-20240116; t=1770218404; c=relaxed/simple;
+	bh=f357uIp2r3UORriSFxH0FFp2+2jzwwsJTaLZfA/u0j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZVN6u2v5nq2mg6s1aI25QCTG36GfVXLvEgQchi5iGjg1+aEhDpwHisoh6igON817hh38aULX494V7XfAycyPGf3YYowF24QQ9vKt8UpXVwwr7t/FNT6G8lbsxtoveEJrL1U0njP/OSIAcKuOOJgnKq4bJf2PZGYVCf8XAd7KGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W444WRwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F0DC4CEF7;
-	Wed,  4 Feb 2026 15:24:25 +0000 (UTC)
+	 MIME-Version; b=EtSuFrgeYXk2CA8EMB4c3DV6KCGMDHQvOASOOa73xX/5EmCwYRnxMJ+fr16d8goBlItusgRvG3Z/lq9pyEiys5Nr+R1mnUglhX9i3XFpRYBxJLXxvaVw2pVgAMKuvCssvmVZuYQH6VdpHpktmkO/vqoanaM6Dquzm+gQj3OOtkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvwNW21r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9442C4CEF7;
+	Wed,  4 Feb 2026 15:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218665;
-	bh=TtloezVzmq+FnQ+zC1tXXvadb9OJI3q6gdHQpl++igA=;
+	s=korg; t=1770218404;
+	bh=f357uIp2r3UORriSFxH0FFp2+2jzwwsJTaLZfA/u0j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W444WRwmFowdMtvKZJYuNf98UvqNcVwr3VQ1yhARKrFezvCkQeDrO2oKTE0Usjhpp
-	 dVRMenW2c1m3FaHpPIjDisBbiNTRHSBhgwZa67iuOsDH+GRkDAgts4SjZlMYLt2AQt
-	 ZD4MFQec4wEH0WHSUA3reGiaUY/p9UqSl3lvkjqA=
+	b=xvwNW21rPDTfxrMxuBK2Yzhb9tiQop41YX5Atu5npOOx+7Tnm69XMb5gSBoYy6T2n
+	 CPV+MMQ73bSG4JdaM0PyXslIjrYku/dv+KeoJzn0OZryd6Mpbd0nOPAgYm31DSPamG
+	 QWk+4512R42zPKdj4n7uLtwDaeNMxhlKMYA2YZkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tagir Garaev <tgaraev653@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Denis Sergeev <denserg.edu@gmail.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 25/87] ASoC: Intel: sof_es8336: fix headphone GPIO logic inversion
-Date: Wed,  4 Feb 2026 15:40:23 +0100
-Message-ID: <20260204143847.815997789@linuxfoundation.org>
+Subject: [PATCH 6.6 21/72] gpiolib: acpi: use BIT_ULL() for u64 mask in address space handler
+Date: Wed,  4 Feb 2026 15:40:24 +0100
+Message-ID: <20260204143846.391660467@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214130-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oss.qualcomm.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[linuxtesting.org:query timed out];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214053-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[bartosz.golaszewski.oss.qualcomm.com:query timed out,westeri.kernel.org:query timed out,densergedu.gmail.com:query timed out];
 	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 0CBDBE900F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxtesting.org:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3D9E5E9BC5
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tagir Garaev <tgaraev653@gmail.com>
+From: Denis Sergeev <denserg.edu@gmail.com>
 
-[ Upstream commit 213c4e51267fd825cd21a08a055450cac7e0b7fb ]
+[ Upstream commit c0ae43d303e45764918fa8c1dc13d6a5db59c479 ]
 
-The headphone GPIO should be set to the inverse of speaker_en.
-When speakers are enabled, headphones should be disabled and vice versa.
+The BIT() macro uses unsigned long, which is 32 bits on 32-bit
+architectures. When iterating over GPIO pins with index >= 32,
+the expression (*value & BIT(i)) causes undefined behavior due
+to shifting by a value >= type width.
 
-Currently both GPIOs are set to the same value (speaker_en), causing
-audio to play through both speakers and headphones simultaneously
-when headphones are plugged in.
+Since 'value' is a pointer to u64, use BIT_ULL() to ensure correct
+64-bit mask on all architectures.
 
-Tested on Huawei Matebook (BOD-WXX9) with ES8336 codec.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Fixes: 6e1ff1459e00 ("ASoC: Intel: sof_es8336: support a separate gpio to control headphone")
-Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
-Link: https://patch.msgid.link/20260121152435.101698-1-tgaraev653@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 2c4d00cb8fc5 ("gpiolib: acpi: Use BIT() macro to increase readability")
+Signed-off-by: Denis Sergeev <denserg.edu@gmail.com>
+Reviewed-by: Mika Westerberg <westeri@kernel.org>
+Link: https://lore.kernel.org/r/20260126035914.16586-1-denserg.edu@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_es8336.c | 2 +-
+ drivers/gpio/gpiolib-acpi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index fc998fe4b1960..bc27229be7c24 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -120,7 +120,7 @@ static void pcm_pop_work_events(struct work_struct *work)
- 	gpiod_set_value_cansleep(priv->gpio_speakers, priv->speaker_en);
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 86de8740c0d46..69d4297ae5754 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1228,7 +1228,7 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
+ 		mutex_unlock(&achip->conn_lock);
  
- 	if (quirk & SOF_ES8336_HEADPHONE_GPIO)
--		gpiod_set_value_cansleep(priv->gpio_headphone, priv->speaker_en);
-+		gpiod_set_value_cansleep(priv->gpio_headphone, !priv->speaker_en);
- 
- }
- 
+ 		if (function == ACPI_WRITE)
+-			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT(i)));
++			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT_ULL(i)));
+ 		else
+ 			*value |= (u64)gpiod_get_raw_value_cansleep(desc) << i;
+ 	}
 -- 
 2.51.0
 
