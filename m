@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-213454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPEYC8tbg2mYlwMAu9opvQ
-	(envelope-from <stable+bounces-213454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:35 +0100
+	id SBGFKx1mg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95AACE7574
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51361E8BC5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69B5B3011A7B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5BBE43101D32
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709C3283FC4;
-	Wed,  4 Feb 2026 14:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80D1423A63;
+	Wed,  4 Feb 2026 15:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXsgEmh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sdk3PqXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342A51C5D77;
-	Wed,  4 Feb 2026 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDA522E3F0;
+	Wed,  4 Feb 2026 15:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216392; cv=none; b=aVdMG6J8DxVzvGdxzDU1ZyTLjL2LacQu3m6YNAKVIIsIv8bzGLLUtYbsBTpS7EowTrx+D2JuUljiBFl5xuxfQ5A3HTXTwNvppJC+xfyQgbt6JJmEsNBGQdedR+azretWaHAM+R1+4dw0et5JdQ+lDQ2NS94DkDKyg8jbbCxzXo8=
+	t=1770218055; cv=none; b=WVvMsZ0Q2fA6KLkeqg2v1E8arAiAI61rzorK3pQ2QPLgbpJ0+NMSlyIgucMjBeqnnZzPnVF5lNeSX8ttBYQktQHCxJAiW0X+S1kWgeuFwI3qLKIZfwDRwaA4iaaaU/eA3U8+o7/fovCR9/58ZZ542kgOE5fD3kHzcaRTvEJcaRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216392; c=relaxed/simple;
-	bh=aLi24bvb0exwi/7BzgDyMdCEkLERUaD3zq9UNswit14=;
+	s=arc-20240116; t=1770218055; c=relaxed/simple;
+	bh=cl+qr1USTCo4TzxGqp1QRmyR1LG4JXMK68Jk+SBCvcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1mL9uAt2SveMiXAcAsF9bJiuZ7wYe70CyT4R7qsMpdmBPlhziGu7ykPuo6/xUilFSnMyB74Xviee/p1oQ1CfSC58ARgrPxNp5yGZ0EnAhD2bo8+v81MOAIf5s/5b38VL1c/oo4Gbln1mEo6GlOKeQqbPKytgOZ67CKWvA+hgfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXsgEmh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E09C4CEF7;
-	Wed,  4 Feb 2026 14:46:31 +0000 (UTC)
+	 MIME-Version; b=m2c/4dtPGsH3SCeJzsI+04evPR5lnHEaSBaOFdeqPAjRN955aGg/OHk5KV7AYO6cgEzry4DPtcoyrjEObdW8+IQH886E2GCwPBxWAYcx3knn5bJmKBiGQ+pwXT9aqU1VzIgMkRY3mPYwO/ku4LVMfzfFR0/Skt/mYzGoUNcOyU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sdk3PqXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0E1C4CEF7;
+	Wed,  4 Feb 2026 15:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216391;
-	bh=aLi24bvb0exwi/7BzgDyMdCEkLERUaD3zq9UNswit14=;
+	s=korg; t=1770218055;
+	bh=cl+qr1USTCo4TzxGqp1QRmyR1LG4JXMK68Jk+SBCvcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXsgEmh36EbTx91XBrp+hxfo9MfcAnF21cdXGmzTtumXW3Bc5AmMmH4tjbh2r59WO
-	 ondRU0gJZ77KsmkbNu4wnkFBvxJYYblaFSQeoKZ23XngXkfcPzatrKtsfmhv9PmOGo
-	 ySdbLJf63b1bG2PzDu5eWJbf9qnWcE7xxR/KzAi8=
+	b=Sdk3PqXVTfeOQD4WvOQOTLwjdTuM6fDduEPYv4U+PHwgTeymwh914gXOrx1CNXu8W
+	 YpokuZ5TSAsb1hPHrsNYedD8dutfVue1fz0hfm4M1EIk9mJH9mQHztlIJF3i9Z6YS9
+	 93KohYYThrt31J08Zj8u1NR1cV7CXI4C4qEledbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Arun Raghavan <arunr@valvesoftware.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/161] ALSA: usb: Increase volume range that triggers a warning
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.1 164/280] wifi: ath10k: fix dma_free_coherent() pointer
 Date: Wed,  4 Feb 2026 15:38:58 +0100
-Message-ID: <20260204143854.452265274@linuxfoundation.org>
+Message-ID: <20260204143915.526146525@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213454-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213950-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,valvesoftware.com:email,suse.com:email,suse.de:email,perex.cz:email]
-X-Rspamd-Queue-Id: 95AACE7574
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 51361E8BC5
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Raghavan <arunr@valvesoftware.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62 ]
+commit 9282a1e171ad8d2205067e8ec3bbe4e3cef4f29f upstream.
 
-On at least the HyperX Cloud III, the range is 18944 (-18944 -> 0 in
-steps of 1), so the original check for 255 steps is definitely obsolete.
-Let's give ourselves a little more headroom before we emit a warning.
+dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+addresses in XXX_unaligned fields.  Those should be reused when freeing
+the buffer rather than the aligned addresses.
 
-Fixes: 80acefff3bc7 ("ALSA: usb-audio - Add volume range check and warn if it too big")
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org
-Signed-off-by: Arun Raghavan <arunr@valvesoftware.com>
-Link: https://patch.msgid.link/20260116225804.3845935-1-arunr@valvesoftware.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2a1e1ad3fd37 ("ath10k: Add support for 64 bit ce descriptor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260105210439.20131-2-fourier.thomas@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/ce.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 949b171377267..b5baf9d609333 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1741,11 +1741,10 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1791,8 +1791,8 @@ static void _ath10k_ce_free_pipe(struct
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
+ 	}
  
- 	range = (cval->max - cval->min) / cval->res;
- 	/*
--	 * Are there devices with volume range more than 255? I use a bit more
--	 * to be sure. 384 is a resolution magic number found on Logitech
--	 * devices. It will definitively catch all buggy Logitech devices.
-+	 * There are definitely devices with a range of ~20,000, so let's be
-+	 * conservative and allow for a bit more.
- 	 */
--	if (range > 384) {
-+	if (range > 65535) {
- 		usb_audio_warn(mixer->chip,
- 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
- 			       range);
--- 
-2.51.0
-
+@@ -1801,8 +1801,8 @@ static void _ath10k_ce_free_pipe(struct
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
+ 
+@@ -1822,8 +1822,8 @@ static void _ath10k_ce_free_pipe_64(stru
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
+ 	}
+ 
+@@ -1832,8 +1832,8 @@ static void _ath10k_ce_free_pipe_64(stru
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
+ 
 
 
 
