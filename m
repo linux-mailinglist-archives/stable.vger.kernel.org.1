@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEPHClJgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:54 +0100
+	id UCApFi5lg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C073E7E35
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0416DE8908
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C2E93027D85
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 30C52307A44F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E75285404;
-	Wed,  4 Feb 2026 15:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983E74218A8;
+	Wed,  4 Feb 2026 15:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBypYqun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8V7wpZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFA528853A;
-	Wed,  4 Feb 2026 15:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEC542189D;
+	Wed,  4 Feb 2026 15:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217332; cv=none; b=f+16puQCTu6VukDe22nl5xqlXXEzfVt0+t1bZpPNRzMBm7SkxrJIorJZfPwFa4S+uTZ3M9VF9PxJhWbHm82jDEu9qiYsXl69A+i7m0UiZw9fNs68xpT8LpvGj1sqFWZpG9Kie0ikDjQEZZEXnf+ZvOwcfJntHsl6V+nWpN+NiZ4=
+	t=1770218224; cv=none; b=N0l+X4Pp6tplo2oB8lu1kKSlPtJBl17TS5fZ/O40rsyuW96dfsD5Xp9e4m0WPs9U6LIzIH/IDNxmny5mtj8Eqa4n0//En1SvH8b/bQuFcgxQeK76S4Wo63D3maguNFg+0PKehFTKhZZDG+jJH6p6aZ+SCysQbgC0UhtkeCiZVBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217332; c=relaxed/simple;
-	bh=RWobgHbIUFQjkVC/aP7rowwVC5TIgWGqHxhsGL6JU8Q=;
+	s=arc-20240116; t=1770218224; c=relaxed/simple;
+	bh=QZTtrCH7eOfewMMPzN4wdk3udTVOWKlO3FW9C3L9B1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nC98DeHki8+clDl0UdFsiUDpKrRSdixANfq+MY3K2utoUWI6Za0A0bDfV7LpUXmBE18yqmbWr0/yJWRUnwgD4uUFrytbDzsR3QDO80nId3v54i9+keHy3YWiqrIzptC4CNXzi/zQcd2RP7Ht/tNGJP8vMjIX9PZUF9zlHVlurqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBypYqun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F33C4CEF7;
-	Wed,  4 Feb 2026 15:02:12 +0000 (UTC)
+	 MIME-Version; b=laTgY2CUD6vWarDPV03buN5k3xWmC3pfNbZgn2yj3XfK9W8Z/8Q/qyUlyURGV0tLw5CIWSKSHAl6AU2HsIHJdkmAe64m1LE3Je1ex/DKTuEa//Z0Lbc0hWNntVZNjImNu3C94dQo275VgZ4F1s8Vinj89wgt8/5bPQL0DWxM27Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8V7wpZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DECC4CEF7;
+	Wed,  4 Feb 2026 15:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217332;
-	bh=RWobgHbIUFQjkVC/aP7rowwVC5TIgWGqHxhsGL6JU8Q=;
+	s=korg; t=1770218224;
+	bh=QZTtrCH7eOfewMMPzN4wdk3udTVOWKlO3FW9C3L9B1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBypYqun8v9/xfj6EWX4XRX/HjfLLL1f4MdfM5+2OJFO0cK2TLzV+2DLPgOFFBMB8
-	 +KjMX5ld19B3aiOWForSOKFBrqzCgE3r50IijoTOAcoFAHToLtswnFX4HZsc1nUgnB
-	 VXDfSxRD6VukSMJt6ZA4Eq7xncz4C2XUzBuZhHP0=
+	b=u8V7wpZwrklRbxN/sXnDIYlijDgMhoc7ZNV2Rm3dJzKPCu+UPDmoh++4uOinpkeVn
+	 jr/sYnmaQ6mhAxpWgvpd6y4BMtnX8qadluVVIYPeASFaPhaL76Ot7UxFLlVcjo2RiM
+	 s1B0V6K3Mz5oeFfisErUV6CmRK0LmbxEFNONDIbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Oak Zeng <Oak.Zeng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 192/206] drm/amdkfd: fix a memory leak in device_queue_manager_init()
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 249/280] x86/fpu: Clear XSTATE_BV[i] in guest XSAVE state whenever XFD[i]=1
 Date: Wed,  4 Feb 2026 15:40:23 +0100
-Message-ID: <20260204143905.139247881@linuxfoundation.org>
+Message-ID: <20260204143918.600342327@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213736-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214000-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,81 +87,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9C073E7E35
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0416DE8908
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 80614c509810fc051312d1a7ccac8d0012d6b8d0 upstream.
+[ Upstream commit b45f721775947a84996deb5c661602254ce25ce6 ]
 
-If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
-to release the memory allocated by allocate_hiq_sdma_mqd().
-Move deallocate_hiq_sdma_mqd() up to ensure proper function
-visibility at the point of use.
+When loading guest XSAVE state via KVM_SET_XSAVE, and when updating XFD in
+response to a guest WRMSR, clear XFD-disabled features in the saved (or to
+be restored) XSTATE_BV to ensure KVM doesn't attempt to load state for
+features that are disabled via the guest's XFD.  Because the kernel
+executes XRSTOR with the guest's XFD, saving XSTATE_BV[i]=1 with XFD[i]=1
+will cause XRSTOR to #NM and panic the kernel.
 
-Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
+E.g. if fpu_update_guest_xfd() sets XFD without clearing XSTATE_BV:
+
+  ------------[ cut here ]------------
+  WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#29: amx_test/848
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 29 UID: 1000 PID: 848 Comm: amx_test Not tainted 6.19.0-rc2-ffa07f7fd437-x86_amx_nm_xfd_non_init-vm #171 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:exc_device_not_available+0x101/0x110
+  Call Trace:
+   <TASK>
+   asm_exc_device_not_available+0x1a/0x20
+  RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
+   switch_fpu_return+0x4a/0xb0
+   kvm_arch_vcpu_ioctl_run+0x1245/0x1e40 [kvm]
+   kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
+   __x64_sys_ioctl+0x8f/0xd0
+   do_syscall_64+0x62/0x940
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+This can happen if the guest executes WRMSR(MSR_IA32_XFD) to set XFD[18] = 1,
+and a host IRQ triggers kernel_fpu_begin() prior to the vmexit handler's
+call to fpu_update_guest_xfd().
+
+and if userspace stuffs XSTATE_BV[i]=1 via KVM_SET_XSAVE:
+
+  ------------[ cut here ]------------
+  WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#14: amx_test/867
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 14 UID: 1000 PID: 867 Comm: amx_test Not tainted 6.19.0-rc2-2dace9faccd6-x86_amx_nm_xfd_non_init-vm #168 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:exc_device_not_available+0x101/0x110
+  Call Trace:
+   <TASK>
+   asm_exc_device_not_available+0x1a/0x20
+  RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
+   fpu_swap_kvm_fpstate+0x6b/0x120
+   kvm_load_guest_fpu+0x30/0x80 [kvm]
+   kvm_arch_vcpu_ioctl_run+0x85/0x1e40 [kvm]
+   kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
+   __x64_sys_ioctl+0x8f/0xd0
+   do_syscall_64+0x62/0x940
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+The new behavior is consistent with the AMX architecture.  Per Intel's SDM,
+XSAVE saves XSTATE_BV as '0' for components that are disabled via XFD
+(and non-compacted XSAVE saves the initial configuration of the state
+component):
+
+  If XSAVE, XSAVEC, XSAVEOPT, or XSAVES is saving the state component i,
+  the instruction does not generate #NM when XCR0[i] = IA32_XFD[i] = 1;
+  instead, it operates as if XINUSE[i] = 0 (and the state component was
+  in its initial state): it saves bit i of XSTATE_BV field of the XSAVE
+  header as 0; in addition, XSAVE saves the initial configuration of the
+  state component (the other instructions do not save state component i).
+
+Alternatively, KVM could always do XRSTOR with XFD=0, e.g. by using
+a constant XFD based on the set of enabled features when XSAVEing for
+a struct fpu_guest.  However, having XSTATE_BV[i]=1 for XFD-disabled
+features can only happen in the above interrupt case, or in similar
+scenarios involving preemption on preemptible kernels, because
+fpu_swap_kvm_fpstate()'s call to save_fpregs_to_fpstate() saves the
+outgoing FPU state with the current XFD; and that is (on all but the
+first WRMSR to XFD) the guest XFD.
+
+Therefore, XFD can only go out of sync with XSTATE_BV in the above
+interrupt case, or in similar scenarios involving preemption on
+preemptible kernels, and it we can consider it (de facto) part of KVM
+ABI that KVM_GET_XSAVE returns XSTATE_BV[i]=0 for XFD-disabled features.
+
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[Move clearing of XSTATE_BV from fpu_copy_uabi_to_guest_fpstate
+ to kvm_vcpu_ioctl_x86_set_xsave. - Paolo]
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ arch/x86/kernel/fpu/core.c |   32 +++++++++++++++++++++++++++++---
+ arch/x86/kvm/x86.c         |    9 +++++++++
+ 2 files changed, 38 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -1847,6 +1847,14 @@ static int allocate_hiq_sdma_mqd(struct
- 	return retval;
- }
- 
-+static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
-+				    struct kfd_mem_obj *mqd)
-+{
-+	WARN(!mqd, "No hiq sdma mqd trunk to free");
-+
-+	amdgpu_amdkfd_free_gtt_mem(dev->kgd, &mqd->gtt_mem);
-+}
-+
- struct device_queue_manager *device_queue_manager_init(struct kfd_dev *dev)
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -294,10 +294,29 @@ EXPORT_SYMBOL_GPL(fpu_enable_guest_xfd_f
+ #ifdef CONFIG_X86_64
+ void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
  {
- 	struct device_queue_manager *dqm;
-@@ -1980,19 +1988,13 @@ struct device_queue_manager *device_queu
- 	if (!dqm->ops.initialize(dqm))
- 		return dqm;
- 
-+	deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
++	struct fpstate *fpstate = guest_fpu->fpstate;
 +
- out_free:
- 	kfree(dqm);
- 	return NULL;
+ 	fpregs_lock();
+-	guest_fpu->fpstate->xfd = xfd;
+-	if (guest_fpu->fpstate->in_use)
+-		xfd_update_state(guest_fpu->fpstate);
++
++	/*
++	 * KVM's guest ABI is that setting XFD[i]=1 *can* immediately revert the
++	 * save state to its initial configuration.  Likewise, KVM_GET_XSAVE does
++	 * the same as XSAVE and returns XSTATE_BV[i]=0 whenever XFD[i]=1.
++	 *
++	 * If the guest's FPU state is in hardware, just update XFD: the XSAVE
++	 * in fpu_swap_kvm_fpstate will clear XSTATE_BV[i] whenever XFD[i]=1.
++	 *
++	 * If however the guest's FPU state is NOT resident in hardware, clear
++	 * disabled components in XSTATE_BV now, or a subsequent XRSTOR will
++	 * attempt to load disabled components and generate #NM _in the host_.
++	 */
++	if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
++		fpstate->regs.xsave.header.xfeatures &= ~xfd;
++
++	fpstate->xfd = xfd;
++	if (fpstate->in_use)
++		xfd_update_state(fpstate);
++
+ 	fpregs_unlock();
  }
+ EXPORT_SYMBOL_GPL(fpu_update_guest_xfd);
+@@ -406,6 +425,13 @@ int fpu_copy_uabi_to_guest_fpstate(struc
+ 		return -EINVAL;
  
--static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
--				    struct kfd_mem_obj *mqd)
--{
--	WARN(!mqd, "No hiq sdma mqd trunk to free");
--
--	amdgpu_amdkfd_free_gtt_mem(dev->kgd, mqd->gtt_mem);
--}
--
- void device_queue_manager_uninit(struct device_queue_manager *dqm)
+ 	/*
++	 * Disabled features must be in their initial state, otherwise XRSTOR
++	 * causes an exception.
++	 */
++	if (WARN_ON_ONCE(ustate->xsave.header.xfeatures & kstate->xfd))
++		return -EINVAL;
++
++	/*
+ 	 * Nullify @vpkru to preserve its current value if PKRU's bit isn't set
+ 	 * in the header.  KVM's odd ABI is to leave PKRU untouched in this
+ 	 * case (all other components are eventually re-initialized).
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5341,9 +5341,18 @@ static void kvm_vcpu_ioctl_x86_get_xsave
+ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+ 					struct kvm_xsave *guest_xsave)
  {
- 	dqm->ops.uninitialize(dqm);
++	union fpregs_state *xstate = (union fpregs_state *)guest_xsave->region;
++
+ 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
+ 		return 0;
+ 
++	/*
++	 * For backwards compatibility, do not expect disabled features to be in
++	 * their initial state.  XSTATE_BV[i] must still be cleared whenever
++	 * XFD[i]=1, or XRSTOR would cause a #NM.
++	 */
++	xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
++
+ 	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
+ 					      guest_xsave->region,
+ 					      kvm_caps.supported_xcr0,
 
 
 
