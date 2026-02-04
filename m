@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDmiOgRfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:20 +0100
+	id iHuCH+ptg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9EE7BA9
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA16E9CD5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B10E53048E27
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2613930944C7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0252641325F;
-	Wed,  4 Feb 2026 14:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F562D7D42;
+	Wed,  4 Feb 2026 15:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogWu4ntr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVp7+Z6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABC640FDAE;
-	Wed,  4 Feb 2026 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846A129993F;
+	Wed,  4 Feb 2026 15:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216706; cv=none; b=mOc7A3RlEk8Bm0pr0MNkTid+iWT1kZy8LrolLgJYouhJHgXXhHnvkitvM7Ews6aXro5f3AW2bAFHP+BHcexzMgkSxFSNalBl57f26yLSwMuYY7U5BLmfy+oDN3eppILUHpQP5hz4ngtfcGvEPmXP4MH9BlFaNVNvV6iiF/AkqSM=
+	t=1770218496; cv=none; b=lwdSRjSssUfQ+9rTo39yU1kJL9mDNYtaKajVbMQ3vki1YoNCFeM/w9eoYlJEfvQ9+tsk+YbD+7nZ5HvNYPBZFlRhPBQ1c1AxrUFQeFfbyt3PvZa1ZTrh/fRH8+xqoFYHeGFNqxNOiYoQaPVyYBMnSfdh57PB5JC9ExFpgZ5MKQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216706; c=relaxed/simple;
-	bh=8m7GuHDMpbGjehG3ps+dL6yG55CTW5bM9RT0yq4aElo=;
+	s=arc-20240116; t=1770218496; c=relaxed/simple;
+	bh=SQ0MgUZ7qpIw+9jqWoZL3iTMiqSatIBDAq4T/OZHuhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCKx+h9WKOwxshqDyi3S/cntWybY2Zq8xtBBa5XX9BYf8H0pU+lpQVGcEXe8zO3NcmXGoZABB61WmjNTC7sGvmZi3AIVdpRCsJt04SGSWV5d+n7trjnKH+JPaQXdSEd1TIDW6gxnGYLQK37Ign5+C4Qk5oFSBotsTN3anfEn5GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogWu4ntr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC7EC4CEF7;
-	Wed,  4 Feb 2026 14:51:45 +0000 (UTC)
+	 MIME-Version; b=t8D851jHn9S48S4eS10F2E1i1OYzssVSm/dFqc7haow9JBX5SxLPFwTSN4q6BJcKG0VCLmHTArO0f5Jsp7Z10Idauhqty+0qQ9BMAvERlcc0n9V2BjnDq0YtWTffY+JzERZR72/edKx/p7CeckQ69jWA4qfzl4iUKSLVjvAS+ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVp7+Z6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82BEC4CEF7;
+	Wed,  4 Feb 2026 15:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216706;
-	bh=8m7GuHDMpbGjehG3ps+dL6yG55CTW5bM9RT0yq4aElo=;
+	s=korg; t=1770218496;
+	bh=SQ0MgUZ7qpIw+9jqWoZL3iTMiqSatIBDAq4T/OZHuhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogWu4ntrnStERoyqn0Qex7dFLUwk99KAINjHTHwVj0323F+FvhAh4tmRgBtoTryQa
-	 yIEQzfXnke6ADwegBGaQag2oI2yHB7cpBmHy/dSRgmJ61nqJC1HRMICR65dK7TOVGQ
-	 zVChRIIO7LTkI2SJUkQlMaleMDE2fNAklMNUUzfg=
+	b=jVp7+Z6sceoDDMQTCXSGJDVa7uAf0bPyjWk//GViUVyJvYxbU7PiuRKcQ4nDUHoYp
+	 3Qel7uhuy2YmrPpEnCeZZE0zd/MQOXc5B7LjpaJ0gO9AG/ZfrNtWXKXrYvKmC/1hws
+	 M81OUILuYRAhvX05b7UIuMPzDPNVGuyHDHXsddHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 143/161] iio: adc: exynos_adc: fix OF populate on driver rebind
+Subject: [PATCH 6.6 03/72] can: gs_usb: gs_usb_receive_bulk_callback(): fix error message
 Date: Wed,  4 Feb 2026 15:40:06 +0100
-Message-ID: <20260204143856.892888522@linuxfoundation.org>
+Message-ID: <20260204143845.733529164@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,97 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213549-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214080-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5EC9EE7BA9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,pengutronix.de:email]
+X-Rspamd-Queue-Id: 6CA16E9CD5
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
+[ Upstream commit 494fc029f662c331e06b7c2031deff3c64200eed ]
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+Sinc commit 79a6d1bfe114 ("can: gs_usb: gs_usb_receive_bulk_callback():
+unanchor URL on usb_submit_urb() error") a failing resubmit URB will print
+an info message.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+In the case of a short read where netdev has not yet been assigned,
+initialize as NULL to avoid dereferencing an undefined value. Also report
+the error value of the failed resubmit.
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
+Fixes: 79a6d1bfe114 ("can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL on usb_submit_urb() error")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/20260119181904.1209979-1-kuba@kernel.org/
+Link: https://patch.msgid.link/20260120-gs_usb-fix-error-message-v1-1-6be04de572bc@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/exynos_adc.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/net/can/usb/gs_usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -718,14 +718,7 @@ static const struct iio_chan_spec exynos
- 	ADC_CHANNEL(9, "adc9"),
- };
- 
--static int exynos_adc_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
- 
--	return 0;
--}
- 
- static int exynos_adc_ts_open(struct input_dev *dev)
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 63439affd59d5..7a3c6493a3536 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -607,7 +607,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
  {
-@@ -924,8 +917,7 @@ static int exynos_adc_probe(struct platf
- 	return 0;
- 
- err_of_populate:
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	if (has_ts) {
- 		input_unregister_device(info->input);
- 		free_irq(info->tsirq, info);
-@@ -954,8 +946,7 @@ static int exynos_adc_remove(struct plat
- 		free_irq(info->tsirq, info);
- 		input_unregister_device(info->input);
+ 	struct gs_usb *parent = urb->context;
+ 	struct gs_can *dev;
+-	struct net_device *netdev;
++	struct net_device *netdev = NULL;
+ 	int rc;
+ 	struct net_device_stats *stats;
+ 	struct gs_host_frame *hf = urb->transfer_buffer;
+@@ -765,7 +765,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		}
+ 	} else if (rc != -ESHUTDOWN && net_ratelimit()) {
+ 		netdev_info(netdev, "failed to re-submit IN URB: %pe\n",
+-			    ERR_PTR(urb->status));
++			    ERR_PTR(rc));
  	}
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	iio_device_unregister(indio_dev);
- 	free_irq(info->irq, info);
- 	if (info->data->exit_hw)
+ }
+ 
+-- 
+2.51.0
+
 
 
 
