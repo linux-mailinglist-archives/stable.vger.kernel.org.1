@@ -1,180 +1,267 @@
-Return-Path: <stable+bounces-213336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aECNLqWqgmkMXwMAu9opvQ
-	(envelope-from <stable+bounces-213336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 03:10:45 +0100
+	id MATZGmqtgmliYAMAu9opvQ
+	(envelope-from <stable+bounces-213337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 03:22:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A029E0B4B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 03:10:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E373EE0C67
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 03:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A6F9307180E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 02:09:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 89125300B9E4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 02:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA742586C8;
-	Wed,  4 Feb 2026 02:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674A2299924;
+	Wed,  4 Feb 2026 02:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="DtTqsKhp"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="CtGrCzBp"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D0322D4DC
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 02:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D14929B76F;
+	Wed,  4 Feb 2026 02:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770170951; cv=none; b=RIOOxIpEtpJMRxIo8q3DOg/YjrurzejpLt/4wQep6/4c3fydGxxYLd0KSMZK46C47tJRrPSrQXkVDmI0M3YgL1El4dN/urhVAhb3rd51KK94dfxzXN11y3bWpa0AUtIjz0JQtjkkkh97OxkVjSK/E3ER8rgYVoFJIucZQ9qjbCM=
+	t=1770171744; cv=none; b=TB06OCwO9qLfIuUqyuFHE1GTFQBiY2r40Do1Ppq7XDhASyl/Q52yXLekCy4iagcbd2mC4wViftGjgVVks+6uWnTaT2SGOIcuHHKnsYqTnwIQicFAnzSsmh1aXOOJdQdCpvEpT4DZkkSkgH3I4X5L7lRmRAupKlEQRbBoe9fQQlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770170951; c=relaxed/simple;
-	bh=4F5mVsuwAz7ohrogfu8nghY2SdzHnQV4iAhKCZCrWv0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nXaZa2zeH8ngCUCIoZI8EoWnYfl+q+ibPvsmvYZ8hi0l7UJ+OaL46qIA/TLweHmGWAT0Rg7JI2Jby+m5Ryj2zXJP0cqpszrzitjRcFO4cAxnpeDdArgWl9w9lJcFq6rJrMohoGA9+b8Q5tgDIvb/RMSjVVOqZRuS3wy+V66WEMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=DtTqsKhp; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770170947; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=jBt7Z/V5pgKMFlIjdcHweNeN5RveOulAhKPeOcD39KA=;
-	b=DtTqsKhpAFjYxuUXsnKFHANdwoghiidUtvJm1zM+pb4wv6XMbgmBcv4uz5SkHr44iDFmjpQ23xcRHd57ueMhRP0uyiPXL/yiqRS1f0qfBEOP/6tvDbKDp4NMyktjR5/IJ32ejmJl2QRa3yQLOEKPG0xJSOxjLA7Is38sMKUOXGY=
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WyUk0nd_1770170629 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 04 Feb 2026 10:03:49 +0800
-Message-ID: <ad71b58d-cdb9-4a88-9a80-d0c4339e54f1@linux.alibaba.com>
-Date: Wed, 4 Feb 2026 10:03:48 +0800
+	s=arc-20240116; t=1770171744; c=relaxed/simple;
+	bh=q++V7uuIKNzI6SstRdiLpRLr8M2f7zydqlcGpzWMsPk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q0kMbUUF3cLi9d9c67F0GNxqkG3PsGxIRNjmUpPgU+8q3PlMCUEoQzQyXWji3ccBGmDfH/42+f5G4sTmAirJJbNfPkgpdU6wuwKY4YIHghkaQ1mPQpct4vPJLoYp+O/VYMA1W2//I9jnzjqQJL5rD06a+0eYppnMSvH1FJlM3s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=CtGrCzBp; arc=none smtp.client-ip=120.232.169.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=CtGrCzBpoJiJIHMIgdb9Bo3Zt0BdoxDyoT6qXvvDbO1QxWcwuG0egvGlYJWXvSFZq53u/4GH1DAEm
+	 0pk6W+1aDazWCtiyHoWbMgr3yIQ81sgoBN3FLsKb1N5tI4hBvOWIbl7I4nVn4BkbGcL4nkWv4SzihY
+	 3O1MWinPvs/SqV5k=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-37-12051 (RichMail) with SMTP id 2f136982ada9798-017b6;
+	Wed, 04 Feb 2026 10:23:41 +0800 (CST)
+X-RM-TRANSID:2f136982ada9798-017b6
+From: Li hongliang <1468888505@139.com>
+To: mmakassikis@freebox.fr,
+	gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	ysk@kzalloc.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linkinjeon@kernel.org,
+	sfrench@samba.org,
+	senozhatsky@chromium.org,
+	tom@talpey.com,
+	akendo@akendo.eu,
+	set_pte_at@outlook.com,
+	linux-cifs@vger.kernel.org,
+	stfrench@microsoft.com
+Subject: [PATCH 6.6.y] ksmbd: fix recursive locking in RPC handle list access
+Date: Wed,  4 Feb 2026 10:22:05 +0800
+Message-Id: <20260204022205.3204230-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] mm/huge_memory: fix early failure try_to_migrate()
- when split huge pmd for shared thp
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, ziy@nvidia.com, gavinguo@igalia.com
-Cc: linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
- stable@vger.kernel.org
-References: <20260204004219.6524-1-richard.weiyang@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260204004219.6524-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213336-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,linux-foundation.org,kernel.org,oracle.com,surriel.com,suse.cz,google.com,nvidia.com,igalia.com];
+	TAGGED_FROM(0.00)[bounces-213337-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,samba.org,chromium.org,talpey.com,akendo.eu,outlook.com,microsoft.com];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[139.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,igalia.com:email,linux.alibaba.com:mid,linux.alibaba.com:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 1A029E0B4B
+	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[freebox.fr:email]
+X-Rspamd-Queue-Id: E373EE0C67
 X-Rspamd-Action: no action
 
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
+[ Upstream commit 88f170814fea74911ceab798a43cbd7c5599bed4 ]
 
-On 2/4/26 8:42 AM, Wei Yang wrote:
-> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-> split_huge_pmd_locked()") return false unconditionally after
-> split_huge_pmd_locked() which may fail early during try_to_migrate() for
-> shared thp. This will lead to unexpected folio split failure.
-> 
-> One way to reproduce:
-> 
->      Create an anonymous thp range and fork 512 children, so we have a
->      thp shared mapped in 513 processes. Then trigger folio split with
->      /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
->      order 0.
-> 
-> Without the above commit, we can successfully split to order 0.
-> With the above commit, the folio is still a large folio.
-> 
-> The reason is the above commit return false after split pmd
-> unconditionally in the first process and break try_to_migrate().
-> 
-> The tricky thing in above reproduce method is current debugfs interface
-> leverage function split_huge_pages_pid(), which will iterate the whole
-> pmd range and do folio split on each base page address. This means it
-> will try 512 times, and each time split one pmd from pmd mapped to pte
-> mapped thp. If there are less than 512 shared mapped process,
-> the folio is still split successfully at last. But in real world, we
-> usually try it for once.
-> 
-> This patch fixes this by restart page_vma_mapped_walk() after
-> split_huge_pmd_locked(). Because split_huge_pmd_locked() may fall back to
-> (freeze = false) if folio_try_share_anon_rmap_pmd() fails and the PMD is
-> just split instead of split to migration entry. Restart
-> page_vma_mapped_walk() and let try_to_migrate_one() try on each PTE
-> again and fail try_to_migrate() early if it fails.
-> 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-> Cc: Gavin Guo <gavinguo@igalia.com>
-> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: <stable@vger.kernel.org>
-> 
-> ---
-> v2:
->    * restart page_vma_mapped_walk() after split_huge_pmd_locked()
-> ---
+Since commit 305853cce3794 ("ksmbd: Fix race condition in RPC handle list
+access"), ksmbd_session_rpc_method() attempts to lock sess->rpc_lock.
 
-The fix looks reasonable to me. Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+This causes hung connections / tasks when a client attempts to open
+a named pipe. Using Samba's rpcclient tool:
 
->   mm/rmap.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 618df3385c8b..5b853ec8901d 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2446,11 +2446,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->   			__maybe_unused pmd_t pmdval;
->   
->   			if (flags & TTU_SPLIT_HUGE_PMD) {
-> +				/*
-> +				 * After split_huge_pmd_locked(), restart the
-> +				 * walk to detect PageAnonExclusive handling
-> +				 * failure in __split_huge_pmd_locked().
-> +				 */
->   				split_huge_pmd_locked(vma, pvmw.address,
->   						      pvmw.pmd, true);
-> -				ret = false;
-> -				page_vma_mapped_walk_done(&pvmw);
-> -				break;
-> +				flags &= ~TTU_SPLIT_HUGE_PMD;
-> +				page_vma_mapped_walk_restart(&pvmw);
-> +				continue;
->   			}
->   #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->   			pmdval = pmdp_get(pvmw.pmd);
+ $ rpcclient //192.168.1.254 -U user%password
+ $ rpcclient $> srvinfo
+ <connection hung here>
+
+Kernel side:
+  "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+  task:kworker/0:0 state:D stack:0 pid:5021 tgid:5021 ppid:2 flags:0x00200000
+  Workqueue: ksmbd-io handle_ksmbd_work
+  Call trace:
+  __schedule from schedule+0x3c/0x58
+  schedule from schedule_preempt_disabled+0xc/0x10
+  schedule_preempt_disabled from rwsem_down_read_slowpath+0x1b0/0x1d8
+  rwsem_down_read_slowpath from down_read+0x28/0x30
+  down_read from ksmbd_session_rpc_method+0x18/0x3c
+  ksmbd_session_rpc_method from ksmbd_rpc_open+0x34/0x68
+  ksmbd_rpc_open from ksmbd_session_rpc_open+0x194/0x228
+  ksmbd_session_rpc_open from create_smb2_pipe+0x8c/0x2c8
+  create_smb2_pipe from smb2_open+0x10c/0x27ac
+  smb2_open from handle_ksmbd_work+0x238/0x3dc
+  handle_ksmbd_work from process_scheduled_works+0x160/0x25c
+  process_scheduled_works from worker_thread+0x16c/0x1e8
+  worker_thread from kthread+0xa8/0xb8
+  kthread from ret_from_fork+0x14/0x38
+  Exception stack(0x8529ffb0 to 0x8529fff8)
+
+The task deadlocks because the lock is already held:
+  ksmbd_session_rpc_open
+    down_write(&sess->rpc_lock)
+    ksmbd_rpc_open
+      ksmbd_session_rpc_method
+        down_read(&sess->rpc_lock)   <-- deadlock
+
+Adjust ksmbd_session_rpc_method() callers to take the lock when necessary.
+
+Fixes: 305853cce3794 ("ksmbd: Fix race condition in RPC handle list access")
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ fs/smb/server/mgmt/user_session.c |  7 ++-----
+ fs/smb/server/smb2pdu.c           |  9 ++++++++-
+ fs/smb/server/transport_ipc.c     | 12 ++++++++++++
+ 3 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 5986d6d0a90b..e344475a41bd 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -147,14 +147,11 @@ void ksmbd_session_rpc_close(struct ksmbd_session *sess, int id)
+ int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
+ {
+ 	struct ksmbd_session_rpc *entry;
+-	int method;
+ 
+-	down_read(&sess->rpc_lock);
++	lockdep_assert_held(&sess->rpc_lock);
+ 	entry = xa_load(&sess->rpc_handle_list, id);
+-	method = entry ? entry->method : 0;
+-	up_read(&sess->rpc_lock);
+ 
+-	return method;
++	return entry ? entry->method : 0;
+ }
+ 
+ void ksmbd_session_destroy(struct ksmbd_session *sess)
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index f4b3798279d9..eacfb241d3d4 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4614,8 +4614,15 @@ static int smb2_get_info_file_pipe(struct ksmbd_session *sess,
+ 	 * pipe without opening it, checking error condition here
+ 	 */
+ 	id = req->VolatileFileId;
+-	if (!ksmbd_session_rpc_method(sess, id))
++
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
++	if (!ksmbd_session_rpc_method(sess, id)) {
++		up_read(&sess->rpc_lock);
+ 		return -ENOENT;
++	}
++	up_read(&sess->rpc_lock);
+ 
+ 	ksmbd_debug(SMB, "FileInfoClass %u, FileId 0x%llx\n",
+ 		    req->FileInfoClass, req->VolatileFileId);
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index a5b90d0b9f2d..53bfcf57f167 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -778,6 +778,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_write(struct ksmbd_session *sess, int handle
+ 	if (!msg)
+ 		return NULL;
+ 
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
+ 	msg->type = KSMBD_EVENT_RPC_REQUEST;
+ 	req = (struct ksmbd_rpc_command *)msg->payload;
+ 	req->handle = handle;
+@@ -786,6 +789,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_write(struct ksmbd_session *sess, int handle
+ 	req->flags |= KSMBD_RPC_WRITE_METHOD;
+ 	req->payload_sz = payload_sz;
+ 	memcpy(req->payload, payload, payload_sz);
++	up_read(&sess->rpc_lock);
+ 
+ 	resp = ipc_msg_send_request(msg, req->handle);
+ 	ipc_msg_free(msg);
+@@ -802,6 +806,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_read(struct ksmbd_session *sess, int handle)
+ 	if (!msg)
+ 		return NULL;
+ 
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
+ 	msg->type = KSMBD_EVENT_RPC_REQUEST;
+ 	req = (struct ksmbd_rpc_command *)msg->payload;
+ 	req->handle = handle;
+@@ -809,6 +816,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_read(struct ksmbd_session *sess, int handle)
+ 	req->flags |= rpc_context_flags(sess);
+ 	req->flags |= KSMBD_RPC_READ_METHOD;
+ 	req->payload_sz = 0;
++	up_read(&sess->rpc_lock);
+ 
+ 	resp = ipc_msg_send_request(msg, req->handle);
+ 	ipc_msg_free(msg);
+@@ -829,6 +837,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioctl(struct ksmbd_session *sess, int handle
+ 	if (!msg)
+ 		return NULL;
+ 
++	lockdep_assert_not_held(&sess->rpc_lock);
++
++	down_read(&sess->rpc_lock);
+ 	msg->type = KSMBD_EVENT_RPC_REQUEST;
+ 	req = (struct ksmbd_rpc_command *)msg->payload;
+ 	req->handle = handle;
+@@ -837,6 +848,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioctl(struct ksmbd_session *sess, int handle
+ 	req->flags |= KSMBD_RPC_IOCTL_METHOD;
+ 	req->payload_sz = payload_sz;
+ 	memcpy(req->payload, payload, payload_sz);
++	up_read(&sess->rpc_lock);
+ 
+ 	resp = ipc_msg_send_request(msg, req->handle);
+ 	ipc_msg_free(msg);
+-- 
+2.34.1
+
 
 
