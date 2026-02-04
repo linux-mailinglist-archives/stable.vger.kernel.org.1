@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-214073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NdBIM9mg2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:35 +0100
+	id 6PTmDi5mg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7DCE8DD7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47035E8BEF
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 133B230603EB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D12E2301D040
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FED41B37E;
-	Wed,  4 Feb 2026 15:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688274219F1;
+	Wed,  4 Feb 2026 15:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K37M/pOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fh5eEOwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF1E2C08AC;
-	Wed,  4 Feb 2026 15:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C66E413226;
+	Wed,  4 Feb 2026 15:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218473; cv=none; b=T399+ycl1wLRI7F6LGmLRz1Dg9Fu33dxakA+7NqRwgo053SKEwZJUZP79WpqVdMjuIt3a7dikrc7VgTxyeoM6dABlliBeJ5Bw3Czu0DJO+XwfM6PVjcibekdp/i7722kG6s3KVqciP227x0dBG9bAxB7IZKf0zcLMVyO3ZEFzPw=
+	t=1770218361; cv=none; b=AlbZnGF5ovCIbkCOzDlyt08KP8cTrQrCDt/Oqd1SLFIBgu/J5lQmcqmafgnkAaddIElPV3KeQ/krLvtJnfkr0bA1NPhZTRKIQZBNTnP/iIMwwDv0427cpulRyPfYIGAlPtlA/igkbUPmUgX1QBIJMwlD0gfCgHxWBSjAjDCKOY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218473; c=relaxed/simple;
-	bh=IvAZDp7R4+Xsf7bFwWVCTirHuOk+ja6Llf/Dyz7u1D4=;
+	s=arc-20240116; t=1770218361; c=relaxed/simple;
+	bh=ywUa9SDy6i6ohExiB70iSc66XKMEVF18uLxCitNbetc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGYv+nx5P2hMtLcDL/697m7V4shltuXgKbuVexe71wVER2h0U2gU/pLoa764IuWOxtsmbe6TW3RK8bC5Xa/HNpCvCoIEejW9BZJStQ661vYjM5GbnINz/7JXd+7L9hluvSHP/q4pujVWFXQ3nEi2CKmuRNeSJrcOSTVrSG0J1Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K37M/pOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7064DC4CEF7;
-	Wed,  4 Feb 2026 15:21:12 +0000 (UTC)
+	 MIME-Version; b=bT+UM8r26uVSzV5+1xnf0Jm6x2NuIop9ivqKfLcJnc3A3KfseClNb1ZFNe+itfqvFgvU+KzhYqgSnaDye0YLF81ZFD0EgHLvpNfzErr3StXw6UP+EyDWtq1Pc6trGyyBzHIw6awFjcUIeHwIYxK3oiF2sbYmHQgwQfHaAzB1+bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fh5eEOwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4160FC2BCB0;
+	Wed,  4 Feb 2026 15:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218472;
-	bh=IvAZDp7R4+Xsf7bFwWVCTirHuOk+ja6Llf/Dyz7u1D4=;
+	s=korg; t=1770218360;
+	bh=ywUa9SDy6i6ohExiB70iSc66XKMEVF18uLxCitNbetc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K37M/pOHiOxGOyXfY+irPTjfWmi9KNshLx2QJoWhFNP/kigHJmXDUO8EgGP+QOVIt
-	 82Ru08Q7khAhTGotgbzBsYm1yq5aVj61ZuEEHq7P+C7EVLYMJLAK1WJXchOFe3qEV8
-	 a2uK78zSXDz+fiPbKH7Iako0lihi9oCJCZ8f9eZw=
+	b=fh5eEOwAPScdhxZV2mtxYF46dKzW3Xff/nhCz/ml8omIktccxNjeavksLybfhs5hc
+	 a142Ed341OZifTdXyH6wpmRqwr4r86bdaPu/2jcQIqKZ90x85Mle7nJezPnV+Sjm5z
+	 D665mLd8fSRK6sQkmiWS2Hs5TdeFs9TUA4SBYgIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 39/72] drm/amdgpu/soc21: fix xclk for APUs
+	syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com,
+	syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 268/280] sctp: linearize cloned gso packets in sctp_rcv
 Date: Wed,  4 Feb 2026 15:40:42 +0100
-Message-ID: <20260204143847.043345495@linuxfoundation.org>
+Message-ID: <20260204143919.343512003@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +68,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214073-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214040-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,139.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,773e51afe420baaf0e2b,70a42f45e76bede082be];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,gitlab.freedesktop.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DD7DCE8DD7
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 47035E8BEF
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit e7fbff9e7622a00c2b53cb14df481916f0019742 upstream.
+[ Upstream commit fd60d8a086191fe33c2d719732d2482052fa6805 ]
 
-The reference clock is supposed to be 100Mhz, but it
-appears to actually be slightly lower (99.81Mhz).
+A cloned head skb still shares these frag skbs in fraglist with the
+original head skb. It's not safe to access these frag skbs.
 
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/14451
-Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 637fee3954d4bd509ea9d95ad1780fc174489860)
-Cc: stable@vger.kernel.org
+syzbot reported two use-of-uninitialized-memory bugs caused by this:
+
+  BUG: KMSAN: uninit-value in sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_assoc_bh_rcv+0x1a7/0xc50 net/sctp/associola.c:998
+   sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x397/0xdb0 net/sctp/input.c:331
+   sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1122
+   __release_sock+0x1da/0x330 net/core/sock.c:3106
+   release_sock+0x6b/0x250 net/core/sock.c:3660
+   sctp_wait_for_connect+0x487/0x820 net/sctp/socket.c:9360
+   sctp_sendmsg_to_asoc+0x1ec1/0x1f00 net/sctp/socket.c:1885
+   sctp_sendmsg+0x32b9/0x4a80 net/sctp/socket.c:2031
+   inet_sendmsg+0x25a/0x280 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:718 [inline]
+
+and
+
+  BUG: KMSAN: uninit-value in sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_inq_push+0x2a3/0x350 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x3c7/0xda0 net/sctp/input.c:331
+   sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
+   __release_sock+0x1d3/0x330 net/core/sock.c:3213
+   release_sock+0x6b/0x270 net/core/sock.c:3767
+   sctp_wait_for_connect+0x458/0x820 net/sctp/socket.c:9367
+   sctp_sendmsg_to_asoc+0x223a/0x2260 net/sctp/socket.c:1886
+   sctp_sendmsg+0x3910/0x49f0 net/sctp/socket.c:2032
+   inet_sendmsg+0x269/0x2a0 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:712 [inline]
+
+This patch fixes it by linearizing cloned gso packets in sctp_rcv().
+
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Reported-by: syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com
+Reported-by: syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/dd7dc337b99876d4132d0961f776913719f7d225.1754595611.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc21.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+This patch is lost/missing, as it has already been added
+into stable branches less than and greater than 6.1. Previous patch in
+https://lore.kernel.org/stable/20251022075549.195012-1-kovalev@altlinux.org/ is still not added.
+So I resent it again.
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/sctp/input.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/soc21.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
-@@ -218,7 +218,13 @@ static u32 soc21_get_config_memsize(stru
- 
- static u32 soc21_get_xclk(struct amdgpu_device *adev)
- {
--	return adev->clock.spll.reference_freq;
-+	u32 reference_clock = adev->clock.spll.reference_freq;
-+
-+	/* reference clock is actually 99.81 Mhz rather than 100 Mhz */
-+	if ((adev->flags & AMD_IS_APU) && reference_clock == 10000)
-+		return 9981;
-+
-+	return reference_clock;
- }
- 
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -114,7 +114,7 @@ int sctp_rcv(struct sk_buff *skb)
+ 	 * it's better to just linearize it otherwise crc computing
+ 	 * takes longer.
+ 	 */
+-	if ((!is_gso && skb_linearize(skb)) ||
++	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
+ 	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
+ 		goto discard_it;
  
 
 
