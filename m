@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wO8cGlNlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:15 +0100
+	id sMo6DgRgg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A306EE895F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DE8E7D86
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 138F6315BFDF
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 900E6304A2C7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715DA421884;
-	Wed,  4 Feb 2026 15:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F51D29BD80;
+	Wed,  4 Feb 2026 15:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsipeoJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y04N6Jqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351DC2D8763;
-	Wed,  4 Feb 2026 15:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AA7285404;
+	Wed,  4 Feb 2026 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218197; cv=none; b=n+ODwVwhMrSyi8NUCuWsx3C5j+cQ45zvPU82SG4k/8rJdteJUhZU5wD7vq1HFtR8YADEDQdQlMait91n1nbrunV6a12eg9TvERHt2Je90dx4RH7gR31XbJ8teodcxnDGYuR+2kWguLUUfZnopyvF9jKWNVJMu+BSaYEzat6V3Qo=
+	t=1770217303; cv=none; b=GhwPSgiRta5dmYWtObS5dcGAeHZN4dmkdcoG3maCDCIO/51tLnZal5bcuWTfpO+k9BAP5/MoNRli505vBF/FlRmtfxOGOyoJogBTEFY4+pTuE7I5sdQ0I+Ai5yq6aLDDs9QisDCO7V99VuWcozdvpe+ni6bJVfCfO7/0t1OoLkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218197; c=relaxed/simple;
-	bh=oN+2V/PZOZYWi/uqvDCXcGW9uFENmkrrkKcFhlNNM6s=;
+	s=arc-20240116; t=1770217303; c=relaxed/simple;
+	bh=8V8D4l2dzhmg6/GRhObbgTrF+syftXFtWre9W8aFE60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3gzoWmUgfwtPjn2efO4PFYgWkncRE3HaoxmI/pbV91zgcFYaKXzxbbTTzYqEHiPP8wepiDd8cWseOIQyonhYGbmTgfjSJHWb4AQYmjNTGdZMC1JeGpLNq260DPyHw9hJp0DsTS4L+LhIAfaT5+3Eym6aD4KizMyfJEpkV0x0fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsipeoJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35EEC4CEF7;
-	Wed,  4 Feb 2026 15:16:36 +0000 (UTC)
+	 MIME-Version; b=s5FxPaWyBmbWgXS8N3mhEzqPn7UGQ4o1lID/JVlgwwcSfYxqln6e7MnAoAPqEVWEO9s9GkMmy+cB2UIiipXgpZKj1HcmA7Y3vXzbGfJGCiHHXJV0/A/E9nsA9yZoazDQ5ngCh2FElURUjRq0zG73nL2Yumc/k5IrbdyjSFJSAoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y04N6Jqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41269C4CEF7;
+	Wed,  4 Feb 2026 15:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218197;
-	bh=oN+2V/PZOZYWi/uqvDCXcGW9uFENmkrrkKcFhlNNM6s=;
+	s=korg; t=1770217302;
+	bh=8V8D4l2dzhmg6/GRhObbgTrF+syftXFtWre9W8aFE60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsipeoJT6WiNZCj5VCkV0bXePmewW34Sc2XOapRJV/UJyL5uwnVHzMCXlkxXnmcot
-	 7tjFdcGpiMeTwbWLtkan3+tMYdaaQbXV3i4Z+XeveBdCNlKuT6tOXWqSYc7a2MqVFq
-	 GTUPDd8ReEZN6Id4s/Urp/qXjLal6z0HdKhQiwQ4=
+	b=Y04N6Jqz5BGSpb6M4Pju8/vTnvpDbfNosL9rMzhrOQpsniDVdfkFNst+dqY31JbaL
+	 MF1nmOip+7f2XFz3z7tbDDJl10oe6Xg9e5L/ReGlUAY5Mu/cnHEASWmM3VJMth/X6/
+	 tg3cmbAbv1mjjqWD8aII57kxSb3osSySGATTcYoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/280] phy: phy-rockchip-inno-usb2: simplify phy clock handling
+	Ying Hsu <yinghsu@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 5.15 184/206] Bluetooth: Fix hci_suspend_sync crash
 Date: Wed,  4 Feb 2026 15:40:15 +0100
-Message-ID: <20260204143918.301429980@linuxfoundation.org>
+Message-ID: <20260204143904.847167191@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,92 +67,95 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-213727-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,chromium.org,intel.com,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213992-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email]
-X-Rspamd-Queue-Id: A306EE895F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: 98DE8E7D86
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit b43511233c6e34b9c0d9a55e41b078d10e7d9ea6 ]
+[ Upstream commit 573ebae162111063eedc6c838a659ba628f66a0f ]
 
-Simplify phyclk handling by using devm_clk_get_optional_enabled to
-acquire and enable the optional clock. This also fixes a resource
-leak in driver remove path and adds proper error handling.
+If hci_unregister_dev() frees the hci_dev object but hci_suspend_notifier
+may still be accessing it, it can cause the program to crash.
+Here's the call trace:
+  <4>[102152.653246] Call Trace:
+  <4>[102152.653254]  hci_suspend_sync+0x109/0x301 [bluetooth]
+  <4>[102152.653259]  hci_suspend_dev+0x78/0xcd [bluetooth]
+  <4>[102152.653263]  hci_suspend_notifier+0x42/0x7a [bluetooth]
+  <4>[102152.653268]  notifier_call_chain+0x43/0x6b
+  <4>[102152.653271]  __blocking_notifier_call_chain+0x48/0x69
+  <4>[102152.653273]  __pm_notifier_call_chain+0x22/0x39
+  <4>[102152.653276]  pm_suspend+0x287/0x57c
+  <4>[102152.653278]  state_store+0xae/0xe5
+  <4>[102152.653281]  kernfs_fop_write+0x109/0x173
+  <4>[102152.653284]  __vfs_write+0x16f/0x1a2
+  <4>[102152.653287]  ? selinux_file_permission+0xca/0x16f
+  <4>[102152.653289]  ? security_file_permission+0x36/0x109
+  <4>[102152.653291]  vfs_write+0x114/0x21d
+  <4>[102152.653293]  __x64_sys_write+0x7b/0xdb
+  <4>[102152.653296]  do_syscall_64+0x59/0x194
+  <4>[102152.653299]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
 
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20230522170324.61349-6-sebastian.reichel@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: e07dea3de508 ("phy: rockchip: inno-usb2: Fix a double free bug in rockchip_usb2phy_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch holds the reference count of the hci_dev object while
+processing it in hci_suspend_notifier to avoid potential crash
+caused by the race condition.
+
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Adjust context ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c |   17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ net/bluetooth/hci_core.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-@@ -1273,18 +1273,16 @@ static int rockchip_usb2phy_probe(struct
- 		return -EINVAL;
- 	}
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3706,6 +3706,9 @@ static int hci_suspend_notifier(struct n
+ 	int ret = 0;
+ 	u8 state = BT_RUNNING;
  
--	rphy->clk = of_clk_get_by_name(np, "phyclk");
--	if (!IS_ERR(rphy->clk)) {
--		clk_prepare_enable(rphy->clk);
--	} else {
--		dev_info(&pdev->dev, "no phyclk specified\n");
--		rphy->clk = NULL;
-+	rphy->clk = devm_clk_get_optional_enabled(dev, "phyclk");
-+	if (IS_ERR(rphy->clk)) {
-+		return dev_err_probe(&pdev->dev, PTR_ERR(rphy->clk),
-+				     "failed to get phyclk\n");
- 	}
++	/* To avoid a potential race with hci_unregister_dev. */
++	hci_dev_hold(hdev);
++
+ 	/* If powering down, wait for completion. */
+ 	if (mgmt_powering_down(hdev)) {
+ 		set_bit(SUSPEND_POWERING_DOWN, hdev->suspend_tasks);
+@@ -3757,6 +3760,7 @@ done:
+ 		bt_dev_err(hdev, "Suspend notifier action (%lu) failed: %d",
+ 			   action, ret);
  
- 	ret = rockchip_usb2phy_clk480m_register(rphy);
- 	if (ret) {
- 		dev_err(dev, "failed to register 480m output clock\n");
--		goto disable_clks;
-+		return ret;
- 	}
- 
- 	index = 0;
-@@ -1347,11 +1345,6 @@ next_child:
- 
- put_child:
- 	of_node_put(child_np);
--disable_clks:
--	if (rphy->clk) {
--		clk_disable_unprepare(rphy->clk);
--		clk_put(rphy->clk);
--	}
- 	return ret;
++	hci_dev_put(hdev);
+ 	return NOTIFY_DONE;
  }
  
 
