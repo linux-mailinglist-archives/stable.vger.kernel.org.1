@@ -1,219 +1,150 @@
-Return-Path: <stable+bounces-214331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAR3Lx54g2mFmwMAu9opvQ
-	(envelope-from <stable+bounces-214331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:47:26 +0100
+	id INTXELp6g2nyngMAu9opvQ
+	(envelope-from <stable+bounces-214332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:58:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B36DEA77B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:47:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1E3EAA9C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 59D36300D4C7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 16:46:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 659DF300D4C6
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 16:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FA0338922;
-	Wed,  4 Feb 2026 16:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1277833F374;
+	Wed,  4 Feb 2026 16:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3tYiww6c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcK07/Gf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3004733890A
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 16:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770223608; cv=pass; b=UUDVhdzvbYHhVQvlbFB9YOanDTCMplw9LWOYNB3g3wLc0eoDXKmKoxXPnW7eDvOMUOjsWtn47whZXbxoawvXUtM0c2/vx2gbxuNyyn0gaGA1wpcPSLMz772gVwshOA+MEhGL8qJGBTBJvSsyC08hcKKo2vsHqAk/UU8dzmJFRF0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770223608; c=relaxed/simple;
-	bh=GuDdEDTx6jqo86jDKae5LLsjrHGR1rOWzeioqAUpz7I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a5M6XxY/kFIcU7OOq6FrQZBQmbgQWB5/8KwVgIMdCqSc6hO36oFluZ5vHOsunCslTRQF8AAsNNvLDogRJOgpQU9b9OK1tnthaGb/wP546ZXaPs0csll+6SqLtXJyjjpqlnJdppYM/+cteRRfD7ZKXQB9d5lPe7DsVtCQu1w6rG8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3tYiww6c; arc=pass smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50299648ae9so572171cf.1
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 08:46:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770223607; cv=none;
-        d=google.com; s=arc-20240605;
-        b=c5KjpgdfBBC75HPi3tAcVVzhk6c75nNucPWn1LlcX0q5h02otoyKBEiHorbe/Tsnki
-         ZLi1OHYObz0WC/yIn70Gvnvum6pPQWFvqE++OGz16UuejqojxThjx2kHZ1wwEr6GzTAL
-         zpRXKS8nNbmaWYpdeoTlnvC2AQsPmR0UEKYjsmb4sTFZ0bHeoIDT8vE3mwBhY73cDCGS
-         UbLX86T8cbebtyiDTQRsRaHm+enroTBINVi8P4f0dR8UDH2KiNHtnbBONBuY3w4Dieav
-         aFFqLeqS4jIASV78lCnbPbJTMP1sqgNkuzBl+IQlBVXTgkgVwG3tFK1IJfwjnPNUtZRp
-         RH8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fxhu04OAvpDfoeT5InEkoDqVAH1C962dtOlYUArfHyE=;
-        fh=XG5vVwEcZnIcIreul/JofQVcQ9rN0Y+ryIvw7JCrHJk=;
-        b=BLMz80yJv2jChbD1GppnWJehaP44vPE4o/nhvPIeBzM8Fbdop/vPxA4QczUSMwFnEY
-         YXC/YJo6AvdPFWOP0n16FkFqof6cNfboGDqYVClMFXlwBvGUSxzqWwBOEhwvTSaAGwsr
-         8fwJuIxW3RWnk7ZrFFd7+bx1yn7kqe+DdyFOkKJN4ZulhAM7Fb5qh2mAMBr+byMmr9Hy
-         oipj0uHm2vM8dg44RRiz+LPIAztW3+hMH04PWgoPD1nKn5yGYgZcrBCV9KKmZv3EP6G5
-         PL+IkV/vPpcCkGB+YiXFa0MaV8XHQZoKyf5RZEhnhMHk9lddBZRHsM2EgdpVZwzTsKnY
-         vUoQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770223607; x=1770828407; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fxhu04OAvpDfoeT5InEkoDqVAH1C962dtOlYUArfHyE=;
-        b=3tYiww6cIq+DIBwIjPwaMtjkvFwbzmYivNko/vjc5ToRLVdikZ0Otw3rdNHHagMP9T
-         iCs7P9oxYZwlccjB5NN0rb3bEoLd/3CVQJ0CyTVWk7MyCISzeR66jinwc7MN8lDw3quv
-         5YLcSZ/tKBupngd2wMc0fwQ7y79PvI478KXKwxTGaorr9dAGRE0dDsSg96QlFuIqvzGo
-         lamUSYXZH0ZxbPojBlarLyDMq5rUeiFfeBOWMzpPcXEdNhYMcsHZqIcAJF3nF2BJBriv
-         wWTffoIS+LacZHcrETcGRlguPQTFSiBIogWC+v/GwGg3+H5vbmOPMBBDmbxIxzZKypmA
-         yaBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770223607; x=1770828407;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fxhu04OAvpDfoeT5InEkoDqVAH1C962dtOlYUArfHyE=;
-        b=FcnGmYN0mg8FYcAxgkWvf+HJj6dmOHn4wJr4msAGkfw2N+YlOh68oWXqu+zWuX2OaF
-         xzzshNqfeOMq0EKJxFxlSJSj1dC4+qQG7ASyke81R2rVNbbRDMQe+5HknMGORtipxfJU
-         9Ty6TQnfvEC3iQD3or7pxp3xOvvLMA8Dt5lhaUv7bWU55ZZmH9Z5gdvfyazGifH+dKEF
-         01FG/aQnD1VFF83zC1e3OMJYEi1X6vwud+0S/bVYeg7pz2CtJa8Gy+z5K8+JsUdWpDFL
-         UuwzEXwG+S0PMx2YZFfMA1aXtuNwuV57ixSXEKZNuuD23vp8uhmOqKfMM2vaWS2Jgv8Q
-         kPRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDGYCrg77mEy7W0y11i+0UqYcHjQ45DHXN+0zEppIB1IEAIOM3Ct651LUCjRPRZ6RNTa2Bf2U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywk0VEEO5giv0J7BRCAi24mQZl33w7fupwSn4Lupk30RZGmyaGw
-	8tHrITznXIFsNvpmySS6UBVvAayilPqk4c1BSyhrSw6uA4kB76yc0wpxm9gJxNMiEqmlvFHEuCW
-	j24aJaYyDSVIC9Tp/TtIWQDxGjv7MYucyaz25xct0
-X-Gm-Gg: AZuq6aLTdnnlwKVtbFEqzHPlYdhYZF/lu5XHFthzAoW27iTCtVH+rhrFahuChTpno2h
-	IKwBaP0wy27++cA09bfL6YE94gNqY8AT1kaFJ/g984Kjud6poI9HiP9roGKqSD4uVKn4G6cVXqm
-	a6eEig+EMVFmpnKYunvR26TTtQqxHQRvXWrqM075GdnxCBpux4I/KPfkiCcZanIQCJaCoC3vvk7
-	y0T7ihbG1EmQbgRy41AX7rTJO48KuXBxpb/NRwFYzb0HbqZji/l6UmaH3RBjEyff+yJJ2T2CKB0
-	Rd9LWL/pUlp0d0H3JN2ZLZ2Q2Q==
-X-Received: by 2002:ac8:5750:0:b0:4ed:a65c:88d0 with SMTP id
- d75a77b69052e-5061c3c6ed1mr14901671cf.6.1770223606526; Wed, 04 Feb 2026
- 08:46:46 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FCC32D7EC;
+	Wed,  4 Feb 2026 16:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770224265; cv=none; b=hKsoOJRUGwNH+YCggIzav5sOTBQOl7aG/v3/2PmUAUse9Cw8lsnIx6/TtZ7V/8gWTbr4/2X4b1oMr9vm5pku12Fwz1VPbQS+1g9Q2hrIoWWzg3inB3sJa3Yv1Ud17lUoTk3Yr7KOhNJVFHN6bCKCrlEK8X0+MKIjiQVs5TOVO6k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770224265; c=relaxed/simple;
+	bh=cBviwNx3dSB5yXIQBO6E1ifjNsWgF2O9bUxOR5Mi1d0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LaQxK6UCOPAqR/bBBcmvqaEEYKC9Ax1dMzc/gPpXqkaa2JaG9klM3dFrXP4WQQhIREA0+1b7p2CdajU6jAJsPf6MkRac0LnJXU4Qc5V4PG5gOCK3KLSa4elG7P6OGmZnGqkhxQvxILJSkw0Ztqp9rcLPEEfMtNX1DWrziOCiFmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcK07/Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB25C4CEF7;
+	Wed,  4 Feb 2026 16:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770224265;
+	bh=cBviwNx3dSB5yXIQBO6E1ifjNsWgF2O9bUxOR5Mi1d0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=YcK07/GfCSiVkJ7OjAV0FGIhkCdKi/Y0qSZCj3rf9cYWhmLjFLnjg8mNDWlyTq07s
+	 iqoW2+yUB5yv2UiysvAl/AXBYzbPQH3ImuEyu2P/9iEC/LyxXuo6mfBFGKLYoesbPe
+	 QMdHh/USmzF6jZWUM1+L+HwWvaplVkkavQRqLONJU2Pfb64KiwFCKTEDuXVJ87e/Ne
+	 NFjqypb/CNj5Yvx4rFeE7ZaAV8dvHTrFytKasql6Al6P2hJ6UpTGTPp1b/5qZ0Mp0M
+	 Edv+zALuKhpjG0839dn0v1WFc3aNoM12an8K4XZzQllNUYw1+LvlIk2una4I8s6ttB
+	 ahkF6uXQAUa2Q==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/4] mptcp: misc fixes for v6.19-rc8
+Date: Wed, 04 Feb 2026 17:57:24 +0100
+Message-Id: <20260204-net-mptcp-misc-fixes-6-19-rc8-v1-0-cb559fb6b50a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2026020303-drippy-appliance-a74c@gregkh> <20260204002654.1462558-1-sashal@kernel.org>
- <2026020419-extortion-swinging-6394@gregkh>
-In-Reply-To: <2026020419-extortion-swinging-6394@gregkh>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 4 Feb 2026 08:46:35 -0800
-X-Gm-Features: AZwV_QgktQI-U-2cz1KZyg814_EvzKKRB5FUYNdIaeW8UD1HDjUFn6kcQetyzPo
-Message-ID: <CAJuCfpHGM0apXNe4nW_5vTNzEBLGvEHduoiHpHhs70+qmeFMLg@mail.gmail.com>
-Subject: Re: [PATCH 6.18.y] kho: init alloc tags when restoring pages from
- reserved memory
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHR6g2kC/x2MQQqDQAwAvyI5N7C7lKj9ivSwpFFzcLtsRATx7
+ w09DszMBSZNxeDVXdDkUNNvcYiPDnjNZRHUjzOkkCik8MQiO25154qbGuOspxgSxhEbD0iZiAf
+ KMc09+KM2+Ru+mMBTeN/3D86HHVt0AAAA
+X-Change-ID: 20260204-net-mptcp-misc-fixes-6-19-rc8-6a66c86a12f7
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1638; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=cBviwNx3dSB5yXIQBO6E1ifjNsWgF2O9bUxOR5Mi1d0=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKbq1rcz2Vc6ju7L54z4ryifvyZ138EbfqzNNSWiQrFM
+ OQFntHuKGVhEONikBVTZJFui8yf+byKt8TLzwJmDisTyBAGLk4BmMidi4wMi/6WRj683FH1+6dn
+ +jSju4/Px2lXF19a45q6+Nr65Ykh2xj+x8Z8O16f9GeFlbPu6/vdbGfqHJYvF9LPz2y6kXOmpLC
+ THwA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214331-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214332-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[surenb@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,f56f7d56e2c6e11a01b6];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linux.dev:email,zte.com.cn:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 6B36DEA77B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5C1E3EAA9C
 X-Rspamd-Action: no action
 
-On Wed, Feb 4, 2026 at 1:59=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
->
-> On Tue, Feb 03, 2026 at 07:26:54PM -0500, Sasha Levin wrote:
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >
-> > [ Upstream commit e86436ad0ad2a9aaf88802d69b68f02cbd1f04a9 ]
-> >
-> > Memblock pages (including reserved memory) should have their allocation
-> > tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-> > released to the page allocator.  When kho restores pages through
-> > kho_restore_page(), missing this call causes mismatched
-> > allocation/deallocation tracking and below warning message:
-> >
-> > alloc_tag was not set
-> > WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU=
-#1: swapper/0/1
-> > RIP: 0010:___free_pages+0xb8/0x260
-> >  kho_restore_vmalloc+0x187/0x2e0
-> >  kho_test_init+0x3c4/0xa30
-> >  do_one_initcall+0x62/0x2b0
-> >  kernel_init_freeable+0x25b/0x480
-> >  kernel_init+0x1a/0x1c0
-> >  ret_from_fork+0x2d1/0x360
-> >
-> > Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-> > fix this.
-> >
-> > Link: https://lkml.kernel.org/r/20260122132740.176468-1-ranxiaokai627@1=
-63.com
-> > Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation=
-")
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Cc: Alexander Graf <graf@amazon.com>
-> > Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  kernel/kexec_handover.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-> > index 03d12e27189fc..db08c1a2e1f80 100644
-> > --- a/kernel/kexec_handover.c
-> > +++ b/kernel/kexec_handover.c
-> > @@ -260,6 +260,14 @@ static struct page *kho_restore_page(phys_addr_t p=
-hys)
-> >       if (info.order > 0)
-> >               prep_compound_page(page, info.order);
-> >
-> > +     /* Always mark headpage's codetag as empty to avoid accounting mi=
-smatch */
-> > +     clear_page_tag_ref(page);
-> > +     if (!is_folio) {
-> > +             /* Also do that for the non-compound tail pages */
-> > +             for (unsigned int i =3D 1; i < nr_pages; i++)
-> > +                     clear_page_tag_ref(page + i);
-> > +     }
-> > +
->
-> Breaks the build :(
+Here are various unrelated fixes:
 
-Which config? I built both defconfig and CONFIG_MEM_ALLOC_PROFILING=3Dy,
-they didn't fail. Could you please send me your failing config?
+- Patch 1: when removing an MPTCP in-kernel PM endpoint, always mark the
+  corresponding ID as "available". Syzbot found a corner case where it
+  is not marked as such. A fix for up to v5.10.
 
->
+- Patch 2: Linked to the previous patch, the variable name was confusing
+  and was probably partly responsible for the issue fixed by patch 1. No
+  "Fixes" tag: no need to backport that for the moment, but better to
+  avoid confusion now.
+
+- Patch 3: fix all existing kdoc warnings linked to MPTCP code. No
+  "Fixes" tag: they were there for a while, and not considered as
+  important to backport.
+
+- Patch 4: silence a compiler (false-positive) warning in the selftests.
+  No "Fixes" tag: it is a false-positive warning, only seen with some
+  versions.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Matthieu Baerts (NGI0) (4):
+      mptcp: pm: in-kernel: always set ID as avail when rm endp
+      mptcp: pm: in-kernel: clarify mptcp_pm_remove_anno_addr()
+      mptcp: fix kdoc warnings
+      selftests: mptcp: connect: fix maybe-uninitialize warn
+
+ include/uapi/linux/mptcp_pm.h                     |  2 +-
+ net/mptcp/pm_kernel.c                             | 29 ++++++++++-------------
+ net/mptcp/token.c                                 | 16 +++++++------
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |  2 +-
+ 4 files changed, 23 insertions(+), 26 deletions(-)
+---
+base-commit: 7576bd9017e35379db1ab1ef6b0e1d570eb28429
+change-id: 20260204-net-mptcp-misc-fixes-6-19-rc8-6a66c86a12f7
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
