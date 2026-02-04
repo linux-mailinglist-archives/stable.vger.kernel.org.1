@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOGtMWxdg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:32 +0100
+	id QGlLKWNlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F0BE7873
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BAFCE89AE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D6C2B300EBE5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C240300E38B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EA9413234;
-	Wed,  4 Feb 2026 14:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92537426D19;
+	Wed,  4 Feb 2026 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maakpKfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2q2BplZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF002E92BC;
-	Wed,  4 Feb 2026 14:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F44426D06;
+	Wed,  4 Feb 2026 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216720; cv=none; b=JSEyfv6iwBeGUWvucmoQtHi8sWVq7R6i5yEOBd5bs15SXZGfj9g8bw3PQDVTqrRrjtMWwBRxRPCOMuLWTMq5h4ynDLiUakVER1iSyHlG4khuyZwZFDYmEY3DTSgBlfVfflUgqLruMg7QdmocHRkKoP/b9z51BM5AZa6hfEKcfkI=
+	t=1770217613; cv=none; b=GairdApBkUpANkNVL5ueZpQPHGxR7VNzdifzZKxX9MjHH6UINR6wHplayOzeJqqkZhhOzCm3RmNe9K0iysGVlDMrEf86v2zMc5Rt8HWnyAyyD6GUYhen4LJtt9cYKh7wuaHT+55FMT5YMSK9j6wwkbOVV6TckrkVponnkUqGEfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216720; c=relaxed/simple;
-	bh=xJQn0D4YQ/Bz1Mzg1uKT5vwiJl4r1wDgqb9YbtXikEo=;
+	s=arc-20240116; t=1770217613; c=relaxed/simple;
+	bh=IjfQHoHAi27OTaUE3XW5arnsAj3qBF0RFFPmqcZ4/3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6419Oyed+rGYaUnNm2in4MD46NwSqsNxn7EWrjmtkahBjptUep6vlJMPi0k/DhY8TP+histHRNm10ZJACAqEEADojVKEWNIueknuKmLSAqBh0REcfvMVKfenDTbsKiwJdWTFEqmt5+1JdpBSORynFkBYh5AzDarwSI1Va8ZIHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maakpKfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E05CC19423;
-	Wed,  4 Feb 2026 14:51:58 +0000 (UTC)
+	 MIME-Version; b=gcgKHhZR/1+aykhuWr5gaIq18NaDPoYZgY/MrYvLdJi73R+nnFbrS68UHI5wumSCk8S5anicnrIwSZ8r1FEjpqPqvB//BlJtshyot8hp4VLTRtNFzL6j/LfZ85o9pA6Uba9mSB87hEw4tBaplleElizhF0M0NQyWNh5C6xlkBWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2q2BplZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A00C4CEF7;
+	Wed,  4 Feb 2026 15:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216719;
-	bh=xJQn0D4YQ/Bz1Mzg1uKT5vwiJl4r1wDgqb9YbtXikEo=;
+	s=korg; t=1770217613;
+	bh=IjfQHoHAi27OTaUE3XW5arnsAj3qBF0RFFPmqcZ4/3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maakpKfCjw7bFojfR0t/Q6vkORDniNlyCcuMaZ0ToMNkRmwALrk35tGk/OnfIEcCd
-	 2m8/jizs9AkLmsZ6I5yuUAg28N3xJRUiU+ZQLDmUN3TkAtWJtyzBDATKKvM3a4EWGs
-	 Sh+sEVBmuOdWrG+uIdpN+8jRmteVbETxvUp1mFos=
+	b=2q2BplZZbpKrywepVOnuki8SuoWt81fLKU1+6R7/fk4DAj0XlfTEcun3x0rHkvFiW
+	 NsndkICj43w3dILsi2CnC3Ts4z5NW2tQeo2NCUeEJKNuLkTFAClZertvfELTC8Z7fr
+	 5hBkhCESyQZE0i7Kds2aVpt+F/FLavAR99/C5Gak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 011/206] net/mlx5e: Restore destroying state bit after profile cleanup
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 068/280] dmaengine: bcm-sba-raid: fix device leak on probe
 Date: Wed,  4 Feb 2026 15:37:22 +0100
-Message-ID: <20260204143858.611427249@linuxfoundation.org>
+Message-ID: <20260204143912.102189395@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,100 +68,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213553-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213818-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 13F0BE7873
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3BAFCE89AE
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 5629f8859dca7ef74d7314b60de6a957f23166c0 ]
+commit 7c3a46ebf15a9796b763a54272407fdbf945bed8 upstream.
 
-Profile rollback can fail in mlx5e_netdev_change_profile() and we will
-end up with invalid mlx5e_priv memset to 0, we must maintain the
-'destroying' bit in order to gracefully shutdown even if the
-profile/priv are not valid.
+Make sure to drop the reference taken when looking up the mailbox device
+during probe on probe failures and on driver unbind.
 
-This patch maintains the previous state of the 'destroying' state of
-mlx5e_priv after priv cleanup, to allow the remove flow to cleanup
-common resources from mlx5_core to avoid FW fatal errors as seen below:
-
-$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
-    Error: mlx5_core: Failed setting eswitch to offloads.
-dmesg: mlx5_core 0000:00:03.0 enp0s3np0: failed to rollback to orig profile, ...
-
-$ devlink dev reload pci/0000:00:03.0
-
-mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
-mlx5_core 0000:00:03.0: poll_health:803:(pid 519): Fatal error 3 detected
-mlx5_core 0000:00:03.0: firmware version: 28.41.1000
-mlx5_core 0000:00:03.0: 0.000 Gb/s available PCIe bandwidth (Unknown x255 link)
-mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
-mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
-mlx5_core 0000:00:03.0: mlx5_health_try_recover:340:(pid 141): handling bad device here
-mlx5_core 0000:00:03.0: mlx5_handle_bad_state:285:(pid 141): Expected to see disabled NIC but it is full driver
-mlx5_core 0000:00:03.0: mlx5_error_sw_reset:236:(pid 141): start
-mlx5_core 0000:00:03.0: NIC IFC still 0 after 4000ms.
-
-Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260108212657.25090-5-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 743e1c8ffe4e ("dmaengine: Add Broadcom SBA RAID driver")
+Cc: stable@vger.kernel.org	# 4.13
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-4-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/dma/bcm-sba-raid.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 321441e6ad328..ba36e500c1ff1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4856,6 +4856,7 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
+--- a/drivers/dma/bcm-sba-raid.c
++++ b/drivers/dma/bcm-sba-raid.c
+@@ -1697,7 +1697,7 @@ static int sba_probe(struct platform_dev
+ 	/* Prealloc channel resource */
+ 	ret = sba_prealloc_channel_resources(sba);
+ 	if (ret)
+-		goto fail_free_mchan;
++		goto fail_put_mbox;
  
- void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- {
-+	bool destroying = test_bit(MLX5E_STATE_DESTROYING, &priv->state);
- 	int i;
+ 	/* Check availability of debugfs */
+ 	if (!debugfs_initialized())
+@@ -1727,6 +1727,8 @@ skip_debugfs:
+ fail_free_resources:
+ 	debugfs_remove_recursive(sba->root);
+ 	sba_freeup_channel_resources(sba);
++fail_put_mbox:
++	put_device(sba->mbox_dev);
+ fail_free_mchan:
+ 	mbox_free_channel(sba->mchan);
+ 	return ret;
+@@ -1742,6 +1744,8 @@ static int sba_remove(struct platform_de
  
- 	/* bail if change profile failed and also rollback failed */
-@@ -4870,6 +4871,8 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- 	kvfree(priv->htb.qos_sq_stats);
+ 	sba_freeup_channel_resources(sba);
  
- 	memset(priv, 0, sizeof(*priv));
-+	if (destroying) /* restore destroying bit, to allow unload */
-+		set_bit(MLX5E_STATE_DESTROYING, &priv->state);
- }
++	put_device(sba->mbox_dev);
++
+ 	mbox_free_channel(sba->mchan);
  
- struct net_device *
--- 
-2.51.0
-
+ 	return 0;
 
 
 
