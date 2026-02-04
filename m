@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-214139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNCjC2hog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:24 +0100
+	id QB/+KYtgg2mfmAMAu9opvQ
+	(envelope-from <stable+bounces-213745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1184E918E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBC2E7ED0
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A1B3C30E24E8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9B513301841B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F222D8798;
-	Wed,  4 Feb 2026 15:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63FF2BD012;
+	Wed,  4 Feb 2026 15:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqg2MXmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnBxBnlK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E242D8773;
-	Wed,  4 Feb 2026 15:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1F21C84A6;
+	Wed,  4 Feb 2026 15:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218694; cv=none; b=caq5BPD4qgIEt84rOXhOjE61ooI0Rpl+Nqs3afhFcVDsMdovUKP8jTU/YZSQ5x50Bt9JPejrwXdeTtlNwLYESZ+STkK5CrQPN1soeeIX9fVhrFr2NvbSN6roytAALf49hQR+3kSfjKF6KnKihcRVZa/kchL22VYM/fwyQNtzAVM=
+	t=1770217363; cv=none; b=dgUpVnrrC6z6iVj7YWbk//nEpj6ZAYZIHaJYcrg9RFAiD12yzudE3bHdZlD3pwDh006BJOgaQZ3phG4ov0r+rhlfWOevXO+emO6f0WwCSYYAp/DWRf0avVli5AXvvNS4lbemZRvfW0b0cQ65QgmnO0pfMvn+qm4qwpR0peOxbdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218694; c=relaxed/simple;
-	bh=GkdWH556kaxXvROF/T/A3c5nMoyK0j7nqmNO0eSs9hw=;
+	s=arc-20240116; t=1770217363; c=relaxed/simple;
+	bh=cytjmjqsXuHusPDUTXhT/3Uh6CY+/LzgUuHCJsiaVNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nrJRtI2d/nyKm4FI3yukyKT1ra3Wk7kfcxfKq7d1v5hUm66TCbIihEVqKt3di9XeEzHhC8m8+5C+IPCtFNdOgDo4N807htOv/iHGS6e3SV89XW6fYm/fcXXiosLqs/9tzmzSDXEeWTdjDmXokL5IIjQEJN99UdriY756BFCb8fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqg2MXmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3085BC4CEF7;
-	Wed,  4 Feb 2026 15:24:54 +0000 (UTC)
+	 MIME-Version; b=SaWZb3Zz4lI+Gt1hR4b1PH21imMrwuLYOudVumTIkQbLHMCFQx5prXyGDdp0LLkFATbOKIuq3jQNya2pXdENEwi4BW6QYQcvcNXlwq55YyrF4anOcVeYfekskbeRTnzpL0oCC+eaEmRhFqBzu2hruAJ52c4BI27KeX1spYwRCy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnBxBnlK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA798C4CEF7;
+	Wed,  4 Feb 2026 15:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218694;
-	bh=GkdWH556kaxXvROF/T/A3c5nMoyK0j7nqmNO0eSs9hw=;
+	s=korg; t=1770217363;
+	bh=cytjmjqsXuHusPDUTXhT/3Uh6CY+/LzgUuHCJsiaVNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqg2MXmv5v0luBRa2f5QBknuh+32VhSTmWz/IpU7t544A9C9n7hhu5MuEkH3GsDUB
-	 jqW14X/1ztn4QeI4y/XlQ0jnI+28xNfX9LLsQBaepVIv605dMgYrJSDPryrmDPE57G
-	 tjmpr/BdFQ9JQwheHBje1qNZN5aWIDg1TouCCtuQ=
+	b=SnBxBnlKzJuw/2mJ2mu5A2fFR3FtqCoDFgwLTgTIWJr+sOZ5WoGlm3tQW+k/FavR/
+	 HjkA8JsbW6CT9RWvis3Ebpa45HubzTNL7V5qTw2G2yFYt2Htru3vbE98MwsSSWFxH8
+	 h608YQ3o1lULz+110zEdHmkBkIIQh1ToeUmfKefY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 33/87] sched/deadline: Fix stuck dl_server
+Subject: [PATCH 5.15 200/206] pinctrl: meson: mark the GPIO controller as sleeping
 Date: Wed,  4 Feb 2026 15:40:31 +0100
-Message-ID: <20260204143848.103960729@linuxfoundation.org>
+Message-ID: <20260204143905.431859575@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +68,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214139-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213745-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,samsung.com,oss.qualcomm.com,googlemail.com,linaro.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,infradead.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B1184E918E
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,samsung.com:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 2DBC2E7ED0
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 115135422562e2f791e98a6f55ec57b2da3b3a95 ]
+[ Upstream commit 28f24068387169722b508bba6b5257cb68b86e74 ]
 
-Andrea reported the dl_server getting stuck for him. He tracked it
-down to a state where dl_server_start() saw dl_defer_running==1, but
-the dl_server's job is no longer valid at the time of
-dl_server_start().
+The GPIO controller is configured as non-sleeping but it uses generic
+pinctrl helpers which use a mutex for synchronization.
 
-In the state diagram this corresponds to [4] D->A (or dl_server_stop()
-due to no more runnable tasks) followed by [1], which in case of a
-lapsed deadline must then be A->B.
+This can cause the following lockdep splat with shared GPIOs enabled on
+boards which have multiple devices using the same GPIO:
 
-Now our A has dl_defer_running==1, while B demands
-dl_defer_running==0, therefore it must get cleared when the CBS wakeup
-rules demand a replenish.
+BUG: sleeping function called from invalid context at
+kernel/locking/mutex.c:591
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
+kworker/u25:3
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+INFO: lockdep is turned off.
+irq event stamp: 46379
+hardirqs last  enabled at (46379): [<ffff8000813acb24>]
+_raw_spin_unlock_irqrestore+0x74/0x78
+hardirqs last disabled at (46378): [<ffff8000813abf38>]
+_raw_spin_lock_irqsave+0x84/0x88
+softirqs last  enabled at (46330): [<ffff8000800c71b4>]
+handle_softirqs+0x4c4/0x4dc
+softirqs last disabled at (46295): [<ffff800080010674>]
+__do_softirq+0x14/0x20
+CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
+6.19.0-rc4-next-20260105+ #11963 PREEMPT
+Tainted: [C]=CRAP
+Hardware name: Khadas VIM3 (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  __might_resched+0x144/0x248
+  __might_sleep+0x48/0x98
+  __mutex_lock+0x5c/0x894
+  mutex_lock_nested+0x24/0x30
+  pinctrl_get_device_gpio_range+0x44/0x128
+  pinctrl_gpio_set_config+0x40/0xdc
+  gpiochip_generic_config+0x28/0x3c
+  gpio_do_set_config+0xa8/0x194
+  gpiod_set_config+0x34/0xfc
+  gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
+  gpio_do_set_config+0xa8/0x194
+  gpiod_set_transitory+0x4c/0xf0
+  gpiod_configure_flags+0xa4/0x480
+  gpiod_find_and_request+0x1a0/0x574
+  gpiod_get_index+0x58/0x84
+  devm_gpiod_get_index+0x20/0xb4
+  devm_gpiod_get+0x18/0x24
+  mmc_pwrseq_emmc_probe+0x40/0xb8
+  platform_probe+0x5c/0xac
+  really_probe+0xbc/0x298
+  __driver_probe_device+0x78/0x12c
+  driver_probe_device+0xdc/0x164
+  __device_attach_driver+0xb8/0x138
+  bus_for_each_drv+0x80/0xdc
+  __device_attach+0xa8/0x1b0
 
-Fixes: a110a81c52a9 ("sched/deadline: Deferrable dl server")
-Reported-by: Andrea Righi arighi@nvidia.com
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Tested-by: Andrea Righi arighi@nvidia.com
-Link: https://lkml.kernel.org/r/20260123161645.2181752-1-arighi@nvidia.com
-Link: https://patch.msgid.link/20260130124100.GC1079264@noisy.programming.kicks-ass.net
+Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
+Cc: stable@vger.kernel.org
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@samsung.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/deadline.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/pinctrl/meson/pinctrl-meson.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index a860d77062395..1689d190dea8f 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1086,6 +1086,12 @@ static void update_dl_entity(struct sched_dl_entity *dl_se)
- 			return;
- 		}
+--- a/drivers/pinctrl/meson/pinctrl-meson.c
++++ b/drivers/pinctrl/meson/pinctrl-meson.c
+@@ -617,7 +617,7 @@ static int meson_gpiolib_register(struct
+ 	pc->chip.set = meson_gpio_set;
+ 	pc->chip.base = -1;
+ 	pc->chip.ngpio = pc->data->num_pins;
+-	pc->chip.can_sleep = false;
++	pc->chip.can_sleep = true;
+ 	pc->chip.of_node = pc->of_node;
+ 	pc->chip.of_gpio_n_cells = 2;
  
-+		/*
-+		 * When [4] D->A is followed by [1] A->B, dl_defer_running
-+		 * needs to be cleared, otherwise it will fail to properly
-+		 * start the zero-laxity timer.
-+		 */
-+		dl_se->dl_defer_running = 0;
- 		replenish_dl_new_period(dl_se, rq);
- 	} else if (dl_server(dl_se) && dl_se->dl_defer) {
- 		/*
-@@ -1692,6 +1698,12 @@ void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec)
-  *   dl_server_active = 1;
-  *   enqueue_dl_entity()
-  *     update_dl_entity(WAKEUP)
-+ *       if (dl_time_before() || dl_entity_overflow())
-+ *         dl_defer_running = 0;
-+ *         replenish_dl_new_period();
-+ *           // fwd period
-+ *           dl_throttled = 1;
-+ *           dl_defer_armed = 1;
-  *       if (!dl_defer_running)
-  *         dl_defer_armed = 1;
-  *         dl_throttled = 1;
--- 
-2.51.0
-
 
 
 
