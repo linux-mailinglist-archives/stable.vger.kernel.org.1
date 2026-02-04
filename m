@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFwuH4Btg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:08 +0100
+	id YN3HNpBjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D56E9C0A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8DAE84B4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B13443030B17
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4792B30670A5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FE32D0292;
-	Wed,  4 Feb 2026 15:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C81D42848A;
+	Wed,  4 Feb 2026 15:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQDA36QW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYZhPDEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7E11C5D57;
-	Wed,  4 Feb 2026 15:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B072542846A;
+	Wed,  4 Feb 2026 15:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219057; cv=none; b=GQjvNXU1UrsoqGWmfkC0sTLZwggkRvpcDksG366xH4tksKC1oK2LJB0tKJ+jnzIaeluII7Kh+RAaM0k4FFBDnlHd3Tf3Q5kW4OAHabS4vOH4Bwrx2hSeqB2pFov+Llsw+lH5M6b+MZZRcsQWaRd5ksEejU4fq/9bzg46mbxRhyg=
+	t=1770217398; cv=none; b=BxlkNpgjuigRyFAcVugeboC3CX/4nIpjbzvIk8kpW9IbOiRL9z2jViSImEoaeZFOCerQzLcSQvdRXUsS4hztwpv88HsX4YZlwbh92K1ic793jPRblURaD0pXptQsNTIMVDQBA7sFy9S5/3zI4czgag+G1otzg7lse33kQbQy0cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219057; c=relaxed/simple;
-	bh=T4ta11f/igTjqB5BRg+ZaQQOg9PRxuKSGcpRFybDy7Y=;
+	s=arc-20240116; t=1770217398; c=relaxed/simple;
+	bh=10aQA4eNKQDndC12SyANmqGbzmbf6VowRTVwa8hkWH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOFIzJcbnelBKuGhIVRKERg1g6pn//z0iBeD0SVm6mrOBmximlPQQdEEHoW6QIWnu7gTCEHHCl32ameWTH5wv4ppfTr0fIT4B/SIUb9sbzGaekZ0qBUtBb2OydeL7ScWGNc4hZeSdbFk9eTPeYi9hxBnQUAGifQoGeieB5Y4azE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQDA36QW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23671C4CEF7;
-	Wed,  4 Feb 2026 15:30:56 +0000 (UTC)
+	 MIME-Version; b=U8WtcsRTbHJ5MMawvTQAxc7nkoK2VsdDp6G3S61a/kHDluvUmB2nejLFUYCXHuw8AJYsd7CweKFWv3UQLM2f3Wwe5KPnd/pCfWL3NSrt/IInSR4cQ2FnfNicnBAza9EJLaxW34A6zfdDwu2ianjX/cJ+PehC4aNjuQlcmCkVpyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYZhPDEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28EBC19425;
+	Wed,  4 Feb 2026 15:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219057;
-	bh=T4ta11f/igTjqB5BRg+ZaQQOg9PRxuKSGcpRFybDy7Y=;
+	s=korg; t=1770217398;
+	bh=10aQA4eNKQDndC12SyANmqGbzmbf6VowRTVwa8hkWH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQDA36QWFr3l/KBLmP4xUX4c2SUjNQPn736B0zEDSHQkQJpfKOgnaFhb+nueJUYND
-	 igCCi2YWmKAjQpqR6S5hyOpimXE8w/KniyO0JisUd/o/xxXQSlFVgG7hmZAn991TIy
-	 fZn6RerEBq58KNSpJB4y4AmERzxcdxs+ilpS1XRk=
+	b=dYZhPDEKW55IwZwmzQWKY0/O5mbjkUG8GlaZBYr4MtOI4eS3jmXKzW+7cf1LcusTX
+	 gBnGf/DyfP6sXIqNugNKUQz5vmGSDob1aGkefsNGIPRMSoRgCaTqDkrrCz66jJnUc+
+	 M5K25MU8v6oI376cCMfAEOhvlncc8AtYf4GB+Kzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sai Sree Kartheek Adivi <s-adivi@ti.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 053/122] dma/pool: distinguish between missing and exhausted atomic pools
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 204/206] wifi: cfg80211: cancel wiphy_work before freeing wiphy
 Date: Wed,  4 Feb 2026 15:40:35 +0100
-Message-ID: <20260204143853.762843931@linuxfoundation.org>
+Message-ID: <20260204143905.576349040@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,99 +68,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214248-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213755-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
-X-Rspamd-Queue-Id: 17D56E9C0A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 5C8DAE84B4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sai Sree Kartheek Adivi <s-adivi@ti.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 56c430c7f06d838fe3b2077dbbc4cc0bf992312b ]
+commit 72d520476a2fab6f3489e8388ab524985d6c4b90 upstream.
 
-Currently, dma_alloc_from_pool() unconditionally warns and dumps a stack
-trace when an allocation fails, with the message "Failed to get suitable
-pool".
+A wiphy_work can be queued from the moment the wiphy is allocated and
+initialized (i.e. wiphy_new_nm). When a wiphy_work is queued, the
+rdev::wiphy_work is getting queued.
 
-This conflates two distinct failure modes:
-1. Configuration error: No atomic pool is available for the requested
-   DMA mask (a fundamental system setup issue)
-2. Resource Exhaustion: A suitable pool exists but is currently full (a
-   recoverable runtime state)
+If wiphy_free is called before the rdev::wiphy_work had a chance to run,
+the wiphy memory will be freed, and then when it eventally gets to run
+it'll use invalid memory.
 
-This lack of distinction prevents drivers from using __GFP_NOWARN to
-suppress error messages during temporary pressure spikes, such as when
-awaiting synchronous reclaim of descriptors.
+Fix this by canceling the work before freeing the wiphy.
 
-Refactor the error handling to distinguish these cases:
-- If no suitable pool is found, keep the unconditional WARN regarding
-  the missing pool.
-- If a pool was found but is exhausted, respect __GFP_NOWARN and update
-  the warning message to explicitly state "DMA pool exhausted".
-
-Fixes: 9420139f516d ("dma-pool: fix coherent pool allocations for IOMMU mappings")
-Signed-off-by: Sai Sree Kartheek Adivi <s-adivi@ti.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260128133554.3056582-1-s-adivi@ti.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20250306123626.efd1d19f6e07.I48229f96f4067ef73f5b87302335e2fd750136c9@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/pool.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/wireless/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 26392badc36b0..985d6aa102b67 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -268,15 +268,20 @@ struct page *dma_alloc_from_pool(struct device *dev, size_t size,
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1127,6 +1127,13 @@ void cfg80211_dev_free(struct cfg80211_r
  {
- 	struct gen_pool *pool = NULL;
- 	struct page *page;
-+	bool pool_found = false;
- 
- 	while ((pool = dma_guess_pool(pool, gfp))) {
-+		pool_found = true;
- 		page = __dma_alloc_from_pool(dev, size, pool, cpu_addr,
- 					     phys_addr_ok);
- 		if (page)
- 			return page;
- 	}
- 
--	WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
-+	if (pool_found)
-+		WARN(!(gfp & __GFP_NOWARN), "DMA pool exhausted for %s\n", dev_name(dev));
-+	else
-+		WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
- 	return NULL;
- }
- 
--- 
-2.51.0
-
+ 	struct cfg80211_internal_bss *scan, *tmp;
+ 	struct cfg80211_beacon_registration *reg, *treg;
++	unsigned long flags;
++
++	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
++	WARN_ON(!list_empty(&rdev->wiphy_work_list));
++	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
++	cancel_work_sync(&rdev->wiphy_work);
++
+ 	rfkill_destroy(rdev->wiphy.rfkill);
+ 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
+ 		list_del(&reg->list);
 
 
 
