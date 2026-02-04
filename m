@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213546-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOO0Inpgg2mfmAMAu9opvQ
-	(envelope-from <stable+bounces-213748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:34 +0100
+	id cHTzCYZdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213546-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FADBE7E9E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACE2E78AC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 524B63031F07
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03E793044D45
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00E62BD02A;
-	Wed,  4 Feb 2026 15:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC50413224;
+	Wed,  4 Feb 2026 14:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QheqI+qx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPZX+9qT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F2F2BF002;
-	Wed,  4 Feb 2026 15:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6E427B359;
+	Wed,  4 Feb 2026 14:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217373; cv=none; b=K0Bq1xtGpdfe6isZToMpc4Eyiwf5Px01rdllyMDw3LE67KgNDpZB1Dzdyp4ONY6suP6mKQIuND3PjdahdXmPu6Fc257cr4EdQ2PDiFPoEMnLVYpTbfa9PnmNEAew3f/bP0naUkzduScmJieKUO0b3JZbqwHpSNhtuwFTPBm2veI=
+	t=1770216695; cv=none; b=HbYbxSfK9jFlyCAlWmOAAMiyZwySyOtGU+v+lXHEYtKJyWki5Z0yKKKOF1FauA6ySyZ4DvGsaHEziajO1pxFgZNOR1/VC1qg++NyADdcWzHoKEv0hlQJJCKmu9LMy+146X7YxjFWcjKtwLUw7AoUbjdVV9VmIw8rAIPpGRP7vag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217373; c=relaxed/simple;
-	bh=9WsK+6PTnau4CAy0LkaBVfe9dy8OajGCtxZOa/Hxhyw=;
+	s=arc-20240116; t=1770216695; c=relaxed/simple;
+	bh=J9IFNBQwlLbEpQf1fzgxmBYq/+IyZAGrFneWcn3rsqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lz4ghghLxTzBBLE1RvO4j+ukMveOx0jmk5BScOMoMbcdTT+zd7qC9P1YL+r6uKhMVY29ctdAlxsVCjDmy3NcBNk6908eMiXocP9r6zgxagbsRCXXx0IkEmNCpjw3HqAvBDT0qr5aSKLEXTrPZ3tSDT2VjETupBoRH4OzUPb8XKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QheqI+qx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE05C4CEF7;
-	Wed,  4 Feb 2026 15:02:52 +0000 (UTC)
+	 MIME-Version; b=n3T90NUzs1Iua0h2O58M9jVJ83bxM8JXL2X3mlfbvXRJQBJ8HcGzYzMYW91A9M5+omwFCjAUMHJ31OHm9g/OaF/kckmhhLFpDNt5o/wNnQxulXVGpaIwX4sELkTRyKgbwbEkJKZxm3i0Zw4s+1NzGlNtMtp1pIuytsJ4MsnKyAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPZX+9qT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E5BC4CEF7;
+	Wed,  4 Feb 2026 14:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217373;
-	bh=9WsK+6PTnau4CAy0LkaBVfe9dy8OajGCtxZOa/Hxhyw=;
+	s=korg; t=1770216695;
+	bh=J9IFNBQwlLbEpQf1fzgxmBYq/+IyZAGrFneWcn3rsqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QheqI+qxMFfr8Y6pDbWkSDAjBnnWVKZzgigwSmgACc1woeY0tWu2f9wuZuyws1Mb+
-	 0tJdn+fYGcP10n2dCvpJaBnosmnNXWQRwEi9Is51hrXC187rogIq4TPrbMnBn7ubZt
-	 poyGoOYGQq1Pcte1DVUczz6OJalWjEiuMQH0+9is=
+	b=sPZX+9qTvcl0d2/ORjWV7kgFlKHb/DucStdiwm99LQgoIyxKDnW1U+iUInOqxPvba
+	 IJGMo5+AQTVYT7YOZEfvtgTBvC26/Wudhuxcunqeu57/RvAGhafOrrTC/kUQ4YRqqx
+	 OmWZD+WPzCfnottLTOSflEZlZ+842JRdFFempsgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Juergen Gross <jgross@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 171/206] mei: trace: treat reg parameter as string
-Date: Wed,  4 Feb 2026 15:40:02 +0100
-Message-ID: <20260204143904.368085535@linuxfoundation.org>
+Subject: [PATCH 5.10 140/161] scsi: xen: scsiback: Fix potential memory leak in scsiback_remove()
+Date: Wed,  4 Feb 2026 15:40:03 +0100
+Message-ID: <20260204143856.784191129@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,127 +75,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213546-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213748-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2FADBE7E9E
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iitm.ac.in:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,oracle.com:email,suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7ACE2E78AC
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 ]
+[ Upstream commit 901a5f309daba412e2a30364d7ec1492fa11c32c ]
 
-The commit
-afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
-forbids to emit event with a plain char* without a wrapper.
+Memory allocated for struct vscsiblk_info in scsiback_probe() is not
+freed in scsiback_remove() leading to potential memory leaks on remove,
+as well as in the scsiback_probe() error paths. Fix that by freeing it
+in scsiback_remove().
 
-The reg parameter always passed as static string and wrapper
-is not strictly required, contrary to dev parameter.
-Use the string wrapper anyway to check sanity of the reg parameters,
-store it value independently and prevent internal kernel data leaks.
-
-Since some code refactoring has taken place, explicit backporting may
-be needed for kernels older than 6.10.
-
-Cc: stable@vger.kernel.org  # v6.11+
-Fixes: a0a927d06d79 ("mei: me: add io register tracing")
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted __assign_str() calls to use two arguments ]
+Cc: stable@vger.kernel.org
+Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://patch.msgid.link/20251223063012.119035-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ adapted void scsiback_remove() to int return type with return 0 statement ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/mei-trace.h |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/xen/xen-scsiback.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/misc/mei/mei-trace.h
-+++ b/drivers/misc/mei/mei-trace.h
-@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
+--- a/drivers/xen/xen-scsiback.c
++++ b/drivers/xen/xen-scsiback.c
+@@ -1202,6 +1202,7 @@ static int scsiback_remove(struct xenbus
+ 	gnttab_page_cache_shrink(&info->free_pages, 0);
  
- TRACE_EVENT(mei_reg_write,
-@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] write %s[%#x] = %#x",
--		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
- );
+ 	dev_set_drvdata(&dev->dev, NULL);
++	kfree(info);
  
- TRACE_EVENT(mei_pci_cfg_read,
-@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
- 
- #endif /* _MEI_TRACE_H_ */
+ 	return 0;
+ }
 
 
 
