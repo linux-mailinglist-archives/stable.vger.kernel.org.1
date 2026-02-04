@@ -1,214 +1,320 @@
-Return-Path: <stable+bounces-214340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qC9YJnOUg2mppgMAu9opvQ
-	(envelope-from <stable+bounces-214340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 19:48:19 +0100
+	id sOrbFdaVg2nYpgMAu9opvQ
+	(envelope-from <stable+bounces-214341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 19:54:14 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F60EBBEE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 19:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B6BEBC70
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 19:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D5D93010141
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 18:48:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59C3830252AF
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 18:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613EF34AAE2;
-	Wed,  4 Feb 2026 18:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DEC3D7D9D;
+	Wed,  4 Feb 2026 18:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+sFaaV6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRHi1102"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A52346AFC;
-	Wed,  4 Feb 2026 18:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770230896; cv=none; b=pdSlI8PJXpghjtQ80MvcYH7ZJaWzUn+dpHDdjy5UtBfFoO/VhhLDdlNiCxKXRxnMZRm5KR3JcV9wF1NTot8EIejQpcvT+oW2DN9kivX/FkgBNsrZeAS+Ct8TJseZSOwmYGi7acI2FbPT1i+DV5Szsrlvd1UsTxJdoyi94LfbaYE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770230896; c=relaxed/simple;
-	bh=5dffcEdKgAFcYj3WU+q5x5hHwMm4789JM2jaUUQpS8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MAWqyMjO1JGIKUQ50y120EIeCIuCIAvZpAEe4mBVcLyPZ2P+kzrw0JUcDJ/JNzrFTGXa+r0U8zs0ouYM2yrPtgmknpFW+9g8/s27qlPk+GhhRLyWkX2fAqrJLeGJv1rlnUwuAfCDO4/TQPAuf389+WpD/Vxb1WEyxxs5IGFibbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+sFaaV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FA9C4CEF7;
-	Wed,  4 Feb 2026 18:48:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770230895;
-	bh=5dffcEdKgAFcYj3WU+q5x5hHwMm4789JM2jaUUQpS8c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S+sFaaV63yEmCbpi41BOmA+J4zmeIGFCjO051PUDmpIHgsAFE1yVGbtECB6/Fi8UU
-	 xrJzZKnmSYbAblqtKlif6Pv2NylzYs2hums9P+XTZ057bGwBMV9POyA71OFUArAwMG
-	 PBDthJrzcD+No7h3Qpt5vtu0uyhDZQTsQfRdEwutOqym788WzOEHsx6y4J5939ADNY
-	 Z3oM6m4MbW1MpWjMoes+2PVvu72t25bkiOhMkFjoCTnNK+VC+zEtbOJyUm0IXIiiEr
-	 HAYbbEQH+7+0GZwcRr3NsPFfHUpRPskXkVh6VbfxG5GbUSBboiRu0Cvtm6LnBf5Zfz
-	 wbeZn6HXBjdyQ==
-Date: Wed, 4 Feb 2026 11:48:10 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Pimyn Girgis <pimyn@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Marco Elver <elver@google.com>,
-	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 5.15 195/206] mm/kfence: randomize the freelist on
- initialization
-Message-ID: <20260204184810.GA2715873@ax162>
-References: <20260204143858.193781818@linuxfoundation.org>
- <20260204143905.245830999@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91287156F20;
+	Wed,  4 Feb 2026 18:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770231221; cv=fail; b=nrpBU5PoiqT3ugq7zXBbyfBRG8fbriQLweVjh1z8kddm6KMHUWsxmzrYkpXkCRnL775niRtz/zqQ3YZH3Lc02srBHQNkEJpkvFPnCuGJPROA4s6FmRrmMBGmrsIxYDIW2Wc7GRHIhVyNLHVbjDar4I/Jc8WSW+W+fQnDNlhHJcA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770231221; c=relaxed/simple;
+	bh=ri5lCNcx+QbKrB9Viv2DVTpf37a7I3bLgxZQ1M3OW5M=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LavuAj7WurQ7TbktXDZfFcRklWTduSeBnviduFO2aGLAsDfPJN/nPCtpe+mtH8QuL199aKSQw89B0u1YTorwV7HMDVQYwgivhdUg8lrCUSLvwuHGTCER2kGtxn+BqDTfli6NRc7Ohby9ZaJEN2iRkQY1hg9iPveJBGOXVsqL1g0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRHi1102; arc=fail smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770231221; x=1801767221;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ri5lCNcx+QbKrB9Viv2DVTpf37a7I3bLgxZQ1M3OW5M=;
+  b=cRHi110212f+mHodBKmsLbwXfR4iWFLin1FWTjIyhDqvG2yVZfTCYM8O
+   4KzMboBEAIBkTo5lbn1Uzm6dYOBIzxR25jhcmXerSTVQn5CP5o3QXidfO
+   Ul5k7QWijFJexqslh991k0c2Nh5ihWtL2sIf+ACaGEVv+qdEpTCHEEZL5
+   PMHYT0MIwXGkM1RFaJabSwlJUWR/Wwb4t3oI17+f51U93a/dPlgNcCRMw
+   hQtdILAdCugwDa0anVsx1lH8FrzlFuRvS2QNO7oesZsnY4HMsM78rVlmF
+   l9tndRTGy43//QLIQ3bhXwVZO6aTvhe/YgkB0SVpOYMqptsmvVh37tlJe
+   Q==;
+X-CSE-ConnectionGUID: 12q2b6vHQC+7YIGTqiKFOg==
+X-CSE-MsgGUID: 0wFUqFzMQmmFkDkOyS6H+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71461416"
+X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
+   d="scan'208";a="71461416"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 10:53:38 -0800
+X-CSE-ConnectionGUID: JY0FS9C3R66jS8MFFwyjhQ==
+X-CSE-MsgGUID: rrAF6u6yQbK4MDng1OY+Kg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
+   d="scan'208";a="215233174"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 10:53:38 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 4 Feb 2026 10:53:37 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Wed, 4 Feb 2026 10:53:37 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.59) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 4 Feb 2026 10:53:36 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Vt1sSc7/t3m7S1KCqH6GP9snxE1BQ2MW4y87F4LW9nRIw5yXHdQtX2XDOCDrTJbUS2mQAyswDSF4piLhklw0tOjuV7jV6eCb/vpoCKoH7cYRh6TlkvJvzbWYjaM6OzhqLVxobDVq7J0bRhvr5rqYqQBaibic/mT7mylK/YDoQvzxw07fzADGnD1rWhGVdEkTMZs/9v9Zo4UywG4a1HWcRErnkLROG5jIDpfaKEcUg0HDP/oI9ySh0SyJw0EY4/uWPEl6bGFmTsTgadi74hnev3YYZK/sPLtaj06yjBRJy7BEhgX255HXWogbNeQg6xHhedQwocmvckEkapGlVO87PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mcui8+/ic6ABQ/53XHhz/iPU8EcGH00PR/gBFVOIZWs=;
+ b=mUddonVdMCPkRW9XQVL934zjgOm0eNjsJhebPO5gXnjKb7KYWYfLtQ0+4U4Y5ck+Oow6RlptMAtNopdTvI7XkRVVthB+lIHWSNIpa2Eyf+p2A6YPjjMw7FZ+tGSG+37aCHoZii8U6FGxT9Z7yqnSUDGozPqFZKgREb2QaOaRlgLqoupdWWVSqSEuhG7TNVCQkhrLzTtzwgVZVsTAklv3SAx71CE5XGzt7n8AxUc9wb5H4+7GjV9EtsTae58fLlr6TdEU8xsj9Dv850GfWeKGsFya9p0meU/BPo2NwKreNVJXNhLoByLZbpgEiIUgT5c9N3h5VcG3601tUcUnv0Dj0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
+ by DS0PR11MB8163.namprd11.prod.outlook.com (2603:10b6:8:165::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Wed, 4 Feb
+ 2026 18:53:33 +0000
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.20.9587.010; Wed, 4 Feb 2026
+ 18:53:33 +0000
+Message-ID: <722b53a7-7560-4a1b-ab26-73eeed3dffa5@intel.com>
+Date: Wed, 4 Feb 2026 10:53:28 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] x86/x2apic: disable x2apic on resume if the kernel
+ expects so
+Content-Language: en-US
+To: Shashank Balaji <shashank.mahadasyam@sony.com>
+CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Suresh Siddha
+	<suresh.b.siddha@intel.com>, "K. Y. Srinivasan" <kys@microsoft.com>, "Haiyang
+ Zhang" <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, Long Li <longli@microsoft.com>, Ajay Kaher
+	<ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Ingo Molnar <mingo@elte.hu>,
+	<linux-kernel@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
+	<virtualization@lists.linux.dev>, <jailhouse-dev@googlegroups.com>,
+	<kvm@vger.kernel.org>, <xen-devel@lists.xenproject.org>, Rahul Bukte
+	<rahul.bukte@sony.com>, Daniel Palmer <daniel.palmer@sony.com>, Tim Bird
+	<tim.bird@sony.com>, <stable@vger.kernel.org>
+References: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
+ <20260202-x2apic-fix-v1-1-71c8f488a88b@sony.com>
+ <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
+ <aYMOqXTYMJ_IlEFA@JPC00244420>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <aYMOqXTYMJ_IlEFA@JPC00244420>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0064.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::9) To DS0PR11MB7997.namprd11.prod.outlook.com
+ (2603:10b6:8:125::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204143905.245830999@linuxfoundation.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|DS0PR11MB8163:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8057de85-c57d-46e6-3aab-08de641eb22b
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UHJJcld6MkRoZnpwMWsrRitmYi9pQ1VLRVVRaGJrVHhWNzY1dkdkSDNpTmVH?=
+ =?utf-8?B?Z1ZPdzRFOVNobHdkWFd3ZHg1YjRneHdGSWlmMzhwVkh2dUJPMWxJM0NvVlhQ?=
+ =?utf-8?B?UGozOWFyQnhuMmk3dmMvQXpBVXhPNVJQbVRtdnpKcGZVY1VHQnpEYlByckJU?=
+ =?utf-8?B?c3ZFYVVIZFhjcXlJb05iSk8zcEZJWE1tQ0hFWkgrWjJuSndKeVp1Q3dGTCs3?=
+ =?utf-8?B?Y2l4ZmdWZWIrOTE4NnJrYWc0R1VrWWlqR25NbjRnR2xCT0RYeThLdVVxemo4?=
+ =?utf-8?B?M2o2R2RNNXlwK2Q0ajdVQnIxak9yanZVWitUeFl0RWhUZFdXaWNzamlkenVH?=
+ =?utf-8?B?MHptcEJDYnlneXFTaExiTFg0ZXZKMGlEckhGQlJXN3BRUDVmN0VGUFBuVUkw?=
+ =?utf-8?B?QUxDSWZ6bHpDd2grR0NiOUtMcGxWNmY3NWFqb2ZlYW5ZVDdvUWRpLzIzMnl5?=
+ =?utf-8?B?YTZFWDR2cXNsUklRNnA2SytSYnVCbGphMDhjUHhCREllM3RwZUZHMDk5MnFp?=
+ =?utf-8?B?MHZCa0ZSRTFrd2xTTDd6dzFqSW5iMk95YUdYb3pkTG5wdjVud0JwSXUyMTBP?=
+ =?utf-8?B?N1BKTHI0dVVmcjY5ejI3QjZocDdmUk41amcwV1N5YTEweVkzOFVENWhzTzJu?=
+ =?utf-8?B?aGJpdEJwb3MrS1pJYWxYM2I1WDI1YmVyTXhWeW0rd1ZGUHU2N21zUnUyL0I3?=
+ =?utf-8?B?SG9SZHhBQUdUb0ViRUM0aEZUOUdYNUJhaFV4OXRVeGxXaWVpd1BYdU1vOWsw?=
+ =?utf-8?B?cDZHck9nQmNWajU4bnFHRTgvTFYrY2xOVmY4NkNBK0s3a1NRbWw1OGRUMjNi?=
+ =?utf-8?B?VC9hdkl3VHdvTlp5MURYSnJUSTYzU3hDNFE5SEpFTjJ3NUR0U2RBTjErakxM?=
+ =?utf-8?B?a0R0eDlBVENXT3JDVW9RZ0x4M0JmZm1tSVFZb1owQ3c3QkhmRzFLNHBNb01t?=
+ =?utf-8?B?U1kydDN2cEVrMVp1WUJuSXlyZ3N0TmxmYzM4KzFZUDFjV1duMElmZUx2NVlY?=
+ =?utf-8?B?Q2FxTW9pY0RMZ3pMZ1RPMU8vY2RpV3ZTY1VVUzVTRzR0QUd3YzRFOGF4Y3Y3?=
+ =?utf-8?B?dXg5NUFVczVmMmJvSlVocTVvakJSZkxMRkFockNrRHRveW5QSHo4Zkd5WHdY?=
+ =?utf-8?B?RzBoblNNUk50a1NaQjNPck9DeXJEK20ydFZKdmo4RFhmUFRkaVZwS2JZMEVw?=
+ =?utf-8?B?ckk3MThub2l2N1BYZmNxdW9oZ0t4ekQ1WGJZSmlyMkpRNUFXQTV3RWowQ0VV?=
+ =?utf-8?B?akpDcktKRmdwbGIveW4vQWtJSDMyaU1NZW44TTdVUFpLYjJpaCtydndrcGdq?=
+ =?utf-8?B?YitVajM0NXZJR1UzbVUyVDAvOHhKaVFyWHllczNoZkRvbkYrc3htamxXU0sx?=
+ =?utf-8?B?eDVVUGtTNEcvbWVtY29hY2R0MkxJYXhINDM2cG1ETXZObXloZVVTY0xPK1Fv?=
+ =?utf-8?B?WUI1WkswUUxUZXJmelo4RU1sVFlaMWhVbWVuMnl2ckU5dGtPU2xOV0xHazhJ?=
+ =?utf-8?B?SGxORTZPdERZL1dmRGUrL0RUOERrRG5HeGF2bllQWkdEOE1hSU5vd2pBdkJy?=
+ =?utf-8?B?UVJSN21PTzVpaWVGTkZ5S2Fva2FkTURmL2hXSjNTZFNWdW8xS1hlb0FLQ3NK?=
+ =?utf-8?B?Z080YW9YcGRBWFNqaGpxekk2eTB2SGgxR3ZBZWlLZkNKK2xEYXFjSzdhMGpI?=
+ =?utf-8?B?c0xQc2U3TWxxMC9ITmJPelU5bUVFVG1zNWhTcnNOOXFqS1A0R3pYQTVOMkZK?=
+ =?utf-8?B?dXlCTUV1YVlaeDZsdWlzTHkrUlBOVFBKZHZmbVRjS0FQSy9iUTNzTUN2ek5a?=
+ =?utf-8?B?N2dUbmFFTG5ZQ0EwTzgwTDc2cXFXeUd5endRcUxyMzB4ZVZ1Z0M2M3pFdVVK?=
+ =?utf-8?B?NXBkcGNiVkRDZjBpT0RNQlcvUUxaR2xGN2hCWnk3b1RIV3N4dWZ1SEpzT1ZK?=
+ =?utf-8?B?cC93TFpsalpoQTR1MWQwV1d0UHNSa2R6M0NoTjdpMFNCekhVbFVlZzMvQWxB?=
+ =?utf-8?B?VHVpWWQ5Z0N6b0lxa0VjSDJabEcrVTV2c1hSYWsydmh1L0NjSXpHNDE1Vi9L?=
+ =?utf-8?B?dmNBNVJFT2RneHBJVUplSXFlWnNsVkdzZHFCbFZaUFEyY3Btd0Q3QUx3VGVO?=
+ =?utf-8?Q?c0QE=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bVdERVBpWFlabWZ0dzB5Mmt2TzVhNkQwN0Y0Ym01SHdFOC93WTlIeEJuK2Z0?=
+ =?utf-8?B?SnFPWnlINjNMTzhoRUN4SVNML3ROSS9LUG54WlNGb2dBcWdpRTlDemZuT0dM?=
+ =?utf-8?B?bEQrV2NMYWEzQXgxSHh2NmFDczFYOHJmVzdXVGR6c1o4TkhMbUZmZzd1VWs4?=
+ =?utf-8?B?VlNzTWpobFZOTHdDS0xlYjNSeUk1U3F5dXFWNk93RnA1TTZrcmN4ZkoxY0x5?=
+ =?utf-8?B?RVYydzIvUmI3Z1dDSFJwTjJwVUJlL0NRV3BqTE5ubyt1YkZrL0gyVGcwSlE5?=
+ =?utf-8?B?ZUFmbWRqbUV0M3NUdHNMWGtwSFBHWFM2eDM1Tnl0NmIyMEZKRXdRUit3MjN6?=
+ =?utf-8?B?NForbTRjNlRmUmdYRyszUFRVR3o4bTNHWmxqRVM3QzlRdmt5T21GbmpiaVF3?=
+ =?utf-8?B?cnI4TlYzdDVCN3V4c3ZldVhNZ0c5eXZkQVNwTGNRNG5HYVk0NWE3R1RFZGFO?=
+ =?utf-8?B?b2RxT1lyZkRjY0FtNFNLcHpQQXNsTmxqM3ByWDY2ZDllZzZnWkllWlJoNzR6?=
+ =?utf-8?B?K2pyeFpUK25hbVVBZEJ5ZzFIVlZBK2VGVCtLVHhjMFI4Uyt1MlpBS29XN3pB?=
+ =?utf-8?B?N1FEckpmbko1TVFCNk41aHRWVTFIWFV5UVBTNWtLTDRvUUNMQnpNamQxTkhs?=
+ =?utf-8?B?QWE5RkFscDkyQWVqSjRwV0UrcHpzRDg3aUN1L09DZGdvWEw3UjhQVnhxVDhh?=
+ =?utf-8?B?WDNTUVAzdGptNGJRRWNadGorczAxWUZxeFhiaWZaOFZGN1Q2NGlFMk5WMVBF?=
+ =?utf-8?B?REJEcGw4TXJUcTgwbG5VdUlJZk1YNThzN1Z2MlVVWCt0cmpoMjRhVVJMTE5u?=
+ =?utf-8?B?Z2xPOHJ6cENYK1pEL0tzekU1bnhlRVBvMjAwT1Y4NzhYN2JJazg5YytPVURN?=
+ =?utf-8?B?TWNDeCsrUnRabjM0V0JVSjV6Y3I2Zlg3Yzl2cEdlQlNEZS9MRkVVQkdVbUxC?=
+ =?utf-8?B?eDFrWGlWcmY3WHdIeXV1SmJuYVA3RC9XSExMQlVuVkNVQUpldngyR3pvV3Rt?=
+ =?utf-8?B?NHUwWU5GNWc5ZFZCdGwrWTlwa3VlMW8wK3Z2alhKc3lpRUVSSWoxZVg1bWRW?=
+ =?utf-8?B?TFJHN0JLWGg2VFAySFRIMnhiU01FSi84eDVTY05qWnY2cGxybzlXTEVOeFlz?=
+ =?utf-8?B?SDFDNGNDSHdPTktuZGZYVG9tSDVZa2NyU1pCRU94Q2tIY0c3MVQ5MEJLTGI0?=
+ =?utf-8?B?K1I3RDlXVnhwTEhoU1lJZTlIVTR2YUJBbnRqMEt0NGU5eFZDbWRlcFJsWXN1?=
+ =?utf-8?B?Y2t3MEM1TmVPdnYwbnZBQXVUSHUwYnZFS1ZRYVdnemYvT1VYM3diMXYzU053?=
+ =?utf-8?B?N3VnQVFDQmxETFh5ZUxkVlhoVkFTQ2F6cjM1VVd4YWdVZmFLSFdCdUg2R1R4?=
+ =?utf-8?B?TWJyT1YwOEttZEtDdUZYOXhYRTNKVjFLbU5OYUN3ZnRaUWFTKzZVajNrTFJy?=
+ =?utf-8?B?czlpOERyRG9TcWc3dnVtVUJwOGNSLzREMkNZQXhyY0xIQTZhVTFka3NYMDg0?=
+ =?utf-8?B?dnNmQmZHeGJkWUZHNk51dXJRRldzMTkwWCtMQWNRYWloV3hjZ3lXbHk4UWo4?=
+ =?utf-8?B?cHVlVnlEcitRc2VSVE1Ha0lRR0diK0llZSsyb1NzdzFHOFA0ZVh4emJEckFJ?=
+ =?utf-8?B?dGMzVkQ5c0toOWNlRzBrcWV4a0RGUjZ0eFhYdW1mK3M4cFhVazJSUWlUVHZD?=
+ =?utf-8?B?b3JJaGlNeXNNcit6cHlZaTVRQ0F4eWJUWTdXYlFWbjU4UGU4Rmp5S2FkalJj?=
+ =?utf-8?B?b2VKWFkxZjNSRDdkSTNEME1IV3lGZnRISjlNTUpsV2tmZmVLWUtDZklHajgw?=
+ =?utf-8?B?dCtUYWFsdVgvT2s5L2hUaFZyUGVwTjJoOEFLaHNzWmFleC9kWVM2Ri9HdHIy?=
+ =?utf-8?B?QW82UTMzVmZFRzhoZzZBL0laZFM2bzRlZzBZWjQwSzV0ZUx3S3ZoMmUwY3R5?=
+ =?utf-8?B?dDF4bjBkRXZ5d0lqM3paWTBmbXp3dy9oMGo4Ujk3NEl0WlFwNW9CRGdzT09H?=
+ =?utf-8?B?SVBMYnFEbTdacUF4dVNFcmtENUJuNUhZRFZobkJ4UWw2dWMvRXMxN3dURzhZ?=
+ =?utf-8?B?R3Z3TkRpN0s4enNSRDlaM3d2STBjQVNWRTZSekhOa3NCZmVYMzZrSDJ1RFRZ?=
+ =?utf-8?B?T01nd1ZSN2lrZE42dk9zaUUwQnBCNlN4UnVmNG5Wa1BGbHNSZjVxRi9zZklL?=
+ =?utf-8?B?QndIRkV3TkZTOWNibEF3QjZWTTZwVFlzbHlMVHY2UWxPd1FXVlpiSW1lVWVt?=
+ =?utf-8?B?eTlncFhOejVOc3lYTEV5Z1RuN3ZQQmc3cmZLeVk4emlrbTJWczBJRHU2Lzdm?=
+ =?utf-8?B?eUdJRjZqYVZEaGVxRUMxREhQUDBGeUNBQzJFOGNaa0ZqbHFCRHZyZz09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8057de85-c57d-46e6-3aab-08de641eb22b
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 18:53:33.5711
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bn8zWyXjfURZZWpZ8USJ9E9fy+x9qqoK6hkqYi0fqroGsjUFnlJdA2VuDyDV2paTFNxcyZJZDYggHvdx+jLsrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8163
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214341-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214340-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: B7F60EBBEE
+	FROM_NEQ_ENVFROM(0.00)[sohil.mehta@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: F2B6BEBC70
 X-Rspamd-Action: no action
 
-On Wed, Feb 04, 2026 at 03:40:26PM +0100, Greg Kroah-Hartman wrote:
-> 5.15-stable review patch.  If anyone has any objections, please let me know.
+On 2/4/2026 1:17 AM, Shashank Balaji wrote:
+
+> __x2apic_disable disables x2apic only if boot_cpu_has(X86_FEATURE_APIC)
+> and x2apic is already enabled. 
+
+I meant the X86_FEATURE_X2APIC and not X86_FEATURE_APIC. But, thinking
+about it more, checking that the CPU is really in X2APIC mode by reading
+the MSR is good enough.
+
+> x2apic_enabled also does the same checks,
+> the only difference being, it uses rdmsrq_safe instead of just rdmsrq,
+> which is what __x2apic_disable uses. The safe version is because of
+> Boris' suggestion [1]. If that's applicable here as well, then rdmsrq in
+> __x2apic_disable should be changed to rdmsrq_safe.
+
+I don't know if there is a strong justification for changing to
+rdmsrq_safe() over here. Also, that would be beyond the scope of this
+patch. In general, it's better to avoid such changes unless an actual
+issue pops up.
+
 > 
-> ------------------
+>> I considered if an error message should be printed along with this. But,
+>> I am not sure if it can really be called a firmware issue. It's probably
+>> just that newer CPUs might have started defaulting to x2apic on.
+>>
+>> Can you specify what platform you are encountering this?
 > 
-> From: Pimyn Girgis <pimyn@google.com>
 > 
-> commit 870ff19251bf3910dda7a7245da826924045fedd upstream.
+> I'm not sure it's the CPU defaulting to x2apic on. As per Section
+> 12.12.5.1 of the Intel SDM:
 > 
-> Randomize the KFENCE freelist during pool initialization to make
-> allocation patterns less predictable.  This is achieved by shuffling the
-> order in which metadata objects are added to the freelist using
-> get_random_u32_below().
+> 	On coming out of reset, the local APIC unit is enabled and is in
+> 	the xAPIC mode: IA32_APIC_BASE[EN]=1 and IA32_APIC_BASE[EXTD]=0.
 > 
-> Additionally, ensure the error path correctly calculates the address range
-> to be reset if initialization fails, as the address increment logic has
-> been moved to a separate loop.
-> 
-> Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
-> Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-> Signed-off-by: Pimyn Girgis <pimyn@google.com>
-> Reviewed-by: Alexander Potapenko <glider@google.com>
-> Cc: Dmitry Vyukov <dvyukov@google.com>
-> Cc: Marco Elver <elver@google.com>
-> Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
-> Cc: Greg KH <gregkh@linuxfoundation.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Pimyn Girgis <pimyn@google.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  mm/kfence/core.c |   24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> --- a/mm/kfence/core.c
-> +++ b/mm/kfence/core.c
-> @@ -520,7 +520,7 @@ static bool __init kfence_init_pool(void
->  {
->  	unsigned long addr = (unsigned long)__kfence_pool;
->  	struct page *pages;
-> -	int i;
-> +	int i, rand;
->  	char *p;
->  
->  	if (!__kfence_pool)
-> @@ -576,13 +576,28 @@ static bool __init kfence_init_pool(void
->  		INIT_LIST_HEAD(&meta->list);
->  		raw_spin_lock_init(&meta->lock);
->  		meta->state = KFENCE_OBJECT_UNUSED;
-> -		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
-> -		list_add_tail(&meta->list, &kfence_freelist);
-> +		/* Use addr to randomize the freelist. */
-> +		meta->addr = i;
->  
->  		/* Protect the right redzone. */
-> -		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
-> +		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
->  			goto err;
-> +	}
-> +
-> +	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
-> +		rand = get_random_u32() % i;
-> +		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
-> +	}
-> +
-> +	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-> +		struct kfence_metadata *meta_1 = &kfence_metadata[i];
-> +		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
-> +
-> +		list_add_tail(&meta_2->list, &kfence_freelist);
-> +	}
->  
-> +	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-> +		kfence_metadata[i].addr = addr;
->  		addr += 2 * PAGE_SIZE;
->  	}
->  
-> @@ -597,6 +612,7 @@ static bool __init kfence_init_pool(void
->  	return true;
->  
->  err:
-> +	addr += 2 * i * PAGE_SIZE;
->  	/*
->  	 * Only release unprotected pages, and do not try to go back and change
->  	 * page attributes due to risk of failing to do so as well. If changing
-> 
+> So, the CPU should be turning on in xapic mode. In fact, when x2apic is
+> disabled in the firmware, this problem doesn't happen.
 > 
 
-This introduces a new instance of -Wsometimes-uninitialized, as pointed
-out by this KernelCI report:
+It's a bit odd then that the firmware chooses to enable x2apic without
+the OS requesting it.
 
-https://lore.kernel.org/177022794292.7001.3716577555750776270@22d5995788c3/
+Linux maintains a concept of X2APIC_ON_LOCKED in x2apic_state which is
+based on the hardware preference to keep the apic in X2APIC mode.
 
-  mm/kfence/core.c:529:6: error: variable 'i' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
-    529 |         if (!arch_kfence_init_pool())
-        |             ^~~~~~~~~~~~~~~~~~~~~~~~
-  mm/kfence/core.c:615:14: note: uninitialized use occurs here
-    615 |         addr += 2 * i * PAGE_SIZE;
-        |                     ^
-  mm/kfence/core.c:529:2: note: remove the 'if' if its condition is always false
-    529 |         if (!arch_kfence_init_pool())
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    530 |                 goto err;
-        |                 ~~~~~~~~
-  mm/kfence/core.c:523:7: note: initialize the variable 'i' to silence this warning
-    523 |         int i, rand;
-        |              ^
-        |               = 0
+When you have x2apic enabled in firmware, but the system is in XAPIC
+mode, can you read the values in MSR_IA32_ARCH_CAPABILITIES and
+MSR_IA32_XAPIC_DISABLE_STATUS?
 
-Cheers,
-Nathan
+XAPIC shouldn't be disabled because you are running in that mode. But,
+it would be good to confirm.
+
+
+> Either way, a pr_warn maybe helpful. How about "x2apic re-enabled by the
+> firmware during resume. Disabling\n"?
+
+I mainly want to make sure the firmware is really at fault before we add
+such a print. But it seems likely now that the firmware messed up.
+
+
 
