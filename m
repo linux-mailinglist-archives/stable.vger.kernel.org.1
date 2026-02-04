@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-213868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OA2LGBpg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:32 +0100
+	id ILdgNodbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D472E9411
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D07E74FD
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 233D230CC69D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49659300F1A5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFD341C2EE;
-	Wed,  4 Feb 2026 15:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731782773E5;
+	Wed,  4 Feb 2026 14:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="do5vSlb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yULSCNRH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EC941B36C;
-	Wed,  4 Feb 2026 15:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37187270575;
+	Wed,  4 Feb 2026 14:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217783; cv=none; b=f3JFNNigUdaWgvaV+/fwDHrujn8cc4IQedvLBSb+gBqYly0CcCspCSvkFXpjEPS8rq4E4zfx8rxPEETSCQD7dQonly8Kp1sDbbGDDD2VstuA3eZqaQAV+/sEG+RK4x+3GeGlMW3+4oikazTz48x0ZkdXiC/fk5QeX4vm/aldB3o=
+	t=1770216325; cv=none; b=pCzJczRRjdVbCjsyPPsipYE211yz7d6ywflkGNZWaIoHCOO5Wrwt8mjyV3YDOxKD1uLZP/nDGxWLxiNrJCbQ/sreOVMt4HvRQC6wHVAhYkvW9QKJdrUZqxu8r9CuWqVhmWQkQ8JBcxFkJTNAX9vxx2j6uPqP0D2VZibr2G+SBpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217783; c=relaxed/simple;
-	bh=Q9zya9JzxxAPzgjcGZtA7QmDMdT8QWyBDJO9cxesbk0=;
+	s=arc-20240116; t=1770216325; c=relaxed/simple;
+	bh=tn5G3xYcTvCqVflj7hfuFi+dXUP7Z3Kd2aUnpqlihEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TqfXyJbJT6MYn6UgqWKl0Q5RxxkPBOjcYUShX7kF1WjI8KBMDIrk5fhuZ0k5JOoN8YByDI1uSENZs3tlFRy0y75S0vCNEVTUkTvbClCRYsQ8fGsu8/1BKAnpQXpxi8y/fwlheX+qkhALvT5vEoeKLq88w72WeOdOkKBwoJDnBTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=do5vSlb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E60CC4CEF7;
-	Wed,  4 Feb 2026 15:09:42 +0000 (UTC)
+	 MIME-Version; b=U0HS7qYSOTzsU+bJSCmuf48SCcXSkpZSx5qeBEcFLhXyUt84yrSte9nWwMhBpLhXKiz+ku/iHy1zxkwcdDMrS7Kzqbtbw17hXEJUUyxJAaV0r7hvUqT0fZVLt1DiYGiLtnmPK3nsJum0V4xSZUQJtB7/ymKd/dbRXAgMB+1gmjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yULSCNRH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5462C4CEF7;
+	Wed,  4 Feb 2026 14:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217782;
-	bh=Q9zya9JzxxAPzgjcGZtA7QmDMdT8QWyBDJO9cxesbk0=;
+	s=korg; t=1770216325;
+	bh=tn5G3xYcTvCqVflj7hfuFi+dXUP7Z3Kd2aUnpqlihEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=do5vSlb2FYyziDFAYDQ/X5FIWP9GXalpBPNrLb+Oad1RV8iUtbEHgB2ypphcs/7jI
-	 3QkXbXcL6MDp9VTGog4ub9H72s/C0WdaWm+tvF8MH7oRJmkEy1vNN+8fJNQ4gEwnrC
-	 dKrMWUO4UURkmoWsTyx7hH4N+mHaLnGsIDbRb6xg=
+	b=yULSCNRHSaiDUzCoakAa4cHVja/o+Ikx01lWyXarZugRfUjfRTHxRPnWVkDKNhMgT
+	 OXUrFvKsUT0DuEFiXZfv8JuBxrtC94f94+aLlQB3QuiC0NL3xSns+4Q9KB6MVh/8L/
+	 sWNi+BzCYf7MC36G01Dy1Ln8nlTWz7SqtRZuAVWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 116/280] comedi: dmm32at: serialize use of paged registers
+	Ulrich Mohr <u.mohr@semex-engcon.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 027/161] USB: serial: option: add Telit LE910 MBIM composition
 Date: Wed,  4 Feb 2026 15:38:10 +0100
-Message-ID: <20260204143913.815595197@linuxfoundation.org>
+Message-ID: <20260204143852.739444759@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,158 +68,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213868-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213434-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 1D472E9411
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,semex-engcon.com:email]
+X-Rspamd-Queue-Id: 54D07E74FD
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Ulrich Mohr <u.mohr@semex-engcon.com>
 
-commit e03b29b55f2b7c345a919a6ee36633b06bf3fb56 upstream.
+commit 8af4274ab5999831f4757dfd5bd11665ba3b1569 upstream.
 
-Some of the hardware registers of the DMM-32-AT board are multiplexed,
-using the least significant two bits of the Miscellaneous Control
-register to select the function of registers at offsets 12 to 15:
+Add support for Telit LE910 module when operating in MBIM composition
+with additional ttys. This USB product ID is used by the module
+when AT#USBCFG is set to 7.
 
- 00 => 8254 timer/counter registers are accessible
- 01 => 8255 digital I/O registers are accessible
- 10 => Reserved
- 11 => Calibration registers are accessible
+0x1252: MBIM + tty(NMEA) + tty(MODEM) + tty(MODEM) + SAP
 
-The interrupt service routine (`dmm32at_isr()`) clobbers the bottom two
-bits of the register with value 00, which would interfere with access to
-the 8255 registers by the `dm32at_8255_io()` function (used for Comedi
-instruction handling on the digital I/O subdevice).
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1252 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=LE910C1-EU
+S:  SerialNumber=0123456789ABCDEF
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Make use of the generic Comedi device spin-lock `dev->spinlock` (which
-is otherwise unused by this driver) to serialize access to the
-miscellaneous control register and paged registers.
-
-Fixes: 3c501880ac44 ("Staging: comedi: add dmm32at driver")
+Signed-off-by: Ulrich Mohr <u.mohr@semex-engcon.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260112162835.91688-1-abbotti@mev.co.uk
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/dmm32at.c |   32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/comedi/drivers/dmm32at.c
-+++ b/drivers/comedi/drivers/dmm32at.c
-@@ -330,6 +330,7 @@ static int dmm32at_ai_cmdtest(struct com
- 
- static void dmm32at_setaitimer(struct comedi_device *dev, unsigned int nansec)
- {
-+	unsigned long irq_flags;
- 	unsigned char lo1, lo2, hi2;
- 	unsigned short both2;
- 
-@@ -342,6 +343,9 @@ static void dmm32at_setaitimer(struct co
- 	/* set counter clocks to 10MHz, disable all aux dio */
- 	outb(0, dev->iobase + DMM32AT_CTRDIO_CFG_REG);
- 
-+	/* serialize access to control register and paged registers */
-+	spin_lock_irqsave(&dev->spinlock, irq_flags);
-+
- 	/* get access to the clock regs */
- 	outb(DMM32AT_CTRL_PAGE_8254, dev->iobase + DMM32AT_CTRL_REG);
- 
-@@ -354,6 +358,8 @@ static void dmm32at_setaitimer(struct co
- 	outb(lo2, dev->iobase + DMM32AT_CLK2);
- 	outb(hi2, dev->iobase + DMM32AT_CLK2);
- 
-+	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
-+
- 	/* enable the ai conversion interrupt and the clock to start scans */
- 	outb(DMM32AT_INTCLK_ADINT |
- 	     DMM32AT_INTCLK_CLKEN | DMM32AT_INTCLK_CLKSEL,
-@@ -363,13 +369,19 @@ static void dmm32at_setaitimer(struct co
- static int dmm32at_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
- {
- 	struct comedi_cmd *cmd = &s->async->cmd;
-+	unsigned long irq_flags;
- 	int ret;
- 
- 	dmm32at_ai_set_chanspec(dev, s, cmd->chanlist[0], cmd->chanlist_len);
- 
-+	/* serialize access to control register and paged registers */
-+	spin_lock_irqsave(&dev->spinlock, irq_flags);
-+
- 	/* reset the interrupt just in case */
- 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
- 
-+	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
-+
- 	/*
- 	 * wait for circuit to settle
- 	 * we don't have the 'insn' here but it's not needed
-@@ -429,8 +441,13 @@ static irqreturn_t dmm32at_isr(int irq,
- 		comedi_handle_events(dev, s);
- 	}
- 
-+	/* serialize access to control register and paged registers */
-+	spin_lock(&dev->spinlock);
-+
- 	/* reset the interrupt */
- 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
-+
-+	spin_unlock(&dev->spinlock);
- 	return IRQ_HANDLED;
- }
- 
-@@ -481,14 +498,25 @@ static int dmm32at_ao_insn_write(struct
- static int dmm32at_8255_io(struct comedi_device *dev,
- 			   int dir, int port, int data, unsigned long regbase)
- {
-+	unsigned long irq_flags;
-+	int ret;
-+
-+	/* serialize access to control register and paged registers */
-+	spin_lock_irqsave(&dev->spinlock, irq_flags);
-+
- 	/* get access to the DIO regs */
- 	outb(DMM32AT_CTRL_PAGE_8255, dev->iobase + DMM32AT_CTRL_REG);
- 
- 	if (dir) {
- 		outb(data, dev->iobase + regbase + port);
--		return 0;
-+		ret = 0;
-+	} else {
-+		ret = inb(dev->iobase + regbase + port);
- 	}
--	return inb(dev->iobase + regbase + port);
-+
-+	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
-+
-+	return ret;
- }
- 
- /* Make sure the board is there and put it to a known state */
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1505,6 +1505,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1231, 0xff),	/* Telit LE910Cx (RNDIS) */
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x1250, 0xff, 0x00, 0x00) },	/* Telit LE910Cx (rmnet) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1252, 0xff) },	/* Telit LE910Cx (MBIM) */
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1260),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1261),
 
 
 
