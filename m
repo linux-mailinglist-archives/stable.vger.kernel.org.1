@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-213642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULtUDk1jg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:18:37 +0100
+	id AMj6Mk1pg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DA2E840E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:18:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E44E93F3
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5390431BABF2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C12B30B0B2B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DB7413221;
-	Wed,  4 Feb 2026 14:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B517041B365;
+	Wed,  4 Feb 2026 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBybk9Cp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wURwLspc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13787421F0C;
-	Wed,  4 Feb 2026 14:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B6A413249;
+	Wed,  4 Feb 2026 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217018; cv=none; b=g/jQC250QoALc1uxyFnls8iA82XgSGAZqBLP8RapKdWr+vOwAhehtBcQoeB0iZIPC7RlpovUDEgzne93hp9l8UHq4gldF5KNL34U+miqCt8mgWd30j80gun7HkiwcOKFkrVGIkw8/k/MDxlM11pkzAHGcJTQzKy6olWHvrtpM3k=
+	t=1770217769; cv=none; b=Vf4HKZ9QpgiPA4XmhR5ShlUkMopxP+q+UEwfh0Ge6U3mhuJDCsAITiGZ51/LvYV7SFf1I9K+CK18Kw7/pLdxlMZaskAQ8aRm3f/PVGI4oyrIidVxMdjg2zZFfbiyVv1qaqc+Xyy6sBFIICEcltY1Y3X3xLFXgWcmaFfD1wlNwm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217018; c=relaxed/simple;
-	bh=zOKJmo/zH/bnq4ncBBiqoZ9epYFMA2a9CusCfYGiZdc=;
+	s=arc-20240116; t=1770217769; c=relaxed/simple;
+	bh=gQzEqkMnYr8IoDulspnhWqjP+0M26X88A3KYo9QDt2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdvBFJOnKOesKKEz8pzkFXXUrtb9vPOAvJyvARYM2HibO/IujYyj0eEInuo1mqW8Z7vhPliLvmHR1djtBteq+/ZSGzAv0Dh1bqhY87Yvo8zSJSiLtSHNAcUxLoGpp0QZif2rxWxnqD/U3WIoMD3fAOjTLTEhE68bF0dlVIANn3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBybk9Cp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D5CC4CEF7;
-	Wed,  4 Feb 2026 14:56:57 +0000 (UTC)
+	 MIME-Version; b=DtXf2NvSkBafzcvtNqrunbChCHBluj+SJvP5aB0SAg5/DhVj7lxPpArMarTU6QxUbcTKQN5ruvgsITh4dYz+XSgeLbHAIHeQmWTRVJee9DDcyJa6HoYm0B0XGuBrDcj3CuqznBWlAop7olrSnSi5SYVb0hS9eDTDM3bJmYweY2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wURwLspc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00EAC4CEF7;
+	Wed,  4 Feb 2026 15:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217018;
-	bh=zOKJmo/zH/bnq4ncBBiqoZ9epYFMA2a9CusCfYGiZdc=;
+	s=korg; t=1770217769;
+	bh=gQzEqkMnYr8IoDulspnhWqjP+0M26X88A3KYo9QDt2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fBybk9CpHm4Tstw1hnf6VduPnu2LXEGZXV713b50j6em1KJtKsDcNiGGYsss2H9gs
-	 tX4ghlWCYGrHNJFh0e4xgCUWaS6JkYOqRB4wULiI8lNqtTZidH5IblrsEa8vOwSvHi
-	 MmIxMmjqIrAqQDvT3nF1B8t+a+6noXC9mw3LtumU=
+	b=wURwLspcMG6p/HMh8qGtJSCXQ+7BUHD1tzGmt+R9uF9OVSGEHqDAGcCgOK+xNBvLm
+	 Xp5H6Y27DNS4IKD8mXxM8uGMAEVXMcXwtAVoyyI0XcwksfpFq/MFCM4eeXX2GLlqeo
+	 /IodrcWy3hmUgB3QRKeTGG3tTIX57sA8mPtf9zhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xabier Marquiegui <reibax@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 055/206] posix-clock: introduce posix_clock_context concept
-Date: Wed,  4 Feb 2026 15:38:06 +0100
-Message-ID: <20260204143900.200374022@linuxfoundation.org>
+Subject: [PATCH 6.1 113/280] net/sched: qfq: Use cl_is_active to determine whether class is active in qfq_rm_from_ag
+Date: Wed,  4 Feb 2026 15:38:07 +0100
+Message-ID: <20260204143913.710573777@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,347 +69,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,davemloft.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213642-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-213864-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 89DA2E840E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mojatatu.com:email]
+X-Rspamd-Queue-Id: 30E44E93F3
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xabier Marquiegui <reibax@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 60c6946675fc06dd2fd2b7a4b6fd1c1f046f1056 ]
+[ Upstream commit d837fbee92453fbb829f950c8e7cf76207d73f33 ]
 
-Add the necessary structure to support custom private-data per
-posix-clock user.
+This is more of a preventive patch to make the code more consistent and
+to prevent possible exploits that employ child qlen manipulations on qfq.
+use cl_is_active instead of relying on the child qdisc's qlen to determine
+class activation.
 
-The previous implementation of posix-clock assumed all file open
-instances need access to the same clock structure on private_data.
-
-The need for individual data structures per file open instance has been
-identified when developing support for multiple timestamp event queue
-users for ptp_clock.
-
-Signed-off-by: Xabier Marquiegui <reibax@gmail.com>
-Suggested-by: Richard Cochran <richardcochran@gmail.com>
-Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e859d375d169 ("posix-clock: Store file pointer in struct posix_clock_context")
+Fixes: 462dbc9101acd ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260114160243.913069-3-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_chardev.c   | 21 +++++++++++++--------
- drivers/ptp/ptp_private.h   | 16 +++++++++-------
- include/linux/posix-clock.h | 35 +++++++++++++++++++++++++++--------
- kernel/time/posix-clock.c   | 36 +++++++++++++++++++++++++++---------
- 4 files changed, 76 insertions(+), 32 deletions(-)
+ net/sched/sch_qfq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 6b36003567975..fcee202f4484c 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -103,14 +103,16 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
- 	return 0;
- }
- 
--int ptp_open(struct posix_clock *pc, fmode_t fmode)
-+int ptp_open(struct posix_clock_context *pccontext, fmode_t fmode)
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index 0047f35504348..51d962e5113bc 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -375,7 +375,7 @@ static void qfq_rm_from_agg(struct qfq_sched *q, struct qfq_class *cl)
+ /* Deschedule class and remove it from its parent aggregate. */
+ static void qfq_deact_rm_from_agg(struct qfq_sched *q, struct qfq_class *cl)
  {
- 	return 0;
- }
+-	if (cl->qdisc->q.qlen > 0) /* class is active */
++	if (cl_is_active(cl)) /* class is active */
+ 		qfq_deactivate_class(q, cl);
  
--long ptp_ioctl(struct posix_clock *pc, unsigned int cmd, unsigned long arg)
-+long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
-+	       unsigned long arg)
- {
--	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
-+	struct ptp_clock *ptp =
-+		container_of(pccontext->clk, struct ptp_clock, clock);
- 	struct ptp_sys_offset_extended *extoff = NULL;
- 	struct ptp_sys_offset_precise precise_offset;
- 	struct system_device_crosststamp xtstamp;
-@@ -434,9 +436,11 @@ long ptp_ioctl(struct posix_clock *pc, unsigned int cmd, unsigned long arg)
- 	return err;
- }
- 
--__poll_t ptp_poll(struct posix_clock *pc, struct file *fp, poll_table *wait)
-+__poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
-+		  poll_table *wait)
- {
--	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
-+	struct ptp_clock *ptp =
-+		container_of(pccontext->clk, struct ptp_clock, clock);
- 
- 	poll_wait(fp, &ptp->tsev_wq, wait);
- 
-@@ -445,10 +449,11 @@ __poll_t ptp_poll(struct posix_clock *pc, struct file *fp, poll_table *wait)
- 
- #define EXTTS_BUFSIZE (PTP_BUF_TIMESTAMPS * sizeof(struct ptp_extts_event))
- 
--ssize_t ptp_read(struct posix_clock *pc,
--		 uint rdflags, char __user *buf, size_t cnt)
-+ssize_t ptp_read(struct posix_clock_context *pccontext, uint rdflags,
-+		 char __user *buf, size_t cnt)
- {
--	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
-+	struct ptp_clock *ptp =
-+		container_of(pccontext->clk, struct ptp_clock, clock);
- 	struct timestamp_event_queue *queue = &ptp->tsevq;
- 	struct ptp_extts_event *event;
- 	unsigned long flags;
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index bf823b8c3c8fd..1787fb7a9e1db 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -125,16 +125,18 @@ extern struct class *ptp_class;
- int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
- 		    enum ptp_pin_function func, unsigned int chan);
- 
--long ptp_ioctl(struct posix_clock *pc,
--	       unsigned int cmd, unsigned long arg);
-+long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
-+	       unsigned long arg);
- 
--int ptp_open(struct posix_clock *pc, fmode_t fmode);
-+int ptp_open(struct posix_clock_context *pccontext, fmode_t fmode);
- 
--ssize_t ptp_read(struct posix_clock *pc,
--		 uint flags, char __user *buf, size_t cnt);
-+int ptp_release(struct posix_clock_context *pccontext);
- 
--__poll_t ptp_poll(struct posix_clock *pc,
--	      struct file *fp, poll_table *wait);
-+ssize_t ptp_read(struct posix_clock_context *pccontext, uint flags, char __user *buf,
-+		 size_t cnt);
-+
-+__poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
-+		  poll_table *wait);
- 
- /*
-  * see ptp_sysfs.c
-diff --git a/include/linux/posix-clock.h b/include/linux/posix-clock.h
-index 468328b1e1dd5..ef8619f489203 100644
---- a/include/linux/posix-clock.h
-+++ b/include/linux/posix-clock.h
-@@ -14,6 +14,7 @@
- #include <linux/rwsem.h>
- 
- struct posix_clock;
-+struct posix_clock_context;
- 
- /**
-  * struct posix_clock_operations - functional interface to the clock
-@@ -50,18 +51,18 @@ struct posix_clock_operations {
- 	/*
- 	 * Optional character device methods:
- 	 */
--	long    (*ioctl)   (struct posix_clock *pc,
--			    unsigned int cmd, unsigned long arg);
-+	long (*ioctl)(struct posix_clock_context *pccontext, unsigned int cmd,
-+		      unsigned long arg);
- 
--	int     (*open)    (struct posix_clock *pc, fmode_t f_mode);
-+	int (*open)(struct posix_clock_context *pccontext, fmode_t f_mode);
- 
--	__poll_t (*poll)   (struct posix_clock *pc,
--			    struct file *file, poll_table *wait);
-+	__poll_t (*poll)(struct posix_clock_context *pccontext, struct file *file,
-+			 poll_table *wait);
- 
--	int     (*release) (struct posix_clock *pc);
-+	int (*release)(struct posix_clock_context *pccontext);
- 
--	ssize_t (*read)    (struct posix_clock *pc,
--			    uint flags, char __user *buf, size_t cnt);
-+	ssize_t (*read)(struct posix_clock_context *pccontext, uint flags,
-+			char __user *buf, size_t cnt);
- };
- 
- /**
-@@ -90,6 +91,24 @@ struct posix_clock {
- 	bool zombie;
- };
- 
-+/**
-+ * struct posix_clock_context - represents clock file operations context
-+ *
-+ * @clk:              Pointer to the clock
-+ * @private_clkdata:  Pointer to user data
-+ *
-+ * Drivers should use struct posix_clock_context during specific character
-+ * device file operation methods to access the posix clock.
-+ *
-+ * Drivers can store a private data structure during the open operation
-+ * if they have specific information that is required in other file
-+ * operations.
-+ */
-+struct posix_clock_context {
-+	struct posix_clock *clk;
-+	void *private_clkdata;
-+};
-+
- /**
-  * posix_clock_register() - register a new clock
-  * @clk:   Pointer to the clock. Caller must provide 'ops' field
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index 05e73d209aa87..706559ed75793 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -19,7 +19,8 @@
-  */
- static struct posix_clock *get_posix_clock(struct file *fp)
- {
--	struct posix_clock *clk = fp->private_data;
-+	struct posix_clock_context *pccontext = fp->private_data;
-+	struct posix_clock *clk = pccontext->clk;
- 
- 	down_read(&clk->rwsem);
- 
-@@ -39,6 +40,7 @@ static void put_posix_clock(struct posix_clock *clk)
- static ssize_t posix_clock_read(struct file *fp, char __user *buf,
- 				size_t count, loff_t *ppos)
- {
-+	struct posix_clock_context *pccontext = fp->private_data;
- 	struct posix_clock *clk = get_posix_clock(fp);
- 	int err = -EINVAL;
- 
-@@ -46,7 +48,7 @@ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
- 		return -ENODEV;
- 
- 	if (clk->ops.read)
--		err = clk->ops.read(clk, fp->f_flags, buf, count);
-+		err = clk->ops.read(pccontext, fp->f_flags, buf, count);
- 
- 	put_posix_clock(clk);
- 
-@@ -55,6 +57,7 @@ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
- 
- static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
- {
-+	struct posix_clock_context *pccontext = fp->private_data;
- 	struct posix_clock *clk = get_posix_clock(fp);
- 	__poll_t result = 0;
- 
-@@ -62,7 +65,7 @@ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
- 		return EPOLLERR;
- 
- 	if (clk->ops.poll)
--		result = clk->ops.poll(clk, fp, wait);
-+		result = clk->ops.poll(pccontext, fp, wait);
- 
- 	put_posix_clock(clk);
- 
-@@ -72,6 +75,7 @@ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
- static long posix_clock_ioctl(struct file *fp,
- 			      unsigned int cmd, unsigned long arg)
- {
-+	struct posix_clock_context *pccontext = fp->private_data;
- 	struct posix_clock *clk = get_posix_clock(fp);
- 	int err = -ENOTTY;
- 
-@@ -79,7 +83,7 @@ static long posix_clock_ioctl(struct file *fp,
- 		return -ENODEV;
- 
- 	if (clk->ops.ioctl)
--		err = clk->ops.ioctl(clk, cmd, arg);
-+		err = clk->ops.ioctl(pccontext, cmd, arg);
- 
- 	put_posix_clock(clk);
- 
-@@ -90,6 +94,7 @@ static long posix_clock_ioctl(struct file *fp,
- static long posix_clock_compat_ioctl(struct file *fp,
- 				     unsigned int cmd, unsigned long arg)
- {
-+	struct posix_clock_context *pccontext = fp->private_data;
- 	struct posix_clock *clk = get_posix_clock(fp);
- 	int err = -ENOTTY;
- 
-@@ -97,7 +102,7 @@ static long posix_clock_compat_ioctl(struct file *fp,
- 		return -ENODEV;
- 
- 	if (clk->ops.ioctl)
--		err = clk->ops.ioctl(clk, cmd, arg);
-+		err = clk->ops.ioctl(pccontext, cmd, arg);
- 
- 	put_posix_clock(clk);
- 
-@@ -110,6 +115,7 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
- 	int err;
- 	struct posix_clock *clk =
- 		container_of(inode->i_cdev, struct posix_clock, cdev);
-+	struct posix_clock_context *pccontext;
- 
- 	down_read(&clk->rwsem);
- 
-@@ -117,14 +123,20 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
- 		err = -ENODEV;
- 		goto out;
- 	}
-+	pccontext = kzalloc(sizeof(*pccontext), GFP_KERNEL);
-+	if (!pccontext) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+	pccontext->clk = clk;
-+	fp->private_data = pccontext;
- 	if (clk->ops.open)
--		err = clk->ops.open(clk, fp->f_mode);
-+		err = clk->ops.open(pccontext, fp->f_mode);
- 	else
- 		err = 0;
- 
- 	if (!err) {
- 		get_device(clk->dev);
--		fp->private_data = clk;
- 	}
- out:
- 	up_read(&clk->rwsem);
-@@ -133,14 +145,20 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
- 
- static int posix_clock_release(struct inode *inode, struct file *fp)
- {
--	struct posix_clock *clk = fp->private_data;
-+	struct posix_clock_context *pccontext = fp->private_data;
-+	struct posix_clock *clk;
- 	int err = 0;
- 
-+	if (!pccontext)
-+		return -ENODEV;
-+	clk = pccontext->clk;
-+
- 	if (clk->ops.release)
--		err = clk->ops.release(clk);
-+		err = clk->ops.release(pccontext);
- 
- 	put_device(clk->dev);
- 
-+	kfree(pccontext);
- 	fp->private_data = NULL;
- 
- 	return err;
+ 	qfq_rm_from_agg(q, cl);
 -- 
 2.51.0
 
