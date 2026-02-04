@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CU3G9Nbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:43 +0100
+	id IMkFG8Fgg2mfmAMAu9opvQ
+	(envelope-from <stable+bounces-213630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:07:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B04E7583
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C587EE7F63
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9628302C5F5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1127C318E87F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459972417E0;
-	Wed,  4 Feb 2026 14:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF294219FF;
+	Wed,  4 Feb 2026 14:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPYYk5Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5uKBMsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0985E270575;
-	Wed,  4 Feb 2026 14:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71710280CD2;
+	Wed,  4 Feb 2026 14:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216322; cv=none; b=X4cok4L16F0jYbeP2WBwkYvWfj+q3j+o4O0mcT8t002asm7l3upgMsfmbhD23u8kJlxtJu5u5VuhBPC5nXQLn12FVqetuFiE6Ruo6KFPqHqSYSA5cD18jYdQMA3EJ42Xbug1R7SE9nZkyoNU1F0M5AEKwX1CAbMHHoWYrMi77VM=
+	t=1770216974; cv=none; b=ctl14FM3LNbx8oUetSCExBSEML19B8S5xQQxiKjOn3O8GqtefCBH4wKKKDt4a29VPKhs7gKJIBmcmmk/lylro6jNNRfCszyZg0gJUgXxtCJWqw/S9JCSZ0ZXDJsm/GwuLsjnXG3JDendn1o1TblS13hFym3gV6TZ5IVUuNMxffo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216322; c=relaxed/simple;
-	bh=rTMd2lckVmvL75oht8O2G40JlcGKZTqtVDiAukDOUns=;
+	s=arc-20240116; t=1770216974; c=relaxed/simple;
+	bh=/B6saTJQgcqTAyx6KNLmsK5leikSOtH4QpIQFD21FSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQJO/SxKYHqUXkRqaF70dA7uCZImqQWgV8W3Cs6aIDMbzDEzWCsHyW0tJ/oUbp+5Xn0DamHPJE/R9XjQAf6KB/5ecr+oNS2n2TDsNEmRF+3zEdIm0j0O1U0NQG539SuwYWTiz332EUsHnCK0/11a1mxiFOuzedeb4u8LcXSgFyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPYYk5Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBE3C4CEF7;
-	Wed,  4 Feb 2026 14:45:21 +0000 (UTC)
+	 MIME-Version; b=L8ea+U0/BA/YBN/vqOE/Pdw8JR4pGsQY/6pv6xdgfhAAaILY0QMXz9zJCaUZDutNdTSSZh+Isnb3aezGMRSuWeqllTB+/ntXzPim8+RYxcHWG40XkCDDnJsOwNr3+D1Vr10CFb98cfFD56TsoH1r1Vo760lgNlaS7odPNIJP9YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5uKBMsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDED1C4CEF7;
+	Wed,  4 Feb 2026 14:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216321;
-	bh=rTMd2lckVmvL75oht8O2G40JlcGKZTqtVDiAukDOUns=;
+	s=korg; t=1770216974;
+	bh=/B6saTJQgcqTAyx6KNLmsK5leikSOtH4QpIQFD21FSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPYYk5LoOVljys2y/XJJcaXWF+H2Xe0qZga7YiDur9bpZwZR+o6UR+gJvDO3HACLj
-	 2tFXlzY4CJuN92rxgwlxc0r4h2vxtf9F/0d5RBRtBWtm7MWOnpE9Yck4BDRV6qE9iA
-	 VFT3rxltIU8jAXy7a9a6e+iynmXTUebMuY/FbRp8=
+	b=L5uKBMsPTxomkljhT8RPymOgXgNUqllRfJptccqetpppJ0UfCMrXfYT/3RXsGyuJv
+	 HULaRFa7iGw2uFqlgDmsMHkOjRhM4cFVndcY68eROx75huXEK4TFMV1VpEomJMGiiw
+	 /TCm9W6ZJGIIUN5OnT/gfKNTJ4ur4uI9Pxfpf//A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Chen <chenzhen126@huawei.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/161] sctp: move SCTP_CMD_ASSOC_SHKEY right after SCTP_CMD_PEER_INIT
-Date: Wed,  4 Feb 2026 15:38:36 +0100
-Message-ID: <20260204143853.669662191@linuxfoundation.org>
+	feng <alec.jiang@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 086/206] Input: i8042 - add quirk for ASUS Zenbook UX425QA_UM425QA
+Date: Wed,  4 Feb 2026 15:38:37 +0100
+Message-ID: <20260204143901.308493557@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,135 +67,82 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213433-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213630-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D0B04E7583
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: C587EE7F63
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: feng <alec.jiang@gmail.com>
 
-[ Upstream commit a80c9d945aef55b23b54838334345f20251dad83 ]
+commit 2934325f56150ad8dab8ab92cbe2997242831396 upstream.
 
-A null-ptr-deref was reported in the SCTP transmit path when SCTP-AUTH key
-initialization fails:
+The ASUS Zenbook UX425QA_UM425QA fails to initialize the keyboard after
+a cold boot.
 
-  ==================================================================
-  KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-  CPU: 0 PID: 16 Comm: ksoftirqd/0 Tainted: G W 6.6.0 #2
-  RIP: 0010:sctp_packet_bundle_auth net/sctp/output.c:264 [inline]
-  RIP: 0010:sctp_packet_append_chunk+0xb36/0x1260 net/sctp/output.c:401
-  Call Trace:
+A quirk already exists for "ZenBook UX425", but some Zenbooks report
+"Zenbook" with a lowercase 'b'. Since DMI matching is case-sensitive,
+the existing quirk is not applied to these "extra special" Zenbooks.
 
-  sctp_packet_transmit_chunk+0x31/0x250 net/sctp/output.c:189
-  sctp_outq_flush_data+0xa29/0x26d0 net/sctp/outqueue.c:1111
-  sctp_outq_flush+0xc80/0x1240 net/sctp/outqueue.c:1217
-  sctp_cmd_interpreter.isra.0+0x19a5/0x62c0 net/sctp/sm_sideeffect.c:1787
-  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
-  sctp_do_sm+0x1a3/0x670 net/sctp/sm_sideeffect.c:1169
-  sctp_assoc_bh_rcv+0x33e/0x640 net/sctp/associola.c:1052
-  sctp_inq_push+0x1dd/0x280 net/sctp/inqueue.c:88
-  sctp_rcv+0x11ae/0x3100 net/sctp/input.c:243
-  sctp6_rcv+0x3d/0x60 net/sctp/ipv6.c:1127
+Testing confirms that this model needs the same quirks as the ZenBook
+UX425 variants.
 
-The issue is triggered when sctp_auth_asoc_init_active_key() fails in
-sctp_sf_do_5_1C_ack() while processing an INIT_ACK. In this case, the
-command sequence is currently:
-
-- SCTP_CMD_PEER_INIT
-- SCTP_CMD_TIMER_STOP (T1_INIT)
-- SCTP_CMD_TIMER_START (T1_COOKIE)
-- SCTP_CMD_NEW_STATE (COOKIE_ECHOED)
-- SCTP_CMD_ASSOC_SHKEY
-- SCTP_CMD_GEN_COOKIE_ECHO
-
-If SCTP_CMD_ASSOC_SHKEY fails, asoc->shkey remains NULL, while
-asoc->peer.auth_capable and asoc->peer.peer_chunks have already been set by
-SCTP_CMD_PEER_INIT. This allows a DATA chunk with auth = 1 and shkey = NULL
-to be queued by sctp_datamsg_from_user().
-
-Since command interpretation stops on failure, no COOKIE_ECHO should been
-sent via SCTP_CMD_GEN_COOKIE_ECHO. However, the T1_COOKIE timer has already
-been started, and it may enqueue a COOKIE_ECHO into the outqueue later. As
-a result, the DATA chunk can be transmitted together with the COOKIE_ECHO
-in sctp_outq_flush_data(), leading to the observed issue.
-
-Similar to the other places where it calls sctp_auth_asoc_init_active_key()
-right after sctp_process_init(), this patch moves the SCTP_CMD_ASSOC_SHKEY
-immediately after SCTP_CMD_PEER_INIT, before stopping T1_INIT and starting
-T1_COOKIE. This ensures that if shared key generation fails, authenticated
-DATA cannot be sent. It also allows the T1_INIT timer to retransmit INIT,
-giving the client another chance to process INIT_ACK and retry key setup.
-
-Fixes: 730fc3d05cd4 ("[SCTP]: Implete SCTP-AUTH parameter processing")
-Reported-by: Zhen Chen <chenzhen126@huawei.com>
-Tested-by: Zhen Chen <chenzhen126@huawei.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/44881224b375aa8853f5e19b4055a1a56d895813.1768324226.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: feng <alec.jiang@gmail.com>
+Link: https://patch.msgid.link/20260122013957.11184-1-alec.jiang@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 9a0ba3747711c..c91f712ce1fab 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -594,6 +594,11 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_PEER_INIT,
- 			SCTP_PEER_INIT(initchunk));
- 
-+	/* SCTP-AUTH: generate the association shared keys so that
-+	 * we can potentially sign the COOKIE-ECHO.
-+	 */
-+	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
-+
- 	/* Reset init error count upon receipt of INIT-ACK.  */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_INIT_COUNTER_RESET, SCTP_NULL());
- 
-@@ -608,11 +613,6 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_NEW_STATE,
- 			SCTP_STATE(SCTP_STATE_COOKIE_ECHOED));
- 
--	/* SCTP-AUTH: generate the association shared keys so that
--	 * we can potentially sign the COOKIE-ECHO.
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
--
- 	/* 5.1 C) "A" shall then send the State Cookie received in the
- 	 * INIT ACK chunk in a COOKIE ECHO chunk, ...
- 	 */
--- 
-2.51.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -114,6 +114,17 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_NEVER)
+ 	},
+ 	{
++		/*
++		 * ASUS Zenbook UX425QA_UM425QA
++		 * Some Zenbooks report "Zenbook" with a lowercase b.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Zenbook UX425QA_UM425QA"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_PROBE_DEFER | SERIO_QUIRK_RESET_NEVER)
++	},
++	{
+ 		/* ASUS ZenBook UX425UA/QA */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
