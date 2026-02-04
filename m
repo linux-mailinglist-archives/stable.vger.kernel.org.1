@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFwPItpcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:06 +0100
+	id OJTgJW9hg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B06E7780
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5631E80D9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 73018300FECD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 57763303F09A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB4841B343;
-	Wed,  4 Feb 2026 14:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5BD41C2E7;
+	Wed,  4 Feb 2026 14:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNN9q76+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0HgGyWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608733AEF30;
-	Wed,  4 Feb 2026 14:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8160B35029F;
+	Wed,  4 Feb 2026 14:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216614; cv=none; b=oOJcDFYNfU7gkn3CgqBl+F9EGBfy0Vi4pCMDyforv//tv2aKZnBimeb4BXsvvnnj6oQbMPOj0pekclar9vdQ9WoZ6VFHB4t3yA3WNaaHbi/9ZxMP8eX2N5Dfosz4KqlzMUjJp7+4Uk9xOguwai8N3aGodzl/Iem5eeYcWSBG110=
+	t=1770217151; cv=none; b=TETDrZpaudxxKHQadg/dasa+ENoAXKXEBJT1SWso6VxEhKPN8UvuwxdsJTM+Sb8VUPw0asYn7/+VW9KkLG3p223Y70I9aD4swjrURFkLT1kCapeytMX4JOjT3lQyYoe7eE/oIuqK7frZRUEBLzwkvTqRs7I5wzUp5svLlWOzNUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216614; c=relaxed/simple;
-	bh=gKIfTL5ICpg1zMTN0GWEnlYUST1qHFsm5u+xji+MBb8=;
+	s=arc-20240116; t=1770217151; c=relaxed/simple;
+	bh=Ab/ipPPR0/WSKS6m7KKETOPMl2d7bTLkZlmvZM/ODfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KIjnktQDdqwZu9rfd6BbAM8ElQpRpplPerJ4KeF0KydEhbwS1SlNbcDNQwjEunWbr/4cZQ2+L34+E+ZiGRh8PmZE5yXSzHw4bZKWDwMYyHPR+7wAHvXAdRezR/iF75DRTU/xAErXk/c8lPxMRoHG92lo1vtlxWpU6IC0efF9lt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNN9q76+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF3EC4CEF7;
-	Wed,  4 Feb 2026 14:50:13 +0000 (UTC)
+	 MIME-Version; b=ntuoiHoeDgvMVIkWzqg1x1spRB9+ZfLBVcrKPqo1GsPM+5RpF+PzGtrNZy+ZAKPwivkuqaTpzB8ql2sPS8J1rRqQmxWRwWnG+Bhy3ty0OSEu6euxnJx09yZda9ykrXbhEX9cA/rH7DtjncL9yL6+AqiGNAeS6EnKrT2gkHJOovw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0HgGyWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB298C4CEF7;
+	Wed,  4 Feb 2026 14:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216614;
-	bh=gKIfTL5ICpg1zMTN0GWEnlYUST1qHFsm5u+xji+MBb8=;
+	s=korg; t=1770217151;
+	bh=Ab/ipPPR0/WSKS6m7KKETOPMl2d7bTLkZlmvZM/ODfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNN9q76+TJMtV/o7acdikQYOxy7EUyjQkGhkmbhRoTZWzhOk3NGbSN0DdYqE8dj3V
-	 fov+DIaCWdLdxeCnQnJadZgayYxgvxfy3AX6gmBUmoRSV2fMPWrvWER4Wgu9+W+keN
-	 /ttiGhjdjtt8h4z1IdzqbhdkNsXptZvKkvC1VWRg=
+	b=e0HgGyWi2jWYHU+mt25rRT2cDl5sHw8jZ2tS7+cZrBnq4hvsou/ZZ/b1RS0g6vNbN
+	 L6EJw1iKtSBxAvpF3eztG24idZ//K59/m+opOX9MsuEQX1gMZF1/X1Oo2etWroUlHM
+	 SyqUmgCGDlrRGApTQTpVtPVxlG65rlEHSxLbpb4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Fernand Sieber <sieberf@amazon.com>
-Subject: [PATCH 5.10 106/161] perf/x86/intel: Do not enable BTS for guests
-Date: Wed,  4 Feb 2026 15:39:29 +0100
-Message-ID: <20260204143855.559808924@linuxfoundation.org>
+	Kery Qi <qikeyu2017@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 139/206] rocker: fix memory leak in rocker_world_port_post_fini()
+Date: Wed,  4 Feb 2026 15:39:30 +0100
+Message-ID: <20260204143903.211948729@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213521-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213681-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,infradead.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: B5B06E7780
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: A5631E80D9
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernand Sieber <sieberf@amazon.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
+[ Upstream commit 8d7ba71e46216b8657a82ca2ec118bc93812a4d0 ]
 
-By default when users program perf to sample branch instructions
-(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
-interprets this as a special case and enables BTS (Branch Trace Store)
-as an optimization to avoid taking an interrupt on every branch.
+In rocker_world_port_pre_init(), rocker_port->wpriv is allocated with
+kzalloc(wops->port_priv_size, GFP_KERNEL). However, in
+rocker_world_port_post_fini(), the memory is only freed when
+wops->port_post_fini callback is set:
 
-Since BTS doesn't virtualize, this optimization doesn't make sense when
-the request originates from a guest. Add an additional check that
-prevents this optimization for virtualized events (exclude_host).
+    if (!wops->port_post_fini)
+        return;
+    wops->port_post_fini(rocker_port);
+    kfree(rocker_port->wpriv);
 
-Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Fernand Sieber <sieberf@amazon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since rocker_ofdpa_ops does not implement port_post_fini callback
+(it is NULL), the wpriv memory allocated for each port is never freed
+when ports are removed. This leads to a memory leak of
+sizeof(struct ofdpa_port) bytes per port on every device removal.
+
+Fix this by always calling kfree(rocker_port->wpriv) regardless of
+whether the port_post_fini callback exists.
+
+Fixes: e420114eef4a ("rocker: introduce worlds infrastructure")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260123211030.2109-2-qikeyu2017@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/perf_event.h |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/rocker/rocker_main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1088,13 +1088,22 @@ static inline bool intel_pmu_has_bts_per
- 	struct hw_perf_event *hwc = &event->hw;
- 	unsigned int hw_event, bts_event;
+diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
+index e1509becb7536..a7495a46d0943 100644
+--- a/drivers/net/ethernet/rocker/rocker_main.c
++++ b/drivers/net/ethernet/rocker/rocker_main.c
+@@ -1525,9 +1525,8 @@ static void rocker_world_port_post_fini(struct rocker_port *rocker_port)
+ {
+ 	struct rocker_world_ops *wops = rocker_port->rocker->wops;
  
--	if (event->attr.freq)
-+	/*
-+	 * Only use BTS for fixed rate period==1 events.
-+	 */
-+	if (event->attr.freq || period != 1)
-+		return false;
-+
-+	/*
-+	 * BTS doesn't virtualize.
-+	 */
-+	if (event->attr.exclude_host)
- 		return false;
- 
- 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
- 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
- 
--	return hw_event == bts_event && period == 1;
-+	return hw_event == bts_event;
+-	if (!wops->port_post_fini)
+-		return;
+-	wops->port_post_fini(rocker_port);
++	if (wops->port_post_fini)
++		wops->port_post_fini(rocker_port);
+ 	kfree(rocker_port->wpriv);
  }
  
- static inline bool intel_pmu_has_bts(struct perf_event *event)
+-- 
+2.51.0
+
 
 
 
