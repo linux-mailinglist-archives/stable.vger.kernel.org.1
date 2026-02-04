@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGQPK5lng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:57 +0100
+	id wG/YGuZsg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C87E8F68
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3DEE9B5A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C2D631FF661
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 308AD3253F49
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44F14219EA;
-	Wed,  4 Feb 2026 15:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91A9284B37;
+	Wed,  4 Feb 2026 15:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InmyqMFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o92nHtav"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CE82DCF61;
-	Wed,  4 Feb 2026 15:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65D27F163;
+	Wed,  4 Feb 2026 15:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218622; cv=none; b=fZbi/ABF2Lch0grPczaWWqpiDvr5LdytVx7U8GIcUfADD1TZMArtdG8M5BhdOcE5WSZDEPG0eMw3hDYaFv2RQYTtL6h/HFbShsgBgl32P/L7JiG0lAj7zjBcWz8j62jaNvbv2o89EJyGCAG5qjVDg6dbA22a/BLyeY9qE1B07ls=
+	t=1770218935; cv=none; b=ooVu4OKk95SaH06h3lH31r2Keo63FUV20tHBPI927IZDX5FjO/HuLEpC71c64BXwqAfVjFbFSgfD1fFx5fMwO6UYgqHdcc/8RKgfJorEyCN1aHKBulmBXRKTcmMDzjHAjiCttlCc3+5sdFO+q/kWcCL6Wnv9m1UUAAkDapDXTkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218622; c=relaxed/simple;
-	bh=ZEivupDTlLBTH+Buyb7K6pcho3UgNqQ3EW6TcGLdsIc=;
+	s=arc-20240116; t=1770218935; c=relaxed/simple;
+	bh=k0yY5ZAQbzF+ht4D5bwzTMGPKxj5eBfygvZYVjUp8q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKWowv1a7kWjW6+eozNm1COCGvNBhOZCfNti7iKCKoIa9v8HA6s4xoNxq6ARabbY+VqoqaaoZdBvtQkGRlWzSo8t0qC69maI/f0yWjkFA+BdPsM5C94T49kim243EUTNFLKSkhRspbvsWI37L78U2LM7JJvvlt1/YeUBB0WEXXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InmyqMFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF30C4CEF7;
-	Wed,  4 Feb 2026 15:23:41 +0000 (UTC)
+	 MIME-Version; b=OuG8A8p2dYbcHZw1IRr6Jbyn1StoVkBlZBp4uKSXqNx09DvswiiNizRLfzFCIgsN2Tnf3lvZ5e10cmFk0rBUYjJWWN6VKAOopQm4OrEI1Xe/vvyj7R/zaCgIU8mIolXRXPMZ9u9BxrngiMkq2iI5QrFsSGWjGe/uAP9W3tLouNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o92nHtav; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2DFC4CEF7;
+	Wed,  4 Feb 2026 15:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218622;
-	bh=ZEivupDTlLBTH+Buyb7K6pcho3UgNqQ3EW6TcGLdsIc=;
+	s=korg; t=1770218935;
+	bh=k0yY5ZAQbzF+ht4D5bwzTMGPKxj5eBfygvZYVjUp8q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InmyqMFxSJrMayWWWmYMZo0XSbpiEyXxfrUarX1F4PNc7ASwWBhf6o+v/zfykAC0M
-	 0q5k79KN6d+Kwu2Pw45rEnUWeVZ8CHM07UrJL8wa9goLsNxwfjOynXem1FpgRskNgC
-	 y+n+vC0juVEo6D+nnzXNvxK66M4ESl2LT6nS3N/o=
+	b=o92nHtavfVm0Q9HlcVEhgw+zqlg5UetAX3BXW/w52V2LxYJ3C+q6ji4a/U7WnhdU5
+	 mHSCpZEa+RAWZ1kn9V0ZXcqVYqRy6fQSX6lkzBU0kYjC9Xbt1BeO9M0NjSrcMgDN+0
+	 6Yav+TNvPAwZ4SJ1JB8g/6BxEKX0WprcW3VE35t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia-Hong Su <s11242586@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 02/87] Bluetooth: hci_uart: fix null-ptr-deref in hci_uart_write_work
+Subject: [PATCH 6.18 018/122] net: spacemit: Check for netif_carrier_ok() in emac_stats_update()
 Date: Wed,  4 Feb 2026 15:40:00 +0100
-Message-ID: <20260204143846.999685580@linuxfoundation.org>
+Message-ID: <20260204143852.522778230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,104 +68,131 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214117-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214211-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 03C87E8F68
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email,jmu.edu.cn:email]
+X-Rspamd-Queue-Id: 8B3DEE9B5A
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia-Hong Su <s11242586@gmail.com>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-[ Upstream commit 0c3cd7a0b862c37acbee6d9502107146cc944398 ]
+[ Upstream commit 2c84959167d6493dbdac88965c7389b8ab88bf4e ]
 
-hci_uart_set_proto() sets HCI_UART_PROTO_INIT before calling
-hci_uart_register_dev(), which calls proto->open() to initialize
-hu->priv. However, if a TTY write wakeup occurs during this window,
-hci_uart_tx_wakeup() may schedule write_work before hu->priv is
-initialized, leading to a NULL pointer dereference in
-hci_uart_write_work() when proto->dequeue() accesses hu->priv.
+Some PHYs stop the refclk for power saving, usually while link down.
+This causes reading stats to time out.
 
-The race condition is:
+Therefore, in emac_stats_update(), also don't update and reschedule if
+!netif_carrier_ok(). But that means we could be missing later updates if
+the link comes back up, so also reschedule when link up is detected in
+emac_adjust_link().
 
-  CPU0                              CPU1
-  ----                              ----
-  hci_uart_set_proto()
-    set_bit(HCI_UART_PROTO_INIT)
-    hci_uart_register_dev()
-                                    tty write wakeup
-                                      hci_uart_tty_wakeup()
-                                        hci_uart_tx_wakeup()
-                                          schedule_work(&hu->write_work)
-      proto->open(hu)
-        // initializes hu->priv
-                                    hci_uart_write_work()
-                                      hci_uart_dequeue()
-                                        proto->dequeue(hu)
-                                          // accesses hu->priv (NULL!)
+While we're at it, improve the comments and error message prints around
+this to reflect the better understanding of how this could happen.
+Hopefully if this happens again on new hardware, these comments will
+direct towards a solution.
 
-Fix this by moving set_bit(HCI_UART_PROTO_INIT) after proto->open()
-succeeds, ensuring hu->priv is initialized before any work can be
-scheduled.
-
-Fixes: 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during initialization")
-Link: https://lore.kernel.org/linux-bluetooth/6969764f.170a0220.2b9fc4.35a7@mx.google.com/
-
-Signed-off-by: Jia-Hong Su <s11242586@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Closes: https://lore.kernel.org/r/20260119141620.1318102-1-amadeus@jmu.edu.cn/
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+Co-developed-by: Chukun Pan <amadeus@jmu.edu.cn>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Link: https://patch.msgid.link/20260123-k1-ethernet-clarify-stat-timeout-v3-1-93b9df627e87@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ldisc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/spacemit/k1_emac.c | 34 ++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index 2f322f890b81f..436ee77d4bf2f 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -685,6 +685,8 @@ static int hci_uart_register_dev(struct hci_uart *hu)
- 		return err;
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index 220eb5ce75833..88e9424d2d51a 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -1099,7 +1099,13 @@ static int emac_read_stat_cnt(struct emac_priv *priv, u8 cnt, u32 *res,
+ 					100, 10000);
+ 
+ 	if (ret) {
+-		netdev_err(priv->ndev, "Read stat timeout\n");
++		/*
++		 * This could be caused by the PHY stopping its refclk even when
++		 * the link is up, for power saving. See also comments in
++		 * emac_stats_update().
++		 */
++		dev_err_ratelimited(&priv->ndev->dev,
++				    "Read stat timeout. PHY clock stopped?\n");
+ 		return ret;
  	}
  
-+	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
+@@ -1147,17 +1153,25 @@ static void emac_stats_update(struct emac_priv *priv)
+ 
+ 	assert_spin_locked(&priv->stats_lock);
+ 
+-	if (!netif_running(priv->ndev) || !netif_device_present(priv->ndev)) {
+-		/* Not up, don't try to update */
++	/*
++	 * We can't read statistics if the interface is not up. Also, some PHYs
++	 * stop their reference clocks for link down power saving, which also
++	 * causes reading statistics to time out. Don't update and don't
++	 * reschedule in these cases.
++	 */
++	if (!netif_running(priv->ndev) ||
++	    !netif_carrier_ok(priv->ndev) ||
++	    !netif_device_present(priv->ndev)) {
+ 		return;
+ 	}
+ 
+ 	for (i = 0; i < sizeof(priv->tx_stats) / sizeof(*tx_stats); i++) {
+ 		/*
+-		 * If reading stats times out, everything is broken and there's
+-		 * nothing we can do. Reading statistics also can't return an
+-		 * error, so just return without updating and without
+-		 * rescheduling.
++		 * If reading stats times out anyway, the stat registers will be
++		 * stuck, and we can't really recover from that.
++		 *
++		 * Reading statistics also can't return an error, so just return
++		 * without updating and without rescheduling.
+ 		 */
+ 		if (emac_tx_read_stat_cnt(priv, i, &res))
+ 			return;
+@@ -1636,6 +1650,12 @@ static void emac_adjust_link(struct net_device *dev)
+ 		emac_wr(priv, MAC_GLOBAL_CONTROL, ctrl);
+ 
+ 		emac_set_fc_autoneg(priv);
 +
- 	if (test_bit(HCI_UART_INIT_PENDING, &hu->hdev_flags))
- 		return 0;
++		/*
++		 * Reschedule stats updates now that link is up. See comments in
++		 * emac_stats_update().
++		 */
++		mod_timer(&priv->stats_timer, jiffies);
+ 	}
  
-@@ -712,8 +714,6 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
- 
- 	hu->proto = p;
- 
--	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
--
- 	err = hci_uart_register_dev(hu);
- 	if (err) {
- 		return err;
+ 	phy_print_status(phydev);
 -- 
 2.51.0
 
