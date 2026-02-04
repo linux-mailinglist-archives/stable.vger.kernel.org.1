@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-213710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KiBKBdgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:55 +0100
+	id mHQkKQZlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408A0E7DC0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A38E8892
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 16F7A3053EF5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 57E473078BD7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BB62D8760;
-	Wed,  4 Feb 2026 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F155F423165;
+	Wed,  4 Feb 2026 15:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8PtfpnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mr8O3XHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB4C2D593E;
-	Wed,  4 Feb 2026 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B992C21F2;
+	Wed,  4 Feb 2026 15:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217247; cv=none; b=FlK+cf3rW3ngxJ6faqnYAQpYlznsMOD7kQaKP+qZ46QVjA2xZgcoSapmZsa7bGwWfQrXugWkWHLF7UFj8x4erUwlJq+HfOBVRrvDwBV6FZCHuFBMWtEk0C/K97n0GpSE1mf6q+xPbn9HLiuHfJfWrMTJL2jZptn/5rH1OA37m/4=
+	t=1770218031; cv=none; b=Lg2t9h5qYC9PQ+jf4INdL6Y/wr1MDkAfFxKr5FqrMPp3oOCYQ90RcmNj/iTC7lCOZROsGEj1F5UoN7kqsGhVz3DfuEUgWnpdnNmchTPSs412zrZBaZHMcfmLJqvi7P0xlrUI5h78VFyCiqDiHKZzgihNwdithO92wfTrj2tJB4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217247; c=relaxed/simple;
-	bh=bRGnObyINSiXA7dtdlHTFN11t2aC9UWr4/IryL6yjG8=;
+	s=arc-20240116; t=1770218031; c=relaxed/simple;
+	bh=lobbj8opxg2VLHpJxz2Hw56DjkToYu2K0wmOvRuGrMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1hE3RJsQQDMPrNIJ6a/J9KBFQr5OssARSjoTcKDQ35lnAUkHfyzwGlFmiLUa0ZbIfbQopj3weIGYSZt1wv1WnEb22UygX0P8P2FqETfrMBkEGxHAnItppL4B8+qr9+btZn5I+6curpqVTWf6AacMXi5jIjxfTbp0fgyZ6IK2dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8PtfpnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EDDC116C6;
-	Wed,  4 Feb 2026 15:00:46 +0000 (UTC)
+	 MIME-Version; b=HZbhJJ1+DHmsG2QnY/zX3TDu/4/fGsCTLEYxvq36F5TBrzA8lbGfJzXfJqbZdSG42++/4f9B4fvFWhrk4Wwf6ptmA4rDAz8LCNfN4C3ATi2iAJxa/mtaN/nPb+K2lXQ9ADsM+Pbsa7/Ae9D23XuqaRNpmQ7/3sGF8qOHZv7eW3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mr8O3XHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252F9C4CEF7;
+	Wed,  4 Feb 2026 15:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217247;
-	bh=bRGnObyINSiXA7dtdlHTFN11t2aC9UWr4/IryL6yjG8=;
+	s=korg; t=1770218031;
+	bh=lobbj8opxg2VLHpJxz2Hw56DjkToYu2K0wmOvRuGrMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8PtfpnNbCec/Iw8iKpHBkjJ1QyJgi1G+ymZN1T+zV36LI2o40WEJnibh9za6jpVa
-	 hDsqTlVxFQc1pu7/Z0YwH2wABu2CIeFKrxfvixPbP2Xyg9fi+tClx4vX8M8hdvfTdh
-	 DxikcznFmcaRmVEOBrWgTSW14oHe0O0XJph4ltoA=
+	b=mr8O3XHhw288kZT+MPVts1AiP6auCTI/gUGIHyDrqnjVdTLSJPftO5XVnfJ8HqH92
+	 8l04C0+ZJNhqII5ojK1EHOiHGA/Ll7Q1rYBa4472F07TXmVcvJyn4YdOGI7qE8XB0o
+	 Xr/c4Mwr9DGuZqcjPnC2Vl7Jd0kzbzrU1ncUPOow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 5.15 133/206] bpf: Do not let BPF test infra emit invalid GSO types to stack
+	Jakub Kicinski <kuba@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 190/280] can: gs_usb: gs_usb_receive_bulk_callback(): fix error message
 Date: Wed,  4 Feb 2026 15:39:24 +0100
-Message-ID: <20260204143902.988046357@linuxfoundation.org>
+Message-ID: <20260204143916.446705937@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,104 +74,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213710-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213942-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hust.edu.cn:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,iogearbox.net:email]
-X-Rspamd-Queue-Id: 408A0E7DC0
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 50A38E8892
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 04a899573fb87273a656f178b5f920c505f68875 upstream.
+[ Upstream commit 494fc029f662c331e06b7c2031deff3c64200eed ]
 
-Yinhao et al. reported that their fuzzer tool was able to trigger a
-skb_warn_bad_offload() from netif_skb_features() -> gso_features_check().
-When a BPF program - triggered via BPF test infra - pushes the packet
-to the loopback device via bpf_clone_redirect() then mentioned offload
-warning can be seen. GSO-related features are then rightfully disabled.
+Sinc commit 79a6d1bfe114 ("can: gs_usb: gs_usb_receive_bulk_callback():
+unanchor URL on usb_submit_urb() error") a failing resubmit URB will print
+an info message.
 
-We get into this situation due to convert___skb_to_skb() setting
-gso_segs and gso_size but not gso_type. Technically, it makes sense
-that this warning triggers since the GSO properties are malformed due
-to the gso_type. Potentially, the gso_type could be marked non-trustworthy
-through setting it at least to SKB_GSO_DODGY without any other specific
-assumptions, but that also feels wrong given we should not go further
-into the GSO engine in the first place.
+In the case of a short read where netdev has not yet been assigned,
+initialize as NULL to avoid dereferencing an undefined value. Also report
+the error value of the failed resubmit.
 
-The checks were added in 121d57af308d ("gso: validate gso_type in GSO
-handlers") because there were malicious (syzbot) senders that combine
-a protocol with a non-matching gso_type. If we would want to drop such
-packets, gso_features_check() currently only returns feature flags via
-netif_skb_features(), so one location for potentially dropping such skbs
-could be validate_xmit_unreadable_skb(), but then otoh it would be
-an additional check in the fast-path for a very corner case. Given
-bpf_clone_redirect() is the only place where BPF test infra could emit
-such packets, lets reject them right there.
-
-Fixes: 850a88cc4096 ("bpf: Expose __sk_buff wire_len/gso_segs to BPF_PROG_TEST_RUN")
-Fixes: cf62089b0edd ("bpf: Add gso_size to __sk_buff")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20251020075441.127980-1-daniel@iogearbox.net
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79a6d1bfe114 ("can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL on usb_submit_urb() error")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/20260119181904.1209979-1-kuba@kernel.org/
+Link: https://patch.msgid.link/20260120-gs_usb-fix-error-message-v1-1-6be04de572bc@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c |    5 +++++
- net/core/filter.c  |    7 +++++++
- 2 files changed, 12 insertions(+)
+ drivers/net/can/usb/gs_usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -537,6 +537,11 @@ static int convert___skb_to_skb(struct s
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index f782c3aa179e0..8859e65d4470b 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -526,7 +526,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ {
+ 	struct gs_usb *parent = urb->context;
+ 	struct gs_can *dev;
+-	struct net_device *netdev;
++	struct net_device *netdev = NULL;
+ 	int rc;
+ 	struct net_device_stats *stats;
+ 	struct gs_host_frame *hf = urb->transfer_buffer;
+@@ -674,7 +674,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		}
+ 	} else if (rc != -ESHUTDOWN && net_ratelimit()) {
+ 		netdev_info(netdev, "failed to re-submit IN URB: %pe\n",
+-			    ERR_PTR(urb->status));
++			    ERR_PTR(rc));
+ 	}
+ }
  
- 	if (__skb->gso_segs > GSO_MAX_SEGS)
- 		return -EINVAL;
-+
-+	/* Currently GSO type is zero/unset. If this gets extended with
-+	 * a small list of accepted GSO types in future, the filter for
-+	 * an unset GSO type in bpf_clone_redirect() can be lifted.
-+	 */
- 	skb_shinfo(skb)->gso_segs = __skb->gso_segs;
- 	skb_shinfo(skb)->gso_size = __skb->gso_size;
- 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2433,6 +2433,13 @@ BPF_CALL_3(bpf_clone_redirect, struct sk
- 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
- 		return -EINVAL;
- 
-+	/* BPF test infra's convert___skb_to_skb() can create type-less
-+	 * GSO packets. gso_features_check() will detect this as a bad
-+	 * offload. However, lets not leak them out in the first place.
-+	 */
-+	if (unlikely(skb_is_gso(skb) && !skb_shinfo(skb)->gso_type))
-+		return -EBADMSG;
-+
- 	dev = dev_get_by_index_rcu(dev_net(skb->dev), ifindex);
- 	if (unlikely(!dev))
- 		return -EINVAL;
+-- 
+2.51.0
+
 
 
 
