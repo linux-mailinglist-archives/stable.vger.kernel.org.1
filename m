@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF5WLRxlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:20 +0100
+	id cPizEJxcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C184E88E3
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4BDE76EB
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1429531411B7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C92A8300AC1A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDF441B365;
-	Wed,  4 Feb 2026 15:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D356C2C0263;
+	Wed,  4 Feb 2026 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjucrjBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0r7wAT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32ADA18859B;
-	Wed,  4 Feb 2026 15:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96776219301;
+	Wed,  4 Feb 2026 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218122; cv=none; b=moKgpj/jWommz2jvHGNMSQLIB2XKJuZ0i3pYXX4yITnSuJXiZBLAPo2DX+j95WtX8GFUOySr1/NPkuuc9pKI30Na9uBQQTVY9TXjf9oh/3AWfeNFKqEgKmLQ6wzTo8+MSOKs1ps+4Qmk0P6xKMmHb92U6docXqlwclz2WEXA4iQ=
+	t=1770216581; cv=none; b=nUHMWtgjeMPB8YW0brVWhgLFfYd+kNjUGNe1CKN4Fs5zR7sN8+0SxmY79f7B8K+7RwYSYAzI9tu7TlmKe3IYhqOvnphSGyEX2trfs8GVLldwF0zMagZYBYHqBMsk4Qp4D2IHmhr9wu1w7NuelnVsmNN5i9giKZeqp1UjX3W6dLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218122; c=relaxed/simple;
-	bh=1Qf4uWsiwyXIxQTLN8Hx7z7677NDvvQ8jHF8W0hddeE=;
+	s=arc-20240116; t=1770216581; c=relaxed/simple;
+	bh=D35PslkfhK3I4L7Oym6vN0QXXd6JB8Eh57AcaJPXZUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HRSTCylJOronZxJkHJ7rLkL6jUwbJVckCXnm4kk5wXI94TRJxuzQcqW19oldmvNr3i5iqQdlz/5Yqor/qnuK7usyO8KsyGsuCNRaEKMYJorGkc27rmsSkF+WnRFqNjyGG6opwfx7JD6DQio8SRXIoreanrsZZSBAgPQ8wXR/cwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjucrjBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C230C4CEF7;
-	Wed,  4 Feb 2026 15:15:21 +0000 (UTC)
+	 MIME-Version; b=qr2fl1dJW/puHwz40UB+Yv5gzfMB5ttP4JYoBgXUp7zqvCImDBYJSV36C/Sjv175UWy2PPOmcCygKpKiE/I5YsebHG7Jl5sIAZTlaeAUw2RfF6RKRxgDK1KWxUP8dVK+xsOuXxox9gvKoGKZvjon+nvhqPG/F3ARZAHenQi7OkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0r7wAT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB528C4CEF7;
+	Wed,  4 Feb 2026 14:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218121;
-	bh=1Qf4uWsiwyXIxQTLN8Hx7z7677NDvvQ8jHF8W0hddeE=;
+	s=korg; t=1770216581;
+	bh=D35PslkfhK3I4L7Oym6vN0QXXd6JB8Eh57AcaJPXZUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjucrjBhM/sSo9b5k5MWNocZ9Cs7HttQmawy7G6MtMXyYe/Ou8xVP9LdSABLk71mK
-	 A7hECeS/4n2PxP4EgOCs4FogHwx9AbKYSmUHDZkGPzvt7jp4l5AR/ZESsm4HH2VaXS
-	 TG0YBQJDvPq4CtS8LANWhZqFE0qC9NQMNfqlXzww=
+	b=k0r7wAT6BYnoszrO7I+mvw7iZAafrU3BMhnqcT1eSfwswHiGJXbZKwLDSctYFgq1C
+	 FPnaMzRPeKMp6EHZQv9wAxayFhTyG20OIWeqB5ntJ+SvuN7IsrVjfri6E6YLzaeLan
+	 GgE5iHvWt/5Cw3DDwo08xld6XFLeL0KFGTTfmbEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 218/280] drm/amdgpu/gfx11: fix wptr reset in KGQ init
+	Martin Kaiser <martin@kaiser.cx>,
+	Florian Westphal <fw@strlen.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 129/161] net: bridge: fix static key check
 Date: Wed,  4 Feb 2026 15:39:52 +0100
-Message-ID: <20260204143917.452623937@linuxfoundation.org>
+Message-ID: <20260204143856.383957828@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213970-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213511-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2C184E88E3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,strlen.de:email,kaiser.cx:email]
+X-Rspamd-Queue-Id: 8D4BDE76EB
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-commit b1f810471c6a6bd349f7f9f2f2fed96082056d46 upstream.
+[ Upstream commit cc0cf10fdaeadf5542d64a55b5b4120d3df90b7d ]
 
-wptr is a 64 bit value and we need to update the
-full value, not just 32 bits. Align with what we
-already do for KCQs.
+Fix the check if netfilter's static keys are available. netfilter defines
+and exports static keys if CONFIG_JUMP_LABEL is enabled. (HAVE_JUMP_LABEL
+is never defined.)
 
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1f16866bdb1daed7a80ca79ae2837a9832a74fbc)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 971502d77faa ("bridge: netfilter: unroll NF_HOOK helper in bridge input path")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260127101925.1754425-1-martin@kaiser.cx
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    2 +-
+ net/bridge/br_input.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -3716,7 +3716,7 @@ static int gfx_v11_0_gfx_init_queue(stru
- 			memcpy(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset the ring */
- 		ring->wptr = 0;
--		*ring->wptr_cpu_addr = 0;
-+		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
- 		amdgpu_ring_clear_ring(ring);
- #ifdef BRING_UP_DEBUG
- 		mutex_lock(&adev->srbm_mutex);
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index 52dd0708fd143..f9d4b86e3186d 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -218,7 +218,7 @@ static int nf_hook_bridge_pre(struct sk_buff *skb, struct sk_buff **pskb)
+ 	int ret;
+ 
+ 	net = dev_net(skb->dev);
+-#ifdef HAVE_JUMP_LABEL
++#ifdef CONFIG_JUMP_LABEL
+ 	if (!static_key_false(&nf_hooks_needed[NFPROTO_BRIDGE][NF_BR_PRE_ROUTING]))
+ 		goto frame_finish;
+ #endif
+-- 
+2.51.0
+
 
 
 
