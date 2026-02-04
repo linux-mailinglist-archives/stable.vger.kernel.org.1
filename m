@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sA6JDRxng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-213813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:52 +0100
+	id 8E5oHEZfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570D9E8E6D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2B5E7C13
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 31F923022EC3
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11A7030547DD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA04426D03;
-	Wed,  4 Feb 2026 15:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F5F41B36A;
+	Wed,  4 Feb 2026 14:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00xnucQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIGJ0T/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2156E4266BB;
-	Wed,  4 Feb 2026 15:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F153C41B343;
+	Wed,  4 Feb 2026 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217596; cv=none; b=Y6Nkl2juoI9XIAUObhJD87dPTtdtkPVhDZdBNoTiKl7agxjqW0ZJR8dmiQhmhN9hOjH30szRqvJeurIvajHtAfvQPOGmdhZepX3wShlIBNYdgE9cXuWsM/IIHc2xAtPQ1fpeBvNAP5ydEZST6329lIB7GR80WiFIZfEy7oxG1nM=
+	t=1770216759; cv=none; b=QIg6bsBcPyMFT7DI4v4Oj+sNhNChylkzp3TJ6kpOtV7pGC+YniZGAs2kx+OH8na4sqHCSYzwTw45I2GMwD9P21bTFXW9iapT6q8/4oO9Mmfe+XmmdPGiTx2Vd7Ou4NzGZtvO6yNOETb90RuDdG0qjdyEcfYAuarSWOUpHBGhzYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217596; c=relaxed/simple;
-	bh=xZ3VmYqdPrraOotG7pH7r1lxEpbQOaX5z3rZh0THvE4=;
+	s=arc-20240116; t=1770216759; c=relaxed/simple;
+	bh=lEJkcqPhPbP6nNOWUEan0Uc6CIwP5FlX/W1uAXEeiDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRfI0s8Ly2ibXEr5T/0FnHcGrLyfiskCybSGHS7Hqy108vXFX6YG/Ilvg6ADDUbvEJGTcP5wRxDYWgZsPymkR7NQO6PBDXGcsoQYxz7IeawR6yNRhXTKsZeDWmvfkeRtuj5gOplyGxWxQE9Y9ezkma+hnhidaHryfblhSCBYFvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00xnucQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA09C4CEF7;
-	Wed,  4 Feb 2026 15:06:35 +0000 (UTC)
+	 MIME-Version; b=kLMY6ZDLrX//GJJEQ2weujUbYSVhaSE89mDUuJJXklkAkgg3FtlH4OJuo8+KX/EIPEtcHviui3wAoXXDdwyWbXbhlK/B+ZwCwGpJnEU2RtdyWiQInTfrrC1vaxr11SaDyhd/dWZTITWgGlK+0/ro/dQ5N/G+YO1cdYiG+CyB8xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIGJ0T/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6459FC4CEF7;
+	Wed,  4 Feb 2026 14:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217596;
-	bh=xZ3VmYqdPrraOotG7pH7r1lxEpbQOaX5z3rZh0THvE4=;
+	s=korg; t=1770216758;
+	bh=lEJkcqPhPbP6nNOWUEan0Uc6CIwP5FlX/W1uAXEeiDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00xnucQTpEWqdjMg2CxBeNJRjXPf/tkswcGa+GrLcYfdyFoOzuWeB0ooyHYrJTguD
-	 Ibg6g64EOnMGPDDCuxWZb8zVuwkUr70gxx7L5ALNl9BuGuHhRmARXwBFy6vQMVwhjG
-	 B+cfLC3qTZlsvQ9yYlcWfujoUJYfs3LgFs8D5iFI=
+	b=RIGJ0T/4rpDqlM/zAThQQwT0kLEP90BfReKIRFwrmUx5OlKJdbfVi4OsA04I8EZMQ
+	 cB9ejjeXHKS0IwHq1SCz8Pp4VHwtGu4h8HTrLMm8EV2bL9MKMqKnZwsFfJOIcDSGlD
+	 U6y1X3r2+h9VnxsszaUERpbOu+Ip5NCr43VqyV6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 6.1 063/280] drm/nouveau/disp/nv50-: Set lock_core in curs507a_prepare
+	syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 006/206] ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()
 Date: Wed,  4 Feb 2026 15:37:17 +0100
-Message-ID: <20260204143911.921266111@linuxfoundation.org>
+Message-ID: <20260204143858.427827108@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +66,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213813-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213565-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 570D9E8E6D
+	TAGGED_RCPT(0.00)[stable,d4dda070f833dc5dc89a];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0D2B5E7C13
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9e9bc6be0fa0b6b6b73f4f831f3b77716d0a8d9e upstream.
+[ Upstream commit 81c734dae203757fb3c9eee6f9896386940776bd ]
 
-For a while, I've been seeing a strange issue where some (usually not all)
-of the display DMA channels will suddenly hang, particularly when there is
-a visible cursor on the screen that is being frequently updated, and
-especially when said cursor happens to go between two screens. While this
-brings back lovely memories of fixing Intel Skylake bugs, I would quite
-like to fix it :).
+Blamed commit did not take care of VLAN encapsulations
+as spotted by syzbot [1].
 
-It turns out the problem that's happening here is that we're managing to
-reach nv50_head_flush_set() in our atomic commit path without actually
-holding nv50_disp->mutex. This means that cursor updates happening in
-parallel (along with any other atomic updates that need to use the core
-channel) will race with eachother, which eventually causes us to corrupt
-the pushbuffer - leading to a plethora of various GSP errors, usually:
+Use skb_vlan_inet_prepare() instead of pskb_inet_may_pull().
 
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000218 00102680 00000004 00800003
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 0000021c 00040509 00000004 00000001
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000000 00000000 00000001 00000001
+[1]
+ BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+ BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+ BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+  IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+  ip6ip6_dscp_ecn_decapsulate+0x16f/0x1b0 net/ipv6/ip6_tunnel.c:729
+  __ip6_tnl_rcv+0xed9/0x1b50 net/ipv6/ip6_tunnel.c:860
+  ip6_tnl_rcv+0xc3/0x100 net/ipv6/ip6_tunnel.c:903
+ gre_rcv+0x1529/0x1b90 net/ipv6/ip6_gre.c:-1
+  ip6_protocol_deliver_rcu+0x1c89/0x2c60 net/ipv6/ip6_input.c:438
+  ip6_input_finish+0x1f4/0x4a0 net/ipv6/ip6_input.c:489
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+  ip6_input+0x9c/0x330 net/ipv6/ip6_input.c:500
+  ip6_mc_input+0x7ca/0xc10 net/ipv6/ip6_input.c:590
+  dst_input include/net/dst.h:474 [inline]
+  ip6_rcv_finish+0x958/0x990 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+  ipv6_rcv+0xf1/0x3c0 net/ipv6/ip6_input.c:311
+  __netif_receive_skb_one_core net/core/dev.c:6139 [inline]
+  __netif_receive_skb+0x1df/0xac0 net/core/dev.c:6252
+  netif_receive_skb_internal net/core/dev.c:6338 [inline]
+  netif_receive_skb+0x57/0x630 net/core/dev.c:6397
+  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
+  tun_get_user+0x5c0e/0x6c60 drivers/net/tun.c:1953
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
+  __se_sys_write fs/read_write.c:746 [inline]
+  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-The reason this is happening is because generally we check whether we need
-to set nv50_atom->lock_core at the end of nv50_head_atomic_check().
-However, curs507a_prepare is called from the fb_prepare callback, which
-happens after the atomic check phase. As a result, this can lead to commits
-that both touch the core channel but also don't grab nv50_disp->mutex.
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:4960 [inline]
+  slab_alloc_node mm/slub.c:5263 [inline]
+  kmem_cache_alloc_node_noprof+0x9e7/0x17a0 mm/slub.c:5315
+  kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:586
+  __alloc_skb+0x805/0x1040 net/core/skbuff.c:690
+  alloc_skb include/linux/skbuff.h:1383 [inline]
+  alloc_skb_with_frags+0xc5/0xa60 net/core/skbuff.c:6712
+  sock_alloc_send_pskb+0xacc/0xc60 net/core/sock.c:2995
+  tun_alloc_skb drivers/net/tun.c:1461 [inline]
+  tun_get_user+0x1142/0x6c60 drivers/net/tun.c:1794
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
+  __se_sys_write fs/read_write.c:746 [inline]
+  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-So, fix this by making sure that we set nv50_atom->lock_core in
-cus507a_prepare().
+CPU: 0 UID: 0 PID: 6465 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(none)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
 
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
-Cc: <stable@vger.kernel.org> # v4.18+
-Link: https://patch.msgid.link/20251219215344.170852-2-lyude@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d975c15c0cd ("ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()")
+Reported-by: syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/695e88b2.050a0220.1c677c.036d.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260107163109.4188620-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/curs507a.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/ip6_tunnel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
-@@ -83,6 +83,7 @@ curs507a_prepare(struct nv50_wndw *wndw,
- 		asyh->curs.handle = handle;
- 		asyh->curs.offset = offset;
- 		asyh->set.curs = asyh->curs.visible;
-+		nv50_atom(asyh->state.state)->lock_core = true;
- 	}
- }
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index ccdea44438940..553851e3aca14 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -846,7 +846,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
  
+ 	skb_reset_network_header(skb);
+ 
+-	if (!pskb_inet_may_pull(skb)) {
++	if (skb_vlan_inet_prepare(skb, true)) {
+ 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+ 		DEV_STATS_INC(tunnel->dev, rx_errors);
+ 		goto drop;
+-- 
+2.51.0
+
 
 
 
