@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNUCHWheg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:57:44 +0100
+	id aFACIollg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEE0E7A68
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:57:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ADEE8A0E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1664A3015A4F
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A4C93049724
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495D541B360;
-	Wed,  4 Feb 2026 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879074279E5;
+	Wed,  4 Feb 2026 15:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ3vyIGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1Ld9rnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD78410D10;
-	Wed,  4 Feb 2026 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B78E2D8DA8;
+	Wed,  4 Feb 2026 15:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216813; cv=none; b=hd2X00sSQ1FTkD8V5m0oRnacC3ikTdxsgITGeGArcWLhKIDu3rVuz2waU5Mlw5dJtS3oXHBt5uh5BGZ9icg3qA9WcIVv03h/N46N1aZaQwuqalknAFkkdzq2MmAVCrTrjFO8sKGGb4Sa+ql2OyKJ0hqYxwk22l8AUJhFa+fD3V0=
+	t=1770217657; cv=none; b=Zfz0qn7acXNTeviIEsLZXazToDts2ANjWSfnOL4P+LK957bVAsFuFt602tBAjUsLhLD0b8MncdupnvtoU2kB95xe8Z1aVjmkIzF7OL3KUzOt9jQk1SSQ1M4PWsU550WNTpH0DRckWpssh3V5LSTHVWIrN61FsxsisMYXoEfwmL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216813; c=relaxed/simple;
-	bh=I158yrltoyUFMgsfptMA/xQ4y6uY9eahrj2GqnRBES0=;
+	s=arc-20240116; t=1770217657; c=relaxed/simple;
+	bh=8B78SKN4KJPZ+AVLf7/OOEgIB4Fr2v1W6tj5NUkw7M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwDMmI5FshWgVVppRngBykTEmxRW/dzUcVG6U/9dqdupBD1bhJaVpTV6aJr5tQFkolofGmLioQTm9s8tOQDfFO910yozOLo2qBucVaIisMSypEawALCBTHfJKt/xJM/K+0y2V7OlE6loDOVhN/QVc9FtMFC+S5CVNubZNlZ5s8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ3vyIGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77949C4CEF7;
-	Wed,  4 Feb 2026 14:53:32 +0000 (UTC)
+	 MIME-Version; b=Dd08jQIAVNUwW9KN/eSGxWDap8poAs8OBtKqrvqNuDFMEnZoNafmXtWEsILaYgRoAt+7q2OowlWZMk+M+/mO4Voa1qPVgwIr6my6zIIPtaatRL08FL8KT76sVTGnYs0Zp+jH+xoV6zUCI92YCPRrmQOvLhABBmmyEdtFByATxHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1Ld9rnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FDAC4CEF7;
+	Wed,  4 Feb 2026 15:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216812;
-	bh=I158yrltoyUFMgsfptMA/xQ4y6uY9eahrj2GqnRBES0=;
+	s=korg; t=1770217657;
+	bh=8B78SKN4KJPZ+AVLf7/OOEgIB4Fr2v1W6tj5NUkw7M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZ3vyIGhWXl5Xyaz3CUnnqhP7fcwO1p+/axpMi0X9y/OtIyFVoc193HUFwDSRTF0m
-	 +DGVwbo29UQY7u5xIUFS+9b0M3P9ijtfPZzBw4fI5s8VPf/wlSDo1WMstr1Attou5u
-	 WkEWwr4xvSAwhn8VvPEJUn/iMshrIYsgTSzab290=
+	b=D1Ld9rnqBrTSxrF9hxbqU9+V5zQIOGPm3paC8DWL/DEesp6+5TUkD/M8NWVVgo2bV
+	 vd9KWfZELn5BW/yxWJ58s/96D5Y2GriLkvitwmKjnnU3pjDijC7qoR5K6knh+ygKCD
+	 n5g54znQW5QD3/fNyAxmhwd5xJPS3GuG5optQUR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Vinod Koul <vkoul@kernel.org>,
+	Xabier Marquiegui <reibax@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/206] dmaengine: omap-dma: fix dma_pool resource leak in error paths
-Date: Wed,  4 Feb 2026 15:37:32 +0100
-Message-ID: <20260204143858.966974741@linuxfoundation.org>
+Subject: [PATCH 6.1 079/280] posix-clock: introduce posix_clock_context concept
+Date: Wed,  4 Feb 2026 15:37:33 +0100
+Message-ID: <20260204143912.502492275@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,78 +71,347 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,davemloft.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213831-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213581-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DDEE0E7A68
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email]
+X-Rspamd-Queue-Id: D7ADEE8A0E
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Xabier Marquiegui <reibax@gmail.com>
 
-[ Upstream commit 2e1136acf8a8887c29f52e35a77b537309af321f ]
+[ Upstream commit 60c6946675fc06dd2fd2b7a4b6fd1c1f046f1056 ]
 
-The dma_pool created by dma_pool_create() is not destroyed when
-dma_async_device_register() or of_dma_controller_register() fails,
-causing a resource leak in the probe error paths.
+Add the necessary structure to support custom private-data per
+posix-clock user.
 
-Add dma_pool_destroy() in both error paths to properly release the
-allocated dma_pool resource.
+The previous implementation of posix-clock assumed all file open
+instances need access to the same clock structure on private_data.
 
-Fixes: 7bedaa553760 ("dmaengine: add OMAP DMA engine driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251103073018.643-1-vulab@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The need for individual data structures per file open instance has been
+identified when developing support for multiple timestamp event queue
+users for ptp_clock.
+
+Signed-off-by: Xabier Marquiegui <reibax@gmail.com>
+Suggested-by: Richard Cochran <richardcochran@gmail.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e859d375d169 ("posix-clock: Store file pointer in struct posix_clock_context")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/omap-dma.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ptp/ptp_chardev.c   | 21 +++++++++++++--------
+ drivers/ptp/ptp_private.h   | 16 +++++++++-------
+ include/linux/posix-clock.h | 35 +++++++++++++++++++++++++++--------
+ kernel/time/posix-clock.c   | 36 +++++++++++++++++++++++++++---------
+ 4 files changed, 76 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-index 7cb577e6587b1..be47a9b8ac96e 100644
---- a/drivers/dma/ti/omap-dma.c
-+++ b/drivers/dma/ti/omap-dma.c
-@@ -1804,6 +1804,8 @@ static int omap_dma_probe(struct platform_device *pdev)
- 	if (rc) {
- 		pr_warn("OMAP-DMA: failed to register slave DMA engine device: %d\n",
- 			rc);
-+		if (od->ll123_supported)
-+			dma_pool_destroy(od->desc_pool);
- 		omap_dma_free(od);
- 		return rc;
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index 6b36003567975..fcee202f4484c 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -103,14 +103,16 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
+ 	return 0;
+ }
+ 
+-int ptp_open(struct posix_clock *pc, fmode_t fmode)
++int ptp_open(struct posix_clock_context *pccontext, fmode_t fmode)
+ {
+ 	return 0;
+ }
+ 
+-long ptp_ioctl(struct posix_clock *pc, unsigned int cmd, unsigned long arg)
++long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
++	       unsigned long arg)
+ {
+-	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
++	struct ptp_clock *ptp =
++		container_of(pccontext->clk, struct ptp_clock, clock);
+ 	struct ptp_sys_offset_extended *extoff = NULL;
+ 	struct ptp_sys_offset_precise precise_offset;
+ 	struct system_device_crosststamp xtstamp;
+@@ -434,9 +436,11 @@ long ptp_ioctl(struct posix_clock *pc, unsigned int cmd, unsigned long arg)
+ 	return err;
+ }
+ 
+-__poll_t ptp_poll(struct posix_clock *pc, struct file *fp, poll_table *wait)
++__poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
++		  poll_table *wait)
+ {
+-	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
++	struct ptp_clock *ptp =
++		container_of(pccontext->clk, struct ptp_clock, clock);
+ 
+ 	poll_wait(fp, &ptp->tsev_wq, wait);
+ 
+@@ -445,10 +449,11 @@ __poll_t ptp_poll(struct posix_clock *pc, struct file *fp, poll_table *wait)
+ 
+ #define EXTTS_BUFSIZE (PTP_BUF_TIMESTAMPS * sizeof(struct ptp_extts_event))
+ 
+-ssize_t ptp_read(struct posix_clock *pc,
+-		 uint rdflags, char __user *buf, size_t cnt)
++ssize_t ptp_read(struct posix_clock_context *pccontext, uint rdflags,
++		 char __user *buf, size_t cnt)
+ {
+-	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
++	struct ptp_clock *ptp =
++		container_of(pccontext->clk, struct ptp_clock, clock);
+ 	struct timestamp_event_queue *queue = &ptp->tsevq;
+ 	struct ptp_extts_event *event;
+ 	unsigned long flags;
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index a54124269c2f4..a431eb79fe77d 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -131,16 +131,18 @@ extern struct class *ptp_class;
+ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
+ 		    enum ptp_pin_function func, unsigned int chan);
+ 
+-long ptp_ioctl(struct posix_clock *pc,
+-	       unsigned int cmd, unsigned long arg);
++long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
++	       unsigned long arg);
+ 
+-int ptp_open(struct posix_clock *pc, fmode_t fmode);
++int ptp_open(struct posix_clock_context *pccontext, fmode_t fmode);
+ 
+-ssize_t ptp_read(struct posix_clock *pc,
+-		 uint flags, char __user *buf, size_t cnt);
++int ptp_release(struct posix_clock_context *pccontext);
+ 
+-__poll_t ptp_poll(struct posix_clock *pc,
+-	      struct file *fp, poll_table *wait);
++ssize_t ptp_read(struct posix_clock_context *pccontext, uint flags, char __user *buf,
++		 size_t cnt);
++
++__poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
++		  poll_table *wait);
+ 
+ /*
+  * see ptp_sysfs.c
+diff --git a/include/linux/posix-clock.h b/include/linux/posix-clock.h
+index 468328b1e1dd5..ef8619f489203 100644
+--- a/include/linux/posix-clock.h
++++ b/include/linux/posix-clock.h
+@@ -14,6 +14,7 @@
+ #include <linux/rwsem.h>
+ 
+ struct posix_clock;
++struct posix_clock_context;
+ 
+ /**
+  * struct posix_clock_operations - functional interface to the clock
+@@ -50,18 +51,18 @@ struct posix_clock_operations {
+ 	/*
+ 	 * Optional character device methods:
+ 	 */
+-	long    (*ioctl)   (struct posix_clock *pc,
+-			    unsigned int cmd, unsigned long arg);
++	long (*ioctl)(struct posix_clock_context *pccontext, unsigned int cmd,
++		      unsigned long arg);
+ 
+-	int     (*open)    (struct posix_clock *pc, fmode_t f_mode);
++	int (*open)(struct posix_clock_context *pccontext, fmode_t f_mode);
+ 
+-	__poll_t (*poll)   (struct posix_clock *pc,
+-			    struct file *file, poll_table *wait);
++	__poll_t (*poll)(struct posix_clock_context *pccontext, struct file *file,
++			 poll_table *wait);
+ 
+-	int     (*release) (struct posix_clock *pc);
++	int (*release)(struct posix_clock_context *pccontext);
+ 
+-	ssize_t (*read)    (struct posix_clock *pc,
+-			    uint flags, char __user *buf, size_t cnt);
++	ssize_t (*read)(struct posix_clock_context *pccontext, uint flags,
++			char __user *buf, size_t cnt);
+ };
+ 
+ /**
+@@ -90,6 +91,24 @@ struct posix_clock {
+ 	bool zombie;
+ };
+ 
++/**
++ * struct posix_clock_context - represents clock file operations context
++ *
++ * @clk:              Pointer to the clock
++ * @private_clkdata:  Pointer to user data
++ *
++ * Drivers should use struct posix_clock_context during specific character
++ * device file operation methods to access the posix clock.
++ *
++ * Drivers can store a private data structure during the open operation
++ * if they have specific information that is required in other file
++ * operations.
++ */
++struct posix_clock_context {
++	struct posix_clock *clk;
++	void *private_clkdata;
++};
++
+ /**
+  * posix_clock_register() - register a new clock
+  * @clk:   Pointer to the clock. Caller must provide 'ops' field
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index 05e73d209aa87..706559ed75793 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -19,7 +19,8 @@
+  */
+ static struct posix_clock *get_posix_clock(struct file *fp)
+ {
+-	struct posix_clock *clk = fp->private_data;
++	struct posix_clock_context *pccontext = fp->private_data;
++	struct posix_clock *clk = pccontext->clk;
+ 
+ 	down_read(&clk->rwsem);
+ 
+@@ -39,6 +40,7 @@ static void put_posix_clock(struct posix_clock *clk)
+ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
+ 				size_t count, loff_t *ppos)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	int err = -EINVAL;
+ 
+@@ -46,7 +48,7 @@ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
+ 		return -ENODEV;
+ 
+ 	if (clk->ops.read)
+-		err = clk->ops.read(clk, fp->f_flags, buf, count);
++		err = clk->ops.read(pccontext, fp->f_flags, buf, count);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -55,6 +57,7 @@ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
+ 
+ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	__poll_t result = 0;
+ 
+@@ -62,7 +65,7 @@ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
+ 		return EPOLLERR;
+ 
+ 	if (clk->ops.poll)
+-		result = clk->ops.poll(clk, fp, wait);
++		result = clk->ops.poll(pccontext, fp, wait);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -72,6 +75,7 @@ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
+ static long posix_clock_ioctl(struct file *fp,
+ 			      unsigned int cmd, unsigned long arg)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	int err = -ENOTTY;
+ 
+@@ -79,7 +83,7 @@ static long posix_clock_ioctl(struct file *fp,
+ 		return -ENODEV;
+ 
+ 	if (clk->ops.ioctl)
+-		err = clk->ops.ioctl(clk, cmd, arg);
++		err = clk->ops.ioctl(pccontext, cmd, arg);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -90,6 +94,7 @@ static long posix_clock_ioctl(struct file *fp,
+ static long posix_clock_compat_ioctl(struct file *fp,
+ 				     unsigned int cmd, unsigned long arg)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	int err = -ENOTTY;
+ 
+@@ -97,7 +102,7 @@ static long posix_clock_compat_ioctl(struct file *fp,
+ 		return -ENODEV;
+ 
+ 	if (clk->ops.ioctl)
+-		err = clk->ops.ioctl(clk, cmd, arg);
++		err = clk->ops.ioctl(pccontext, cmd, arg);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -110,6 +115,7 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 	int err;
+ 	struct posix_clock *clk =
+ 		container_of(inode->i_cdev, struct posix_clock, cdev);
++	struct posix_clock_context *pccontext;
+ 
+ 	down_read(&clk->rwsem);
+ 
+@@ -117,14 +123,20 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 		err = -ENODEV;
+ 		goto out;
  	}
-@@ -1819,6 +1821,8 @@ static int omap_dma_probe(struct platform_device *pdev)
- 		if (rc) {
- 			pr_warn("OMAP-DMA: failed to register DMA controller\n");
- 			dma_async_device_unregister(&od->ddev);
-+			if (od->ll123_supported)
-+				dma_pool_destroy(od->desc_pool);
- 			omap_dma_free(od);
- 		}
++	pccontext = kzalloc(sizeof(*pccontext), GFP_KERNEL);
++	if (!pccontext) {
++		err = -ENOMEM;
++		goto out;
++	}
++	pccontext->clk = clk;
++	fp->private_data = pccontext;
+ 	if (clk->ops.open)
+-		err = clk->ops.open(clk, fp->f_mode);
++		err = clk->ops.open(pccontext, fp->f_mode);
+ 	else
+ 		err = 0;
+ 
+ 	if (!err) {
+ 		get_device(clk->dev);
+-		fp->private_data = clk;
  	}
+ out:
+ 	up_read(&clk->rwsem);
+@@ -133,14 +145,20 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 
+ static int posix_clock_release(struct inode *inode, struct file *fp)
+ {
+-	struct posix_clock *clk = fp->private_data;
++	struct posix_clock_context *pccontext = fp->private_data;
++	struct posix_clock *clk;
+ 	int err = 0;
+ 
++	if (!pccontext)
++		return -ENODEV;
++	clk = pccontext->clk;
++
+ 	if (clk->ops.release)
+-		err = clk->ops.release(clk);
++		err = clk->ops.release(pccontext);
+ 
+ 	put_device(clk->dev);
+ 
++	kfree(pccontext);
+ 	fp->private_data = NULL;
+ 
+ 	return err;
 -- 
 2.51.0
 
