@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOjfNypbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:54 +0100
+	id +LtIK2pfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:02:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C496E744E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCFBE7C6C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87BEA3011BF5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 379E331052F2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2925840F8C6;
-	Wed,  4 Feb 2026 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A6B27F749;
+	Wed,  4 Feb 2026 14:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKj5oLDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnJXFyRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C1F1EA84;
-	Wed,  4 Feb 2026 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70F941B345;
+	Wed,  4 Feb 2026 14:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216196; cv=none; b=bnQ8hyCgWG72s2mEnGfb3flYcZ4EMnrY11sKxqj5djRZxXjaiKSLmG3MBm3eEGRJlTi2Ge0Ta4rwFO2UXpmkQhadufmfZLQOqKQEc4orbF3MuHkwAHRSSI/Giv37YO/s1JaUWq04nmDM54Nk6xCTN7RGHg1V7AXzgqYctBN70tE=
+	t=1770216845; cv=none; b=Mif6hgjCr26/CTkVl44/+qXmxGRRTQCFgV6oP8oG1ibma+J+p5h++YRQb66LTLhbxa9gDAkwgZNsmP1c6y5OtwR7huaZA/jiQf2uAUDj/bffpiwPiVl74mP2YEaH/JXtdkdmXFdfZh3QwpJaT3/uA3lGKeos2MQxZY4iAEnUqns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216196; c=relaxed/simple;
-	bh=m2ktMt47fVMyof6SBXrwkoWZ+Cu0+uhwjIWAlRYNlo0=;
+	s=arc-20240116; t=1770216845; c=relaxed/simple;
+	bh=bHy6etdnpDbK4Zhx20r0Di16LAR/bPtn9tpULEcaKnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGiYrN+byAzjJDU18WaYFBh9xQuWMXSnQpKjeWg5X3wfxync7TwkVTLUsh7SooeASJPFbUXEKLxve0f1EOPyQ8cpYBObBNXt4yFmJXBB+tz8eny8kMShHD6XvouqL+utbesZTcaCYJRv8hFLr0mCAHtQkGgZZA7VZnCEykRqimI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKj5oLDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CBFC4CEF7;
-	Wed,  4 Feb 2026 14:43:14 +0000 (UTC)
+	 MIME-Version; b=M9vlCDwHa99pGvfpf2rJWicKmdmcmzBs8cK/O0EdromESTatBIFO4yKjAPF/7RgeAE/65AGng+HShRWHaIAFYRv03Mzy7Q8WdCntHeYQJ2aX4VdizZ3hov462HJzVBESCOEc4riqPwfFhqtHEYTB2dssqwqrHrO+yHONkgLzqNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnJXFyRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE4AC4CEF7;
+	Wed,  4 Feb 2026 14:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216195;
-	bh=m2ktMt47fVMyof6SBXrwkoWZ+Cu0+uhwjIWAlRYNlo0=;
+	s=korg; t=1770216845;
+	bh=bHy6etdnpDbK4Zhx20r0Di16LAR/bPtn9tpULEcaKnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKj5oLDS1O/O+4mpHH2+oII2MVb+2XybMztzPGvHFAbQJAEyY8ZWQHZT0NeVfAHD6
-	 f/opaU5Q5ZinFdvQctHxBpSOgWqYuFzFKDmSleBv8AZGZoO87kJxXVB816TFVpcKFf
-	 8QOxH1t2PyF1AEO5xlroNkVf54pXSsEojV5GTwiQ=
+	b=KnJXFyRhI14FmL1q6QmpxhlOd8hW0KK3POAvflTx0PVPG3K7DmSGxZ5Ka3bGIwSQu
+	 RNS1VA3ZgjWsxlYjerRLGz7f+gyiZaFNqC1LWnYGPII4ZfOjUpQEZoIZzu5UM1DHGU
+	 v849+jCKcnjt4wclAsP+V6/gemuI6Vmvw/R9Ma08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/161] phy: stm32-usphyc: Fix off by one in probe()
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 048/206] dmaengine: lpc18xx-dmamux: fix device leak on route allocation
 Date: Wed,  4 Feb 2026 15:37:59 +0100
-Message-ID: <20260204143852.349381259@linuxfoundation.org>
+Message-ID: <20260204143859.945833025@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +67,123 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213395-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213591-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[vz.mleia.com:query timed out,vkoul.kernel.org:query timed out];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linaro.org:email]
-X-Rspamd-Queue-Id: 5C496E744E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5BCFBE7C6C
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit cabd25b57216ddc132efbcc31f972baa03aad15a ]
+commit d4d63059dee7e7cae0c4d9a532ed558bc90efb55 upstream.
 
-The "index" variable is used as an index into the usbphyc->phys[] array
-which has usbphyc->nphys elements.  So if it is equal to usbphyc->nphys
-then it is one element out of bounds.  The "index" comes from the
-device tree so it's data that we trust and it's unlikely to be wrong,
-however it's obviously still worth fixing the bug.  Change the > to >=.
+Make sure to drop the reference taken when looking up the DMA mux
+platform device during route allocation.
 
-Fixes: 94c358da3a05 ("phy: stm32: add support for STM32 USB PHY Controller (USBPHYC)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/aTfHcMJK1wFVnvEe@stanley.mountain
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
+Cc: stable@vger.kernel.org	# 4.3
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251117161258.10679-8-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/st/phy-stm32-usbphyc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/lpc18xx-dmamux.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/phy/st/phy-stm32-usbphyc.c b/drivers/phy/st/phy-stm32-usbphyc.c
-index 03fc567e9f188..9b1b6e9d819ca 100644
---- a/drivers/phy/st/phy-stm32-usbphyc.c
-+++ b/drivers/phy/st/phy-stm32-usbphyc.c
-@@ -391,7 +391,7 @@ static int stm32_usbphyc_probe(struct platform_device *pdev)
- 		}
+--- a/drivers/dma/lpc18xx-dmamux.c
++++ b/drivers/dma/lpc18xx-dmamux.c
+@@ -55,30 +55,31 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
+ 	unsigned long flags;
+ 	unsigned mux;
++	int ret = -EINVAL;
  
- 		ret = of_property_read_u32(child, "reg", &index);
--		if (ret || index > usbphyc->nphys) {
-+		if (ret || index >= usbphyc->nphys) {
- 			dev_err(&phy->dev, "invalid reg property: %d\n", ret);
- 			if (!ret)
- 				ret = -EINVAL;
--- 
-2.51.0
-
+ 	if (dma_spec->args_count != 3) {
+ 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	mux = dma_spec->args[0];
+ 	if (mux >= dmamux->dma_master_requests) {
+ 		dev_err(&pdev->dev, "invalid mux number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
+ 		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
+ 			dma_spec->args[1]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	/* The of_node_put() will be done in the core for the node */
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "can't get dma master\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	spin_lock_irqsave(&dmamux->lock, flags);
+@@ -87,7 +88,8 @@ static void *lpc18xx_dmamux_reserve(stru
+ 		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
+ 			mux, mux, dmamux->muxes[mux].value);
+ 		of_node_put(dma_spec->np);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 
+ 	dmamux->muxes[mux].busy = true;
+@@ -104,7 +106,14 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
+ 		dmamux->muxes[mux].value, mux);
+ 
++	put_device(&pdev->dev);
++
+ 	return &dmamux->muxes[mux];
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ 
+ static int lpc18xx_dmamux_probe(struct platform_device *pdev)
 
 
 
