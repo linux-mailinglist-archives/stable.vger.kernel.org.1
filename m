@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBwiJ3hgg2mfmAMAu9opvQ
-	(envelope-from <stable+bounces-213612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:32 +0100
+	id 8ObMFU5bg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30370E7E96
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF626E749B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D6AA303277A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFAC3300B868
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761D941C2F6;
-	Wed,  4 Feb 2026 14:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94950410D10;
+	Wed,  4 Feb 2026 14:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGyyOokC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6c/eFsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393DF41B34E;
-	Wed,  4 Feb 2026 14:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586B4280A3B;
+	Wed,  4 Feb 2026 14:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216914; cv=none; b=PMf2pfloXAcnJKpAIIS44GPAQ1AXifggsCjBQLZz57FDGZxDEvOUfBcMTB6NenDpupBhZccXGTiB+q0ABDaeDFqH7Hk8On//xV70WiXmjQ2GCXzVNr2PXY0tLzGXXnN1nlGQLRcJsAypSJMS1hjy4qE41GnxEy60MJmzj9a1Vfs=
+	t=1770216267; cv=none; b=pzs7NpD9w5myrnrpXSx+pUfAcHzLzwynOYTs9DcP4kU2iOIDyPOpXllAH9gSTIovjRseo+GhrM3MX9WvcDcLmCtEHxJb8iR7hHIGgmJJw41kmj1A2HpVWWObvY0ZQEvZm8puwFXwwcnxdYo+sbWsD4ke1nrC8wVbqxaY1r6KSQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216914; c=relaxed/simple;
-	bh=lZktKEqcTiR9XB+5lC+MYbgoub58/S5CehekVM5DVQI=;
+	s=arc-20240116; t=1770216267; c=relaxed/simple;
+	bh=NsrnnFvoNKQXCIIfV+ejeYLY5bUr6cGDEAROsyHM2to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfgMx4w/NI8yu5nlGg3wmd5X+IzA2uT1tM8nuI1pXNeOxwMW3reO3jcpZMBrlmVmfoNkTA6Jk7zvJ7G/D7uVNaRr3l2z8DgKghH42BVoUWJzI/3+8MMWyr0Uss8T9PeeiXmpOGS1S4vWj6ub7+q+IIRT9icB7itE7Sa4luwU6VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGyyOokC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6266C4CEF7;
-	Wed,  4 Feb 2026 14:55:13 +0000 (UTC)
+	 MIME-Version; b=XaA6Eyl8g6ArJjO817MSykCAkGFAkZHsyLn8W3wsq95BO9WT2FfZDaxYlEdUiwmtcVypNFvfUTtYcC7g/FuONniga2at6wPPcrVWZ1y4Xy7w5AP17gmEV39+5bOB7JiHkQ2x87JRswHmluY0ug60XdjI7FAVlqjXgqRzM6I80Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6c/eFsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C035DC4CEF7;
+	Wed,  4 Feb 2026 14:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216914;
-	bh=lZktKEqcTiR9XB+5lC+MYbgoub58/S5CehekVM5DVQI=;
+	s=korg; t=1770216267;
+	bh=NsrnnFvoNKQXCIIfV+ejeYLY5bUr6cGDEAROsyHM2to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGyyOokC7a4QtFxtqwzN0lYC0hthzlk/KxncKIQwedRuL8Crjxbwpnacf3ZopBi1Q
-	 EKqn4P7lmOG8LIP8iI3nwkvP5Y0kVkgblxD2pNvJ7Ft7fAafyqtwXlsmss3Fdmng6b
-	 FItcru1KqalCrjPyYjVjarCSypr5r3gcE+SZJxsM=
+	b=c6c/eFsAFP6gDIkxWKyamD4ik8efjW3u/a+WrcWMaANde3XN77almAEBSBo7uPFhZ
+	 hfkab9RtX85cGmOes05aLv9aK2xEG4gn6d5WQ237GPrwjX6R/3peGGHvsO4UwETiQ/
+	 RPbfD/K1+YLG8/bJ99IqdtgsGZRgTQlsYIMZIW+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Chen <chenzhen126@huawei.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/206] sctp: move SCTP_CMD_ASSOC_SHKEY right after SCTP_CMD_PEER_INIT
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 038/161] dmaengine: bcm-sba-raid: fix device leak on probe
 Date: Wed,  4 Feb 2026 15:38:21 +0100
-Message-ID: <20260204143900.734741941@linuxfoundation.org>
+Message-ID: <20260204143853.133608500@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,138 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213612-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213417-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: 30370E7E96
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: CF626E749B
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a80c9d945aef55b23b54838334345f20251dad83 ]
+commit 7c3a46ebf15a9796b763a54272407fdbf945bed8 upstream.
 
-A null-ptr-deref was reported in the SCTP transmit path when SCTP-AUTH key
-initialization fails:
+Make sure to drop the reference taken when looking up the mailbox device
+during probe on probe failures and on driver unbind.
 
-  ==================================================================
-  KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-  CPU: 0 PID: 16 Comm: ksoftirqd/0 Tainted: G W 6.6.0 #2
-  RIP: 0010:sctp_packet_bundle_auth net/sctp/output.c:264 [inline]
-  RIP: 0010:sctp_packet_append_chunk+0xb36/0x1260 net/sctp/output.c:401
-  Call Trace:
-
-  sctp_packet_transmit_chunk+0x31/0x250 net/sctp/output.c:189
-  sctp_outq_flush_data+0xa29/0x26d0 net/sctp/outqueue.c:1111
-  sctp_outq_flush+0xc80/0x1240 net/sctp/outqueue.c:1217
-  sctp_cmd_interpreter.isra.0+0x19a5/0x62c0 net/sctp/sm_sideeffect.c:1787
-  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
-  sctp_do_sm+0x1a3/0x670 net/sctp/sm_sideeffect.c:1169
-  sctp_assoc_bh_rcv+0x33e/0x640 net/sctp/associola.c:1052
-  sctp_inq_push+0x1dd/0x280 net/sctp/inqueue.c:88
-  sctp_rcv+0x11ae/0x3100 net/sctp/input.c:243
-  sctp6_rcv+0x3d/0x60 net/sctp/ipv6.c:1127
-
-The issue is triggered when sctp_auth_asoc_init_active_key() fails in
-sctp_sf_do_5_1C_ack() while processing an INIT_ACK. In this case, the
-command sequence is currently:
-
-- SCTP_CMD_PEER_INIT
-- SCTP_CMD_TIMER_STOP (T1_INIT)
-- SCTP_CMD_TIMER_START (T1_COOKIE)
-- SCTP_CMD_NEW_STATE (COOKIE_ECHOED)
-- SCTP_CMD_ASSOC_SHKEY
-- SCTP_CMD_GEN_COOKIE_ECHO
-
-If SCTP_CMD_ASSOC_SHKEY fails, asoc->shkey remains NULL, while
-asoc->peer.auth_capable and asoc->peer.peer_chunks have already been set by
-SCTP_CMD_PEER_INIT. This allows a DATA chunk with auth = 1 and shkey = NULL
-to be queued by sctp_datamsg_from_user().
-
-Since command interpretation stops on failure, no COOKIE_ECHO should been
-sent via SCTP_CMD_GEN_COOKIE_ECHO. However, the T1_COOKIE timer has already
-been started, and it may enqueue a COOKIE_ECHO into the outqueue later. As
-a result, the DATA chunk can be transmitted together with the COOKIE_ECHO
-in sctp_outq_flush_data(), leading to the observed issue.
-
-Similar to the other places where it calls sctp_auth_asoc_init_active_key()
-right after sctp_process_init(), this patch moves the SCTP_CMD_ASSOC_SHKEY
-immediately after SCTP_CMD_PEER_INIT, before stopping T1_INIT and starting
-T1_COOKIE. This ensures that if shared key generation fails, authenticated
-DATA cannot be sent. It also allows the T1_INIT timer to retransmit INIT,
-giving the client another chance to process INIT_ACK and retry key setup.
-
-Fixes: 730fc3d05cd4 ("[SCTP]: Implete SCTP-AUTH parameter processing")
-Reported-by: Zhen Chen <chenzhen126@huawei.com>
-Tested-by: Zhen Chen <chenzhen126@huawei.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/44881224b375aa8853f5e19b4055a1a56d895813.1768324226.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 743e1c8ffe4e ("dmaengine: Add Broadcom SBA RAID driver")
+Cc: stable@vger.kernel.org	# 4.13
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-4-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/dma/bcm-sba-raid.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index f9882e0e67b1b..dc758ad0051e0 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -601,6 +601,11 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_PEER_INIT,
- 			SCTP_PEER_INIT(initchunk));
+--- a/drivers/dma/bcm-sba-raid.c
++++ b/drivers/dma/bcm-sba-raid.c
+@@ -1707,7 +1707,7 @@ static int sba_probe(struct platform_dev
+ 	/* Prealloc channel resource */
+ 	ret = sba_prealloc_channel_resources(sba);
+ 	if (ret)
+-		goto fail_free_mchan;
++		goto fail_put_mbox;
  
-+	/* SCTP-AUTH: generate the association shared keys so that
-+	 * we can potentially sign the COOKIE-ECHO.
-+	 */
-+	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
+ 	/* Check availability of debugfs */
+ 	if (!debugfs_initialized())
+@@ -1737,6 +1737,8 @@ skip_debugfs:
+ fail_free_resources:
+ 	debugfs_remove_recursive(sba->root);
+ 	sba_freeup_channel_resources(sba);
++fail_put_mbox:
++	put_device(sba->mbox_dev);
+ fail_free_mchan:
+ 	mbox_free_channel(sba->mchan);
+ 	return ret;
+@@ -1752,6 +1754,8 @@ static int sba_remove(struct platform_de
+ 
+ 	sba_freeup_channel_resources(sba);
+ 
++	put_device(sba->mbox_dev);
 +
- 	/* Reset init error count upon receipt of INIT-ACK.  */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_INIT_COUNTER_RESET, SCTP_NULL());
+ 	mbox_free_channel(sba->mchan);
  
-@@ -615,11 +620,6 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_NEW_STATE,
- 			SCTP_STATE(SCTP_STATE_COOKIE_ECHOED));
- 
--	/* SCTP-AUTH: generate the association shared keys so that
--	 * we can potentially sign the COOKIE-ECHO.
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
--
- 	/* 5.1 C) "A" shall then send the State Cookie received in the
- 	 * INIT ACK chunk in a COOKIE ECHO chunk, ...
- 	 */
--- 
-2.51.0
-
+ 	return 0;
 
 
 
