@@ -1,137 +1,132 @@
-Return-Path: <stable+bounces-213322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFfFKviOgmkMWQMAu9opvQ
-	(envelope-from <stable+bounces-213322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:12:40 +0100
+	id IMo9I02SgmmhWQMAu9opvQ
+	(envelope-from <stable+bounces-213323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:26:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD79DFF06
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:12:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F359BE0016
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68998313017C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 00:10:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 76EE430A9AF3
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 00:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E27286A4;
-	Wed,  4 Feb 2026 00:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E12A19D074;
+	Wed,  4 Feb 2026 00:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KUsiikIv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWZ+j23G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F096F2F2
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 00:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61296128816
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 00:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770163837; cv=none; b=fdmCdHmrmOjdC/nZX9A3RRZ9v+llazVLk0uMPz2Da/yGVXTzEHLO7401K9cK+ByvfzNI78PP1uJN/I9/YxANHZJib+lEsRta2kxZd6d3ha6tD81O+46DiYmsZChd2RwnyOy1h17019twp0Pd/fnflo1WqqyZMoHlYdO65sCFKPs=
+	t=1770164808; cv=none; b=BDCZNuoD/Xg4qhO60BftY42FlRR15Vz5QCIHg/dTN7CYGsufcy/FVoEjA0kCUAj/eS3eVXH99gBxMrdWL/KrLPKVRv/y3TWNChSVbEIzw1+zESPfJUfbGBREBefzLCvTNVfWlmsQnAhprn7z1s+ZyoSeWlum3a6WRLrHkyXlLv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770163837; c=relaxed/simple;
-	bh=vqzHv7lXFONrgk1q1S1d7m7ni/z2/e2XsIvvQuEyR80=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L+Bz9tVd0YkEvAcxo3sYEkslPtOYM2V2gGoPyMPyoBxUsK7NZdKRoekMprKBittogsB+SVMl5g5/AmLW+JoxpHzY8TjMJws8U1r33jYwSnkpgff5IBUWy+mtgx/F7OJGaf6mFYzZEZajXBhS9Wb39WA9tGocYkg6eJ79SeQMWZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KUsiikIv; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-352e6fcd72dso10902733a91.3
-        for <stable@vger.kernel.org>; Tue, 03 Feb 2026 16:10:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770163835; x=1770768635; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T642Vz3ikngqdidKik0xkf1miyZGBg7zmmEdVffHrRw=;
-        b=KUsiikIvMuLi339Ef6GTZnRqn73MSj6vsyX6Hpa4gZIX0Tyay/7PkJ+mLE/VcQnVLT
-         9p4Ces+RplTpHYRgjFWC+tBnSjob9qByNhdlFMS7azEsk12hEqllRXYDHm2Bb79+sbmO
-         Cfz+TI2adN7/sICL2Rb4H5LvaUj7/eTpIZPijdOz7x2pgwP03zuCEUd/BLNV6BHUEAjk
-         3Re6CvL1wWzRZPjEyvj625i0Okv/tZeC9leaqXn9e/elSc1cU1U1QfyRijGIczgBGFBy
-         zAH9b8KUyU8/lehV1tddgAFnOxKGC6uHOkZSuGB6ZiPDRz0CeXQPtW2al4TH6jxdBeX0
-         DGlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770163835; x=1770768635;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T642Vz3ikngqdidKik0xkf1miyZGBg7zmmEdVffHrRw=;
-        b=Fgr8XiYMFMM9liB3HVXS/K8gkJHL/yx5gJ+7J1m/7UqggiNKAYCUFgY751WKLiyMIs
-         S3mEqzmsZ7r2h6f+MskTTTKVAjbBJhPUuYiVFOxdc3VORx8DmHJvqbqC6Yr1gK4ipDI2
-         5O3dbidkZs5BDeePCYOtiwvnmJ+nx14K1/po8UOXrX0BGcwjE/fQwmat4OBgsNzP3wlX
-         OFX4AEtt+kjFQyf8pOQnfW7QRDPwJq3zsjxnYmAuGSkkoBmdum3KDn1Mf7dvXCf/vPuk
-         GGK8pOOQQRrWyX/o6W9QzX1/sZv4zIK3Us+vBmqJOM/dIqEGxCk285NnE51oyXuUSLLx
-         0hSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlvkAu3xvWe5pNvIaePB8qG6RXz/VUK0M37GZNpqZLZhPQ/k7EKpU8AOSWbdXSK4BfQ4DPesg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrhDHto3fG82uvDTq8vr/EFAmvS2Lcm3pmyYrmjDBufdYxBe/P
-	vl30xi7VaVfhg8CSc5shw/Uik3RZwCCzEB6cicoA1jhS52bmAiSeZGEHNkRFg75P455u3FAzYRJ
-	3eg/wjg==
-X-Received: from pjyl6.prod.google.com ([2002:a17:90a:ec06:b0:34e:d39d:454a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c05:b0:32e:7270:9499
- with SMTP id 98e67ed59e1d1-35486f57774mr858279a91.0.1770163834977; Tue, 03
- Feb 2026 16:10:34 -0800 (PST)
-Date: Tue,  3 Feb 2026 16:10:17 -0800
-In-Reply-To: <20260123125657.3384063-1-khushit.shah@nutanix.com>
+	s=arc-20240116; t=1770164808; c=relaxed/simple;
+	bh=o/c5o865DTQNIzAqFJPNUrcNI/EA63KHy4KZrAdWtTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iE3jTy2AqXb1Nc6rRiNYA1kWoqV1i3O+soLSwZWRsOXY3ReGUM4rgWHNlloPpNhrwiwf9witmd6HAdVUEP1S0YMVTLtAt+v5PoyGZdD6NcbPRxszjD/Rjh29awr3XxYuHOkjRjNOPnxvEXXlzDdwHXpsCkEehtPV4fL80RHXIiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWZ+j23G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E828C116D0;
+	Wed,  4 Feb 2026 00:26:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770164808;
+	bh=o/c5o865DTQNIzAqFJPNUrcNI/EA63KHy4KZrAdWtTA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jWZ+j23GeH9cr3FGTrUyt9Z9QGuWWK+4P3D6HYPz3TpDXgEs/hEhhwybTZP6dyQzG
+	 t7DO6DJ+8fPTZYSE+BPISk0OW+YyP5ICNnPTTZTaZznGcajQXTUoSXNGDoieD8IUWC
+	 cnjI0J7dehUv6zy/ATU6Olmzkf7X0Umyk6TCKdhW76T0KyVSsGfO87jiRU84x5FpOJ
+	 k8/LQqgfhK15N4LqdmRZeylkz/cBubuO2EvYij7npAc2VcjfsNcemq5eaP5nJic6MD
+	 +wegv9wnAlZFUMR90F+IQYbvHVqG+U1q1B0nOHZ2/oKiLTmNK+FzKM611PkCGKT1mc
+	 ldqHrK6yUtEOw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] drm/amdkfd: Don't use sw fault filter if retry cam enabled
+Date: Tue,  3 Feb 2026 19:26:44 -0500
+Message-ID: <20260204002645.1462394-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026020358-resemble-wildness-53b5@gregkh>
+References: <2026020358-resemble-wildness-53b5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260123125657.3384063-1-khushit.shah@nutanix.com>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <177016270726.565816.4840269573401291170.b4-ty@google.com>
-Subject: Re: [PATCH v6] KVM: x86: Add x2APIC "features" to control EOI
- broadcast suppression
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, kai.huang@intel.com, 
-	dwmw2@infradead.org, Khushit Shah <khushit.shah@nutanix.com>
-Cc: mingo@redhat.com, x86@kernel.org, bp@alien8.de, hpa@zytor.com, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	dave.hansen@linux.intel.com, tglx@linutronix.de, jon@nutanix.com, 
-	shaju.abraham@nutanix.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213322-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213323-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ECD79DFF06
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F359BE0016
 X-Rspamd-Action: no action
 
-On Fri, 23 Jan 2026 12:56:25 +0000, Khushit Shah wrote:
-> Add two flags for KVM_CAP_X2APIC_API to allow userspace to control support
-> for Suppress EOI Broadcasts when using a split IRQCHIP (I/O APIC emulated
-> by userspace), which KVM completely mishandles. When x2APIC support was
-> first added, KVM incorrectly advertised and "enabled" Suppress EOI
-> Broadcast, without fully supporting the I/O APIC side of the equation,
-> i.e. without adding directed EOI to KVM's in-kernel I/O APIC.
-> 
-> [...]
+From: Philip Yang <Philip.Yang@amd.com>
 
-Applied to kvm-x86 misc, with some minor formatting tweaks.  Thanks!
+[ Upstream commit e61801f162ddcf8874c820639483ec4849b0fb0b ]
 
-[1/1] KVM: x86: Add x2APIC "features" to control EOI broadcast suppression
-      https://github.com/kvm-x86/linux/commit/6517dfbcc918
+If retry cam enabled, we don't use sw retry fault filter and add fault
+into sw filter ring, so we shouldn't remove fault from sw filter.
 
---
-https://github.com/kvm-x86/linux/tree/next
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 8b1ecc9377bc ("drm/amdgpu: fix NULL pointer dereference in amdgpu_gmc_filter_faults_remove")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index 0b6a0e149f1c4..9b225acdcf974 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -452,7 +452,10 @@ void amdgpu_gmc_filter_faults_remove(struct amdgpu_device *adev, uint64_t addr,
+ 	uint32_t hash;
+ 	uint64_t tmp;
+ 
+-	ih = adev->irq.retry_cam_enabled ? &adev->irq.ih_soft : &adev->irq.ih1;
++	if (adev->irq.retry_cam_enabled)
++		return;
++
++	ih = &adev->irq.ih1;
+ 	/* Get the WPTR of the last entry in IH ring */
+ 	last_wptr = amdgpu_ih_get_wptr(adev, ih);
+ 	/* Order wptr with ring data. */
+-- 
+2.51.0
+
 
