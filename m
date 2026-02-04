@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213572-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCOaNZ5lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:30 +0100
+	id oNdTOVBfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213572-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BBCE8A72
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEBEE7C1B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8667301DBA0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D13430FAB46
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA49428467;
-	Wed,  4 Feb 2026 15:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF9941B34E;
+	Wed,  4 Feb 2026 14:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TR3ETfCt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bSdjK6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5442D94AF;
-	Wed,  4 Feb 2026 15:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEA3410D10;
+	Wed,  4 Feb 2026 14:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217704; cv=none; b=pb90wkJq75zU0yahlwSdlNjyy25mrI6/eKXs7Xa0IG7z2c2VaIBUmDEtdBrY7KDzG+iUN60X2qVItu2vMdBuDfDXN1CBU6ASYyJRZzYIzNjofb/Iq29yN8pU2P6g3+rppBTZG+xDg2zDG9gwvt9a22thn7EYQwViEU+BP176eKo=
+	t=1770216782; cv=none; b=pboO12P0gVtTh+W5IhXczPHEnrQDzciha3NOaMKM4HhUxMvswT3/lkegEuYznBTaisWtpq0s7cjzbZ7febCEH4mJLy5Afw/CoEtF+DlkNJmts5rDqfqLNVlSaMpXwBqySA4wyGTT/d+pif7BEXdEmm9BHi4DCIduamKtmFxBc20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217704; c=relaxed/simple;
-	bh=XmdUC1lSXAF+KarqW9Ar4hSbvjzTjDoWgAu10rNUjMQ=;
+	s=arc-20240116; t=1770216782; c=relaxed/simple;
+	bh=A7jFytY3VROcsRnMmWsw6WKvKdd6KChKtW+hG6mwVYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OdayOjXki+FsxxJzup0+/BWoWEERHKptyerlL6I6gn8Apkn1/ucseP+aSTJuiLbE3zsv9oi7CbKRrrKLOr9Fry42oHI6VJ7lR9CCiiht/1RFqjswRpnfmXcVrWDce7ljxx8iIzsGehWrVgooOviFqV7e6ynSvbw9ogHc353QAU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TR3ETfCt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAC4C4CEF7;
-	Wed,  4 Feb 2026 15:08:23 +0000 (UTC)
+	 MIME-Version; b=az0UZ/hIfvkTVoNsY0fqfPY52bOnwLQ75FI1n67ofoP4On5aSYIZM+jCrLmydlUGEC+T//8DSSsp+nBnG5Ig2vyM2qD2Vz7J612I+ig00JMG0GZoUNQQe68Ffu4gadhCJhjWoH46HxeERZhJXzhXwFCG4/kLb4j2TUWjaB+B7Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bSdjK6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB56DC19423;
+	Wed,  4 Feb 2026 14:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217703;
-	bh=XmdUC1lSXAF+KarqW9Ar4hSbvjzTjDoWgAu10rNUjMQ=;
+	s=korg; t=1770216782;
+	bh=A7jFytY3VROcsRnMmWsw6WKvKdd6KChKtW+hG6mwVYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TR3ETfCtned17JoA3xZEVi7BoRYo6DczkCnRvYVZl1beAWOCBSmCVLV+LUzxOyV0j
-	 hbWXrzEP2ggiOCSUUztUnpgGDcyJ7cGVNip6T31gUNgOb/z2y04UFQNDJBYn5N5vwU
-	 +DwpQ/hq/8eMRpFciHbg9iUii7fW6zUbyR/8GKBI=
+	b=0bSdjK6sI6fIRtthu3uuL2p3ewJDDGdyBOhrtOf3yO5U50jPghaj8az7CvIq4AswJ
+	 0JQoyR+8MX/sV8/9hbopAR59FQTeM4BNgMYxE1X7mzmYHW5YspHMPV1JPJld1w6Jv+
+	 VgtoYFs/TxvrceUbQYuRczG9mE17zIzZnkLRma3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xabier Marquiegui <reibax@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/280] ptp: add testptp mask test
-Date: Wed,  4 Feb 2026 15:37:40 +0100
-Message-ID: <20260204143912.753363723@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Shengwen Xiao <atzlinux@sina.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 030/206] USB: OHCI/UHCI: Add soft dependencies on ehci_platform
+Date: Wed,  4 Feb 2026 15:37:41 +0100
+Message-ID: <20260204143859.288510302@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,147 +68,125 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,davemloft.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213844-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,sina.com,loongson.cn,rowland.harvard.edu];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RSPAMD_URIBL_FAIL(0.00)[0.152.150.128:query timed out];
+	TAGGED_FROM(0.00)[bounces-213572-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[chenhuacai.loongson.cn:server fail,stable.kernel.org:server fail];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,davemloft.net:email]
-X-Rspamd-Queue-Id: 69BBCE8A72
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.152.150.128:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,harvard.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sina.com:email,loongson.cn:email]
+X-Rspamd-Queue-Id: 7FEBEE7C1B
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xabier Marquiegui <reibax@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 26285e689c6cd2cf3849568c83b2ebe53f467143 ]
+commit 01ef7f1b8713a78ab1a9512cf8096d2474c70633 upstream.
 
-Add option to test timestamp event queue mask manipulation in testptp.
+Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
+loaded first") said that ehci-hcd should be loaded before ohci-hcd and
+uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
+dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
+pci, which is not enough and we may still see the warnings in boot log.
 
-Option -F allows the user to specify a single channel that will be
-applied on the mask filter via IOCTL.
+To eliminate the warnings we should make ohci-hcd/uhci-hcd depend on
+ehci-hcd. But Alan said that the warning introduced by 9beeee6584b9aa4f
+is bogus, we only need the soft dependencies in the PCI level rather
+than the HCD level.
 
-The test program will maintain the file open until user input is
-received.
+However, there is really another neccessary soft dependencies between
+ohci-platform/uhci-platform and ehci-platform, which is added by this
+patch. The boot logs are below.
 
-This allows checking the effect of the IOCTL in debugfs.
+1. ohci-platform loaded before ehci-platform:
 
-eg:
+ ohci-platform 1f058000.usb: Generic Platform OHCI controller
+ ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 1
+ ohci-platform 1f058000.usb: irq 28, io mem 0x1f058000
+ hub 1-0:1.0: USB hub found
+ hub 1-0:1.0: 4 ports detected
+ Warning! ehci_hcd should always be loaded before uhci_hcd and ohci_hcd, not after
+ usb 1-4: new low-speed USB device number 2 using ohci-platform
+ ehci-platform 1f050000.usb: EHCI Host Controller
+ ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 2
+ ehci-platform 1f050000.usb: irq 29, io mem 0x1f050000
+ ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+ usb 1-4: device descriptor read/all, error -62
+ hub 2-0:1.0: USB hub found
+ hub 2-0:1.0: 4 ports detected
+ usb 1-4: new low-speed USB device number 3 using ohci-platform
+ input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb1/1-4/1-4:1.0/0003:10C4:8105.0001/input/input0
+ hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
 
-Console 1:
-```
-Channel 12 exclusively enabled. Check on debugfs.
-Press any key to continue
-```
+2. ehci-platform loaded before ohci-platform:
 
-Console 2:
-```
-0x00000000 0x00000001 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000
-```
+ ehci-platform 1f050000.usb: EHCI Host Controller
+ ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 1
+ ehci-platform 1f050000.usb: irq 28, io mem 0x1f050000
+ ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+ hub 1-0:1.0: USB hub found
+ hub 1-0:1.0: 4 ports detected
+ ohci-platform 1f058000.usb: Generic Platform OHCI controller
+ ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 2
+ ohci-platform 1f058000.usb: irq 29, io mem 0x1f058000
+ hub 2-0:1.0: USB hub found
+ hub 2-0:1.0: 4 ports detected
+ usb 2-4: new low-speed USB device number 2 using ohci-platform
+ input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb2/2-4/2-4:1.0/0003:10C4:8105.0001/input/input0
+ hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
 
-Signed-off-by: Xabier Marquiegui <reibax@gmail.com>
-Suggested-by: Richard Cochran <richardcochran@gmail.com>
-Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the later case, there is no re-connection for USB-1.0/1.1 devices,
+which is expected.
+
+Cc: stable <stable@kernel.org>
+Reported-by: Shengwen Xiao <atzlinux@sina.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260112084802.1995923-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/usb/host/ohci-platform.c |    1 +
+ drivers/usb/host/uhci-platform.c |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 863699434296a..b609efbdea55d 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -121,6 +121,7 @@ static void usage(char *progname)
- 		" -d name    device to open\n"
- 		" -e val     read 'val' external time stamp events\n"
- 		" -f val     adjust the ptp clock frequency by 'val' ppb\n"
-+		" -F chan    Enable single channel mask and keep device open for debugfs verification.\n"
- 		" -g         get the ptp clock time\n"
- 		" -h         prints this message\n"
- 		" -i val     index for event/trigger\n"
-@@ -187,6 +188,7 @@ int main(int argc, char *argv[])
- 	int pps = -1;
- 	int seconds = 0;
- 	int settime = 0;
-+	int channel = -1;
- 
- 	int64_t t1, t2, tp;
- 	int64_t interval, offset;
-@@ -196,7 +198,7 @@ int main(int argc, char *argv[])
- 
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -210,6 +212,9 @@ int main(int argc, char *argv[])
- 		case 'f':
- 			adjfreq = atoi(optarg);
- 			break;
-+		case 'F':
-+			channel = atoi(optarg);
-+			break;
- 		case 'g':
- 			gettime = 1;
- 			break;
-@@ -602,6 +607,18 @@ int main(int argc, char *argv[])
- 		free(xts);
- 	}
- 
-+	if (channel >= 0) {
-+		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
-+			perror("PTP_MASK_CLEAR_ALL");
-+		} else if (ioctl(fd, PTP_MASK_EN_SINGLE, (unsigned int *)&channel)) {
-+			perror("PTP_MASK_EN_SINGLE");
-+		} else {
-+			printf("Channel %d exclusively enabled. Check on debugfs.\n", channel);
-+			printf("Press any key to continue\n.");
-+			getchar();
-+		}
-+	}
-+
- 	close(fd);
- 	return 0;
- }
--- 
-2.51.0
-
+--- a/drivers/usb/host/ohci-platform.c
++++ b/drivers/usb/host/ohci-platform.c
+@@ -359,3 +359,4 @@ MODULE_DESCRIPTION(DRIVER_DESC);
+ MODULE_AUTHOR("Hauke Mehrtens");
+ MODULE_AUTHOR("Alan Stern");
+ MODULE_LICENSE("GPL");
++MODULE_SOFTDEP("pre: ehci_platform");
+--- a/drivers/usb/host/uhci-platform.c
++++ b/drivers/usb/host/uhci-platform.c
+@@ -190,3 +190,4 @@ static struct platform_driver uhci_platf
+ 		.of_match_table = platform_uhci_ids,
+ 	},
+ };
++MODULE_SOFTDEP("pre: ehci_platform");
 
 
 
