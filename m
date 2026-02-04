@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-213700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFkcM9Vhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:21 +0100
+	id wCxqCPlpg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF961E81A5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85681E95BB
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5488F30DB3F0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F7E3313D787
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA8E2DCF61;
-	Wed,  4 Feb 2026 15:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9441E425CC2;
+	Wed,  4 Feb 2026 15:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BRqgYbs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5P3lJFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D1841B346;
-	Wed,  4 Feb 2026 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577863B52EE;
+	Wed,  4 Feb 2026 15:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217213; cv=none; b=W00t3PIhdMlJM/5M/4fwdD18BbEfh8GeHLplx7OkdvfIiEC1a9SmVXa3X0RFkITiqSQ74BAzpu+KYCThqgUzYbJvTb5XPqCXwfx8VoBTlIBAG2rfDY9YWCm2HtzWETEru23bwRF2QS4wTuBEjtpSTySp0RA5cLX3bdIzi04mQk4=
+	t=1770218105; cv=none; b=HTPdRPfXTYZsu/krHr1XiuDfKgSQ3XwYPxSScw3SS20YkSgwBmfsj7iJO/mBJujIhLhqZ4C/5IFbX+mcNA4c2CzL4w43sxvAErNkUJ6pcEJnp7gSLmY0JWtvIAjuyzS4dPNbyiO8xbvGplLhfdSppkxzQaZ+ph6hby0GBiuub/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217213; c=relaxed/simple;
-	bh=xZxmhMX+obuW7dtBuU5zP4hR2OoJCw1+t+xc6cHdNrU=;
+	s=arc-20240116; t=1770218105; c=relaxed/simple;
+	bh=OYpYS3doT/i/5iNXBylSp1gUC+/ODtNXwrPStg99FDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wy6BaQrIYd6rjVowKeq/9rvy1RI0JUdr8hdc8k5gXQjyY1StARNoGi23tPnY2UASgFuc+zRFOq9c2wLenV5k/uwFtbUTWFdhW7S07O8hnftTx+sM820t+HPUf7Pn+5MO45ATtPHbM03LNTV61w1A33A6jrP2+ZMvz2Ci6JwHhjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BRqgYbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF82C4CEF7;
-	Wed,  4 Feb 2026 15:00:13 +0000 (UTC)
+	 MIME-Version; b=jBNSyVaINB5z0xgCOtp9NSfI/cVKq7LBFddGrGotLxfDKEuzAZ082oLlF0iZvZd+EX6TGmsJll2+eVfYUGDLWQmYucwTCy2JXsIORkFmjtKPi7EC0WQwuO7jO4NE5x6730phG2u4WeaxfyE4MCqgCQBG5czJfZlRpN2J1I8+Am8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5P3lJFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9884C4CEF7;
+	Wed,  4 Feb 2026 15:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217213;
-	bh=xZxmhMX+obuW7dtBuU5zP4hR2OoJCw1+t+xc6cHdNrU=;
+	s=korg; t=1770218105;
+	bh=OYpYS3doT/i/5iNXBylSp1gUC+/ODtNXwrPStg99FDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BRqgYbsCvF8RQXxx7LJkn2jqxcbo3gqRa4ovYdMXzZZ/KGDdpo/2Dpilq7Inkl0k
-	 WAfr++hOx/10dFFMc6IDSQzReOUTuV7rJC7NhBtv/5fDTclGTb+iVaBrRm8PUrIWf8
-	 ET/pSPfZkfAid/8yRauCPdoDoUYNGcy8UvxEd0WM=
+	b=Q5P3lJFx0Z91KbO4+7qgk7GJU0zfP1DgMKAMkY8wIcIlk5KRFmcAhNPLj63j70iIf
+	 opYbM5lpbaS0kXbZEmmSFlRF3oytuYmM2iwhAX9uSFDcYyN1EGo4Fjhg11i8I7L+iA
+	 LOMP2bxlMStanBCrXTxvR4q/y0tOtfdK+ssZk6Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.15 157/206] comedi: Fix getting range information for subdevices 16 to 255
+	Jan Kara <jack@suse.cz>,
+	Bernd Schubert <bernd@bsbernd.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 214/280] flex_proportions: make fprop_new_period() hardirq safe
 Date: Wed,  4 Feb 2026 15:39:48 +0100
-Message-ID: <20260204143903.858360310@linuxfoundation.org>
+Message-ID: <20260204143917.311094090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,131 +72,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213700-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bsbernd.com,infradead.org,gmail.com,szeredi.hu,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-213965-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,mev.co.uk:email]
-X-Rspamd-Queue-Id: DF961E81A5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,szeredi.hu:email,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bsbernd.com:email,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 85681E95BB
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Jan Kara <jack@suse.cz>
 
-commit 10d28cffb3f6ec7ad67f0a4cd32c2afa92909452 upstream.
+commit dd9e2f5b38f1fdd49b1ab6d3a85f81c14369eacc upstream.
 
-The `COMEDI_RANGEINFO` ioctl does not work properly for subdevice
-indices above 15.  Currently, the only in-tree COMEDI drivers that
-support more than 16 subdevices are the "8255" driver and the
-"comedi_bond" driver.  Making the ioctl work for subdevice indices up to
-255 is achievable.  It needs minor changes to the handling of the
-`COMEDI_RANGEINFO` and `COMEDI_CHANINFO` ioctls that should be mostly
-harmless to user-space, apart from making them less broken.  Details
-follow...
+Bernd has reported a lockdep splat from flexible proportions code that is
+essentially complaining about the following race:
 
-The `COMEDI_RANGEINFO` ioctl command gets the list of supported ranges
-(usually with units of volts or milliamps) for a COMEDI subdevice or
-channel.  (Only some subdevices have per-channel range tables, indicated
-by the `SDF_RANGETYPE` flag in the subdevice information.)  It uses a
-`range_type` value and a user-space pointer, both supplied by
-user-space, but the `range_type` value should match what was obtained
-using the `COMEDI_CHANINFO` ioctl (if the subdevice has per-channel
-range tables)  or `COMEDI_SUBDINFO` ioctl (if the subdevice uses a
-single range table for all channels).  Bits 15 to 0 of the `range_type`
-value contain the length of the range table, which is the only part that
-user-space should care about (so it can use a suitably sized buffer to
-fetch the range table).  Bits 23 to 16 store the channel index, which is
-assumed to be no more than 255 if the subdevice has per-channel range
-tables, and is set to 0 if the subdevice has a single range table.  For
-`range_type` values produced by the `COMEDI_SUBDINFO` ioctl, bits 31 to
-24 contain the subdevice index, which is assumed to be no more than 255.
-But for `range_type` values produced by the `COMEDI_CHANINFO` ioctl,
-bits 27 to 24 contain the subdevice index, which is assumed to be no
-more than 15, and bits 31 to 28 contain the COMEDI device's minor device
-number for some unknown reason lost in the mists of time.  The
-`COMEDI_RANGEINFO` ioctl extract the length from bits 15 to 0 of the
-user-supplied `range_type` value, extracts the channel index from bits
-23 to 16 (only used if the subdevice has per-channel range tables),
-extracts the subdevice index from bits 27 to 24, and ignores bits 31 to
-28.  So for subdevice indices 16 to 255, the `COMEDI_SUBDINFO` or
-`COMEDI_CHANINFO` ioctl will report a `range_type` value that doesn't
-work with the `COMEDI_RANGEINFO` ioctl.  It will either get the range
-table for the subdevice index modulo 16, or will fail with `-EINVAL`.
+<timer fires>
+run_timer_softirq - we are in softirq context
+  call_timer_fn
+    writeout_period
+      fprop_new_period
+        write_seqcount_begin(&p->sequence);
 
-To fix this, always use bits 31 to 24 of the `range_type` value to hold
-the subdevice index (assumed to be no more than 255).  This affects the
-`COMEDI_CHANINFO` and `COMEDI_RANGEINFO` ioctls.  There should not be
-anything in user-space that depends on the old, broken usage, although
-it may now see different values in bits 31 to 28 of the `range_type`
-values reported by the `COMEDI_CHANINFO` ioctl for subdevices that have
-per-channel subdevices.  User-space should not be trying to decode bits
-31 to 16 of the `range_type` values anyway.
+        <hardirq is raised>
+        ...
+        blk_mq_end_request()
+	  blk_update_request()
+	    ext4_end_bio()
+	      folio_end_writeback()
+		__wb_writeout_add()
+		  __fprop_add_percpu_max()
+		    if (unlikely(max_frac < FPROP_FRAC_BASE)) {
+		      fprop_fraction_percpu()
+			seq = read_seqcount_begin(&p->sequence);
+			  - sees odd sequence so loops indefinitely
 
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable@vger.kernel.org #5.17+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20251203162438.176841-1-abbotti@mev.co.uk
+Note that a deadlock like this is only possible if the bdi has configured
+maximum fraction of writeout throughput which is very rare in general but
+frequent for example for FUSE bdis.  To fix this problem we have to make
+sure write section of the sequence counter is irqsafe.
+
+Link: https://lkml.kernel.org/r/20260121112729.24463-2-jack@suse.cz
+Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reported-by: Bernd Schubert <bernd@bsbernd.com>
+Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Joanne Koong <joannelkoong@gmail.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi.h      |    2 +-
- drivers/comedi/comedi_fops.c |    2 +-
- drivers/comedi/range.c       |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ lib/flex_proportions.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/comedi/comedi.h
-+++ b/drivers/comedi/comedi.h
-@@ -640,7 +640,7 @@ struct comedi_chaninfo {
+diff --git a/lib/flex_proportions.c b/lib/flex_proportions.c
+index 84ecccddc771..012d5614efb9 100644
+--- a/lib/flex_proportions.c
++++ b/lib/flex_proportions.c
+@@ -64,13 +64,14 @@ void fprop_global_destroy(struct fprop_global *p)
+ bool fprop_new_period(struct fprop_global *p, int periods)
+ {
+ 	s64 events = percpu_counter_sum(&p->events);
++	unsigned long flags;
  
- /**
-  * struct comedi_rangeinfo - used to retrieve the range table for a channel
-- * @range_type:		Encodes subdevice index (bits 27:24), channel index
-+ * @range_type:		Encodes subdevice index (bits 31:24), channel index
-  *			(bits 23:16) and range table length (bits 15:0).
-  * @range_ptr:		Pointer to array of @struct comedi_krange to be filled
-  *			in with the range table for the channel or subdevice.
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -1095,7 +1095,7 @@ static int do_chaninfo_ioctl(struct come
- 		for (i = 0; i < s->n_chan; i++) {
- 			int x;
+ 	/*
+ 	 * Don't do anything if there are no events.
+ 	 */
+ 	if (events <= 1)
+ 		return false;
+-	preempt_disable_nested();
++	local_irq_save(flags);
+ 	write_seqcount_begin(&p->sequence);
+ 	if (periods < 64)
+ 		events -= events >> periods;
+@@ -78,7 +79,7 @@ bool fprop_new_period(struct fprop_global *p, int periods)
+ 	percpu_counter_add(&p->events, -events);
+ 	p->period += periods;
+ 	write_seqcount_end(&p->sequence);
+-	preempt_enable_nested();
++	local_irq_restore(flags);
  
--			x = (dev->minor << 28) | (it->subdev << 24) | (i << 16) |
-+			x = (it->subdev << 24) | (i << 16) |
- 			    (s->range_table_list[i]->length);
- 			if (put_user(x, it->rangelist + i))
- 				return -EFAULT;
---- a/drivers/comedi/range.c
-+++ b/drivers/comedi/range.c
-@@ -52,7 +52,7 @@ int do_rangeinfo_ioctl(struct comedi_dev
- 	const struct comedi_lrange *lr;
- 	struct comedi_subdevice *s;
- 
--	subd = (it->range_type >> 24) & 0xf;
-+	subd = (it->range_type >> 24) & 0xff;
- 	chan = (it->range_type >> 16) & 0xff;
- 
- 	if (!dev->attached)
+ 	return true;
+ }
+-- 
+2.53.0
+
 
 
 
