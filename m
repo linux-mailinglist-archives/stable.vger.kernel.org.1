@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-214023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDUUNm1qg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:01 +0100
+	id sKuOLlVmg2nVmQMAu9opvQ
+	(envelope-from <stable+bounces-214075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7FCE9688
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B87E8C63
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 724D630DB01D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC2903060D07
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5250041C2F1;
-	Wed,  4 Feb 2026 15:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65ABE4219E8;
+	Wed,  4 Feb 2026 15:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3m+XwUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zszdpw4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1550A2D5A14;
-	Wed,  4 Feb 2026 15:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E632D0292;
+	Wed,  4 Feb 2026 15:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218303; cv=none; b=qvIAPIxLDtPSRhtKKAKFcfMBZ/8iDpONtjk9wMNa7xE79c3J3mWkjVFcKTobSxWOfTSVr44EuIjyIWpi91aYxboMwIgDUqVoenY2YuBUGqQRiJFISu6SThISkhEbrZKgW2VeRGtOH151nE6gZHAqsrALgN69VNdZb/IAZDStYbk=
+	t=1770218480; cv=none; b=NlJI8ShsdGga0lhcV3AR4G1+KR2Dg7VA7rTCGYymKxnuiNCXzA3OUIarq4HUaRQqY1JNWjTuU23FMod1e8pQeWyEvNPDNVV2p8vnhrR7JOEsUB2UQtUOE57PEPmM11ey1nRJdZ148D2+M+td4Ab5SoPaCZ0ZuwYqTGURcLC/Erg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218303; c=relaxed/simple;
-	bh=HQeaG6J06uq/VOAhgATsflV/Mqd8qmbE/uN5eKDw/Co=;
+	s=arc-20240116; t=1770218480; c=relaxed/simple;
+	bh=TC5qYpLqyRxznzKILF+RkL+CfFy2HeL+BNAAcOHMB/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6Sp2z5qyblaByMMpUeGu6LcY9BnawNw+c/eS88FHi4lGV7Cel8aVy/6FvA2FH3XsfIZddD8Eohq47684KqN9iycdBvt4lnN+BWecxmReGLs+ctNL225PmFQqj0hC2/d9DGkU7iqmKaPe5OowPcDCOTd5G1wAk0I1+tpJyA+vEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3m+XwUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA70C4CEF7;
-	Wed,  4 Feb 2026 15:18:22 +0000 (UTC)
+	 MIME-Version; b=rk/YYQeH6JDTKrTamPyk9HH/jAWE+GFS6sq7V0z8A6OsosM4CXfNAwbEFQ2pCzDwDBRxiNVyak/kkTCdYk19E5BATTKZkaP0oOPIGHUKPXuETwAtFawYTxmBX838TLK07QG9iLo6QItb1TI/IPYTnVWC8Wu/ju/tlKxXfEwNCm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zszdpw4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454DCC4CEF7;
+	Wed,  4 Feb 2026 15:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218302;
-	bh=HQeaG6J06uq/VOAhgATsflV/Mqd8qmbE/uN5eKDw/Co=;
+	s=korg; t=1770218479;
+	bh=TC5qYpLqyRxznzKILF+RkL+CfFy2HeL+BNAAcOHMB/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3m+XwUgXt/pIJKtwG5QoPbIhMS5/zD789oV1aI3E+CxrWXzojyy2G/yzaAVENf5/
-	 Mcj6sN6OxOOrp0iWY9dKGsNNYRWSObCV/p6M3aGJdfWJJYUnnzrHuxKk+QHsNUvrFI
-	 n9PdaAWZTH/6QFRYOMj2x5jHCT5kdmTUHBrIJ6bU=
+	b=Zszdpw4SfOsNih5zs213nfd9XjRavBxFvZS8UIh2nkt9riuEGY0KwIXarDgbBsNYk
+	 ZZpyQouk8BNGQY3p15EY1/jglriVv5msPGaUjs0TFAC+V+ixLut5ZimHlrngPGJaDF
+	 nxwwnkv+eWyUBwXVdZ7T3SvIdGmVvBl8mBl9+0Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Klute <fiona.klute@gmx.de>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 237/280] iio: chemical: scd4x: fix reported channel endianness
+Subject: [PATCH 6.6 08/72] ipv6: use the right ifindex when replying to icmpv6 from localhost
 Date: Wed,  4 Feb 2026 15:40:11 +0100
-Message-ID: <20260204143918.153535636@linuxfoundation.org>
+Message-ID: <20260204143845.914141592@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +70,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,baylibre.com,huawei.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-214023-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214075-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email,gmx.de:email]
-X-Rspamd-Queue-Id: 3D7FCE9688
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 39B87E8C63
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Klute <fiona.klute@gmx.de>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 81d5a5366d3c20203fb9d7345e1aa46d668445a2 ]
+[ Upstream commit 03cbcdf93866e61beb0063392e6dbb701f03aea2 ]
 
-The driver converts values read from the sensor from BE to CPU
-endianness in scd4x_read_meas(). The result is then pushed into the
-buffer in scd4x_trigger_handler(), so on LE architectures parsing the
-buffer using the reported BE type gave wrong results.
+When replying to a ICMPv6 echo request that comes from localhost address
+the right output ifindex is 1 (lo) and not rt6i_idev dev index. Use the
+skb device ifindex instead. This fixes pinging to a local address from
+localhost source address.
 
-scd4x_read_raw() which provides sysfs *_raw values is not affected, it
-used the values returned by scd4x_read_meas() without further
-conversion.
+$ ping6 -I ::1 2001:1:1::2 -c 3
+PING 2001:1:1::2 (2001:1:1::2) from ::1 : 56 data bytes
+64 bytes from 2001:1:1::2: icmp_seq=1 ttl=64 time=0.037 ms
+64 bytes from 2001:1:1::2: icmp_seq=2 ttl=64 time=0.069 ms
+64 bytes from 2001:1:1::2: icmp_seq=3 ttl=64 time=0.122 ms
 
-Fixes: 49d22b695cbb6 ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+2001:1:1::2 ping statistics
+3 packets transmitted, 3 received, 0% packet loss, time 2032ms
+rtt min/avg/max/mdev = 0.037/0.076/0.122/0.035 ms
+
+Fixes: 1b70d792cf67 ("ipv6: Use rt6i_idev index for echo replies to a local address")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260121194409.6749-1-fmancera@suse.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/scd4x.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/icmp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/chemical/scd4x.c
-+++ b/drivers/iio/chemical/scd4x.c
-@@ -518,7 +518,7 @@ static const struct iio_chan_spec scd4x_
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -533,7 +533,7 @@ static const struct iio_chan_spec scd4x_
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -546,7 +546,7 @@ static const struct iio_chan_spec scd4x_
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- };
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index fd91fd139d76c..c7e815b7ca087 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -768,7 +768,9 @@ static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
+ 	fl6.daddr = ipv6_hdr(skb)->saddr;
+ 	if (saddr)
+ 		fl6.saddr = *saddr;
+-	fl6.flowi6_oif = icmp6_iif(skb);
++	fl6.flowi6_oif = ipv6_addr_loopback(&fl6.daddr) ?
++			 skb->dev->ifindex :
++			 icmp6_iif(skb);
+ 	fl6.fl6_icmp_type = type;
+ 	fl6.flowi6_mark = mark;
+ 	fl6.flowi6_uid = sock_net_uid(net, NULL);
+-- 
+2.51.0
+
 
 
 
