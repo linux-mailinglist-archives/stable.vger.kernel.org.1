@@ -1,61 +1,74 @@
-Return-Path: <stable+bounces-213685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213491-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAi9MbZfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:18 +0100
+	id yKmsInRdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213491-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F972E7CF8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F5FE7888
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5240A304B1EA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 252F53062C49
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5895D4218A1;
-	Wed,  4 Feb 2026 14:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B299328B7EA;
+	Wed,  4 Feb 2026 14:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nErPCBpi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSWsZ5hf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A50542188D;
-	Wed,  4 Feb 2026 14:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C1D27FD56;
+	Wed,  4 Feb 2026 14:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217164; cv=none; b=hboSCf4HkLXOFXNZzrY9h8ktu50AOEfNcfFnKNBC6BES33C1RZJWJDeb76bEXM4W7hB0WwLGIl1QlKuYz0AaZrDSuer8dw+eqI5RJwsg/AQFHIW4G9/wvqpRF/SqVugByesW2b8JLA1qxMGtiyaBim0Jc+d6yepsW4vhl3qiNNg=
+	t=1770216517; cv=none; b=h65JC9YFJwT2SllMjf1lqS4YbUFgRd6ZfagO/jkeZV+/Y0/RfopiHkSuQEygzAKof0VJsTKjlcelZqWxIL8dgN7XusAuEI1lFgjiECoI0fYpCItL7lc8yaZ45t+3aWSX7+gfMAKPD3rnbjx5n6PfQQT3ASqqRn/drGCJp8DFtko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217164; c=relaxed/simple;
-	bh=qapa0ksVn6XNNXxpwTU2kavTfMbZsdrCvc9Ohwb3g3U=;
+	s=arc-20240116; t=1770216517; c=relaxed/simple;
+	bh=lABHIglB+ShPVkmw/4eY2TP99HxZddl2xcqUcO9BX3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQMS++dZGOhoI7bI/S/2tPcP/ihCdZEkKtS++LzLoeS7e7LH26XmNvC3dnO1o7TSd3yqWBX9fg09d+5whrKH3reLTVW3Eeot7iCuuU9fMroOeSKkl+rv8qJIV7Qd6f44nre1w05dDHYYji+5hoTdLfTHwJ2oY5u3DCRY+TlMBOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nErPCBpi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FDEC4CEF7;
-	Wed,  4 Feb 2026 14:59:23 +0000 (UTC)
+	 MIME-Version; b=HSPJIJVu/vtaOn32Bl78piR0Y9dWmkkm4+9FDvqRbl1J15czcsqMT2BAqhZZJYRHjt8OkpckvuYTRjIouzxSUvtTaytswaWeSdMz9VfyFba35C8xVzDhmVXRDH6eK2IDJ4+x1m2Hb1aZIfzOZTtawK5i0PP2J3FzGeoacweL9dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSWsZ5hf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF16C4CEF7;
+	Wed,  4 Feb 2026 14:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217164;
-	bh=qapa0ksVn6XNNXxpwTU2kavTfMbZsdrCvc9Ohwb3g3U=;
+	s=korg; t=1770216517;
+	bh=lABHIglB+ShPVkmw/4eY2TP99HxZddl2xcqUcO9BX3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nErPCBpiZakoqCufzP2HZEwUTkxEAtkQ8HkLU7AbXZy9dEYYWhnjht48L90dkLqf8
-	 /+EGFmIbiGeGugxn7lNqWkxMf6N1teU1kKauNCr1u8ItWAeMtgo68drIaD8d1mgHOF
-	 qiCnJjTX9JV3oo/J3SKtoCDG05jDqTyJCpd5NyIg=
+	b=eSWsZ5hfu4SZJQ2xbr75F+FnGHixSdqR71pNMDrXkzFkKyovfu5+hazmaK5H3S2GO
+	 8USvPGaEFG+tS+zhtuhkAtrIarj0z5nfB1jL5J+NZlQuM48LalMrLyMrdAU+kecrtJ
+	 XmfNeVzcjfC8VAGSSbA38xOFvEgWyL4+2SCTB7sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/206] net/mlx5e: Expose rx_oversize_pkts_buffer counter
-Date: Wed,  4 Feb 2026 15:39:34 +0100
-Message-ID: <20260204143903.355486220@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jann Horn <jannh@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH 5.10 112/161] migrate: correct lock ordering for hugetlb file folios
+Date: Wed,  4 Feb 2026 15:39:35 +0100
+Message-ID: <20260204143855.773203826@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,177 +80,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213685-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-213491-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,infradead.org,syzkaller.appspotmail.com,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org,linux.dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2F972E7CF8
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,nvidia.com:email,intel.com:email,appspotmail.com:email,oracle.com:email,infradead.org:email,alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sk.com:email,gourry.net:email]
+X-Rspamd-Queue-Id: 16F5FE7888
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 16ab85e78439bab1201ff26ba430231d1574b4ae ]
+commit b7880cb166ab62c2409046b2347261abf701530e upstream.
 
-Add the rx_oversize_pkts_buffer counter to ethtool statistics.
-This counter exposes the number of dropped received packets due to
-length which arrived to RQ and exceed software buffer size allocated by
-the device for incoming traffic. It might imply that the device MTU is
-larger than the software buffers size.
+Syzbot has found a deadlock (analyzed by Lance Yang):
 
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 476681f10cc1 ("net/mlx5e: Account for netdev stats in ndo_get_stats64")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
+2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
+folio_lock.
+
+migrate_pages()
+  -> migrate_hugetlbs()
+    -> unmap_and_move_huge_page()     <- Takes folio_lock!
+      -> remove_migration_ptes()
+        -> __rmap_walk_file()
+          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
+
+hugetlbfs_fallocate()
+  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
+    -> hugetlbfs_zero_partial_page()
+     -> filemap_lock_hugetlb_folio()
+      -> filemap_lock_folio()
+        -> __filemap_get_folio        <- Waits for folio_lock!
+
+The migration path is the one taking locks in the wrong order according to
+the documentation at the top of mm/rmap.c.  So expand the scope of the
+existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
+
+This is (mostly) how it used to be after commit c0d0381ade79.  That was
+removed by 336bf30eb765 for both file & anon hugetlb pages when it should
+only have been removed for anon hugetlb pages.
+
+Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
+Debugged-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Jann Horn <jannh@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  3 ++-
- .../ethernet/mellanox/mlx5/core/en_stats.c    | 21 ++++++++++++++++++-
- .../ethernet/mellanox/mlx5/core/en_stats.h    |  4 ++++
- include/linux/mlx5/mlx5_ifc.h                 |  8 +++++--
- 4 files changed, 32 insertions(+), 4 deletions(-)
+ mm/migrate.c |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index ba36e500c1ff1..b4e6a467409be 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3190,7 +3190,8 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 	stats->rx_length_errors =
- 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
- 		PPORT_802_3_GET(pstats, a_out_of_range_length_field) +
--		PPORT_802_3_GET(pstats, a_frame_too_long_errors);
-+		PPORT_802_3_GET(pstats, a_frame_too_long_errors) +
-+		VNIC_ENV_GET(&priv->stats.vnic, eth_wqe_too_small);
- 	stats->rx_crc_errors =
- 		PPORT_802_3_GET(pstats, a_frame_check_sequence_errors);
- 	stats->rx_frame_errors = PPORT_802_3_GET(pstats, a_alignment_errors);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-index 5a5c6eda29d28..75c3b2ac7e24e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-@@ -567,17 +567,26 @@ static const struct counter_desc vnic_env_stats_dev_oob_desc[] = {
- 		VNIC_ENV_OFF(vport_env.internal_rq_out_of_buffer) },
- };
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1289,6 +1289,7 @@ static int unmap_and_move_huge_page(new_
+ 	struct page *new_hpage;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct address_space *mapping = NULL;
++	enum ttu_flags ttu = TTU_MIGRATION|TTU_IGNORE_MLOCK;
  
-+static const struct counter_desc vnic_env_stats_drop_desc[] = {
-+	{ "rx_oversize_pkts_buffer",
-+		VNIC_ENV_OFF(vport_env.eth_wqe_too_small) },
-+};
+ 	/*
+ 	 * Migratability of hugepages depends on architectures and their size.
+@@ -1336,9 +1337,6 @@ static int unmap_and_move_huge_page(new_
+ 		goto put_anon;
+ 
+ 	if (page_mapped(hpage)) {
+-		bool mapping_locked = false;
+-		enum ttu_flags ttu = TTU_MIGRATION|TTU_IGNORE_MLOCK;
+-
+ 		if (!PageAnon(hpage)) {
+ 			/*
+ 			 * In shared mappings, try_to_unmap could potentially
+@@ -1350,15 +1348,11 @@ static int unmap_and_move_huge_page(new_
+ 			if (unlikely(!mapping))
+ 				goto unlock_put_anon;
+ 
+-			mapping_locked = true;
+ 			ttu |= TTU_RMAP_LOCKED;
+ 		}
+ 
+ 		try_to_unmap(hpage, ttu);
+ 		page_was_mapped = 1;
+-
+-		if (mapping_locked)
+-			i_mmap_unlock_write(mapping);
+ 	}
+ 
+ 	if (!page_mapped(hpage))
+@@ -1366,7 +1360,11 @@ static int unmap_and_move_huge_page(new_
+ 
+ 	if (page_was_mapped)
+ 		remove_migration_ptes(hpage,
+-			rc == MIGRATEPAGE_SUCCESS ? new_hpage : hpage, false);
++			rc == MIGRATEPAGE_SUCCESS ? new_hpage : hpage,
++				(ttu & TTU_RMAP_LOCKED) ? true : false);
 +
- #define NUM_VNIC_ENV_STEER_COUNTERS(dev) \
- 	(MLX5_CAP_GEN(dev, nic_receive_steering_discard) ? \
- 	 ARRAY_SIZE(vnic_env_stats_steer_desc) : 0)
- #define NUM_VNIC_ENV_DEV_OOB_COUNTERS(dev) \
- 	(MLX5_CAP_GEN(dev, vnic_env_int_rq_oob) ? \
- 	 ARRAY_SIZE(vnic_env_stats_dev_oob_desc) : 0)
-+#define NUM_VNIC_ENV_DROP_COUNTERS(dev) \
-+	(MLX5_CAP_GEN(dev, eth_wqe_too_small) ? \
-+	 ARRAY_SIZE(vnic_env_stats_drop_desc) : 0)
++	if (ttu & TTU_RMAP_LOCKED)
++		i_mmap_unlock_write(mapping);
  
- static MLX5E_DECLARE_STATS_GRP_OP_NUM_STATS(vnic_env)
- {
- 	return NUM_VNIC_ENV_STEER_COUNTERS(priv->mdev) +
--		NUM_VNIC_ENV_DEV_OOB_COUNTERS(priv->mdev);
-+	       NUM_VNIC_ENV_DEV_OOB_COUNTERS(priv->mdev) +
-+	       NUM_VNIC_ENV_DROP_COUNTERS(priv->mdev);
- }
- 
- static MLX5E_DECLARE_STATS_GRP_OP_FILL_STRS(vnic_env)
-@@ -591,6 +600,11 @@ static MLX5E_DECLARE_STATS_GRP_OP_FILL_STRS(vnic_env)
- 	for (i = 0; i < NUM_VNIC_ENV_DEV_OOB_COUNTERS(priv->mdev); i++)
- 		strcpy(data + (idx++) * ETH_GSTRING_LEN,
- 		       vnic_env_stats_dev_oob_desc[i].format);
-+
-+	for (i = 0; i < NUM_VNIC_ENV_DROP_COUNTERS(priv->mdev); i++)
-+		strcpy(data + (idx++) * ETH_GSTRING_LEN,
-+		       vnic_env_stats_drop_desc[i].format);
-+
- 	return idx;
- }
- 
-@@ -605,6 +619,11 @@ static MLX5E_DECLARE_STATS_GRP_OP_FILL_STATS(vnic_env)
- 	for (i = 0; i < NUM_VNIC_ENV_DEV_OOB_COUNTERS(priv->mdev); i++)
- 		data[idx++] = MLX5E_READ_CTR32_BE(priv->stats.vnic.query_vnic_env_out,
- 						  vnic_env_stats_dev_oob_desc, i);
-+
-+	for (i = 0; i < NUM_VNIC_ENV_DROP_COUNTERS(priv->mdev); i++)
-+		data[idx++] = MLX5E_READ_CTR32_BE(priv->stats.vnic.query_vnic_env_out,
-+						  vnic_env_stats_drop_desc, i);
-+
- 	return idx;
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.h b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.h
-index 139e59f30db00..f31da3699c7b5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.h
-@@ -256,6 +256,10 @@ struct mlx5e_qcounter_stats {
- 	u32 rx_if_down_packets;
- };
- 
-+#define VNIC_ENV_GET(vnic_env_stats, c) \
-+	MLX5_GET(query_vnic_env_out, (vnic_env_stats)->query_vnic_env_out, \
-+		 vport_env.c)
-+
- struct mlx5e_vnic_env_stats {
- 	__be64 query_vnic_env_out[MLX5_ST_SZ_QW(query_vnic_env_out)];
- };
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index c8489aeb74f7e..30251dfbe040c 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -1384,7 +1384,9 @@ struct mlx5_ifc_cmd_hca_cap_bits {
- 
- 	u8         reserved_at_120[0xa];
- 	u8         log_max_ra_req_dc[0x6];
--	u8         reserved_at_130[0x9];
-+	u8         reserved_at_130[0x2];
-+	u8         eth_wqe_too_small[0x1];
-+	u8         reserved_at_133[0x6];
- 	u8         vnic_env_cq_overrun[0x1];
- 	u8         log_max_ra_res_dc[0x6];
- 
-@@ -3337,7 +3339,9 @@ struct mlx5_ifc_vnic_diagnostic_statistics_bits {
- 
- 	u8         cq_overrun[0x20];
- 
--	u8         reserved_at_220[0xde0];
-+	u8         eth_wqe_too_small[0x20];
-+
-+	u8         reserved_at_220[0xdc0];
- };
- 
- struct mlx5_ifc_traffic_counter_bits {
--- 
-2.51.0
-
+ unlock_put_anon:
+ 	unlock_page(new_hpage);
 
 
 
