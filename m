@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANN5IfNag2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:42:59 +0100
+	id 0HzWIjpeg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD4EE73EB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:42:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6D5E79FC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7699A3005AB2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:42:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8655B30093BC
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A9A40758D;
-	Wed,  4 Feb 2026 14:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A011741B345;
+	Wed,  4 Feb 2026 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+atKEB9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYdezitF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD1E1EA84;
-	Wed,  4 Feb 2026 14:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640E927F749;
+	Wed,  4 Feb 2026 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216176; cv=none; b=eL2SHz/u4Gzt8U8ZUDpne/qx1orU7KO/GQKBGbKTwfpJo7+EoOdEdWD9e4zs8f6upacj01mxBzvq99NlTwKgw2KKX7rqCJNrjQfmAsHLdqSEcdcRCLjL7qzjr3vI/AyHclvKTMcT9K5shtE9cngugHEJeC4X8jQs66Lb2yGAciQ=
+	t=1770216826; cv=none; b=F9msioe3mLWJJEYlDdiFGbGMv2mJMFkJ0fmGp7eBJrLeNQCDwjV2XWDKekwkJfglPXanHCu7f9RG1oPKIJTxdXYbuPpQ91m6iaUHo2nwdUVgCbg4MnxMuP1ALowSbSyHrcm1XaUN5F2qr1wD4eLw6ZdvOOnY9WNEZ6n9y3J3K08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216176; c=relaxed/simple;
-	bh=WWh7jnSn1CcGzugELi/uCyBBWUM3no3SFjh27V8Htyg=;
+	s=arc-20240116; t=1770216826; c=relaxed/simple;
+	bh=g0Q0KXpUqMNgYpwXspCA1ZvISK28ni7cUjbd8Yu45YQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OYzc47unCjcBXMZrUMupAS26e/gwWwyvu255mGL8moD6H+yF8gzxeJ0CvODb31T3FIpkRAlvqrkEKhkbM3Fi/R8dPDCfKOu8Tel3MhRN7FFyNMVVyqiCi+ahc7AzMnvLKN4xnjbTxSIeoldv45r3OA18n+Zi6NQu0KGRweuSqfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+atKEB9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EBCC4CEF7;
-	Wed,  4 Feb 2026 14:42:54 +0000 (UTC)
+	 MIME-Version; b=Fvphy33PnYcPTO9HUwPSanRDP8GPz94gJJOzmj9i7WbhUeBEaYtVjGU8LZweaUv1Yq2iwvccqbRjpPyunv+AKPNmARVxp562hTrGa2qpHi+VtAelHPd3h725JfJa6fyBYLlZvGfiH/ivqZfPkz+w9Fw7nadNU/wr39cvX1PBSdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYdezitF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2A3C4CEF7;
+	Wed,  4 Feb 2026 14:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216175;
-	bh=WWh7jnSn1CcGzugELi/uCyBBWUM3no3SFjh27V8Htyg=;
+	s=korg; t=1770216825;
+	bh=g0Q0KXpUqMNgYpwXspCA1ZvISK28ni7cUjbd8Yu45YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+atKEB9g2f8eIJWewMHea0wrgVOouVVNy5rO2IJ7pGfxFY6An6yqiOmUpzviJBhl
-	 AcKz2jMbjW8K64sr9IEem6gr62gfbAggdsVcelwE2VugvMKYEfk4uvUxPFM08/i7dk
-	 QBSTQ0WP8DXu4OrRngfzJJgRX5zh2DNsZnimpNeI=
+	b=TYdezitFRNC/iFsq0ADcLIe8E8uorrSyRNrSB4DM8ba4DW/vf9f3gDt9h/18WnP7x
+	 TFUOKmxkiUp+GT+PovnmUVxlbriGZeR3QiGd6F3qM/O9ZrAe2s+qRvcCyUCdh0LnnO
+	 PsWDn4KhTCvGaN93gEjwVyTJyoPF89ywy8ThiMgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 010/161] vsock/test: add a final full barrier after run all tests
+	Dave Airlie <airlied@redhat.com>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 5.15 042/206] drm/nouveau/disp/nv50-: Set lock_core in curs507a_prepare
 Date: Wed,  4 Feb 2026 15:37:53 +0100
-Message-ID: <20260204143852.134524769@linuxfoundation.org>
+Message-ID: <20260204143859.726506932@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +68,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213389-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213585-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1FD4EE73EB
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9A6D5E79FC
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Lyude Paul <lyude@redhat.com>
 
-[ Upstream commit c39a6a277e0e67ffff6a8efcbbf7e7e23ce9e38c ]
+commit 9e9bc6be0fa0b6b6b73f4f831f3b77716d0a8d9e upstream.
 
-If the last test fails, the other side still completes correctly,
-which could lead to false positives.
+For a while, I've been seeing a strange issue where some (usually not all)
+of the display DMA channels will suddenly hang, particularly when there is
+a visible cursor on the screen that is being frequently updated, and
+especially when said cursor happens to go between two screens. While this
+brings back lovely memories of fixing Intel Skylake bugs, I would quite
+like to fix it :).
 
-Let's add a final barrier that ensures that the last test has finished
-correctly on both sides, but also that the two sides agree on the
-number of tests to be performed.
+It turns out the problem that's happening here is that we're managing to
+reach nv50_head_flush_set() in our atomic commit path without actually
+holding nv50_disp->mutex. This means that cursor updates happening in
+parallel (along with any other atomic updates that need to use the core
+channel) will race with eachother, which eventually causes us to corrupt
+the pushbuffer - leading to a plethora of various GSP errors, usually:
 
-Fixes: 2f65b44e199c ("VSOCK: add full barrier between test cases")
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260108114419.52747-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000218 00102680 00000004 00800003
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 0000021c 00040509 00000004 00000001
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000000 00000000 00000001 00000001
+
+The reason this is happening is because generally we check whether we need
+to set nv50_atom->lock_core at the end of nv50_head_atomic_check().
+However, curs507a_prepare is called from the fb_prepare callback, which
+happens after the atomic check phase. As a result, this can lead to commits
+that both touch the core channel but also don't grab nv50_disp->mutex.
+
+So, fix this by making sure that we set nv50_atom->lock_core in
+cus507a_prepare().
+
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
+Cc: <stable@vger.kernel.org> # v4.18+
+Link: https://patch.msgid.link/20251219215344.170852-2-lyude@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/vsock/util.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/nouveau/dispnv50/curs507a.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
-index 93cbd6f603f97..356acac85d862 100644
---- a/tools/testing/vsock/util.c
-+++ b/tools/testing/vsock/util.c
-@@ -338,6 +338,18 @@ void run_tests(const struct test_case *test_cases,
- 
- 		printf("ok\n");
+--- a/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
+@@ -84,6 +84,7 @@ curs507a_prepare(struct nv50_wndw *wndw,
+ 		asyh->curs.handle = handle;
+ 		asyh->curs.offset = offset;
+ 		asyh->set.curs = asyh->curs.visible;
++		nv50_atom(asyh->state.state)->lock_core = true;
  	}
-+
-+	printf("All tests have been executed. Waiting other peer...");
-+	fflush(stdout);
-+
-+	/*
-+	 * Final full barrier, to ensure that all tests have been run and
-+	 * that even the last one has been successful on both sides.
-+	 */
-+	control_writeln("COMPLETED");
-+	control_expectln("COMPLETED");
-+
-+	printf("ok\n");
  }
  
- void list_tests(const struct test_case *test_cases)
--- 
-2.51.0
-
 
 
 
