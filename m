@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePd9A8phg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:10 +0100
+	id IKkVNXFcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C3EE8171
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD872E7665
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D66431BECC8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 771B23004621
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777B7413254;
-	Wed,  4 Feb 2026 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3FA413221;
+	Wed,  4 Feb 2026 14:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhhp27bU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuRuY6mw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4D12BE035;
-	Wed,  4 Feb 2026 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D6C3ACF06;
+	Wed,  4 Feb 2026 14:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217200; cv=none; b=MOm/FxqtgI0ylPm2LRK4la15ZE7di44FGXZ4W+wk0WhCT2gUJDACbqB49K/QS86GPWdk1nYeucNqL0SnIAIKkmee/Ttn5+MHGnIekIhz/RUqu8NBknG2r0xMlFeIjUBvNjDvrUUAY4E5eX2r17e7t9aYagA1fjnO7Z2YKUIWX7g=
+	t=1770216552; cv=none; b=b9q0IYWmKAYQqMoqSQw+u0F3yZESPT7f51Vq0wyo+Fo8000pX5zo4IFdfAM9rpLeO00qddt4YqEpxtjA6bKTZNQ+4L0AHOqkW87y4YT1KzffDyjVKCa2dVBiWggeAET7a0mh72g6h7Hy2MufGc/jT/jnTOdg+QhAfHfTREYKQXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217200; c=relaxed/simple;
-	bh=6gbXmXe6diIBsJhpeYlh2vfoAq9vCfhwZJeav5dHGi8=;
+	s=arc-20240116; t=1770216552; c=relaxed/simple;
+	bh=MSPrK59DVy4F08f5YtLI9OWBq58MAq9XyASaaYqx9s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abfkYbhCKAEAmm3S/TP6kZry0QNrnzUX7UhzPI2HLhJMmF+xZarPbLzE6dPPMIEjrAPhHmEexpAHTOFqR+ZXgjvt5Ga+erBnF+IyCCv6D3OeHiX1PGtu6rhXz3vCwDlTGQi5j1epXmvgeYE/UgL97Si9gdx2g0sENFk9eynViQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhhp27bU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B9AC4CEF7;
-	Wed,  4 Feb 2026 14:59:59 +0000 (UTC)
+	 MIME-Version; b=IHO3ghNqDCpY906jJljqk2tOf2l2mJgnDTjfFPNYQrhsyKl2hdMkW7akzA4gjeUBhPc2tRUT6CYU+UqGNq/8bFBnzNWvp49lVgt5fRdGCU2Ejx/NAk3poOo4mMNyLzwRFVMlyPOnU0f6nP9fcXj5EarYt3I1J/9exFI6zkugap0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuRuY6mw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BB4C4CEF7;
+	Wed,  4 Feb 2026 14:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217200;
-	bh=6gbXmXe6diIBsJhpeYlh2vfoAq9vCfhwZJeav5dHGi8=;
+	s=korg; t=1770216551;
+	bh=MSPrK59DVy4F08f5YtLI9OWBq58MAq9XyASaaYqx9s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhhp27bUotuDCPGsbnrgX5mQnFnDnHLzE5xGRcxhZjtxDQ5O4h22kD/4ubegj+Kio
-	 kXG40VvrZBiqs9jN3nswZH06Kwj5GbBaEbBaqeOKp5rrDl/C8ocbgbLXlvhU8wfG6H
-	 Bwi2gQJqhgolSAs+iLI0Y5YM5GOjgp8rzofWTxDU=
+	b=iuRuY6mwbFWQ0NJeYP3PPkwcF/aRO/6xy0Dc653hhN3IoXp8NI+wFtpYpW3Hhqr8B
+	 QzYbtc2HkSEcrGjXbLknLrV4th7GrqiQze75A+nqLpzmCNDGCrIRNG5YtEHAP4+6VC
+	 o3++ivTWwVma6emsCZyyNLNyf29gKUG8PKyvBFPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 153/206] scsi: qla2xxx: edif: Fix dma_free_coherent() size
+	Kery Qi <qikeyu2017@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 121/161] rocker: fix memory leak in rocker_world_port_post_fini()
 Date: Wed,  4 Feb 2026 15:39:44 +0100
-Message-ID: <20260204143903.712913133@linuxfoundation.org>
+Message-ID: <20260204143856.099999927@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213696-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213501-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 86C3EE8171
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CD872E7665
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-commit 56bd3c0f749f45793d1eae1d0ddde4255c749bf6 upstream.
+[ Upstream commit 8d7ba71e46216b8657a82ca2ec118bc93812a4d0 ]
 
-Earlier in the function, the ha->flt buffer is allocated with size
-sizeof(struct qla_flt_header) + FLT_REGIONS_SIZE but freed in the error
-path with size SFP_DEV_SIZE.
+In rocker_world_port_pre_init(), rocker_port->wpriv is allocated with
+kzalloc(wops->port_priv_size, GFP_KERNEL). However, in
+rocker_world_port_post_fini(), the memory is only freed when
+wops->port_post_fini callback is set:
 
-Fixes: 84318a9f01ce ("scsi: qla2xxx: edif: Add send, receive, and accept for auth_els")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260112134326.55466-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    if (!wops->port_post_fini)
+        return;
+    wops->port_post_fini(rocker_port);
+    kfree(rocker_port->wpriv);
+
+Since rocker_ofdpa_ops does not implement port_post_fini callback
+(it is NULL), the wpriv memory allocated for each port is never freed
+when ports are removed. This leads to a memory leak of
+sizeof(struct ofdpa_port) bytes per port on every device removal.
+
+Fix this by always calling kfree(rocker_port->wpriv) regardless of
+whether the port_post_fini callback exists.
+
+Fixes: e420114eef4a ("rocker: introduce worlds infrastructure")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260123211030.2109-2-qikeyu2017@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/rocker/rocker_main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4431,7 +4431,7 @@ qla2x00_mem_alloc(struct qla_hw_data *ha
- fail_elsrej:
- 	dma_pool_destroy(ha->purex_dma_pool);
- fail_flt:
--	dma_free_coherent(&ha->pdev->dev, SFP_DEV_SIZE,
-+	dma_free_coherent(&ha->pdev->dev, sizeof(struct qla_flt_header) + FLT_REGIONS_SIZE,
- 	    ha->flt, ha->flt_dma);
+diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
+index ec90f75289dbe..4073e3852adb5 100644
+--- a/drivers/net/ethernet/rocker/rocker_main.c
++++ b/drivers/net/ethernet/rocker/rocker_main.c
+@@ -1525,9 +1525,8 @@ static void rocker_world_port_post_fini(struct rocker_port *rocker_port)
+ {
+ 	struct rocker_world_ops *wops = rocker_port->rocker->wops;
  
- fail_flt_buffer:
+-	if (!wops->port_post_fini)
+-		return;
+-	wops->port_post_fini(rocker_port);
++	if (wops->port_post_fini)
++		wops->port_post_fini(rocker_port);
+ 	kfree(rocker_port->wpriv);
+ }
+ 
+-- 
+2.51.0
+
 
 
 
