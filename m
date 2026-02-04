@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-213873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJUhL31kg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:41 +0100
+	id 2NxMCNdig2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:16:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20238E86D8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB61E8383
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF6E830D2E41
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3059130A7063
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECAD41C2FB;
-	Wed,  4 Feb 2026 15:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A08642315C;
+	Wed,  4 Feb 2026 14:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBzL3uEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fN4Ql4U6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831042BD02A;
-	Wed,  4 Feb 2026 15:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FE342314D;
+	Wed,  4 Feb 2026 14:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217799; cv=none; b=chV06SPbMJJMl0gaaNE3FqymkulM7UNrHFv/1gYQG0ioEauopgrFgJ+ylEAB/CYaAMYtaNs1HBXtpyJFGASmEC9ECZETPrMAu0ILsm1F2AQ6+i/RFb02RAUY0zxO1qLlbUQEHu+Bx6iDNrD5oEdLdNIXjd1c0r+x22H9poy9G5U=
+	t=1770216898; cv=none; b=YBOSoTADx8xgVROaOOMqdPcVV2txMUpm8G0X1ES+HQYvhfl7fv9ySmWxcW2wB+Q9GS09i/61apjI6HSJsiKQ58InE6oX4QGx7DO4umXZ8XPDTouvVr+7e0KHhO67u85TMEHk6fvFWh9dLUb/PMm8ledmfUqLuLCHJZDOZv+lGh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217799; c=relaxed/simple;
-	bh=fKtyixu/FZyUSHRmotAKMi+r0drfC2gDOwQRCSFJPzQ=;
+	s=arc-20240116; t=1770216898; c=relaxed/simple;
+	bh=5YsJei5woJuxThfSRBtyGYMc87U/Kll13AGG3mIsmE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBSouxQN+6QTm/kx4fA+GYPwYI8yEcjKuqU9cDC6TV/+4PLNlqTodkybq8HPfMfFDgFbVQgphCtzSBI6pU8vjncoy/jo+pDynx3VUKISyBYTrsN/IeGebCMvkg/+ZWwJSMlfK7hOWfyo/4AOHbt3pYKVLgW/TQx/+9grxam6+Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBzL3uEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA94BC4CEF7;
-	Wed,  4 Feb 2026 15:09:58 +0000 (UTC)
+	 MIME-Version; b=og7QZVpXWT4UkrFKJmkVIMPWBY1cyPnw+1wWz6DQsD5SINIbW3woRtmbxocXxmKOoV5KyP9W6cZENps3b0lSdT2RZjJ9MqezH2NL1P7Vu8MVy9FXw8r3urnZ7RTXBxZmPiCMZu1oukLYeP0mhOMcG5FkJPofxvQeMhOT/r4S0fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fN4Ql4U6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD3BC4CEF7;
+	Wed,  4 Feb 2026 14:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217799;
-	bh=fKtyixu/FZyUSHRmotAKMi+r0drfC2gDOwQRCSFJPzQ=;
+	s=korg; t=1770216898;
+	bh=5YsJei5woJuxThfSRBtyGYMc87U/Kll13AGG3mIsmE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBzL3uEwd/odb9qhxAAJN1gNkYHUPOuLuxfDrNrZi03h8AlpjZJZHLn7BS5n1Ydrb
-	 b1xVbcZ7PdOUC4xCyEHVJ+2w5HC+1d0m9GG59B2PNO3GOo//fVZvDTMV7wgxea65jy
-	 Z/uPnZMsiSGHEvS26iLXC4VZ63Xp0fwgNVG/3XMk=
+	b=fN4Ql4U65sRXbumlcKy/LEBsfXpx9Ow+TJD87sZG8bDUVci+e9nWp8ODdLGgFCX86
+	 0TvE3Sm80deRwk89qoB0ZYS/Tp8VV7LK/07rOVOAnRrzov7rwyNbMEGDI4zJixjHu7
+	 vStuOAURrJkhC+PHgyGiBlDTezOJFS9b0UtI6U+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	feng <alec.jiang@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 121/280] Input: i8042 - add quirk for ASUS Zenbook UX425QA_UM425QA
-Date: Wed,  4 Feb 2026 15:38:15 +0100
-Message-ID: <20260204143913.991346067@linuxfoundation.org>
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Wojtek Wasko <wwasko@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 065/206] testptp: Add option to open PHC in readonly mode
+Date: Wed,  4 Feb 2026 15:38:16 +0100
+Message-ID: <20260204143900.555706528@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +67,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213873-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,davemloft.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213607-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 20238E86D8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,davemloft.net:email]
+X-Rspamd-Queue-Id: 7CB61E8383
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: feng <alec.jiang@gmail.com>
+From: Wojtek Wasko <wwasko@nvidia.com>
 
-commit 2934325f56150ad8dab8ab92cbe2997242831396 upstream.
+[ Upstream commit 76868642e42795353106197abf9c607ad80f4c9e ]
 
-The ASUS Zenbook UX425QA_UM425QA fails to initialize the keyboard after
-a cold boot.
+PTP Hardware Clocks no longer require WRITE permission to perform
+readonly operations, such as listing device capabilities or listening to
+EXTTS events once they have been enabled by a process with WRITE
+permissions.
 
-A quirk already exists for "ZenBook UX425", but some Zenbooks report
-"Zenbook" with a lowercase 'b'. Since DMI matching is case-sensitive,
-the existing quirk is not applied to these "extra special" Zenbooks.
+Add '-r' option to testptp to open the PHC in readonly mode instead of
+the default read-write mode. Skip enabling EXTTS if readonly mode is
+requested.
 
-Testing confirms that this model needs the same quirks as the ZenBook
-UX425 variants.
-
-Signed-off-by: feng <alec.jiang@gmail.com>
-Link: https://patch.msgid.link/20260122013957.11184-1-alec.jiang@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/testing/selftests/ptp/testptp.c | 37 +++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -116,6 +116,17 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_NEVER)
- 	},
- 	{
-+		/*
-+		 * ASUS Zenbook UX425QA_UM425QA
-+		 * Some Zenbooks report "Zenbook" with a lowercase b.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Zenbook UX425QA_UM425QA"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_PROBE_DEFER | SERIO_QUIRK_RESET_NEVER)
-+	},
-+	{
- 		/* ASUS ZenBook UX425UA/QA */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index d3922e3c437f1..89b4f43a7ba45 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -140,6 +140,7 @@ static void usage(char *progname)
+ 		" -H val     set output phase to 'val' nanoseconds (requires -p)\n"
+ 		" -w val     set output pulse width to 'val' nanoseconds (requires -p)\n"
+ 		" -P val     enable or disable (val=1|0) the system clock PPS\n"
++		" -r         open the ptp clock in readonly mode\n"
+ 		" -s         set the ptp clock time from the system time\n"
+ 		" -S         set the system time from the ptp clock time\n"
+ 		" -t val     shift the ptp clock time by 'val' seconds\n"
+@@ -188,6 +189,7 @@ int main(int argc, char *argv[])
+ 	int pin_index = -1, pin_func;
+ 	int pps = -1;
+ 	int seconds = 0;
++	int readonly = 0;
+ 	int settime = 0;
+ 	int channel = -1;
+ 	clockid_t ext_clockid = CLOCK_REALTIME;
+@@ -200,7 +202,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -252,6 +254,9 @@ int main(int argc, char *argv[])
+ 		case 'P':
+ 			pps = atoi(optarg);
+ 			break;
++		case 'r':
++			readonly = 1;
++			break;
+ 		case 's':
+ 			settime = 1;
+ 			break;
+@@ -308,7 +313,7 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	fd = open(device, O_RDWR);
++	fd = open(device, readonly ? O_RDONLY : O_RDWR);
+ 	if (fd < 0) {
+ 		fprintf(stderr, "opening %s: %s\n", device, strerror(errno));
+ 		return -1;
+@@ -422,14 +427,16 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	if (extts) {
+-		memset(&extts_request, 0, sizeof(extts_request));
+-		extts_request.index = index;
+-		extts_request.flags = PTP_ENABLE_FEATURE;
+-		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
+-			perror("PTP_EXTTS_REQUEST");
+-			extts = 0;
+-		} else {
+-			puts("external time stamp request okay");
++		if (!readonly) {
++			memset(&extts_request, 0, sizeof(extts_request));
++			extts_request.index = index;
++			extts_request.flags = PTP_ENABLE_FEATURE;
++			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
++				perror("PTP_EXTTS_REQUEST");
++				extts = 0;
++			} else {
++				puts("external time stamp request okay");
++			}
+ 		}
+ 		for (; extts; extts--) {
+ 			cnt = read(fd, &event, sizeof(event));
+@@ -441,10 +448,12 @@ int main(int argc, char *argv[])
+ 			       event.t.sec, event.t.nsec);
+ 			fflush(stdout);
+ 		}
+-		/* Disable the feature again. */
+-		extts_request.flags = 0;
+-		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
+-			perror("PTP_EXTTS_REQUEST");
++		if (!readonly) {
++			/* Disable the feature again. */
++			extts_request.flags = 0;
++			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
++				perror("PTP_EXTTS_REQUEST");
++			}
+ 		}
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
