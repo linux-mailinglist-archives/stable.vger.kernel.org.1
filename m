@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-213930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECq/KeBkg2l1mQMAu9opvQ
-	(envelope-from <stable+bounces-213930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:20 +0100
+	id 0LPRCchcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03664E87F0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 839E0E773B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E3F6311BE93
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9229B303A6DB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8854423145;
-	Wed,  4 Feb 2026 15:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055B027FD56;
+	Wed,  4 Feb 2026 14:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEfEL8az"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tl3gSYNc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C632421F1C;
-	Wed,  4 Feb 2026 15:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD91E244675;
+	Wed,  4 Feb 2026 14:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217990; cv=none; b=YrN75D82EaO6oaLZC+wCxLfTx101yqWGK6QFc6oeE7RtTNpXuz+jOOD6Jm+YNw9Tm0bmHLACCP3cbdtffbttbyeUTmcKsTv4+gAspyoXzc8SIegldcGD4mol0/n0vm4lhCPqVRofb+s5KakdNe9g0pPFDndv/2p8fkOWd/CSevo=
+	t=1770216446; cv=none; b=Z/WWf5Pge81mWbLi99GJGUHSfslJudUoI+on2buyVcVbc5/jfiqSmSm7kPRRoF+ZW2RIRjKyPI9T2xMtuU2TdAsDruDpm1WSg5PCjq8QLDHc36uynsKZY/9Sz5asQNY4+qp9vGFskazcZoNgNqkoivVBsSJOhKQbLpe1oS6miKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217990; c=relaxed/simple;
-	bh=JdbzGt5k/op9cywIESTsPHBOMYMFwiz1PC7KQ/yZtlo=;
+	s=arc-20240116; t=1770216446; c=relaxed/simple;
+	bh=qvor09EpHF619Q/TgH+TxMBwYWWtnfHzqcgYLS7XVqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlTwXfQhhSeIwm/W2TgmXvQcp/PzVRv7qTcdt2t1o1CPmreVLFwlEgV9YG1RfYPCKgBprtklVpFk28gtEmb2RSIH6W3GEBbv7LYXY5z7fBfoppXhn11qT+erHNh1SiDAQZ+/mbkMxTpg4KmP9KIQ9B9uyaXmC8X3L1q5pTNbkRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEfEL8az; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F042AC4CEF7;
-	Wed,  4 Feb 2026 15:13:09 +0000 (UTC)
+	 MIME-Version; b=ITbpdN73jl1NNs8OwgkakBzmFzEd00InCOjWi+/O7bPd+4XfmWK6Z3BsZfq2TodZVAHE9kpLNoMjEgaEBycU3Opv7HQj7RmHqHdPjRqxU1vkGNdm7rI4iMjz8dNANu8y+odVzBzNjvme7adbbWnyrKDPI99eGRfyEjqMjq+8anc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tl3gSYNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0ADC4CEF7;
+	Wed,  4 Feb 2026 14:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217990;
-	bh=JdbzGt5k/op9cywIESTsPHBOMYMFwiz1PC7KQ/yZtlo=;
+	s=korg; t=1770216446;
+	bh=qvor09EpHF619Q/TgH+TxMBwYWWtnfHzqcgYLS7XVqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEfEL8azVJilxJZoS7YWj/BHWvWl1yY5u4WBMcxw3vfBQ/m6zFyX5FxHZtvqxtKW+
-	 d+zkZJNDhN4NaKvksjuPy+pPCCboSdCRVTrfDyzU/D8iOp9pqk55lUmoLLah9l9mK+
-	 om9zjJlXPRswAzqx4LfAz4EA5nRxjbuTsAAsXgew=
+	b=tl3gSYNc/eCbZ325eYDWqPgX9YGcqq71myhDqg2viiMLVMHUafw+l1r1MOz7nDyNg
+	 muks9gUwSWdtP1JCvIa4gzcKtwZHzhvFOBGY3rpARcwmJ+mdEYOnu4N1Nnq2I+RcEg
+	 Y6k4dxJAJarzFW87pUeIsIaO/0dHMem2ORpZPMdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 179/280] can: ems_usb: ems_usb_read_bulk_callback(): fix URB memory leak
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 090/161] iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_adc driver
 Date: Wed,  4 Feb 2026 15:39:13 +0100
-Message-ID: <20260204143916.059164956@linuxfoundation.org>
+Message-ID: <20260204143854.984685082@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,82 +74,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213930-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213470-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 03664E87F0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email]
+X-Rspamd-Queue-Id: 839E0E773B
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-commit 0ce73a0eb5a27070957b67fd74059b6da89cc516 upstream.
+commit dbdb442218cd9d613adeab31a88ac973f22c4873 upstream.
 
-Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
-gs_usb_receive_bulk_callback(): fix URB memory leak").
+at91_adc_interrupt can call at91_adc_touch_data_handler function
+to start the work by schedule_work(&st->touch_st.workq).
 
-In ems_usb_open(), the URBs for USB-in transfers are allocated, added to
-the dev->rx_submitted anchor and submitted. In the complete callback
-ems_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-ems_usb_close() the URBs are freed by calling
-usb_kill_anchored_urbs(&dev->rx_submitted).
+If we remove the module which will call at91_adc_remove to
+make cleanup, it will free indio_dev through iio_device_unregister but
+quite a bit later. While the work mentioned above will be used. The
+sequence of operations that may lead to a UAF bug is as follows:
 
-However, this does not take into account that the USB framework unanchors
-the URB before the complete function is called. This means that once an
-in-URB has been completed, it is no longer anchored and is ultimately not
-released in ems_usb_close().
+CPU0                                      CPU1
 
-Fix the memory leak by anchoring the URB in the
-ems_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+                                     | at91_adc_workq_handler
+at91_adc_remove                      |
+iio_device_unregister(indio_dev)     |
+//free indio_dev a bit later         |
+                                     | iio_push_to_buffers(indio_dev)
+                                     | //use indio_dev
 
-Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-1-4b8cb2915571@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in at91_adc_remove.
+
+Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/ems_usb.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/iio/adc/at91-sama5d2_adc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/can/usb/ems_usb.c
-+++ b/drivers/net/can/usb/ems_usb.c
-@@ -486,11 +486,17 @@ resubmit_urb:
- 			  urb->transfer_buffer, RX_BUFFER_SIZE,
- 			  ems_usb_read_bulk_callback, dev);
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -1891,6 +1891,7 @@ static int at91_adc_remove(struct platfo
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
  
-+	usb_anchor_urb(urb, &dev->rx_submitted);
-+
- 	retval = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!retval)
-+		return;
-+
-+	usb_unanchor_urb(urb);
+ 	iio_device_unregister(indio_dev);
++	cancel_work_sync(&st->touch_st.workq);
  
- 	if (retval == -ENODEV)
- 		netif_device_detach(netdev);
--	else if (retval)
-+	else
- 		netdev_err(netdev,
- 			   "failed resubmitting read bulk urb: %d\n", retval);
- }
+ 	at91_adc_dma_disable(pdev);
+ 
 
 
 
