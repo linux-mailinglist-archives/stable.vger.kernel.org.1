@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIURG49gg2mfmAMAu9opvQ
-	(envelope-from <stable+bounces-213618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:55 +0100
+	id kAYiOGVbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF89E7EE6
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B3E74CC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0A0231734DA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B65693011A58
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA1442188D;
-	Wed,  4 Feb 2026 14:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5B840758D;
+	Wed,  4 Feb 2026 14:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvhJtK2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w54wbDXZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48EC42188A;
-	Wed,  4 Feb 2026 14:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2395D280A3B;
+	Wed,  4 Feb 2026 14:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216934; cv=none; b=hYikBDAOv2DNt5THjA9oY7NR8FcsVSyZCcWuhrp+SQ43JXUhamki3CAd+F6sgCWgWKrX8qtzUV1sNVDc7XLu+rE+9TGPpLktUNcS/UBaEDT7OECOony/U9TYKcwXhAzj9GAbYf322HvX4/2XHl6R9SKf6iIPUKQ+4523AM+ZpRo=
+	t=1770216284; cv=none; b=nP4ftycGQ1PR61Q5j84GgcKNj+TgHcEMkLDjkZuno7xSnhckdy0nerGdezR2SHgH+219Xc7Ep4lNh10tOTbp/HFKVdgcFLcxAsdqQwNhMcKNwzxM6IY16icff9bygFtK3dfy8bPK4AaU69b2JkDiyJy4H85iv/MBoRuVMLdWzSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216934; c=relaxed/simple;
-	bh=Gy4j+y84Qq6eJxSG/EpftfmAis+ijbKfEXgggJ+ePr0=;
+	s=arc-20240116; t=1770216284; c=relaxed/simple;
+	bh=sYuIkVNWRwc2RsdRYOrJ3NCRwOj8gctGrJSYzH9IUhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YkwXg8vjn2qqZQ1MaRTahR8DesLzK5YItQDLeQM25n+Tz1BE4xbMcHz2yt8DHeUvVR1UcpRfHorvriIzx3TGOTcGw6oB7nH5iNqPPLr4/qR8mjmoJY0I0Ze8473gaOLZJOMIqNeTLT1jvVCLhntp5048oQNTx703P1ifB3YmGH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvhJtK2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5E9C4CEF7;
-	Wed,  4 Feb 2026 14:55:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E1T72WfduSCu/EaJDUaotVUM5bS3l7v29cZazw6F9Znv2rByIqWmilICKBV/jlc/wqnaFZ/QuquTCy6E1b02y8h512IqVjLJbuvDjVooCXrdoIUrVHzc6CSy2FIz2zbu6VAAMaJm9xpriv0dhbwiouAOmGvMvc2XHCd3A0iIc40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w54wbDXZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74576C4CEF7;
+	Wed,  4 Feb 2026 14:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216933;
-	bh=Gy4j+y84Qq6eJxSG/EpftfmAis+ijbKfEXgggJ+ePr0=;
+	s=korg; t=1770216283;
+	bh=sYuIkVNWRwc2RsdRYOrJ3NCRwOj8gctGrJSYzH9IUhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvhJtK2ysCN6oCvzzSeGeIigi9EPXfJ+bbv+tmm/TmMzBWfkKgdwyxYaKwJe1zGsS
-	 /6gfsiTqlTIxcnk3W5wFFlCXfq8gjiXrigb59e4dxRgdfEPqFPL3/8hxsvtthTKg+0
-	 U+HoHp5Z9jNQ48mmoQutDdAOCYY0av12agqDdDmI=
+	b=w54wbDXZWqC72NcYIz1g7Hj6GeYq7gabfw3f9Ee92fKsnZ141hvHG8o2exS1zQsLb
+	 u8AnELMTn+zMBiGR/oZYTcnKvtj6URIWw3mO14/QXxPUG1tCcNKbT9dZ4ZIUIXv6wt
+	 w12lrng/uhRCtd0cLOi025x5ZX5gqkduAb1f6Q74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fomichev <sdf@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/206] net: fou: use policy and operation tables generated from the spec
+	Filipe Manana <fdmanana@suse.com>,
+	Robbie Ko <robbieko@synology.com>,
+	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
+Subject: [PATCH 5.10 043/161] btrfs: fix deadlock in wait_current_trans() due to ignored transaction type
 Date: Wed,  4 Feb 2026 15:38:26 +0100
-Message-ID: <20260204143900.915058466@linuxfoundation.org>
+Message-ID: <20260204143853.314300230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,270 +64,191 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213618-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213422-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CAF89E7EE6
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6D4B3E74CC
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Robbie Ko <robbieko@synology.com>
 
-[ Upstream commit 1d562c32e4392cc091c940918ee1ffd7bfcb9e96 ]
+commit 5037b342825df7094a4906d1e2a9674baab50cb2 upstream.
 
-Generate and plug in the spec-based tables.
+When wait_current_trans() is called during start_transaction(), it
+currently waits for a blocked transaction without considering whether
+the given transaction type actually needs to wait for that particular
+transaction state. The btrfs_blocked_trans_types[] array already defines
+which transaction types should wait for which transaction states, but
+this check was missing in wait_current_trans().
 
-A little bit of renaming is needed in the FOU code.
+This can lead to a deadlock scenario involving two transactions and
+pending ordered extents:
 
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  1. Transaction A is in TRANS_STATE_COMMIT_DOING state
+
+  2. A worker processing an ordered extent calls start_transaction()
+     with TRANS_JOIN
+
+  3. join_transaction() returns -EBUSY because Transaction A is in
+     TRANS_STATE_COMMIT_DOING
+
+  4. Transaction A moves to TRANS_STATE_UNBLOCKED and completes
+
+  5. A new Transaction B is created (TRANS_STATE_RUNNING)
+
+  6. The ordered extent from step 2 is added to Transaction B's
+     pending ordered extents
+
+  7. Transaction B immediately starts commit by another task and
+     enters TRANS_STATE_COMMIT_START
+
+  8. The worker finally reaches wait_current_trans(), sees Transaction B
+     in TRANS_STATE_COMMIT_START (a blocked state), and waits
+     unconditionally
+
+  9. However, TRANS_JOIN should NOT wait for TRANS_STATE_COMMIT_START
+     according to btrfs_blocked_trans_types[]
+
+  10. Transaction B is waiting for pending ordered extents to complete
+
+  11. Deadlock: Transaction B waits for ordered extent, ordered extent
+      waits for Transaction B
+
+This can be illustrated by the following call stacks:
+  CPU0                              CPU1
+                                    btrfs_finish_ordered_io()
+                                      start_transaction(TRANS_JOIN)
+                                        join_transaction()
+                                          # -EBUSY (Transaction A is
+                                          # TRANS_STATE_COMMIT_DOING)
+  # Transaction A completes
+  # Transaction B created
+  # ordered extent added to
+  # Transaction B's pending list
+  btrfs_commit_transaction()
+    # Transaction B enters
+    # TRANS_STATE_COMMIT_START
+    # waiting for pending ordered
+    # extents
+                                        wait_current_trans()
+                                          # waits for Transaction B
+                                          # (should not wait!)
+
+Task bstore_kv_sync in btrfs_commit_transaction waiting for ordered
+extents:
+
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  btrfs_commit_transaction+0xbf7/0xda0 [btrfs]
+  btrfs_sync_file+0x342/0x4d0 [btrfs]
+  __x64_sys_fdatasync+0x4b/0x80
+  do_syscall_64+0x33/0x40
+  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Task kworker in wait_current_trans waiting for transaction commit:
+
+  Workqueue: btrfs-syno_nocow btrfs_work_helper [btrfs]
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  wait_current_trans+0xb0/0x110 [btrfs]
+  start_transaction+0x346/0x5b0 [btrfs]
+  btrfs_finish_ordered_io.isra.0+0x49b/0x9c0 [btrfs]
+  btrfs_work_helper+0xe8/0x350 [btrfs]
+  process_one_work+0x1d3/0x3c0
+  worker_thread+0x4d/0x3e0
+  kthread+0x12d/0x150
+  ret_from_fork+0x1f/0x30
+
+Fix this by passing the transaction type to wait_current_trans() and
+checking btrfs_blocked_trans_types[cur_trans->state] against the given
+type before deciding to wait. This ensures that transaction types which
+are allowed to join during certain blocked states will not unnecessarily
+wait and cause deadlocks.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Robbie Ko <robbieko@synology.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Motiejus Jakštys <motiejus@jakstys.lt>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/Makefile   |  2 +-
- net/ipv4/fou_core.c | 47 +++++++-------------------------------------
- net/ipv4/fou_nl.c   | 48 +++++++++++++++++++++++++++++++++++++++++++++
- net/ipv4/fou_nl.h   | 25 +++++++++++++++++++++++
- 4 files changed, 81 insertions(+), 41 deletions(-)
- create mode 100644 net/ipv4/fou_nl.c
- create mode 100644 net/ipv4/fou_nl.h
+ fs/btrfs/transaction.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
-index e694a5e5b0302..d1c8d4beb77d4 100644
---- a/net/ipv4/Makefile
-+++ b/net/ipv4/Makefile
-@@ -26,7 +26,7 @@ obj-$(CONFIG_IP_MROUTE) += ipmr.o
- obj-$(CONFIG_IP_MROUTE_COMMON) += ipmr_base.o
- obj-$(CONFIG_NET_IPIP) += ipip.o
- gre-y := gre_demux.o
--fou-y := fou_core.o
-+fou-y := fou_core.o fou_nl.o
- obj-$(CONFIG_NET_FOU) += fou.o
- obj-$(CONFIG_NET_IPGRE_DEMUX) += gre.o
- obj-$(CONFIG_NET_IPGRE) += ip_gre.o
-diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-index e63aa6b52460c..118b48279da32 100644
---- a/net/ipv4/fou_core.c
-+++ b/net/ipv4/fou_core.c
-@@ -19,6 +19,8 @@
- #include <uapi/linux/fou.h>
- #include <uapi/linux/genetlink.h>
- 
-+#include "fou_nl.h"
-+
- struct fou {
- 	struct socket *sock;
- 	u8 protocol;
-@@ -665,20 +667,6 @@ static int fou_destroy(struct net *net, struct fou_cfg *cfg)
- 
- static struct genl_family fou_nl_family;
- 
--static const struct nla_policy fou_nl_policy[FOU_ATTR_MAX + 1] = {
--	[FOU_ATTR_PORT]			= { .type = NLA_U16, },
--	[FOU_ATTR_AF]			= { .type = NLA_U8, },
--	[FOU_ATTR_IPPROTO]		= { .type = NLA_U8, },
--	[FOU_ATTR_TYPE]			= { .type = NLA_U8, },
--	[FOU_ATTR_REMCSUM_NOPARTIAL]	= { .type = NLA_FLAG, },
--	[FOU_ATTR_LOCAL_V4]		= { .type = NLA_U32, },
--	[FOU_ATTR_PEER_V4]		= { .type = NLA_U32, },
--	[FOU_ATTR_LOCAL_V6]		= { .len = sizeof(struct in6_addr), },
--	[FOU_ATTR_PEER_V6]		= { .len = sizeof(struct in6_addr), },
--	[FOU_ATTR_PEER_PORT]		= { .type = NLA_U16, },
--	[FOU_ATTR_IFINDEX]		= { .type = NLA_S32, },
--};
--
- static int parse_nl_config(struct genl_info *info,
- 			   struct fou_cfg *cfg)
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -514,13 +514,14 @@ static inline int is_transaction_blocked
+  * when this is done, it is safe to start a new transaction, but the current
+  * transaction might not be fully on disk.
+  */
+-static void wait_current_trans(struct btrfs_fs_info *fs_info)
++static void wait_current_trans(struct btrfs_fs_info *fs_info, unsigned int type)
  {
-@@ -770,7 +758,7 @@ static int parse_nl_config(struct genl_info *info,
- 	return 0;
+ 	struct btrfs_transaction *cur_trans;
+ 
+ 	spin_lock(&fs_info->trans_lock);
+ 	cur_trans = fs_info->running_transaction;
+-	if (cur_trans && is_transaction_blocked(cur_trans)) {
++	if (cur_trans && is_transaction_blocked(cur_trans) &&
++	    (btrfs_blocked_trans_types[cur_trans->state] & type)) {
+ 		refcount_inc(&cur_trans->use_count);
+ 		spin_unlock(&fs_info->trans_lock);
+ 
+@@ -669,12 +670,12 @@ again:
+ 		sb_start_intwrite(fs_info->sb);
+ 
+ 	if (may_wait_transaction(fs_info, type))
+-		wait_current_trans(fs_info);
++		wait_current_trans(fs_info, type);
+ 
+ 	do {
+ 		ret = join_transaction(fs_info, type);
+ 		if (ret == -EBUSY) {
+-			wait_current_trans(fs_info);
++			wait_current_trans(fs_info, type);
+ 			if (unlikely(type == TRANS_ATTACH ||
+ 				     type == TRANS_JOIN_NOSTART))
+ 				ret = -ENOENT;
+@@ -902,7 +903,7 @@ out:
+ 
+ void btrfs_throttle(struct btrfs_fs_info *fs_info)
+ {
+-	wait_current_trans(fs_info);
++	wait_current_trans(fs_info, TRANS_START);
  }
  
--static int fou_nl_cmd_add_port(struct sk_buff *skb, struct genl_info *info)
-+int fou_nl_add_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct net *net = genl_info_net(info);
- 	struct fou_cfg cfg;
-@@ -783,7 +771,7 @@ static int fou_nl_cmd_add_port(struct sk_buff *skb, struct genl_info *info)
- 	return fou_create(net, &cfg, NULL);
- }
- 
--static int fou_nl_cmd_rm_port(struct sk_buff *skb, struct genl_info *info)
-+int fou_nl_del_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct net *net = genl_info_net(info);
- 	struct fou_cfg cfg;
-@@ -852,7 +840,7 @@ static int fou_dump_info(struct fou *fou, u32 portid, u32 seq,
- 	return -EMSGSIZE;
- }
- 
--static int fou_nl_cmd_get_port(struct sk_buff *skb, struct genl_info *info)
-+int fou_nl_get_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct net *net = genl_info_net(info);
- 	struct fou_net *fn = net_generic(net, fou_net_id);
-@@ -899,7 +887,7 @@ static int fou_nl_cmd_get_port(struct sk_buff *skb, struct genl_info *info)
- 	return ret;
- }
- 
--static int fou_nl_dump(struct sk_buff *skb, struct netlink_callback *cb)
-+int fou_nl_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct net *net = sock_net(skb->sk);
- 	struct fou_net *fn = net_generic(net, fou_net_id);
-@@ -922,33 +910,12 @@ static int fou_nl_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
- 
--static const struct genl_small_ops fou_nl_ops[] = {
--	{
--		.cmd = FOU_CMD_ADD,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = fou_nl_cmd_add_port,
--		.flags = GENL_ADMIN_PERM,
--	},
--	{
--		.cmd = FOU_CMD_DEL,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = fou_nl_cmd_rm_port,
--		.flags = GENL_ADMIN_PERM,
--	},
--	{
--		.cmd = FOU_CMD_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = fou_nl_cmd_get_port,
--		.dumpit = fou_nl_dump,
--	},
--};
--
- static struct genl_family fou_nl_family __ro_after_init = {
- 	.hdrsize	= 0,
- 	.name		= FOU_GENL_NAME,
- 	.version	= FOU_GENL_VERSION,
- 	.maxattr	= FOU_ATTR_MAX,
--	.policy = fou_nl_policy,
-+	.policy		= fou_nl_policy,
- 	.netnsok	= true,
- 	.module		= THIS_MODULE,
- 	.small_ops	= fou_nl_ops,
-diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
-new file mode 100644
-index 0000000000000..6c3820f41dd5d
---- /dev/null
-+++ b/net/ipv4/fou_nl.c
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/fou.yaml */
-+/* YNL-GEN kernel source */
-+
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include "fou_nl.h"
-+
-+#include <linux/fou.h>
-+
-+/* Global operation policy for fou */
-+const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
-+	[FOU_ATTR_PORT] = { .type = NLA_U16, },
-+	[FOU_ATTR_AF] = { .type = NLA_U8, },
-+	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, },
-+	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
-+	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
-+	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
-+	[FOU_ATTR_LOCAL_V6] = { .len = 16, },
-+	[FOU_ATTR_PEER_V4] = { .type = NLA_U32, },
-+	[FOU_ATTR_PEER_V6] = { .len = 16, },
-+	[FOU_ATTR_PEER_PORT] = { .type = NLA_U16, },
-+	[FOU_ATTR_IFINDEX] = { .type = NLA_S32, },
-+};
-+
-+/* Ops table for fou */
-+const struct genl_small_ops fou_nl_ops[3] = {
-+	{
-+		.cmd		= FOU_CMD_ADD,
-+		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit		= fou_nl_add_doit,
-+		.flags		= GENL_ADMIN_PERM,
-+	},
-+	{
-+		.cmd		= FOU_CMD_DEL,
-+		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit		= fou_nl_del_doit,
-+		.flags		= GENL_ADMIN_PERM,
-+	},
-+	{
-+		.cmd		= FOU_CMD_GET,
-+		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit		= fou_nl_get_doit,
-+		.dumpit		= fou_nl_get_dumpit,
-+	},
-+};
-diff --git a/net/ipv4/fou_nl.h b/net/ipv4/fou_nl.h
-new file mode 100644
-index 0000000000000..b7a68121ce6f7
---- /dev/null
-+++ b/net/ipv4/fou_nl.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: BSD-3-Clause */
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/fou.yaml */
-+/* YNL-GEN kernel header */
-+
-+#ifndef _LINUX_FOU_GEN_H
-+#define _LINUX_FOU_GEN_H
-+
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include <linux/fou.h>
-+
-+/* Global operation policy for fou */
-+extern const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1];
-+
-+/* Ops table for fou */
-+extern const struct genl_small_ops fou_nl_ops[3];
-+
-+int fou_nl_add_doit(struct sk_buff *skb, struct genl_info *info);
-+int fou_nl_del_doit(struct sk_buff *skb, struct genl_info *info);
-+int fou_nl_get_doit(struct sk_buff *skb, struct genl_info *info);
-+int fou_nl_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+
-+#endif /* _LINUX_FOU_GEN_H */
--- 
-2.51.0
-
+ static int should_end_transaction(struct btrfs_trans_handle *trans)
 
 
 
