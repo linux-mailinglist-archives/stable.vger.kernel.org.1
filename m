@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0G+HM+Flg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:37 +0100
+	id UGFpDTddg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D422E8B31
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF4CE7809
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3CC9E30C6A39
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03B6D3053B05
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387894219FF;
-	Wed,  4 Feb 2026 15:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD9040F8C8;
+	Wed,  4 Feb 2026 14:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0pyonQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJJtFong"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F097F3D994;
-	Wed,  4 Feb 2026 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E535A2C08AC;
+	Wed,  4 Feb 2026 14:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217947; cv=none; b=Fl939NrEjS6XH0EMmWvSYjzh9MFoYT/E5Mgoy6IpLEr7uARNx+WU4w7X80jmy/kUtN5FVqjkYSx/Wh8OzScNPC3keSxI2df8qpWzgu8CZhw3PVrXwZ9Ag9ZPnJQj0IWw5o4QZRQHirAm8+K0ylMAzfL1C9H2nNbeVZHBhoVJQfA=
+	t=1770216491; cv=none; b=tQ8pXdl/nqLPL8pVHeyHEGbsZn1EK3GDVijFktGg4KOe63O2DHwCFjicEyADGZ1oT9YSi2K/oV+93UVjh/VmHp/thbYA6s0OUsT9pTSTeQK0xo/1CelIwzCOxKgwEO9pDn81zvMZ7nqdJCn4LMrqPphFSX4cp4lu5rzBZaiP1KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217947; c=relaxed/simple;
-	bh=VM/PGWc5YWp4gBk74mvtisL4O073AzevcqLzJN83Z9s=;
+	s=arc-20240116; t=1770216491; c=relaxed/simple;
+	bh=jD9K5nG6WSowIQnPg8w2WFITWQDbDSwzDNnqwAjCgyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGkNi9SnMI2zhMQwRsSzpljAREkRVDEOkwkvwvjW4imxyXGbezAXsTzqZ855twyyrcX1YJFJn38RLgfzxmXvcDbliHXUbZzgwBSuPRhmjXA7KFOKUgQU+UYxZE7VvBl2GWPILozzOaqweHgKpu9w2PAMBFa0/1Z4BqtBAXy6lwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0pyonQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769FFC4CEF7;
-	Wed,  4 Feb 2026 15:12:26 +0000 (UTC)
+	 MIME-Version; b=ckrXR/bhkkxJRGJSkJfmjlz7NtnU2tQW1eFTXKwO8ZVZ9c3DalLTSBQpGzWhu5Of4hkHfKGSrbyxym+BcsIpjiCpVkXhqA7f8Ic1nBqCBKJ0QeIr6iEurpkxdPhTfAgCZH4p3CPa9F8OQTdJyxxULqv8zRnBIg4MgQcqlXOnfBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJJtFong; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B90DC19423;
+	Wed,  4 Feb 2026 14:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217946;
-	bh=VM/PGWc5YWp4gBk74mvtisL4O073AzevcqLzJN83Z9s=;
+	s=korg; t=1770216490;
+	bh=jD9K5nG6WSowIQnPg8w2WFITWQDbDSwzDNnqwAjCgyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0pyonQo/H/ozTFGjglLDE3NHqBCBAII2QfbM+j2xZMGIsr+KQQ4iTa5guMeJTmZQ
-	 PeLUxOPzXvppWcoB5T/hdhFGfciwhRWiuicaYykkposp+nnAZMX9gwNdjcYkdICiFJ
-	 b3pEMBFJmvnX4fcjXS1U7QHuKQZREVn59/Sa34Qo=
+	b=yJJtFongUbBlusbw/mQUTGJMWm1ZgM2ZVOfZUKvFq8q/MJA74dXkEJXxZiPFVWmVx
+	 hzwfMjvcCIu3afzLvCwqyHTtwug1fMVTP8N9ZhKVVGAWGDbOdjqZlrFUCxvN48HRyu
+	 sW+s0wwVMrMGkK9kJEBTtN0k/bD8nC9nS5RSfuA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Stable@vger.kernel.org,
+	Francesco Lavra <flavra@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 159/280] iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_adc driver
+Subject: [PATCH 5.10 070/161] iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event detection
 Date: Wed,  4 Feb 2026 15:38:53 +0100
-Message-ID: <20260204143915.345966075@linuxfoundation.org>
+Message-ID: <20260204143854.274769162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +70,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213483-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213917-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6D422E8B31
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email]
+X-Rspamd-Queue-Id: 6CF4CE7809
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Francesco Lavra <flavra@baylibre.com>
 
-commit dbdb442218cd9d613adeab31a88ac973f22c4873 upstream.
+commit c34e2e2d67b3bb8d5a6d09b0d6dac845cdd13fb3 upstream.
 
-at91_adc_interrupt can call at91_adc_touch_data_handler function
-to start the work by schedule_work(&st->touch_st.workq).
+The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-NULL
+event_spec field, indicating support for IIO events. However, event
+detection is not supported for all sensors, and if userspace tries to
+configure accelerometer wakeup events on a sensor device that does not
+support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a NULL
+pointer when trying to write to the wakeup register.
+Define an additional struct iio_chan_spec array whose members have a NULL
+event_spec field, and use this array instead of st_lsm6dsx_acc_channels for
+sensors without event detection capability.
 
-If we remove the module which will call at91_adc_remove to
-make cleanup, it will free indio_dev through iio_device_unregister but
-quite a bit later. While the work mentioned above will be used. The
-sequence of operations that may lead to a UAF bug is as follows:
-
-CPU0                                      CPU1
-
-                                     | at91_adc_workq_handler
-at91_adc_remove                      |
-iio_device_unregister(indio_dev)     |
-//free indio_dev a bit later         |
-                                     | iio_push_to_buffers(indio_dev)
-                                     | //use indio_dev
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in at91_adc_remove.
-
-Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: <Stable@vger.kernel.org>
+Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/at91-sama5d2_adc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -2521,6 +2521,7 @@ static int at91_adc_remove(struct platfo
- 	struct at91_adc_state *st = iio_priv(indio_dev);
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -74,6 +74,13 @@ static const struct iio_chan_spec st_lsm
+ 	IIO_CHAN_SOFT_TIMESTAMP(3),
+ };
  
- 	iio_device_unregister(indio_dev);
-+	cancel_work_sync(&st->touch_st.workq);
- 
- 	at91_adc_dma_disable(st);
- 
++static const struct iio_chan_spec st_lsm6ds0_acc_channels[] = {
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
++	IIO_CHAN_SOFT_TIMESTAMP(3),
++};
++
+ static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
+@@ -115,8 +122,8 @@ static const struct st_lsm6dsx_settings
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6ds0_gyro_channels,
+@@ -1170,8 +1177,8 @@ static const struct st_lsm6dsx_settings
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6dsx_gyro_channels,
 
 
 
