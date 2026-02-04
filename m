@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-213536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214159-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMkFFtleg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:37 +0100
+	id GO6nFQ1og2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214159-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B6BE7B3F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B0FE9082
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B091B30D7D64
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A96B32304F7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260E62E92BC;
-	Wed,  4 Feb 2026 14:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A948A4218AE;
+	Wed,  4 Feb 2026 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoXx+HHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDCsRHYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFDB27B359;
-	Wed,  4 Feb 2026 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE9142189E;
+	Wed,  4 Feb 2026 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216661; cv=none; b=Q1O8IeNBucLhW939VLCLlay2F57EC0zoxK4uVAk+ncc9xmG1qWikC+0p+ogb1vlWSiulyulcz8qJdNN/FfOMbk4Nv/499Qouwi7mhOfsNzqnDO5X81+AYw223zd5p7xVvP6xOcqAe6J0Snpfl9V9txp/1X/HPAIqpwokgjX/5gY=
+	t=1770218761; cv=none; b=PmHZZbpliiLNMUR+PNlC8vtNjP2NGdbPA3RArNco5aOduLUDsflDlxC8xB7jlU1mlcnIt/XJjrhDaP1ciDyAtF0WeYCKKq0eTbVvi1csuWBNVG7Hn1cbmzE8BTrj51DIRvHisDECKAq6fOBXu/ig5scwG9kJOSwwkl2zcqjub50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216661; c=relaxed/simple;
-	bh=HzeyMSVPZvgwULciV4usITTKn2EtsNmcMsmuRGmP8xk=;
+	s=arc-20240116; t=1770218761; c=relaxed/simple;
+	bh=lHqhZmwSVZKPGx4SBO/B/atqvROyN+oNhy6Xgx34eKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGq6gCcIYTBvJCbpQhaOORm9puAi8LOEXStybjaALMje05aiinbpUym/s93nTykXyiLy9eRofagwJ17qLZdLwXobrR0UVdLrLTPE6SjbjVeEhUEVn3KiuEcq/Ffb7zCHG6XaAbBQPEuaXPn2pYSwAwVWiOQrp0n0gKa34mIeEfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoXx+HHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E06BC4CEF7;
-	Wed,  4 Feb 2026 14:51:01 +0000 (UTC)
+	 MIME-Version; b=cu6J5ll9MUR392eYKwyCDIFzKwnOu05XHG2vIPpS/fWohN2kBHupyJ5Mg9I+056D0b/KUlNI+LzvMHtiI7acloW82tHaXzr6qyvLRnnOQd1CI4ullZ8l6OpxnDdvnL0CVchrDLVTjik6mTbrtqUmIg/M+a8BYAsZWRfxDEoehes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDCsRHYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D229CC4CEF7;
+	Wed,  4 Feb 2026 15:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216661;
-	bh=HzeyMSVPZvgwULciV4usITTKn2EtsNmcMsmuRGmP8xk=;
+	s=korg; t=1770218761;
+	bh=lHqhZmwSVZKPGx4SBO/B/atqvROyN+oNhy6Xgx34eKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BoXx+HHsB7hDZVEYDbE6EQycmlPkUxlkhmQSwbxVUwEMre54SxVWeFOPL+/5vC3VE
-	 k6S9Kp9VoQQV42JJGpK9Kv+i2UmREBePeCX4YZ09IuvAzryJxAyrVv9a1ukxW0qy03
-	 SBMkuefJmmtZt+MX04ysvz49MnVbckw4go1GiXeo=
+	b=cDCsRHYla2JqGqo7/zLtEbIcKQx5qvc5wNNCI9ySOWpgnAKL5Q8Wu4MKjFAwKh+Vu
+	 HJAHuO+rOTl6eh8pg4ILsrMaTzv0f7UOddow+RcuMoi0bhNq6E4YuNGbj7EXF+TM9M
+	 +tO7yo8sfwEeZ2S7fVLC6voHM8bBrMhZCXqobpvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laveesh Bansal <laveeshb@laveeshbansal.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/161] writeback: fix 100% CPU usage when dirtytime_expire_interval is 0
+Subject: [PATCH 6.12 20/87] net/mlx5: fs, Fix inverted cap check in tx flow table root disconnect
 Date: Wed,  4 Feb 2026 15:40:18 +0100
-Message-ID: <20260204143857.324065738@linuxfoundation.org>
+Message-ID: <20260204143847.638675157@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213536-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214159-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,88 +89,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,laveeshbansal.com:email]
-X-Rspamd-Queue-Id: B2B6BE7B3F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C7B0FE9082
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laveesh Bansal <laveeshb@laveeshbansal.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 543467d6fe97e27e22a26e367fda972dbefebbff ]
+[ Upstream commit 2610a3d65691a1301ab10c92ff6ebab0bedf9199 ]
 
-When vm.dirtytime_expire_seconds is set to 0, wakeup_dirtytime_writeback()
-schedules delayed work with a delay of 0, causing immediate execution.
-The function then reschedules itself with 0 delay again, creating an
-infinite busy loop that causes 100% kworker CPU usage.
+The capability check for reset_root_to_default was inverted, causing
+the function to return -EOPNOTSUPP when the capability IS supported,
+rather than when it is NOT supported.
 
-Fix by:
-- Only scheduling delayed work in wakeup_dirtytime_writeback() when
-  dirtytime_expire_interval is non-zero
-- Cancelling the delayed work in dirtytime_interval_handler() when
-  the interval is set to 0
-- Adding a guard in start_dirtytime_writeback() for defensive coding
+Fix the capability check condition.
 
-Tested by booting kernel in QEMU with virtme-ng:
-- Before fix: kworker CPU spikes to ~73%
-- After fix: CPU remains at normal levels
-- Setting interval back to non-zero correctly resumes writeback
-
-Fixes: a2f4870697a5 ("fs: make sure the timestamps for lazytime inodes eventually get written")
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220227
-Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
-Link: https://patch.msgid.link/20260106145059.543282-2-laveeshb@laveeshbansal.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ adapted system_percpu_wq to system_wq for the workqueue used in dirtytime_interval_handler() ]
+Fixes: 3c9c34c32bc6 ("net/mlx5: fs, Command to control TX flow table root")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1769503961-124173-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2187,12 +2187,14 @@ static void wakeup_dirtytime_writeback(s
- 				wb_wakeup(wb);
- 	}
- 	rcu_read_unlock();
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+index 676005854dad4..c115270936774 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
+@@ -1166,7 +1166,8 @@ int mlx5_fs_cmd_set_tx_flow_table_root(struct mlx5_core_dev *dev, u32 ft_id, boo
+ 	u32 out[MLX5_ST_SZ_DW(set_flow_table_root_out)] = {};
+ 	u32 in[MLX5_ST_SZ_DW(set_flow_table_root_in)] = {};
  
- static int __init start_dirtytime_writeback(void)
- {
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
- 	return 0;
- }
- __initcall(start_dirtytime_writeback);
-@@ -2203,8 +2205,12 @@ int dirtytime_interval_handler(struct ct
- 	int ret;
+-	if (disconnect && MLX5_CAP_FLOWTABLE_NIC_TX(dev, reset_root_to_default))
++	if (disconnect &&
++	    !MLX5_CAP_FLOWTABLE_NIC_TX(dev, reset_root_to_default))
+ 		return -EOPNOTSUPP;
  
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
--	if (ret == 0 && write)
--		mod_delayed_work(system_wq, &dirtytime_work, 0);
-+	if (ret == 0 && write) {
-+		if (dirtytime_expire_interval)
-+			mod_delayed_work(system_wq, &dirtytime_work, 0);
-+		else
-+			cancel_delayed_work_sync(&dirtytime_work);
-+	}
- 	return ret;
- }
- 
+ 	MLX5_SET(set_flow_table_root_in, in, opcode,
+-- 
+2.51.0
+
 
 
 
