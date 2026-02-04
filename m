@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +J5REmtmg2nSmQMAu9opvQ
-	(envelope-from <stable+bounces-213991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:55 +0100
+	id sO7DC0Rng2kFmgMAu9opvQ
+	(envelope-from <stable+bounces-214123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8F8E8CA0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935F6E8EC7
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2B1F1304ABB7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 33F3230AC27B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDF041C301;
-	Wed,  4 Feb 2026 15:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABFB3ACF06;
+	Wed,  4 Feb 2026 15:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WkBLRUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnQlZxEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CA2284B37;
-	Wed,  4 Feb 2026 15:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9A91C84D0;
+	Wed,  4 Feb 2026 15:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218194; cv=none; b=Mz2LzMzVEvm3Iz/3y7i9pRDNoH40eTziY68yOqBqrLsB3dnnjbbu/+ffNaSAmPqYtpXZO8Y+3AU2dtMKg2Q1f7H89KmPdUa3uI4lzuUvWzU3SSVHZa0C0PGAw3WJ2hlLxyO/HoCEgU9Hdcvi2MwU97sq++oiAbbV+fP4ThsuhWE=
+	t=1770218643; cv=none; b=FWHsLfIQeRPob6o77y/wTlubmT2XZ5J5fxjIUQHtvP6z9tXA4G85bxzRA10eGQXnKo51xZC/x8nsIs10mK5FfGBTWWLcKsdD7Z1n+w/oDk6JsBN182tF0ViyecmvPG7WRo9LX92Cj099k+iRH6mfLd4+X+W+w115a0BxU3fFBFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218194; c=relaxed/simple;
-	bh=/lt700RSrgZjV1XkE9moMF5dATEM/H0PLWQeGrNPZb8=;
+	s=arc-20240116; t=1770218643; c=relaxed/simple;
+	bh=TkXcCn1NYCnGSDZxeuk1/xQDrr/vS1iiUItVmf2Ri94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CD0UD9mOdiU6FBV1C+xhT6W8MJujTcxwjWBJ5j23jcHgj6yWOtjM+bQOWPTZcsfA17t7RlkxVY8NjN2EcNks4eCkpafw7+nSH3iB9519f2TeQaMhznsi70uMEAITL4Ebxai1gbeRW7bhDVGmjlfR4QmCw01X2SoGSqnwlPFNk3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WkBLRUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41099C4CEF7;
-	Wed,  4 Feb 2026 15:16:33 +0000 (UTC)
+	 MIME-Version; b=CySgQXvOO4NOqRVBJi7yRbcmwJlqGyBxgM27b8R9DbwLQD45UK8s/aM8yOfHEBaswXW7dBDTECAdrHsooFyL7/fMWxUB5SM1jM3LE6FyHRQ87Y4ycPOkJ/DHhnbwT16rS2jxSxJ+52zqgthNooM+ysVdlZspgksN98l2VQtLdiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnQlZxEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DB0C4CEF7;
+	Wed,  4 Feb 2026 15:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218193;
-	bh=/lt700RSrgZjV1XkE9moMF5dATEM/H0PLWQeGrNPZb8=;
+	s=korg; t=1770218643;
+	bh=TkXcCn1NYCnGSDZxeuk1/xQDrr/vS1iiUItVmf2Ri94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WkBLRUDFA3oMpxMYcVo+TgkCiH21H4zAKpLP2DOlO6Ma6h5Mea12Tbkhr948XBNz
-	 VghRScI1XSpSmzzY0WVLsfgi2q6DVPP9RClufbbhBSnx8W7ejRJZiGxdV6gf0KEj1h
-	 Wl/lzvCOiQ70EWdM9bz5Z68m11E2zuJS9wDnxUhw=
+	b=CnQlZxEtWStUbSXQjuI+JSbzxBTwDwS4/DuaCtb1yyF7vOG9vmYXoLFT2v1a5VBTI
+	 AGWuw+46LtP1k/jDD2oQsfl3WjDIePs0BpLb42v036SK2zuN/OFttsRf6wzeastKCc
+	 q7Je7pb4IXYhAaX+cBXsnyEzDvV4EhaoT/daZwLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 232/280] arm64/fpsimd: signal: Fix restoration of SVE context
+Subject: [PATCH 6.12 08/87] bonding: annotate data-races around slave->last_rx
 Date: Wed,  4 Feb 2026 15:40:06 +0100
-Message-ID: <20260204143917.971024281@linuxfoundation.org>
+Message-ID: <20260204143847.212965150@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213991-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214123-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,147 +87,192 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,svcr.sm:url]
-X-Rspamd-Queue-Id: DE8F8E8CA0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 935F6E8EC7
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d2907cbe9ea0a54cbe078076f9d089240ee1e2d9 ]
+[ Upstream commit f6c3665b6dc53c3ab7d31b585446a953a74340ef ]
 
-When SME is supported, Restoring SVE signal context can go wrong in a
-few ways, including placing the task into an invalid state where the
-kernel may read from out-of-bounds memory (and may potentially take a
-fatal fault) and/or may kill the task with a SIGKILL.
+slave->last_rx and slave->target_last_arp_rx[...] can be read and written
+locklessly. Add READ_ONCE() and WRITE_ONCE() annotations.
 
-(1) Restoring a context with SVE_SIG_FLAG_SM set can place the task into
-    an invalid state where SVCR.SM is set (and sve_state is non-NULL)
-    but TIF_SME is clear, consequently resuting in out-of-bounds memory
-    reads and/or killing the task with SIGKILL.
+syzbot reported:
 
-    This can only occur in unusual (but legitimate) cases where the SVE
-    signal context has either been modified by userspace or was saved in
-    the context of another task (e.g. as with CRIU), as otherwise the
-    presence of an SVE signal context with SVE_SIG_FLAG_SM implies that
-    TIF_SME is already set.
+BUG: KCSAN: data-race in bond_rcv_validate / bond_rcv_validate
 
-    While in this state, task_fpsimd_load() will NOT configure SMCR_ELx
-    (leaving some arbitrary value configured in hardware) before
-    restoring SVCR and attempting to restore the streaming mode SVE
-    registers from memory via sve_load_state(). As the value of
-    SMCR_ELx.LEN may be larger than the task's streaming SVE vector
-    length, this may read memory outside of the task's allocated
-    sve_state, reading unrelated data and/or triggering a fault.
+write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 1:
+  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
+  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
+  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
+  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
+  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
+  netif_receive_skb_internal net/core/dev.c:6351 [inline]
+  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
+...
 
-    While this can result in secrets being loaded into streaming SVE
-    registers, these values are never exposed. As TIF_SME is clear,
-    fpsimd_bind_task_to_cpu() will configure CPACR_ELx.SMEN to trap EL0
-    accesses to streaming mode SVE registers, so these cannot be
-    accessed directly at EL0. As fpsimd_save_user_state() verifies the
-    live vector length before saving (S)SVE state to memory, no secret
-    values can be saved back to memory (and hence cannot be observed via
-    ptrace, signals, etc).
+write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 0:
+  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
+  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
+  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
+  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
+  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
+  netif_receive_skb_internal net/core/dev.c:6351 [inline]
+  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
+  br_netif_receive_skb net/bridge/br_input.c:30 [inline]
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+...
 
-    When the live vector length doesn't match the expected vector length
-    for the task, fpsimd_save_user_state() will send a fatal SIGKILL
-    signal to the task. Hence the task may be killed after executing
-    userspace for some period of time.
+value changed: 0x0000000100005365 -> 0x0000000100005366
 
-(2) Restoring a context with SVE_SIG_FLAG_SM clear does not clear the
-    task's SVCR.SM. If SVCR.SM was set prior to restoring the context,
-    then the task will be left in streaming mode unexpectedly, and some
-    register state will be combined inconsistently, though the task will
-    be left in legitimate state from the kernel's PoV.
-
-    This can only occur in unusual (but legitimate) cases where ptrace
-    has been used to set SVCR.SM after entry to the sigreturn syscall,
-    as syscall entry clears SVCR.SM.
-
-    In these cases, the the provided SVE register data will be loaded
-    into the task's sve_state using the non-streaming SVE vector length
-    and the FPSIMD registers will be merged into this using the
-    streaming SVE vector length.
-
-Fix (1) by setting TIF_SME when setting SVCR.SM. This also requires
-ensuring that the task's sme_state has been allocated, but as this could
-contain live ZA state, it should not be zeroed. Fix (2) by clearing
-SVCR.SM when restoring a SVE signal context with SVE_SIG_FLAG_SM clear.
-
-For consistency, I've pulled the manipulation of SVCR, TIF_SVE, TIF_SME,
-and fp_type earlier, immediately after the allocation of
-sve_state/sme_state, before the restore of the actual register state.
-This makes it easier to ensure that these are always modified
-consistently, even if a fault is taken while reading the register data
-from the signal context. I do not expect any software to depend on the
-exact state restored when a fault is taken while reading the context.
-
-Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ adapted sme_state to za_state ]
+Fixes: f5b2b966f032 ("[PATCH] bonding: Validate probe replies in ARP monitor")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Link: https://patch.msgid.link/20260122162914.2299312-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/signal.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/net/bonding/bond_main.c    | 18 ++++++++++--------
+ drivers/net/bonding/bond_options.c |  8 ++++----
+ include/net/bonding.h              | 13 +++++++------
+ 3 files changed, 21 insertions(+), 18 deletions(-)
 
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -317,12 +317,28 @@ static int restore_sve_fpsimd_context(st
- 	fpsimd_flush_task_state(current);
- 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
- 
-+	if (sve.flags & SVE_SIG_FLAG_SM) {
-+		sme_alloc(current, false);
-+		if (!current->thread.za_state)
-+			return -ENOMEM;
-+	}
-+
- 	sve_alloc(current, true);
- 	if (!current->thread.sve_state) {
- 		clear_thread_flag(TIF_SVE);
- 		return -ENOMEM;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index b52f5f64e3abb..209cab75ac0a5 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3214,8 +3214,8 @@ static void bond_validate_arp(struct bonding *bond, struct slave *slave, __be32
+ 			   __func__, &sip);
+ 		return;
  	}
+-	slave->last_rx = jiffies;
+-	slave->target_last_arp_rx[i] = jiffies;
++	WRITE_ONCE(slave->last_rx, jiffies);
++	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
+ }
  
-+	if (sve.flags & SVE_SIG_FLAG_SM) {
-+		current->thread.svcr |= SVCR_SM_MASK;
-+		set_thread_flag(TIF_SME);
-+	} else {
-+		current->thread.svcr &= ~SVCR_SM_MASK;
-+		set_thread_flag(TIF_SVE);
-+	}
-+
-+	current->thread.fp_type = FP_STATE_SVE;
-+
- 	err = __copy_from_user(current->thread.sve_state,
- 			       (char __user const *)user->sve +
- 					SVE_SIG_REGS_OFFSET,
-@@ -330,12 +346,6 @@ static int restore_sve_fpsimd_context(st
- 	if (err)
- 		return -EFAULT;
+ static int bond_arp_rcv(const struct sk_buff *skb, struct bonding *bond,
+@@ -3434,8 +3434,8 @@ static void bond_validate_na(struct bonding *bond, struct slave *slave,
+ 			  __func__, saddr);
+ 		return;
+ 	}
+-	slave->last_rx = jiffies;
+-	slave->target_last_arp_rx[i] = jiffies;
++	WRITE_ONCE(slave->last_rx, jiffies);
++	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
+ }
  
--	if (sve.flags & SVE_SIG_FLAG_SM)
--		current->thread.svcr |= SVCR_SM_MASK;
--	else
--		set_thread_flag(TIF_SVE);
--	current->thread.fp_type = FP_STATE_SVE;
+ static int bond_na_rcv(const struct sk_buff *skb, struct bonding *bond,
+@@ -3505,7 +3505,7 @@ int bond_rcv_validate(const struct sk_buff *skb, struct bonding *bond,
+ 		    (slave_do_arp_validate_only(bond) && is_ipv6) ||
+ #endif
+ 		    !slave_do_arp_validate_only(bond))
+-			slave->last_rx = jiffies;
++			WRITE_ONCE(slave->last_rx, jiffies);
+ 		return RX_HANDLER_ANOTHER;
+ 	} else if (is_arp) {
+ 		return bond_arp_rcv(skb, bond, slave);
+@@ -3573,7 +3573,7 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
+ 
+ 		if (slave->link != BOND_LINK_UP) {
+ 			if (bond_time_in_interval(bond, last_tx, 1) &&
+-			    bond_time_in_interval(bond, slave->last_rx, 1)) {
++			    bond_time_in_interval(bond, READ_ONCE(slave->last_rx), 1)) {
+ 
+ 				bond_propose_link_state(slave, BOND_LINK_UP);
+ 				slave_state_changed = 1;
+@@ -3597,8 +3597,10 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
+ 			 * when the source ip is 0, so don't take the link down
+ 			 * if we don't know our ip yet
+ 			 */
+-			if (!bond_time_in_interval(bond, last_tx, bond->params.missed_max) ||
+-			    !bond_time_in_interval(bond, slave->last_rx, bond->params.missed_max)) {
++			if (!bond_time_in_interval(bond, last_tx,
++						   bond->params.missed_max) ||
++			    !bond_time_in_interval(bond, READ_ONCE(slave->last_rx),
++						   bond->params.missed_max)) {
+ 
+ 				bond_propose_link_state(slave, BOND_LINK_DOWN);
+ 				slave_state_changed = 1;
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 28c53f1b13826..a37b47b8ea8ed 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1124,7 +1124,7 @@ static void _bond_options_arp_ip_target_set(struct bonding *bond, int slot,
+ 
+ 	if (slot >= 0 && slot < BOND_MAX_ARP_TARGETS) {
+ 		bond_for_each_slave(bond, slave, iter)
+-			slave->target_last_arp_rx[slot] = last_rx;
++			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
+ 		targets[slot] = target;
+ 	}
+ }
+@@ -1193,8 +1193,8 @@ static int bond_option_arp_ip_target_rem(struct bonding *bond, __be32 target)
+ 	bond_for_each_slave(bond, slave, iter) {
+ 		targets_rx = slave->target_last_arp_rx;
+ 		for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
+-			targets_rx[i] = targets_rx[i+1];
+-		targets_rx[i] = 0;
++			WRITE_ONCE(targets_rx[i], READ_ONCE(targets_rx[i+1]));
++		WRITE_ONCE(targets_rx[i], 0);
+ 	}
+ 	for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
+ 		targets[i] = targets[i+1];
+@@ -1349,7 +1349,7 @@ static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
+ 
+ 	if (slot >= 0 && slot < BOND_MAX_NS_TARGETS) {
+ 		bond_for_each_slave(bond, slave, iter) {
+-			slave->target_last_arp_rx[slot] = last_rx;
++			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
+ 			slave_set_ns_maddr(bond, slave, target, &targets[slot]);
+ 		}
+ 		targets[slot] = *target;
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index 95f67b308c19a..9fb40a5920209 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -519,13 +519,14 @@ static inline int bond_is_ip6_target_ok(struct in6_addr *addr)
+ static inline unsigned long slave_oldest_target_arp_rx(struct bonding *bond,
+ 						       struct slave *slave)
+ {
++	unsigned long tmp, ret = READ_ONCE(slave->target_last_arp_rx[0]);
+ 	int i = 1;
+-	unsigned long ret = slave->target_last_arp_rx[0];
 -
- fpsimd_only:
- 	/* copy the FP and status/control registers */
- 	/* restore_sigframe() already checked that user->fpsimd != NULL. */
+-	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++)
+-		if (time_before(slave->target_last_arp_rx[i], ret))
+-			ret = slave->target_last_arp_rx[i];
+ 
++	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++) {
++		tmp = READ_ONCE(slave->target_last_arp_rx[i]);
++		if (time_before(tmp, ret))
++			ret = tmp;
++	}
+ 	return ret;
+ }
+ 
+@@ -535,7 +536,7 @@ static inline unsigned long slave_last_rx(struct bonding *bond,
+ 	if (bond->params.arp_all_targets == BOND_ARP_TARGETS_ALL)
+ 		return slave_oldest_target_arp_rx(bond, slave);
+ 
+-	return slave->last_rx;
++	return READ_ONCE(slave->last_rx);
+ }
+ 
+ static inline void slave_update_last_tx(struct slave *slave)
+-- 
+2.51.0
+
 
 
 
