@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-213827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yL41Fu9jg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:19 +0100
+	id +IDvN/Bjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758F4E8555
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4788EE855D
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B3A23047009
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D55E30479E7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014D0426EDD;
-	Wed,  4 Feb 2026 15:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5641C2D8768;
+	Wed,  4 Feb 2026 15:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yi89KBSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjI5b9f+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760F426ED8;
-	Wed,  4 Feb 2026 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188E1426EDA;
+	Wed,  4 Feb 2026 15:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217643; cv=none; b=h+H1GCouP4CliagnafbVAje/obItIZPvo5J0kDohzNRZ3ugrOT0KCKb7ek8LrfRe4svSviDALQA+1PP6HB4U0bsfF9yoVpFlcqBwcjsUVnXEk5COYxYXfGN/3iEGP5nij/SPTkqdsWkfQQep4ilh7A2OvDoRcY6N0om5ZSpzU2A=
+	t=1770217647; cv=none; b=Bbp3/igEslsFIjEP/yWoTVjOOfKg6jjFeyK9ea+NiJl7kN/7GIjsIaHwAdaAlWC7MUz5+7zhyxrxn4RhxiROpeX7Qd2Uptwz0+pC9QSM/ySUa0voeT1gBne5U0q19q3fWXbp49fJqq3RwcsXxFPInaEkOuyGx711k4gtOXowpvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217643; c=relaxed/simple;
-	bh=aSY8GlUWf3QsJCmI/MZG+OQIdlqgPyhwUykqYKPVRb0=;
+	s=arc-20240116; t=1770217647; c=relaxed/simple;
+	bh=9mX7xzHgsYiLiCF3QO3EH4ej4Ugar0T4biTnDwkr1cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z87okUYJCBKLEvdYzEzPr7zNIgWkSlbkb4tJABKsdENFyzW5IQsp73s0GC/d4kbJyezaDF1do7A4EF4KtUYZtDaKVWZqprtZfMe8TOznVoxb5v9q6V7qmUJVCfeqG+ogNk2l81wTfaRI+H9jaDLubKWKmuUyE93DjXYD5VZjID0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yi89KBSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C3CC116C6;
-	Wed,  4 Feb 2026 15:07:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AMbnaRS8taMThjVzFX8yn6cYTtt8bYfyWrdMdpeQkkX1Eg3UO3g1x3bD4jxJyOn9lOxj6EwhiKxVqZiV3Y4KffO75HEVQLjZdbVXM1+v3IN77X75fAT231Dw91BzzDjc0wWxvO/fPctK3j2YiSThnA+LhqjZaSLj8BnVVDXrzgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjI5b9f+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D4BC4CEF7;
+	Wed,  4 Feb 2026 15:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217643;
-	bh=aSY8GlUWf3QsJCmI/MZG+OQIdlqgPyhwUykqYKPVRb0=;
+	s=korg; t=1770217647;
+	bh=9mX7xzHgsYiLiCF3QO3EH4ej4Ugar0T4biTnDwkr1cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yi89KBSo9mhoRexUvcgSps86SDJ00VZAMb30OacX8dl8IEqtFRUKa+9YKHpcHikBM
-	 IzXyYPv7vtATg5sQkmmTs+XO7U+aMASeRV2Wy8WUAp4s4oQA/JhfBBaca+95w191Ye
-	 M8pw6B19dM1GPfsEKbiOdhn46rIGzc17Nr2TkO/Y=
+	b=XjI5b9f+9nhoQJthi57eHyytiJHszEOaDiDnbdnHX5CuzGiW3L+YbcVpGh7Mq0KgS
+	 SLHU+cXRKT+NnQKDb0A5EeoicQMg5VEbG8Cegd2YoEzcU82z20DyG+T36T5Wpyq/S0
+	 lQtxFAdq+paUekcn1M4gWmYz6qctLLT7fQfHu4go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 076/280] dmaengine: ti: k3-udma: fix device leak on udma lookup
-Date: Wed,  4 Feb 2026 15:37:30 +0100
-Message-ID: <20260204143912.391114629@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Robbie Ko <robbieko@synology.com>,
+	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
+Subject: [PATCH 6.1 077/280] btrfs: fix deadlock in wait_current_trans() due to ignored transaction type
+Date: Wed,  4 Feb 2026 15:37:31 +0100
+Message-ID: <20260204143912.429923209@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -64,79 +64,191 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213827-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213828-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 758F4E8555
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,jakstys.lt:email,synology.com:email]
+X-Rspamd-Queue-Id: 4788EE855D
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Robbie Ko <robbieko@synology.com>
 
-commit 430f7803b69cd5e5694e5dfc884c6628870af36e upstream.
+commit 5037b342825df7094a4906d1e2a9674baab50cb2 upstream.
 
-Make sure to drop the reference taken when looking up the UDMA platform
-device.
+When wait_current_trans() is called during start_transaction(), it
+currently waits for a blocked transaction without considering whether
+the given transaction type actually needs to wait for that particular
+transaction state. The btrfs_blocked_trans_types[] array already defines
+which transaction types should wait for which transaction states, but
+this check was missing in wait_current_trans().
 
-Note that holding a reference to a platform device does not prevent its
-driver data from going away so there is no point in keeping the
-reference after the lookup helper returns.
+This can lead to a deadlock scenario involving two transactions and
+pending ordered extents:
 
-Fixes: d70241913413 ("dmaengine: ti: k3-udma: Add glue layer for non DMAengine users")
-Fixes: 1438cde8fe9c ("dmaengine: ti: k3-udma: add missing put_device() call in of_xudma_dev_get()")
-Cc: stable@vger.kernel.org	# 5.6: 1438cde8fe9c
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-17-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+  1. Transaction A is in TRANS_STATE_COMMIT_DOING state
+
+  2. A worker processing an ordered extent calls start_transaction()
+     with TRANS_JOIN
+
+  3. join_transaction() returns -EBUSY because Transaction A is in
+     TRANS_STATE_COMMIT_DOING
+
+  4. Transaction A moves to TRANS_STATE_UNBLOCKED and completes
+
+  5. A new Transaction B is created (TRANS_STATE_RUNNING)
+
+  6. The ordered extent from step 2 is added to Transaction B's
+     pending ordered extents
+
+  7. Transaction B immediately starts commit by another task and
+     enters TRANS_STATE_COMMIT_START
+
+  8. The worker finally reaches wait_current_trans(), sees Transaction B
+     in TRANS_STATE_COMMIT_START (a blocked state), and waits
+     unconditionally
+
+  9. However, TRANS_JOIN should NOT wait for TRANS_STATE_COMMIT_START
+     according to btrfs_blocked_trans_types[]
+
+  10. Transaction B is waiting for pending ordered extents to complete
+
+  11. Deadlock: Transaction B waits for ordered extent, ordered extent
+      waits for Transaction B
+
+This can be illustrated by the following call stacks:
+  CPU0                              CPU1
+                                    btrfs_finish_ordered_io()
+                                      start_transaction(TRANS_JOIN)
+                                        join_transaction()
+                                          # -EBUSY (Transaction A is
+                                          # TRANS_STATE_COMMIT_DOING)
+  # Transaction A completes
+  # Transaction B created
+  # ordered extent added to
+  # Transaction B's pending list
+  btrfs_commit_transaction()
+    # Transaction B enters
+    # TRANS_STATE_COMMIT_START
+    # waiting for pending ordered
+    # extents
+                                        wait_current_trans()
+                                          # waits for Transaction B
+                                          # (should not wait!)
+
+Task bstore_kv_sync in btrfs_commit_transaction waiting for ordered
+extents:
+
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  btrfs_commit_transaction+0xbf7/0xda0 [btrfs]
+  btrfs_sync_file+0x342/0x4d0 [btrfs]
+  __x64_sys_fdatasync+0x4b/0x80
+  do_syscall_64+0x33/0x40
+  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Task kworker in wait_current_trans waiting for transaction commit:
+
+  Workqueue: btrfs-syno_nocow btrfs_work_helper [btrfs]
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  wait_current_trans+0xb0/0x110 [btrfs]
+  start_transaction+0x346/0x5b0 [btrfs]
+  btrfs_finish_ordered_io.isra.0+0x49b/0x9c0 [btrfs]
+  btrfs_work_helper+0xe8/0x350 [btrfs]
+  process_one_work+0x1d3/0x3c0
+  worker_thread+0x4d/0x3e0
+  kthread+0x12d/0x150
+  ret_from_fork+0x1f/0x30
+
+Fix this by passing the transaction type to wait_current_trans() and
+checking btrfs_blocked_trans_types[cur_trans->state] against the given
+type before deciding to wait. This ensures that transaction types which
+are allowed to join during certain blocked states will not unnecessarily
+wait and cause deadlocks.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Robbie Ko <robbieko@synology.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Motiejus Jakštys <motiejus@jakstys.lt>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/k3-udma-private.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/transaction.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/dma/ti/k3-udma-private.c
-+++ b/drivers/dma/ti/k3-udma-private.c
-@@ -40,9 +40,9 @@ struct udma_dev *of_xudma_dev_get(struct
- 	}
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -503,13 +503,14 @@ static inline int is_transaction_blocked
+  * when this is done, it is safe to start a new transaction, but the current
+  * transaction might not be fully on disk.
+  */
+-static void wait_current_trans(struct btrfs_fs_info *fs_info)
++static void wait_current_trans(struct btrfs_fs_info *fs_info, unsigned int type)
+ {
+ 	struct btrfs_transaction *cur_trans;
  
- 	ud = platform_get_drvdata(pdev);
-+	put_device(&pdev->dev);
- 	if (!ud) {
- 		pr_debug("UDMA has not been probed\n");
--		put_device(&pdev->dev);
- 		return ERR_PTR(-EPROBE_DEFER);
- 	}
+ 	spin_lock(&fs_info->trans_lock);
+ 	cur_trans = fs_info->running_transaction;
+-	if (cur_trans && is_transaction_blocked(cur_trans)) {
++	if (cur_trans && is_transaction_blocked(cur_trans) &&
++	    (btrfs_blocked_trans_types[cur_trans->state] & type)) {
+ 		refcount_inc(&cur_trans->use_count);
+ 		spin_unlock(&fs_info->trans_lock);
  
+@@ -661,12 +662,12 @@ again:
+ 		sb_start_intwrite(fs_info->sb);
+ 
+ 	if (may_wait_transaction(fs_info, type))
+-		wait_current_trans(fs_info);
++		wait_current_trans(fs_info, type);
+ 
+ 	do {
+ 		ret = join_transaction(fs_info, type);
+ 		if (ret == -EBUSY) {
+-			wait_current_trans(fs_info);
++			wait_current_trans(fs_info, type);
+ 			if (unlikely(type == TRANS_ATTACH ||
+ 				     type == TRANS_JOIN_NOSTART))
+ 				ret = -ENOENT;
+@@ -948,7 +949,7 @@ out:
+ 
+ void btrfs_throttle(struct btrfs_fs_info *fs_info)
+ {
+-	wait_current_trans(fs_info);
++	wait_current_trans(fs_info, TRANS_START);
+ }
+ 
+ static bool should_end_transaction(struct btrfs_trans_handle *trans)
 
 
 
