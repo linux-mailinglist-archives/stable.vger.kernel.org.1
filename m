@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-213625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ0NH9Beg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:28 +0100
+	id qAU5AJBkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF48E7B28
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51694E870A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CA9EA3004F25
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70DEA30E522C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A941E4218BD;
-	Wed,  4 Feb 2026 14:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B4B4218A7;
+	Wed,  4 Feb 2026 15:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hHYBs3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ3KoHdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5AF41B37C;
-	Wed,  4 Feb 2026 14:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C50E42189C;
+	Wed,  4 Feb 2026 15:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216957; cv=none; b=ufrhluCnTLhfIA1WU2pyhP9qyhIhn5u415XvfzRqQB/jqBRlJJWbGF1nPqb5Gt09zOJ52liL8XLDdTSl/YFU+vwX4eACMqJON0ICW7CCrLIansrJQdlv6TsQWUq4rvvol8UhO7ngC73kn4FMVbBBi3r5DmIJaLEkMjvChmtLN6w=
+	t=1770217852; cv=none; b=udFG7Rxh9GeJ7zZsviDvzzGmtKBPgsr/I2qX77byDO1ZA4uoGhMFuEMv7fCTnwjPDhWvDzBs7Fj5ejXpmMQF2FPjH+hDmt5VUTViK+sJl6L26zVT28rzNzoCF+E62OMUB/vkwzpcTAKm6nyhydoTuICpJa3yyNJU2yHBOP2W5AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216957; c=relaxed/simple;
-	bh=n7D1oKPLnhtUw3UFy/+ZzDYdKJQ2bRZaIE8OB0x3fII=;
+	s=arc-20240116; t=1770217852; c=relaxed/simple;
+	bh=8+EvkxdFxvCvVsszn7JgMOXJSCG3TF9eW9EFmbxX79w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ol4E9+4NmE7oiQZkTMYcyLc17TEHFVO0lhV+a3STacBufe4QF0ucOTFC/bTQkyyg+Sij/9/hyEPj8MLIbwowJ/PVLK7enhCFvbcYPXcok33Lj0BRzMme9sAcuKCTMbMpdhIbCII/AnPhxGqHAbxLA2QaTkoD6Nbd1gVGLkkcgqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hHYBs3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C6AC4CEF7;
-	Wed,  4 Feb 2026 14:55:56 +0000 (UTC)
+	 MIME-Version; b=p0dNX68IFRYSv2s1TogGBsJfs0na1Iot85WLRzv7SBUqYpIkU5vYJmYHnRCgVWBggl5ESsMMLJZwZWs+loLcjdntyaLcjMJm8B4wjFPn4TnC1O0Hs2EUFXrP/psD7v8DWom+NRxJgTIiwbtftHtriCkcQ42a/63Di+Ja0tEPjoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ3KoHdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8252EC4CEF7;
+	Wed,  4 Feb 2026 15:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216957;
-	bh=n7D1oKPLnhtUw3UFy/+ZzDYdKJQ2bRZaIE8OB0x3fII=;
+	s=korg; t=1770217852;
+	bh=8+EvkxdFxvCvVsszn7JgMOXJSCG3TF9eW9EFmbxX79w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hHYBs3BW68j9RGSwhAax5iX2/64uHgtWNfRxOkbyrzsrHOaahO4CT9jx6KuUNDSj
-	 6Flpy/llXUGSJTaCTS2T58P4hUf5PAHTFtC+UdrVxGsMZjMBrAoYfn5lwbynxIOpVY
-	 +yvfCl31162tEgBL4/WC6SppNqtgOkPmJpJAurWw=
+	b=lJ3KoHdH2JxJb/YpoqzVNWKI4Oni8eEzYRoBd32+vjwDWfwPj3ruayFu/uBP0+WOH
+	 Juwh0voiNqgBW5BTgs5M97zescvXVF8f8owb8RvOc8BtxqQ+u68YXoovcFrpfEDzbJ
+	 3Z1U2KhhsZdpI+S/dh7+rjQmB0JQnXMnDHpMF4vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.15 082/206] comedi: dmm32at: serialize use of paged registers
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Yun Lu <luyun@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/280] netdevsim: fix a race issue related to the operation on bpf_bound_progs list
 Date: Wed,  4 Feb 2026 15:38:33 +0100
-Message-ID: <20260204143901.164707998@linuxfoundation.org>
+Message-ID: <20260204143914.639636047@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,158 +71,161 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213625-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213889-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mev.co.uk:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1EF48E7B28
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,hust.edu.cn:email]
+X-Rspamd-Queue-Id: 51694E870A
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Yun Lu <luyun@kylinos.cn>
 
-commit e03b29b55f2b7c345a919a6ee36633b06bf3fb56 upstream.
+[ Upstream commit b97d5eedf4976cc94321243be83b39efe81a0e15 ]
 
-Some of the hardware registers of the DMM-32-AT board are multiplexed,
-using the least significant two bits of the Miscellaneous Control
-register to select the function of registers at offsets 12 to 15:
+The netdevsim driver lacks a protection mechanism for operations on the
+bpf_bound_progs list. When the nsim_bpf_create_prog() performs
+list_add_tail, it is possible that nsim_bpf_destroy_prog() is
+simultaneously performs list_del. Concurrent operations on the list may
+lead to list corruption and trigger a kernel crash as follows:
 
- 00 => 8254 timer/counter registers are accessible
- 01 => 8255 digital I/O registers are accessible
- 10 => Reserved
- 11 => Calibration registers are accessible
+[  417.290971] kernel BUG at lib/list_debug.c:62!
+[  417.290983] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[  417.290992] CPU: 10 PID: 168 Comm: kworker/10:1 Kdump: loaded Not tainted 6.19.0-rc5 #1
+[  417.291003] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  417.291007] Workqueue: events bpf_prog_free_deferred
+[  417.291021] RIP: 0010:__list_del_entry_valid_or_report+0xa7/0xc0
+[  417.291034] Code: a8 ff 0f 0b 48 89 fe 48 89 ca 48 c7 c7 48 a1 eb ae e8 ed fb a8 ff 0f 0b 48 89 fe 48 89 c2 48 c7 c7 80 a1 eb ae e8 d9 fb a8 ff <0f> 0b 48 89 d1 48 c7 c7 d0 a1 eb ae 48 89 f2 48 89 c6 e8 c2 fb a8
+[  417.291040] RSP: 0018:ffffb16a40807df8 EFLAGS: 00010246
+[  417.291046] RAX: 000000000000006d RBX: ffff8e589866f500 RCX: 0000000000000000
+[  417.291051] RDX: 0000000000000000 RSI: ffff8e59f7b23180 RDI: ffff8e59f7b23180
+[  417.291055] RBP: ffffb16a412c9000 R08: 0000000000000000 R09: 0000000000000003
+[  417.291059] R10: ffffb16a40807c80 R11: ffffffffaf9edce8 R12: ffff8e594427ac20
+[  417.291063] R13: ffff8e59f7b44780 R14: ffff8e58800b7a05 R15: 0000000000000000
+[  417.291074] FS:  0000000000000000(0000) GS:ffff8e59f7b00000(0000) knlGS:0000000000000000
+[  417.291079] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  417.291083] CR2: 00007fc4083efe08 CR3: 00000001c3626006 CR4: 0000000000770ee0
+[  417.291088] PKRU: 55555554
+[  417.291091] Call Trace:
+[  417.291096]  <TASK>
+[  417.291103]  nsim_bpf_destroy_prog+0x31/0x80 [netdevsim]
+[  417.291154]  __bpf_prog_offload_destroy+0x2a/0x80
+[  417.291163]  bpf_prog_dev_bound_destroy+0x6f/0xb0
+[  417.291171]  bpf_prog_free_deferred+0x18e/0x1a0
+[  417.291178]  process_one_work+0x18a/0x3a0
+[  417.291188]  worker_thread+0x27b/0x3a0
+[  417.291197]  ? __pfx_worker_thread+0x10/0x10
+[  417.291207]  kthread+0xe5/0x120
+[  417.291214]  ? __pfx_kthread+0x10/0x10
+[  417.291221]  ret_from_fork+0x31/0x50
+[  417.291230]  ? __pfx_kthread+0x10/0x10
+[  417.291236]  ret_from_fork_asm+0x1a/0x30
+[  417.291246]  </TASK>
 
-The interrupt service routine (`dmm32at_isr()`) clobbers the bottom two
-bits of the register with value 00, which would interfere with access to
-the 8255 registers by the `dm32at_8255_io()` function (used for Comedi
-instruction handling on the digital I/O subdevice).
+Add a mutex lock, to prevent simultaneous addition and deletion operations
+on the list.
 
-Make use of the generic Comedi device spin-lock `dev->spinlock` (which
-is otherwise unused by this driver) to serialize access to the
-miscellaneous control register and paged registers.
-
-Fixes: 3c501880ac44 ("Staging: comedi: add dmm32at driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260112162835.91688-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 31d3ad832948 ("netdevsim: add bpf offload support")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Link: https://patch.msgid.link/20260116095308.11441-1-luyun_611@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/dmm32at.c |   32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ drivers/net/netdevsim/bpf.c       | 6 ++++++
+ drivers/net/netdevsim/dev.c       | 2 ++
+ drivers/net/netdevsim/netdevsim.h | 1 +
+ 3 files changed, 9 insertions(+)
 
---- a/drivers/comedi/drivers/dmm32at.c
-+++ b/drivers/comedi/drivers/dmm32at.c
-@@ -331,6 +331,7 @@ static int dmm32at_ai_cmdtest(struct com
+diff --git a/drivers/net/netdevsim/bpf.c b/drivers/net/netdevsim/bpf.c
+index 50854265864d1..7064a3397be23 100644
+--- a/drivers/net/netdevsim/bpf.c
++++ b/drivers/net/netdevsim/bpf.c
+@@ -244,7 +244,9 @@ static int nsim_bpf_create_prog(struct nsim_dev *nsim_dev,
+ 			    &state->state, &nsim_bpf_string_fops);
+ 	debugfs_create_bool("loaded", 0400, state->ddir, &state->is_loaded);
  
- static void dmm32at_setaitimer(struct comedi_device *dev, unsigned int nansec)
++	mutex_lock(&nsim_dev->progs_list_lock);
+ 	list_add_tail(&state->l, &nsim_dev->bpf_bound_progs);
++	mutex_unlock(&nsim_dev->progs_list_lock);
+ 
+ 	prog->aux->offload->dev_priv = state;
+ 
+@@ -273,12 +275,16 @@ static int nsim_bpf_translate(struct bpf_prog *prog)
+ static void nsim_bpf_destroy_prog(struct bpf_prog *prog)
  {
-+	unsigned long irq_flags;
- 	unsigned char lo1, lo2, hi2;
- 	unsigned short both2;
+ 	struct nsim_bpf_bound_prog *state;
++	struct nsim_dev *nsim_dev;
  
-@@ -343,6 +344,9 @@ static void dmm32at_setaitimer(struct co
- 	/* set counter clocks to 10MHz, disable all aux dio */
- 	outb(0, dev->iobase + DMM32AT_CTRDIO_CFG_REG);
- 
-+	/* serialize access to control register and paged registers */
-+	spin_lock_irqsave(&dev->spinlock, irq_flags);
-+
- 	/* get access to the clock regs */
- 	outb(DMM32AT_CTRL_PAGE_8254, dev->iobase + DMM32AT_CTRL_REG);
- 
-@@ -355,6 +359,8 @@ static void dmm32at_setaitimer(struct co
- 	outb(lo2, dev->iobase + DMM32AT_CLK2);
- 	outb(hi2, dev->iobase + DMM32AT_CLK2);
- 
-+	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
-+
- 	/* enable the ai conversion interrupt and the clock to start scans */
- 	outb(DMM32AT_INTCLK_ADINT |
- 	     DMM32AT_INTCLK_CLKEN | DMM32AT_INTCLK_CLKSEL,
-@@ -364,13 +370,19 @@ static void dmm32at_setaitimer(struct co
- static int dmm32at_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
- {
- 	struct comedi_cmd *cmd = &s->async->cmd;
-+	unsigned long irq_flags;
- 	int ret;
- 
- 	dmm32at_ai_set_chanspec(dev, s, cmd->chanlist[0], cmd->chanlist_len);
- 
-+	/* serialize access to control register and paged registers */
-+	spin_lock_irqsave(&dev->spinlock, irq_flags);
-+
- 	/* reset the interrupt just in case */
- 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
- 
-+	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
-+
- 	/*
- 	 * wait for circuit to settle
- 	 * we don't have the 'insn' here but it's not needed
-@@ -430,8 +442,13 @@ static irqreturn_t dmm32at_isr(int irq,
- 		comedi_handle_events(dev, s);
- 	}
- 
-+	/* serialize access to control register and paged registers */
-+	spin_lock(&dev->spinlock);
-+
- 	/* reset the interrupt */
- 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
-+
-+	spin_unlock(&dev->spinlock);
- 	return IRQ_HANDLED;
+ 	state = prog->aux->offload->dev_priv;
++	nsim_dev = state->nsim_dev;
+ 	WARN(state->is_loaded,
+ 	     "offload state destroyed while program still bound");
+ 	debugfs_remove_recursive(state->ddir);
++	mutex_lock(&nsim_dev->progs_list_lock);
+ 	list_del(&state->l);
++	mutex_unlock(&nsim_dev->progs_list_lock);
+ 	kfree(state);
  }
  
-@@ -482,14 +499,25 @@ static int dmm32at_ao_insn_write(struct
- static int dmm32at_8255_io(struct comedi_device *dev,
- 			   int dir, int port, int data, unsigned long regbase)
- {
-+	unsigned long irq_flags;
-+	int ret;
-+
-+	/* serialize access to control register and paged registers */
-+	spin_lock_irqsave(&dev->spinlock, irq_flags);
-+
- 	/* get access to the DIO regs */
- 	outb(DMM32AT_CTRL_PAGE_8255, dev->iobase + DMM32AT_CTRL_REG);
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index cdf7a70d66591..971796b30605a 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -1550,6 +1550,7 @@ int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev)
+ 	nsim_dev->max_macs = NSIM_DEV_MAX_MACS_DEFAULT;
+ 	nsim_dev->test1 = NSIM_DEV_TEST1_DEFAULT;
+ 	spin_lock_init(&nsim_dev->fa_cookie_lock);
++	mutex_init(&nsim_dev->progs_list_lock);
  
- 	if (dir) {
- 		outb(data, dev->iobase + regbase + port);
--		return 0;
-+		ret = 0;
-+	} else {
-+		ret = inb(dev->iobase + regbase + port);
- 	}
--	return inb(dev->iobase + regbase + port);
-+
-+	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
-+
-+	return ret;
- }
+ 	dev_set_drvdata(&nsim_bus_dev->dev, nsim_dev);
  
- /* Make sure the board is there and put it to a known state */
+@@ -1684,6 +1685,7 @@ void nsim_drv_remove(struct nsim_bus_dev *nsim_bus_dev)
+ 	devl_resources_unregister(devlink);
+ 	kfree(nsim_dev->vfconfigs);
+ 	kfree(nsim_dev->fa_cookie);
++	mutex_destroy(&nsim_dev->progs_list_lock);
+ 	devl_unlock(devlink);
+ 	devlink_free(devlink);
+ 	dev_set_drvdata(&nsim_bus_dev->dev, NULL);
+diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
+index 02e3518e9a7e2..c28f5a9f92302 100644
+--- a/drivers/net/netdevsim/netdevsim.h
++++ b/drivers/net/netdevsim/netdevsim.h
+@@ -272,6 +272,7 @@ struct nsim_dev {
+ 	u32 prog_id_gen;
+ 	struct list_head bpf_bound_progs;
+ 	struct list_head bpf_bound_maps;
++	struct mutex progs_list_lock;
+ 	struct netdev_phys_item_id switch_id;
+ 	struct list_head port_list;
+ 	bool fw_update_status;
+-- 
+2.51.0
+
 
 
 
