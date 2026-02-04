@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yA4EKqlkg2l1mQMAu9opvQ
-	(envelope-from <stable+bounces-213845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:25 +0100
+	id wH/mMyBeg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCA4E876E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F99E79D6
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 05E663030334
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1703930137B4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E426428471;
-	Wed,  4 Feb 2026 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C366C41B36C;
+	Wed,  4 Feb 2026 14:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+n3HPAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3i73/1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51282DCF61;
-	Wed,  4 Feb 2026 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8838841B352;
+	Wed,  4 Feb 2026 14:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217707; cv=none; b=HRvlzUGN/i1FvNljATHVqFWlGONg8A4wtAYxdrGCYCiHVpFhD8nGJng47qBSnNZoxF5xDtIOzOm20EfMTvzEV+R1/WYWRB0h6V7ZEFgzL366WGi5P5QRowfgxD2Kg60FenviDLEXBZovkc/g53LT+FNXzUA8l98ANBepCsrIMJE=
+	t=1770216816; cv=none; b=nre2qv0FY2kt5pm8otgmGJ2swSOXja857gMlUtu7RFaTITnutv6GBZ5U0fHCTmMFVHpwtLerDiE7MZ8q1STr6/evRZCJrDgUbvJKWaXNtrQyBDnTN1UKMNVQC0E5k0LNxjmxC3LZU1PagnO/b6VO5RBFtZ/DiaRamkkW1pxQCHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217707; c=relaxed/simple;
-	bh=I94jVX0DJTshUsH6Wg5jJ6aEBo9tKAcRLnzJlpHBDSE=;
+	s=arc-20240116; t=1770216816; c=relaxed/simple;
+	bh=/Yft/O9nqTLU4WNHvSMnxYGrdLygB3hY6WJxJGnxjLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XzQtlOsuE4OASc+6kBfxmu530+4Gb58XBIgpwzcshlnielquX9/uSsTSCg8+7RURUdI9fkxm0Gp6g346cdhlpMajoYQFxiyjz5WbXB1obf21QpCjJ4VR8GeBNuTpmbyJ+WWBTLgoopkCRbTcnx3kiS+ePBC18DnWx0f/3JD3/2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+n3HPAX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F29C19424;
-	Wed,  4 Feb 2026 15:08:26 +0000 (UTC)
+	 MIME-Version; b=Whuh/WSRZdKcVtx1ic4gSH9sfkRQCK1UZ0SWBA16X3Y7PmNLaXADt/Qxj1I747PTc847gBrVt0CXS8KFWU8W9ucTfro30sxzou38/oxLOfvfb4thuV3rJsd0REGpMNrpjiELAgW1bqnpjOvaPFxMl06ZJ3uGRYfStpdOZgIJVGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3i73/1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB136C4CEF7;
+	Wed,  4 Feb 2026 14:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217706;
-	bh=I94jVX0DJTshUsH6Wg5jJ6aEBo9tKAcRLnzJlpHBDSE=;
+	s=korg; t=1770216816;
+	bh=/Yft/O9nqTLU4WNHvSMnxYGrdLygB3hY6WJxJGnxjLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+n3HPAXCGNE4WWsp2ZFCX3mASRXlsyGyBsiklFrJR0HyskqoGI2R0+cRhS82eQ2C
-	 QpmY8UxBBLaBOMuNrpyvICVcTNm2XFSI7pbnOIUWHdV1pnIy30iIb/FHApFkR/YjwE
-	 LTf60poZZIizkE/ELTYh8DI89WXSavFT9qQ+xUB8=
+	b=y3i73/1ga27ibfQe4hWceHWyX+oGp8/Ppl7xlSer7oztDODdQlP109nob+l+KK7kU
+	 23uvZM78haZpsa4o/QndKlM0rCCZnOMsEFpHP6VpMoITjCejQgdAJW/b+o6ueFrq3a
+	 IkTOOEH8G3sGQr6eY9LzBEwNMdWidPLEvEvQX9co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Wolf <wolf@yoxt.cc>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/280] ata: libata: Call ata_dev_config_lpm() for ATAPI devices
-Date: Wed,  4 Feb 2026 15:37:49 +0100
-Message-ID: <20260204143913.072241669@linuxfoundation.org>
+	Xiaochen Shen <shenxiaochen@open-hieco.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>
+Subject: [PATCH 5.15 039/206] x86/resctrl: Fix memory bandwidth counter width for Hygon
+Date: Wed,  4 Feb 2026 15:37:50 +0100
+Message-ID: <20260204143859.619873455@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213845-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213582-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,62 +87,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4CCA4E876E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,alien8.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,open-hieco.net:email]
+X-Rspamd-Queue-Id: C2F99E79D6
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Xiaochen Shen <shenxiaochen@open-hieco.net>
 
-[ Upstream commit 8f3fb33f8f3f825c708ece800c921977c157f9b6 ]
+commit 7517e899e1b87b4c22a92c7e40d8733c48e4ec3c upstream.
 
-Commit d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
-introduced ata_dev_config_lpm(). However, it only called this function for
-ATA_DEV_ATA and ATA_DEV_ZAC devices, not for ATA_DEV_ATAPI devices.
+The memory bandwidth calculation relies on reading the hardware counter
+and measuring the delta between samples. To ensure accurate measurement,
+the software reads the counter frequently enough to prevent it from
+rolling over twice between reads.
 
-Additionally, commit d99a9142e782 ("ata: libata-core: Move device LPM quirk
-settings to ata_dev_config_lpm()") moved the LPM quirk application from
-ata_dev_configure() to ata_dev_config_lpm(), causing LPM quirks for ATAPI
-devices to no longer be applied.
+The default Memory Bandwidth Monitoring (MBM) counter width is 24 bits.
+Hygon CPUs provide a 32-bit width counter, but they do not support the
+MBM capability CPUID leaf (0xF.[ECX=1]:EAX) to report the width offset
+(from 24 bits).
 
-Call ata_dev_config_lpm() also for ATAPI devices, such that LPM quirks are
-applied for ATAPI devices with an entry in __ata_dev_quirks once again.
+Consequently, the kernel falls back to the 24-bit default counter width,
+which causes incorrect overflow handling on Hygon CPUs.
 
-Fixes: d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
-Fixes: d99a9142e782 ("ata: libata-core: Move device LPM quirk settings to ata_dev_config_lpm()")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Tested-by: Wolf <wolf@yoxt.cc>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Stable-dep-of: c8c6fb886f57 ("ata: libata: Print features also for ATAPI devices")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by explicitly setting the counter width offset to 8 bits (resulting
+in a 32-bit total counter width) for Hygon CPUs.
+
+Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
+Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251209062650.1536952-3-shenxiaochen@open-hieco.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/resctrl/core.c     |   15 +++++++++++++--
+ arch/x86/kernel/cpu/resctrl/internal.h |    3 +++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 1277b80726535..3fb7f7a5181a9 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2882,6 +2882,8 @@ int ata_dev_configure(struct ata_device *dev)
- 				     ata_mode_string(xfer_mask),
- 				     cdb_intr_string, atapi_an_string,
- 				     dma_dir_string);
-+
-+		ata_dev_config_lpm(dev);
- 	}
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -937,8 +937,19 @@ void resctrl_cpu_detect(struct cpuinfo_x
+ 		c->x86_cache_occ_scale = ebx;
+ 		c->x86_cache_mbm_width_offset = eax & 0xff;
  
- 	/* determine max_sectors */
--- 
-2.51.0
-
+-		if (c->x86_vendor == X86_VENDOR_AMD && !c->x86_cache_mbm_width_offset)
+-			c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
++		if (!c->x86_cache_mbm_width_offset) {
++			switch (c->x86_vendor) {
++			case X86_VENDOR_AMD:
++				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
++				break;
++			case X86_VENDOR_HYGON:
++				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_HYGON;
++				break;
++			default:
++				/* Leave c->x86_cache_mbm_width_offset as 0 */
++				break;
++			}
++		}
+ 	}
+ }
+ 
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -40,6 +40,9 @@
+ #define MAX_MBA_BW_AMD			0x800
+ #define MBM_CNTR_WIDTH_OFFSET_AMD	20
+ 
++/* Hygon MBM counter width as an offset from MBM_CNTR_WIDTH_BASE */
++#define MBM_CNTR_WIDTH_OFFSET_HYGON	8
++
+ #define RMID_VAL_ERROR			BIT_ULL(63)
+ #define RMID_VAL_UNAVAIL		BIT_ULL(62)
+ /*
 
 
 
