@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-214104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H78Ndhrg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:04 +0100
+	id SPCgCCRug2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A4EE9946
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B760E9D43
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12BA0309216B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9DF0831AD3E0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7469B1E520C;
-	Wed,  4 Feb 2026 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2252D8768;
+	Wed,  4 Feb 2026 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1Xbt9Kr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opHsIQb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378F7421EED;
-	Wed,  4 Feb 2026 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FF12D5C91;
+	Wed,  4 Feb 2026 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218577; cv=none; b=kmU4FlYmGs7bWFUQX6N3eLItYnNvoZ7RLYubp26b4U8dMpOLYKjGV6fHP5gOsmtvHuVJnlVhbrVO/TQDz1SziUhKFsdem9kZyO1woPoRVFSwqWBO3Ng7uD1RBn82m7ULCXV9DNBzTxE7sQtrtMLpE9FoAsHnazc7TEj25ieySc4=
+	t=1770219188; cv=none; b=PMMZ9YdGoUA/83vKCRybn3Uss2OyGWJ73C4LaNet37lRzUfFx0LvhbUvZrCKc2e9ox+m8Cx54X+0zZ1SZh7l0nNkBSGW0Or6YmBe97QGdqY8YT+GX8Vf/tOYJfbDszLGlA1WNvfmuPBAHSCINDKu2C451e9L7LxE7P3KWXs5fuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218577; c=relaxed/simple;
-	bh=77Sq4oReETXXpdaDYSU06elgCNE3Mm/InQlRD0i4UPE=;
+	s=arc-20240116; t=1770219188; c=relaxed/simple;
+	bh=nfQIA6CvaelNj7kzTvV1xho6QnrycBsdKJg1ylYfaDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlYUMJ806O324+nSt9M/Imgrj3r2XY7oesrdNoFrQLPWDYpSDHFfl3Anb9Q71HS/+wuWk94W5jdSdfv6Y9lXyLsRNTXo+ZyjTxuU7+BpjX2krt7feyugEwBN5wqUSwc+iq4YVb6vTqxt5OUn4m+PYLt2vMFp4UosnyISL55StE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1Xbt9Kr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F180C116C6;
-	Wed,  4 Feb 2026 15:22:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jHBL4UzTrkvBZW/+JejLnTey4tSIPKER3TeFMYMyU2ISA2CpZP/u73W+hlgO9yfVMSRFi3pWyjbiRDaVQO32D0aJ57vJsFTONxGW89gboT5BHhh5bVvEkuXNo22jsqIPqlwOoFHbtbjY5jekU1awl/ZvaL+EJSvZq7COe274LIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opHsIQb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D88C4CEF7;
+	Wed,  4 Feb 2026 15:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218577;
-	bh=77Sq4oReETXXpdaDYSU06elgCNE3Mm/InQlRD0i4UPE=;
+	s=korg; t=1770219188;
+	bh=nfQIA6CvaelNj7kzTvV1xho6QnrycBsdKJg1ylYfaDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1Xbt9Krfh/hNS1+gr7nEv20IeGx6BofBdyBAxdUDtxH6lNWFj5dt3YWk3F9UZa6Y
-	 JQ+AZqivAeyTynJv6GyzZ0eyQQGmdxCfxoWYrCKr0ZXgqa0YlFb/UyKAmLF9Rq070D
-	 MsnhZJZ6NCwGwP3WWq892vHbtR48BHNo4rqnA4eY=
+	b=opHsIQb1Mz9IhPCLrvUZSrAH4TklRXP4Jv/RTBPqjIh2wS2/EYmK5XjCGemlZ4B3v
+	 5vvT/a0Ji0qAhvvQWxUeQXiJeuSLUh60SXlvpPNmP8JqP/QRNQxZgSjIocVZESpldh
+	 5XloBZZxe/Am5L/mXAy0XNz5YAu7IgkRB8eQef0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.6 70/72] Revert "net: Allow to use SMP threads for backlog NAPI."
-Date: Wed,  4 Feb 2026 15:41:13 +0100
-Message-ID: <20260204143848.181101080@linuxfoundation.org>
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 092/122] rust: sync: atomic: Provide stub for `rusttest` 32-bit hosts
+Date: Wed,  4 Feb 2026 15:41:14 +0100
+Message-ID: <20260204143855.161961076@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,322 +63,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214104-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-214288-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,onurozkan.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 22A4EE9946
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 3B760E9D43
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-This reverts commit f3652768a89cfdaedbe2c9384299eea7ec435fef which is
-commit dad6b97702639fba27a2bd3e986982ad6f0db3a7 upstream.
+commit bd36f6e2abf7f85644f7ea8deb1de4040b03bbc1 upstream.
 
-It is only for issues around PREEMPT_RT, which is not in the 6.6.y tree,
-so revert this for now.
+For arm32, on a x86_64 builder, running the `rusttest` target yields:
 
-Link: https://lore.kernel.org/r/20260120103833.4kssDD1Y@linutronix.de
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Wen Yang <wen.yang@linux.dev>
+    error[E0080]: evaluation of constant value failed
+      --> rust/kernel/static_assert.rs:37:23
+       |
+    37 |         const _: () = ::core::assert!($condition $(,$arg)?);
+       |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at 'assertion failed: size_of::<isize>() == size_of::<isize_atomic_repr>()', rust/kernel/sync/atomic/predefine.rs:68:1
+       |
+      ::: rust/kernel/sync/atomic/predefine.rs:68:1
+       |
+    68 | static_assert!(size_of::<isize>() == size_of::<isize_atomic_repr>());
+       | -------------------------------------------------------------------- in this macro invocation
+       |
+       = note: this error originates in the macro `::core::assert` which comes from the expansion of the macro `static_assert` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+The reason is that `rusttest` runs on the host, so for e.g. a x86_64
+builder `isize` is 64 bits but it is not a `CONFIG_64BIT` build.
+
+Fix it by providing a stub for `rusttest` as usual.
+
+Fixes: 84c6d36bcaf9 ("rust: sync: atomic: Add Atomic<{usize,isize}>")
+Cc: stable@vger.kernel.org
+Reviewed-by: Onur Özkan <work@onurozkan.dev>
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://patch.msgid.link/20260123233432.22703-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |  152 +++++++++++++--------------------------------------------
- 1 file changed, 37 insertions(+), 115 deletions(-)
+ rust/kernel/sync/atomic/predefine.rs | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -78,7 +78,6 @@
- #include <linux/slab.h>
- #include <linux/sched.h>
- #include <linux/sched/mm.h>
--#include <linux/smpboot.h>
- #include <linux/mutex.h>
- #include <linux/rwsem.h>
- #include <linux/string.h>
-@@ -218,31 +217,6 @@ static inline struct hlist_head *dev_ind
- 	return &net->dev_index_head[ifindex & (NETDEV_HASHENTRIES - 1)];
- }
+diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+index 45a17985cda4..0fca1ba3c2db 100644
+--- a/rust/kernel/sync/atomic/predefine.rs
++++ b/rust/kernel/sync/atomic/predefine.rs
+@@ -35,12 +35,23 @@ fn rhs_into_delta(rhs: i64) -> i64 {
+ // as `isize` and `usize`, and `isize` and `usize` are always bi-directional transmutable to
+ // `isize_atomic_repr`, which also always implements `AtomicImpl`.
+ #[allow(non_camel_case_types)]
++#[cfg(not(testlib))]
+ #[cfg(not(CONFIG_64BIT))]
+ type isize_atomic_repr = i32;
+ #[allow(non_camel_case_types)]
++#[cfg(not(testlib))]
+ #[cfg(CONFIG_64BIT)]
+ type isize_atomic_repr = i64;
  
--#ifndef CONFIG_PREEMPT_RT
--
--static DEFINE_STATIC_KEY_FALSE(use_backlog_threads_key);
--
--static int __init setup_backlog_napi_threads(char *arg)
--{
--	static_branch_enable(&use_backlog_threads_key);
--	return 0;
--}
--early_param("thread_backlog_napi", setup_backlog_napi_threads);
--
--static bool use_backlog_threads(void)
--{
--	return static_branch_unlikely(&use_backlog_threads_key);
--}
--
--#else
--
--static bool use_backlog_threads(void)
--{
--	return true;
--}
--
--#endif
--
- static inline void rps_lock_irqsave(struct softnet_data *sd,
- 				    unsigned long *flags)
- {
-@@ -4533,7 +4507,6 @@ EXPORT_SYMBOL(__dev_direct_xmit);
- /*************************************************************************
-  *			Receiver routines
-  *************************************************************************/
--static DEFINE_PER_CPU(struct task_struct *, backlog_napi);
- 
- int netdev_max_backlog __read_mostly = 1000;
- EXPORT_SYMBOL(netdev_max_backlog);
-@@ -4566,16 +4539,12 @@ static inline void ____napi_schedule(str
- 		 */
- 		thread = READ_ONCE(napi->thread);
- 		if (thread) {
--			if (use_backlog_threads() && thread == raw_cpu_read(backlog_napi))
--				goto use_local_napi;
--
- 			set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
- 			wake_up_process(thread);
- 			return;
- 		}
- 	}
- 
--use_local_napi:
- 	list_add_tail(&napi->poll_list, &sd->poll_list);
- 	WRITE_ONCE(napi->list_owner, smp_processor_id());
- 	/* If not called from net_rx_action()
-@@ -4821,11 +4790,6 @@ static void napi_schedule_rps(struct sof
- 
- #ifdef CONFIG_RPS
- 	if (sd != mysd) {
--		if (use_backlog_threads()) {
--			__napi_schedule_irqoff(&sd->backlog);
--			return;
--		}
--
- 		sd->rps_ipi_next = mysd->rps_ipi_list;
- 		mysd->rps_ipi_list = sd;
- 
-@@ -6049,7 +6013,7 @@ static void net_rps_action_and_irq_enabl
- #ifdef CONFIG_RPS
- 	struct softnet_data *remsd = sd->rps_ipi_list;
- 
--	if (!use_backlog_threads() && remsd) {
-+	if (remsd) {
- 		sd->rps_ipi_list = NULL;
- 
- 		local_irq_enable();
-@@ -6064,7 +6028,7 @@ static void net_rps_action_and_irq_enabl
- static bool sd_has_rps_ipi_waiting(struct softnet_data *sd)
- {
- #ifdef CONFIG_RPS
--	return !use_backlog_threads() && sd->rps_ipi_list;
-+	return sd->rps_ipi_list != NULL;
- #else
- 	return false;
- #endif
-@@ -6108,7 +6072,7 @@ static int process_backlog(struct napi_s
- 			 * We can use a plain write instead of clear_bit(),
- 			 * and we dont need an smp_mb() memory barrier.
- 			 */
--			napi->state &= NAPIF_STATE_THREADED;
-+			napi->state = 0;
- 			again = false;
- 		} else {
- 			skb_queue_splice_tail_init(&sd->input_pkt_queue,
-@@ -6774,48 +6738,43 @@ static void skb_defer_free_flush(struct
- 	}
- }
- 
--static void napi_threaded_poll_loop(struct napi_struct *napi)
-+static int napi_threaded_poll(void *data)
- {
-+	struct napi_struct *napi = data;
- 	struct softnet_data *sd;
--	unsigned long last_qs = jiffies;
-+	void *have;
- 
--	for (;;) {
--		bool repoll = false;
--		void *have;
-+	while (!napi_thread_wait(napi)) {
-+		unsigned long last_qs = jiffies;
- 
--		local_bh_disable();
--		sd = this_cpu_ptr(&softnet_data);
--		sd->in_napi_threaded_poll = true;
-+		for (;;) {
-+			bool repoll = false;
- 
--		have = netpoll_poll_lock(napi);
--		__napi_poll(napi, &repoll);
--		netpoll_poll_unlock(have);
--
--		sd->in_napi_threaded_poll = false;
--		barrier();
--
--		if (sd_has_rps_ipi_waiting(sd)) {
--			local_irq_disable();
--			net_rps_action_and_irq_enable(sd);
--		}
--		skb_defer_free_flush(sd);
--		local_bh_enable();
-+			local_bh_disable();
-+			sd = this_cpu_ptr(&softnet_data);
-+			sd->in_napi_threaded_poll = true;
++#[allow(non_camel_case_types)]
++#[cfg(testlib)]
++#[cfg(target_pointer_width = "32")]
++type isize_atomic_repr = i32;
++#[allow(non_camel_case_types)]
++#[cfg(testlib)]
++#[cfg(target_pointer_width = "64")]
++type isize_atomic_repr = i64;
 +
-+			have = netpoll_poll_lock(napi);
-+			__napi_poll(napi, &repoll);
-+			netpoll_poll_unlock(have);
-+
-+			sd->in_napi_threaded_poll = false;
-+			barrier();
-+
-+			if (sd_has_rps_ipi_waiting(sd)) {
-+				local_irq_disable();
-+				net_rps_action_and_irq_enable(sd);
-+			}
-+			skb_defer_free_flush(sd);
-+			local_bh_enable();
- 
--		if (!repoll)
--			break;
-+			if (!repoll)
-+				break;
- 
--		rcu_softirq_qs_periodic(last_qs);
--		cond_resched();
-+			rcu_softirq_qs_periodic(last_qs);
-+			cond_resched();
-+		}
- 	}
--}
--
--static int napi_threaded_poll(void *data)
--{
--	struct napi_struct *napi = data;
--
--	while (!napi_thread_wait(napi))
--		napi_threaded_poll_loop(napi);
--
- 	return 0;
- }
- 
-@@ -11400,7 +11359,7 @@ static int dev_cpu_dead(unsigned int old
- 
- 		list_del_init(&napi->poll_list);
- 		if (napi->poll == process_backlog)
--			napi->state &= NAPIF_STATE_THREADED;
-+			napi->state = 0;
- 		else
- 			____napi_schedule(sd, napi);
- 	}
-@@ -11408,14 +11367,12 @@ static int dev_cpu_dead(unsigned int old
- 	raise_softirq_irqoff(NET_TX_SOFTIRQ);
- 	local_irq_enable();
- 
--	if (!use_backlog_threads()) {
- #ifdef CONFIG_RPS
--		remsd = oldsd->rps_ipi_list;
--		oldsd->rps_ipi_list = NULL;
-+	remsd = oldsd->rps_ipi_list;
-+	oldsd->rps_ipi_list = NULL;
- #endif
--		/* send out pending IPI's on offline CPU */
--		net_rps_send_ipi(remsd);
--	}
-+	/* send out pending IPI's on offline CPU */
-+	net_rps_send_ipi(remsd);
- 
- 	/* Process offline CPU's input_pkt_queue */
- 	while ((skb = __skb_dequeue(&oldsd->process_queue))) {
-@@ -11678,38 +11635,6 @@ static struct pernet_operations __net_in
-  *
-  */
- 
--static int backlog_napi_should_run(unsigned int cpu)
--{
--	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
--	struct napi_struct *napi = &sd->backlog;
--
--	return test_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
--}
--
--static void run_backlog_napi(unsigned int cpu)
--{
--	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
--
--	napi_threaded_poll_loop(&sd->backlog);
--}
--
--static void backlog_napi_setup(unsigned int cpu)
--{
--	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
--	struct napi_struct *napi = &sd->backlog;
--
--	napi->thread = this_cpu_read(backlog_napi);
--	set_bit(NAPI_STATE_THREADED, &napi->state);
--}
--
--static struct smp_hotplug_thread backlog_threads = {
--	.store			= &backlog_napi,
--	.thread_should_run	= backlog_napi_should_run,
--	.thread_fn		= run_backlog_napi,
--	.thread_comm		= "backlog_napi/%u",
--	.setup			= backlog_napi_setup,
--};
--
- /*
-  *       This is called single threaded during boot, so no need
-  *       to take the rtnl semaphore.
-@@ -11760,10 +11685,7 @@ static int __init net_dev_init(void)
- 		init_gro_hash(&sd->backlog);
- 		sd->backlog.poll = process_backlog;
- 		sd->backlog.weight = weight_p;
--		INIT_LIST_HEAD(&sd->backlog.poll_list);
- 	}
--	if (use_backlog_threads())
--		smpboot_register_percpu_thread(&backlog_threads);
- 
- 	dev_boot_phase = 0;
- 
+ // Ensure size and alignment requirements are checked.
+ static_assert!(size_of::<isize>() == size_of::<isize_atomic_repr>());
+ static_assert!(align_of::<isize>() == align_of::<isize_atomic_repr>());
+-- 
+2.53.0
+
 
 
 
