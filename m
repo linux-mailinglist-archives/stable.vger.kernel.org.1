@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-214086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNRzLtpmg2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214086-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:46 +0100
+	id QIn/GK1og2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2671DE8DFD
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D96E9249
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 27B5930692FE
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 288CE30FFA21
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B903C41C2EE;
-	Wed,  4 Feb 2026 15:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8C12DCF61;
+	Wed,  4 Feb 2026 15:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8LJiYA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik3NVhn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C45E21FF4C;
-	Wed,  4 Feb 2026 15:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DEB29AB1D;
+	Wed,  4 Feb 2026 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218516; cv=none; b=Uu5uNmpCKXUyxPTLlaPboqHBrJ7eyOTmJJ7ynPkvEDwMwUxhRA6UHcgnPYnPBAA96ku3UpYQXvTEtq8Dltd/vIbTBjNZFck/3S9e6Vs/duPykF1WmQING/UWHfJW77G4AU7+sBVeDvynQdglgvxfQNnN2yCuP6jtniLJIxvn9gA=
+	t=1770218778; cv=none; b=NFgi0C7VtdOiVJXiYK0Gg9lf8IudUfdL5myen/c998myqorl9WqaOOrAlz/LU7Hcx1pVOEA2fc52nnlDzAI47dkwsqGiK/I3gLn8NF9fMyGpOjAzjo8tH/1W7mEpeAy2lVQG0N7gjowgEAnLTNag9Bach60AEUlls58GFhkNQ+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218516; c=relaxed/simple;
-	bh=KgEG+fr7EBFrWVtyAc1bdAZgG630vkzmwNxdRpFNly4=;
+	s=arc-20240116; t=1770218778; c=relaxed/simple;
+	bh=UK6Yjv8B/n6fKeXqpMN9Pp6oWrF3tAYpyqXjpbMhehw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyp9vCduS6GVvvMztaxP89QSyw92fhnJP9TitlGM6JXiJ5KXv72chEfdBEsNjRABFzrPzL9BfRa2cuyz3oXornNIXTmdC1Kqioqx11xwXzTO7jFyNwYFuZAgd4vrdAbZ5HasmcUEO3vB1K3oOjDtFnUfFQ2cRoEB3a8KtEO3t9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8LJiYA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93961C4CEF7;
-	Wed,  4 Feb 2026 15:21:55 +0000 (UTC)
+	 MIME-Version; b=SK/gVl2Q3TZga3k00AyomjJK5N/sd0SO2C293nnz5tKMREZi1Or8BK355TL9t/4f0GMvi6z5hkB3ylPmNkW8MLUX4LQMo9cFC0vKeRIhk9ZK6P5WIt1D7RvFzS42Nfh4VNlcxI+BSWrUq7pxd8AWKzMt6ocH6cGn50sgNPZZ1gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik3NVhn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EA9C4CEF7;
+	Wed,  4 Feb 2026 15:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218516;
-	bh=KgEG+fr7EBFrWVtyAc1bdAZgG630vkzmwNxdRpFNly4=;
+	s=korg; t=1770218777;
+	bh=UK6Yjv8B/n6fKeXqpMN9Pp6oWrF3tAYpyqXjpbMhehw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8LJiYA+djdnSXjvluUzUm/0oGaAZnT3N6vsWVyrqLkqfmIJyddHV7q/VwVOapodi
-	 FmungB5WL2SruzISjlRdi8trszA1E90RvP55HuavbBm/G5gvZn8hqLNPPjrqKhXWxm
-	 NoyHg/X2qcYsT92Q8c79jiVbwSwaSPZLm+tUEAlM=
+	b=ik3NVhn98dzjwpdoUyXmDWUaa8DxFjvo1A6G3u1L6oLk7ArI8yDwViVi0a3v/cRI3
+	 ZhRcQVKonO0saJYfvGmW5lSZSDFiigDnx+p/iTjNKJJwwTqsCMpBiaWUw2LvRh5m6Z
+	 Jd/Q6EQzbMU09tS2ueTtkwALe0sECAp64Pn3y8VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Robert McClinton <rbmccav@gmail.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 54/72] drm/radeon: delete radeon_fence_process in is_signaled, no deadlock
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>
+Subject: [PATCH 6.12 59/87] drm/msm/a6xx: fix bogus hwcg register updates
 Date: Wed,  4 Feb 2026 15:40:57 +0100
-Message-ID: <20260204143847.591590326@linuxfoundation.org>
+Message-ID: <20260204143849.041662612@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,82 +70,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214086-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,139.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214164-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:email]
-X-Rspamd-Queue-Id: 2671DE8DFD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,patchwork.freedesktop.org:url,qualcomm.com:email]
+X-Rspamd-Queue-Id: D4D96E9249
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert McClinton <rbmccav@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 9eb00b5f5697bd56baa3222c7a1426fa15bacfb5 ]
+commit dedb897f11c5d7e32c0e0a0eff7cec23a8047167 upstream.
 
-Delete the attempt to progress the queue when checking if fence is
-signaled. This avoids deadlock.
+The hw clock gating register sequence consists of register value pairs
+that are written to the GPU during initialisation.
 
-dma-fence_ops::signaled can be called with the fence lock in unknown
-state. For radeon, the fence lock is also the wait queue lock. This can
-cause a self deadlock when signaled() tries to make forward progress on
-the wait queue. But advancing the queue is unneeded because incorrectly
-returning false from signaled() is perfectly acceptable.
+The a690 hwcg sequence has two GMU registers in it that used to amount
+to random writes in the GPU mapping, but since commit 188db3d7fe66
+("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
+the updated offsets now lie outside the mapping. This in turn breaks
+boot of machines like the Lenovo ThinkPad X13s.
 
-Link: https://github.com/brave/brave-browser/issues/49182
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4641
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Robert McClinton <rbmccav@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 527ba26e50ec2ca2be9c7c82f3ad42998a75d0db)
-Cc: stable@vger.kernel.org
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Note that the updates of these GMU registers is already taken care of
+properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
+properties on a6xx too"), but for some reason these two entries were
+left in the table.
+
+Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
+Cc: stable@vger.kernel.org	# 6.5
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
+Patchwork: https://patchwork.freedesktop.org/patch/695778/
+Message-ID: <20251221164552.19990-1-johan@kernel.org>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+(cherry picked from commit dcbd2f8280eea2c965453ed8c3c69d6f121e950b)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_fence.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_catalog.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/gpu/drm/radeon/radeon_fence.c
-+++ b/drivers/gpu/drm/radeon/radeon_fence.c
-@@ -362,14 +362,6 @@ static bool radeon_fence_is_signaled(str
- 		return true;
- 	}
- 
--	if (down_read_trylock(&rdev->exclusive_lock)) {
--		radeon_fence_process(rdev, ring);
--		up_read(&rdev->exclusive_lock);
--
--		if (atomic64_read(&rdev->fence_drv[ring].last_seq) >= seq) {
--			return true;
--		}
--	}
- 	return false;
- }
+--- a/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_catalog.c
+@@ -501,8 +501,6 @@ static const struct adreno_reglist a690_
+ 	{REG_A6XX_RBBM_CLOCK_CNTL_GMU_GX, 0x00000222},
+ 	{REG_A6XX_RBBM_CLOCK_DELAY_GMU_GX, 0x00000111},
+ 	{REG_A6XX_RBBM_CLOCK_HYST_GMU_GX, 0x00000555},
+-	{REG_A6XX_GPU_GMU_AO_GMU_CGC_DELAY_CNTL, 0x10111},
+-	{REG_A6XX_GPU_GMU_AO_GMU_CGC_HYST_CNTL, 0x5555},
+ 	{}
+ };
  
 
 
