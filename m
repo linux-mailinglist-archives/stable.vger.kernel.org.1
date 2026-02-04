@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-213753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGU5FfZgg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:38 +0100
+	id WHF/IPZng2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:30 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73C6E7FDA
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2031CE9058
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9AAAE3064E0D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:03:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 91F24301C510
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F0C421A09;
-	Wed,  4 Feb 2026 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A512D8777;
+	Wed,  4 Feb 2026 15:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MH/Y6uOW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqzzyYmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645BE4219F1;
-	Wed,  4 Feb 2026 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9352BD012;
+	Wed,  4 Feb 2026 15:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217391; cv=none; b=jvp4F0n4BOdje8yw2lweTSEoSRvuuaJHRsohyZ0xqTTHS3TGdRcpZ96D8T5QS3kjYBPbvwyS7PFrqzSWESxo31FYybKpfcpUvNvlRQPZJuW/5Pz1kiOWJ8ZbwUZ83XreBFT7zfvm0GurIxlrT3l4vNYpho27QW96l4bOwvUpJlg=
+	t=1770219050; cv=none; b=mOkakpOSwOhK+/0IOID1S5HIrs6fuE8T3gXkTLpDAaY4n7OY1hsbc7NvI10P1w8Vr3vJDwu2Uh4N1moM89CjI/nsg9n1f0Bvy+p7R7IXes0CWnPg1hRPac30Db7sDZt7PtXKbnrH1/3gygO29/h5um1CgXTwRKcFI9SVuellqVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217391; c=relaxed/simple;
-	bh=WAOF+j0vKhJwZWj1qPpKdfvrqD8G2qBkkpEQlB/8StU=;
+	s=arc-20240116; t=1770219050; c=relaxed/simple;
+	bh=vOZk9XFidI8jn2Y5SNPY/yXhF+gEhxjn9MH1g4rkemQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWC/nCzfbKpI+k50wfZwznRqjbBunXXW8j9xE6k7EWEn3zeDaYR/IrKBeYsFRwl7ObKulPV+dS9H3EBct0EHG8rZa0PL9nQtTjBNXQdyVcmDhcNp1yFSlmYgyhcqgCTw53bhfj5w14RBS6XUR94bhHxRE473RHnaiVKWvOU6RTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MH/Y6uOW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B87C4AF0D;
-	Wed,  4 Feb 2026 15:03:10 +0000 (UTC)
+	 MIME-Version; b=XWxiNE0VTEfIgXIZjTTD+hfIEY8UBx9BMqWMemqZ9pikRjFJqEpHDi+S9PiJD0GK9e6KXOBgqKtAA1H4FVByS3gdJsAYvKuS/wZARnJ+LuJ5xhBcB1i/E0D8ndFjVa6omMT9hrBVHEzY/ftHtanr9IqwSdGW7+h9Hh++8Opt26s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqzzyYmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D14CC4CEF7;
+	Wed,  4 Feb 2026 15:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217391;
-	bh=WAOF+j0vKhJwZWj1qPpKdfvrqD8G2qBkkpEQlB/8StU=;
+	s=korg; t=1770219050;
+	bh=vOZk9XFidI8jn2Y5SNPY/yXhF+gEhxjn9MH1g4rkemQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MH/Y6uOWSQSNhHC4KdBz77nv0acE52Jbi6HCf6hSdKSvPpIvU5j/CkhBSjh5NrO+N
-	 eFejiRnjasFuBSgG/j2+iFP+fIlFj3RtNVRL5gfGHnd5w+sewv1rOz4Koheww1n3S5
-	 ukxam8RvkzI9N6SU+h14jbCVakipfJpCt4cyx+9w=
+	b=bqzzyYmTVyLVvjJkZnNYc4QmYi/z5+y+4fMtm9RhJMnQMWBExlHjDOBiWJ0a9O/Cr
+	 x9VWv4kmLxA017n6uOmrsKe89EjjzrRfDLRWyjMp98C8+4+S8eNmacE1h9Vl+orqke
+	 oczshNGf7g5VoXvFV5arDuE5rh3cimxwuymxfAr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.15 202/206] wifi: cfg80211: use system_unbound_wq for wiphy work
+	Christoph Hellwig <hch@lst.de>,
+	Shida Zhang <zhangshida@kylinos.cn>,
+	Coly Li <colyli@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 051/122] bcache: use bio cloning for detached device requests
 Date: Wed,  4 Feb 2026 15:40:33 +0100
-Message-ID: <20260204143905.505759051@linuxfoundation.org>
+Message-ID: <20260204143853.692314234@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,60 +76,260 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214246-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213753-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E73C6E7FDA
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,kernel.dk:email]
+X-Rspamd-Queue-Id: 2031CE9058
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-commit 91d20ab9d9ca035527af503d00e1e30d6c375f2a upstream.
+[ Upstream commit 3ef825dfd4e487d6f92b23ee2df2455814583ef4 ]
 
-Since wiphy work items can run pretty much arbitrary
-code in the stack/driver, it can take longer to run
-all of this, so we shouldn't be using system_wq via
-schedule_work(). Also, we lock the wiphy (which is
-the reason this exists), so use system_unbound_wq.
+Previously, bcache hijacked the bi_end_io and bi_private fields of
+the incoming bio when the backing device was in a detached state.
+This is fragile and breaks if the bio is needed to be processed by
+other layers.
 
-Reported-and-tested-by: Kalle Valo <kvalo@kernel.org>
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch transitions to using a cloned bio embedded within a private
+structure. This ensures the original bio's metadata remains untouched.
+
+Fixes: 53280e398471 ("bcache: fix improper use of bi_end_io")
+Co-developed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Acked-by: Coly Li <colyli@fnnas.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 4da7c5c3ec34 ("bcache: fix I/O accounting leak in detached_dev_do_request")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/bcache/bcache.h  |  9 +++++
+ drivers/md/bcache/request.c | 79 ++++++++++++++++---------------------
+ drivers/md/bcache/super.c   | 12 +++++-
+ 3 files changed, 54 insertions(+), 46 deletions(-)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1593,7 +1593,7 @@ void wiphy_work_queue(struct wiphy *wiph
- 		list_add_tail(&work->entry, &rdev->wiphy_work_list);
- 	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
+diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
+index 1d33e40d26ea5..cca5756030d71 100644
+--- a/drivers/md/bcache/bcache.h
++++ b/drivers/md/bcache/bcache.h
+@@ -273,6 +273,8 @@ struct bcache_device {
  
--	schedule_work(&rdev->wiphy_work);
-+	queue_work(system_unbound_wq, &rdev->wiphy_work);
+ 	struct bio_set		bio_split;
+ 
++	struct bio_set		bio_detached;
++
+ 	unsigned int		data_csum:1;
+ 
+ 	int (*cache_miss)(struct btree *b, struct search *s,
+@@ -755,6 +757,13 @@ struct bbio {
+ 	struct bio		bio;
+ };
+ 
++struct detached_dev_io_private {
++	struct bcache_device	*d;
++	unsigned long		start_time;
++	struct bio		*orig_bio;
++	struct bio              bio;
++};
++
+ #define BTREE_PRIO		USHRT_MAX
+ #define INITIAL_PRIO		32768U
+ 
+diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
+index 82fdea7dea7aa..a02aecac05cdf 100644
+--- a/drivers/md/bcache/request.c
++++ b/drivers/md/bcache/request.c
+@@ -1077,68 +1077,58 @@ static CLOSURE_CALLBACK(cached_dev_nodata)
+ 	continue_at(cl, cached_dev_bio_complete, NULL);
  }
- EXPORT_SYMBOL_GPL(wiphy_work_queue);
  
+-struct detached_dev_io_private {
+-	struct bcache_device	*d;
+-	unsigned long		start_time;
+-	bio_end_io_t		*bi_end_io;
+-	void			*bi_private;
+-	struct block_device	*orig_bdev;
+-};
+-
+ static void detached_dev_end_io(struct bio *bio)
+ {
+-	struct detached_dev_io_private *ddip;
+-
+-	ddip = bio->bi_private;
+-	bio->bi_end_io = ddip->bi_end_io;
+-	bio->bi_private = ddip->bi_private;
++	struct detached_dev_io_private *ddip =
++		container_of(bio, struct detached_dev_io_private, bio);
++	struct bio *orig_bio = ddip->orig_bio;
+ 
+ 	/* Count on the bcache device */
+-	bio_end_io_acct_remapped(bio, ddip->start_time, ddip->orig_bdev);
++	bio_end_io_acct(orig_bio, ddip->start_time);
+ 
+ 	if (bio->bi_status) {
+-		struct cached_dev *dc = container_of(ddip->d,
+-						     struct cached_dev, disk);
++		struct cached_dev *dc = bio->bi_private;
++
+ 		/* should count I/O error for backing device here */
+ 		bch_count_backing_io_errors(dc, bio);
++		orig_bio->bi_status = bio->bi_status;
+ 	}
+ 
+-	kfree(ddip);
+-	bio_endio(bio);
++	bio_put(bio);
++	bio_endio(orig_bio);
+ }
+ 
+-static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
+-		struct block_device *orig_bdev, unsigned long start_time)
++static void detached_dev_do_request(struct bcache_device *d,
++		struct bio *orig_bio, unsigned long start_time)
+ {
+ 	struct detached_dev_io_private *ddip;
+ 	struct cached_dev *dc = container_of(d, struct cached_dev, disk);
++	struct bio *clone_bio;
+ 
+-	/*
+-	 * no need to call closure_get(&dc->disk.cl),
+-	 * because upper layer had already opened bcache device,
+-	 * which would call closure_get(&dc->disk.cl)
+-	 */
+-	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
+-	if (!ddip) {
+-		bio->bi_status = BLK_STS_RESOURCE;
+-		bio_endio(bio);
++	if (bio_op(orig_bio) == REQ_OP_DISCARD &&
++	    !bdev_max_discard_sectors(dc->bdev)) {
++		bio_endio(orig_bio);
+ 		return;
+ 	}
+ 
+-	ddip->d = d;
++	clone_bio = bio_alloc_clone(dc->bdev, orig_bio, GFP_NOIO,
++				    &d->bio_detached);
++	if (!clone_bio) {
++		orig_bio->bi_status = BLK_STS_RESOURCE;
++		bio_endio(orig_bio);
++		return;
++	}
++
++	ddip = container_of(clone_bio, struct detached_dev_io_private, bio);
+ 	/* Count on the bcache device */
+-	ddip->orig_bdev = orig_bdev;
++	ddip->d = d;
+ 	ddip->start_time = start_time;
+-	ddip->bi_end_io = bio->bi_end_io;
+-	ddip->bi_private = bio->bi_private;
+-	bio->bi_end_io = detached_dev_end_io;
+-	bio->bi_private = ddip;
+-
+-	if ((bio_op(bio) == REQ_OP_DISCARD) &&
+-	    !bdev_max_discard_sectors(dc->bdev))
+-		detached_dev_end_io(bio);
+-	else
+-		submit_bio_noacct(bio);
++	ddip->orig_bio = orig_bio;
++
++	clone_bio->bi_end_io = detached_dev_end_io;
++	clone_bio->bi_private = dc;
++
++	submit_bio_noacct(clone_bio);
+ }
+ 
+ static void quit_max_writeback_rate(struct cache_set *c,
+@@ -1214,10 +1204,10 @@ void cached_dev_submit_bio(struct bio *bio)
+ 
+ 	start_time = bio_start_io_acct(bio);
+ 
+-	bio_set_dev(bio, dc->bdev);
+ 	bio->bi_iter.bi_sector += dc->sb.data_offset;
+ 
+ 	if (cached_dev_get(dc)) {
++		bio_set_dev(bio, dc->bdev);
+ 		s = search_alloc(bio, d, orig_bdev, start_time);
+ 		trace_bcache_request_start(s->d, bio);
+ 
+@@ -1237,9 +1227,10 @@ void cached_dev_submit_bio(struct bio *bio)
+ 			else
+ 				cached_dev_read(dc, s);
+ 		}
+-	} else
++	} else {
+ 		/* I/O request sent to backing device */
+-		detached_dev_do_request(d, bio, orig_bdev, start_time);
++		detached_dev_do_request(d, bio, start_time);
++	}
+ }
+ 
+ static int cached_dev_ioctl(struct bcache_device *d, blk_mode_t mode,
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 6d250e366412c..9218b9dbd4af2 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -887,6 +887,7 @@ static void bcache_device_free(struct bcache_device *d)
+ 	}
+ 
+ 	bioset_exit(&d->bio_split);
++	bioset_exit(&d->bio_detached);
+ 	kvfree(d->full_dirty_stripes);
+ 	kvfree(d->stripe_sectors_dirty);
+ 
+@@ -949,6 +950,11 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+ 			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
+ 		goto out_ida_remove;
+ 
++	if (bioset_init(&d->bio_detached, 4,
++			offsetof(struct detached_dev_io_private, bio),
++			BIOSET_NEED_BVECS|BIOSET_NEED_RESCUER))
++		goto out_bioset_split_exit;
++
+ 	if (lim.logical_block_size > PAGE_SIZE && cached_bdev) {
+ 		/*
+ 		 * This should only happen with BCACHE_SB_VERSION_BDEV.
+@@ -964,7 +970,7 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+ 
+ 	d->disk = blk_alloc_disk(&lim, NUMA_NO_NODE);
+ 	if (IS_ERR(d->disk))
+-		goto out_bioset_exit;
++		goto out_bioset_detach_exit;
+ 
+ 	set_capacity(d->disk, sectors);
+ 	snprintf(d->disk->disk_name, DISK_NAME_LEN, "bcache%i", idx);
+@@ -976,7 +982,9 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+ 	d->disk->private_data	= d;
+ 	return 0;
+ 
+-out_bioset_exit:
++out_bioset_detach_exit:
++	bioset_exit(&d->bio_detached);
++out_bioset_split_exit:
+ 	bioset_exit(&d->bio_split);
+ out_ida_remove:
+ 	ida_free(&bcache_device_idx, idx);
+-- 
+2.51.0
+
 
 
 
