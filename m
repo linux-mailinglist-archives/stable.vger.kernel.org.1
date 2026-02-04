@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-214110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GzLOe1rg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:25 +0100
+	id IG2oM51qg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4744FE99A3
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E736E9700
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D28CD313483B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C821331AE654
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3C4423A70;
-	Wed,  4 Feb 2026 15:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155452D8DA3;
+	Wed,  4 Feb 2026 15:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nw209SOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkXo5vjw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11E1423A6A;
-	Wed,  4 Feb 2026 15:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1293ACF06;
+	Wed,  4 Feb 2026 15:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218598; cv=none; b=InZ/apKD/lk+GJPsp+8QWs9vpp1Q4M56Uf8Nt1PTwMzQR7gQACKRQ+rbKU8yeZwZO/er963cwnQn5N6zv2WX84xNIHfbisZFMxi9CBoPiWdVxW+VYx35APGk0k50JjpVCoqfKzsbzGP4bSMSw+5TmMK7iGWvKb8QNcTKHMPH86A=
+	t=1770218353; cv=none; b=kOUB7qQvE1fUqYBZWimJ/L5Viw5wgGLyDxlijmUoe4iFHUpOQX3O/cgZ+6JCtosI92/f5IDbRTkD5pMkOls5A+edZPsTMv0BkeoAjeMDMvfVdtcATCrIl63Gd/pgBWNbQIFx0qLECP7/M+o5NK23S28uwgalRu0gXR11RA7fWh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218598; c=relaxed/simple;
-	bh=tBGjWp9KZwqfSR4OF+DmFQHQbG+EMJVuxLRJ6OZhZLw=;
+	s=arc-20240116; t=1770218353; c=relaxed/simple;
+	bh=IKIJEQ5OFo0XgMxH+A0D660rb6QFLBhvl6vdGIkf6x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q4G0Cnl1v7KhRIdgOE6X2w/Te4Ylsuq1B4lXUBXi3U9v2OkxZiTILNiy+1Iqig0BSaIVe0ahDwIVAVmOnC9FEOJYSLjLx88BQ+5ZH35yKjKDF3FgrjkxkfVMQqr7My4dipKZgK+RUzfs5uE+Fm2KCxJKrTAMoK7Ko7toncEmpyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nw209SOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D5FC4CEF7;
-	Wed,  4 Feb 2026 15:23:17 +0000 (UTC)
+	 MIME-Version; b=ZS3lEjm+0YfMp98y9ukHnniHxJ2i51ih2wwsOjfdg3+1KJyrzRJfWDhk0VyXhgLBBNH0L/NgJuvGNyzoBcu6CuUkAGXWVL5NYdcHfesH1kOt4uwhyufvZa2LK8UluMFNmEQo5mxT9kOqCc+2JkdIBPDmO0W24R3RANlDXALm+Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkXo5vjw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7CAC116C6;
+	Wed,  4 Feb 2026 15:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218598;
-	bh=tBGjWp9KZwqfSR4OF+DmFQHQbG+EMJVuxLRJ6OZhZLw=;
+	s=korg; t=1770218353;
+	bh=IKIJEQ5OFo0XgMxH+A0D660rb6QFLBhvl6vdGIkf6x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nw209SOI308lXQ6NuY2AakBWZ27WYfEKtvx1ZyLI2q4EiGseYI9DnFV0KIhvkufYT
-	 r5zIFpebxw3QeBrYEtuWUtP0uAr2yupRtK3CVaFJIj0KemBI96O+CR6iKslgHkUhmv
-	 MJWlF0pbqytfnpFqCaijUq1z9cjGI796r7Uh8ibM=
+	b=TkXo5vjwpnv+oplgv0LJSu/FzdUpbZD1Yn/w1Emt5lJUvC8TiOKKB2BEw+1Ef581J
+	 YueOB88j8E21ItB6xhZhqlwu2dSJ7XnLYAhKy8JZcL2xNXpGn6hdGjS/drojD8feuI
+	 TPcgZpelNWIVYGmYZJNhCg0lYz5/KfPWI3jFbw0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Pimyn Girgis <pimyn@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 47/72] mei: trace: treat reg parameter as string
+Subject: [PATCH 6.1 276/280] mm/kfence: randomize the freelist on initialization
 Date: Wed,  4 Feb 2026 15:40:50 +0100
-Message-ID: <20260204143847.334283103@linuxfoundation.org>
+Message-ID: <20260204143919.636646321@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,127 +79,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214038-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214110-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4744FE99A3
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tugraz.at:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E736E9700
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Pimyn Girgis <pimyn@google.com>
 
-[ Upstream commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 ]
+[ Upstream commit 870ff19251bf3910dda7a7245da826924045fedd ]
 
-The commit
-afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
-forbids to emit event with a plain char* without a wrapper.
+Randomize the KFENCE freelist during pool initialization to make
+allocation patterns less predictable.  This is achieved by shuffling the
+order in which metadata objects are added to the freelist using
+get_random_u32_below().
 
-The reg parameter always passed as static string and wrapper
-is not strictly required, contrary to dev parameter.
-Use the string wrapper anyway to check sanity of the reg parameters,
-store it value independently and prevent internal kernel data leaks.
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-Since some code refactoring has taken place, explicit backporting may
-be needed for kernels older than 6.10.
-
-Cc: stable@vger.kernel.org  # v6.11+
-Fixes: a0a927d06d79 ("mei: me: add io register tracing")
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted __assign_str() calls to use two arguments ]
+Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ replaced kfence_metadata_init with kfence_metadata ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/mei-trace.h |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ mm/kfence/core.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
---- a/drivers/misc/mei/mei-trace.h
-+++ b/drivers/misc/mei/mei-trace.h
-@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -542,7 +542,7 @@ static unsigned long kfence_init_pool(vo
+ {
+ 	unsigned long addr = (unsigned long)__kfence_pool;
+ 	struct page *pages;
+-	int i;
++	int i, rand;
  
- TRACE_EVENT(mei_reg_write,
-@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] write %s[%#x] = %#x",
--		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
- );
+ 	if (!arch_kfence_init_pool())
+ 		return addr;
+@@ -590,19 +590,34 @@ static unsigned long kfence_init_pool(vo
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
  
- TRACE_EVENT(mei_pci_cfg_read,
-@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
+ 			goto reset_slab;
++	}
++
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32_below(i);
++		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
++	}
  
- #endif /* _MEI_TRACE_H_ */
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
+ 	}
+ 
+ 	return 0;
+ 
+ reset_slab:
++	addr += 2 * i * PAGE_SIZE;
+ 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+ 		struct slab *slab = page_slab(nth_page(pages, i));
+ 
 
 
 
