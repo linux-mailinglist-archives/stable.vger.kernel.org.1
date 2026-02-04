@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aM0PC6Fbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:53 +0100
+	id yLBcAu1rg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44179E752B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86000E9992
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C624300F9F0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1DD3308152B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E494410D10;
-	Wed,  4 Feb 2026 14:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278744219F6;
+	Wed,  4 Feb 2026 15:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDmXcojB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCAKWhvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0207B280A3B;
-	Wed,  4 Feb 2026 14:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5133D994;
+	Wed,  4 Feb 2026 15:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216271; cv=none; b=dp0KuMlAAiY6T5yd0bpZyCnUrGqdwpoj/xfw1uWHDsjQvnUjwoNKql7GhBj1htrnA/BtEl8nLpLoXe+HLUd+iaaxOGtW04qBunNzQV4YyIJ7t1U+CCefLA7Dx/iy2eKMuemBLVsR+qEmHHO39iebxoDrpT3+M+LsHPoSM6CXru0=
+	t=1770217932; cv=none; b=N5AuE3albtzonk96D5+l1kPWty53fEgt6p1fNgVZL94HImtTnVb/S3wL9O32Ry9ZWXJN7VSGZ9zJk+MziDhYQaVmPNeRc2UoEtXyR4+2aGU7/vwQpunBV0I+X8DOSlv9iWmunmpLm+swiUbGHfZ4neZm2k8JwEEp3W4XKpPvutg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216271; c=relaxed/simple;
-	bh=5Mki0E4D5JZXJW37KRC+E9Nvs8QzQQZkr6pL7SBorrY=;
+	s=arc-20240116; t=1770217932; c=relaxed/simple;
+	bh=VW9Ayz1QQiDtFWuWrf8EaklQHzqixiuuJ+x2+SVsOu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqe8ZrEv6r1K9sJzYdupJBXHq8M2FwueiWeQtZlVlrACRg5pTzYQLnena0l+2YoL/xvb5GJouJEBFGA4/6NgG9JVgREhfS02BH0qqu449k9qd97DO3SUA25OclxUgutbrg9IF+1RjCa8GiZEhfOlAL1Ualm/vuGbrzGv0rUAQhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDmXcojB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CBEC4CEF7;
-	Wed,  4 Feb 2026 14:44:29 +0000 (UTC)
+	 MIME-Version; b=r8UbSIjoaznuOBm0Q8aH+3HO1idGqFcnfOfMsQZx9dkqttUAce03S/zLL6hMVVD/doLZjq2TniWnHjUjpi1IYvqZJUJ5XCwooRAstKAHq8CoFwegM/MiD3LwEJ/28EExqUxhWXiOTM5+431B5uHbhbqQ+60vx2g0cmWommbEBRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCAKWhvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C9BC4CEF7;
+	Wed,  4 Feb 2026 15:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216270;
-	bh=5Mki0E4D5JZXJW37KRC+E9Nvs8QzQQZkr6pL7SBorrY=;
+	s=korg; t=1770217932;
+	bh=VW9Ayz1QQiDtFWuWrf8EaklQHzqixiuuJ+x2+SVsOu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDmXcojBvpCh1kdD0gxvhFMJZU3O4gM4fCVm/x5Km/Yt1M3hWCXJ6KULYmg3yn7qL
-	 d1IV+dpqyqaR6p7agNypuarvTw1kDLymx3aeresv9rFKweOay0EjpEbM/jQQO+bHAG
-	 Sxf/UmarIOu4jki+XQxfnMITywQR80B7VKJTas2o=
+	b=jCAKWhvdhMCFB5gEdcrQod9cPC05hakuAVJFI1sZHxDhZRS9UB8ANjHYvuGA4rC6t
+	 +o3JasZqzQan8k6zqnyEUgjWY6F7gGfWHW+BGORxiUeDmJXEXWpBdUhjCHSuDIOyp0
+	 kloD+b6C/R7hq2xtIeThdpg+yiTANERZlQSsQvMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 039/161] dmaengine: lpc18xx-dmamux: fix device leak on route allocation
-Date: Wed,  4 Feb 2026 15:38:22 +0100
-Message-ID: <20260204143853.169514699@linuxfoundation.org>
+	Yang Li <yang.lee@linux.alibaba.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/280] spi: sprd-adi: Use devm_platform_get_and_ioremap_resource()
+Date: Wed,  4 Feb 2026 15:38:23 +0100
+Message-ID: <20260204143914.277004404@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +70,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213913-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213418-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 44179E752B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email]
+X-Rspamd-Queue-Id: 86000E9992
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yang Li <yang.lee@linux.alibaba.com>
 
-commit d4d63059dee7e7cae0c4d9a532ed558bc90efb55 upstream.
+[ Upstream commit 8499d4b5970f5fd135ee8860075768562a5efe70 ]
 
-Make sure to drop the reference taken when looking up the DMA mux
-platform device during route allocation.
+According to commit 890cc39a8799 ("drivers: provide
+devm_platform_get_and_ioremap_resource()"), convert
+platform_get_resource(), devm_ioremap_resource() to a single
+call to devm_platform_get_and_ioremap_resource(), as this is exactly
+what this function does.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
-
-Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
-Cc: stable@vger.kernel.org	# 4.3
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251117161258.10679-8-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230327060516.93509-1-yang.lee@linux.alibaba.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 383d4f5cffcc ("spi: spi-sprd-adi: Fix double free in probe error path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/lpc18xx-dmamux.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sprd-adi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/dma/lpc18xx-dmamux.c
-+++ b/drivers/dma/lpc18xx-dmamux.c
-@@ -55,30 +55,31 @@ static void *lpc18xx_dmamux_reserve(stru
- 	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
- 	unsigned long flags;
- 	unsigned mux;
-+	int ret = -EINVAL;
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 3b158124d79f7..22e39c4c12c4e 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -541,8 +541,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	dev_set_drvdata(&pdev->dev, ctlr);
+ 	sadi = spi_controller_get_devdata(ctlr);
  
- 	if (dma_spec->args_count != 3) {
- 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	mux = dma_spec->args[0];
- 	if (mux >= dmamux->dma_master_requests) {
- 		dev_err(&pdev->dev, "invalid mux number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
- 		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
- 			dma_spec->args[1]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	/* The of_node_put() will be done in the core for the node */
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "can't get dma master\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	spin_lock_irqsave(&dmamux->lock, flags);
-@@ -87,7 +88,8 @@ static void *lpc18xx_dmamux_reserve(stru
- 		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
- 			mux, mux, dmamux->muxes[mux].value);
- 		of_node_put(dma_spec->np);
--		return ERR_PTR(-EBUSY);
-+		ret = -EBUSY;
-+		goto err_put_pdev;
- 	}
- 
- 	dmamux->muxes[mux].busy = true;
-@@ -104,7 +106,14 @@ static void *lpc18xx_dmamux_reserve(stru
- 	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
- 		dmamux->muxes[mux].value, mux);
- 
-+	put_device(&pdev->dev);
-+
- 	return &dmamux->muxes[mux];
-+
-+err_put_pdev:
-+	put_device(&pdev->dev);
-+
-+	return ERR_PTR(ret);
- }
- 
- static int lpc18xx_dmamux_probe(struct platform_device *pdev)
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	sadi->base = devm_ioremap_resource(&pdev->dev, res);
++	sadi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(sadi->base)) {
+ 		ret = PTR_ERR(sadi->base);
+ 		goto put_ctlr;
+-- 
+2.51.0
+
 
 
 
