@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-213935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IihNhxog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-213935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:08 +0100
+	id yKM7Nd5cg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9F2E90B5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6013EE7787
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B1B930581F4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CADFA303FF16
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CFE423156;
-	Wed,  4 Feb 2026 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F21A274B39;
+	Wed,  4 Feb 2026 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQA1r/nj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSCNLBWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B559423152;
-	Wed,  4 Feb 2026 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B09221F17;
+	Wed,  4 Feb 2026 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218007; cv=none; b=kyi8UChvlurjNBS50bxBmx+UmGijoTMlpZgJVq+22FXGBO54+hJ2/xE9xg81GEgp+9gRZ22eoS6hzP5UakqbQr94dQCsdyqHloo6rBuWEpBFZBQE42CLNQXT+/MUa1YvnQwkCBCzDuESdpE6XMSitEcwnyPYmLrgjRhsWh7nh/8=
+	t=1770216467; cv=none; b=IMFIYeUAD9TXgieOpKfZlqC0tf5RuxNU3eiQx3LsEDlyyb1Tne9ByycPjbFMBjV/TUggsLoKajvu+K0A1O4xh11JY7AQGETfOWbTzK7vYo9XVtEiXPDDrC5LUjBpO9bbfrz8sqsSPuITrwaKuaeDdomW/dT0oy9v7Oi8o9ov1dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218007; c=relaxed/simple;
-	bh=7oRpsxN8uojkCK3kB9cBFX9IGGiE7U7O5mmstAHSwZM=;
+	s=arc-20240116; t=1770216467; c=relaxed/simple;
+	bh=T0oXPex2cVYUwT/7Dl8cjqeedn+noozU1Ms/zomlnFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMxsUVtme0atGN5ipM1bOcrmkvp3P9S7OFMYhjOta47xZOX3wWPq0mpnMb4/kLZVCRPZUQOoMR/jqbqOJDmyI8WG5VphIPJtULAr3HGK+yeehS53axZAUeMnnS0eaL/pbYyJAgTz9r+G8NtP0uPWAm2bc8HDpjQwE2l5bUNKRkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQA1r/nj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC392C4CEF7;
-	Wed,  4 Feb 2026 15:13:26 +0000 (UTC)
+	 MIME-Version; b=Jvob1vDX8IhhVAvNyc108OPlS+hOZH10xVnSOBhgmtH8DLAbCHqF5UuozKy4UCP9XpQs3F1JNqk68Q4LxV+L6tImsqeCjbRQJ2+IMVkMEn8FtxErUTcw2qGaT0Ps+qv+ziW6ylrz0SyUwWTJiKf6u/xiLUaQp6G5j6YBXjOuRhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSCNLBWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5350C116C6;
+	Wed,  4 Feb 2026 14:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218007;
-	bh=7oRpsxN8uojkCK3kB9cBFX9IGGiE7U7O5mmstAHSwZM=;
+	s=korg; t=1770216467;
+	bh=T0oXPex2cVYUwT/7Dl8cjqeedn+noozU1Ms/zomlnFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQA1r/njYdXWWpaziEp+Wk7felekwZ70rxtgTHMJLPi165DYHVTGPkp9B+zPjUDos
-	 qaFdQP6BVeHSz836gPb3Y1Q4Ge7daYSV9LRV6j2Cs66L+x/53Tw/+l5IR3P2RQUIN/
-	 nabEX0zHuSAApfe+8AzvcGBNGqx3FOnCiwz961B0=
+	b=wSCNLBWNbODhfdT2brqf/3gGTUDN7XwNmQoOpK7VPVk81RUyC8vtA9isWkV+iBa43
+	 PpJwHXHTG83VyLuCGChrcwWuUD2mnp7kGS1LwLs1aMg4DMa2sMTlVJjy5UbFd0evdM
+	 2oKBZkpfY3HEsyzZzCxPk3QWTXTWYXZSVWI33qdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.1 184/280] bpf: Do not let BPF test infra emit invalid GSO types to stack
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 5.10 095/161] wifi: ath10k: fix dma_free_coherent() pointer
 Date: Wed,  4 Feb 2026 15:39:18 +0100
-Message-ID: <20260204143916.234396600@linuxfoundation.org>
+Message-ID: <20260204143855.161370450@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,113 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213935-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213476-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,hust.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.com:email,iogearbox.net:email]
-X-Rspamd-Queue-Id: EE9F2E90B5
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 6013EE7787
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 04a899573fb87273a656f178b5f920c505f68875 upstream.
+commit 9282a1e171ad8d2205067e8ec3bbe4e3cef4f29f upstream.
 
-Yinhao et al. reported that their fuzzer tool was able to trigger a
-skb_warn_bad_offload() from netif_skb_features() -> gso_features_check().
-When a BPF program - triggered via BPF test infra - pushes the packet
-to the loopback device via bpf_clone_redirect() then mentioned offload
-warning can be seen. GSO-related features are then rightfully disabled.
+dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+addresses in XXX_unaligned fields.  Those should be reused when freeing
+the buffer rather than the aligned addresses.
 
-We get into this situation due to convert___skb_to_skb() setting
-gso_segs and gso_size but not gso_type. Technically, it makes sense
-that this warning triggers since the GSO properties are malformed due
-to the gso_type. Potentially, the gso_type could be marked non-trustworthy
-through setting it at least to SKB_GSO_DODGY without any other specific
-assumptions, but that also feels wrong given we should not go further
-into the GSO engine in the first place.
-
-The checks were added in 121d57af308d ("gso: validate gso_type in GSO
-handlers") because there were malicious (syzbot) senders that combine
-a protocol with a non-matching gso_type. If we would want to drop such
-packets, gso_features_check() currently only returns feature flags via
-netif_skb_features(), so one location for potentially dropping such skbs
-could be validate_xmit_unreadable_skb(), but then otoh it would be
-an additional check in the fast-path for a very corner case. Given
-bpf_clone_redirect() is the only place where BPF test infra could emit
-such packets, lets reject them right there.
-
-Fixes: 850a88cc4096 ("bpf: Expose __sk_buff wire_len/gso_segs to BPF_PROG_TEST_RUN")
-Fixes: cf62089b0edd ("bpf: Add gso_size to __sk_buff")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20251020075441.127980-1-daniel@iogearbox.net
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: 2a1e1ad3fd37 ("ath10k: Add support for 64 bit ce descriptor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260105210439.20131-2-fourier.thomas@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bpf/test_run.c |    5 +++++
- net/core/filter.c  |    7 +++++++
- 2 files changed, 12 insertions(+)
+ drivers/net/wireless/ath/ath10k/ce.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1047,6 +1047,11 @@ static int convert___skb_to_skb(struct s
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1791,8 +1791,8 @@ static void _ath10k_ce_free_pipe(struct
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
+ 	}
  
- 	if (__skb->gso_segs > GSO_MAX_SEGS)
- 		return -EINVAL;
-+
-+	/* Currently GSO type is zero/unset. If this gets extended with
-+	 * a small list of accepted GSO types in future, the filter for
-+	 * an unset GSO type in bpf_clone_redirect() can be lifted.
-+	 */
- 	skb_shinfo(skb)->gso_segs = __skb->gso_segs;
- 	skb_shinfo(skb)->gso_size = __skb->gso_size;
- 	skb_shinfo(skb)->hwtstamps.hwtstamp = __skb->hwtstamp;
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2444,6 +2444,13 @@ BPF_CALL_3(bpf_clone_redirect, struct sk
- 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
- 		return -EINVAL;
+@@ -1801,8 +1801,8 @@ static void _ath10k_ce_free_pipe(struct
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
  
-+	/* BPF test infra's convert___skb_to_skb() can create type-less
-+	 * GSO packets. gso_features_check() will detect this as a bad
-+	 * offload. However, lets not leak them out in the first place.
-+	 */
-+	if (unlikely(skb_is_gso(skb) && !skb_shinfo(skb)->gso_type))
-+		return -EBADMSG;
-+
- 	dev = dev_get_by_index_rcu(dev_net(skb->dev), ifindex);
- 	if (unlikely(!dev))
- 		return -EINVAL;
+@@ -1822,8 +1822,8 @@ static void _ath10k_ce_free_pipe_64(stru
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
+ 	}
+ 
+@@ -1832,8 +1832,8 @@ static void _ath10k_ce_free_pipe_64(stru
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
+ 
 
 
 
