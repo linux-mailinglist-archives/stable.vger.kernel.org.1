@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-214224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMXYGhpog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:06 +0100
+	id cNZGMZVrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:53:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1321E90AE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA98E98AB
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 458C3300E3C7
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C39DC31CBDDD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCFF3C196E;
-	Wed,  4 Feb 2026 15:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDC32D0292;
+	Wed,  4 Feb 2026 15:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzoTzzPA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gM3WZF7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5171D21FF4C;
-	Wed,  4 Feb 2026 15:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A52285404;
+	Wed,  4 Feb 2026 15:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218977; cv=none; b=gSNKhxFi2TcbBYlZ66wDY06kgzufY7aQ/2pqKhJGywHLw02Htk6xI9ouLzpYblbz1B4Jm8xgR6phsXocW8c+8QLtwdtHNpVps00syAnXH7qxhy1xheKP7PDWz1wLRxabXcZsTb2vdkEOdlr1aBCunyBo3Z0MQWpm5M3GIEcCw+M=
+	t=1770218486; cv=none; b=BVjW5O0o0Dlo1kKvcfWRRObVBZeNFbhGBIZIzkdFWloGrNYeLZnF9Y3t8+JCAJVxAf5Ldrw6Bz/+FXAcO97U5mNK5vv/gT8GvYRBZEg0O5lvEYvBNIDxN0oXMVjGpvi5Xb58ZvOScI/MWVStXdbqRTrl9rpAC8ZwLAxv8rUfd4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218977; c=relaxed/simple;
-	bh=gbTgvC2hGwFHkztrYQQaw1jqGzun+kDVol23iNcsYtc=;
+	s=arc-20240116; t=1770218486; c=relaxed/simple;
+	bh=gGdzEW0SpGv05BdpYCBQfg1WDnNSIjRcKpde6d8PU4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqnsTf8bsIm4ujkkhN95WNpx1EBXdEbkEpzTIAiizTnUrUh6r3R8HNeDLDvKVCkHDV2nZG5BoNWXi3sXVqDCBBdDtpZJYhGEMTm3W7qBuGaPiKwJh/d9XTF1/5uvTHSQgw8i32f4mBQLR7JD43bCgD1groN1c4ginIKeJDVZpnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzoTzzPA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50BBC116C6;
-	Wed,  4 Feb 2026 15:29:36 +0000 (UTC)
+	 MIME-Version; b=bdLCMB0PrGCwjdbDkJ5WmF3hfXmy5zsKu/n45oBMBvSk4l/zf/+9icY6bhYhqRBYexQQ8eBLXmavek+nqypEET0OAotsCDWvO6FUKLOuxynfeD6FDgpjLEgX5Q90puWwFbTNQhSBeDukAjrKMhofmvwFzK2ZSfjcs+SchfoWzZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gM3WZF7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68C3C4CEF7;
+	Wed,  4 Feb 2026 15:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218977;
-	bh=gbTgvC2hGwFHkztrYQQaw1jqGzun+kDVol23iNcsYtc=;
+	s=korg; t=1770218486;
+	bh=gGdzEW0SpGv05BdpYCBQfg1WDnNSIjRcKpde6d8PU4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzoTzzPAFglF/cJmFGG25LVGo9pUFCeWPjubVYCoKTGImwG0ynDMLwclGMXytPbWp
-	 vc1UFbTlsj6o1tExv8OHwWJcjo97yok33r+IlUXY6qwr2exyvZ0w+qallMIp/ymRJ+
-	 2RLlXUDMXYpWdWqCVIMd3vqoPQAnuOYc888UuDcA=
+	b=gM3WZF7CmLMemmKKriFIO3QkvdnWiur+sPj5PPuZGJ3gvMF0f6HGV2JRoL6sl7BEB
+	 prmJ8TYa0sVwmHZgoLQp6hTA+LZx9GaoghoQ3esG6tuzxT34v0I37NeiGMHvoULEao
+	 0BNBNJKq6gPiSllKSSaptllcB1BOao3+1nHHYzDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
+	Kery Qi <qikeyu2017@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 031/122] net/mlx5: fs, Fix inverted cap check in tx flow table root disconnect
+Subject: [PATCH 6.6 10/72] rocker: fix memory leak in rocker_world_port_post_fini()
 Date: Wed,  4 Feb 2026 15:40:13 +0100
-Message-ID: <20260204143852.982469683@linuxfoundation.org>
+Message-ID: <20260204143845.987583499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,72 +70,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-214077-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214224-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: D1321E90AE
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4BA98E98AB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-[ Upstream commit 2610a3d65691a1301ab10c92ff6ebab0bedf9199 ]
+[ Upstream commit 8d7ba71e46216b8657a82ca2ec118bc93812a4d0 ]
 
-The capability check for reset_root_to_default was inverted, causing
-the function to return -EOPNOTSUPP when the capability IS supported,
-rather than when it is NOT supported.
+In rocker_world_port_pre_init(), rocker_port->wpriv is allocated with
+kzalloc(wops->port_priv_size, GFP_KERNEL). However, in
+rocker_world_port_post_fini(), the memory is only freed when
+wops->port_post_fini callback is set:
 
-Fix the capability check condition.
+    if (!wops->port_post_fini)
+        return;
+    wops->port_post_fini(rocker_port);
+    kfree(rocker_port->wpriv);
 
-Fixes: 3c9c34c32bc6 ("net/mlx5: fs, Command to control TX flow table root")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Since rocker_ofdpa_ops does not implement port_post_fini callback
+(it is NULL), the wpriv memory allocated for each port is never freed
+when ports are removed. This leads to a memory leak of
+sizeof(struct ofdpa_port) bytes per port on every device removal.
+
+Fix this by always calling kfree(rocker_port->wpriv) regardless of
+whether the port_post_fini callback exists.
+
+Fixes: e420114eef4a ("rocker: introduce worlds infrastructure")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1769503961-124173-2-git-send-email-tariqt@nvidia.com
+Link: https://patch.msgid.link/20260123211030.2109-2-qikeyu2017@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/rocker/rocker_main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-index 1af76da8b1320..b79544134e2a2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-@@ -1167,7 +1167,8 @@ int mlx5_fs_cmd_set_tx_flow_table_root(struct mlx5_core_dev *dev, u32 ft_id, boo
- 	u32 out[MLX5_ST_SZ_DW(set_flow_table_root_out)] = {};
- 	u32 in[MLX5_ST_SZ_DW(set_flow_table_root_in)] = {};
+diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
+index 2e2826c901fcc..b741d335b1dc4 100644
+--- a/drivers/net/ethernet/rocker/rocker_main.c
++++ b/drivers/net/ethernet/rocker/rocker_main.c
+@@ -1525,9 +1525,8 @@ static void rocker_world_port_post_fini(struct rocker_port *rocker_port)
+ {
+ 	struct rocker_world_ops *wops = rocker_port->rocker->wops;
  
--	if (disconnect && MLX5_CAP_FLOWTABLE_NIC_TX(dev, reset_root_to_default))
-+	if (disconnect &&
-+	    !MLX5_CAP_FLOWTABLE_NIC_TX(dev, reset_root_to_default))
- 		return -EOPNOTSUPP;
+-	if (!wops->port_post_fini)
+-		return;
+-	wops->port_post_fini(rocker_port);
++	if (wops->port_post_fini)
++		wops->port_post_fini(rocker_port);
+ 	kfree(rocker_port->wpriv);
+ }
  
- 	MLX5_SET(set_flow_table_root_in, in, opcode,
 -- 
 2.51.0
 
