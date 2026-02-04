@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFSoJ5Rhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:16 +0100
+	id MBkDCVpmg2nUmQMAu9opvQ
+	(envelope-from <stable+bounces-213985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD81E8121
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7ACBE8C6A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7B743190E88
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC6FB3165C8F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919DA42188E;
-	Wed,  4 Feb 2026 14:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6672D0292;
+	Wed,  4 Feb 2026 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqR5qkT1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKLhgXE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BC7421886;
-	Wed,  4 Feb 2026 14:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D0527F163;
+	Wed,  4 Feb 2026 15:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217161; cv=none; b=Q4b6bL+3NJFBglNyCOZOrDtztsn8xFDGisInmWN75cFKtjYvUXKfXb0UJhcwX0reAqKIoaNIsG8Nvan/yJtTN+R2b8JbY32JNal7oU6eCxl3GgUqG/H3+ZQG6MkQu3VN7lOGzWirsW0+Vl/MlxfKa+ebwyDtFUDqf26V3Dfh3fQ=
+	t=1770218172; cv=none; b=gByXTuHkAs5H3iMhhF4tfjaDoLp9NNgBVz3T755dB29oKnkuYr7j7ASW05HbGgFfaP6dU4cZ2ZfsrUajXG5Iw3r5pSZCeoz8UO7dhy7PnVJcIiuDwJeG/pvzNlUKHwvSv0FJzeNqVs9jvM1lAmaVO0Qx8DTV6s/oY7DM+KKsIIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217161; c=relaxed/simple;
-	bh=T7r6a31771H4JaGSJYIENeOr8Y5cyDYEl7BGrBMXx+g=;
+	s=arc-20240116; t=1770218172; c=relaxed/simple;
+	bh=ybMZMYCS9JAZJgYXs1AEF1sb5rVLpiGFa9pm8uNIYmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUn4eJsx439n0/BYKrsOB7xBRtmzG1h51JgDpxCVv2NKsvaKN8UErsG+vh2UlNxo7yOp/1CivOxFRTO2uJBqb1QHRKIxRwMH8gSdsQMPUdLiN08Bx9Q6tkaakjpE46OtsQ8FNI+tjUpZ3ol6vYeOpe6n+HK6X38LmVbDseP8pF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqR5qkT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981A5C4CEF7;
-	Wed,  4 Feb 2026 14:59:20 +0000 (UTC)
+	 MIME-Version; b=Iq/EM9oB4Uffh5F0Z5Yz3qvPcsGD2uzqiIwd0mD5U6q4IaSULovPDwjjmDcUjclYHYKT+kticB+2I38+dEWAqY2tAY+glvVEHWh4ykPURN2L3cO4wKgus3AfQW/PExs749NfpZxz6hj3Osj23lo7ljMrZRViTgrNWBp+edpOTI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKLhgXE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EF3C4CEF7;
+	Wed,  4 Feb 2026 15:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217161;
-	bh=T7r6a31771H4JaGSJYIENeOr8Y5cyDYEl7BGrBMXx+g=;
+	s=korg; t=1770218172;
+	bh=ybMZMYCS9JAZJgYXs1AEF1sb5rVLpiGFa9pm8uNIYmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqR5qkT1EPkmSXQZ2HlJsuSDoFmbyggPBgX2II2xSoC++7+KNmlzyIkcLr6DWYJxC
-	 iH4Xfx6RbjxBcodX+TOjJhka7uzdztVRl6IVSGtVqu7TaBQoIvHEI892z7u66i0wCk
-	 QoCkHqjykWwXzUotSKcZRa4O19szmZZn4ovM3BoE=
+	b=RKLhgXE9BQooIb8tmjSshMMhukPh3Cl20MwdDJ5q255XgZ5JbpTG3u0u/EcQsyHpQ
+	 1zB9PPJu8w8ElIkQ/fBmVKIbLGa9g+MODn16TpA9gf8yZnaqSf3yc/FPvYWylbxuzL
+	 FdeleoCK3OlzINLsvh6QxouF/2Sjb35BOMvaS8iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
+	syzbot+f9c5fd1a0874f9069dce@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/206] net/mlx5: Add HW definitions of vport debug counters
-Date: Wed,  4 Feb 2026 15:39:33 +0100
-Message-ID: <20260204143903.319940898@linuxfoundation.org>
+Subject: [PATCH 6.1 200/280] nfc: nci: Fix race between rfkill and nci_unregister_device().
+Date: Wed,  4 Feb 2026 15:39:34 +0100
+Message-ID: <20260204143916.801327046@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +67,230 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213684-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213985-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 2FD81E8121
+	TAGGED_RCPT(0.00)[stable,f9c5fd1a0874f9069dce];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: A7ACBE8C6A
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 3e94e61bd44d90070dcda53b647fdc826097ef26 ]
+[ Upstream commit d2492688bb9fed6ab6e313682c387ae71a66ebae ]
 
-total_q_under_processor_handle - number of queues in error state due to an
-async error or errored command.
+syzbot reported the splat below [0] without a repro.
 
-send_queue_priority_update_flow - number of QP/SQ priority/SL update
-events.
+It indicates that struct nci_dev.cmd_wq had been destroyed before
+nci_close_device() was called via rfkill.
 
-cq_overrun - number of times CQ entered an error state due to an
-overflow.
+nci_dev.cmd_wq is only destroyed in nci_unregister_device(), which
+(I think) was called from virtual_ncidev_close() when syzbot close()d
+an fd of virtual_ncidev.
 
-async_eq_overrun -number of time an EQ mapped to async events was
-overrun.
+The problem is that nci_unregister_device() destroys nci_dev.cmd_wq
+first and then calls nfc_unregister_device(), which removes the
+device from rfkill by rfkill_unregister().
 
-comp_eq_overrun - number of time an EQ mapped to completion events was
-overrun.
+So, the device is still visible via rfkill even after nci_dev.cmd_wq
+is destroyed.
 
-quota_exceeded_command - number of commands issued and failed due to quota
-exceeded.
+Let's unregister the device from rfkill first in nci_unregister_device().
 
-invalid_command - number of commands issued and failed dues to any reason
-other than quota exceeded.
+Note that we cannot call nfc_unregister_device() before
+nci_close_device() because
 
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: 476681f10cc1 ("net/mlx5e: Account for netdev stats in ndo_get_stats64")
+  1) nfc_unregister_device() calls device_del() which frees
+     all memory allocated by devm_kzalloc() and linked to
+     ndev->conn_info_list
+
+  2) nci_rx_work() could try to queue nci_conn_info to
+     ndev->conn_info_list which could be leaked
+
+Thus, nfc_unregister_device() is split into two functions so we
+can remove rfkill interfaces only before nci_close_device().
+
+[0]:
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: kernel/locking/lockdep.c:238 at hlock_class kernel/locking/lockdep.c:238 [inline], CPU#0: syz.0.8675/6349
+WARNING: kernel/locking/lockdep.c:238 at check_wait_context kernel/locking/lockdep.c:4854 [inline], CPU#0: syz.0.8675/6349
+WARNING: kernel/locking/lockdep.c:238 at __lock_acquire+0x39d/0x2cf0 kernel/locking/lockdep.c:5187, CPU#0: syz.0.8675/6349
+Modules linked in:
+CPU: 0 UID: 0 PID: 6349 Comm: syz.0.8675 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/13/2026
+RIP: 0010:hlock_class kernel/locking/lockdep.c:238 [inline]
+RIP: 0010:check_wait_context kernel/locking/lockdep.c:4854 [inline]
+RIP: 0010:__lock_acquire+0x3a4/0x2cf0 kernel/locking/lockdep.c:5187
+Code: 18 00 4c 8b 74 24 08 75 27 90 e8 17 f2 fc 02 85 c0 74 1c 83 3d 50 e0 4e 0e 00 75 13 48 8d 3d 43 f7 51 0e 48 c7 c6 8b 3a de 8d <67> 48 0f b9 3a 90 31 c0 0f b6 98 c4 00 00 00 41 8b 45 20 25 ff 1f
+RSP: 0018:ffffc9000c767680 EFLAGS: 00010046
+RAX: 0000000000000001 RBX: 0000000000040000 RCX: 0000000000080000
+RDX: ffffc90013080000 RSI: ffffffff8dde3a8b RDI: ffffffff8ff24ca0
+RBP: 0000000000000003 R08: ffffffff8fef35a3 R09: 1ffffffff1fde6b4
+R10: dffffc0000000000 R11: fffffbfff1fde6b5 R12: 00000000000012a2
+R13: ffff888030338ba8 R14: ffff888030338000 R15: ffff888030338b30
+FS:  00007fa5995f66c0(0000) GS:ffff8881256f8000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f7e72f842d0 CR3: 00000000485a0000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
+ touch_wq_lockdep_map+0xcb/0x180 kernel/workqueue.c:3940
+ __flush_workqueue+0x14b/0x14f0 kernel/workqueue.c:3982
+ nci_close_device+0x302/0x630 net/nfc/nci/core.c:567
+ nci_dev_down+0x3b/0x50 net/nfc/nci/core.c:639
+ nfc_dev_down+0x152/0x290 net/nfc/core.c:161
+ nfc_rfkill_set_block+0x2d/0x100 net/nfc/core.c:179
+ rfkill_set_block+0x1d2/0x440 net/rfkill/core.c:346
+ rfkill_fop_write+0x461/0x5a0 net/rfkill/core.c:1301
+ vfs_write+0x29a/0xb90 fs/read_write.c:684
+ ksys_write+0x150/0x270 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa59b39acb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa5995f6028 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007fa59b615fa0 RCX: 00007fa59b39acb9
+RDX: 0000000000000008 RSI: 0000200000000080 RDI: 0000000000000007
+RBP: 00007fa59b408bf7 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa59b616038 R14: 00007fa59b615fa0 R15: 00007ffc82218788
+ </TASK>
+
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-by: syzbot+f9c5fd1a0874f9069dce@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/695e7f56.050a0220.1c677c.036c.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260127040411.494931-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mlx5/mlx5_ifc.h | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ include/net/nfc/nfc.h |  2 ++
+ net/nfc/core.c        | 27 ++++++++++++++++++++++++---
+ net/nfc/nci/core.c    |  4 +++-
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index d974c235ad8ee..c8489aeb74f7e 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -1384,7 +1384,8 @@ struct mlx5_ifc_cmd_hca_cap_bits {
+diff --git a/include/net/nfc/nfc.h b/include/net/nfc/nfc.h
+index 5dee575fbe86a..b82f4f2a27fb8 100644
+--- a/include/net/nfc/nfc.h
++++ b/include/net/nfc/nfc.h
+@@ -215,6 +215,8 @@ static inline void nfc_free_device(struct nfc_dev *dev)
  
- 	u8         reserved_at_120[0xa];
- 	u8         log_max_ra_req_dc[0x6];
--	u8         reserved_at_130[0xa];
-+	u8         reserved_at_130[0x9];
-+	u8         vnic_env_cq_overrun[0x1];
- 	u8         log_max_ra_res_dc[0x6];
+ int nfc_register_device(struct nfc_dev *dev);
  
- 	u8         reserved_at_140[0x6];
-@@ -1579,7 +1580,11 @@ struct mlx5_ifc_cmd_hca_cap_bits {
- 	u8         nic_receive_steering_discard[0x1];
- 	u8         receive_discard_vport_down[0x1];
- 	u8         transmit_discard_vport_down[0x1];
--	u8         reserved_at_343[0x5];
-+	u8         eq_overrun_count[0x1];
-+	u8         reserved_at_344[0x1];
-+	u8         invalid_command_count[0x1];
-+	u8         quota_exceeded_count[0x1];
-+	u8         reserved_at_347[0x1];
- 	u8         log_max_flow_counter_bulk[0x8];
- 	u8         max_flow_counter_15_0[0x10];
++void nfc_unregister_rfkill(struct nfc_dev *dev);
++void nfc_remove_device(struct nfc_dev *dev);
+ void nfc_unregister_device(struct nfc_dev *dev);
  
-@@ -3318,11 +3323,21 @@ struct mlx5_ifc_vnic_diagnostic_statistics_bits {
+ /**
+diff --git a/net/nfc/core.c b/net/nfc/core.c
+index 5352571b62148..a02ede8b067bd 100644
+--- a/net/nfc/core.c
++++ b/net/nfc/core.c
+@@ -1147,14 +1147,14 @@ int nfc_register_device(struct nfc_dev *dev)
+ EXPORT_SYMBOL(nfc_register_device);
  
- 	u8         transmit_discard_vport_down[0x40];
+ /**
+- * nfc_unregister_device - unregister a nfc device in the nfc subsystem
++ * nfc_unregister_rfkill - unregister a nfc device in the rfkill subsystem
+  *
+  * @dev: The nfc device to unregister
+  */
+-void nfc_unregister_device(struct nfc_dev *dev)
++void nfc_unregister_rfkill(struct nfc_dev *dev)
+ {
+-	int rc;
+ 	struct rfkill *rfk = NULL;
++	int rc;
  
--	u8         reserved_at_140[0xa0];
-+	u8         async_eq_overrun[0x20];
+ 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
+ 
+@@ -1175,7 +1175,16 @@ void nfc_unregister_device(struct nfc_dev *dev)
+ 		rfkill_unregister(rfk);
+ 		rfkill_destroy(rfk);
+ 	}
++}
++EXPORT_SYMBOL(nfc_unregister_rfkill);
+ 
++/**
++ * nfc_remove_device - remove a nfc device in the nfc subsystem
++ *
++ * @dev: The nfc device to remove
++ */
++void nfc_remove_device(struct nfc_dev *dev)
++{
+ 	if (dev->ops->check_presence) {
+ 		del_timer_sync(&dev->check_pres_timer);
+ 		cancel_work_sync(&dev->check_pres_work);
+@@ -1188,6 +1197,18 @@ void nfc_unregister_device(struct nfc_dev *dev)
+ 	device_del(&dev->dev);
+ 	mutex_unlock(&nfc_devlist_mutex);
+ }
++EXPORT_SYMBOL(nfc_remove_device);
 +
-+	u8         comp_eq_overrun[0x20];
-+
-+	u8         reserved_at_180[0x20];
-+
-+	u8         invalid_command[0x20];
-+
-+	u8         quota_exceeded_command[0x20];
++/**
++ * nfc_unregister_device - unregister a nfc device in the nfc subsystem
++ *
++ * @dev: The nfc device to unregister
++ */
++void nfc_unregister_device(struct nfc_dev *dev)
++{
++	nfc_unregister_rfkill(dev);
++	nfc_remove_device(dev);
++}
+ EXPORT_SYMBOL(nfc_unregister_device);
  
- 	u8         internal_rq_out_of_buffer[0x20];
+ static int __init nfc_init(void)
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 6196bb512dfc1..2ffdbbf90eb70 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1291,6 +1291,8 @@ void nci_unregister_device(struct nci_dev *ndev)
+ {
+ 	struct nci_conn_info *conn_info, *n;
  
--	u8         reserved_at_200[0xe00];
-+	u8         cq_overrun[0x20];
++	nfc_unregister_rfkill(ndev->nfc_dev);
 +
-+	u8         reserved_at_220[0xde0];
- };
+ 	/* This set_bit is not protected with specialized barrier,
+ 	 * However, it is fine because the mutex_lock(&ndev->req_lock);
+ 	 * in nci_close_device() will help to emit one.
+@@ -1308,7 +1310,7 @@ void nci_unregister_device(struct nci_dev *ndev)
+ 		/* conn_info is allocated with devm_kzalloc */
+ 	}
  
- struct mlx5_ifc_traffic_counter_bits {
+-	nfc_unregister_device(ndev->nfc_dev);
++	nfc_remove_device(ndev->nfc_dev);
+ }
+ EXPORT_SYMBOL(nci_unregister_device);
+ 
 -- 
 2.51.0
 
