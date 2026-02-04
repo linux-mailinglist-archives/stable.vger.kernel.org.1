@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-214318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJG5I7dug2lNmwMAu9opvQ
-	(envelope-from <stable+bounces-214318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:19 +0100
+	id yAXwN8hog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F4EE9E55
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561A9E927E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B7F431C41F5
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:34:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BE5BC310B4D2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706202D8773;
-	Wed,  4 Feb 2026 15:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9722D879E;
+	Wed,  4 Feb 2026 15:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHuqGwHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rt34cigK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349DE19E96D;
-	Wed,  4 Feb 2026 15:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E7D2D8763;
+	Wed,  4 Feb 2026 15:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219290; cv=none; b=JxjtwzcbvTj0A9mLRYIiiVEivHW95nE5IHF3kr9OzGTUfdEP6vIvISDb+5otal6pkk+THxfqJhunrEZ0Fa7GkwR9ZeNTo9ma2lZVhRDdnqdrACo85DgJeKlhrx1mnmncSFd5ODd+8BUVI7/P497z2TSIRPq0EtNs6q4eP6zF1Cw=
+	t=1770218862; cv=none; b=QGwaY6RFa18NN8qa/8hkcce8zN4nE9ywu1XiIzH64xjYJPRmw7mAGkDGtyZdIvexth8lHIdux1fvS4TX3hORUUUtWUD3S1fDATdclxsX+DYX+uPnbF7ZVhwSypSLnv608+KnjCZRASV2eOfwgkuKYSOj2qEMrXuLhgGOh+hNiII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219290; c=relaxed/simple;
-	bh=MoCDGd7eipsPWD738KHhSv+0WAx9HZV2KYGIWe0SjEQ=;
+	s=arc-20240116; t=1770218862; c=relaxed/simple;
+	bh=lLrjddHA8qlz9Z90jfTL1IMboGlktBwtqXVishvi1kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDlyZuTbHKD84qKvFHNcIZa1qpIoG/02FD1aeL64yl8W0yqHWtVK8tGiw+hNZIa7EsqJuMtaLatbKvYY+UPDirujMTdt8feZcjtuIB1oIVlnW5SD1eFhYiFGKZPMdS5FisJwivspEuioie5KgwZJoMYGtwSlp8CBjvvGdtHBgPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHuqGwHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F18AC4CEF7;
-	Wed,  4 Feb 2026 15:34:49 +0000 (UTC)
+	 MIME-Version; b=dpnZEJzxd7mlxQVvaPz+f+6N+e0wX5EHBlwTQlUipi8GH9jNiFkcl0hiNY+9tyTG77FKtNY0YTC9paRhUEFTmiG9+PalRpeOfaGiaDxASA9JNDXURJb0S/ZDtkGBynkAIA3qe8TNBUoNHL6v9mlMnJAOL92EdJhy2+7DgAW/p1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rt34cigK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C3DC4CEF7;
+	Wed,  4 Feb 2026 15:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219289;
-	bh=MoCDGd7eipsPWD738KHhSv+0WAx9HZV2KYGIWe0SjEQ=;
+	s=korg; t=1770218862;
+	bh=lLrjddHA8qlz9Z90jfTL1IMboGlktBwtqXVishvi1kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHuqGwHveRtm/Dz1reAShFam/EeoGCrWkqH8mcPxe9fnxyKyaWAgK2ut2F/1MUBzI
-	 I+k+LbC3yC4i4rK8CYeZuyKlmSkuQszWhZIDpTJNxk/DPbJMBO2CkV5RcvdGI4dZlT
-	 mEsMetEY9Ln1ZFY42jS/sbrsZhZxoIAt4JXJqBUE=
+	b=Rt34cigK1w1SZolf4pdGmMUmjt3nW/awEH7Wx73hXehZhTDhw+70dp3w80bsyAjLP
+	 ZSkdo24Eem6PEIueLPImjW3bxTT9KFuuCfQ2Q1jKCrcvbpsCwELR14c5YAVa9VMztj
+	 Gasc1wKoF5An/OZ5XyWSx4q+vJU7pJUk5I+LyiT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.18 097/122] scripts: generate_rust_analyzer: compile sysroot with correct edition
-Date: Wed,  4 Feb 2026 15:41:19 +0100
-Message-ID: <20260204143855.340114444@linuxfoundation.org>
+	Laveesh Bansal <laveeshb@laveeshbansal.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 82/87] writeback: fix 100% CPU usage when dirtytime_expire_interval is 0
+Date: Wed,  4 Feb 2026 15:41:20 +0100
+Message-ID: <20260204143849.877167770@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,104 +70,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214189-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214318-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 23F4EE9E55
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 561A9E927E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Laveesh Bansal <laveeshb@laveeshbansal.com>
 
-commit ac3c50b9a24e9ebeb585679078d6c47922034bb6 upstream.
+[ Upstream commit 543467d6fe97e27e22a26e367fda972dbefebbff ]
 
-Use `core_edition` for all sysroot crates rather than just core as all
-were updated to edition 2024 in Rust 1.87.
+When vm.dirtytime_expire_seconds is set to 0, wakeup_dirtytime_writeback()
+schedules delayed work with a delay of 0, causing immediate execution.
+The function then reschedules itself with 0 delay again, creating an
+infinite busy loop that causes 100% kworker CPU usage.
 
-Fixes: f4daa80d6be7 ("rust: compile libcore with edition 2024 for 1.87+")
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+Fix by:
+- Only scheduling delayed work in wakeup_dirtytime_writeback() when
+  dirtytime_expire_interval is non-zero
+- Cancelling the delayed work in dirtytime_interval_handler() when
+  the interval is set to 0
+- Adding a guard in start_dirtytime_writeback() for defensive coding
+
+Tested by booting kernel in QEMU with virtme-ng:
+- Before fix: kworker CPU spikes to ~73%
+- After fix: CPU remains at normal levels
+- Setting interval back to non-zero correctly resumes writeback
+
+Fixes: a2f4870697a5 ("fs: make sure the timestamps for lazytime inodes eventually get written")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-rust-analyzer-sysroot-v2-1-094aedc33208@kernel.org
-[ Added `>`s to make the quote a single block. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220227
+Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
+Link: https://patch.msgid.link/20260106145059.543282-2-laveeshb@laveeshbansal.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ adapted system_percpu_wq to system_wq for the workqueue used in dirtytime_interval_handler() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |   29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ fs/fs-writeback.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -61,7 +61,6 @@ def generate_crates(srctree, objtree, sy
-         display_name,
-         deps,
-         cfg=[],
--        edition="2021",
-     ):
-         append_crate(
-             display_name,
-@@ -69,13 +68,37 @@ def generate_crates(srctree, objtree, sy
-             deps,
-             cfg,
-             is_workspace_member=False,
--            edition=edition,
-+            # Miguel Ojeda writes:
-+            #
-+            # > ... in principle even the sysroot crates may have different
-+            # > editions.
-+            # >
-+            # > For instance, in the move to 2024, it seems all happened at once
-+            # > in 1.87.0 in these upstream commits:
-+            # >
-+            # >     0e071c2c6a58 ("Migrate core to Rust 2024")
-+            # >     f505d4e8e380 ("Migrate alloc to Rust 2024")
-+            # >     0b2489c226c3 ("Migrate proc_macro to Rust 2024")
-+            # >     993359e70112 ("Migrate std to Rust 2024")
-+            # >
-+            # > But in the previous move to 2021, `std` moved in 1.59.0, while
-+            # > the others in 1.60.0:
-+            # >
-+            # >     b656384d8398 ("Update stdlib to the 2021 edition")
-+            # >     06a1c14d52a8 ("Switch all libraries to the 2021 edition")
-+            #
-+            # Link: https://lore.kernel.org/all/CANiq72kd9bHdKaAm=8xCUhSHMy2csyVed69bOc4dXyFAW4sfuw@mail.gmail.com/
-+            #
-+            # At the time of writing all rust versions we support build the
-+            # sysroot crates with the same edition. We may need to relax this
-+            # assumption if future edition moves span multiple rust versions.
-+            edition=core_edition,
-         )
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2418,12 +2418,14 @@ static void wakeup_dirtytime_writeback(s
+ 				wb_wakeup(wb);
+ 	}
+ 	rcu_read_unlock();
+-	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
++	if (dirtytime_expire_interval)
++		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
+ }
  
-     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
-     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
-     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
--    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
-+    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
-     append_sysroot_crate("alloc", ["core"])
-     append_sysroot_crate("std", ["alloc", "core"])
-     append_sysroot_crate("proc_macro", ["core", "std"])
+ static int __init start_dirtytime_writeback(void)
+ {
+-	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
++	if (dirtytime_expire_interval)
++		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
+ 	return 0;
+ }
+ __initcall(start_dirtytime_writeback);
+@@ -2434,8 +2436,12 @@ int dirtytime_interval_handler(const str
+ 	int ret;
+ 
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+-	if (ret == 0 && write)
+-		mod_delayed_work(system_wq, &dirtytime_work, 0);
++	if (ret == 0 && write) {
++		if (dirtytime_expire_interval)
++			mod_delayed_work(system_wq, &dirtytime_work, 0);
++		else
++			cancel_delayed_work_sync(&dirtytime_work);
++	}
+ 	return ret;
+ }
+ 
 
 
 
