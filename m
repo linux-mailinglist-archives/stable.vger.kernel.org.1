@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-213431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AI09JoFbg2mWlwMAu9opvQ
-	(envelope-from <stable+bounces-213431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:21 +0100
+	id gN1xCNlrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD750E74F6
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAD9E9947
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 32DF0300461B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7D01730330E8
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E558271A9A;
-	Wed,  4 Feb 2026 14:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9A14218AA;
+	Wed,  4 Feb 2026 15:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Vh27NqU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyjQqBB1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CEB1C5D77;
-	Wed,  4 Feb 2026 14:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20E34218A0;
+	Wed,  4 Feb 2026 15:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216315; cv=none; b=CxStYv3cGxWiWZARQNbdikZfWLfSLYkzZsSupjN69jrBMuSE6tjQfP/n3iNUppBh02FghvT/UqtRJs15A85nAJ+nhlwdckQZKX/2w5f1pMGMGEMu9NlNTGXqD8Awao4sTVyckj309hZ2GFL78Bv/5mVrn4ALgzqq42B4t1KCCbA=
+	t=1770217855; cv=none; b=smsf8T0kZuytX4Dy+qg0otIumHaJDyK61moIeTdGpIi1lEf+/YW5ejAN0nYKedSwWUZ3q8W0KFvhfEH+2+lxCoHk/fB3U4FxSC4vVTKC03RDj3uCmcHGLspcpAFFa7hvP2Rp006uD2zF57ieDIM7E+a5MXy88TCbsicTsPJac3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216315; c=relaxed/simple;
-	bh=DEKfkM+tugJgAmzoWQDS3cOLxcUmXtd6gSfPoMmNDHQ=;
+	s=arc-20240116; t=1770217855; c=relaxed/simple;
+	bh=+KOEUkanwSW0gfoMak+z5SnyI0udYqrH+cDKa5+KPn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cu3UbdvoNjXND4Ymx4oyfY5ujpC3jUp/P+87urEJUJxyHY+I+ls+ZPcrGo0agX6rXQzgh+EGnciEriVu0M6bGBFqw3WSHmoN6H38FnapMSPFNIpbtxfD4hKca0p5slKXC6mpWChescBj95ZPrqTCzTF7EFNQSZgqy/tg813QZO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Vh27NqU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81F6C4CEF7;
-	Wed,  4 Feb 2026 14:45:14 +0000 (UTC)
+	 MIME-Version; b=EO0h05RyVr1Em4WsildE3UagicZwRYkVXyjfACGUZlMnvK6diiAmsJAc7ixrGB8DP0mDEMTaVT1f/doEmCnRnwVTeO0cP0GUuDsQ8SaDQ4vUv08/ga6rhpo1BaOP1az6/3URvOcNAFw7QxDPEl59XUrZUrWBbfUhKW1j5l956qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyjQqBB1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC96C4CEF7;
+	Wed,  4 Feb 2026 15:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216315;
-	bh=DEKfkM+tugJgAmzoWQDS3cOLxcUmXtd6gSfPoMmNDHQ=;
+	s=korg; t=1770217855;
+	bh=+KOEUkanwSW0gfoMak+z5SnyI0udYqrH+cDKa5+KPn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Vh27NqUg8IsiKUsNvhbJVVuK19bYqOsJiMg4upmC6TJl2FGnUglsHDFqc5m8hAGq
-	 n8fME+Mc89/8ta3aboSmTuA2jIL3F860ZheKIHOT9ymWYoHfl/88HEC0P3MW2hK+UP
-	 YCfR3HdvnQW3HSFp227FUeeAs204kX8yh7Iy4pug=
+	b=cyjQqBB1PS63Vz9ZDWlDKAOtiYhKFM/1hAzLk1iRJQNTOstV+ADOXYEPZEpFuSF+j
+	 Gku7qKXAEXUqfD76NvOmnCFde5Irog519kDfS5woKv3srN7INiyAS5OlSp+05NNipX
+	 wCfEP7bSa/FzXms4VeOmFCEMYZUnv2CW5Y18s7xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/161] selftests: net: fib-onlink-tests: Convert to use namespaces by default
+Subject: [PATCH 6.1 140/280] net: hns3: fix wrong GENMASK() for HCLGE_FD_AD_COUNTER_NUM_M
 Date: Wed,  4 Feb 2026 15:38:34 +0100
-Message-ID: <20260204143853.597552484@linuxfoundation.org>
+Message-ID: <20260204143914.674559765@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,215 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213431-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213890-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,suse.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: CD750E74F6
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 3AAD9E9947
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 4f5f148dd7c0459229d2ab9a769b2e820f9ee6a2 ]
+[ Upstream commit d57c67c956a1bad15115eba6e59d77a6dfeba01d ]
 
-Currently, the test breaks if the SUT already has a default route
-configured for IPv6. Fix by avoiding the use of the default namespace.
+HCLGE_FD_AD_COUNTER_NUM_M should be at GENMASK(19, 13),
+rather than at GENMASK(20, 13), because bit 20 is
+HCLGE_FD_AD_NXT_STEP_B.
 
-Fixes: 4ed591c8ab44 ("net/ipv6: Allow onlink routes to have a device mismatch if it is the default route")
-Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260113-selftests-net-fib-onlink-v2-1-89de2b931389@suse.com
+This patch corrects the wrong definition.
+
+Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://patch.msgid.link/20260119132840.410513-2-shaojijie@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/fib-onlink-tests.sh | 71 ++++++++-----------
- 1 file changed, 30 insertions(+), 41 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
-index ec2d6ceb1f08d..c01be076b210d 100755
---- a/tools/testing/selftests/net/fib-onlink-tests.sh
-+++ b/tools/testing/selftests/net/fib-onlink-tests.sh
-@@ -120,7 +120,7 @@ log_subsection()
- 
- run_cmd()
- {
--	local cmd="$*"
-+	local cmd="$1"
- 	local out
- 	local rc
- 
-@@ -145,7 +145,7 @@ get_linklocal()
- 	local pfx
- 	local addr
- 
--	addr=$(${pfx} ip -6 -br addr show dev ${dev} | \
-+	addr=$(${pfx} ${IP} -6 -br addr show dev ${dev} | \
- 	awk '{
- 		for (i = 3; i <= NF; ++i) {
- 			if ($i ~ /^fe80/)
-@@ -173,58 +173,48 @@ setup()
- 
- 	set -e
- 
--	# create namespace
--	setup_ns PEER_NS
-+	# create namespaces
-+	setup_ns ns1
-+	IP="ip -netns $ns1"
-+	setup_ns ns2
- 
- 	# add vrf table
--	ip li add ${VRF} type vrf table ${VRF_TABLE}
--	ip li set ${VRF} up
--	ip ro add table ${VRF_TABLE} unreachable default metric 8192
--	ip -6 ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} li add ${VRF} type vrf table ${VRF_TABLE}
-+	${IP} li set ${VRF} up
-+	${IP} ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} -6 ro add table ${VRF_TABLE} unreachable default metric 8192
- 
- 	# create test interfaces
--	ip li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
--	ip li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
--	ip li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
--	ip li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
-+	${IP} li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
-+	${IP} li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
-+	${IP} li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
-+	${IP} li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
- 
- 	# enslave vrf interfaces
- 	for n in 5 7; do
--		ip li set ${NETIFS[p${n}]} vrf ${VRF}
-+		${IP} li set ${NETIFS[p${n}]} vrf ${VRF}
- 	done
- 
- 	# add addresses
- 	for n in 1 3 5 7; do
--		ip li set ${NETIFS[p${n}]} up
--		ip addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} up
-+		${IP} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		${IP} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
- 	# move peer interfaces to namespace and add addresses
- 	for n in 2 4 6 8; do
--		ip li set ${NETIFS[p${n}]} netns ${PEER_NS} up
--		ip -netns ${PEER_NS} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip -netns ${PEER_NS} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} netns ${ns2} up
-+		ip -netns $ns2 addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		ip -netns $ns2 addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
--	ip -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
--	ip -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
-+	${IP} -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
-+	${IP} -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
- 
- 	set +e
- }
- 
--cleanup()
--{
--	# make sure we start from a clean slate
--	cleanup_ns ${PEER_NS} 2>/dev/null
--	for n in 1 3 5 7; do
--		ip link del ${NETIFS[p${n}]} 2>/dev/null
--	done
--	ip link del ${VRF} 2>/dev/null
--	ip ro flush table ${VRF_TABLE}
--	ip -6 ro flush table ${VRF_TABLE}
--}
--
- ################################################################################
- # IPv4 tests
- #
-@@ -241,7 +231,7 @@ run_ip()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -257,8 +247,8 @@ run_ip_mpath()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -339,7 +329,7 @@ run_ip6()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -353,8 +343,8 @@ run_ip6_mpath()
- 	local exp_rc="$6"
- 	local desc="$7"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 "${opts}" \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 ${opts} \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -491,10 +481,9 @@ do
- 	esac
- done
- 
--cleanup
- setup
- run_onlink_tests
--cleanup
-+cleanup_ns ${ns1} ${ns2}
- 
- if [ "$TESTS" != "none" ]; then
- 	printf "\nTests passed: %3d\n" ${nsuccess}
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+index 43cada51d8cb3..0b9d3fc749b95 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+@@ -731,7 +731,7 @@ struct hclge_fd_tcam_config_3_cmd {
+ #define HCLGE_FD_AD_QID_M		GENMASK(11, 2)
+ #define HCLGE_FD_AD_USE_COUNTER_B	12
+ #define HCLGE_FD_AD_COUNTER_NUM_S	13
+-#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(20, 13)
++#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(19, 13)
+ #define HCLGE_FD_AD_NXT_STEP_B		20
+ #define HCLGE_FD_AD_NXT_KEY_S		21
+ #define HCLGE_FD_AD_NXT_KEY_M		GENMASK(25, 21)
 -- 
 2.51.0
 
