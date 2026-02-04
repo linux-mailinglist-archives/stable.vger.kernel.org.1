@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-214016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJV3AMBlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-214016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:04 +0100
+	id wLE/CPhjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDF2E8AD7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C81E857B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 757703177B1D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B5CAF3131D7F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C1041B34E;
-	Wed,  4 Feb 2026 15:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8413542DFFD;
+	Wed,  4 Feb 2026 15:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8I+bAUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3Usdtvl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DEF42AA9;
-	Wed,  4 Feb 2026 15:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469A942DFF8;
+	Wed,  4 Feb 2026 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218279; cv=none; b=b4scdVw2r8Z/Bcv41kIdU+BJVaNS1PRuJnOaOkNzkNJSYwlbNnrrxMfVGsLmjTGmVBpzbvQvpojkiG93I7xKaeHA46PabqN8dYbSp3Z4EVAo5CRQ+RwoY/MPMLhCnfoh1dBs3VR4kyTGmrDMda9wJzGKNuG+p8MT14tv1enKw1M=
+	t=1770217405; cv=none; b=oXY2lAETJmpj2FoYXF2k3e9TvcRNzrmmALhPuMkg0onk/U9EFIzmjtrAFKnRBc+PGT2/yyVx0PIgamC9gzGMoeSi8F9ksS/+gtfSBLBpB8Qgls0WOkJ4g5Ud+DtTFEMfpGVBdP1Pkffi0peioppmHeh9+GW/egYYutbFsXHMXgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218279; c=relaxed/simple;
-	bh=z1+1I4XIhMJ/NUmpc9KADisJBNtECYGV7lF5TT/saX8=;
+	s=arc-20240116; t=1770217405; c=relaxed/simple;
+	bh=w/q48A4Oyh2alQ+widBSV0kFM1T73GcPD7KRoVmtoFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1uT3uFusaKu/4U+8P1/JHrekw7JuN4dfqNKWXngvyJ4HWQTGMThOJLG1GWL91YV3cQoXhtx6tYtD5tz4CJzC+k/DabYaTjOhrH0Y5a5A7Xm2JeA1bQpqBJUzECfUjaZ+K1PNx0cQieHRBwkE0JIPH4H0Mv1qiXUuT4ZS3CXCfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8I+bAUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D77C4CEF7;
-	Wed,  4 Feb 2026 15:17:58 +0000 (UTC)
+	 MIME-Version; b=SVZGhKIKI/IKVl7aZyyN7TIOI5R3NKKYKUhYFzZNey70AYPzF/C6i5oMQ/pCTipUYSSFe+NiGlxAfMhdNEWUk7RVgnAwkXQ9LZTVZv5lhbMD3z6Vw7CrcqY+6JptV5N4YRtm2XjhTeMBYBTkn532r0Qi0A7+/7If/vWIaaPTsfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3Usdtvl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC4EC4CEF7;
+	Wed,  4 Feb 2026 15:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218279;
-	bh=z1+1I4XIhMJ/NUmpc9KADisJBNtECYGV7lF5TT/saX8=;
+	s=korg; t=1770217404;
+	bh=w/q48A4Oyh2alQ+widBSV0kFM1T73GcPD7KRoVmtoFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8I+bAUgh1+WqEPF+RGqxCPzN0eBDfwXp64OvPSkgNAEgxJFtL2rMNRqGcXNriznU
-	 moM4OLPpvp5OFyX2wyZ1NKM03C7zMMN0xHTcx2G11xATvOTjsbtnrlS1U/oQfZKBl0
-	 xPyg6CyAFKzP4RmJOdhU679Qd5l/WUo6MP9M/M4o=
+	b=f3UsdtvlhoiaoAm62J/tgP9SP+Wzd/PsQzDu2KzUTPuMdDey6Qiq0hJOL0uU2NccF
+	 1APZuGzf8pO3iiV2nIZtxTbyxWOyjtyJOAJBh0q3BLe9p3o2ILB0IfVienzpocS/Tu
+	 BKWX7+V8LE66a/6Lua3WQzgEvo+S1DuoTG+oj7wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 263/280] gfs2: Fix NULL pointer dereference in gfs2_log_flush
+	syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 206/206] wifi: cfg80211: init wiphy_work before allocating rfkill fails
 Date: Wed,  4 Feb 2026 15:40:37 +0100
-Message-ID: <20260204143919.163617421@linuxfoundation.org>
+Message-ID: <20260204143905.648694967@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +65,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214016-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,163.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213757-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,aaf0488c83d1d5f4f029];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8FDF2E8AD7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,syzkaller.appspot.com:url,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: 86C81E857B
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 35264909e9d1973ab9aaa2a1b07cda70f12bb828 ]
+commit fc88dee89d7b63eeb17699393eb659aadf9d9b7c upstream.
 
-In gfs2_jindex_free(), set sdp->sd_jdesc to NULL under the log flush
-lock to provide exclusion against gfs2_log_flush().
+syzbort reported a uninitialize wiphy_work_lock in cfg80211_dev_free. [1]
 
-In gfs2_log_flush(), check if sdp->sd_jdesc is non-NULL before
-dereferencing it.  Otherwise, we could run into a NULL pointer
-dereference when outstanding glock work races with an unmount
-(glock_work_func -> run_queue -> do_xmote -> inode_go_sync ->
-gfs2_log_flush).
+After rfkill allocation fails, the wiphy release process will be performed,
+which will cause cfg80211_dev_free to access the uninitialized wiphy_work
+related data.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-[ The context change is due to the commit 4d927b03a688
-("gfs2: Rename gfs2_withdrawn to gfs2_withdrawing_or_withdrawn") in v6.8
-which is irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Move the initialization of wiphy_work to before rfkill initialization to
+avoid this issue.
+
+[1]
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ assign_lock_key kernel/locking/lockdep.c:983 [inline]
+ register_lock_class+0xc39/0x1240 kernel/locking/lockdep.c:1297
+ __lock_acquire+0x135/0x3c40 kernel/locking/lockdep.c:5103
+ lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
+ cfg80211_dev_free+0x30/0x3d0 net/wireless/core.c:1196
+ device_release+0xa1/0x240 drivers/base/core.c:2568
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1e4/0x5a0 lib/kobject.c:737
+ put_device+0x1f/0x30 drivers/base/core.c:3774
+ wiphy_free net/wireless/core.c:1224 [inline]
+ wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
+ ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
+ mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
+ hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
+ genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
+ netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
+ netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg net/socket.c:733 [inline]
+ ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
+ ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
+ __sys_sendmsg+0x16e/0x220 net/socket.c:2659
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+
+Fixes: 72d520476a2f ("wifi: cfg80211: cancel wiphy_work before freeing wiphy")
+Reported-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Close: https://syzkaller.appspot.com/bug?extid=aaf0488c83d1d5f4f029
+Tested-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_258DD9121DDDB9DD9A1939CFAA0D8625B107@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/log.c   |    3 ++-
- fs/gfs2/super.c |    4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ net/wireless/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1102,7 +1102,8 @@ repeat:
- 	lops_before_commit(sdp, tr);
- 	if (gfs2_withdrawn(sdp))
- 		goto out_withdraw;
--	gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
-+	if (sdp->sd_jdesc)
-+		gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
- 	if (gfs2_withdrawn(sdp))
- 		goto out_withdraw;
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -546,6 +546,9 @@ use_default_name:
+ 	INIT_WORK(&rdev->mgmt_registrations_update_wk,
+ 		  cfg80211_mgmt_registrations_update_wk);
+ 	spin_lock_init(&rdev->mgmt_registrations_lock);
++	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
++	INIT_LIST_HEAD(&rdev->wiphy_work_list);
++	spin_lock_init(&rdev->wiphy_work_lock);
  
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -67,9 +67,13 @@ void gfs2_jindex_free(struct gfs2_sbd *s
- 	sdp->sd_journals = 0;
- 	spin_unlock(&sdp->sd_jindex_spin);
+ #ifdef CONFIG_CFG80211_DEFAULT_PS
+ 	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
+@@ -563,9 +566,6 @@ use_default_name:
+ 		return NULL;
+ 	}
  
-+	down_write(&sdp->sd_log_flush_lock);
- 	sdp->sd_jdesc = NULL;
-+	up_write(&sdp->sd_log_flush_lock);
-+
- 	while (!list_empty(&list)) {
- 		jd = list_first_entry(&list, struct gfs2_jdesc, jd_list);
-+		BUG_ON(jd->jd_log_bio);
- 		gfs2_free_journal_extents(jd);
- 		list_del(&jd->jd_list);
- 		iput(jd->jd_inode);
+-	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
+-	INIT_LIST_HEAD(&rdev->wiphy_work_list);
+-	spin_lock_init(&rdev->wiphy_work_lock);
+ 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
+ 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
+ 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
 
 
 
