@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-213707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kH7hAARgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:36 +0100
+	id MDZ2Nxplg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA9CE7D87
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843BFE88DC
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4331F301285D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 48AD8309AECB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39CB2BD02A;
-	Wed,  4 Feb 2026 15:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43707425CEB;
+	Wed,  4 Feb 2026 15:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmoTbhNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzqf686C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AD528853E;
-	Wed,  4 Feb 2026 15:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E1A18859B;
+	Wed,  4 Feb 2026 15:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217237; cv=none; b=WRIrmIeglMB40Kbud13lmaXEwz9sxVZRmSYJ/XTl8iK/FJX1bx7sCAe8F1YHHd/azv1Hr4Hg1qLZ/dTNziyWtADIvm3+N/i6xEr3oRQbr46+A8SXwwqWk5MATIv/u7RxDFn7Qryeg3eRz+TJa/jRIovAnLLCb7uHNpoLhAC+HQs=
+	t=1770218129; cv=none; b=CK1jI2rLATxxtFuu5NJWFkyXWL33qvpbo/jRFKBNwi5rOh0/225Oe7lMGsMWnYKT1hsSIu4IMRalhQU7SajBbMrJ/O8I9guD81G3nn4UX7rnJv2pZLR+qghBAG3Q9I8D9CRb/YWMoxzvE5/CaBadHCv/4+lop1IXOOHowodR03w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217237; c=relaxed/simple;
-	bh=Rdrq8ffKKp4sDU6V1782YzBZpUTrJznVjldH4F/90Iw=;
+	s=arc-20240116; t=1770218129; c=relaxed/simple;
+	bh=tELssnmH1RSFFzhmjHtDzF14i5RMo316MHyXUONy2J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOLoTxx4AAg12OOQL8uJh4agKp9cOlzWH86DfMtG59AiwMFIBl12fSLrLs+gZl2li4NWUYtd/Vrnop+xWOLi6SnkNsEzQIcS+LttTxm8B+QwvG+TbhV6+oXQL+vxEvXZBSXPQtudSmY1nxEf/+5uctrWSSQfX37uXz2/bbnSswc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmoTbhNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C597AC4CEF7;
-	Wed,  4 Feb 2026 15:00:36 +0000 (UTC)
+	 MIME-Version; b=FI1VRfmqH3EC5yD8uop5p2QriM2KaQ8UvBMXNOUdnNkZBQol3CrDGwGNZqjFpscI6N789n5mg4NdjEnqxif/L/ON0jq6pGCOsq1Aq5qqXMp1alRFRTbCBCR2rljkMf8Zt4xAGgRJb1hUf9iMRPTFmQjbpUVbi79k0inMA/Z7+O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzqf686C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F7CC4CEF7;
+	Wed,  4 Feb 2026 15:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217237;
-	bh=Rdrq8ffKKp4sDU6V1782YzBZpUTrJznVjldH4F/90Iw=;
+	s=korg; t=1770218128;
+	bh=tELssnmH1RSFFzhmjHtDzF14i5RMo316MHyXUONy2J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmoTbhNT2cHOb92pg5/7yJXWrGvBZ4xCtes+kbeCu42TaH6vCC6s2wbY40piP7eXE
-	 1IwZuic/41x4VH7nRIhYnYi9+UMQJ2PnH9pfSBgxQtRuz/Dvpp/FcSRAJX8hqoaadF
-	 hA5PZvrVafqMm0c0gSlsUD2om6oBB8gAaKaD1f1c=
+	b=kzqf686C1o2GrwSQwUTHVmL41o9dVMCg0+PrHDSbm+tcnh3Nc7pURDs4I9yjUlJU1
+	 J1evOtlfD+7vfWLYdOPUZ+mbLgKJp3tjzI0iKbohWAMUW4eRUm/Eh3TGuXc6APDT8R
+	 Bg8YqeWHjc5C7YNoopPqGkIgdZu004xjHw+cjgpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Uschakow, Stanislav" <suschako@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 163/206] w1: therm: Fix off-by-one buffer overflow in alarms_store
+Subject: [PATCH 6.1 220/280] mm/rmap: fix two comments related to huge_pmd_unshare()
 Date: Wed,  4 Feb 2026 15:39:54 +0100
-Message-ID: <20260204143904.075785408@linuxfoundation.org>
+Message-ID: <20260204143917.522589953@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,8 +87,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213707-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213972-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -88,145 +96,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: BFA9CE7D87
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,huawei.com:email,suse.de:email,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,linux-foundation.org:email,surriel.com:email]
+X-Rspamd-Queue-Id: 843BFE88DC
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 
-[ Upstream commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a ]
+[ Upstream commit a8682d500f691b6dfaa16ae1502d990aeb86e8be ]
 
-The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-bytes and a NUL terminator is appended. However, the 'size' argument
-does not account for this extra byte. The original code then allocated
-'size' bytes and used strcpy() to copy 'buf', which always writes one
-byte past the allocated buffer since strcpy() copies until the NUL
-terminator at index 'size'.
+PMD page table unsharing no longer touches the refcount of a PMD page
+table.  Also, it is not about dropping the refcount of a "PMD page" but
+the "PMD page table".
 
-Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-without allocating any intermediate memory or string copying. This
-removes the overflow while simplifying the code.
+Let's just simplify by saying that the PMD page table was unmapped,
+consequently also unmapping the folio that was mapped into this page.
 
-Cc: stable@vger.kernel.org
-Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+This code should be deduplicated in the future.
+
+Link: https://lkml.kernel.org/r/20251223214037.580860-4-david@kernel.org
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/w1/slaves/w1_therm.c |   60 +++++++++++++------------------------------
- 1 file changed, 19 insertions(+), 41 deletions(-)
+ mm/rmap.c |   20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1780,53 +1780,35 @@ static ssize_t alarms_store(struct devic
- 	struct w1_slave *sl = dev_to_w1_slave(device);
- 	struct therm_info info;
- 	u8 new_config_register[3];	/* array of data to be written */
--	int temp, ret;
--	char *token = NULL;
-+	long long temp;
-+	int ret = 0;
- 	s8 tl, th;	/* 1 byte per value + temp ring order */
--	char *p_args, *orig;
-+	const char *p = buf;
-+	char *endp;
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1574,14 +1574,8 @@ static bool try_to_unmap_one(struct foli
+ 					mmu_notifier_invalidate_range(mm,
+ 						range.start, range.end);
+ 					/*
+-					 * The ref count of the PMD page was
+-					 * dropped which is part of the way map
+-					 * counting is done for shared PMDs.
+-					 * Return 'true' here.  When there is
+-					 * no other sharing, huge_pmd_unshare
+-					 * returns false and we will unmap the
+-					 * actual page and drop map count
+-					 * to zero.
++					 * The PMD table was unmapped,
++					 * consequently unmapping the folio.
+ 					 */
+ 					page_vma_mapped_walk_done(&pvmw);
+ 					break;
+@@ -1965,14 +1959,8 @@ static bool try_to_migrate_one(struct fo
+ 						range.start, range.end);
  
--	p_args = orig = kmalloc(size, GFP_KERNEL);
--	/* Safe string copys as buf is const */
--	if (!p_args) {
--		dev_warn(device,
--			"%s: error unable to allocate memory %d\n",
--			__func__, -ENOMEM);
--		return size;
--	}
--	strcpy(p_args, buf);
--
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--
--	/* Convert 1st entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp || *endp != ' ')
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	tl = int_to_short(temp);
- 
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--	/* Convert 2nd entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	p = endp + 1;
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp)
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Prepare to cast to short by eliminating out of range values */
-@@ -1849,7 +1831,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: error reading from the slave device %d\n",
- 			__func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Write data in the device RAM */
-@@ -1857,7 +1839,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: Device not supported by the driver %d\n",
- 			__func__, -ENODEV);
--		goto free_m;
-+		return size;
- 	}
- 
- 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
-@@ -1866,10 +1848,6 @@ static ssize_t alarms_store(struct devic
- 			"%s: error writing to the slave device %d\n",
- 			__func__, ret);
- 
--free_m:
--	/* free allocated memory */
--	kfree(orig);
--
- 	return size;
- }
- 
+ 					/*
+-					 * The ref count of the PMD page was
+-					 * dropped which is part of the way map
+-					 * counting is done for shared PMDs.
+-					 * Return 'true' here.  When there is
+-					 * no other sharing, huge_pmd_unshare
+-					 * returns false and we will unmap the
+-					 * actual page and drop map count
+-					 * to zero.
++					 * The PMD table was unmapped,
++					 * consequently unmapping the folio.
+ 					 */
+ 					page_vma_mapped_walk_done(&pvmw);
+ 					break;
 
 
 
