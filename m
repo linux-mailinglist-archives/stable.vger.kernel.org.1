@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPkYBhReg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:20 +0100
+	id KC95Kt1ng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F4EE79B9
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30552E901F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6689F302A2DB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 00E4B30EA978
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DBD2BF006;
-	Wed,  4 Feb 2026 14:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B9621FF4C;
+	Wed,  4 Feb 2026 15:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puXoj6hF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKaYStxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFD0219301;
-	Wed,  4 Feb 2026 14:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3032C026F;
+	Wed,  4 Feb 2026 15:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216584; cv=none; b=VlaRiffWNISRP5XW3e0H9D53TQYQHWDj1KzWqtN2N0oEz7lK9BFcrDuAGXmYBcTYcjx1DfhUdDFk6nFCe72QgzyxqWoFCceV5xHO1mRt7Ww3QS8L5N1zkKkly7i9abydFJTDwBjaqKbhJXW63UuEl4ggMbVkvl+zjexEA0Nf9IU=
+	t=1770218912; cv=none; b=icQbhzELBT581evblJznZo1lEh2LjiaW5+RSrVVM8EsCVAqxyMg0I3w9WTOU/KDxfFS6j8Jzd9MNOSMhYI+821tR1lRNASkWNKLeDA2aeWcVN30uPEVfhvCyy7kZhNGadJ/7ArJm/RfOOxMlkyLe4VADHVYQ5zQ3vv00TiJhioc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216584; c=relaxed/simple;
-	bh=xtb4Yg1NQnFbabo4vF5AjqgyHVuG4VbZzV/4zpZxE5E=;
+	s=arc-20240116; t=1770218912; c=relaxed/simple;
+	bh=c0EDH3lMPnlDYsOfwRuSrAh30yZmpDKKU5iCE+dwvhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t723G7NCI6RHJPl8cPdNMWahm/renvvSSPCjtJIX46gUg7MroHZMgTJMKGdxfKGP23BWdmL8sHCInxs/cvVlW1OATpxrVjRYorx+xQ6jDSKgOcPgNFX9rDxT5nalnGI+8NmIOkf+fJ8W9zQ6T5MNfd7c3Ckrb6p0Ob5tbcYb5Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puXoj6hF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294E0C4CEF7;
-	Wed,  4 Feb 2026 14:49:43 +0000 (UTC)
+	 MIME-Version; b=I4ivNxkt4lx2IRyMWfgWpoJsK+uaZyLn9WXgSgR32DBVIyJBcC0v/iOewUMgNNAlPeMUaS9VoBsSLLDkfg1X2zQrbZ+zJdNNh1GckTyNTjlyrVW1kyybnEnCYHkdgMyawbxBECEyvGsw4aS4IwGR7ztuuSfdOt0NWtm3FyDahzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKaYStxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946B9C116C6;
+	Wed,  4 Feb 2026 15:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216584;
-	bh=xtb4Yg1NQnFbabo4vF5AjqgyHVuG4VbZzV/4zpZxE5E=;
+	s=korg; t=1770218912;
+	bh=c0EDH3lMPnlDYsOfwRuSrAh30yZmpDKKU5iCE+dwvhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=puXoj6hFIpYDnKlMHC5aksz8Y249EEcYPUM8qc0IpmRF7QIm9hSbdeIKWliIFEaJU
-	 ZFfHg3dTJ3wusx+UUtQmfRTqxrpl+/M03JPrGPyc7R5KfcY3coPlEkyOc7bZWKNdLi
-	 PEMk8fydizmW3tLw+bzmWO3K4SmHzTg6y2Xn/V2M=
+	b=mKaYStxmfgEnouPO0QgqzoSlvySBawRLL63f+hgiQgDOgBAAdFgIsWg7KvH8ELEcE
+	 2UpJXs5fT1AvG4s23Lsn3SglurmYrSKBALsqbcdG+pKo4OuytQP0fzdKiP/hRGdW2b
+	 0fpRmJ/ApT2VIkkS9DNX2JumHzQPqcabe5Ru4gj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damir Mansurov <damir.mansurov@oktetlabs.ru>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/161] scsi: firewire: sbp-target: Fix overflow in sbp_make_tpg()
+Subject: [PATCH 6.18 011/122] sfc: fix deadlock in RSS config read
 Date: Wed,  4 Feb 2026 15:39:53 +0100
-Message-ID: <20260204143856.419562830@linuxfoundation.org>
+Message-ID: <20260204143852.271444224@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +67,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213512-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-214204-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oktetlabs.ru,decadent.org.uk,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 61F4EE79B9
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,decadent.org.uk:email,oktetlabs.ru:email]
+X-Rspamd-Queue-Id: 30552E901F
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Edward Cree <ecree.xilinx@gmail.com>
 
-[ Upstream commit b2d6b1d443009ed4da2d69f5423ab38e5780505a ]
+[ Upstream commit 944c614b0a7afa5b87612c3fb557b95a50ad654c ]
 
-The code in sbp_make_tpg() limits "tpgt" to UINT_MAX but the data type of
-"tpg->tport_tpgt" is u16. This causes a type truncation issue.
+Since cited commit, core locks the net_device's rss_lock when handling
+ ethtool -x command, so driver's implementation should not lock it
+ again.  Remove the latter.
 
-When a user creates a TPG via configfs mkdir, for example:
-
-    mkdir /sys/kernel/config/target/sbp/<wwn>/tpgt_70000
-
-The value 70000 passes the "tpgt > UINT_MAX" check since 70000 is far less
-than 4294967295. However, when assigned to the u16 field tpg->tport_tpgt,
-the value is silently truncated to 4464 (70000 & 0xFFFF). This causes the
-value the user specified to differ from what is actually stored, leading to
-confusion and potential unexpected behavior.
-
-Fix this by changing the type of "tpgt" to u16 and using kstrtou16() which
-will properly reject values outside the u16 range.
-
-Fixes: a511ce339780 ("sbp-target: Initial merge of firewire/ieee-1394 target mode support")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Link: https://patch.msgid.link/20260121114515.1829-2-qikeyu2017@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 040cef30b5e6 ("net: ethtool: move get_rxfh callback under the rss_lock")
+Reported-by: Damir Mansurov <damir.mansurov@oktetlabs.ru>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1126015
+Suggested-by: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
+Link: https://patch.msgid.link/20260123161634.1215006-1-edward.cree@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/sbp/sbp_target.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/sfc/mcdi_filters.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/target/sbp/sbp_target.c b/drivers/target/sbp/sbp_target.c
-index e4a9b9fe3dfb0..9445bf3409fd1 100644
---- a/drivers/target/sbp/sbp_target.c
-+++ b/drivers/target/sbp/sbp_target.c
-@@ -1989,12 +1989,12 @@ static struct se_portal_group *sbp_make_tpg(struct se_wwn *wwn,
- 		container_of(wwn, struct sbp_tport, tport_wwn);
+diff --git a/drivers/net/ethernet/sfc/mcdi_filters.c b/drivers/net/ethernet/sfc/mcdi_filters.c
+index 6ef96292909a2..3db589b90b68a 100644
+--- a/drivers/net/ethernet/sfc/mcdi_filters.c
++++ b/drivers/net/ethernet/sfc/mcdi_filters.c
+@@ -2182,12 +2182,7 @@ int efx_mcdi_rx_pull_rss_context_config(struct efx_nic *efx,
  
- 	struct sbp_tpg *tpg;
--	unsigned long tpgt;
-+	u16 tpgt;
- 	int ret;
+ int efx_mcdi_rx_pull_rss_config(struct efx_nic *efx)
+ {
+-	int rc;
+-
+-	mutex_lock(&efx->net_dev->ethtool->rss_lock);
+-	rc = efx_mcdi_rx_pull_rss_context_config(efx, &efx->rss_context);
+-	mutex_unlock(&efx->net_dev->ethtool->rss_lock);
+-	return rc;
++	return efx_mcdi_rx_pull_rss_context_config(efx, &efx->rss_context);
+ }
  
- 	if (strstr(name, "tpgt_") != name)
- 		return ERR_PTR(-EINVAL);
--	if (kstrtoul(name + 5, 10, &tpgt) || tpgt > UINT_MAX)
-+	if (kstrtou16(name + 5, 10, &tpgt))
- 		return ERR_PTR(-EINVAL);
- 
- 	if (tport->tpg) {
+ void efx_mcdi_rx_restore_rss_contexts(struct efx_nic *efx)
 -- 
 2.51.0
 
