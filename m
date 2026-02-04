@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-214109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FgrJulrg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:21 +0100
+	id 0DTtNbRtg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1378EE9984
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E93E9C61
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59FB631F28BC
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 655CA31BFBBC
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF41423A66;
-	Wed,  4 Feb 2026 15:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A87273D77;
+	Wed,  4 Feb 2026 15:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQQB4goB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isuaV0yY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616F8423A62;
-	Wed,  4 Feb 2026 15:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B94F19E96D;
+	Wed,  4 Feb 2026 15:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218595; cv=none; b=Iy+eD+BIhLa73o/5Tuqaf2cKImYCvTF/DcgmSArkta56OnsyzVZjRJaKTwDIQl7vmes4gzB7Iliw1D2ba/NKQVg4kU8LfRpxRhE87fSNbVW2eUbOhae3yJVOsGjqWtT3jT7e0FPbXB55FjQBFCJEjvMZjYFFfKD5FhhIc5ZKQ3g=
+	t=1770219097; cv=none; b=XdLABWEGffkEubFc2K3ZqAUNLFFCRR+RQgp9HR4tv471tiR3jTQL6O78vQwwJSsV1LglaJkTt79xdehkRae0s1mEaeCjW1OpxBsVAZ0apHU0Pi5oLd4jHjwzrhM+wlzicaL9VpNihpxc+qF8c1LtYMy/GVIKFtbgz/mxJsWZL4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218595; c=relaxed/simple;
-	bh=12hoi4zSayuLS2eGvVaWtGS8039J+gRcOH1rYGlSKp0=;
+	s=arc-20240116; t=1770219097; c=relaxed/simple;
+	bh=MovVJDgH4QHIqXnnZFCL3dpdeU3kuz9inaenp9uPZ1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkGBtbHdQuBzRbbmZL0Hppq8lXqwKiRNVPBJLt23vZ8oZXQ3jLzChjeCEw1uATRLctj3/hJebLKvL5bFBeolM8geEZDo0vNhLJ5CJimny2/otGZ8yd8JC3MW11SZG4WlEd1ERQsjCWiI2vODVZXXG4UHTvhrLidtQ5rqqMj4jHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQQB4goB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB72C4CEF7;
-	Wed,  4 Feb 2026 15:23:14 +0000 (UTC)
+	 MIME-Version; b=JkbFFmkmRULXx0Tj7w+g3OqtO0iDXz2NhQz7QTCxnk3PstLWJRbgKWSHDvVAKHfM9gYjD6xITL9ku9kOO8D4ScJ8WnPJgDYw+K6lCpc32v3xIZ7tOeIiCxyjnLylCa5Lru7/IceJFyGxVukSlRCrNxjHs0vru+T9+LgYHuW6s2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isuaV0yY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11152C4CEF7;
+	Wed,  4 Feb 2026 15:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218595;
-	bh=12hoi4zSayuLS2eGvVaWtGS8039J+gRcOH1rYGlSKp0=;
+	s=korg; t=1770219097;
+	bh=MovVJDgH4QHIqXnnZFCL3dpdeU3kuz9inaenp9uPZ1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQQB4goBEJ6yblrzwjh4AeCMvS49qcusWPzlXi2EKO29yGuOHcSN4IX3r6QlTunr7
-	 wCUSz2yI5A6bdqSjD35oMPsuhKa3BD5DD+djSgFbi+TgCn42y8qm1t43Hc/ZXW7Q8Z
-	 itlkDHByzL03708UzQuagpNe6zNMnmwGXZzBg2Jc=
+	b=isuaV0yYWG16A0GldoAD0oS0mcXm/kdDZi/6g7RXhkj5F+mzJK3X5hYaJ0eI9qhWj
+	 dfWYg8qd+FxtWfOD+gaQhtAINBtcIPzYkrqm5OARBDvX9eIkJhNyhJjpa4gK6iEjOr
+	 NRYrWj5mb8D4HRFFiBXz6Lg8gUXK6/saKR0CgEFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 46/72] arm64/fpsimd: signal: Fix restoration of SVE context
+	Alice Ryhl <aliceryhl@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 067/122] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi` target
 Date: Wed,  4 Feb 2026 15:40:49 +0100
-Message-ID: <20260204143847.298059336@linuxfoundation.org>
+Message-ID: <20260204143854.266731228@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214109-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214260-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,147 +87,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,svcr.sm:url,arm.com:email]
-X-Rspamd-Queue-Id: 1378EE9984
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rust-lang.org:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 42E93E9C61
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit d2907cbe9ea0a54cbe078076f9d089240ee1e2d9 ]
+commit af20ae33e7dd949f2e770198e74ac8f058cb299d upstream.
 
-When SME is supported, Restoring SVE signal context can go wrong in a
-few ways, including placing the task into an invalid state where the
-kernel may read from out-of-bounds memory (and may potentially take a
-fatal fault) and/or may kill the task with a SIGKILL.
+`rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
+and we apply `rustfmt` to the macro expanded sources generated by the
+`.rsi` target.
 
-(1) Restoring a context with SVE_SIG_FLAG_SM set can place the task into
-    an invalid state where SVCR.SM is set (and sve_state is non-NULL)
-    but TIF_SME is clear, consequently resuting in out-of-bounds memory
-    reads and/or killing the task with SIGKILL.
+However, under an `O=` pointing to an external folder (i.e. not just
+a subdir), `rustfmt` will not find the file when checking the parent
+folders. Since the edition is configured in this file, this can lead to
+errors when it encounters newer syntax, e.g.
 
-    This can only occur in unusual (but legitimate) cases where the SVE
-    signal context has either been modified by userspace or was saved in
-    the context of another task (e.g. as with CRIU), as otherwise the
-    presence of an SVE signal context with SVE_SIG_FLAG_SM implies that
-    TIF_SME is already set.
+    error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an operator, found `"rust_minimal"`
+      --> samples/rust/rust_minimal.rsi:29:49
+       |
+    28 | impl ::kernel::ModuleMetadata for RustMinimal {
+       |                                               - while parsing this item list starting here
+    29 |     const NAME: &'static ::kernel::str::CStr = c"rust_minimal";
+       |                                                 ^^^^^^^^^^^^^^ expected one of 8 possible tokens
+    30 | }
+       | - the item list ends here
+       |
+       = note: you may be trying to write a c-string literal
+       = note: c-string literals require Rust 2021 or later
+       = help: pass `--edition 2024` to `rustc`
+       = note: for more on editions, read https://doc.rust-lang.org/edition-guide
 
-    While in this state, task_fpsimd_load() will NOT configure SMCR_ELx
-    (leaving some arbitrary value configured in hardware) before
-    restoring SVCR and attempting to restore the streaming mode SVE
-    registers from memory via sve_load_state(). As the value of
-    SMCR_ELx.LEN may be larger than the task's streaming SVE vector
-    length, this may read memory outside of the task's allocated
-    sve_state, reading unrelated data and/or triggering a fault.
+A workaround is to use `RUSTFMT=n`, which is documented in the `Makefile`
+help for cases where macro expanded source may happen to break `rustfmt`
+for other reasons, but this is not one of those cases.
 
-    While this can result in secrets being loaded into streaming SVE
-    registers, these values are never exposed. As TIF_SME is clear,
-    fpsimd_bind_task_to_cpu() will configure CPACR_ELx.SMEN to trap EL0
-    accesses to streaming mode SVE registers, so these cannot be
-    accessed directly at EL0. As fpsimd_save_user_state() verifies the
-    live vector length before saving (S)SVE state to memory, no secret
-    values can be saved back to memory (and hence cannot be observed via
-    ptrace, signals, etc).
+One solution would be to pass `--edition`, but we want `rustfmt` to
+use the entire configuration, even if currently we essentially use the
+default configuration.
 
-    When the live vector length doesn't match the expected vector length
-    for the task, fpsimd_save_user_state() will send a fatal SIGKILL
-    signal to the task. Hence the task may be killed after executing
-    userspace for some period of time.
+Thus explicitly give the path to the config file to `rustfmt` instead.
 
-(2) Restoring a context with SVE_SIG_FLAG_SM clear does not clear the
-    task's SVCR.SM. If SVCR.SM was set prior to restoring the context,
-    then the task will be left in streaming mode unexpectedly, and some
-    register state will be combined inconsistently, though the task will
-    be left in legitimate state from the kernel's PoV.
-
-    This can only occur in unusual (but legitimate) cases where ptrace
-    has been used to set SVCR.SM after entry to the sigreturn syscall,
-    as syscall entry clears SVCR.SM.
-
-    In these cases, the the provided SVE register data will be loaded
-    into the task's sve_state using the non-streaming SVE vector length
-    and the FPSIMD registers will be merged into this using the
-    streaming SVE vector length.
-
-Fix (1) by setting TIF_SME when setting SVCR.SM. This also requires
-ensuring that the task's sme_state has been allocated, but as this could
-contain live ZA state, it should not be zeroed. Fix (2) by clearing
-SVCR.SM when restoring a SVE signal context with SVE_SIG_FLAG_SM clear.
-
-For consistency, I've pulled the manipulation of SVCR, TIF_SVE, TIF_SME,
-and fp_type earlier, immediately after the allocation of
-sve_state/sme_state, before the restore of the actual register state.
-This makes it easier to ensure that these are always modified
-consistently, even if a fault is taken while reading the register data
-from the signal context. I do not expect any software to depend on the
-exact state restored when a fault is taken while reading the context.
-
-Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ preserved fpsimd_flush_task_state() call before new SME allocation logic ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260115183832.46595-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/signal.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ scripts/Makefile.build |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -344,12 +344,28 @@ static int restore_sve_fpsimd_context(st
- 	fpsimd_flush_task_state(current);
- 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -356,7 +356,7 @@ $(obj)/%.o: $(obj)/%.rs FORCE
+ quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+       cmd_rustc_rsi_rs = \
+ 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
+-	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
++	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) --config-path $(srctree)/.rustfmt.toml $@
  
-+	if (sm) {
-+		sme_alloc(current, false);
-+		if (!current->thread.sme_state)
-+			return -ENOMEM;
-+	}
-+
- 	sve_alloc(current, true);
- 	if (!current->thread.sve_state) {
- 		clear_thread_flag(TIF_SVE);
- 		return -ENOMEM;
- 	}
- 
-+	if (sm) {
-+		current->thread.svcr |= SVCR_SM_MASK;
-+		set_thread_flag(TIF_SME);
-+	} else {
-+		current->thread.svcr &= ~SVCR_SM_MASK;
-+		set_thread_flag(TIF_SVE);
-+	}
-+
-+	current->thread.fp_type = FP_STATE_SVE;
-+
- 	err = __copy_from_user(current->thread.sve_state,
- 			       (char __user const *)user->sve +
- 					SVE_SIG_REGS_OFFSET,
-@@ -357,12 +373,6 @@ static int restore_sve_fpsimd_context(st
- 	if (err)
- 		return -EFAULT;
- 
--	if (flags & SVE_SIG_FLAG_SM)
--		current->thread.svcr |= SVCR_SM_MASK;
--	else
--		set_thread_flag(TIF_SVE);
--	current->thread.fp_type = FP_STATE_SVE;
--
- 	err = read_fpsimd_context(&fpsimd, user);
- 	if (err)
- 		return err;
+ $(obj)/%.rsi: $(obj)/%.rs FORCE
+ 	+$(call if_changed_dep,rustc_rsi_rs)
 
 
 
