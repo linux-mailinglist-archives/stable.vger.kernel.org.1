@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-214107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CC0sEt9rg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:11 +0100
+	id GEDtI19lg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37490E995C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39ECAE8999
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54511308F6B0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6968A303F8D5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65993423162;
-	Wed,  4 Feb 2026 15:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3A24219EA;
+	Wed,  4 Feb 2026 15:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfqQKOsN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYmV3S7P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E5F2D97BB;
-	Wed,  4 Feb 2026 15:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530FC4218BB;
+	Wed,  4 Feb 2026 15:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218588; cv=none; b=MopXKNJVXzrb1BpdVx3j1mALDpwspOw72jbzZ54cgsB63jK42I3iSJ9MVKEds3860qswYl9zXi9rFDQ5K5bx0fjHef7+Y+3EBiI4KTN/wwNDeaf1XwsONSYSUFdrC/EazezH4+XDh4iKdB/eVch3CCqVI5rLCxAuuK08cV/+o/o=
+	t=1770218343; cv=none; b=D8VUDFb0FrtU1D6DfIWfqDepQwVVrsogR9SPAIgL2esImk66RrV/yoj1ip+2vcGvgAKDeNAgh2S/BgHX1FFCxRgzSzg3l0vhGQ3yz6UxI35Pnc3dNCih8q+PYzLRHi8Gev0I3ywFF5HFq49Fpox1xfEWxgre9b7MslZMde9XalU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218588; c=relaxed/simple;
-	bh=uAoLLUki/dgPHiCMqW2UzFuyKwB8jNwoEJMHBJrLXKk=;
+	s=arc-20240116; t=1770218343; c=relaxed/simple;
+	bh=7VfOC/LUceFnP+2HhQqxkfn5pTlekKV5EmS4dYznkZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEgKnJlawSpJNg1JmhEZcXPfFecS33dhc0mH9yaOXTZxZ1ljg9zBHJZO/WRWz40Jlcvwv2KYehEiYNPO6HTDt9Y/tfPduV8yXb9p4XHqij+S6UXWwk3oaSvGGgqjz3h9ikqX4AllAYiOeFz1n7AAFXv3jDpKEF32ZhTAOyLurQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfqQKOsN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F446C4CEF7;
-	Wed,  4 Feb 2026 15:23:07 +0000 (UTC)
+	 MIME-Version; b=gIk2Xdv25i52RmOGJGXUTEtPDioO32v8j2pIqLIwhwquAEI2/L/zgYPuhCfcIM4uc0/T7HWNn/puKQt0vxqYad7TsE75jth96CFkraRZqKhr7N45W/xHS6nbCPCi9D78gpiK+vmpb/Z1Nnjgy7m6jfJbER3o9s2zpc39Fizt9xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYmV3S7P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD8EC116C6;
+	Wed,  4 Feb 2026 15:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218588;
-	bh=uAoLLUki/dgPHiCMqW2UzFuyKwB8jNwoEJMHBJrLXKk=;
+	s=korg; t=1770218342;
+	bh=7VfOC/LUceFnP+2HhQqxkfn5pTlekKV5EmS4dYznkZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfqQKOsNt52usHDUXRSd5TgbKfHEq4ILP1hn5JuQ9Weg+Z+w1hj3Yr05towRhbUD/
-	 PyfZtqYSWMIw5o1zROf0ltyqw7DU3S1K6AiHsn2jzqeOYVx7OjRn7rEpkEhuzyKUez
-	 dg3atebQkESxXX7165zweeu4Qdz+np+GZBtbhFmk=
+	b=DYmV3S7PDtM/wPVfZMEyhWjYJwc7Or4OKdFC7GdIZTqt3kc3kA9Qml3GFXwDiOsdJ
+	 sIw0C/So5D4kTB51qeMEW2CHNx7qWV/90MdUX0J9IhuvC1Eruc8nSq9cZdTCeM+/j2
+	 7ZudvOhqpUUrwnuf0NsZdb1zbVihGQp0XInVCD/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 44/72] arm64/fpsimd: signal: Mandate SVE payload for streaming-mode state
+	JP Kobryn <inwardvessel@gmail.com>
+Subject: [PATCH 6.1 273/280] btrfs: prevent use-after-free on page private data in btrfs_subpage_clear_uptodate()
 Date: Wed,  4 Feb 2026 15:40:47 +0100
-Message-ID: <20260204143847.224605489@linuxfoundation.org>
+Message-ID: <20260204143919.527715186@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,117 +65,119 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214107-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214035-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,pstate.sm:url]
-X-Rspamd-Queue-Id: 37490E995C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 39ECAE8999
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: JP Kobryn <inwardvessel@gmail.com>
 
-[ Upstream commit b465ace42620970e840c7aeb2c44a6e3b1002fec ]
+This is a stable-only patch. The issue was inadvertently fixed in 6.17 [0]
+as part of a refactoring, but this patch serves as a minimal targeted fix
+for prior kernels.
 
-Non-streaming SVE state may be preserved without an SVE payload, in
-which case the SVE context only has a header with VL==0, and all state
-can be restored from the FPSIMD context. Streaming SVE state is always
-preserved with an SVE payload, where the SVE context header has VL!=0,
-and the SVE_SIG_FLAG_SM flag is set.
+Users of find_lock_page() need to guard against the situation where
+releasepage() has been invoked during reclaim but the page was ultimately
+not removed from the page cache. This patch covers one location that was
+overlooked.
 
-The kernel never preserves an SVE context where SVE_SIG_FLAG_SM is set
-without an SVE payload. However, restore_sve_fpsimd_context() doesn't
-forbid restoring such a context, and will handle this case by clearing
-PSTATE.SM and restoring the FPSIMD context into non-streaming mode,
-which isn't consistent with the SVE_SIG_FLAG_SM flag.
+After acquiring the page, use set_page_extent_mapped() to ensure the page
+private state is valid. This is especially important in the subpage case,
+where the private field is an allocated struct containing bitmap and lock
+data.
 
-Forbid this case, and mandate an SVE payload when the SVE_SIG_FLAG_SM
-flag is set. This avoids an awkward ABI quirk and reduces the risk that
-later rework to this code permits configuring a task with PSTATE.SM==1
-and fp_type==FP_STATE_FPSIMD.
+Without this protection, the race below is possible:
 
-I've marked this as a fix given that we never intended to support this
-case, and we don't want anyone to start relying upon the old behaviour
-once we re-enable SME.
+[mm] page cache reclaim path        [fs] relocation in subpage mode
+shrink_page_list()
+  trylock_page() /* lock acquired */
+  try_to_release_page()
+    mapping->a_ops->releasepage()
+      btrfs_releasepage()
+        __btrfs_releasepage()
+          clear_page_extent_mapped()
+            btrfs_detach_subpage()
+              subpage = detach_page_private(page)
+              btrfs_free_subpage(subpage)
+                kfree(subpage) /* point A */
+                                        prealloc_file_extent_cluster()
+                                          find_lock_page()
+                                            page_cache_get_speculative()
+                                            lock_page() /* wait for lock */
+  if (...)
+    ...
+  else if (!mapping || !__remove_mapping(..))
+    /*
+     * __remove_mapping() returns zero when
+     * page_ref_freeze(page, refcount) fails /* point B */
+     */
+    goto keep_locked /* page remains in cache */
+keep_locked:
+  unlock_page(page) /* lock released */
+                                        /* lock acquired */
+                                        btrfs_subpage_clear_uptodate()
+                                          /* use-after-free */
+                                          subpage = page->private
+[0] 4e346baee95f ("btrfs: reloc: unconditionally invalidate the page cache for each cluster")
 
-Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250508132644.1395904-4-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: d2907cbe9ea0 ("arm64/fpsimd: signal: Fix restoration of SVE context")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9d9ea1e68a05 ("btrfs: subpage: fix relocation potentially overwriting last page data")
+Cc: stable@vger.kernel.org # 5.15 - 6.9
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/signal.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ fs/btrfs/relocation.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -276,6 +276,7 @@ static int restore_sve_fpsimd_context(st
- 	unsigned int vl, vq;
- 	struct user_fpsimd_state fpsimd;
- 	u16 user_vl, flags;
-+	bool sm;
- 
- 	if (user->sve_size < sizeof(*user->sve))
- 		return -EINVAL;
-@@ -285,7 +286,8 @@ static int restore_sve_fpsimd_context(st
- 	if (err)
- 		return err;
- 
--	if (flags & SVE_SIG_FLAG_SM) {
-+	sm = flags & SVE_SIG_FLAG_SM;
-+	if (sm) {
- 		if (!system_supports_sme())
- 			return -EINVAL;
- 
-@@ -305,7 +307,16 @@ static int restore_sve_fpsimd_context(st
- 	if (user_vl != vl)
- 		return -EINVAL;
- 
--	if (user->sve_size == sizeof(*user->sve)) {
-+	/*
-+	 * Non-streaming SVE state may be preserved without an SVE payload, in
-+	 * which case the SVE context only has a header with VL==0, and all
-+	 * state can be restored from the FPSIMD context.
-+	 *
-+	 * Streaming SVE state is always preserved with an SVE payload. For
-+	 * consistency and robustness, reject restoring streaming SVE state
-+	 * without an SVE payload.
-+	 */
-+	if (!sm && user->sve_size == sizeof(*user->sve)) {
- 		clear_thread_flag(TIF_SVE);
- 		current->thread.svcr &= ~SVCR_SM_MASK;
- 		current->thread.fp_type = FP_STATE_FPSIMD;
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2897,6 +2897,19 @@ static noinline_for_stack int prealloc_f
+ 		 * will re-read the whole page anyway.
+ 		 */
+ 		if (page) {
++			/*
++			 * releasepage() could have cleared the page private data while
++			 * we were not holding the lock. Reset the mapping if needed so
++			 * subpage operations can access a valid private page state.
++			 */
++			ret = set_page_extent_mapped(page);
++			if (ret) {
++				unlock_page(page);
++				put_page(page);
++
++				return ret;
++			}
++
+ 			btrfs_subpage_clear_uptodate(fs_info, page, i_size,
+ 					round_up(i_size, PAGE_SIZE) - i_size);
+ 			unlock_page(page);
 
 
 
