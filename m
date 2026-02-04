@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBKLN+Zeg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:50 +0100
+	id ANnuN0Zpg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A27E7B6B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97161E93E5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDF4230DD3CD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 919B8314ED87
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5133227B359;
-	Wed,  4 Feb 2026 14:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F0B2D5950;
+	Wed,  4 Feb 2026 15:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMYmKo/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bca5DE2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AA62E92BC;
-	Wed,  4 Feb 2026 14:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EAE2D6611;
+	Wed,  4 Feb 2026 15:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216678; cv=none; b=uNk3o8kvibLeJHvv8zH1CvXlJRcYDGIap6Xbz4/BlD4jD4cRlighDvBfaKRuL+4k2DrbOPJAgTut6daDqgLlD4mf6+JsYLns2eLCxihm7mUp+uzrvuGJ0X+5vl9DOibZ58e+YqFwjCh5p+6ZXP2ndo0cPQ91lEdekIpx4ZfGT7g=
+	t=1770219013; cv=none; b=TirKLqW9eYR44qpQmoJUQbqEP/0CjFgOufCP/TbWIMvjsmOMdYfuO9kj4yWq3cqfFMhQAi9sfWswahADgKD9UtebCjkrcyKhasTnQFy8tYTAOs0B/JNC067m9auDUaBVhXWd5v3qqniV4o72tmw+wPZ1qeZ44cEH3sgRvO4kBJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216678; c=relaxed/simple;
-	bh=fJpO8OhbQU402wqOy4xCJQM8o3sDApFj1QKgfO6tMBs=;
+	s=arc-20240116; t=1770219013; c=relaxed/simple;
+	bh=M9uYQDJZYdZ9rQjv5YYNLRie80LBXiwsAGl7cCrSxXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTIR4lGl/KCVrmEnIFOfHblp+JLkn3742A0TE+t1V81LZHn+8RRfmyWiOLPMZ+H6rcHAPNHxLNch1ZcYc3CEPgPvthNDvaVq1KRsKevggrt8OoFlRNUM9QPbiUVjIaEHGzokshhmJ0w7I366ptnwAmp+RRih+KBQrepaG19ZQpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMYmKo/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E86AC4CEF7;
-	Wed,  4 Feb 2026 14:51:17 +0000 (UTC)
+	 MIME-Version; b=fmgoOhbFTfgl/7FhTAS/cPEZw5eZ/m53IeVDy8wWUtRz2o+OF2iER7lNv37w6MyZpC3ulLajAug2hNHiBrhpU7ELaWmz91scssQhLaXi4NVNfiPUOhqIzMQ5ym5tlI9p3zc9FQB/HDBVPSRwBgRBRPihzyYdkbMmy7mB8EX7KEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bca5DE2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BE7C4CEF7;
+	Wed,  4 Feb 2026 15:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216678;
-	bh=fJpO8OhbQU402wqOy4xCJQM8o3sDApFj1QKgfO6tMBs=;
+	s=korg; t=1770219013;
+	bh=M9uYQDJZYdZ9rQjv5YYNLRie80LBXiwsAGl7cCrSxXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dMYmKo/nV31k1r2PJtg1MqXdfOresnBMHeSqufqgRW9stGyO/wx+9cXo/QHF0sYMj
-	 7l+JH2LgFmpKiLPSVN74dH68tU/ykMP93E8f8OYDsfhiXXSY09YMBJ19IefgSjZDkj
-	 sDvimzmBQnhOLFyJeav7+naxitrPDIiRpFhf5d6I=
+	b=bca5DE2TlhAqtsxSpnVdmSZE/JDbArYMArGOiCuDumhB7aTvkmt4FvOM8EJNH3UHN
+	 Bk9Zn2TUfuck5HqqMSOI3MiQm9WNwI0MYikCYZmNeuleeTYm40QLfRVjBRcmnc3JZK
+	 86HnJvJzu1xbHbnl6mF4h3jzUM2VHCiK6EB6rMmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Tagir Garaev <tgaraev653@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/161] drm/imx: imx-tve: move initialization into probe
+Subject: [PATCH 6.18 041/122] ASoC: Intel: sof_es8336: fix headphone GPIO logic inversion
 Date: Wed,  4 Feb 2026 15:40:23 +0100
-Message-ID: <20260204143857.506620515@linuxfoundation.org>
+Message-ID: <20260204143853.337724416@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,130 +67,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214235-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213541-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email,ffwll.ch:email]
-X-Rspamd-Queue-Id: 34A27E7B6B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 97161E93E5
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Tagir Garaev <tgaraev653@gmail.com>
 
-[ Upstream commit a91cfaf6e6503150ed1ef08454f2c03e1f95a4ec ]
+[ Upstream commit 213c4e51267fd825cd21a08a055450cac7e0b7fb ]
 
-Parts of the initialization that do not require the drm device can be
-done once during probe instead of possibly multiple times during bind.
-The bind function only creates the encoder.
+The headphone GPIO should be set to the inverse of speaker_en.
+When speakers are enabled, headphones should be disabled and vice versa.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Stable-dep-of: e535c23513c6 ("drm/imx/tve: fix probe device leak")
+Currently both GPIOs are set to the same value (speaker_en), causing
+audio to play through both speakers and headphones simultaneously
+when headphones are plugged in.
+
+Tested on Huawei Matebook (BOD-WXX9) with ES8336 codec.
+
+Fixes: 6e1ff1459e00 ("ASoC: Intel: sof_es8336: support a separate gpio to control headphone")
+Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
+Link: https://patch.msgid.link/20260121152435.101698-1-tgaraev653@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imx/imx-tve.c |   42 +++++++++++++++++++-----------------------
- 1 file changed, 19 insertions(+), 23 deletions(-)
+ sound/soc/intel/boards/sof_es8336.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/imx/imx-tve.c
-+++ b/drivers/gpu/drm/imx/imx-tve.c
-@@ -439,6 +439,9 @@ static int imx_tve_register(struct drm_d
- 	encoder_type = tve->mode == TVE_MODE_VGA ?
- 				DRM_MODE_ENCODER_DAC : DRM_MODE_ENCODER_TVDAC;
+diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
+index 10b189ea88dba..09acd80d23e0f 100644
+--- a/sound/soc/intel/boards/sof_es8336.c
++++ b/sound/soc/intel/boards/sof_es8336.c
+@@ -120,7 +120,7 @@ static void pcm_pop_work_events(struct work_struct *work)
+ 	gpiod_set_value_cansleep(priv->gpio_speakers, priv->speaker_en);
  
-+	memset(connector, 0, sizeof(*connector));
-+	memset(encoder, 0, sizeof(*encoder));
-+
- 	ret = imx_drm_encoder_parse_of(drm, encoder, tve->dev->of_node);
- 	if (ret)
- 		return ret;
-@@ -504,8 +507,19 @@ static int of_get_tve_mode(struct device
+ 	if (quirk & SOF_ES8336_HEADPHONE_GPIO)
+-		gpiod_set_value_cansleep(priv->gpio_headphone, priv->speaker_en);
++		gpiod_set_value_cansleep(priv->gpio_headphone, !priv->speaker_en);
  
- static int imx_tve_bind(struct device *dev, struct device *master, void *data)
- {
--	struct platform_device *pdev = to_platform_device(dev);
- 	struct drm_device *drm = data;
-+	struct imx_tve *tve = dev_get_drvdata(dev);
-+
-+	return imx_tve_register(drm, tve);
-+}
-+
-+static const struct component_ops imx_tve_ops = {
-+	.bind	= imx_tve_bind,
-+};
-+
-+static int imx_tve_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
- 	struct device_node *ddc_node;
- 	struct imx_tve *tve;
-@@ -515,8 +529,9 @@ static int imx_tve_bind(struct device *d
- 	int irq;
- 	int ret;
- 
--	tve = dev_get_drvdata(dev);
--	memset(tve, 0, sizeof(*tve));
-+	tve = devm_kzalloc(dev, sizeof(*tve), GFP_KERNEL);
-+	if (!tve)
-+		return -ENOMEM;
- 
- 	tve->dev = dev;
- 
-@@ -623,28 +638,9 @@ static int imx_tve_bind(struct device *d
- 	if (ret)
- 		return ret;
- 
--	ret = imx_tve_register(drm, tve);
--	if (ret)
--		return ret;
--
--	return 0;
--}
--
--static const struct component_ops imx_tve_ops = {
--	.bind	= imx_tve_bind,
--};
--
--static int imx_tve_probe(struct platform_device *pdev)
--{
--	struct imx_tve *tve;
--
--	tve = devm_kzalloc(&pdev->dev, sizeof(*tve), GFP_KERNEL);
--	if (!tve)
--		return -ENOMEM;
--
- 	platform_set_drvdata(pdev, tve);
- 
--	return component_add(&pdev->dev, &imx_tve_ops);
-+	return component_add(dev, &imx_tve_ops);
  }
  
- static int imx_tve_remove(struct platform_device *pdev)
+-- 
+2.51.0
+
 
 
 
