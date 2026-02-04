@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-213647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNC6LhFhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:05 +0100
+	id GHgxJXNcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1CAE8006
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B39E766C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B703B31BDE93
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E054D3015707
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82EC41C2FA;
-	Wed,  4 Feb 2026 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0D22773E5;
+	Wed,  4 Feb 2026 14:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/dPyXRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP7mv1Dp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C21641B37D;
-	Wed,  4 Feb 2026 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F26C1C5D77;
+	Wed,  4 Feb 2026 14:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217036; cv=none; b=t68YnHYK1+YdTMeVQCyN6cGkGBSx6UNBgvsQwwJBV50el8pYweN+V4PV2dxCV2XxrEaM1CnkizVlDkkWYeDmmTQezND2eJVTnH0h/LMaQ68zAp0WInWkPka0zIGfT91KneQjrexrti5TzmYtFvti6qEeC3hnF7pffaNPkNe4AdY=
+	t=1770216385; cv=none; b=P4Qxp2sVrt+55JMW1flkp9suIRn4EJELjSUrXyYwKGIptW5hiabGCPcX6Dgazx6LWX81t8P8JTni32BDT72QMfxeDzFPw8LvlioCMUhhom79GAVJFcNJXvcMexv4PAhffqDeq1uhUWXcU2Ngb58wPqYzr0rVXYWOsTkm5N16+vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217036; c=relaxed/simple;
-	bh=FF4XH8oKnXLIuKl06TcE8M5xMdAXgX2CFNjSRsNAOWg=;
+	s=arc-20240116; t=1770216385; c=relaxed/simple;
+	bh=o92B/yqS1lxIG+o+TL8n6MziA97xKsRiBjvruLZ1r4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCno6HjfmlYiCeSzGGgbHr2EQBELvxdim4QsYnAStIvrYq3/n4CMCY5JmLAAUY1wpBDDhCuH6r3phx9wb2RygM1q0nCbso/FM6QvTVsZpRgGYJLUve4K08GYAibzu9NWn9AMp0kaZ+6SkxUVmdtnQwJLdVZKtba96GkzAJuGbpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/dPyXRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E182BC116C6;
-	Wed,  4 Feb 2026 14:57:15 +0000 (UTC)
+	 MIME-Version; b=l0px5XFRw9o772jeQZTsyeLhsa6xavR7W6ZEau0jsrFTbkiYsU6eobXyEOqBw121AvfRYlY4VaT0Twerni5DrV6V9GkWaGOvmxke7oSFOxH4iz5lt0Jx65NuR4fiuqBEFTEAzLvhDf02eQcE+/B74x12503/zdsTX7WGDpe9U20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MP7mv1Dp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47D2C4CEF7;
+	Wed,  4 Feb 2026 14:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217036;
-	bh=FF4XH8oKnXLIuKl06TcE8M5xMdAXgX2CFNjSRsNAOWg=;
+	s=korg; t=1770216385;
+	bh=o92B/yqS1lxIG+o+TL8n6MziA97xKsRiBjvruLZ1r4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/dPyXRHtKjShTo/tpgmEbABCX3n4aLszVSaa9szG8XF6ItaQQ7Yt0UKAN54JSigl
-	 LsCSW3BsgKOkNmkJQWobikgxtilolUHLc+Wgu8y0mwHlMZSqQn9Pr0vfhVVGHw7rNG
-	 jaC7HEOs0oimzAdjID6vAxxzkMvhWWCPQiTV09ws=
+	b=MP7mv1DpNcAbS1crtPDKvVhVHvVj6y+Krqx9QnW4FqEfKDijuNS9v1AFG7+P+IW5p
+	 ro+pDBAYjGV5YLWH+WfQ6bV3AP/NXPV9fzr0bvBrBz4LPY/Fdn2bacq3d16jqIdB6o
+	 vHhF/A3cJSg2PpAJo2nAcpEwJRCXT8nDtXOfULF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cedric Xing <cedric.xing@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Cheng-Yu Lee <cylee12@realtek.com>,
+	Yu-Chun Lin <eleanor.lin@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/206] x86: make page fault handling disable interrupts properly
+Subject: [PATCH 5.10 073/161] regmap: Fix race condition in hwspinlock irqsave routine
 Date: Wed,  4 Feb 2026 15:38:56 +0100
-Message-ID: <20260204143901.990998366@linuxfoundation.org>
+Message-ID: <20260204143854.381852715@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213647-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213452-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,107 +87,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,intel.com:email]
-X-Rspamd-Queue-Id: 3D1CAE8006
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E0B39E766C
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cedric Xing <cedric.xing@intel.com>
+From: Cheng-Yu Lee <cylee12@realtek.com>
 
-[ Upstream commit 614da1d3d4cdbd6e41aea06bc97ec15aacff6daf ]
+[ Upstream commit 4b58aac989c1e3fafb1c68a733811859df388250 ]
 
-There's a big comment in the x86 do_page_fault() about our interrupt
-disabling code:
+Previously, the address of the shared member '&map->spinlock_flags' was
+passed directly to 'hwspin_lock_timeout_irqsave'. This creates a race
+condition where multiple contexts contending for the lock could overwrite
+the shared flags variable, potentially corrupting the state for the
+current lock owner.
 
-    * User address page fault handling might have reenabled
-    * interrupts. Fixing up all potential exit points of
-    * do_user_addr_fault() and its leaf functions is just not
-    * doable w/o creating an unholy mess or turning the code
-    * upside down.
+Fix this by using a local stack variable 'flags' to store the IRQ state
+temporarily.
 
-but it turns out that comment is subtly wrong, and the code as a result
-is also wrong.
-
-Because it's certainly true that we may have re-enabled interrupts when
-handling user page faults.  And it's most certainly true that we don't
-want to bother fixing up all the cases.
-
-But what isn't true is that it's limited to user address page faults.
-
-The confusion stems from the fact that we have logic here that depends
-on the address range of the access, but other code then depends on the
-_context_ the access was done in.  The two are not related, even though
-both of them are about user-vs-kernel.
-
-In other words, both user and kernel addresses can cause interrupts to
-have been enabled (eg when __bad_area_nosemaphore() gets called for user
-accesses to kernel addresses).  As a result we should make sure to
-disable interrupts again regardless of the address range before
-returning to the low-level fault handling code.
-
-The __bad_area_nosemaphore() code actually did disable interrupts again
-after enabling them, just not consistently.  Ironically, as noted in the
-original comment, fixing up all the cases is just not worth it, when the
-simple solution is to just do it unconditionally in one single place.
-
-So remove the incomplete case that unsuccessfully tried to do what the
-comment said was "not doable" in commit ca4c6a9858c2 ("x86/traps: Make
-interrupt enable/disable symmetric in C code"), and just make it do the
-simple and straightforward thing.
-
-Signed-off-by: Cedric Xing <cedric.xing@intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Fixes: ca4c6a9858c2 ("x86/traps: Make interrupt enable/disable symmetric in C code")
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 8698b9364710 ("regmap: Add hardware spinlock support")
+Signed-off-by: Cheng-Yu Lee <cylee12@realtek.com>
+Co-developed-by: Yu-Chun Lin <eleanor.lin@realtek.com>
+Signed-off-by: Yu-Chun Lin <eleanor.lin@realtek.com>
+Link: https://patch.msgid.link/20260109032633.8732-1-eleanor.lin@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/fault.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/base/regmap/regmap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 31afd82b95245..7215e74076ec9 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -804,8 +804,6 @@ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
- 		force_sig_pkuerr((void __user *)address, pkey);
- 	else
- 		force_sig_fault(SIGSEGV, si_code, (void __user *)address);
--
--	local_irq_disable();
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 02c21fce457c1..e86d069894c06 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -463,9 +463,11 @@ static void regmap_lock_hwlock_irq(void *__map)
+ static void regmap_lock_hwlock_irqsave(void *__map)
+ {
+ 	struct regmap *map = __map;
++	unsigned long flags = 0;
+ 
+ 	hwspin_lock_timeout_irqsave(map->hwlock, UINT_MAX,
+-				    &map->spinlock_flags);
++				    &flags);
++	map->spinlock_flags = flags;
  }
  
- static noinline void
-@@ -1443,15 +1441,12 @@ handle_page_fault(struct pt_regs *regs, unsigned long error_code,
- 		do_kern_addr_fault(regs, error_code, address);
- 	} else {
- 		do_user_addr_fault(regs, error_code, address);
--		/*
--		 * User address page fault handling might have reenabled
--		 * interrupts. Fixing up all potential exit points of
--		 * do_user_addr_fault() and its leaf functions is just not
--		 * doable w/o creating an unholy mess or turning the code
--		 * upside down.
--		 */
--		local_irq_disable();
- 	}
-+	/*
-+	 * page fault handling might have reenabled interrupts,
-+	 * make sure to disable them again.
-+	 */
-+	local_irq_disable();
- }
- 
- DEFINE_IDTENTRY_RAW_ERRORCODE(exc_page_fault)
+ static void regmap_unlock_hwlock(void *__map)
 -- 
 2.51.0
 
