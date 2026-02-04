@@ -1,70 +1,67 @@
-Return-Path: <stable+bounces-214281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHB9FPVog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:45 +0100
+	id OAipOfZog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A350DE92FE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F87E9305
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11B9932B8C89
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 395AD3183644
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9DB2D6611;
-	Wed,  4 Feb 2026 15:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B1A2D8773;
+	Wed,  4 Feb 2026 15:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJiK7Vyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pR201Nou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419CE2D7D42;
-	Wed,  4 Feb 2026 15:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9C02D738F;
+	Wed,  4 Feb 2026 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219164; cv=none; b=PnMz4LRpI38sxmfVmq96a0o3ox3IYus4ELP3wGhOIty16rnVmc5w3maSyOgAHLr/RyN79SO58DlLKXDRvPkD1wLazYa6ZgblIyYIGcS3YFSCvvyy0bmm1wxDvlH8JyIfX4S06h4Ew1cm1eDfD1hIde3uBbZBFYc4R1BDcZptH1U=
+	t=1770219171; cv=none; b=NFwDlvgO0E79ica7odwSweTSXRNU2pY6m2JuEBri63h+HygdE33kD+3sUKQcEVHyswGRIz2hw7kOSWbv25nBRkk4KQGHsEDfMWu9bhsALiBnykyzOSsFd40i9k9hxo7KaDoF+T5453STJ/iIRtqxc/EwFCSAbaHWZW0xvdSxGMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219164; c=relaxed/simple;
-	bh=qnq1VHcs+DmEqQrwBBSAhPEAxUkRA+5AyOMTeeiHmsQ=;
+	s=arc-20240116; t=1770219171; c=relaxed/simple;
+	bh=IpqBlnf4SVj91UydQQT1mROWsEhiZpb6J+VTQjw74Mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYGG3eV/16rTp0g20u0x/7+nYkRteiaFL9pDYSMqTLmD4aJYcgoaad1xeNF1wrmhxyb4SJI8Mj17JZvkQHrU3NTf7I2i9JXGNnzqnPh506kdoWEb78I23qJhFUVBa2ih7ZlE5gXorAuKqn6w+o3r4ihBhK3nU/7cWmFBPJ1mpRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJiK7Vyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D15C4CEF7;
-	Wed,  4 Feb 2026 15:32:43 +0000 (UTC)
+	 MIME-Version; b=IcJQhz9bMzTzLsWPSuzUBQMV4FQCCWO6twQE2mRmWNAmtCVXrZWuGfljX/Zmi0k7t9qzdyw87PSluOP2w1ShX+CryRBNw2eGiIWl23FvuzRL/1YUcKuN1KniK6AFZwungnzKzb4R+NtAH3481OWU3aOSXPqhwyxupbt/+exDvWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pR201Nou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275B9C4CEF7;
+	Wed,  4 Feb 2026 15:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219164;
-	bh=qnq1VHcs+DmEqQrwBBSAhPEAxUkRA+5AyOMTeeiHmsQ=;
+	s=korg; t=1770219170;
+	bh=IpqBlnf4SVj91UydQQT1mROWsEhiZpb6J+VTQjw74Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJiK7VybZbdTVCQgUUKMK/hz41pd6Zuw5eGz75tZJtj6b0yV1TyMEC9C4ajVkt7kI
-	 Nr81UeQejIQXKvpljV2hvOA6EMXdJLnY+RJ+FMXQNDKrFjnXNJWOSckr2RnUkDLkgB
-	 lufFV/AFlwsrpVisCy7oTNurGNeDK3oPJRIcj1QE=
+	b=pR201Nou7QlVXWu+Oo5VNsvrnVw6RISs0RGldGXJAcbjR9pFPN/MFM++QsO2d34l9
+	 LztP6wyY0FtWdLNhdVtLfPnZFB1AyKcdbNrFO3D0M+8EUrWr/c77SkFt4IyquTGaAF
+	 3juEWb5M+N+jHvqfu/qgc62K94Qnl1RcxFw9Wxvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jane Chu <jane.chu@oracle.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Chris Mason <clm@meta.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	William Roche <william.roche@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 086/122] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
-Date: Wed,  4 Feb 2026 15:41:08 +0100
-Message-ID: <20260204143854.945461075@linuxfoundation.org>
+	"robin.kuo" <robin.kuo@mediatek.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"andrew.yang" <andrew.yang@mediatek.com>,
+	AngeloGiaocchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Chinwen Chang <chinwen.chang@mediatek.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Mathias Brugger <matthias.bgg@gmail.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+Subject: [PATCH 6.18 087/122] mm, swap: restore swap_space attr aviod kernel panic
+Date: Wed,  4 Feb 2026 15:41:09 +0100
+Message-ID: <20260204143854.981902181@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
 References: <20260204143851.857060534@linuxfoundation.org>
@@ -90,10 +87,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-214281-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-214283-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,huawei.com,meta.com,kernel.org,google.com,infradead.org,suse.com,linux.dev,gmail.com,suse.de,linux-foundation.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mediatek.com,linux-foundation.org,collabora.com,redhat.com,kernel.org,tencent.com,gmail.com,huaweicloud.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
@@ -107,239 +104,102 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,meta.com:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linux-foundation.org:email,suse.com:email,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email]
-X-Rspamd-Queue-Id: A350DE92FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tencent.com:email,linux-foundation.org:email,mediatek.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huaweicloud.com:email]
+X-Rspamd-Queue-Id: 53F87E9305
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jane Chu <jane.chu@oracle.com>
+From: robin.kuo <robin.kuo@mediatek.com>
 
-commit a148a2040191b12b45b82cb29c281cb3036baf90 upstream.
+commit a0f3c0845a4ff68d403c568266d17e9cc553e561 upstream.
 
-When a newly poisoned subpage ends up in an already poisoned hugetlb
-folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats is
-not.  Fix the inconsistency by designating action_result() to update them
-both.
+commit 8b47299a411a ("mm, swap: mark swap address space ro and add context
+debug check") made the swap address space read-only.  It may lead to
+kernel panic if arch_prepare_to_swap returns a failure under heavy memory
+pressure as follows,
 
-While at it, define __get_huge_page_for_hwpoison() return values in terms
-of symbol names for better readibility.  Also rename
-folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
-function does more than the conventional bit setting and the fact three
-possible return values are expected.
+el1_abort+0x40/0x64
+el1h_64_sync_handler+0x48/0xcc
+el1h_64_sync+0x84/0x88
+errseq_set+0x4c/0xb8 (P)
+__filemap_set_wb_err+0x20/0xd0
+shrink_folio_list+0xc20/0x11cc
+evict_folios+0x1520/0x1be4
+try_to_shrink_lruvec+0x27c/0x3dc
+shrink_one+0x9c/0x228
+shrink_node+0xb3c/0xeac
+do_try_to_free_pages+0x170/0x4f0
+try_to_free_pages+0x334/0x534
+__alloc_pages_direct_reclaim+0x90/0x158
+__alloc_pages_slowpath+0x334/0x588
+__alloc_frozen_pages_noprof+0x224/0x2fc
+__folio_alloc_noprof+0x14/0x64
+vma_alloc_zeroed_movable_folio+0x34/0x44
+do_pte_missing+0xad4/0x1040
+handle_mm_fault+0x4a4/0x790
+do_page_fault+0x288/0x5f8
+do_translation_fault+0x38/0x54
+do_mem_abort+0x54/0xa8
 
-Link: https://lkml.kernel.org/r/20260120232234.3462258-1-jane.chu@oracle.com
-Fixes: 18f41fa616ee ("mm: memory-failure: bump memory failure stats to pglist_data")
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Chris Mason <clm@meta.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: William Roche <william.roche@oracle.com>
+Restore swap address space as not ro to avoid the panic.
+
+Link: https://lkml.kernel.org/r/20260116062535.306453-2-robin.kuo@mediatek.com
+Fixes: 8b47299a411a ("mm, swap: mark swap address space ro and add context debug check")
+Signed-off-by: robin.kuo <robin.kuo@mediatek.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: andrew.yang <andrew.yang@mediatek.com>
+Cc: AngeloGiaocchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Mathias Brugger <matthias.bgg@gmail.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |   93 +++++++++++++++++++++++++++++++---------------------
- 1 file changed, 56 insertions(+), 37 deletions(-)
+ mm/swap.h       | 2 +-
+ mm/swap_state.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1873,12 +1873,22 @@ static unsigned long __folio_free_raw_hw
- 	return count;
- }
+diff --git a/mm/swap.h b/mm/swap.h
+index d034c13d8dd2..1bd466da3039 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -198,7 +198,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
+ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
  
--static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
-+#define	MF_HUGETLB_FREED		0	/* freed hugepage */
-+#define	MF_HUGETLB_IN_USED		1	/* in-use hugepage */
-+#define	MF_HUGETLB_NON_HUGEPAGE		2	/* not a hugepage */
-+#define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
-+#define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
-+#define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
-+/*
-+ * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
-+ * to keep track of the poisoned pages.
-+ */
-+static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+ /* linux/mm/swap_state.c */
+-extern struct address_space swap_space __ro_after_init;
++extern struct address_space swap_space __read_mostly;
+ static inline struct address_space *swap_address_space(swp_entry_t entry)
  {
- 	struct llist_head *head;
- 	struct raw_hwp_page *raw_hwp;
- 	struct raw_hwp_page *p;
--	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
-+	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
+ 	return &swap_space;
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 5f97c6ae70a2..44d228982521 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -37,8 +37,7 @@ static const struct address_space_operations swap_aops = {
+ #endif
+ };
  
- 	/*
- 	 * Once the hwpoison hugepage has lost reliable raw error info,
-@@ -1886,20 +1896,17 @@ static int folio_set_hugetlb_hwpoison(st
- 	 * so skip to add additional raw error info.
- 	 */
- 	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
--		return -EHWPOISON;
-+		return MF_HUGETLB_FOLIO_PRE_POISONED;
- 	head = raw_hwp_list_head(folio);
- 	llist_for_each_entry(p, head->first, node) {
- 		if (p->page == page)
--			return -EHWPOISON;
-+			return MF_HUGETLB_PAGE_PRE_POISONED;
- 	}
+-/* Set swap_space as read only as swap cache is handled by swap table */
+-struct address_space swap_space __ro_after_init = {
++struct address_space swap_space __read_mostly = {
+ 	.a_ops = &swap_aops,
+ };
  
- 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
- 	if (raw_hwp) {
- 		raw_hwp->page = page;
- 		llist_add(&raw_hwp->node, head);
--		/* the first error event will be counted in action_result(). */
--		if (ret)
--			num_poisoned_pages_inc(page_to_pfn(page));
- 	} else {
- 		/*
- 		 * Failed to save raw error info.  We no longer trace all
-@@ -1947,42 +1954,39 @@ void folio_clear_hugetlb_hwpoison(struct
- 
- /*
-  * Called from hugetlb code with hugetlb_lock held.
-- *
-- * Return values:
-- *   0             - free hugepage
-- *   1             - in-use hugepage
-- *   2             - not a hugepage
-- *   -EBUSY        - the hugepage is busy (try to retry)
-- *   -EHWPOISON    - the hugepage is already hwpoisoned
-  */
- int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
- 				 bool *migratable_cleared)
- {
- 	struct page *page = pfn_to_page(pfn);
- 	struct folio *folio = page_folio(page);
--	int ret = 2;	/* fallback to normal page handling */
- 	bool count_increased = false;
-+	int ret, rc;
- 
--	if (!folio_test_hugetlb(folio))
-+	if (!folio_test_hugetlb(folio)) {
-+		ret = MF_HUGETLB_NON_HUGEPAGE;
- 		goto out;
--
--	if (flags & MF_COUNT_INCREASED) {
--		ret = 1;
-+	} else if (flags & MF_COUNT_INCREASED) {
-+		ret = MF_HUGETLB_IN_USED;
- 		count_increased = true;
- 	} else if (folio_test_hugetlb_freed(folio)) {
--		ret = 0;
-+		ret = MF_HUGETLB_FREED;
- 	} else if (folio_test_hugetlb_migratable(folio)) {
--		ret = folio_try_get(folio);
--		if (ret)
-+		if (folio_try_get(folio)) {
-+			ret = MF_HUGETLB_IN_USED;
- 			count_increased = true;
-+		} else {
-+			ret = MF_HUGETLB_FREED;
-+		}
- 	} else {
--		ret = -EBUSY;
-+		ret = MF_HUGETLB_RETRY;
- 		if (!(flags & MF_NO_RETRY))
- 			goto out;
- 	}
- 
--	if (folio_set_hugetlb_hwpoison(folio, page)) {
--		ret = -EHWPOISON;
-+	rc = hugetlb_update_hwpoison(folio, page);
-+	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
-+		ret = rc;
- 		goto out;
- 	}
- 
-@@ -2007,10 +2011,16 @@ out:
-  * with basic operations like hugepage allocation/free/demotion.
-  * So some of prechecks for hwpoison (pinning, and testing/setting
-  * PageHWPoison) should be done in single hugetlb_lock range.
-+ * Returns:
-+ *	0		- not hugetlb, or recovered
-+ *	-EBUSY		- not recovered
-+ *	-EOPNOTSUPP	- hwpoison_filter'ed
-+ *	-EHWPOISON	- folio or exact page already poisoned
-+ *	-EFAULT		- kill_accessing_process finds current->mm null
-  */
- static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
- {
--	int res;
-+	int res, rv;
- 	struct page *p = pfn_to_page(pfn);
- 	struct folio *folio;
- 	unsigned long page_flags;
-@@ -2019,22 +2029,31 @@ static int try_memory_failure_hugetlb(un
- 	*hugetlb = 1;
- retry:
- 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
--	if (res == 2) { /* fallback to normal page handling */
-+	switch (res) {
-+	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
- 		*hugetlb = 0;
- 		return 0;
--	} else if (res == -EHWPOISON) {
--		if (flags & MF_ACTION_REQUIRED) {
--			folio = page_folio(p);
--			res = kill_accessing_process(current, folio_pfn(folio), flags);
--		}
--		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
--		return res;
--	} else if (res == -EBUSY) {
-+	case MF_HUGETLB_RETRY:
- 		if (!(flags & MF_NO_RETRY)) {
- 			flags |= MF_NO_RETRY;
- 			goto retry;
- 		}
- 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-+	case MF_HUGETLB_FOLIO_PRE_POISONED:
-+	case MF_HUGETLB_PAGE_PRE_POISONED:
-+		rv = -EHWPOISON;
-+		if (flags & MF_ACTION_REQUIRED) {
-+			folio = page_folio(p);
-+			rv = kill_accessing_process(current, folio_pfn(folio), flags);
-+		}
-+		if (res == MF_HUGETLB_PAGE_PRE_POISONED)
-+			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-+		else
-+			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
-+		return rv;
-+	default:
-+		WARN_ON((res != MF_HUGETLB_FREED) && (res != MF_HUGETLB_IN_USED));
-+		break;
- 	}
- 
- 	folio = page_folio(p);
-@@ -2045,7 +2064,7 @@ retry:
- 		if (migratable_cleared)
- 			folio_set_hugetlb_migratable(folio);
- 		folio_unlock(folio);
--		if (res == 1)
-+		if (res == MF_HUGETLB_IN_USED)
- 			folio_put(folio);
- 		return -EOPNOTSUPP;
- 	}
-@@ -2054,7 +2073,7 @@ retry:
- 	 * Handling free hugepage.  The possible race with hugepage allocation
- 	 * or demotion can be prevented by PageHWPoison flag.
- 	 */
--	if (res == 0) {
-+	if (res == MF_HUGETLB_FREED) {
- 		folio_unlock(folio);
- 		if (__page_handle_poison(p) > 0) {
- 			page_ref_inc(p);
+-- 
+2.53.0
+
 
 
 
