@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-213963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFPiJ/dpg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:03 +0100
+	id EJLAH7hdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC85EE95B4
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26EAE791C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 542C0313BCCB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D39A3080B1E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D099F423A8A;
-	Wed,  4 Feb 2026 15:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE832C0F79;
+	Wed,  4 Feb 2026 14:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWzcKsY+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxMQvx8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C5E2BE03C;
-	Wed,  4 Feb 2026 15:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C8D2C08DC;
+	Wed,  4 Feb 2026 14:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218098; cv=none; b=bAu1ztfdC6I6ORj/+PSpm8bFhI49/5/y0eJr+gZY4EdHdqJTTnl5DZ0ziwEVGilMnXmlJPAjKeTNUWEeBqsf/Q9cAOcd8eKwUoKisFkIyPYp2wpINFDtkczEACDH5tEHR30s5dBYPnGLlxbz91l2EZ1DmNOpdlv22e7rx/2XXZ0=
+	t=1770216558; cv=none; b=C9tEsHVc3wfiM7v3bgeBpIc4kAhR5Kt1nJWUoGWTPM8Q9Ogw/HqGfiezdVj/1i1mrDQGz1NiZw/Y2fam1ydyBZQYWQCMzLgEVsqkw3vkJb7/sm4TsF+orgNlGmORzN/deNe98G6T4fcBxmiy/w+fHSh3hx58LApCl0fR2/e0Zx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218098; c=relaxed/simple;
-	bh=WLK4wQ4Tpz1a00GZZLipyOBUPgY2NSsrUWzhn1mQsOw=;
+	s=arc-20240116; t=1770216558; c=relaxed/simple;
+	bh=z49r8F/N9pYXEvHtwTDjEobAwH73W5KPNVK7lGJgDLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qK1qE6/CF2wfp5Dy1n+Wt7CyPL0jt8RJaPRWy+TIp45XgdGu+JiPLcA5KSzndgW1x81iujwGNB5h7jM5NS+3qaWXtn4vGUyzTrQOEom6VqVOmpgKSf6+Q/A5VW9bvVuwE3HgXU3H4JazGdAR/BjlAzrp34GtiDQxdZz7sG/BJiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWzcKsY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2A2C4CEF7;
-	Wed,  4 Feb 2026 15:14:57 +0000 (UTC)
+	 MIME-Version; b=K17cvdGe9uUQ4onMeKiOEqHkFpylcKA0Yy+9rzjuwB8umpjD5ZALbcVkpj5ub437U82cAQarRMDJI1WPQSXUOWo3a/suFb3FBUtCsspqkW8Oq1eAQbVR9lonWGlpUWFMLvF0yO/2dMkxsEBNyukM24VAAqLbQZQLif6olaFZFp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxMQvx8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90373C4CEF7;
+	Wed,  4 Feb 2026 14:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218098;
-	bh=WLK4wQ4Tpz1a00GZZLipyOBUPgY2NSsrUWzhn1mQsOw=;
+	s=korg; t=1770216558;
+	bh=z49r8F/N9pYXEvHtwTDjEobAwH73W5KPNVK7lGJgDLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWzcKsY+zrADAlsaqAgxPweSxNbKrbpduEm7vNAvrz1HDrKPQ2XW8Me79OYiKIRcm
-	 y+dw93qMLReToZeM9fvofWfVByJlCsOO8PE9B+7HkLMsQSW/LUZTSCGQf5O5Dm7EPW
-	 XL/h178aktiDLoB/U4L0k3e4o+0E/xOa4R9oCrLE=
+	b=IxMQvx8SlR5il+rxRBqHZpMneJxzNDdwLhNZ/rIZWsBK/EZhRvA7s7jbV8Xb/2dB/
+	 V19HCKsYklkB9BXURkdkDEkWBsZDiV8n3duVAqUf1WC1zjiZsw3ej5WcAexeeBHIJ6
+	 MbW/0K/E4kt9QRYcBQcWVpEoMvp2NSVLc/sLWkNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 212/280] efivarfs: fix error propagation in efivar_entry_get()
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jake Keller <jacob.e.keller@intel.com>,
+	IWL <intel-wired-lan@lists.osuosl.org>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 123/161] ice: stop counting UDP csum mismatch as rx_errors
 Date: Wed,  4 Feb 2026 15:39:46 +0100
-Message-ID: <20260204143917.238431314@linuxfoundation.org>
+Message-ID: <20260204143856.170523056@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +71,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213503-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213963-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: EC85EE95B4
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:url,intel.com:email,cloudflare.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,osuosl.org:email]
+X-Rspamd-Queue-Id: D26EAE791C
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
 
-commit 4b22ec1685ce1fc0d862dcda3225d852fb107995 upstream.
+[ Upstream commit 05faf2c0a76581d0a7fdbb8ec46477ba183df95b ]
 
-efivar_entry_get() always returns success even if the underlying
-__efivar_entry_get() fails, masking errors.
+Since the beginning, the Intel ice driver has counted receive checksum
+offload mismatches into the rx_errors member of the rtnl_link_stats64
+struct. In ethtool -S these show up as rx_csum_bad.nic.
 
-This may result in uninitialized heap memory being copied to userspace
-in the efivarfs_file_read() path.
+I believe counting these in rx_errors is fundamentally wrong, as it's
+pretty clear from the comments in if_link.h and from every other statistic
+the driver is summing into rx_errors, that all of them would cause a
+"hardware drop" except for the UDP checksum mismatch, as well as the fact
+that all the other causes for rx_errors are L2 reasons, and this L4 UDP
+"mismatch" is an outlier.
 
-Fix it by returning the error from __efivar_entry_get().
+A last nail in the coffin is that rx_errors is monitored in production and
+can indicate a bad NIC/cable/Switch port, but instead some random series of
+UDP packets with bad checksums will now trigger this alert. This false
+positive makes the alert useless and affects us as well as other companies.
 
-Fixes: 2d82e6227ea1 ("efi: vars: Move efivar caching layer into efivarfs")
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This packet with presumably a bad UDP checksum is *already* passed to the
+stack, just not marked as offloaded by the hardware/driver. If it is
+dropped by the stack it will show up as UDP_MIB_CSUMERRORS.
+
+And one more thing, none of the other Intel drivers, and at least bnxt_en
+and mlx5 both don't appear to count UDP offload mismatches as rx_errors.
+
+Here is a related customer complaint:
+https://community.intel.com/t5/Ethernet-Products/ice-rx-errros-is-too-sensitive-to-IP-TCP-attack-packets-Intel/td-p/1662125
+
+Fixes: 4f1fe43c920b ("ice: Add more Rx errors to netdev's rx_error counter")
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Jake Keller <jacob.e.keller@intel.com>
+Cc: IWL <intel-wired-lan@lists.osuosl.org>
+Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/efivarfs/vars.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/efivarfs/vars.c
-+++ b/fs/efivarfs/vars.c
-@@ -609,7 +609,7 @@ int efivar_entry_get(struct efivar_entry
- 	err = __efivar_entry_get(entry, attributes, size, data);
- 	efivar_unlock();
- 
--	return 0;
-+	return err;
- }
- 
- /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index a337a6826a845..b3ae457b4db6b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5441,7 +5441,6 @@ void ice_update_vsi_stats(struct ice_vsi *vsi)
+ 				    pf->stats.illegal_bytes +
+ 				    pf->stats.rx_len_errors +
+ 				    pf->stats.rx_undersize +
+-				    pf->hw_csum_rx_error +
+ 				    pf->stats.rx_jabber +
+ 				    pf->stats.rx_fragments +
+ 				    pf->stats.rx_oversize;
+-- 
+2.51.0
+
 
 
 
