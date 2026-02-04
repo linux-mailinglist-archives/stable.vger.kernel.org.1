@@ -1,84 +1,51 @@
-Return-Path: <stable+bounces-214344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id p54gCIqeg2kLqQMAu9opvQ
-	(envelope-from <stable+bounces-214344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 20:31:22 +0100
+	id +PgpK7ufg2kLqQMAu9opvQ
+	(envelope-from <stable+bounces-214345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 20:36:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634F1EC138
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 20:31:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1E3EC1C9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 20:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 798CD302800E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 19:31:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C51C30055F5
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 19:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BF51C6FF5;
-	Wed,  4 Feb 2026 19:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5B642316F;
+	Wed,  4 Feb 2026 19:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UpUAVuVW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R34k9rUv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F178D23E320
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 19:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B361832E137
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 19:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770233477; cv=none; b=FkiN1DigpRUUiO/YVA/UHswAmmrUfJb98DVbugG12ua15VTc81zpx0nh1jwb+TUtLjscZOJLlfmY+DH4Bz2NFacSb0y/Q9ZJpv+VJKqA4vUKzcWNiCl2AEE04OLnD5dt0ehG4H/X81z/2nKWHHriX66DXb1ydeJjOGIoFsBNRbg=
+	t=1770233782; cv=none; b=kP3hl1QiIq7qv51cvpjv790R2FhWrFqCFG9hNj3Bke7ZiisW4VrlyU96OKgfKVvXCdI2ZUAnsrlpNkbYn4xUDL3ghtvXiZVqvF0BhsGg6Ae4o00TIOG215gYyJmoWTE/mJAer4iPCSjxBIWqTdNMIe9dQWzo3f0+pyCefp2LhWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770233477; c=relaxed/simple;
-	bh=1wVbNCL7mJuBFv3mVOLcFDU0DouuXiCE9Qn43xJuscU=;
+	s=arc-20240116; t=1770233782; c=relaxed/simple;
+	bh=QU3jrWsGIuZ9o2iKsCUnTMZ1BLOu3kxDvnNgU0Q6PbY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L4/ySyUDP6nKugJxaQJnj10Qsy1FrRrq8jnefTKgRpao99hzsUGiXbDM6DqNzxbQA3STRyCC0sc+uwd+qwZmESwO2BaJKVYXDK23QDS9I8v7XjsS8ut42+rWznD9QsEPwwmox0F7VqeZqlV6tfJa5m/7U5Nca2CuPC39hzqzk84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UpUAVuVW; arc=none smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-66307e10d1dso102181eaf.0
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 11:31:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770233476; x=1770838276; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/NZCfJ3FeJBJ3Z7n7uLLlEjb4EHcHxxuD7Rih9R6Vw=;
-        b=UpUAVuVWwEGXZtVRKe+8TvJYPbTpUwJKG5V3luBIkxe/1N+Q8qhMVeEoAf/M9az1Ly
-         uDjvNUGOVx1NcWPYOil43SynOwsB4Ft0dBhHovtemvlKOnoPUBKGWpzUtUz0jVk43oZg
-         ehTDjVLc+cFny7BPnM9SzGvziMamKUwZH5sTRAsjLOy7pXK/3z1LVUA6+H19S3GuUGTU
-         KdBC0MK6iCYSzcTwQHHrnIZ/L5uzLPUBGLGkfqj71hus5nCTaP1UPuWWZx/at+gKOxR2
-         ygiZAQit9EUNdmQqqup2EwX0gkpPvzCrwam/Cvbv3qUV6eEe2sZpwkqwdrYvyx7n+Y+A
-         E0og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770233476; x=1770838276;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z/NZCfJ3FeJBJ3Z7n7uLLlEjb4EHcHxxuD7Rih9R6Vw=;
-        b=U5/TmX+Dch7CR6jRRz9j2X/DNps/MWUZZjAdxqBytdfmLjqiSQ3k7oWjoILtPgPst3
-         QibXDeZzXwIM2u9F1XK2GvwNfPkyWBa0gYnySuZtHURtFvzoYLTUsH3SQYaqgzThdFth
-         d5Mm0X4LLHi8gaGl/CrF2P8CYsn9R52XIOZVU1JdLKd7nG89frylOui6I72S7EdWvtia
-         2Tneq0lfxkPfeGEgPeQ1JMbxIyVPk3M4NcW5LnbA2yfbWJ/oETji7hzs6VE9KN3Td5sP
-         x7m9nd9KBtDnDfOC+Z40+geu8zudsTMj2FWI1QH5q5BdVvZYxFKJy8TXrzDa9Nofyevm
-         Kq4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVhkl7ZDAH/5Z8NOEHm2uQtIZAJv5/+U++3hwVm/ZsdorGu2LJHRjaI1OR1vC2kG7qaALEhAA8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6OAkGP6V/2DW0UQ0l8+iTvCsc/zA3fiEU0SkpZRYP1dYzeTxU
-	S7DxNoOtLScaVgVmg+kfF+2BsKHGq+9eaXpQkedhlclb2hrJ9YjR5/r6
-X-Gm-Gg: AZuq6aJaeNX/s0060aSTdE2AIGSu1odKlCw/fSMfnnt9o2tVynTfPBFRAu6uTsnP8yp
-	m1R7d8uNpqm3A6U2gqT2CAmJVpFl6qPWcUBp0STo+Mj5ph193651ZmEe+voGPlxSbMfSNOfLcZt
-	v5csBe/eC5djJPPf/OwMa9rZxRafhxVWmbOb9mcsOF9TtgUtra35I6XLIztgCbtr8QW4RoGi3H7
-	ZNG1Pv4gMRrm8Zwke3Kz0t6DPz+cuP+l48O0g3+fNnX/cCEEtBIfZpRHNLJgFCnqHXdWDmVrK65
-	MNuFqpumdPoavIbf4c3BTOFzkU2roSPpp+0IM8Ial5wqxg1OusuzoOOtxV9qQWtHnJLBSVfqgYA
-	jSQ7sInYOuhzbouPcQsAPTc15Zsujinquqpe8FTVI9tI+H+jKIIWUOzoDjZ3yhR1lT42waSY2rg
-	y3YvmoVlbMUnsdoKnwJkS0kVoSW7jmdbtMDBhO0pcl5wh5rQmo
-X-Received: by 2002:a05:6820:6ae3:b0:659:9a49:8f70 with SMTP id 006d021491bc7-66a22979c30mr1849320eaf.53.1770233475810;
-        Wed, 04 Feb 2026 11:31:15 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66a354bdd76sm1813640eaf.11.2026.02.04.11.31.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Feb 2026 11:31:15 -0800 (PST)
-Message-ID: <5598b605-df7f-4490-ad73-45d6dce9dfa0@gmail.com>
-Date: Wed, 4 Feb 2026 11:31:12 -0800
+	 In-Reply-To:Content-Type; b=R/1AVUmrN9DC5gZyRb2XijO1VoBxbQCkVc34fVUJgFL4XYexJ95WbWTKTALMY9IkDu+8Xt48jO7+2mGuuvuzew7NfziH2J5MUrfOtmbL9gBQCCMhG9W9iDhHtPMhv8iRIc7ZGZLImJhJljJ455NhnEjwGbkT/6F2pYi8B3UJAgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R34k9rUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92C9C4CEF7;
+	Wed,  4 Feb 2026 19:36:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770233782;
+	bh=QU3jrWsGIuZ9o2iKsCUnTMZ1BLOu3kxDvnNgU0Q6PbY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=R34k9rUvrSuNHWvpokBkg5c1iGffIx40UJz0bBuQO2uqidy8D5Hh3vxwD5PzHVfsj
+	 nW28jOkm5TfKDV8kT/dm/8hvYVaYLD1NzPsq0XGiDQxGKrd7PSLYlBrWPSSFKOyY+C
+	 pZ5bJ0VmHcqmagN/VlHHdmWW35iw8X7sYJ1lWiPet4wje/wnx6Pt53yjKx/KhxdMTZ
+	 ZR0y+BDzRVipQ8sPc/y/ess5IJ2zydaSQzhYI1Jh9xlKATMpYq8fneH2wj75r8ZEwv
+	 VfH0BZRyG/Xim/MxAfcZ7LuwlFJiRxfO6edj5Yp5bGsbRLMDoVHNZ0TVSCXHSGwtUa
+	 q3uQPohPCSEFA==
+Message-ID: <d3f4456d-f2e1-4d8f-aa92-77ccd1606d59@kernel.org>
+Date: Wed, 4 Feb 2026 20:36:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,82 +53,192 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/161] 5.10.249-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260204143851.755002596@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+Subject: Re: [Patch v2] mm/huge_memory: fix early failure try_to_migrate()
+ when split huge pmd for shared thp
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, riel@surriel.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com, ziy@nvidia.com,
+ gavinguo@igalia.com, baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
+ stable@vger.kernel.org
+References: <20260204004219.6524-1-richard.weiyang@gmail.com>
+From: "David Hildenbrand (arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260204004219.6524-1-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214344-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214345-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,linux-foundation.org,oracle.com,surriel.com,suse.cz,google.com,nvidia.com,igalia.com,linux.alibaba.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
-X-Rspamd-Queue-Id: 634F1EC138
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,nvidia.com:email]
+X-Rspamd-Queue-Id: AC1E3EC1C9
 X-Rspamd-Action: no action
 
-On 2/4/26 06:37, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.249 release.
-> There are 161 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 06 Feb 2026 14:38:23 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.249-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Sorry for the late reply. I saw that I was CCed in v1 but I am only now 
+catching up with mails ... slowly but steadily.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+> Without the above commit, we can successfully split to order 0.
+> With the above commit, the folio is still a large folio.
+> 
+> The reason is the above commit return false after split pmd
+> unconditionally in the first process and break try_to_migrate().
+> 
+> The tricky thing in above reproduce method is current debugfs interface
+> leverage function split_huge_pages_pid(), which will iterate the whole
+> pmd range and do folio split on each base page address. This means it
+> will try 512 times, and each time split one pmd from pmd mapped to pte
+> mapped thp. If there are less than 512 shared mapped process,
+> the folio is still split successfully at last. But in real world, we
+> usually try it for once.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Ah, that explains magic number 513.
 
-We have a new warning:
+> 
+> This patch fixes this by restart page_vma_mapped_walk() after
+> split_huge_pmd_locked(). Because split_huge_pmd_locked() may fall back to
+> (freeze = false) if folio_try_share_anon_rmap_pmd() fails and the PMD is
+> just split instead of split to migration entry. 
 
-drivers/scsi/scsi_lib.c:321:17: warning: ISO C90 forbids mixed 
-declarations and code [-Wdeclaration-after-statement]
+Right, but folio_try_share_anon_rmap_pmd() should never fail on the 
+folios that have already been shared? (above you write that it is shared 
+with 512 children)
+
+The only case where  folio_try_share_anon_rmap_pmd() could fail would be 
+if the folio would not be shared, and there would only be a single PMD 
+then, so there is nothing you can do -> abort.
+
+Returning "false" from try_to_migrate_one() is the real issue, as it 
+makes rmap_walk_anon() to just stop -> abort the walk.
+
+
+So I suspect v1 was actually sufficient, or what am I missing where the 
+restart would actually be required?
+
+
+(maybe we should get rid of the usage of booleans here at some point, an 
+enum like abort/continue would have been much clearer)
+
+> Restart
+> page_vma_mapped_walk() and let try_to_migrate_one() try on each PTE
+> again and fail try_to_migrate() early if it fails.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+> Cc: Gavin Guo <gavinguo@igalia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: <stable@vger.kernel.org>
+> 
+> ---
+> v2:
+>    * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+> ---
+>   mm/rmap.c | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 618df3385c8b..5b853ec8901d 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2446,11 +2446,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>   			__maybe_unused pmd_t pmdval;
+>   
+>   			if (flags & TTU_SPLIT_HUGE_PMD) {
+> +				/*
+> +				 * After split_huge_pmd_locked(), restart the
+> +				 * walk to detect PageAnonExclusive handling
+> +				 * failure in __split_huge_pmd_locked().
+> +				 */
+>   				split_huge_pmd_locked(vma, pvmw.address,
+>   						      pvmw.pmd, true);
+> -				ret = false;
+> -				page_vma_mapped_walk_done(&pvmw);
+> -				break;
+> +				flags &= ~TTU_SPLIT_HUGE_PMD;
+> +				page_vma_mapped_walk_restart(&pvmw);
+> +				continue;
+>   			}
+
+The change looks more consistent to what we have in try_to_unmap().
+
+But the explanation above is not quite right I think. And consequently 
+the comment above as well.
+
+PAE being set implies "single PMD" -> unshared.
+
 -- 
-Florian
+Cheers,
+
+David
 
