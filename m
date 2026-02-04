@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-213850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCqHN21ng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-213850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:13 +0100
+	id 0LGgLUFig2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E83E8F1A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11224E8298
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F170304CEC2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEBA93066339
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE0A428497;
-	Wed,  4 Feb 2026 15:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00C141B345;
+	Wed,  4 Feb 2026 14:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0Wb7+Ri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Btm/d5GE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3327C3C1963;
-	Wed,  4 Feb 2026 15:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6445E223323;
+	Wed,  4 Feb 2026 14:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217722; cv=none; b=Oda8EeQT3EJPEYHMne29edlT76G5s3hyrbqQaa5w4XTN1TWnWnk2p0SBTkfBc+ZCbMDHirYJdeCaNW/0X3gPYBMLnz/LIFdNI5UZCjQqp372d1M3rZqr3Q3aT3JrqBT+YjVqLlISnFHYZaB7F1wb4ooPcnRi2VdhLSoDVpelQBM=
+	t=1770216829; cv=none; b=OX/vQEZaVBuDD3DvWwo/1FOit2HdCcl+qDtknzBbS3aQWjbbZWGxllwzrR6hKBqTPTbHpC92bya/91r5o4AKyRQqmZcOyJbSlpCRDhEZWUnfzAIgufneRPTlG0lVB5XgNovN2cH+Halji9gFY4WXa+s8oP8qc9i0m6TV1BccTsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217722; c=relaxed/simple;
-	bh=bXyclqGl58ngeFouA5KBmepSC+i2rN9nc5MjcaCtOtY=;
+	s=arc-20240116; t=1770216829; c=relaxed/simple;
+	bh=TJmX4XwAEixdkezmbL+7qgnUm1CuncVC7gGHna2H12E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hdaAh1rcl7rUvvMTByaEi+1nz9fDFIBPCaLa26FPwPkte2wOCbLEg8lBfSLWxn1ZUyiB9+psix7EFqOXx4KYGMH47YkXReSESGFttoeal0xFTlCL2xSpP6tx978oeLRxxoSDl6jiqeeK6vDKh4LINPI10ghpcD7qsUiL4BxPUpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0Wb7+Ri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DBAC4CEF7;
-	Wed,  4 Feb 2026 15:08:41 +0000 (UTC)
+	 MIME-Version; b=btqDUr8rByyh9zQs11dMRHA+iy+u8Tp71WY8oSynnv5ayrQPpJqkrylsXLIyUXETfQ62EICiTK6v22jfPLSIXlVGd+beV2WzJO37etbBrdTIlXnwaQYbL10Vu14dwFl80Nzl4/zQ6JCkdulOwZDIIxthY0ps5rfEx6ArOWYF/u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Btm/d5GE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DD9C4CEF7;
+	Wed,  4 Feb 2026 14:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217722;
-	bh=bXyclqGl58ngeFouA5KBmepSC+i2rN9nc5MjcaCtOtY=;
+	s=korg; t=1770216829;
+	bh=TJmX4XwAEixdkezmbL+7qgnUm1CuncVC7gGHna2H12E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0Wb7+RiOLmdK00wlSQ8plwQCceG/M9dUopx5+WnwIbwPtsFKegOptXIP4+ZoZWzG
-	 FN3dOylm2Y+i1fnFASI2pWHh+UHHzF1RKXNKh0ltDqUBUm//TI0v3O4JNxbPF0DizB
-	 yyIVJXmEJXhMcO/HZEBFC9Zcw7ZKOskRQTC9A3y4=
+	b=Btm/d5GE1rD89Qp0HRgSuXWmYVvQ19N1uobWxHVfIpVFDglZywUX3/lySIr4huFs+
+	 rZdP6EaoWoiAbiCTjp4tAF4ZrtFqYHELlBldGH4TpBHbk0YwgiRC/Ub3LcsR9/yIAM
+	 abzWcuYvKTcY3f3tyJ0DHooIFQNxzNoBieXnthd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/280] selftests: net: fib-onlink-tests: Convert to use namespaces by default
+	Marek Vasut <marex@nabladev.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.15 043/206] drm/panel-simple: fix connector type for DataImage SCF0700C48GGU18 panel
 Date: Wed,  4 Feb 2026 15:37:54 +0100
-Message-ID: <20260204143913.250676380@linuxfoundation.org>
+Message-ID: <20260204143859.763120328@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,218 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213850-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213586-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 06E83E8F1A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,nabladev.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email]
+X-Rspamd-Queue-Id: 11224E8298
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit 4f5f148dd7c0459229d2ab9a769b2e820f9ee6a2 ]
+commit 6ab3d4353bf75005eaa375677c9fed31148154d6 upstream.
 
-Currently, the test breaks if the SUT already has a default route
-configured for IPv6. Fix by avoiding the use of the default namespace.
+The connector type for the DataImage SCF0700C48GGU18 panel is missing and
+devm_drm_panel_bridge_add() requires connector type to be set. This leads
+to a warning and a backtrace in the kernel log and panel does not work:
+"
+WARNING: CPU: 3 PID: 38 at drivers/gpu/drm/bridge/panel.c:379 devm_drm_of_get_bridge+0xac/0xb8
+"
+The warning is triggered by a check for valid connector type in
+devm_drm_panel_bridge_add(). If there is no valid connector type
+set for a panel, the warning is printed and panel is not added.
+Fill in the missing connector type to fix the warning and make
+the panel operational once again.
 
-Fixes: 4ed591c8ab44 ("net/ipv6: Allow onlink routes to have a device mismatch if it is the default route")
-Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260113-selftests-net-fib-onlink-v2-1-89de2b931389@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 97ceb1fb08b6 ("drm/panel: simple: Add support for DataImage SCF0700C48GGU18")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260110152750.73848-1-marex@nabladev.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/net/fib-onlink-tests.sh | 71 ++++++++-----------
- 1 file changed, 30 insertions(+), 41 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
-index ec2d6ceb1f08d..c01be076b210d 100755
---- a/tools/testing/selftests/net/fib-onlink-tests.sh
-+++ b/tools/testing/selftests/net/fib-onlink-tests.sh
-@@ -120,7 +120,7 @@ log_subsection()
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1921,6 +1921,7 @@ static const struct panel_desc dataimage
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ 	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
++	.connector_type = DRM_MODE_CONNECTOR_DPI,
+ };
  
- run_cmd()
- {
--	local cmd="$*"
-+	local cmd="$1"
- 	local out
- 	local rc
- 
-@@ -145,7 +145,7 @@ get_linklocal()
- 	local pfx
- 	local addr
- 
--	addr=$(${pfx} ip -6 -br addr show dev ${dev} | \
-+	addr=$(${pfx} ${IP} -6 -br addr show dev ${dev} | \
- 	awk '{
- 		for (i = 3; i <= NF; ++i) {
- 			if ($i ~ /^fe80/)
-@@ -173,58 +173,48 @@ setup()
- 
- 	set -e
- 
--	# create namespace
--	setup_ns PEER_NS
-+	# create namespaces
-+	setup_ns ns1
-+	IP="ip -netns $ns1"
-+	setup_ns ns2
- 
- 	# add vrf table
--	ip li add ${VRF} type vrf table ${VRF_TABLE}
--	ip li set ${VRF} up
--	ip ro add table ${VRF_TABLE} unreachable default metric 8192
--	ip -6 ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} li add ${VRF} type vrf table ${VRF_TABLE}
-+	${IP} li set ${VRF} up
-+	${IP} ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} -6 ro add table ${VRF_TABLE} unreachable default metric 8192
- 
- 	# create test interfaces
--	ip li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
--	ip li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
--	ip li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
--	ip li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
-+	${IP} li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
-+	${IP} li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
-+	${IP} li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
-+	${IP} li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
- 
- 	# enslave vrf interfaces
- 	for n in 5 7; do
--		ip li set ${NETIFS[p${n}]} vrf ${VRF}
-+		${IP} li set ${NETIFS[p${n}]} vrf ${VRF}
- 	done
- 
- 	# add addresses
- 	for n in 1 3 5 7; do
--		ip li set ${NETIFS[p${n}]} up
--		ip addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} up
-+		${IP} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		${IP} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
- 	# move peer interfaces to namespace and add addresses
- 	for n in 2 4 6 8; do
--		ip li set ${NETIFS[p${n}]} netns ${PEER_NS} up
--		ip -netns ${PEER_NS} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip -netns ${PEER_NS} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} netns ${ns2} up
-+		ip -netns $ns2 addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		ip -netns $ns2 addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
--	ip -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
--	ip -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
-+	${IP} -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
-+	${IP} -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
- 
- 	set +e
- }
- 
--cleanup()
--{
--	# make sure we start from a clean slate
--	cleanup_ns ${PEER_NS} 2>/dev/null
--	for n in 1 3 5 7; do
--		ip link del ${NETIFS[p${n}]} 2>/dev/null
--	done
--	ip link del ${VRF} 2>/dev/null
--	ip ro flush table ${VRF_TABLE}
--	ip -6 ro flush table ${VRF_TABLE}
--}
--
- ################################################################################
- # IPv4 tests
- #
-@@ -241,7 +231,7 @@ run_ip()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -257,8 +247,8 @@ run_ip_mpath()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -339,7 +329,7 @@ run_ip6()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -353,8 +343,8 @@ run_ip6_mpath()
- 	local exp_rc="$6"
- 	local desc="$7"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 "${opts}" \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 ${opts} \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -491,10 +481,9 @@ do
- 	esac
- done
- 
--cleanup
- setup
- run_onlink_tests
--cleanup
-+cleanup_ns ${ns1} ${ns2}
- 
- if [ "$TESTS" != "none" ]; then
- 	printf "\nTests passed: %3d\n" ${nsuccess}
--- 
-2.51.0
-
+ static const struct display_timing dlc_dlc0700yzg_1_timing = {
 
 
 
