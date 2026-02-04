@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-213644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEimFTBfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:04 +0100
+	id 0G+HM+Flg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E89E7BDE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D422E8B31
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 320C23024DE4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3CC9E30C6A39
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0132741C2F3;
-	Wed,  4 Feb 2026 14:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387894219FF;
+	Wed,  4 Feb 2026 15:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai/2VrHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0pyonQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82AA41C2F2;
-	Wed,  4 Feb 2026 14:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F097F3D994;
+	Wed,  4 Feb 2026 15:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217025; cv=none; b=ZQEmM5c/3/ogSdSyCimKgAgAeWp5U1aAibDcIajgA8cisg15DOkS3xKQSF1p9ZWlTOmW7kyLNxQYDLUC1kml5h9FcFDf81b4EqJbQITWuNVaVfKI/VQa2vAfqMgkiXXkUopcWmIOGiBgabhnsavP6V0mA7h/3o//j3z55VzLllY=
+	t=1770217947; cv=none; b=Fl939NrEjS6XH0EMmWvSYjzh9MFoYT/E5Mgoy6IpLEr7uARNx+WU4w7X80jmy/kUtN5FVqjkYSx/Wh8OzScNPC3keSxI2df8qpWzgu8CZhw3PVrXwZ9Ag9ZPnJQj0IWw5o4QZRQHirAm8+K0ylMAzfL1C9H2nNbeVZHBhoVJQfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217025; c=relaxed/simple;
-	bh=+aP2uwaZqwSO6wGc9wRrDnPQ6joqhT2hzZP74205G7k=;
+	s=arc-20240116; t=1770217947; c=relaxed/simple;
+	bh=VM/PGWc5YWp4gBk74mvtisL4O073AzevcqLzJN83Z9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QagsNe0rClVeMrSiPgZwse7OzXV36E+Tm5Ymxmgy5GtHtSZUV4M0BWP0i2DDcGHIyjqw0h8/H6yW/QoyJPUJ9LCGPiYLh/gn8ngvv2WpBwBP2NFbCWTiYJ/E7qU02OPH3ttnTCv3KV3+Fu73fHoZLOk293jg1rdYeq5Wx0w53BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai/2VrHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0FCC4CEF7;
-	Wed,  4 Feb 2026 14:57:04 +0000 (UTC)
+	 MIME-Version; b=RGkNi9SnMI2zhMQwRsSzpljAREkRVDEOkwkvwvjW4imxyXGbezAXsTzqZ855twyyrcX1YJFJn38RLgfzxmXvcDbliHXUbZzgwBSuPRhmjXA7KFOKUgQU+UYxZE7VvBl2GWPILozzOaqweHgKpu9w2PAMBFa0/1Z4BqtBAXy6lwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0pyonQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769FFC4CEF7;
+	Wed,  4 Feb 2026 15:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217025;
-	bh=+aP2uwaZqwSO6wGc9wRrDnPQ6joqhT2hzZP74205G7k=;
+	s=korg; t=1770217946;
+	bh=VM/PGWc5YWp4gBk74mvtisL4O073AzevcqLzJN83Z9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ai/2VrHoS4hZJ18TZkNEzGCEkgD5WqvGhv7I99HVxCQss/PLJMy7fW+o8vXIei0FI
-	 OaByGQR3SBmLx0FqIRZ1SzSxMlGCqk0LdiOa5HHIIbYGZksPT5j0iY5theESKhtKQ4
-	 34Cx6D2KEdVE8FpUsiQY/k2zSXcLbu4vOyTx6nnw=
+	b=P0pyonQo/H/ozTFGjglLDE3NHqBCBAII2QfbM+j2xZMGIsr+KQQ4iTa5guMeJTmZQ
+	 PeLUxOPzXvppWcoB5T/hdhFGfciwhRWiuicaYykkposp+nnAZMX9gwNdjcYkdICiFJ
+	 b3pEMBFJmvnX4fcjXS1U7QHuKQZREVn59/Sa34Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c46409299c70a221415e@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Matteo Croce <mcroce@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/206] bonding: provide a net pointer to __skb_flow_dissect()
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 159/280] iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_adc driver
 Date: Wed,  4 Feb 2026 15:38:53 +0100
-Message-ID: <20260204143901.885390521@linuxfoundation.org>
+Message-ID: <20260204143915.345966075@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_URIBL_FAIL(0.00)[fomichev.me:query timed out];
-	TAGGED_FROM(0.00)[bounces-213644-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-213917-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[mcroce.redhat.com:query timed out,sdf.fomichev.me:query timed out];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,c46409299c70a221415e];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fomichev.me:email]
-X-Rspamd-Queue-Id: 38E89E7BDE
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6D422E8B31
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 5f9b329096596b7e53e07d041d7fca4cbe1be752 ]
+commit dbdb442218cd9d613adeab31a88ac973f22c4873 upstream.
 
-After 3cbf4ffba5ee ("net: plumb network namespace into __skb_flow_dissect")
-we have to provide a net pointer to __skb_flow_dissect(),
-either via skb->dev, skb->sk, or a user provided pointer.
+at91_adc_interrupt can call at91_adc_touch_data_handler function
+to start the work by schedule_work(&st->touch_st.workq).
 
-In the following case, syzbot was able to cook a bare skb.
+If we remove the module which will call at91_adc_remove to
+make cleanup, it will free indio_dev through iio_device_unregister but
+quite a bit later. While the work mentioned above will be used. The
+sequence of operations that may lead to a UAF bug is as follows:
 
-WARNING: net/core/flow_dissector.c:1131 at __skb_flow_dissect+0xb57/0x68b0 net/core/flow_dissector.c:1131, CPU#1: syz.2.1418/11053
-Call Trace:
- <TASK>
-  bond_flow_dissect drivers/net/bonding/bond_main.c:4093 [inline]
-  __bond_xmit_hash+0x2d7/0xba0 drivers/net/bonding/bond_main.c:4157
-  bond_xmit_hash_xdp drivers/net/bonding/bond_main.c:4208 [inline]
-  bond_xdp_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5139 [inline]
-  bond_xdp_get_xmit_slave+0x1fd/0x710 drivers/net/bonding/bond_main.c:5515
-  xdp_master_redirect+0x13f/0x2c0 net/core/filter.c:4388
-  bpf_prog_run_xdp include/net/xdp.h:700 [inline]
-  bpf_test_run+0x6b2/0x7d0 net/bpf/test_run.c:421
-  bpf_prog_test_run_xdp+0x795/0x10e0 net/bpf/test_run.c:1390
-  bpf_prog_test_run+0x2c7/0x340 kernel/bpf/syscall.c:4703
-  __sys_bpf+0x562/0x860 kernel/bpf/syscall.c:6182
-  __do_sys_bpf kernel/bpf/syscall.c:6274 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:6272 [inline]
-  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6272
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
+CPU0                                      CPU1
 
-Fixes: 58deb77cc52d ("bonding: balance ICMP echoes in layer3+4 mode")
-Reported-by: syzbot+c46409299c70a221415e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/696faa23.050a0220.4cb9c.001f.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Matteo Croce <mcroce@redhat.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20260120161744.1893263-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+                                     | at91_adc_workq_handler
+at91_adc_remove                      |
+iio_device_unregister(indio_dev)     |
+//free indio_dev a bit later         |
+                                     | iio_push_to_buffers(indio_dev)
+                                     | //use indio_dev
+
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in at91_adc_remove.
+
+Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/adc/at91-sama5d2_adc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 86be928b210a2..e6394fd45f6df 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3811,8 +3811,9 @@ static bool bond_flow_dissect(struct bonding *bond, struct sk_buff *skb, const v
- 	case BOND_XMIT_POLICY_ENCAP23:
- 	case BOND_XMIT_POLICY_ENCAP34:
- 		memset(fk, 0, sizeof(*fk));
--		return __skb_flow_dissect(NULL, skb, &flow_keys_bonding,
--					  fk, data, l2_proto, nhoff, hlen, 0);
-+		return __skb_flow_dissect(dev_net(bond->dev), skb,
-+					  &flow_keys_bonding, fk, data,
-+					  l2_proto, nhoff, hlen, 0);
- 	default:
- 		break;
- 	}
--- 
-2.51.0
-
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -2521,6 +2521,7 @@ static int at91_adc_remove(struct platfo
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
+ 
+ 	iio_device_unregister(indio_dev);
++	cancel_work_sync(&st->touch_st.workq);
+ 
+ 	at91_adc_dma_disable(st);
+ 
 
 
 
