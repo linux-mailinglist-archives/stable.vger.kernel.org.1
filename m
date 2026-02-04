@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GjgOBFmg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:25 +0100
+	id 4GK1EQ5dg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C21AE8BAD
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6544E77C2
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 777E93076D45
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E79A730333E4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586A5421F1C;
-	Wed,  4 Feb 2026 15:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958843BFE35;
+	Wed,  4 Feb 2026 14:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COTBCwKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzjPD9nq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5BE1E520C;
-	Wed,  4 Feb 2026 15:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C153AEF30;
+	Wed,  4 Feb 2026 14:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218014; cv=none; b=f/UKHLy5dFsUoExTuqJnrGc1sNCwYChk2ciVYmMVsbNPWeMxUBRhsQwClEy8HXi4xNWvRlS6vidF3zkYUTQVIjLQprNjoOAXBX6O9nqVi/KzOWPsurXUGeOCT0qBiedSlSIP2YycXq0x9lqPsjgoPhKIy9MEECOD+fg5wkr9Aa8=
+	t=1770216617; cv=none; b=ncTd4eeI9Gl0h1uH4FTUafUK4/sTuFdyysz0/4DFcpu2nmHqZIsjFrS+9/5HKPUnwjnImInk/UYZk0k8TDU8RtHrl/dbJWIU/oo6wvDlNyh3dtXybibE9vnS2owTBH6Tz3350ny91P9nNmjN0vy4MTcEFC2tsOMXw6inkaAHUzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218014; c=relaxed/simple;
-	bh=iD/exxZ00/GVD4vVNVXzqhp+W6e3y1oTYKL0Z+J56H4=;
+	s=arc-20240116; t=1770216617; c=relaxed/simple;
+	bh=BPLrvK+JeSAvScJ067qQXKqskXGXYwQTs2bNKxRL7AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=el9zloIV4aU720eFbRX5Di8etVJ1soZmmaMNiCtF0UnjgVlPxWpGTIQhZDXFlMae1CG+4XOw+jik2SJLArEBd8RlD95WW5+NnBN/rU2+ciLW0ucKofvuDuGbOnt8GcNLy03wpegUFf2ZB2Y8VF0VGSTLeoLHqZk56VC2xKhWA1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COTBCwKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D98C4CEF7;
-	Wed,  4 Feb 2026 15:13:33 +0000 (UTC)
+	 MIME-Version; b=N8knThegqdFk/ZWOv9DacUiP2u3KrHdzWqemQFi5orsEcsBFq9kZbDTcV/SnePEI9dxe8rR2Nb1LRf8nDs3QM90vRUdXlOgdnix0ZNVTFPW3f57DHAWKaW6frfbjo7PZMOJtztHdfLKuxlZzZWl+cjj932xRixtLRSVY8uK/LZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzjPD9nq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D747CC4CEF7;
+	Wed,  4 Feb 2026 14:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218014;
-	bh=iD/exxZ00/GVD4vVNVXzqhp+W6e3y1oTYKL0Z+J56H4=;
+	s=korg; t=1770216617;
+	bh=BPLrvK+JeSAvScJ067qQXKqskXGXYwQTs2bNKxRL7AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=COTBCwKKj9jJBraN5pk8BFyC2nMV+w1rLgVyE9mzPp+ke0JVMozdPiiA2xaX+5JPh
-	 ODAn2jcWd4nUAB/Nev/30Na72od+B0Or/K4gmypD9Jj4pRGzJxfetPxv6sZTOO1vtd
-	 MriiqSDFqAffW5dJW6jmj3ncoBm35VGhQYchnbxE=
+	b=EzjPD9nq3s3BSZ8ES0ELIXIKfqXqle/dBs6t37fLTpwbAf1mkHUrEQhWAes8z9Jp7
+	 cVrCPWx/e6CFrTSOXEn3kkmmyASC2xXTr1I4WpcmMEZo6qxFXwvG0WOL6PCkZDffb/
+	 YAEKWTEWKoLpZ/0mNimeqQw3Xb/cxKLaYKlyaJfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	chongjiapeng <jiapeng.chong@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 186/280] mm/damon/sysfs-scheme: cleanup quotas subdirs on scheme dir setup failure
+	Marek Vasut <marex@nabladev.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 097/161] wifi: rsi: Fix memory corruption due to not set vif driver data size
 Date: Wed,  4 Feb 2026 15:39:20 +0100
-Message-ID: <20260204143916.304302865@linuxfoundation.org>
+Message-ID: <20260204143855.233392898@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213937-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213522-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,61 +87,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,alibaba.com:email]
-X-Rspamd-Queue-Id: 9C21AE8BAD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,nabladev.com:email,intel.com:email]
+X-Rspamd-Queue-Id: B6544E77C2
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Marek Vasut <marex@nabladev.com>
 
-commit dc7e1d75fd8c505096d0cddeca9e2efb2b55aaf9 upstream.
+commit 4f431d88ea8093afc7ba55edf4652978c5a68f33 upstream.
 
-When a DAMOS-scheme DAMON sysfs directory setup fails after setup of
-quotas/ directory, subdirectories of quotas/ directory are not cleaned up.
-As a result, DAMON sysfs interface is nearly broken until the system
-reboots, and the memory for the unremoved directory is leaked.
+The struct ieee80211_vif contains trailing space for vif driver data,
+when struct ieee80211_vif is allocated, the total memory size that is
+allocated is sizeof(struct ieee80211_vif) + size of vif driver data.
+The size of vif driver data is set by each WiFi driver as needed.
 
-Cleanup the directories under such failures.
+The RSI911x driver does not set vif driver data size, no trailing space
+for vif driver data is therefore allocated past struct ieee80211_vif .
+The RSI911x driver does however use the vif driver data to store its
+vif driver data structure "struct vif_priv". An access to vif->drv_priv
+leads to access out of struct ieee80211_vif bounds and corruption of
+some memory.
 
-Link: https://lkml.kernel.org/r/20251225023043.18579-4-sj@kernel.org
-Fixes: 1b32234ab087 ("mm/damon/sysfs: support DAMOS watermarks")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # 5.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+In case of the failure observed locally, rsi_mac80211_add_interface()
+would write struct vif_priv *vif_info = (struct vif_priv *)vif->drv_priv;
+vif_info->vap_id = vap_idx. This write corrupts struct fq_tin member
+struct list_head new_flows . The flow = list_first_entry(head, struct
+fq_flow, flowchain); in fq_tin_reset() then reports non-NULL bogus
+address, which when accessed causes a crash.
+
+The trigger is very simple, boot the machine with init=/bin/sh , mount
+devtmpfs, sysfs, procfs, and then do "ip link set wlan0 up", "sleep 1",
+"ip link set wlan0 down" and the crash occurs.
+
+Fix this by setting the correct size of vif driver data, which is the
+size of "struct vif_priv", so that memory is allocated and the driver
+can store its driver data in it, instead of corrupting memory around
+it.
+
+Cc: stable@vger.kernel.org
+Fixes: dad0d04fa7ba ("rsi: Add RS9113 wireless driver")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260109235817.150330-1-marex@nabladev.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -859,7 +859,7 @@ static int damon_sysfs_scheme_add_dirs(s
- 		goto put_access_pattern_out;
- 	err = damon_sysfs_scheme_set_watermarks(scheme);
- 	if (err)
--		goto put_quotas_access_pattern_out;
-+		goto rmdir_put_quotas_access_pattern_out;
- 	err = damon_sysfs_scheme_set_stats(scheme);
- 	if (err)
- 		goto put_watermarks_quotas_access_pattern_out;
-@@ -868,7 +868,8 @@ static int damon_sysfs_scheme_add_dirs(s
- put_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->watermarks->kobj);
- 	scheme->watermarks = NULL;
--put_quotas_access_pattern_out:
-+rmdir_put_quotas_access_pattern_out:
-+	damon_sysfs_quotas_rm_dirs(scheme->quotas);
- 	kobject_put(&scheme->quotas->kobj);
- 	scheme->quotas = NULL;
- put_access_pattern_out:
+--- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
++++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
+@@ -2005,6 +2005,7 @@ int rsi_mac80211_attach(struct rsi_commo
+ 
+ 	hw->queues = MAX_HW_QUEUES;
+ 	hw->extra_tx_headroom = RSI_NEEDED_HEADROOM;
++	hw->vif_data_size = sizeof(struct vif_priv);
+ 
+ 	hw->max_rates = 1;
+ 	hw->max_rate_tries = MAX_RETRIES;
 
 
 
