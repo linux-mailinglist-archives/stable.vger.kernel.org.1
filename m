@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-214148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFGrLPVng2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:29 +0100
+	id gCXiHeFfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19389E9051
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB89CE7D62
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED9EC3010B95
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D52FB301F79C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671064219EF;
-	Wed,  4 Feb 2026 15:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4722BF002;
+	Wed,  4 Feb 2026 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn6Y+LpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXxvc6qG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8F841B37C;
-	Wed,  4 Feb 2026 15:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0F92BD012;
+	Wed,  4 Feb 2026 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218724; cv=none; b=BWBeRudnBmPEb3wi7J0l72u6IvTfl3B4j9v71328v6fmT8rg4d0S4oxWmupcDvPSjUnpPqQqbE8x1yovfV/4GP942HZKRbMPAqee0n6aN/Lw+UpMt28HoToyj0ldvD2UsWTzt5Im3mNWZ0bvPqtUsS62w9plDQjULJDLZf8w540=
+	t=1770217296; cv=none; b=reKnVR4hbl4nfwyTVlD0bYOPR7uatvFCvDlTMaPBo9rF0TUaLmQYBC7XAyrsI01TV0UQ2RqJqzbTcx83Wcm5dvxgvD0+Fgg6oFuaqWo/cGIzVOz1iB+xSZI0aXbRrYsNATRK6QQ2DJ8pKhDml1V9r9dlnT57LcPn3JV2JBDsguo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218724; c=relaxed/simple;
-	bh=sPUmy/Bko9pv9VH3Dtytvm5wYL3M/xEe7g3hGF2PaH8=;
+	s=arc-20240116; t=1770217296; c=relaxed/simple;
+	bh=FLj484Xfg34QCvZtwF77bQTdVnaKCOrdYGJpEuqLG6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfjkV0mILhV5SrmZJqUyUROT98eL1Iqswq4LmYkhcelk3NDLH9cbG38sKdn2MYV7bYS7aAeZT0cYeKMo7uoXfZAoNHJEYFthsXJIFbh24OYNiVffzAEqhCcuUG8sHd/NA70+qHffq+MDlCGT1KIvH4nHbgSlUAC8O6RUCLESr8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn6Y+LpP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7549C4CEF7;
-	Wed,  4 Feb 2026 15:25:23 +0000 (UTC)
+	 MIME-Version; b=L7ry3yQvvYd4ZJIGC2ZwzFAgrUF6qx6NRwSeffmUmTLs8+fIzXa+e4FhWgCm72+t8DlkFuvxXVzDsXLMmsYvuF9zzRih8EUy6YdzT9O6HRzP4V+ST/xn5ClRg2WHog2v3bBGsOT+rJXJ14MmtrEbtosx3YXD8BwQcGzvrU8aibo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXxvc6qG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7C1C116C6;
+	Wed,  4 Feb 2026 15:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218724;
-	bh=sPUmy/Bko9pv9VH3Dtytvm5wYL3M/xEe7g3hGF2PaH8=;
+	s=korg; t=1770217296;
+	bh=FLj484Xfg34QCvZtwF77bQTdVnaKCOrdYGJpEuqLG6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cn6Y+LpPph/DhdAH7YgvIhKAwFxXPm9uz2+BnVs8p7lTqymw251BC85rIE+knPBwi
-	 0qdpHQacPjKG3OKkB5CSd/gPjiWuXGdUdi0e4t04f8eeyIkAZkEDO6ytga5bb4JgI6
-	 R2tavMOl9A8PTFYTZJBWL7wyI7CIP/00E2kVU67Y=
+	b=CXxvc6qGzg0BNZeg2VZu+XewrEQTpgx3Z2Z/iiSY0utZdALPDAn/U3JxcdCTUDGTq
+	 1R5zFf57fu8I7nKgzdFI8iF/b7ZcVeakgUh8/9y+gjL9AeD+jJCsvQy10W9Yix90rX
+	 qfAMYyp/clCp1vBJI2QTH9AJmcqk+t22BSTNcBJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jake Keller <jacob.e.keller@intel.com>,
-	IWL <intel-wired-lan@lists.osuosl.org>,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 15/87] ice: stop counting UDP csum mismatch as rx_errors
+	Jakub Kicinski <kuba@kernel.org>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15 182/206] usbnet: Fix using smp_processor_id() in preemptible code warnings
 Date: Wed,  4 Feb 2026 15:40:13 +0100
-Message-ID: <20260204143847.460660010@linuxfoundation.org>
+Message-ID: <20260204143904.774143890@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,93 +70,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.dev,redhat.com,163.com];
+	TAGGED_FROM(0.00)[bounces-213725-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214148-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,osuosl.org:email,cloudflare.com:email,intel.com:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 19389E9051
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linux.dev:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DB89CE7D62
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+From: Zqiang <qiang.zhang@linux.dev>
 
-[ Upstream commit 05faf2c0a76581d0a7fdbb8ec46477ba183df95b ]
+[ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
 
-Since the beginning, the Intel ice driver has counted receive checksum
-offload mismatches into the rx_errors member of the rtnl_link_stats64
-struct. In ethtool -S these show up as rx_csum_bad.nic.
+Syzbot reported the following warning:
 
-I believe counting these in rx_errors is fundamentally wrong, as it's
-pretty clear from the comments in if_link.h and from every other statistic
-the driver is summing into rx_errors, that all of them would cause a
-"hardware drop" except for the UDP checksum mismatch, as well as the fact
-that all the other causes for rx_errors are L2 reasons, and this L4 UDP
-"mismatch" is an outlier.
+BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
+caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
+ usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+ usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
+ usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
+ __dev_set_mtu net/core/dev.c:9443 [inline]
+ netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
+ netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
+ dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
+ dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
+ dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
+ sock_do_ioctl+0x19d/0x280 net/socket.c:1204
+ sock_ioctl+0x42f/0x6a0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-A last nail in the coffin is that rx_errors is monitored in production and
-can indicate a bad NIC/cable/Switch port, but instead some random series of
-UDP packets with bad checksums will now trigger this alert. This false
-positive makes the alert useless and affects us as well as other companies.
+For historical and portability reasons, the netif_rx() is usually
+run in the softirq or interrupt context, this commit therefore add
+local_bh_disable/enable() protection in the usbnet_resume_rx().
 
-This packet with presumably a bad UDP checksum is *already* passed to the
-stack, just not marked as offloaded by the hardware/driver. If it is
-dropped by the stack it will show up as UDP_MIB_CSUMERRORS.
-
-And one more thing, none of the other Intel drivers, and at least bnxt_en
-and mlx5 both don't appear to count UDP offload mismatches as rx_errors.
-
-Here is a related customer complaint:
-https://community.intel.com/t5/Ethernet-Products/ice-rx-errros-is-too-sensitive-to-IP-TCP-attack-packets-Intel/td-p/1662125
-
-Fixes: 4f1fe43c920b ("ice: Add more Rx errors to netdev's rx_error counter")
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Jake Keller <jacob.e.keller@intel.com>
-Cc: IWL <intel-wired-lan@lists.osuosl.org>
-Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Acked-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ The context change is due to the commit 2c04d279e857
+("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
+in v6.17 which is irrelevant to the logic of this patch.]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/usb/usbnet.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index d024e71722de3..8e0f180ec38e1 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -6974,7 +6974,6 @@ void ice_update_vsi_stats(struct ice_vsi *vsi)
- 		cur_ns->rx_errors = pf->stats.crc_errors +
- 				    pf->stats.illegal_bytes +
- 				    pf->stats.rx_undersize +
--				    pf->hw_csum_rx_error +
- 				    pf->stats.rx_jabber +
- 				    pf->stats.rx_fragments +
- 				    pf->stats.rx_oversize;
--- 
-2.51.0
-
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -707,6 +707,7 @@ void usbnet_resume_rx(struct usbnet *dev
+ 	struct sk_buff *skb;
+ 	int num = 0;
+ 
++	local_bh_disable();
+ 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+ 
+ 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
+@@ -715,6 +716,7 @@ void usbnet_resume_rx(struct usbnet *dev
+ 	}
+ 
+ 	tasklet_schedule(&dev->bh);
++	local_bh_enable();
+ 
+ 	netif_dbg(dev, rx_status, dev->net,
+ 		  "paused rx queue disabled, %d skbs requeued\n", num);
 
 
 
