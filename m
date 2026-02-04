@@ -1,62 +1,72 @@
-Return-Path: <stable+bounces-213364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGTWOtgYg2mKhgMAu9opvQ
-	(envelope-from <stable+bounces-213364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 11:00:56 +0100
+	id 4KD4Ersbg2l/hwMAu9opvQ
+	(envelope-from <stable+bounces-213365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 11:13:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF11E4347
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 11:00:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF905E451E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 11:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92D7F300F9E8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 09:59:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05E4D301BCDC
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 10:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A823D3326;
-	Wed,  4 Feb 2026 09:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968373D6669;
+	Wed,  4 Feb 2026 10:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Es+rZFy9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="El2K5lZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA0B3B961C
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 09:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550723D3CF1;
+	Wed,  4 Feb 2026 10:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770199171; cv=none; b=H4yVCkTwTp79o5ggsDY3t/IFPgVIsTu0ZgCo8c12k2Kv+zyuraWNms7rHL9FAKQB0MJBp0+rMgSh3wmk9VZazxv8lfm+AeChN1QZSNOIrzXq3ibtVTfjQRl3B6cPZFz0RJTtM3VROP3jKZ2xboTXlzR9/SDCbDZ8k9xrgkPtpLA=
+	t=1770199959; cv=none; b=RFUNrcLioJ7LQ4BSFp7NyDU4uB4jW+8pwyyRYzmG3fhg36Z4IUuEnHHzdpr0yTBnqgmUzMsuMV9BdwHq6MWXgJuldzYkePkwrFDH4NCQF+SsWJLI92GrPQXeqtZeJzVShyGRzRwHbXkXqLPPqujHj9SJjShpdhbXB0dh7+sRzcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770199171; c=relaxed/simple;
-	bh=KdqlhGM1C3SBt7l/NwTZdCohrrG7+C7dLW2/rn4U1FQ=;
+	s=arc-20240116; t=1770199959; c=relaxed/simple;
+	bh=inCyKiiNSNV6LDkRbFvq9oB6OngDmsXZ8tjL09HtSOk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TM3pRI9KiwltTUTAQ92OoZ/lmJFeYcJrAqyqNUwSbeMDKqBgenipCSwUBRZEpvT7W2bEWeNSm8BkeJ6GCS5FEzMVJMOc26TV/XafNlvtl5nflPLI9AzLgOoEx44Yi8iYeagZI4QGPU7H/+IuaBefoSmg6yALWLwLxYLdeI0gfdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Es+rZFy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A47C4CEF7;
-	Wed,  4 Feb 2026 09:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770199171;
-	bh=KdqlhGM1C3SBt7l/NwTZdCohrrG7+C7dLW2/rn4U1FQ=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=oxmJg+uhqU052GY/YExYXb+tBk4Upj/Ct3gR1V7yg85ns8lHe1w0wBAY4vnYGp93tjJ89E/h4lqswceQ186G9zDUHtTaK6KGVwYmHDPDembj5HVNHdYtFy8AqMZxtQaepC0GMm4QJ8nFJZ0B5I8U/57jZ2W/+T4l8M3xWYQf5RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=El2K5lZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8B2C4CEF7;
+	Wed,  4 Feb 2026 10:12:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770199958;
+	bh=inCyKiiNSNV6LDkRbFvq9oB6OngDmsXZ8tjL09HtSOk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Es+rZFy9le2O5peXo82eJ4YY2D8p83WrLIC/CIe+cTnZpYKYMyNvC2KMT+3DMBYF3
-	 vy3042Peeu19afmwZOpJmMF7TfWRrC/ShSStxchNi7NmkSQATzhkYxgM3wmoricgsz
-	 dKafo+prc+gdDQCdsIwg6Yyjrfn+srlSna/BfZnI=
-Date: Wed, 4 Feb 2026 10:59:27 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.18.y] kho: init alloc tags when restoring pages from
- reserved memory
-Message-ID: <2026020419-extortion-swinging-6394@gregkh>
-References: <2026020303-drippy-appliance-a74c@gregkh>
- <20260204002654.1462558-1-sashal@kernel.org>
+	b=El2K5lZoEYzGXPyiQxYUZbPxYCcUkUy2DeqOoMdeS2xmPuu6qi9yOlqaI/8W7uAtD
+	 2r4LxKa8TICwGGNHb6rRIAaIkikOg/4N++mxnZGe/kW/4xy/ykNtOylncPllOgG/sN
+	 aNuCBjJ7UgtK/mt52ZKlnlkZPq7NdXTUPjWI8sR3oZoIcZmziDPPIl2DO379SMXbtc
+	 yzFcXxATivyof8t6/+RWy+1aGdUeq9qoAhW6XZWRDUqjU8QX28yG7pnORzwJo4h0HS
+	 RsCBiQyw21eyk61UeiOGmTNKKRX0yhf5cgn9WnhFEmLwdPpcgWUNp3TuyGLQCxi8Rj
+	 XabZ2/+NgFjtw==
+Date: Wed, 4 Feb 2026 11:11:33 +0100
+From: Nicolas Schier <nsc@kernel.org>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Rong Zhang <i@rong.moe>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: Re: [PATCH] kbuild: Do not run kernel-doc when building external
+ modules
+Message-ID: <aYMbVcNvJPlLPaaG@derry.ads.avm.de>
+Mail-Followup-To: Jani Nikula <jani.nikula@linux.intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Rong Zhang <i@rong.moe>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+References: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
+ <176987242178.1743608.5094531752561489739.b4-ty@kernel.org>
+ <CAK7LNARR9bZQ9t9emcVzmL+P7xYemu=8s8v_LshQ0-m_zEE9mA@mail.gmail.com>
+ <6387ba7b99fb952a59932c3a851dfd0ecc4dfb2c@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,98 +75,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260204002654.1462558-1-sashal@kernel.org>
+In-Reply-To: <6387ba7b99fb952a59932c3a851dfd0ecc4dfb2c@intel.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213364-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213365-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[zte.com.cn:query timed out,linuxfoundation.org:query timed out];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[surenb.google.com:query timed out,pratyush.kernel.org:query timed out];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,huawei];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zte.com.cn:email,linux.dev:email,soleen.com:email]
-X-Rspamd-Queue-Id: 8FF11E4347
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,derry.ads.avm.de:mid]
+X-Rspamd-Queue-Id: DF905E451E
 X-Rspamd-Action: no action
 
-On Tue, Feb 03, 2026 at 07:26:54PM -0500, Sasha Levin wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Wed, Feb 04, 2026 at 11:10:37AM +0200, Jani Nikula wrote:
+> On Wed, 04 Feb 2026, Masahiro Yamada <masahiroy@kernel.org> wrote:
+> > Since kernel-doc is a part of Kbuild,
+> > all dependent libraries should exist under scripts/.
 > 
-> [ Upstream commit e86436ad0ad2a9aaf88802d69b68f02cbd1f04a9 ]
-> 
-> Memblock pages (including reserved memory) should have their allocation
-> tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-> released to the page allocator.  When kho restores pages through
-> kho_restore_page(), missing this call causes mismatched
-> allocation/deallocation tracking and below warning message:
-> 
-> alloc_tag was not set
-> WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-> RIP: 0010:___free_pages+0xb8/0x260
->  kho_restore_vmalloc+0x187/0x2e0
->  kho_test_init+0x3c4/0xa30
->  do_one_initcall+0x62/0x2b0
->  kernel_init_freeable+0x25b/0x480
->  kernel_init+0x1a/0x1c0
->  ret_from_fork+0x2d1/0x360
-> 
-> Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-> fix this.
-> 
-> Link: https://lkml.kernel.org/r/20260122132740.176468-1-ranxiaokai627@163.com
-> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Cc: Alexander Graf <graf@amazon.com>
-> Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  kernel/kexec_handover.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-> index 03d12e27189fc..db08c1a2e1f80 100644
-> --- a/kernel/kexec_handover.c
-> +++ b/kernel/kexec_handover.c
-> @@ -260,6 +260,14 @@ static struct page *kho_restore_page(phys_addr_t phys)
->  	if (info.order > 0)
->  		prep_compound_page(page, info.order);
->  
-> +	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
-> +	clear_page_tag_ref(page);
-> +	if (!is_folio) {
-> +		/* Also do that for the non-compound tail pages */
-> +		for (unsigned int i = 1; i < nr_pages; i++)
-> +			clear_page_tag_ref(page + i);
-> +	}
-> +
+> Huh. I've always wondered why all the Kbuild makefiles are placed in
+> scripts/, which appears to be a haphazard collection of, well, scripts
+> and tools. But then you also have tools/.
 
-Breaks the build :(
+From the kbuild perspective, as Masahiro mentioned, every tooling
+related to kernel builds, kbuild or kconfig should be placed in
+scripts/.  The tools/ subtree isn't using kbuild; rules, definitionas
+and other expectations that are valid for kbuild may not be true in
+tools/, cp. commit 6e6ef2da3a28f [1].
 
+Unfortunately, there _are_ things in tools/ that are required for kernel
+builds (e.g. objtool), but there is no consent on moving these parts out
+of the tools/ subtree [2].
+
+> I've followed the kernel-doc refactoring from the sidelines, commenting
+> on some things, but it never crossed my mind the build shouldn't depend
+> on something outside of scripts/. (That's what I'm inferring here
+> anyway.) And apparently that thought didn't occur to a lot of other
+> people either, with even more kernel experience than myself.
+
+Yes, I also saw the changes fly by but did not think about the
+implications.
+
+> Sounds like the kernel config and build system would deserve a top-level
+> directory like build/ or kbuild/, which collects everything needed for
+> the build, nothing more, nothing less. Because scripts/ is not *that*.
+
+Well, sounds straight forward at first, but where should we make the cut
+between kbuild and non-kbuild?  I admit that there are some scripts
+below scripts/ that I'd rather label as "contrib", but I don't think
+that these are too much.
+
+> I understand all of this may be a historical accident, and possibly too
+> painful to fix now, but is any of this documented anywhere either?
+
+No, I am afraid it isn't.
+
+Kind regards,
+Nicolas
+
+
+[1]: https://git.kernel.org/kbuild/c/6e6ef2da3a28f
+[2]: https://lore.kernel.org/linux-kbuild/1551764896-8453-3-git-send-email-yamada.masahiro@socionext.com/
 
