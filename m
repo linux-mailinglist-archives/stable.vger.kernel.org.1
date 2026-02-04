@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-214069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAteGslmg2nQmQMAu9opvQ
-	(envelope-from <stable+bounces-214069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:29 +0100
+	id mGSxC11qg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC03CE8DB0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4B2E9670
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F0388305D222
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48E47317CE82
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA45261B91;
-	Wed,  4 Feb 2026 15:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135FB421A0C;
+	Wed,  4 Feb 2026 15:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLYv/cWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPxkwb8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236FB3EFD00;
-	Wed,  4 Feb 2026 15:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8938421A06;
+	Wed,  4 Feb 2026 15:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218459; cv=none; b=eYKW4iYY08FUOYr2Rkkd+b3i38qbhk6GpuPFCYwc9hky7nOscWtUlst4Gyu/uK24vQ/m7S58gyBhJ1im4CO0b5PugviVz52Gr5QZyreOd8ZZRWuVmiCcrDedkZI9eq+CVsmfKY5BivQIujtdCob+s7XTYhsKuOqn7sWXHKO9GY0=
+	t=1770218282; cv=none; b=Euj+DTvIOKBGg3f4uH4ym7OddyBJboqJrcBJn3H+WwSuWz4zTh/XFsdaTbqjjgHRKY4RjvZzVXbHVwQQGCVAT97xwIMn6kLEKwA9fN3cYKeU+mhNu9ic1xS5u+KjcYfkk2cfWZS58g2wPid2ZHkpshDWFjxQARnX9xTA8kD0LXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218459; c=relaxed/simple;
-	bh=PqSx2EMA+ZA9Nr/gEy3c3jG9ekTqfWQbDTK5sR9d35k=;
+	s=arc-20240116; t=1770218282; c=relaxed/simple;
+	bh=xiiMY4qG/ZJjjmc6y5CHel5amUkYEgVrYj8HuZzMIoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgNaMEgYXXdbTg2+2om2kwIz9sWjRmJQ7c4neK9XSrHcmRCKJOXw7POACXrywTjny7Voo5SkrZCYmYG0K2m5OhQZPtJvDO+nUjUk7jLUkicW/sEl/WpgQKMejN688uoLlqJPb7fh4wg4Vqq38/3UUYzcsciDbI8WbVx1ZJUoCf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLYv/cWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4401BC4CEF7;
-	Wed,  4 Feb 2026 15:20:58 +0000 (UTC)
+	 MIME-Version; b=dgTidfT+9kBZ0pmS/3ENIGP6zYySF7N1UiNtkkslN9SVQcSi8r7fdo5EbXDoy6R9Ycy+xWnrkduyn0xHCjH6TTw5MUX4RstGEjE4U89+PPZK2gvVMMZKIiqlXfCFcClHiMqaKg3Bs3qFYbgeFQGFcwlA2g6G2UmwwrDXgE95WA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPxkwb8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA71C116C6;
+	Wed,  4 Feb 2026 15:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218458;
-	bh=PqSx2EMA+ZA9Nr/gEy3c3jG9ekTqfWQbDTK5sR9d35k=;
+	s=korg; t=1770218282;
+	bh=xiiMY4qG/ZJjjmc6y5CHel5amUkYEgVrYj8HuZzMIoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLYv/cWaD4cM3x5PoITkvCMOPvrR7H3BzBsLqdns8Jvmi7aWViW+sIM1gONqp3j0S
-	 SKED9cYTuaXHeF9S37dscyj3dnY6odezoTd8iwhzE8iT4xSf4cpIm+qVXLxuozpfrT
-	 lpqfsJvIEC0qhzs8bLG4RkflywO+UAy9ReFaUI0I=
+	b=PPxkwb8QOWPEq2kb7k7IAdNV6FZrMWb6KizgK8LdYcJ3rqUoTEJJ1ia3QUKLfSIUW
+	 XZIYX6EFHbUp3der8/Sm357EgfJgjFtsJCjV1YgmQSjI9Ir1cl9BZzVgMGrCs7phH1
+	 3U7KUHD3MarEAe6XDaXe1Sf5wNA964b7awe2D6iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 35/72] selftests: mptcp: join: fix local endp not being tracked
+	Shubham Rana <s9.rana@samsung.com>,
+	Maninder Singh <maninder1.s@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 264/280] NFSD: fix race between nfsd registration and exports_proc
 Date: Wed,  4 Feb 2026 15:40:38 +0100
-Message-ID: <20260204143846.896105833@linuxfoundation.org>
+Message-ID: <20260204143919.199074765@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +71,198 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,samsung.com,kernel.org,oracle.com,163.com];
+	TAGGED_FROM(0.00)[bounces-214017-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214069-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DC03CE8DB0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,samsung.com:email]
+X-Rspamd-Queue-Id: 8E4B2E9670
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Maninder Singh <maninder1.s@samsung.com>
 
-commit c5d5ecf21fdd9ce91e6116feb3aa83cee73352cc upstream.
+[ Upstream commit f7fb730cac9aafda8b9813b55d04e28a9664d17c ]
 
-When running this mptcp_join.sh selftest on older kernel versions not
-supporting local endpoints tracking, this test fails because 3 MP_JOIN
-ACKs have been received, while only 2 were expected.
+As of now nfsd calls create_proc_exports_entry() at start of init_nfsd
+and cleanup by remove_proc_entry() at last of exit_nfsd.
 
-It is not clear why only 2 MP_JOIN ACKs were expected on old kernel
-versions, while 3 MP_JOIN SYN and SYN+ACK were expected. When testing on
-the v5.15.197 kernel, 3 MP_JOIN ACKs are seen, which is also what is
-expected in the selftests included in this kernel version, see commit
-f4480eaad489 ("selftests: mptcp: add missing join check").
+Which causes kernel OOPs if there is race between below 2 operations:
+(i) exportfs -r
+(ii) mount -t nfsd none /proc/fs/nfsd
 
-Switch the expected MP_JOIN ACKs to 3. While at it, move this
-chk_join_nr helper out of the special condition for older kernel
-versions as it is now the same as with more recent ones. Also, invert
-the condition to be more logical: what's expected on newer kernel
-versions having such helper first.
+for 5.4 kernel ARM64:
 
-Fixes: d4c81bbb8600 ("selftests: mptcp: join: support local endpoint being tracked or not")
+CPU 1:
+el1_irq+0xbc/0x180
+arch_counter_get_cntvct+0x14/0x18
+running_clock+0xc/0x18
+preempt_count_add+0x88/0x110
+prep_new_page+0xb0/0x220
+get_page_from_freelist+0x2d8/0x1778
+__alloc_pages_nodemask+0x15c/0xef0
+__vmalloc_node_range+0x28c/0x478
+__vmalloc_node_flags_caller+0x8c/0xb0
+kvmalloc_node+0x88/0xe0
+nfsd_init_net+0x6c/0x108 [nfsd]
+ops_init+0x44/0x170
+register_pernet_operations+0x114/0x270
+register_pernet_subsys+0x34/0x50
+init_nfsd+0xa8/0x718 [nfsd]
+do_one_initcall+0x54/0x2e0
+
+CPU 2 :
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+
+PC is at : exports_net_open+0x50/0x68 [nfsd]
+
+Call trace:
+exports_net_open+0x50/0x68 [nfsd]
+exports_proc_open+0x2c/0x38 [nfsd]
+proc_reg_open+0xb8/0x198
+do_dentry_open+0x1c4/0x418
+vfs_open+0x38/0x48
+path_openat+0x28c/0xf18
+do_filp_open+0x70/0xe8
+do_sys_open+0x154/0x248
+
+Sometimes it crashes at exports_net_open() and sometimes cache_seq_next_rcu().
+
+and same is happening on latest 6.14 kernel as well:
+
+[    0.000000] Linux version 6.14.0-rc5-next-20250304-dirty
+...
+[  285.455918] Unable to handle kernel paging request at virtual address 00001f4800001f48
+...
+[  285.464902] pc : cache_seq_next_rcu+0x78/0xa4
+...
+[  285.469695] Call trace:
+[  285.470083]  cache_seq_next_rcu+0x78/0xa4 (P)
+[  285.470488]  seq_read+0xe0/0x11c
+[  285.470675]  proc_reg_read+0x9c/0xf0
+[  285.470874]  vfs_read+0xc4/0x2fc
+[  285.471057]  ksys_read+0x6c/0xf4
+[  285.471231]  __arm64_sys_read+0x1c/0x28
+[  285.471428]  invoke_syscall+0x44/0x100
+[  285.471633]  el0_svc_common.constprop.0+0x40/0xe0
+[  285.471870]  do_el0_svc_compat+0x1c/0x34
+[  285.472073]  el0_svc_compat+0x2c/0x80
+[  285.472265]  el0t_32_sync_handler+0x90/0x140
+[  285.472473]  el0t_32_sync+0x19c/0x1a0
+[  285.472887] Code: f9400885 93407c23 937d7c27 11000421 (f86378a3)
+[  285.473422] ---[ end trace 0000000000000000 ]---
+
+It reproduced simply with below script:
+while [ 1 ]
+do
+/exportfs -r
+done &
+
+while [ 1 ]
+do
+insmod /nfsd.ko
+mount -t nfsd none /proc/fs/nfsd
+umount /proc/fs/nfsd
+rmmod nfsd
+done &
+
+So exporting interfaces to user space shall be done at last and
+cleanup at first place.
+
+With change there is no Kernel OOPs.
+
+Co-developed-by: Shubham Rana <s9.rana@samsung.com>
+Signed-off-by: Shubham Rana <s9.rana@samsung.com>
+Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-5-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ The context change is due to the commit bd9d6a3efa97
+("NFSD: add rpc_status netlink support") in v6.7
+and the proper adoption is done. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/nfsd/nfsctl.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2203,17 +2203,16 @@ signal_address_tests()
- 		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=1
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 3 3 3
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1511,12 +1511,9 @@ static int __init init_nfsd(void)
+ 	if (retval)
+ 		goto out_free_pnfs;
+ 	nfsd_lockd_init();	/* lockd->nfsd callbacks */
+-	retval = create_proc_exports_entry();
+-	if (retval)
+-		goto out_free_lockd;
+ 	retval = register_pernet_subsys(&nfsd_net_ops);
+ 	if (retval < 0)
+-		goto out_free_exports;
++		goto out_free_lockd;
+ 	retval = register_cld_notifier();
+ 	if (retval)
+ 		goto out_free_subsys;
+@@ -1525,17 +1522,19 @@ static int __init init_nfsd(void)
+ 		goto out_free_cld;
+ 	retval = register_filesystem(&nfsd_fs_type);
+ 	if (retval)
++		goto out_free_nfsd4;
++	retval = create_proc_exports_entry();
++	if (retval)
+ 		goto out_free_all;
+ 	return 0;
+ out_free_all:
++	unregister_filesystem(&nfsd_fs_type);
++out_free_nfsd4:
+ 	nfsd4_destroy_laundry_wq();
+ out_free_cld:
+ 	unregister_cld_notifier();
+ out_free_subsys:
+ 	unregister_pernet_subsys(&nfsd_net_ops);
+-out_free_exports:
+-	remove_proc_entry("fs/nfs/exports", NULL);
+-	remove_proc_entry("fs/nfs", NULL);
+ out_free_lockd:
+ 	nfsd_lockd_shutdown();
+ 	nfsd_drc_slab_free();
+@@ -1548,13 +1547,13 @@ out_free_slabs:
  
- 		# It is not directly linked to the commit introducing this
- 		# symbol but for the parent one which is linked anyway.
--		if ! mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
--			chk_join_nr 3 3 2
--			chk_add_nr 4 4
--		else
--			chk_join_nr 3 3 3
-+		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
- 			# the server will not signal the address terminating
- 			# the MPC subflow
- 			chk_add_nr 3 3
-+		else
-+			chk_add_nr 4 4
- 		fi
- 	fi
- }
+ static void __exit exit_nfsd(void)
+ {
++	remove_proc_entry("fs/nfs/exports", NULL);
++	remove_proc_entry("fs/nfs", NULL);
+ 	unregister_filesystem(&nfsd_fs_type);
+ 	nfsd4_destroy_laundry_wq();
+ 	unregister_cld_notifier();
+ 	unregister_pernet_subsys(&nfsd_net_ops);
+ 	nfsd_drc_slab_free();
+-	remove_proc_entry("fs/nfs/exports", NULL);
+-	remove_proc_entry("fs/nfs", NULL);
+ 	nfsd_lockd_shutdown();
+ 	nfsd4_free_slabs();
+ 	nfsd4_exit_pnfs();
 
 
 
