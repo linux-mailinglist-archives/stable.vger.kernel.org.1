@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-213719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LknLCdig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:43 +0100
+	id 2OFUCjBpg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55BEE825A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1BEE93A6
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 62F3930246EE
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F59A30FFBE1
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A9227F163;
-	Wed,  4 Feb 2026 15:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6C2423A76;
+	Wed,  4 Feb 2026 15:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSBs/Cnz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwAjG1Xs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09EC28853A;
-	Wed,  4 Feb 2026 15:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37F2421EE5;
+	Wed,  4 Feb 2026 15:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217278; cv=none; b=oSXgFOMlBfyZBeVOLdQwKMpGqQstp16OwJZzuBVKMEZ0XAl1YYrtc615VQn1acenfMqbDNR/+bRQhfCXI3d5nCrPpwJ3Im6CNp5ECFmCpqzPubYJ1x+8zVkrN8ysuxxFvYjkMsEQoqXSnPfDADpGbAQ94UCpwQrla/XKRqOCPNY=
+	t=1770218411; cv=none; b=L1cFG8uXwvH2jAroeLVZ6GPUEL+d9c545EZ8Xjk3eBa3MrG8wS0cVUaNP9ue4WJNU5JRgva8h9P/CMj/Z1mblaII2ZzgditQ9Ni23id3TUMINOxuee5uehPNHd1n42NzJKoGs2x6jfiHdQDEiTGX4C6bFvJ9wo3/Fg/LO5oYVrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217278; c=relaxed/simple;
-	bh=0A88DzciJtQyoEKEVdGK6PyaUxvxZh5v55/WdVaCRWg=;
+	s=arc-20240116; t=1770218411; c=relaxed/simple;
+	bh=yPDe4uzFzAkstIgxSkQHLcDT5gGzXLUq/+bwKc07wzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnSnw43YfjOFr9ROgBgQPC0Z1CXkSayVUzGbKtkMfylrd8Z77gxMdjpQIPF23ITEzXJTb3qCLpYufjpCx553antK2lCAFbUqge9RdXCTojCLRTzOgO01s9hfVyiibcdSKJMv9/5T33tsdGAzfUlKvJ92lq+JGy8JL4TtKpT4cgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSBs/Cnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30268C4CEF7;
-	Wed,  4 Feb 2026 15:01:17 +0000 (UTC)
+	 MIME-Version; b=LE5TFe7jUG1Rq2YxgdVeJnl7HdLbvWEsstX4x1XdTm5POEoOr6PV9dmkTGSNIykk6yTQQTMnxZAS0oIClPH2dQIF+ah6+tEVzdtOnDnb6IrRda2pK1GmYPL5I7Nubt5N7tQlu5qHJzQlWwKQtuvB6hwJc7WJkovLtWYGXb7karA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwAjG1Xs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6227CC4CEF7;
+	Wed,  4 Feb 2026 15:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217278;
-	bh=0A88DzciJtQyoEKEVdGK6PyaUxvxZh5v55/WdVaCRWg=;
+	s=korg; t=1770218410;
+	bh=yPDe4uzFzAkstIgxSkQHLcDT5gGzXLUq/+bwKc07wzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSBs/CnzZdKD/mJhm7WkH6dIdA5MiFU8K7SEtW3yEy0YlVTZbOuEOWhuhmO6FwPjO
-	 dR0WHqUxJZx5Evbg3xLHUzLQRz68AeITKqG9JLLbNG7Z2oFZGFGg50f2kmi5HV+N4s
-	 0a/65G0T39sBHIofE4ga7cI02QLD9DjDTkSjMU+A=
+	b=QwAjG1XsIons11rhLvC+yB6UjUBdSsKVe17nyWyAsVPLpM7PZh71AprBdNvFbkXto
+	 FBPR/eQUaZi9yUhgnjrEUMsX/znBWnPDXaXC140eakfZBmpOPX1n0R/xevpPI1EsCX
+	 1/49CpUi9lTbQHgHyg8zdomCHXEHYEw3qy/GXzCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com,
-	syzbot+0399100e525dd9696764@syzkaller.appspotmail.com,
-	Khalid Aziz <khalid@kernel.org>,
-	Bartlomiej Kubik <kubik.bartlomiej@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 5.15 177/206] fs/ntfs3: Initialize allocated memory before use
+	Zilin Guan <zilin@seu.edu.cn>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 05/72] octeon_ep: Fix memory leak in octep_device_setup()
 Date: Wed,  4 Feb 2026 15:40:08 +0100
-Message-ID: <20260204143904.589144887@linuxfoundation.org>
+Message-ID: <20260204143845.804844516@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,109 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213719-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,paragon-software.com,139.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,332bd4e9d148f11a87dc,0399100e525dd9696764];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214055-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email,139.com:email,paragon-software.com:email]
-X-Rspamd-Queue-Id: C55BEE825A
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,seu.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3C1BEE93A6
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
+[ Upstream commit 8016dc5ee19a77678c264f8ba368b1e873fa705b ]
 
-KMSAN reports: Multiple uninitialized values detected:
+In octep_device_setup(), if octep_ctrl_net_init() fails, the function
+returns directly without unmapping the mapped resources and freeing the
+allocated configuration memory.
 
-- KMSAN: uninit-value in ntfs_read_hdr (3)
-- KMSAN: uninit-value in bcmp (3)
+Fix this by jumping to the unsupported_dev label, which performs the
+necessary cleanup. This aligns with the error handling logic of other
+paths in this function.
 
-Memory is allocated by __getname(), which is a wrapper for
-kmem_cache_alloc(). This memory is used before being properly
-cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
-properly allocate and clear memory before use.
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
-
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 577f0d1b1c5f ("octeon_ep: add separate mailbox command and response queues")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20260121130551.3717090-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1298,7 +1298,7 @@ struct inode *ntfs_create_inode(struct u
- 		fa |= FILE_ATTRIBUTE_READONLY;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index 7a30095b3486f..c385084546639 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -998,7 +998,7 @@ int octep_device_setup(struct octep_device *oct)
  
- 	/* Allocate PATH_MAX bytes. */
--	new_de = __getname();
-+	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!new_de) {
- 		err = -ENOMEM;
- 		goto out1;
-@@ -1694,10 +1694,9 @@ int ntfs_link_inode(struct inode *inode,
- 	struct ATTR_FILE_NAME *de_name;
+ 	ret = octep_ctrl_net_init(oct);
+ 	if (ret)
+-		return ret;
++		goto unsupported_dev;
  
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
--	memset(de, 0, PATH_MAX);
- 
- 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
- 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
-@@ -1742,7 +1741,7 @@ int ntfs_unlink_inode(struct inode *dir,
- 		return -EINVAL;
- 
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
- 
+ 	atomic_set(&oct->hb_miss_cnt, 0);
+ 	INIT_DELAYED_WORK(&oct->hb_task, octep_hb_timeout_task);
+-- 
+2.51.0
+
 
 
 
