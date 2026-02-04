@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ME/+McRdg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:55:00 +0100
+	id uBCWFPVkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F6BE7940
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0818E8850
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EDFE7300A588
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A20EA30EA954
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A13441B35D;
-	Wed,  4 Feb 2026 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0DC426D11;
+	Wed,  4 Feb 2026 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6Qr52U5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QviMOixz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE483D413D;
-	Wed,  4 Feb 2026 14:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF68426D06;
+	Wed,  4 Feb 2026 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216769; cv=none; b=bpOaBSEGIFry2/5ogP7buaywNeK6PXrTur+4LsPLa6VIHdcsRJPwHWx5rExXTb1oxU5VXJ12A1xg+WzWD3lsHx9xVHwgFaO8mPo77cp9Bq7/YXrgxcbSdd2iy+A42zUgYaoWwS1r3djRo4f+ZTfa8UK8woH3SeVg243I8HUokOU=
+	t=1770217606; cv=none; b=FK0iXCOc1ml6atJdwVtpCbFk5iSpkoNtjQ2D+idK0rM2Zc87l20t9OV8AAFpGLKDlFiENBFOHHJLEEXa82BZsbH63jIlD0gcA4cWWlGUYAryowbMFOg3NfMfpa9WsGuiVthqwF91nK/yWIt0JivbqDaeCUqelqYHwloxgMn5qxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216769; c=relaxed/simple;
-	bh=TRBzE80msyGAXWD7nb9cbUj9AgT3UzLfjW3vRrKPNb0=;
+	s=arc-20240116; t=1770217606; c=relaxed/simple;
+	bh=puE2166XQoEqLX1E/0wZAHvXKc/hlT0n1yEezxGbSfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5AJOaUzodtibYaaxbytIcSUKj0T7ebFOkXuBpPpCZyZbnchUsLMMrOd82Y8E5QuIg10w88LEOCmEeS6Xr4Lwk+mRAfUOZ+PWVeugi/oh1ksrrcX0HiPKVJZg7n5OR/KuMa2ups6OAeHE68cWnjEH8ohSb6QEbIYJACMjLVjE3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6Qr52U5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A577C4CEF7;
-	Wed,  4 Feb 2026 14:52:48 +0000 (UTC)
+	 MIME-Version; b=gBAwzOFIiewd+BNkvFmNWePZgM5MAzcLP7hyEDr4pjqd7EuLJYHE2S7W0FeVuLhArl9TC7xDfZWm3KbM9SNGNyj20uVZkM0c6GWz8BH7sFB+wit1S8VFvY9deG97smaoVvT9pm1M7F5undiY2P4611nerAZper5R5AQ5pjRawPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QviMOixz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA467C116C6;
+	Wed,  4 Feb 2026 15:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216768;
-	bh=TRBzE80msyGAXWD7nb9cbUj9AgT3UzLfjW3vRrKPNb0=;
+	s=korg; t=1770217606;
+	bh=puE2166XQoEqLX1E/0wZAHvXKc/hlT0n1yEezxGbSfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6Qr52U5Z72leRl3EZSXt659xvmu/xvOw7Qo3E0urXXeC241kZm7FcOMS7HIW6jcA
-	 jB6F+T50gIv64zozhS4eQC2hrFtCeJrAwk/vlIavmF3/7eOWI2exoFqJ2uGuVvVknf
-	 iGSxstBH4E2cET/TqqGldh23KwlZD6zh5O+eTxv4=
+	b=QviMOixz/0EGYpvFUQH4FAcvgxzaaHrubxAd7ynmJF2yrSoLOYe+Ej/aEAD6rjuAY
+	 D9aeXXWWvL/STyX1Q91ryy7wrxEness/BBw9U3oWQddyxESEkohDIFEIYlUo1PhZ+R
+	 eIuduXJ5H/qvYwwBgR4DMdyyUHsVbTSL1yVbm0XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/206] ipv4: ip_gre: make ipgre_header() robust
+	Neal Gompa <neal@gompa.dev>,
+	Janne Grunau <j@jannau.net>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 066/280] dmaengine: apple-admac: Add "apple,t8103-admac" compatible
 Date: Wed,  4 Feb 2026 15:37:20 +0100
-Message-ID: <20260204143858.533801760@linuxfoundation.org>
+Message-ID: <20260204143912.030537962@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213568-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-213816-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7c134e1c3aa3283790b9];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,spinics.net:url,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C7F6BE7940
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,gompa.dev:email]
+X-Rspamd-Queue-Id: D0818E8850
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit e67c577d89894811ce4dcd1a9ed29d8b63476667 ]
+commit 76cba1e60b69c9cd53b9127d017a7dc5945455b1 upstream.
 
-Analog to commit db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
+After discussion with the devicetree maintainers we agreed to not extend
+lists with the generic compatible "apple,admac" anymore [1]. Use
+"apple,t8103-admac" as base compatible as it is the SoC the driver and
+bindings were written for.
 
-Over the years, syzbot found many ways to crash the kernel
-in ipgre_header() [1].
+[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
-
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ipgre device.
-
-[1]
-skbuff: skb_under_panic: text:ffffffff89ea3cb7 len:2030915468 put:2030915372 head:ffff888058b43000 data:ffff887fdfa6e194 tail:0x120 end:0x6c0 dev:team0
- kernel BUG at net/core/skbuff.c:213 !
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 1322 Comm: kworker/1:9 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: mld mld_ifc_work
- RIP: 0010:skb_panic+0x157/0x160 net/core/skbuff.c:213
-Call Trace:
- <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ipgre_header+0x67/0x290 net/ipv4/ip_gre.c:897
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Reported-by: syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
-Closes: https://www.spinics.net/lists/netdev/msg1147302.html
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260108190214.1667040-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b127315d9a78 ("dmaengine: apple-admac: Add Apple ADMAC driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Janne Grunau <j@jannau.net>
+Link: https://patch.msgid.link/20251231-apple-admac-t8103-base-compat-v1-1-ec24a3708f76@jannau.net
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_gre.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/dma/apple-admac.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index eeb48b0bb94cd..2f9f5c583dba1 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -857,10 +857,17 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 			const void *daddr, const void *saddr, unsigned int len)
- {
- 	struct ip_tunnel *t = netdev_priv(dev);
--	struct iphdr *iph;
- 	struct gre_base_hdr *greh;
-+	struct iphdr *iph;
-+	int needed;
-+
-+	needed = t->hlen + sizeof(*iph);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
+--- a/drivers/dma/apple-admac.c
++++ b/drivers/dma/apple-admac.c
+@@ -937,6 +937,7 @@ static int admac_remove(struct platform_
+ }
  
--	iph = skb_push(skb, t->hlen + sizeof(*iph));
-+	iph = skb_push(skb, needed);
- 	greh = (struct gre_base_hdr *)(iph+1);
- 	greh->flags = gre_tnl_flags_to_gre_flags(t->parms.o_flags);
- 	greh->protocol = htons(type);
--- 
-2.51.0
-
+ static const struct of_device_id admac_of_match[] = {
++	{ .compatible = "apple,t8103-admac", },
+ 	{ .compatible = "apple,admac", },
+ 	{ }
+ };
 
 
 
