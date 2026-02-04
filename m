@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-214106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HIKAXlng2kFmgMAu9opvQ
-	(envelope-from <stable+bounces-214106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:25 +0100
+	id MDP4Fylug2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BB3E8F41
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4C7E9D53
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3631730841B9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E256531B3504
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F12742188E;
-	Wed,  4 Feb 2026 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0FA2D8798;
+	Wed,  4 Feb 2026 15:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2U/qWjac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onJlzLUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FE42D97BB;
-	Wed,  4 Feb 2026 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15EE2D7D42;
+	Wed,  4 Feb 2026 15:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218584; cv=none; b=PORprFm8qXbbgsmbZwTCvwTZ+SZlQITobwJTty3VLWez7fkO90ercBloH/JI2f3dLnfSBM/tnJnIuGwvJjjpgGvWZJXTHo12QmYT+ynTb2y5IRcjlMCMIRru/uu79Zt93PctWxHsTzDwqUMYA/h2xCfO+gO4pntmaG6cLXr4E0I=
+	t=1770219191; cv=none; b=knYhSsSlebFoXlq/cDvzRZ97pMXdACdAMMmbx5jyQM7vvhljjbHATP2T3pdZhQU6GJL2qRDmvl5sjC2lg4AInGBPELVWkaEiBaNhtPQq2DSzEd8RxI5cBtp0wWRZZsW7+NM+vjM+Vsbpi/WoxY/FKXOflc/jxv8UAFEP+6drnrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218584; c=relaxed/simple;
-	bh=lmMrWdZTiriurxUJkl78Fl0AJ6cAUj1Qyzr7+Z7psVQ=;
+	s=arc-20240116; t=1770219191; c=relaxed/simple;
+	bh=+ruDzITtxit0fUQ2b9d8LzQV2uyWdoAHpGHLArTEF3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s0KvUiDg4JJkzjCwt/sn9T9M685pBUvTXVwVXwtd3REugLz0ODIEW7KjgJ7xI5pjuaMV3/JWFC7lU81eIiiGchMj73ta3+42sTO4B0O+blOhr7DdywNeQBpN5wh3rqNNCfS3Sr1/SJsyI61uDyLKevE8L8kDNzAXib1UfarDKyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2U/qWjac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63B0C4CEF7;
-	Wed,  4 Feb 2026 15:23:03 +0000 (UTC)
+	 MIME-Version; b=RhQZXh7WsZzoVBRTjgfBo4/324Zica8nZ9ffFvozAz9pOLCz7foL+cvxBw/uCb3+GeJbwzt0O4IASE/nvguFbwKvrwWbAJ1Hk5b7NIqY/9IzCQOviWoYmqk6I5y2tIlItqrrnltufl6Rmd5TYgHhn7E4FqQTqQAdLG3mI8CgzBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onJlzLUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D747C4CEF7;
+	Wed,  4 Feb 2026 15:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218584;
-	bh=lmMrWdZTiriurxUJkl78Fl0AJ6cAUj1Qyzr7+Z7psVQ=;
+	s=korg; t=1770219191;
+	bh=+ruDzITtxit0fUQ2b9d8LzQV2uyWdoAHpGHLArTEF3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2U/qWjacPSdiFIL5QkhYx8DNr8ljpN7GlKcmt0BN+drryqqpRTszQHz+pmcsvauh/
-	 SiCFwfqBEj+tDKOlBuLCi7sRYZvTlX4enysZnxZdlmOVL9ALgW2fdf8PVQlqTXgtdw
-	 rwpBdy/HL628oJ+UfP8/wiZEhV+LdbcWw3pNYZxw=
+	b=onJlzLUW87YQ65BeXw90cWO0WhEGaM09y1ul97kRVTojeSAV2rAqJAJv83TM7lMR6
+	 zDBa5XNQhWRQwXQvVYhnSCDSmRM1i9dYQdfDbF6O32wzPo19s29IP2lqysCaPWTT1L
+	 iI6HqAVwZ83yDXA4QOpV/r6cK68Zkq84sueKmWu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 72/72] bpf/selftests: test_select_reuseport_kern: Remove unused header
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 093/122] rust: sync: refcount: always inline functions using build_assert with arguments
 Date: Wed,  4 Feb 2026 15:41:15 +0100
-Message-ID: <20260204143848.252227833@linuxfoundation.org>
+Message-ID: <20260204143855.197498969@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214106-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214289-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,collabora.com,nvidia.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,suse.com:email]
-X-Rspamd-Queue-Id: 55BB3E8F41
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: DC4C7E9D53
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+From: Alexandre Courbot <acourbot@nvidia.com>
 
-commit 93cf4e537ed0c5bd9ba6cbdb2c33864547c1442f upstream.
+commit d6ff6e870077ae0f01a6f860ca1e4a5a825dc032 upstream.
 
-test_select_reuseport_kern.c is currently including <stdlib.h>, but it
-does not use any definition from there.
+`build_assert` relies on the compiler to optimize out its error path.
+Functions using it with its arguments must thus always be inlined,
+otherwise the error path of `build_assert` might not be optimized out,
+triggering a build error.
 
-Remove stdlib.h inclusion from test_select_reuseport_kern.c
-
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250227-remove_wrong_header-v1-1-bc94eb4e2f73@bootlin.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[shung-hsi.yu: Fix compilation error mentioned in footer of Alexis'
-patch with newer glibc header:
-
-  [...]
-    CLNG-BPF [test_progs-cpuv4] test_select_reuseport_kern.bpf.o
-  In file included from progs/test_select_reuseport_kern.c:4:
-  /usr/include/bits/floatn.h:83:52: error: unsupported machine mode
-  '__TC__'
-     83 | typedef _Complex float __cfloat128 __attribute__ ((__mode__
-  (__TC__)));
-        |                                                    ^
-  /usr/include/bits/floatn.h:97:9: error: __float128 is not supported on
-  this target
-     97 | typedef __float128 _Float128;
-
-I'm not certain when the problem starts to occur, but I'm quite sure
-test_select_reuseport_kern.c were not meant to be using the C standard
-library in the first place.]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: bb38f35b35f9 ("rust: implement `kernel::sync::Refcount`")
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://patch.msgid.link/20251208-io-build-assert-v3-5-98aded02c1ea@nvidia.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c |    1 -
- 1 file changed, 1 deletion(-)
+ rust/kernel/sync/refcount.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright (c) 2018 Facebook */
- 
--#include <stdlib.h>
- #include <linux/in.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
+diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
+index 19236a5bccde..6c7ae8b05a0b 100644
+--- a/rust/kernel/sync/refcount.rs
++++ b/rust/kernel/sync/refcount.rs
+@@ -23,7 +23,8 @@ impl Refcount {
+     /// Construct a new [`Refcount`] from an initial value.
+     ///
+     /// The initial value should be non-saturated.
+-    #[inline]
++    // Always inline to optimize out error path of `build_assert`.
++    #[inline(always)]
+     pub fn new(value: i32) -> Self {
+         build_assert!(value >= 0, "initial value saturated");
+         // SAFETY: There are no safety requirements for this FFI call.
+-- 
+2.53.0
+
 
 
 
