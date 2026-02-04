@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-214252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIboOV1vg2lgmwMAu9opvQ
-	(envelope-from <stable+bounces-214252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:10:05 +0100
+	id 0JuCAmFlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24444E9F4B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:10:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA63E89A1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EBB573095CDC
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33DF63163C9A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6FA27702D;
-	Wed,  4 Feb 2026 15:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462E24218AF;
+	Wed,  4 Feb 2026 15:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1t5XzWfl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgg6kmwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5247E19E96D;
-	Wed,  4 Feb 2026 15:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD5B42189D;
+	Wed,  4 Feb 2026 15:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219071; cv=none; b=Cltt/cbA10OPpdypdsOsTsWJgvevabtLHkyQ/669Lc1fWvgHcr1bxZQSEc7UwgM70VetkaLvZwvMvDO5YGK9lFKio2KDSkgGQDm2YnfGwzTSZGNWGpt5aFqH4VwnSUdm0w/kV/m9z1nV3vUvsHxOPruWDnknKZNlTECo5+0anM0=
+	t=1770218231; cv=none; b=vF/qXy5DKjuqZZozvOZzUwy1WRupUFZbmX7LsAwgAvqGa7MNR4UrIlcg8AAYkeyol2us+iEqJAriPxox6IwNoqb5+F4Ls0ZMl+21ImKc1s+/0FilaXZpAq9TPr/HZewKyN9gQWRSEaEX+sQL4wzeuzg2UnhqmFLkZaVh6ORw9kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219071; c=relaxed/simple;
-	bh=SWtcAxDyNjpl37qNxHY5s8s3MEBToxtgcHSEf1bPNVw=;
+	s=arc-20240116; t=1770218231; c=relaxed/simple;
+	bh=5boyJ8U3nb2hWDSkExp9V3vk8FfCHQ6r5ixeKUbOg84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6cUKCl9MmsgVU3/hGgkapacd9nJhGqkD+xpN3p8CgIpsplwbd9sNJ5s5j3byn8Ht/G8d7S/26vH5gKkFlUgavmTiF0WGGgp/9Yx4h4uE3QNv6qvAFPs25MBi1XsEvYjYK2LmUsU5DmEv203LD71fSPnYpegpfXqnG345xpPpC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1t5XzWfl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AB7C4CEF7;
-	Wed,  4 Feb 2026 15:31:10 +0000 (UTC)
+	 MIME-Version; b=t/qxPAaV89SGRKhHCsb6Xzwrms3Nke1bRrDAdxGiW8+2/22nWHKorr4NAWPDT0f7Uem+ZYweBGgsH0VgXAp+Du0cDnUGE5i2Nn4C+XHpejHZtZzBA5dqC3x1Ca6U6XwKmOKDIyHFYCbPpF3snLL3B0raP8fs11GR+2FEP3cwzyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgg6kmwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69164C4CEF7;
+	Wed,  4 Feb 2026 15:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219071;
-	bh=SWtcAxDyNjpl37qNxHY5s8s3MEBToxtgcHSEf1bPNVw=;
+	s=korg; t=1770218230;
+	bh=5boyJ8U3nb2hWDSkExp9V3vk8FfCHQ6r5ixeKUbOg84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1t5XzWflOesT3tAHa5cYEIM9hJJhkdXCjiYOscex4zXrFQ7Pe7o4yNP2Oy7wIRpq+
-	 cgx8t+XaiLXu9VnRAMI4ASYeKlDTdxCTnkJM6q0UdZcj2lI8nGYhk7r//R7AchOORC
-	 8VWxHSYb9nLLrmDhJ9VrdiD7Q2n3/E32KFV0VX/E=
+	b=rgg6kmwAanzROH5/sK2X2BPGlKc7aZXT2gcBbsHqGMHrt0JuFLxhmxgPfeXapvoph
+	 aisYO6mjIU23YnQVdZXgVSvWGmDW6lZk5aRsC2afX4xh7dyYkEojIx2e0ZyLfsVO6y
+	 O7lOXWIW0cxQQ4G+o9L5f1hTy6oCCXuxh4uIuSv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 025/122] net/mlx5e: TC, delete flows only for existing peers
+Subject: [PATCH 6.1 233/280] mmc: sdhci-of-dwcmshc: Update DLL and pre-change delay for rockchip platform
 Date: Wed,  4 Feb 2026 15:40:07 +0100
-Message-ID: <20260204143852.770106215@linuxfoundation.org>
+Message-ID: <20260204143918.008248183@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,163 +69,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214252-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214002-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qemu.org:url]
-X-Rspamd-Queue-Id: 24444E9F4B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5AA63E89A1
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit f67666938ae626cbda63fbf5176b3583c07e7124 ]
+[ Upstream commit b75a52b0dda353aeefb4830a320589a363f49579 ]
 
-When deleting TC steering flows, iterate only over actual devcom
-peers instead of assuming all possible ports exist. This avoids
-touching non-existent peers and ensures cleanup is limited to
-devices the driver is currently connected to.
+For Rockchip platform, DLL bypass bit and start bit need to be set if
+DLL is not locked. And adjust pre-change delay to 0x3 for better signal
+test result.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000008
- #PF: supervisor write access in kernel mode
- #PF: error_code(0x0002) - not-present page
- PGD 133c8a067 P4D 0
- Oops: Oops: 0002 [#1] SMP
- CPU: 19 UID: 0 PID: 2169 Comm: tc Not tainted 6.18.0+ #156 NONE
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
- RIP: 0010:mlx5e_tc_del_fdb_peers_flow+0xbe/0x200 [mlx5_core]
- Code: 00 00 a8 08 74 a8 49 8b 46 18 f6 c4 02 74 9f 4c 8d bf a0 12 00 00 4c 89 ff e8 0e e7 96 e1 49 8b 44 24 08 49 8b 0c 24 4c 89 ff <48> 89 41 08 48 89 08 49 89 2c 24 49 89 5c 24 08 e8 7d ce 96 e1 49
- RSP: 0018:ff11000143867528 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: dead000000000122 RCX: 0000000000000000
- RDX: ff11000143691580 RSI: ff110001026e5000 RDI: ff11000106f3d2a0
- RBP: dead000000000100 R08: 00000000000003fd R09: 0000000000000002
- R10: ff11000101c75690 R11: ff1100085faea178 R12: ff11000115f0ae78
- R13: 0000000000000000 R14: ff11000115f0a800 R15: ff11000106f3d2a0
- FS:  00007f35236bf740(0000) GS:ff110008dc809000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000008 CR3: 0000000157a01001 CR4: 0000000000373eb0
- Call Trace:
-  <TASK>
-  mlx5e_tc_del_flow+0x46/0x270 [mlx5_core]
-  mlx5e_flow_put+0x25/0x50 [mlx5_core]
-  mlx5e_delete_flower+0x2a6/0x3e0 [mlx5_core]
-  tc_setup_cb_reoffload+0x20/0x80
-  fl_reoffload+0x26f/0x2f0 [cls_flower]
-  ? mlx5e_tc_reoffload_flows_work+0xc0/0xc0 [mlx5_core]
-  ? mlx5e_tc_reoffload_flows_work+0xc0/0xc0 [mlx5_core]
-  tcf_block_playback_offloads+0x9e/0x1c0
-  tcf_block_unbind+0x7b/0xd0
-  tcf_block_setup+0x186/0x1d0
-  tcf_block_offload_cmd.isra.0+0xef/0x130
-  tcf_block_offload_unbind+0x43/0x70
-  __tcf_block_put+0x85/0x160
-  ingress_destroy+0x32/0x110 [sch_ingress]
-  __qdisc_destroy+0x44/0x100
-  qdisc_graft+0x22b/0x610
-  tc_get_qdisc+0x183/0x4d0
-  rtnetlink_rcv_msg+0x2d7/0x3d0
-  ? rtnl_calcit.isra.0+0x100/0x100
-  netlink_rcv_skb+0x53/0x100
-  netlink_unicast+0x249/0x320
-  ? __alloc_skb+0x102/0x1f0
-  netlink_sendmsg+0x1e3/0x420
-  __sock_sendmsg+0x38/0x60
-  ____sys_sendmsg+0x1ef/0x230
-  ? copy_msghdr_from_user+0x6c/0xa0
-  ___sys_sendmsg+0x7f/0xc0
-  ? ___sys_recvmsg+0x8a/0xc0
-  ? __sys_sendto+0x119/0x180
-  __sys_sendmsg+0x61/0xb0
-  do_syscall_64+0x55/0x640
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7f35238bb764
- Code: 15 b9 86 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00 f3 0f 1e fa 80 3d e5 08 0d 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
- RSP: 002b:00007ffed4c35638 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 000055a2efcc75e0 RCX: 00007f35238bb764
- RDX: 0000000000000000 RSI: 00007ffed4c356a0 RDI: 0000000000000003
- RBP: 00007ffed4c35710 R08: 0000000000000010 R09: 00007f3523984b20
- R10: 0000000000000004 R11: 0000000000000202 R12: 00007ffed4c35790
- R13: 000000006947df8f R14: 000055a2efcc75e0 R15: 00007ffed4c35780
-
-Fixes: 9be6c21fdcf8 ("net/mlx5e: Handle offloads flows per peer")
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1769411695-18820-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://lore.kernel.org/r/1675298118-64243-2-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 3009738a855c ("mmc: sdhci-of-dwcmshc: Prevent illegal clock reduction in HS200/HS400 mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 00c2763e57ca1..ebea43c235cc3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -2147,11 +2147,14 @@ static void mlx5e_tc_del_fdb_peer_flow(struct mlx5e_tc_flow *flow,
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -48,6 +48,7 @@
+ #define DWCMSHC_EMMC_DLL_RXCLK_SRCSEL	29
+ #define DWCMSHC_EMMC_DLL_START_POINT	16
+ #define DWCMSHC_EMMC_DLL_INC		8
++#define DWCMSHC_EMMC_DLL_BYPASS		BIT(24)
+ #define DWCMSHC_EMMC_DLL_DLYENA		BIT(27)
+ #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
+ #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
+@@ -60,6 +61,7 @@
+ #define DLL_RXCLK_NO_INVERTER		1
+ #define DLL_RXCLK_INVERTER		0
+ #define DLL_CMDOUT_TAPNUM_90_DEGREES	0x8
++#define DLL_RXCLK_ORI_GATE		BIT(31)
+ #define DLL_CMDOUT_TAPNUM_FROM_SW	BIT(24)
+ #define DLL_CMDOUT_SRC_CLK_NEG		BIT(28)
+ #define DLL_CMDOUT_EN_SRC_CLK_NEG	BIT(29)
+@@ -234,9 +236,12 @@ static void dwcmshc_rk3568_set_clock(str
+ 	sdhci_writel(host, extra, reg);
  
- static void mlx5e_tc_del_fdb_peers_flow(struct mlx5e_tc_flow *flow)
- {
-+	struct mlx5_devcom_comp_dev *devcom;
-+	struct mlx5_devcom_comp_dev *pos;
-+	struct mlx5_eswitch *peer_esw;
- 	int i;
- 
--	for (i = 0; i < MLX5_MAX_PORTS; i++) {
--		if (i == mlx5_get_dev_index(flow->priv->mdev))
--			continue;
-+	devcom = flow->priv->mdev->priv.eswitch->devcom;
-+	mlx5_devcom_for_each_peer_entry(devcom, peer_esw, pos) {
-+		i = mlx5_get_dev_index(peer_esw->dev);
- 		mlx5e_tc_del_fdb_peer_flow(flow, i);
+ 	if (clock <= 52000000) {
+-		/* Disable DLL and reset both of sample and drive clock */
+-		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_CTRL);
+-		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_RXCLK);
++		/*
++		 * Disable DLL and reset both of sample and drive clock.
++		 * The bypass bit and start bit need to be set if DLL is not locked.
++		 */
++		sdhci_writel(host, DWCMSHC_EMMC_DLL_BYPASS | DWCMSHC_EMMC_DLL_START, DWCMSHC_EMMC_DLL_CTRL);
++		sdhci_writel(host, DLL_RXCLK_ORI_GATE, DWCMSHC_EMMC_DLL_RXCLK);
+ 		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
+ 		sdhci_writel(host, 0, DECMSHC_EMMC_DLL_CMDOUT);
+ 		/*
+@@ -279,7 +284,7 @@ static void dwcmshc_rk3568_set_clock(str
  	}
- }
-@@ -5511,12 +5514,16 @@ int mlx5e_tc_num_filters(struct mlx5e_priv *priv, unsigned long flags)
  
- void mlx5e_tc_clean_fdb_peer_flows(struct mlx5_eswitch *esw)
- {
-+	struct mlx5_devcom_comp_dev *devcom;
-+	struct mlx5_devcom_comp_dev *pos;
- 	struct mlx5e_tc_flow *flow, *tmp;
-+	struct mlx5_eswitch *peer_esw;
- 	int i;
+ 	extra = 0x1 << 16 | /* tune clock stop en */
+-		0x2 << 17 | /* pre-change delay */
++		0x3 << 17 | /* pre-change delay */
+ 		0x3 << 19;  /* post-change delay */
+ 	sdhci_writel(host, extra, dwc_priv->vendor_specific_area1 + DWCMSHC_EMMC_ATCTRL);
  
--	for (i = 0; i < MLX5_MAX_PORTS; i++) {
--		if (i == mlx5_get_dev_index(esw->dev))
--			continue;
-+	devcom = esw->devcom;
-+
-+	mlx5_devcom_for_each_peer_entry(devcom, peer_esw, pos) {
-+		i = mlx5_get_dev_index(peer_esw->dev);
- 		list_for_each_entry_safe(flow, tmp, &esw->offloads.peer_flows[i], peer[i])
- 			mlx5e_tc_del_fdb_peers_flow(flow);
- 	}
--- 
-2.51.0
-
 
 
 
