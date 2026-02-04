@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-213560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAg4LuVhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:37 +0100
+	id UGkfJ4Vig2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C2BE81D8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3644E8318
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D127A30ED02A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B79B93116E9B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8B241325F;
-	Wed,  4 Feb 2026 14:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2706F41C2E7;
+	Wed,  4 Feb 2026 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6EmZo51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBE5m485"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D20286A4;
-	Wed,  4 Feb 2026 14:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE91A41B379;
+	Wed,  4 Feb 2026 14:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216742; cv=none; b=TNhUZL7QYV5q1rl0qnVz9gTa674PlnyJLmJto25her3cr8W54K1Vx/4p2eY2NVEALRGzeHYrhE2IK1DeUZw7FEcYAK0q6W6W6MTymwify2+AN0j2HivPt20hFmpbiNP2DzQWkyEBPHq7WjMv2nYBAiBZiViG2Zj6Cgy6y0pK6xQ=
+	t=1770216891; cv=none; b=kavbhWPLKawZpZuxLAEZjZqsBV7kRc1T6kX4siWVS6N5Rq1WrrkT2CJfVmJ+RVfR48Sev4c/gTVe7NdUxN22iiDOpIBarnNBdXLGZ01xOmHBrLq+pMixUz2/z5RiR8o4viqU0+GFnr2Hm/P1R/ft44woGNjEBAPkXgTdviYDm2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216742; c=relaxed/simple;
-	bh=woWI2tswE43FooyxNHwKxSlIciTFDyEsY06xCSq5tAw=;
+	s=arc-20240116; t=1770216891; c=relaxed/simple;
+	bh=SedTDsa8ebpaI+npEa5HRGvLalRwXIzZI0U9sGcqBbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2QrAkKvDDpyRXS4pAa+Bp5roZOCH3Pts9N8HVLWGB/UE2kMYG7ySl02KOt3H5tPfseYxHGoyzX5RBWHz/1CxTQjbC3CNJXAXVRU9bruc3tq2CIF+sbJikKbQpHdRN9RlO20MYzcVWc+9/9q5nsLCXUi++tkBh2NB9ir0o/3gTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6EmZo51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AB0C4CEF7;
-	Wed,  4 Feb 2026 14:52:21 +0000 (UTC)
+	 MIME-Version; b=a5a9qG/sJQXmbCfDfMTaKKNFxDfT44NDXz8KXOwXs3V34qeZ15CnEzi6AEgc7vFWWlOMspZHJbzdz6kkqFcyr1m2Qr97LPjSi3VtvSgomZnY2stUaCX38lqDgFHxZUcJftKG70nL/YJMuimA8ElMS//V6/ZDwZX8qb6CRzfuOMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBE5m485; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605EFC116C6;
+	Wed,  4 Feb 2026 14:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216742;
-	bh=woWI2tswE43FooyxNHwKxSlIciTFDyEsY06xCSq5tAw=;
+	s=korg; t=1770216891;
+	bh=SedTDsa8ebpaI+npEa5HRGvLalRwXIzZI0U9sGcqBbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6EmZo51gEM+bq/6M1FHgARP2e5bssUm9maClL7tfkmXZTsC/VmhrGc+PpEpky56N
-	 aEFR3bqY58VGlnCPB8O2mxm4cH85/BghUB5bvkdd1Ezzokt5rYVaxIaGFz9F9ZLTg0
-	 Bg1+Mf53PxoWHIGcmpv4DZ5q0t88wEK1rACVxCqQ=
+	b=lBE5m485uPHRn/v7jCvczk+XnS69ma7yhQIzKS2ptLhWpvRMuuYcieIJMVq27FQOw
+	 D9djAdZe8wlzt+Epxf+9YB2lVROSN8FIe4wuep9wFmPL9FfluT6cYJLS4dQ+8+FGXk
+	 MMTbD62On/yfHyCK/Yf4oY+jio/WPMHTYdy293NY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Folker Schwesinger <dev@folker-schwesinger.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/206] dmaengine: xilinx_dma: Fix uninitialized addr_width when "xlnx,addrwidth" property is missing
-Date: Wed,  4 Feb 2026 15:37:29 +0100
-Message-ID: <20260204143858.858687407@linuxfoundation.org>
+Subject: [PATCH 5.15 019/206] phy: stm32-usphyc: Fix off by one in probe()
+Date: Wed,  4 Feb 2026 15:37:30 +0100
+Message-ID: <20260204143858.895216872@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
 References: <20260204143858.193781818@linuxfoundation.org>
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213560-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213605-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,71 +87,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,folker-schwesinger.de:email]
-X-Rspamd-Queue-Id: 09C2BE81D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,st.com:email]
+X-Rspamd-Queue-Id: E3644E8318
 X-Rspamd-Action: no action
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Gupta <suraj.gupta2@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c0732fe78728718c853ef8e7af5bbb05262acbd1 ]
+[ Upstream commit cabd25b57216ddc132efbcc31f972baa03aad15a ]
 
-When device tree lacks optional "xlnx,addrwidth" property, the addr_width
-variable remained uninitialized with garbage values, causing incorrect
-DMA mask configuration and subsequent probe failure. The fix ensures a
-fallback to the default 32-bit address width when this property is missing.
+The "index" variable is used as an index into the usbphyc->phys[] array
+which has usbphyc->nphys elements.  So if it is equal to usbphyc->nphys
+then it is one element out of bounds.  The "index" comes from the
+device tree so it's data that we trust and it's unlikely to be wrong,
+however it's obviously still worth fixing the bug.  Change the > to >=.
 
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-Fixes: b72db4005fe4 ("dmaengine: vdma: Add 64 bit addressing support to the driver")
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Reviewed-by: Folker Schwesinger <dev@folker-schwesinger.de>
-Link: https://patch.msgid.link/20251021183006.3434495-1-suraj.gupta2@amd.com
+Fixes: 94c358da3a05 ("phy: stm32: add support for STM32 USB PHY Controller (USBPHYC)")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Link: https://patch.msgid.link/aTfHcMJK1wFVnvEe@stanley.mountain
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/xilinx/xilinx_dma.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/phy/st/phy-stm32-usbphyc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 48ac51447baee..ba5850ca39ddd 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -128,6 +128,7 @@
- #define XILINX_MCDMA_MAX_CHANS_PER_DEVICE	0x20
- #define XILINX_DMA_MAX_CHANS_PER_DEVICE		0x2
- #define XILINX_CDMA_MAX_CHANS_PER_DEVICE	0x1
-+#define XILINX_DMA_DFAULT_ADDRWIDTH		0x20
+diff --git a/drivers/phy/st/phy-stm32-usbphyc.c b/drivers/phy/st/phy-stm32-usbphyc.c
+index 27f7e2292cf0b..1e3f73cee9efd 100644
+--- a/drivers/phy/st/phy-stm32-usbphyc.c
++++ b/drivers/phy/st/phy-stm32-usbphyc.c
+@@ -530,7 +530,7 @@ static int stm32_usbphyc_probe(struct platform_device *pdev)
+ 		}
  
- #define XILINX_DMA_DMAXR_ALL_IRQ_MASK	\
- 		(XILINX_DMA_DMASR_FRM_CNT_IRQ | \
-@@ -3013,7 +3014,7 @@ static int xilinx_dma_probe(struct platform_device *pdev)
- 	struct device_node *node = pdev->dev.of_node;
- 	struct xilinx_dma_device *xdev;
- 	struct device_node *child, *np = pdev->dev.of_node;
--	u32 num_frames, addr_width, len_width;
-+	u32 num_frames, addr_width = XILINX_DMA_DFAULT_ADDRWIDTH, len_width;
- 	int i, err;
- 
- 	/* Allocate and initialize the DMA engine structure */
-@@ -3082,7 +3083,9 @@ static int xilinx_dma_probe(struct platform_device *pdev)
- 
- 	err = of_property_read_u32(node, "xlnx,addrwidth", &addr_width);
- 	if (err < 0)
--		dev_warn(xdev->dev, "missing xlnx,addrwidth property\n");
-+		dev_warn(xdev->dev,
-+			 "missing xlnx,addrwidth property, using default value %d\n",
-+			 XILINX_DMA_DFAULT_ADDRWIDTH);
- 
- 	if (addr_width > 32)
- 		xdev->ext_addr = true;
+ 		ret = of_property_read_u32(child, "reg", &index);
+-		if (ret || index > usbphyc->nphys) {
++		if (ret || index >= usbphyc->nphys) {
+ 			dev_err(&phy->dev, "invalid reg property: %d\n", ret);
+ 			if (!ret)
+ 				ret = -EINVAL;
 -- 
 2.51.0
 
