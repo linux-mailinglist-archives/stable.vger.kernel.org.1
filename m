@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-214198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPa0HkBog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:44 +0100
+	id KFHHI0Nog2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E67E90F7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD59E910C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 764ED306177B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CE20305E31E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C18A1C84D0;
-	Wed,  4 Feb 2026 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9E941B37C;
+	Wed,  4 Feb 2026 15:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz/G/ZT1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofuqefuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C328B29AB1D;
-	Wed,  4 Feb 2026 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B46352937;
+	Wed,  4 Feb 2026 15:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218891; cv=none; b=jYzYDAj5FYolCm+wR2AOWtS/WAARornWkQzexU/oefbWWEmNyAli0F4TejWjfstQvo7lTqmqdh812Qj147Ueh9V/YZK6yz7rcK4leMDhlrh5SOa2UnV1MazcAxXmYizjKiK59zmkfX+XupZzNyoKRnRRvKZaYQECkx3GeEzcTAc=
+	t=1770218895; cv=none; b=NOYsArcflGn2eWPB241UVVkI7LlbGDxD7CrJTvaHC2FNGZmkVuJAVjhVQiVv2pFpmZBPX47aDPNFs45GI/61RhTAf5m5+0qNpJe4HsGQ6KArOVWyc2bmHfA1OUMhoRTK8JveXBk1qAf1Ft+ypa8d2kn5NgtncxBlV2zt3j0gLLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218891; c=relaxed/simple;
-	bh=OQbECWL7HYwsPMucwct1Z2kT6/e1fuNO1TYn2pB6HSA=;
+	s=arc-20240116; t=1770218895; c=relaxed/simple;
+	bh=quqLLKWChKEdqeKBbDzdMgQtuKmCE1b1Cf+N1zI6WBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VksrY0rWqD6H+euChXOP7QyaP9H07skHrMB9GbKX0OFo64ooMBOGioaZE3d0ZeMGyXbMkMjFBIp7mbpSwRKDrmRlk4yLedP7w6Nhh/021wx/XT4nfeXGYIozUcbC7opzXrEZiajP8o4VkuXUHzDsP1upOVJ35LQCB1GSxINzjHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz/G/ZT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3786FC4CEF7;
-	Wed,  4 Feb 2026 15:28:10 +0000 (UTC)
+	 MIME-Version; b=NupIkL8Mi39jYq1/xlDPPfzbNw6od5Mg+NnYROGnYqj8ieuLUnff1os/YVE4qrfQx8KC0HORTsDHkZ5deWRSvqrEfpqiXERUDEPAf6CAV5GtEjFBFHStxcDQGsxA9Ev3stisRUTPHu5PWTBxdEKMdOFhxMZAUflWucCYnUhXOzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofuqefuL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E2AC4CEF7;
+	Wed,  4 Feb 2026 15:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218891;
-	bh=OQbECWL7HYwsPMucwct1Z2kT6/e1fuNO1TYn2pB6HSA=;
+	s=korg; t=1770218895;
+	bh=quqLLKWChKEdqeKBbDzdMgQtuKmCE1b1Cf+N1zI6WBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iz/G/ZT1BXSdYG+cCbs9M32Qtsk3aoTR9CHw/dPykKPZ5+1Sp9oI90VkGarWAT/rr
-	 4YTEaUObjhF100I9peZEM2nQIFZovS87ktvFgnK/vlN+PjVOXX3gEopLPtvUKNjJgH
-	 cVqPOfL4jA8ZyHaPlTjRS9a96vTbGFO1ui9/DMQo=
+	b=ofuqefuLwv2KEP3oI1C+E9+njr/pugk+C4V6dldDmNY3pdRBrYcJY8D9PDd1Z4k+L
+	 7rSkM0oDlGDtTbSfyBfGucIHAVzbXE9GmTarqMfYkdzh97W3zTIueiplIy5my/HCyl
+	 1vRzpw0TmeRHuGih0ltnw9rUyrRz5lMB9NkeWGzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Long Li <longli@microsoft.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	stable@kernel.org
-Subject: [PATCH 6.12 85/87] net: mana: Change the function signature of mana_get_primary_netdev_rcu
-Date: Wed,  4 Feb 2026 15:41:23 +0100
-Message-ID: <20260204143849.987193792@linuxfoundation.org>
+Subject: [PATCH 6.12 86/87] RDMA/mana_ib: Handle net event for pointing to the current netdev
+Date: Wed,  4 Feb 2026 15:41:24 +0100
+Message-ID: <20260204143850.024294683@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
 References: <20260204143846.906385641@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214198-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214199-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,9 +90,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D0E67E90F7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2FD59E910C
 X-Rspamd-Action: no action
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
@@ -101,111 +101,122 @@ X-Rspamd-Action: no action
 
 From: Long Li <longli@microsoft.com>
 
-commit a8445cfec101c42e9d64cdb2dac13973b22c205c upstream.
+commit bee35b7161aaaed9831e2f14876c374b9c566952 upstream.
 
-Change mana_get_primary_netdev_rcu() to mana_get_primary_netdev(), and
-return the ndev with refcount held. The caller is responsible for dropping
-the refcount.
+When running under Hyper-V, the master device to the RDMA device is always
+bonded to this RDMA device. This is not user-configurable.
 
-Also drop the check for IFF_SLAVE as it is not necessary if the upper
-device is present.
+The master device can be unbind/bind from the kernel. During those events,
+the RDMA device should set to the current netdev to reflect the change of
+master device from those events.
 
 Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/1741821332-9392-1-git-send-email-longli@linuxonhyperv.com
+Link: https://patch.msgid.link/1741821332-9392-2-git-send-email-longli@linuxonhyperv.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Fixes: 1df03a4b4414 ("RDMA/mana_ib: Set correct device into ib")
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/device.c           |    7 +++----
- drivers/infiniband/hw/mana/mana_ib.h          |    1 +
- drivers/net/ethernet/microsoft/mana/mana_en.c |   22 ++++++++++++++--------
- include/net/mana/mana.h                       |    4 +++-
- 4 files changed, 21 insertions(+), 13 deletions(-)
+ drivers/infiniband/hw/mana/device.c  |   47 +++++++++++++++++++++++++++++++++--
+ drivers/infiniband/hw/mana/mana_ib.h |    1 
+ 2 files changed, 46 insertions(+), 2 deletions(-)
 
 --- a/drivers/infiniband/hw/mana/device.c
 +++ b/drivers/infiniband/hw/mana/device.c
-@@ -84,10 +84,8 @@ static int mana_ib_probe(struct auxiliar
- 	dev->ib_dev.num_comp_vectors = mdev->gdma_context->max_num_queues;
- 	dev->ib_dev.dev.parent = mdev->gdma_context->dev;
+@@ -51,6 +51,38 @@ static const struct ib_device_ops mana_i
+ 			   ib_ind_table),
+ };
  
--	rcu_read_lock(); /* required to get primary netdev */
--	ndev = mana_get_primary_netdev_rcu(mc, 0);
-+	ndev = mana_get_primary_netdev(mc, 0, &dev->dev_tracker);
- 	if (!ndev) {
--		rcu_read_unlock();
- 		ret = -ENODEV;
- 		ibdev_err(&dev->ib_dev, "Failed to get netdev for IB port 1");
- 		goto free_ib_device;
-@@ -95,7 +93,8 @@ static int mana_ib_probe(struct auxiliar
- 	ether_addr_copy(mac_addr, ndev->dev_addr);
- 	addrconf_addr_eui48((u8 *)&dev->ib_dev.node_guid, ndev->dev_addr);
- 	ret = ib_device_set_netdev(&dev->ib_dev, ndev, 1);
--	rcu_read_unlock();
-+	/* mana_get_primary_netdev() returns ndev with refcount held */
-+	netdev_put(ndev, &dev->dev_tracker);
++static int mana_ib_netdev_event(struct notifier_block *this,
++				unsigned long event, void *ptr)
++{
++	struct mana_ib_dev *dev = container_of(this, struct mana_ib_dev, nb);
++	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
++	struct gdma_context *gc = dev->gdma_dev->gdma_context;
++	struct mana_context *mc = gc->mana.driver_data;
++	struct net_device *ndev;
++
++	/* Only process events from our parent device */
++	if (event_dev != mc->ports[0])
++		return NOTIFY_DONE;
++
++	switch (event) {
++	case NETDEV_CHANGEUPPER:
++		ndev = mana_get_primary_netdev(mc, 0, &dev->dev_tracker);
++		/*
++		 * RDMA core will setup GID based on updated netdev.
++		 * It's not possible to race with the core as rtnl lock is being
++		 * held.
++		 */
++		ib_device_set_netdev(&dev->ib_dev, ndev, 1);
++
++		/* mana_get_primary_netdev() returns ndev with refcount held */
++		netdev_put(ndev, &dev->dev_tracker);
++
++		return NOTIFY_OK;
++	default:
++		return NOTIFY_DONE;
++	}
++}
++
+ static int mana_ib_probe(struct auxiliary_device *adev,
+ 			 const struct auxiliary_device_id *id)
+ {
+@@ -108,17 +140,25 @@ static int mana_ib_probe(struct auxiliar
+ 	}
+ 	dev->gdma_dev = &mdev->gdma_context->mana_ib;
+ 
++	dev->nb.notifier_call = mana_ib_netdev_event;
++	ret = register_netdevice_notifier(&dev->nb);
++	if (ret) {
++		ibdev_err(&dev->ib_dev, "Failed to register net notifier, %d",
++			  ret);
++		goto deregister_device;
++	}
++
+ 	ret = mana_ib_gd_query_adapter_caps(dev);
  	if (ret) {
- 		ibdev_err(&dev->ib_dev, "Failed to set ib netdev, ret %d", ret);
- 		goto free_ib_device;
+ 		ibdev_err(&dev->ib_dev, "Failed to query device caps, ret %d",
+ 			  ret);
+-		goto deregister_device;
++		goto deregister_net_notifier;
+ 	}
+ 
+ 	ret = mana_ib_create_eqs(dev);
+ 	if (ret) {
+ 		ibdev_err(&dev->ib_dev, "Failed to create EQs, ret %d", ret);
+-		goto deregister_device;
++		goto deregister_net_notifier;
+ 	}
+ 
+ 	ret = mana_ib_gd_create_rnic_adapter(dev);
+@@ -147,6 +187,8 @@ destroy_rnic:
+ 	mana_ib_gd_destroy_rnic_adapter(dev);
+ destroy_eqs:
+ 	mana_ib_destroy_eqs(dev);
++deregister_net_notifier:
++	unregister_netdevice_notifier(&dev->nb);
+ deregister_device:
+ 	mana_gd_deregister_device(dev->gdma_dev);
+ free_ib_device:
+@@ -162,6 +204,7 @@ static void mana_ib_remove(struct auxili
+ 	xa_destroy(&dev->qp_table_wq);
+ 	mana_ib_gd_destroy_rnic_adapter(dev);
+ 	mana_ib_destroy_eqs(dev);
++	unregister_netdevice_notifier(&dev->nb);
+ 	mana_gd_deregister_device(dev->gdma_dev);
+ 	ib_dealloc_device(&dev->ib_dev);
+ }
 --- a/drivers/infiniband/hw/mana/mana_ib.h
 +++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -64,6 +64,7 @@ struct mana_ib_dev {
- 	struct gdma_queue **eqs;
+@@ -65,6 +65,7 @@ struct mana_ib_dev {
  	struct xarray qp_table_wq;
  	struct mana_ib_adapter_caps adapter_caps;
-+	netdevice_tracker dev_tracker;
+ 	netdevice_tracker dev_tracker;
++	struct notifier_block nb;
  };
  
  struct mana_ib_wq {
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3000,21 +3000,27 @@ out:
- 	kfree(ac);
- }
- 
--struct net_device *mana_get_primary_netdev_rcu(struct mana_context *ac, u32 port_index)
-+struct net_device *mana_get_primary_netdev(struct mana_context *ac,
-+					   u32 port_index,
-+					   netdevice_tracker *tracker)
- {
- 	struct net_device *ndev;
- 
--	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
--			 "Taking primary netdev without holding the RCU read lock");
- 	if (port_index >= ac->num_ports)
- 		return NULL;
- 
--	/* When mana is used in netvsc, the upper netdevice should be returned. */
--	if (ac->ports[port_index]->flags & IFF_SLAVE)
--		ndev = netdev_master_upper_dev_get_rcu(ac->ports[port_index]);
--	else
-+	rcu_read_lock();
-+
-+	/* If mana is used in netvsc, the upper netdevice should be returned. */
-+	ndev = netdev_master_upper_dev_get_rcu(ac->ports[port_index]);
-+
-+	/* If there is no upper device, use the parent Ethernet device */
-+	if (!ndev)
- 		ndev = ac->ports[port_index];
- 
-+	netdev_hold(ndev, tracker, GFP_ATOMIC);
-+	rcu_read_unlock();
-+
- 	return ndev;
- }
--EXPORT_SYMBOL_NS(mana_get_primary_netdev_rcu, NET_MANA);
-+EXPORT_SYMBOL_NS(mana_get_primary_netdev, NET_MANA);
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -819,5 +819,7 @@ int mana_cfg_vport(struct mana_port_cont
- 		   u32 doorbell_pg_id);
- void mana_uncfg_vport(struct mana_port_context *apc);
- 
--struct net_device *mana_get_primary_netdev_rcu(struct mana_context *ac, u32 port_index);
-+struct net_device *mana_get_primary_netdev(struct mana_context *ac,
-+					   u32 port_index,
-+					   netdevice_tracker *tracker);
- #endif /* _MANA_H */
 
 
 
