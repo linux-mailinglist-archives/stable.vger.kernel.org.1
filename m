@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPCgCCRug2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:52 +0100
+	id YJL6Og5ng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B760E9D43
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AE5E8E56
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DF0831AD3E0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:33:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 648903093787
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2252D8768;
-	Wed,  4 Feb 2026 15:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AAD42315F;
+	Wed,  4 Feb 2026 15:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opHsIQb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5NtcPCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FF12D5C91;
-	Wed,  4 Feb 2026 15:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A57042188E;
+	Wed,  4 Feb 2026 15:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219188; cv=none; b=PMMZ9YdGoUA/83vKCRybn3Uss2OyGWJ73C4LaNet37lRzUfFx0LvhbUvZrCKc2e9ox+m8Cx54X+0zZ1SZh7l0nNkBSGW0Or6YmBe97QGdqY8YT+GX8Vf/tOYJfbDszLGlA1WNvfmuPBAHSCINDKu2C451e9L7LxE7P3KWXs5fuE=
+	t=1770218581; cv=none; b=SMryazuns/UZbAkRFRrhIjwRq0MhrYL8QWOTUYcVsq4JhL+FVY40eVRdSfAzbCaPCHD5F3GWWwSF7oO8ccmRKNpC7rz4euyjJYzwTXdLFmAeEpiWU5e90D2LZU8vEB3iljfLHDbBHdN6v92Ytu5WIDf7Au2Q3ULUt8qcwlT+hOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219188; c=relaxed/simple;
-	bh=nfQIA6CvaelNj7kzTvV1xho6QnrycBsdKJg1ylYfaDc=;
+	s=arc-20240116; t=1770218581; c=relaxed/simple;
+	bh=3ztzBiwU5wUE3pbaXmAb77q+03JxqlA4l2ZKbuXMrcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jHBL4UzTrkvBZW/+JejLnTey4tSIPKER3TeFMYMyU2ISA2CpZP/u73W+hlgO9yfVMSRFi3pWyjbiRDaVQO32D0aJ57vJsFTONxGW89gboT5BHhh5bVvEkuXNo22jsqIPqlwOoFHbtbjY5jekU1awl/ZvaL+EJSvZq7COe274LIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opHsIQb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D88C4CEF7;
-	Wed,  4 Feb 2026 15:33:07 +0000 (UTC)
+	 MIME-Version; b=EfUpr0On4pskLxyaGV0W9tT3+XrD1S6oNZ7PhSlo8SvLiJ2J5UzA/0fbmEqzG6mtKjBSDQFBQZr1S0soCws63QakR56aY4z6U/MVosWyOFgq0M7cWLkEnEnX64gSzgu8EGTcyZdjm45U2lH9WHXwXU05vgtbzKzSJXBmOySgsuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5NtcPCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7E9C4CEF7;
+	Wed,  4 Feb 2026 15:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219188;
-	bh=nfQIA6CvaelNj7kzTvV1xho6QnrycBsdKJg1ylYfaDc=;
+	s=korg; t=1770218580;
+	bh=3ztzBiwU5wUE3pbaXmAb77q+03JxqlA4l2ZKbuXMrcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opHsIQb1Mz9IhPCLrvUZSrAH4TklRXP4Jv/RTBPqjIh2wS2/EYmK5XjCGemlZ4B3v
-	 5vvT/a0Ji0qAhvvQWxUeQXiJeuSLUh60SXlvpPNmP8JqP/QRNQxZgSjIocVZESpldh
-	 5XloBZZxe/Am5L/mXAy0XNz5YAu7IgkRB8eQef0U=
+	b=F5NtcPCRM2LQayb9Ms6vst/UKEWFMrScpbR4u/vZVeJlLjUvuIE/mttfxYgGbpSO6
+	 WbnO8c2RL40/01hh65BQoNkhmTp5GNuRQUP9iKc5ikdH80gMtKy3Z2LbKWQUkxy35X
+	 7H+awN75WBjYpkg88q1fxFgXxIIttqVD6yTjf8Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.18 092/122] rust: sync: atomic: Provide stub for `rusttest` 32-bit hosts
+	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wen Yang <wen.yang@linux.dev>
+Subject: [PATCH 6.6 71/72] Revert "net: Remove conditional threaded-NAPI wakeup based on task state."
 Date: Wed,  4 Feb 2026 15:41:14 +0100
-Message-ID: <20260204143855.161961076@linuxfoundation.org>
+Message-ID: <20260204143848.216983148@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +64,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214288-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,onurozkan.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214105-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 3B760E9D43
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 69AE5E8E56
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit bd36f6e2abf7f85644f7ea8deb1de4040b03bbc1 upstream.
+This reverts commit 03765d5c18084eab40351fda09bc6fc1a343cd07 which is
+commit 56364c910691f6d10ba88c964c9041b9ab777bd6 upstream.
 
-For arm32, on a x86_64 builder, running the `rusttest` target yields:
+It is only for issues around PREEMPT_RT, which is not in the 6.6.y tree,
+so revert this for now.
 
-    error[E0080]: evaluation of constant value failed
-      --> rust/kernel/static_assert.rs:37:23
-       |
-    37 |         const _: () = ::core::assert!($condition $(,$arg)?);
-       |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at 'assertion failed: size_of::<isize>() == size_of::<isize_atomic_repr>()', rust/kernel/sync/atomic/predefine.rs:68:1
-       |
-      ::: rust/kernel/sync/atomic/predefine.rs:68:1
-       |
-    68 | static_assert!(size_of::<isize>() == size_of::<isize_atomic_repr>());
-       | -------------------------------------------------------------------- in this macro invocation
-       |
-       = note: this error originates in the macro `::core::assert` which comes from the expansion of the macro `static_assert` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-The reason is that `rusttest` runs on the host, so for e.g. a x86_64
-builder `isize` is 64 bits but it is not a `CONFIG_64BIT` build.
-
-Fix it by providing a stub for `rusttest` as usual.
-
-Fixes: 84c6d36bcaf9 ("rust: sync: atomic: Add Atomic<{usize,isize}>")
-Cc: stable@vger.kernel.org
-Reviewed-by: Onur Özkan <work@onurozkan.dev>
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20260123233432.22703-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20260120103833.4kssDD1Y@linutronix.de
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Wen Yang <wen.yang@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/sync/atomic/predefine.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/core/dev.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-index 45a17985cda4..0fca1ba3c2db 100644
---- a/rust/kernel/sync/atomic/predefine.rs
-+++ b/rust/kernel/sync/atomic/predefine.rs
-@@ -35,12 +35,23 @@ fn rhs_into_delta(rhs: i64) -> i64 {
- // as `isize` and `usize`, and `isize` and `usize` are always bi-directional transmutable to
- // `isize_atomic_repr`, which also always implements `AtomicImpl`.
- #[allow(non_camel_case_types)]
-+#[cfg(not(testlib))]
- #[cfg(not(CONFIG_64BIT))]
- type isize_atomic_repr = i32;
- #[allow(non_camel_case_types)]
-+#[cfg(not(testlib))]
- #[cfg(CONFIG_64BIT)]
- type isize_atomic_repr = i64;
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4539,7 +4539,13 @@ static inline void ____napi_schedule(str
+ 		 */
+ 		thread = READ_ONCE(napi->thread);
+ 		if (thread) {
+-			set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
++			/* Avoid doing set_bit() if the thread is in
++			 * INTERRUPTIBLE state, cause napi_thread_wait()
++			 * makes sure to proceed with napi polling
++			 * if the thread is explicitly woken from here.
++			 */
++			if (READ_ONCE(thread->__state) != TASK_INTERRUPTIBLE)
++				set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
+ 			wake_up_process(thread);
+ 			return;
+ 		}
+@@ -6695,6 +6701,8 @@ static int napi_poll(struct napi_struct
  
-+#[allow(non_camel_case_types)]
-+#[cfg(testlib)]
-+#[cfg(target_pointer_width = "32")]
-+type isize_atomic_repr = i32;
-+#[allow(non_camel_case_types)]
-+#[cfg(testlib)]
-+#[cfg(target_pointer_width = "64")]
-+type isize_atomic_repr = i64;
+ static int napi_thread_wait(struct napi_struct *napi)
+ {
++	bool woken = false;
 +
- // Ensure size and alignment requirements are checked.
- static_assert!(size_of::<isize>() == size_of::<isize_atomic_repr>());
- static_assert!(align_of::<isize>() == align_of::<isize_atomic_repr>());
--- 
-2.53.0
-
+ 	set_current_state(TASK_INTERRUPTIBLE);
+ 
+ 	while (!kthread_should_stop()) {
+@@ -6703,13 +6711,15 @@ static int napi_thread_wait(struct napi_
+ 		 * Testing SCHED bit is not enough because SCHED bit might be
+ 		 * set by some other busy poll thread or by napi_disable().
+ 		 */
+-		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state)) {
++		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state) || woken) {
+ 			WARN_ON(!list_empty(&napi->poll_list));
+ 			__set_current_state(TASK_RUNNING);
+ 			return 0;
+ 		}
+ 
+ 		schedule();
++		/* woken being true indicates this thread owns this napi. */
++		woken = true;
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 	}
+ 	__set_current_state(TASK_RUNNING);
 
 
 
