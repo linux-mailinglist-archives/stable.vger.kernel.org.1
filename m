@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-214204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KC95Kt1ng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:05 +0100
+	id 2PqxIBVlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30552E901F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EE8E88C6
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00E4B30EA978
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 352573073518
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B9621FF4C;
-	Wed,  4 Feb 2026 15:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564C541B375;
+	Wed,  4 Feb 2026 15:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKaYStxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wXcW+Jz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3032C026F;
-	Wed,  4 Feb 2026 15:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EA4413249;
+	Wed,  4 Feb 2026 15:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218912; cv=none; b=icQbhzELBT581evblJznZo1lEh2LjiaW5+RSrVVM8EsCVAqxyMg0I3w9WTOU/KDxfFS6j8Jzd9MNOSMhYI+821tR1lRNASkWNKLeDA2aeWcVN30uPEVfhvCyy7kZhNGadJ/7ArJm/RfOOxMlkyLe4VADHVYQ5zQ3vv00TiJhioc=
+	t=1770218125; cv=none; b=GjVxCaxGonraA0v6kso/TWxjT/r9DKpaZyQ4prgCQQbx6TKpJ4lioCgCHOShySbT9ppyjJOASBIP0Uk8EfE7DKls1H9GVq/EKHrGGS/IF1JBYGooQYFUaGnG7gi4dekvTCYkKIlfK9y2HWnt9Yx5dJ81sGRFG5F/uWJKP9czFxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218912; c=relaxed/simple;
-	bh=c0EDH3lMPnlDYsOfwRuSrAh30yZmpDKKU5iCE+dwvhI=;
+	s=arc-20240116; t=1770218125; c=relaxed/simple;
+	bh=k4KmYauBPxdzD8lr9oiLJmZhgVGj0mjbSaF92AIpbp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4ivNxkt4lx2IRyMWfgWpoJsK+uaZyLn9WXgSgR32DBVIyJBcC0v/iOewUMgNNAlPeMUaS9VoBsSLLDkfg1X2zQrbZ+zJdNNh1GckTyNTjlyrVW1kyybnEnCYHkdgMyawbxBECEyvGsw4aS4IwGR7ztuuSfdOt0NWtm3FyDahzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKaYStxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946B9C116C6;
-	Wed,  4 Feb 2026 15:28:31 +0000 (UTC)
+	 MIME-Version; b=aVZjabb29T0iLRFmkvlIhLr0mTorSBbfaWLREpKG85L7NZ8ibRSQvSQkNlMHYBEWLkFqvF6n4PVj5EziqWU+mh6SSKbRe0PVJcRJxrvL7z3M2Vl5XYCuEJtH2dSHUTn/OpUumGjSYQy30YVXpJFT+3ZOQCbi8Ziub2VIfKWqe8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wXcW+Jz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C94FC4CEF7;
+	Wed,  4 Feb 2026 15:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218912;
-	bh=c0EDH3lMPnlDYsOfwRuSrAh30yZmpDKKU5iCE+dwvhI=;
+	s=korg; t=1770218125;
+	bh=k4KmYauBPxdzD8lr9oiLJmZhgVGj0mjbSaF92AIpbp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKaYStxmfgEnouPO0QgqzoSlvySBawRLL63f+hgiQgDOgBAAdFgIsWg7KvH8ELEcE
-	 2UpJXs5fT1AvG4s23Lsn3SglurmYrSKBALsqbcdG+pKo4OuytQP0fzdKiP/hRGdW2b
-	 0fpRmJ/ApT2VIkkS9DNX2JumHzQPqcabe5Ru4gj0=
+	b=1wXcW+JzKAcG7or7OBew+fyuZ04tLJONvdwrMSM31rPPEjGbG3B1DmY+8L59zb9HM
+	 fJAjCfwX/xhOzw4DDl8sEEAW/+eGcN9nOkAskWfGeUTm6y1U8vdi0j7mu9g/eEvafw
+	 rAQlI3GLi8l6OylSYeKdJreTk/n5rBZpfsaE+8o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damir Mansurov <damir.mansurov@oktetlabs.ru>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 011/122] sfc: fix deadlock in RSS config read
+	Heiko Stuebner <heiko@sntech.de>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.1 219/280] gpio: rockchip: Stop calling pinctrl for set_direction
 Date: Wed,  4 Feb 2026 15:39:53 +0100
-Message-ID: <20260204143852.271444224@linuxfoundation.org>
+Message-ID: <20260204143917.487486356@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +65,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214204-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oktetlabs.ru,decadent.org.uk,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213971-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,decadent.org.uk:email,oktetlabs.ru:email]
-X-Rspamd-Queue-Id: 30552E901F
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
+X-Rspamd-Queue-Id: 01EE8E88C6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Cree <ecree.xilinx@gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 944c614b0a7afa5b87612c3fb557b95a50ad654c ]
+commit 7ca497be00163610afb663867db24ac408752f13 upstream.
 
-Since cited commit, core locks the net_device's rss_lock when handling
- ethtool -x command, so driver's implementation should not lock it
- again.  Remove the latter.
+Marking the whole controller as sleeping due to the pinctrl calls in the
+.direction_{input,output} callbacks has the unfortunate side effect that
+legitimate invocations of .get and .set, which cannot themselves sleep,
+in atomic context now spew WARN()s from gpiolib.
 
-Fixes: 040cef30b5e6 ("net: ethtool: move get_rxfh callback under the rss_lock")
-Reported-by: Damir Mansurov <damir.mansurov@oktetlabs.ru>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1126015
-Suggested-by: Ben Hutchings <ben@decadent.org.uk>
-Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
-Link: https://patch.msgid.link/20260123161634.1215006-1-edward.cree@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, as Heiko points out, the driver doing this is a bit silly to
+begin with, as the pinctrl .gpio_set_direction hook doesn't even care
+about the direction, the hook is only used to claim the mux. And sure
+enough, the .gpio_request_enable hook exists to serve this very purpose,
+so switch to that and remove the problematic business entirely.
+
+Cc: stable@vger.kernel.org
+Fixes: 20cf2aed89ac ("gpio: rockchip: mark the GPIO controller as sleeping")
+Suggested-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/bddc0469f25843ca5ae0cf578ab3671435ae98a7.1769429546.git.robin.murphy@arm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+[ Backport past pinctrl API change for the deleted calls ]
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/sfc/mcdi_filters.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpio/gpio-rockchip.c       |    8 --------
+ drivers/pinctrl/pinctrl-rockchip.c |    9 ++++-----
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/mcdi_filters.c b/drivers/net/ethernet/sfc/mcdi_filters.c
-index 6ef96292909a2..3db589b90b68a 100644
---- a/drivers/net/ethernet/sfc/mcdi_filters.c
-+++ b/drivers/net/ethernet/sfc/mcdi_filters.c
-@@ -2182,12 +2182,7 @@ int efx_mcdi_rx_pull_rss_context_config(struct efx_nic *efx,
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -19,7 +19,6 @@
+ #include <linux/of_address.h>
+ #include <linux/of_device.h>
+ #include <linux/of_irq.h>
+-#include <linux/pinctrl/consumer.h>
+ #include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/regmap.h>
  
- int efx_mcdi_rx_pull_rss_config(struct efx_nic *efx)
- {
--	int rc;
+@@ -157,12 +156,6 @@ static int rockchip_gpio_set_direction(s
+ 	unsigned long flags;
+ 	u32 data = input ? 0 : 1;
+ 
 -
--	mutex_lock(&efx->net_dev->ethtool->rss_lock);
--	rc = efx_mcdi_rx_pull_rss_context_config(efx, &efx->rss_context);
--	mutex_unlock(&efx->net_dev->ethtool->rss_lock);
--	return rc;
-+	return efx_mcdi_rx_pull_rss_context_config(efx, &efx->rss_context);
+-	if (input)
+-		pinctrl_gpio_direction_input(bank->pin_base + offset);
+-	else
+-		pinctrl_gpio_direction_output(bank->pin_base + offset);
+-
+ 	raw_spin_lock_irqsave(&bank->slock, flags);
+ 	rockchip_gpio_writel_bit(bank, offset, data, bank->gpio_regs->port_ddr);
+ 	raw_spin_unlock_irqrestore(&bank->slock, flags);
+@@ -584,7 +577,6 @@ static int rockchip_gpiolib_register(str
+ 	gc->ngpio = bank->nr_pins;
+ 	gc->label = bank->name;
+ 	gc->parent = bank->dev;
+-	gc->can_sleep = true;
+ 
+ 	ret = gpiochip_add_data(gc, bank);
+ 	if (ret) {
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -2750,10 +2750,9 @@ static int rockchip_pmx_set(struct pinct
+ 	return 0;
  }
  
- void efx_mcdi_rx_restore_rss_contexts(struct efx_nic *efx)
--- 
-2.51.0
-
+-static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+-					   struct pinctrl_gpio_range *range,
+-					   unsigned offset,
+-					   bool input)
++static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
++					    struct pinctrl_gpio_range *range,
++					    unsigned int offset)
+ {
+ 	struct rockchip_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
+ 	struct rockchip_pin_bank *bank;
+@@ -2767,7 +2766,7 @@ static const struct pinmux_ops rockchip_
+ 	.get_function_name	= rockchip_pmx_get_func_name,
+ 	.get_function_groups	= rockchip_pmx_get_groups,
+ 	.set_mux		= rockchip_pmx_set,
+-	.gpio_set_direction	= rockchip_pmx_gpio_set_direction,
++	.gpio_request_enable	= rockchip_pmx_gpio_request_enable,
+ };
+ 
+ /*
 
 
 
