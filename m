@@ -1,70 +1,60 @@
-Return-Path: <stable+bounces-214283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAipOfZog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:46 +0100
+	id mEz7Kbdng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F87E9305
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58441E8FBF
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 395AD3183644
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7565731058E6
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B1A2D8773;
-	Wed,  4 Feb 2026 15:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69274413249;
+	Wed,  4 Feb 2026 15:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pR201Nou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY6lBx+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9C02D738F;
-	Wed,  4 Feb 2026 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C83F221F17;
+	Wed,  4 Feb 2026 15:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219171; cv=none; b=NFwDlvgO0E79ica7odwSweTSXRNU2pY6m2JuEBri63h+HygdE33kD+3sUKQcEVHyswGRIz2hw7kOSWbv25nBRkk4KQGHsEDfMWu9bhsALiBnykyzOSsFd40i9k9hxo7KaDoF+T5453STJ/iIRtqxc/EwFCSAbaHWZW0xvdSxGMk=
+	t=1770218822; cv=none; b=P0SnraWPL/fkEn33TdV3iVZ6q1I5dIGVGkEBl8RDAndk5S0bO3vUMQcshBwQdapQ9rRcobiHoTnpvRfWuzBH+7qSGMyTv2W/kvGupXCWHfCwnQ/2rqT+BXe1prypdkPTZbTnX+JDVzwewn4yY9en+YAzsFRxMCcYTa6OgQwnbWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219171; c=relaxed/simple;
-	bh=IpqBlnf4SVj91UydQQT1mROWsEhiZpb6J+VTQjw74Mw=;
+	s=arc-20240116; t=1770218822; c=relaxed/simple;
+	bh=bT4iEhSzxuJIucQ4a0k/c35KLR3gaQscE3rrro9xjyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcJQhz9bMzTzLsWPSuzUBQMV4FQCCWO6twQE2mRmWNAmtCVXrZWuGfljX/Zmi0k7t9qzdyw87PSluOP2w1ShX+CryRBNw2eGiIWl23FvuzRL/1YUcKuN1KniK6AFZwungnzKzb4R+NtAH3481OWU3aOSXPqhwyxupbt/+exDvWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pR201Nou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275B9C4CEF7;
-	Wed,  4 Feb 2026 15:32:50 +0000 (UTC)
+	 MIME-Version; b=Qnsnne2ZY00hQjOXGgtBlPRVqc5bLaGZbgEFwMHgzRuTkKVANpQpcM6E3Zagq3zSWWrz0Ht60el5N3A44xc5mLWz4PelOBWQyJeL3bAcSBeKmh5zMcKNxp0ry+MINwq08rlw98klbEwaca0tOP2suV57n4yj3nTbXwPRQzCSDz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY6lBx+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614DEC4CEF7;
+	Wed,  4 Feb 2026 15:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219170;
-	bh=IpqBlnf4SVj91UydQQT1mROWsEhiZpb6J+VTQjw74Mw=;
+	s=korg; t=1770218822;
+	bh=bT4iEhSzxuJIucQ4a0k/c35KLR3gaQscE3rrro9xjyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pR201Nou7QlVXWu+Oo5VNsvrnVw6RISs0RGldGXJAcbjR9pFPN/MFM++QsO2d34l9
-	 LztP6wyY0FtWdLNhdVtLfPnZFB1AyKcdbNrFO3D0M+8EUrWr/c77SkFt4IyquTGaAF
-	 3juEWb5M+N+jHvqfu/qgc62K94Qnl1RcxFw9Wxvc=
+	b=iY6lBx+YhmIokilgbHWhgsPBMU6aBxnTN6zGKhIp1NRDg2+qX8ubV9ZW4ciUi4iiY
+	 mHTvTcrC5YfoLeVnPwiJoK5aZHwgns7MLLvWFKRCbRdo5mz3XY+avrJ2WX+TLTCgIO
+	 mEiBR5kqejvXn0BWqaTDShoxpp7GAiZxLZ8v8S0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"robin.kuo" <robin.kuo@mediatek.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"andrew.yang" <andrew.yang@mediatek.com>,
-	AngeloGiaocchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Chinwen Chang <chinwen.chang@mediatek.com>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Mathias Brugger <matthias.bgg@gmail.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Qun-wei Lin <Qun-wei.Lin@mediatek.com>
-Subject: [PATCH 6.18 087/122] mm, swap: restore swap_space attr aviod kernel panic
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 71/87] ksmbd: smbd: fix dma_unmap_sg() nents
 Date: Wed,  4 Feb 2026 15:41:09 +0100
-Message-ID: <20260204143854.981902181@linuxfoundation.org>
+Message-ID: <20260204143849.473431118@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,127 +69,103 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-214283-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mediatek.com,linux-foundation.org,collabora.com,redhat.com,kernel.org,tencent.com,gmail.com,huaweicloud.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-214177-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tencent.com:email,linux-foundation.org:email,mediatek.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huaweicloud.com:email]
-X-Rspamd-Queue-Id: 53F87E9305
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 58441E8FBF
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: robin.kuo <robin.kuo@mediatek.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit a0f3c0845a4ff68d403c568266d17e9cc553e561 upstream.
+[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
 
-commit 8b47299a411a ("mm, swap: mark swap address space ro and add context
-debug check") made the swap address space read-only.  It may lead to
-kernel panic if arch_prepare_to_swap returns a failure under heavy memory
-pressure as follows,
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-el1_abort+0x40/0x64
-el1h_64_sync_handler+0x48/0xcc
-el1h_64_sync+0x84/0x88
-errseq_set+0x4c/0xb8 (P)
-__filemap_set_wb_err+0x20/0xd0
-shrink_folio_list+0xc20/0x11cc
-evict_folios+0x1520/0x1be4
-try_to_shrink_lruvec+0x27c/0x3dc
-shrink_one+0x9c/0x228
-shrink_node+0xb3c/0xeac
-do_try_to_free_pages+0x170/0x4f0
-try_to_free_pages+0x334/0x534
-__alloc_pages_direct_reclaim+0x90/0x158
-__alloc_pages_slowpath+0x334/0x588
-__alloc_frozen_pages_noprof+0x224/0x2fc
-__folio_alloc_noprof+0x14/0x64
-vma_alloc_zeroed_movable_folio+0x34/0x44
-do_pte_missing+0xad4/0x1040
-handle_mm_fault+0x4a4/0x790
-do_page_fault+0x288/0x5f8
-do_translation_fault+0x38/0x54
-do_mem_abort+0x54/0xa8
-
-Restore swap address space as not ro to avoid the panic.
-
-Link: https://lkml.kernel.org/r/20260116062535.306453-2-robin.kuo@mediatek.com
-Fixes: 8b47299a411a ("mm, swap: mark swap address space ro and add context debug check")
-Signed-off-by: robin.kuo <robin.kuo@mediatek.com>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: andrew.yang <andrew.yang@mediatek.com>
-Cc: AngeloGiaocchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chinwen Chang <chinwen.chang@mediatek.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Mathias Brugger <matthias.bgg@gmail.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swap.h       | 2 +-
- mm/swap_state.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ fs/smb/server/transport_rdma.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/mm/swap.h b/mm/swap.h
-index d034c13d8dd2..1bd466da3039 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -198,7 +198,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
- void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -1108,14 +1108,12 @@ static int get_sg_list(void *buf, int si
  
- /* linux/mm/swap_state.c */
--extern struct address_space swap_space __ro_after_init;
-+extern struct address_space swap_space __read_mostly;
- static inline struct address_space *swap_address_space(swp_entry_t entry)
+ static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
+ 			      struct scatterlist *sg_list, int nentries,
+-			      enum dma_data_direction dir)
++			      enum dma_data_direction dir, int *npages)
  {
- 	return &swap_space;
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 5f97c6ae70a2..44d228982521 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -37,8 +37,7 @@ static const struct address_space_operations swap_aops = {
- #endif
- };
+-	int npages;
+-
+-	npages = get_sg_list(buf, size, sg_list, nentries);
+-	if (npages < 0)
++	*npages = get_sg_list(buf, size, sg_list, nentries);
++	if (*npages < 0)
+ 		return -EINVAL;
+-	return ib_dma_map_sg(device, sg_list, npages, dir);
++	return ib_dma_map_sg(device, sg_list, *npages, dir);
+ }
  
--/* Set swap_space as read only as swap cache is handled by swap table */
--struct address_space swap_space __ro_after_init = {
-+struct address_space swap_space __read_mostly = {
- 	.a_ops = &swap_aops,
- };
+ static int post_sendmsg(struct smb_direct_transport *t,
+@@ -1184,12 +1182,13 @@ static int smb_direct_post_send_data(str
+ 	for (i = 0; i < niov; i++) {
+ 		struct ib_sge *sge;
+ 		int sg_cnt;
++		int npages;
  
--- 
-2.53.0
-
+ 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
+ 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
+ 					    iov[i].iov_base, iov[i].iov_len,
+ 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
+-					    DMA_TO_DEVICE);
++					    DMA_TO_DEVICE, &npages);
+ 		if (sg_cnt <= 0) {
+ 			pr_err("failed to map buffer\n");
+ 			ret = -ENOMEM;
+@@ -1197,7 +1196,7 @@ static int smb_direct_post_send_data(str
+ 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
+ 			pr_err("buffer not fitted into sges\n");
+ 			ret = -E2BIG;
+-			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
++			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
+ 					DMA_TO_DEVICE);
+ 			goto err;
+ 		}
 
 
 
