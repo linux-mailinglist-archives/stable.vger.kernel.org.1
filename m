@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCvVEeZbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:47:02 +0100
+	id kNrKJPhgg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADA2E75A7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:47:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B233BE7FE1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 45F0E300F16F
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5BEAC307AC9D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CF8271A9A;
-	Wed,  4 Feb 2026 14:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A185941B37C;
+	Wed,  4 Feb 2026 14:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpF5JfdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEubWvl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F3D1C5D77;
-	Wed,  4 Feb 2026 14:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DE341B367;
+	Wed,  4 Feb 2026 14:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216419; cv=none; b=sAab/pjwmrdESNmDNHvF2TyXue8/qmUQR95RGxmxfs4E7CPL4mFF/AJs2fmpMqYIvBaK73KkwY0T85A0dsoMDfoxNWVgenE3xWMJ9Otj7R8+mwsQBt/L9/TGcFuOpGgKoKirIqF8aRlqBQAl5SqL1UmkT9My8EN9duDORee3b2g=
+	t=1770217070; cv=none; b=aP36ZVnv3l2kPr3NEBDBoOKIsYj8NCefdh/ZMTxP6YM6/9byWnK1fAMIqdr395AnpWJ0ZY22D6ANC8I0/hXW6vSmMk95KOrQpAjrPInc1DLc/2z60rNl9Pmb/kGekxrKuT3751XwXvvyiKqm5RO47YfdBK5z4jE2ZzHp6/B9OTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216419; c=relaxed/simple;
-	bh=HfrZPbc6UV0Df6PcBHdOvRloSNrfZHP6m5tYBbfvq7A=;
+	s=arc-20240116; t=1770217070; c=relaxed/simple;
+	bh=sE6YtcqB+hodrEBJwu2ZN6NMG7L+IIOqtDJUJnjQpHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hNZJVZPo/4atofv9q0B3VWDIVrvCJWh7gd01aauJItQKygbOFbblD1BJH3Wy6GUg4WXoW1+CyLKkRtciIOHNEEHbIqACYZ7Xoai4RocjcKrOz6uQS1bTbcHeymbfK0fxOFjkkwO4MW0RAjBMBUKHab67iyl2WwWWthDwsqeT7Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpF5JfdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B760EC4CEF7;
-	Wed,  4 Feb 2026 14:46:58 +0000 (UTC)
+	 MIME-Version; b=pZLs+wQEstNAXi/MQ84LOOlDAqL+tr5TKST+aIWLWttw/uNjs+byxa0widDKNvcTYkGItqPdMV67h2i//baxIs7BHDVcND4FIFOPQnVwNf51VmNX/POX6F/DhRFHIyI7TyQh/9d+Dm8phGjRWdwEwHI0yPo4GeGiQWxYpG5Pceo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEubWvl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D644C116C6;
+	Wed,  4 Feb 2026 14:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216419;
-	bh=HfrZPbc6UV0Df6PcBHdOvRloSNrfZHP6m5tYBbfvq7A=;
+	s=korg; t=1770217070;
+	bh=sE6YtcqB+hodrEBJwu2ZN6NMG7L+IIOqtDJUJnjQpHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpF5JfdPzrBru7WSlM5d8WKW2G3cuwimumKgzOFJftlRQPt8d+NlPnfRoZ82tbV3p
-	 nJo/1d+HYJA+r1vQtIDAv0WFbYFXvJJ40ib8C00fmZ7JOd85sOGFlIgEJle/FHOlgP
-	 +2IhdS+bda+ANt5437fLo9z/YjmB7v4c9/Su7/oc=
+	b=BEubWvl0v/4GSYbx9H1vcUwq8ZvnwJja0I2DMrt2Gd4pxCe9hbK6j4nT8n46iwbkM
+	 Ub/uscHKXzXosSFAtMh9tk/lErLaBFpMj69KBR/cBAPd/Nvy+pgrnweai5ouJ6Xkpr
+	 VTajASdZShg3Z+YpruMULJV/ZScy+URJlpZk4IuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/161] drm/amd/pm: Workaround SI powertune issue on Radeon 430 (v2)
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 5.15 114/206] wifi: ath10k: fix dma_free_coherent() pointer
 Date: Wed,  4 Feb 2026 15:39:05 +0100
-Message-ID: <20260204143854.699271512@linuxfoundation.org>
+Message-ID: <20260204143902.309809597@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213462-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213657-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 5ADA2E75A7
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B233BE7FE1
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 764a90eb02268a23b1bb98be5f4a13671346804a ]
+commit 9282a1e171ad8d2205067e8ec3bbe4e3cef4f29f upstream.
 
-Radeon 430 and 520 are OEM GPUs from 2016~2017
-They have the same device id: 0x6611 and revision: 0x87
+dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+addresses in XXX_unaligned fields.  Those should be reused when freeing
+the buffer rather than the aligned addresses.
 
-On the Radeon 430, powertune is buggy and throttles the GPU,
-never allowing it to reach its maximum SCLK. Work around this
-bug by raising the TDP limits we program to the SMC from
-24W (specified by the VBIOS on Radeon 430) to 32W.
-
-Disabling powertune entirely is	not a viable workaround,
-because	it causes the Radeon 520 to heat up above 100 C,
-which I prefer to avoid.
-
-Additionally, revise the maximum SCLK limit. Considering the
-above issue, these GPUs never reached a high SCLK on Linux,
-and the workarounds were added before the GPUs were released,
-so the workaround likely didn't target these specifically.
-Use 780 MHz (the maximum SCLK according to the VBIOS on the
-Radeon 430). Note that the Radeon 520 VBIOS has a higher
-maximum SCLK: 905 MHz, but in practice it doesn't seem to
-perform better with the higher clock, only heats up more.
-
-v2:
-Move the workaround to si_populate_smc_tdp_limits.
-
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 966d70f1e160bdfdecaf7ff2b3f22ad088516e9f)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2a1e1ad3fd37 ("ath10k: Add support for 64 bit ce descriptor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260105210439.20131-2-fourier.thomas@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/si_dpm.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/ce.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-index 0238b91d95e7e..ece892b16d9a7 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-@@ -2250,6 +2250,12 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
- 		if (ret)
- 			return ret;
- 
-+		if (adev->pdev->device == 0x6611 && adev->pdev->revision == 0x87) {
-+			/* Workaround buggy powertune on Radeon 430 and 520. */
-+			tdp_limit = 32;
-+			near_tdp_limit = 28;
-+		}
-+
- 		smc_table->dpm2Params.TDPLimit =
- 			cpu_to_be32(si_scale_power_for_smc(tdp_limit, scaling_factor) * 1000);
- 		smc_table->dpm2Params.NearTDPLimit =
-@@ -3425,10 +3431,15 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 		    (adev->pdev->revision == 0x80) ||
- 		    (adev->pdev->revision == 0x81) ||
- 		    (adev->pdev->revision == 0x83) ||
--		    (adev->pdev->revision == 0x87) ||
-+		    (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device != 0x6611) ||
- 		    (adev->pdev->device == 0x6604) ||
- 		    (adev->pdev->device == 0x6605)) {
- 			max_sclk = 75000;
-+		} else if (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device == 0x6611) {
-+			/* Radeon 430 and 520 */
-+			max_sclk = 78000;
- 		}
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1791,8 +1791,8 @@ static void _ath10k_ce_free_pipe(struct
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
  	}
  
--- 
-2.51.0
-
+@@ -1801,8 +1801,8 @@ static void _ath10k_ce_free_pipe(struct
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
+ 
+@@ -1822,8 +1822,8 @@ static void _ath10k_ce_free_pipe_64(stru
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
+ 	}
+ 
+@@ -1832,8 +1832,8 @@ static void _ath10k_ce_free_pipe_64(stru
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
+ 
 
 
 
