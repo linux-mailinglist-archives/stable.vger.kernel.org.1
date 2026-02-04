@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LiZKFVig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:29 +0100
+	id WFE3H01kg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:22:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0504CE82B5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D585FE8662
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:22:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 278CF306D84E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9693B30975AD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F79941B34E;
-	Wed,  4 Feb 2026 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353EF42980D;
+	Wed,  4 Feb 2026 15:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5N4P8C+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+zQM3au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1366B27F749;
-	Wed,  4 Feb 2026 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC76C429805;
+	Wed,  4 Feb 2026 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216852; cv=none; b=Qx1pJ9+nC1fLNtyYc80s1E6QYjlZGlrkORDgxoWJzJ+b/s5sko/Wd854XmdxqKpWlDSUO2d8+6JwwDuK7ZzjN9aHfdfZEPq1y73QXX6WYajARHfu7iOgCqNQJWmf9kDeJfTV1pI9y84sJalULNhYkb832TLrz0Ej3wSnFX3f/IU=
+	t=1770217747; cv=none; b=aGhHst+eQnw9qIIWRb8DP+9Zc9Z9jyEtwRyaUeh5F9oO0LKkrJeoWIb9rfnnu0wUvx58hyk04N4+dMK2XT03omaTc6Vs/mbYzXqAdm0QzrcoxtOJRA0rAl4TCbCGjK8C9JD5BW5Xj/9snVqzSDgYiZrPw+zXSszZOCIsluQOOWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216852; c=relaxed/simple;
-	bh=V9F3IMDegiXFD//RgPEd8wx8LEB2piF5MKGOGp3ZrQc=;
+	s=arc-20240116; t=1770217747; c=relaxed/simple;
+	bh=sPs3Fv2F6verJncFd9/8PvWtqjyfOm7QizThuvQArO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GeJFpptTW0+iCoPmkFAmVHCMsGt/1FBZ+qrlbVD4VCKMoqDPRMZcv+KEGFwcbfmHNPLiycKzwLuaqqUM1dJ336PiJpjYIcLjP8g8ElH8lpwDK/PTVd9qR/BavA3RU+YkCE3xGkYX/3GnGBe/WoM5d6tTSesK9H3yLR3FVZd5BfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5N4P8C+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AD8C4CEF7;
-	Wed,  4 Feb 2026 14:54:11 +0000 (UTC)
+	 MIME-Version; b=HrvLEGJKUg9rqylqJCvDBwWaU0rmTGGzoJqWevXhdNPtdc3/w7r9wvW6kUyPto8vsmdwTv++udCk0fvC/hK0lqj9TvbbRSYjaTuv0NRTyx+F9r79V23Ey9zqH3aSRI9SdXGZYj9Ay8pWa71QJBzMMYWUqeju+5eQdCAtlrn9i0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+zQM3au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E1CC19423;
+	Wed,  4 Feb 2026 15:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216852;
-	bh=V9F3IMDegiXFD//RgPEd8wx8LEB2piF5MKGOGp3ZrQc=;
+	s=korg; t=1770217746;
+	bh=sPs3Fv2F6verJncFd9/8PvWtqjyfOm7QizThuvQArO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5N4P8C+nFeIfWFtUBBxSiKfCULE3GVo6ypLq2hzNFEyJHe1OHW84txCsFgDnBI+t
-	 1kmEnopYuCYz4+zW5ChbR7Hin+1TOy8kXA2D07awkBno6ybk8D/WJkFTfBCOiF4vff
-	 F08r66KvKhrMJv+MNKXuOD1SBGQSh0UOGKMQL11g=
+	b=G+zQM3audjwRIqZQ7Xua1rrT+TsJ7SIH79KG2mxYNr7LK4X/qo+YmdekvdyaV+A7L
+	 fvAGDp9dIUYd/tGU19WTBwngv7VdW47KA8Av+wxdKgJDsl+msZfVQ8fw6lGrRV5+KT
+	 MFZZR87MN778x/FEeHi2HnWgfN2Y5BQ7vLERIZJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 049/206] dmaengine: qcom: gpi: Fix memory leak in gpi_peripheral_config()
+	Stanislav Fomichev <sdf@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 106/280] net: fou: rename the source for linking
 Date: Wed,  4 Feb 2026 15:38:00 +0100
-Message-ID: <20260204143859.983275694@linuxfoundation.org>
+Message-ID: <20260204143913.461985453@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +68,76 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213593-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213857-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0504CE82B5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D585FE8662
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 3f747004bbd641131d9396d87b5d2d3d1e182728 upstream.
+[ Upstream commit 08d323234d10eab077cbf0093eeb5991478a261a ]
 
-Fix a memory leak in gpi_peripheral_config() where the original memory
-pointed to by gchan->config could be lost if krealloc() fails.
+We'll need to link two objects together to form the fou module.
+This means the source can't be called fou, the build system expects
+fou.o to be the combined object.
 
-The issue occurs when:
-1. gchan->config points to previously allocated memory
-2. krealloc() fails and returns NULL
-3. The function directly assigns NULL to gchan->config, losing the
-   reference to the original memory
-4. The original memory becomes unreachable and cannot be freed
-
-Fix this by using a temporary variable to hold the krealloc() result
-and only updating gchan->config when the allocation succeeds.
-
-Found via static analysis and code review.
-
-Fixes: 5d0c3533a19f ("dmaengine: qcom: Add GPI dma driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://patch.msgid.link/20251029123421.91973-1-linmq006@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/qcom/gpi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv4/Makefile              | 1 +
+ net/ipv4/{fou.c => fou_core.c} | 0
+ 2 files changed, 1 insertion(+)
+ rename net/ipv4/{fou.c => fou_core.c} (100%)
 
---- a/drivers/dma/qcom/gpi.c
-+++ b/drivers/dma/qcom/gpi.c
-@@ -1621,14 +1621,16 @@ static int
- gpi_peripheral_config(struct dma_chan *chan, struct dma_slave_config *config)
- {
- 	struct gchan *gchan = to_gchan(chan);
-+	void *new_config;
- 
- 	if (!config->peripheral_config)
- 		return -EINVAL;
- 
--	gchan->config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
--	if (!gchan->config)
-+	new_config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
-+	if (!new_config)
- 		return -ENOMEM;
- 
-+	gchan->config = new_config;
- 	memcpy(gchan->config, config->peripheral_config, config->peripheral_size);
- 
- 	return 0;
+diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
+index bbdd9c44f14e3..e694a5e5b0302 100644
+--- a/net/ipv4/Makefile
++++ b/net/ipv4/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_IP_MROUTE) += ipmr.o
+ obj-$(CONFIG_IP_MROUTE_COMMON) += ipmr_base.o
+ obj-$(CONFIG_NET_IPIP) += ipip.o
+ gre-y := gre_demux.o
++fou-y := fou_core.o
+ obj-$(CONFIG_NET_FOU) += fou.o
+ obj-$(CONFIG_NET_IPGRE_DEMUX) += gre.o
+ obj-$(CONFIG_NET_IPGRE) += ip_gre.o
+diff --git a/net/ipv4/fou.c b/net/ipv4/fou_core.c
+similarity index 100%
+rename from net/ipv4/fou.c
+rename to net/ipv4/fou_core.c
+-- 
+2.51.0
+
 
 
 
