@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-214175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNLnFLlog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:45 +0100
+	id kH8eHU9og2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEFAAE9265
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F9FE9123
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62A8B30D9D71
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE33C3024DC1
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B497E413254;
-	Wed,  4 Feb 2026 15:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7326C2DEA7A;
+	Wed,  4 Feb 2026 15:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0441wm2N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFarYByy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BE822332E;
-	Wed,  4 Feb 2026 15:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355AC2D879A;
+	Wed,  4 Feb 2026 15:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218815; cv=none; b=qE6O7xG21M6ed8p2cjZm4h3W4U3YDDQitviMPfHBb029ZXbdiB8MU7ZhnSWoO+TG+/6GZyAnTS2QdtPmu7WXNSET1tJk0w3s65b3KP7a9EDpI/Q9NAp+I67LqU/PKZL8dFnjq8WIGarLMaRY8DKpxndQDx+CoL1mBXBtcC7Xusg=
+	t=1770219161; cv=none; b=Xs46KRarYwAgP45VkJ29HF/A5C3Aun+LTgF9alTxdKXi6dGFz0maNLdBY/FIk/U7wG9Vc1EjiuOeN0Dj9R3TscQ1QqqptMYrzussrR+s7X6+DVzxjYp8+9Jc3P/AG/CmcofzODioWFRKfgw1TlXIyN4+uqxM+K5HLq0/h4c2VmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218815; c=relaxed/simple;
-	bh=uYeGUvVRJjvOxemBwsUrpBmeS/lqQKNwn5Q7wm0Z64U=;
+	s=arc-20240116; t=1770219161; c=relaxed/simple;
+	bh=UhWp1o94l2r/217vmK2ZnKhd+Qms/99TSikuviDGxEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q5KyNdkiJTCvUaLgi2uxMbhyTsr4mlNHf1OzqvZ3z2jj+IH/Iw/TAt7pBK+SuwB+wKJrxSzZcLWNkpQghFiObI0TunaZ0iDhphaIiXYocoD3z+9dmmCsMxaOoSRrIXXsMuJPV7HsWFc2VNbHeMW8gR4Xlzn9DFGIjY7eJu5FM5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0441wm2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98952C4CEF7;
-	Wed,  4 Feb 2026 15:26:54 +0000 (UTC)
+	 MIME-Version; b=JVcY6LDwsG/hllB7+1KE3qh9vn2YNOFfQKeFGDDq+PmbV9zYVav+mHV+5d+J11zLpGpuPIjBCtMWex3UFyy2pwpjK3R8LQT3wk07ddCVLRcG+3jm/oolMuQNCpVTDd3ONcVsPgZ/yAw4m1ku+HQFEiWaPjAtTcAvTyiFZ/nP6p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFarYByy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F65FC116C6;
+	Wed,  4 Feb 2026 15:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218815;
-	bh=uYeGUvVRJjvOxemBwsUrpBmeS/lqQKNwn5Q7wm0Z64U=;
+	s=korg; t=1770219161;
+	bh=UhWp1o94l2r/217vmK2ZnKhd+Qms/99TSikuviDGxEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0441wm2NymGPkK1l4MSitbKeAWl3hJcRgwWVVtrdcJbwzH9Ou2/xdyRQG7EojEhxe
-	 UhCw40y7Bgrdc6WFMHj4ZNp40+bcwNl5mAkiXuZxPsdqvMtGaL8wtdpgTMYc6wR1bl
-	 7Qn0ZyNrUJhxQo57OSVGixW/bQJ+jfH4qidv2/W8=
+	b=OFarYByyRZvwVITGCdzkJ+Y1X4Btx5JBeqNkvv8wFZzAkJuR/qBuGOy/XwllqVe0v
+	 DHnTQXVrue5dqJj8KyfxBMIbt1pKxCltB3/6jVG8KQ3IsTIGEglJwThUYOVwPvDZ0P
+	 skOdmdvHeRXV/h+49pkYC7qofni671ZvfIpKDYwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"T.J. Mercier" <tjmercier@google.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: [PATCH 6.12 69/87] cgroup: Fix kernfs_node UAF in css_free_rwork_fn
+	Pimyn Girgis <pimyn@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 085/122] mm/kfence: randomize the freelist on initialization
 Date: Wed,  4 Feb 2026 15:41:07 +0100
-Message-ID: <20260204143849.400071829@linuxfoundation.org>
+Message-ID: <20260204143854.909594246@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,163 +67,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214175-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214280-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: BEFAAE9265
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,tugraz.at:email]
+X-Rspamd-Queue-Id: 45F9FE9123
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "T.J. Mercier" <tjmercier@google.com>
+From: Pimyn Girgis <pimyn@google.com>
 
-This fix patch is not upstream, and is applicable only to kernels 6.10
-(where the cgroup_rstat_lock tracepoint was added) through 6.15 after
-which commit 5da3bfa029d6 ("cgroup: use separate rstat trees for each
-subsystem") reordered cgroup_rstat_flush as part of a new feature
-addition and inadvertently fixed this UAF.
+commit 870ff19251bf3910dda7a7245da826924045fedd upstream.
 
-css_free_rwork_fn first releases the last reference on the cgroup's
-kernfs_node, and then calls cgroup_rstat_exit which attempts to use it
-in the cgroup_rstat_lock tracepoint:
+Randomize the KFENCE freelist during pool initialization to make
+allocation patterns less predictable.  This is achieved by shuffling the
+order in which metadata objects are added to the freelist using
+get_random_u32_below().
 
-kernfs_put(cgrp->kn);
-cgroup_rstat_exit
-  cgroup_rstat_flush
-    __cgroup_rstat_lock
-      trace_cgroup_rstat_locked:
-        TP_fast_assign(
-          __entry->root = cgrp->root->hierarchy_id;
-          __entry->id = cgroup_id(cgrp);
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-Where cgroup_id is:
-static inline u64 cgroup_id(const struct cgroup *cgrp)
-{
-	return cgrp->kn->id;
-}
-
-Fix this by reordering the kernfs_put after cgroup_rstat_exit.
-
-[78782.605161][ T9861] BUG: KASAN: slab-use-after-free in trace_event_raw_event_cgroup_rstat+0x110/0x1dc
-[78782.605182][ T9861] Read of size 8 at addr ffffff890270e610 by task kworker/6:1/9861
-[78782.605199][ T9861] CPU: 6 UID: 0 PID: 9861 Comm: kworker/6:1 Tainted: G        W  OE      6.12.23-android16-5-gabaf21382e8f-4k #1 0308449da8ad70d2d3649ae989c1d02f0fbf562c
-[78782.605220][ T9861] Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[78782.605226][ T9861] Hardware name: Qualcomm Technologies, Inc. Alor QRD + WCN7750 WLAN + Kundu PD2536F_EX (DT)
-[78782.605235][ T9861] Workqueue: cgroup_destroy css_free_rwork_fn
-[78782.605251][ T9861] Call trace:
-[78782.605254][ T9861]  dump_backtrace+0x120/0x170
-[78782.605267][ T9861]  show_stack+0x2c/0x40
-[78782.605276][ T9861]  dump_stack_lvl+0x84/0xb4
-[78782.605286][ T9861]  print_report+0x144/0x7a4
-[78782.605301][ T9861]  kasan_report+0xe0/0x140
-[78782.605315][ T9861]  __asan_load8+0x98/0xa0
-[78782.605329][ T9861]  trace_event_raw_event_cgroup_rstat+0x110/0x1dc
-[78782.605339][ T9861]  __traceiter_cgroup_rstat_locked+0x78/0xc4
-[78782.605355][ T9861]  __cgroup_rstat_lock+0xe8/0x1dc
-[78782.605368][ T9861]  cgroup_rstat_flush_locked+0x7dc/0xaec
-[78782.605383][ T9861]  cgroup_rstat_flush+0x34/0x108
-[78782.605396][ T9861]  cgroup_rstat_exit+0x2c/0x120
-[78782.605409][ T9861]  css_free_rwork_fn+0x504/0xa18
-[78782.605421][ T9861]  process_scheduled_works+0x378/0x8e0
-[78782.605435][ T9861]  worker_thread+0x5a8/0x77c
-[78782.605446][ T9861]  kthread+0x1c4/0x270
-[78782.605455][ T9861]  ret_from_fork+0x10/0x20
-[78782.605470][ T9861] Allocated by task 2864 on cpu 7 at 78781.564561s:
-[78782.605467][    C5] ENHANCE: rpm_suspend+0x93c/0xafc: 0:0:0:0 ret=0
-[78782.605481][ T9861]  kasan_save_track+0x44/0x9c
-[78782.605497][ T9861]  kasan_save_alloc_info+0x40/0x54
-[78782.605507][ T9861]  __kasan_slab_alloc+0x70/0x8c
-[78782.605521][ T9861]  kmem_cache_alloc_noprof+0x1a0/0x428
-[78782.605534][ T9861]  __kernfs_new_node+0xd4/0x3e4
-[78782.605545][ T9861]  kernfs_new_node+0xbc/0x168
-[78782.605554][ T9861]  kernfs_create_dir_ns+0x58/0xe8
-[78782.605565][ T9861]  cgroup_mkdir+0x25c/0xc9c
-[78782.605576][ T9861]  kernfs_iop_mkdir+0x130/0x214
-[78782.605586][ T9861]  vfs_mkdir+0x290/0x388
-[78782.605599][ T9861]  do_mkdirat+0xfc/0x27c
-[78782.605612][ T9861]  __arm64_sys_mkdirat+0x5c/0x78
-[78782.605625][ T9861]  invoke_syscall+0x90/0x1e8
-[78782.605634][ T9861]  el0_svc_common+0x134/0x168
-[78782.605643][ T9861]  do_el0_svc+0x34/0x44
-[78782.605652][ T9861]  el0_svc+0x38/0x84
-[78782.605667][ T9861]  el0t_64_sync_handler+0x70/0xbc
-[78782.605681][ T9861]  el0t_64_sync+0x19c/0x1a0
-[78782.605695][ T9861] Freed by task 69 on cpu 1 at 78782.573275s:
-[78782.605705][ T9861]  kasan_save_track+0x44/0x9c
-[78782.605719][ T9861]  kasan_save_free_info+0x54/0x70
-[78782.605729][ T9861]  __kasan_slab_free+0x68/0x8c
-[78782.605743][ T9861]  kmem_cache_free+0x118/0x488
-[78782.605755][ T9861]  kernfs_free_rcu+0xa0/0xb8
-[78782.605765][ T9861]  rcu_do_batch+0x324/0xaa0
-[78782.605775][ T9861]  rcu_nocb_cb_kthread+0x388/0x690
-[78782.605785][ T9861]  kthread+0x1c4/0x270
-[78782.605794][ T9861]  ret_from_fork+0x10/0x20
-[78782.605809][ T9861] Last potentially related work creation:
-[78782.605814][ T9861]  kasan_save_stack+0x40/0x70
-[78782.605829][ T9861]  __kasan_record_aux_stack+0xb0/0xcc
-[78782.605839][ T9861]  kasan_record_aux_stack_noalloc+0x14/0x24
-[78782.605849][ T9861]  __call_rcu_common+0x54/0x390
-[78782.605863][ T9861]  call_rcu+0x18/0x28
-[78782.605875][ T9861]  kernfs_put+0x17c/0x28c
-[78782.605884][ T9861]  css_free_rwork_fn+0x4f4/0xa18
-[78782.605897][ T9861]  process_scheduled_works+0x378/0x8e0
-[78782.605910][ T9861]  worker_thread+0x5a8/0x77c
-[78782.605923][ T9861]  kthread+0x1c4/0x270
-[78782.605932][ T9861]  ret_from_fork+0x10/0x20
-[78782.605947][ T9861] The buggy address belongs to the object at ffffff890270e5b0
-[78782.605947][ T9861]  which belongs to the cache kernfs_node_cache of size 144
-[78782.605957][ T9861] The buggy address is located 96 bytes inside of
-[78782.605957][ T9861]  freed 144-byte region [ffffff890270e5b0, ffffff890270e640)
-
-Fixes: fc29e04ae1ad ("cgroup/rstat: add cgroup_rstat_lock helpers and tracepoints")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
+Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/kfence/core.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5481,9 +5481,9 @@ static void css_free_rwork_fn(struct wor
- 			 * children.
- 			 */
- 			cgroup_put(cgroup_parent(cgrp));
--			kernfs_put(cgrp->kn);
- 			psi_cgroup_free(cgrp);
- 			cgroup_rstat_exit(cgrp);
-+			kernfs_put(cgrp->kn);
- 			kfree(cgrp);
- 		} else {
- 			/*
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -595,7 +595,7 @@ static void rcu_guarded_free(struct rcu_
+ static unsigned long kfence_init_pool(void)
+ {
+ 	unsigned long addr, start_pfn;
+-	int i;
++	int i, rand;
+ 
+ 	if (!arch_kfence_init_pool())
+ 		return (unsigned long)__kfence_pool;
+@@ -645,13 +645,27 @@ static unsigned long kfence_init_pool(vo
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
+ 
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
+ 			goto reset_slab;
++	}
++
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32_below(i);
++		swap(kfence_metadata_init[i - 1].addr, kfence_metadata_init[rand].addr);
++	}
+ 
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata_init[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata_init[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata_init[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
+ 	}
+ 
+@@ -664,6 +678,7 @@ static unsigned long kfence_init_pool(vo
+ 	return 0;
+ 
+ reset_slab:
++	addr += 2 * i * PAGE_SIZE;
+ 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+ 		struct slab *slab;
+ 
 
 
 
