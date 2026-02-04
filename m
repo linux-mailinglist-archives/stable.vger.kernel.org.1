@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213952-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKpfLDtfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:15 +0100
+	id sEkbNhtmg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213952-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6D6E7BFB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A43EE8BBE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 01577303D8D9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82C7830800A7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBA641B37A;
-	Wed,  4 Feb 2026 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A5A3ACF06;
+	Wed,  4 Feb 2026 15:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lu1Ye/b4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gIY0UXZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAAA41C2FE;
-	Wed,  4 Feb 2026 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA3B2D8DA8;
+	Wed,  4 Feb 2026 15:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217050; cv=none; b=vC22bZWTujSZRSA7nZlBcGOThGAdwbRhQWyTo75I1Znqvh/vUD5UJKR3VCl7Ah5r03ILATaR1vYaZ4a7SJliIbZOTnJsDiMuLp1nDF0THjtkAOYLcmzIQsl1qjf3061xT5E0qOuQ9DkbxcigW31xoq3jVb97QFM/cOODvifndgU=
+	t=1770218062; cv=none; b=gmwhbZ5Ew/PVMJ/z6XgW3nwYRJtIj6Rx4hjplyonPqtG8ZY7dLSg/FFgwHiN8hqasjWRmRESyFyzLZ01W9kakk683kLGv4pveQ3oI4uJqbC+SI3z4nupqCmKYnP4XnkQmkufuibvb8FyuSJ1wzFCeA+L1esEO6sFNXcHAHW9HNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217050; c=relaxed/simple;
-	bh=fZ8X0YAGMERWhXDAvgt8fsQ6g87ca7QmxhXmjLL3wFI=;
+	s=arc-20240116; t=1770218062; c=relaxed/simple;
+	bh=9p+bPLzP7Wdf/7j8hX9+U9sokQJ7CDrVPdDItQCiDFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jo4c7lTda2TjvqO2ADWfZ4e6hH0idMKxz4JJiob1LkwVznWiV80MFjlpTcZDN2k1y1IJsHGhJpGgt1MkS6H9WIddE+pCFgGeelztRoAWYQxuCRzjoZf8yqFGCF1jEUjGfZEQOMpN7Zam/yg0XCWITOoLXs1CVqkr00ZPHzfNo+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lu1Ye/b4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8815BC4CEF7;
-	Wed,  4 Feb 2026 14:57:29 +0000 (UTC)
+	 MIME-Version; b=oIlxd6RWmkRG/dZoCA8GvTHhlQt4PqWC8yNAOmB3mphYYevMy5EuR5GNDdesNZoEsYxrr7qWi0y8mzr/cLDOIbZaDqrEJOGaTX/bPevgRvZcjpE3ede28aQq0AyT/MfZoyeb8XGzGdrYfcwVrybrsfI4gXYnmorBWdCjj2f58jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gIY0UXZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7183CC4CEF7;
+	Wed,  4 Feb 2026 15:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217050;
-	bh=fZ8X0YAGMERWhXDAvgt8fsQ6g87ca7QmxhXmjLL3wFI=;
+	s=korg; t=1770218061;
+	bh=9p+bPLzP7Wdf/7j8hX9+U9sokQJ7CDrVPdDItQCiDFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lu1Ye/b4t2PEuF3mCMdHNl3DtNoseqJyEjvghJe/8Kpouk7AddXbZQuRy5va/DuPh
-	 5I4aj7pEjEGgBnOL78TnkNqjzcO9f0T69Ud4yAVYNKgh+8aq1Cnf1EuuDPqsaXfXC0
-	 AfBSeE8pj4HVfjynR+KnLxuqe1wP48OcxYTjw/8c=
+	b=1gIY0UXZPHLe/ajEBFGq0+2O+x5XBTkte3mNbOUo60352CzoWTjG0GTAac9jmiBk0
+	 cp55md7h+6YlxfkXZ6Om3zRZL/NRC0Hj5ftDeqjQBu9jM6XMYo2xiwNxmk7L7/PB40
+	 V32ey84RhrkmQ/kmdshNQm4ID2RbYMA+5XgsTrRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 109/206] iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_adc driver
+	Marek Vasut <marex@nabladev.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 166/280] wifi: rsi: Fix memory corruption due to not set vif driver data size
 Date: Wed,  4 Feb 2026 15:39:00 +0100
-Message-ID: <20260204143902.133126727@linuxfoundation.org>
+Message-ID: <20260204143915.596157789@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +66,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213651-lists,stable=lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[kylinos.cn:query timed out];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[xiaopei01.kylinos.cn:query timed out];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213952-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,kylinos.cn:email]
-X-Rspamd-Queue-Id: 8B6D6E7BFB
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A43EE8BBE
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Marek Vasut <marex@nabladev.com>
 
-commit dbdb442218cd9d613adeab31a88ac973f22c4873 upstream.
+commit 4f431d88ea8093afc7ba55edf4652978c5a68f33 upstream.
 
-at91_adc_interrupt can call at91_adc_touch_data_handler function
-to start the work by schedule_work(&st->touch_st.workq).
+The struct ieee80211_vif contains trailing space for vif driver data,
+when struct ieee80211_vif is allocated, the total memory size that is
+allocated is sizeof(struct ieee80211_vif) + size of vif driver data.
+The size of vif driver data is set by each WiFi driver as needed.
 
-If we remove the module which will call at91_adc_remove to
-make cleanup, it will free indio_dev through iio_device_unregister but
-quite a bit later. While the work mentioned above will be used. The
-sequence of operations that may lead to a UAF bug is as follows:
+The RSI911x driver does not set vif driver data size, no trailing space
+for vif driver data is therefore allocated past struct ieee80211_vif .
+The RSI911x driver does however use the vif driver data to store its
+vif driver data structure "struct vif_priv". An access to vif->drv_priv
+leads to access out of struct ieee80211_vif bounds and corruption of
+some memory.
 
-CPU0                                      CPU1
+In case of the failure observed locally, rsi_mac80211_add_interface()
+would write struct vif_priv *vif_info = (struct vif_priv *)vif->drv_priv;
+vif_info->vap_id = vap_idx. This write corrupts struct fq_tin member
+struct list_head new_flows . The flow = list_first_entry(head, struct
+fq_flow, flowchain); in fq_tin_reset() then reports non-NULL bogus
+address, which when accessed causes a crash.
 
-                                     | at91_adc_workq_handler
-at91_adc_remove                      |
-iio_device_unregister(indio_dev)     |
-//free indio_dev a bit later         |
-                                     | iio_push_to_buffers(indio_dev)
-                                     | //use indio_dev
+The trigger is very simple, boot the machine with init=/bin/sh , mount
+devtmpfs, sysfs, procfs, and then do "ip link set wlan0 up", "sleep 1",
+"ip link set wlan0 down" and the crash occurs.
 
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in at91_adc_remove.
+Fix this by setting the correct size of vif driver data, which is the
+size of "struct vif_priv", so that memory is allocated and the driver
+can store its driver data in it, instead of corrupting memory around
+it.
 
-Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: dad0d04fa7ba ("rsi: Add RS9113 wireless driver")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260109235817.150330-1-marex@nabladev.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/at91-sama5d2_adc.c |    1 +
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -1887,6 +1887,7 @@ static int at91_adc_remove(struct platfo
- 	struct at91_adc_state *st = iio_priv(indio_dev);
+--- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
++++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
+@@ -2022,6 +2022,7 @@ int rsi_mac80211_attach(struct rsi_commo
  
- 	iio_device_unregister(indio_dev);
-+	cancel_work_sync(&st->touch_st.workq);
+ 	hw->queues = MAX_HW_QUEUES;
+ 	hw->extra_tx_headroom = RSI_NEEDED_HEADROOM;
++	hw->vif_data_size = sizeof(struct vif_priv);
  
- 	at91_adc_dma_disable(pdev);
- 
+ 	hw->max_rates = 1;
+ 	hw->max_rate_tries = MAX_RETRIES;
 
 
 
