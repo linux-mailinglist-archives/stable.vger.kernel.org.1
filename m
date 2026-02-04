@@ -1,61 +1,73 @@
-Return-Path: <stable+bounces-214098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oADUJiNng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:59 +0100
+	id CHB9FPVog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C14E8E95
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A350DE92FE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 71E5C308CE0C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11B9932B8C89
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19425423152;
-	Wed,  4 Feb 2026 15:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9DB2D6611;
+	Wed,  4 Feb 2026 15:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0+oysgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJiK7Vyb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1453421EE4;
-	Wed,  4 Feb 2026 15:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419CE2D7D42;
+	Wed,  4 Feb 2026 15:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218556; cv=none; b=Ha8FMd9jWnUVStYbHyBFJ43x4J6mtoyUozYea+fJ1GaauyOnG01A46QqVTOgZv97Uk7ZnukogVpYpJDRz/lf/gShDwPBhEh0s41ToJLCphEuuXfswIAjRp+Qq6PbacVkru/PpTZtnq/BmBxbJ6F38PzGKv26N9072rRuiaFg6Ok=
+	t=1770219164; cv=none; b=PnMz4LRpI38sxmfVmq96a0o3ox3IYus4ELP3wGhOIty16rnVmc5w3maSyOgAHLr/RyN79SO58DlLKXDRvPkD1wLazYa6ZgblIyYIGcS3YFSCvvyy0bmm1wxDvlH8JyIfX4S06h4Ew1cm1eDfD1hIde3uBbZBFYc4R1BDcZptH1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218556; c=relaxed/simple;
-	bh=O3YfBDcgvcoqAL0uKbubhc3+yhMMtR2W4zBgdpg9PmY=;
+	s=arc-20240116; t=1770219164; c=relaxed/simple;
+	bh=qnq1VHcs+DmEqQrwBBSAhPEAxUkRA+5AyOMTeeiHmsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FiaK1fw+686HrMACvkvBms3928kl0wUwmUbbUQZ8gOsrg5UvjOjbFau5lw91WqA1plA9LYFYHZZSlvGQoVjf9XXwmp7VPAXegOLGcfdPqU2wmVxGy90i9lfRiAxYwh/udt2Kipuuo+BOdWyttMPSOJJwNX1rjNDIBewA8J9M/sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0+oysgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E3EC4CEF7;
-	Wed,  4 Feb 2026 15:22:36 +0000 (UTC)
+	 MIME-Version; b=sYGG3eV/16rTp0g20u0x/7+nYkRteiaFL9pDYSMqTLmD4aJYcgoaad1xeNF1wrmhxyb4SJI8Mj17JZvkQHrU3NTf7I2i9JXGNnzqnPh506kdoWEb78I23qJhFUVBa2ih7ZlE5gXorAuKqn6w+o3r4ihBhK3nU/7cWmFBPJ1mpRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJiK7Vyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D15C4CEF7;
+	Wed,  4 Feb 2026 15:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218556;
-	bh=O3YfBDcgvcoqAL0uKbubhc3+yhMMtR2W4zBgdpg9PmY=;
+	s=korg; t=1770219164;
+	bh=qnq1VHcs+DmEqQrwBBSAhPEAxUkRA+5AyOMTeeiHmsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0+oysgOn18XV9agwfXPLww4ezKazfNpGxzjsUh6HYUAcgk29Po0YKR/zanyg33aw
-	 yasJSRA6tiMDUDmWDHHOaJ/gYvMPqto4qu6hS76WmyY0u6WXUyG5jirwXRK7t+y4Kw
-	 ewffvXuy+KhkPqMwZo21/K8wF3EDiYOiVqC/hPCQ=
+	b=HJiK7VybZbdTVCQgUUKMK/hz41pd6Zuw5eGz75tZJtj6b0yV1TyMEC9C4ajVkt7kI
+	 Nr81UeQejIQXKvpljV2hvOA6EMXdJLnY+RJ+FMXQNDKrFjnXNJWOSckr2RnUkDLkgB
+	 lufFV/AFlwsrpVisCy7oTNurGNeDK3oPJRIcj1QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Jon Doron <jond@wiz.io>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 65/72] drm/amdgpu: fix NULL pointer dereference in amdgpu_gmc_filter_faults_remove
+	Jane Chu <jane.chu@oracle.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Chris Mason <clm@meta.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	William Roche <william.roche@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 086/122] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
 Date: Wed,  4 Feb 2026 15:41:08 +0100
-Message-ID: <20260204143847.994211614@linuxfoundation.org>
+Message-ID: <20260204143854.945461075@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +77,269 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,wiz.io,kernel.org];
-	TAGGED_FROM(0.00)[bounces-214098-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-214281-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,huawei.com,meta.com,kernel.org,google.com,infradead.org,suse.com,linux.dev,gmail.com,suse.de,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,wiz.io:email]
-X-Rspamd-Queue-Id: 21C14E8E95
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,meta.com:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linux-foundation.org:email,suse.com:email,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email]
+X-Rspamd-Queue-Id: A350DE92FE
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Doron <jond@wiz.io>
+From: Jane Chu <jane.chu@oracle.com>
 
-[ Upstream commit 8b1ecc9377bc641533cd9e76dfa3aee3cd04a007 ]
+commit a148a2040191b12b45b82cb29c281cb3036baf90 upstream.
 
-On APUs such as Raven and Renoir (GC 9.1.0, 9.2.2, 9.3.0), the ih1 and
-ih2 interrupt ring buffers are not initialized. This is by design, as
-these secondary IH rings are only available on discrete GPUs. See
-vega10_ih_sw_init() which explicitly skips ih1/ih2 initialization when
-AMD_IS_APU is set.
+When a newly poisoned subpage ends up in an already poisoned hugetlb
+folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats is
+not.  Fix the inconsistency by designating action_result() to update them
+both.
 
-However, amdgpu_gmc_filter_faults_remove() unconditionally uses ih1 to
-get the timestamp of the last interrupt entry. When retry faults are
-enabled on APUs (noretry=0), this function is called from the SVM page
-fault recovery path, resulting in a NULL pointer dereference when
-amdgpu_ih_decode_iv_ts_helper() attempts to access ih->ring[].
+While at it, define __get_huge_page_for_hwpoison() return values in terms
+of symbol names for better readibility.  Also rename
+folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+function does more than the conventional bit setting and the fact three
+possible return values are expected.
 
-The crash manifests as:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000004
-  RIP: 0010:amdgpu_ih_decode_iv_ts_helper+0x22/0x40 [amdgpu]
-  Call Trace:
-   amdgpu_gmc_filter_faults_remove+0x60/0x130 [amdgpu]
-   svm_range_restore_pages+0xae5/0x11c0 [amdgpu]
-   amdgpu_vm_handle_fault+0xc8/0x340 [amdgpu]
-   gmc_v9_0_process_interrupt+0x191/0x220 [amdgpu]
-   amdgpu_irq_dispatch+0xed/0x2c0 [amdgpu]
-   amdgpu_ih_process+0x84/0x100 [amdgpu]
-
-This issue was exposed by commit 1446226d32a4 ("drm/amdgpu: Remove GC HW
-IP 9.3.0 from noretry=1") which changed the default for Renoir APU from
-noretry=1 to noretry=0, enabling retry fault handling and thus
-exercising the buggy code path.
-
-Fix this by adding a check for ih1.ring_size before attempting to use
-it. Also restore the soft_ih support from commit dd299441654f ("drm/amdgpu:
-Rework retry fault removal").  This is needed if the hardware doesn't
-support secondary HW IH rings.
-
-v2: additional updates (Alex)
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3814
-Fixes: dd299441654f ("drm/amdgpu: Rework retry fault removal")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Jon Doron <jond@wiz.io>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6ce8d536c80aa1f059e82184f0d1994436b1d526)
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20260120232234.3462258-1-jane.chu@oracle.com
+Fixes: 18f41fa616ee ("mm: memory-failure: bump memory failure stats to pglist_data")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Chris Mason <clm@meta.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: William Roche <william.roche@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/memory-failure.c |   93 +++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 56 insertions(+), 37 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -454,8 +454,13 @@ void amdgpu_gmc_filter_faults_remove(str
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1873,12 +1873,22 @@ static unsigned long __folio_free_raw_hw
+ 	return count;
+ }
  
- 	if (adev->irq.retry_cam_enabled)
- 		return;
-+	else if (adev->irq.ih1.ring_size)
-+		ih = &adev->irq.ih1;
-+	else if (adev->irq.ih_soft.enabled)
-+		ih = &adev->irq.ih_soft;
-+	else
-+		return;
+-static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
++#define	MF_HUGETLB_FREED		0	/* freed hugepage */
++#define	MF_HUGETLB_IN_USED		1	/* in-use hugepage */
++#define	MF_HUGETLB_NON_HUGEPAGE		2	/* not a hugepage */
++#define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
++#define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
++#define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
++/*
++ * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
++ * to keep track of the poisoned pages.
++ */
++static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+ {
+ 	struct llist_head *head;
+ 	struct raw_hwp_page *raw_hwp;
+ 	struct raw_hwp_page *p;
+-	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
++	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
  
--	ih = &adev->irq.ih1;
- 	/* Get the WPTR of the last entry in IH ring */
- 	last_wptr = amdgpu_ih_get_wptr(adev, ih);
- 	/* Order wptr with ring data. */
+ 	/*
+ 	 * Once the hwpoison hugepage has lost reliable raw error info,
+@@ -1886,20 +1896,17 @@ static int folio_set_hugetlb_hwpoison(st
+ 	 * so skip to add additional raw error info.
+ 	 */
+ 	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+-		return -EHWPOISON;
++		return MF_HUGETLB_FOLIO_PRE_POISONED;
+ 	head = raw_hwp_list_head(folio);
+ 	llist_for_each_entry(p, head->first, node) {
+ 		if (p->page == page)
+-			return -EHWPOISON;
++			return MF_HUGETLB_PAGE_PRE_POISONED;
+ 	}
+ 
+ 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+ 	if (raw_hwp) {
+ 		raw_hwp->page = page;
+ 		llist_add(&raw_hwp->node, head);
+-		/* the first error event will be counted in action_result(). */
+-		if (ret)
+-			num_poisoned_pages_inc(page_to_pfn(page));
+ 	} else {
+ 		/*
+ 		 * Failed to save raw error info.  We no longer trace all
+@@ -1947,42 +1954,39 @@ void folio_clear_hugetlb_hwpoison(struct
+ 
+ /*
+  * Called from hugetlb code with hugetlb_lock held.
+- *
+- * Return values:
+- *   0             - free hugepage
+- *   1             - in-use hugepage
+- *   2             - not a hugepage
+- *   -EBUSY        - the hugepage is busy (try to retry)
+- *   -EHWPOISON    - the hugepage is already hwpoisoned
+  */
+ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 				 bool *migratable_cleared)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+ 	struct folio *folio = page_folio(page);
+-	int ret = 2;	/* fallback to normal page handling */
+ 	bool count_increased = false;
++	int ret, rc;
+ 
+-	if (!folio_test_hugetlb(folio))
++	if (!folio_test_hugetlb(folio)) {
++		ret = MF_HUGETLB_NON_HUGEPAGE;
+ 		goto out;
+-
+-	if (flags & MF_COUNT_INCREASED) {
+-		ret = 1;
++	} else if (flags & MF_COUNT_INCREASED) {
++		ret = MF_HUGETLB_IN_USED;
+ 		count_increased = true;
+ 	} else if (folio_test_hugetlb_freed(folio)) {
+-		ret = 0;
++		ret = MF_HUGETLB_FREED;
+ 	} else if (folio_test_hugetlb_migratable(folio)) {
+-		ret = folio_try_get(folio);
+-		if (ret)
++		if (folio_try_get(folio)) {
++			ret = MF_HUGETLB_IN_USED;
+ 			count_increased = true;
++		} else {
++			ret = MF_HUGETLB_FREED;
++		}
+ 	} else {
+-		ret = -EBUSY;
++		ret = MF_HUGETLB_RETRY;
+ 		if (!(flags & MF_NO_RETRY))
+ 			goto out;
+ 	}
+ 
+-	if (folio_set_hugetlb_hwpoison(folio, page)) {
+-		ret = -EHWPOISON;
++	rc = hugetlb_update_hwpoison(folio, page);
++	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
++		ret = rc;
+ 		goto out;
+ 	}
+ 
+@@ -2007,10 +2011,16 @@ out:
+  * with basic operations like hugepage allocation/free/demotion.
+  * So some of prechecks for hwpoison (pinning, and testing/setting
+  * PageHWPoison) should be done in single hugetlb_lock range.
++ * Returns:
++ *	0		- not hugetlb, or recovered
++ *	-EBUSY		- not recovered
++ *	-EOPNOTSUPP	- hwpoison_filter'ed
++ *	-EHWPOISON	- folio or exact page already poisoned
++ *	-EFAULT		- kill_accessing_process finds current->mm null
+  */
+ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
+ {
+-	int res;
++	int res, rv;
+ 	struct page *p = pfn_to_page(pfn);
+ 	struct folio *folio;
+ 	unsigned long page_flags;
+@@ -2019,22 +2029,31 @@ static int try_memory_failure_hugetlb(un
+ 	*hugetlb = 1;
+ retry:
+ 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+-	if (res == 2) { /* fallback to normal page handling */
++	switch (res) {
++	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
+ 		*hugetlb = 0;
+ 		return 0;
+-	} else if (res == -EHWPOISON) {
+-		if (flags & MF_ACTION_REQUIRED) {
+-			folio = page_folio(p);
+-			res = kill_accessing_process(current, folio_pfn(folio), flags);
+-		}
+-		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+-		return res;
+-	} else if (res == -EBUSY) {
++	case MF_HUGETLB_RETRY:
+ 		if (!(flags & MF_NO_RETRY)) {
+ 			flags |= MF_NO_RETRY;
+ 			goto retry;
+ 		}
+ 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
++	case MF_HUGETLB_FOLIO_PRE_POISONED:
++	case MF_HUGETLB_PAGE_PRE_POISONED:
++		rv = -EHWPOISON;
++		if (flags & MF_ACTION_REQUIRED) {
++			folio = page_folio(p);
++			rv = kill_accessing_process(current, folio_pfn(folio), flags);
++		}
++		if (res == MF_HUGETLB_PAGE_PRE_POISONED)
++			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
++		else
++			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
++		return rv;
++	default:
++		WARN_ON((res != MF_HUGETLB_FREED) && (res != MF_HUGETLB_IN_USED));
++		break;
+ 	}
+ 
+ 	folio = page_folio(p);
+@@ -2045,7 +2064,7 @@ retry:
+ 		if (migratable_cleared)
+ 			folio_set_hugetlb_migratable(folio);
+ 		folio_unlock(folio);
+-		if (res == 1)
++		if (res == MF_HUGETLB_IN_USED)
+ 			folio_put(folio);
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -2054,7 +2073,7 @@ retry:
+ 	 * Handling free hugepage.  The possible race with hugepage allocation
+ 	 * or demotion can be prevented by PageHWPoison flag.
+ 	 */
+-	if (res == 0) {
++	if (res == MF_HUGETLB_FREED) {
+ 		folio_unlock(folio);
+ 		if (__page_handle_poison(p) > 0) {
+ 			page_ref_inc(p);
 
 
 
