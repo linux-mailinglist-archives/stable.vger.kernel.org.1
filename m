@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAYiOGVbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:53 +0100
+	id mJC2AoZkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B3E74CC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE2DE86F4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B65693011A58
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78E7930DCFD6
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5B840758D;
-	Wed,  4 Feb 2026 14:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9635641C31C;
+	Wed,  4 Feb 2026 15:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w54wbDXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yf/L8gwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2395D280A3B;
-	Wed,  4 Feb 2026 14:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C4C41C312;
+	Wed,  4 Feb 2026 15:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216284; cv=none; b=nP4ftycGQ1PR61Q5j84GgcKNj+TgHcEMkLDjkZuno7xSnhckdy0nerGdezR2SHgH+219Xc7Ep4lNh10tOTbp/HFKVdgcFLcxAsdqQwNhMcKNwzxM6IY16icff9bygFtK3dfy8bPK4AaU69b2JkDiyJy4H85iv/MBoRuVMLdWzSM=
+	t=1770217828; cv=none; b=d4qx3D+ByYQnUSowED2HFSbGA4DdhW0JU6L/cp3uHX+x4eu9cAS/bLyv5o+nlxpridcQXWroyf2xL91Nao3nTAjWeI7kWYj680wMmP3ELXrEuv5ar6ehLxvoidxzTniFqiOBEf4UfLQuDZPkU2m6M5jx0c/+qJ8WypkxWdhzj78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216284; c=relaxed/simple;
-	bh=sYuIkVNWRwc2RsdRYOrJ3NCRwOj8gctGrJSYzH9IUhk=;
+	s=arc-20240116; t=1770217828; c=relaxed/simple;
+	bh=7uPCuriZgJJxJK2kFd/7RIN+2/yLaSt2QvWNzyMjMU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E1T72WfduSCu/EaJDUaotVUM5bS3l7v29cZazw6F9Znv2rByIqWmilICKBV/jlc/wqnaFZ/QuquTCy6E1b02y8h512IqVjLJbuvDjVooCXrdoIUrVHzc6CSy2FIz2zbu6VAAMaJm9xpriv0dhbwiouAOmGvMvc2XHCd3A0iIc40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w54wbDXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74576C4CEF7;
-	Wed,  4 Feb 2026 14:44:43 +0000 (UTC)
+	 MIME-Version; b=V4EM947hchBpxXIs4hyVcbeUbx3hmwheqN8yrdQGuxivZ/H+jeiVTs/JGHZ4c3/PonD31eDq3jC4dLweg5iEvUR4S6Fix6cRj+7eZmD/jznb2fC3MVeIkEjd42AfWVC34Ph421vEUpiu1irVESM9LzTHJHK4YJBFtfIvJjCt66w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yf/L8gwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD86C4CEF7;
+	Wed,  4 Feb 2026 15:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216283;
-	bh=sYuIkVNWRwc2RsdRYOrJ3NCRwOj8gctGrJSYzH9IUhk=;
+	s=korg; t=1770217828;
+	bh=7uPCuriZgJJxJK2kFd/7RIN+2/yLaSt2QvWNzyMjMU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w54wbDXZWqC72NcYIz1g7Hj6GeYq7gabfw3f9Ee92fKsnZ141hvHG8o2exS1zQsLb
-	 u8AnELMTn+zMBiGR/oZYTcnKvtj6URIWw3mO14/QXxPUG1tCcNKbT9dZ4ZIUIXv6wt
-	 w12lrng/uhRCtd0cLOi025x5ZX5gqkduAb1f6Q74=
+	b=Yf/L8gwrp/frnxA2eTZ0UW4mbyNU+jVs40MtIgBzHbrbTi3KZD08D0QpXoep8Viwh
+	 WpioI/ht6GOeYkR2B5awc1hlslQ0U5zs+0yCzrZbBAMOcTGBcwA5sa/UU/AwK2WGIX
+	 jqOo+pkD7TtUJbST69z4Js7t+HSJRdh7d30DrTgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Robbie Ko <robbieko@synology.com>,
-	David Sterba <dsterba@suse.com>,
-	=?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
-Subject: [PATCH 5.10 043/161] btrfs: fix deadlock in wait_current_trans() due to ignored transaction type
+	Felix Gu <gu_0233@qq.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 132/280] spi: spi-sprd-adi: Fix double free in probe error path
 Date: Wed,  4 Feb 2026 15:38:26 +0100
-Message-ID: <20260204143853.314300230@linuxfoundation.org>
+Message-ID: <20260204143914.383367777@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,191 +64,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213422-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213882-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6D4B3E74CC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,alibaba.com:email]
+X-Rspamd-Queue-Id: 0FE2DE86F4
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robbie Ko <robbieko@synology.com>
+From: Felix Gu <gu_0233@qq.com>
 
-commit 5037b342825df7094a4906d1e2a9674baab50cb2 upstream.
+[ Upstream commit 383d4f5cffcc8df930d95b06518a9d25a6d74aac ]
 
-When wait_current_trans() is called during start_transaction(), it
-currently waits for a blocked transaction without considering whether
-the given transaction type actually needs to wait for that particular
-transaction state. The btrfs_blocked_trans_types[] array already defines
-which transaction types should wait for which transaction states, but
-this check was missing in wait_current_trans().
+The driver currently uses spi_alloc_host() to allocate the controller
+but registers it using devm_spi_register_controller().
 
-This can lead to a deadlock scenario involving two transactions and
-pending ordered extents:
+If devm_register_restart_handler() fails, the code jumps to the
+put_ctlr label and calls spi_controller_put(). However, since the
+controller was registered via a devm function, the device core will
+automatically call spi_controller_put() again when the probe fails.
+This results in a double-free of the spi_controller structure.
 
-  1. Transaction A is in TRANS_STATE_COMMIT_DOING state
+Fix this by switching to devm_spi_alloc_host() and removing the
+manual spi_controller_put() call.
 
-  2. A worker processing an ordered extent calls start_transaction()
-     with TRANS_JOIN
-
-  3. join_transaction() returns -EBUSY because Transaction A is in
-     TRANS_STATE_COMMIT_DOING
-
-  4. Transaction A moves to TRANS_STATE_UNBLOCKED and completes
-
-  5. A new Transaction B is created (TRANS_STATE_RUNNING)
-
-  6. The ordered extent from step 2 is added to Transaction B's
-     pending ordered extents
-
-  7. Transaction B immediately starts commit by another task and
-     enters TRANS_STATE_COMMIT_START
-
-  8. The worker finally reaches wait_current_trans(), sees Transaction B
-     in TRANS_STATE_COMMIT_START (a blocked state), and waits
-     unconditionally
-
-  9. However, TRANS_JOIN should NOT wait for TRANS_STATE_COMMIT_START
-     according to btrfs_blocked_trans_types[]
-
-  10. Transaction B is waiting for pending ordered extents to complete
-
-  11. Deadlock: Transaction B waits for ordered extent, ordered extent
-      waits for Transaction B
-
-This can be illustrated by the following call stacks:
-  CPU0                              CPU1
-                                    btrfs_finish_ordered_io()
-                                      start_transaction(TRANS_JOIN)
-                                        join_transaction()
-                                          # -EBUSY (Transaction A is
-                                          # TRANS_STATE_COMMIT_DOING)
-  # Transaction A completes
-  # Transaction B created
-  # ordered extent added to
-  # Transaction B's pending list
-  btrfs_commit_transaction()
-    # Transaction B enters
-    # TRANS_STATE_COMMIT_START
-    # waiting for pending ordered
-    # extents
-                                        wait_current_trans()
-                                          # waits for Transaction B
-                                          # (should not wait!)
-
-Task bstore_kv_sync in btrfs_commit_transaction waiting for ordered
-extents:
-
-  __schedule+0x2e7/0x8a0
-  schedule+0x64/0xe0
-  btrfs_commit_transaction+0xbf7/0xda0 [btrfs]
-  btrfs_sync_file+0x342/0x4d0 [btrfs]
-  __x64_sys_fdatasync+0x4b/0x80
-  do_syscall_64+0x33/0x40
-  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-Task kworker in wait_current_trans waiting for transaction commit:
-
-  Workqueue: btrfs-syno_nocow btrfs_work_helper [btrfs]
-  __schedule+0x2e7/0x8a0
-  schedule+0x64/0xe0
-  wait_current_trans+0xb0/0x110 [btrfs]
-  start_transaction+0x346/0x5b0 [btrfs]
-  btrfs_finish_ordered_io.isra.0+0x49b/0x9c0 [btrfs]
-  btrfs_work_helper+0xe8/0x350 [btrfs]
-  process_one_work+0x1d3/0x3c0
-  worker_thread+0x4d/0x3e0
-  kthread+0x12d/0x150
-  ret_from_fork+0x1f/0x30
-
-Fix this by passing the transaction type to wait_current_trans() and
-checking btrfs_blocked_trans_types[cur_trans->state] against the given
-type before deciding to wait. This ensures that transaction types which
-are allowed to join during certain blocked states will not unnecessarily
-wait and cause deadlocks.
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Robbie Ko <robbieko@synology.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Cc: Motiejus Jakštys <motiejus@jakstys.lt>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ac17750 ("spi: sprd: Add the support of restarting the system")
+Signed-off-by: Felix Gu <gu_0233@qq.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://patch.msgid.link/tencent_AC7D389CE7E24318445E226F7CDCCC2F0D07@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sprd-adi.c | 33 ++++++++++-----------------------
+ 1 file changed, 10 insertions(+), 23 deletions(-)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -514,13 +514,14 @@ static inline int is_transaction_blocked
-  * when this is done, it is safe to start a new transaction, but the current
-  * transaction might not be fully on disk.
-  */
--static void wait_current_trans(struct btrfs_fs_info *fs_info)
-+static void wait_current_trans(struct btrfs_fs_info *fs_info, unsigned int type)
- {
- 	struct btrfs_transaction *cur_trans;
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 441cde971f7b8..3e546cd87157b 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -529,7 +529,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	pdev->id = of_alias_get_id(np, "spi");
+ 	num_chipselect = of_get_child_count(np);
  
- 	spin_lock(&fs_info->trans_lock);
- 	cur_trans = fs_info->running_transaction;
--	if (cur_trans && is_transaction_blocked(cur_trans)) {
-+	if (cur_trans && is_transaction_blocked(cur_trans) &&
-+	    (btrfs_blocked_trans_types[cur_trans->state] & type)) {
- 		refcount_inc(&cur_trans->use_count);
- 		spin_unlock(&fs_info->trans_lock);
+-	ctlr = spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
+ 	if (!ctlr)
+ 		return -ENOMEM;
  
-@@ -669,12 +670,12 @@ again:
- 		sb_start_intwrite(fs_info->sb);
+@@ -537,10 +537,8 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	sadi = spi_controller_get_devdata(ctlr);
  
- 	if (may_wait_transaction(fs_info, type))
--		wait_current_trans(fs_info);
-+		wait_current_trans(fs_info, type);
+ 	sadi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+-	if (IS_ERR(sadi->base)) {
+-		ret = PTR_ERR(sadi->base);
+-		goto put_ctlr;
+-	}
++	if (IS_ERR(sadi->base))
++		return PTR_ERR(sadi->base);
  
- 	do {
- 		ret = join_transaction(fs_info, type);
- 		if (ret == -EBUSY) {
--			wait_current_trans(fs_info);
-+			wait_current_trans(fs_info, type);
- 			if (unlikely(type == TRANS_ATTACH ||
- 				     type == TRANS_JOIN_NOSTART))
- 				ret = -ENOENT;
-@@ -902,7 +903,7 @@ out:
+ 	sadi->slave_vbase = (unsigned long)sadi->base +
+ 			    data->slave_offset;
+@@ -552,18 +550,15 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0)) {
+ 		sadi->hwlock =
+ 			devm_hwspin_lock_request_specific(&pdev->dev, ret);
+-		if (!sadi->hwlock) {
+-			ret = -ENXIO;
+-			goto put_ctlr;
+-		}
++		if (!sadi->hwlock)
++			return -ENXIO;
+ 	} else {
+ 		switch (ret) {
+ 		case -ENOENT:
+ 			dev_info(&pdev->dev, "no hardware spinlock supplied\n");
+ 			break;
+ 		default:
+-			dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+-			goto put_ctlr;
++			return dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+ 		}
+ 	}
  
- void btrfs_throttle(struct btrfs_fs_info *fs_info)
- {
--	wait_current_trans(fs_info);
-+	wait_current_trans(fs_info, TRANS_START);
+@@ -580,26 +575,18 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	ctlr->transfer_one = sprd_adi_transfer_one;
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to register SPI controller\n");
+-		goto put_ctlr;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "failed to register SPI controller\n");
+ 
+ 	if (sadi->data->restart) {
+ 		ret = devm_register_restart_handler(&pdev->dev,
+ 						    sadi->data->restart,
+ 						    sadi);
+-		if (ret) {
+-			dev_err(&pdev->dev, "can not register restart handler\n");
+-			goto put_ctlr;
+-		}
++		if (ret)
++			return dev_err_probe(&pdev->dev, ret, "can not register restart handler\n");
+ 	}
+ 
+ 	return 0;
+-
+-put_ctlr:
+-	spi_controller_put(ctlr);
+-	return ret;
  }
  
- static int should_end_transaction(struct btrfs_trans_handle *trans)
+ static struct sprd_adi_data sc9860_data = {
+-- 
+2.51.0
+
 
 
 
