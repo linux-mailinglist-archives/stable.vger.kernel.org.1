@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-213972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDZ2Nxplg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:18 +0100
+	id wHVtAmNog2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843BFE88DC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769C5E9170
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 48AD8309AECB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EA103179211
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43707425CEB;
-	Wed,  4 Feb 2026 15:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA0D2D8DA3;
+	Wed,  4 Feb 2026 15:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzqf686C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6kfhnG1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E1A18859B;
-	Wed,  4 Feb 2026 15:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6512417E0;
+	Wed,  4 Feb 2026 15:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218129; cv=none; b=CK1jI2rLATxxtFuu5NJWFkyXWL33qvpbo/jRFKBNwi5rOh0/225Oe7lMGsMWnYKT1hsSIu4IMRalhQU7SajBbMrJ/O8I9guD81G3nn4UX7rnJv2pZLR+qghBAG3Q9I8D9CRb/YWMoxzvE5/CaBadHCv/4+lop1IXOOHowodR03w=
+	t=1770218918; cv=none; b=orhaPcAKYTRTgqMl3cI/bk+DfpXtMz8hHvClwQkO63AKVnclccYNs/H9Gxdz3wAO8xbh3XsvsHQzfSjrcuXTnGswEK5I0q1bLmloGJzMF7Mfh5b8oWPXWtKEHG8fy3U0XimgximvsxTsrPDI3LWxePBeLBSbbey3E2tcvm7I3fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218129; c=relaxed/simple;
-	bh=tELssnmH1RSFFzhmjHtDzF14i5RMo316MHyXUONy2J8=;
+	s=arc-20240116; t=1770218918; c=relaxed/simple;
+	bh=hdwNh2IyksMmIanPVv3/QFEdud8amIcfkiJiwTmX9gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FI1VRfmqH3EC5yD8uop5p2QriM2KaQ8UvBMXNOUdnNkZBQol3CrDGwGNZqjFpscI6N789n5mg4NdjEnqxif/L/ON0jq6pGCOsq1Aq5qqXMp1alRFRTbCBCR2rljkMf8Zt4xAGgRJb1hUf9iMRPTFmQjbpUVbi79k0inMA/Z7+O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzqf686C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F7CC4CEF7;
-	Wed,  4 Feb 2026 15:15:27 +0000 (UTC)
+	 MIME-Version; b=GiznAxgYwo7mAc8rDE41CKmVfgRTmU66YuC73Ys/L87UMISrzE033M+Zgy9+eVPfMQx6i9DognuGI7PhC8N5awwQ08urrtgBdigwL9iMOlSaemyJguEEdqCGzdIobycn6NCDp2Ra7QcQfWaPlKLQeScY8PNOKGg4vNAxQXYJCtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6kfhnG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA25C4CEF7;
+	Wed,  4 Feb 2026 15:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218128;
-	bh=tELssnmH1RSFFzhmjHtDzF14i5RMo316MHyXUONy2J8=;
+	s=korg; t=1770218918;
+	bh=hdwNh2IyksMmIanPVv3/QFEdud8amIcfkiJiwTmX9gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzqf686C1o2GrwSQwUTHVmL41o9dVMCg0+PrHDSbm+tcnh3Nc7pURDs4I9yjUlJU1
-	 J1evOtlfD+7vfWLYdOPUZ+mbLgKJp3tjzI0iKbohWAMUW4eRUm/Eh3TGuXc6APDT8R
-	 Bg8YqeWHjc5C7YNoopPqGkIgdZu004xjHw+cjgpg=
+	b=J6kfhnG1cXy08Q+Hd40tpSgL5TrEHgTTbVlyjpdyVAj8xd21HDuE9DtU25j3qEUih
+	 pFUvDY/WrEdal1V2QUvz9sFCoTAl/bRmuzQmizt8t7wyLqVzqmCGj8yn79A/2L7H6a
+	 sjaFvT2H2rW7UMkgZaiO0t39/zKRsqaXYGWAoz1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	"Uschakow, Stanislav" <suschako@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 220/280] mm/rmap: fix two comments related to huge_pmd_unshare()
-Date: Wed,  4 Feb 2026 15:39:54 +0100
-Message-ID: <20260204143917.522589953@linuxfoundation.org>
+Subject: [PATCH 6.18 013/122] ipv6: use the right ifindex when replying to icmpv6 from localhost
+Date: Wed,  4 Feb 2026 15:39:55 +0100
+Message-ID: <20260204143852.344134366@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,104 +70,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214206-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213972-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,huawei.com:email,suse.de:email,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,linux-foundation.org:email,surriel.com:email]
-X-Rspamd-Queue-Id: 843BFE88DC
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 769C5E9170
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit a8682d500f691b6dfaa16ae1502d990aeb86e8be ]
+[ Upstream commit 03cbcdf93866e61beb0063392e6dbb701f03aea2 ]
 
-PMD page table unsharing no longer touches the refcount of a PMD page
-table.  Also, it is not about dropping the refcount of a "PMD page" but
-the "PMD page table".
+When replying to a ICMPv6 echo request that comes from localhost address
+the right output ifindex is 1 (lo) and not rt6i_idev dev index. Use the
+skb device ifindex instead. This fixes pinging to a local address from
+localhost source address.
 
-Let's just simplify by saying that the PMD page table was unmapped,
-consequently also unmapping the folio that was mapped into this page.
+$ ping6 -I ::1 2001:1:1::2 -c 3
+PING 2001:1:1::2 (2001:1:1::2) from ::1 : 56 data bytes
+64 bytes from 2001:1:1::2: icmp_seq=1 ttl=64 time=0.037 ms
+64 bytes from 2001:1:1::2: icmp_seq=2 ttl=64 time=0.069 ms
+64 bytes from 2001:1:1::2: icmp_seq=3 ttl=64 time=0.122 ms
 
-This code should be deduplicated in the future.
+2001:1:1::2 ping statistics
+3 packets transmitted, 3 received, 0% packet loss, time 2032ms
+rtt min/avg/max/mdev = 0.037/0.076/0.122/0.035 ms
 
-Link: https://lkml.kernel.org/r/20251223214037.580860-4-david@kernel.org
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1b70d792cf67 ("ipv6: Use rt6i_idev index for echo replies to a local address")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260121194409.6749-1-fmancera@suse.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/rmap.c |   20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ net/ipv6/icmp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1574,14 +1574,8 @@ static bool try_to_unmap_one(struct foli
- 					mmu_notifier_invalidate_range(mm,
- 						range.start, range.end);
- 					/*
--					 * The ref count of the PMD page was
--					 * dropped which is part of the way map
--					 * counting is done for shared PMDs.
--					 * Return 'true' here.  When there is
--					 * no other sharing, huge_pmd_unshare
--					 * returns false and we will unmap the
--					 * actual page and drop map count
--					 * to zero.
-+					 * The PMD table was unmapped,
-+					 * consequently unmapping the folio.
- 					 */
- 					page_vma_mapped_walk_done(&pvmw);
- 					break;
-@@ -1965,14 +1959,8 @@ static bool try_to_migrate_one(struct fo
- 						range.start, range.end);
- 
- 					/*
--					 * The ref count of the PMD page was
--					 * dropped which is part of the way map
--					 * counting is done for shared PMDs.
--					 * Return 'true' here.  When there is
--					 * no other sharing, huge_pmd_unshare
--					 * returns false and we will unmap the
--					 * actual page and drop map count
--					 * to zero.
-+					 * The PMD table was unmapped,
-+					 * consequently unmapping the folio.
- 					 */
- 					page_vma_mapped_walk_done(&pvmw);
- 					break;
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 56c974cf75d15..cf6455cbe2cc9 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -769,7 +769,9 @@ static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
+ 	fl6.daddr = ipv6_hdr(skb)->saddr;
+ 	if (saddr)
+ 		fl6.saddr = *saddr;
+-	fl6.flowi6_oif = icmp6_iif(skb);
++	fl6.flowi6_oif = ipv6_addr_loopback(&fl6.daddr) ?
++			 skb->dev->ifindex :
++			 icmp6_iif(skb);
+ 	fl6.fl6_icmp_type = type;
+ 	fl6.flowi6_mark = mark;
+ 	fl6.flowi6_uid = sock_net_uid(net, NULL);
+-- 
+2.51.0
+
 
 
 
