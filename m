@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-213474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213933-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yO4QBtdcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:03 +0100
+	id wCdWCAJlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213933-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB617E7772
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE247E887B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35AB3303E2F6
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B2A2E3009885
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A4A274B39;
-	Wed,  4 Feb 2026 14:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC7F423149;
+	Wed,  4 Feb 2026 15:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQ++2q+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEtv+Jb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160A1221F17;
-	Wed,  4 Feb 2026 14:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237C01E520C;
+	Wed,  4 Feb 2026 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216461; cv=none; b=cqI5DUr2ojpjXIKjIV7su7lxw0texlnp1ZqfTLybVNRW2xq5SGYUT9EwR6zfbY3LUGoeVSyCJ/H9xnaqMhqSFJIBIEjPQOkAxJx4/70bICuO1D/4PH8ODe+zBA3xIvSj8e00LfQxFMR4LML/W5Du1A3OirpdNrX0tJNQ49CcN4w=
+	t=1770218001; cv=none; b=BQ+WvHYii8j5D7I2UaJXwLigQa6iYm2Nlbr4qDHY+fyW9xG+Nv1KTLPMFtwvDGvr72nEkxfW1FQv6HmcwCWAUuiUaDr1RJbN47fk1/AKABhnuPWuIS2Hb/e3dofMMHGzqIsTdtUga14B2ZKPpKAt5HaewdB8gUSe1kGZLqBmO70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216461; c=relaxed/simple;
-	bh=bw3DrZXnAfcGWsAtlAtraSMNJb3z/saVPQ3/RtwIWGE=;
+	s=arc-20240116; t=1770218001; c=relaxed/simple;
+	bh=gzYGBU8NuBd28XYn45OLB0J+f2cstGwwn38/p7kmqfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5M39XTam+/6dvWfk9fdZ9wf13Jl99QNbBzybhPg8KpJFiBg+KLBSI/MMlzxbMSBIBeqxqsWmQATf5g1iZ1B4UEM7235yrcE1LeuCiiP+TTZwjfOE9tbsZK5jBbMdOyCfPg916/zgtJe7PBr+xp+Rmnsfh7+JbKPR3dobDZqrO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQ++2q+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD13C4CEF7;
-	Wed,  4 Feb 2026 14:47:39 +0000 (UTC)
+	 MIME-Version; b=BAO5bpfI7nTRvyFubsVfiG3eEDejx7BxibosztaRyMIIx7rpvHIFhz2E0V29e6qnS2ocUK2zqqitvDeKJP3dxKVIE1qoucNhmVyM1GlLBUYdKmf8fDjQIa45lHEbisHFob3b2A2qTW/0V0K8SNTMBcaOOkoQLZ5SV83q9OeaRxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEtv+Jb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69027C116C6;
+	Wed,  4 Feb 2026 15:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216460;
-	bh=bw3DrZXnAfcGWsAtlAtraSMNJb3z/saVPQ3/RtwIWGE=;
+	s=korg; t=1770218000;
+	bh=gzYGBU8NuBd28XYn45OLB0J+f2cstGwwn38/p7kmqfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQ++2q+yvbNkuYlTPbGQ+poo4H72nN23NBqe7bjRKH0QOqsj+HlXne9lFLtofE72o
-	 tABxIROZ1yt8hNOtumvTdUeVoLlkI+2YDR0wpGQIw+bu0v4IV9pa9fP9ScLCfD26T4
-	 UejUVqU8kMEx8ATm89k2d7mewclmnpuNqtO0j/+E=
+	b=bEtv+Jb1/dWzFIONd8sJm+VbwAMPvk3HT2wBIv3WlTnWgLNl1N/Uc1Nk6W6F913ek
+	 UF1tXMTOzCWvuyEgbtruVFhQbNs1SYkNKwejOl0WQV5Bmh8JgFOsrQ3AXmw74nXd1C
+	 i983qfje4Q/48SMaHL8bEzyrhojv9C8GH4UE6Z/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 093/161] ALSA: usb-audio: Fix use-after-free in snd_usb_mixer_free()
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 182/280] can: usb_8dev: usb_8dev_read_bulk_callback(): fix URB memory leak
 Date: Wed,  4 Feb 2026 15:39:16 +0100
-Message-ID: <20260204143855.091018060@linuxfoundation.org>
+Message-ID: <20260204143916.164838362@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +65,89 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213474-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213933-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AB617E7772
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email]
+X-Rspamd-Queue-Id: DE247E887B
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 930e69757b74c3ae083b0c3c7419bfe7f0edc7b2 upstream.
+commit f7a980b3b8f80fe367f679da376cf76e800f9480 upstream.
 
-When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees
-mixer->id_elems but the controls already added to the card still
-reference the freed memory. Later when snd_card_register() runs,
-the OSS mixer layer calls their callbacks and hits a use-after-free read.
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-Call trace:
-  get_ctl_value+0x63f/0x820 sound/usb/mixer.c:411
-  get_min_max_with_quirks.isra.0+0x240/0x1f40 sound/usb/mixer.c:1241
-  mixer_ctl_feature_info+0x26b/0x490 sound/usb/mixer.c:1381
-  snd_mixer_oss_build_test+0x174/0x3a0 sound/core/oss/mixer_oss.c:887
-  ...
-  snd_card_register+0x4ed/0x6d0 sound/core/init.c:923
-  usb_audio_probe+0x5ef/0x2a90 sound/usb/card.c:1025
+In usb_8dev_open() -> usb_8dev_start(), the URBs for USB-in transfers are
+allocated, added to the priv->rx_submitted anchor and submitted. In the
+complete callback usb_8dev_read_bulk_callback(), the URBs are processed and
+resubmitted. In usb_8dev_close() -> unlink_all_urbs() the URBs are freed by
+calling usb_kill_anchored_urbs(&priv->rx_submitted).
 
-Fix by calling snd_ctl_remove() for all mixer controls before freeing
-id_elems. We save the next pointer first because snd_ctl_remove()
-frees the current element.
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in usb_kill_anchored_urbs().
 
-Fixes: 6639b6c2367f ("[ALSA] usb-audio - add mixer control notifications")
+Fix the memory leak by anchoring the URB in the
+usb_8dev_read_bulk_callback() to the priv->rx_submitted anchor.
+
+Fixes: 0024d8ad1639 ("can: usb_8dev: Add support for USB2CAN interface from 8 devices")
 Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260120102855.7300-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-5-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/usb_8dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -2858,10 +2858,23 @@ static int parse_audio_unit(struct mixer
+--- a/drivers/net/can/usb/usb_8dev.c
++++ b/drivers/net/can/usb/usb_8dev.c
+@@ -541,11 +541,17 @@ resubmit_urb:
+ 			  urb->transfer_buffer, RX_BUFFER_SIZE,
+ 			  usb_8dev_read_bulk_callback, priv);
  
- static void snd_usb_mixer_free(struct usb_mixer_interface *mixer)
- {
-+	struct usb_mixer_elem_list *list, *next;
-+	int id;
++	usb_anchor_urb(urb, &priv->rx_submitted);
 +
- 	/* kill pending URBs */
- 	snd_usb_mixer_disconnect(mixer);
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
++		return;
++
++	usb_unanchor_urb(urb);
  
--	kfree(mixer->id_elems);
-+	/* Unregister controls first, snd_ctl_remove() frees the element */
-+	if (mixer->id_elems) {
-+		for (id = 0; id < MAX_ID_ELEMS; id++) {
-+			for (list = mixer->id_elems[id]; list; list = next) {
-+				next = list->next_id_elem;
-+				if (list->kctl)
-+					snd_ctl_remove(mixer->chip->card, list->kctl);
-+			}
-+		}
-+		kfree(mixer->id_elems);
-+	}
- 	if (mixer->urb) {
- 		kfree(mixer->urb->transfer_buffer);
- 		usb_free_urb(mixer->urb);
+ 	if (retval == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (retval)
++	else
+ 		netdev_err(netdev,
+ 			"failed resubmitting read bulk urb: %d\n", retval);
+ }
 
 
 
