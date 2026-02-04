@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2B2uOJBig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:28 +0100
+	id EF9/DJJmg2nQmQMAu9opvQ
+	(envelope-from <stable+bounces-214015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:32:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E64AE8343
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:15:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C27E8E8D19
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DA95312403D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:08:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9082C30856F2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EEA42B741;
-	Wed,  4 Feb 2026 15:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7DB2BE7C0;
+	Wed,  4 Feb 2026 15:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNXMpoGr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFy0a/SR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5ED42B735;
-	Wed,  4 Feb 2026 15:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73DC410D16;
+	Wed,  4 Feb 2026 15:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217401; cv=none; b=O5Lq8FtRcrsIXJoARY3udtV1GkafQ3BFXmaohti/TCUySvoXUafxEGTlHYBxb0ZeWmaLdDCDkj46x7sw7oAgLDn+ph9aPScYUf2nIT8XX/22AxmIkh5zk7jQw+yIo5+iUcjLhpGMmpq5uUbIUrPd3ereAXC8Kab3tUXGfKkN6UY=
+	t=1770218276; cv=none; b=sUEYGAY1dfmlst4f4NCtA7eM8e9gCbzhDO6ijPynV2njEVMmwwWVe7DLwHMUgawLX+iVIhAt0CAFxmH3UiFLcaG5oxvJbIPFiFOQ49VdIiG7BKkEJBMj4zn3ZjAsBsDNcby/8nXRUh3Lxw9Bi11PRWZI1dDf9W8VeyLBfq8YAT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217401; c=relaxed/simple;
-	bh=a3lfsgVaJeKZk8cTGDQH3U5uqWkhx1qygnrfhvDEUIM=;
+	s=arc-20240116; t=1770218276; c=relaxed/simple;
+	bh=CH2F8XAa1O8EJ/nen9WIOEBJgRNtO5qzkqp6CSyAT2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STcT3CpVK1g8ysk349NXFaW5aMA4evmpVvxVsRT/Xr+j6UH2JLyRPs6HkYFeLgFjns7MVhtMm9k44pEVQEFGk/If2oBp+fDwTJL33+JxsaYTC2mnGV6/yPLnewq3aUPKpZGz7aMrhOCWeQB9QeIEWIyWxA5TJ3/GZqdUo6yw69k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNXMpoGr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA45C19423;
-	Wed,  4 Feb 2026 15:03:20 +0000 (UTC)
+	 MIME-Version; b=O1uImbiq226+Wn6/t40JxqDr8FPRtPDjypqATevWMPFZVOxnJPx/eAbYggOxuUckIN8MIHRCoJAl+9jvTUKUhMfqXfe9Gw6AWA1uOpwry3WG1ODk8Tktytx6qgyyCwPInEvFKeRsjKqMVAaGetwHzA6Yeu3LbIzqVor4RnKJeIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFy0a/SR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBE7C4CEF7;
+	Wed,  4 Feb 2026 15:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217401;
-	bh=a3lfsgVaJeKZk8cTGDQH3U5uqWkhx1qygnrfhvDEUIM=;
+	s=korg; t=1770218275;
+	bh=CH2F8XAa1O8EJ/nen9WIOEBJgRNtO5qzkqp6CSyAT2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNXMpoGrAAc+DOgphuDEIIYTgPYKOfu0ch4UMDMKM7IxtcgTTRqHmhwb9AzPk/US6
-	 4NjTcA2vLtgu1eJrbku0Fg1VKdXoHTd1xH6qIXDvo9lQ4lo/arOrjtoXKLdWKQxiPT
-	 jpjoAepDVvAAVJdVwuObtOJwxmXRJ7CFtHOl1Hdw=
+	b=iFy0a/SRJdy06/aRtEC+cnJ3OL/NbSImCyEqdoYMzGoK2k0eV6okVmnm8QemRO7LF
+	 Jd2TxpZLzVjus9+zKG2SRpGUMWC6sumQbN0S3OWUtJzJkSP/+iImxhc5V5kF5PVUh+
+	 FNyhvIiTzeo6/SHPIN+X3BPjJXz9bUt1b3wkfM7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 205/206] wifi: cfg80211: fully move wiphy work to unbound workqueue
+	Gavin Li <gavinl@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 262/280] Revert "net/mlx5: Block entering switchdev mode with ns inconsistency"
 Date: Wed,  4 Feb 2026 15:40:36 +0100
-Message-ID: <20260204143905.611974642@linuxfoundation.org>
+Message-ID: <20260204143919.127299452@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +70,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,163.com];
+	TAGGED_FROM(0.00)[bounces-214015-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213756-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.cz:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5E64AE8343
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C27E8E8D19
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Gavin Li <gavinl@nvidia.com>
 
-commit e296c95eac655008d5a709b8cf54d0018da1c916 upstream.
+[ Upstream commit 8deeefb24786ea7950b37bde4516b286c877db00 ]
 
-Previously I had moved the wiphy work to the unbound
-system workqueue, but missed that when it restarts and
-during resume it was still using the normal system
-workqueue. Fix that.
+This reverts commit 662404b24a4c4d839839ed25e3097571f5938b9b.
+The revert is required due to the suspicion it is not good for anything
+and cause crash.
 
-Fixes: 91d20ab9d9ca ("wifi: cfg80211: use system_unbound_wq for wiphy work")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240522124126.7ca959f2cbd3.I3e2a71ef445d167b84000ccf934ea245aef8d395@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 662404b24a4c ("net/mlx5e: Block entering switchdev mode with ns inconsistency")
+Signed-off-by: Gavin Li <gavinl@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+[ The context change is due to the commit e25373416678
+("net/mlx5e: Rewrite IPsec vs. TC block interface") in v6.6
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c  |    2 +-
- net/wireless/sysfs.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c |   19 -------------
+ 1 file changed, 19 deletions(-)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -427,7 +427,7 @@ static void cfg80211_wiphy_work(struct w
- 	if (wk) {
- 		list_del_init(&wk->entry);
- 		if (!list_empty(&rdev->wiphy_work_list))
--			schedule_work(work);
-+			queue_work(system_unbound_wq, work);
- 		spin_unlock_irq(&rdev->wiphy_work_lock);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3493,18 +3493,6 @@ static int esw_inline_mode_to_devlink(u8
+ 	return 0;
+ }
  
- 		wk->func(&rdev->wiphy, wk);
---- a/net/wireless/sysfs.c
-+++ b/net/wireless/sysfs.c
-@@ -5,7 +5,7 @@
-  *
-  * Copyright 2005-2006	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2006	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2020-2021, 2023 Intel Corporation
-+ * Copyright (C) 2020-2021, 2023-2024 Intel Corporation
-  */
+-static bool esw_offloads_devlink_ns_eq_netdev_ns(struct devlink *devlink)
+-{
+-	struct net *devl_net, *netdev_net;
+-	struct mlx5_eswitch *esw;
+-
+-	esw = mlx5_devlink_eswitch_get(devlink);
+-	netdev_net = dev_net(esw->dev->mlx5e_res.uplink_netdev);
+-	devl_net = devlink_net(devlink);
+-
+-	return net_eq(devl_net, netdev_net);
+-}
+-
+ int mlx5_devlink_eswitch_mode_set(struct devlink *devlink, u16 mode,
+ 				  struct netlink_ext_ack *extack)
+ {
+@@ -3519,13 +3507,6 @@ int mlx5_devlink_eswitch_mode_set(struct
+ 	if (esw_mode_from_devlink(mode, &mlx5_mode))
+ 		return -EINVAL;
  
- #include <linux/device.h>
-@@ -137,7 +137,7 @@ static int wiphy_resume(struct device *d
- 	if (rdev->wiphy.registered && rdev->ops->resume)
- 		ret = rdev_resume(rdev);
- 	rdev->suspended = false;
--	schedule_work(&rdev->wiphy_work);
-+	queue_work(system_unbound_wq, &rdev->wiphy_work);
- 	wiphy_unlock(&rdev->wiphy);
- 
- 	if (ret)
+-	if (mode == DEVLINK_ESWITCH_MODE_SWITCHDEV &&
+-	    !esw_offloads_devlink_ns_eq_netdev_ns(devlink)) {
+-		NL_SET_ERR_MSG_MOD(extack,
+-				   "Can't change E-Switch mode to switchdev when netdev net namespace has diverged from the devlink's.");
+-		return -EPERM;
+-	}
+-
+ 	mlx5_lag_disable_change(esw->dev);
+ 	err = mlx5_esw_try_lock(esw);
+ 	if (err < 0) {
 
 
 
