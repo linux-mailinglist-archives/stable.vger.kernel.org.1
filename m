@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-214184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIJLFCxog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:24 +0100
+	id UEe5MSBmg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E02E90CB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266B1E8BD4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55A5932359AE
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2E6331ADDE3
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD5342AA9;
-	Wed,  4 Feb 2026 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8434F3C196E;
+	Wed,  4 Feb 2026 15:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCPvLRkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1prYv13a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EF92C026F;
-	Wed,  4 Feb 2026 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4818829AB1D;
+	Wed,  4 Feb 2026 15:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218845; cv=none; b=OFgT1551NXR/RaBJBjSUD1rejuxyg9J8uTKfF40kS/yUzkTq5m5zPzXZLwUf04SrS2PjPelcoxpgaCyRoT5tWOX1JBzE4xz4XdaAS25gN6GTeDJ23hJGJwKcRbMKQ+VDnQV3FkpGadZfStoRPRyQCNvHfiNjCwWKHYcC9a5zmp0=
+	t=1770218350; cv=none; b=bBQjww3dJDamYnqe59Hzg9MhRuDXMX/rKrzFpdVYF0Q7favcpd1yiPIYbFLncuNvm6FwDfW6OQ6IggyvEGgEhWypjnowc/sXB9nL41x4RmQkt9lWsbICxNuQE5O1dS9I+BqhzrJWcQAOqjejIm4+pKDfUnw24gQtV4dhgJ0xvSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218845; c=relaxed/simple;
-	bh=ykUMaf4sew9MiioIIcOuKMakV9/j2ED3Kp1pJ7SNDKc=;
+	s=arc-20240116; t=1770218350; c=relaxed/simple;
+	bh=FDN09JFNferyKClIlEKw9I7t8Wbpl9eCsNTh35/FU8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0VUigi4u767omAwU4fmKfVhk3+RboA6OEB7PzV+nOeqD6e3U0OCnG+7pmAehT2fFKtCY3asm8NoRYNpCuQLKuz34njaDkJpswG610v/orlhAI97Jf2BhLnkZ/5pzYCEJkTCLJBkSdhbQs8vIKNgrxRwJkFg72dj2QslyZVMzk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCPvLRkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3121C4CEF7;
-	Wed,  4 Feb 2026 15:27:24 +0000 (UTC)
+	 MIME-Version; b=VWk1x3ga+HGxfMaQO+htb6ilJCGKsvX4z1z70Zz9Mn9Wml8nudRaLnGs+DnUccbvaUtmUlw45UUniGIGAE7uuvIx4B5+GTRG/11/RYdjsXMiegBjKwbyBMLbe6hlphrRakR8qJ+RU5vxn3z4eTrg6BnhV7cD14fmf/lWlBmXiqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1prYv13a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7851C19423;
+	Wed,  4 Feb 2026 15:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218845;
-	bh=ykUMaf4sew9MiioIIcOuKMakV9/j2ED3Kp1pJ7SNDKc=;
+	s=korg; t=1770218350;
+	bh=FDN09JFNferyKClIlEKw9I7t8Wbpl9eCsNTh35/FU8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCPvLRkV6/1ED79yX986LF/R8rO22leOrmdGh9PgDobKMtufVHIVXjvT2vlEqLuAT
-	 Iboia+KDbcIKY3bBh1SCvSo3O76HyMS+AulHB5QQhW7xGUabOS6a02hKmQGwVzLSuC
-	 AbeaWj2FFXwhPv2wzMOyXxsI4OqQfRRBnd4shsdA=
+	b=1prYv13acRgiDhme9kliuE/VB+2V52ZYeGYHhC6yCyBy3OuGs5X/DR5KJIhpj+iny
+	 fZHql9zLU6R0yWsP3SmBabIbobG390EGdCG4Rnk9Q4vJdFSHkBg1fUvAFdgoVTwLyx
+	 b0v2rOopLITe4tSvGSRvUGGpxAn624LCtKlhvRhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Bernd Schubert <bernd@bsbernd.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 51/87] flex_proportions: make fprop_new_period() hardirq safe
+	Marco Angaroni <marco.angaroni@italtel.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 275/280] mptcp: avoid dup SUB_CLOSED events after disconnect
 Date: Wed,  4 Feb 2026 15:40:49 +0100
-Message-ID: <20260204143848.753202836@linuxfoundation.org>
+Message-ID: <20260204143919.599183261@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,111 +71,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bsbernd.com,infradead.org,gmail.com,szeredi.hu,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-214184-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214037-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,szeredi.hu:email,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.cz:email,bsbernd.com:email]
-X-Rspamd-Queue-Id: A3E02E90CB
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 266B1E8BD4
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit dd9e2f5b38f1fdd49b1ab6d3a85f81c14369eacc upstream.
+[ Upstream commit 280d654324e33f8e6e3641f76764694c7b64c5db ]
 
-Bernd has reported a lockdep splat from flexible proportions code that is
-essentially complaining about the following race:
+In case of subflow disconnect(), which can also happen with the first
+subflow in case of errors like timeout or reset, mptcp_subflow_ctx_reset
+will reset most fields from the mptcp_subflow_context structure,
+including close_event_done. Then, when another subflow is closed, yet
+another SUB_CLOSED event for the disconnected initial subflow is sent.
+Because of the previous reset, there are no source address and
+destination port.
 
-<timer fires>
-run_timer_softirq - we are in softirq context
-  call_timer_fn
-    writeout_period
-      fprop_new_period
-        write_seqcount_begin(&p->sequence);
+A solution is then to also check the subflow's local id: it shouldn't be
+negative anyway.
 
-        <hardirq is raised>
-        ...
-        blk_mq_end_request()
-	  blk_update_request()
-	    ext4_end_bio()
-	      folio_end_writeback()
-		__wb_writeout_add()
-		  __fprop_add_percpu_max()
-		    if (unlikely(max_frac < FPROP_FRAC_BASE)) {
-		      fprop_fraction_percpu()
-			seq = read_seqcount_begin(&p->sequence);
-			  - sees odd sequence so loops indefinitely
+Another solution would be not to reset subflow->close_event_done at
+disconnect time, but when reused. But then, probably the whole reset
+could be done when being reused. Let's not change this logic, similar
+to TCP with tcp_disconnect().
 
-Note that a deadlock like this is only possible if the bdi has configured
-maximum fraction of writeout throughput which is very rare in general but
-frequent for example for FUSE bdis.  To fix this problem we have to make
-sure write section of the sequence counter is irqsafe.
-
-Link: https://lkml.kernel.org/r/20260121112729.24463-2-jack@suse.cz
-Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reported-by: Bernd Schubert <bernd@bsbernd.com>
-Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Joanne Koong <joannelkoong@gmail.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d82809b6c5f2 ("mptcp: avoid duplicated SUB_CLOSED events")
+Cc: stable@vger.kernel.org
+Reported-by: Marco Angaroni <marco.angaroni@italtel.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/603
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-1-7f71e1bc4feb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/flex_proportions.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/lib/flex_proportions.c
-+++ b/lib/flex_proportions.c
-@@ -64,13 +64,14 @@ void fprop_global_destroy(struct fprop_g
- bool fprop_new_period(struct fprop_global *p, int periods)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2569,8 +2569,8 @@ out:
+ void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 		     struct mptcp_subflow_context *subflow)
  {
- 	s64 events = percpu_counter_sum(&p->events);
-+	unsigned long flags;
+-	/* The first subflow can already be closed and still in the list */
+-	if (subflow->close_event_done)
++	/* The first subflow can already be closed or disconnected */
++	if (subflow->close_event_done || READ_ONCE(subflow->local_id) < 0)
+ 		return;
  
- 	/*
- 	 * Don't do anything if there are no events.
- 	 */
- 	if (events <= 1)
- 		return false;
--	preempt_disable_nested();
-+	local_irq_save(flags);
- 	write_seqcount_begin(&p->sequence);
- 	if (periods < 64)
- 		events -= events >> periods;
-@@ -78,7 +79,7 @@ bool fprop_new_period(struct fprop_globa
- 	percpu_counter_add(&p->events, -events);
- 	p->period += periods;
- 	write_seqcount_end(&p->sequence);
--	preempt_enable_nested();
-+	local_irq_restore(flags);
- 
- 	return true;
- }
+ 	subflow->close_event_done = true;
 
 
 
