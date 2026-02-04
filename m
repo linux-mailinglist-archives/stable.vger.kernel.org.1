@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-214223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SA34ESNpg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:31 +0100
+	id EJbcNvhsg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD00E9378
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29113E9B73
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F35C3313EC1C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2D69930E010E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE662D978A;
-	Wed,  4 Feb 2026 15:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77515421A04;
+	Wed,  4 Feb 2026 15:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArGscxhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufof15z7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620272D5950;
-	Wed,  4 Feb 2026 15:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7784219FC;
+	Wed,  4 Feb 2026 15:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218974; cv=none; b=nXW/jItQ4GkLV4M4cZyZvjnaSpT06vYM/GQDtNH0GgOyH+0gQfY+MOjnu/XTRNADlp/ntxy7eGGP1GYtbpHWg7UOwdlwwyhEvDxXhqsw/Fi3UN/lmYpHn4MImDO71wHiwFfCC6NfXLG5y5wJ1E3Thn5xMVzgIUbpn6jvtz6o2ZU=
+	t=1770218364; cv=none; b=I/lIURanOIjR106aVkPgy7Ou3A3+yZc7XPJyo3fUDdQJHq54wYe9bP4NWghI9GRl4+4SWFZTsw9D3HitI/anV8f8VhW3PV24Dm6YRthh29Trvz871DL/6zmCjrI463kw4YPZ3uVFmAFt+tp7cb43bdgK0cLS/4mLOBl5APlgphw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218974; c=relaxed/simple;
-	bh=C3mJhrfBAdXP3aKo5AD+UZ8IYXMTBYx3DWjMb/rsg6A=;
+	s=arc-20240116; t=1770218364; c=relaxed/simple;
+	bh=Dw9JCdPBhDCENnZoIgor50XIMxUjJ0kCDYDuYPbcXRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWMIy42BmSev6xi242yiYCcZcACNQ30PIFLPGNj1SD4Ya0M7PdO3E3gT3oluQwuhzySClzAJsD9eqNMISU5lRTkJ1VOUMYqYKe6aijq6UN2QjLWOM24QzDilo4QADs5CSsYtrcVZgf9L5OPq4K2TXrHvuF7Zm39C+QtGQkmcaJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArGscxhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7B3C4CEF7;
-	Wed,  4 Feb 2026 15:29:33 +0000 (UTC)
+	 MIME-Version; b=aVw6Q5kbTu9MV5n7Lh/e1BtSSWoCqqOjG+7mmviimy55YAUpPQYEpnbnrsRLS4bXeCpEazoYH1oHEmkvXClUyvGxXfMMItXbaCxS7d05qsktkFe6Gx61uR7UMVDRMCso+4sV16x4ZBlMRd07QI2W/MdFkVl4WemPVBbihI6Llq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufof15z7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08B8C4CEF7;
+	Wed,  4 Feb 2026 15:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218974;
-	bh=C3mJhrfBAdXP3aKo5AD+UZ8IYXMTBYx3DWjMb/rsg6A=;
+	s=korg; t=1770218364;
+	bh=Dw9JCdPBhDCENnZoIgor50XIMxUjJ0kCDYDuYPbcXRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ArGscxhHFfEuXvCi4drPt7zrZLlJu6ZLPzqkk2YFNKxAW3mbxN2uW1pyg8moHlwBY
-	 n+pYA9Hyaeim+rs4E2aHoICbL9EL1Vlq4rnTZo2ciDSDaRYj+BkWrCUghdTru/QVYJ
-	 fVwHH2WxFUv1BMwYfFkZYLuWCeW0qZaWnT7RKXQU=
+	b=ufof15z74e14Ii/dqCR3OxpS+vfCoOWHxbmm3wNhDQg0izWaRkLvOLzLSHIImXw9C
+	 yNxN7rUqm+71MRnwqKp4xx5F8ai+zERTQY08cwlYibekpn198Tngw1itO3BmtlI+Hj
+	 hD6eQLrQiFYiAhDv24OuX9FAjvicL4mt4VbcMXFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Kohei Enju <enjuk@amazon.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jia-Hong Su <s11242586@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 022/122] ixgbe: dont initialize aci lock in ixgbe_recovery_probe()
+Subject: [PATCH 6.6 01/72] Bluetooth: hci_uart: fix null-ptr-deref in hci_uart_write_work
 Date: Wed,  4 Feb 2026 15:40:04 +0100
-Message-ID: <20260204143852.664275663@linuxfoundation.org>
+Message-ID: <20260204143845.661215489@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +67,104 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214041-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214223-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: ADD00E9378
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 29113E9B73
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Jia-Hong Su <s11242586@gmail.com>
 
-[ Upstream commit 100cf7b4ca6ed770ec4287f3789b1da2e340a05a ]
+[ Upstream commit 0c3cd7a0b862c37acbee6d9502107146cc944398 ]
 
-hw->aci.lock is already initialized in ixgbe_sw_init(), so
-ixgbe_recovery_probe() doesn't need to initialize the lock. This
-function is also not responsible for destroying the lock on failures.
+hci_uart_set_proto() sets HCI_UART_PROTO_INIT before calling
+hci_uart_register_dev(), which calls proto->open() to initialize
+hu->priv. However, if a TTY write wakeup occurs during this window,
+hci_uart_tx_wakeup() may schedule write_work before hu->priv is
+initialized, leading to a NULL pointer dereference in
+hci_uart_write_work() when proto->dequeue() accesses hu->priv.
 
-Additionally, change the name of label in accordance with this change.
+The race condition is:
 
-Fixes: 29cb3b8d95c7 ("ixgbe: add E610 implementation of FW recovery mode")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/intel-wired-lan/aTcFhoH-z2btEKT-@horms.kernel.org/
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+  CPU0                              CPU1
+  ----                              ----
+  hci_uart_set_proto()
+    set_bit(HCI_UART_PROTO_INIT)
+    hci_uart_register_dev()
+                                    tty write wakeup
+                                      hci_uart_tty_wakeup()
+                                        hci_uart_tx_wakeup()
+                                          schedule_work(&hu->write_work)
+      proto->open(hu)
+        // initializes hu->priv
+                                    hci_uart_write_work()
+                                      hci_uart_dequeue()
+                                        proto->dequeue(hu)
+                                          // accesses hu->priv (NULL!)
+
+Fix this by moving set_bit(HCI_UART_PROTO_INIT) after proto->open()
+succeeds, ensuring hu->priv is initialized before any work can be
+scheduled.
+
+Fixes: 5df5dafc171b ("Bluetooth: hci_uart: Fix another race during initialization")
+Link: https://lore.kernel.org/linux-bluetooth/6969764f.170a0220.2b9fc4.35a7@mx.google.com/
+
+Signed-off-by: Jia-Hong Su <s11242586@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/bluetooth/hci_ldisc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index ee1007e9b6355..3edebca958307 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -11476,10 +11476,9 @@ static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index 70320b8f1aa1c..e38f3c4458c90 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -682,6 +682,8 @@ static int hci_uart_register_dev(struct hci_uart *hu)
  		return err;
+ 	}
  
- 	ixgbe_get_hw_control(adapter);
--	mutex_init(&hw->aci.lock);
- 	err = ixgbe_get_flash_data(&adapter->hw);
- 	if (err)
--		goto shutdown_aci;
-+		goto err_release_hw_control;
++	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
++
+ 	if (test_bit(HCI_UART_INIT_PENDING, &hu->hdev_flags))
+ 		return 0;
  
- 	timer_setup(&adapter->service_timer, ixgbe_service_timer, 0);
- 	INIT_WORK(&adapter->service_task, ixgbe_recovery_service_task);
-@@ -11502,8 +11501,7 @@ static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
- 	devl_unlock(adapter->devlink);
+@@ -709,8 +711,6 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
  
- 	return 0;
--shutdown_aci:
--	mutex_destroy(&adapter->hw.aci.lock);
-+err_release_hw_control:
- 	ixgbe_release_hw_control(adapter);
- 	return err;
- }
+ 	hu->proto = p;
+ 
+-	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
+-
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
 -- 
 2.51.0
 
