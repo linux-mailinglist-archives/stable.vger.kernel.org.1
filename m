@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAXwN8hog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:00 +0100
+	id mLJbLLxug2lNmwMAu9opvQ
+	(envelope-from <stable+bounces-214319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561A9E927E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCCCE9E64
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BE5BC310B4D2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBB9231C6812
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9722D879E;
-	Wed,  4 Feb 2026 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E5A2D6611;
+	Wed,  4 Feb 2026 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rt34cigK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i98tz17q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E7D2D8763;
-	Wed,  4 Feb 2026 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A519E96D;
+	Wed,  4 Feb 2026 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218862; cv=none; b=QGwaY6RFa18NN8qa/8hkcce8zN4nE9ywu1XiIzH64xjYJPRmw7mAGkDGtyZdIvexth8lHIdux1fvS4TX3hORUUUtWUD3S1fDATdclxsX+DYX+uPnbF7ZVhwSypSLnv608+KnjCZRASV2eOfwgkuKYSOj2qEMrXuLhgGOh+hNiII=
+	t=1770219293; cv=none; b=NHs4k0qq39TV949CWKgyYBL96FXLulf1/B0YciigjLr01dnS44fHr5TGk3HvO/YxJwvDvJLoh/H/UcCpo8NYdbU3F09cAters26rB6Ps6qtz7euz1FMNjaDNURHJ+f8XcJ/GYrvng6t3xqYpyPW6MU8CJhnEtVRyzzmrYhrIdls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218862; c=relaxed/simple;
-	bh=lLrjddHA8qlz9Z90jfTL1IMboGlktBwtqXVishvi1kk=;
+	s=arc-20240116; t=1770219293; c=relaxed/simple;
+	bh=5KpP/PhRPy8Qy/5UB7otTC/JHlziHkIwWvkN0uNBWP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpnZEJzxd7mlxQVvaPz+f+6N+e0wX5EHBlwTQlUipi8GH9jNiFkcl0hiNY+9tyTG77FKtNY0YTC9paRhUEFTmiG9+PalRpeOfaGiaDxASA9JNDXURJb0S/ZDtkGBynkAIA3qe8TNBUoNHL6v9mlMnJAOL92EdJhy2+7DgAW/p1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rt34cigK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C3DC4CEF7;
-	Wed,  4 Feb 2026 15:27:41 +0000 (UTC)
+	 MIME-Version; b=o/6NAEZfpI46ObCItopwbIUs0dY8xmPExM5dqIIIO5lbv8HXsY/oKh9RtKDBy6qU+TDoLOaK062AbmUdXaJIcvj+Lufg8+tMwA2mk5Kdk1skZpIUFGxk8+804KYHPAzdaecAC1/02jYq6zHrOwmC2EZDhDlKohVXQgGY5hRvzPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i98tz17q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99ECBC4CEF7;
+	Wed,  4 Feb 2026 15:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218862;
-	bh=lLrjddHA8qlz9Z90jfTL1IMboGlktBwtqXVishvi1kk=;
+	s=korg; t=1770219293;
+	bh=5KpP/PhRPy8Qy/5UB7otTC/JHlziHkIwWvkN0uNBWP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rt34cigK1w1SZolf4pdGmMUmjt3nW/awEH7Wx73hXehZhTDhw+70dp3w80bsyAjLP
-	 ZSkdo24Eem6PEIueLPImjW3bxTT9KFuuCfQ2Q1jKCrcvbpsCwELR14c5YAVa9VMztj
-	 Gasc1wKoF5An/OZ5XyWSx4q+vJU7pJUk5I+LyiT0=
+	b=i98tz17qu2uwcyDwPNntrtlysrP1FV0oS0fo8iu6eyzRAJuwZfntrD7D92iMG6PgT
+	 wF0xvDpI2DcNwiD0wrfd+pnY/m81yLQJJk/HHG1ri1qXxZ190ixgRu5DPWHPwKfSRY
+	 znzAwEvzs8Ow11XfOcxMkkSfNrKVVEXCa22tIvfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laveesh Bansal <laveeshb@laveeshbansal.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 82/87] writeback: fix 100% CPU usage when dirtytime_expire_interval is 0
+	SeungJong Ha <engineer.jjhama@gmail.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Jesung Yang <y.j3ms.n@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 098/122] scripts: generate_rust_analyzer: fix resolution of #[pin_data] macros
 Date: Wed,  4 Feb 2026 15:41:20 +0100
-Message-ID: <20260204143849.877167770@linuxfoundation.org>
+Message-ID: <20260204143855.375498698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,108 +67,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214189-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214319-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,garyguo.net];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 561A9E927E
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,garyguo.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1DCCCE9E64
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laveesh Bansal <laveeshb@laveeshbansal.com>
+From: SeungJong Ha <engineer.jjhama@gmail.com>
 
-[ Upstream commit 543467d6fe97e27e22a26e367fda972dbefebbff ]
+commit e440bc5c190cd0e5f148b2892aeb1f4bbbf54507 upstream.
 
-When vm.dirtytime_expire_seconds is set to 0, wakeup_dirtytime_writeback()
-schedules delayed work with a delay of 0, causing immediate execution.
-The function then reschedules itself with 0 delay again, creating an
-infinite busy loop that causes 100% kworker CPU usage.
+Currently, rust-analyzer fails to properly resolve structs annotated with
+`#[pin_data]`. This prevents IDE features like "Go to Definition" from
+working correctly for those structs.
 
-Fix by:
-- Only scheduling delayed work in wakeup_dirtytime_writeback() when
-  dirtytime_expire_interval is non-zero
-- Cancelling the delayed work in dirtytime_interval_handler() when
-  the interval is set to 0
-- Adding a guard in start_dirtytime_writeback() for defensive coding
+Add the missing configuration to `generate_rust_analyzer.py` to ensure
+the `pin-init` crate macros are handled correctly.
 
-Tested by booting kernel in QEMU with virtme-ng:
-- Before fix: kworker CPU spikes to ~73%
-- After fix: CPU remains at normal levels
-- Setting interval back to non-zero correctly resumes writeback
-
-Fixes: a2f4870697a5 ("fs: make sure the timestamps for lazytime inodes eventually get written")
+Signed-off-by: SeungJong Ha <engineer.jjhama@gmail.com>
+Fixes: d7659acca7a3 ("rust: add pin-init crate build infrastructure")
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220227
-Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
-Link: https://patch.msgid.link/20260106145059.543282-2-laveeshb@laveeshbansal.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ adapted system_percpu_wq to system_wq for the workqueue used in dirtytime_interval_handler() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: Tamir Duberstein <tamird@kernel.org>
+Acked-by: Tamir Duberstein <tamird@kernel.org>
+Acked-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Jesung Yang <y.j3ms.n@gmail.com>
+Link: https://patch.msgid.link/20260123-fix-pin-init-crate-dependecies-v2-1-bb1c2500e54c@gmail.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ scripts/generate_rust_analyzer.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2418,12 +2418,14 @@ static void wakeup_dirtytime_writeback(s
- 				wb_wakeup(wb);
- 	}
- 	rcu_read_unlock();
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
- }
- 
- static int __init start_dirtytime_writeback(void)
- {
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
- 	return 0;
- }
- __initcall(start_dirtytime_writeback);
-@@ -2434,8 +2436,12 @@ int dirtytime_interval_handler(const str
- 	int ret;
- 
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
--	if (ret == 0 && write)
--		mod_delayed_work(system_wq, &dirtytime_work, 0);
-+	if (ret == 0 && write) {
-+		if (dirtytime_expire_interval)
-+			mod_delayed_work(system_wq, &dirtytime_work, 0);
-+		else
-+			cancel_delayed_work_sync(&dirtytime_work);
-+	}
- 	return ret;
- }
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -192,7 +192,7 @@ def generate_crates(srctree, objtree, sy
+             append_crate(
+                 name,
+                 path,
+-                ["core", "kernel"],
++                ["core", "kernel", "pin_init"],
+                 cfg=cfg,
+             )
  
 
 
