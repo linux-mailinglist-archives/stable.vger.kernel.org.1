@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-214047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOM5FF1ng2kFmgMAu9opvQ
-	(envelope-from <stable+bounces-214047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:57 +0100
+	id +FTmF3dgg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0500BE8EED
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F579E7E89
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCAE230DDFB0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:21:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8A86130425B0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539432D6611;
-	Wed,  4 Feb 2026 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA092BD02A;
+	Wed,  4 Feb 2026 15:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJMoGmXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCni+ze3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177DF29993F;
-	Wed,  4 Feb 2026 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F9B285404;
+	Wed,  4 Feb 2026 15:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218384; cv=none; b=N6KtbkOJ7UGsHMC8rrtuzW/Bihbz4oyXSIum3h5axkmjDieF2r3pW0CWy0EebcoYerG7BLo74S0LdOoZWPFH7VVOBXIJA9TmSou+mc7CXgPMWhC/tqTV1VztHv03HnTdzSEXHxrqlafLfNCTKjAVef9BZ0T/6KQ9ULR6oczM2Ck=
+	t=1770217316; cv=none; b=fctZ9g7rJ6GE980+kLmLp5oGq+wdJstXwNX2aaPXk6t3CTKYrY5Is27pMfNKk2Kb8Q9+0nVL3ALEHGx+lLPKi/KwAwd+GYk/nGkWl0GwbqT68VIpVqjAg2yYibpUPHpXLpfIqNiuJXCNeFQR6q+MEoCzo2kfT/HG1WuyNA8zg9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218384; c=relaxed/simple;
-	bh=y3811HkT3OZ3xv96Ibfu8Upr2+PSa2+dU+eq5q3eVjg=;
+	s=arc-20240116; t=1770217316; c=relaxed/simple;
+	bh=A10wiJ8PMHyBPpBRYRtBQwNNFLvwUUZ4ENtb4E2DVoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apA2XxrO4yF/OhW1JsIrjHJf5f6dNuEAQsVlClubrbwaUmBTq2aEXY4DNm8tWYwpd9lfdt7xyL+kQJmvmk8AQvbqkXy6eQfRfZ/lE3TP92mOq/3/Nm0qMfKLj5YfPlD3/IYkQqmiNCPubPSvfTFWH2IeFtwhc2XTcUySJhWteuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJMoGmXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962A7C4CEF7;
-	Wed,  4 Feb 2026 15:19:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DVEmJ+0yoL+bcLCiazPQRNUpN63AeYpE61+Jlgw9P7W0CpxuJ2qpZ1xlHmtcLxLB6IKVLwk/0BlHsNf0MZMVxooSNXoQwf6b2J1hCYVrFDcxKHIx4hOgHQd0USPYR8zhDJMyQ2ZHsQGFDHc+OEpQaEbwtVUSarFBS38oaxtOqGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCni+ze3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD08C4CEF7;
+	Wed,  4 Feb 2026 15:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218384;
-	bh=y3811HkT3OZ3xv96Ibfu8Upr2+PSa2+dU+eq5q3eVjg=;
+	s=korg; t=1770217316;
+	bh=A10wiJ8PMHyBPpBRYRtBQwNNFLvwUUZ4ENtb4E2DVoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJMoGmXttIDm1widfET8Y3Z497IJBsIjnxQHSDqD3fDWJRtxIkQ1xvhmcs7H9JeD5
-	 qA1o1bNKfT72UtLMJoB0gQ+dcRKd5uqpZ1KweDuv9Ld2VuhkTZ9dCjv4oSqDykqzMD
-	 Y1bglNp6HtyMqhwAzpMxPp0QgeFjEL3649v3ZeyU=
+	b=iCni+ze3XChV9HXIqbUEqEs3JO+4bAKkLuUnBfIiCICn9mr7b3FNpOBW52H2QqB06
+	 sQO4A4OWzjQCRJzNrOADouBnPc6158BWeRp2qAzpT0Vyf7K6AN28S6mgvF8Hl2BnDS
+	 /knBjdw1FrAr3JzbjBip3yKeIf6oZY3NWm09JtCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/72] net/mlx5e: Account for netdev stats in ndo_get_stats64
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 5.15 187/206] wifi: mac80211: move TDLS work to wiphy work
 Date: Wed,  4 Feb 2026 15:40:18 +0100
-Message-ID: <20260204143846.171113468@linuxfoundation.org>
+Message-ID: <20260204143904.957973070@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +63,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214047-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213731-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0500BE8EED
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3F579E7E89
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 476681f10cc1e0e56e26856684e75d4678b072b2 ]
+[ Upstream commit 777b26002b73127e81643d9286fadf3d41e0e477 ]
 
-The driver's ndo_get_stats64 callback is only reporting mlx5 counters,
-without accounting for the netdev stats, causing errors from the network
-stack to be invisible in statistics.
+Again, to have the wiphy locked for it.
 
-Add netdev_stats_to_stats64() call to first populate the counters, then
-add mlx5 counters on top, ensuring both are accounted for (where
-appropriate).
-
-Fixes: f62b8bb8f2d3 ("net/mlx5: Extend mlx5_core to support ConnectX-4 Ethernet functionality")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1769411695-18820-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Summary of conflict resolutions:
+  - In mlme.c, move only tdls_peer_del_work
+    to wiphy work, and none the other works ]
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_main.c | 20 ++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ net/mac80211/ieee80211_i.h |    4 ++--
+ net/mac80211/mlme.c        |    7 ++++---
+ net/mac80211/tdls.c        |   11 ++++++-----
+ 3 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index c72c085be603c..71749497ec27a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3743,6 +3743,8 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 		mlx5e_queue_update_stats(priv);
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -542,7 +542,7 @@ struct ieee80211_if_managed {
+ 
+ 	/* TDLS support */
+ 	u8 tdls_peer[ETH_ALEN] __aligned(2);
+-	struct delayed_work tdls_peer_del_work;
++	struct wiphy_delayed_work tdls_peer_del_work;
+ 	struct sk_buff *orig_teardown_skb; /* The original teardown skb */
+ 	struct sk_buff *teardown_skb; /* A copy to send through the AP */
+ 	spinlock_t teardown_lock; /* To lock changing teardown_skb */
+@@ -2494,7 +2494,7 @@ int ieee80211_tdls_mgmt(struct wiphy *wi
+ 			size_t extra_ies_len);
+ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 			const u8 *peer, enum nl80211_tdls_operation oper);
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk);
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk);
+ int ieee80211_tdls_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 				  const u8 *addr, u8 oper_class,
+ 				  struct cfg80211_chan_def *chandef);
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4890,8 +4890,8 @@ void ieee80211_sta_setup_sdata(struct ie
+ 	INIT_WORK(&ifmgd->csa_connection_drop_work,
+ 		  ieee80211_csa_connection_drop_work);
+ 	INIT_WORK(&ifmgd->request_smps_work, ieee80211_request_smps_mgd_work);
+-	INIT_DELAYED_WORK(&ifmgd->tdls_peer_del_work,
+-			  ieee80211_tdls_peer_del_work);
++	wiphy_delayed_work_init(&ifmgd->tdls_peer_del_work,
++				ieee80211_tdls_peer_del_work);
+ 	timer_setup(&ifmgd->timer, ieee80211_sta_timer, 0);
+ 	timer_setup(&ifmgd->bcn_mon_timer, ieee80211_sta_bcn_mon_timer, 0);
+ 	timer_setup(&ifmgd->conn_mon_timer, ieee80211_sta_conn_mon_timer, 0);
+@@ -6010,7 +6010,8 @@ void ieee80211_mgd_stop(struct ieee80211
+ 	cancel_work_sync(&ifmgd->request_smps_work);
+ 	cancel_work_sync(&ifmgd->csa_connection_drop_work);
+ 	cancel_work_sync(&ifmgd->chswitch_work);
+-	cancel_delayed_work_sync(&ifmgd->tdls_peer_del_work);
++	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++				  &ifmgd->tdls_peer_del_work);
+ 
+ 	sdata_lock(sdata);
+ 	if (ifmgd->assoc_data) {
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -21,7 +21,7 @@
+ /* give usermode some time for retries in setting up the TDLS session */
+ #define TDLS_PEER_SETUP_TIMEOUT	(15 * HZ)
+ 
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk)
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_local *local;
+@@ -1126,9 +1126,9 @@ ieee80211_tdls_mgmt_setup(struct wiphy *
+ 		return ret;
  	}
  
-+	netdev_stats_to_stats64(stats, &dev->stats);
-+
- 	if (mlx5e_is_uplink_rep(priv)) {
- 		struct mlx5e_vport_stats *vstats = &priv->stats.vport;
+-	ieee80211_queue_delayed_work(&sdata->local->hw,
+-				     &sdata->u.mgd.tdls_peer_del_work,
+-				     TDLS_PEER_SETUP_TIMEOUT);
++	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
++				 &sdata->u.mgd.tdls_peer_del_work,
++				 TDLS_PEER_SETUP_TIMEOUT);
+ 	return 0;
  
-@@ -3759,21 +3761,21 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 		mlx5e_fold_sw_stats64(priv, stats);
+ out_unlock:
+@@ -1425,7 +1425,8 @@ int ieee80211_tdls_oper(struct wiphy *wi
  	}
  
--	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
--	stats->rx_dropped = PPORT_2863_GET(pstats, if_in_discards);
-+	stats->rx_missed_errors += priv->stats.qcnt.rx_out_of_buffer;
-+	stats->rx_dropped += PPORT_2863_GET(pstats, if_in_discards);
+ 	if (ret == 0 && ether_addr_equal(sdata->u.mgd.tdls_peer, peer)) {
+-		cancel_delayed_work(&sdata->u.mgd.tdls_peer_del_work);
++		wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++					  &sdata->u.mgd.tdls_peer_del_work);
+ 		eth_zero_addr(sdata->u.mgd.tdls_peer);
+ 	}
  
--	stats->rx_length_errors =
-+	stats->rx_length_errors +=
- 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
- 		PPORT_802_3_GET(pstats, a_out_of_range_length_field) +
- 		PPORT_802_3_GET(pstats, a_frame_too_long_errors) +
- 		VNIC_ENV_GET(&priv->stats.vnic, eth_wqe_too_small);
--	stats->rx_crc_errors =
-+	stats->rx_crc_errors +=
- 		PPORT_802_3_GET(pstats, a_frame_check_sequence_errors);
--	stats->rx_frame_errors = PPORT_802_3_GET(pstats, a_alignment_errors);
--	stats->tx_aborted_errors = PPORT_2863_GET(pstats, if_out_discards);
--	stats->rx_errors = stats->rx_length_errors + stats->rx_crc_errors +
--			   stats->rx_frame_errors;
--	stats->tx_errors = stats->tx_aborted_errors + stats->tx_carrier_errors;
-+	stats->rx_frame_errors += PPORT_802_3_GET(pstats, a_alignment_errors);
-+	stats->tx_aborted_errors += PPORT_2863_GET(pstats, if_out_discards);
-+	stats->rx_errors += stats->rx_length_errors + stats->rx_crc_errors +
-+			    stats->rx_frame_errors;
-+	stats->tx_errors += stats->tx_aborted_errors + stats->tx_carrier_errors;
- }
- 
- static void mlx5e_nic_set_rx_mode(struct mlx5e_priv *priv)
--- 
-2.51.0
-
 
 
 
