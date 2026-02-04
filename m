@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-213448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PaBKDtcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:27 +0100
+	id IJIGCw1eg2kHmAMAu9opvQ
+	(envelope-from <stable+bounces-213606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06170E761B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEB1E79A3
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83E10301701D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2AC3F300E5AD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04076271A9A;
-	Wed,  4 Feb 2026 14:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D604219EA;
+	Wed,  4 Feb 2026 14:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr68sJ+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYj6Z7EF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3611C5D77;
-	Wed,  4 Feb 2026 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2166F4218B4;
+	Wed,  4 Feb 2026 14:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216372; cv=none; b=XOz+dkoAZN4OPZoQaDdpYW3jIr9Kap+KGmNhC76mLJbBes2uNd91U2xgpasklfJhRGhGLoIsPQDWVu7qq2Qerq/Vx2EGDffqKv/NlHPRXNViUfaK+TRkPBnMXHIS7H0bi/8cfKB+XiV4cUPCk6RI6/f1ch/wj4f50bwFdf4H0bU=
+	t=1770216895; cv=none; b=rqPZqMiwyVlfKD116RWhhhpdSiRA6QNK3JP6mf6xDTuaRPenDfLjf/UBDIrxaLib8dHEm5NycBpOL8fauiMcKKGdUvLGrAHUUGPo+AjNhrXmLXzOlSPY+j/oW7EgNXO/vBLORwT3tZCBWnJJ8EhlXSXPufFsKYcLKCsmxh5En2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216372; c=relaxed/simple;
-	bh=5zt+6rlcURCeOafr5ha1bTw0LU/YYJNKkGsQJ0mqbBM=;
+	s=arc-20240116; t=1770216895; c=relaxed/simple;
+	bh=tl7AxjjDcNY9plGKgr2sHBk7xlKa3oX/P1q/mrb1t+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ns8WCM+mq22Rs1LOmJnX/ncHjuYw7k2+WpUWxhy3UJHA48UI0ledtAzBlZBCULTlyBxXpZtVS/dZHncGpGHX29oLkoXOTTp6BTuTqFqhFuriAnahPMNaDw8i98RVLAWX2DIzNfTgjO1GKKQgYxUsFU4l9iuNuDXejnwAL9U/btw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr68sJ+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4E2C4CEF7;
-	Wed,  4 Feb 2026 14:46:11 +0000 (UTC)
+	 MIME-Version; b=K40wtxBMBcrZSeQnkRNwaU7nPS7i+omELhpaUjf5JBlyZeJFQvflulBSokmQJy3yzESnIOCG101aIsHyRKRB820h4xr67JIKK/Bjx8+65aeTffnR872X5UW9cHMV6uLFs0axfj5aqRqR4iVJolQ6xNajx+EJV/uFrWn9pRKoHoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYj6Z7EF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945B6C19423;
+	Wed,  4 Feb 2026 14:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216372;
-	bh=5zt+6rlcURCeOafr5ha1bTw0LU/YYJNKkGsQJ0mqbBM=;
+	s=korg; t=1770216895;
+	bh=tl7AxjjDcNY9plGKgr2sHBk7xlKa3oX/P1q/mrb1t+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gr68sJ+D8vCBxn6TH+Fk+ABmzgU7mW7oSTJNHISaEwzddgALhkg7mjwTyJuD+F4gJ
-	 dsbTpdc8wBFzs2ebEfv9WGJYCact9tgY0+Ofb3+Njy4SuUuowfmTawFm8p7h6XUiN7
-	 DzTwqskAtsW75fhZeaZ3wO6+v5/LQrzlA8/WG5VQ=
+	b=FYj6Z7EF1gYpjT5JdpWOYVk1LZi3sUlBbDIrl6mhrRhFOsokPJm9smziNHU7e9DQB
+	 xVSoqQmljExa6RRL0cl3rJVT/AQUZcAAPL2eZKqrycQ/XRHnEVyyafhyCmSKVbLmdU
+	 fIgVGu5fjY4yYgrB1YoDVXCOhZ/ezXtFESBzhH7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 024/161] phy: tegra: xusb: Explicitly configure HS_DISCON_LEVEL to 0x7
+	Rohit Keshri <rkeshri@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 056/206] Fix memory leak in posix_clock_open()
 Date: Wed,  4 Feb 2026 15:38:07 +0100
-Message-ID: <20260204143852.634176613@linuxfoundation.org>
+Message-ID: <20260204143900.235544868@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +73,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213606-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213448-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 06170E761B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linutronix.de:email]
+X-Rspamd-Queue-Id: BEEB1E79A3
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit b246caa68037aa495390a60d080acaeb84f45fff upstream.
+[ Upstream commit 5b4cdd9c5676559b8a7c944ac5269b914b8c0bb8 ]
 
-The USB2 Bias Pad Control register manages analog parameters for signal
-detection. Previously, the HS_DISCON_LEVEL relied on hardware reset
-values, which may lead to the detection failure.
+If the clk ops.open() function returns an error, we don't release the
+pccontext we allocated for this clock.
 
-Explicitly configure HS_DISCON_LEVEL to 0x7. This ensures the disconnect
-threshold is sufficient to guarantee reliable detection.
+Re-organize the code slightly to make it all more obvious.
 
-Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://patch.msgid.link/20251212032116.768307-1-waynec@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Rohit Keshri <rkeshri@redhat.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Fixes: 60c6946675fc ("posix-clock: introduce posix_clock_context concept")
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Stable-dep-of: e859d375d169 ("posix-clock: Store file pointer in struct posix_clock_context")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/time/posix-clock.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -84,6 +84,7 @@
- #define XUSB_PADCTL_USB2_BIAS_PAD_CTL0		0x284
- #define  BIAS_PAD_PD				BIT(11)
- #define  HS_SQUELCH_LEVEL(x)			(((x) & 0x7) << 0)
-+#define  HS_DISCON_LEVEL(x)			(((x) & 0x7) << 3)
- 
- #define XUSB_PADCTL_USB2_BIAS_PAD_CTL1		0x288
- #define  USB2_TRK_START_TIMER(x)		(((x) & 0x7f) << 12)
-@@ -214,6 +215,8 @@ static void tegra186_utmi_bias_pad_power
- 	value &= ~BIAS_PAD_PD;
- 	value &= ~HS_SQUELCH_LEVEL(~0);
- 	value |= HS_SQUELCH_LEVEL(priv->calib.hs_squelch);
-+	value &= ~HS_DISCON_LEVEL(~0);
-+	value |= HS_DISCON_LEVEL(0x7);
- 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL0);
- 
- 	udelay(1);
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index 706559ed75793..a6487a9d60853 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -129,15 +129,17 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 		goto out;
+ 	}
+ 	pccontext->clk = clk;
+-	fp->private_data = pccontext;
+-	if (clk->ops.open)
++	if (clk->ops.open) {
+ 		err = clk->ops.open(pccontext, fp->f_mode);
+-	else
+-		err = 0;
+-
+-	if (!err) {
+-		get_device(clk->dev);
++		if (err) {
++			kfree(pccontext);
++			goto out;
++		}
+ 	}
++
++	fp->private_data = pccontext;
++	get_device(clk->dev);
++	err = 0;
+ out:
+ 	up_read(&clk->rwsem);
+ 	return err;
+-- 
+2.51.0
+
 
 
 
