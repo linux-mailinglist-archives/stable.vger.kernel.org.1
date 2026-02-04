@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MImtLzpeg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:58 +0100
+	id EG+MOv9hg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C686E79FD
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D313E8220
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0EDC730B925C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5AF7F3045193
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEE841B372;
-	Wed,  4 Feb 2026 14:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2167A2BD012;
+	Wed,  4 Feb 2026 15:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pp5FArmh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9Aa7wU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D747D41B366;
-	Wed,  4 Feb 2026 14:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6A29AB1D;
+	Wed,  4 Feb 2026 15:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216601; cv=none; b=Ry0u4z0fGdvv09/EEiLIOv6233ron3Xnsx5YeEQj63i49OFO+mVRwshJAzmRVXcjNm0wwB2LNphL9cdaRPkamiyEL2suMlpSBfutHSuSorAQqacVwQU2ODWeoJhms96bsHYkABcNpLaLXtNMZ5DJLlX8hhGcL8mcxVtxgNEK+mg=
+	t=1770217250; cv=none; b=T/NCwkCapY6KOkpMPo4d0A5vTrap5MX0nUBhSi9d+hcc24OgL6BylocaoZt49Vpusx/NQLDBjlcvqRRfh86pF4i2uUhFMOR4C0iJcF8yF3dwmjitF1q9VersCpdaNLMCSvlfr2PcAZc/OGynXjIJ/o6tyPQl+kU+4TkuXmtywnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216601; c=relaxed/simple;
-	bh=wIDE6Gax3q1NfNYLJNy6eer4gTtyQ7NjobtVftA4qz0=;
+	s=arc-20240116; t=1770217250; c=relaxed/simple;
+	bh=bbJSgAMcEYLOGEqrNRUg5fqNxXO3spacrjW4zDHMsWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKRyYP7QMViQ8ZnK4aPPUJF/gkNUcnbqYQY2Wphz1i4dfB7zn+UdmME+L1Sr3Biu5NAAjz6QLzhjLJIs41XYW0OzSiYm0iHmECW8FwbWIBylhNNCwm0R6RPBGD6NgyGyzggkqGPPSMrY9JDi6rElbw8ndp2rfXYQoUdlkg7wHGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pp5FArmh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16205C19423;
-	Wed,  4 Feb 2026 14:50:00 +0000 (UTC)
+	 MIME-Version; b=qslEjvW3Mphin/T2RSYcPEran+FkpNlwNDnZCOS6Q5xKBsZ/d4QZlCI6EgN6qkDFKedocdAIKYoSf3YIz74xQ7lNSwHkdS3Me2a2q+UL9WOIjihsKM0UxElUgQ8X4sQH8wywZg2uciDae/Gkyt+YniP6WzFSRf7NWtNI90IhGnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9Aa7wU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A05C116C6;
+	Wed,  4 Feb 2026 15:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216601;
-	bh=wIDE6Gax3q1NfNYLJNy6eer4gTtyQ7NjobtVftA4qz0=;
+	s=korg; t=1770217250;
+	bh=bbJSgAMcEYLOGEqrNRUg5fqNxXO3spacrjW4zDHMsWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pp5FArmhtFL6zbtm9x/Sb6THFeRsnnkCBkhQjbw0J0TAYMzzjWMQpldVLvSQld9pl
-	 E2KXRaQkYwiVTRdOayX7S02tt11fQ8ylCysbfjq6KYmRdhNiJKp371JBpsKlVx4abe
-	 dN1kRKaVLgtTti3PDB/RJv03xGsIrTaKO8NNr+LA=
+	b=i9Aa7wU7h/U71O5yq3CcYQNV5iqBUXd84EmGCxn29cCAZwKL81KUk0Vxj0tbW91pm
+	 xVvQIKtyIG/DFw0xpU50P/da1P8DvYUYBpGYFUuA+RKA71fxOEzDGqO+EdLY5y/hlv
+	 vmPedwf/5EI1JVw7REL/wjyrm4QD5wgfOiLGCBjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 5.10 102/161] uacce: fix cdev handling in the cleanup path
+	syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 5.15 134/206] bpf: Reject narrower access to pointer ctx fields
 Date: Wed,  4 Feb 2026 15:39:25 +0100
-Message-ID: <20260204143855.416825660@linuxfoundation.org>
+Message-ID: <20260204143903.034780521@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +67,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213517-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213711-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,suse.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,0ef84a7bdf5301d4cbec];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1C686E79FD
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,suse.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 0D313E8220
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-commit a3bece3678f6c88db1f44c602b2a63e84b4040ac upstream.
+commit e09299225d5ba3916c91ef70565f7d2187e4cca0 upstream.
 
-When cdev_device_add fails, it internally releases the cdev memory,
-and if cdev_device_del is then executed, it will cause a hang error.
-To fix it, we check the return value of cdev_device_add() and clear
-uacce->cdev to avoid calling cdev_device_del in the uacce_remove.
+The following BPF program, simplified from a syzkaller repro, causes a
+kernel warning:
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-2-huangchenghai2@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    r0 = *(u8 *)(r1 + 169);
+    exit;
+
+With pointer field sk being at offset 168 in __sk_buff. This access is
+detected as a narrower read in bpf_skb_is_valid_access because it
+doesn't match offsetof(struct __sk_buff, sk). It is therefore allowed
+and later proceeds to bpf_convert_ctx_access. Note that for the
+"is_narrower_load" case in the convert_ctx_accesses(), the insn->off
+is aligned, so the cnt may not be 0 because it matches the
+offsetof(struct __sk_buff, sk) in the bpf_convert_ctx_access. However,
+the target_size stays 0 and the verifier errors with a kernel warning:
+
+    verifier bug: error during ctx access conversion(1)
+
+This patch fixes that to return a proper "invalid bpf_context access
+off=X size=Y" error on the load instruction.
+
+The same issue affects multiple other fields in context structures that
+allow narrow access. Some other non-affected fields (for sk_msg,
+sk_lookup, and sockopt) were also changed to use bpf_ctx_range_ptr for
+consistency.
+
+Note this syzkaller crash was reported in the "Closes" link below, which
+used to be about a different bug, fixed in
+commit fce7bd8e385a ("bpf/verifier: Handle BPF_LOAD_ACQ instructions
+in insn_def_regno()"). Because syzbot somehow confused the two bugs,
+the new crash and repro didn't get reported to the mailing list.
+
+Fixes: f96da09473b52 ("bpf: simplify narrower ctx access")
+Fixes: 0df1a55afa832 ("bpf: Warn on internal verifier errors")
+Reported-by: syzbot+0ef84a7bdf5301d4cbec@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0ef84a7bdf5301d4cbec
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://patch.msgid.link/3b8dcee67ff4296903351a974ddd9c4dca768b64.1753194596.git.paul.chaignon@gmail.com
+[shung-hsi.yu: offset(struct bpf_sock_ops, skb_hwtstamp) case was
+dropped becasuse it was only added in v6.2 with commit 9bb053490f1a
+("bpf: Add hwtstamp field for the sockops prog")]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/bpf/cgroup.c |    8 ++++----
+ net/core/filter.c   |   18 +++++++++---------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -482,6 +482,8 @@ EXPORT_SYMBOL_GPL(uacce_alloc);
-  */
- int uacce_register(struct uacce_device *uacce)
- {
-+	int ret;
-+
- 	if (!uacce)
- 		return -ENODEV;
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -2028,22 +2028,22 @@ static bool cg_sockopt_is_valid_access(i
+ 	}
  
-@@ -492,7 +494,11 @@ int uacce_register(struct uacce_device *
- 	uacce->cdev->ops = &uacce_fops;
- 	uacce->cdev->owner = THIS_MODULE;
+ 	switch (off) {
+-	case offsetof(struct bpf_sockopt, sk):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, sk):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+ 		break;
+-	case offsetof(struct bpf_sockopt, optval):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, optval):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_PACKET;
+ 		break;
+-	case offsetof(struct bpf_sockopt, optval_end):
++	case bpf_ctx_range_ptr(struct bpf_sockopt, optval_end):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_PACKET_END;
+ 		break;
+-	case offsetof(struct bpf_sockopt, retval):
++	case bpf_ctx_range(struct bpf_sockopt, retval):
+ 		if (size != size_default)
+ 			return false;
+ 		return prog->expected_attach_type == BPF_CGROUP_GETSOCKOPT;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -8080,7 +8080,7 @@ static bool bpf_skb_is_valid_access(int
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct __sk_buff, sk):
++	case bpf_ctx_range_ptr(struct __sk_buff, sk):
+ 		if (type == BPF_WRITE || size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCK_COMMON_OR_NULL;
+@@ -8597,7 +8597,7 @@ static bool sock_addr_is_valid_access(in
+ 				return false;
+ 		}
+ 		break;
+-	case offsetof(struct bpf_sock_addr, sk):
++	case bpf_ctx_range_ptr(struct bpf_sock_addr, sk):
+ 		if (type != BPF_READ)
+ 			return false;
+ 		if (size != sizeof(__u64))
+@@ -8651,17 +8651,17 @@ static bool sock_ops_is_valid_access(int
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, sk):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, sk):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_SOCKET_OR_NULL;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, skb_data):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_PACKET;
+ 			break;
+-		case offsetof(struct bpf_sock_ops, skb_data_end):
++		case bpf_ctx_range_ptr(struct bpf_sock_ops, skb_data_end):
+ 			if (size != sizeof(__u64))
+ 				return false;
+ 			info->reg_type = PTR_TO_PACKET_END;
+@@ -8735,17 +8735,17 @@ static bool sk_msg_is_valid_access(int o
+ 		return false;
  
--	return cdev_device_add(uacce->cdev, &uacce->dev);
-+	ret = cdev_device_add(uacce->cdev, &uacce->dev);
-+	if (ret)
-+		uacce->cdev = NULL;
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(uacce_register);
+ 	switch (off) {
+-	case offsetof(struct sk_msg_md, data):
++	case bpf_ctx_range_ptr(struct sk_msg_md, data):
+ 		info->reg_type = PTR_TO_PACKET;
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct sk_msg_md, data_end):
++	case bpf_ctx_range_ptr(struct sk_msg_md, data_end):
+ 		info->reg_type = PTR_TO_PACKET_END;
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		break;
+-	case offsetof(struct sk_msg_md, sk):
++	case bpf_ctx_range_ptr(struct sk_msg_md, sk):
+ 		if (size != sizeof(__u64))
+ 			return false;
+ 		info->reg_type = PTR_TO_SOCKET;
+@@ -10837,7 +10837,7 @@ static bool sk_lookup_is_valid_access(in
+ 		return false;
+ 
+ 	switch (off) {
+-	case offsetof(struct bpf_sk_lookup, sk):
++	case bpf_ctx_range_ptr(struct bpf_sk_lookup, sk):
+ 		info->reg_type = PTR_TO_SOCKET_OR_NULL;
+ 		return size == sizeof(__u64);
  
 
 
