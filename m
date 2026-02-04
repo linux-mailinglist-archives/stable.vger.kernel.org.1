@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBGFKx1mg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:37 +0100
+	id SKYoJdZgg2mfmAMAu9opvQ
+	(envelope-from <stable+bounces-213649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51361E8BC5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6EE1E7F96
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5BBE43101D32
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 050E83075D16
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80D1423A63;
-	Wed,  4 Feb 2026 15:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE0B41C2F9;
+	Wed,  4 Feb 2026 14:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sdk3PqXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Re5KxcRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDA522E3F0;
-	Wed,  4 Feb 2026 15:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7332E41B34E;
+	Wed,  4 Feb 2026 14:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218055; cv=none; b=WVvMsZ0Q2fA6KLkeqg2v1E8arAiAI61rzorK3pQ2QPLgbpJ0+NMSlyIgucMjBeqnnZzPnVF5lNeSX8ttBYQktQHCxJAiW0X+S1kWgeuFwI3qLKIZfwDRwaA4iaaaU/eA3U8+o7/fovCR9/58ZZ542kgOE5fD3kHzcaRTvEJcaRY=
+	t=1770217043; cv=none; b=X69rbwFCSgntIYEEdQj60Wy8c44/vLBO5ruh3jhazz+0rBzN5AaiINg7TL5lgC04/1V/ga0Ub+82L3oNdhDmmCcocoeHSgmM5pbLRJB+dhXwzoug4Vb320RqjbGsWZihot3pLoEMjN6y+SSgaYfJr30pq+WfJ14hfLMGjsw8/NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218055; c=relaxed/simple;
-	bh=cl+qr1USTCo4TzxGqp1QRmyR1LG4JXMK68Jk+SBCvcA=;
+	s=arc-20240116; t=1770217043; c=relaxed/simple;
+	bh=+U753IKr8Ucm76H0tiazudaWcSAAklV0ggiJEVMZ/Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2c/4dtPGsH3SCeJzsI+04evPR5lnHEaSBaOFdeqPAjRN955aGg/OHk5KV7AYO6cgEzry4DPtcoyrjEObdW8+IQH886E2GCwPBxWAYcx3knn5bJmKBiGQ+pwXT9aqU1VzIgMkRY3mPYwO/ku4LVMfzfFR0/Skt/mYzGoUNcOyU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sdk3PqXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0E1C4CEF7;
-	Wed,  4 Feb 2026 15:14:14 +0000 (UTC)
+	 MIME-Version; b=GkdprGdyc3b+ec6fZGTxWiT/fiSg1lEZaRuHmF8hy+vuTXbuNYscq/q3QDAnLdcBY+IhYDnGreHNvE4lcQVh25B1g0m9K2W2uTxLypJrXENS9emr5pgr7bxiL9yIKhXPPZSym1cKxj+Z5IUMTJSuAUt8cQ4INRDvmNKav4bi4Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Re5KxcRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CB1C4CEF7;
+	Wed,  4 Feb 2026 14:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218055;
-	bh=cl+qr1USTCo4TzxGqp1QRmyR1LG4JXMK68Jk+SBCvcA=;
+	s=korg; t=1770217043;
+	bh=+U753IKr8Ucm76H0tiazudaWcSAAklV0ggiJEVMZ/Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sdk3PqXVTfeOQD4WvOQOTLwjdTuM6fDduEPYv4U+PHwgTeymwh914gXOrx1CNXu8W
-	 YpokuZ5TSAsb1hPHrsNYedD8dutfVue1fz0hfm4M1EIk9mJH9mQHztlIJF3i9Z6YS9
-	 93KohYYThrt31J08Zj8u1NR1cV7CXI4C4qEledbY=
+	b=Re5KxcROrAODl/7ipqbE5le4kA1fIwCo3sIBfxUd2mI51Ssb4MddMDLtq/N01iE+p
+	 nOCz+TZ0Q6bqoDtBwC0ff080A1O7ME10DYeFB9F5kkSD0yme2xP4gwjpAeLEWZj6Qb
+	 vLewMYBCzRD5DwAyUkrUBOcEtGDq+brqfqGLPs00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.1 164/280] wifi: ath10k: fix dma_free_coherent() pointer
+	Weigang He <geoffreyhe2@gmail.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.15 107/206] of: fix reference count leak in of_alias_scan()
 Date: Wed,  4 Feb 2026 15:38:58 +0100
-Message-ID: <20260204143915.526146525@linuxfoundation.org>
+Message-ID: <20260204143902.062765487@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213950-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213649-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 51361E8BC5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: D6EE1E7F96
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Weigang He <geoffreyhe2@gmail.com>
 
-commit 9282a1e171ad8d2205067e8ec3bbe4e3cef4f29f upstream.
+commit 81122fba08fa3ccafab6ed272a5c6f2203923a7e upstream.
 
-dma_alloc_coherent() allocates a DMA mapped buffer and stores the
-addresses in XXX_unaligned fields.  Those should be reused when freeing
-the buffer rather than the aligned addresses.
+of_find_node_by_path() returns a device_node with its refcount
+incremented. When kstrtoint() fails or dt_alloc() fails, the function
+continues to the next iteration without calling of_node_put(), causing
+a reference count leak.
 
-Fixes: 2a1e1ad3fd37 ("ath10k: Add support for 64 bit ce descriptor")
+Add of_node_put(np) before continue on both error paths to properly
+release the device_node reference.
+
+Fixes: 611cad720148 ("dt: add of_alias_scan and of_alias_get_id")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260105210439.20131-2-fourier.thomas@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
+Link: https://patch.msgid.link/20260117091238.481243-1-geoffreyhe2@gmail.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/ce.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/of/base.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/ce.c
-+++ b/drivers/net/wireless/ath/ath10k/ce.c
-@@ -1791,8 +1791,8 @@ static void _ath10k_ce_free_pipe(struct
- 				  (ce_state->src_ring->nentries *
- 				   sizeof(struct ce_desc) +
- 				   CE_DESC_RING_ALIGN),
--				  ce_state->src_ring->base_addr_owner_space,
--				  ce_state->src_ring->base_addr_ce_space);
-+				  ce_state->src_ring->base_addr_owner_space_unaligned,
-+				  ce_state->src_ring->base_addr_ce_space_unaligned);
- 		kfree(ce_state->src_ring);
- 	}
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2018,13 +2018,17 @@ void of_alias_scan(void * (*dt_alloc)(u6
+ 			end--;
+ 		len = end - start;
  
-@@ -1801,8 +1801,8 @@ static void _ath10k_ce_free_pipe(struct
- 				  (ce_state->dest_ring->nentries *
- 				   sizeof(struct ce_desc) +
- 				   CE_DESC_RING_ALIGN),
--				  ce_state->dest_ring->base_addr_owner_space,
--				  ce_state->dest_ring->base_addr_ce_space);
-+				  ce_state->dest_ring->base_addr_owner_space_unaligned,
-+				  ce_state->dest_ring->base_addr_ce_space_unaligned);
- 		kfree(ce_state->dest_ring);
- 	}
+-		if (kstrtoint(end, 10, &id) < 0)
++		if (kstrtoint(end, 10, &id) < 0) {
++			of_node_put(np);
+ 			continue;
++		}
  
-@@ -1822,8 +1822,8 @@ static void _ath10k_ce_free_pipe_64(stru
- 				  (ce_state->src_ring->nentries *
- 				   sizeof(struct ce_desc_64) +
- 				   CE_DESC_RING_ALIGN),
--				  ce_state->src_ring->base_addr_owner_space,
--				  ce_state->src_ring->base_addr_ce_space);
-+				  ce_state->src_ring->base_addr_owner_space_unaligned,
-+				  ce_state->src_ring->base_addr_ce_space_unaligned);
- 		kfree(ce_state->src_ring);
- 	}
- 
-@@ -1832,8 +1832,8 @@ static void _ath10k_ce_free_pipe_64(stru
- 				  (ce_state->dest_ring->nentries *
- 				   sizeof(struct ce_desc_64) +
- 				   CE_DESC_RING_ALIGN),
--				  ce_state->dest_ring->base_addr_owner_space,
--				  ce_state->dest_ring->base_addr_ce_space);
-+				  ce_state->dest_ring->base_addr_owner_space_unaligned,
-+				  ce_state->dest_ring->base_addr_ce_space_unaligned);
- 		kfree(ce_state->dest_ring);
- 	}
- 
+ 		/* Allocate an alias_prop with enough space for the stem */
+ 		ap = dt_alloc(sizeof(*ap) + len + 1, __alignof__(*ap));
+-		if (!ap)
++		if (!ap) {
++			of_node_put(np);
+ 			continue;
++		}
+ 		memset(ap, 0, sizeof(*ap) + len + 1);
+ 		ap->alias = start;
+ 		of_alias_add(ap, np, id, start, len);
 
 
 
