@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOwCAlRfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:40 +0100
+	id KGk5OvZlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF44EE7C1C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:01:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BD5E8B66
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5085A3040215
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 327FD306E4AF
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD3F42188D;
-	Wed,  4 Feb 2026 14:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44861421EF2;
+	Wed,  4 Feb 2026 15:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InHWBaMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xG1Ow7Ai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45E541B371;
-	Wed,  4 Feb 2026 14:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08782421EE1;
+	Wed,  4 Feb 2026 15:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217073; cv=none; b=AJbI7RcUSRM6zIaKzUQzZSl1wYdDHT5gZB9A/wWaFxNTXWXosz3oqQARVeX/0nbWlVwVXTkqiwE6VGUfmoGrOG23rQmcPHEFbnMFUiuMduylqfBTPLF56LMbeuCnsjcWYLsWpIjkdEjy2MNdy8NcDSF9eqNxSr7rucKh44LQu3g=
+	t=1770217967; cv=none; b=AIXzv/5S12ROy6XeYJux2puEvP60N7+/jScYbxWZMR3+eUegzJbVkvy4d1boHfvhED6uov23r9XqDdC9kU9vWFb5w2AWI8OsCbU9LHGeCwDSp3+t44IM3svt1hCX25AxJyijdVTz1IxbJSRRv7Aa4JwQCoA/1ZT/4AP9iqXZVaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217073; c=relaxed/simple;
-	bh=+iaebYaFgedcx4rSDcQA/l4sHbI70figFNC5swhRnIk=;
+	s=arc-20240116; t=1770217967; c=relaxed/simple;
+	bh=Sj2ajQLaN/5SAwaPBIXc1zmTAm0w0XHdrb8NUCHIizE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NEyBjCQJb3dUC7kR+jZd4wbg/gK5ZqdPOodfdW+eC6C9XBoBhse9HYI1zDwwbXirp6zbITfSsYBd/GYotWHubl9cNlDByHbK/9g2uvJu246Nr+uGkWdQWcPaSvVJWGCkbYEvugX24ObVxoRIXLBIbq44TEN7W5T7+1M2/MfB0kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InHWBaMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3F2C19424;
-	Wed,  4 Feb 2026 14:57:52 +0000 (UTC)
+	 MIME-Version; b=pAlMs3BfyKO3urmDHNjaDmEzM5MZnmoz5tHOeuD/bB5fKgrAGbfHJP7KpwssiyAkK0vuYJnMAgFORCjV6ZuhPxvRk3NvEcmSDspkItS8ClskBCkSgq/4c+7+tOMlk3kaTjQRyFsDebyxSQu9eiiFOIKMOH3xGxtMhZW62oLLt7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xG1Ow7Ai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD3CC4CEF7;
+	Wed,  4 Feb 2026 15:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217073;
-	bh=+iaebYaFgedcx4rSDcQA/l4sHbI70figFNC5swhRnIk=;
+	s=korg; t=1770217966;
+	bh=Sj2ajQLaN/5SAwaPBIXc1zmTAm0w0XHdrb8NUCHIizE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InHWBaMkbH05ay19XuZle3qjaGDa5eEE4/KqUmJdOg8VFmw3+gZVxSl/FJjmeTs1B
-	 GpCHWrpsMVI4rkLjZoxLrCI+iPHZ6Z89+bcfp2mDQLZeeDVQp4LvjjXr0kSHeKt9tB
-	 kU8mIcudiIN2V9ciXHwagKwFRnjLheIIIpxqeZVs=
+	b=xG1Ow7Ai1MTKDOULc+xUXnP9EvuW3qZCLAPTYXghwNAcqCwBRN2TKugnO2ScmgTsi
+	 xtTsFN0vt1Go2RI73ixWLXXMsuuyJN8NY90PYRUuqzkh3FmBNbFMdYVVpPvkw/MTr1
+	 gICSs12HHPZB+z1cOcJZo3qsTh6xGgmL2ffXR5sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jeff Chen <jeff.chen_1@nxp.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 115/206] wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
-Date: Wed,  4 Feb 2026 15:39:06 +0100
-Message-ID: <20260204143902.344775704@linuxfoundation.org>
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 6.1 173/280] uacce: fix cdev handling in the cleanup path
+Date: Wed,  4 Feb 2026 15:39:07 +0100
+Message-ID: <20260204143915.847359425@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,80 +67,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213658-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213923-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[dan.carpenter.linaro.org:query timed out,johannes.berg.intel.com:query timed out];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,linaro.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: DF44EE7C1C
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,hisilicon.com:email]
+X-Rspamd-Queue-Id: A1BD5E8B66
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-commit 2120f3a3738a65730c81bf10447b1ff776078915 upstream.
+commit a3bece3678f6c88db1f44c602b2a63e84b4040ac upstream.
 
-The "i" iterator variable is used to count two different things but
-unfortunately we can't store two different numbers in the same variable.
-Use "i" for the outside loop and "j" for the inside loop.
+When cdev_device_add fails, it internally releases the cdev memory,
+and if cdev_device_del is then executed, it will cause a hang error.
+To fix it, we check the return value of cdev_device_add() and clear
+uacce->cdev to avoid calling cdev_device_del in the uacce_remove.
 
+Fixes: 015d239ac014 ("uacce: add uacce driver")
 Cc: stable@vger.kernel.org
-Fixes: d219b7eb3792 ("mwifiex: handle BT coex event to adjust Rx BA window size")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
-Link: https://patch.msgid.link/aWAM2MGUWRP0zWUd@stanley.mountain
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-2-huangchenghai2@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/misc/uacce/uacce.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-@@ -839,7 +839,7 @@ void mwifiex_update_rxreor_flags(struct
- static void mwifiex_update_ampdu_rxwinsize(struct mwifiex_adapter *adapter,
- 					   bool coex_flag)
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -500,6 +500,8 @@ EXPORT_SYMBOL_GPL(uacce_alloc);
+  */
+ int uacce_register(struct uacce_device *uacce)
  {
--	u8 i;
-+	u8 i, j;
- 	u32 rx_win_size;
- 	struct mwifiex_private *priv;
++	int ret;
++
+ 	if (!uacce)
+ 		return -ENODEV;
  
-@@ -879,8 +879,8 @@ static void mwifiex_update_ampdu_rxwinsi
- 		if (rx_win_size != priv->add_ba_param.rx_win_size) {
- 			if (!priv->media_connected)
- 				continue;
--			for (i = 0; i < MAX_NUM_TID; i++)
--				mwifiex_11n_delba(priv, i);
-+			for (j = 0; j < MAX_NUM_TID; j++)
-+				mwifiex_11n_delba(priv, j);
- 		}
- 	}
+@@ -510,7 +512,11 @@ int uacce_register(struct uacce_device *
+ 	uacce->cdev->ops = &uacce_fops;
+ 	uacce->cdev->owner = THIS_MODULE;
+ 
+-	return cdev_device_add(uacce->cdev, &uacce->dev);
++	ret = cdev_device_add(uacce->cdev, &uacce->dev);
++	if (ret)
++		uacce->cdev = NULL;
++
++	return ret;
  }
+ EXPORT_SYMBOL_GPL(uacce_register);
+ 
 
 
 
