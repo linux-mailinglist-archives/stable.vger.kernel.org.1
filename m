@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJnaN/5hg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:02 +0100
+	id YIdlJvNkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A11E8213
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF94FE883C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F3CC830557FE
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 258C131D3C61
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6D941B360;
-	Wed,  4 Feb 2026 14:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FE7426D02;
+	Wed,  4 Feb 2026 15:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZ2a5ap+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmGCPgSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416A73D413D;
-	Wed,  4 Feb 2026 14:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1645D4218BB;
+	Wed,  4 Feb 2026 15:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216762; cv=none; b=CAh4Zd8Vmc+4VOvTy1aBY+kRY43srjJT4mt1QbWetwXTHMOfffEylHRY9qgmz6/0K++6rKdS1PTAq0+Y2W/PsfK3A7gmEearSUnZNY8L2OloZYP5NlOCFo5wlZNuHCQ1pp3FZwc4cKX7TAAsKPWLafXSJpDHdm1eRI6g6D7aRUQ=
+	t=1770217603; cv=none; b=GxBsnF9OmFaRZLPR8+okzjq7sQQDnZ2ni51QDI1goflzpRAWS0qGvbwiqtGwU9ojeyhHefy76YPV/jtGU0jsYSl3asWUe1/bgcnLewIoEBYeB3n78tjNqyDrg9GSJs+PJI5Q+KlPkgxKExOgb+M68mv51AeUS2zSgW+Mho8XdhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216762; c=relaxed/simple;
-	bh=OdE4PMvmDQjvOJkw0WM9yijgMHZa2+L1bJHCIcCDv7o=;
+	s=arc-20240116; t=1770217603; c=relaxed/simple;
+	bh=+6d1Fat8iHbsXvSuycUno+HXI3FKqWlujUBMKc6K/3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3jDNVhKRT5eKon/PabmXzubiLvVCRr1SsbVy867CJSdYRP8lMhIPqDCPZVBu9yKtrBq7ydAoFg4cD+R6NaqqG8PUfD8ii/as3C1R7b41lsYJQhub1fmICeuESRWkq/jXPS2xo/1Iq19P1EjIC/xhIXZ6fAqg71nHKGmbdGZULQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZ2a5ap+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A593AC4CEF7;
-	Wed,  4 Feb 2026 14:52:41 +0000 (UTC)
+	 MIME-Version; b=eDVPJvtoCZ+b9AHl0KUXJqJ84L5EFQ80SMD4eGEI/edo4HokVArdXoBduKaTkj+4ZRisCXSq2uglnW40dbufNwC+WHURHYgeqPW5ZB/4btxYt7ZByKxgsgc7y/54pPVR74+1XQDo1Fd/KJu3pkbrTPyJqw/KG2ayhGlAUguPH3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmGCPgSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3453BC4CEF7;
+	Wed,  4 Feb 2026 15:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216762;
-	bh=OdE4PMvmDQjvOJkw0WM9yijgMHZa2+L1bJHCIcCDv7o=;
+	s=korg; t=1770217603;
+	bh=+6d1Fat8iHbsXvSuycUno+HXI3FKqWlujUBMKc6K/3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZ2a5ap+Kkk/BVHVj92vDBFetvEbQHpNhxxMxJA5IYrhri1QuP7rygKIIqHAEEJA4
-	 n5bm41lpg523WjYlb6Ax9IiIJH60x9vGFyyD+MUmQ9JzXkRj2TPd8wPLDs3y96gUiI
-	 RCrjlteoMiAMd3c8oXocMjPJtkgxr3VJx14ipIkI=
+	b=LmGCPgSb1aPP1aO0WR7rX1gxvrasDEaqzTSJi39EH6vZZX2Rj64tL2X23LjeYzji6
+	 VMjBwsy8hzdgMShhiEn3Dj1ruS+bhdNwpAbsXPjAltGvdE28zbeZ0OlecifouW47HQ
+	 fOMIJpgteZhj5Gaiv0AIhf+ovjBeqpCM7zYWLMfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/206] net: update netdev_lock_{type,name}
-Date: Wed,  4 Feb 2026 15:37:18 +0100
-Message-ID: <20260204143858.463640788@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH 6.1 065/280] drm/vmwgfx: Fix an error return check in vmw_compat_shader_add()
+Date: Wed,  4 Feb 2026 15:37:19 +0100
+Message-ID: <20260204143911.995055969@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213566-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213815-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,103 +87,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 43A11E8213
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,iscas.ac.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: EF94FE883C
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit eb74c19fe10872ee1f29a8f90ca5ce943921afe9 ]
+commit bf72b4b7bb7dbb643d204fa41e7463894a95999f upstream.
 
-Add missing entries in netdev_lock_type[] and netdev_lock_name[] :
+In vmw_compat_shader_add(), the return value check of vmw_shader_alloc()
+is not proper. Modify the check for the return pointer 'res'.
 
-CAN, MCTP, RAWIP, CAIF, IP6GRE, 6LOWPAN, NETLINK, VSOCKMON,
-IEEE802154_MONITOR.
+Found by code review and compiled on ubuntu 20.04.
 
-Also add a WARN_ONCE() in netdev_lock_pos() to help future bug hunting
-next time a protocol is added without updating these arrays.
-
-Fixes: 1a33e10e4a95 ("net: partially revert dynamic lockdep key changes")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260108093244.830280-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18e4a4669c50 ("drm/vmwgfx: Fix compat shader namespace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251224091105.1569464-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_shader.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 2f7bd1fe58515..977146a70b8c1 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -426,15 +426,21 @@ static const unsigned short netdev_lock_type[] = {
- 	 ARPHRD_IEEE1394, ARPHRD_EUI64, ARPHRD_INFINIBAND, ARPHRD_SLIP,
- 	 ARPHRD_CSLIP, ARPHRD_SLIP6, ARPHRD_CSLIP6, ARPHRD_RSRVD,
- 	 ARPHRD_ADAPT, ARPHRD_ROSE, ARPHRD_X25, ARPHRD_HWX25,
-+	 ARPHRD_CAN, ARPHRD_MCTP,
- 	 ARPHRD_PPP, ARPHRD_CISCO, ARPHRD_LAPB, ARPHRD_DDCMP,
--	 ARPHRD_RAWHDLC, ARPHRD_TUNNEL, ARPHRD_TUNNEL6, ARPHRD_FRAD,
-+	 ARPHRD_RAWHDLC, ARPHRD_RAWIP,
-+	 ARPHRD_TUNNEL, ARPHRD_TUNNEL6, ARPHRD_FRAD,
- 	 ARPHRD_SKIP, ARPHRD_LOOPBACK, ARPHRD_LOCALTLK, ARPHRD_FDDI,
- 	 ARPHRD_BIF, ARPHRD_SIT, ARPHRD_IPDDP, ARPHRD_IPGRE,
- 	 ARPHRD_PIMREG, ARPHRD_HIPPI, ARPHRD_ASH, ARPHRD_ECONET,
- 	 ARPHRD_IRDA, ARPHRD_FCPP, ARPHRD_FCAL, ARPHRD_FCPL,
- 	 ARPHRD_FCFABRIC, ARPHRD_IEEE80211, ARPHRD_IEEE80211_PRISM,
--	 ARPHRD_IEEE80211_RADIOTAP, ARPHRD_PHONET, ARPHRD_PHONET_PIPE,
--	 ARPHRD_IEEE802154, ARPHRD_VOID, ARPHRD_NONE};
-+	 ARPHRD_IEEE80211_RADIOTAP,
-+	 ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR,
-+	 ARPHRD_PHONET, ARPHRD_PHONET_PIPE,
-+	 ARPHRD_CAIF, ARPHRD_IP6GRE, ARPHRD_NETLINK, ARPHRD_6LOWPAN,
-+	 ARPHRD_VSOCKMON,
-+	 ARPHRD_VOID, ARPHRD_NONE};
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+@@ -917,8 +917,10 @@ int vmw_compat_shader_add(struct vmw_pri
+ 	ttm_bo_unreserve(&buf->base);
  
- static const char *const netdev_lock_name[] = {
- 	"_xmit_NETROM", "_xmit_ETHER", "_xmit_EETHER", "_xmit_AX25",
-@@ -443,15 +449,21 @@ static const char *const netdev_lock_name[] = {
- 	"_xmit_IEEE1394", "_xmit_EUI64", "_xmit_INFINIBAND", "_xmit_SLIP",
- 	"_xmit_CSLIP", "_xmit_SLIP6", "_xmit_CSLIP6", "_xmit_RSRVD",
- 	"_xmit_ADAPT", "_xmit_ROSE", "_xmit_X25", "_xmit_HWX25",
-+	"_xmit_CAN", "_xmit_MCTP",
- 	"_xmit_PPP", "_xmit_CISCO", "_xmit_LAPB", "_xmit_DDCMP",
--	"_xmit_RAWHDLC", "_xmit_TUNNEL", "_xmit_TUNNEL6", "_xmit_FRAD",
-+	"_xmit_RAWHDLC", "_xmit_RAWIP",
-+	"_xmit_TUNNEL", "_xmit_TUNNEL6", "_xmit_FRAD",
- 	"_xmit_SKIP", "_xmit_LOOPBACK", "_xmit_LOCALTLK", "_xmit_FDDI",
- 	"_xmit_BIF", "_xmit_SIT", "_xmit_IPDDP", "_xmit_IPGRE",
- 	"_xmit_PIMREG", "_xmit_HIPPI", "_xmit_ASH", "_xmit_ECONET",
- 	"_xmit_IRDA", "_xmit_FCPP", "_xmit_FCAL", "_xmit_FCPL",
- 	"_xmit_FCFABRIC", "_xmit_IEEE80211", "_xmit_IEEE80211_PRISM",
--	"_xmit_IEEE80211_RADIOTAP", "_xmit_PHONET", "_xmit_PHONET_PIPE",
--	"_xmit_IEEE802154", "_xmit_VOID", "_xmit_NONE"};
-+	"_xmit_IEEE80211_RADIOTAP",
-+	"_xmit_IEEE802154", "_xmit_IEEE802154_MONITOR",
-+	"_xmit_PHONET", "_xmit_PHONET_PIPE",
-+	"_xmit_CAIF", "_xmit_IP6GRE", "_xmit_NETLINK", "_xmit_6LOWPAN",
-+	"_xmit_VSOCKMON",
-+	"_xmit_VOID", "_xmit_NONE"};
+ 	res = vmw_shader_alloc(dev_priv, buf, size, 0, shader_type);
+-	if (unlikely(ret != 0))
++	if (IS_ERR(res)) {
++		ret = PTR_ERR(res);
+ 		goto no_reserve;
++	}
  
- static struct lock_class_key netdev_xmit_lock_key[ARRAY_SIZE(netdev_lock_type)];
- static struct lock_class_key netdev_addr_lock_key[ARRAY_SIZE(netdev_lock_type)];
-@@ -464,6 +476,7 @@ static inline unsigned short netdev_lock_pos(unsigned short dev_type)
- 		if (netdev_lock_type[i] == dev_type)
- 			return i;
- 	/* the last key is used by default */
-+	WARN_ONCE(1, "netdev_lock_pos() could not find dev_type=%u\n", dev_type);
- 	return ARRAY_SIZE(netdev_lock_type) - 1;
- }
- 
--- 
-2.51.0
-
+ 	ret = vmw_cmdbuf_res_add(man, vmw_cmdbuf_res_shader,
+ 				 vmw_shader_key(user_key, shader_type),
 
 
 
