@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-214256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDM4Mp1tg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:37 +0100
+	id 4JrDGzBdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138F5E9C34
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBD4E77FA
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4E0131BBC93
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02BE9303AF2D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FBE273D77;
-	Wed,  4 Feb 2026 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963223BFE35;
+	Wed,  4 Feb 2026 14:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u55SCBaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efKlT4E8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A2F19E96D;
-	Wed,  4 Feb 2026 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3882417E0;
+	Wed,  4 Feb 2026 14:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219084; cv=none; b=Ffko4izOK4lEzM9m6d2i/ad9moKKlT/SfJk3FD+HpFSQn0b7BPbdgGL3SiRggAaAZRp3V2jd6Ktzb9TVPNP7For7uAHgvJ1HORPKvhvwJyRnw7ojkBvq0/fUfL7qVfayZdNHdFLKtS8A9T/0akkwLLL4PczgnfVX++Wo8TAI7Fw=
+	t=1770216636; cv=none; b=bw/CSvF/4a/sculQ/7E79bKQXVsODaCacbdISOAZV5Hct0uweNO5RYxZJjXX0sO1mc2D0H1pXyyPmKWNgTsvuDg1o1HVA4LeDPeztGE/sCANwFvJomOgN0x2Rc38lvdJotApcpnNyLFgoJBB84zBvu1OSRTu+Gx6UgAbAwe7NPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219084; c=relaxed/simple;
-	bh=Ka343KXpa7rYpr6s1g0Egi9dZzJnDSDGZBOk9EKEBDo=;
+	s=arc-20240116; t=1770216636; c=relaxed/simple;
+	bh=XhHjm0NlmIrH9b13AqHte93VMTBlBrjYujX8r0HUSS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmGhJ9bYdntbXUbDNepQ8DC3SGCJdRLW1RKA+cs97G0vRhBj8NnvwTqCXjbRS19pVOOCvYUM2rX+0iNf3u8yXap/Lq9ndmeSJFEegR6A04XvSbEOq2pEX+rHgQqw6vuiR+O1SC27TqxvxrFxFCm9ehv/An+Igs2bt5mPvsDEUUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u55SCBaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E0AC4CEF7;
-	Wed,  4 Feb 2026 15:31:23 +0000 (UTC)
+	 MIME-Version; b=OEdLUBW/CK8ewUOPtQfS6mRLbB6wOp8XtOM3EFW73xoQ6hDTP83JOTSqcR5IM9AVXJvH26R9bgkvh9hzYmGuJGUI4oYMUpUe1YSKA+7k0gdq4y4kqUXjIwwYGAfzW5/td+JgsmFB681JuezqhNWXO0M5Pw41urdIAwyL3etgodQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efKlT4E8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F0DC116C6;
+	Wed,  4 Feb 2026 14:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219084;
-	bh=Ka343KXpa7rYpr6s1g0Egi9dZzJnDSDGZBOk9EKEBDo=;
+	s=korg; t=1770216636;
+	bh=XhHjm0NlmIrH9b13AqHte93VMTBlBrjYujX8r0HUSS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u55SCBaXiojLXbcsaFkxtpo0Jl8k5m6KhK0nvQoSpfVtHCfOJGGHyRnuWVKCaNax4
-	 icHYCgosVt/chQGYfWnnmNthdPGUsCd8mbZp1uD+0J8BPW8/pc/7UgTcJwXKujc2Vj
-	 1pEQY9bqPYqCNAknZ4hvVRt8vEW2lR7z/khZrjgk=
+	b=efKlT4E8LEm2m8BWzH5a9xDFOHVTsmcaaBa2bN/DM+EaBY7ghBwYpak7MX72PUBa4
+	 W9pLnXoQMDEwQ7C2KN8396QtyfPKLQJSo+OCLY/yGxodm/bXHGF9Kelb9315t9LO7c
+	 MViQ+KrwhPfOKRFZzgBOblI91CpwQxZkqe+sXUUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 029/122] net/mlx5e: dont assume psp tx skbs are ipv6 csum handling
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Oak Zeng <Oak.Zeng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 148/161] drm/amdkfd: fix a memory leak in device_queue_manager_init()
 Date: Wed,  4 Feb 2026 15:40:11 +0100
-Message-ID: <20260204143852.911167001@linuxfoundation.org>
+Message-ID: <20260204143857.074979003@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +66,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214256-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,nvidia.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213528-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 138F5E9C34
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: DDBD4E77FA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Zahka <daniel.zahka@gmail.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit a62f7d62d2b115e67c7224e36ace4ef12a9650b4 ]
+commit 80614c509810fc051312d1a7ccac8d0012d6b8d0 upstream.
 
-mlx5e_psp_handle_tx_skb() assumes skbs are ipv6 when doing a partial
-TCP checksum with tso. Make correctly mlx5e_psp_handle_tx_skb() handle
-ipv4 packets.
+If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
+to release the memory allocated by allocate_hiq_sdma_mqd().
+Move deallocate_hiq_sdma_mqd() up to ensure proper function
+visibility at the point of use.
 
-Fixes: e5a1861a298e ("net/mlx5e: Implement PSP Tx data path")
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Link: https://patch.msgid.link/20260126-dzahka-fix-tx-csum-partial-v2-1-0a905590ea5f@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/en_accel/psp_rxtx.c      | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
-index 828bff1137aff..fa98d0074531b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
-@@ -177,8 +177,6 @@ bool mlx5e_psp_handle_tx_skb(struct net_device *netdev,
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -1832,6 +1832,14 @@ static int allocate_hiq_sdma_mqd(struct
+ 	return retval;
+ }
+ 
++static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
++				    struct kfd_mem_obj *mqd)
++{
++	WARN(!mqd, "No hiq sdma mqd trunk to free");
++
++	amdgpu_amdkfd_free_gtt_mem(dev->kgd, mqd->gtt_mem);
++}
++
+ struct device_queue_manager *device_queue_manager_init(struct kfd_dev *dev)
  {
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 	struct net *net = sock_net(skb->sk);
--	const struct ipv6hdr *ip6;
--	struct tcphdr *th;
+ 	struct device_queue_manager *dqm;
+@@ -1961,19 +1969,13 @@ struct device_queue_manager *device_queu
+ 	if (!dqm->ops.initialize(dqm))
+ 		return dqm;
  
- 	if (!mlx5e_psp_set_state(priv, skb, psp_st))
- 		return true;
-@@ -189,11 +187,18 @@ bool mlx5e_psp_handle_tx_skb(struct net_device *netdev,
- 		return false;
- 	}
- 	if (skb_is_gso(skb)) {
--		ip6 = ipv6_hdr(skb);
--		th = inner_tcp_hdr(skb);
-+		int len = skb_shinfo(skb)->gso_size + inner_tcp_hdrlen(skb);
-+		struct tcphdr *th = inner_tcp_hdr(skb);
- 
--		th->check = ~tcp_v6_check(skb_shinfo(skb)->gso_size + inner_tcp_hdrlen(skb), &ip6->saddr,
--					  &ip6->daddr, 0);
-+		if (skb->protocol == htons(ETH_P_IP)) {
-+			const struct iphdr *ip = ip_hdr(skb);
++	deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
 +
-+			th->check = ~tcp_v4_check(len, ip->saddr, ip->daddr, 0);
-+		} else {
-+			const struct ipv6hdr *ip6 = ipv6_hdr(skb);
-+
-+			th->check = ~tcp_v6_check(len, &ip6->saddr, &ip6->daddr, 0);
-+		}
- 	}
+ out_free:
+ 	kfree(dqm);
+ 	return NULL;
+ }
  
- 	return true;
--- 
-2.51.0
-
+-static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
+-				    struct kfd_mem_obj *mqd)
+-{
+-	WARN(!mqd, "No hiq sdma mqd trunk to free");
+-
+-	amdgpu_amdkfd_free_gtt_mem(dev->kgd, mqd->gtt_mem);
+-}
+-
+ void device_queue_manager_uninit(struct device_queue_manager *dqm)
+ {
+ 	dqm->ops.uninitialize(dqm);
 
 
 
