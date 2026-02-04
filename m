@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILjsMLplg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:58 +0100
+	id IIVBBSNjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:17:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CB7E8ABB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F50FE83E1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A6EEC30ED8E6
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00C6730D134B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643D64218B1;
-	Wed,  4 Feb 2026 15:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353414219FD;
+	Wed,  4 Feb 2026 14:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2QNy/vN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDi/OyhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282854218A0;
-	Wed,  4 Feb 2026 15:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE6E4219F9;
+	Wed,  4 Feb 2026 14:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217859; cv=none; b=eCcpYtX6FeEijOlOqKqdbtPXXtrEIUyHF5T7sVgbMOdGo4zZ/pEc/m+C+CgntfWid9j/RyXEFQd5b1jFwtG12DHNOeAqsG2wgO6/Q1Pk/NoXXgjcClXYT08d+bTG0wRhjo8ZfkkH71404S+wyW0Mgo08S9XWPCUjrS3tWr74j1s=
+	t=1770216971; cv=none; b=OeGt/Tx6BXhcJU4zYAijrH5ARPli/32M2FHU1j4RJoIQV0yZrdIe56alJ0viC2yfhlT9c3yem6lBtuuHNZn2Ul37E3bkYnefe2iW0DngtiogrP2VNVu/UChah4YmsIjaR46ptPMRsflWW1I5R7CsD0hqQNdm2xEiWQdI64DzSC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217859; c=relaxed/simple;
-	bh=MFCR0NfoQF9C7XPTECmOJpQgbpyQC/9X3xbGtxrCzEo=;
+	s=arc-20240116; t=1770216971; c=relaxed/simple;
+	bh=bYrV2WwF39+d2qu5vBRNcT/NV8IAepGuwnwocjpgIls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MoI6MEI3byj074tdsdzAsHC90k2ULn3v61oORbw4YkzDytoTzFt2hQbhUQCrZLuIuSIMuWyYG9+GkO3ClLOyVm6tiECWxo+iYxcNua72IeeqD09h3LvNNN4Ixq+OrrzSmZOgvstIzR/7mJj8T32izvE2jxVIiLAeK1422TwDZA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2QNy/vN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F5AC4CEF7;
-	Wed,  4 Feb 2026 15:10:58 +0000 (UTC)
+	 MIME-Version; b=qlrNwwyCHYvl7IRVRmC0wa/x9rbFpiUXQPTyno4Fv0b8aC6tt7BuF5X4t3sVBNFhMu90svDvmCWqwWuVX7tB3raUs1Pj67Zgx19HWBsL1Jo9jqWOmvGGO2VVYKlL8vSPl7K2gB4DGnCyaAYeuVigiHYzNE4CBadZkMiHj1l3a+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDi/OyhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C43C4CEF7;
+	Wed,  4 Feb 2026 14:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217859;
-	bh=MFCR0NfoQF9C7XPTECmOJpQgbpyQC/9X3xbGtxrCzEo=;
+	s=korg; t=1770216970;
+	bh=bYrV2WwF39+d2qu5vBRNcT/NV8IAepGuwnwocjpgIls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2QNy/vNqXpxhEzJ/JAF6tSAn9/tjEMc44rl4kvh/Lhc8L4VjzE8Mvz69olxG/iOr
-	 HQrEAR4lGzBpiyboQ+b0oN+QdT5F0EcetzVL2AE83qDWH8xXdWHcE/34+E5lkQlj1o
-	 hfEENDmM0sS4rO+C/p9vrAcdtkvV4ZW+bP8W373o=
+	b=RDi/OyhHVUQv12DPyVjt/C7JWqKkilAFYTZJitgYML9ZMJIgwmUN4lC0oCq8NutVm
+	 l6H7EdERBB1vbIRwd6rlGEgDrotxsdeplP7rMz0W0iHWtUk+POaW+y/F8ZqWP8RrIP
+	 RtOoHBnbl0raQeizpBr82GJANyr8Fnz1R8tEZcls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/280] net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
-Date: Wed,  4 Feb 2026 15:38:35 +0100
-Message-ID: <20260204143914.709995939@linuxfoundation.org>
+	gongqi <550230171hxy@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 085/206] Input: i8042 - add quirks for MECHREVO Wujie 15X Pro
+Date: Wed,  4 Feb 2026 15:38:36 +0100
+Message-ID: <20260204143901.272224160@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213891-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213629-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 67CB7E8ABB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 6F50FE83E1
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: gongqi <550230171hxy@gmail.com>
 
-[ Upstream commit f87e034d16e43af984380a95c32c25201b7759a7 ]
+commit 19a5d9ba6208e9006a2a9d5962aea4d6e427d8ab upstream.
 
-Use next_input_key instead of counter_id to set HCLGE_FD_AD_NXT_KEY.
+The MECHREVO Wujie 15X Pro requires several i8042 quirks to function
+correctly. Specifically, NOMUX, RESET_ALWAYS, NOLOOP, and NOPNP are
+needed to ensure the keyboard and touchpad work reliably.
 
-Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260119132840.410513-3-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: gongqi <550230171hxy@gmail.com>
+Link: https://patch.msgid.link/20260122155501.376199-3-550230171hxy@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index a92f056b25613..42173a076163f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -5717,7 +5717,7 @@ static int hclge_fd_ad_config(struct hclge_dev *hdev, u8 stage, int loc,
- 			HCLGE_FD_AD_COUNTER_NUM_S, action->counter_id);
- 	hnae3_set_bit(ad_data, HCLGE_FD_AD_NXT_STEP_B, action->use_next_stage);
- 	hnae3_set_field(ad_data, HCLGE_FD_AD_NXT_KEY_M, HCLGE_FD_AD_NXT_KEY_S,
--			action->counter_id);
-+			action->next_input_key);
- 
- 	req->ad_data = cpu_to_le64(ad_data);
- 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
--- 
-2.51.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1168,6 +1168,13 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
+ 	/*
+ 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
+ 	 * after suspend fixable with nomux + reset + noloop + nopnp. Luckily,
 
 
 
