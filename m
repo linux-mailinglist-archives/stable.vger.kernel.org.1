@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGHGEi5lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:38 +0100
+	id UDMWKmlog2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C1DE8907
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB67E9196
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51ED23149FAB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E07FD3253523
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99AA41C2EB;
-	Wed,  4 Feb 2026 15:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67648413254;
+	Wed,  4 Feb 2026 15:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7ufntIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yh9rEVhx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7DC18859B;
-	Wed,  4 Feb 2026 15:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4A027702D;
+	Wed,  4 Feb 2026 15:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218139; cv=none; b=Axz9SrguEaYlUPQiIpIJZm9QALhEb67wlunoAJZrO1xwu/9jg0pF1Y2GoeCLjdKdUozftUloueQJg/Qr3G67SDJ06X9WHMf7TWRnBX9CjRtzT1JOAm0FpKv0LMeYv0eVdNLaANtFWBeclRIVBVErJCxNNfMB8TnLcRwm8LE5Hcc=
+	t=1770218925; cv=none; b=ZdZASDKHdm/6cXGMpCHiT5A9Vxgjp5NKVi1NPw5B2Fm+5P5aQd2ibwVdDILsLdiurx8jfTMByj86n6x3dwRFPUMaBxrdWnG28AIugNgQWAqwqZuNZ1iMNHHlY+zMB48gFaO4aB3hWRMaALBtI8nPU1ZRAiV4er3iCgoAWpImYy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218139; c=relaxed/simple;
-	bh=vJ1d5US3IRPBB9KnWCrItYPdBgpTuCE1HUV7GQwwfE0=;
+	s=arc-20240116; t=1770218925; c=relaxed/simple;
+	bh=3ZbChxvd7dbHWmutl5x3zZ7lXWdoImOyu/FpKxI2ElA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpoeRFjfeDfS3tRB+47v8tJ57wqPE+AlomFOXByCP53pt9ILsNf23Po71KpxWGiws2KY5XLTLq8rFFdhbk/OnnYYR3/63svsPOirHcWomgWbUfe9zR95j4yCt6Cv5rfBdlx0w1j0acaocPr7sWYVNae4pVDDGeC1nm+/wkPZl9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7ufntIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D07C4CEF7;
-	Wed,  4 Feb 2026 15:15:38 +0000 (UTC)
+	 MIME-Version; b=T4zRS5UmjcuCIZTtzMiyfsA61I0dC+vFf3HTL+EfoNuL7u3u5amigmjZTA+oKhUXqNFwlIP3ZpvQW1Amgkw0oIh1/zZWoreWKfIkfMNkxzdDacFT2+EJJJuP9Y/JYl6BYXenZRZxEu6XU4YqzSq3Lsld0iO86/dH2somM1HchLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yh9rEVhx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921F7C4CEF7;
+	Wed,  4 Feb 2026 15:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218139;
-	bh=vJ1d5US3IRPBB9KnWCrItYPdBgpTuCE1HUV7GQwwfE0=;
+	s=korg; t=1770218925;
+	bh=3ZbChxvd7dbHWmutl5x3zZ7lXWdoImOyu/FpKxI2ElA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7ufntIVQtgmbWfP2fdMPOoNEqB1cZX9mixqwZUATsY9aPMEYfO0RZdDlScXwmJni
-	 ebaFwNBfeNijSFc2ZRW7igz3HnhHlKke7i7CdcxXZUYrqzVOQAME0cGu6KaflvfZW1
-	 zv9Jr82g1g+WcT4l1Hn2LtCcuyM6ZM9wuBFpje8Y=
+	b=Yh9rEVhxeH6Dzyu7IDblgtu/44w2MSbJNTf49aP0jPuch1GH/AagFecISJ0QnL533
+	 x+XdZ4vyUXI2lOUByesyqhpL3OB2my0VqSVWcu6JZCLlYWsUHoKc5vrzGbyjwsorZL
+	 g7NAGbMheBco7FV2kgiSVefj5iyHIju5N/K/uX0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Juergen Gross <jgross@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Zeng Chi <zengchi@kylinos.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/280] scsi: xen: scsiback: Fix potential memory leak in scsiback_remove()
+Subject: [PATCH 6.18 015/122] net/mlx5: Fix return type mismatch in mlx5_esw_vport_vhca_id()
 Date: Wed,  4 Feb 2026 15:39:57 +0100
-Message-ID: <20260204143917.634812744@linuxfoundation.org>
+Message-ID: <20260204143852.415615798@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213975-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214208-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,48 +90,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,iitm.ac.in:email]
-X-Rspamd-Queue-Id: A2C1DE8907
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email]
+X-Rspamd-Queue-Id: 1CB67E9196
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Zeng Chi <zengchi@kylinos.cn>
 
-[ Upstream commit 901a5f309daba412e2a30364d7ec1492fa11c32c ]
+[ Upstream commit ca12c4a155ebf84e9ef29b05ce979bc89364290f ]
 
-Memory allocated for struct vscsiblk_info in scsiback_probe() is not
-freed in scsiback_remove() leading to potential memory leaks on remove,
-as well as in the scsiback_probe() error paths. Fix that by freeing it
-in scsiback_remove().
+The function mlx5_esw_vport_vhca_id() is declared to return bool,
+but returns -EOPNOTSUPP (-45), which is an int error code. This
+causes a signedness bug as reported by smatch.
 
-Cc: stable@vger.kernel.org
-Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://patch.msgid.link/20251223063012.119035-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This patch fixes this smatch report:
+drivers/net/ethernet/mellanox/mlx5/core/eswitch.h:981 mlx5_esw_vport_vhca_id()
+warn: signedness bug returning '(-45)'
+
+Fixes: 1baf30426553 ("net/mlx5: E-Switch, Set/Query hca cap via vhca id")
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260123085749.1401969-1-zeng_chi911@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/xen-scsiback.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/xen/xen-scsiback.c
-+++ b/drivers/xen/xen-scsiback.c
-@@ -1261,6 +1261,7 @@ static void scsiback_remove(struct xenbu
- 	gnttab_page_cache_shrink(&info->free_pages, 0);
- 
- 	dev_set_drvdata(&dev->dev, NULL);
-+	kfree(info);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index 16eb99aba2a7e..2d91f77b01601 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -1002,7 +1002,7 @@ mlx5_esw_host_functions_enabled(const struct mlx5_core_dev *dev)
+ static inline bool
+ mlx5_esw_vport_vhca_id(struct mlx5_eswitch *esw, u16 vportn, u16 *vhca_id)
+ {
+-	return -EOPNOTSUPP;
++	return false;
  }
  
- static int scsiback_probe(struct xenbus_device *dev,
+ #endif /* CONFIG_MLX5_ESWITCH */
+-- 
+2.51.0
+
 
 
 
