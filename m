@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJTtN9Jhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:18 +0100
+	id OMweKAhog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A0EE8186
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19230E9074
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E68AB30D9EED
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 396F8313A60B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A5B2D6E73;
-	Wed,  4 Feb 2026 15:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD0B1C84D0;
+	Wed,  4 Feb 2026 15:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwappa2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCbDzOnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498592D46A2;
-	Wed,  4 Feb 2026 15:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F71F2417E0;
+	Wed,  4 Feb 2026 15:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217207; cv=none; b=cDDy6P4gHxV2gm7Na0t8lLm7hBf8Nd1tR16AdsJ2cSVt4BT68vLVtwzwQsJVt2S1PwQCVyc0b5aeXePQZ21dm/mCEBWhprilqXjf5gbxjXW4jrjH/JOJZpbolrMsh9JW6aJ4lFqHs07cXwN/BBJiG8nDxm1Z6/H0orME9gDHMNM=
+	t=1770218955; cv=none; b=Bc5szAt48pgZOMQv3+fFgMMdWRISHdR9/ML3lxXIyub6XtxJAOX1X0vMu+TGP4TRW8eLX6JIKb2WpI3pWfHAkoHxuJis/iMXwR8xF9nbNxoki2A/UGdYVEBwl/4py70eQa23Y0zdXNzEyP7DBFaQVxnBfIWsp/5kU7zWKb/k0Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217207; c=relaxed/simple;
-	bh=dcO1JVqb3+YLZHiQy29Q6VWodqlcX2tnuwm0xWyP3xk=;
+	s=arc-20240116; t=1770218955; c=relaxed/simple;
+	bh=6RBG54rI1LSoBLS76gXxRCTDScRJ3CD/WzEug+YcZyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5sKSh4jrWiRgWwzL+74L1dP5HQjrSxDbMs7eleRCt/DXVCL89N2ZVClj1TqBIOmwuDsKRRlMlYWfgroBtU04LALdnkMPMTJeRlf/mBkZuCURrjuKZ75UlkQFDs7QIJ11sQaqVwtQZVQvB98QJiPsWhXmkLV3lrJe7eRJzsB0i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwappa2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF68AC4CEF7;
-	Wed,  4 Feb 2026 15:00:06 +0000 (UTC)
+	 MIME-Version; b=EoRMzSK8xsf4cLh5bFfEcCxEEL5Uii4eI3AAW9JCK7TWDEmg81lrDt+ZzQ35dpPgAjozxO1gAWDaiaM6JQadSXJUp77Kt4zXZfKCBZ3dc8+iG8xNA+7Dq4oHTKr0bt2SVCiNAbWkOMRUb4FlYDcvwpRXe9JFMGesD18MGBBcHAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCbDzOnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931CFC4CEF7;
+	Wed,  4 Feb 2026 15:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217207;
-	bh=dcO1JVqb3+YLZHiQy29Q6VWodqlcX2tnuwm0xWyP3xk=;
+	s=korg; t=1770218954;
+	bh=6RBG54rI1LSoBLS76gXxRCTDScRJ3CD/WzEug+YcZyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bwappa2J00InboN6sC4fcvY/x5Q4+0VpQG8P1GsGCe2+zUjpeB5p1ix7UacKYmWeL
-	 PzhHjjKvR7F3hDu1odaIBlAl34vtzFNwMvIHGB9S6htd+HWo9ivfO7V7zAZ+WxRVtt
-	 ic8JKTRPBYt1tJfV+Gm/IN0KWRTtEvVBr7QCBfTU=
+	b=PCbDzOnusUajjIgecuPkTXEuY6UAUTJWxH1HApn49Wk4dEgoI86FbOpHe0Ltn/Gql
+	 9EZdM4pdEBYw/HoebnRpTcdvnWWCFWB4P7Kgiga9MRwLBQF2jb2mv5bzVMXrDjCBQO
+	 FKCF+XOP2o4/2OdVIZx4HhbT94iHHlQgbeX5nRfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharath Chandra Vurukala <quic_sharathv@quicinc.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 5.15 155/206] net: Add locking to protect skb->dev access in ip_output
-Date: Wed,  4 Feb 2026 15:39:46 +0100
-Message-ID: <20260204143903.783731420@linuxfoundation.org>
+	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 005/122] Bluetooth: MGMT: Fix memory leak in set_ssp_complete
+Date: Wed,  4 Feb 2026 15:39:47 +0100
+Message-ID: <20260204143852.057467266@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,147 +69,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213698-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214217-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email,quicinc.com:email]
-X-Rspamd-Queue-Id: D6A0EE8186
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,windriver.com:email,match.sk:url]
+X-Rspamd-Queue-Id: 19230E9074
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
 
-commit 1dbf1d590d10a6d1978e8184f8dfe20af22d680a upstream.
+[ Upstream commit 1b9c17fd0a7fdcbe69ec5d6fe8e50bc5ed7f01f2 ]
 
-In ip_output() skb->dev is updated from the skb_dst(skb)->dev
-this can become invalid when the interface is unregistered and freed,
+Fix memory leak in set_ssp_complete() where mgmt_pending_cmd structures
+are not freed after being removed from the pending list.
 
-Introduced new skb_dst_dev_rcu() function to be used instead of
-skb_dst_dev() within rcu_locks in ip_output.This will ensure that
-all the skb's associated with the dev being deregistered will
-be transnmitted out first, before freeing the dev.
+Commit 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs") replaced
+mgmt_pending_foreach() calls with individual command handling but missed
+adding mgmt_pending_free() calls in both error and success paths of
+set_ssp_complete(). Other completion functions like set_le_complete()
+were fixed correctly in the same commit.
 
-Given that ip_output() is called within an rcu_read_lock()
-critical section or from a bottom-half context, it is safe to introduce
-an RCU read-side critical section within it.
+This causes a memory leak of the mgmt_pending_cmd structure and its
+associated parameter data for each SSP command that completes.
 
-Multiple panic call stacks were observed when UL traffic was run
-in concurrency with device deregistration from different functions,
-pasting one sample for reference.
+Add the missing mgmt_pending_free(cmd) calls in both code paths to fix
+the memory leak. Also fix the same issue in set_advertising_complete().
 
-[496733.627565][T13385] Call trace:
-[496733.627570][T13385] bpf_prog_ce7c9180c3b128ea_cgroupskb_egres+0x24c/0x7f0
-[496733.627581][T13385] __cgroup_bpf_run_filter_skb+0x128/0x498
-[496733.627595][T13385] ip_finish_output+0xa4/0xf4
-[496733.627605][T13385] ip_output+0x100/0x1a0
-[496733.627613][T13385] ip_send_skb+0x68/0x100
-[496733.627618][T13385] udp_send_skb+0x1c4/0x384
-[496733.627625][T13385] udp_sendmsg+0x7b0/0x898
-[496733.627631][T13385] inet_sendmsg+0x5c/0x7c
-[496733.627639][T13385] __sys_sendto+0x174/0x1e4
-[496733.627647][T13385] __arm64_sys_sendto+0x28/0x3c
-[496733.627653][T13385] invoke_syscall+0x58/0x11c
-[496733.627662][T13385] el0_svc_common+0x88/0xf4
-[496733.627669][T13385] do_el0_svc+0x2c/0xb0
-[496733.627676][T13385] el0_svc+0x2c/0xa4
-[496733.627683][T13385] el0t_64_sync_handler+0x68/0xb4
-[496733.627689][T13385] el0t_64_sync+0x1a4/0x1a8
-
-Changes in v3:
-- Replaced WARN_ON() with  WARN_ON_ONCE(), as suggested by Willem de Bruijn.
-- Dropped legacy lines mistakenly pulled in from an outdated branch.
-
-Changes in v2:
-- Addressed review comments from Eric Dumazet
-- Used READ_ONCE() to prevent potential load/store tearing
-- Added skb_dst_dev_rcu() and used along with rcu_read_lock() in ip_output
-
-Signed-off-by: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250730105118.GA26100@hu-sharathv-hyd.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Keerthana: Backported the patch to v5.15-v6.1 ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs")
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h    |   12 ++++++++++++
- net/ipv4/ip_output.c |   16 +++++++++++-----
- 2 files changed, 23 insertions(+), 5 deletions(-)
+ net/bluetooth/mgmt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -554,6 +554,18 @@ static inline void skb_dst_update_pmtu_n
- 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 211951eb832af..ee2dd26b1b82b 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -1954,6 +1954,7 @@ static void set_ssp_complete(struct hci_dev *hdev, void *data, int err)
+ 		}
+ 
+ 		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_err);
++		mgmt_pending_free(cmd);
+ 		return;
+ 	}
+ 
+@@ -1972,6 +1973,7 @@ static void set_ssp_complete(struct hci_dev *hdev, void *data, int err)
+ 		sock_put(match.sk);
+ 
+ 	hci_update_eir_sync(hdev);
++	mgmt_pending_free(cmd);
  }
  
-+static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
-+{
-+	/* In the future, use rcu_dereference(dst->dev) */
-+	WARN_ON_ONCE(!rcu_read_lock_held());
-+	return READ_ONCE(dst->dev);
-+}
-+
-+static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
-+{
-+	return dst_dev_rcu(skb_dst(skb));
-+}
-+
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
- void dst_blackhole_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 			       struct sk_buff *skb, u32 mtu, bool confirm_neigh);
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -420,17 +420,23 @@ int ip_mc_output(struct net *net, struct
+ static int set_ssp_sync(struct hci_dev *hdev, void *data)
+@@ -6356,6 +6358,7 @@ static void set_advertising_complete(struct hci_dev *hdev, void *data, int err)
+ 		hci_dev_clear_flag(hdev, HCI_ADVERTISING);
  
- int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct net_device *dev = skb_dst(skb)->dev, *indev = skb->dev;
-+	struct net_device *dev, *indev = skb->dev;
-+	int ret_val;
-+
-+	rcu_read_lock();
-+	dev = skb_dst_dev_rcu(skb);
+ 	settings_rsp(cmd, &match);
++	mgmt_pending_free(cmd);
  
- 	IP_UPD_PO_STATS(net, IPSTATS_MIB_OUT, skb->len);
+ 	new_settings(hdev, match.sk);
  
- 	skb->dev = dev;
- 	skb->protocol = htons(ETH_P_IP);
- 
--	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
--			    net, sk, skb, indev, dev,
--			    ip_finish_output,
--			    !(IPCB(skb)->flags & IPSKB_REROUTED));
-+	ret_val = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-+				net, sk, skb, indev, dev,
-+				ip_finish_output,
-+				!(IPCB(skb)->flags & IPSKB_REROUTED));
-+	rcu_read_unlock();
-+	return ret_val;
- }
- EXPORT_SYMBOL(ip_output);
- 
+-- 
+2.51.0
+
 
 
 
