@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIQLHXpgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:34 +0100
+	id aM0PC6Fbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F147FE7E9D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44179E752B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 565E2316A152
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C624300F9F0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B505541C300;
-	Wed,  4 Feb 2026 14:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E494410D10;
+	Wed,  4 Feb 2026 14:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYLZ9SWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDmXcojB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7862F41C2FD;
-	Wed,  4 Feb 2026 14:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0207B280A3B;
+	Wed,  4 Feb 2026 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216917; cv=none; b=IyrgqPUsibMQfRbv9xeLxl27H38eFi+0Jd0myLeDObKG5tHUqiRISJFzORq/ApeKydtDDKHmDPgJqUYvX3nSdh8FPxaEAOp1LQZIaDXFQA/u4ZDp3FFj9YMFMCaTIASLsCX3MSLRRuWDxrB1NQKBx7iPmOjt7DL9h/3VVR/8ju4=
+	t=1770216271; cv=none; b=dp0KuMlAAiY6T5yd0bpZyCnUrGqdwpoj/xfw1uWHDsjQvnUjwoNKql7GhBj1htrnA/BtEl8nLpLoXe+HLUd+iaaxOGtW04qBunNzQV4YyIJ7t1U+CCefLA7Dx/iy2eKMuemBLVsR+qEmHHO39iebxoDrpT3+M+LsHPoSM6CXru0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216917; c=relaxed/simple;
-	bh=0UXGJoG/14yEXZZzUpwQzTbjuhbfMtoFDd8VIpsChqg=;
+	s=arc-20240116; t=1770216271; c=relaxed/simple;
+	bh=5Mki0E4D5JZXJW37KRC+E9Nvs8QzQQZkr6pL7SBorrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzvrYHasMaaE0/HmsB4xCDFTxFkxi36aecfu846yq5zcWuC151Lq48czafOrv0MChH1gWUQV09idSrX+SURtHy/X13oHAJeHAZHOo6lz0uhM3ixkzzaePXeaGydXM1CgDzI/F5Hr81L4EZY+5db3mld1dKUI+M0wwY/4e3FqcFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYLZ9SWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21F6C4CEF7;
-	Wed,  4 Feb 2026 14:55:16 +0000 (UTC)
+	 MIME-Version; b=hqe8ZrEv6r1K9sJzYdupJBXHq8M2FwueiWeQtZlVlrACRg5pTzYQLnena0l+2YoL/xvb5GJouJEBFGA4/6NgG9JVgREhfS02BH0qqu449k9qd97DO3SUA25OclxUgutbrg9IF+1RjCa8GiZEhfOlAL1Ualm/vuGbrzGv0rUAQhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDmXcojB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CBEC4CEF7;
+	Wed,  4 Feb 2026 14:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216917;
-	bh=0UXGJoG/14yEXZZzUpwQzTbjuhbfMtoFDd8VIpsChqg=;
+	s=korg; t=1770216270;
+	bh=5Mki0E4D5JZXJW37KRC+E9Nvs8QzQQZkr6pL7SBorrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYLZ9SWJWgs3AxUqeMrWSdjtpEeVQCnWET/O19iJCHIFuF1GsylSzk0qpBNSewr8y
-	 IDzjyxRKJkqG7fG0MN/AMP72KtmlyRWxtnEXBzT62Y9eL/W/lMaZf8E73O0tBS1dsc
-	 THhf/uVtIv+BCkhqUMW+G6vn9gjuKzZ8unyDjfwM=
+	b=nDmXcojBvpCh1kdD0gxvhFMJZU3O4gM4fCVm/x5Km/Yt1M3hWCXJ6KULYmg3yn7qL
+	 d1IV+dpqyqaR6p7agNypuarvTw1kDLymx3aeresv9rFKweOay0EjpEbM/jQQO+bHAG
+	 Sxf/UmarIOu4jki+XQxfnMITywQR80B7VKJTas2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/206] amd-xgbe: avoid misleading per-packet error log
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 039/161] dmaengine: lpc18xx-dmamux: fix device leak on route allocation
 Date: Wed,  4 Feb 2026 15:38:22 +0100
-Message-ID: <20260204143900.771281827@linuxfoundation.org>
+Message-ID: <20260204143853.169514699@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213613-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213418-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,59 +90,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: F147FE7E9D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 44179E752B
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c158f985cf6c2c36c99c4f67af2ff3f5ebe09f8f ]
+commit d4d63059dee7e7cae0c4d9a532ed558bc90efb55 upstream.
 
-On the receive path, packet can be damaged because of buffer
-overflow in Rx FIFO. Avoid misleading per-packet error log when
-packet->errors is set, this can flood the log. Instead, rely on the
-standard rtnl_link_stats64 stats.
+Make sure to drop the reference taken when looking up the DMA mux
+platform device during route allocation.
 
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260114163037.2062606-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
+Cc: stable@vger.kernel.org	# 4.3
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251117161258.10679-8-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/dma/lpc18xx-dmamux.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 32397517807b0..00312543f2267 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2112,7 +2112,7 @@ static void xgbe_get_stats64(struct net_device *netdev,
- 	s->multicast = pstats->rxmulticastframes_g;
- 	s->rx_length_errors = pstats->rxlengtherror;
- 	s->rx_crc_errors = pstats->rxcrcerror;
--	s->rx_fifo_errors = pstats->rxfifooverflow;
-+	s->rx_over_errors = pstats->rxfifooverflow;
+--- a/drivers/dma/lpc18xx-dmamux.c
++++ b/drivers/dma/lpc18xx-dmamux.c
+@@ -55,30 +55,31 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
+ 	unsigned long flags;
+ 	unsigned mux;
++	int ret = -EINVAL;
  
- 	s->tx_packets = pstats->txframecount_gb;
- 	s->tx_bytes = pstats->txoctetcount_gb;
-@@ -2566,9 +2566,6 @@ static int xgbe_rx_poll(struct xgbe_channel *channel, int budget)
- 			goto read_again;
+ 	if (dma_spec->args_count != 3) {
+ 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
  
- 		if (error || packet->errors) {
--			if (packet->errors)
--				netif_err(pdata, rx_err, netdev,
--					  "error in received packet\n");
- 			dev_kfree_skb(skb);
- 			goto next_packet;
- 		}
--- 
-2.51.0
-
+ 	mux = dma_spec->args[0];
+ 	if (mux >= dmamux->dma_master_requests) {
+ 		dev_err(&pdev->dev, "invalid mux number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
+ 		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
+ 			dma_spec->args[1]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	/* The of_node_put() will be done in the core for the node */
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "can't get dma master\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	spin_lock_irqsave(&dmamux->lock, flags);
+@@ -87,7 +88,8 @@ static void *lpc18xx_dmamux_reserve(stru
+ 		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
+ 			mux, mux, dmamux->muxes[mux].value);
+ 		of_node_put(dma_spec->np);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 
+ 	dmamux->muxes[mux].busy = true;
+@@ -104,7 +106,14 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
+ 		dmamux->muxes[mux].value, mux);
+ 
++	put_device(&pdev->dev);
++
+ 	return &dmamux->muxes[mux];
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ 
+ static int lpc18xx_dmamux_probe(struct platform_device *pdev)
 
 
 
