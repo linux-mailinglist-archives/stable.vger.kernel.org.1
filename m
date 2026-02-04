@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-213646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBhVAVNjg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:18:43 +0100
+	id OP6UDNdpg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:46:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEE9E8415
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:18:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8139DE954F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B136131BDBA1
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A466312588D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245BC41C2F7;
-	Wed,  4 Feb 2026 14:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1E9423163;
+	Wed,  4 Feb 2026 15:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNPppQb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qksHCqLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC58E27F749;
-	Wed,  4 Feb 2026 14:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8030442315E;
+	Wed,  4 Feb 2026 15:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217032; cv=none; b=nsy9C/L2zqvV5ygJ5oEBTiGlRU4obiTyjJUeOp63K70tkb9uIM5CLcnV8F7qumFwd9xPi4PurqMoDinajGzKokuu2FasdDuSenpV+qIOUjhMhpGHyqK6fUv89e2G/7G1HN0OnTyKtnSquFDkj4K0WuJzoRZia8rwUAEDaxSAE28=
+	t=1770218021; cv=none; b=i6QV0zXvi3NMPt0jJNVBgIebWxdK4VT+fFdGQtu+enegMmWELBhwZoRMJcmsM99VDMFgucr+nETCkwIi/eIDLCspKbBEH6aKqT0hr4nqBFbk+tYpxYGiBfWBg8RgUjZLqZvXF4n8KZDXf8IZC37ivQgE+mfrBo57PmJbCjY7PWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217032; c=relaxed/simple;
-	bh=aTyaG2fkwmVGwuALI7F3s5TUBPvSRw1LXp4Jl6g4pbk=;
+	s=arc-20240116; t=1770218021; c=relaxed/simple;
+	bh=Vah/wqgHkRuLec5x0zMoEuoyFXhoQbqncVLC93tBLzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBDPA1/nbvUlK5PKaABWfOM7XI+D7Ii/iBWa8+uZP0QfLNLylH8trXTbe3Wg4IixmcRRcQnmgV9G81dqdeQGqcoB4Hm1Y42vB0wE/TB5bR1BNaIx5yp+W8Uucq/EQYskAEsnHpwI5mE0mmyc7eOuAi4L/mhcYG6oSMBHh0A5Rpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNPppQb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537D7C4CEF7;
-	Wed,  4 Feb 2026 14:57:12 +0000 (UTC)
+	 MIME-Version; b=BFyd5ukmukyW6pexDTU6uBHjLR+rHl50afBnv51v5/Ea0nxCX/CCzy+8851kg0OfvNpmD7r/f0EwFfCA+wwCRGPKlCt2Uej7z7qCJ7XNXeCF2gMeAoBRvLLDFstyGpw5IqcwI6DD4XyEFQ6LkVCxBr5I/049DszP+zcRIt4ek5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qksHCqLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE8DC4CEF7;
+	Wed,  4 Feb 2026 15:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217032;
-	bh=aTyaG2fkwmVGwuALI7F3s5TUBPvSRw1LXp4Jl6g4pbk=;
+	s=korg; t=1770218021;
+	bh=Vah/wqgHkRuLec5x0zMoEuoyFXhoQbqncVLC93tBLzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iNPppQb97DdYqGiCTwppaVsnfY6FHcyh73EhX2P6hu2kwnKRkMgRlistN4iWldxwm
-	 l130mBbg3ewVc0rtwNWAEfZKqDvXSHUOqsIC7yBme81HvnRc21NZapHL+bIdnfsiHu
-	 0JusxtxqCQQKXGeIg7wlCPrRFM+lzJnOaF6Of1yU=
+	b=qksHCqLOI3+hU2XhFxigfO068iGWfKx4VnyFMkIioKu1wkxRjcrGI/tSA+qo0RxeH
+	 cxZLHSkYbZbgSW+bbSswHTTpTjmS73TZ1ZRL+oJYxmqWQgaNyXfZG4SAU5c1/mJwS0
+	 AKLArbqJCXsgbAPIb81YWEVZ2n5LxazBM5Pk1Quo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Yotam Gigi <yotam.gi@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/206] net/sched: act_ife: avoid possible NULL deref
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Karsten Hohmeier <linux@hohmatik.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 161/280] ALSA: ctxfi: Fix potential OOB access in audio mixer handling
 Date: Wed,  4 Feb 2026 15:38:55 +0100
-Message-ID: <20260204143901.955954580@linuxfoundation.org>
+Message-ID: <20260204143915.420466638@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213646-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,gmail.com,mojatatu.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213939-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,5cf914f193dffde3bd3c];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 5BEE9E8415
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,hohmatik.de:email]
+X-Rspamd-Queue-Id: 8139DE954F
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 27880b0b0d35ad1c98863d09788254e36f874968 ]
+commit 61006c540cbdedea83b05577dc7fb7fa18fe1276 upstream.
 
-tcf_ife_encode() must make sure ife_encode() does not return NULL.
+In the audio mixer handling code of ctxfi driver, the conf field is
+used as a kind of loop index, and it's referred in the index callbacks
+(amixer_index() and sum_index()).
 
-syzbot reported:
+As spotted recently by fuzzers, the current code causes OOB access at
+those functions.
+| UBSAN: array-index-out-of-bounds in /build/reproducible-path/linux-6.17.8/sound/pci/ctxfi/ctamixer.c:347:48
+| index 8 is out of range for type 'unsigned char [8]'
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:ife_tlv_meta_encode+0x41/0xa0 net/ife/ife.c:166
-CPU: 3 UID: 0 PID: 8990 Comm: syz.0.696 Not tainted syzkaller #0 PREEMPT(full)
-Call Trace:
- <TASK>
-  ife_encode_meta_u32+0x153/0x180 net/sched/act_ife.c:101
-  tcf_ife_encode net/sched/act_ife.c:841 [inline]
-  tcf_ife_act+0x1022/0x1de0 net/sched/act_ife.c:877
-  tc_act include/net/tc_wrapper.h:130 [inline]
-  tcf_action_exec+0x1c0/0xa20 net/sched/act_api.c:1152
-  tcf_exts_exec include/net/pkt_cls.h:349 [inline]
-  mall_classify+0x1a0/0x2a0 net/sched/cls_matchall.c:42
-  tc_classify include/net/tc_wrapper.h:197 [inline]
-  __tcf_classify net/sched/cls_api.c:1764 [inline]
-  tcf_classify+0x7f2/0x1380 net/sched/cls_api.c:1860
-  multiq_classify net/sched/sch_multiq.c:39 [inline]
-  multiq_enqueue+0xe0/0x510 net/sched/sch_multiq.c:66
-  dev_qdisc_enqueue+0x45/0x250 net/core/dev.c:4147
-  __dev_xmit_skb net/core/dev.c:4262 [inline]
-  __dev_queue_xmit+0x2998/0x46c0 net/core/dev.c:4798
+After the analysis, the cause was found to be the lack of the proper
+(re-)initialization of conj field.
 
-Fixes: 295a6e06d21e ("net/sched: act_ife: Change to use ife module")
-Reported-by: syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6970d61d.050a0220.706b.0010.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Yotam Gigi <yotam.gi@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260121133724.3400020-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch addresses those OOB accesses by adding the proper
+initializations of the loop indices.
+
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Tested-by: Karsten Hohmeier <linux@hohmatik.de>
+Closes: https://bugs.debian.org/1121535
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/aSk8KJI35H7gFru6@eldamar.lan/
+Link: https://patch.msgid.link/20260119133212.189129-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ife.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/pci/ctxfi/ctamixer.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index a8a5dbd7221b0..1e29e9ec228e5 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -820,6 +820,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 	/* could be stupid policy setup or mtu config
- 	 * so lets be conservative.. */
- 	if ((action == TC_ACT_SHOT) || exceed_mtu) {
-+drop:
- 		qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
- 		return TC_ACT_SHOT;
- 	}
-@@ -828,6 +829,8 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 		skb_push(skb, skb->dev->hard_header_len);
+--- a/sound/pci/ctxfi/ctamixer.c
++++ b/sound/pci/ctxfi/ctamixer.c
+@@ -205,6 +205,7 @@ static int amixer_rsc_init(struct amixer
  
- 	ife_meta = ife_encode(skb, metalen);
-+	if (!ife_meta)
-+		goto drop;
+ 	/* Set amixer specific operations */
+ 	amixer->rsc.ops = &amixer_basic_rsc_ops;
++	amixer->rsc.conj = 0;
+ 	amixer->ops = &amixer_ops;
+ 	amixer->input = NULL;
+ 	amixer->sum = NULL;
+@@ -369,6 +370,7 @@ static int sum_rsc_init(struct sum *sum,
+ 		return err;
  
- 	spin_lock(&ife->tcf_lock);
+ 	sum->rsc.ops = &sum_basic_rsc_ops;
++	sum->rsc.conj = 0;
  
-@@ -843,8 +846,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 		if (err < 0) {
- 			/* too corrupt to keep around if overwritten */
- 			spin_unlock(&ife->tcf_lock);
--			qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
--			return TC_ACT_SHOT;
-+			goto drop;
- 		}
- 		skboff += err;
- 	}
--- 
-2.51.0
-
+ 	return 0;
+ }
 
 
 
