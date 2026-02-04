@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOKqBAdtg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:00:07 +0100
+	id OAIiJhhlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4655DE9B98
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:00:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEBDE88D4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AD783263F4D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAA76313F962
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C3A29993F;
-	Wed,  4 Feb 2026 15:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCA441324E;
+	Wed,  4 Feb 2026 15:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYlub55C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUz4QHzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F3918859B;
-	Wed,  4 Feb 2026 15:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D92922332E;
+	Wed,  4 Feb 2026 15:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218964; cv=none; b=tx17vmVEhF7fnc4QC2YV6X6S++vR8u1wn3LB+VZ4HUH8kNG0H13uBm9Huw4QF6YsWQ0xeRakzV+RbL+te0wdgoG6R7nRKRoXJ50KUYYxKHgMYyJ7QsqgtfV5VemN1hQ+IBmQTFDZEmhMMJiJpt0hWleUaHcFqTv/Ij/gSbhV9UY=
+	t=1770218115; cv=none; b=g34MJEs+tQqppc+YoHHLFfn2ay2vD4Omjh/BrBH0IT4SXl1+1KQftXcUvuOx7wKeM6QAg11do9B6raAKvwY49lxKEDGNGE5UX6WQDwchIKicr+UfkTyYxIM866GFn5+Qa9P7qiTpYzsZKhKo+itJsSL9A2wjSE2Eu35G0iY73Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218964; c=relaxed/simple;
-	bh=K5qv9jUFbjIcEMIhOX7CfdUpR7qCTEWCZhakmhHY+kk=;
+	s=arc-20240116; t=1770218115; c=relaxed/simple;
+	bh=+bBMKIGZZuWgvb8B1s8nhoGNJmiRilHJ2eadZIKdkK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwbGBTeGGqIUnCUAP0vMcUfdjec9V/JtT1b3UwcG/51Ua2ux/BTdNlU/Bbf9By6IZgAfUwgajwMoysJiq1NLTS0ggZbgPPg4xGWqmnuq1aHQDtmqfxF6IPnOyI4kP3hpFOYtIJaEhq8zSgFkRQ9s2CmiUqdP+stWk9fQCax8iuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYlub55C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75DCC4CEF7;
-	Wed,  4 Feb 2026 15:29:23 +0000 (UTC)
+	 MIME-Version; b=Kg++bt/fk5tPo/+feApD3lMVeWFQ5EIZzlRi9AiCuddsvWttx2RkXBy/UdS81bHQk6M8VO+Y59aaq+hi2cOElPA1QCjlsu91av6QRhEMJ5LPBT8THuWY7YIm57DTANg7iajn8fc2tshw+4HxcY2KcQ2Skd5ubEObnfYK8cHXNxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUz4QHzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE56C4CEF7;
+	Wed,  4 Feb 2026 15:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218964;
-	bh=K5qv9jUFbjIcEMIhOX7CfdUpR7qCTEWCZhakmhHY+kk=;
+	s=korg; t=1770218115;
+	bh=+bBMKIGZZuWgvb8B1s8nhoGNJmiRilHJ2eadZIKdkK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYlub55C1LSzZB/pibe0nzoZzc4u8ONzoNAiMqXOr47OO0FxNSBr4yD+C04XxAVSn
-	 YyBvoiTAzNBNgXwIz/8hHCMx0tMnx994hAE7sxevF8gyEogSBEEkS3+Mgl6T5OiKnC
-	 ZxpeN8sspTwYEyfvI9K45559AIk+Uf11II9TmZ+Q=
+	b=YUz4QHzEQvzS0ybp/U7ZHTOsK/TKDPwECZqR+tw5+zYXUNEk6i/sXEFpKhjC4zVvm
+	 Q2GkJP3nq/7XKLF3tokK7lIa6h0EJkmX/ctqjUdSj7mQ3tCuLmY8v7TUG/ea4VqcsF
+	 2WKnNQWrAP5gaffHSh3np+XMtdgLh8XXKjdLWaiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 008/122] net: bcmasp: fix early exit leak with fixed phy
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 216/280] drm/amdgpu/soc21: fix xclk for APUs
 Date: Wed,  4 Feb 2026 15:39:50 +0100
-Message-ID: <20260204143852.164798957@linuxfoundation.org>
+Message-ID: <20260204143917.381877038@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,79 +68,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214220-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213968-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4655DE9B98
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: ECEBDE88D4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 6de4436bf369e1444606445e4cd5df5bcfc74b48 ]
+commit e7fbff9e7622a00c2b53cb14df481916f0019742 upstream.
 
-We are not deregistering the fixed phy link when hitting the early
-exit condition. Add the correct early exit sequence.
+The reference clock is supposed to be 100Mhz, but it
+appears to actually be slightly lower (99.81Mhz).
 
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260122194001.1098859-1-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/14451
+Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 637fee3954d4bd509ea9d95ad1780fc174489860)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/soc21.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index b9973956c4809..ceb6c11431dd9 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -1261,7 +1261,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
- 		netdev_err(intf->ndev, "invalid PHY mode: %s for port %d\n",
- 			   phy_modes(intf->phy_interface), intf->port);
- 		ret = -EINVAL;
--		goto err_free_netdev;
-+		goto err_deregister_fixed_link;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -202,7 +202,13 @@ static u32 soc21_get_config_memsize(stru
  
- 	ret = of_get_ethdev_address(ndev_dn, ndev);
-@@ -1286,6 +1286,9 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ static u32 soc21_get_xclk(struct amdgpu_device *adev)
+ {
+-	return adev->clock.spll.reference_freq;
++	u32 reference_clock = adev->clock.spll.reference_freq;
++
++	/* reference clock is actually 99.81 Mhz rather than 100 Mhz */
++	if ((adev->flags & AMD_IS_APU) && reference_clock == 10000)
++		return 9981;
++
++	return reference_clock;
+ }
  
- 	return intf;
  
-+err_deregister_fixed_link:
-+	if (of_phy_is_fixed_link(ndev_dn))
-+		of_phy_deregister_fixed_link(ndev_dn);
- err_free_netdev:
- 	free_netdev(ndev);
- err:
--- 
-2.51.0
-
 
 
 
