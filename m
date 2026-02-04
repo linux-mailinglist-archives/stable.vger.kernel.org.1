@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-214066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8P9eON1tg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:41 +0100
+	id gBkHLftrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC0BE9CB1
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1523FE99B9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0838330A9153
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF9DA31FEF99
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703ED41B367;
-	Wed,  4 Feb 2026 15:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B86423A83;
+	Wed,  4 Feb 2026 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nsS9he/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqdS01xC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B9040FD81;
-	Wed,  4 Feb 2026 15:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349294218AB;
+	Wed,  4 Feb 2026 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218449; cv=none; b=DAOgfRFKaiGshIS5Au8RixxpVGS7Mhv49J+nSAIwqIdDE9Xz6gazdKW/KT9yc5u3yW60f02P3STBsxJX2In4XOGgXQTyGy2fSa/i/QuOO7VGWh2airYgcJq81pb+lG8Z33rxPBQLCJIx19zgrgA93DAlBZ5yfUlvpPEzncwYH98=
+	t=1770218619; cv=none; b=dnLu/Nfgqbjr+EJpMXRzWgUjeL0EOqbsFF8I0F4a+X//WIjmYdyAcUfhsoHdltE369Lnk9BuixiVfdfVKXuQClthmLFEfX0niFdyU+6eGEkIUy86QNxLc1k7JSf7SZzZrX6EBnrWqMOeQvc/DDYZo5zVYX7oXKntJeCkal+DoLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218449; c=relaxed/simple;
-	bh=26jhqweaYrU6H/V/7isz4ylCuMaAt9R5Vaqq0O9rAgo=;
+	s=arc-20240116; t=1770218619; c=relaxed/simple;
+	bh=4h670GeaaOa2gaXJIEDuiDGxm5BeVr4B6NIBKEXTBdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7VkRj4PDe42BXQrjtGlXEQEI2XS6Rd5+Vl/vsolEr/yrW1hHI74buiPZQDsNLQ8w3qAYKS2EFi/fSWxLHNpVJW8cGSYi1dUIot3gT1aWFSTVDWl81O5RnqQFdZ56HOZYf3svP9V3F9dhvW6lg8JhwbDoukusaQbBBXKNbJGLlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nsS9he/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31B4C4CEF7;
-	Wed,  4 Feb 2026 15:20:47 +0000 (UTC)
+	 MIME-Version; b=ONSn8VcPMr9LfrqQQ5aR5CW295ayWhmdWiLv7jatYZfo+8OBSu87sZ5nsVcx2VKEnBxthOaXF+VEhZdLKnGlXcNQhW514+7y6XotSP56irDHTBv5jQxa5Ha61IgbXXZcQzzpT15BPbWNbV7c71lirP8tPpyMnAjcREZ5inP4Amg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqdS01xC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99599C4CEF7;
+	Wed,  4 Feb 2026 15:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218448;
-	bh=26jhqweaYrU6H/V/7isz4ylCuMaAt9R5Vaqq0O9rAgo=;
+	s=korg; t=1770218619;
+	bh=4h670GeaaOa2gaXJIEDuiDGxm5BeVr4B6NIBKEXTBdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0nsS9he/HwPrvdZ14Ymc17FUqS7ysQrN3AiMXfSBUmZ0UW9/ZoIGa6BcxeA7TPfnh
-	 HZ/Z36YDWjuZeDdWfQA59VmGN855ef1tvs4V1mRba0mQ6EwwzlCLDkV3tVCsViG2LU
-	 5BvX40ah44xN9qxmdscCAejyQCFqD/UN9OyinWug=
+	b=cqdS01xCpQ2/cwEjy2bNju2JZ1AU8qruCU2G6nqzRtm4gj+JN3paIebJ1zU+p6o2x
+	 IAJY3Iw0/73ESEt7hnhuFqFrJ3epAgfA9Z6QaXRCTgfDmonYKorfho7QDvBlV8yOX6
+	 xIrPwJAR9C8H3E0Th8gVrOr6aDI/FhMShbQpxBM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot <syzkaller@googlegroups.com>,
+	Kery Qi <qikeyu2017@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/72] bonding: annotate data-races around slave->last_rx
+Subject: [PATCH 6.12 11/87] net: wwan: t7xx: fix potential skb->frags overflow in RX path
 Date: Wed,  4 Feb 2026 15:40:09 +0100
-Message-ID: <20260204143845.841095243@linuxfoundation.org>
+Message-ID: <20260204143847.319238338@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,208 +67,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214116-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214066-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,googlegroups.com:email]
-X-Rspamd-Queue-Id: DDC0BE9CB1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1523FE99B9
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-[ Upstream commit f6c3665b6dc53c3ab7d31b585446a953a74340ef ]
+[ Upstream commit f0813bcd2d9d97fdbdf2efb9532ab03ae92e99e6 ]
 
-slave->last_rx and slave->target_last_arp_rx[...] can be read and written
-locklessly. Add READ_ONCE() and WRITE_ONCE() annotations.
+When receiving data in the DPMAIF RX path,
+the t7xx_dpmaif_set_frag_to_skb() function adds
+page fragments to an skb without checking if the number of
+fragments has exceeded MAX_SKB_FRAGS. This could lead to a buffer overflow
+in skb_shinfo(skb)->frags[] array, corrupting adjacent memory and
+potentially causing kernel crashes or other undefined behavior.
 
-syzbot reported:
+This issue was identified through static code analysis by comparing with a
+similar vulnerability fixed in the mt76 driver commit b102f0c522cf ("mt76:
+fix array overflow on receiving too many fragments for a packet").
 
-BUG: KCSAN: data-race in bond_rcv_validate / bond_rcv_validate
+The vulnerability could be triggered if the modem firmware sends packets
+with excessive fragments. While under normal protocol conditions (MTU 3080
+bytes, BAT buffer 3584 bytes),
+a single packet should not require additional
+fragments, the kernel should not blindly trust firmware behavior.
+Malicious, buggy, or compromised firmware could potentially craft packets
+with more fragments than the kernel expects.
 
-write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 1:
-  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
-  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
-  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
-  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
-  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
-  netif_receive_skb_internal net/core/dev.c:6351 [inline]
-  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
-...
+Fix this by adding a bounds check before calling skb_add_rx_frag() to
+ensure nr_frags does not exceed MAX_SKB_FRAGS.
 
-write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 0:
-  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
-  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
-  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
-  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
-  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
-  netif_receive_skb_internal net/core/dev.c:6351 [inline]
-  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
-  br_netif_receive_skb net/bridge/br_input.c:30 [inline]
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-...
+The check must be performed before unmapping to avoid a page leak
+and double DMA unmap during device teardown.
 
-value changed: 0x0000000100005365 -> 0x0000000100005366
-
-Fixes: f5b2b966f032 ("[PATCH] bonding: Validate probe replies in ARP monitor")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Link: https://patch.msgid.link/20260122162914.2299312-1-edumazet@google.com
+Fixes: d642b012df70a ("net: wwan: t7xx: Add data path interface")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Link: https://patch.msgid.link/20260122170401.1986-2-qikeyu2017@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c    | 18 ++++++++++--------
- drivers/net/bonding/bond_options.c |  8 ++++----
- include/net/bonding.h              | 13 +++++++------
- 3 files changed, 21 insertions(+), 18 deletions(-)
+ drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 9385c3ac0c83c..4373e300879d9 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3137,8 +3137,8 @@ static void bond_validate_arp(struct bonding *bond, struct slave *slave, __be32
- 			   __func__, &sip);
- 		return;
- 	}
--	slave->last_rx = jiffies;
--	slave->target_last_arp_rx[i] = jiffies;
-+	WRITE_ONCE(slave->last_rx, jiffies);
-+	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
- }
- 
- static int bond_arp_rcv(const struct sk_buff *skb, struct bonding *bond,
-@@ -3357,8 +3357,8 @@ static void bond_validate_na(struct bonding *bond, struct slave *slave,
- 			  __func__, saddr);
- 		return;
- 	}
--	slave->last_rx = jiffies;
--	slave->target_last_arp_rx[i] = jiffies;
-+	WRITE_ONCE(slave->last_rx, jiffies);
-+	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
- }
- 
- static int bond_na_rcv(const struct sk_buff *skb, struct bonding *bond,
-@@ -3428,7 +3428,7 @@ int bond_rcv_validate(const struct sk_buff *skb, struct bonding *bond,
- 		    (slave_do_arp_validate_only(bond) && is_ipv6) ||
- #endif
- 		    !slave_do_arp_validate_only(bond))
--			slave->last_rx = jiffies;
-+			WRITE_ONCE(slave->last_rx, jiffies);
- 		return RX_HANDLER_ANOTHER;
- 	} else if (is_arp) {
- 		return bond_arp_rcv(skb, bond, slave);
-@@ -3496,7 +3496,7 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
- 
- 		if (slave->link != BOND_LINK_UP) {
- 			if (bond_time_in_interval(bond, last_tx, 1) &&
--			    bond_time_in_interval(bond, slave->last_rx, 1)) {
-+			    bond_time_in_interval(bond, READ_ONCE(slave->last_rx), 1)) {
- 
- 				bond_propose_link_state(slave, BOND_LINK_UP);
- 				slave_state_changed = 1;
-@@ -3520,8 +3520,10 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
- 			 * when the source ip is 0, so don't take the link down
- 			 * if we don't know our ip yet
- 			 */
--			if (!bond_time_in_interval(bond, last_tx, bond->params.missed_max) ||
--			    !bond_time_in_interval(bond, slave->last_rx, bond->params.missed_max)) {
-+			if (!bond_time_in_interval(bond, last_tx,
-+						   bond->params.missed_max) ||
-+			    !bond_time_in_interval(bond, READ_ONCE(slave->last_rx),
-+						   bond->params.missed_max)) {
- 
- 				bond_propose_link_state(slave, BOND_LINK_DOWN);
- 				slave_state_changed = 1;
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index a2fa068193e3b..5a2a935945c4c 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1124,7 +1124,7 @@ static void _bond_options_arp_ip_target_set(struct bonding *bond, int slot,
- 
- 	if (slot >= 0 && slot < BOND_MAX_ARP_TARGETS) {
- 		bond_for_each_slave(bond, slave, iter)
--			slave->target_last_arp_rx[slot] = last_rx;
-+			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
- 		targets[slot] = target;
- 	}
- }
-@@ -1193,8 +1193,8 @@ static int bond_option_arp_ip_target_rem(struct bonding *bond, __be32 target)
- 	bond_for_each_slave(bond, slave, iter) {
- 		targets_rx = slave->target_last_arp_rx;
- 		for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
--			targets_rx[i] = targets_rx[i+1];
--		targets_rx[i] = 0;
-+			WRITE_ONCE(targets_rx[i], READ_ONCE(targets_rx[i+1]));
-+		WRITE_ONCE(targets_rx[i], 0);
- 	}
- 	for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
- 		targets[i] = targets[i+1];
-@@ -1349,7 +1349,7 @@ static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
- 
- 	if (slot >= 0 && slot < BOND_MAX_NS_TARGETS) {
- 		bond_for_each_slave(bond, slave, iter) {
--			slave->target_last_arp_rx[slot] = last_rx;
-+			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
- 			slave_set_ns_maddr(bond, slave, target, &targets[slot]);
- 		}
- 		targets[slot] = *target;
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 95f67b308c19a..9fb40a5920209 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -519,13 +519,14 @@ static inline int bond_is_ip6_target_ok(struct in6_addr *addr)
- static inline unsigned long slave_oldest_target_arp_rx(struct bonding *bond,
- 						       struct slave *slave)
+diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+index 7a9c09cd4fdcf..6b0df637afeb8 100644
+--- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
++++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+@@ -394,6 +394,7 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
+ 				       struct sk_buff *skb)
  {
-+	unsigned long tmp, ret = READ_ONCE(slave->target_last_arp_rx[0]);
- 	int i = 1;
--	unsigned long ret = slave->target_last_arp_rx[0];
--
--	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++)
--		if (time_before(slave->target_last_arp_rx[i], ret))
--			ret = slave->target_last_arp_rx[i];
+ 	unsigned long long data_bus_addr, data_base_addr;
++	struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 	struct device *dev = rxq->dpmaif_ctrl->dev;
+ 	struct dpmaif_bat_page *page_info;
+ 	unsigned int data_len;
+@@ -401,18 +402,22 @@ static int t7xx_dpmaif_set_frag_to_skb(const struct dpmaif_rx_queue *rxq,
  
-+	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++) {
-+		tmp = READ_ONCE(slave->target_last_arp_rx[i]);
-+		if (time_before(tmp, ret))
-+			ret = tmp;
-+	}
- 	return ret;
- }
+ 	page_info = rxq->bat_frag->bat_skb;
+ 	page_info += t7xx_normal_pit_bid(pkt_info);
+-	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
  
-@@ -535,7 +536,7 @@ static inline unsigned long slave_last_rx(struct bonding *bond,
- 	if (bond->params.arp_all_targets == BOND_ARP_TARGETS_ALL)
- 		return slave_oldest_target_arp_rx(bond, slave);
+ 	if (!page_info->page)
+ 		return -EINVAL;
  
--	return slave->last_rx;
-+	return READ_ONCE(slave->last_rx);
- }
++	if (shinfo->nr_frags >= MAX_SKB_FRAGS)
++		return -EINVAL;
++
++	dma_unmap_page(dev, page_info->data_bus_addr, page_info->data_len, DMA_FROM_DEVICE);
++
+ 	data_bus_addr = le32_to_cpu(pkt_info->pd.data_addr_h);
+ 	data_bus_addr = (data_bus_addr << 32) + le32_to_cpu(pkt_info->pd.data_addr_l);
+ 	data_base_addr = page_info->data_bus_addr;
+ 	data_offset = data_bus_addr - data_base_addr;
+ 	data_offset += page_info->offset;
+ 	data_len = FIELD_GET(PD_PIT_DATA_LEN, le32_to_cpu(pkt_info->header));
+-	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page_info->page,
++	skb_add_rx_frag(skb, shinfo->nr_frags, page_info->page,
+ 			data_offset, data_len, page_info->data_len);
  
- static inline void slave_update_last_tx(struct slave *slave)
+ 	page_info->page = NULL;
 -- 
 2.51.0
 
