@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKR3HN1lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:33 +0100
+	id MIQLHXpgg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175B8E8B1C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F147FE7E9D
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9E1F23068558
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 565E2316A152
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699B128853E;
-	Wed,  4 Feb 2026 15:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B505541C300;
+	Wed,  4 Feb 2026 14:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5e8bymi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYLZ9SWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE2D2D5926;
-	Wed,  4 Feb 2026 15:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7862F41C2FD;
+	Wed,  4 Feb 2026 14:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217930; cv=none; b=Iprg0DAFxYJ/9EzMWxmxXnrwUvvVX/xRV1lURdEAuRQjhmzrBwIaUiBrmwHyaHYj0s//jNcMh6TOlJDgPZGUVwUsFr2Ciwzt71+nYoCsPyQAUtnRShoqT68ID1KbGgoAU5oJtV93UXUi/7KHZp3NkcVMONDBLrVjPxhC+0oqq3c=
+	t=1770216917; cv=none; b=IyrgqPUsibMQfRbv9xeLxl27H38eFi+0Jd0myLeDObKG5tHUqiRISJFzORq/ApeKydtDDKHmDPgJqUYvX3nSdh8FPxaEAOp1LQZIaDXFQA/u4ZDp3FFj9YMFMCaTIASLsCX3MSLRRuWDxrB1NQKBx7iPmOjt7DL9h/3VVR/8ju4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217930; c=relaxed/simple;
-	bh=sJF0iGo1Hjwgt3SH4mGLIUzR71OquTRRgkx3amdA0U8=;
+	s=arc-20240116; t=1770216917; c=relaxed/simple;
+	bh=0UXGJoG/14yEXZZzUpwQzTbjuhbfMtoFDd8VIpsChqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lQFOj7MJYsOBL/Ff6btmfxw4OBGqgPIVkPBjqst4lBw5PpkPZN3t+hEga4iczXm2yaZdKqrBzUgd9l0Q7sgBH5fKdNoSPkKck8vBCa1ILwPKGlkEn/EfU3jtr1z1rB8Rf4sZ27pYP4sv8b1mmrQ9OgCSD9XYi3X6xwuo/ifsE9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5e8bymi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FEDC4CEF7;
-	Wed,  4 Feb 2026 15:12:09 +0000 (UTC)
+	 MIME-Version; b=hzvrYHasMaaE0/HmsB4xCDFTxFkxi36aecfu846yq5zcWuC151Lq48czafOrv0MChH1gWUQV09idSrX+SURtHy/X13oHAJeHAZHOo6lz0uhM3ixkzzaePXeaGydXM1CgDzI/F5Hr81L4EZY+5db3mld1dKUI+M0wwY/4e3FqcFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYLZ9SWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21F6C4CEF7;
+	Wed,  4 Feb 2026 14:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217929;
-	bh=sJF0iGo1Hjwgt3SH4mGLIUzR71OquTRRgkx3amdA0U8=;
+	s=korg; t=1770216917;
+	bh=0UXGJoG/14yEXZZzUpwQzTbjuhbfMtoFDd8VIpsChqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L5e8bymi80ANTsS4gPqyf5kDnwOpqZ2tjvWhn0Na3UHrEpe9uyM7iIk572rf35jAu
-	 VbYzv3PLhpvYVdkDtpr+tZeFHgfC0HZB1aMYgNO4pxpXd672gKba/bggZ8RNsTwkrX
-	 22qYLo3fKsBSf0x1gR/MRvB5uS0j1itVosDCoSsE=
+	b=kYLZ9SWJWgs3AxUqeMrWSdjtpEeVQCnWET/O19iJCHIFuF1GsylSzk0qpBNSewr8y
+	 IDzjyxRKJkqG7fG0MN/AMP72KtmlyRWxtnEXBzT62Y9eL/W/lMaZf8E73O0tBS1dsc
+	 THhf/uVtIv+BCkhqUMW+G6vn9gjuKzZ8unyDjfwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/280] spi: sprd-adi: Convert to platform remove callback returning void
+Subject: [PATCH 5.15 071/206] amd-xgbe: avoid misleading per-packet error log
 Date: Wed,  4 Feb 2026 15:38:22 +0100
-Message-ID: <20260204143914.242134646@linuxfoundation.org>
+Message-ID: <20260204143900.771281827@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213912-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213613-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pengutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 175B8E8B1C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: F147FE7E9D
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit f7f785f125d03360d3766d96d04cf08b8472ce8f ]
+[ Upstream commit c158f985cf6c2c36c99c4f67af2ff3f5ebe09f8f ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+On the receive path, packet can be damaged because of buffer
+overflow in Rx FIFO. Avoid misleading per-packet error log when
+packet->errors is set, this can flood the log. Instead, rely on the
+standard rtnl_link_stats64 stats.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230303172041.2103336-71-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 383d4f5cffcc ("spi: spi-sprd-adi: Fix double free in probe error path")
+Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20260114163037.2062606-1-Raju.Rangoju@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sprd-adi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 1edbf44c05a72..3b158124d79f7 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -608,13 +608,12 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index 32397517807b0..00312543f2267 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -2112,7 +2112,7 @@ static void xgbe_get_stats64(struct net_device *netdev,
+ 	s->multicast = pstats->rxmulticastframes_g;
+ 	s->rx_length_errors = pstats->rxlengtherror;
+ 	s->rx_crc_errors = pstats->rxcrcerror;
+-	s->rx_fifo_errors = pstats->rxfifooverflow;
++	s->rx_over_errors = pstats->rxfifooverflow;
  
--static int sprd_adi_remove(struct platform_device *pdev)
-+static void sprd_adi_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(&pdev->dev);
- 	struct sprd_adi *sadi = spi_controller_get_devdata(ctlr);
+ 	s->tx_packets = pstats->txframecount_gb;
+ 	s->tx_bytes = pstats->txoctetcount_gb;
+@@ -2566,9 +2566,6 @@ static int xgbe_rx_poll(struct xgbe_channel *channel, int budget)
+ 			goto read_again;
  
- 	unregister_restart_handler(&sadi->restart_handler);
--	return 0;
- }
- 
- static struct sprd_adi_data sc9860_data = {
-@@ -660,7 +659,7 @@ static struct platform_driver sprd_adi_driver = {
- 		.of_match_table = sprd_adi_of_match,
- 	},
- 	.probe = sprd_adi_probe,
--	.remove = sprd_adi_remove,
-+	.remove_new = sprd_adi_remove,
- };
- module_platform_driver(sprd_adi_driver);
- 
+ 		if (error || packet->errors) {
+-			if (packet->errors)
+-				netif_err(pdata, rx_err, netdev,
+-					  "error in received packet\n");
+ 			dev_kfree_skb(skb);
+ 			goto next_packet;
+ 		}
 -- 
 2.51.0
 
