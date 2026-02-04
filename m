@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-214128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNvjLy5sg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:30 +0100
+	id IOwbBdlqg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:50:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20820E9A0D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87381E9767
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEA713150E74
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7170F30500C2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E145D426693;
-	Wed,  4 Feb 2026 15:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D1441C30A;
+	Wed,  4 Feb 2026 15:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCyd0ZY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZM5UcfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E4F22332E;
-	Wed,  4 Feb 2026 15:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B36C41C303;
+	Wed,  4 Feb 2026 15:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218659; cv=none; b=AhRjs5KqZYLXRPpRKtCD+Iy+kLnDLTbDQzVFdy+/+GtKuA+ui2T2LiYfUQX6+BpT2Y/KlSSkp73AnahywUIYcV4c12ODtZ/Odjgc/nJx8xJM9TBB4Tq5/ERKYidRzfUXSbNZdkOfsDvH5M9Eb4LyiFLx5+GalCkKzOoQfJPe2gA=
+	t=1770218394; cv=none; b=GTIauJPuX9dmoG6MWYQch/AkoBZylNOoTlXOXjZs1zeOwrcwRawSUn+ql9z/8WZ9XFo5SqI97VDl+HkPp/8i5QA+FF2jWg43+suNLY9Sk1vlYx0P0ShEpebls5i/8ZCozAHIGp5uUz7usfhGmnJn5s0MVZjYuaL4Yer0dLYpGFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218659; c=relaxed/simple;
-	bh=wJvdxC2OOwbfsqrMI5tVpUL4GIAMDC3UtCh9mr+99t4=;
+	s=arc-20240116; t=1770218394; c=relaxed/simple;
+	bh=6ABKFSBLdx07wdo6LwA61flnk8CT6F6tYqd+6TGwj3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rL/0ahP9iTCb9pqF4TKwIO3/h8a7ArAy5ZJnQ1ZUzrKEAa5w1t3VILrdOiTpAM8hdtZzs+l/SR0sj+NXR0dY9mYCCGZfzBzeYjlX0OpbyVetj33CbO/be0LM3u35fZIQaTzGS6k14szZslkCd3WMNffZdB+0hihbLUvwjKbi2jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCyd0ZY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C977C116C6;
-	Wed,  4 Feb 2026 15:24:18 +0000 (UTC)
+	 MIME-Version; b=c4NRJ0HC3KOyzmGVmuAYlccjAotasNIIXEx9TyJUrtMf/AbLsFpdOG+VStPAPbQEaV+dzK6QA6kcmyRhkILf+VOnmZwtWoylIpXcIYlO33mhAtshDaxmiVZglytb5xL3emtj5LeHlI+qCrbQGYNxfgqiJk9LHj/VjJKVIioHrmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZM5UcfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD5EC4CEF7;
+	Wed,  4 Feb 2026 15:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218659;
-	bh=wJvdxC2OOwbfsqrMI5tVpUL4GIAMDC3UtCh9mr+99t4=;
+	s=korg; t=1770218394;
+	bh=6ABKFSBLdx07wdo6LwA61flnk8CT6F6tYqd+6TGwj3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCyd0ZY6FI8FkYA+7+tM7btSyWObth+1X90KC1G9hmddePsfO/Wj1yvD4rkQuPy/A
-	 97BgDwqxKLs0RUXWbwFCr4k+mjP6ewPAWDc0UHDXp0S8Kzd4FcQhGvlcufnkNb1CZ2
-	 APuZrQW+2kpPUT1tIoHtxloAY2tEVv+N9owcfjkU=
+	b=nZM5UcfEK2hCvZRSjaUpFE3pp9p+kAWPVaVR+kHh+pypw74/F9Dz8tiJfWX3y87W2
+	 EpAmOy4gyuoFSQlcOY1lIyCCvmlMg8K5/2/vw1TMwF18Qf3uPIiuTEnWvfN0n2lTN4
+	 SrGpliz20zenv9mT/gQbBF0ezz1dWQSw9I3+7ndk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 23/87] net/mlx5e: Skip ESN replay window setup for IPsec crypto offload
+Subject: [PATCH 6.6 18/72] net/mlx5e: Skip ESN replay window setup for IPsec crypto offload
 Date: Wed,  4 Feb 2026 15:40:21 +0100
-Message-ID: <20260204143847.744878586@linuxfoundation.org>
+Message-ID: <20260204143846.282598489@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214128-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214050-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,16 +89,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 20820E9A0D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 87381E9767
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -131,10 +131,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 39dcbf863421a..7e24f3f0b4dd3 100644
+index 5161bf51fa110..fdf664e9c46e9 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -347,7 +347,8 @@ void mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
+@@ -350,7 +350,8 @@ void mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
  		attrs->replay_esn.esn = sa_entry->esn_state.esn;
  		attrs->replay_esn.esn_msb = sa_entry->esn_state.esn_msb;
  		attrs->replay_esn.overlap = sa_entry->esn_state.overlap;
