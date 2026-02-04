@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-214217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMweKAhog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:48 +0100
+	id eNfDFNRhg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19230E9074
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830D5E819B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 396F8313A60B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A616230DB3CD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD0B1C84D0;
-	Wed,  4 Feb 2026 15:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8C72D593E;
+	Wed,  4 Feb 2026 15:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCbDzOnu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFL7G565"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F71F2417E0;
-	Wed,  4 Feb 2026 15:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF912561AE;
+	Wed,  4 Feb 2026 15:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218955; cv=none; b=Bc5szAt48pgZOMQv3+fFgMMdWRISHdR9/ML3lxXIyub6XtxJAOX1X0vMu+TGP4TRW8eLX6JIKb2WpI3pWfHAkoHxuJis/iMXwR8xF9nbNxoki2A/UGdYVEBwl/4py70eQa23Y0zdXNzEyP7DBFaQVxnBfIWsp/5kU7zWKb/k0Os=
+	t=1770217210; cv=none; b=GYEGYcFlLBvn+SLFkZi0TydegqVZoVunZkX12jzbhgJglW6VPBRaTHgIRrV3Q9iTEjKDVpBE65/iusNIn10jMGfOV4nDbN5fpZO22lvkKPqVDazlLQLCl8LhmdtR03loe8a1bxLxXfpUOm47rYXYXGQWa3htSMgJfWrYmlQFK3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218955; c=relaxed/simple;
-	bh=6RBG54rI1LSoBLS76gXxRCTDScRJ3CD/WzEug+YcZyY=;
+	s=arc-20240116; t=1770217210; c=relaxed/simple;
+	bh=BySPZRRF/RIHcnnaMgXRbAgj4ps+PJEDR9+JV37F0/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoRMzSK8xsf4cLh5bFfEcCxEEL5Uii4eI3AAW9JCK7TWDEmg81lrDt+ZzQ35dpPgAjozxO1gAWDaiaM6JQadSXJUp77Kt4zXZfKCBZ3dc8+iG8xNA+7Dq4oHTKr0bt2SVCiNAbWkOMRUb4FlYDcvwpRXe9JFMGesD18MGBBcHAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCbDzOnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931CFC4CEF7;
-	Wed,  4 Feb 2026 15:29:14 +0000 (UTC)
+	 MIME-Version; b=oKnbX5Bx9GZzR2ijQ35NeUU41zAUdRzBQmixarQyMWRwP90jH3RzNuDU+eppHE2085ijiyu7vyN7q7c4/UwcQWmfN0WlvNeyANXCt3ex81m1JyiXxxtnN+wtvOUpoOf74QgFeYL83QD6G8fegIX7KfNKzx+yvYQ8fqnMoU9O1/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFL7G565; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC57C116C6;
+	Wed,  4 Feb 2026 15:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218954;
-	bh=6RBG54rI1LSoBLS76gXxRCTDScRJ3CD/WzEug+YcZyY=;
+	s=korg; t=1770217210;
+	bh=BySPZRRF/RIHcnnaMgXRbAgj4ps+PJEDR9+JV37F0/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCbDzOnusUajjIgecuPkTXEuY6UAUTJWxH1HApn49Wk4dEgoI86FbOpHe0Ltn/Gql
-	 9EZdM4pdEBYw/HoebnRpTcdvnWWCFWB4P7Kgiga9MRwLBQF2jb2mv5bzVMXrDjCBQO
-	 FKCF+XOP2o4/2OdVIZx4HhbT94iHHlQgbeX5nRfc=
+	b=sFL7G565mvszKX0OOlEiZz6W0QrQdYDIuUB+GnuNZqzX3hrfhWlD8aRLZ1fUkRiII
+	 jegmCnDW6AZbMzw34WvxO+B3kc9kaOfS9la54xam+n4VhBg2WyjSdQXpu/AYxyhP8T
+	 JLbv697EdxQujlCSgJuwjRv/zmoQxxDyxZPpB1E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 005/122] Bluetooth: MGMT: Fix memory leak in set_ssp_complete
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH 5.15 156/206] tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
 Date: Wed,  4 Feb 2026 15:39:47 +0100
-Message-ID: <20260204143852.057467266@linuxfoundation.org>
+Message-ID: <20260204143903.823926861@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +71,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213699-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214217-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,windriver.com:email,match.sk:url]
-X-Rspamd-Queue-Id: 19230E9074
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,broadcom.com:email,queasysnail.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 830D5E819B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 1b9c17fd0a7fdcbe69ec5d6fe8e50bc5ed7f01f2 ]
+commit c65f27b9c3be2269918e1cbad6d8884741f835c5 upstream.
 
-Fix memory leak in set_ssp_complete() where mgmt_pending_cmd structures
-are not freed after being removed from the pending list.
+get_netdev_for_sock() is called during setsockopt(),
+so not under RCU.
 
-Commit 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs") replaced
-mgmt_pending_foreach() calls with individual command handling but missed
-adding mgmt_pending_free() calls in both error and success paths of
-set_ssp_complete(). Other completion functions like set_le_complete()
-were fixed correctly in the same commit.
+Using sk_dst_get(sk)->dev could trigger UAF.
 
-This causes a memory leak of the mgmt_pending_cmd structure and its
-associated parameter data for each SSP command that completes.
+Let's use __sk_dst_get() and dst_dev_rcu().
 
-Add the missing mgmt_pending_free(cmd) calls in both code paths to fix
-the memory leak. Also fix the same issue in set_advertising_complete().
+Note that the only ->ndo_sk_get_lower_dev() user is
+bond_sk_get_lower_dev(), which uses RCU.
 
-Fixes: 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250916214758.650211-6-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Keerthana: Backport to v5.15-v6.1 ]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/tls/tls_device.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 211951eb832af..ee2dd26b1b82b 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -1954,6 +1954,7 @@ static void set_ssp_complete(struct hci_dev *hdev, void *data, int err)
- 		}
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -110,17 +110,19 @@ static void tls_device_queue_ctx_destruc
+ /* We assume that the socket is already connected */
+ static struct net_device *get_netdev_for_sock(struct sock *sk)
+ {
+-	struct dst_entry *dst = sk_dst_get(sk);
+-	struct net_device *netdev = NULL;
++	struct net_device *dev, *lowest_dev = NULL;
++	struct dst_entry *dst;
  
- 		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_err);
-+		mgmt_pending_free(cmd);
- 		return;
+-	if (likely(dst)) {
+-		netdev = netdev_sk_get_lowest_dev(dst->dev, sk);
+-		dev_hold(netdev);
++	rcu_read_lock();
++	dst = __sk_dst_get(sk);
++	dev = dst ? dst_dev_rcu(dst) : NULL;
++	if (likely(dev)) {
++		lowest_dev = netdev_sk_get_lowest_dev(dev, sk);
++		dev_hold(lowest_dev);
  	}
++	rcu_read_unlock();
  
-@@ -1972,6 +1973,7 @@ static void set_ssp_complete(struct hci_dev *hdev, void *data, int err)
- 		sock_put(match.sk);
- 
- 	hci_update_eir_sync(hdev);
-+	mgmt_pending_free(cmd);
+-	dst_release(dst);
+-
+-	return netdev;
++	return lowest_dev;
  }
  
- static int set_ssp_sync(struct hci_dev *hdev, void *data)
-@@ -6356,6 +6358,7 @@ static void set_advertising_complete(struct hci_dev *hdev, void *data, int err)
- 		hci_dev_clear_flag(hdev, HCI_ADVERTISING);
- 
- 	settings_rsp(cmd, &match);
-+	mgmt_pending_free(cmd);
- 
- 	new_settings(hdev, match.sk);
- 
--- 
-2.51.0
-
+ static void destroy_record(struct tls_record_info *record)
 
 
 
