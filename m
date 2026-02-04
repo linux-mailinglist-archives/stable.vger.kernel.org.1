@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0E4yDuxkg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:32 +0100
+	id UAMMLV9dg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE0FE880F
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:25:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD5BE7857
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D20231243EA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03E3E3012C6F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D353742315B;
-	Wed,  4 Feb 2026 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D445280CD2;
+	Wed,  4 Feb 2026 14:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CY+M6oup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjVqcXod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971E01E520C;
-	Wed,  4 Feb 2026 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E7327FD56;
+	Wed,  4 Feb 2026 14:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218017; cv=none; b=jawUXIi7ZRZP7twGdjfF/8RMWH1bEG5WZX/SWz1YOZ6XFLqlcUrAYXj0kTtiAFlORoQU4s5yDUtajodNL8Xx3BeW/7x3/lBNqL7tnHu2Qqid5YfGrFG6C3K/nP2ftiuyplWzHKhPdOfBOhJppfd6+BbKblM1ryZb50mo5UWQInM=
+	t=1770216497; cv=none; b=YUW3RQxNx993nXViKwj4ctZtrc1VrgQ7WAwcim58vT1+NT6SecVqxsudKJvEY0bJj3VgvUylOEV29OJ9r3fP9rx2K7IE2F3BA1a7q5DQN8INK15KMxyCHSZn5W0EdwUHby9Ixh+z5xKaiDiquqbOZ2GBFsaYI+zXYXXr/Zln1kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218017; c=relaxed/simple;
-	bh=MePvG+Y2haXsgEMh/99ZKY56FrL3iDCNXhsUSRy0blY=;
+	s=arc-20240116; t=1770216497; c=relaxed/simple;
+	bh=igbz/sw+7D2pFsU6w6fsQ0eKUgWekH8/teSmaYAaL5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AljcDUDhTSsQmLtKqWELTKYo9IleYDnE1x3Cc4MDxb3RuJXFIkqv3vQfJFVmXLSyVGxUl25E177KH93bcAWs1jnCL1Mb/s9z1RYvWJvO77EtaAv9/Bau+wMudxlL/GS4ds6sd5W7juJEwMPTJzpBTgrKVNXd+b7lgU8cwNMWwrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CY+M6oup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D75C116C6;
-	Wed,  4 Feb 2026 15:13:36 +0000 (UTC)
+	 MIME-Version; b=n2KH1ILeCfsiLerERz7DJv3JaWgwKt8iPIinyNENDwviflh5UJDVHkXzKhDKBLjJWoTphqnmx83u2mWJc4XZbLuAA4GCbVVr7juht2M0gHDpA9eDldv7+kPdOy0gc6fYAW+LqxNuVq9+LHZNnkz1o0OEBzjGWsxrR0zhnK6hbhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjVqcXod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C48CC4CEF7;
+	Wed,  4 Feb 2026 14:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218017;
-	bh=MePvG+Y2haXsgEMh/99ZKY56FrL3iDCNXhsUSRy0blY=;
+	s=korg; t=1770216496;
+	bh=igbz/sw+7D2pFsU6w6fsQ0eKUgWekH8/teSmaYAaL5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CY+M6oupHfR/eQpvtdbnw/GQKiqaaILVQqmOcvDiEksl+VDIENrXYIIYln6BakoUB
-	 DIVdefsIwZZi+K7oC3w/bvr6Wzrkx6JK2iTA4M5WGUjf254/tXTFmUu959vICM/H/v
-	 Ehloo8aQQljwsjURn2q6xYh8eoHYGtjofG5Xi+hc=
+	b=cjVqcXodzsWWHQKhZ/QEkwL/7jkOhcuREG5eWR7MHtdzuDaEYu80IB8BAVbQ0kcVZ
+	 SBN4jXKJjZDlj5I8MtugxGFGmUs4h22fFewitwPdvm4I4DFsgxj0paG2Wf0SrIC8sb
+	 HmyOsoXlAJqllqybXvsTlpFHOfRw58tVzQtWvsMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	chongjiapeng <jiapeng.chong@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 187/280] mm/damon/sysfs-scheme: cleanup access_pattern subdirs on scheme dir setup failure
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 098/161] octeontx2: Fix otx2_dma_map_page() error return code
 Date: Wed,  4 Feb 2026 15:39:21 +0100
-Message-ID: <20260204143916.340652433@linuxfoundation.org>
+Message-ID: <20260204143855.271802380@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213938-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213485-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8DE0FE880F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 1AD5BE7857
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 392b3d9d595f34877dd745b470c711e8ebcd225c upstream.
+commit d998b0e5afffa90d0f03770bad31083767079858 upstream.
 
-When a DAMOS-scheme DAMON sysfs directory setup fails after setup of
-access_pattern/ directory, subdirectories of access_pattern/ directory are
-not cleaned up.  As a result, DAMON sysfs interface is nearly broken until
-the system reboots, and the memory for the unremoved directory is leaked.
+0 is a valid DMA address [1] so using it as the error value can lead to
+errors.  The error value of dma_map_XXX() functions is DMA_MAPPING_ERROR
+which is ~0.  The callers of otx2_dma_map_page() use dma_mapping_error()
+to test the return value of otx2_dma_map_page(). This means that they
+would not detect an error in otx2_dma_map_page().
 
-Cleanup the directories under such failures.
+Make otx2_dma_map_page() return the raw value of dma_map_page_attrs().
 
-Link: https://lkml.kernel.org/r/20251225023043.18579-5-sj@kernel.org
-Fixes: 9bbb820a5bd5 ("mm/damon/sysfs: support DAMOS quotas")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # 5.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+[1] https://lore.kernel.org/all/f977f68b-cec5-4ab7-b4bd-2cf6aca46267@intel.com
+
+Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260114123107.42387-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -856,7 +856,7 @@ static int damon_sysfs_scheme_add_dirs(s
- 		return err;
- 	err = damon_sysfs_scheme_set_quotas(scheme);
- 	if (err)
--		goto put_access_pattern_out;
-+		goto rmdir_put_access_pattern_out;
- 	err = damon_sysfs_scheme_set_watermarks(scheme);
- 	if (err)
- 		goto rmdir_put_quotas_access_pattern_out;
-@@ -872,7 +872,8 @@ rmdir_put_quotas_access_pattern_out:
- 	damon_sysfs_quotas_rm_dirs(scheme->quotas);
- 	kobject_put(&scheme->quotas->kobj);
- 	scheme->quotas = NULL;
--put_access_pattern_out:
-+rmdir_put_access_pattern_out:
-+	damon_sysfs_access_pattern_rm_dirs(scheme->access_pattern);
- 	kobject_put(&scheme->access_pattern->kobj);
- 	scheme->access_pattern = NULL;
- 	return err;
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -562,13 +562,8 @@ static inline dma_addr_t otx2_dma_map_pa
+ 					   size_t offset, size_t size,
+ 					   enum dma_data_direction dir)
+ {
+-	dma_addr_t iova;
+-
+-	iova = dma_map_page_attrs(pfvf->dev, page,
++	return dma_map_page_attrs(pfvf->dev, page,
+ 				  offset, size, dir, DMA_ATTR_SKIP_CPU_SYNC);
+-	if (unlikely(dma_mapping_error(pfvf->dev, iova)))
+-		return (dma_addr_t)NULL;
+-	return iova;
+ }
+ 
+ static inline void otx2_dma_unmap_page(struct otx2_nic *pfvf,
 
 
 
