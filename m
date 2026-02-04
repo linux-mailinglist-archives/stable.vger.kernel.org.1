@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-214177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEz7Kbdng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:27 +0100
+	id 8FBKGhNng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58441E8FBF
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D871FE8E64
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7565731058E6
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BE59308E578
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69274413249;
-	Wed,  4 Feb 2026 15:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25D2423154;
+	Wed,  4 Feb 2026 15:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY6lBx+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTzwlqTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C83F221F17;
-	Wed,  4 Feb 2026 15:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650B7421EE4;
+	Wed,  4 Feb 2026 15:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218822; cv=none; b=P0SnraWPL/fkEn33TdV3iVZ6q1I5dIGVGkEBl8RDAndk5S0bO3vUMQcshBwQdapQ9rRcobiHoTnpvRfWuzBH+7qSGMyTv2W/kvGupXCWHfCwnQ/2rqT+BXe1prypdkPTZbTnX+JDVzwewn4yY9en+YAzsFRxMCcYTa6OgQwnbWc=
+	t=1770218560; cv=none; b=mFEO1Mi3cn2UnA0WjrvrA+DkG5NvzJCCY3M4+IW7+pTsJYSXu0E7dl5oTca1WnlrqS3KEtHG/BHkN9FMAfGRmw9ZlMpsULhOGSfqJ/1Dh1sumCEqWE1kVIYMQ5dI56VhWQoUNB/MZNQnSS3RBCyEK9+mHrQt9XFJjfI3n6cLyhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218822; c=relaxed/simple;
-	bh=bT4iEhSzxuJIucQ4a0k/c35KLR3gaQscE3rrro9xjyY=;
+	s=arc-20240116; t=1770218560; c=relaxed/simple;
+	bh=76Z1IF2GUYuIPxFznPSTfcdM6QCyxTxUNi2aJK+1fxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qnsnne2ZY00hQjOXGgtBlPRVqc5bLaGZbgEFwMHgzRuTkKVANpQpcM6E3Zagq3zSWWrz0Ht60el5N3A44xc5mLWz4PelOBWQyJeL3bAcSBeKmh5zMcKNxp0ry+MINwq08rlw98klbEwaca0tOP2suV57n4yj3nTbXwPRQzCSDz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY6lBx+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614DEC4CEF7;
-	Wed,  4 Feb 2026 15:27:01 +0000 (UTC)
+	 MIME-Version; b=TlxUBGosXTW+yUKae7Gybv1RLRav10p93R/DKVZrcUPiPJ+17s9st81gfKEu0f3QSse+mfhK7ZBQUqBoYktymWYrRc7VmM2U4zOGAGICtaIYEbyO3hutA6mEltvfXviMZ99gEevWdfdZLe1KT9xijB01LecJv9yQotPKr7ABMt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTzwlqTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF642C4CEF7;
+	Wed,  4 Feb 2026 15:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218822;
-	bh=bT4iEhSzxuJIucQ4a0k/c35KLR3gaQscE3rrro9xjyY=;
+	s=korg; t=1770218560;
+	bh=76Z1IF2GUYuIPxFznPSTfcdM6QCyxTxUNi2aJK+1fxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iY6lBx+YhmIokilgbHWhgsPBMU6aBxnTN6zGKhIp1NRDg2+qX8ubV9ZW4ciUi4iiY
-	 mHTvTcrC5YfoLeVnPwiJoK5aZHwgns7MLLvWFKRCbRdo5mz3XY+avrJ2WX+TLTCgIO
-	 mEiBR5kqejvXn0BWqaTDShoxpp7GAiZxLZ8v8S0g=
+	b=jTzwlqTeNdl0Oa5O7MhipEJ5AHP0a/Q077WCZzZ/XtA+xC5twYGhFfzIG/0xqaoeQ
+	 kIb1pW45Ub3zq3X8YQoQuwZzg6i0UAWIhxbQNt6qh83Fn+NMymMtlFSv1EwNvY5hV+
+	 EiCvd6kZMvay1CIYWAtKfZO6b7K3syhF23Y36d1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 71/87] ksmbd: smbd: fix dma_unmap_sg() nents
+	Eryk Kubanski <e.kubanski@partner.samsung.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jianqiang kang <jianqkang@sina.cn>
+Subject: [PATCH 6.6 66/72] xsk: Fix race condition in AF_XDP generic RX path
 Date: Wed,  4 Feb 2026 15:41:09 +0100
-Message-ID: <20260204143849.473431118@linuxfoundation.org>
+Message-ID: <20260204143848.031785612@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,106 +66,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214177-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,partner.samsung.com,intel.com,kernel.org,sina.cn];
+	TAGGED_FROM(0.00)[bounces-214099-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 58441E8FBF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,samsung.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sina.cn:email]
+X-Rspamd-Queue-Id: D871FE8E64
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: "e.kubanski" <e.kubanski@partner.samsung.com>
 
-[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
+[ Upstream commit a1356ac7749cafc4e27aa62c0c4604b5dca4983e ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Move rx_lock from xsk_socket to xsk_buff_pool.
+Fix synchronization for shared umem mode in
+generic RX path where multiple sockets share
+single xsk_buff_pool.
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+RX queue is exclusive to xsk_socket, while FILL
+queue can be shared between multiple sockets.
+This could result in race condition where two
+CPU cores access RX path of two different sockets
+sharing the same umem.
+
+Protect both queues by acquiring spinlock in shared
+xsk_buff_pool.
+
+Lock contention may be minimized in the future by some
+per-thread FQ buffering.
+
+It's safe and necessary to move spin_lock_bh(rx_lock)
+after xsk_rcv_check():
+* xs->pool and spinlock_init is synchronized by
+  xsk_bind() -> xsk_is_bound() memory barriers.
+* xsk_rcv_check() may return true at the moment
+  of xsk_release() or xsk_unbind_dev(),
+  however this will not cause any data races or
+  race conditions. xsk_unbind_dev() removes xdp
+  socket from all maps and waits for completion
+  of all outstanding rx operations. Packets in
+  RX path will either complete safely or drop.
+
+Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
+Fixes: bf0bdd1343efb ("xdp: fix race on generic receive path")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Link: https://patch.msgid.link/20250416101908.10919-1-e.kubanski@partner.samsung.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict is resolved when backporting this fix. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ include/net/xdp_sock.h      |    3 ---
+ include/net/xsk_buff_pool.h |    2 ++
+ net/xdp/xsk.c               |    6 +++---
+ net/xdp/xsk_buff_pool.c     |    1 +
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1108,14 +1108,12 @@ static int get_sg_list(void *buf, int si
+--- a/include/net/xdp_sock.h
++++ b/include/net/xdp_sock.h
+@@ -63,9 +63,6 @@ struct xdp_sock {
  
- static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
- 			      struct scatterlist *sg_list, int nentries,
--			      enum dma_data_direction dir)
-+			      enum dma_data_direction dir, int *npages)
- {
--	int npages;
+ 	struct xsk_queue *tx ____cacheline_aligned_in_smp;
+ 	struct list_head tx_list;
+-	/* Protects generic receive. */
+-	spinlock_t rx_lock;
 -
--	npages = get_sg_list(buf, size, sg_list, nentries);
--	if (npages < 0)
-+	*npages = get_sg_list(buf, size, sg_list, nentries);
-+	if (*npages < 0)
- 		return -EINVAL;
--	return ib_dma_map_sg(device, sg_list, npages, dir);
-+	return ib_dma_map_sg(device, sg_list, *npages, dir);
+ 	/* Statistics */
+ 	u64 rx_dropped;
+ 	u64 rx_queue_full;
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -54,6 +54,8 @@ struct xsk_buff_pool {
+ 	refcount_t users;
+ 	struct xdp_umem *umem;
+ 	struct work_struct work;
++	/* Protects generic receive in shared and non-shared umem mode. */
++	spinlock_t rx_lock;
+ 	struct list_head free_list;
+ 	struct list_head xskb_list;
+ 	u32 heads_cnt;
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -339,13 +339,14 @@ int xsk_generic_rcv(struct xdp_sock *xs,
+ 	u32 len = xdp_get_buff_len(xdp);
+ 	int err;
+ 
+-	spin_lock_bh(&xs->rx_lock);
+ 	err = xsk_rcv_check(xs, xdp, len);
+ 	if (!err) {
++		spin_lock_bh(&xs->pool->rx_lock);
+ 		err = __xsk_rcv(xs, xdp, len);
+ 		xsk_flush(xs);
++		spin_unlock_bh(&xs->pool->rx_lock);
+ 	}
+-	spin_unlock_bh(&xs->rx_lock);
++
+ 	return err;
  }
  
- static int post_sendmsg(struct smb_direct_transport *t,
-@@ -1184,12 +1182,13 @@ static int smb_direct_post_send_data(str
- 	for (i = 0; i < niov; i++) {
- 		struct ib_sge *sge;
- 		int sg_cnt;
-+		int npages;
+@@ -1647,7 +1648,6 @@ static int xsk_create(struct net *net, s
+ 	xs = xdp_sk(sk);
+ 	xs->state = XSK_READY;
+ 	mutex_init(&xs->mutex);
+-	spin_lock_init(&xs->rx_lock);
  
- 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
- 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
- 					    iov[i].iov_base, iov[i].iov_len,
- 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
--					    DMA_TO_DEVICE);
-+					    DMA_TO_DEVICE, &npages);
- 		if (sg_cnt <= 0) {
- 			pr_err("failed to map buffer\n");
- 			ret = -ENOMEM;
-@@ -1197,7 +1196,7 @@ static int smb_direct_post_send_data(str
- 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
- 			pr_err("buffer not fitted into sges\n");
- 			ret = -E2BIG;
--			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
-+			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
- 					DMA_TO_DEVICE);
- 			goto err;
- 		}
+ 	INIT_LIST_HEAD(&xs->map_list);
+ 	spin_lock_init(&xs->map_list_lock);
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -85,6 +85,7 @@ struct xsk_buff_pool *xp_create_and_assi
+ 		XDP_PACKET_HEADROOM;
+ 	pool->umem = umem;
+ 	pool->addrs = umem->addrs;
++	spin_lock_init(&pool->rx_lock);
+ 	INIT_LIST_HEAD(&pool->free_list);
+ 	INIT_LIST_HEAD(&pool->xskb_list);
+ 	INIT_LIST_HEAD(&pool->xsk_tx_list);
 
 
 
