@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCzXImdcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:11 +0100
+	id 8CNDEsxsg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6FEE7654
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D8CE9B44
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1B9F3014131
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22552316EF71
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF74128CF49;
-	Wed,  4 Feb 2026 14:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0492C028C;
+	Wed,  4 Feb 2026 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvgGzUNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqDQ+Acu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A392C2C0F6E;
-	Wed,  4 Feb 2026 14:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501F021ABC9;
+	Wed,  4 Feb 2026 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216548; cv=none; b=OEFfKhag3542jiMrQZljNMlWBTzHAWalqhLBXZnk3zper+SUI+iJmDJsdgbXBl9wKYrhAwgthbZGrvXujhc+gflooqb2LRtgvFbv9NsAX6evKVVfpVvGKkdeGxiMy+sicJiMnupUW26caR+7Kav0ca4sNJYpKXdGMHkzfPXiBTw=
+	t=1770218905; cv=none; b=J8s9ZUyq8YlE/hf4OfDf9UpRlamVNYQc9EXnkvSJ/fQYyP3zMHkMgJwuT+9v+mW/vEeDYxtby7jKKPss6F7qtXYbEwGQl0O5LnR3UUPNdpc25pvxz7j1LoyDwsMmbRo/FTjWDtTUrSjIoSvTdVBc2RDvNo1fLpMv9I7MpBXsoAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216548; c=relaxed/simple;
-	bh=822/xpiY/g65rpm776VqdffaU97uacmYP9FLUq6lF+k=;
+	s=arc-20240116; t=1770218905; c=relaxed/simple;
+	bh=zpP712wHkCX0ZcR/yqmHj4ermrRt/Fdzbs1K0SqCwg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLQuFNllOPoOZ24PK6NcnmA/MwEPFO7+kOMBfnftQcPP9nor+HaGQ+exutFpbmff+wgnoSPmY2H/tvTjdAHFialr0Hq4TeEn0N/V4exhZG+4kUtCCudDfQX2So/KbDUl78ZhmsGWnkQzEZprCaaD1KiXUGMnmWDS+ETFHkJeAmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvgGzUNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC870C4CEF7;
-	Wed,  4 Feb 2026 14:49:07 +0000 (UTC)
+	 MIME-Version; b=PZu7ymOEYeos4kI6tK+7NQ5Re0EbpqHWqxP2Ym4PMh+DEe7NT1vqXEEi+FYhXBG9XyokyMynH3QsDP8xElv2Kxl4doW7qessTVSVpSc8MG9bcox6HzlVYXlYYSObUz3JTpqVGkUhnplU1SIUytI4T5x29rHk37mY1VtUaYnnxLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqDQ+Acu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7464C4CEF7;
+	Wed,  4 Feb 2026 15:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216548;
-	bh=822/xpiY/g65rpm776VqdffaU97uacmYP9FLUq6lF+k=;
+	s=korg; t=1770218905;
+	bh=zpP712wHkCX0ZcR/yqmHj4ermrRt/Fdzbs1K0SqCwg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NvgGzUNd39CoIXCno5GqqbsYDjQk7DsLP6qqjRnlltGYeAcyF2l34IsTd9IHKDDEK
-	 RtyZ9qZmKnhY3lbsy6Sj++VtRKQFRpLR6Uoc7E9w6/jVLmqKpfQ+S7DGEH8Aorc1HY
-	 3O+HP8l6B7K1RkzmolT46eYxCEuoo5s+2BR0us04=
+	b=mqDQ+AcuKab+yldYLKreJyO8g09YCsqSwwZeY0FgLNxPvEYhWpHo2XlD6jbEV3rbg
+	 eC2cg1y9v7cabLoab5W/jGNaLoI9MDBMKsFSI+I0i9dBvOZzJL9Ef05my8cJ4xIv6M
+	 J8kheK4T5cXk4h7qPCakX66dSGoSElmzf7JvS5C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chunsheng Luo <luochunsheng@ustc.edu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/161] net: mvpp2: cls: Fix memory leak in mvpp2_ethtool_cls_rule_ins()
+Subject: [PATCH 6.18 001/122] readdir: require opt-in for d_type flags
 Date: Wed,  4 Feb 2026 15:39:43 +0100
-Message-ID: <20260204143856.064184347@linuxfoundation.org>
+Message-ID: <20260204143851.913403161@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,76 +70,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ustc.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-214202-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213500-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EF6FEE7654
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,ustc.edu:email]
+X-Rspamd-Queue-Id: 83D8CE9B44
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 09f979d1f312627b31d2ee1e46f9692e442610cd ]
+[ Upstream commit c644bce62b9c6b441143a03c910f986109c47001 ]
 
-In mvpp2_ethtool_cls_rule_ins(), the ethtool_rule is allocated by
-ethtool_rx_flow_rule_create(). If the subsequent conversion to flow
-type fails, the function jumps to the clean_rule label.
+Commit c31f91c6af96 ("fuse: don't allow signals to interrupt getdents
+copying") introduced the use of high bits in d_type as flags. However,
+overlayfs was not adapted to handle this change.
 
-However, the clean_rule label only frees efs, skipping the cleanup
-of ethtool_rule, which leads to a memory leak.
+In ovl_cache_entry_new(), the code checks if d_type == DT_CHR to
+determine if an entry might be a whiteout. When fuse is used as the
+lower layer and sets high bits in d_type, this comparison fails,
+causing whiteout files to not be recognized properly and resulting in
+incorrect overlayfs behavior.
 
-Fix this by jumping to the clean_eth_rule label, which properly calls
-ethtool_rx_flow_rule_destroy() before freeing efs.
+Fix this by requiring callers of iterate_dir() to opt-in for getting
+flag bits in d_type outside of S_DT_MASK.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: f4f1ba18195d ("net: mvpp2: cls: Report an error for unsupported flow types")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260123065716.2248324-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c31f91c6af96 ("fuse: don't allow signals to interrupt getdents copying")
+Link: https://lore.kernel.org/all/20260107034551.439-1-luochunsheng@ustc.edu/
+Link: https://github.com/containerd/stargz-snapshotter/issues/2214
+Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
+Reviewed-by: Chunsheng Luo <luochunsheng@ustc.edu>
+Tested-by: Chunsheng Luo <luochunsheng@ustc.edu>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://patch.msgid.link/20260108074522.3400998-1-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/readdir.c       | 3 +++
+ include/linux/fs.h | 6 +++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-index 3ad1327395877..821cc5aa4a7b4 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-@@ -1383,7 +1383,7 @@ int mvpp2_ethtool_cls_rule_ins(struct mvpp2_port *port,
- 	efs->rule.flow_type = mvpp2_cls_ethtool_flow_to_type(info->fs.flow_type);
- 	if (efs->rule.flow_type < 0) {
- 		ret = efs->rule.flow_type;
--		goto clean_rule;
-+		goto clean_eth_rule;
- 	}
+diff --git a/fs/readdir.c b/fs/readdir.c
+index 7764b86389788..73707b6816e9a 100644
+--- a/fs/readdir.c
++++ b/fs/readdir.c
+@@ -316,6 +316,7 @@ SYSCALL_DEFINE3(getdents, unsigned int, fd,
+ 	struct getdents_callback buf = {
+ 		.ctx.actor = filldir,
+ 		.ctx.count = count,
++		.ctx.dt_flags_mask = FILLDIR_FLAG_NOINTR,
+ 		.current_dir = dirent
+ 	};
+ 	int error;
+@@ -400,6 +401,7 @@ SYSCALL_DEFINE3(getdents64, unsigned int, fd,
+ 	struct getdents_callback64 buf = {
+ 		.ctx.actor = filldir64,
+ 		.ctx.count = count,
++		.ctx.dt_flags_mask = FILLDIR_FLAG_NOINTR,
+ 		.current_dir = dirent
+ 	};
+ 	int error;
+@@ -569,6 +571,7 @@ COMPAT_SYSCALL_DEFINE3(getdents, unsigned int, fd,
+ 	struct compat_getdents_callback buf = {
+ 		.ctx.actor = compat_filldir,
+ 		.ctx.count = count,
++		.ctx.dt_flags_mask = FILLDIR_FLAG_NOINTR,
+ 		.current_dir = dirent,
+ 	};
+ 	int error;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 9b2230fb2332f..3e965c77fa1b1 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2207,6 +2207,8 @@ struct dir_context {
+ 	 * INT_MAX  unlimited
+ 	 */
+ 	int count;
++	/* @actor supports these flags in d_type high bits */
++	unsigned int dt_flags_mask;
+ };
  
- 	ret = mvpp2_cls_rfs_parse_rule(&efs->rule);
+ /* If OR-ed with d_type, pending signals are not checked */
+@@ -3985,7 +3987,9 @@ static inline bool dir_emit(struct dir_context *ctx,
+ 			    const char *name, int namelen,
+ 			    u64 ino, unsigned type)
+ {
+-	return ctx->actor(ctx, name, namelen, ctx->pos, ino, type);
++	unsigned int dt_mask = S_DT_MASK | ctx->dt_flags_mask;
++
++	return ctx->actor(ctx, name, namelen, ctx->pos, ino, type & dt_mask);
+ }
+ static inline bool dir_emit_dot(struct file *file, struct dir_context *ctx)
+ {
 -- 
 2.51.0
 
