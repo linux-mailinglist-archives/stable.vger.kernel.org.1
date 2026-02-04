@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDjeI79og2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:51 +0100
+	id WKgnAMheg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9078E926D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EBAE7B12
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C36C730C0D4D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C144230D1697
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C13341C30D;
-	Wed,  4 Feb 2026 15:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2514C3AEF30;
+	Wed,  4 Feb 2026 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYSddzwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhIoBkWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45E02D877F;
-	Wed,  4 Feb 2026 15:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC7F281530;
+	Wed,  4 Feb 2026 14:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218313; cv=none; b=hZOyuaaevWIbYZ+M1tf6jeQbdBB0hS/wvHyGVNKhXQbbGanonhyvRaX6BLjC56cYIDBslf3WaItrIul1NlNPVDf42JOlfoovw5Xk76IO+4brpzLZiTZxKBUn1AnGdQJ67JKOJmpKw0iUjxYOxO2+2wMsGzrHC4eKVXlO7IQ2blw=
+	t=1770216645; cv=none; b=rnotvMmP4kRu7JKS90pYeQxzBQ+lZHA+OQmVbnY3dvgN/nFhh5g8BDO83tkJQTrJeb7m/sWsEtBZGUUGktbpdNBO6ZCk6YwwKNUoZIqZNsieAjBzyyPpMLVz+8V0fuZ0Xk+7g0g50TutOHHoz/++4ifQyOzDq/kJ5gIZrRUVyDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218313; c=relaxed/simple;
-	bh=YkOFGcXnQJDCv+CX6dhVwHXGCmik1vtv4Vd5WpUT4Lw=;
+	s=arc-20240116; t=1770216645; c=relaxed/simple;
+	bh=gV1JhdC8MSUKC+wzR3t90b7tbLeH+SbLl2DsGlP5NhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=abVc0/YRcGas6MW2DOH1rBNoIgTVcnODAcTMaHsPzpJ5lGMsqdoGmCxTvvfckbwaAw4NxC4d/SCo8Mj9zEHUpIQOU/lu4JNhIIe54sVRDHWz424sJcudgqPEnf6qNb9/SS9eAc/0UFCrnhB71YjCpFvQrKvgaQvSjuQ76wGqoDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYSddzwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5720BC4CEF7;
-	Wed,  4 Feb 2026 15:18:32 +0000 (UTC)
+	 MIME-Version; b=aHdMoGVlSjEjQ4P4TwEtZugGWaXsbXWU7E2tUDCv/cb91HY8n0c9aVS8w/XhcwNLmjGvM17R5lkdqQap9gbO7PruuqbxZmxVLTTDPsCTSkHJg28LDEYtjt4GA1wzSn9GMVttTx3EgAs3yDuN75txPhqat1liH2fs559/Rujv398=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhIoBkWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177B8C4CEF7;
+	Wed,  4 Feb 2026 14:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218312;
-	bh=YkOFGcXnQJDCv+CX6dhVwHXGCmik1vtv4Vd5WpUT4Lw=;
+	s=korg; t=1770216645;
+	bh=gV1JhdC8MSUKC+wzR3t90b7tbLeH+SbLl2DsGlP5NhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYSddzwrOFQMUhvqREzeWL7db9lg8TlK38bB8TiMJd0he7KK7z2wPuO/IlAHALsq7
-	 serGHotG7l03EKaJK92H/CpsIOoPZmHsx9ZZaoq82EfmJ5KGyIxiLuhKvKmzyhozaI
-	 3kTh9AfdXTAsQ62AzyCMSIQqgl7lRhCXufQBMZhM=
+	b=YhIoBkWCeylYUSB/DRheM2dTyX2KuuaHVX6QeIu37hgxAyVzPOQFBEZBKzIVYosYa
+	 MbKanVBm61DWN4SJQP6DYj6JXJE4E9TvvWlQKAAxgnYe9bAe7dKt13oq9jeMXKZWk0
+	 NcJkyihVsgqI/7fPu2pxpq5S7ZLysbtRp6DijmEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <dwagner@suse.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/280] nvme: fix PCIe subsystem reset controller state transition
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.10 151/161] of: platform: Use default match table for /firmware
 Date: Wed,  4 Feb 2026 15:40:14 +0100
-Message-ID: <20260204143918.264973072@linuxfoundation.org>
+Message-ID: <20260204143857.181912448@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214026-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213531-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: A9078E926D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 66EBAE7B12
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 0edb475ac0a7d153318a24d4dca175a270a5cc4f ]
+commit 48e6a9c4a20870e09f85ff1a3628275d6bce31c0 upstream.
 
-The commit d2fe192348f9 (“nvme: only allow entering LIVE from CONNECTING
-state”) disallows controller state transitions directly from RESETTING
-to LIVE. However, the NVMe PCIe subsystem reset path relies on this
-transition to recover the controller on PowerPC (PPC) systems.
+Calling of_platform_populate() without a match table will only populate
+the immediate child nodes under /firmware. This is usually fine, but in
+the case of something like a "simple-mfd" node such as
+"raspberrypi,bcm2835-firmware", those child nodes will not be populated.
+And subsequent calls won't work either because the /firmware node is
+marked as processed already.
 
-On PPC systems, issuing a subsystem reset causes a temporary loss of
-communication with the NVMe adapter. A subsequent PCIe MMIO read then
-triggers EEH recovery, which restores the PCIe link and brings the
-controller back online. For EEH recovery to proceed correctly, the
-controller must transition back to the LIVE state.
+Switch the call to of_platform_default_populate() to solve this problem.
+It should be a nop for existing cases.
 
-Due to the changes introduced by commit d2fe192348f9 (“nvme: only allow
-entering LIVE from CONNECTING state”), the controller can no longer
-transition directly from RESETTING to LIVE. As a result, EEH recovery
-exits prematurely, leaving the controller stuck in the RESETTING state.
-
-Fix this by explicitly transitioning the controller state from RESETTING
-to CONNECTING and then to LIVE. This satisfies the updated state
-transition rules and allows the controller to be successfully recovered
-on PPC systems following a PCIe subsystem reset.
-
+Fixes: 3aa0582fdb82 ("of: platform: populate /firmware/ node from of_platform_default_populate_init()")
 Cc: stable@vger.kernel.org
-Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://patch.msgid.link/20260114015158.692170-2-robh@kernel.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/of/platform.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1213,7 +1213,10 @@ static int nvme_pci_subsystem_reset(stru
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -533,7 +533,7 @@ static int __init of_platform_default_po
+ 
+ 	node = of_find_node_by_path("/firmware");
+ 	if (node) {
+-		of_platform_populate(node, NULL, NULL, NULL);
++		of_platform_default_populate(node, NULL, NULL);
+ 		of_node_put(node);
  	}
  
- 	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
--	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
-+
-+	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
-+	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
-+		goto unlock;
- 
- 	/*
- 	 * Read controller status to flush the previous write and trigger a
 
 
 
