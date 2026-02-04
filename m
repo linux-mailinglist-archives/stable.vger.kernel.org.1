@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sO7DC0Rng2kFmgMAu9opvQ
-	(envelope-from <stable+bounces-214123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:32 +0100
+	id yNsUMzxgg2mfmAMAu9opvQ
+	(envelope-from <stable+bounces-213718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935F6E8EC7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B19E7E07
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33F3230AC27B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A7A71303D8E9
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABFB3ACF06;
-	Wed,  4 Feb 2026 15:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA15C28853E;
+	Wed,  4 Feb 2026 15:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnQlZxEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRy+iaBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9A91C84D0;
-	Wed,  4 Feb 2026 15:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D89828853A;
+	Wed,  4 Feb 2026 15:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218643; cv=none; b=FWHsLfIQeRPob6o77y/wTlubmT2XZ5J5fxjIUQHtvP6z9tXA4G85bxzRA10eGQXnKo51xZC/x8nsIs10mK5FfGBTWWLcKsdD7Z1n+w/oDk6JsBN182tF0ViyecmvPG7WRo9LX92Cj099k+iRH6mfLd4+X+W+w115a0BxU3fFBFw=
+	t=1770217275; cv=none; b=OQadao3av72NbL/+a39+mQ9/b3QVk63LJD+WbZF7Y2BInKm8Glyx/EUH90GjhcBX68axsfYFVCAkaommkU4980X1LO6mcs94zLp0JPvmmwR0uIX94IHWxQTJ+Ms90+fLNt2xQnunx2pQKQvxutHSbT4fk4XT7/muiYQAcwU+pfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218643; c=relaxed/simple;
-	bh=TkXcCn1NYCnGSDZxeuk1/xQDrr/vS1iiUItVmf2Ri94=;
+	s=arc-20240116; t=1770217275; c=relaxed/simple;
+	bh=FCM45A789tGL89W4sQ+jJj9aX6lwFMqIZ5iokV/7IbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CySgQXvOO4NOqRVBJi7yRbcmwJlqGyBxgM27b8R9DbwLQD45UK8s/aM8yOfHEBaswXW7dBDTECAdrHsooFyL7/fMWxUB5SM1jM3LE6FyHRQ87Y4ycPOkJ/DHhnbwT16rS2jxSxJ+52zqgthNooM+ysVdlZspgksN98l2VQtLdiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnQlZxEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DB0C4CEF7;
-	Wed,  4 Feb 2026 15:24:02 +0000 (UTC)
+	 MIME-Version; b=J+QJp0jkmixraHiatmTp8ZTx6LdhGvCwaydJLi8QyueSmQSm76+a40ES0247d3OEmFKl0joWmYdrQi6NaNvx7LebJmB2wocOqKW20sh4QyW4vTJBL26ffH9WWsXs7HJgqTEzzv3b3dJ5W66GhXjqaC1M9+BDej6Co1AQHtWP84I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRy+iaBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BA6C116C6;
+	Wed,  4 Feb 2026 15:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218643;
-	bh=TkXcCn1NYCnGSDZxeuk1/xQDrr/vS1iiUItVmf2Ri94=;
+	s=korg; t=1770217275;
+	bh=FCM45A789tGL89W4sQ+jJj9aX6lwFMqIZ5iokV/7IbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnQlZxEtWStUbSXQjuI+JSbzxBTwDwS4/DuaCtb1yyF7vOG9vmYXoLFT2v1a5VBTI
-	 AGWuw+46LtP1k/jDD2oQsfl3WjDIePs0BpLb42v036SK2zuN/OFttsRf6wzeastKCc
-	 q7Je7pb4IXYhAaX+cBXsnyEzDvV4EhaoT/daZwLY=
+	b=bRy+iaBxQLXhATSIExSN1aoR/e+3LmAuSSICYPOLxxyrBtcXhxz69/Ml+bMmCut5r
+	 ItsC1yvl6nFTrV7SVufjUpsZlUFMpMpH+sx8KLjau/Ga1bwVugmc5tsNH8w5e2tVwn
+	 AQeJaPIdkiLIj1TMIU5ZZjKIQYFashEmYbXl2XCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot <syzkaller@googlegroups.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 08/87] bonding: annotate data-races around slave->last_rx
-Date: Wed,  4 Feb 2026 15:40:06 +0100
-Message-ID: <20260204143847.212965150@linuxfoundation.org>
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 5.15 176/206] ksmbd: fix use-after-free in ksmbd_tree_connect_put under concurrency
+Date: Wed,  4 Feb 2026 15:40:07 +0100
+Message-ID: <20260204143904.552224393@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,209 +71,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com,139.com];
+	TAGGED_FROM(0.00)[bounces-213718-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214123-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 935F6E8EC7
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,139.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 98B19E7E07
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit f6c3665b6dc53c3ab7d31b585446a953a74340ef ]
+[ Upstream commit b39a1833cc4a2755b02603eec3a71a85e9dff926 ]
 
-slave->last_rx and slave->target_last_arp_rx[...] can be read and written
-locklessly. Add READ_ONCE() and WRITE_ONCE() annotations.
+Under high concurrency, A tree-connection object (tcon) is freed on
+a disconnect path while another path still holds a reference and later
+executes *_put()/write on it.
 
-syzbot reported:
-
-BUG: KCSAN: data-race in bond_rcv_validate / bond_rcv_validate
-
-write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 1:
-  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
-  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
-  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
-  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
-  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
-  netif_receive_skb_internal net/core/dev.c:6351 [inline]
-  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
-...
-
-write to 0xffff888149f0d428 of 8 bytes by interrupt on cpu 0:
-  bond_rcv_validate+0x202/0x7a0 drivers/net/bonding/bond_main.c:3335
-  bond_handle_frame+0xde/0x5e0 drivers/net/bonding/bond_main.c:1533
-  __netif_receive_skb_core+0x5b1/0x1950 net/core/dev.c:6039
-  __netif_receive_skb_one_core net/core/dev.c:6150 [inline]
-  __netif_receive_skb+0x59/0x270 net/core/dev.c:6265
-  netif_receive_skb_internal net/core/dev.c:6351 [inline]
-  netif_receive_skb+0x4b/0x2d0 net/core/dev.c:6410
-  br_netif_receive_skb net/bridge/br_input.c:30 [inline]
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-...
-
-value changed: 0x0000000100005365 -> 0x0000000100005366
-
-Fixes: f5b2b966f032 ("[PATCH] bonding: Validate probe replies in ARP monitor")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Link: https://patch.msgid.link/20260122162914.2299312-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c    | 18 ++++++++++--------
- drivers/net/bonding/bond_options.c |  8 ++++----
- include/net/bonding.h              | 13 +++++++------
- 3 files changed, 21 insertions(+), 18 deletions(-)
+ fs/ksmbd/mgmt/tree_connect.c |   18 ++++--------------
+ fs/ksmbd/mgmt/tree_connect.h |    1 -
+ fs/ksmbd/smb2pdu.c           |    3 ---
+ 3 files changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index b52f5f64e3abb..209cab75ac0a5 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3214,8 +3214,8 @@ static void bond_validate_arp(struct bonding *bond, struct slave *slave, __be32
- 			   __func__, &sip);
- 		return;
- 	}
--	slave->last_rx = jiffies;
--	slave->target_last_arp_rx[i] = jiffies;
-+	WRITE_ONCE(slave->last_rx, jiffies);
-+	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
- }
+--- a/fs/ksmbd/mgmt/tree_connect.c
++++ b/fs/ksmbd/mgmt/tree_connect.c
+@@ -76,7 +76,6 @@ ksmbd_tree_conn_connect(struct ksmbd_con
+ 	tree_conn->t_state = TREE_NEW;
+ 	status.tree_conn = tree_conn;
+ 	atomic_set(&tree_conn->refcount, 1);
+-	init_waitqueue_head(&tree_conn->refcount_q);
  
- static int bond_arp_rcv(const struct sk_buff *skb, struct bonding *bond,
-@@ -3434,8 +3434,8 @@ static void bond_validate_na(struct bonding *bond, struct slave *slave,
- 			  __func__, saddr);
- 		return;
- 	}
--	slave->last_rx = jiffies;
--	slave->target_last_arp_rx[i] = jiffies;
-+	WRITE_ONCE(slave->last_rx, jiffies);
-+	WRITE_ONCE(slave->target_last_arp_rx[i], jiffies);
- }
+ 	ret = xa_err(xa_store(&sess->tree_conns, tree_conn->id, tree_conn,
+ 			      GFP_KERNEL));
+@@ -98,14 +97,8 @@ out_error:
  
- static int bond_na_rcv(const struct sk_buff *skb, struct bonding *bond,
-@@ -3505,7 +3505,7 @@ int bond_rcv_validate(const struct sk_buff *skb, struct bonding *bond,
- 		    (slave_do_arp_validate_only(bond) && is_ipv6) ||
- #endif
- 		    !slave_do_arp_validate_only(bond))
--			slave->last_rx = jiffies;
-+			WRITE_ONCE(slave->last_rx, jiffies);
- 		return RX_HANDLER_ANOTHER;
- 	} else if (is_arp) {
- 		return bond_arp_rcv(skb, bond, slave);
-@@ -3573,7 +3573,7 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
- 
- 		if (slave->link != BOND_LINK_UP) {
- 			if (bond_time_in_interval(bond, last_tx, 1) &&
--			    bond_time_in_interval(bond, slave->last_rx, 1)) {
-+			    bond_time_in_interval(bond, READ_ONCE(slave->last_rx), 1)) {
- 
- 				bond_propose_link_state(slave, BOND_LINK_UP);
- 				slave_state_changed = 1;
-@@ -3597,8 +3597,10 @@ static void bond_loadbalance_arp_mon(struct bonding *bond)
- 			 * when the source ip is 0, so don't take the link down
- 			 * if we don't know our ip yet
- 			 */
--			if (!bond_time_in_interval(bond, last_tx, bond->params.missed_max) ||
--			    !bond_time_in_interval(bond, slave->last_rx, bond->params.missed_max)) {
-+			if (!bond_time_in_interval(bond, last_tx,
-+						   bond->params.missed_max) ||
-+			    !bond_time_in_interval(bond, READ_ONCE(slave->last_rx),
-+						   bond->params.missed_max)) {
- 
- 				bond_propose_link_state(slave, BOND_LINK_DOWN);
- 				slave_state_changed = 1;
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 28c53f1b13826..a37b47b8ea8ed 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1124,7 +1124,7 @@ static void _bond_options_arp_ip_target_set(struct bonding *bond, int slot,
- 
- 	if (slot >= 0 && slot < BOND_MAX_ARP_TARGETS) {
- 		bond_for_each_slave(bond, slave, iter)
--			slave->target_last_arp_rx[slot] = last_rx;
-+			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
- 		targets[slot] = target;
- 	}
- }
-@@ -1193,8 +1193,8 @@ static int bond_option_arp_ip_target_rem(struct bonding *bond, __be32 target)
- 	bond_for_each_slave(bond, slave, iter) {
- 		targets_rx = slave->target_last_arp_rx;
- 		for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
--			targets_rx[i] = targets_rx[i+1];
--		targets_rx[i] = 0;
-+			WRITE_ONCE(targets_rx[i], READ_ONCE(targets_rx[i+1]));
-+		WRITE_ONCE(targets_rx[i], 0);
- 	}
- 	for (i = ind; (i < BOND_MAX_ARP_TARGETS-1) && targets[i+1]; i++)
- 		targets[i] = targets[i+1];
-@@ -1349,7 +1349,7 @@ static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
- 
- 	if (slot >= 0 && slot < BOND_MAX_NS_TARGETS) {
- 		bond_for_each_slave(bond, slave, iter) {
--			slave->target_last_arp_rx[slot] = last_rx;
-+			WRITE_ONCE(slave->target_last_arp_rx[slot], last_rx);
- 			slave_set_ns_maddr(bond, slave, target, &targets[slot]);
- 		}
- 		targets[slot] = *target;
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 95f67b308c19a..9fb40a5920209 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -519,13 +519,14 @@ static inline int bond_is_ip6_target_ok(struct in6_addr *addr)
- static inline unsigned long slave_oldest_target_arp_rx(struct bonding *bond,
- 						       struct slave *slave)
+ void ksmbd_tree_connect_put(struct ksmbd_tree_connect *tcon)
  {
-+	unsigned long tmp, ret = READ_ONCE(slave->target_last_arp_rx[0]);
- 	int i = 1;
--	unsigned long ret = slave->target_last_arp_rx[0];
--
--	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++)
--		if (time_before(slave->target_last_arp_rx[i], ret))
--			ret = slave->target_last_arp_rx[i];
+-	/*
+-	 * Checking waitqueue to releasing tree connect on
+-	 * tree disconnect. waitqueue_active is safe because it
+-	 * uses atomic operation for condition.
+-	 */
+-	if (!atomic_dec_return(&tcon->refcount) &&
+-	    waitqueue_active(&tcon->refcount_q))
+-		wake_up(&tcon->refcount_q);
++	if (atomic_dec_and_test(&tcon->refcount))
++		kfree(tcon);
+ }
  
-+	for (; (i < BOND_MAX_ARP_TARGETS) && bond->params.arp_targets[i]; i++) {
-+		tmp = READ_ONCE(slave->target_last_arp_rx[i]);
-+		if (time_before(tmp, ret))
-+			ret = tmp;
-+	}
+ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
+@@ -117,14 +110,11 @@ int ksmbd_tree_conn_disconnect(struct ks
+ 	xa_erase(&sess->tree_conns, tree_conn->id);
+ 	write_unlock(&sess->tree_conns_lock);
+ 
+-	if (!atomic_dec_and_test(&tree_conn->refcount))
+-		wait_event(tree_conn->refcount_q,
+-			   atomic_read(&tree_conn->refcount) == 0);
+-
+ 	ret = ksmbd_ipc_tree_disconnect_request(sess->id, tree_conn->id);
+ 	ksmbd_release_tree_conn_id(sess, tree_conn->id);
+ 	ksmbd_share_config_put(tree_conn->share_conf);
+-	kfree(tree_conn);
++	if (atomic_dec_and_test(&tree_conn->refcount))
++		kfree(tree_conn);
  	return ret;
  }
  
-@@ -535,7 +536,7 @@ static inline unsigned long slave_last_rx(struct bonding *bond,
- 	if (bond->params.arp_all_targets == BOND_ARP_TARGETS_ALL)
- 		return slave_oldest_target_arp_rx(bond, slave);
+--- a/fs/ksmbd/mgmt/tree_connect.h
++++ b/fs/ksmbd/mgmt/tree_connect.h
+@@ -32,7 +32,6 @@ struct ksmbd_tree_connect {
+ 	int				maximal_access;
+ 	bool				posix_extensions;
+ 	atomic_t			refcount;
+-	wait_queue_head_t		refcount_q;
+ 	unsigned int			t_state;
+ };
  
--	return slave->last_rx;
-+	return READ_ONCE(slave->last_rx);
- }
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2169,7 +2169,6 @@ int smb2_tree_disconnect(struct ksmbd_wo
+ 		goto err_out;
+ 	}
  
- static inline void slave_update_last_tx(struct slave *slave)
--- 
-2.51.0
-
+-	WARN_ON_ONCE(atomic_dec_and_test(&tcon->refcount));
+ 	tcon->t_state = TREE_DISCONNECTED;
+ 	write_unlock(&sess->tree_conns_lock);
+ 
+@@ -2179,8 +2178,6 @@ int smb2_tree_disconnect(struct ksmbd_wo
+ 		goto err_out;
+ 	}
+ 
+-	work->tcon = NULL;
+-
+ 	rsp->StructureSize = cpu_to_le16(4);
+ 	err = ksmbd_iov_pin_rsp(work, rsp,
+ 				sizeof(struct smb2_tree_disconnect_rsp));
 
 
 
