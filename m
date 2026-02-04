@@ -1,182 +1,163 @@
-Return-Path: <stable+bounces-213360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sI9dML8Og2kBhQMAu9opvQ
-	(envelope-from <stable+bounces-213360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:17:51 +0100
+	id WM+lHgARg2kPhQMAu9opvQ
+	(envelope-from <stable+bounces-213361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:27:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7A2E3B68
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:17:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52ECE3D20
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 10:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B4563006B44
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 09:17:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F94A302A057
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 09:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0C23A1E8A;
-	Wed,  4 Feb 2026 09:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AC63A4F23;
+	Wed,  4 Feb 2026 09:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="wGdUrGti"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6mgO+17"
 X-Original-To: stable@vger.kernel.org
-Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B56221FAC;
-	Wed,  4 Feb 2026 09:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AFC3A1E66;
+	Wed,  4 Feb 2026 09:23:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770196666; cv=none; b=tdeobr/s9pEsfKlJz/uZXtKH6vV0so/UxgUKvC5wj8+nNqH8bGIvpQGisVfnIkN1HpBpHDDTR9F9dDl4gl8NDPhEhk/z7FE/Xjii7PlNuXv+bQErdMRLYtktIYHTL2vBA558fv/ah9aTTtcix79AVrj9DzM+iOMybTDdI6v4xpM=
+	t=1770196981; cv=none; b=O0SXN2PcL0ArWG2LIjuQoLxjCpwhAHL4wAEX/igXceAkK5/WlGJDlLtz53CJUO/7JVTEcTPVlzrUR7jRadSbIZSiKJadYCu0xmed9l5XXd6/DmD/IRc2LNCsgiSO6bLr/NdPzWnI95UU8df4i8rfaOOLxvxj92eM7dEbod/NjOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770196666; c=relaxed/simple;
-	bh=rTjzOHeWG9eHm33rQDOPGTZZySKoFz1aHEHitCndjIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h10BqJxe1xVjNI7J4mmAdJT8j767N5d15sbzUBvp1WYUhAZ9v3fSx7C2skkkf0OeZXZzLzMDmF7HKC6hwsxvnYY6kIMxMyqgjQSM/Y5TG7jAcBZfJrER+W0xRw7nsvRF7BKf0EBnttb5WhTq+yd5nz+7DJshhr3Pcelhg+9nnF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=wGdUrGti; arc=none smtp.client-ip=211.125.140.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1770196666; x=1801732666;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gSpoUwnGMiw8Hd9rxHOb3HRj7lon6L0Wu64wAWcD0ZA=;
-  b=wGdUrGtij/1vJJHOHvHifJnnQT/Mqo8Mv1OcrGQfdnucIZ2OUraYOxXB
-   i00Wkq7A7tcQ+v8CnaQ1hHWFZKiAYZ6jRO/J/2A9MQWnnxiIdg5okicub
-   m14Sxr9yKkH3D2BNMxCrVGGAOw3WXx2QT92x2mprGiTgtyXyy1eVyK+hV
-   Tc6J8NK4vAL3dy8MMj+qaOTlWK+t3WL4vVnFqsC5FpcIb0aeVQSmkZYXp
-   DOobgdaM+s/Q06ZSXn86C/2ngj7p1OOF8Ne6K5Ze+/zbYAwyCaIm2XzRx
-   6OZ9aoSCMze5TUm9HDUJuvidckZ4JzM0cb8iHzGH7+wZbP4S0eIIT1VMW
-   g==;
-Received: from unknown (HELO jpmta-ob1.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::6])
-  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 18:17:39 +0900
-X-IronPort-AV: E=Sophos;i="6.21,272,1763391600"; 
-   d="scan'208";a="608110368"
-Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
-  by jpmta-ob1.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 18:17:38 +0900
-Date: Wed, 4 Feb 2026 18:17:29 +0900
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	jailhouse-dev@googlegroups.com, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org, Rahul Bukte <rahul.bukte@sony.com>,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Tim Bird <tim.bird@sony.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] x86/x2apic: disable x2apic on resume if the kernel
- expects so
-Message-ID: <aYMOqXTYMJ_IlEFA@JPC00244420>
-References: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
- <20260202-x2apic-fix-v1-1-71c8f488a88b@sony.com>
- <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
+	s=arc-20240116; t=1770196981; c=relaxed/simple;
+	bh=xpBNHLw1ybQAm9G2QR0TrOLsIa2kQxFTbxJgZSQ8QvI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iO8ghjqJpm2XgYySSRJ7xua8vqmLjaTn3cA/hiyutJ5U3eGvJrwhUXZLQzbH1Y9tarnVjb7QvOjntgTJyRt6mTqzmlyUR1/zm/gZSruW340YSeyIGNfpsB0OuoJfmdgnLBgSbyzcwGZ+qVOi3fjM+eR2dyCK3J2qNKq+7uGOPUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6mgO+17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0CEC4CEF7;
+	Wed,  4 Feb 2026 09:22:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770196980;
+	bh=xpBNHLw1ybQAm9G2QR0TrOLsIa2kQxFTbxJgZSQ8QvI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=c6mgO+179ipCFsaJ3+MxLIojtjIeuMwGB9/lhzbLg2stnjYZ5nSM9o+NAy7A+gjdq
+	 2qkudYPJEngZSWNlzsFI2m+qhiPL/l9/Ihei+igdFS2AUPsDRCeMXu4VSwGIVu7rSQ
+	 6M0hc6zBDp2v7k4MCzpGpTFWKE9LU0WGjm1Feq2oCyjKtAfHIxoDXuzu0tjqfcaqD0
+	 bCpK6eey8PVoZAJ5PSbbnSwY3MMQay3TOjP382smn4mI+nx8cu1VIjbGLbtC3pilD+
+	 ej3jLhObd/3JLwEqBNdJFCOCFcparqdF98hv85zYTR06iiR9Fc/p3j4KYoj90AXgk4
+	 qo/1kKWe2Kg+Q==
+From: syzbot <syzbot@kernel.org>
+To: jfs-discussion@lists.sourceforge.net,
+	shaggy@kernel.org,
+	ghandatmanas@gmail.com
+Cc: syzbot <syzbot@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	syzbot+1afe7ef2d0062e19eeb3@syzkaller.appspotmail.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] jfs: fix array-index-out-of-bounds in dbFindLeaf
+Date: Wed,  4 Feb 2026 10:22:30 +0100
+Message-ID: <20260204092230.2540042-1-syzbot@kernel.org>
+X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sony.com,none];
-	R_DKIM_ALLOW(-0.20)[sony.com:s=s1jp];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213360-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[lists.sourceforge.net,kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	DKIM_TRACE(0.00)[sony.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shashank.mahadasyam@sony.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-213361-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sony.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD7A2E3B68
+	TAGGED_RCPT(0.00)[stable,1afe7ef2d0062e19eeb3];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B52ECE3D20
 X-Rspamd-Action: no action
 
-Hi Sohil,
+UBSAN reported an array-index-out-of-bounds issue in dbFindLeaf:
 
-On Tue, Feb 03, 2026 at 01:08:39PM -0800, Sohil Mehta wrote:
-> > diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-> > index d93f87f29d03..cc64d61f82cf 100644
-> > --- a/arch/x86/kernel/apic/apic.c
-> > +++ b/arch/x86/kernel/apic/apic.c
-> > @@ -2456,6 +2456,12 @@ static void lapic_resume(void *data)
-> >  	if (x2apic_mode) {
-> >  		__x2apic_enable();
-> >  	} else {
-> > +		/*
-> > +		 * x2apic may have been re-enabled by the
-> > +		 * firmware on resuming from s2ram
-> > +		 */
-> > +		__x2apic_disable();
-> > +
-> 
-> We should likely only disable x2apic on platforms that support it and
-> need the disabling. How about?
-> 
-> ...
-> } else {
-> 	/*
-> 	 *
-> 	 */
-> 	if (x2apic_enabled())
-> 		__x2apic_disable();
+  index 1365 is out of range for type 's8[1365]' (aka 'signed char[1365]')
+  CPU: 0 UID: 0 PID: 6287 Comm: syz-executor268 Not tainted ...
+  Call Trace:
+   ...
+   __ubsan_handle_out_of_bounds+0x115/0x140 lib/ubsan.c:455
+   dbFindLeaf+0x308/0x520 fs/jfs/jfs_dmap.c:2976
+   dbFindCtl+0x267/0x520 fs/jfs/jfs_dmap.c:1717
+   ...
 
-__x2apic_disable disables x2apic only if boot_cpu_has(X86_FEATURE_APIC)
-and x2apic is already enabled. x2apic_enabled also does the same checks,
-the only difference being, it uses rdmsrq_safe instead of just rdmsrq,
-which is what __x2apic_disable uses. The safe version is because of
-Boris' suggestion [1]. If that's applicable here as well, then rdmsrq in
-__x2apic_disable should be changed to rdmsrq_safe.
+The issue is caused by an off-by-one error in the bounds check within
+dbFindLeaf. The function traverses the dmap tree to find free blocks.
+It uses a loop to iterate through the levels of the tree, calculating
+the index `x + n` to access the `tp->dmt_stree` array. The variable
+`max_size` represents the size of this array (CTLTREESIZE (1365) for
+dmapctl or TREESIZE (341) for dmaptree).
 
-> I considered if an error message should be printed along with this. But,
-> I am not sure if it can really be called a firmware issue. It's probably
-> just that newer CPUs might have started defaulting to x2apic on.
-> 
-> Can you specify what platform you are encountering this?
+The bounds check `if (x + n > max_size)` allows `x + n` to be equal to
+`max_size`. However, since the array size is `max_size`, the valid
+indices are `0` to `max_size - 1`. Accessing `tp->dmt_stree[max_size]`
+results in an array-index-out-of-bounds access.
 
+This can occur when the `dmt_height` field in the on-disk structure is
+corrupted or fuzzed to be larger than the fixed height supported by the
+`dmt_stree` array.
 
-I'm not sure it's the CPU defaulting to x2apic on. As per Section
-12.12.5.1 of the Intel SDM:
+Fix this by changing the condition to `>=` to correctly reject indices
+equal to or greater than the array size.
 
-	On coming out of reset, the local APIC unit is enabled and is in
-	the xAPIC mode: IA32_APIC_BASE[EN]=1 and IA32_APIC_BASE[EXTD]=0.
+Signed-off-by: syzbot@kernel.org
+Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
+Fixes: 22cad8bc1d36 ("jfs: fix array-index-out-of-bounds in dbFindLeaf")
+Reported-by: syzbot+1afe7ef2d0062e19eeb3@syzkaller.appspotmail.com
+To: <jfs-discussion@lists.sourceforge.net>
+To: "Dave Kleikamp" <shaggy@kernel.org>
+To: "Manas Ghandat" <ghandatmanas@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>
+Cc: <stable@vger.kernel.org>
+---
+This patch was generated by Google Gemini LLM model.
+It was pre-reviewed and Signed-off-by a human, but please review carefully.
 
-So, the CPU should be turning on in xapic mode. In fact, when x2apic is
-disabled in the firmware, this problem doesn't happen.
+Gerrit code review with full side-by-side diffs:
+https://linux-review.git.corp.google.com/c/linux/kernel/git/torvalds/linux/+/26122
 
-Either way, a pr_warn maybe helpful. How about "x2apic re-enabled by the
-firmware during resume. Disabling\n"?
+Change-Id: I92f694e86518349eafa132b2ba314d8dfff6c86e
+---
 
-[1] https://lore.kernel.org/all/20150116095927.GA18880@pd.tnic/
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index cdfa699..18a7dc5 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2971,7 +2971,7 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
+ 			/* sufficient free space found.  move to the next
+ 			 * level (or quit if this is the last level).
+ 			 */
+-			if (x + n > max_size)
++			if (x + n >= max_size)
+ 				return -ENOSPC;
+ 			if (l2nb <= tp->dmt_stree[x + n])
+ 				break;
+
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
 
