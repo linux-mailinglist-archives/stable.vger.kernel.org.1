@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aL66IzFlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-214004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:41 +0100
+	id 8E9aBv9qg2m3mgMAu9opvQ
+	(envelope-from <stable+bounces-214238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C37CE8918
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E7FE97C9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E5CCB307B324
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 21F1431385EF
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917BD2D8768;
-	Wed,  4 Feb 2026 15:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC282D5950;
+	Wed,  4 Feb 2026 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsnBRnml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNIVX6Gx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558E91E520C;
-	Wed,  4 Feb 2026 15:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BC9273D77;
+	Wed,  4 Feb 2026 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218237; cv=none; b=nq59WmMN1qZeCx3rsszGXEyNoWcb89dTXkS0qU9L0TbHezHRn8OS1ydCVgrIJbKyPpFV5dfNdtC0TWRgabj83Aqb8P6YrcNg2pIYQ2j+MMnmMI5fHqvCT/d0Q3RtPt2Y0r+MKhb/FT+iSXzpg4EzMgimYzL29SLVzOTp6BtfboI=
+	t=1770219024; cv=none; b=LL7sIUgo7xi5SYpLfPeWdrW0cvsOvKOPqrUlC08i2mkYWnkOC7nyGKoYVR6UOK8cG7b+N61zGYRmBnvbTwSngomwaCEgbajtezfryG4VUkCS6zlhiAalKlmWa9WCbvK4go5SN2T9FDr4uOQCqOHKISFkWtVjSIgsaUEww5tAL8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218237; c=relaxed/simple;
-	bh=9tlklgjFSXr7X5LFVtLSZJb+uMAw+lZ96yA1H0eeWB8=;
+	s=arc-20240116; t=1770219024; c=relaxed/simple;
+	bh=+5UhERIv2JRpCJV3K0CRepvp8IgnZGaSnxdcQkkfNag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AWIJR2C57d3n0aljkevzriEg2WqSvxgcxVgPR7vgQEhLeMjP7d/Jnd8j8P8zPTjdTnkraPcXrhDpXrLqBgF6AzMrEMHONinWG/fHfpEOMUM2N0YY3G5iGeFELx41mzRQMxUiD7TpUWqPsab2lRD7iaiJB30TM55sSWp21m2ygv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsnBRnml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6998C4CEF7;
-	Wed,  4 Feb 2026 15:17:16 +0000 (UTC)
+	 MIME-Version; b=NHIKfyUY+IfHPjy1o/xfVE7y+zfe4MuITCLK7IBTY/cdCtIHgh7I6XSRNPW+ghqRIIcPYSI8o6t84XPJWIwkPM8AwMnpFhl/i9oOm73iFqSI1i4N+n22WmG3AmlS08r7PokPOwb9LC0NqxSOQvjsU+KUQEWq8aAFHFb+c/++yzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNIVX6Gx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DD5C4CEF7;
+	Wed,  4 Feb 2026 15:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218237;
-	bh=9tlklgjFSXr7X5LFVtLSZJb+uMAw+lZ96yA1H0eeWB8=;
+	s=korg; t=1770219024;
+	bh=+5UhERIv2JRpCJV3K0CRepvp8IgnZGaSnxdcQkkfNag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsnBRnmle9ToTevFbLqXOm4eUlXw1NjMhp8PIInJ3zrMSY03/XaI/tAdckKjLl84b
-	 Viv9FZr5vJGx5bL1x+sKZdv0M25PbOnPaaVahgv65VAafNDpTJKwXPQ+b3HaUHlEQp
-	 CpXeHNDAYmZLAGtef3VQamkcH54Rge0fGLJDSAJs=
+	b=mNIVX6GxqSoK+kRv9uobbNdpV6FahLBHuSS/9dHIUNuaLQtc29AsHSlxikL6n9QWm
+	 8Q4Pf9g4a2rqPtw/12RJLCE+E4p+tKSbi3IQVfTK6GXI7jAllDZ7M7PTwAeYdTMO6r
+	 YR42+CU/v+RC4CrK19HASsNJG5NFF9DTONub7jig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 6.1 252/280] wifi: mac80211: move TDLS work to wiphy work
+	Yang Wang <kevinyang.wang@amd.com>,
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 044/122] drm/amd/pm: fix race in power state check before mutex lock
 Date: Wed,  4 Feb 2026 15:40:26 +0100
-Message-ID: <20260204143918.711363407@linuxfoundation.org>
+Message-ID: <20260204143853.443947825@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +64,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214004-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214238-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1C37CE8918
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 20E7FE97C9
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 777b26002b73127e81643d9286fadf3d41e0e477 ]
+[ Upstream commit ee8d07cd5730038e33bf5e551448190bbd480eb8 ]
 
-Again, to have the wiphy locked for it.
+The power state check in amdgpu_dpm_set_powergating_by_smu() is done
+before acquiring the pm mutex, leading to a race condition where:
+1. Thread A checks state and thinks no change is needed
+2. Thread B acquires mutex and modifies the state
+3. Thread A returns without updating state, causing inconsistency
 
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Summary of conflict resolutions:
-  - In mlme.c, move only tdls_peer_del_work
-    to wiphy work, and none the other works ]
-Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by moving the mutex lock before the power state check,
+ensuring atomicity of the state check and modification.
+
+Fixes: 6ee27ee27ba8 ("drm/amd/pm: avoid duplicate powergate/ungate setting")
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7a3fbdfd19ec5992c0fc2d0bd83888644f5f2f38)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ieee80211_i.h |    4 ++--
- net/mac80211/mlme.c        |    7 ++++---
- net/mac80211/tdls.c        |   11 ++++++-----
- 3 files changed, 12 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -531,7 +531,7 @@ struct ieee80211_if_managed {
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
+index bc29a923fa6e5..8253d2977408d 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm.c
+@@ -80,15 +80,15 @@ int amdgpu_dpm_set_powergating_by_smu(struct amdgpu_device *adev,
+ 	enum ip_power_state pwr_state = gate ? POWER_STATE_OFF : POWER_STATE_ON;
+ 	bool is_vcn = block_type == AMD_IP_BLOCK_TYPE_VCN;
  
- 	/* TDLS support */
- 	u8 tdls_peer[ETH_ALEN] __aligned(2);
--	struct delayed_work tdls_peer_del_work;
-+	struct wiphy_delayed_work tdls_peer_del_work;
- 	struct sk_buff *orig_teardown_skb; /* The original teardown skb */
- 	struct sk_buff *teardown_skb; /* A copy to send through the AP */
- 	spinlock_t teardown_lock; /* To lock changing teardown_skb */
-@@ -2525,7 +2525,7 @@ int ieee80211_tdls_mgmt(struct wiphy *wi
- 			size_t extra_ies_len);
- int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 			const u8 *peer, enum nl80211_tdls_operation oper);
--void ieee80211_tdls_peer_del_work(struct work_struct *wk);
-+void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk);
- int ieee80211_tdls_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 				  const u8 *addr, u8 oper_class,
- 				  struct cfg80211_chan_def *chandef);
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -6517,8 +6517,8 @@ void ieee80211_sta_setup_sdata(struct ie
- 		  ieee80211_beacon_connection_loss_work);
- 	INIT_WORK(&ifmgd->csa_connection_drop_work,
- 		  ieee80211_csa_connection_drop_work);
--	INIT_DELAYED_WORK(&ifmgd->tdls_peer_del_work,
--			  ieee80211_tdls_peer_del_work);
-+	wiphy_delayed_work_init(&ifmgd->tdls_peer_del_work,
-+				ieee80211_tdls_peer_del_work);
- 	timer_setup(&ifmgd->timer, ieee80211_sta_timer, 0);
- 	timer_setup(&ifmgd->bcn_mon_timer, ieee80211_sta_bcn_mon_timer, 0);
- 	timer_setup(&ifmgd->conn_mon_timer, ieee80211_sta_conn_mon_timer, 0);
-@@ -7524,7 +7524,8 @@ void ieee80211_mgd_stop(struct ieee80211
- 	cancel_work_sync(&ifmgd->monitor_work);
- 	cancel_work_sync(&ifmgd->beacon_connection_loss_work);
- 	cancel_work_sync(&ifmgd->csa_connection_drop_work);
--	cancel_delayed_work_sync(&ifmgd->tdls_peer_del_work);
-+	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-+				  &ifmgd->tdls_peer_del_work);
- 
- 	sdata_lock(sdata);
- 	if (ifmgd->assoc_data)
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -21,7 +21,7 @@
- /* give usermode some time for retries in setting up the TDLS session */
- #define TDLS_PEER_SETUP_TIMEOUT	(15 * HZ)
- 
--void ieee80211_tdls_peer_del_work(struct work_struct *wk)
-+void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk)
- {
- 	struct ieee80211_sub_if_data *sdata;
- 	struct ieee80211_local *local;
-@@ -1128,9 +1128,9 @@ ieee80211_tdls_mgmt_setup(struct wiphy *
- 		return ret;
++	mutex_lock(&adev->pm.mutex);
++
+ 	if (atomic_read(&adev->pm.pwr_state[block_type]) == pwr_state &&
+ 			(!is_vcn || adev->vcn.num_vcn_inst == 1)) {
+ 		dev_dbg(adev->dev, "IP block%d already in the target %s state!",
+ 				block_type, gate ? "gate" : "ungate");
+-		return 0;
++		goto out_unlock;
  	}
  
--	ieee80211_queue_delayed_work(&sdata->local->hw,
--				     &sdata->u.mgd.tdls_peer_del_work,
--				     TDLS_PEER_SETUP_TIMEOUT);
-+	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+				 &sdata->u.mgd.tdls_peer_del_work,
-+				 TDLS_PEER_SETUP_TIMEOUT);
- 	return 0;
+-	mutex_lock(&adev->pm.mutex);
+-
+ 	switch (block_type) {
+ 	case AMD_IP_BLOCK_TYPE_UVD:
+ 	case AMD_IP_BLOCK_TYPE_VCE:
+@@ -115,6 +115,7 @@ int amdgpu_dpm_set_powergating_by_smu(struct amdgpu_device *adev,
+ 	if (!ret)
+ 		atomic_set(&adev->pm.pwr_state[block_type], pwr_state);
  
- out_unlock:
-@@ -1427,7 +1427,8 @@ int ieee80211_tdls_oper(struct wiphy *wi
- 	}
++out_unlock:
+ 	mutex_unlock(&adev->pm.mutex);
  
- 	if (ret == 0 && ether_addr_equal(sdata->u.mgd.tdls_peer, peer)) {
--		cancel_delayed_work(&sdata->u.mgd.tdls_peer_del_work);
-+		wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-+					  &sdata->u.mgd.tdls_peer_del_work);
- 		eth_zero_addr(sdata->u.mgd.tdls_peer);
- 	}
- 
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
