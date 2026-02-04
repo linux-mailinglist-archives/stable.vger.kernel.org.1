@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHVtAmNog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:19 +0100
+	id IHqHCwdgg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769C5E9170
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C49C0E7D9C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EA103179211
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB052301CF64
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA0D2D8DA3;
-	Wed,  4 Feb 2026 15:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340C33BBF0;
+	Wed,  4 Feb 2026 15:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6kfhnG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUWu+jwE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6512417E0;
-	Wed,  4 Feb 2026 15:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4F4270540;
+	Wed,  4 Feb 2026 15:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218918; cv=none; b=orhaPcAKYTRTgqMl3cI/bk+DfpXtMz8hHvClwQkO63AKVnclccYNs/H9Gxdz3wAO8xbh3XsvsHQzfSjrcuXTnGswEK5I0q1bLmloGJzMF7Mfh5b8oWPXWtKEHG8fy3U0XimgximvsxTsrPDI3LWxePBeLBSbbey3E2tcvm7I3fg=
+	t=1770217241; cv=none; b=N9V6J+dXakBB9yqnDHoX0JTLxr3Z8N9WXY4XS++H6g3RN4+n48fZxWtgmUMNNYvbBR3JCSX0uBL2PS24QnrIW2214TGCEN4UgAA+4UC8yefnfKPj93m9nMXGl+lQD7/Ql0n3vtVHNJgTYVfeEeSZ8KSrzlc7TTNtTpiNd5JXf+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218918; c=relaxed/simple;
-	bh=hdwNh2IyksMmIanPVv3/QFEdud8amIcfkiJiwTmX9gk=;
+	s=arc-20240116; t=1770217241; c=relaxed/simple;
+	bh=kHUZ+2ReShk68M2bMWFGlFUdot73qRTYGOq4tPHG6F4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiznAxgYwo7mAc8rDE41CKmVfgRTmU66YuC73Ys/L87UMISrzE033M+Zgy9+eVPfMQx6i9DognuGI7PhC8N5awwQ08urrtgBdigwL9iMOlSaemyJguEEdqCGzdIobycn6NCDp2Ra7QcQfWaPlKLQeScY8PNOKGg4vNAxQXYJCtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6kfhnG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA25C4CEF7;
-	Wed,  4 Feb 2026 15:28:37 +0000 (UTC)
+	 MIME-Version; b=IMnIdpSL0XwCOtWgioSuTpmeYyrTsiyZ6I7aW6LqMzwwb++xQ67oRPpqAyCIF94jOgQnNUVjI5CRHXyY/zcN2PJ8BwRJ3oz+7L46jU1sBsr6L4KTVcvdJbRHQJ2Rs7aVNzGdSA+JJEKcdY36APpFSum3j3n03ZTUA7qFS8nws2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUWu+jwE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482C7C4CEF7;
+	Wed,  4 Feb 2026 15:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218918;
-	bh=hdwNh2IyksMmIanPVv3/QFEdud8amIcfkiJiwTmX9gk=;
+	s=korg; t=1770217240;
+	bh=kHUZ+2ReShk68M2bMWFGlFUdot73qRTYGOq4tPHG6F4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6kfhnG1cXy08Q+Hd40tpSgL5TrEHgTTbVlyjpdyVAj8xd21HDuE9DtU25j3qEUih
-	 pFUvDY/WrEdal1V2QUvz9sFCoTAl/bRmuzQmizt8t7wyLqVzqmCGj8yn79A/2L7H6a
-	 sjaFvT2H2rW7UMkgZaiO0t39/zKRsqaXYGWAoz1c=
+	b=oUWu+jwEa1XQ6Jdvw/ERbGMMxwxe42P2PF28QpnF95ZiMFLJOSuo/VInEghAIef4F
+	 AqXkVLWaN2telaVRBqXDUCtKw4jgkFNxbgzkzlYwZ3zuJcnotcICujxOXQ/rpK104s
+	 3gErNYGj/ruooOpZp+1ZI+28bILSJMv8iBF8a6hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+	Johan Hovold <johan@kernel.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 013/122] ipv6: use the right ifindex when replying to icmpv6 from localhost
+Subject: [PATCH 5.15 164/206] dmaengine: stm32: dmamux: fix OF node leak on route allocation failure
 Date: Wed,  4 Feb 2026 15:39:55 +0100
-Message-ID: <20260204143852.344134366@linuxfoundation.org>
+Message-ID: <20260204143904.112227324@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214206-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213708-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,66 +88,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 769C5E9170
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,st.com:email]
+X-Rspamd-Queue-Id: C49C0E7D9C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 03cbcdf93866e61beb0063392e6dbb701f03aea2 ]
+[ Upstream commit b1b590a590af13ded598e70f0b72bc1e515787a1 ]
 
-When replying to a ICMPv6 echo request that comes from localhost address
-the right output ifindex is 1 (lo) and not rt6i_idev dev index. Use the
-skb device ifindex instead. This fixes pinging to a local address from
-localhost source address.
+Make sure to drop the reference taken to the DMA master OF node also on
+late route allocation failures.
 
-$ ping6 -I ::1 2001:1:1::2 -c 3
-PING 2001:1:1::2 (2001:1:1::2) from ::1 : 56 data bytes
-64 bytes from 2001:1:1::2: icmp_seq=1 ttl=64 time=0.037 ms
-64 bytes from 2001:1:1::2: icmp_seq=2 ttl=64 time=0.069 ms
-64 bytes from 2001:1:1::2: icmp_seq=3 ttl=64 time=0.122 ms
-
-2001:1:1::2 ping statistics
-3 packets transmitted, 3 received, 0% packet loss, time 2032ms
-rtt min/avg/max/mdev = 0.037/0.076/0.122/0.035 ms
-
-Fixes: 1b70d792cf67 ("ipv6: Use rt6i_idev index for echo replies to a local address")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260121194409.6749-1-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
+Cc: stable@vger.kernel.org      # 4.15
+Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Link: https://patch.msgid.link/20251117161258.10679-12-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/icmp.c | 4 +++-
+ drivers/dma/stm32-dmamux.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 56c974cf75d15..cf6455cbe2cc9 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -769,7 +769,9 @@ static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
- 	fl6.daddr = ipv6_hdr(skb)->saddr;
- 	if (saddr)
- 		fl6.saddr = *saddr;
--	fl6.flowi6_oif = icmp6_iif(skb);
-+	fl6.flowi6_oif = ipv6_addr_loopback(&fl6.daddr) ?
-+			 skb->dev->ifindex :
-+			 icmp6_iif(skb);
- 	fl6.fl6_icmp_type = type;
- 	fl6.flowi6_mark = mark;
- 	fl6.flowi6_uid = sock_net_uid(net, NULL);
--- 
-2.51.0
-
+--- a/drivers/dma/stm32-dmamux.c
++++ b/drivers/dma/stm32-dmamux.c
+@@ -140,7 +140,7 @@ static void *stm32_dmamux_route_allocate
+ 	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret < 0) {
+ 		spin_unlock_irqrestore(&dmamux->lock, flags);
+-		goto error;
++		goto err_put_dma_spec_np;
+ 	}
+ 	spin_unlock_irqrestore(&dmamux->lock, flags);
+ 
+@@ -160,6 +160,8 @@ static void *stm32_dmamux_route_allocate
+ 
+ 	return mux;
+ 
++err_put_dma_spec_np:
++	of_node_put(dma_spec->np);
+ error:
+ 	clear_bit(mux->chan_id, dmamux->dma_inuse);
+ 
 
 
 
