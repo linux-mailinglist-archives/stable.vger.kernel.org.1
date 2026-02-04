@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDThCQdfg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213638-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:23 +0100
+	id GCHwEqdbg2mYlwMAu9opvQ
+	(envelope-from <stable+bounces-213443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CA1E7BB7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD59AE7540
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 125573036546
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0760E30117BA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3029421F0B;
-	Wed,  4 Feb 2026 14:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A221C5D77;
+	Wed,  4 Feb 2026 14:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFOZUSNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rChSv89m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963A73D3CF2;
-	Wed,  4 Feb 2026 14:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC500271A9A;
+	Wed,  4 Feb 2026 14:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217002; cv=none; b=X/q5VdOjeyrwM+sMieC63Erk9Mk3pRMv4qaI5KWrjwOdlxNFq66lQ0RH3nghrVv6x7WHjXUFdVn+m+PltxfnLz+uSBUHL+hjeN8I4duNARRd2QrlyAvGp8xOQ9zulFmrMuZxMTSL+kl5smChu3HnhnZGrKnu4Fiuw8NTKFbiYxg=
+	t=1770216356; cv=none; b=PBtCmNwIjwML4ssB/QvqOzys+4iUp9XlGYbo7i6DpvoD0i6aGBDPlDzKxPFZ8TnkByjIntMryQlQ4NUSmY9koulMaE+bKdEbt+VUqUfJOGAaWphl17RcVrSGw6TRfCav/Cbf9qiKVlf3Ot3U9kLE3TJoNEyadGGK1x3c6hzFS9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217002; c=relaxed/simple;
-	bh=TSIMWbg+YwbE9WYd711TOOhKdFHfKOG1JmR75JkXuak=;
+	s=arc-20240116; t=1770216356; c=relaxed/simple;
+	bh=OVYMUJsWl0iKhMAQFPNBg7IT5PHkF4tjhhoGLT2fAXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0Vp91tSxLreWWRBxUW3PRxLDGhwo/FsH1a5B5ZE7ThA8ASY7pMOAG+44yUyr4MnKg9xhotHdtUKOtmf6q87sYQORNcvwWcNrJ8vfAgH/FpYp/RfZt2FmURtG1QfxtMKLgUesO+r3JS/D6yFq3vkcjEMfEjgIL0xxXv1xqssm/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFOZUSNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3094C4CEF7;
-	Wed,  4 Feb 2026 14:56:41 +0000 (UTC)
+	 MIME-Version; b=fIIruT07tmFPLcVmVJaCo2ZpG91Ad1/CdAuR7WmeMI5g5L7FaHSYa5t5nYnQrDjLuq+SmeCGMmK9CqLPWdVfFoWrd7iAMyM+bnBZuXHWynNEUpssK0DZtmPvi9GjsRz3typRYRYQNWKxDfP+0cxTEKveJ2EOvByZGWnwfE9IsGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rChSv89m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1114EC4CEF7;
+	Wed,  4 Feb 2026 14:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217002;
-	bh=TSIMWbg+YwbE9WYd711TOOhKdFHfKOG1JmR75JkXuak=;
+	s=korg; t=1770216355;
+	bh=OVYMUJsWl0iKhMAQFPNBg7IT5PHkF4tjhhoGLT2fAXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFOZUSNyT/dnOt3jmMpj4QMJDiAYM5x/jq9EX5xYwookUuIQiSRKQ7CaCryZmAlRq
-	 ov0OYOrLuzGWUnoAvxD4u10yR8Q0eOhlU2DwqvmXXbHNjSwgg8sLmq9bDL47DQIQka
-	 85eC7814HM7fgg9Iq3iyV7VJnTipFh7QEirshb/A=
+	b=rChSv89mBvyMHy0NjT9dYLqbvqC2h2mOK2EELRz/FJdZ0U4JUmHo6eFKQNr+krwiQ
+	 4IHL9Kr0/MWBfvzBhHjsJn382IwmpcK/ZbM2CqJdDi/yIDY3gdoOJyo6tfvy6SrlvF
+	 Q8wX40gpWb0xFbEVDXg1QUPaF0x5euwSWoseMRZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Maftei <alex.maftei@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/206] selftests/ptp: Add -x option for testing PTP_SYS_OFFSET_EXTENDED
+	Yang Erkun <yangerkun@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.10 029/161] ext4: fix iloc.bh leak in ext4_xattr_inode_update_ref
 Date: Wed,  4 Feb 2026 15:38:12 +0100
-Message-ID: <20260204143900.414061705@linuxfoundation.org>
+Message-ID: <20260204143852.809345602@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,148 +71,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213443-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213638-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,davemloft.net:email,amd.com:email]
-X-Rspamd-Queue-Id: C2CA1E7BB7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iloc.bh:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: AD59AE7540
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Maftei <alex.maftei@amd.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit c8ba75c4eb846888f8f2730690b99cb5bf7b337c ]
+commit d250bdf531d9cd4096fedbb9f172bb2ca660c868 upstream.
 
-The -x option (where 'x' stands for eXtended) takes an argument which
-represents the number of samples to request from the PTP device.
-The help message will display the maximum number of samples allowed.
-Providing an invalid argument will also display the maximum number of
-samples allowed.
+The error branch for ext4_xattr_inode_update_ref forget to release the
+refcount for iloc.bh. Find this when review code.
 
-Signed-off-by: Alex Maftei <alex.maftei@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 57295e835408 ("ext4: guard against EA inode refcount underflow in xattr update")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20251213055706.3417529-1-yangerkun@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 44 +++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+ fs/ext4/xattr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index eec05f659950a..d3cbd254a196d 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -143,8 +143,9 @@ static void usage(char *progname)
- 		" -S         set the system time from the ptp clock time\n"
- 		" -t val     shift the ptp clock time by 'val' seconds\n"
- 		" -T val     set the ptp clock time to 'val' seconds\n"
-+		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
- 		" -z         test combinations of rising/falling external time stamp flags\n",
--		progname);
-+		progname, PTP_MAX_SAMPLES);
- }
- 
- int main(int argc, char *argv[])
-@@ -158,6 +159,7 @@ int main(int argc, char *argv[])
- 	struct timex tx;
- 	struct ptp_clock_time *pct;
- 	struct ptp_sys_offset *sysoff;
-+	struct ptp_sys_offset_extended *soe;
- 
- 	char *progname;
- 	unsigned int i;
-@@ -176,6 +178,7 @@ int main(int argc, char *argv[])
- 	int index = 0;
- 	int list_pins = 0;
- 	int pct_offset = 0;
-+	int getextended = 0;
- 	int n_samples = 0;
- 	int pin_index = -1, pin_func;
- 	int pps = -1;
-@@ -190,7 +193,7 @@ int main(int argc, char *argv[])
- 
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:z"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -255,6 +258,15 @@ int main(int argc, char *argv[])
- 		case 'w':
- 			pulsewidth = atoi(optarg);
- 			break;
-+		case 'x':
-+			getextended = atoi(optarg);
-+			if (getextended < 1 || getextended > PTP_MAX_SAMPLES) {
-+				fprintf(stderr,
-+					"number of extended timestamp samples must be between 1 and %d; was asked for %d\n",
-+					PTP_MAX_SAMPLES, getextended);
-+				return -1;
-+			}
-+			break;
- 		case 'z':
- 			flagtest = 1;
- 			break;
-@@ -533,6 +545,34 @@ int main(int argc, char *argv[])
- 		free(sysoff);
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -980,6 +980,7 @@ static int ext4_xattr_inode_update_ref(h
+ 		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
+ 			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
+ 			ea_inode->i_ino, ref_count, ref_change);
++		brelse(iloc.bh);
+ 		ret = -EFSCORRUPTED;
+ 		goto out;
  	}
- 
-+	if (getextended) {
-+		soe = calloc(1, sizeof(*soe));
-+		if (!soe) {
-+			perror("calloc");
-+			return -1;
-+		}
-+
-+		soe->n_samples = getextended;
-+
-+		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
-+			perror("PTP_SYS_OFFSET_EXTENDED");
-+		} else {
-+			printf("extended timestamp request returned %d samples\n",
-+			       getextended);
-+
-+			for (i = 0; i < getextended; i++) {
-+				printf("sample #%2d: system time before: %lld.%09u\n",
-+				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
-+				printf("            phc time: %lld.%09u\n",
-+				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
-+				printf("            system time after: %lld.%09u\n",
-+				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
-+			}
-+		}
-+
-+		free(soe);
-+	}
-+
- 	close(fd);
- 	return 0;
- }
--- 
-2.51.0
-
 
 
 
