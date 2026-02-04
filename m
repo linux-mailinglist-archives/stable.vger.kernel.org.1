@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-213979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SE6nNR1lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213979-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:21 +0100
+	id AEo1A4teg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94726E88F1
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 680C8E7AA9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 55BD23076277
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D598830DE264
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A9D41C2F0;
-	Wed,  4 Feb 2026 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446FB413224;
+	Wed,  4 Feb 2026 14:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJOITvdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqHchHB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C062218859B;
-	Wed,  4 Feb 2026 15:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A15281530;
+	Wed,  4 Feb 2026 14:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218152; cv=none; b=D17AhqPT9/9h2DRLNbWZ2Leffac3I+Yu1PX1p2JIKL/+Hz1lvKyTdI0UP6KJ5LkKxwwVrhhvhAQM4dU0vgBACI9+H0m0GAVk//qlG4sf4DjXODtmQVV2rEGTEETG/L237122v1KTffbM+ABdV6utucdgM6EzGGgPU7RHOnojYGo=
+	t=1770216685; cv=none; b=RMu6sp9nb3wAr1FL0e0FNHSr0W9ZwpLQVu0sgKVBNdoVlcSQE40HB5arFqNxU1y/cn0yh1R5VhU0kIlKAS2P3D14caPX/tdz6h2BIJtlccr6HVJ13aAl1f3tFa6WhiWM2bo3iBb2OxBdng+70ZNep2ioc29sYepmwntQmg86fes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218152; c=relaxed/simple;
-	bh=PofuUck1i57DKHqT+dFF/Dq7H3+haRm99XXHJ9Og47A=;
+	s=arc-20240116; t=1770216685; c=relaxed/simple;
+	bh=hx6MbcDoX9JVohYB9DGqrSjzLecZPWLf1dvzg1pRDfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoQk4BTMmzV9triRmF3GEq6XQuuzXPvLc+NuGO2SPxhBAekDaHEVej/ZSlP5vmcCw3ffZTmdwVojmCUgb6WcArQGtkyZhBAOlzMl7xFcQJt+YOK+RGBrv9hPILPZ6Cgh/Gr6iE4klEUfARkkRNv0UwhyaguWjv2WSlEy6gSMFvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJOITvdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B21C4CEF7;
-	Wed,  4 Feb 2026 15:15:51 +0000 (UTC)
+	 MIME-Version; b=Vb6VhSSZ9QCdBiK79pj1vijfaLiOt3kaBXWo+WSG8aOg5cKvhAZHGPrheG0mmufLGXbgPf7tkoQ+hlJ9h38JUeJJ9UvwAYniLn0j1BiGvs6dSGdiJOW/RWCbdjE8rnnjbVgHKqkCRI7POwAhNjMxDlXa/YbgI6UR5Q58wbrIcxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqHchHB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F28C4CEF7;
+	Wed,  4 Feb 2026 14:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218152;
-	bh=PofuUck1i57DKHqT+dFF/Dq7H3+haRm99XXHJ9Og47A=;
+	s=korg; t=1770216684;
+	bh=hx6MbcDoX9JVohYB9DGqrSjzLecZPWLf1dvzg1pRDfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJOITvdgC7g2bjDicrTRJLjlIai30kFUOYk96q9JJUoBVZYYxxVuRbR73CLWk43rC
-	 rohuFEStpjZrfZEb/25vw5KmDPpp+EOBNqVc/5sVgrD12imwSzu1KnqCy7vwcphi1P
-	 GBsVRBqBv+ADArFG5RzUxGDrekzYImQzgdftCHog=
+	b=sqHchHB8Rtq/1PXcEcPVvbYK+kMCYXIsb4QzBmogASjofCrOHoar+sDdaTCRSln+j
+	 djRb8sBaQerT3D9h15jbCS606m4S2LII6PpWN56yCsbfVPKChOZkKbuXTy5kk4cMdh
+	 g6oo5/b9mse19SGZWNgTL0MpG0ZeSZzeVE+KS4zY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Johan Hovold <johan@kernel.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Brian Foster <bfoster@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 226/280] dmaengine: stm32: dmamux: fix device leak on route allocation
+Subject: [PATCH 5.10 137/161] xfs: set max_agbno to allow sparse alloc of last full inode chunk
 Date: Wed,  4 Feb 2026 15:40:00 +0100
-Message-ID: <20260204143917.747046745@linuxfoundation.org>
+Message-ID: <20260204143856.673752999@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213979-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213543-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,102 +87,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,st.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 94726E88F1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 680C8E7AA9
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Brian Foster <bfoster@redhat.com>
 
-[ Upstream commit dd6e4943889fb354efa3f700e42739da9bddb6ef ]
+[ Upstream commit c360004c0160dbe345870f59f24595519008926f ]
 
-Make sure to drop the reference taken when looking up the DMA mux
-platform device during route allocation.
+Sparse inode cluster allocation sets min/max agbno values to avoid
+allocating an inode cluster that might map to an invalid inode
+chunk. For example, we can't have an inode record mapped to agbno 0
+or that extends past the end of a runt AG of misaligned size.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+The initial calculation of max_agbno is unnecessarily conservative,
+however. This has triggered a corner case allocation failure where a
+small runt AG (i.e. 2063 blocks) is mostly full save for an extent
+to the EOFS boundary: [2050,13]. max_agbno is set to 2048 in this
+case, which happens to be the offset of the last possible valid
+inode chunk in the AG. In practice, we should be able to allocate
+the 4-block cluster at agbno 2052 to map to the parent inode record
+at agbno 2048, but the max_agbno value precludes it.
 
-Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org	# 4.15
-Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-11-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Note that this can result in filesystem shutdown via dirty trans
+cancel on stable kernels prior to commit 9eb775968b68 ("xfs: walk
+all AGs if TRYLOCK passed to xfs_alloc_vextent_iterate_ags") because
+the tail AG selection by the allocator sets t_highest_agno on the
+transaction. If the inode allocator spins around and finds an inode
+chunk with free inodes in an earlier AG, the subsequent dir name
+creation path may still fail to allocate due to the AG restriction
+and cancel.
+
+To avoid this problem, update the max_agbno calculation to the agbno
+prior to the last chunk aligned agbno in the AG. This is not
+necessarily the last valid allocation target for a sparse chunk, but
+since inode chunks (i.e. records) are chunk aligned and sparse
+allocs are cluster sized/aligned, this allows the sb_spino_align
+alignment restriction to take over and round down the max effective
+agbno to within the last valid inode chunk in the AG.
+
+Note that even though the allocator improvements in the
+aforementioned commit seem to avoid this particular dirty trans
+cancel situation, the max_agbno logic improvement still applies as
+we should be able to allocate from an AG that has been appropriately
+selected. The more important target for this patch however are
+older/stable kernels prior to this allocator rework/improvement.
+
+Cc: stable@vger.kernel.org # v4.2
+Fixes: 56d1115c9bc7 ("xfs: allocate sparse inode chunks on full chunk allocation failure")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ xfs_ag_block_count(args.mp, pag_agno(pag)) => args.mp->m_sb.sb_agblocks ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32-dmamux.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ fs/xfs/libxfs/xfs_ialloc.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/dma/stm32-dmamux.c
-+++ b/drivers/dma/stm32-dmamux.c
-@@ -88,23 +88,25 @@ static void *stm32_dmamux_route_allocate
- 	struct stm32_dmamux_data *dmamux = platform_get_drvdata(pdev);
- 	struct stm32_dmamux *mux;
- 	u32 i, min, max;
--	int ret;
-+	int ret = -EINVAL;
- 	unsigned long flags;
+--- a/fs/xfs/libxfs/xfs_ialloc.c
++++ b/fs/xfs/libxfs/xfs_ialloc.c
+@@ -777,14 +777,15 @@ sparse_alloc:
+ 		 * invalid inode records, such as records that start at agbno 0
+ 		 * or extend beyond the AG.
+ 		 *
+-		 * Set min agbno to the first aligned, non-zero agbno and max to
+-		 * the last aligned agbno that is at least one full chunk from
+-		 * the end of the AG.
++		 * Set min agbno to the first chunk aligned, non-zero agbno and
++		 * max to one less than the last chunk aligned agbno from the
++		 * end of the AG. We subtract 1 from max so that the cluster
++		 * allocation alignment takes over and allows allocation within
++		 * the last full inode chunk in the AG.
+ 		 */
+ 		args.min_agbno = args.mp->m_sb.sb_inoalignmt;
+ 		args.max_agbno = round_down(args.mp->m_sb.sb_agblocks,
+-					    args.mp->m_sb.sb_inoalignmt) -
+-				 igeo->ialloc_blks;
++					    args.mp->m_sb.sb_inoalignmt) - 1;
  
- 	if (dma_spec->args_count != 3) {
- 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	if (dma_spec->args[0] > dmamux->dmamux_requests) {
- 		dev_err(&pdev->dev, "invalid mux request number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
--	if (!mux)
--		return ERR_PTR(-ENOMEM);
-+	if (!mux) {
-+		ret = -ENOMEM;
-+		goto err_put_pdev;
-+	}
- 
- 	spin_lock_irqsave(&dmamux->lock, flags);
- 	mux->chan_id = find_first_zero_bit(dmamux->dma_inuse,
-@@ -131,7 +133,6 @@ static void *stm32_dmamux_route_allocate
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", i - 1);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "can't get dma master\n");
--		ret = -EINVAL;
- 		goto error;
- 	}
- 
-@@ -158,6 +159,8 @@ static void *stm32_dmamux_route_allocate
- 	dev_dbg(&pdev->dev, "Mapping DMAMUX(%u) to DMA%u(%u)\n",
- 		mux->request, mux->master, mux->chan_id);
- 
-+	put_device(&pdev->dev);
-+
- 	return mux;
- 
- err_put_dma_spec_np:
-@@ -167,6 +170,9 @@ error:
- 
- error_chan_id:
- 	kfree(mux);
-+err_put_pdev:
-+	put_device(&pdev->dev);
-+
- 	return ERR_PTR(ret);
- }
- 
+ 		error = xfs_alloc_vextent(&args);
+ 		if (error)
 
 
 
