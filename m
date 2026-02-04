@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHTiISNbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:47 +0100
+	id oIZ9FSlig2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3C0E7440
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88FFE8261
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8CE303004919
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC02E30FCD1B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA85940F8C6;
-	Wed,  4 Feb 2026 14:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B7341B36A;
+	Wed,  4 Feb 2026 14:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DU08Ou+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dD97PvOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9CC280A3B;
-	Wed,  4 Feb 2026 14:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4EA41B360;
+	Wed,  4 Feb 2026 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216224; cv=none; b=vCTz5E4M4Se8vZDh6j2KWbuq2xOvn78OLS6mc1CD57381BS//Tj/QEkRSDmT0GwSP1Dkd/WyemPbH97JlRsDJXFsD9z2CR5kjXdOqwXTE8ZEYPqluw9RrQe5XrLhqTGxQqjCxcyKVfVowEJcspuvCN9X1qEyvBaz2uL6RTuflFM=
+	t=1770216802; cv=none; b=RnPZ3n/+zXdsImFmBR5T8Cbuyr6eA88IuseZMJUgoHuI2Ki8wYizXznscs/NbDcG1USv5j0PuIh9SBy4WY35puunRwhBIQdUb8MfXdVQSSoU2PmEYmvMLyJ6UknAz47BmTt4TmJ7SZMPecVXf8psmRtE6bWiFa0acjl5/mx+hzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216224; c=relaxed/simple;
-	bh=9TTIld/KD/xueaP9aUQ7owbD61v89DKT74mezcztovw=;
+	s=arc-20240116; t=1770216802; c=relaxed/simple;
+	bh=qiHk+c1XPwUt83e003wExTR7/zK0cTydjRS4rpX15BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QwyIgbZ0XhDiO8IBrBSv4EJgFxAzGznznahAKyJ1GbWWWGU2Jo75h/1keTD7gws8s/vvFS2kEUfKycoHXYUdjUD6sz+PKNo+J8MzIlvyCxnDOqTsmLdYIq+IDLWsAZ5WS4F+Cdri2HSZQj47SDhZ26AacB/FiUqEU4E5hHqa3LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DU08Ou+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F07FC4CEF7;
-	Wed,  4 Feb 2026 14:43:43 +0000 (UTC)
+	 MIME-Version; b=F5w0DAEKoh/5+YuJDG+u1mPyknRZoqMOaoXX0XjvK1rS5NYa9qN84Vl0oxwjq54bnLLz1oQYwaCnS6xv/c6EeyWxTCKmKEbzi1f5EbPi8GcDdWNxdMc9ryVGnDjKg0xmvOQ5Ptbexy5VE2g74qXmjBGy2XE3ws6zR2RA0zzNTWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dD97PvOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4CEC116C6;
+	Wed,  4 Feb 2026 14:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216224;
-	bh=9TTIld/KD/xueaP9aUQ7owbD61v89DKT74mezcztovw=;
+	s=korg; t=1770216802;
+	bh=qiHk+c1XPwUt83e003wExTR7/zK0cTydjRS4rpX15BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DU08Ou+lwQ6sDR6xbnYw1tQEbryfV7oTuFr4jpyVHIdOoF9ezI1BiLxPn4AjE0qJL
-	 Hh/44CKFEiA/BTwMNbWf62nZvuo6nZefH+RLvgTV2uGkm0CaKl/wqefwWLKN5AOU1t
-	 9jMGv5KR0PmV6QrUpVH2f9JhI4MMk15IR+DgUslY=
+	b=dD97PvOH3oj+JQdXzJSzddj6kvje3sfyVDUKBQN2qUbH11P/flzDtPth2hrY36CDi
+	 uDQYYZBEZQV757owaHz+g1dLwt+GjSQBttw+tRlWy9vyMAzq/p5agESJIdFOvkM+3W
+	 kl2iyhl/In7+ACVhq9Z1mrvlcQd6BVbSGTqU/bQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Shivam Kumar <kumar.shivam43666@gmail.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 003/161] nvme-tcp: fix NULL pointer dereferences in nvmet_tcp_build_pdu_iovec
-Date: Wed,  4 Feb 2026 15:37:46 +0100
-Message-ID: <20260204143851.884018725@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 036/206] EDAC/x38: Fix a resource leak in x38_probe1()
+Date: Wed,  4 Feb 2026 15:37:47 +0100
+Message-ID: <20260204143859.509434744@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,grimberg.me,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213404-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213578-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2B3C0E7440
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,alien8.de:email]
+X-Rspamd-Queue-Id: A88FFE8261
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivam Kumar <kumar.shivam43666@gmail.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 32b63acd78f577b332d976aa06b56e70d054cbba ]
+commit 0ff7c44106b4715fc27a2e455d9f57f1dfcfd54f upstream.
 
-Commit efa56305908b ("nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length")
-added ttag bounds checking and data_offset
-validation in nvmet_tcp_handle_h2c_data_pdu(), but it did not validate
-whether the command's data structures (cmd->req.sg and cmd->iov) have
-been properly initialized before processing H2C_DATA PDUs.
+If edac_mc_alloc() fails, also unmap the window.
 
-The nvmet_tcp_build_pdu_iovec() function dereferences these pointers
-without NULL checks. This can be triggered by sending H2C_DATA PDU
-immediately after the ICREQ/ICRESP handshake, before
-sending a CONNECT command or NVMe write command.
+  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
 
-Attack vectors that trigger NULL pointer dereferences:
-1. H2C_DATA PDU sent before CONNECT → both pointers NULL
-2. H2C_DATA PDU for READ command → cmd->req.sg allocated, cmd->iov NULL
-3. H2C_DATA PDU for uninitialized command slot → both pointers NULL
-
-The fix validates both cmd->req.sg and cmd->iov before calling
-nvmet_tcp_build_pdu_iovec(). Both checks are required because:
-- Uninitialized commands: both NULL
-- READ commands: cmd->req.sg allocated, cmd->iov NULL
-- WRITE commands: both allocated
-
-Fixes: efa56305908b ("nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length")
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Shivam Kumar <kumar.shivam43666@gmail.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: df8bc08c192f ("edac x38: new MC driver module")
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251223124350.1496325-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/edac/x38_edac.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index d7b368102ad9a..94ed4b5b725c7 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -959,6 +959,18 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
- 		goto err_proto;
- 	}
-+       /*
-+	* Ensure command data structures are initialized. We must check both
-+	* cmd->req.sg and cmd->iov because they can have different NULL states:
-+	* - Uninitialized commands: both NULL
-+	* - READ commands: cmd->req.sg allocated, cmd->iov NULL
-+	* - WRITE commands: both allocated
-+	*/
-+	if (unlikely(!cmd->req.sg || !cmd->iov)) {
-+		pr_err("queue %d: H2CData PDU received for invalid command state (ttag %u)\n",
-+			queue->idx, data->ttag);
-+		goto err_proto;
-+	}
- 	cmd->pdu_recv = 0;
- 	nvmet_tcp_map_pdu_iovec(cmd);
- 	queue->cmd = cmd;
--- 
-2.51.0
-
+--- a/drivers/edac/x38_edac.c
++++ b/drivers/edac/x38_edac.c
+@@ -341,9 +341,12 @@ static int x38_probe1(struct pci_dev *pd
+ 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
+ 	layers[1].size = x38_channel_num;
+ 	layers[1].is_virt_csrow = false;
++
++
++	rc = -ENOMEM;
+ 	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, 0);
+ 	if (!mci)
+-		return -ENOMEM;
++		goto unmap;
+ 
+ 	edac_dbg(3, "MC: init mci\n");
+ 
+@@ -403,9 +406,9 @@ static int x38_probe1(struct pci_dev *pd
+ 	return 0;
+ 
+ fail:
++	edac_mc_free(mci);
++unmap:
+ 	iounmap(window);
+-	if (mci)
+-		edac_mc_free(mci);
+ 
+ 	return rc;
+ }
 
 
 
