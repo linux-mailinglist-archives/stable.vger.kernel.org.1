@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLWQMOBng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-213910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:08 +0100
+	id sLL2GXdgg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52F7E9026
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A13E7E88
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2998F307E915
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A66F316882A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EC32D8798;
-	Wed,  4 Feb 2026 15:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5357F41C2F9;
+	Wed,  4 Feb 2026 14:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seoeyvqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNnSK7rJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07A83D994;
-	Wed,  4 Feb 2026 15:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171D841C2E4;
+	Wed,  4 Feb 2026 14:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217922; cv=none; b=Edi6k9zZR4AL02WIsyb0MOQbDD3GDmabsYtkONT61GYah4/RBkf0W92RnczChwjMusGAuL0zX+vngs7dL8zVVJMUep4Ccx6no79AT+0CjPxH84ClKQkqmXYMw0UND7i3EA167fZ/qJVd79PUPfAzxlgLeyNudr+aHyrl9Yb3eRY=
+	t=1770216911; cv=none; b=DoG0MgFM2QR0dHEhRwOqAJTpdvy2d71wq4JP6u8vEWZxAe6E95QMfwRbWG4HcJWa3EZ8CQVPL9naimB3D+D2koRqzA2NHa8Jk1jKqrUvUQ/15j3FLOfcxHrbnCyt/mNS+rXo/zOaaG5QFm09Pt9bOHuasHfNfPVjNQXXJrp2QLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217922; c=relaxed/simple;
-	bh=JhUe1wP0CryQyI7VAjcNJETjTQ7Mh32h0Mc3l35HbJU=;
+	s=arc-20240116; t=1770216911; c=relaxed/simple;
+	bh=NrdpF7I9Jc/NhK2sqPIdLHk2EztU+zx5zsAzdO7wMgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOA6irdWidZCdJiP7yPkFAkr6rO2qHuRNw7ugyM9hgsoNAC82Bq8ttQ8GgzflI1e60RNqb7JMfL/PvPpYdHhrzJGqQSwanW9icTjmDL1uND4Jnr58n59prcnaDpXLBp2t6vyXcRVtZBUIzGLt5lNQjgtuorfN0VRl37u/0KZuVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seoeyvqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F887C4CEF7;
-	Wed,  4 Feb 2026 15:12:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=grRCXpk45RzHbEkm6NWlNDo6TvZutGbuyh07WeV0OyC+TBrkvdAye5BbZM6vBOWNqdnAubJSNRg3bJofFTpzSUHeCTUZp4X67lkUmpD0XQl9Pajrbro/uHR9LBH+wwnY6ouxdSw+0M49PLf2z8uQcDsiZlAOI2U05/rOMNohWH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNnSK7rJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E672C4CEF7;
+	Wed,  4 Feb 2026 14:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217922;
-	bh=JhUe1wP0CryQyI7VAjcNJETjTQ7Mh32h0Mc3l35HbJU=;
+	s=korg; t=1770216911;
+	bh=NrdpF7I9Jc/NhK2sqPIdLHk2EztU+zx5zsAzdO7wMgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seoeyvqWkq57A3vsM7puucAi5NeknwuO2+cVjDTHzkqTGDxKzQvTPcL78K/BmEJcl
-	 3mvThN9xLEnwXnetwjuAdqme4pupldutXnfqr/xKVg7DbE5luQQC3huC5Jk8ZPeC6k
-	 KKt/vt1aLgu1RCsASvJiQaK4WQ1kMc8lRkKBA3s8=
+	b=UNnSK7rJqDv+6N3tbiaCi+MlU6/jqWAYGa1mtpLd3hawhr9nqspANxOfZR2ZUOrOV
+	 H2YspCX4JGpym0ZckWeSuXYpX2hB+gBJ6kNdlvIFN+IoPBFdiW7IDRphGbyTk5UfpA
+	 uVBrtAs3QP7QXfvOEM44MQLOjaScDC2gCOlJl9NE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 126/280] iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event detection
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 069/206] selftests: net: fib-onlink-tests: Convert to use namespaces by default
 Date: Wed,  4 Feb 2026 15:38:20 +0100
-Message-ID: <20260204143914.170807701@linuxfoundation.org>
+Message-ID: <20260204143900.699047060@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +65,218 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213910-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213611-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,baylibre.com:email,intel.com:email,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D52F7E9026
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B9A13E7E88
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-commit c34e2e2d67b3bb8d5a6d09b0d6dac845cdd13fb3 upstream.
+[ Upstream commit 4f5f148dd7c0459229d2ab9a769b2e820f9ee6a2 ]
 
-The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-NULL
-event_spec field, indicating support for IIO events. However, event
-detection is not supported for all sensors, and if userspace tries to
-configure accelerometer wakeup events on a sensor device that does not
-support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a NULL
-pointer when trying to write to the wakeup register.
-Define an additional struct iio_chan_spec array whose members have a NULL
-event_spec field, and use this array instead of st_lsm6dsx_acc_channels for
-sensors without event detection capability.
+Currently, the test breaks if the SUT already has a default route
+configured for IPv6. Fix by avoiding the use of the default namespace.
 
-Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ed591c8ab44 ("net/ipv6: Allow onlink routes to have a device mismatch if it is the default route")
+Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Link: https://patch.msgid.link/20260113-selftests-net-fib-onlink-v2-1-89de2b931389@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ .../testing/selftests/net/fib-onlink-tests.sh | 71 ++++++++-----------
+ 1 file changed, 30 insertions(+), 41 deletions(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -76,6 +76,13 @@ static const struct iio_chan_spec st_lsm
- 	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
+diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+index ec2d6ceb1f08d..c01be076b210d 100755
+--- a/tools/testing/selftests/net/fib-onlink-tests.sh
++++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+@@ -120,7 +120,7 @@ log_subsection()
  
-+static const struct iio_chan_spec st_lsm6ds0_acc_channels[] = {
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
- static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
- 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
- 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
-@@ -117,8 +124,8 @@ static const struct st_lsm6dsx_settings
- 		},
- 		.channels = {
- 			[ST_LSM6DSX_ID_ACC] = {
--				.chan = st_lsm6dsx_acc_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+				.chan = st_lsm6ds0_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
- 			},
- 			[ST_LSM6DSX_ID_GYRO] = {
- 				.chan = st_lsm6ds0_gyro_channels,
-@@ -1009,8 +1016,8 @@ static const struct st_lsm6dsx_settings
- 		},
- 		.channels = {
- 			[ST_LSM6DSX_ID_ACC] = {
--				.chan = st_lsm6dsx_acc_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+				.chan = st_lsm6ds0_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
- 			},
- 			[ST_LSM6DSX_ID_GYRO] = {
- 				.chan = st_lsm6dsx_gyro_channels,
+ run_cmd()
+ {
+-	local cmd="$*"
++	local cmd="$1"
+ 	local out
+ 	local rc
+ 
+@@ -145,7 +145,7 @@ get_linklocal()
+ 	local pfx
+ 	local addr
+ 
+-	addr=$(${pfx} ip -6 -br addr show dev ${dev} | \
++	addr=$(${pfx} ${IP} -6 -br addr show dev ${dev} | \
+ 	awk '{
+ 		for (i = 3; i <= NF; ++i) {
+ 			if ($i ~ /^fe80/)
+@@ -173,58 +173,48 @@ setup()
+ 
+ 	set -e
+ 
+-	# create namespace
+-	setup_ns PEER_NS
++	# create namespaces
++	setup_ns ns1
++	IP="ip -netns $ns1"
++	setup_ns ns2
+ 
+ 	# add vrf table
+-	ip li add ${VRF} type vrf table ${VRF_TABLE}
+-	ip li set ${VRF} up
+-	ip ro add table ${VRF_TABLE} unreachable default metric 8192
+-	ip -6 ro add table ${VRF_TABLE} unreachable default metric 8192
++	${IP} li add ${VRF} type vrf table ${VRF_TABLE}
++	${IP} li set ${VRF} up
++	${IP} ro add table ${VRF_TABLE} unreachable default metric 8192
++	${IP} -6 ro add table ${VRF_TABLE} unreachable default metric 8192
+ 
+ 	# create test interfaces
+-	ip li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
+-	ip li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
+-	ip li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
+-	ip li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
++	${IP} li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
++	${IP} li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
++	${IP} li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
++	${IP} li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
+ 
+ 	# enslave vrf interfaces
+ 	for n in 5 7; do
+-		ip li set ${NETIFS[p${n}]} vrf ${VRF}
++		${IP} li set ${NETIFS[p${n}]} vrf ${VRF}
+ 	done
+ 
+ 	# add addresses
+ 	for n in 1 3 5 7; do
+-		ip li set ${NETIFS[p${n}]} up
+-		ip addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
+-		ip addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
++		${IP} li set ${NETIFS[p${n}]} up
++		${IP} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
++		${IP} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
+ 	done
+ 
+ 	# move peer interfaces to namespace and add addresses
+ 	for n in 2 4 6 8; do
+-		ip li set ${NETIFS[p${n}]} netns ${PEER_NS} up
+-		ip -netns ${PEER_NS} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
+-		ip -netns ${PEER_NS} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
++		${IP} li set ${NETIFS[p${n}]} netns ${ns2} up
++		ip -netns $ns2 addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
++		ip -netns $ns2 addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
+ 	done
+ 
+-	ip -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
+-	ip -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
++	${IP} -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
++	${IP} -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
+ 
+ 	set +e
+ }
+ 
+-cleanup()
+-{
+-	# make sure we start from a clean slate
+-	cleanup_ns ${PEER_NS} 2>/dev/null
+-	for n in 1 3 5 7; do
+-		ip link del ${NETIFS[p${n}]} 2>/dev/null
+-	done
+-	ip link del ${VRF} 2>/dev/null
+-	ip ro flush table ${VRF_TABLE}
+-	ip -6 ro flush table ${VRF_TABLE}
+-}
+-
+ ################################################################################
+ # IPv4 tests
+ #
+@@ -241,7 +231,7 @@ run_ip()
+ 	# dev arg may be empty
+ 	[ -n "${dev}" ] && dev="dev ${dev}"
+ 
+-	run_cmd ip ro add table "${table}" "${prefix}"/32 via "${gw}" "${dev}" onlink
++	run_cmd "${IP} ro add table ${table} ${prefix}/32 via ${gw} ${dev} onlink"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -257,8 +247,8 @@ run_ip_mpath()
+ 	# dev arg may be empty
+ 	[ -n "${dev}" ] && dev="dev ${dev}"
+ 
+-	run_cmd ip ro add table "${table}" "${prefix}"/32 \
+-		nexthop via ${nh1} nexthop via ${nh2}
++	run_cmd "${IP} ro add table ${table} ${prefix}/32 \
++		nexthop via ${nh1} nexthop via ${nh2}"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -339,7 +329,7 @@ run_ip6()
+ 	# dev arg may be empty
+ 	[ -n "${dev}" ] && dev="dev ${dev}"
+ 
+-	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 via "${gw}" "${dev}" onlink
++	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 via ${gw} ${dev} onlink"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -353,8 +343,8 @@ run_ip6_mpath()
+ 	local exp_rc="$6"
+ 	local desc="$7"
+ 
+-	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 "${opts}" \
+-		nexthop via ${nh1} nexthop via ${nh2}
++	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 ${opts} \
++		nexthop via ${nh1} nexthop via ${nh2}"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -491,10 +481,9 @@ do
+ 	esac
+ done
+ 
+-cleanup
+ setup
+ run_onlink_tests
+-cleanup
++cleanup_ns ${ns1} ${ns2}
+ 
+ if [ "$TESTS" != "none" ]; then
+ 	printf "\nTests passed: %3d\n" ${nsuccess}
+-- 
+2.51.0
+
 
 
 
