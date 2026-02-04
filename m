@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPt6IoVcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:41 +0100
+	id OCTUOCJmg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2C0E76A3
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35D2E8BDB
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:30:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB37D3028EDE
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC5333039E9C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3AD27FD56;
-	Wed,  4 Feb 2026 14:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2337B423A66;
+	Wed,  4 Feb 2026 15:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfZliqle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xw7Ztvbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C671C5D77;
-	Wed,  4 Feb 2026 14:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB9822E3F0;
+	Wed,  4 Feb 2026 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216395; cv=none; b=LGecWe4/0f9RfGjqeamSFNxbKOPZhuzAvHEo5RL8OuJ3sxLhwicERpDBNWv7kwXCV6G/Gzege7zZcNs4KYIzhivlV2sHqKIE0VM0DdKOYi08e5pExnIAP2TtKx0pwuQapcc2j+x+qw/tFByjHaHdfOO5wWGRDmCGelhG6TpH+Xo=
+	t=1770218058; cv=none; b=H8XbJU0D0/SENc1Q+w0hj9NU9xQU/1INe9ZXx+R2PFhKX6AV29gbMeowPaGPRunJVsnHzSUTBIvZHXGaiT5MPo2VRI8q8KRMDKuFEomMlwrZ+rsn7PnXUMgUBgmy24+Ps+B9K1amcEICmAgeLlIel9evXq1T/bA2vhR7O08P9BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216395; c=relaxed/simple;
-	bh=jAxogVbj8OTNZn64WzlIVxnB/Q9FGa13ZbQy5Wx9h9c=;
+	s=arc-20240116; t=1770218058; c=relaxed/simple;
+	bh=/l0yiVSv+desXB/jgjOZ6qIYyN568z2XvoQ//DzukMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTyAQWpcsZlyUcrY7kw62zCgaYoko+uRP47ua1/bL73agHsFqQ6jFVGcu1oQUHy48NncWpTUWQG9zB8npZ3inGAAyRY+Nxbtfx/qedyD8odcViApOdlYslgq/JfBeSDvMNWTiO9NkCIGzivSNqnWjGHKVBpmnbWVWPRWfniJL1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfZliqle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAEEC4CEF7;
-	Wed,  4 Feb 2026 14:46:34 +0000 (UTC)
+	 MIME-Version; b=ZZHDzjdFIOpZlx1gqJmTE+HTpdz5KfvVZLMgmeq9AeowTpu0X5RDiFRfJgVeEVsQkBJ0gMgA4QyFjxCPKX/S6CKkcwjl6QwiNG1s+IKVNcmBxExsoGyUWvJOrHTvuxpiO7n+L40r2aAO/RXnMNd4dghEDqGBIn8XTUGoc1qxscU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xw7Ztvbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48430C4CEF7;
+	Wed,  4 Feb 2026 15:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216395;
-	bh=jAxogVbj8OTNZn64WzlIVxnB/Q9FGa13ZbQy5Wx9h9c=;
+	s=korg; t=1770218058;
+	bh=/l0yiVSv+desXB/jgjOZ6qIYyN568z2XvoQ//DzukMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cfZliqlefofykA8JJz5VR6tcAmla1PuHUMFTBXEQda06ObDeIvFajs7hU5zKLVkiG
-	 gssuAuZ1YUvVkG9U0rbYh19s5DocgYjhS3Kw1FSHYKAkhxMMH4pFVhUZ7r7PuICBVi
-	 30Z1D8drihgryX6Rs+J3jvCX92n8cDougnFELl8o=
+	b=Xw7ZtvbxyNgS5fvvnqmzar2MPrFnxOyWTtdhpLpW2ikRYZfYGoYR5GfdrFQBdvClg
+	 tyMqYGOnss3H2omVo4MiO+fKJx2p/Q5ZnZc6VUSFpy0kXWCYI6jYbrgNlyWW42Ai//
+	 BMVcaDUzHNwr0Uh9K/2yqt/d6s3zhnqtBUvkZbNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 076/161] net: hns3: fix wrong GENMASK() for HCLGE_FD_AD_COUNTER_NUM_M
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 165/280] wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
 Date: Wed,  4 Feb 2026 15:38:59 +0100
-Message-ID: <20260204143854.487656748@linuxfoundation.org>
+Message-ID: <20260204143915.561437980@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213455-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213951-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,50 +90,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1E2C0E76A3
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,nxp.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: B35D2E8BDB
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d57c67c956a1bad15115eba6e59d77a6dfeba01d ]
+commit 2120f3a3738a65730c81bf10447b1ff776078915 upstream.
 
-HCLGE_FD_AD_COUNTER_NUM_M should be at GENMASK(19, 13),
-rather than at GENMASK(20, 13), because bit 20 is
-HCLGE_FD_AD_NXT_STEP_B.
+The "i" iterator variable is used to count two different things but
+unfortunately we can't store two different numbers in the same variable.
+Use "i" for the outside loop and "j" for the inside loop.
 
-This patch corrects the wrong definition.
-
-Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260119132840.410513-2-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d219b7eb3792 ("mwifiex: handle BT coex event to adjust Rx BA window size")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/aWAM2MGUWRP0zWUd@stanley.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-index 3d70c3a47d631..67d878eb8a7d6 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-@@ -1038,7 +1038,7 @@ struct hclge_fd_tcam_config_3_cmd {
- #define HCLGE_FD_AD_QID_M		GENMASK(11, 2)
- #define HCLGE_FD_AD_USE_COUNTER_B	12
- #define HCLGE_FD_AD_COUNTER_NUM_S	13
--#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(20, 13)
-+#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(19, 13)
- #define HCLGE_FD_AD_NXT_STEP_B		20
- #define HCLGE_FD_AD_NXT_KEY_S		21
- #define HCLGE_FD_AD_NXT_KEY_M		GENMASK(25, 21)
--- 
-2.51.0
-
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -827,7 +827,7 @@ void mwifiex_update_rxreor_flags(struct
+ static void mwifiex_update_ampdu_rxwinsize(struct mwifiex_adapter *adapter,
+ 					   bool coex_flag)
+ {
+-	u8 i;
++	u8 i, j;
+ 	u32 rx_win_size;
+ 	struct mwifiex_private *priv;
+ 
+@@ -867,8 +867,8 @@ static void mwifiex_update_ampdu_rxwinsi
+ 		if (rx_win_size != priv->add_ba_param.rx_win_size) {
+ 			if (!priv->media_connected)
+ 				continue;
+-			for (i = 0; i < MAX_NUM_TID; i++)
+-				mwifiex_11n_delba(priv, i);
++			for (j = 0; j < MAX_NUM_TID; j++)
++				mwifiex_11n_delba(priv, j);
+ 		}
+ 	}
+ }
 
 
 
