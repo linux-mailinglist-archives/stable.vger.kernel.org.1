@@ -1,74 +1,59 @@
-Return-Path: <stable+bounces-213934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLCANBxsg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:12 +0100
+	id yCEuHyxhg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784C1E99EB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88626E804B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 785DB302A1D9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BA8C83085B19
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8361D423151;
-	Wed,  4 Feb 2026 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3264219F7;
+	Wed,  4 Feb 2026 14:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajvTMjm3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLY117Bq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F2B421F1C;
-	Wed,  4 Feb 2026 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D6A4218A8;
+	Wed,  4 Feb 2026 14:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218004; cv=none; b=gJu7DADDyYpG5RbB23p4Tp4vpgR8JMYnNnbIDFm8a8oR8YyxJRUCZspm4jevsY/4l9EWM2oU9jsQ99yXHWV7pI+BCXWxiro2vk3KIFTs4EUpH7ZW73sHaOTg9WzHd/j+yfR4H5BukaJJMYouEoYFk8DxGirp6FPp/DWfIPpuYlg=
+	t=1770217113; cv=none; b=XxD2h/VRPjEBwayQWcqBtk8tYDP2oZ6HL2eVPVWA4yyMaZsdaKNuNQGCYky+GaDGL9NltAdYF2EdkNDzUS7727hzKS2odpH31VmVcKBMh5vKgZ/P6QOjaqWuThhW+0Wmym/nIUrYIRscVocP05GcLk3s9xHPukT+suw5AuxA0o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218004; c=relaxed/simple;
-	bh=jiXMu4LRsXI+GxG2D2r0phHoos5hXtp8GZSihQ0iXoQ=;
+	s=arc-20240116; t=1770217113; c=relaxed/simple;
+	bh=AxvBq/tDhx19rNihNKLrGjPUjvp9H+hXgmFsIb+q09M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbdSBIHeAbAEJJJeQfhEJRttaWio9sZv6s1y+w3uxiO9swkzDliRUXw71yHUHKwlskQnLkClMHfkH1l3wHcrLeEzJGcMkHwgwGsomfhP/ClESgk98nZ3GfgL+Qc0N+ps/Jv6Ba4lKRH7cPLqvZV0avPIwJBDrPIA7Zxqc4uYVa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajvTMjm3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BCFC4CEF7;
-	Wed,  4 Feb 2026 15:13:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hyU8hfsxHxrGFAvmp1WApFsLWObGmiaBVvjIg5U8DAfnuDtxkmcfIMFNwG9YKlie4xZtzJ3CIX50oL6F1VdJzciohIH2rJ0S6IhuHyidNZVc5k6ALSr6KM9umj/egM9VRiLGsQio9rGsbU7unf6aszS5ndhYv3R6W5oHLbiAHoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLY117Bq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9420FC4CEF7;
+	Wed,  4 Feb 2026 14:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218004;
-	bh=jiXMu4LRsXI+GxG2D2r0phHoos5hXtp8GZSihQ0iXoQ=;
+	s=korg; t=1770217113;
+	bh=AxvBq/tDhx19rNihNKLrGjPUjvp9H+hXgmFsIb+q09M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajvTMjm3xlF7Tu2FglRP5cE1Ppx4o9EzJQsKFrxiIkuw1MaJELNgYw+cACLdgR93r
-	 mVzObekwKawg/l1eN+ipoliKOnSHuXhbwDngJS1oAd0zG/uD2QHMiE2V1NrqLbuQ17
-	 gY6GpQsHYRu1WUxu2MAVZhDXdLsm1+VdwhKvT3k0=
+	b=vLY117Bq2UYCOYXXGqbtLj5l2CMxpgkXDUYNUPcB/kb/ZCAKPouuwZktbDSxYr3oc
+	 Vewgd5NIHp4n/R5hsihu4Of8PWkC3RDdrT2vZLHrtDi26wIKodMixtm0218EFLTwiK
+	 NnfCF7F0VlEFEpIOKMe7kl5hnT+zF915pM0NullI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jann Horn <jannh@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 6.1 183/280] migrate: correct lock ordering for hugetlb file folios
+	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Fernand Sieber <sieberf@amazon.com>
+Subject: [PATCH 5.15 126/206] perf/x86/intel: Do not enable BTS for guests
 Date: Wed,  4 Feb 2026 15:39:17 +0100
-Message-ID: <20260204143916.199111495@linuxfoundation.org>
+Message-ID: <20260204143902.739105439@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,145 +63,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-213934-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,infradead.org,syzkaller.appspotmail.com,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org,linux.dev];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213670-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,surriel.com:email,nvidia.com:email,oracle.com:email,gourry.net:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email,linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,linux-foundation.org:email,suse.cz:email]
-X-Rspamd-Queue-Id: 784C1E99EB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amazon.de:email]
+X-Rspamd-Queue-Id: 88626E804B
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Fernand Sieber <sieberf@amazon.com>
 
-commit b7880cb166ab62c2409046b2347261abf701530e upstream.
+commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
 
-Syzbot has found a deadlock (analyzed by Lance Yang):
+By default when users program perf to sample branch instructions
+(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
+interprets this as a special case and enables BTS (Branch Trace Store)
+as an optimization to avoid taking an interrupt on every branch.
 
-1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
-2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
-folio_lock.
+Since BTS doesn't virtualize, this optimization doesn't make sense when
+the request originates from a guest. Add an additional check that
+prevents this optimization for virtualized events (exclude_host).
 
-migrate_pages()
-  -> migrate_hugetlbs()
-    -> unmap_and_move_huge_page()     <- Takes folio_lock!
-      -> remove_migration_ptes()
-        -> __rmap_walk_file()
-          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
-
-hugetlbfs_fallocate()
-  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
-    -> hugetlbfs_zero_partial_page()
-     -> filemap_lock_hugetlb_folio()
-      -> filemap_lock_folio()
-        -> __filemap_get_folio        <- Waits for folio_lock!
-
-The migration path is the one taking locks in the wrong order according to
-the documentation at the top of mm/rmap.c.  So expand the scope of the
-existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
-
-This is (mostly) how it used to be after commit c0d0381ade79.  That was
-removed by 336bf30eb765 for both file & anon hugetlb pages when it should
-only have been removed for anon hugetlb pages.
-
-Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
-Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
-Debugged-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/migrate.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/events/perf_event.h |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1357,6 +1357,7 @@ static int unmap_and_move_huge_page(new_
- 	struct page *new_hpage;
- 	struct anon_vma *anon_vma = NULL;
- 	struct address_space *mapping = NULL;
-+	enum ttu_flags ttu = 0;
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1286,13 +1286,22 @@ static inline bool intel_pmu_has_bts_per
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	unsigned int hw_event, bts_event;
  
- 	/*
- 	 * Migratability of hugepages depends on architectures and their size.
-@@ -1409,8 +1410,6 @@ static int unmap_and_move_huge_page(new_
- 		goto put_anon;
- 
- 	if (folio_mapped(src)) {
--		enum ttu_flags ttu = 0;
--
- 		if (!folio_test_anon(src)) {
- 			/*
- 			 * In shared mappings, try_to_unmap could potentially
-@@ -1427,9 +1426,6 @@ static int unmap_and_move_huge_page(new_
- 
- 		try_to_migrate(src, ttu);
- 		page_was_mapped = 1;
--
--		if (ttu & TTU_RMAP_LOCKED)
--			i_mmap_unlock_write(mapping);
- 	}
- 
- 	if (!folio_mapped(src))
-@@ -1437,7 +1433,11 @@ static int unmap_and_move_huge_page(new_
- 
- 	if (page_was_mapped)
- 		remove_migration_ptes(src,
--			rc == MIGRATEPAGE_SUCCESS ? dst : src, false);
-+			rc == MIGRATEPAGE_SUCCESS ? dst : src,
-+				ttu ? true : false);
+-	if (event->attr.freq)
++	/*
++	 * Only use BTS for fixed rate period==1 events.
++	 */
++	if (event->attr.freq || period != 1)
++		return false;
 +
-+	if (ttu & TTU_RMAP_LOCKED)
-+		i_mmap_unlock_write(mapping);
++	/*
++	 * BTS doesn't virtualize.
++	 */
++	if (event->attr.exclude_host)
+ 		return false;
  
- unlock_put_anon:
- 	folio_unlock(dst);
+ 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
+ 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
+ 
+-	return hw_event == bts_event && period == 1;
++	return hw_event == bts_event;
+ }
+ 
+ static inline bool intel_pmu_has_bts(struct perf_event *event)
 
 
 
