@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHs8K2hsg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:57:28 +0100
+	id KG8VK89mg2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B02DE9A8B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:57:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE40E8DD8
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1BBA1302801C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C5A830195BB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35194219E2;
-	Wed,  4 Feb 2026 15:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAC1421EE6;
+	Wed,  4 Feb 2026 15:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh/Gaa5R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAArVy32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7723241C309;
-	Wed,  4 Feb 2026 15:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F630421EE2;
+	Wed,  4 Feb 2026 15:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218737; cv=none; b=WfLi3h1FopTFRiQDDEwN11HQ81rzt2n6rmknrfA66iVR9e4KeHO7eeu7K5IDa/DD6zgpONh3HWAv/zZ78Kx2t6N4RYm0jR0KVoWKw4jPXeQ4nuGqolAf9Qa3JQZe0D99JmK4rz9hGnT6iu8xipGrv0AyiJ+7R0fNP70vzLD7b5g=
+	t=1770218320; cv=none; b=bUYEEFwA0/Yg8q4ivrd3GE7wUIbsNzfhB8lkDY6ANfW1gWaYU/DdLqnKVjyAPwkE29ZxiPOEptdPvP0ifv6N7G21XHq3oUxOhLH0JuBiSGzFPlSpx2SNHs+y4Hn3pn9dxGw25tKyoXlWmFJHVP1HV/ongWWZNmcYm4gWm4DO5ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218737; c=relaxed/simple;
-	bh=IbopASy/KkGpKHzXtlkKLg/cTtQEkEQSkAO4oETwdeM=;
+	s=arc-20240116; t=1770218320; c=relaxed/simple;
+	bh=qX927nqQuolOy0OD5WATdC9XYHrT5ZmUbj9q8EIJjt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hp5LM0GRwBi3CjbKY8QK/MZnDh/85kkGELLCiKaiKTFaY20klNAyM6NqrgE3t8aArflzBMr06OY4j5nAsZJEDjdlNDMX1jt0ZuuH05/XKublaakGPI/wKzj1nJtqTY6Cvy/rjroKsXGivmu9ncRPF6QP2LkhM0QIiiF00QXbDgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh/Gaa5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE3AC4CEF7;
-	Wed,  4 Feb 2026 15:25:36 +0000 (UTC)
+	 MIME-Version; b=laH+DuP0hvAS4G+zfJSPuo7Cj4gULBd6ARvb6HsEX0pDpKj6KoZAYmXGT2DyVbjAN/3JZBZXK3+XwXnXTidv6cFhdDIi9OZP8UVGUxVoxIVvEcpFPUUlJuKxafc25bbIyfGWymXvsOCseYSCry8rD9s8r6FHcgOY2BKP9ZncyMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAArVy32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DF8C2BCAF;
+	Wed,  4 Feb 2026 15:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218737;
-	bh=IbopASy/KkGpKHzXtlkKLg/cTtQEkEQSkAO4oETwdeM=;
+	s=korg; t=1770218319;
+	bh=qX927nqQuolOy0OD5WATdC9XYHrT5ZmUbj9q8EIJjt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eh/Gaa5R57b4o7TCCL4630cHF2bnG3ayYlBzP79jpBKDq+3tmX34R56fZfUNVQwvl
-	 tSalG9ahgFKPCoN0nSjhUaO0wsvolyjH/VK/dK6J/tkXNvQwYbo+At2c9ywnOAoiwo
-	 w6YaPUXXEB0MoNmlBvHX4hGCW5jrLxENrl5UqXcQ=
+	b=dAArVy32VPgthaOlfIHMRGsojb1/Hwx9h17T1RofbLMzv8mY3usp9XeKtkzGvcF3w
+	 cZoNpsOAFqP8E1VskxwThZ4aePlaGe3CHlf0DOgpYkIaAo01dAhbAbX+n6omVx2k5L
+	 FijwyzzXgNwVjOhLYErlBrSJ/KDWrj1d3h554Wdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.12 45/87] gpio: rockchip: Stop calling pinctrl for set_direction
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 269/280] ksmbd: fix use-after-free in ksmbd_session_rpc_open
 Date: Wed,  4 Feb 2026 15:40:43 +0100
-Message-ID: <20260204143848.536194801@linuxfoundation.org>
+Message-ID: <20260204143919.380141609@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +70,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,doyensec.com,kernel.org,microsoft.com,139.com];
+	TAGGED_FROM(0.00)[bounces-214028-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214152-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sntech.de:email,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arm.com:email]
-X-Rspamd-Queue-Id: 0B02DE9A8B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,doyensec.com:email]
+X-Rspamd-Queue-Id: 4FE40E8DD8
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 7ca497be00163610afb663867db24ac408752f13 upstream.
+[ Upstream commit a1f46c99d9ea411f9bf30025b912d881d36fc709 ]
 
-Marking the whole controller as sleeping due to the pinctrl calls in the
-.direction_{input,output} callbacks has the unfortunate side effect that
-legitimate invocations of .get and .set, which cannot themselves sleep,
-in atomic context now spew WARN()s from gpiolib.
-
-However, as Heiko points out, the driver doing this is a bit silly to
-begin with, as the pinctrl .gpio_set_direction hook doesn't even care
-about the direction, the hook is only used to claim the mux. And sure
-enough, the .gpio_request_enable hook exists to serve this very purpose,
-so switch to that and remove the problematic business entirely.
+A UAF issue can occur due to a race condition between
+ksmbd_session_rpc_open() and __session_rpc_close().
+Add rpc_lock to the session to protect it.
 
 Cc: stable@vger.kernel.org
-Fixes: 20cf2aed89ac ("gpio: rockchip: mark the GPIO controller as sleeping")
-Suggested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/bddc0469f25843ca5ae0cf578ab3671435ae98a7.1769429546.git.robin.murphy@arm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ KSMBD_DEFAULT_GFP is introduced by commit 0066f623bce8 ("ksmbd: use __GFP_RETRY_MAYFAIL")
+ after linux-6.13. Here we still use GFP_KERNEL. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-rockchip.c       |    8 --------
- drivers/pinctrl/pinctrl-rockchip.c |    9 ++++-----
- 2 files changed, 4 insertions(+), 13 deletions(-)
+ fs/smb/server/mgmt/user_session.c |   20 ++++++++++++++------
+ fs/smb/server/mgmt/user_session.h |    1 +
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -18,7 +18,6 @@
- #include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_irq.h>
--#include <linux/pinctrl/consumer.h>
- #include <linux/pinctrl/pinconf-generic.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
-@@ -157,12 +156,6 @@ static int rockchip_gpio_set_direction(s
- 	unsigned long flags;
- 	u32 data = input ? 0 : 1;
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -59,10 +59,12 @@ static void ksmbd_session_rpc_clear_list
+ 	struct ksmbd_session_rpc *entry;
+ 	long index;
  
--
--	if (input)
--		pinctrl_gpio_direction_input(chip, offset);
--	else
--		pinctrl_gpio_direction_output(chip, offset);
--
- 	raw_spin_lock_irqsave(&bank->slock, flags);
- 	rockchip_gpio_writel_bit(bank, offset, data, bank->gpio_regs->port_ddr);
- 	raw_spin_unlock_irqrestore(&bank->slock, flags);
-@@ -584,7 +577,6 @@ static int rockchip_gpiolib_register(str
- 	gc->ngpio = bank->nr_pins;
- 	gc->label = bank->name;
- 	gc->parent = bank->dev;
--	gc->can_sleep = true;
++	down_write(&sess->rpc_lock);
+ 	xa_for_each(&sess->rpc_handle_list, index, entry) {
+ 		xa_erase(&sess->rpc_handle_list, index);
+ 		__session_rpc_close(sess, entry);
+ 	}
++	up_write(&sess->rpc_lock);
  
- 	ret = gpiochip_add_data(gc, bank);
- 	if (ret) {
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -2922,10 +2922,9 @@ static int rockchip_pmx_set(struct pinct
- 	return 0;
+ 	xa_destroy(&sess->rpc_handle_list);
+ }
+@@ -92,7 +94,7 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ {
+ 	struct ksmbd_session_rpc *entry, *old;
+ 	struct ksmbd_rpc_command *resp;
+-	int method;
++	int method, id;
+ 
+ 	method = __rpc_method(rpc_name);
+ 	if (!method)
+@@ -102,26 +104,29 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ 	if (!entry)
+ 		return -ENOMEM;
+ 
++	down_read(&sess->rpc_lock);
+ 	entry->method = method;
+-	entry->id = ksmbd_ipc_id_alloc();
+-	if (entry->id < 0)
++	entry->id = id = ksmbd_ipc_id_alloc();
++	if (id < 0)
+ 		goto free_entry;
+-	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	old = xa_store(&sess->rpc_handle_list, id, entry, GFP_KERNEL);
+ 	if (xa_is_err(old))
+ 		goto free_id;
+ 
+-	resp = ksmbd_rpc_open(sess, entry->id);
++	resp = ksmbd_rpc_open(sess, id);
+ 	if (!resp)
+ 		goto erase_xa;
+ 
++	up_read(&sess->rpc_lock);
+ 	kvfree(resp);
+-	return entry->id;
++	return id;
+ erase_xa:
+ 	xa_erase(&sess->rpc_handle_list, entry->id);
+ free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
++	up_read(&sess->rpc_lock);
+ 	return -EINVAL;
  }
  
--static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
--					   struct pinctrl_gpio_range *range,
--					   unsigned offset,
--					   bool input)
-+static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
-+					    struct pinctrl_gpio_range *range,
-+					    unsigned int offset)
+@@ -129,9 +134,11 @@ void ksmbd_session_rpc_close(struct ksmb
  {
- 	struct rockchip_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
- 	struct rockchip_pin_bank *bank;
-@@ -2939,7 +2938,7 @@ static const struct pinmux_ops rockchip_
- 	.get_function_name	= rockchip_pmx_get_func_name,
- 	.get_function_groups	= rockchip_pmx_get_groups,
- 	.set_mux		= rockchip_pmx_set,
--	.gpio_set_direction	= rockchip_pmx_gpio_set_direction,
-+	.gpio_request_enable	= rockchip_pmx_gpio_request_enable,
+ 	struct ksmbd_session_rpc *entry;
+ 
++	down_write(&sess->rpc_lock);
+ 	entry = xa_erase(&sess->rpc_handle_list, id);
+ 	if (entry)
+ 		__session_rpc_close(sess, entry);
++	up_write(&sess->rpc_lock);
+ }
+ 
+ int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
+@@ -404,6 +411,7 @@ static struct ksmbd_session *__session_c
+ 	sess->sequence_number = 1;
+ 	rwlock_init(&sess->tree_conns_lock);
+ 	atomic_set(&sess->refcnt, 2);
++	init_rwsem(&sess->rpc_lock);
+ 
+ 	ret = __init_smb2_session(sess);
+ 	if (ret)
+--- a/fs/smb/server/mgmt/user_session.h
++++ b/fs/smb/server/mgmt/user_session.h
+@@ -63,6 +63,7 @@ struct ksmbd_session {
+ 	rwlock_t			tree_conns_lock;
+ 
+ 	atomic_t			refcnt;
++	struct rw_semaphore		rpc_lock;
  };
  
- /*
+ static inline int test_session_flag(struct ksmbd_session *sess, int bit)
 
 
 
