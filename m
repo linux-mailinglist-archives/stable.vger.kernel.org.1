@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK5gJYppg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:14 +0100
+	id ONM9NAJfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EE5E94E7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93909E7BA2
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7568330F0E4E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1A55B3034EFD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23302421893;
-	Wed,  4 Feb 2026 15:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DF4421EFD;
+	Wed,  4 Feb 2026 14:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IXO1kNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIjw7Q5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D981D18871F;
-	Wed,  4 Feb 2026 15:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA9841C2E9;
+	Wed,  4 Feb 2026 14:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217885; cv=none; b=qlgxxgswhG4O1EVOBgReBPBgxlmfK47oiB/2RPtof2e1q+P+WTTTBUpiB19V2y+9L9iVSOCM/pM+6BBhtGgwb+BxK6BUCeNH9EUIV+hdPCdgXO3x4zVakeNtzQbyWnDR5g25XgjtFiQ1iVopvcefbHp5LztviOVUKZAk15iL5sY=
+	t=1770216991; cv=none; b=BPe4STt8E3kpNPlPSyRGBbndywk0tdJYnvinHRF6TZ3NHhn1uAgYfVNf3jfJWcWKoqeQ6HQeMeCcxCgaPxOWyQnGWlevo4qZ1OETbAM4R9A4A99dE4UCVQYq9qFiv/VdQZ3LjJ1dNh0xubNrxsSbMgezEXnR7T95NGoir4zX9zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217885; c=relaxed/simple;
-	bh=1yq4FDEBAQYU8AtNejjhw86in7KhF7099aGgpn0x3Qw=;
+	s=arc-20240116; t=1770216991; c=relaxed/simple;
+	bh=wIIk0VWnbDHrBBAjHFzdGSKx9ryhECoEl/2TYwaRFok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIiIrRepgSBj30NCTAvYUqmWnHw+aJ/llr/8mKS4bMBUKwD9cIkKd9DxvuM9TfJfCz20vo/Tdqbpxess48FALbxjIJkHdLKzUNqyjmDA+0b6t3/xQgaJ434efkuXZpmm3jt6AbFkayT6wt5gMwCPp4PxmXnFHK+cHlQgV4PiLoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IXO1kNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FA2C4CEF7;
-	Wed,  4 Feb 2026 15:11:24 +0000 (UTC)
+	 MIME-Version; b=d1z2g5Zgus/zYnXPvoQVRTDVyYk3mj/SQIUHBTat7o/NQHCoO6DshJy7hwuFkCUVmFhOqGoWMCrtQ+k292OJWpo9rdqGReXO3EMT2oFQFN5i7rrqIKaYcIUV43QiddwxyMif78KuINyotOpMDqAZsn/OXzXRhOb7VMu0lD7yX2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIjw7Q5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99A9C4CEF7;
+	Wed,  4 Feb 2026 14:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217885;
-	bh=1yq4FDEBAQYU8AtNejjhw86in7KhF7099aGgpn0x3Qw=;
+	s=korg; t=1770216991;
+	bh=wIIk0VWnbDHrBBAjHFzdGSKx9ryhECoEl/2TYwaRFok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IXO1kNey35IJeJJu+TKjRT66z8W3TKgUD965I56sZ1k1HHI1wB3re875/YKrmEQJ
-	 nxadEl+O1MEcOEJqrRUdt9EDShxZeVBExi6coThvqvRQedxum3yp3MQVoxoHha3lS3
-	 DG/4PHLap/6DkH3Qhnk8hpVHh9BJTJ8vupEj2lVw=
+	b=NIjw7Q5MxtBJexuKhSBozyJ+vQRYVkJVVyIGlXsn33zEOudfyCo7xEa17eul6D2Cz
+	 bYCrIgQOu/468VQD2E+OxcoEJAfAhDVN887I7KmT67Nl0cSMwIzS1EI4q09gvGmIe+
+	 1NaH5+gVZbP9JeFCsNwsy+LN0v0UrrEnU2ThrsHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/280] selftests: net: amt: wait longer for connection before sending packets
+Subject: [PATCH 5.15 091/206] iio: adc: ad7280a: handle spi_setup() errors in probe()
 Date: Wed,  4 Feb 2026 15:38:42 +0100
-Message-ID: <20260204143914.959181459@linuxfoundation.org>
+Message-ID: <20260204143901.486606317@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +68,75 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213899-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213635-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E5EE5E94E7
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 93909E7BA2
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit 04708606fd7bdc34b69089a4ff848ff36d7088f9 ]
+[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
 
-Both send_mcast4() and send_mcast6() use sleep 2 to wait for the tunnel
-connection between the gateway and the relay, and for the listener
-socket to be created in the LISTENER namespace.
+The probe() function ignored the return value of spi_setup(), leaving SPI
+configuration failures undetected. If spi_setup() fails, the driver should
+stop initialization and propagate the error to the caller.
 
-However, tests sometimes fail because packets are sent before the
-connection is fully established.
+Add proper error handling: check the return value of spi_setup() and return
+it on failure.
 
-Increase the waiting time to make the tests more reliable, and use
-wait_local_port_listen() to explicitly wait for the listener socket.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Link: https://patch.msgid.link/20260120133930.863845-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/amt.sh | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/staging/iio/adc/ad7280a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests/net/amt.sh
-index 7e7ed6c558da9..ea40b469a8c11 100755
---- a/tools/testing/selftests/net/amt.sh
-+++ b/tools/testing/selftests/net/amt.sh
-@@ -73,6 +73,8 @@
- #       +------------------------+
- #==============================================================================
+diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
+index 0f64b2fbfa7aa..cc66c3d7141aa 100644
+--- a/drivers/staging/iio/adc/ad7280a.c
++++ b/drivers/staging/iio/adc/ad7280a.c
+@@ -964,7 +964,9 @@ static int ad7280_probe(struct spi_device *spi)
  
-+source lib.sh
-+
- readonly LISTENER=$(mktemp -u listener-XXXXXXXX)
- readonly GATEWAY=$(mktemp -u gateway-XXXXXXXX)
- readonly RELAY=$(mktemp -u relay-XXXXXXXX)
-@@ -240,14 +242,15 @@ test_ipv6_forward()
+ 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
+ 	st->spi->mode = SPI_MODE_1;
+-	spi_setup(st->spi);
++	ret = spi_setup(st->spi);
++	if (ret < 0)
++		return ret;
  
- send_mcast4()
- {
--	sleep 2
-+	sleep 5
-+	wait_local_port_listen ${LISTENER} 4000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 172.17.0.2 | nc -w 1 -u 239.0.0.1 4000' &
- }
- 
- send_mcast6()
- {
--	sleep 2
-+	wait_local_port_listen ${LISTENER} 6000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 2001:db8:3::2 | nc -w 1 -u ff0e::5:6 6000' &
- }
+ 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, pdata->acquisition_time) |
+ 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, pdata->thermistor_term_en);
 -- 
 2.51.0
 
