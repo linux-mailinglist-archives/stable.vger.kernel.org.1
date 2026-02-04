@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFVnM0lsg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:57 +0100
+	id gANTGr1lg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-214014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:01 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0143FE9A46
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD85EE8AC9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66297315F97B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DC213174AE1
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A39321FF4C;
-	Wed,  4 Feb 2026 15:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D231E22332E;
+	Wed,  4 Feb 2026 15:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoG8ZUvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbRcX3Nt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C275541B357;
-	Wed,  4 Feb 2026 15:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AAE2BE7C0;
+	Wed,  4 Feb 2026 15:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218707; cv=none; b=dnIwVXycceDznlq1P8DrLDeZ1Ej310EZzuVQZJ/b+l0TYuSikMYINjQoUOHpQaa80YJwtmjtBgnY7ng6L02LBUayiONvUzAMFCda3RVXu5xCdjykXBORYQkbiILcQ85poaII2k9v+cbmXowTJu2KGK+64v1hOm2T/wb32ILXTvw=
+	t=1770218272; cv=none; b=pCLQdxbwA4nxn0QxQbK04rDqzl6eG+4taNvAXJIfbAkxGsLXN8CEIhp055yP6yrTnhoCn0ejeSP0Tn7dWyjP50yZiwURenxg5kuV3qS0fV8Gemrv/Q6xRWZ8AE52EiuhMRzC/7AOVk4BLgzuAHj+JaPGj2kU2CGPIae3fYU4938=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218707; c=relaxed/simple;
-	bh=6GTDv+QoSOIbE3p62gHoiAD7M7113sHKZ5J/yKS9zWo=;
+	s=arc-20240116; t=1770218272; c=relaxed/simple;
+	bh=5iFf3jn30wgNrKmPDLbLQmbnRIR3fPATdn/SCYHQAmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2jCS6GqG99QkQhru1yev6NfpDI4vtgUMZX4AE2WtiyNC62mTGHtphd4eIx2La/NsjYl6K7h2YkulPDUyC9EiFP7EcHXYyrxlD1fcW+RY2ZSTgo0r3MnGZNjBgpz3SYbFJfQhVQZt/nDQcmkP1sxSoBVPF4E6XDm19wi4raTMUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoG8ZUvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3457DC4CEF7;
-	Wed,  4 Feb 2026 15:25:07 +0000 (UTC)
+	 MIME-Version; b=Z5oFx4yjiOV9CiUl+7eiWENEJ6TVHg27YBpOcO6IFDxolMcYNbQwfB3vC/3EM68dWew7zWY8qZzczwVAtvW3A645q9Ta+GoSwEgEMwg/LIM8Bnb7K1modKCA97+YxxREmCdAO1oeTZkoJRvqQmqM0EaBMHB2hQmoppRyUkRTgcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbRcX3Nt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029DEC4CEF7;
+	Wed,  4 Feb 2026 15:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218707;
-	bh=6GTDv+QoSOIbE3p62gHoiAD7M7113sHKZ5J/yKS9zWo=;
+	s=korg; t=1770218272;
+	bh=5iFf3jn30wgNrKmPDLbLQmbnRIR3fPATdn/SCYHQAmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VoG8ZUvEF3wkRrC1AOkyFHY2zhBYI0w3t3rNs5eG0Z6GjmntCOcjsCtd0yY/sSc9/
-	 pFNUBCKpNcBaQCFQxKJFEYnExyxCjqn4Ylv5/dDihWDFD6s5GGTBKpqaS4kpCX2iPm
-	 UHOvOQJ0v9kFueL56lvHadyhQ6M0fdBAdAFa9C7U=
+	b=BbRcX3NtRZ5ZeOaowJHXzsq/lfsfYPeDlNW73EHmyzQ934Mjr6MyXd/TVnnepewSU
+	 cnoMBrYqYpoCtVh11+2Opxpw8MEQII1/2MwZeU+XpX4M3fWl9s8Q6mVLKBHL3Rmbf8
+	 hvwvZp7jfw6f4rkji4cTIVRn2G4g5O6gr6jsEiTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 37/87] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi` target
+	Waiman Long <longman@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.1 261/280] blk-cgroup: Reinit blkg_iostat_set after clearing in blkcg_reset_stats()
 Date: Wed,  4 Feb 2026 15:40:35 +0100
-Message-ID: <20260204143848.248539299@linuxfoundation.org>
+Message-ID: <20260204143919.090825055@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,92 +76,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,kernel.org,kernel.dk,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-214014-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214143-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,rust-lang.org:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0143FE9A46
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kernel.dk:email,foxmail.com:email]
+X-Rspamd-Queue-Id: CD85EE8AC9
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Waiman Long <longman@redhat.com>
 
-commit af20ae33e7dd949f2e770198e74ac8f058cb299d upstream.
+[ Upstream commit 3d2af77e31ade05ff7ccc3658c3635ec1bea0979 ]
 
-`rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
-and we apply `rustfmt` to the macro expanded sources generated by the
-`.rsi` target.
+When blkg_alloc() is called to allocate a blkcg_gq structure
+with the associated blkg_iostat_set's, there are 2 fields within
+blkg_iostat_set that requires proper initialization - blkg & sync.
+The former field was introduced by commit 3b8cc6298724 ("blk-cgroup:
+Optimize blkcg_rstat_flush()") while the later one was introduced by
+commit f73316482977 ("blk-cgroup: reimplement basic IO stats using
+cgroup rstat").
 
-However, under an `O=` pointing to an external folder (i.e. not just
-a subdir), `rustfmt` will not find the file when checking the parent
-folders. Since the edition is configured in this file, this can lead to
-errors when it encounters newer syntax, e.g.
+Unfortunately those fields in the blkg_iostat_set's are not properly
+re-initialized when they are cleared in v1's blkcg_reset_stats(). This
+can lead to a kernel panic due to NULL pointer access of the blkg
+pointer. The missing initialization of sync is less problematic and
+can be a problem in a debug kernel due to missing lockdep initialization.
 
-    error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an operator, found `"rust_minimal"`
-      --> samples/rust/rust_minimal.rsi:29:49
-       |
-    28 | impl ::kernel::ModuleMetadata for RustMinimal {
-       |                                               - while parsing this item list starting here
-    29 |     const NAME: &'static ::kernel::str::CStr = c"rust_minimal";
-       |                                                 ^^^^^^^^^^^^^^ expected one of 8 possible tokens
-    30 | }
-       | - the item list ends here
-       |
-       = note: you may be trying to write a c-string literal
-       = note: c-string literals require Rust 2021 or later
-       = help: pass `--edition 2024` to `rustc`
-       = note: for more on editions, read https://doc.rust-lang.org/edition-guide
+Fix these problems by re-initializing them after memory clearing.
 
-A workaround is to use `RUSTFMT=n`, which is documented in the `Makefile`
-help for cases where macro expanded source may happen to break `rustfmt`
-for other reasons, but this is not one of those cases.
-
-One solution would be to pass `--edition`, but we want `rustfmt` to
-use the entire configuration, even if currently we essentially use the
-default configuration.
-
-Thus explicitly give the path to the config file to `rustfmt` instead.
-
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260115183832.46595-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+Fixes: f73316482977 ("blk-cgroup: reimplement basic IO stats using cgroup rstat")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20230606180724.2455066-1-longman@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Remove this line: bis -> blkg = blkg for blkg was introduced by commit
+  3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()") since v6.2. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.build |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-cgroup.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -286,7 +286,7 @@ $(obj)/%.o: $(obj)/%.rs FORCE
- quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_rsi_rs = \
- 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
--	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
-+	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) --config-path $(srctree)/.rustfmt.toml $@
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -531,8 +531,12 @@ static int blkcg_reset_stats(struct cgro
+ 			struct blkg_iostat_set *bis =
+ 				per_cpu_ptr(blkg->iostat_cpu, cpu);
+ 			memset(bis, 0, sizeof(*bis));
++
++			/* Re-initialize the cleared blkg_iostat_set */
++			u64_stats_init(&bis->sync);
+ 		}
+ 		memset(&blkg->iostat, 0, sizeof(blkg->iostat));
++		u64_stats_init(&blkg->iostat.sync);
  
- $(obj)/%.rsi: $(obj)/%.rs FORCE
- 	+$(call if_changed_dep,rustc_rsi_rs)
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
 
 
 
