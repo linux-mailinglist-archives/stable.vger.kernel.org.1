@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LPmNkRhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213668-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:56 +0100
+	id yO4QBtdcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4881CE808E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB617E7772
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6016431AAB44
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35AB3303E2F6
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE024218AC;
-	Wed,  4 Feb 2026 14:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A4A274B39;
+	Wed,  4 Feb 2026 14:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BdiQFhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQ++2q+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B441A4218A8;
-	Wed,  4 Feb 2026 14:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160A1221F17;
+	Wed,  4 Feb 2026 14:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217106; cv=none; b=CTODxfJ5ib8o4fwaVWXaEUzJFqmZldxWlHknUQh2byKyNpYoIgvDx2wruBHIPZb58BnBy4WK+qEHw3aumTRlY8RrQ82dr50+vgqda6LTpe1wYzlczP5Po93NupwveVnYjIbxrNL/sdtfxrIIr1RrP3+mAXZpjnR11AcRxGcZtCw=
+	t=1770216461; cv=none; b=cqI5DUr2ojpjXIKjIV7su7lxw0texlnp1ZqfTLybVNRW2xq5SGYUT9EwR6zfbY3LUGoeVSyCJ/H9xnaqMhqSFJIBIEjPQOkAxJx4/70bICuO1D/4PH8ODe+zBA3xIvSj8e00LfQxFMR4LML/W5Du1A3OirpdNrX0tJNQ49CcN4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217106; c=relaxed/simple;
-	bh=2H2Mj66sMuxRRVby+p1QBSmrbM/Z9LNNvUYPN9sgoqY=;
+	s=arc-20240116; t=1770216461; c=relaxed/simple;
+	bh=bw3DrZXnAfcGWsAtlAtraSMNJb3z/saVPQ3/RtwIWGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EL6Y1ERJ6n9+zFr8+leC7onzh0KD6hm7LTa4AbNsqCLlaSrRx+AuGQXbqTiDLoiB32W7rXdHk3zZfVU3JojfP1UFI38f46kc1emiummVsQztVwoVY8vrt+1BZ1rWZf2d3QyTjFx4JGCeUqXpS1IxREKdkUNWQwqnUe/Z6Vv6X7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BdiQFhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28714C4CEF7;
-	Wed,  4 Feb 2026 14:58:25 +0000 (UTC)
+	 MIME-Version; b=f5M39XTam+/6dvWfk9fdZ9wf13Jl99QNbBzybhPg8KpJFiBg+KLBSI/MMlzxbMSBIBeqxqsWmQATf5g1iZ1B4UEM7235yrcE1LeuCiiP+TTZwjfOE9tbsZK5jBbMdOyCfPg916/zgtJe7PBr+xp+Rmnsfh7+JbKPR3dobDZqrO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQ++2q+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD13C4CEF7;
+	Wed,  4 Feb 2026 14:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217106;
-	bh=2H2Mj66sMuxRRVby+p1QBSmrbM/Z9LNNvUYPN9sgoqY=;
+	s=korg; t=1770216460;
+	bh=bw3DrZXnAfcGWsAtlAtraSMNJb3z/saVPQ3/RtwIWGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BdiQFhz6+LoAYuOuqJWm3+5jagFhOfHWsY/vpMBG5lSpeBDW74NNqcnbZ4+Mh+kE
-	 XBVgfuRrF8E5G4Kh0zWTPhGWAnShV0YJrE5x/0ailhC5EB3sW/7Psrfm2v/LFo7FQA
-	 wQ+hZfYW1a7GSuVygSicFmOVuYh+L1UO8m5f0jg8=
+	b=kQ++2q+yvbNkuYlTPbGQ+poo4H72nN23NBqe7bjRKH0QOqsj+HlXne9lFLtofE72o
+	 tABxIROZ1yt8hNOtumvTdUeVoLlkI+2YDR0wpGQIw+bu0v4IV9pa9fP9ScLCfD26T4
+	 UejUVqU8kMEx8ATm89k2d7mewclmnpuNqtO0j/+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Yang Shen <shenyang39@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 5.15 124/206] uacce: ensure safe queue release with state management
-Date: Wed,  4 Feb 2026 15:39:15 +0100
-Message-ID: <20260204143902.668464211@linuxfoundation.org>
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Berk Cem Goksel <berkcgoksel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 093/161] ALSA: usb-audio: Fix use-after-free in snd_usb_mixer_free()
+Date: Wed,  4 Feb 2026 15:39:16 +0100
+Message-ID: <20260204143855.091018060@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,122 +67,99 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-213474-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213668-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linaro.org:email]
-X-Rspamd-Queue-Id: 4881CE808E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: AB617E7772
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Berk Cem Goksel <berkcgoksel@gmail.com>
 
-commit 26c08dabe5475d99a13f353d8dd70e518de45663 upstream.
+commit 930e69757b74c3ae083b0c3c7419bfe7f0edc7b2 upstream.
 
-Directly calling `put_queue` carries risks since it cannot
-guarantee that resources of `uacce_queue` have been fully released
-beforehand. So adding a `stop_queue` operation for the
-UACCE_CMD_PUT_Q command and leaving the `put_queue` operation to
-the final resource release ensures safety.
+When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees
+mixer->id_elems but the controls already added to the card still
+reference the freed memory. Later when snd_card_register() runs,
+the OSS mixer layer calls their callbacks and hits a use-after-free read.
 
-Queue states are defined as follows:
-- UACCE_Q_ZOMBIE: Initial state
-- UACCE_Q_INIT: After opening `uacce`
-- UACCE_Q_STARTED: After `start` is issued via `ioctl`
+Call trace:
+  get_ctl_value+0x63f/0x820 sound/usb/mixer.c:411
+  get_min_max_with_quirks.isra.0+0x240/0x1f40 sound/usb/mixer.c:1241
+  mixer_ctl_feature_info+0x26b/0x490 sound/usb/mixer.c:1381
+  snd_mixer_oss_build_test+0x174/0x3a0 sound/core/oss/mixer_oss.c:887
+  ...
+  snd_card_register+0x4ed/0x6d0 sound/core/init.c:923
+  usb_audio_probe+0x5ef/0x2a90 sound/usb/card.c:1025
 
-When executing `poweroff -f` in virt while accelerator are still
-working, `uacce_fops_release` and `uacce_remove` may execute
-concurrently. This can cause `uacce_put_queue` within
-`uacce_fops_release` to access a NULL `ops` pointer. Therefore, add
-state checks to prevent accessing freed pointers.
+Fix by calling snd_ctl_remove() for all mixer controls before freeing
+id_elems. We save the next pointer first because snd_ctl_remove()
+frees the current element.
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
+Fixes: 6639b6c2367f ("[ALSA] usb-audio - add mixer control notifications")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Yang Shen <shenyang39@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-5-huangchenghai2@huawei.com
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+Link: https://patch.msgid.link/20260120102855.7300-1-berkcgoksel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ sound/usb/mixer.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -37,20 +37,34 @@ static int uacce_start_queue(struct uacc
- 	return 0;
- }
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -2858,10 +2858,23 @@ static int parse_audio_unit(struct mixer
  
--static int uacce_put_queue(struct uacce_queue *q)
-+static int uacce_stop_queue(struct uacce_queue *q)
+ static void snd_usb_mixer_free(struct usb_mixer_interface *mixer)
  {
- 	struct uacce_device *uacce = q->uacce;
++	struct usb_mixer_elem_list *list, *next;
++	int id;
++
+ 	/* kill pending URBs */
+ 	snd_usb_mixer_disconnect(mixer);
  
--	if ((q->state == UACCE_Q_STARTED) && uacce->ops->stop_queue)
-+	if (q->state != UACCE_Q_STARTED)
-+		return 0;
-+
-+	if (uacce->ops->stop_queue)
- 		uacce->ops->stop_queue(q);
- 
--	if ((q->state == UACCE_Q_INIT || q->state == UACCE_Q_STARTED) &&
--	     uacce->ops->put_queue)
-+	q->state = UACCE_Q_INIT;
-+
-+	return 0;
-+}
-+
-+static void uacce_put_queue(struct uacce_queue *q)
-+{
-+	struct uacce_device *uacce = q->uacce;
-+
-+	uacce_stop_queue(q);
-+
-+	if (q->state != UACCE_Q_INIT)
-+		return;
-+
-+	if (uacce->ops->put_queue)
- 		uacce->ops->put_queue(q);
- 
- 	q->state = UACCE_Q_ZOMBIE;
--
--	return 0;
- }
- 
- static long uacce_fops_unl_ioctl(struct file *filep,
-@@ -77,7 +91,7 @@ static long uacce_fops_unl_ioctl(struct
- 		ret = uacce_start_queue(q);
- 		break;
- 	case UACCE_CMD_PUT_Q:
--		ret = uacce_put_queue(q);
-+		ret = uacce_stop_queue(q);
- 		break;
- 	default:
- 		if (uacce->ops->ioctl)
+-	kfree(mixer->id_elems);
++	/* Unregister controls first, snd_ctl_remove() frees the element */
++	if (mixer->id_elems) {
++		for (id = 0; id < MAX_ID_ELEMS; id++) {
++			for (list = mixer->id_elems[id]; list; list = next) {
++				next = list->next_id_elem;
++				if (list->kctl)
++					snd_ctl_remove(mixer->chip->card, list->kctl);
++			}
++		}
++		kfree(mixer->id_elems);
++	}
+ 	if (mixer->urb) {
+ 		kfree(mixer->urb->transfer_buffer);
+ 		usb_free_urb(mixer->urb);
 
 
 
