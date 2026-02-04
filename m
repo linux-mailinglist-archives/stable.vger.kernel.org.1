@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-214063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2I/wFQNng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:27 +0100
+	id OGU5FfZgg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD22CE8E46
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73C6E7FDA
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:08:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 468B430DED6A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:23:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9AAAE3064E0D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53B3426EAC;
-	Wed,  4 Feb 2026 15:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F0C421A09;
+	Wed,  4 Feb 2026 15:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQOsvKeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MH/Y6uOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A434B426EC1;
-	Wed,  4 Feb 2026 15:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645BE4219F1;
+	Wed,  4 Feb 2026 15:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218438; cv=none; b=XRN+cKcTVUKAFB5QZbHWxWQsRTEpkdikiNZ19dOxsuahFSsI15U2mFX1lqOYhtCe+5oOtOFBSrLsFBTMn/dEBdVGPavac80cdFuZ3PGdpLOB5wGpR6+kje/8vZUDp/K3R6CY2mPrCZKk2FLOtEqhqxe5Fmfz3emAF71RZfjgy7g=
+	t=1770217391; cv=none; b=jvp4F0n4BOdje8yw2lweTSEoSRvuuaJHRsohyZ0xqTTHS3TGdRcpZ96D8T5QS3kjYBPbvwyS7PFrqzSWESxo31FYybKpfcpUvNvlRQPZJuW/5Pz1kiOWJ8ZbwUZ83XreBFT7zfvm0GurIxlrT3l4vNYpho27QW96l4bOwvUpJlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218438; c=relaxed/simple;
-	bh=Hdpu7mzeMxOAiestlOGxIvhiKIZjd9bf/jzzxBa9mUM=;
+	s=arc-20240116; t=1770217391; c=relaxed/simple;
+	bh=WAOF+j0vKhJwZWj1qPpKdfvrqD8G2qBkkpEQlB/8StU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EayZ95/PK17lbtS5t5MQl9phCX6oRUej+ndiyvKPlI6k3riac3N3eR8EddGA9DN0peLDtuATfRrGrZ+mah/gZh4vlLgSbE/PN8p3bde+pyNASTiZhTiV7qlgrVGXJ3rHW6D5yUzrnjbYWq5RSQJt0y6BFSsWiVbJ9lK2utS3IIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQOsvKeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B9CC19425;
-	Wed,  4 Feb 2026 15:20:37 +0000 (UTC)
+	 MIME-Version; b=SWC/nCzfbKpI+k50wfZwznRqjbBunXXW8j9xE6k7EWEn3zeDaYR/IrKBeYsFRwl7ObKulPV+dS9H3EBct0EHG8rZa0PL9nQtTjBNXQdyVcmDhcNp1yFSlmYgyhcqgCTw53bhfj5w14RBS6XUR94bhHxRE473RHnaiVKWvOU6RTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MH/Y6uOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B87C4AF0D;
+	Wed,  4 Feb 2026 15:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218438;
-	bh=Hdpu7mzeMxOAiestlOGxIvhiKIZjd9bf/jzzxBa9mUM=;
+	s=korg; t=1770217391;
+	bh=WAOF+j0vKhJwZWj1qPpKdfvrqD8G2qBkkpEQlB/8StU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQOsvKeI0YsA6QPrnKXLbtPFYSk5lk1U6IRajgwdCez9Kzi8u67Ns2iN6kzhnF7iJ
-	 u4u85McJr873FYbSBAjfxhMji3xtKiEbqKZapI+ggHhzyxcN14F8RUnPp8H1eCXdpm
-	 Z8duPI0WX2BdpccuadNPvIuFCiag/ihPTh1l6qI4=
+	b=MH/Y6uOWSQSNhHC4KdBz77nv0acE52Jbi6HCf6hSdKSvPpIvU5j/CkhBSjh5NrO+N
+	 eFejiRnjasFuBSgG/j2+iFP+fIlFj3RtNVRL5gfGHnd5w+sewv1rOz4Koheww1n3S5
+	 ukxam8RvkzI9N6SU+h14jbCVakipfJpCt4cyx+9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 30/72] scsi: qla2xxx: edif: Fix dma_free_coherent() size
+	Johannes Berg <johannes.berg@intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.15 202/206] wifi: cfg80211: use system_unbound_wq for wiphy work
 Date: Wed,  4 Feb 2026 15:40:33 +0100
-Message-ID: <20260204143846.717883958@linuxfoundation.org>
+Message-ID: <20260204143905.505759051@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214063-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213753-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: AD22CE8E46
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E73C6E7FDA
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 56bd3c0f749f45793d1eae1d0ddde4255c749bf6 upstream.
+commit 91d20ab9d9ca035527af503d00e1e30d6c375f2a upstream.
 
-Earlier in the function, the ha->flt buffer is allocated with size
-sizeof(struct qla_flt_header) + FLT_REGIONS_SIZE but freed in the error
-path with size SFP_DEV_SIZE.
+Since wiphy work items can run pretty much arbitrary
+code in the stack/driver, it can take longer to run
+all of this, so we shouldn't be using system_wq via
+schedule_work(). Also, we lock the wiphy (which is
+the reason this exists), so use system_unbound_wq.
 
-Fixes: 84318a9f01ce ("scsi: qla2xxx: edif: Add send, receive, and accept for auth_els")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260112134326.55466-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-and-tested-by: Kalle Valo <kvalo@kernel.org>
+Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |    2 +-
+ net/wireless/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4482,7 +4482,7 @@ fail_lsrjt:
- fail_elsrej:
- 	dma_pool_destroy(ha->purex_dma_pool);
- fail_flt:
--	dma_free_coherent(&ha->pdev->dev, SFP_DEV_SIZE,
-+	dma_free_coherent(&ha->pdev->dev, sizeof(struct qla_flt_header) + FLT_REGIONS_SIZE,
- 	    ha->flt, ha->flt_dma);
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1593,7 +1593,7 @@ void wiphy_work_queue(struct wiphy *wiph
+ 		list_add_tail(&work->entry, &rdev->wiphy_work_list);
+ 	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
  
- fail_flt_buffer:
+-	schedule_work(&rdev->wiphy_work);
++	queue_work(system_unbound_wq, &rdev->wiphy_work);
+ }
+ EXPORT_SYMBOL_GPL(wiphy_work_queue);
+ 
 
 
 
