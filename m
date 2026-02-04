@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KG8VK89mg2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:35 +0100
+	id QNC7ECJug2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE40E8DD8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906CCE9D3C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C5A830195BB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA35030A1C58
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAC1421EE6;
-	Wed,  4 Feb 2026 15:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD672D7D42;
+	Wed,  4 Feb 2026 15:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAArVy32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxZ+BF3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F630421EE2;
-	Wed,  4 Feb 2026 15:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E72F2BE7C0;
+	Wed,  4 Feb 2026 15:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218320; cv=none; b=bUYEEFwA0/Yg8q4ivrd3GE7wUIbsNzfhB8lkDY6ANfW1gWaYU/DdLqnKVjyAPwkE29ZxiPOEptdPvP0ifv6N7G21XHq3oUxOhLH0JuBiSGzFPlSpx2SNHs+y4Hn3pn9dxGw25tKyoXlWmFJHVP1HV/ongWWZNmcYm4gWm4DO5ug=
+	t=1770219195; cv=none; b=Cs7OuRbHsoTm2jkRYhSuiZqP/3IVQrL1D/0H2Vm+34NrFgtfFvROxImYRArpUMSKG/dy3735FaCPugEjNqPRcMzb8IECg6edZmJOsKQ73egdoOFR4DFSbfisx2g0q7NZimQwcTxrEe+ygjNt3tNpyF5FxVJysAx/WleNuR//rAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218320; c=relaxed/simple;
-	bh=qX927nqQuolOy0OD5WATdC9XYHrT5ZmUbj9q8EIJjt0=;
+	s=arc-20240116; t=1770219195; c=relaxed/simple;
+	bh=Kot8Y0JpYrn5doUgO5WreQNJnN5CM7Mn+gmYooUaL+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=laH+DuP0hvAS4G+zfJSPuo7Cj4gULBd6ARvb6HsEX0pDpKj6KoZAYmXGT2DyVbjAN/3JZBZXK3+XwXnXTidv6cFhdDIi9OZP8UVGUxVoxIVvEcpFPUUlJuKxafc25bbIyfGWymXvsOCseYSCry8rD9s8r6FHcgOY2BKP9ZncyMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAArVy32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DF8C2BCAF;
-	Wed,  4 Feb 2026 15:18:39 +0000 (UTC)
+	 MIME-Version; b=ArhhpAadIkFHX70L5P6wfLQOGwr/3bNw4/FWkhcj51jMmp5enM/EUE/NyHUw2bm38BL0+EpY6QLY74QwA5bpXVl8RmuAkty+ArjJJdKo2OTmzFO7m5IbuNQe2BpQYVi26l3+lWAVWuwLUDw9uwcd/eFzxezjbge0707HMhYvP0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxZ+BF3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4A6C4CEF7;
+	Wed,  4 Feb 2026 15:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218319;
-	bh=qX927nqQuolOy0OD5WATdC9XYHrT5ZmUbj9q8EIJjt0=;
+	s=korg; t=1770219195;
+	bh=Kot8Y0JpYrn5doUgO5WreQNJnN5CM7Mn+gmYooUaL+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAArVy32VPgthaOlfIHMRGsojb1/Hwx9h17T1RofbLMzv8mY3usp9XeKtkzGvcF3w
-	 cZoNpsOAFqP8E1VskxwThZ4aePlaGe3CHlf0DOgpYkIaAo01dAhbAbX+n6omVx2k5L
-	 FijwyzzXgNwVjOhLYErlBrSJ/KDWrj1d3h554Wdc=
+	b=dxZ+BF3zoY2c8KGOOwBaIfuPwcYsNKK1edMMGd03oLR8h99lwhqRkX6Ji/P4Rjhea
+	 EduadnLaziRqr+ppmihRau58UDYUwB/El6axTJ09TFrWC+nRmBfuRQTGgDht6HVz3q
+	 u3l489KWCb3WlmtweN3xK7Em9OO+Q3BrahASZ2Rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.1 269/280] ksmbd: fix use-after-free in ksmbd_session_rpc_open
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.18 061/122] pinctrl: meson: mark the GPIO controller as sleeping
 Date: Wed,  4 Feb 2026 15:40:43 +0100
-Message-ID: <20260204143919.380141609@linuxfoundation.org>
+Message-ID: <20260204143854.051521838@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,152 +67,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,doyensec.com,kernel.org,microsoft.com,139.com];
-	TAGGED_FROM(0.00)[bounces-214028-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214290-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,samsung.com,oss.qualcomm.com,googlemail.com,linaro.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,doyensec.com:email]
-X-Rspamd-Queue-Id: 4FE40E8DD8
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,qualcomm.com:email,samsung.com:email]
+X-Rspamd-Queue-Id: 906CCE9D3C
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit a1f46c99d9ea411f9bf30025b912d881d36fc709 ]
+commit 28f24068387169722b508bba6b5257cb68b86e74 upstream.
 
-A UAF issue can occur due to a race condition between
-ksmbd_session_rpc_open() and __session_rpc_close().
-Add rpc_lock to the session to protect it.
+The GPIO controller is configured as non-sleeping but it uses generic
+pinctrl helpers which use a mutex for synchronization.
 
+This can cause the following lockdep splat with shared GPIOs enabled on
+boards which have multiple devices using the same GPIO:
+
+BUG: sleeping function called from invalid context at
+kernel/locking/mutex.c:591
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
+kworker/u25:3
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+INFO: lockdep is turned off.
+irq event stamp: 46379
+hardirqs last  enabled at (46379): [<ffff8000813acb24>]
+_raw_spin_unlock_irqrestore+0x74/0x78
+hardirqs last disabled at (46378): [<ffff8000813abf38>]
+_raw_spin_lock_irqsave+0x84/0x88
+softirqs last  enabled at (46330): [<ffff8000800c71b4>]
+handle_softirqs+0x4c4/0x4dc
+softirqs last disabled at (46295): [<ffff800080010674>]
+__do_softirq+0x14/0x20
+CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
+6.19.0-rc4-next-20260105+ #11963 PREEMPT
+Tainted: [C]=CRAP
+Hardware name: Khadas VIM3 (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  __might_resched+0x144/0x248
+  __might_sleep+0x48/0x98
+  __mutex_lock+0x5c/0x894
+  mutex_lock_nested+0x24/0x30
+  pinctrl_get_device_gpio_range+0x44/0x128
+  pinctrl_gpio_set_config+0x40/0xdc
+  gpiochip_generic_config+0x28/0x3c
+  gpio_do_set_config+0xa8/0x194
+  gpiod_set_config+0x34/0xfc
+  gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
+  gpio_do_set_config+0xa8/0x194
+  gpiod_set_transitory+0x4c/0xf0
+  gpiod_configure_flags+0xa4/0x480
+  gpiod_find_and_request+0x1a0/0x574
+  gpiod_get_index+0x58/0x84
+  devm_gpiod_get_index+0x20/0xb4
+  devm_gpiod_get+0x18/0x24
+  mmc_pwrseq_emmc_probe+0x40/0xb8
+  platform_probe+0x5c/0xac
+  really_probe+0xbc/0x298
+  __driver_probe_device+0x78/0x12c
+  driver_probe_device+0xdc/0x164
+  __device_attach_driver+0xb8/0x138
+  bus_for_each_drv+0x80/0xdc
+  __device_attach+0xa8/0x1b0
+
+Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
 Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ KSMBD_DEFAULT_GFP is introduced by commit 0066f623bce8 ("ksmbd: use __GFP_RETRY_MAYFAIL")
- after linux-6.13. Here we still use GFP_KERNEL. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@samsung.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |   20 ++++++++++++++------
- fs/smb/server/mgmt/user_session.h |    1 +
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ drivers/pinctrl/meson/pinctrl-meson.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -59,10 +59,12 @@ static void ksmbd_session_rpc_clear_list
- 	struct ksmbd_session_rpc *entry;
- 	long index;
+--- a/drivers/pinctrl/meson/pinctrl-meson.c
++++ b/drivers/pinctrl/meson/pinctrl-meson.c
+@@ -619,7 +619,7 @@ static int meson_gpiolib_register(struct
+ 	pc->chip.set = meson_gpio_set;
+ 	pc->chip.base = -1;
+ 	pc->chip.ngpio = pc->data->num_pins;
+-	pc->chip.can_sleep = false;
++	pc->chip.can_sleep = true;
  
-+	down_write(&sess->rpc_lock);
- 	xa_for_each(&sess->rpc_handle_list, index, entry) {
- 		xa_erase(&sess->rpc_handle_list, index);
- 		__session_rpc_close(sess, entry);
- 	}
-+	up_write(&sess->rpc_lock);
- 
- 	xa_destroy(&sess->rpc_handle_list);
- }
-@@ -92,7 +94,7 @@ int ksmbd_session_rpc_open(struct ksmbd_
- {
- 	struct ksmbd_session_rpc *entry, *old;
- 	struct ksmbd_rpc_command *resp;
--	int method;
-+	int method, id;
- 
- 	method = __rpc_method(rpc_name);
- 	if (!method)
-@@ -102,26 +104,29 @@ int ksmbd_session_rpc_open(struct ksmbd_
- 	if (!entry)
- 		return -ENOMEM;
- 
-+	down_read(&sess->rpc_lock);
- 	entry->method = method;
--	entry->id = ksmbd_ipc_id_alloc();
--	if (entry->id < 0)
-+	entry->id = id = ksmbd_ipc_id_alloc();
-+	if (id < 0)
- 		goto free_entry;
--	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	old = xa_store(&sess->rpc_handle_list, id, entry, GFP_KERNEL);
- 	if (xa_is_err(old))
- 		goto free_id;
- 
--	resp = ksmbd_rpc_open(sess, entry->id);
-+	resp = ksmbd_rpc_open(sess, id);
- 	if (!resp)
- 		goto erase_xa;
- 
-+	up_read(&sess->rpc_lock);
- 	kvfree(resp);
--	return entry->id;
-+	return id;
- erase_xa:
- 	xa_erase(&sess->rpc_handle_list, entry->id);
- free_id:
- 	ksmbd_rpc_id_free(entry->id);
- free_entry:
- 	kfree(entry);
-+	up_read(&sess->rpc_lock);
- 	return -EINVAL;
- }
- 
-@@ -129,9 +134,11 @@ void ksmbd_session_rpc_close(struct ksmb
- {
- 	struct ksmbd_session_rpc *entry;
- 
-+	down_write(&sess->rpc_lock);
- 	entry = xa_erase(&sess->rpc_handle_list, id);
- 	if (entry)
- 		__session_rpc_close(sess, entry);
-+	up_write(&sess->rpc_lock);
- }
- 
- int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
-@@ -404,6 +411,7 @@ static struct ksmbd_session *__session_c
- 	sess->sequence_number = 1;
- 	rwlock_init(&sess->tree_conns_lock);
- 	atomic_set(&sess->refcnt, 2);
-+	init_rwsem(&sess->rpc_lock);
- 
- 	ret = __init_smb2_session(sess);
- 	if (ret)
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -63,6 +63,7 @@ struct ksmbd_session {
- 	rwlock_t			tree_conns_lock;
- 
- 	atomic_t			refcnt;
-+	struct rw_semaphore		rpc_lock;
- };
- 
- static inline int test_session_flag(struct ksmbd_session *sess, int bit)
+ 	ret = gpiochip_add_data(&pc->chip, pc);
+ 	if (ret) {
 
 
 
