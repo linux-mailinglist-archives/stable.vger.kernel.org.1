@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANnuN0Zpg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:06 +0100
+	id GEPHClJgg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:54 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97161E93E5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C073E7E35
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 919B8314ED87
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C2E93027D85
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F0B2D5950;
-	Wed,  4 Feb 2026 15:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E75285404;
+	Wed,  4 Feb 2026 15:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bca5DE2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBypYqun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EAE2D6611;
-	Wed,  4 Feb 2026 15:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFA528853A;
+	Wed,  4 Feb 2026 15:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219013; cv=none; b=TirKLqW9eYR44qpQmoJUQbqEP/0CjFgOufCP/TbWIMvjsmOMdYfuO9kj4yWq3cqfFMhQAi9sfWswahADgKD9UtebCjkrcyKhasTnQFy8tYTAOs0B/JNC067m9auDUaBVhXWd5v3qqniV4o72tmw+wPZ1qeZ44cEH3sgRvO4kBJg=
+	t=1770217332; cv=none; b=f+16puQCTu6VukDe22nl5xqlXXEzfVt0+t1bZpPNRzMBm7SkxrJIorJZfPwFa4S+uTZ3M9VF9PxJhWbHm82jDEu9qiYsXl69A+i7m0UiZw9fNs68xpT8LpvGj1sqFWZpG9Kie0ikDjQEZZEXnf+ZvOwcfJntHsl6V+nWpN+NiZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219013; c=relaxed/simple;
-	bh=M9uYQDJZYdZ9rQjv5YYNLRie80LBXiwsAGl7cCrSxXc=;
+	s=arc-20240116; t=1770217332; c=relaxed/simple;
+	bh=RWobgHbIUFQjkVC/aP7rowwVC5TIgWGqHxhsGL6JU8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmgoOhbFTfgl/7FhTAS/cPEZw5eZ/m53IeVDy8wWUtRz2o+OF2iER7lNv37w6MyZpC3ulLajAug2hNHiBrhpU7ELaWmz91scssQhLaXi4NVNfiPUOhqIzMQ5ym5tlI9p3zc9FQB/HDBVPSRwBgRBRPihzyYdkbMmy7mB8EX7KEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bca5DE2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BE7C4CEF7;
-	Wed,  4 Feb 2026 15:30:12 +0000 (UTC)
+	 MIME-Version; b=nC98DeHki8+clDl0UdFsiUDpKrRSdixANfq+MY3K2utoUWI6Za0A0bDfV7LpUXmBE18yqmbWr0/yJWRUnwgD4uUFrytbDzsR3QDO80nId3v54i9+keHy3YWiqrIzptC4CNXzi/zQcd2RP7Ht/tNGJP8vMjIX9PZUF9zlHVlurqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBypYqun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F33C4CEF7;
+	Wed,  4 Feb 2026 15:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219013;
-	bh=M9uYQDJZYdZ9rQjv5YYNLRie80LBXiwsAGl7cCrSxXc=;
+	s=korg; t=1770217332;
+	bh=RWobgHbIUFQjkVC/aP7rowwVC5TIgWGqHxhsGL6JU8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bca5DE2TlhAqtsxSpnVdmSZE/JDbArYMArGOiCuDumhB7aTvkmt4FvOM8EJNH3UHN
-	 Bk9Zn2TUfuck5HqqMSOI3MiQm9WNwI0MYikCYZmNeuleeTYm40QLfRVjBRcmnc3JZK
-	 86HnJvJzu1xbHbnl6mF4h3jzUM2VHCiK6EB6rMmk=
+	b=oBypYqun8v9/xfj6EWX4XRX/HjfLLL1f4MdfM5+2OJFO0cK2TLzV+2DLPgOFFBMB8
+	 +KjMX5ld19B3aiOWForSOKFBrqzCgE3r50IijoTOAcoFAHToLtswnFX4HZsc1nUgnB
+	 VXDfSxRD6VukSMJt6ZA4Eq7xncz4C2XUzBuZhHP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tagir Garaev <tgaraev653@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 041/122] ASoC: Intel: sof_es8336: fix headphone GPIO logic inversion
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Oak Zeng <Oak.Zeng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 192/206] drm/amdkfd: fix a memory leak in device_queue_manager_init()
 Date: Wed,  4 Feb 2026 15:40:23 +0100
-Message-ID: <20260204143853.337724416@linuxfoundation.org>
+Message-ID: <20260204143905.139247881@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +68,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214235-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213736-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 97161E93E5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9C073E7E35
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tagir Garaev <tgaraev653@gmail.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 213c4e51267fd825cd21a08a055450cac7e0b7fb ]
+commit 80614c509810fc051312d1a7ccac8d0012d6b8d0 upstream.
 
-The headphone GPIO should be set to the inverse of speaker_en.
-When speakers are enabled, headphones should be disabled and vice versa.
+If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
+to release the memory allocated by allocate_hiq_sdma_mqd().
+Move deallocate_hiq_sdma_mqd() up to ensure proper function
+visibility at the point of use.
 
-Currently both GPIOs are set to the same value (speaker_en), causing
-audio to play through both speakers and headphones simultaneously
-when headphones are plugged in.
-
-Tested on Huawei Matebook (BOD-WXX9) with ES8336 codec.
-
-Fixes: 6e1ff1459e00 ("ASoC: Intel: sof_es8336: support a separate gpio to control headphone")
-Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
-Link: https://patch.msgid.link/20260121152435.101698-1-tgaraev653@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_es8336.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index 10b189ea88dba..09acd80d23e0f 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -120,7 +120,7 @@ static void pcm_pop_work_events(struct work_struct *work)
- 	gpiod_set_value_cansleep(priv->gpio_speakers, priv->speaker_en);
- 
- 	if (quirk & SOF_ES8336_HEADPHONE_GPIO)
--		gpiod_set_value_cansleep(priv->gpio_headphone, priv->speaker_en);
-+		gpiod_set_value_cansleep(priv->gpio_headphone, !priv->speaker_en);
- 
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -1847,6 +1847,14 @@ static int allocate_hiq_sdma_mqd(struct
+ 	return retval;
  }
  
--- 
-2.51.0
-
++static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
++				    struct kfd_mem_obj *mqd)
++{
++	WARN(!mqd, "No hiq sdma mqd trunk to free");
++
++	amdgpu_amdkfd_free_gtt_mem(dev->kgd, &mqd->gtt_mem);
++}
++
+ struct device_queue_manager *device_queue_manager_init(struct kfd_dev *dev)
+ {
+ 	struct device_queue_manager *dqm;
+@@ -1980,19 +1988,13 @@ struct device_queue_manager *device_queu
+ 	if (!dqm->ops.initialize(dqm))
+ 		return dqm;
+ 
++	deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
++
+ out_free:
+ 	kfree(dqm);
+ 	return NULL;
+ }
+ 
+-static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
+-				    struct kfd_mem_obj *mqd)
+-{
+-	WARN(!mqd, "No hiq sdma mqd trunk to free");
+-
+-	amdgpu_amdkfd_free_gtt_mem(dev->kgd, mqd->gtt_mem);
+-}
+-
+ void device_queue_manager_uninit(struct device_queue_manager *dqm)
+ {
+ 	dqm->ops.uninitialize(dqm);
 
 
 
