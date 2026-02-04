@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-213865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YO5SDmxkg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:24 +0100
+	id yCQBHEBbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E32EE86A5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:23:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14046E747F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FFA53084E20
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F320300E3F9
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB05429838;
-	Wed,  4 Feb 2026 15:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05CF41B343;
+	Wed,  4 Feb 2026 14:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9bseGIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxO1xuZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFABB42982F;
-	Wed,  4 Feb 2026 15:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EE5410D10;
+	Wed,  4 Feb 2026 14:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217773; cv=none; b=DnsrjTLzQguGv3ZMyCwdogYw0yUM7IdIPohAZ0k30AgZJDZkiYI/EUTU6eqeTsE9THOT2Xk8NpsI5aT5lrH74/uruqrTw6YDowgaxLQvA/HRObytqax5/5pfjSV8EL7wU9c1131Bbtge9fa2z2bPn0XnShyA6OxK1lNOUAuOraA=
+	t=1770216250; cv=none; b=UtNBYu5HKp9+ut6i6NRIQmGzWQXavmNVjgqd4bs98OZX3uHjEOP9OgRQA+yXWyE8iZXxcVRk761KxpXPmnWB0cOqn+D9cwiHFOadfP/OpMyLN4bbZsBkjQhZ18eXfl1/InzRMwUujJjy6fy8e9eZX7Dm7qWxqAk2MdYVM8DQ/GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217773; c=relaxed/simple;
-	bh=1IJn8hV4ZHjfI86tXU+QQIAgIUPVpBh9AA0k7cMXkxs=;
+	s=arc-20240116; t=1770216250; c=relaxed/simple;
+	bh=9w8dDEVjZ0VWQKu3hE/74SQeM/o0ThFeM2bLjjyesnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/Yt8abK5dbAYoUrMyRbh+pZSJAnq2mPT7XmCzoVs8JMy5TjatiIfSQlzifQ5v8sC46SUclAYhvtsBjAKwqqPvD0Sj3HFQfzrNKwHXoTxofB/geCy1QrXYJdijGn4pqqeO33yA2HogfRXuL2oCRV4QsmkUe9ZJ6AxcC24r1g9R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9bseGIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44044C116C6;
-	Wed,  4 Feb 2026 15:09:32 +0000 (UTC)
+	 MIME-Version; b=SoMciSCueZxtneewXmvve1rNeaJdSOr1AH2py2OwpdMH56nYvCHnrMS0YqXkZFNWFAuAs10DVmmqw0WZqtzKOsFekViRv79vY2x1HUYqzdx8u7kYnaUiwg5LYRDI+isubrxzrynWGlSQCiOCMf5fRGljmLuoM/DP049ucY4bjtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxO1xuZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D77C19424;
+	Wed,  4 Feb 2026 14:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217772;
-	bh=1IJn8hV4ZHjfI86tXU+QQIAgIUPVpBh9AA0k7cMXkxs=;
+	s=korg; t=1770216250;
+	bh=9w8dDEVjZ0VWQKu3hE/74SQeM/o0ThFeM2bLjjyesnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9bseGIftsa1LCmQrmaieFCY9A351BU1ISi59+9bKsxEQLiX822ThOQXxeLsYKnm1
-	 BZRHTl77LHh9Y/lnQR9OFMq6ArkmkfjFew+Ka+LLqvgSRCzO+xa+xTB0p1YDIfir8O
-	 NpkOOUsx6Zzps9reihSw64eZGmpr+zcBujZpIIFs=
+	b=LxO1xuZulM6vS04FsWeSgTREMKuaVFhQLize2J1KleplZbMmTIr/MZZPMJYladkgP
+	 Ronpm2hO5L4f+XmebQzfylD/UT/khLJORkVVrX/dI2CEuIN5Hkql1IwxGKoAr0R6NO
+	 cnAY6ulrkA4oKBZpG08WVZOLjMl+b9sUKeiq3R8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taeyang Lee <0wn@theori.io>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/280] crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 025/161] usb: dwc3: Check for USB4 IP_NAME
 Date: Wed,  4 Feb 2026 15:38:08 +0100
-Message-ID: <20260204143913.745346686@linuxfoundation.org>
+Message-ID: <20260204143852.668820391@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +67,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213412-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213865-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,theori.io:email]
-X-Rspamd-Queue-Id: 8E32EE86A5
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 14046E747F
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taeyang Lee <0wn@theori.io>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 2397e9264676be7794f8f7f1e9763d90bd3c7335 ]
+commit 0ed91d47959cb7573c17e06487f0fb891d59dfb3 upstream.
 
-authencesn assumes an ESP/ESN-formatted AAD. When assoclen is shorter than
-the minimum expected length, crypto_authenc_esn_decrypt() can advance past
-the end of the destination scatterlist and trigger a NULL pointer dereference
-in scatterwalk_map_and_copy(), leading to a kernel panic (DoS).
+Synopsys renamed DWC_usb32 IP to DWC_usb4 as of IP version 1.30. No
+functional change except checking for the IP_NAME here. The driver will
+treat the new IP_NAME as if it's DWC_usb32. Additional features for USB4
+will be introduced and checked separately.
 
-Add a minimum AAD length check to fail fast on invalid inputs.
-
-Fixes: 104880a6b470 ("crypto: authencesn - Convert to new AEAD interface")
-Reported-By: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/e6f1827754c7a7ddc5eb7382add20bfe3a9b312f.1767390747.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/authencesn.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/dwc3/core.c |    2 ++
+ drivers/usb/dwc3/core.h |    1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/crypto/authencesn.c b/crypto/authencesn.c
-index b60e61b1904cb..6487b35851d54 100644
---- a/crypto/authencesn.c
-+++ b/crypto/authencesn.c
-@@ -191,6 +191,9 @@ static int crypto_authenc_esn_encrypt(struct aead_request *req)
- 	struct scatterlist *src, *dst;
- 	int err;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -778,6 +778,8 @@ static bool dwc3_core_is_valid(struct dw
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	sg_init_table(areq_ctx->src, 2);
- 	src = scatterwalk_ffwd(areq_ctx->src, req->src, assoclen);
- 	dst = src;
-@@ -284,6 +287,9 @@ static int crypto_authenc_esn_decrypt(struct aead_request *req)
- 	u32 tmp[2];
- 	int err;
+ 	reg = dwc3_readl(dwc->regs, DWC3_GSNPSID);
+ 	dwc->ip = DWC3_GSNPS_ID(reg);
++	if (dwc->ip == DWC4_IP)
++		dwc->ip = DWC32_IP;
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	cryptlen -= authsize;
+ 	/* This should read as U3 followed by revision number */
+ 	if (DWC3_IP_IS(DWC3)) {
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1142,6 +1142,7 @@ struct dwc3 {
+ #define DWC3_IP			0x5533
+ #define DWC31_IP		0x3331
+ #define DWC32_IP		0x3332
++#define DWC4_IP			0x3430
  
- 	if (req->src != dst) {
--- 
-2.51.0
-
+ 	u32			revision;
+ 
 
 
 
