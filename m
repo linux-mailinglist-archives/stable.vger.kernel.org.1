@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-213548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAZaBf5eg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:14 +0100
+	id KFRxEstsg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76005E7B8B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A3DE9B3D
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5450030480B2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 080E630C5361
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8169A413224;
-	Wed,  4 Feb 2026 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F2C2D877F;
+	Wed,  4 Feb 2026 15:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaOBwJYH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvJjtXj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454782E92BC;
-	Wed,  4 Feb 2026 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7222BF002;
+	Wed,  4 Feb 2026 15:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216703; cv=none; b=cvuXUeVDikcRnbHYxKikpTEjJyQt40VCtKVFJN/i/TxxB52P3KQ0VcwbxcLXtnd5ewo0m6lf5VCccF1uPJbdXblC6LQq4SrVAq6tuqCBXS4eVqlrTVOYsy5ow9/Xn6MuKf/p7SeYLeC3JjutA781aymjXPp+KngtVKjPnyUn5Wo=
+	t=1770218316; cv=none; b=dLMFbiSxRdpddTErp1y7GE36wDp3PIR1tDoZhErp7FumcSb5ixIvqQ+1qIJlZ5pjUNVih8LUVbpUKjGd/aBR3Nn0zQXdDptaz/vouoTTmLsjqespLfAERj3i7bxWP5FiI2aJgvFUPyqaIn5VJwgTFMsl3bJdIUn6rjVXCTe8nsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216703; c=relaxed/simple;
-	bh=OsOT9Wn++I1j9hJx254LcokUMqp/d1moUB2kYcpmayE=;
+	s=arc-20240116; t=1770218316; c=relaxed/simple;
+	bh=AEXuzJ548Ujwg0sBy8YxfEQLamGC/CPeUcPaEvt+oBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgS6e3P8AGSBLE/RgRWRQ1mTR09j8lLbQi4Vw8Jkg0U2rRUUpb5l/ZlGWD8Nsn6hW2gzN/05r6rdK7yb6foQPwf2LLNHm8FkeUZqslQWXvpfUOF77CHEl1b8GbQW6o9e9q1QNLXr7vJa2elizwd+Brl+HY+TV0jW7FvNMeoQRhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaOBwJYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F578C4CEF7;
-	Wed,  4 Feb 2026 14:51:42 +0000 (UTC)
+	 MIME-Version; b=ZzLjC7NHWQssTd0swFNPsum2yKYD6coqEWLqkEAQTuWLVhcNFwWgzlfhdi2RinfxzmAIvMAUFM+/hLamNytUbBpOI6rH/cM23yO8fQIGw8Lq2oKuao5NC+VQC9UAMlxiYuOkDcUn0kISubMT97/t8MhDUII0GXkZqQPToUrYlYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvJjtXj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8C1C4CEF7;
+	Wed,  4 Feb 2026 15:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216702;
-	bh=OsOT9Wn++I1j9hJx254LcokUMqp/d1moUB2kYcpmayE=;
+	s=korg; t=1770218316;
+	bh=AEXuzJ548Ujwg0sBy8YxfEQLamGC/CPeUcPaEvt+oBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aaOBwJYHMNqMdyIzqp1orRkEOcS2asvbuV9P6cRea8OGjVMrF34k+ketfVId/vGXJ
-	 hOle2AxZ5LCJrL/r7etdhKdPWQmV9Gmkbii3aZ1q7RM6zsDo/x0IR6mlwzl+kkUWS2
-	 6DGdMv7dU2ua/7R2ErwFTBVLxhG7f/yrsS90i5sg=
+	b=QvJjtXj7AQYMAaQWR1iosgOJtjX6VQV0kUHOPVbQCOu7J0bmzizwUyQ2w0mzVykks
+	 j+smeT8YmcrLggnc5vsLDdubmqSRyAKqhZRuCFbqSWHSy79MfayomiEhb9EhcPn7oo
+	 pFpbzFuiNGZQX0qSUXwVRHPD0r7qUkUO16E9xTCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/161] w1: therm: Fix off-by-one buffer overflow in alarms_store
+Subject: [PATCH 6.1 231/280] mei: trace: treat reg parameter as string
 Date: Wed,  4 Feb 2026 15:40:05 +0100
-Message-ID: <20260204143856.856228777@linuxfoundation.org>
+Message-ID: <20260204143917.932850516@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213548-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214027-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,145 +87,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email]
-X-Rspamd-Queue-Id: 76005E7B8B
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 44A3DE9B3D
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a ]
+[ Upstream commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 ]
 
-The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-bytes and a NUL terminator is appended. However, the 'size' argument
-does not account for this extra byte. The original code then allocated
-'size' bytes and used strcpy() to copy 'buf', which always writes one
-byte past the allocated buffer since strcpy() copies until the NUL
-terminator at index 'size'.
+The commit
+afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
+forbids to emit event with a plain char* without a wrapper.
 
-Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-without allocating any intermediate memory or string copying. This
-removes the overflow while simplifying the code.
+The reg parameter always passed as static string and wrapper
+is not strictly required, contrary to dev parameter.
+Use the string wrapper anyway to check sanity of the reg parameters,
+store it value independently and prevent internal kernel data leaks.
 
-Cc: stable@vger.kernel.org
-Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Since some code refactoring has taken place, explicit backporting may
+be needed for kernels older than 6.10.
+
+Cc: stable@vger.kernel.org  # v6.11+
+Fixes: a0a927d06d79 ("mei: me: add io register tracing")
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted __assign_str() calls to use two arguments ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/w1/slaves/w1_therm.c |   60 +++++++++++++------------------------------
- 1 file changed, 19 insertions(+), 41 deletions(-)
+ drivers/misc/mei/mei-trace.h |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1781,53 +1781,35 @@ static ssize_t alarms_store(struct devic
- 	struct w1_slave *sl = dev_to_w1_slave(device);
- 	struct therm_info info;
- 	u8 new_config_register[3];	/* array of data to be written */
--	int temp, ret;
--	char *token = NULL;
-+	long long temp;
-+	int ret = 0;
- 	s8 tl, th;	/* 1 byte per value + temp ring order */
--	char *p_args, *orig;
-+	const char *p = buf;
-+	char *endp;
+--- a/drivers/misc/mei/mei-trace.h
++++ b/drivers/misc/mei/mei-trace.h
+@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev));
+-		__entry->reg  = reg;
++		__assign_str(reg, reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
  
--	p_args = orig = kmalloc(size, GFP_KERNEL);
--	/* Safe string copys as buf is const */
--	if (!p_args) {
--		dev_warn(device,
--			"%s: error unable to allocate memory %d\n",
--			__func__, -ENOMEM);
--		return size;
--	}
--	strcpy(p_args, buf);
--
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--
--	/* Convert 1st entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp || *endp != ' ')
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
+ TRACE_EVENT(mei_reg_write,
+@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev));
+-		__entry->reg = reg;
++		__assign_str(reg, reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] write %s[%#x] = %#x",
+-		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
+ );
  
- 	tl = int_to_short(temp);
+ TRACE_EVENT(mei_pci_cfg_read,
+@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev));
+-		__entry->reg  = reg;
++		__assign_str(reg, reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
  
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--	/* Convert 2nd entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	p = endp + 1;
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp)
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Prepare to cast to short by eliminating out of range values */
-@@ -1850,7 +1832,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: error reading from the slave device %d\n",
- 			__func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Write data in the device RAM */
-@@ -1858,7 +1840,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: Device not supported by the driver %d\n",
- 			__func__, -ENODEV);
--		goto free_m;
-+		return size;
- 	}
- 
- 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
-@@ -1867,10 +1849,6 @@ static ssize_t alarms_store(struct devic
- 			"%s: error writing to the slave device %d\n",
- 			__func__, ret);
- 
--free_m:
--	/* free allocated memory */
--	kfree(orig);
--
- 	return size;
- }
- 
+ #endif /* _MEI_TRACE_H_ */
 
 
 
