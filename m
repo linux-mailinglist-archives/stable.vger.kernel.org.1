@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-214221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +E4oIoxog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:00 +0100
+	id oIo/O+Jhg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F38E9207
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD8FE81BB
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B63D3264220
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 835923042670
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C0E29AB1D;
-	Wed,  4 Feb 2026 15:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C772F270540;
+	Wed,  4 Feb 2026 15:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CN9pQPWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1C9YgOgm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCEA1A0BF1;
-	Wed,  4 Feb 2026 15:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A80E19DFAB;
+	Wed,  4 Feb 2026 15:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218967; cv=none; b=XgUWFOLqpCYX22J7xTTzVrt2CTtUBty92GanSBLldwS7s+HwvzxGOK1pM63zw3YgICxQYU3Up79JH6fwgg8DR/+aJIOCs1dH74IUn30/FQcNPQ+LUaaTnb4F+8x1qu1Ul7sCtIIozhVduh0X9HfLnVeHMo5MR7qf5wC+2QMNvZg=
+	t=1770217227; cv=none; b=JTqrEs8X1Pc6Ls/t3CAkabQ2CNDqNC9Lhp9dNS1yhpUn2Odj7kffJ1ykDB95LbL09OchDvHy1HEYKUEW9x6vv0HwaXUmCWYaTqmlzb8NIFcJT7xmYayhpgFBprZ4TQ8VJlz+6esD33KW0OWQaLDiGt0cR4SZmnnId3lFRA99FJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218967; c=relaxed/simple;
-	bh=zfBROlFXU52Hmg89gTb275QFj5cHf7jdySi1wFD4/sc=;
+	s=arc-20240116; t=1770217227; c=relaxed/simple;
+	bh=lNJh2nKEy5SZ+7ymkkRtN3bePn1LTJWIrIqdRulPlOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmWvgK8QYrklwZ1PlsVCOm2NSgryG6cqrMPCRuQsgydheN8lYmXxazpcvKj9w9MaOSHd2L2Q7G+j9l+Lr9C6lXTNJMIosazkry3/S+c1hUxiGiT5uUJMxJFjTPEl9zbMkgrdAKIJE7asGT9Vsn5/7i524ZHmIRcf83ctVvdEGVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CN9pQPWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354D0C4CEF7;
-	Wed,  4 Feb 2026 15:29:26 +0000 (UTC)
+	 MIME-Version; b=pKDJJ+BeRKgbCcbj+K0o7vYb9LQkSQDwGjYuAmTHgH9hUsvfL1QuT8dp0skP8tyzTrkHZULoZYiCm/JUP2/mlItG+EP/sKQLF0ZeJrUJVOvL3vrVz0j1K4vILoJ2boTT3PyqkOfxBlUVjmjYk7CubgBfkoxjCl/9+MCtJN9E2W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1C9YgOgm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C92C4CEF7;
+	Wed,  4 Feb 2026 15:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218967;
-	bh=zfBROlFXU52Hmg89gTb275QFj5cHf7jdySi1wFD4/sc=;
+	s=korg; t=1770217227;
+	bh=lNJh2nKEy5SZ+7ymkkRtN3bePn1LTJWIrIqdRulPlOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CN9pQPWGXYQRdn4WAC/AJgk53l8tn8YWtNg5Az799tuUXQafOkDE6IrQqkoc9WHqA
-	 sc9kdARCm6u7Yx5bS0PopN2u/Y18W+e2gNMUEGljH6jT0gFJNMqPZ/X2p1I1PFOfJJ
-	 8U8adjt6p1MEkNz4P4ydti1RKQdphT0Ghd6pTGcs=
+	b=1C9YgOgm8eXqNxoLqcRfaYBw4Wl8be4jkRyZfiYl9GKryG8L+eD22q6zgot86PIxS
+	 JwcGlnP/EfaZRSsup3S9IqF4FL2ix2PeKu77ntS8/t0tJOt1p24WkoeeiVnXdOp6ne
+	 Y1+wYeAAlYVIOTWWI6+vCc40oP3xwXZDSSOTl4PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Juergen Gross <jgross@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 009/122] octeon_ep: Fix memory leak in octep_device_setup()
+Subject: [PATCH 5.15 160/206] scsi: xen: scsiback: Fix potential memory leak in scsiback_remove()
 Date: Wed,  4 Feb 2026 15:39:51 +0100
-Message-ID: <20260204143852.200734566@linuxfoundation.org>
+Message-ID: <20260204143903.966435448@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214221-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213704-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,60 +87,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email]
-X-Rspamd-Queue-Id: E5F38E9207
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,suse.com:email,iitm.ac.in:email]
+X-Rspamd-Queue-Id: 0FD8FE81BB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 8016dc5ee19a77678c264f8ba368b1e873fa705b ]
+[ Upstream commit 901a5f309daba412e2a30364d7ec1492fa11c32c ]
 
-In octep_device_setup(), if octep_ctrl_net_init() fails, the function
-returns directly without unmapping the mapped resources and freeing the
-allocated configuration memory.
+Memory allocated for struct vscsiblk_info in scsiback_probe() is not
+freed in scsiback_remove() leading to potential memory leaks on remove,
+as well as in the scsiback_probe() error paths. Fix that by freeing it
+in scsiback_remove().
 
-Fix this by jumping to the unsupported_dev label, which performs the
-necessary cleanup. This aligns with the error handling logic of other
-paths in this function.
-
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: 577f0d1b1c5f ("octeon_ep: add separate mailbox command and response queues")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260121130551.3717090-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://patch.msgid.link/20251223063012.119035-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ adapted void scsiback_remove() to int return type with return 0 statement ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/xen-scsiback.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index bcea3fc26a8c7..57db7ea2f5be9 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -1338,7 +1338,7 @@ int octep_device_setup(struct octep_device *oct)
+--- a/drivers/xen/xen-scsiback.c
++++ b/drivers/xen/xen-scsiback.c
+@@ -1197,6 +1197,7 @@ static int scsiback_remove(struct xenbus
+ 	gnttab_page_cache_shrink(&info->free_pages, 0);
  
- 	ret = octep_ctrl_net_init(oct);
- 	if (ret)
--		return ret;
-+		goto unsupported_dev;
+ 	dev_set_drvdata(&dev->dev, NULL);
++	kfree(info);
  
- 	INIT_WORK(&oct->tx_timeout_task, octep_tx_timeout_task);
- 	INIT_WORK(&oct->ctrl_mbox_task, octep_ctrl_mbox_task);
--- 
-2.51.0
-
+ 	return 0;
+ }
 
 
 
