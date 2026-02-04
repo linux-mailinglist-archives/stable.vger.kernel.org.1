@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-214245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213991-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHVLEU9vg2lgmwMAu9opvQ
-	(envelope-from <stable+bounces-214245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:09:51 +0100
+	id +J5REmtmg2nSmQMAu9opvQ
+	(envelope-from <stable+bounces-213991-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52108E9F2C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:09:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8F8E8CA0
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 883F9314F952
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2B1F1304ABB7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B769228853E;
-	Wed,  4 Feb 2026 15:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDF041C301;
+	Wed,  4 Feb 2026 15:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVrixGAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WkBLRUD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B82927702D;
-	Wed,  4 Feb 2026 15:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CA2284B37;
+	Wed,  4 Feb 2026 15:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219047; cv=none; b=AAgLeSXaMoE6JwmLyvRbcoaq+h2aQS4sOMaIWehdixpvkwXWH/NZPZVnxJQq1paP8xNUzm0mhrzGh5XGolTJrCUH52qq5K5EueXKKBuBNtZMYZ1Phv3u6YVnemlEFewAS9++0CaLWiMimHUR+UMTa9ULhK7Qs2QpN1bkY0oY2jI=
+	t=1770218194; cv=none; b=Mz2LzMzVEvm3Iz/3y7i9pRDNoH40eTziY68yOqBqrLsB3dnnjbbu/+ffNaSAmPqYtpXZO8Y+3AU2dtMKg2Q1f7H89KmPdUa3uI4lzuUvWzU3SSVHZa0C0PGAw3WJ2hlLxyO/HoCEgU9Hdcvi2MwU97sq++oiAbbV+fP4ThsuhWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219047; c=relaxed/simple;
-	bh=ncWHsbe55fScPBoRp/erwYQt5J0YUH+Z5gwLVy/iP+I=;
+	s=arc-20240116; t=1770218194; c=relaxed/simple;
+	bh=/lt700RSrgZjV1XkE9moMF5dATEM/H0PLWQeGrNPZb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TX8orrGZ1svhLDsQjI0SbOtzshvtuYR+oTsvzSeZf0psynVfoD/We4ZgcmrCbschRXDJY1Ximp0Z/LsrvWsrNyaBfr67P/tV5fqlT5BfMpcjy8G1vulNdni5NeYO0BS73jiFzromZFMa1HcZIHzJWek7319TIxlsizIuDUBioLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVrixGAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C30C19423;
-	Wed,  4 Feb 2026 15:30:46 +0000 (UTC)
+	 MIME-Version; b=CD0UD9mOdiU6FBV1C+xhT6W8MJujTcxwjWBJ5j23jcHgj6yWOtjM+bQOWPTZcsfA17t7RlkxVY8NjN2EcNks4eCkpafw7+nSH3iB9519f2TeQaMhznsi70uMEAITL4Ebxai1gbeRW7bhDVGmjlfR4QmCw01X2SoGSqnwlPFNk3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WkBLRUD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41099C4CEF7;
+	Wed,  4 Feb 2026 15:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219047;
-	bh=ncWHsbe55fScPBoRp/erwYQt5J0YUH+Z5gwLVy/iP+I=;
+	s=korg; t=1770218193;
+	bh=/lt700RSrgZjV1XkE9moMF5dATEM/H0PLWQeGrNPZb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVrixGAB5qTV2Ann1ZklrFxLu2LtvVuo7SWXWBpAf+u6s9Y44t5doUSBYlz2AFTle
-	 ZhBCqpmNoKEi9whkef9PgTRUawzSW27xut8aoIUWqEa/Sk97HtBHYnYEFMqvEo2P08
-	 sukDlijLJO5yVp2XBnfEigdjCTT26gW0Pb02h+MU=
+	b=2WkBLRUDFA3oMpxMYcVo+TgkCiH21H4zAKpLP2DOlO6Ma6h5Mea12Tbkhr948XBNz
+	 VghRScI1XSpSmzzY0WVLsfgi2q6DVPP9RClufbbhBSnx8W7ejRJZiGxdV6gf0KEj1h
+	 Wl/lzvCOiQ70EWdM9bz5Z68m11E2zuJS9wDnxUhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jake Keller <jacob.e.keller@intel.com>,
-	IWL <intel-wired-lan@lists.osuosl.org>,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 024/122] ice: stop counting UDP csum mismatch as rx_errors
+Subject: [PATCH 6.1 232/280] arm64/fpsimd: signal: Fix restoration of SVE context
 Date: Wed,  4 Feb 2026 15:40:06 +0100
-Message-ID: <20260204143852.734559013@linuxfoundation.org>
+Message-ID: <20260204143917.971024281@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214245-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213991-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,76 +88,147 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cloudflare.com:email,osuosl.org:email]
-X-Rspamd-Queue-Id: 52108E9F2C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,svcr.sm:url]
+X-Rspamd-Queue-Id: DE8F8E8CA0
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 05faf2c0a76581d0a7fdbb8ec46477ba183df95b ]
+[ Upstream commit d2907cbe9ea0a54cbe078076f9d089240ee1e2d9 ]
 
-Since the beginning, the Intel ice driver has counted receive checksum
-offload mismatches into the rx_errors member of the rtnl_link_stats64
-struct. In ethtool -S these show up as rx_csum_bad.nic.
+When SME is supported, Restoring SVE signal context can go wrong in a
+few ways, including placing the task into an invalid state where the
+kernel may read from out-of-bounds memory (and may potentially take a
+fatal fault) and/or may kill the task with a SIGKILL.
 
-I believe counting these in rx_errors is fundamentally wrong, as it's
-pretty clear from the comments in if_link.h and from every other statistic
-the driver is summing into rx_errors, that all of them would cause a
-"hardware drop" except for the UDP checksum mismatch, as well as the fact
-that all the other causes for rx_errors are L2 reasons, and this L4 UDP
-"mismatch" is an outlier.
+(1) Restoring a context with SVE_SIG_FLAG_SM set can place the task into
+    an invalid state where SVCR.SM is set (and sve_state is non-NULL)
+    but TIF_SME is clear, consequently resuting in out-of-bounds memory
+    reads and/or killing the task with SIGKILL.
 
-A last nail in the coffin is that rx_errors is monitored in production and
-can indicate a bad NIC/cable/Switch port, but instead some random series of
-UDP packets with bad checksums will now trigger this alert. This false
-positive makes the alert useless and affects us as well as other companies.
+    This can only occur in unusual (but legitimate) cases where the SVE
+    signal context has either been modified by userspace or was saved in
+    the context of another task (e.g. as with CRIU), as otherwise the
+    presence of an SVE signal context with SVE_SIG_FLAG_SM implies that
+    TIF_SME is already set.
 
-This packet with presumably a bad UDP checksum is *already* passed to the
-stack, just not marked as offloaded by the hardware/driver. If it is
-dropped by the stack it will show up as UDP_MIB_CSUMERRORS.
+    While in this state, task_fpsimd_load() will NOT configure SMCR_ELx
+    (leaving some arbitrary value configured in hardware) before
+    restoring SVCR and attempting to restore the streaming mode SVE
+    registers from memory via sve_load_state(). As the value of
+    SMCR_ELx.LEN may be larger than the task's streaming SVE vector
+    length, this may read memory outside of the task's allocated
+    sve_state, reading unrelated data and/or triggering a fault.
 
-And one more thing, none of the other Intel drivers, and at least bnxt_en
-and mlx5 both don't appear to count UDP offload mismatches as rx_errors.
+    While this can result in secrets being loaded into streaming SVE
+    registers, these values are never exposed. As TIF_SME is clear,
+    fpsimd_bind_task_to_cpu() will configure CPACR_ELx.SMEN to trap EL0
+    accesses to streaming mode SVE registers, so these cannot be
+    accessed directly at EL0. As fpsimd_save_user_state() verifies the
+    live vector length before saving (S)SVE state to memory, no secret
+    values can be saved back to memory (and hence cannot be observed via
+    ptrace, signals, etc).
 
-Here is a related customer complaint:
-https://community.intel.com/t5/Ethernet-Products/ice-rx-errros-is-too-sensitive-to-IP-TCP-attack-packets-Intel/td-p/1662125
+    When the live vector length doesn't match the expected vector length
+    for the task, fpsimd_save_user_state() will send a fatal SIGKILL
+    signal to the task. Hence the task may be killed after executing
+    userspace for some period of time.
 
-Fixes: 4f1fe43c920b ("ice: Add more Rx errors to netdev's rx_error counter")
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Jake Keller <jacob.e.keller@intel.com>
-Cc: IWL <intel-wired-lan@lists.osuosl.org>
-Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Acked-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+(2) Restoring a context with SVE_SIG_FLAG_SM clear does not clear the
+    task's SVCR.SM. If SVCR.SM was set prior to restoring the context,
+    then the task will be left in streaming mode unexpectedly, and some
+    register state will be combined inconsistently, though the task will
+    be left in legitimate state from the kernel's PoV.
+
+    This can only occur in unusual (but legitimate) cases where ptrace
+    has been used to set SVCR.SM after entry to the sigreturn syscall,
+    as syscall entry clears SVCR.SM.
+
+    In these cases, the the provided SVE register data will be loaded
+    into the task's sve_state using the non-streaming SVE vector length
+    and the FPSIMD registers will be merged into this using the
+    streaming SVE vector length.
+
+Fix (1) by setting TIF_SME when setting SVCR.SM. This also requires
+ensuring that the task's sme_state has been allocated, but as this could
+contain live ZA state, it should not be zeroed. Fix (2) by clearing
+SVCR.SM when restoring a SVE signal context with SVE_SIG_FLAG_SM clear.
+
+For consistency, I've pulled the manipulation of SVCR, TIF_SVE, TIF_SME,
+and fp_type earlier, immediately after the allocation of
+sve_state/sme_state, before the restore of the actual register state.
+This makes it easier to ensure that these are always modified
+consistently, even if a fault is taken while reading the register data
+from the signal context. I do not expect any software to depend on the
+exact state restored when a fault is taken while reading the context.
+
+Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: <stable@vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ adapted sme_state to za_state ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/kernel/signal.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index fc284802e2bcd..b5ebfcdc9d434 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -6993,7 +6993,6 @@ void ice_update_vsi_stats(struct ice_vsi *vsi)
- 		cur_ns->rx_errors = pf->stats.crc_errors +
- 				    pf->stats.illegal_bytes +
- 				    pf->stats.rx_undersize +
--				    pf->hw_csum_rx_error +
- 				    pf->stats.rx_jabber +
- 				    pf->stats.rx_fragments +
- 				    pf->stats.rx_oversize;
--- 
-2.51.0
-
+--- a/arch/arm64/kernel/signal.c
++++ b/arch/arm64/kernel/signal.c
+@@ -317,12 +317,28 @@ static int restore_sve_fpsimd_context(st
+ 	fpsimd_flush_task_state(current);
+ 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+ 
++	if (sve.flags & SVE_SIG_FLAG_SM) {
++		sme_alloc(current, false);
++		if (!current->thread.za_state)
++			return -ENOMEM;
++	}
++
+ 	sve_alloc(current, true);
+ 	if (!current->thread.sve_state) {
+ 		clear_thread_flag(TIF_SVE);
+ 		return -ENOMEM;
+ 	}
+ 
++	if (sve.flags & SVE_SIG_FLAG_SM) {
++		current->thread.svcr |= SVCR_SM_MASK;
++		set_thread_flag(TIF_SME);
++	} else {
++		current->thread.svcr &= ~SVCR_SM_MASK;
++		set_thread_flag(TIF_SVE);
++	}
++
++	current->thread.fp_type = FP_STATE_SVE;
++
+ 	err = __copy_from_user(current->thread.sve_state,
+ 			       (char __user const *)user->sve +
+ 					SVE_SIG_REGS_OFFSET,
+@@ -330,12 +346,6 @@ static int restore_sve_fpsimd_context(st
+ 	if (err)
+ 		return -EFAULT;
+ 
+-	if (sve.flags & SVE_SIG_FLAG_SM)
+-		current->thread.svcr |= SVCR_SM_MASK;
+-	else
+-		set_thread_flag(TIF_SVE);
+-	current->thread.fp_type = FP_STATE_SVE;
+-
+ fpsimd_only:
+ 	/* copy the FP and status/control registers */
+ 	/* restore_sigframe() already checked that user->fpsimd != NULL. */
 
 
 
