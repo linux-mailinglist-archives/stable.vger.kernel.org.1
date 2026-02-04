@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-214234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBfeDjJog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:30 +0100
+	id 0DAALFBug2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:05:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6C4E90DA
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F437E9DB8
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C339314D623
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 592B830647D0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0052DEA7A;
-	Wed,  4 Feb 2026 15:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E908D41324E;
+	Wed,  4 Feb 2026 15:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKCcYAnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krVc3UTh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF95413254;
-	Wed,  4 Feb 2026 15:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC84A2D8DA3;
+	Wed,  4 Feb 2026 15:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219010; cv=none; b=K//rQZZ0TxB4lRmWtV5aGpk9mDtilpJjuoQke/STOYp6TTydTc1NX9J/ARr14MVwpC4/mma9rdcpCxe4CqXhcDn2wYFnfe/vN4zJfq5gYMCE/cLfB9ELVG/DhQWVFFYkRyw7aXRreOJmabTmX8HpWZOqu7YPVzHiEPBwBlfrG3o=
+	t=1770218639; cv=none; b=aXnwvvHkEI9tvtmQ/HQHZ0fFxbONIc7k/ZX+dOBphrBNnZ27SeNT67/1o3eRWyiAcYh9mDMCKccB2+4tGosZrsrqutk18+maI+j67wdyEQ1Xjmthhpx3N9inQV7JTFb0t71BuRYTvdHI+PkhFK+IoDj62IUud448Q9icDKsymME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219010; c=relaxed/simple;
-	bh=z9T+ZmVRoGbI6KJhngZmTtrmTm87Mq6/SadWlmcj574=;
+	s=arc-20240116; t=1770218639; c=relaxed/simple;
+	bh=mGH1iaPOpwmUi08AMDW+RmamzOoH/lG5whHG4NMZXqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKBL4Z9m28KpDjPHGFemBKsntmwAKtizoD5IVlpLR/CTA0vmZThTTpZp5Tdt2xzOIBKPcGH6D9/6HFBw/bahj7sZfqx/Do1sIK5sVuVpvieqX/909O+C/BNFWr4uTRx1LkMZ7EZtgTFfN/qiDhDUrO7Xm0zoOkTCo8QTkHjw1DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKCcYAnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40C1C4CEF7;
-	Wed,  4 Feb 2026 15:30:09 +0000 (UTC)
+	 MIME-Version; b=I/OmKi4J17U+qboZXsPK8k5/ykdalNLL5qSC8GGKh2GH55hiW73QNs+WMsuWe5nyy9xtdUmaKVV/8vLfMG7/QIGuQjITt6Rc5toOkoBY3xx3TDZQIrLGxGPPaFfoVEsYPi3JqaljuO4vp1FIQ05tdfgx5TELU7cvdboQJ/DEcKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krVc3UTh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E671C4CEF7;
+	Wed,  4 Feb 2026 15:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219010;
-	bh=z9T+ZmVRoGbI6KJhngZmTtrmTm87Mq6/SadWlmcj574=;
+	s=korg; t=1770218639;
+	bh=mGH1iaPOpwmUi08AMDW+RmamzOoH/lG5whHG4NMZXqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKCcYAnS8MJcpfLHiD7w215wTOBAMVxAunaeNyK/dL8Pl/4T9dCpW8cTZ9OMqHfnN
-	 /seD52qPqN3U9yAazlj+YYKmRx3LsuDJdHrJ0yLiPPApIDRvwfyCsNMeX7ctdApKPW
-	 KajYpbiIwF8bQgJ/kM5KqT1K0+ivaM2TO7uwtImA=
+	b=krVc3UThNB5bBkSn8jfeIdhbh/7axziDe0e+BjqiTPh8MsehkmwhrHpR6juNclbpZ
+	 GEw7RBRDXjv4bqlcdmQ+XMJ4/OHL5fNjuXIimv7qI1VYfLR0j5vl+Yz0OVMmgOx5ih
+	 uAkF7nqsVfSsHRVOmFFCmWFlbn+8s37+/PQeZyR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Aaron Ma <aaron.ma@canonical.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 023/122] ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues
+Subject: [PATCH 6.12 07/87] octeon_ep: Fix memory leak in octep_device_setup()
 Date: Wed,  4 Feb 2026 15:40:05 +0100
-Message-ID: <20260204143852.699328069@linuxfoundation.org>
+Message-ID: <20260204143847.177719916@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214234-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214122-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,107 +87,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,mpg.de:email]
-X-Rspamd-Queue-Id: AE6C4E90DA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: 9F437E9DB8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Ma <aaron.ma@canonical.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 9bb30be4d89ff9a8d7ab1aa0eb2edaca83431f85 ]
+[ Upstream commit 8016dc5ee19a77678c264f8ba368b1e873fa705b ]
 
-Add NULL pointer checks in ice_vsi_set_napi_queues() to prevent crashes
-during resume from suspend when rings[q_idx]->q_vector is NULL.
+In octep_device_setup(), if octep_ctrl_net_init() fails, the function
+returns directly without unmapping the mapped resources and freeing the
+allocated configuration memory.
 
-Tested adaptor:
-60:00.0 Ethernet controller [0200]: Intel Corporation Ethernet Controller E810-XXV for SFP [8086:159b] (rev 02)
-        Subsystem: Intel Corporation Ethernet Network Adapter E810-XXV-2 [8086:4003]
+Fix this by jumping to the unsupported_dev label, which performs the
+necessary cleanup. This aligns with the error handling logic of other
+paths in this function.
 
-SR-IOV state: both disabled and enabled can reproduce this issue.
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-kernel version: v6.18
-
-Reproduce steps:
-Boot up and execute suspend like systemctl suspend or rtcwake.
-
-Log:
-<1>[  231.443607] BUG: kernel NULL pointer dereference, address: 0000000000000040
-<1>[  231.444052] #PF: supervisor read access in kernel mode
-<1>[  231.444484] #PF: error_code(0x0000) - not-present page
-<6>[  231.444913] PGD 0 P4D 0
-<4>[  231.445342] Oops: Oops: 0000 [#1] SMP NOPTI
-<4>[  231.446635] RIP: 0010:netif_queue_set_napi+0xa/0x170
-<4>[  231.447067] Code: 31 f6 31 ff c3 cc cc cc cc 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 85 c9 74 0b <48> 83 79 30 00 0f 84 39 01 00 00 55 41 89 d1 49 89 f8 89 f2 48 89
-<4>[  231.447513] RSP: 0018:ffffcc780fc078c0 EFLAGS: 00010202
-<4>[  231.447961] RAX: ffff8b848ca30400 RBX: ffff8b848caf2028 RCX: 0000000000000010
-<4>[  231.448443] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8b848dbd4000
-<4>[  231.448896] RBP: ffffcc780fc078e8 R08: 0000000000000000 R09: 0000000000000000
-<4>[  231.449345] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
-<4>[  231.449817] R13: ffff8b848dbd4000 R14: ffff8b84833390c8 R15: 0000000000000000
-<4>[  231.450265] FS:  00007c7b29e9d740(0000) GS:ffff8b8c068e2000(0000) knlGS:0000000000000000
-<4>[  231.450715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-<4>[  231.451179] CR2: 0000000000000040 CR3: 000000030626f004 CR4: 0000000000f72ef0
-<4>[  231.451629] PKRU: 55555554
-<4>[  231.452076] Call Trace:
-<4>[  231.452549]  <TASK>
-<4>[  231.452996]  ? ice_vsi_set_napi_queues+0x4d/0x110 [ice]
-<4>[  231.453482]  ice_resume+0xfd/0x220 [ice]
-<4>[  231.453977]  ? __pfx_pci_pm_resume+0x10/0x10
-<4>[  231.454425]  pci_pm_resume+0x8c/0x140
-<4>[  231.454872]  ? __pfx_pci_pm_resume+0x10/0x10
-<4>[  231.455347]  dpm_run_callback+0x5f/0x160
-<4>[  231.455796]  ? dpm_wait_for_superior+0x107/0x170
-<4>[  231.456244]  device_resume+0x177/0x270
-<4>[  231.456708]  dpm_resume+0x209/0x2f0
-<4>[  231.457151]  dpm_resume_end+0x15/0x30
-<4>[  231.457596]  suspend_devices_and_enter+0x1da/0x2b0
-<4>[  231.458054]  enter_state+0x10e/0x570
-
-Add defensive checks for both the ring pointer and its q_vector
-before dereferencing, allowing the system to resume successfully even when
-q_vectors are unmapped.
-
-Fixes: 2a5dc090b92cf ("ice: move netif_queue_set_napi to rtnl-protected sections")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 577f0d1b1c5f ("octeon_ep: add separate mailbox command and response queues")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20260121130551.3717090-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 5a3e7d6697325..3d14932871c58 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2784,12 +2784,14 @@ void ice_vsi_set_napi_queues(struct ice_vsi *vsi)
- 		return;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index 1b2f5cae06449..449c55c09b4a5 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -1283,7 +1283,7 @@ int octep_device_setup(struct octep_device *oct)
  
- 	ice_for_each_rxq(vsi, q_idx)
--		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
--				     &vsi->rx_rings[q_idx]->q_vector->napi);
-+		if (vsi->rx_rings[q_idx] && vsi->rx_rings[q_idx]->q_vector)
-+			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
-+					     &vsi->rx_rings[q_idx]->q_vector->napi);
+ 	ret = octep_ctrl_net_init(oct);
+ 	if (ret)
+-		return ret;
++		goto unsupported_dev;
  
- 	ice_for_each_txq(vsi, q_idx)
--		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
--				     &vsi->tx_rings[q_idx]->q_vector->napi);
-+		if (vsi->tx_rings[q_idx] && vsi->tx_rings[q_idx]->q_vector)
-+			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
-+					     &vsi->tx_rings[q_idx]->q_vector->napi);
- 	/* Also set the interrupt number for the NAPI */
- 	ice_for_each_q_vector(vsi, v_idx) {
- 		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
+ 	INIT_WORK(&oct->tx_timeout_task, octep_tx_timeout_task);
+ 	INIT_WORK(&oct->ctrl_mbox_task, octep_ctrl_mbox_task);
 -- 
 2.51.0
 
