@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-213673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMuRAW9hg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:39 +0100
+	id aEjCHsllg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58629E80D8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46157E8AED
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F988303DA9A
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05B7D306C708
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6F141C2F2;
-	Wed,  4 Feb 2026 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A627A2D661C;
+	Wed,  4 Feb 2026 15:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7kvcQf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBNv0s+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDED41C2EC;
-	Wed,  4 Feb 2026 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698523D994;
+	Wed,  4 Feb 2026 15:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217123; cv=none; b=av3H/tIbJEDdGe/gUm/EQZdRO2sxUomhfr/LjjX9KXS7R+UNvYpeYxSAlGHNxeqMw15aAXY5zV/DuT/shQkIqelRo55OVfmDmdyzLXyh+LxtFV6jBmzCg9SmTo6fKShMVr407jUF/gMG/ZjZt7ZTZ18SXC+ylXFq95CGKE3Ixng=
+	t=1770217912; cv=none; b=k+UVfi/WSwoB5WtnX8NtENHUe6s5lLUy6iiZZvte/fQeJWGw/Uqv0QOzSKKRt05vdhxQ4kDMPKdqGowI7muUK/K3Z3r2gLAYyqoUqc5L33Jt2iWe6kiIpPLNn8ZtGEkPB1W3yAytYtTWzConO2OYSHY8XIlCjpZQmHFI2VABpiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217123; c=relaxed/simple;
-	bh=3cPE8j9f9bFbb0mGZBmqRbSNYrkvaUygBJ0du6MoTWk=;
+	s=arc-20240116; t=1770217912; c=relaxed/simple;
+	bh=DCcUl/W9DNTdLtj9hI7mvbesM/XdDf5aD17FkYpn5/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIrHTVqR/TcV7LtYK41WwbVcCQPp2ZyaZH/FzfBbNffQem6Sszllu8ETDPvYCR4OEyB1f4bpHyJ242hR01vMMFkamvztCsoFy6qsOrd9KXb/ILWjJ1KHWgT1p6MBT+hlK7Ceg2wBW9XQCjIvmY3+Mr9N7DqgV7376ojhqj2bwv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7kvcQf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FCEC4CEF7;
-	Wed,  4 Feb 2026 14:58:42 +0000 (UTC)
+	 MIME-Version; b=Kr0PJXR+1dWiB5dUwDuAopdeBYpfKagMkTwRbE+KT0skf9YetjiEv4se+gLkbQ22jxcJTG4d6qpD8L528ey/dDBK2PLfHl4kUtsFYBbT6IBH3C4RDMIxsqYpaUrMPMilMVz+JAQq/ISLcW/9XQyhCiJ4quelN/uIvz4u4zwEE/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBNv0s+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FB6C4CEF7;
+	Wed,  4 Feb 2026 15:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217123;
-	bh=3cPE8j9f9bFbb0mGZBmqRbSNYrkvaUygBJ0du6MoTWk=;
+	s=korg; t=1770217912;
+	bh=DCcUl/W9DNTdLtj9hI7mvbesM/XdDf5aD17FkYpn5/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7kvcQf4DPcO6tKFl1dx4pa3BB0TcAcOIZl1Zw+qXNgCud+n5CZZMu9YQ16Z7bXnR
-	 9uiA2d1fSgjmvoSpelK3IWJEtPoupJsu5fFiYsCE9OuaqoElKAtGsXLL/eERLYVZqm
-	 hHWmcW985LusrKVrdNAaIghONsi0oBPe1SBBc3oE=
+	b=TBNv0s+JqYhmMWX75OFUkFVDK7WrkDGaVZJwKR3JOH7UFRZUVjxAN1VyoazaNBXYN
+	 JXYd6sk6B1H2RGoom+YsboKycS6BIxmuIcFQNzxX6xiCrDcb0MGjdo34B3aTFVrcMw
+	 kHcE6uUIaQ+2gIgqvYRr83uB/O+GtfzB+MV4QnPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Rocco Yue <rocco.yue@mediatek.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/206] ipv6: annotate data-race in ndisc_router_discovery()
-Date: Wed,  4 Feb 2026 15:38:48 +0100
-Message-ID: <20260204143901.697517579@linuxfoundation.org>
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 155/280] leds: led-class: Only Add LED to leds_list when it is fully ready
+Date: Wed,  4 Feb 2026 15:38:49 +0100
+Message-ID: <20260204143915.206313134@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,110 +69,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213673-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213907-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email]
-X-Rspamd-Queue-Id: 58629E80D8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 46157E8AED
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-[ Upstream commit 9a063f96d87efc3a6cc667f8de096a3d38d74bb5 ]
+commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
 
-syzbot found that ndisc_router_discovery() could read and write
-in6_dev->ra_mtu without holding a lock [1]
+Before this change the LED was added to leds_list before led_init_core()
+gets called adding it the list before led_classdev.set_brightness_work gets
+initialized.
 
-This looks fine, IFLA_INET6_RA_MTU is best effort.
+This leaves a window where led_trigger_register() of a LED's default
+trigger will call led_trigger_set() which calls led_set_brightness()
+which in turn will end up queueing the *uninitialized*
+led_classdev.set_brightness_work.
 
-Add READ_ONCE()/WRITE_ONCE() to document the race.
+This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+succession. The first led_classdev_register() causes an async modprobe of
+snd_ctl_led to run and that async modprobe manages to exactly hit
+the window where the second LED is on the leds_list without led_init_core()
+being called for it, resulting in:
 
-Note that we might also reject illegal MTU values
-(mtu < IPV6_MIN_MTU || mtu > skb->dev->mtu) in a future patch.
+ ------------[ cut here ]------------
+ WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
+ Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
+ ...
+ Call trace:
+  __flush_work+0x344/0x390 (P)
+  flush_work+0x2c/0x50
+  led_trigger_set+0x1c8/0x340
+  led_trigger_register+0x17c/0x1c0
+  led_trigger_register_simple+0x84/0xe8
+  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+  do_one_initcall+0x5c/0x318
+  do_init_module+0x9c/0x2b8
+  load_module+0x7e0/0x998
 
-[1]
-BUG: KCSAN: data-race in ndisc_router_discovery / ndisc_router_discovery
+Close the race window by moving the adding of the LED to leds_list to
+after the led_init_core() call.
 
-read to 0xffff888119809c20 of 4 bytes by task 25817 on cpu 1:
-  ndisc_router_discovery+0x151d/0x1c90 net/ipv6/ndisc.c:1558
-  ndisc_rcv+0x2ad/0x3d0 net/ipv6/ndisc.c:1841
-  icmpv6_rcv+0xe5a/0x12f0 net/ipv6/icmp.c:989
-  ip6_protocol_deliver_rcu+0xb2a/0x10d0 net/ipv6/ip6_input.c:438
-  ip6_input_finish+0xf0/0x1d0 net/ipv6/ip6_input.c:489
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ip6_input+0x5e/0x140 net/ipv6/ip6_input.c:500
-  ip6_mc_input+0x27c/0x470 net/ipv6/ip6_input.c:590
-  dst_input include/net/dst.h:474 [inline]
-  ip6_rcv_finish+0x336/0x340 net/ipv6/ip6_input.c:79
-...
-
-write to 0xffff888119809c20 of 4 bytes by task 25816 on cpu 0:
-  ndisc_router_discovery+0x155a/0x1c90 net/ipv6/ndisc.c:1559
-  ndisc_rcv+0x2ad/0x3d0 net/ipv6/ndisc.c:1841
-  icmpv6_rcv+0xe5a/0x12f0 net/ipv6/icmp.c:989
-  ip6_protocol_deliver_rcu+0xb2a/0x10d0 net/ipv6/ip6_input.c:438
-  ip6_input_finish+0xf0/0x1d0 net/ipv6/ip6_input.c:489
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ip6_input+0x5e/0x140 net/ipv6/ip6_input.c:500
-  ip6_mc_input+0x27c/0x470 net/ipv6/ip6_input.c:590
-  dst_input include/net/dst.h:474 [inline]
-  ip6_rcv_finish+0x336/0x340 net/ipv6/ip6_input.c:79
-...
-
-value changed: 0x00000000 -> 0xe5400659
-
-Fixes: 49b99da2c9ce ("ipv6: add IFLA_INET6_RA_MTU to expose mtu value")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Rocco Yue <rocco.yue@mediatek.com>
-Link: https://patch.msgid.link/20260118152941.2563857-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ndisc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/leds/led-class.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index af584e879467e..1821c1aa97ad4 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1507,8 +1507,8 @@ static void ndisc_router_discovery(struct sk_buff *skb)
- 		memcpy(&n, ((u8 *)(ndopts.nd_opts_mtu+1))+2, sizeof(mtu));
- 		mtu = ntohl(n);
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -410,11 +410,6 @@ int led_classdev_register_ext(struct dev
+ #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
+ 	led_cdev->brightness_hw_changed = -1;
+ #endif
+-	/* add to the list of leds */
+-	down_write(&leds_list_lock);
+-	list_add_tail(&led_cdev->node, &leds_list);
+-	up_write(&leds_list_lock);
+-
+ 	if (!led_cdev->max_brightness)
+ 		led_cdev->max_brightness = LED_FULL;
  
--		if (in6_dev->ra_mtu != mtu) {
--			in6_dev->ra_mtu = mtu;
-+		if (READ_ONCE(in6_dev->ra_mtu) != mtu) {
-+			WRITE_ONCE(in6_dev->ra_mtu, mtu);
- 			send_ifinfo_notify = true;
- 		}
+@@ -422,6 +417,11 @@ int led_classdev_register_ext(struct dev
  
--- 
-2.51.0
-
+ 	led_init_core(led_cdev);
+ 
++	/* add to the list of leds */
++	down_write(&leds_list_lock);
++	list_add_tail(&led_cdev->node, &leds_list);
++	up_write(&leds_list_lock);
++
+ #ifdef CONFIG_LEDS_TRIGGERS
+ 	led_trigger_set_default(led_cdev);
+ #endif
 
 
 
