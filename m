@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICLiIeBlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:36 +0100
+	id 4PsbHDhcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F9E8B2A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2F0E7614
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 188113068AB2
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17D6F301C5BE
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082404219FD;
-	Wed,  4 Feb 2026 15:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0C927FD56;
+	Wed,  4 Feb 2026 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrMWc7RA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fU1PSU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C060D3D994;
-	Wed,  4 Feb 2026 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF9C1C5D77;
+	Wed,  4 Feb 2026 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217943; cv=none; b=QzD4yLhZqj7Q+uyYJSBf/rGY6Vzo6GL1bNuOq1B0muh4b0wV89P9lSs1rt9LluacnFsItPfPTsO7UX+je8frZVWAWLWLcyKvN70yqGwZO521oyVns0TUElu8UOWLHFoTNr+UFc1z3jz/auPAff79yLVE/g9A6lIrJNHQKNb/Mog=
+	t=1770216369; cv=none; b=S2lL4kkYYqLFSeV4j2zMLNBveDcDPpTVlwzoQaGOskv07YYxpKb/jn19sZ9f6jhxvHfQH+3ohEWBSE5sXkxBoEUzMHGMmLkqlv8N48HwrbxO2njTacvM7I7KkvfA/7f6FqqTWItyhJlbwr4OnFTr5jSg0fjuQCct7C9t8aFa6Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217943; c=relaxed/simple;
-	bh=Yi96/XQthGPDrVLccWV7DSNC59xBmouYuhTAMLgQnxA=;
+	s=arc-20240116; t=1770216369; c=relaxed/simple;
+	bh=29kNnOFL4HCYowHuqAq2JR8pRcPNUJ2fK0msuWkhxJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SehAVTnNpI8rsUJMQfI4rqh6fLgl45qbq/cCZXlNvTCbkmugrqYXIinLPJ2AflM0j1dTaDDwE2fFLJySjUR6U32IrJfLCTaZhLE4GQDgC5+Ta+aJBEjXsNE2jzI9hEqF64GErWZsKBlHkl/0DED9X5MbIWCG7+7KoHTuQ2PgkEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrMWc7RA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D674CC4CEF7;
-	Wed,  4 Feb 2026 15:12:22 +0000 (UTC)
+	 MIME-Version; b=IehLE5vrnMILUi2mH98HFRQWst1Dhb0OqFULaAT/2srbP9oZfmFY4fA0Aitr8YHJ23TUWJJjxXEirEnNYjxmmdwRJoteQg/AX2twNFh7Ya1rw0gXqAMKJBP3vEB9hphovbb+gjxGzjdeFGY/wLHM3yca/GgiEvR7CCtWPLdCty0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fU1PSU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E65C4CEF7;
+	Wed,  4 Feb 2026 14:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217943;
-	bh=Yi96/XQthGPDrVLccWV7DSNC59xBmouYuhTAMLgQnxA=;
+	s=korg; t=1770216369;
+	bh=29kNnOFL4HCYowHuqAq2JR8pRcPNUJ2fK0msuWkhxJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qrMWc7RAB/bdZ61ZMuV6rPD6hdNnWHIq1LowxrDu8p6Z7J5lg9rDpFlJZsLF4tLOR
-	 Fbzpjdi3ae2xGTDXO38dKgYOcd7i7zj3Ak/WaBfOHtWcKcW3B6aijC/VEFzL+kcEnv
-	 OttMud9429XyPxhnv2TFbI6OlO5KyA1ucZwSa+Vs=
+	b=2fU1PSU3XONogDz3P1qQ/oqyq5bDtoj37/V597PU1YDH2aqqH0iZUu3pudcQdRq6Z
+	 S8e9NH8NypnTZI37GINBazJIw7B6inbOqsxx9DZSunXWWCQdr+XKGPAxvVfwHWuK1n
+	 jQ4ogX1/0uCsDhYBOy3bd27VWS0XgKdrDUkmi+68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 122/280] scsi: storvsc: Process unsupported MODE_SENSE_10
+	Xiaochen Shen <shenxiaochen@open-hieco.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Reinette Chatre <reinette.chatre@intel.com>
+Subject: [PATCH 5.10 033/161] x86/resctrl: Add missing resctrl initialization for Hygon
 Date: Wed,  4 Feb 2026 15:38:16 +0100
-Message-ID: <20260204143914.026295165@linuxfoundation.org>
+Message-ID: <20260204143852.950566156@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,76 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-213916-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-213447-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: 2E2F9E8B2A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0E2F0E7614
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Xiaochen Shen <shenxiaochen@open-hieco.net>
 
-commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
+commit 6ee98aabdc700b5705e4f1833e2edc82a826b53b upstream.
 
-The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
-driver handles MODE_SENSE as unsupported command, but not for
-MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
-correct code to SCSI layer.
+Hygon CPUs supporting Platform QoS features currently undergo partial resctrl
+initialization through resctrl_cpu_detect() in the Hygon BSP init helper and
+AMD/Hygon common initialization code. However, several critical data
+structures remain uninitialized for Hygon CPUs in the following paths:
 
-Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
-Cc: stable@kernel.org
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ - get_mem_config()-> __rdt_get_mem_config_amd():
+     rdt_resource::membw,alloc_capable
+     hw_res::num_closid
+
+ - rdt_init_res_defs()->rdt_init_res_defs_amd():
+     rdt_resource::cache
+     hw_res::msr_base,msr_update
+
+Add the missing AMD/Hygon common initialization to ensure proper Platform QoS
+functionality on Hygon CPUs.
+
+Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
+Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251209062650.1536952-2-shenxiaochen@open-hieco.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1136,7 +1136,7 @@ static void storvsc_on_io_completion(str
- 	 * The current SCSI handling on the host side does
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
--	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
- 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
-@@ -1146,6 +1146,7 @@ static void storvsc_on_io_completion(str
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -834,7 +834,8 @@ static __init bool get_mem_config(void)
  
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
- 	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
+ 		return __get_mem_config_intel(&rdt_resources_all[RDT_RESOURCE_MBA]);
+-	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
++	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
+ 		return __rdt_get_mem_config_amd(&rdt_resources_all[RDT_RESOURCE_MBA]);
+ 
+ 	return false;
+@@ -960,7 +961,8 @@ static __init void rdt_init_res_defs(voi
+ {
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
+ 		rdt_init_res_defs_intel();
+-	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
++	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
+ 		rdt_init_res_defs_amd();
+ }
+ 
 
 
 
