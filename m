@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-213592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLIwA1Nig2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:27 +0100
+	id WG1FDsBdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AE1E82AE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8ECE792A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 463C9306CC11
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C9DA3011B4A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218CA41B371;
-	Wed,  4 Feb 2026 14:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346F941B373;
+	Wed,  4 Feb 2026 14:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBWkWKHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1L0rSHte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97CA41B34E;
-	Wed,  4 Feb 2026 14:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA8D27F749;
+	Wed,  4 Feb 2026 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216848; cv=none; b=KOjn+aVHyK3ORO7J3X1eRKZ0GskWvbwQ5w3lG6GO5OPnSpRRWrEZQbZQIbfB2iQL76LV5+Q3ely3oBccXCOHJaEa0B/z5dqjUGRJn1QO/CVa8L91q2N9sXfvfOWUcS5dzyJjAPqZbyUugvQrQ//hfarlzoNis5sLac/3NXoHNbA=
+	t=1770216873; cv=none; b=qx+V9sNhoaz28Ku2xYM+8SpfMLHNX9Wuy8Inz2pe12c349PfCTMsE6b1D0d9o56HGsLSh7dfW88sRdJahKJR8HJ/XIxuuXSU+Lyz/AW4lzPXPahZAI4GJdg/xfCaG+l0bFic7j8OQ47whUQA0VDFnj4+5NzbYjk2SPrlzA5nlcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216848; c=relaxed/simple;
-	bh=voJLeiAegyPdcNs6ToGtu0qwVQzHtql+cu3f7pdxQZ4=;
+	s=arc-20240116; t=1770216873; c=relaxed/simple;
+	bh=lPVBDfc+C4XIIiDKdu+mtGq2aTEtUsPtJbAcNGoLtZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTwiIGL1EwVLfsYikwifwlM9lkOL6kjhusjd7Yy3Dz6ZoudJoXNpMyIIdJUMiSnzWLZYAvBvMpmsqj9uCSDJNOaekEr63aGshwnA86eofbbaWBEAixZ5gCCaurcrxPvXgP4LlwcsUaesr20PaxMpCulJNhvIMkkxVbdOWmenlf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBWkWKHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5D8C4CEF7;
-	Wed,  4 Feb 2026 14:54:08 +0000 (UTC)
+	 MIME-Version; b=Ws0A92iIO7yR1qoGwjkk8fp8ZekQLurBpIv8vGFSYJkUI+0JRdtb5uCTEms2dTWpFo9J5wYB65LwbWs8sq77QcKpx7IgFt3IfncDm6rkKlpln06IMMRVYchKJQIzmIL9HVqaYeRnzpOuouGEf1r3f7ISKaKrk3xhjenQ7tCDmN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1L0rSHte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A635C4CEF7;
+	Wed,  4 Feb 2026 14:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216848;
-	bh=voJLeiAegyPdcNs6ToGtu0qwVQzHtql+cu3f7pdxQZ4=;
+	s=korg; t=1770216872;
+	bh=lPVBDfc+C4XIIiDKdu+mtGq2aTEtUsPtJbAcNGoLtZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBWkWKHG1TX3KEC2heZEaGdMGe1NHVofSfzYrx1u8n9SKV7hl8PHA41dSYyPBhk3/
-	 cZVQ+MT9a+4enRsiCPL/oB172qXajbQdA7Z4zA7guKm3zCCfS6r3xj/QKpcVT1N76W
-	 D5OHctnIqGD8QeHafTjjURsypFC/5HMYOevfqE8M=
+	b=1L0rSHtepNhLKwSpe9TNXGS9C24Z9ttkPSSrjt7t4xyRiGNTkkebvsnT279YMO685
+	 a+dhofK71kyjNc/Nqev/89wdL8VfeXbReJopDOVxQgOEjaWO52cBIEO3pYmS4nrC5I
+	 ULj/w+WKjyL03S1Y+KRYOVMSfG9aO6AAwQ3Kjg2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 5.15 022/206] HID: usbhid: paper over wrong bNumDescriptor field
-Date: Wed,  4 Feb 2026 15:37:33 +0100
-Message-ID: <20260204143859.001913709@linuxfoundation.org>
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 023/206] ALSA: pcm: Improve the fix for race of buffer access at PCM OSS layer
+Date: Wed,  4 Feb 2026 15:37:34 +0100
+Message-ID: <20260204143859.038344725@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
 References: <20260204143858.193781818@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213592-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213599-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,65 +89,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 75AE1E82AE
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: CD8ECE792A
 X-Rspamd-Action: no action
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Jaroslav Kysela <perex@perex.cz>
 
-commit f28beb69c51517aec7067dfb2074e7c751542384 upstream.
+commit 47c27c9c9c720bc93fdc69605d0ecd9382e99047 upstream.
 
-Some faulty devices (ZWO EFWmini) have a wrong optional HID class
-descriptor count compared to the provided length.
+Handle the error code from snd_pcm_buffer_access_lock() in
+snd_pcm_runtime_buffer_set_silence() function.
 
-Given that we plainly ignore those optional descriptor, we can attempt
-to fix the provided number so we do not lock out those devices.
+Found by Alexandros Panagiotou <apanagio@redhat.com>
 
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
+Fixes: 93a81ca06577 ("ALSA: pcm: Fix race of buffer access at PCM OSS layer")
+Cc: stable@vger.kernel.org # 6.15
+Signed-off-by: Jaroslav Kysela <perex@perex.cz>
+Link: https://patch.msgid.link/20260107213642.332954-1-perex@perex.cz
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-core.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ include/sound/pcm.h      |    2 +-
+ sound/core/oss/pcm_oss.c |    4 +++-
+ sound/core/pcm_native.c  |    9 +++++++--
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -983,6 +983,7 @@ static int usbhid_parse(struct hid_devic
- 	struct usb_device *dev = interface_to_usbdev (intf);
- 	struct hid_descriptor *hdesc;
- 	struct hid_class_descriptor *hcdesc;
-+	__u8 fixed_opt_descriptors_size;
- 	u32 quirks = 0;
- 	unsigned int rsize = 0;
- 	char *rdesc;
-@@ -1013,7 +1014,21 @@ static int usbhid_parse(struct hid_devic
- 			      (hdesc->bNumDescriptors - 1) * sizeof(*hcdesc)) {
- 		dbg_hid("hid descriptor invalid, bLen=%hhu bNum=%hhu\n",
- 			hdesc->bLength, hdesc->bNumDescriptors);
--		return -EINVAL;
-+
-+		/*
-+		 * Some devices may expose a wrong number of descriptors compared
-+		 * to the provided length.
-+		 * However, we ignore the optional hid class descriptors entirely
-+		 * so we can safely recompute the proper field.
-+		 */
-+		if (hdesc->bLength >= sizeof(*hdesc)) {
-+			fixed_opt_descriptors_size = hdesc->bLength - sizeof(*hdesc);
-+
-+			hid_warn(intf, "fixing wrong optional hid class descriptors count\n");
-+			hdesc->bNumDescriptors = fixed_opt_descriptors_size / sizeof(*hcdesc) + 1;
-+		} else {
-+			return -EINVAL;
-+		}
- 	}
+--- a/include/sound/pcm.h
++++ b/include/sound/pcm.h
+@@ -1384,7 +1384,7 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
+ #define snd_pcm_lib_mmap_iomem	NULL
+ #endif
  
- 	hid->version = le16_to_cpu(hdesc->bcdHID);
+-void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
++int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
+ 
+ /**
+  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
+--- a/sound/core/oss/pcm_oss.c
++++ b/sound/core/oss/pcm_oss.c
+@@ -1079,7 +1079,9 @@ static int snd_pcm_oss_change_params_loc
+ 	runtime->oss.params = 0;
+ 	runtime->oss.prepare = 1;
+ 	runtime->oss.buffer_used = 0;
+-	snd_pcm_runtime_buffer_set_silence(runtime);
++	err = snd_pcm_runtime_buffer_set_silence(runtime);
++	if (err < 0)
++		goto failure;
+ 
+ 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
+ 
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -705,13 +705,18 @@ static void snd_pcm_buffer_access_unlock
+ }
+ 
+ /* fill the PCM buffer with the current silence format; called from pcm_oss.c */
+-void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
++int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
+ {
+-	snd_pcm_buffer_access_lock(runtime);
++	int err;
++
++	err = snd_pcm_buffer_access_lock(runtime);
++	if (err < 0)
++		return err;
+ 	if (runtime->dma_area)
+ 		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
+ 					   bytes_to_samples(runtime, runtime->dma_bytes));
+ 	snd_pcm_buffer_access_unlock(runtime);
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
+ 
 
 
 
