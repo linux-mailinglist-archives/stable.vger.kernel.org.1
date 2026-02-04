@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-213620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IwtMsBeg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:12 +0100
+	id LKQSEGtbg2mYlwMAu9opvQ
+	(envelope-from <stable+bounces-213425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7660EE7B03
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55914E74D7
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8FA6D302A5B9
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 627A830117BA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969CD4218A1;
-	Wed,  4 Feb 2026 14:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62424410D30;
+	Wed,  4 Feb 2026 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMMDVDAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTLntQmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FB642189C;
-	Wed,  4 Feb 2026 14:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261452BE62B;
+	Wed,  4 Feb 2026 14:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216940; cv=none; b=pOLhe6y9msxsnCIPzvT1ywVaOheH4A1dp6Q+QOYqCAQlc/k+2TMC0ntYN/aZhYgcwlP2CDf2bgQYvTYqQMuQRM/zWVRzEMFF5Rkf/U35PoWbRNRlhvOHRIvg1I1wQFNRZTcLIZDK98OkhtBGKQ7rcLEU2jKAGvEDIJxrHLB3YyE=
+	t=1770216295; cv=none; b=YBPRmxwMCFQ5Hyg0K17d9eW53X42nV5Ypei323EyAT3TMAiKzBmNBgolxqWmZP45FZTD1yGEdqCrJwEbvMSpuVDuCSdKIjiQIBlxL8T/yljmqRYoFThqyPVBwcGpvGPR/MFjbTd4qszmK5Qs67gcuKyxHBaHGV3JDvN9s5T67ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216940; c=relaxed/simple;
-	bh=cRv8pEVn8i80DbOxNWdD/3J2bLohkPdfCeENlXu2YFo=;
+	s=arc-20240116; t=1770216295; c=relaxed/simple;
+	bh=9gR4qAThj5M1VzSew8vX+SV0jHDt807p5BtHax1LhOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqVdQgmXddQgcTM2IXHYEey59GYFSHes8C9Jag+abmUjZU30x8D2hfD9x/7O4WWYYIRCGzqNnvGgl+fFOlKWmSZBI9BllX2lGUG6tpemOPtgXw3P7tcEHX9jx0W1a1WK6X1GpZqPeK9zWqjtnr/NBUi4RT1CJafYacWkWcMvr4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMMDVDAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F1BC4CEF7;
-	Wed,  4 Feb 2026 14:55:39 +0000 (UTC)
+	 MIME-Version; b=DdgR7skwF+yfBDDavn0IW2cR2GX+Bw/5v9+kvfoHEX7EVtrNJgQ0P8rgXkq1hdjMGXIrIvnUaMtIXMjrWFsxEo+srd3Ip6155TWrciDeXj1Q6efaFF8Xp27iSKmOzw5X7vWR0TvNr4d9G1aiCz0e1oBHiYhDFZJobdbqV8KakgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTLntQmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B831C4CEF7;
+	Wed,  4 Feb 2026 14:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216940;
-	bh=cRv8pEVn8i80DbOxNWdD/3J2bLohkPdfCeENlXu2YFo=;
+	s=korg; t=1770216294;
+	bh=9gR4qAThj5M1VzSew8vX+SV0jHDt807p5BtHax1LhOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMMDVDAvSieM34WCmtuB4BalREfWntR5xwWkFvSnAVnqKBywyGzOAYUa8O+5utcM6
-	 PrPzlVa5JTQVgR9rYyWi39LWhojZYMRTAwtwuCA6j4SJYGq2+7LBIo4OqlHI6QxbJu
-	 rjLbGXDR0O5vJ9hkS2qsh4koxlMGUAERG4h5sza8=
+	b=PTLntQmZa3Hyvt+BcX1ekkzJN2OGbKGlywwalCXVzWE3BJ5Quuaz/f8KaCqspqu5b
+	 p+nO9uupptTMrhlYliBG+eyhDbGrn01wEZ4E0TeHE70cqHOZR0N7/VLXL9NpF6kLfF
+	 8Kdf9Z+oTOHrzyGB41dZJiIVxsMBLbueAnkzexL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xabier Marquiegui <reibax@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/206] l2tp: avoid one data-race in l2tp_tunnel_del_work()
+Subject: [PATCH 5.10 045/161] posix-clock: introduce posix_clock_context concept
 Date: Wed,  4 Feb 2026 15:38:28 +0100
-Message-ID: <20260204143900.986259490@linuxfoundation.org>
+Message-ID: <20260204143853.385005546@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,118 +67,351 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213620-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,davemloft.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-213425-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7312e82745f7fa2526db];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,katalix.com:email]
-X-Rspamd-Queue-Id: 7660EE7B03
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,davemloft.net:email]
+X-Rspamd-Queue-Id: 55914E74D7
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xabier Marquiegui <reibax@gmail.com>
 
-[ Upstream commit 7a29f6bf60f2590fe5e9c4decb451e19afad2bcf ]
+[ Upstream commit 60c6946675fc06dd2fd2b7a4b6fd1c1f046f1056 ]
 
-We should read sk->sk_socket only when dealing with kernel sockets.
+Add the necessary structure to support custom private-data per
+posix-clock user.
 
-syzbot reported the following data-race:
+The previous implementation of posix-clock assumed all file open
+instances need access to the same clock structure on private_data.
 
-BUG: KCSAN: data-race in l2tp_tunnel_del_work / sk_common_release
+The need for individual data structures per file open instance has been
+identified when developing support for multiple timestamp event queue
+users for ptp_clock.
 
-write to 0xffff88811c182b20 of 8 bytes by task 5365 on cpu 0:
-  sk_set_socket include/net/sock.h:2092 [inline]
-  sock_orphan include/net/sock.h:2118 [inline]
-  sk_common_release+0xae/0x230 net/core/sock.c:4003
-  udp_lib_close+0x15/0x20 include/net/udp.h:325
-  inet_release+0xce/0xf0 net/ipv4/af_inet.c:437
-  __sock_release net/socket.c:662 [inline]
-  sock_close+0x6b/0x150 net/socket.c:1455
-  __fput+0x29b/0x650 fs/file_table.c:468
-  ____fput+0x1c/0x30 fs/file_table.c:496
-  task_work_run+0x131/0x1a0 kernel/task_work.c:233
-  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
-  __exit_to_user_mode_loop kernel/entry/common.c:44 [inline]
-  exit_to_user_mode_loop+0x1fe/0x740 kernel/entry/common.c:75
-  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
-  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
-  syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
-  syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
-  do_syscall_64+0x1e1/0x2b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff88811c182b20 of 8 bytes by task 827 on cpu 1:
-  l2tp_tunnel_del_work+0x2f/0x1a0 net/l2tp/l2tp_core.c:1418
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0x4ce/0x9d0 kernel/workqueue.c:3340
-  worker_thread+0x582/0x770 kernel/workqueue.c:3421
-  kthread+0x489/0x510 kernel/kthread.c:463
-  ret_from_fork+0x149/0x290 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-value changed: 0xffff88811b818000 -> 0x0000000000000000
-
-Fixes: d00fa9adc528 ("l2tp: fix races with tunnel socket close")
-Reported-by: syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6968b029.050a0220.58bed.0016.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20260115092139.3066180-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Xabier Marquiegui <reibax@gmail.com>
+Suggested-by: Richard Cochran <richardcochran@gmail.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e859d375d169 ("posix-clock: Store file pointer in struct posix_clock_context")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ptp/ptp_chardev.c   | 21 +++++++++++++--------
+ drivers/ptp/ptp_private.h   | 16 +++++++++-------
+ include/linux/posix-clock.h | 35 +++++++++++++++++++++++++++--------
+ kernel/time/posix-clock.c   | 36 +++++++++++++++++++++++++++---------
+ 4 files changed, 76 insertions(+), 32 deletions(-)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index acd5b67858ddc..7e242ebac664a 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1252,8 +1252,6 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index 8eb902fe73a98..2776f37713123 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -102,14 +102,16 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
+ 	return 0;
+ }
+ 
+-int ptp_open(struct posix_clock *pc, fmode_t fmode)
++int ptp_open(struct posix_clock_context *pccontext, fmode_t fmode)
  {
- 	struct l2tp_tunnel *tunnel = container_of(work, struct l2tp_tunnel,
- 						  del_work);
--	struct sock *sk = tunnel->sock;
--	struct socket *sock = sk->sk_socket;
+ 	return 0;
+ }
  
- 	l2tp_tunnel_closeall(tunnel);
+-long ptp_ioctl(struct posix_clock *pc, unsigned int cmd, unsigned long arg)
++long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
++	       unsigned long arg)
+ {
+-	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
++	struct ptp_clock *ptp =
++		container_of(pccontext->clk, struct ptp_clock, clock);
+ 	struct ptp_sys_offset_extended *extoff = NULL;
+ 	struct ptp_sys_offset_precise precise_offset;
+ 	struct system_device_crosststamp xtstamp;
+@@ -430,9 +432,11 @@ long ptp_ioctl(struct posix_clock *pc, unsigned int cmd, unsigned long arg)
+ 	return err;
+ }
  
-@@ -1261,6 +1259,8 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
- 	 * the sk API to release it here.
- 	 */
- 	if (tunnel->fd < 0) {
-+		struct socket *sock = tunnel->sock->sk_socket;
+-__poll_t ptp_poll(struct posix_clock *pc, struct file *fp, poll_table *wait)
++__poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
++		  poll_table *wait)
+ {
+-	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
++	struct ptp_clock *ptp =
++		container_of(pccontext->clk, struct ptp_clock, clock);
+ 
+ 	poll_wait(fp, &ptp->tsev_wq, wait);
+ 
+@@ -441,10 +445,11 @@ __poll_t ptp_poll(struct posix_clock *pc, struct file *fp, poll_table *wait)
+ 
+ #define EXTTS_BUFSIZE (PTP_BUF_TIMESTAMPS * sizeof(struct ptp_extts_event))
+ 
+-ssize_t ptp_read(struct posix_clock *pc,
+-		 uint rdflags, char __user *buf, size_t cnt)
++ssize_t ptp_read(struct posix_clock_context *pccontext, uint rdflags,
++		 char __user *buf, size_t cnt)
+ {
+-	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
++	struct ptp_clock *ptp =
++		container_of(pccontext->clk, struct ptp_clock, clock);
+ 	struct timestamp_event_queue *queue = &ptp->tsevq;
+ 	struct ptp_extts_event *event;
+ 	unsigned long flags;
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index d2cb956706763..ba3a1a29a288a 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -73,16 +73,18 @@ static inline int queue_cnt(const struct timestamp_event_queue *q)
+ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
+ 		    enum ptp_pin_function func, unsigned int chan);
+ 
+-long ptp_ioctl(struct posix_clock *pc,
+-	       unsigned int cmd, unsigned long arg);
++long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
++	       unsigned long arg);
+ 
+-int ptp_open(struct posix_clock *pc, fmode_t fmode);
++int ptp_open(struct posix_clock_context *pccontext, fmode_t fmode);
+ 
+-ssize_t ptp_read(struct posix_clock *pc,
+-		 uint flags, char __user *buf, size_t cnt);
++int ptp_release(struct posix_clock_context *pccontext);
+ 
+-__poll_t ptp_poll(struct posix_clock *pc,
+-	      struct file *fp, poll_table *wait);
++ssize_t ptp_read(struct posix_clock_context *pccontext, uint flags, char __user *buf,
++		 size_t cnt);
 +
- 		if (sock) {
- 			kernel_sock_shutdown(sock, SHUT_RDWR);
- 			sock_release(sock);
++__poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
++		  poll_table *wait);
+ 
+ /*
+  * see ptp_sysfs.c
+diff --git a/include/linux/posix-clock.h b/include/linux/posix-clock.h
+index 468328b1e1dd5..ef8619f489203 100644
+--- a/include/linux/posix-clock.h
++++ b/include/linux/posix-clock.h
+@@ -14,6 +14,7 @@
+ #include <linux/rwsem.h>
+ 
+ struct posix_clock;
++struct posix_clock_context;
+ 
+ /**
+  * struct posix_clock_operations - functional interface to the clock
+@@ -50,18 +51,18 @@ struct posix_clock_operations {
+ 	/*
+ 	 * Optional character device methods:
+ 	 */
+-	long    (*ioctl)   (struct posix_clock *pc,
+-			    unsigned int cmd, unsigned long arg);
++	long (*ioctl)(struct posix_clock_context *pccontext, unsigned int cmd,
++		      unsigned long arg);
+ 
+-	int     (*open)    (struct posix_clock *pc, fmode_t f_mode);
++	int (*open)(struct posix_clock_context *pccontext, fmode_t f_mode);
+ 
+-	__poll_t (*poll)   (struct posix_clock *pc,
+-			    struct file *file, poll_table *wait);
++	__poll_t (*poll)(struct posix_clock_context *pccontext, struct file *file,
++			 poll_table *wait);
+ 
+-	int     (*release) (struct posix_clock *pc);
++	int (*release)(struct posix_clock_context *pccontext);
+ 
+-	ssize_t (*read)    (struct posix_clock *pc,
+-			    uint flags, char __user *buf, size_t cnt);
++	ssize_t (*read)(struct posix_clock_context *pccontext, uint flags,
++			char __user *buf, size_t cnt);
+ };
+ 
+ /**
+@@ -90,6 +91,24 @@ struct posix_clock {
+ 	bool zombie;
+ };
+ 
++/**
++ * struct posix_clock_context - represents clock file operations context
++ *
++ * @clk:              Pointer to the clock
++ * @private_clkdata:  Pointer to user data
++ *
++ * Drivers should use struct posix_clock_context during specific character
++ * device file operation methods to access the posix clock.
++ *
++ * Drivers can store a private data structure during the open operation
++ * if they have specific information that is required in other file
++ * operations.
++ */
++struct posix_clock_context {
++	struct posix_clock *clk;
++	void *private_clkdata;
++};
++
+ /**
+  * posix_clock_register() - register a new clock
+  * @clk:   Pointer to the clock. Caller must provide 'ops' field
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index 05e73d209aa87..706559ed75793 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -19,7 +19,8 @@
+  */
+ static struct posix_clock *get_posix_clock(struct file *fp)
+ {
+-	struct posix_clock *clk = fp->private_data;
++	struct posix_clock_context *pccontext = fp->private_data;
++	struct posix_clock *clk = pccontext->clk;
+ 
+ 	down_read(&clk->rwsem);
+ 
+@@ -39,6 +40,7 @@ static void put_posix_clock(struct posix_clock *clk)
+ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
+ 				size_t count, loff_t *ppos)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	int err = -EINVAL;
+ 
+@@ -46,7 +48,7 @@ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
+ 		return -ENODEV;
+ 
+ 	if (clk->ops.read)
+-		err = clk->ops.read(clk, fp->f_flags, buf, count);
++		err = clk->ops.read(pccontext, fp->f_flags, buf, count);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -55,6 +57,7 @@ static ssize_t posix_clock_read(struct file *fp, char __user *buf,
+ 
+ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	__poll_t result = 0;
+ 
+@@ -62,7 +65,7 @@ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
+ 		return EPOLLERR;
+ 
+ 	if (clk->ops.poll)
+-		result = clk->ops.poll(clk, fp, wait);
++		result = clk->ops.poll(pccontext, fp, wait);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -72,6 +75,7 @@ static __poll_t posix_clock_poll(struct file *fp, poll_table *wait)
+ static long posix_clock_ioctl(struct file *fp,
+ 			      unsigned int cmd, unsigned long arg)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	int err = -ENOTTY;
+ 
+@@ -79,7 +83,7 @@ static long posix_clock_ioctl(struct file *fp,
+ 		return -ENODEV;
+ 
+ 	if (clk->ops.ioctl)
+-		err = clk->ops.ioctl(clk, cmd, arg);
++		err = clk->ops.ioctl(pccontext, cmd, arg);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -90,6 +94,7 @@ static long posix_clock_ioctl(struct file *fp,
+ static long posix_clock_compat_ioctl(struct file *fp,
+ 				     unsigned int cmd, unsigned long arg)
+ {
++	struct posix_clock_context *pccontext = fp->private_data;
+ 	struct posix_clock *clk = get_posix_clock(fp);
+ 	int err = -ENOTTY;
+ 
+@@ -97,7 +102,7 @@ static long posix_clock_compat_ioctl(struct file *fp,
+ 		return -ENODEV;
+ 
+ 	if (clk->ops.ioctl)
+-		err = clk->ops.ioctl(clk, cmd, arg);
++		err = clk->ops.ioctl(pccontext, cmd, arg);
+ 
+ 	put_posix_clock(clk);
+ 
+@@ -110,6 +115,7 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 	int err;
+ 	struct posix_clock *clk =
+ 		container_of(inode->i_cdev, struct posix_clock, cdev);
++	struct posix_clock_context *pccontext;
+ 
+ 	down_read(&clk->rwsem);
+ 
+@@ -117,14 +123,20 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 		err = -ENODEV;
+ 		goto out;
+ 	}
++	pccontext = kzalloc(sizeof(*pccontext), GFP_KERNEL);
++	if (!pccontext) {
++		err = -ENOMEM;
++		goto out;
++	}
++	pccontext->clk = clk;
++	fp->private_data = pccontext;
+ 	if (clk->ops.open)
+-		err = clk->ops.open(clk, fp->f_mode);
++		err = clk->ops.open(pccontext, fp->f_mode);
+ 	else
+ 		err = 0;
+ 
+ 	if (!err) {
+ 		get_device(clk->dev);
+-		fp->private_data = clk;
+ 	}
+ out:
+ 	up_read(&clk->rwsem);
+@@ -133,14 +145,20 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 
+ static int posix_clock_release(struct inode *inode, struct file *fp)
+ {
+-	struct posix_clock *clk = fp->private_data;
++	struct posix_clock_context *pccontext = fp->private_data;
++	struct posix_clock *clk;
+ 	int err = 0;
+ 
++	if (!pccontext)
++		return -ENODEV;
++	clk = pccontext->clk;
++
+ 	if (clk->ops.release)
+-		err = clk->ops.release(clk);
++		err = clk->ops.release(pccontext);
+ 
+ 	put_device(clk->dev);
+ 
++	kfree(pccontext);
+ 	fp->private_data = NULL;
+ 
+ 	return err;
 -- 
 2.51.0
 
