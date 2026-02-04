@@ -1,178 +1,219 @@
-Return-Path: <stable+bounces-214330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NcgI5t0g2mFmwMAu9opvQ
-	(envelope-from <stable+bounces-214330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:32:27 +0100
+	id KAR3Lx54g2mFmwMAu9opvQ
+	(envelope-from <stable+bounces-214331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:47:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30011EA47E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:32:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B36DEA77B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:47:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6DF1B3005AA3
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 16:32:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 59D36300D4C7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 16:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904F22F3601;
-	Wed,  4 Feb 2026 16:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FA0338922;
+	Wed,  4 Feb 2026 16:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B7G5s6ni"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3tYiww6c"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A092F12BA
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 16:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770222735; cv=none; b=qaOybBOgp7Ud4+gzjwGXXzH8wCxppWScWAvhq2BREcOJ1VYEz/6nG+hB9ICa0nDykAiCvHvJuhR3bjjsEOqyXevvNcPPN284leDNrwxaoZoVjfJciihcVQTieANjNwl4Qz/Sv/2xCmqDjWKe+WzEM4ix0yTCYuJRDvsBXla8p4I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770222735; c=relaxed/simple;
-	bh=cNOMoPICMTO7Jd/feVQ1G3OBQwG43K4Z1Ef+EsXsnu0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QjdYZTbXJnIgxk0UvmqVWwGvsDyC/Np7Jb4xjNQVIPMQoWaOdBfFC2kupVVuO+IlxS1GoR7Z88TjoUZloVfe6oVq6ON0aa6KctsgaA40dEthkj1WCw4Irbcf6qwIWnN8zOEXn/U7+e+s+Fg7/54XPFbfS90HNbD26gSx4K58ZMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B7G5s6ni; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4358f854840so6880f8f.3
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 08:32:14 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3004733890A
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 16:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770223608; cv=pass; b=UUDVhdzvbYHhVQvlbFB9YOanDTCMplw9LWOYNB3g3wLc0eoDXKmKoxXPnW7eDvOMUOjsWtn47whZXbxoawvXUtM0c2/vx2gbxuNyyn0gaGA1wpcPSLMz772gVwshOA+MEhGL8qJGBTBJvSsyC08hcKKo2vsHqAk/UU8dzmJFRF0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770223608; c=relaxed/simple;
+	bh=GuDdEDTx6jqo86jDKae5LLsjrHGR1rOWzeioqAUpz7I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a5M6XxY/kFIcU7OOq6FrQZBQmbgQWB5/8KwVgIMdCqSc6hO36oFluZ5vHOsunCslTRQF8AAsNNvLDogRJOgpQU9b9OK1tnthaGb/wP546ZXaPs0csll+6SqLtXJyjjpqlnJdppYM/+cteRRfD7ZKXQB9d5lPe7DsVtCQu1w6rG8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3tYiww6c; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50299648ae9so572171cf.1
+        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 08:46:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770223607; cv=none;
+        d=google.com; s=arc-20240605;
+        b=c5KjpgdfBBC75HPi3tAcVVzhk6c75nNucPWn1LlcX0q5h02otoyKBEiHorbe/Tsnki
+         ZLi1OHYObz0WC/yIn70Gvnvum6pPQWFvqE++OGz16UuejqojxThjx2kHZ1wwEr6GzTAL
+         zpRXKS8nNbmaWYpdeoTlnvC2AQsPmR0UEKYjsmb4sTFZ0bHeoIDT8vE3mwBhY73cDCGS
+         UbLX86T8cbebtyiDTQRsRaHm+enroTBINVi8P4f0dR8UDH2KiNHtnbBONBuY3w4Dieav
+         aFFqLeqS4jIASV78lCnbPbJTMP1sqgNkuzBl+IQlBVXTgkgVwG3tFK1IJfwjnPNUtZRp
+         RH8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fxhu04OAvpDfoeT5InEkoDqVAH1C962dtOlYUArfHyE=;
+        fh=XG5vVwEcZnIcIreul/JofQVcQ9rN0Y+ryIvw7JCrHJk=;
+        b=BLMz80yJv2jChbD1GppnWJehaP44vPE4o/nhvPIeBzM8Fbdop/vPxA4QczUSMwFnEY
+         YXC/YJo6AvdPFWOP0n16FkFqof6cNfboGDqYVClMFXlwBvGUSxzqWwBOEhwvTSaAGwsr
+         8fwJuIxW3RWnk7ZrFFd7+bx1yn7kqe+DdyFOkKJN4ZulhAM7Fb5qh2mAMBr+byMmr9Hy
+         oipj0uHm2vM8dg44RRiz+LPIAztW3+hMH04PWgoPD1nKn5yGYgZcrBCV9KKmZv3EP6G5
+         PL+IkV/vPpcCkGB+YiXFa0MaV8XHQZoKyf5RZEhnhMHk9lddBZRHsM2EgdpVZwzTsKnY
+         vUoQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770222733; x=1770827533; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FhzKPlo/o1GqrY1Xo5QLsYHf6TE8sJz/yK5MOWUEpRg=;
-        b=B7G5s6nih128aQkHe/yGNNXDt8RJh5UD23KumLb6VgMGmSSvVIiv1FhlbF2bzxbufN
-         9akNRgsrssziQVDzyyyoD5veddNvhf4nygkmJQnWDqrfgZvzToXFGwcCMZGpCCBTw73a
-         ZIV5rfyM8EIxO9gW+RFP1P/+O+7M0XPDxBfPPb/LQ3y85PwsiDEkybXHesmyHPUmb0lP
-         zkiB9bP5tc0+fJPiEf0Ksy2NWZrlMJ+IdY22HeERVH0vmtJ6WMPNXpSp/rko0+el+fl/
-         iAaFw6rhWgbeXQWsapMWL0aNMtAZShD3dIi/URGECWW7neTmNNH7GWnx8VB0FkxZ+4xO
-         zIpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770222733; x=1770827533;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1770223607; x=1770828407; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FhzKPlo/o1GqrY1Xo5QLsYHf6TE8sJz/yK5MOWUEpRg=;
-        b=rM3jwEJC4U5YowC69otmknyquMfPURGzXDULfPSU84VxqEcdD8oPmwbNRnNhWd0r+0
-         KV4EIyfTHJu/vJpW9zcfGQDp5aY+PWy7c+lkpTeheac9jENe+JpxBaRlZABeHTlztgpS
-         oKQA3M60ylAmIohmy1Xa5INnc7fmHsQTa71VPH0RJrqLMP1hK5rjuh01yO33FgOn1Rnu
-         ElFGf0a1Xn7c/t4mv68zXLFss28I9TNLifq2TeOiNY06LuSNk3NTAeGdnQ0zVKJq/N5B
-         nrUX2RJaEflJCNre95j0+aGH24iGU/+1XU+nTod6B3YzXnwJxkFLlWLkL4Exu6vGiXyg
-         FB7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVJg6LZ/53st4xumpIrVT6oVz5T7niY0Ta5qR3YESN3WB3F9SYlsYEc61xYfk04vygSrejBQ1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx00R5cg6bdkMbGspGFefBcqYqxWVtf5CbnBkrzu/9Jde2UqzQS
-	IjWzE3mPiFzLSXWIocBiPNba2y3sTz3Rk0TCgsQXEL/UIVInG41WJxCm
-X-Gm-Gg: AZuq6aLdLGIJTOuox9j1bg3ECezMEiIeMOLX5Y2VqI+MRr55i5vYXV+i6hkt5cisLsB
-	N2drMn5ekl/CLNQlSlkmhEbm0Yotu7P5I+0fG2gTeL8J1gjXf4q6C6oOAwRM2pRAFN1/eq8XbQj
-	hFipGaIznUHj9MK5edl7USgEMPFe3M7rulzcZdbBgxZrsbsxrb9JnedqkOULAI21coY8StRFWPP
-	N2KLztP0lLyYzVrJgC9pge7IRqyDlAFF08fLlFUsl2V4M5EmWCRzZHnogwtt11FDHHjC2UpkzC/
-	Dp9Abkdb6H64HZ+xlvbZHPaFyYmPtHNqL6HQm/w3+0ZmlgjRQk4/UZEqzLAzwqyAOIpp8tY+Tjj
-	wmz9SzpkQo5rYWiFKyVlbG8RVOEbfevIXFa0B3hIRmiNHvAgFi3u2bhTbDsIy5xjZIrCYWRrIm2
-	S4EU0/SXbP/Yo8DHCISPsZ/le5rSjCLzA8/ljS15eSe/gU382mOfRl3ZdqBBtCtXO+iWPY0DikB
-	PRZOI0=
-X-Received: by 2002:a05:6000:4205:b0:435:91a5:1325 with SMTP id ffacd0b85a97d-43619405830mr2296210f8f.7.1770222733044;
-        Wed, 04 Feb 2026 08:32:13 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-213.paris.inria.fr. [128.93.83.213])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-43617e25683sm7377005f8f.6.2026.02.04.08.32.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 08:32:12 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Zhao Qiang <qiang.zhao@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in uhdlc_memclean()
-Date: Wed,  4 Feb 2026 17:25:47 +0100
-Message-ID: <20260204162548.94160-3-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=fxhu04OAvpDfoeT5InEkoDqVAH1C962dtOlYUArfHyE=;
+        b=3tYiww6cIq+DIBwIjPwaMtjkvFwbzmYivNko/vjc5ToRLVdikZ0Otw3rdNHHagMP9T
+         iCs7P9oxYZwlccjB5NN0rb3bEoLd/3CVQJ0CyTVWk7MyCISzeR66jinwc7MN8lDw3quv
+         5YLcSZ/tKBupngd2wMc0fwQ7y79PvI478KXKwxTGaorr9dAGRE0dDsSg96QlFuIqvzGo
+         lamUSYXZH0ZxbPojBlarLyDMq5rUeiFfeBOWMzpPcXEdNhYMcsHZqIcAJF3nF2BJBriv
+         wWTffoIS+LacZHcrETcGRlguPQTFSiBIogWC+v/GwGg3+H5vbmOPMBBDmbxIxzZKypmA
+         yaBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770223607; x=1770828407;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fxhu04OAvpDfoeT5InEkoDqVAH1C962dtOlYUArfHyE=;
+        b=FcnGmYN0mg8FYcAxgkWvf+HJj6dmOHn4wJr4msAGkfw2N+YlOh68oWXqu+zWuX2OaF
+         xzzshNqfeOMq0EKJxFxlSJSj1dC4+qQG7ASyke81R2rVNbbRDMQe+5HknMGORtipxfJU
+         9Ty6TQnfvEC3iQD3or7pxp3xOvvLMA8Dt5lhaUv7bWU55ZZmH9Z5gdvfyazGifH+dKEF
+         01FG/aQnD1VFF83zC1e3OMJYEi1X6vwud+0S/bVYeg7pz2CtJa8Gy+z5K8+JsUdWpDFL
+         UuwzEXwG+S0PMx2YZFfMA1aXtuNwuV57ixSXEKZNuuD23vp8uhmOqKfMM2vaWS2Jgv8Q
+         kPRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDGYCrg77mEy7W0y11i+0UqYcHjQ45DHXN+0zEppIB1IEAIOM3Ct651LUCjRPRZ6RNTa2Bf2U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk0VEEO5giv0J7BRCAi24mQZl33w7fupwSn4Lupk30RZGmyaGw
+	8tHrITznXIFsNvpmySS6UBVvAayilPqk4c1BSyhrSw6uA4kB76yc0wpxm9gJxNMiEqmlvFHEuCW
+	j24aJaYyDSVIC9Tp/TtIWQDxGjv7MYucyaz25xct0
+X-Gm-Gg: AZuq6aLTdnnlwKVtbFEqzHPlYdhYZF/lu5XHFthzAoW27iTCtVH+rhrFahuChTpno2h
+	IKwBaP0wy27++cA09bfL6YE94gNqY8AT1kaFJ/g984Kjud6poI9HiP9roGKqSD4uVKn4G6cVXqm
+	a6eEig+EMVFmpnKYunvR26TTtQqxHQRvXWrqM075GdnxCBpux4I/KPfkiCcZanIQCJaCoC3vvk7
+	y0T7ihbG1EmQbgRy41AX7rTJO48KuXBxpb/NRwFYzb0HbqZji/l6UmaH3RBjEyff+yJJ2T2CKB0
+	Rd9LWL/pUlp0d0H3JN2ZLZ2Q2Q==
+X-Received: by 2002:ac8:5750:0:b0:4ed:a65c:88d0 with SMTP id
+ d75a77b69052e-5061c3c6ed1mr14901671cf.6.1770223606526; Wed, 04 Feb 2026
+ 08:46:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2026020303-drippy-appliance-a74c@gregkh> <20260204002654.1462558-1-sashal@kernel.org>
+ <2026020419-extortion-swinging-6394@gregkh>
+In-Reply-To: <2026020419-extortion-swinging-6394@gregkh>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 4 Feb 2026 08:46:35 -0800
+X-Gm-Features: AZwV_QgktQI-U-2cz1KZyg814_EvzKKRB5FUYNdIaeW8UD1HDjUFn6kcQetyzPo
+Message-ID: <CAJuCfpHGM0apXNe4nW_5vTNzEBLGvEHduoiHpHhs70+qmeFMLg@mail.gmail.com>
+Subject: Re: [PATCH 6.18.y] kho: init alloc tags when restoring pages from
+ reserved memory
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
+	Alexander Graf <graf@amazon.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214331-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214330-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,nxp.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[surenb@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 30011EA47E
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linux.dev:email,zte.com.cn:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 6B36DEA77B
 X-Rspamd-Action: no action
 
-The priv->rx_buffer and priv->dma_rx_addr are alloc'd together as
-contiguous buffers in uhdlc_init() but freed as two buffers in
-uhdlc_memclean().
+On Wed, Feb 4, 2026 at 1:59=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> On Tue, Feb 03, 2026 at 07:26:54PM -0500, Sasha Levin wrote:
+> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> >
+> > [ Upstream commit e86436ad0ad2a9aaf88802d69b68f02cbd1f04a9 ]
+> >
+> > Memblock pages (including reserved memory) should have their allocation
+> > tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
+> > released to the page allocator.  When kho restores pages through
+> > kho_restore_page(), missing this call causes mismatched
+> > allocation/deallocation tracking and below warning message:
+> >
+> > alloc_tag was not set
+> > WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU=
+#1: swapper/0/1
+> > RIP: 0010:___free_pages+0xb8/0x260
+> >  kho_restore_vmalloc+0x187/0x2e0
+> >  kho_test_init+0x3c4/0xa30
+> >  do_one_initcall+0x62/0x2b0
+> >  kernel_init_freeable+0x25b/0x480
+> >  kernel_init+0x1a/0x1c0
+> >  ret_from_fork+0x2d1/0x360
+> >
+> > Add missing clear_page_tag_ref() annotation in kho_restore_page() to
+> > fix this.
+> >
+> > Link: https://lkml.kernel.org/r/20260122132740.176468-1-ranxiaokai627@1=
+63.com
+> > Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation=
+")
+> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> > Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Cc: Alexander Graf <graf@amazon.com>
+> > Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> > Cc: Suren Baghdasaryan <surenb@google.com>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  kernel/kexec_handover.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> > index 03d12e27189fc..db08c1a2e1f80 100644
+> > --- a/kernel/kexec_handover.c
+> > +++ b/kernel/kexec_handover.c
+> > @@ -260,6 +260,14 @@ static struct page *kho_restore_page(phys_addr_t p=
+hys)
+> >       if (info.order > 0)
+> >               prep_compound_page(page, info.order);
+> >
+> > +     /* Always mark headpage's codetag as empty to avoid accounting mi=
+smatch */
+> > +     clear_page_tag_ref(page);
+> > +     if (!is_folio) {
+> > +             /* Also do that for the non-compound tail pages */
+> > +             for (unsigned int i =3D 1; i < nr_pages; i++)
+> > +                     clear_page_tag_ref(page + i);
+> > +     }
+> > +
+>
+> Breaks the build :(
 
-Change the cleanup to only call dma_free_coherent() once on the whole
-buffer.
+Which config? I built both defconfig and CONFIG_MEM_ALLOC_PROFILING=3Dy,
+they didn't fail. Could you please send me your failing config?
 
-Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/net/wan/fsl_ucc_hdlc.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
-
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index f999798a5612..59cd861d13d6 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -790,19 +790,11 @@ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
- 
- 	if (priv->rx_buffer) {
- 		dma_free_coherent(priv->dev,
--				  RX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
-+				  (RX_BD_RING_LEN + TX_BD_RING_LEN) * MAX_RX_BUF_LENGTH,
- 				  priv->rx_buffer, priv->dma_rx_addr);
- 		priv->rx_buffer = NULL;
- 		priv->dma_rx_addr = 0;
- 	}
--
--	if (priv->tx_buffer) {
--		dma_free_coherent(priv->dev,
--				  TX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
--				  priv->tx_buffer, priv->dma_tx_addr);
--		priv->tx_buffer = NULL;
--		priv->dma_tx_addr = 0;
--	}
- }
- 
- static int uhdlc_close(struct net_device *dev)
--- 
-2.43.0
-
+>
 
