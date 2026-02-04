@@ -1,74 +1,61 @@
-Return-Path: <stable+bounces-213491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKmsInRdg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:40 +0100
+	id ABCoKV1mg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F5FE7888
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517C9E8C81
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 252F53062C49
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B259930D7713
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B299328B7EA;
-	Wed,  4 Feb 2026 14:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637D02D321B;
+	Wed,  4 Feb 2026 15:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSWsZ5hf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfLx0BYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C1D27FD56;
-	Wed,  4 Feb 2026 14:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27813284B37;
+	Wed,  4 Feb 2026 15:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216517; cv=none; b=h65JC9YFJwT2SllMjf1lqS4YbUFgRd6ZfagO/jkeZV+/Y0/RfopiHkSuQEygzAKof0VJsTKjlcelZqWxIL8dgN7XusAuEI1lFgjiECoI0fYpCItL7lc8yaZ45t+3aWSX7+gfMAKPD3rnbjx5n6PfQQT3ASqqRn/drGCJp8DFtko=
+	t=1770218176; cv=none; b=GbnCfTqaQQrCUDCApg4Y35ohYu30qAXCze2+3+phviTViBo+GJy5Wq506JKJKwTK3evHSulLo6xjPUZdXZcr5Yae9ZwrceucaqZIBgHLIOavFe2qM8Pia99XFi8idlwBCvFVhpiZx2ssHN2WZo4pSmJiaKCOv0FxL7lYKQz9rMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216517; c=relaxed/simple;
-	bh=lABHIglB+ShPVkmw/4eY2TP99HxZddl2xcqUcO9BX3k=;
+	s=arc-20240116; t=1770218176; c=relaxed/simple;
+	bh=GhTpcLHMS/gQe/x+EMFxqKInbDW074tbQKOOgA7clNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSPJIJVu/vtaOn32Bl78piR0Y9dWmkkm4+9FDvqRbl1J15czcsqMT2BAqhZZJYRHjt8OkpckvuYTRjIouzxSUvtTaytswaWeSdMz9VfyFba35C8xVzDhmVXRDH6eK2IDJ4+x1m2Hb1aZIfzOZTtawK5i0PP2J3FzGeoacweL9dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSWsZ5hf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF16C4CEF7;
-	Wed,  4 Feb 2026 14:48:36 +0000 (UTC)
+	 MIME-Version; b=hccIaraDKdgJidBjsKT+E+8uLOGjUdC/0PxfONDCd628UkZYNEi1hQ83lywsugApKrT2Z3BryNL49HgGKSfELU21f5hK/uSmOeP3wQB1ie7lEdGJlnBOifn/mPE/jxbffu01xOjT+GlPhUIlbS9DxobAZ9+RfypxNTt7bCvqMak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfLx0BYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C95FC4CEF7;
+	Wed,  4 Feb 2026 15:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216517;
-	bh=lABHIglB+ShPVkmw/4eY2TP99HxZddl2xcqUcO9BX3k=;
+	s=korg; t=1770218176;
+	bh=GhTpcLHMS/gQe/x+EMFxqKInbDW074tbQKOOgA7clNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSWsZ5hfu4SZJQ2xbr75F+FnGHixSdqR71pNMDrXkzFkKyovfu5+hazmaK5H3S2GO
-	 8USvPGaEFG+tS+zhtuhkAtrIarj0z5nfB1jL5J+NZlQuM48LalMrLyMrdAU+kecrtJ
-	 XmfNeVzcjfC8VAGSSbA38xOFvEgWyL4+2SCTB7sQ=
+	b=ZfLx0BYqauxHoeiDrKabfzS6IHkVxiEpHeQHljWhDvR0YbCEhFK4fM9S2Hb/AQZUc
+	 LkTga2BuXxh7YEj8b6s5/LC5QKl3FgvbMui7mhNVNbWn8R4klGWTs6paUN8ioI1a+X
+	 11Q1j52vKqJOVAVBscc4Lf/ACNzVzg+iaNe6r7O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jann Horn <jannh@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 5.10 112/161] migrate: correct lock ordering for hugetlb file folios
+	Martin Kaiser <martin@kaiser.cx>,
+	Florian Westphal <fw@strlen.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 201/280] net: bridge: fix static key check
 Date: Wed,  4 Feb 2026 15:39:35 +0100
-Message-ID: <20260204143855.773203826@linuxfoundation.org>
+Message-ID: <20260204143916.836463652@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,150 +67,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-213491-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,infradead.org,syzkaller.appspotmail.com,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org,linux.dev];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213986-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,nvidia.com:email,intel.com:email,appspotmail.com:email,oracle.com:email,infradead.org:email,alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,sk.com:email,gourry.net:email]
-X-Rspamd-Queue-Id: 16F5FE7888
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,blackwall.org:email,kaiser.cx:email]
+X-Rspamd-Queue-Id: 517C9E8C81
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Martin Kaiser <martin@kaiser.cx>
 
-commit b7880cb166ab62c2409046b2347261abf701530e upstream.
+[ Upstream commit cc0cf10fdaeadf5542d64a55b5b4120d3df90b7d ]
 
-Syzbot has found a deadlock (analyzed by Lance Yang):
+Fix the check if netfilter's static keys are available. netfilter defines
+and exports static keys if CONFIG_JUMP_LABEL is enabled. (HAVE_JUMP_LABEL
+is never defined.)
 
-1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
-2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
-folio_lock.
-
-migrate_pages()
-  -> migrate_hugetlbs()
-    -> unmap_and_move_huge_page()     <- Takes folio_lock!
-      -> remove_migration_ptes()
-        -> __rmap_walk_file()
-          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
-
-hugetlbfs_fallocate()
-  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
-    -> hugetlbfs_zero_partial_page()
-     -> filemap_lock_hugetlb_folio()
-      -> filemap_lock_folio()
-        -> __filemap_get_folio        <- Waits for folio_lock!
-
-The migration path is the one taking locks in the wrong order according to
-the documentation at the top of mm/rmap.c.  So expand the scope of the
-existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
-
-This is (mostly) how it used to be after commit c0d0381ade79.  That was
-removed by 336bf30eb765 for both file & anon hugetlb pages when it should
-only have been removed for anon hugetlb pages.
-
-Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
-Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
-Debugged-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 971502d77faa ("bridge: netfilter: unroll NF_HOOK helper in bridge input path")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260127101925.1754425-1-martin@kaiser.cx
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ net/bridge/br_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1289,6 +1289,7 @@ static int unmap_and_move_huge_page(new_
- 	struct page *new_hpage;
- 	struct anon_vma *anon_vma = NULL;
- 	struct address_space *mapping = NULL;
-+	enum ttu_flags ttu = TTU_MIGRATION|TTU_IGNORE_MLOCK;
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index f11345720c275..e33500771b30f 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -243,7 +243,7 @@ static int nf_hook_bridge_pre(struct sk_buff *skb, struct sk_buff **pskb)
+ 	int ret;
  
- 	/*
- 	 * Migratability of hugepages depends on architectures and their size.
-@@ -1336,9 +1337,6 @@ static int unmap_and_move_huge_page(new_
- 		goto put_anon;
- 
- 	if (page_mapped(hpage)) {
--		bool mapping_locked = false;
--		enum ttu_flags ttu = TTU_MIGRATION|TTU_IGNORE_MLOCK;
--
- 		if (!PageAnon(hpage)) {
- 			/*
- 			 * In shared mappings, try_to_unmap could potentially
-@@ -1350,15 +1348,11 @@ static int unmap_and_move_huge_page(new_
- 			if (unlikely(!mapping))
- 				goto unlock_put_anon;
- 
--			mapping_locked = true;
- 			ttu |= TTU_RMAP_LOCKED;
- 		}
- 
- 		try_to_unmap(hpage, ttu);
- 		page_was_mapped = 1;
--
--		if (mapping_locked)
--			i_mmap_unlock_write(mapping);
- 	}
- 
- 	if (!page_mapped(hpage))
-@@ -1366,7 +1360,11 @@ static int unmap_and_move_huge_page(new_
- 
- 	if (page_was_mapped)
- 		remove_migration_ptes(hpage,
--			rc == MIGRATEPAGE_SUCCESS ? new_hpage : hpage, false);
-+			rc == MIGRATEPAGE_SUCCESS ? new_hpage : hpage,
-+				(ttu & TTU_RMAP_LOCKED) ? true : false);
-+
-+	if (ttu & TTU_RMAP_LOCKED)
-+		i_mmap_unlock_write(mapping);
- 
- unlock_put_anon:
- 	unlock_page(new_hpage);
+ 	net = dev_net(skb->dev);
+-#ifdef HAVE_JUMP_LABEL
++#ifdef CONFIG_JUMP_LABEL
+ 	if (!static_key_false(&nf_hooks_needed[NFPROTO_BRIDGE][NF_BR_PRE_ROUTING]))
+ 		goto frame_finish;
+ #endif
+-- 
+2.51.0
+
 
 
 
