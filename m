@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHTGM0Vpg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:05 +0100
+	id 8CjeOlxig2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6218EE93DE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431F9E82D4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA51430A4E0E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F06D306FCC4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8357E428498;
-	Wed,  4 Feb 2026 15:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30CB41B345;
+	Wed,  4 Feb 2026 14:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2ZKaYMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/uOEopJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46068429822;
-	Wed,  4 Feb 2026 15:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75D127F749;
+	Wed,  4 Feb 2026 14:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217750; cv=none; b=aOOjKVmkxlNBr22SJStYcIprmbMRpRoebpQM/3FQy4j9boDclBPNPqEwwTtXSISjvuIga3Cw14+OyCJofqn/mMEz9FPSntOLxqVMUj1nC/n4J24JuruzOuWJRrg+rdiGNcT1yrMII5OjPBmYBs/beVP0lQb4/Pz40Oh2yEJwXqg=
+	t=1770216855; cv=none; b=ZKVJhKmfLVMv53gUDK7lXKeRXFp3qNSSsQxG6tGgwioRzoKxM4qmXL5J+cfl4Z9d7rQawl6xpPQSd0VrRQIs7/YSUJs9Ku74fpXDs06AVsXO+uBBv+jBP2poeXEQ1F0P0rMOEQz4gkEG1WFHQQVung2tvAS9mQ/wm7VZHHzcPFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217750; c=relaxed/simple;
-	bh=nR6Jq6r9wE7KGwi+CK1dBZS2ud9AgaVuoxdkkAXLeyo=;
+	s=arc-20240116; t=1770216855; c=relaxed/simple;
+	bh=Qio0zSDLXca8gS4S6u8DaTN0Pndtu5IXgJhWstgidzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMLDItKCwsrLfz5ev1mfmWIv+pwamy7X/iIwGurfLsvrdm1e7A1UkC40fu4CkmdxSbRsUIVgZeCLdhOd/QGou+aZcPxADFtblmhjzhtnvCJlWGRH283mBW3C9jqtCVff4e0tjruuSI9yWW/dP66nh3dxBrJlkTL49ttA+FH7RtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2ZKaYMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FECEC4CEF7;
-	Wed,  4 Feb 2026 15:09:09 +0000 (UTC)
+	 MIME-Version; b=Ym5go2IESI7KIOCLujNT9hU5Z5GV9lhCEwNZM1ZRSm89lsxSL9RdmYQWSy+6iMWjZv8YqPDS8hKsVpqybKlI4GNETpitcqLXD5pcN3vzJ/ksIX9bi7av1AwfsgBmm/cVwrtb14af+fkLDmXx4INngghIVJxcnlvOkgFlzXemS3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/uOEopJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E83C4CEF7;
+	Wed,  4 Feb 2026 14:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217750;
-	bh=nR6Jq6r9wE7KGwi+CK1dBZS2ud9AgaVuoxdkkAXLeyo=;
+	s=korg; t=1770216855;
+	bh=Qio0zSDLXca8gS4S6u8DaTN0Pndtu5IXgJhWstgidzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2ZKaYMklqbrIXx0idMrKfjH/gHPLXL7TpQxZT6mZaV3U6B++OX3MjXVPpqvpoQU/
-	 3xp9o8XUvGX56gsVTA5J3ONp7/XslZPCHz/AjSUt9q3dGm6D3Wx4qcuEO5OcBYuk2q
-	 QFPf44XO2fIig2hK6UdoyFmo+yT0HzAlxQLESBr4=
+	b=B/uOEopJjBhpjgr0jVdxIBDA9FcSSxFwLt5OFXe/mmBR39PzoVGRThi29glZWEtzE
+	 yUdMbbLBH30KYOytNI1FzDmgdKlR3SQJ8ZQ5yaFJgEE1cbCScqAQngyreRzSA3FdJl
+	 VWGTznIYF6GPj1Zj+plmetzdO27LNTBrMwSHiCcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fomichev <sdf@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/280] net: fou: use policy and operation tables generated from the spec
+	stable@kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 050/206] dmaengine: sh: rz-dmac: Fix rz_dmac_terminate_all()
 Date: Wed,  4 Feb 2026 15:38:01 +0100
-Message-ID: <20260204143913.498139352@linuxfoundation.org>
+Message-ID: <20260204143900.018895766@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,268 +67,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-213594-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213858-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6218EE93DE
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email]
+X-Rspamd-Queue-Id: 431F9E82D4
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 1d562c32e4392cc091c940918ee1ffd7bfcb9e96 ]
+commit 747213b08a1ab6a76e3e3b3e7a209cc1d402b5d0 upstream.
 
-Generate and plug in the spec-based tables.
+After audio full duplex testing, playing the recorded file contains a few
+playback frames from the previous time. The rz_dmac_terminate_all() does
+not reset all the hardware descriptors queued previously, leading to the
+wrong descriptor being picked up during the next DMA transfer. Fix the
+above issue by resetting all the descriptor headers for a channel in
+rz_dmac_terminate_all() as rz_dmac_lmdesc_recycle() points to the proper
+descriptor header filled by the rz_dmac_prepare_descs_for_slave_sg().
 
-A little bit of renaming is needed in the FOU code.
-
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251113195052.564338-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/Makefile   |  2 +-
- net/ipv4/fou_core.c | 47 +++++++-------------------------------------
- net/ipv4/fou_nl.c   | 48 +++++++++++++++++++++++++++++++++++++++++++++
- net/ipv4/fou_nl.h   | 25 +++++++++++++++++++++++
- 4 files changed, 81 insertions(+), 41 deletions(-)
- create mode 100644 net/ipv4/fou_nl.c
- create mode 100644 net/ipv4/fou_nl.h
+ drivers/dma/sh/rz-dmac.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
-index e694a5e5b0302..d1c8d4beb77d4 100644
---- a/net/ipv4/Makefile
-+++ b/net/ipv4/Makefile
-@@ -26,7 +26,7 @@ obj-$(CONFIG_IP_MROUTE) += ipmr.o
- obj-$(CONFIG_IP_MROUTE_COMMON) += ipmr_base.o
- obj-$(CONFIG_NET_IPIP) += ipip.o
- gre-y := gre_demux.o
--fou-y := fou_core.o
-+fou-y := fou_core.o fou_nl.o
- obj-$(CONFIG_NET_FOU) += fou.o
- obj-$(CONFIG_NET_IPGRE_DEMUX) += gre.o
- obj-$(CONFIG_NET_IPGRE) += ip_gre.o
-diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-index 9d4ae723d2e7d..4ee6c424d96b7 100644
---- a/net/ipv4/fou_core.c
-+++ b/net/ipv4/fou_core.c
-@@ -19,6 +19,8 @@
- #include <uapi/linux/fou.h>
- #include <uapi/linux/genetlink.h>
- 
-+#include "fou_nl.h"
-+
- struct fou {
- 	struct socket *sock;
- 	u8 protocol;
-@@ -662,20 +664,6 @@ static int fou_destroy(struct net *net, struct fou_cfg *cfg)
- 
- static struct genl_family fou_nl_family;
- 
--static const struct nla_policy fou_nl_policy[FOU_ATTR_MAX + 1] = {
--	[FOU_ATTR_PORT]			= { .type = NLA_U16, },
--	[FOU_ATTR_AF]			= { .type = NLA_U8, },
--	[FOU_ATTR_IPPROTO]		= { .type = NLA_U8, },
--	[FOU_ATTR_TYPE]			= { .type = NLA_U8, },
--	[FOU_ATTR_REMCSUM_NOPARTIAL]	= { .type = NLA_FLAG, },
--	[FOU_ATTR_LOCAL_V4]		= { .type = NLA_U32, },
--	[FOU_ATTR_PEER_V4]		= { .type = NLA_U32, },
--	[FOU_ATTR_LOCAL_V6]		= { .len = sizeof(struct in6_addr), },
--	[FOU_ATTR_PEER_V6]		= { .len = sizeof(struct in6_addr), },
--	[FOU_ATTR_PEER_PORT]		= { .type = NLA_U16, },
--	[FOU_ATTR_IFINDEX]		= { .type = NLA_S32, },
--};
--
- static int parse_nl_config(struct genl_info *info,
- 			   struct fou_cfg *cfg)
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -531,11 +531,16 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
+ static int rz_dmac_terminate_all(struct dma_chan *chan)
  {
-@@ -767,7 +755,7 @@ static int parse_nl_config(struct genl_info *info,
- 	return 0;
- }
+ 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
++	struct rz_lmdesc *lmdesc = channel->lmdesc.base;
+ 	unsigned long flags;
++	unsigned int i;
+ 	LIST_HEAD(head);
  
--static int fou_nl_cmd_add_port(struct sk_buff *skb, struct genl_info *info)
-+int fou_nl_add_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct net *net = genl_info_net(info);
- 	struct fou_cfg cfg;
-@@ -780,7 +768,7 @@ static int fou_nl_cmd_add_port(struct sk_buff *skb, struct genl_info *info)
- 	return fou_create(net, &cfg, NULL);
- }
- 
--static int fou_nl_cmd_rm_port(struct sk_buff *skb, struct genl_info *info)
-+int fou_nl_del_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct net *net = genl_info_net(info);
- 	struct fou_cfg cfg;
-@@ -849,7 +837,7 @@ static int fou_dump_info(struct fou *fou, u32 portid, u32 seq,
- 	return -EMSGSIZE;
- }
- 
--static int fou_nl_cmd_get_port(struct sk_buff *skb, struct genl_info *info)
-+int fou_nl_get_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct net *net = genl_info_net(info);
- 	struct fou_net *fn = net_generic(net, fou_net_id);
-@@ -896,7 +884,7 @@ static int fou_nl_cmd_get_port(struct sk_buff *skb, struct genl_info *info)
- 	return ret;
- }
- 
--static int fou_nl_dump(struct sk_buff *skb, struct netlink_callback *cb)
-+int fou_nl_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct net *net = sock_net(skb->sk);
- 	struct fou_net *fn = net_generic(net, fou_net_id);
-@@ -919,33 +907,12 @@ static int fou_nl_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
- 
--static const struct genl_small_ops fou_nl_ops[] = {
--	{
--		.cmd = FOU_CMD_ADD,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = fou_nl_cmd_add_port,
--		.flags = GENL_ADMIN_PERM,
--	},
--	{
--		.cmd = FOU_CMD_DEL,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = fou_nl_cmd_rm_port,
--		.flags = GENL_ADMIN_PERM,
--	},
--	{
--		.cmd = FOU_CMD_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
--		.doit = fou_nl_cmd_get_port,
--		.dumpit = fou_nl_dump,
--	},
--};
--
- static struct genl_family fou_nl_family __ro_after_init = {
- 	.hdrsize	= 0,
- 	.name		= FOU_GENL_NAME,
- 	.version	= FOU_GENL_VERSION,
- 	.maxattr	= FOU_ATTR_MAX,
--	.policy = fou_nl_policy,
-+	.policy		= fou_nl_policy,
- 	.netnsok	= true,
- 	.module		= THIS_MODULE,
- 	.small_ops	= fou_nl_ops,
-diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
-new file mode 100644
-index 0000000000000..6c3820f41dd5d
---- /dev/null
-+++ b/net/ipv4/fou_nl.c
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/fou.yaml */
-+/* YNL-GEN kernel source */
+ 	rz_dmac_disable_hw(channel);
+ 	spin_lock_irqsave(&channel->vc.lock, flags);
++	for (i = 0; i < DMAC_NR_LMDESC; i++)
++		lmdesc[i].header = 0;
 +
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include "fou_nl.h"
-+
-+#include <linux/fou.h>
-+
-+/* Global operation policy for fou */
-+const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
-+	[FOU_ATTR_PORT] = { .type = NLA_U16, },
-+	[FOU_ATTR_AF] = { .type = NLA_U8, },
-+	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, },
-+	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
-+	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
-+	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
-+	[FOU_ATTR_LOCAL_V6] = { .len = 16, },
-+	[FOU_ATTR_PEER_V4] = { .type = NLA_U32, },
-+	[FOU_ATTR_PEER_V6] = { .len = 16, },
-+	[FOU_ATTR_PEER_PORT] = { .type = NLA_U16, },
-+	[FOU_ATTR_IFINDEX] = { .type = NLA_S32, },
-+};
-+
-+/* Ops table for fou */
-+const struct genl_small_ops fou_nl_ops[3] = {
-+	{
-+		.cmd		= FOU_CMD_ADD,
-+		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit		= fou_nl_add_doit,
-+		.flags		= GENL_ADMIN_PERM,
-+	},
-+	{
-+		.cmd		= FOU_CMD_DEL,
-+		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit		= fou_nl_del_doit,
-+		.flags		= GENL_ADMIN_PERM,
-+	},
-+	{
-+		.cmd		= FOU_CMD_GET,
-+		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit		= fou_nl_get_doit,
-+		.dumpit		= fou_nl_get_dumpit,
-+	},
-+};
-diff --git a/net/ipv4/fou_nl.h b/net/ipv4/fou_nl.h
-new file mode 100644
-index 0000000000000..b7a68121ce6f7
---- /dev/null
-+++ b/net/ipv4/fou_nl.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: BSD-3-Clause */
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/fou.yaml */
-+/* YNL-GEN kernel header */
-+
-+#ifndef _LINUX_FOU_GEN_H
-+#define _LINUX_FOU_GEN_H
-+
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include <linux/fou.h>
-+
-+/* Global operation policy for fou */
-+extern const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1];
-+
-+/* Ops table for fou */
-+extern const struct genl_small_ops fou_nl_ops[3];
-+
-+int fou_nl_add_doit(struct sk_buff *skb, struct genl_info *info);
-+int fou_nl_del_doit(struct sk_buff *skb, struct genl_info *info);
-+int fou_nl_get_doit(struct sk_buff *skb, struct genl_info *info);
-+int fou_nl_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+
-+#endif /* _LINUX_FOU_GEN_H */
--- 
-2.51.0
-
+ 	list_splice_tail_init(&channel->ld_active, &channel->ld_free);
+ 	list_splice_tail_init(&channel->ld_queue, &channel->ld_free);
+ 	spin_unlock_irqrestore(&channel->vc.lock, flags);
 
 
 
