@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-213674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOVjBnJhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:42 +0100
+	id QC5BFBZdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E76E80E7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:10:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A24D2E77D0
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97E24303C294
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 563E4304D268
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E687C41C2E1;
-	Wed,  4 Feb 2026 14:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3258D27FD56;
+	Wed,  4 Feb 2026 14:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Bu8J6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvZhaFBf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7E927F749;
-	Wed,  4 Feb 2026 14:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3F7221F17;
+	Wed,  4 Feb 2026 14:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217126; cv=none; b=nSGUZmn+pUud33Iu03BWEBhpm08PKS2OMV6wWlgvH2GOw+BwUgOkthvfpSY+J73Pw/X+m+BCvT0ObMIDeqYCA5FinhevcBa3Hc7bN3bgnrQU25lR1UNn9zCOpkpkCpBdI8NLicUu8+cjf643oBBHMLQYQqDZm5C8CMDyHzvTfyU=
+	t=1770216478; cv=none; b=seTKIeduWgRv7dd3pVbWHXVD02oKrrGgVtt45YnH7uM2LhkYBiF/8UlCVCOxWF1U53DMswyBVjrSDmZF2gHcFjH96wdKwZbF7F7x4wbgNQ/rLjt8bxIvjiduhfXvz4g6khI4Jm55knOF6FJ8CKxqyJfV02i0dlXTQzSzg9Hsh2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217126; c=relaxed/simple;
-	bh=iYUCCtz33bRaof6rqf7WXBgzpldJRsVh1BxlD5ZC60o=;
+	s=arc-20240116; t=1770216478; c=relaxed/simple;
+	bh=6bHzCVPyxZ6cFFhTrDkLbJAmNHiM14SO6aWfCGwT/1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k835qHgqehiB8njTlDc3XsEqtJJ8HQGdYMc08eDXKarVUufl+jRuCCXoHvsGoTR2y6TL6rJ+Xzohw/pzMHQj+7W3axZCnQszCDO1rhIgxghYBG7ZhAxnw1A0L521sQSXpQB7L2l2aedGh9f1zY+l/hnoGPmYSNoS+CX8OBkFJdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Bu8J6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F1EC4CEF7;
-	Wed,  4 Feb 2026 14:58:45 +0000 (UTC)
+	 MIME-Version; b=HtGuUZMXid8hzHfKHkbUbt4+MoSXstNf5O4TlakJx1paQTrfOLDZ2ZPSRConYU/T9U+p/n+wMWbxMCWd2eJtwKCGFdScYvU3oAOC3sBjWre4TbT2ZXcXxxuhu+35Fd3Z2UtBHuawq8KgQO6aCr8BC8stv3QjYbAs9bEcG2wAlKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvZhaFBf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D022C4CEF7;
+	Wed,  4 Feb 2026 14:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217126;
-	bh=iYUCCtz33bRaof6rqf7WXBgzpldJRsVh1BxlD5ZC60o=;
+	s=korg; t=1770216477;
+	bh=6bHzCVPyxZ6cFFhTrDkLbJAmNHiM14SO6aWfCGwT/1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/Bu8J6jTt0FOJIU9UaUJ6KJnjMPH3q+Q0mZmovGA/wqM311bRN/p4B6PIAiJQf6u
-	 RX7Ji9Dh0X7ozoTGPYK0gCZGvSEwGqehCHsG6fRY7KefvXzNYKOTjxx101JgU8qNlt
-	 Epv8IguCyh/CSDuDh42ctEbXmZnZhnU0VRbb10kw=
+	b=PvZhaFBfe14yVJwtJz3Dg5NYApvl6mZlMsJT1c8O0zZ3oLq0Pt8kMlTH+O/n+FGSE
+	 8dOIlu7fHxiuh+EsSIV35oArIKme9zBwAG6eElnwod5tFLz15Hs0vxxwvGHhnfTIG3
+	 2oYK6v9K+k8yzeM71ZZb9iazEfXMdfGNCXbV/IE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Vivier <lvivier@redhat.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/206] usbnet: limit max_mtu based on devices hard_mtu
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 5.10 066/161] w1: fix redundant counter decrement in w1_attach_slave_device()
 Date: Wed,  4 Feb 2026 15:38:49 +0100
-Message-ID: <20260204143901.732738564@linuxfoundation.org>
+Message-ID: <20260204143854.131484291@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,85 +73,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213674-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213479-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,passt.top:url,gitlab.com:url]
-X-Rspamd-Queue-Id: A1E76E80E7
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: A24D2E77D0
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit c7159e960f1472a5493ac99aff0086ab1d683594 ]
+commit cc8f92e41eb76f450f05234fef2054afc3633100 upstream.
 
-The usbnet driver initializes net->max_mtu to ETH_MAX_MTU before calling
-the device's bind() callback. When the bind() callback sets
-dev->hard_mtu based the device's actual capability (from CDC Ethernet's
-wMaxSegmentSize descriptor), max_mtu is never updated to reflect this
-hardware limitation).
+In w1_attach_slave_device(), if __w1_attach_slave_device() fails,
+put_device() -> w1_slave_release() is called to do the cleanup job.
+In w1_slave_release(), sl->family->refcnt and sl->master->slave_count
+have already been decremented. There is no need to decrement twice
+in w1_attach_slave_device().
 
-This allows userspace (DHCP or IPv6 RA) to configure MTU larger than the
-device can handle, leading to silent packet drops when the backend sends
-packet exceeding the device's buffer size.
-
-Fix this by limiting net->max_mtu to the device's hard_mtu after the
-bind callback returns.
-
-See https://gitlab.com/qemu-project/qemu/-/issues/3268 and
-    https://bugs.passt.top/attachment.cgi?bugid=189
-
-Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Link: https://bugs.passt.top/show_bug.cgi?id=189
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20260119075518.2774373-1-lvivier@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c927c0c73fd ("w1: Fix slave count on 1-Wire bus (resend)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251218111414.564403-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/w1/w1.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index aceec2381e802..c4767a729be10 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1797,9 +1797,12 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
- 			net->flags |= IFF_NOARP;
- 
--		/* maybe the remote can't receive an Ethernet MTU */
--		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
--			net->mtu = dev->hard_mtu - net->hard_header_len;
-+		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
-+			net->max_mtu = dev->hard_mtu - net->hard_header_len;
-+
-+		if (net->mtu > net->max_mtu)
-+			net->mtu = net->max_mtu;
-+
- 	} else if (!info->in || !info->out)
- 		status = usbnet_get_endpoints (dev, udev);
- 	else {
--- 
-2.51.0
-
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -765,8 +765,6 @@ int w1_attach_slave_device(struct w1_mas
+ 	if (err < 0) {
+ 		dev_err(&dev->dev, "%s: Attaching %s failed.\n", __func__,
+ 			 sl->name);
+-		dev->slave_count--;
+-		w1_family_put(sl->family);
+ 		atomic_dec(&sl->master->refcnt);
+ 		kfree(sl);
+ 		return err;
 
 
 
