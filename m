@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-213884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHr2CNJrg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:58 +0100
+	id 8IwtMsBeg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229D2E992A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7660EE7B03
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9CCEF305F9CD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8FA6D302A5B9
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A03421889;
-	Wed,  4 Feb 2026 15:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969CD4218A1;
+	Wed,  4 Feb 2026 14:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HddrBP8z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMMDVDAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA63441C312;
-	Wed,  4 Feb 2026 15:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FB642189C;
+	Wed,  4 Feb 2026 14:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217834; cv=none; b=I6NjAKeXKilyQHrZuuvErKrM49CrOwWWyh6TVQ7rzlENrt38EgMxtQOYomwSzCYuiBDd58RQb7Oq3mLU3hjnEjjxWvOUwAIy8SxqbZUsYziG5jh5kNOORrk6qnqsZg4We13TMMJN+fH/4RTaPCb4WVUBoEvjLmz591d8j5opokE=
+	t=1770216940; cv=none; b=pOLhe6y9msxsnCIPzvT1ywVaOheH4A1dp6Q+QOYqCAQlc/k+2TMC0ntYN/aZhYgcwlP2CDf2bgQYvTYqQMuQRM/zWVRzEMFF5Rkf/U35PoWbRNRlhvOHRIvg1I1wQFNRZTcLIZDK98OkhtBGKQ7rcLEU2jKAGvEDIJxrHLB3YyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217834; c=relaxed/simple;
-	bh=UhUjfEfKsRMrMl9tCudsdMnJIXLZffnwa3zEU2DQPig=;
+	s=arc-20240116; t=1770216940; c=relaxed/simple;
+	bh=cRv8pEVn8i80DbOxNWdD/3J2bLohkPdfCeENlXu2YFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtE5MuSVxsH/Iw1Im/76BiTjihCHEiMMBVRZ74o/D3MTvBM7K0PCpoWzpYI2rA6msFPsvzbNBlvbqn11Tb63IGwu9UGynPSWXAh4rJoSOEgqeNCnigrIXBRwvSGUpAaeGAf4Pabqm7j0e9+FO5iSSM24O4q1E9jhFj2KfSI1GM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HddrBP8z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388BAC4CEF7;
-	Wed,  4 Feb 2026 15:10:34 +0000 (UTC)
+	 MIME-Version; b=sqVdQgmXddQgcTM2IXHYEey59GYFSHes8C9Jag+abmUjZU30x8D2hfD9x/7O4WWYYIRCGzqNnvGgl+fFOlKWmSZBI9BllX2lGUG6tpemOPtgXw3P7tcEHX9jx0W1a1WK6X1GpZqPeK9zWqjtnr/NBUi4RT1CJafYacWkWcMvr4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMMDVDAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F1BC4CEF7;
+	Wed,  4 Feb 2026 14:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217834;
-	bh=UhUjfEfKsRMrMl9tCudsdMnJIXLZffnwa3zEU2DQPig=;
+	s=korg; t=1770216940;
+	bh=cRv8pEVn8i80DbOxNWdD/3J2bLohkPdfCeENlXu2YFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HddrBP8zfwoAyO5zTcpOj0fFx+LUUtJmaObUtgjVJolIoa0cUESCJf1cmvxWQKQv3
-	 Tj17Qh2IEijxh9736S4CeOcIuXXvpWjuKbYqYpdM//HqTh0FoSh7JAwKRrTCYXM1h1
-	 Y8XH0UzmbY5w9bfu5nMS8gX2izr0/X5MRdl4A+48=
+	b=NMMDVDAvSieM34WCmtuB4BalREfWntR5xwWkFvSnAVnqKBywyGzOAYUa8O+5utcM6
+	 PrPzlVa5JTQVgR9rYyWi39LWhojZYMRTAwtwuCA6j4SJYGq2+7LBIo4OqlHI6QxbJu
+	 rjLbGXDR0O5vJ9hkS2qsh4koxlMGUAERG4h5sza8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
+	syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	James Chapman <jchapman@katalix.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/280] kconfig: refactor Makefile to reduce process forks
+Subject: [PATCH 5.15 077/206] l2tp: avoid one data-race in l2tp_tunnel_del_work()
 Date: Wed,  4 Feb 2026 15:38:28 +0100
-Message-ID: <20260204143914.463050403@linuxfoundation.org>
+Message-ID: <20260204143900.986259490@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,337 +68,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213884-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213620-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 229D2E992A
+	TAGGED_RCPT(0.00)[stable,7312e82745f7fa2526db];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,katalix.com:email]
+X-Rspamd-Queue-Id: 7660EE7B03
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3122c84409d578a5df8bcb1953547e0b871ac4c2 ]
+[ Upstream commit 7a29f6bf60f2590fe5e9c4decb451e19afad2bcf ]
 
-Refactor Makefile and use read-file macro. For Make >= 4.2, it can read
-out a file by using the built-in function.
+We should read sk->sk_socket only when dealing with kernel sockets.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Stable-dep-of: baaecfcac559 ("kconfig: fix static linking of nconf")
+syzbot reported the following data-race:
+
+BUG: KCSAN: data-race in l2tp_tunnel_del_work / sk_common_release
+
+write to 0xffff88811c182b20 of 8 bytes by task 5365 on cpu 0:
+  sk_set_socket include/net/sock.h:2092 [inline]
+  sock_orphan include/net/sock.h:2118 [inline]
+  sk_common_release+0xae/0x230 net/core/sock.c:4003
+  udp_lib_close+0x15/0x20 include/net/udp.h:325
+  inet_release+0xce/0xf0 net/ipv4/af_inet.c:437
+  __sock_release net/socket.c:662 [inline]
+  sock_close+0x6b/0x150 net/socket.c:1455
+  __fput+0x29b/0x650 fs/file_table.c:468
+  ____fput+0x1c/0x30 fs/file_table.c:496
+  task_work_run+0x131/0x1a0 kernel/task_work.c:233
+  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+  __exit_to_user_mode_loop kernel/entry/common.c:44 [inline]
+  exit_to_user_mode_loop+0x1fe/0x740 kernel/entry/common.c:75
+  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+  syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
+  syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
+  do_syscall_64+0x1e1/0x2b0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff88811c182b20 of 8 bytes by task 827 on cpu 1:
+  l2tp_tunnel_del_work+0x2f/0x1a0 net/l2tp/l2tp_core.c:1418
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0x4ce/0x9d0 kernel/workqueue.c:3340
+  worker_thread+0x582/0x770 kernel/workqueue.c:3421
+  kthread+0x489/0x510 kernel/kthread.c:463
+  ret_from_fork+0x149/0x290 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+value changed: 0xffff88811b818000 -> 0x0000000000000000
+
+Fixes: d00fa9adc528 ("l2tp: fix races with tunnel socket close")
+Reported-by: syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6968b029.050a0220.58bed.0016.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: James Chapman <jchapman@katalix.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/20260115092139.3066180-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/.gitignore   |  4 +++-
- scripts/kconfig/Makefile     | 45 +++++++++++++++++++-----------------
- scripts/kconfig/gconf-cfg.sh |  7 ++++--
- scripts/kconfig/mconf-cfg.sh | 25 +++++++++++---------
- scripts/kconfig/nconf-cfg.sh | 23 ++++++++++--------
- scripts/kconfig/qconf-cfg.sh | 10 +++++---
- scripts/remove-stale-files   |  2 ++
- 7 files changed, 68 insertions(+), 48 deletions(-)
+ net/l2tp/l2tp_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/.gitignore b/scripts/kconfig/.gitignore
-index 500e7424b3ef9..c8a3f9cd52f02 100644
---- a/scripts/kconfig/.gitignore
-+++ b/scripts/kconfig/.gitignore
-@@ -1,5 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- /conf
- /[gmnq]conf
--/[gmnq]conf-cfg
-+/[gmnq]conf-cflags
-+/[gmnq]conf-libs
-+/qconf-bin
- /qconf-moc.cc
-diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
-index b8ef0fb4bbef7..0b1d15efaeb0c 100644
---- a/scripts/kconfig/Makefile
-+++ b/scripts/kconfig/Makefile
-@@ -159,11 +159,12 @@ conf-objs	:= conf.o $(common-objs)
- hostprogs	+= nconf
- nconf-objs	:= nconf.o nconf.gui.o $(common-objs)
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index acd5b67858ddc..7e242ebac664a 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1252,8 +1252,6 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
+ {
+ 	struct l2tp_tunnel *tunnel = container_of(work, struct l2tp_tunnel,
+ 						  del_work);
+-	struct sock *sk = tunnel->sock;
+-	struct socket *sock = sk->sk_socket;
  
--HOSTLDLIBS_nconf	= $(shell . $(obj)/nconf-cfg && echo $$libs)
--HOSTCFLAGS_nconf.o	= $(shell . $(obj)/nconf-cfg && echo $$cflags)
--HOSTCFLAGS_nconf.gui.o	= $(shell . $(obj)/nconf-cfg && echo $$cflags)
-+HOSTLDLIBS_nconf       = $(call read-file, $(obj)/nconf-libs)
-+HOSTCFLAGS_nconf.o     = $(call read-file, $(obj)/nconf-cflags)
-+HOSTCFLAGS_nconf.gui.o = $(call read-file, $(obj)/nconf-cflags)
+ 	l2tp_tunnel_closeall(tunnel);
  
--$(obj)/nconf.o $(obj)/nconf.gui.o: $(obj)/nconf-cfg
-+$(obj)/nconf: | $(obj)/nconf-libs
-+$(obj)/nconf.o $(obj)/nconf.gui.o: | $(obj)/nconf-cflags
- 
- # mconf: Used for the menuconfig target based on lxdialog
- hostprogs	+= mconf
-@@ -171,27 +172,28 @@ lxdialog	:= $(addprefix lxdialog/, \
- 		     checklist.o inputbox.o menubox.o textbox.o util.o yesno.o)
- mconf-objs	:= mconf.o $(lxdialog) $(common-objs)
- 
--HOSTLDLIBS_mconf = $(shell . $(obj)/mconf-cfg && echo $$libs)
-+HOSTLDLIBS_mconf = $(call read-file, $(obj)/mconf-libs)
- $(foreach f, mconf.o $(lxdialog), \
--  $(eval HOSTCFLAGS_$f = $$(shell . $(obj)/mconf-cfg && echo $$$$cflags)))
-+  $(eval HOSTCFLAGS_$f = $$(call read-file, $(obj)/mconf-cflags)))
- 
--$(addprefix $(obj)/, mconf.o $(lxdialog)): $(obj)/mconf-cfg
-+$(obj)/mconf: | $(obj)/mconf-libs
-+$(addprefix $(obj)/, mconf.o $(lxdialog)): | $(obj)/mconf-cflags
- 
- # qconf: Used for the xconfig target based on Qt
- hostprogs	+= qconf
- qconf-cxxobjs	:= qconf.o qconf-moc.o
- qconf-objs	:= images.o $(common-objs)
- 
--HOSTLDLIBS_qconf	= $(shell . $(obj)/qconf-cfg && echo $$libs)
--HOSTCXXFLAGS_qconf.o	= $(shell . $(obj)/qconf-cfg && echo $$cflags)
--HOSTCXXFLAGS_qconf-moc.o = $(shell . $(obj)/qconf-cfg && echo $$cflags)
--
--$(obj)/qconf.o: $(obj)/qconf-cfg
-+HOSTLDLIBS_qconf         = $(call read-file, $(obj)/qconf-libs)
-+HOSTCXXFLAGS_qconf.o     = -std=c++11 -fPIC $(call read-file, $(obj)/qconf-cflags)
-+HOSTCXXFLAGS_qconf-moc.o = -std=c++11 -fPIC $(call read-file, $(obj)/qconf-cflags)
-+$(obj)/qconf: | $(obj)/qconf-libs
-+$(obj)/qconf.o $(obj)/qconf-moc.o: | $(obj)/qconf-cflags
- 
- quiet_cmd_moc = MOC     $@
--      cmd_moc = $(shell . $(obj)/qconf-cfg && echo $$moc) $< -o $@
-+      cmd_moc = $(call read-file, $(obj)/qconf-bin)/moc $< -o $@
- 
--$(obj)/qconf-moc.cc: $(src)/qconf.h $(obj)/qconf-cfg FORCE
-+$(obj)/qconf-moc.cc: $(src)/qconf.h FORCE | $(obj)/qconf-bin
- 	$(call if_changed,moc)
- 
- targets += qconf-moc.cc
-@@ -200,15 +202,16 @@ targets += qconf-moc.cc
- hostprogs	+= gconf
- gconf-objs	:= gconf.o images.o $(common-objs)
- 
--HOSTLDLIBS_gconf    = $(shell . $(obj)/gconf-cfg && echo $$libs)
--HOSTCFLAGS_gconf.o  = $(shell . $(obj)/gconf-cfg && echo $$cflags)
-+HOSTLDLIBS_gconf   = $(call read-file, $(obj)/gconf-libs)
-+HOSTCFLAGS_gconf.o = $(call read-file, $(obj)/gconf-cflags)
- 
--$(obj)/gconf.o: $(obj)/gconf-cfg
-+$(obj)/gconf: | $(obj)/gconf-libs
-+$(obj)/gconf.o: | $(obj)/gconf-cflags
- 
- # check if necessary packages are available, and configure build flags
--filechk_conf_cfg = $(CONFIG_SHELL) $<
-+cmd_conf_cfg = $< $(addprefix $(obj)/$*conf-, cflags libs bin)
- 
--$(obj)/%conf-cfg: $(src)/%conf-cfg.sh FORCE
--	$(call filechk,conf_cfg)
-+$(obj)/%conf-cflags $(obj)/%conf-libs $(obj)/%conf-bin: $(src)/%conf-cfg.sh
-+	$(call cmd,conf_cfg)
- 
--clean-files += *conf-cfg
-+clean-files += *conf-cflags *conf-libs *conf-bin
-diff --git a/scripts/kconfig/gconf-cfg.sh b/scripts/kconfig/gconf-cfg.sh
-index cbd90c28c05f2..040d8f3388202 100755
---- a/scripts/kconfig/gconf-cfg.sh
-+++ b/scripts/kconfig/gconf-cfg.sh
-@@ -1,6 +1,9 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- 
-+cflags=$1
-+libs=$2
+@@ -1261,6 +1259,8 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
+ 	 * the sk API to release it here.
+ 	 */
+ 	if (tunnel->fd < 0) {
++		struct socket *sock = tunnel->sock->sk_socket;
 +
- PKG="gtk+-2.0 gmodule-2.0 libglade-2.0"
- 
- if [ -z "$(command -v ${HOSTPKG_CONFIG})" ]; then
-@@ -26,5 +29,5 @@ if ! ${HOSTPKG_CONFIG} --atleast-version=2.0.0 gtk+-2.0; then
- 	exit 1
- fi
- 
--echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
--echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
-+${HOSTPKG_CONFIG} --cflags ${PKG} > ${cflags}
-+${HOSTPKG_CONFIG} --libs ${PKG} > ${libs}
-diff --git a/scripts/kconfig/mconf-cfg.sh b/scripts/kconfig/mconf-cfg.sh
-index 025b565e0b7cd..1e61f50a59050 100755
---- a/scripts/kconfig/mconf-cfg.sh
-+++ b/scripts/kconfig/mconf-cfg.sh
-@@ -1,19 +1,22 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- 
-+cflags=$1
-+libs=$2
-+
- PKG="ncursesw"
- PKG2="ncurses"
- 
- if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
- 	if ${HOSTPKG_CONFIG} --exists $PKG; then
--		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
--		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
-+		${HOSTPKG_CONFIG} --cflags ${PKG} > ${cflags}
-+		${HOSTPKG_CONFIG} --libs ${PKG} > ${libs}
- 		exit 0
- 	fi
- 
--	if ${HOSTPKG_CONFIG} --exists $PKG2; then
--		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG2)\"
--		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG2)\"
-+	if ${HOSTPKG_CONFIG} --exists ${PKG2}; then
-+		${HOSTPKG_CONFIG} --cflags ${PKG2} > ${cflags}
-+		${HOSTPKG_CONFIG} --libs ${PKG2} > ${libs}
- 		exit 0
- 	fi
- fi
-@@ -22,22 +25,22 @@ fi
- # (Even if it is installed, some distributions such as openSUSE cannot
- # find ncurses by pkg-config.)
- if [ -f /usr/include/ncursesw/ncurses.h ]; then
--	echo cflags=\"-D_GNU_SOURCE -I/usr/include/ncursesw\"
--	echo libs=\"-lncursesw\"
-+	echo -D_GNU_SOURCE -I/usr/include/ncursesw > ${cflags}
-+	echo -lncursesw > ${libs}
- 	exit 0
- fi
- 
- if [ -f /usr/include/ncurses/ncurses.h ]; then
--	echo cflags=\"-D_GNU_SOURCE -I/usr/include/ncurses\"
--	echo libs=\"-lncurses\"
-+	echo -D_GNU_SOURCE -I/usr/include/ncurses > ${cflags}
-+	echo -lncurses > ${libs}
- 	exit 0
- fi
- 
- # As a final fallback before giving up, check if $HOSTCC knows of a default
- # ncurses installation (e.g. from a vendor-specific sysroot).
- if echo '#include <ncurses.h>' | ${HOSTCC} -E - >/dev/null 2>&1; then
--	echo cflags=\"-D_GNU_SOURCE\"
--	echo libs=\"-lncurses\"
-+	echo -D_GNU_SOURCE > ${cflags}
-+	echo -lncurses > ${libs}
- 	exit 0
- fi
- 
-diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
-index 3a10bac2adb3a..f871a2160e363 100755
---- a/scripts/kconfig/nconf-cfg.sh
-+++ b/scripts/kconfig/nconf-cfg.sh
-@@ -1,19 +1,22 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- 
-+cflags=$1
-+libs=$2
-+
- PKG="ncursesw menuw panelw"
- PKG2="ncurses menu panel"
- 
- if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
- 	if ${HOSTPKG_CONFIG} --exists $PKG; then
--		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
--		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
-+		${HOSTPKG_CONFIG} --cflags ${PKG} > ${cflags}
-+		${HOSTPKG_CONFIG} --libs ${PKG} > ${libs}
- 		exit 0
- 	fi
- 
- 	if ${HOSTPKG_CONFIG} --exists $PKG2; then
--		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG2)\"
--		echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG2)\"
-+		${HOSTPKG_CONFIG} --cflags ${PKG2} > ${cflags}
-+		${HOSTPKG_CONFIG} --libs ${PKG2} > ${libs}
- 		exit 0
- 	fi
- fi
-@@ -22,20 +25,20 @@ fi
- # (Even if it is installed, some distributions such as openSUSE cannot
- # find ncurses by pkg-config.)
- if [ -f /usr/include/ncursesw/ncurses.h ]; then
--	echo cflags=\"-D_GNU_SOURCE -I/usr/include/ncursesw\"
--	echo libs=\"-lncursesw -lmenuw -lpanelw\"
-+	echo -D_GNU_SOURCE -I/usr/include/ncursesw > ${cflags}
-+	echo -lncursesw -lmenuw -lpanelw > ${libs}
- 	exit 0
- fi
- 
- if [ -f /usr/include/ncurses/ncurses.h ]; then
--	echo cflags=\"-D_GNU_SOURCE -I/usr/include/ncurses\"
--	echo libs=\"-lncurses -lmenu -lpanel\"
-+	echo -D_GNU_SOURCE -I/usr/include/ncurses > ${cflags}
-+	echo -lncurses -lmenu -lpanel > ${libs}
- 	exit 0
- fi
- 
- if [ -f /usr/include/ncurses.h ]; then
--	echo cflags=\"-D_GNU_SOURCE\"
--	echo libs=\"-lncurses -lmenu -lpanel\"
-+	echo -D_GNU_SOURCE > ${cflags}
-+	echo -lncurses -lmenu -lpanel > ${libs}
- 	exit 0
- fi
- 
-diff --git a/scripts/kconfig/qconf-cfg.sh b/scripts/kconfig/qconf-cfg.sh
-index ad652cb539474..117f36e568fc5 100755
---- a/scripts/kconfig/qconf-cfg.sh
-+++ b/scripts/kconfig/qconf-cfg.sh
-@@ -1,6 +1,10 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- 
-+cflags=$1
-+libs=$2
-+bin=$3
-+
- PKG="Qt5Core Qt5Gui Qt5Widgets"
- 
- if [ -z "$(command -v ${HOSTPKG_CONFIG})" ]; then
-@@ -11,9 +15,9 @@ if [ -z "$(command -v ${HOSTPKG_CONFIG})" ]; then
- fi
- 
- if ${HOSTPKG_CONFIG} --exists $PKG; then
--	echo cflags=\"-std=c++11 -fPIC $(${HOSTPKG_CONFIG} --cflags $PKG)\"
--	echo libs=\"$(${HOSTPKG_CONFIG} --libs $PKG)\"
--	echo moc=\"$(${HOSTPKG_CONFIG} --variable=host_bins Qt5Core)/moc\"
-+	${HOSTPKG_CONFIG} --cflags ${PKG} > ${cflags}
-+	${HOSTPKG_CONFIG} --libs ${PKG} > ${libs}
-+	${HOSTPKG_CONFIG} --variable=host_bins Qt5Core > ${bin}
- 	exit 0
- fi
- 
-diff --git a/scripts/remove-stale-files b/scripts/remove-stale-files
-index ccadfa3afb2b8..64b14aa5aebf4 100755
---- a/scripts/remove-stale-files
-+++ b/scripts/remove-stale-files
-@@ -47,3 +47,5 @@ rm -f arch/riscv/purgatory/kexec-purgatory.c
- rm -f scripts/extract-cert
- 
- rm -f arch/x86/purgatory/kexec-purgatory.c
-+
-+rm -f scripts/kconfig/[gmnq]conf-cfg
+ 		if (sock) {
+ 			kernel_sock_shutdown(sock, SHUT_RDWR);
+ 			sock_release(sock);
 -- 
 2.51.0
 
