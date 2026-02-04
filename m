@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-213920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EN/9K7lkg2l1mQMAu9opvQ
-	(envelope-from <stable+bounces-213920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:41 +0100
+	id 0GNOKGVjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:01 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10473E8793
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07542E844B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C46E31044C8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 520E831FEA1D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709FC2D8773;
-	Wed,  4 Feb 2026 15:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6030E42188A;
+	Wed,  4 Feb 2026 14:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwfD7r8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpeyWGD6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E53421A01;
-	Wed,  4 Feb 2026 15:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244FD41B37C;
+	Wed,  4 Feb 2026 14:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217957; cv=none; b=hRbMABW9WGaalc3WTjk4wrJHqbbX5erLBQtJAHLbCwXm+o1syvoSTd02rqyHx+4uIdi8Cbt93Zvo2oNA07y1z9Vl/K4hHSp3r+6IDUtZVe8teKZEDRTc2imw9mviQdI5YgmfREKcWOMY+sIIcmSy7FhYYsMoL5i8+dP5yymONiU=
+	t=1770217067; cv=none; b=uBGimB/ZuHeLVbTdYht1NxOHvuUMnx3JWcswK90kuSKVx3nVSjlCWEUBd8C4xq9lWZ7dB85RiZfO/jd7EwAfKPC4725uN0yTgVF9qQDaP+xBIPSWfUPrwlNQS8q3DSyXA/sgRWKSz5Am0qjDEYpdzwYH5/Z4eVZi7ejqnj1Ug4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217957; c=relaxed/simple;
-	bh=1NVgiO51Bnx5qt/EI2l8M7D/cooeong+z6+tlVa1MUU=;
+	s=arc-20240116; t=1770217067; c=relaxed/simple;
+	bh=WhxY5hF5Ny0D1hP6ImfIDzTVkMKYFrP59AquQ3fS+0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMJnAsnjeeJz2QItm0BzYJFYdsxfk0Ol1BCGTJpLX1RRbyox8vH3I0yT1gcvqbyYt9vIjXzPkbk5kh7nECdRkgYqo+i1aN+/QkMkwXxlrpIVvn98ymZz6grkY1VyzLopjO+9J+XKtPfC/FujrtQqYcIXhvQSrDcYwafmcI7J+e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwfD7r8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629C9C116C6;
-	Wed,  4 Feb 2026 15:12:36 +0000 (UTC)
+	 MIME-Version; b=nz6J0z0MbwZRqv+518xGquqKqEBvStOfZJ6rXQ8imeoMFwpcXQjhg3D6U5s5pp1H/LqOhDZHfEa8eT9BZiv8QisTAbeZfpIeFBhLNN+hOodsd6Pi/gzU/1e/OiRSensLur52QQv3dMuim2No9xzLFMh19pxrDiZkiv3cIv4e2hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpeyWGD6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B87DC19423;
+	Wed,  4 Feb 2026 14:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217956;
-	bh=1NVgiO51Bnx5qt/EI2l8M7D/cooeong+z6+tlVa1MUU=;
+	s=korg; t=1770217066;
+	bh=WhxY5hF5Ny0D1hP6ImfIDzTVkMKYFrP59AquQ3fS+0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwfD7r8JGJLfixCBm+OcMjx5X1iZ8uPw4DlFw5CyReA9ouZqdCbKNTzTZUJoPaGF3
-	 w0fC4sbAPB7kXr66pO02db+NKjVMgySij/f/RPM2YoK7vktxfXL4JOBDKBlULm6KsH
-	 35gBj2FDx7fKvU89CbKcSZq3RKs7JV7PLdyB+q/0=
+	b=KpeyWGD6kMpri+PFmEoo10IOW0xgqGQNcmWlffSlVb6hAh9pwitV7uSst9QtmJvZ6
+	 BxbY27735GSInHWtblku/5GpG8/Lv0bf3wJ9rY2bqRlkmx9RRKQ/R3SlnZz4Xtysqj
+	 Al14lINB4AJNVLh/AeNEakT4vEowA7bKrj/5wTIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 170/280] slimbus: core: fix runtime PM imbalance on report present
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ricky WU <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 113/206] mmc: rtsx_pci_sdmmc: implement sdmmc_card_busy function
 Date: Wed,  4 Feb 2026 15:39:04 +0100
-Message-ID: <20260204143915.737796276@linuxfoundation.org>
+Message-ID: <20260204143902.274617862@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,81 +74,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213920-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213656-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 10473E8793
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,linux.dev:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 07542E844B
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-commit 0eb4ff6596114aabba1070a66afa2c2f5593739f upstream.
+commit 122610220134b32c742cc056eaf64f7017ac8cd9 upstream.
 
-Make sure to balance the runtime PM usage count in case slimbus device
-or address allocation fails on report present, which would otherwise
-prevent the controller from suspending.
+rtsx_pci_sdmmc does not have an sdmmc_card_busy function, so any voltage
+switches cause a kernel warning, "mmc0: cannot verify signal voltage
+switch."
 
-Fixes: 4b14e62ad3c9 ("slimbus: Add support for 'clock-pause' feature")
-Cc: stable@vger.kernel.org	# 4.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251126145329.5022-3-johan@kernel.org
+Copy the sdmmc_card_busy function from rtsx_pci_usb to rtsx_pci_sdmmc to
+fix this.
+
+Fixes: ff984e57d36e ("mmc: Add realtek pcie sdmmc host driver")
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Tested-by: Ricky WU <ricky_wu@realtek.com>
+Reviewed-by: Ricky WU <ricky_wu@realtek.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/core.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/mmc/host/rtsx_pci_sdmmc.c |   41 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/drivers/slimbus/core.c
-+++ b/drivers/slimbus/core.c
-@@ -496,21 +496,23 @@ int slim_device_report_present(struct sl
- 	if (ctrl->sched.clk_state != SLIM_CLK_ACTIVE) {
- 		dev_err(ctrl->dev, "slim ctrl not active,state:%d, ret:%d\n",
- 				    ctrl->sched.clk_state, ret);
--		goto slimbus_not_active;
-+		goto out_put_rpm;
- 	}
+--- a/drivers/mmc/host/rtsx_pci_sdmmc.c
++++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+@@ -1307,6 +1307,46 @@ out:
+ 	return err;
+ }
  
- 	sbdev = slim_get_device(ctrl, e_addr);
--	if (IS_ERR(sbdev))
--		return -ENODEV;
-+	if (IS_ERR(sbdev)) {
-+		ret = -ENODEV;
-+		goto out_put_rpm;
-+	}
- 
- 	if (sbdev->is_laddr_valid) {
- 		*laddr = sbdev->laddr;
--		return 0;
-+		ret = 0;
-+	} else {
-+		ret = slim_device_alloc_laddr(sbdev, true);
- 	}
- 
--	ret = slim_device_alloc_laddr(sbdev, true);
--
--slimbus_not_active:
-+out_put_rpm:
- 	pm_runtime_mark_last_busy(ctrl->dev);
- 	pm_runtime_put_autosuspend(ctrl->dev);
- 	return ret;
++static int sdmmc_card_busy(struct mmc_host *mmc)
++{
++	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
++	struct rtsx_pcr *pcr = host->pcr;
++	int err;
++	u8 stat;
++	u8 mask = SD_DAT3_STATUS | SD_DAT2_STATUS | SD_DAT1_STATUS
++	| SD_DAT0_STATUS;
++
++	mutex_lock(&pcr->pcr_mutex);
++
++	rtsx_pci_start_run(pcr);
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP,
++			       SD_CLK_TOGGLE_EN);
++	if (err)
++		goto out;
++
++	mdelay(1);
++
++	err = rtsx_pci_read_register(pcr, SD_BUS_STAT, &stat);
++	if (err)
++		goto out;
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
++out:
++	mutex_unlock(&pcr->pcr_mutex);
++
++	if (err)
++		return err;
++
++	/* check if any pin between dat[0:3] is low */
++	if ((stat & mask) != mask)
++		return 1;
++	else
++		return 0;
++}
++
+ static int sdmmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ {
+ 	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
+@@ -1405,6 +1445,7 @@ static const struct mmc_host_ops realtek
+ 	.get_ro = sdmmc_get_ro,
+ 	.get_cd = sdmmc_get_cd,
+ 	.start_signal_voltage_switch = sdmmc_switch_voltage,
++	.card_busy = sdmmc_card_busy,
+ 	.execute_tuning = sdmmc_execute_tuning,
+ 	.init_sd_express = sdmmc_init_sd_express,
+ };
 
 
 
