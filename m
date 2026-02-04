@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHSPFaptg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:50 +0100
+	id kC5qHWVog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5274EE9C43
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D661E917E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B008331BD5E8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:31:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E641C3017252
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3694A273D77;
-	Wed,  4 Feb 2026 15:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBDB2C3254;
+	Wed,  4 Feb 2026 15:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNVjGdzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+u8/9Ec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B219E96D;
-	Wed,  4 Feb 2026 15:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304F92BEFED;
+	Wed,  4 Feb 2026 15:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219091; cv=none; b=pfjJJZzClFZvH0xxvu+w2GatYcGAnwygtZqxtQYViVz9HlSlT2hh8rpST/Gtn7nMUfl2O8Y9j+h4NYjz6Gj0LdHOPugxQae+HotCMjuQo0EuckcLnqIULjmES9Qck3frxqyU6In1EzkUhnGLA8bhqPTnoar7L4wTTAVQ4DucTOQ=
+	t=1770218166; cv=none; b=KcxVWzYPH6+rxmn11qY88XToMH8OUNTIcDaalXQFeHDtvHmF7jzUYbiZAzzlr0Hm5aA/HenTvP/M3bP6MSpoIm/V4hyDkJgJuQS2Lese4bDAefBiGE6fPFBcySXKHLOwQlOTHqyOmMkt1uDyWIdLihZfZcKrqgPcLXN56/bgsik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219091; c=relaxed/simple;
-	bh=L9YCclQGQmuLi2eND9meB35oRSCLXh9bd4iPVwpTrls=;
+	s=arc-20240116; t=1770218166; c=relaxed/simple;
+	bh=8rGPeXRFILS8TeBfSerupNifSxFdc84nZau9x6lDx/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WuE34ZutcakfX4eArnn4tNuHVc+E4HKcmzTnUO23mUmj6OyjSfdVdT9QXe67miRCOQ1a1pcXDoFHVRSLC4kq+WM43xQ0jlyXRWIvvgruj93ysXmvMw0wUAqIa6zIFwQ3S1rwy0ZUCN8D6qbn7tPPAQtnupGuNuZ85DD+hG95WGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNVjGdzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4C3C4CEF7;
-	Wed,  4 Feb 2026 15:31:30 +0000 (UTC)
+	 MIME-Version; b=VKVk3fxPUNLQ7GHwVSgp2ONdycAejpPzS5T0AihmIhrqQfbCNM63bfU1C1HQrUMW6TdyweLqKkdJ9yvQ4gCJw7GJJkViwb7uzNmxxD3RBb20CXjvo0V9kk5P3D8p9dteKkkZdW4bOcRnLmdYRXVajLFPJuPrjutjwUG67T4voBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+u8/9Ec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95632C4CEF7;
+	Wed,  4 Feb 2026 15:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219090;
-	bh=L9YCclQGQmuLi2eND9meB35oRSCLXh9bd4iPVwpTrls=;
+	s=korg; t=1770218166;
+	bh=8rGPeXRFILS8TeBfSerupNifSxFdc84nZau9x6lDx/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WNVjGdzWJOpu9Bvg6aBqPMacsox/wOitBNW03VtLheSEoIbVRCkakNXO319n++lB0
-	 z9LE4+0T8vm8ji+JFoMZ0OSqPh7Whsn71Ob0hPF9Pl8UDueE84HmITm8XTYSKinyxY
-	 9WJI6cXgb6MN1oECbUx1YpN3xuphPck4XJtDuqaQ=
+	b=U+u8/9EcgQyKoxFqHXiSGE8K5d2oHh0EKkSX63RMcCJVbFAMkMybkoTcyElOLaYru
+	 grSKcnWm6my3Pl6xZ8DNoWOKIV8jCfu5OBIfWC1jBV5LvHkwoFSpaJGNTPLxHgN2UJ
+	 FT+FEUZmRk05Mhp/4hRFLJgg//EwwHscOEQWAB+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/122] ixgbe: fix memory leaks in the ixgbe_recovery_probe() path
-Date: Wed,  4 Feb 2026 15:40:03 +0100
-Message-ID: <20260204143852.628766341@linuxfoundation.org>
+Subject: [PATCH 6.1 230/280] ksmbd: smbd: fix dma_unmap_sg() nents
+Date: Wed,  4 Feb 2026 15:40:04 +0100
+Message-ID: <20260204143917.897069584@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,122 +66,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214258-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213983-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5274EE9C43
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8D661E917E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 638344712aefeba97b6e0d90f560815fd88abd0f ]
+[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
 
-When ixgbe_recovery_probe() is invoked and this function fails,
-allocated resources in advance are not completely freed, because
-ixgbe_probe() returns ixgbe_recovery_probe() directly and
-ixgbe_recovery_probe() only frees partial resources, resulting in memory
-leaks including:
-- adapter->io_addr
-- adapter->jump_tables[0]
-- adapter->mac_table
-- adapter->rss_key
-- adapter->af_xdp_zc_qps
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-The leaked MMIO region can be observed in /proc/vmallocinfo, and the
-remaining leaks are reported by kmemleak.
-
-Don't return ixgbe_recovery_probe() directly, and instead let
-ixgbe_probe() to clean up resources on failures.
-
-Fixes: 29cb3b8d95c7 ("ixgbe: add E610 implementation of FW recovery mode")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 20 ++++++++-----------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ fs/smb/server/transport_rdma.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 3190ce7e44c74..ee1007e9b6355 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -11468,14 +11468,12 @@ static void ixgbe_set_fw_version(struct ixgbe_adapter *adapter)
-  */
- static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -1103,14 +1103,12 @@ static int get_sg_list(void *buf, int si
+ 
+ static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
+ 			      struct scatterlist *sg_list, int nentries,
+-			      enum dma_data_direction dir)
++			      enum dma_data_direction dir, int *npages)
  {
--	struct net_device *netdev = adapter->netdev;
- 	struct pci_dev *pdev = adapter->pdev;
- 	struct ixgbe_hw *hw = &adapter->hw;
--	bool disable_dev;
- 	int err = -EIO;
- 
- 	if (hw->mac.type != ixgbe_mac_e610)
--		goto clean_up_probe;
-+		return err;
- 
- 	ixgbe_get_hw_control(adapter);
- 	mutex_init(&hw->aci.lock);
-@@ -11507,13 +11505,6 @@ static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
- shutdown_aci:
- 	mutex_destroy(&adapter->hw.aci.lock);
- 	ixgbe_release_hw_control(adapter);
--clean_up_probe:
--	disable_dev = !test_and_set_bit(__IXGBE_DISABLED, &adapter->state);
--	free_netdev(netdev);
--	devlink_free(adapter->devlink);
--	pci_release_mem_regions(pdev);
--	if (disable_dev)
--		pci_disable_device(pdev);
- 	return err;
+-	int npages;
+-
+-	npages = get_sg_list(buf, size, sg_list, nentries);
+-	if (npages < 0)
++	*npages = get_sg_list(buf, size, sg_list, nentries);
++	if (*npages < 0)
+ 		return -EINVAL;
+-	return ib_dma_map_sg(device, sg_list, npages, dir);
++	return ib_dma_map_sg(device, sg_list, *npages, dir);
  }
  
-@@ -11655,8 +11646,13 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (err)
- 		goto err_sw_init;
+ static int post_sendmsg(struct smb_direct_transport *t,
+@@ -1179,12 +1177,13 @@ static int smb_direct_post_send_data(str
+ 	for (i = 0; i < niov; i++) {
+ 		struct ib_sge *sge;
+ 		int sg_cnt;
++		int npages;
  
--	if (ixgbe_check_fw_error(adapter))
--		return ixgbe_recovery_probe(adapter);
-+	if (ixgbe_check_fw_error(adapter)) {
-+		err = ixgbe_recovery_probe(adapter);
-+		if (err)
-+			goto err_sw_init;
-+
-+		return 0;
-+	}
- 
- 	if (adapter->hw.mac.type == ixgbe_mac_e610) {
- 		err = ixgbe_get_caps(&adapter->hw);
--- 
-2.51.0
-
+ 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
+ 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
+ 					    iov[i].iov_base, iov[i].iov_len,
+ 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
+-					    DMA_TO_DEVICE);
++					    DMA_TO_DEVICE, &npages);
+ 		if (sg_cnt <= 0) {
+ 			pr_err("failed to map buffer\n");
+ 			ret = -ENOMEM;
+@@ -1192,7 +1191,7 @@ static int smb_direct_post_send_data(str
+ 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
+ 			pr_err("buffer not fitted into sges\n");
+ 			ret = -E2BIG;
+-			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
++			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
+ 					DMA_TO_DEVICE);
+ 			goto err;
+ 		}
 
 
 
