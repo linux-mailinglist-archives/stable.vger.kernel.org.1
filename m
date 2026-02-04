@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-213833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNgFAItlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:11 +0100
+	id WGkDJ4xlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F294E8A1C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EBC4E8A2A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A34A63016EC0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C30DC304C0B0
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332334279ED;
-	Wed,  4 Feb 2026 15:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EB94279F2;
+	Wed,  4 Feb 2026 15:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCoZ1VQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEleGiqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB62E2C21ED;
-	Wed,  4 Feb 2026 15:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC8E4279EA;
+	Wed,  4 Feb 2026 15:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217664; cv=none; b=nq5IoPaYlzquMXanftyUDxOVVVm6vcLAj5JUbNnI5brpVNcI36gfQAT9PHkOY2fRJwy/zmjiSnT4Q/g8Zc9stTEk9EFpOY7fl8C0Na3iS0c9A0raABsL84mmkD7GQgJq1jvawQ4KZpBqcsBZ9DfDNMy/d+xsnKwOSalqgZJGZaw=
+	t=1770217667; cv=none; b=HuQ1LGaE1tLuIkQ06jG3t7/GAv0ifOXd1e6xv2skXxOpRd1KEXErsj2LiPAt/etxW0K7cWv47ApH7yikOmwUVor6J5gKaYGhO0S0v56+xY6KZUqUbg+lrrcP+z3/ZisTlvtffzgOwr82nD5jHXHVA7B7bfIoo86NS8qq/EOkAwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217664; c=relaxed/simple;
-	bh=ExQPEfmxo033Y29hLiCtj4r39Z0c59SDL93nBJeDOpw=;
+	s=arc-20240116; t=1770217667; c=relaxed/simple;
+	bh=nAB+WM9Xt+43G35jMkfmpfRhsSm4InGfuqqhnzyQ/hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGyEKP+cM7uz/+MtpWM4nayYLxOlFwIZLDCzczv/ACWsg3kVceKGFJNDPe+cSd/3JbHGWtGXqMmoINmeMBL3o8E8nzmsgEV2eBVUsVSxwBwwh2PCgoSQZROBqp23kVIbFYXn3xyRFqfnkJr2/RHtS45chCZztSiISPAiAtplKl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCoZ1VQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8A9C4CEF7;
-	Wed,  4 Feb 2026 15:07:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KpbOpVSx5KT/ne+Ov1O/Lz7Y+KkUL3PIjrEsD5ookEOAfYyNGmJz2JTprMk6PuXWiDEa1mYOyplkK/kPwtqoskYtt7wQsBVqBrzMeTbmIB73BY7ZSgQkqurkQZp9kGKQ15NmxZtNKTBrI1V7BwcYZDgkcb82CXR31JTmcZkZeYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEleGiqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99473C4CEF7;
+	Wed,  4 Feb 2026 15:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217663;
-	bh=ExQPEfmxo033Y29hLiCtj4r39Z0c59SDL93nBJeDOpw=;
+	s=korg; t=1770217667;
+	bh=nAB+WM9Xt+43G35jMkfmpfRhsSm4InGfuqqhnzyQ/hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCoZ1VQkR63pKqGyN6ss+xxbWu3vNlBrUyxPMFrE2ewjQGPACvEPuRY2t3+lNmeBK
-	 56z0G5j4DRkM7IpDQrr5tCSWTptXY4fCrdCidpNsJJVAeyjFE1yhIkeyWwvJ6Sl3Yz
-	 H+jtpjp2wF/Q6Sy7JOMZOyZ8dxnixNHXKnagr1Wc=
+	b=wEleGiqJIgcsWbXW9GLbeaNcF/sQbnzw1VfUTvMLVgzL31UsoEjxhUSLf3oIk8RZk
+	 XumU8L/BO3C4acrRdWTt0F0SI3o1DN0JmhKqr89fPWMTWxn/cboNsx6ofj2sPjssnF
+	 352/lpxW3p6RmXlaYraqznvpmVpzTyzj9Ai/LQyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Richard Cochran <richardcochran@gmail.com>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Thomas Gleixner <tglx@linutronix.de>,
 	Wojtek Wasko <wwasko@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/280] posix-clock: Store file pointer in struct posix_clock_context
-Date: Wed,  4 Feb 2026 15:37:35 +0100
-Message-ID: <20260204143912.573688570@linuxfoundation.org>
+Subject: [PATCH 6.1 082/280] ptp: Add PHC file mode checks. Allow RO adjtime() without FMODE_WRITE.
+Date: Wed,  4 Feb 2026 15:37:36 +0100
+Message-ID: <20260204143912.610224577@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -66,37 +66,37 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,linutronix.de,nvidia.com,davemloft.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213833-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,linutronix.de,davemloft.net,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213834-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[davemloft.net:email,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 7F294E8A1C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davemloft.net:email,nvidia.com:email,nwtime.org:url]
+X-Rspamd-Queue-Id: 1EBC4E8A2A
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
@@ -105,70 +105,107 @@ X-Rspamd-Action: no action
 
 From: Wojtek Wasko <wwasko@nvidia.com>
 
-[ Upstream commit e859d375d1694488015e6804bfeea527a0b25b9f ]
+[ Upstream commit b4e53b15c04e3852949003752f48f7a14ae39e86 ]
 
-File descriptor based pc_clock_*() operations of dynamic posix clocks
-have access to the file pointer and implement permission checks in the
-generic code before invoking the relevant dynamic clock callback.
+Many devices implement highly accurate clocks, which the kernel manages
+as PTP Hardware Clocks (PHCs). Userspace applications rely on these
+clocks to timestamp events, trace workload execution, correlate
+timescales across devices, and keep various clocks in sync.
 
-Character device operations (open, read, poll, ioctl) do not implement a
-generic permission control and the dynamic clock callbacks have no
-access to the file pointer to implement them.
+The kernel’s current implementation of PTP clocks does not enforce file
+permissions checks for most device operations except for POSIX clock
+operations, where file mode is verified in the POSIX layer before
+forwarding the call to the PTP subsystem. Consequently, it is common
+practice to not give unprivileged userspace applications any access to
+PTP clocks whatsoever by giving the PTP chardevs 600 permissions. An
+example of users running into this limitation is documented in [1].
+Additionally, POSIX layer requires WRITE permission even for readonly
+adjtime() calls which are used in PTP layer to return current frequency
+offset applied to the PHC.
 
-Extend struct posix_clock_context with a struct file pointer and
-initialize it in posix_clock_open(), so that all dynamic clock callbacks
-can access it.
+Add permission checks for functions that modify the state of a PTP
+device. Continue enforcing permission checks for POSIX clock operations
+(settime, adjtime) in the POSIX layer. Only require WRITE access for
+dynamic clocks adjtime() if any flags are set in the modes field.
+
+[1] https://lists.nwtime.org/sympa/arc/linuxptp-users/2024-01/msg00036.html
+
+Changes in v4:
+- Require FMODE_WRITE in ajtime() only for calls modifying the clock in
+  any way.
 
 Acked-by: Richard Cochran <richardcochran@gmail.com>
 Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/posix-clock.h | 6 +++++-
- kernel/time/posix-clock.c   | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/ptp/ptp_chardev.c | 16 ++++++++++++++++
+ kernel/time/posix-clock.c |  2 +-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/posix-clock.h b/include/linux/posix-clock.h
-index ef8619f489203..a500d3160fe8c 100644
---- a/include/linux/posix-clock.h
-+++ b/include/linux/posix-clock.h
-@@ -95,10 +95,13 @@ struct posix_clock {
-  * struct posix_clock_context - represents clock file operations context
-  *
-  * @clk:              Pointer to the clock
-+ * @fp:               Pointer to the file used to open the clock
-  * @private_clkdata:  Pointer to user data
-  *
-  * Drivers should use struct posix_clock_context during specific character
-- * device file operation methods to access the posix clock.
-+ * device file operation methods to access the posix clock. In particular,
-+ * the file pointer can be used to verify correct access mode for ioctl()
-+ * calls.
-  *
-  * Drivers can store a private data structure during the open operation
-  * if they have specific information that is required in other file
-@@ -106,6 +109,7 @@ struct posix_clock {
-  */
- struct posix_clock_context {
- 	struct posix_clock *clk;
-+	struct file *fp;
- 	void *private_clkdata;
- };
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index fcee202f4484c..aa38a518e3d7b 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -150,6 +150,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
  
+ 	case PTP_EXTTS_REQUEST:
+ 	case PTP_EXTTS_REQUEST2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		memset(&req, 0, sizeof(req));
+ 
+ 		if (copy_from_user(&req.extts, (void __user *)arg,
+@@ -191,6 +195,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ 
+ 	case PTP_PEROUT_REQUEST:
+ 	case PTP_PEROUT_REQUEST2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		memset(&req, 0, sizeof(req));
+ 
+ 		if (copy_from_user(&req.perout, (void __user *)arg,
+@@ -259,6 +267,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ 
+ 	case PTP_ENABLE_PPS:
+ 	case PTP_ENABLE_PPS2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		memset(&req, 0, sizeof(req));
+ 
+ 		if (!capable(CAP_SYS_TIME))
+@@ -397,6 +409,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ 
+ 	case PTP_PIN_SETFUNC:
+ 	case PTP_PIN_SETFUNC2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		if (copy_from_user(&pd, (void __user *)arg, sizeof(pd))) {
+ 			err = -EFAULT;
+ 			break;
 diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index a6487a9d60853..b130bb56cc4e0 100644
+index b130bb56cc4e0..827abede72745 100644
 --- a/kernel/time/posix-clock.c
 +++ b/kernel/time/posix-clock.c
-@@ -129,6 +129,7 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+@@ -253,7 +253,7 @@ static int pc_clock_adjtime(clockid_t id, struct __kernel_timex *tx)
+ 	if (err)
+ 		return err;
+ 
+-	if ((cd.fp->f_mode & FMODE_WRITE) == 0) {
++	if (tx->modes && (cd.fp->f_mode & FMODE_WRITE) == 0) {
+ 		err = -EACCES;
  		goto out;
  	}
- 	pccontext->clk = clk;
-+	pccontext->fp = fp;
- 	if (clk->ops.open) {
- 		err = clk->ops.open(pccontext, fp->f_mode);
- 		if (err) {
 -- 
 2.51.0
 
