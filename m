@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-213793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDVmIxJkg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:54 +0100
+	id iPNXDqVkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52665E85DC
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D73E875B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C271D309B45C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:11:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75B163020461
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB5942317D;
-	Wed,  4 Feb 2026 15:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F4B423A6C;
+	Wed,  4 Feb 2026 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCmMpRHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNXov7kT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6005F2D5950;
-	Wed,  4 Feb 2026 15:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8FF2D8764;
+	Wed,  4 Feb 2026 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217529; cv=none; b=BboSa2Zq+KhHwiQN5pVvX0/csAgfJVjSFw8og4OIs519iO+unmaNRauMUfLDnp8I9Yz3aORuxRMEcznuhNW2prneUXoTWIUlpxv+E+dbeJWIq+D3H2WTPW7XKq20dBbLOov9X3iAN57AwKaulMquLdEmaPNO3USJLNRjVpE6fUQ=
+	t=1770217556; cv=none; b=RpIkpWitLATdvbD3IZ0YuLlqoyhZmtidKg4BDzQht842t17YXdAreef2ahRpx5Xa3puT+h9ROX95n0mrre/oPb68JByPH3LXZaDNytEMmBQjqEFaZjLgp3Y2tB4+qkUOio1lAcGqJt3ThY2tMzxTfSGcNZ1ugXsmQwp3n7PQUK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217529; c=relaxed/simple;
-	bh=yg/mRHnMsDEXF6DxHRJY/bdJL2bxvyPftKGHhI94oxY=;
+	s=arc-20240116; t=1770217556; c=relaxed/simple;
+	bh=LAo/nwXj3ErhybTyYKfSOwFR/XT05yfwDs/2dNCqNlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/j9eldwAkVkRXXxP0kuGpB4uQA0naRNOJM88GJb8EnR7HZLKxrskAeQgh3RAzWqVnHNf/sbkvmpyPGkkDODIoiopXp9VF6gDdvVRaMT5A+lj94MAglwFl+68V9HZ0RzrlYO9uS7uALEr74HwrfHjEbfTIp4fLM6UI0D2LQyqW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCmMpRHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE56BC4CEF7;
-	Wed,  4 Feb 2026 15:05:28 +0000 (UTC)
+	 MIME-Version; b=Hk7Ca/U+SW2VCD4okX4MwmXYsoug0aNf8GNRpkcD5oyNtrQRE4E65XKs0BBMs2HLe57MWsVaOpX/3dcuMkuPfrJI1fVYElnd/ODl8KTAmV8rVAtgQ1M9Ju9YP2KVLHVgP4ywazULrju5oy4jNsGaBqbyL/bcD81Mp3qax9WfLrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNXov7kT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5CDC4CEF7;
+	Wed,  4 Feb 2026 15:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217529;
-	bh=yg/mRHnMsDEXF6DxHRJY/bdJL2bxvyPftKGHhI94oxY=;
+	s=korg; t=1770217556;
+	bh=LAo/nwXj3ErhybTyYKfSOwFR/XT05yfwDs/2dNCqNlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCmMpRHAd0jN36k38EbY7OolRYN08ePSKCGeb/4QgVyt+x2TmFEQRZaGrG5FOyZzw
-	 wCyWIu5XPTPuCxjlvf7/2JssuiBFymAO5n7cBRiXgylicPCvkoFQpqnHBdkyVb7qlD
-	 dRnD+rToaSCo5vODaQA+fATUo64bkNFY0w505rvM=
+	b=YNXov7kTF249ld8kCzHlcHcCMV4ibMnQ9WkiYYyyL+qBJv4g3Oxg61Vw+yZh7e5Ne
+	 FNyHltyPXTRAHVCBMpE0IyKHEh6sQ3K+wTBzylPEUhghm21HlvSadek7BOrNnLHhWU
+	 cLeFaQzTzaUe0+G/6b5SZySBjdQI1lckNqzb+fM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/280] net/mlx5e: Restore destroying state bit after profile cleanup
-Date: Wed,  4 Feb 2026 15:36:29 +0100
-Message-ID: <20260204143910.179404261@linuxfoundation.org>
+Subject: [PATCH 6.1 016/280] btrfs: move flush related definitions to space-info.h
+Date: Wed,  4 Feb 2026 15:36:30 +0100
+Message-ID: <20260204143910.214944805@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213793-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213801-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,80 +88,229 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 52665E85DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,toxicpanda.com:email]
+X-Rspamd-Queue-Id: 66D73E875B
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 5629f8859dca7ef74d7314b60de6a957f23166c0 ]
+[ Upstream commit f1e5c6185ca166cde0c7c2eeeab5d233ef315140 ]
 
-Profile rollback can fail in mlx5e_netdev_change_profile() and we will
-end up with invalid mlx5e_priv memset to 0, we must maintain the
-'destroying' bit in order to gracefully shutdown even if the
-profile/priv are not valid.
+This code is used in space-info.c, move the definitions to space-info.h.
 
-This patch maintains the previous state of the 'destroying' state of
-mlx5e_priv after priv cleanup, to allow the remove flow to cleanup
-common resources from mlx5_core to avoid FW fatal errors as seen below:
-
-$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
-    Error: mlx5_core: Failed setting eswitch to offloads.
-dmesg: mlx5_core 0000:00:03.0 enp0s3np0: failed to rollback to orig profile, ...
-
-$ devlink dev reload pci/0000:00:03.0
-
-mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
-mlx5_core 0000:00:03.0: poll_health:803:(pid 519): Fatal error 3 detected
-mlx5_core 0000:00:03.0: firmware version: 28.41.1000
-mlx5_core 0000:00:03.0: 0.000 Gb/s available PCIe bandwidth (Unknown x255 link)
-mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
-mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
-mlx5_core 0000:00:03.0: mlx5_health_try_recover:340:(pid 141): handling bad device here
-mlx5_core 0000:00:03.0: mlx5_handle_bad_state:285:(pid 141): Expected to see disabled NIC but it is full driver
-mlx5_core 0000:00:03.0: mlx5_error_sw_reset:236:(pid 141): start
-mlx5_core 0000:00:03.0: NIC IFC still 0 after 4000ms.
-
-Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260108212657.25090-5-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: a11224a016d6 ("btrfs: fix memory leaks in create_space_info() error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/ctree.h         | 59 ----------------------------------------
+ fs/btrfs/delayed-inode.c |  1 +
+ fs/btrfs/inode-item.c    |  1 +
+ fs/btrfs/props.c         |  1 +
+ fs/btrfs/relocation.c    |  1 +
+ fs/btrfs/space-info.h    | 59 ++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 63 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 0c1f89196f6c1..73011870e5ff6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5566,6 +5566,7 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index da8986e0c4222..bd84a8b774a68 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -2925,65 +2925,6 @@ int btrfs_inc_extent_ref(struct btrfs_trans_handle *trans,
  
- void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- {
-+	bool destroying = test_bit(MLX5E_STATE_DESTROYING, &priv->state);
- 	int i;
+ void btrfs_clear_space_info_full(struct btrfs_fs_info *info);
  
- 	/* bail if change profile failed and also rollback failed */
-@@ -5591,6 +5592,8 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- 	}
+-/*
+- * Different levels for to flush space when doing space reservations.
+- *
+- * The higher the level, the more methods we try to reclaim space.
+- */
+-enum btrfs_reserve_flush_enum {
+-	/* If we are in the transaction, we can't flush anything.*/
+-	BTRFS_RESERVE_NO_FLUSH,
+-
+-	/*
+-	 * Flush space by:
+-	 * - Running delayed inode items
+-	 * - Allocating a new chunk
+-	 */
+-	BTRFS_RESERVE_FLUSH_LIMIT,
+-
+-	/*
+-	 * Flush space by:
+-	 * - Running delayed inode items
+-	 * - Running delayed refs
+-	 * - Running delalloc and waiting for ordered extents
+-	 * - Allocating a new chunk
+-	 */
+-	BTRFS_RESERVE_FLUSH_EVICT,
+-
+-	/*
+-	 * Flush space by above mentioned methods and by:
+-	 * - Running delayed iputs
+-	 * - Committing transaction
+-	 *
+-	 * Can be interrupted by a fatal signal.
+-	 */
+-	BTRFS_RESERVE_FLUSH_DATA,
+-	BTRFS_RESERVE_FLUSH_FREE_SPACE_INODE,
+-	BTRFS_RESERVE_FLUSH_ALL,
+-
+-	/*
+-	 * Pretty much the same as FLUSH_ALL, but can also steal space from
+-	 * global rsv.
+-	 *
+-	 * Can be interrupted by a fatal signal.
+-	 */
+-	BTRFS_RESERVE_FLUSH_ALL_STEAL,
+-};
+-
+-enum btrfs_flush_state {
+-	FLUSH_DELAYED_ITEMS_NR	=	1,
+-	FLUSH_DELAYED_ITEMS	=	2,
+-	FLUSH_DELAYED_REFS_NR	=	3,
+-	FLUSH_DELAYED_REFS	=	4,
+-	FLUSH_DELALLOC		=	5,
+-	FLUSH_DELALLOC_WAIT	=	6,
+-	FLUSH_DELALLOC_FULL	=	7,
+-	ALLOC_CHUNK		=	8,
+-	ALLOC_CHUNK_FORCE	=	9,
+-	RUN_DELAYED_IPUTS	=	10,
+-	COMMIT_TRANS		=	11,
+-};
+-
+ int btrfs_subvolume_reserve_metadata(struct btrfs_root *root,
+ 				     struct btrfs_block_rsv *rsv,
+ 				     int nitems, bool use_global_rsv);
+diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
+index 052112d0daa74..214168868ac08 100644
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -14,6 +14,7 @@
+ #include "qgroup.h"
+ #include "locking.h"
+ #include "inode-item.h"
++#include "space-info.h"
  
- 	memset(priv, 0, sizeof(*priv));
-+	if (destroying) /* restore destroying bit, to allow unload */
-+		set_bit(MLX5E_STATE_DESTROYING, &priv->state);
- }
+ #define BTRFS_DELAYED_WRITEBACK		512
+ #define BTRFS_DELAYED_BACKGROUND	128
+diff --git a/fs/btrfs/inode-item.c b/fs/btrfs/inode-item.c
+index 5add022d3534f..ce5c51ffdc0d0 100644
+--- a/fs/btrfs/inode-item.c
++++ b/fs/btrfs/inode-item.c
+@@ -8,6 +8,7 @@
+ #include "disk-io.h"
+ #include "transaction.h"
+ #include "print-tree.h"
++#include "space-info.h"
  
- static unsigned int mlx5e_get_max_num_txqs(struct mlx5_core_dev *mdev,
+ struct btrfs_inode_ref *btrfs_find_name_in_backref(struct extent_buffer *leaf,
+ 						   int slot,
+diff --git a/fs/btrfs/props.c b/fs/btrfs/props.c
+index 055a631276ce1..07f62e3ba6a51 100644
+--- a/fs/btrfs/props.c
++++ b/fs/btrfs/props.c
+@@ -10,6 +10,7 @@
+ #include "ctree.h"
+ #include "xattr.h"
+ #include "compression.h"
++#include "space-info.h"
+ 
+ #define BTRFS_PROP_HANDLERS_HT_BITS 8
+ static DEFINE_HASHTABLE(prop_handlers_ht, BTRFS_PROP_HANDLERS_HT_BITS);
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index 3fdf5519336f9..795df859cdbfc 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -27,6 +27,7 @@
+ #include "subpage.h"
+ #include "zoned.h"
+ #include "inode-item.h"
++#include "space-info.h"
+ 
+ /*
+  * Relocation overview
+diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
+index 99ce3225dd59d..fea2f93674e7c 100644
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -5,6 +5,65 @@
+ 
+ #include "volumes.h"
+ 
++/*
++ * Different levels for to flush space when doing space reservations.
++ *
++ * The higher the level, the more methods we try to reclaim space.
++ */
++enum btrfs_reserve_flush_enum {
++	/* If we are in the transaction, we can't flush anything.*/
++	BTRFS_RESERVE_NO_FLUSH,
++
++	/*
++	 * Flush space by:
++	 * - Running delayed inode items
++	 * - Allocating a new chunk
++	 */
++	BTRFS_RESERVE_FLUSH_LIMIT,
++
++	/*
++	 * Flush space by:
++	 * - Running delayed inode items
++	 * - Running delayed refs
++	 * - Running delalloc and waiting for ordered extents
++	 * - Allocating a new chunk
++	 */
++	BTRFS_RESERVE_FLUSH_EVICT,
++
++	/*
++	 * Flush space by above mentioned methods and by:
++	 * - Running delayed iputs
++	 * - Committing transaction
++	 *
++	 * Can be interrupted by a fatal signal.
++	 */
++	BTRFS_RESERVE_FLUSH_DATA,
++	BTRFS_RESERVE_FLUSH_FREE_SPACE_INODE,
++	BTRFS_RESERVE_FLUSH_ALL,
++
++	/*
++	 * Pretty much the same as FLUSH_ALL, but can also steal space from
++	 * global rsv.
++	 *
++	 * Can be interrupted by a fatal signal.
++	 */
++	BTRFS_RESERVE_FLUSH_ALL_STEAL,
++};
++
++enum btrfs_flush_state {
++	FLUSH_DELAYED_ITEMS_NR	= 1,
++	FLUSH_DELAYED_ITEMS	= 2,
++	FLUSH_DELAYED_REFS_NR	= 3,
++	FLUSH_DELAYED_REFS	= 4,
++	FLUSH_DELALLOC		= 5,
++	FLUSH_DELALLOC_WAIT	= 6,
++	FLUSH_DELALLOC_FULL	= 7,
++	ALLOC_CHUNK		= 8,
++	ALLOC_CHUNK_FORCE	= 9,
++	RUN_DELAYED_IPUTS	= 10,
++	COMMIT_TRANS		= 11,
++};
++
+ struct btrfs_space_info {
+ 	spinlock_t lock;
+ 
 -- 
 2.51.0
 
