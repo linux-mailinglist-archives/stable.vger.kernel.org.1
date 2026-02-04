@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-214277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJAOLEFog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:45 +0100
+	id SHmdMn9qg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501D5E9104
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:39:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C51E96A5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F06430434A1
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43B62301CB33
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072FF2D8768;
-	Wed,  4 Feb 2026 15:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDECD4218BD;
+	Wed,  4 Feb 2026 15:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB5Xp8wY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaBPR1NF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAD02D0292;
-	Wed,  4 Feb 2026 15:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B224541B34E;
+	Wed,  4 Feb 2026 15:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219150; cv=none; b=RG7b1NPz2PPKukGlmQodBBOpS6oAc5uMGTBFLJJIwFd6R3OvtKG+JimdCEbh73BSc7FwKYAIis/LbsTnUu511PWPFqWNyuwjbpAkeWOj15D0rVMTSZXxG04bcSyhQ7PXqEbA3xcQE6d2KC9Z+JhpJ6aEbXoOELQQ5yc3C01u0fk=
+	t=1770218801; cv=none; b=HMDQ720xIEUThYDOAAu8gfFbcC730UlIP7ehNnx07HM2V54+PckMnIcGGjBDjLwQnXN4iUQvHLXlYHRXW+3mnTMy5E4/HOlYWx+XFUefmGtX4nSiyKOBmTRNR+A2AWDUeK03O9ikUlFONl6/yu6YX1Ztm3InQTeJhR1KdD6nifY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219150; c=relaxed/simple;
-	bh=K+2tthHPKYXkPy5CM7yl46Tcoq0OM5NhgmavIoGrl5M=;
+	s=arc-20240116; t=1770218801; c=relaxed/simple;
+	bh=kSKJiO9svrg/HDpYMg5XNtQvCyV0Ld2qH6ShONhGK1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqEHb8IhN5zFLWQGPNc/+uiSCEC4RioK7FWjZu3Nea5n7MJ7RVbi9FaP0a7QvkqhMY0t9LMxu1h5UzlcqZZ2lMOBUCa0w6sHl6t/SicfoSDUHPTxduNItJbK0LmeYpGhIFQb6yoyt5VLVYx9SxmLL4FUFzZ7VLtPV/R+Eah0/ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB5Xp8wY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F448C19423;
-	Wed,  4 Feb 2026 15:32:30 +0000 (UTC)
+	 MIME-Version; b=Zr4WNTKIXnEKFavGjqFcYvMZ8stZvSdh7MQLcu2taCcSTC+zpOqE4WjdFRhKjGYR8r41gQ5HQyIvOMagqhNHnodUYcVhRA6AQD8pasxndo0kdw5Bh3PLr16P7eyfEcG1e+TTaeunqRCdd3w/VJwJfkltZPdJ7plWbegp7w2OPo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaBPR1NF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A71BC4CEF7;
+	Wed,  4 Feb 2026 15:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219150;
-	bh=K+2tthHPKYXkPy5CM7yl46Tcoq0OM5NhgmavIoGrl5M=;
+	s=korg; t=1770218801;
+	bh=kSKJiO9svrg/HDpYMg5XNtQvCyV0Ld2qH6ShONhGK1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TB5Xp8wYXwfr6dntpPZWiZBWpEaK394aALtKdMfQrQzzsRnB/cP1UYkoPXghcbfsM
-	 ysfBcKpseywG7OisODRPmHy9++CCZUp5a4kBW2fS9qEk3jrHPpi206uEr2DvKRRbv6
-	 UJhsxIpFpntNpIcqyUCbZVoBDLc1bFFAXq5aTq94=
+	b=SaBPR1NFkEnHN5hOZ4GC1c7OApBkK04WxYSIgN8JaoDUsDJqJj8LcJVt26rgxqtaW
+	 CFn41RtQY7t+C8WBKAjNexzR7v3/wTuBGsmHIZcjQApP6pGDnwhWEUXckFYUco3+dA
+	 GmJatZonNoYfoY3AIq5BW81PSvQXJG8XcFI/9x3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 082/122] selftests: mptcp: join: fix local endp not being tracked
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 66/87] drm/amdgpu: Fix cond_exec handling in amdgpu_ib_schedule()
 Date: Wed,  4 Feb 2026 15:41:04 +0100
-Message-ID: <20260204143854.802503472@linuxfoundation.org>
+Message-ID: <20260204143849.293416525@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214277-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214171-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,72 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 501D5E9104
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 21C51E96A5
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit c5d5ecf21fdd9ce91e6116feb3aa83cee73352cc upstream.
+commit b1defcdc4457649db236415ee618a7151e28788c upstream.
 
-When running this mptcp_join.sh selftest on older kernel versions not
-supporting local endpoints tracking, this test fails because 3 MP_JOIN
-ACKs have been received, while only 2 were expected.
+The EXEC_COUNT field must be > 0.  In the gfx shadow
+handling we always emit a cond_exec packet after the gfx_shadow
+packet, but the EXEC_COUNT never gets patched.  This leads
+to a hang when we try and reset queues on gfx11 APUs.
 
-It is not clear why only 2 MP_JOIN ACKs were expected on old kernel
-versions, while 3 MP_JOIN SYN and SYN+ACK were expected. When testing on
-the v5.15.197 kernel, 3 MP_JOIN ACKs are seen, which is also what is
-expected in the selftests included in this kernel version, see commit
-f4480eaad489 ("selftests: mptcp: add missing join check").
-
-Switch the expected MP_JOIN ACKs to 3. While at it, move this
-chk_join_nr helper out of the special condition for older kernel
-versions as it is now the same as with more recent ones. Also, invert
-the condition to be more logical: what's expected on newer kernel
-versions having such helper first.
-
-Fixes: d4c81bbb8600 ("selftests: mptcp: join: support local endpoint being tracked or not")
+Fixes: c68cbbfd54c6 ("drm/amdgpu: cleanup conditional execution")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4789
+Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ba205ac3d6e83f56c4f824f23f1b4522cb844ff3)
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-5-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2305,17 +2305,16 @@ signal_address_tests()
- 		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=1
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 3 3 3
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+@@ -223,7 +223,7 @@ int amdgpu_ib_schedule(struct amdgpu_rin
  
- 		# It is not directly linked to the commit introducing this
- 		# symbol but for the parent one which is linked anyway.
--		if ! mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
--			chk_join_nr 3 3 2
--			chk_add_nr 4 4
--		else
--			chk_join_nr 3 3 3
-+		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
- 			# the server will not signal the address terminating
- 			# the MPC subflow
- 			chk_add_nr 3 3
-+		else
-+			chk_add_nr 4 4
- 		fi
- 	fi
- }
+ 	amdgpu_ring_ib_begin(ring);
+ 
+-	if (ring->funcs->emit_gfx_shadow)
++	if (ring->funcs->emit_gfx_shadow && adev->gfx.cp_gfx_shadow)
+ 		amdgpu_ring_emit_gfx_shadow(ring, shadow_va, csa_va, gds_va,
+ 					    init_shadow, vmid);
+ 
+@@ -279,7 +279,8 @@ int amdgpu_ib_schedule(struct amdgpu_rin
+ 				       fence_flags | AMDGPU_FENCE_FLAG_64BIT);
+ 	}
+ 
+-	if (ring->funcs->emit_gfx_shadow && ring->funcs->init_cond_exec) {
++	if (ring->funcs->emit_gfx_shadow && ring->funcs->init_cond_exec &&
++	    adev->gfx.cp_gfx_shadow) {
+ 		amdgpu_ring_emit_gfx_shadow(ring, 0, 0, 0, false, 0);
+ 		amdgpu_ring_init_cond_exec(ring, ring->cond_exe_gpu_addr);
+ 	}
 
 
 
