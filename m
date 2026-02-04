@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gqqDHXZpg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:54 +0100
+	id 8HM6NBNjg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:17:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F155DE94B2
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DADE83CB
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FB8630914CA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C1812317DF23
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3189042188F;
-	Wed,  4 Feb 2026 15:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B114218B2;
+	Wed,  4 Feb 2026 14:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOnOdid1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQURrCzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E985042188D;
-	Wed,  4 Feb 2026 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6DB41B37C;
+	Wed,  4 Feb 2026 14:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217845; cv=none; b=M9ilMyf2QeXFR9swj/bzym6qrvqCzajXoTFqDHUfLqxYFSe9nxxd+gi/ocEvvSPjL0FMnuEryfJqRALVmdoifqv7DWx2yfgngjvZwMR4e+KNGFM0eK5BhUdv2aIEf6KH8b5mK7AS33Vp+1XZ/MbqATlsBKLFKeXicfz/wIkzjt0=
+	t=1770216950; cv=none; b=ZW9okyBsgzCwyU4GOrp0qsen5RbHu/rVQnCXcocIO/QvzoFI18Z8NNFHgKxT4SZTnHd6JuuCm1J9OG5DldLX61s7mNos9liPhXzinTcvwcA6WTNAFlTbAUzF8s5CYtTHP7E6ZZb3lxSyRKjQiitiCjegMctCmh7O+SsxEziLjps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217845; c=relaxed/simple;
-	bh=1oV9tYE9HrP2MCJFq6Ph1CW04PGDddNHUpbIp9P1+QQ=;
+	s=arc-20240116; t=1770216950; c=relaxed/simple;
+	bh=7mliYGCPsuqcxLEe5Eu6QUqcxs4/RPJor7zwYhllef4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHAD1vKyCnVKvZ5bc8Irhjhvx//ZPpVM6FzC1S7Zw+sg9Ydl7GxXhg17nXvb/X6hMGFgDmabL+fHm8rg+9596Z07Irdl4/5fSQNUDGFkkKoLLQEOh7R8q4PXgl62c/4GP8zOKIay8WX3XB2a8bQlYvqxrs5BweN22YuVcYYWhg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOnOdid1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB27C4CEF7;
-	Wed,  4 Feb 2026 15:10:44 +0000 (UTC)
+	 MIME-Version; b=Nfw9eS/Bs3P3Z1g/6VpNu0AwmWIrUwFvg46c3lAYq5ugfopCLL0hfPinfbWYbE/gbZvVXaeEmToLaI3vaSELtyLGswKZooiTqN/n9LYxw0v/QYBaMmrCZ9TQ0+a0elZ7ACqIhG8/5ACucjr086wYHBqnQe+je/fZICqSFaHc618=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQURrCzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74FBC4CEF7;
+	Wed,  4 Feb 2026 14:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217844;
-	bh=1oV9tYE9HrP2MCJFq6Ph1CW04PGDddNHUpbIp9P1+QQ=;
+	s=korg; t=1770216950;
+	bh=7mliYGCPsuqcxLEe5Eu6QUqcxs4/RPJor7zwYhllef4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOnOdid1aCIEILwvV/aWVGGNbeeg0idDd0rRubKC/bSVaqDze+9TWJkhVqqyuOa+L
-	 6HtobgGzQGxws3lAxc3N9vVhrwJw5QmzjRA9Jxm1mBOdAoaVMAH/yQ477zTpEtYfRY
-	 O4SNIzYiAP4WvPECnsve9MxBnWia5JaNvjFbwm8I=
+	b=AQURrCzZY0FxeobrDaEjIyMJO+OXUZrLEg5FPPRTmeQxXZuaMxixFKg2JfC1gD+PG
+	 SJkXGxWmCj+o6xEEvy5CKuNR9M8dhayllXtGsVxr+smG96daQUPAbno9/6IlD5bhZA
+	 T0PGKC8kZJLNOhvWpJmp1bJ04q78cDGRrALZDxXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/280] scsi: core: Wake up the error handler when final completions race against each other
+Subject: [PATCH 5.15 080/206] net/sched: qfq: Use cl_is_active to determine whether class is active in qfq_rm_from_ag
 Date: Wed,  4 Feb 2026 15:38:31 +0100
-Message-ID: <20260204143914.569968751@linuxfoundation.org>
+Message-ID: <20260204143901.092732359@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,118 +74,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213887-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-213623-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F155DE94B2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mojatatu.com:email]
+X-Rspamd-Queue-Id: 56DADE83CB
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Jeffery <djeffery@redhat.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit fe2f8ad6f0999db3b318359a01ee0108c703a8c3 ]
+[ Upstream commit d837fbee92453fbb829f950c8e7cf76207d73f33 ]
 
-The fragile ordering between marking commands completed or failed so
-that the error handler only wakes when the last running command
-completes or times out has race conditions. These race conditions can
-cause the SCSI layer to fail to wake the error handler, leaving I/O
-through the SCSI host stuck as the error state cannot advance.
+This is more of a preventive patch to make the code more consistent and
+to prevent possible exploits that employ child qlen manipulations on qfq.
+use cl_is_active instead of relying on the child qdisc's qlen to determine
+class activation.
 
-First, there is an memory ordering issue within scsi_dec_host_busy().
-The write which clears SCMD_STATE_INFLIGHT may be reordered with reads
-counting in scsi_host_busy(). While the local CPU will see its own
-write, reordering can allow other CPUs in scsi_dec_host_busy() or
-scsi_eh_inc_host_failed() to see a raised busy count, causing no CPU to
-see a host busy equal to the host_failed count.
-
-This race condition can be prevented with a memory barrier on the error
-path to force the write to be visible before counting host busy
-commands.
-
-Second, there is a general ordering issue with scsi_eh_inc_host_failed(). By
-counting busy commands before incrementing host_failed, it can race with a
-final command in scsi_dec_host_busy(), such that scsi_dec_host_busy() does
-not see host_failed incremented but scsi_eh_inc_host_failed() counts busy
-commands before SCMD_STATE_INFLIGHT is cleared by scsi_dec_host_busy(),
-resulting in neither waking the error handler task.
-
-This needs the call to scsi_host_busy() to be moved after host_failed is
-incremented to close the race condition.
-
-Fixes: 6eb045e092ef ("scsi: core: avoid host-wide host_busy counter for scsi_mq")
-Signed-off-by: David Jeffery <djeffery@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260113161036.6730-1-djeffery@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 462dbc9101acd ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260114160243.913069-3-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_error.c | 11 ++++++++++-
- drivers/scsi/scsi_lib.c   |  8 ++++++++
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ net/sched/sch_qfq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index c1a454b3bbbf1..79dc157661ce9 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -277,11 +277,20 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index d201bcb5edc42..8e5b30c447b86 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -375,7 +375,7 @@ static void qfq_rm_from_agg(struct qfq_sched *q, struct qfq_class *cl)
+ /* Deschedule class and remove it from its parent aggregate. */
+ static void qfq_deact_rm_from_agg(struct qfq_sched *q, struct qfq_class *cl)
  {
- 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
- 	struct Scsi_Host *shost = scmd->device->host;
--	unsigned int busy = scsi_host_busy(shost);
-+	unsigned int busy;
- 	unsigned long flags;
+-	if (cl->qdisc->q.qlen > 0) /* class is active */
++	if (cl_is_active(cl)) /* class is active */
+ 		qfq_deactivate_class(q, cl);
  
- 	spin_lock_irqsave(shost->host_lock, flags);
- 	shost->host_failed++;
-+	spin_unlock_irqrestore(shost->host_lock, flags);
-+	/*
-+	 * The counting of busy requests needs to occur after adding to
-+	 * host_failed or after the lock acquire for adding to host_failed
-+	 * to prevent a race with host unbusy and missing an eh wakeup.
-+	 */
-+	busy = scsi_host_busy(shost);
-+
-+	spin_lock_irqsave(shost->host_lock, flags);
- 	scsi_eh_wakeup(shost, busy);
- 	spin_unlock_irqrestore(shost->host_lock, flags);
- }
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index df61d7b906653..ddc986ff51615 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -280,6 +280,14 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
- 	rcu_read_lock();
- 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
- 	if (unlikely(scsi_host_in_recovery(shost))) {
-+		/*
-+		 * Ensure the clear of SCMD_STATE_INFLIGHT is visible to
-+		 * other CPUs before counting busy requests. Otherwise,
-+		 * reordering can cause CPUs to race and miss an eh wakeup
-+		 * when no CPU sees all busy requests as done or timed out.
-+		 */
-+		smp_mb();
-+
- 		unsigned int busy = scsi_host_busy(shost);
- 
- 		spin_lock_irqsave(shost->host_lock, flags);
+ 	qfq_rm_from_agg(q, cl);
 -- 
 2.51.0
 
