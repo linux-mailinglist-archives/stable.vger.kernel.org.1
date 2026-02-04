@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kC5qHWVog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:21 +0100
+	id SA34ESNpg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D661E917E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD00E9378
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E641C3017252
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F35C3313EC1C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBDB2C3254;
-	Wed,  4 Feb 2026 15:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE662D978A;
+	Wed,  4 Feb 2026 15:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+u8/9Ec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArGscxhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304F92BEFED;
-	Wed,  4 Feb 2026 15:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620272D5950;
+	Wed,  4 Feb 2026 15:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218166; cv=none; b=KcxVWzYPH6+rxmn11qY88XToMH8OUNTIcDaalXQFeHDtvHmF7jzUYbiZAzzlr0Hm5aA/HenTvP/M3bP6MSpoIm/V4hyDkJgJuQS2Lese4bDAefBiGE6fPFBcySXKHLOwQlOTHqyOmMkt1uDyWIdLihZfZcKrqgPcLXN56/bgsik=
+	t=1770218974; cv=none; b=nXW/jItQ4GkLV4M4cZyZvjnaSpT06vYM/GQDtNH0GgOyH+0gQfY+MOjnu/XTRNADlp/ntxy7eGGP1GYtbpHWg7UOwdlwwyhEvDxXhqsw/Fi3UN/lmYpHn4MImDO71wHiwFfCC6NfXLG5y5wJ1E3Thn5xMVzgIUbpn6jvtz6o2ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218166; c=relaxed/simple;
-	bh=8rGPeXRFILS8TeBfSerupNifSxFdc84nZau9x6lDx/o=;
+	s=arc-20240116; t=1770218974; c=relaxed/simple;
+	bh=C3mJhrfBAdXP3aKo5AD+UZ8IYXMTBYx3DWjMb/rsg6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKVk3fxPUNLQ7GHwVSgp2ONdycAejpPzS5T0AihmIhrqQfbCNM63bfU1C1HQrUMW6TdyweLqKkdJ9yvQ4gCJw7GJJkViwb7uzNmxxD3RBb20CXjvo0V9kk5P3D8p9dteKkkZdW4bOcRnLmdYRXVajLFPJuPrjutjwUG67T4voBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+u8/9Ec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95632C4CEF7;
-	Wed,  4 Feb 2026 15:16:05 +0000 (UTC)
+	 MIME-Version; b=RWMIy42BmSev6xi242yiYCcZcACNQ30PIFLPGNj1SD4Ya0M7PdO3E3gT3oluQwuhzySClzAJsD9eqNMISU5lRTkJ1VOUMYqYKe6aijq6UN2QjLWOM24QzDilo4QADs5CSsYtrcVZgf9L5OPq4K2TXrHvuF7Zm39C+QtGQkmcaJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArGscxhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7B3C4CEF7;
+	Wed,  4 Feb 2026 15:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218166;
-	bh=8rGPeXRFILS8TeBfSerupNifSxFdc84nZau9x6lDx/o=;
+	s=korg; t=1770218974;
+	bh=C3mJhrfBAdXP3aKo5AD+UZ8IYXMTBYx3DWjMb/rsg6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+u8/9EcgQyKoxFqHXiSGE8K5d2oHh0EKkSX63RMcCJVbFAMkMybkoTcyElOLaYru
-	 grSKcnWm6my3Pl6xZ8DNoWOKIV8jCfu5OBIfWC1jBV5LvHkwoFSpaJGNTPLxHgN2UJ
-	 FT+FEUZmRk05Mhp/4hRFLJgg//EwwHscOEQWAB+Q=
+	b=ArGscxhHFfEuXvCi4drPt7zrZLlJu6ZLPzqkk2YFNKxAW3mbxN2uW1pyg8moHlwBY
+	 n+pYA9Hyaeim+rs4E2aHoICbL9EL1Vlq4rnTZo2ciDSDaRYj+BkWrCUghdTru/QVYJ
+	 fVwHH2WxFUv1BMwYfFkZYLuWCeW0qZaWnT7RKXQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Kohei Enju <enjuk@amazon.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 230/280] ksmbd: smbd: fix dma_unmap_sg() nents
+Subject: [PATCH 6.18 022/122] ixgbe: dont initialize aci lock in ixgbe_recovery_probe()
 Date: Wed,  4 Feb 2026 15:40:04 +0100
-Message-ID: <20260204143917.897069584@linuxfoundation.org>
+Message-ID: <20260204143852.664275663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,106 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213983-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214223-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8D661E917E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: ADD00E9378
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
+[ Upstream commit 100cf7b4ca6ed770ec4287f3789b1da2e340a05a ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+hw->aci.lock is already initialized in ixgbe_sw_init(), so
+ixgbe_recovery_probe() doesn't need to initialize the lock. This
+function is also not responsible for destroying the lock on failures.
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Context ]
+Additionally, change the name of label in accordance with this change.
+
+Fixes: 29cb3b8d95c7 ("ixgbe: add E610 implementation of FW recovery mode")
+Reported-by: Simon Horman <horms@kernel.org>
+Closes: https://lore.kernel.org/intel-wired-lan/aTcFhoH-z2btEKT-@horms.kernel.org/
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1103,14 +1103,12 @@ static int get_sg_list(void *buf, int si
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index ee1007e9b6355..3edebca958307 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -11476,10 +11476,9 @@ static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
+ 		return err;
  
- static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
- 			      struct scatterlist *sg_list, int nentries,
--			      enum dma_data_direction dir)
-+			      enum dma_data_direction dir, int *npages)
- {
--	int npages;
--
--	npages = get_sg_list(buf, size, sg_list, nentries);
--	if (npages < 0)
-+	*npages = get_sg_list(buf, size, sg_list, nentries);
-+	if (*npages < 0)
- 		return -EINVAL;
--	return ib_dma_map_sg(device, sg_list, npages, dir);
-+	return ib_dma_map_sg(device, sg_list, *npages, dir);
+ 	ixgbe_get_hw_control(adapter);
+-	mutex_init(&hw->aci.lock);
+ 	err = ixgbe_get_flash_data(&adapter->hw);
+ 	if (err)
+-		goto shutdown_aci;
++		goto err_release_hw_control;
+ 
+ 	timer_setup(&adapter->service_timer, ixgbe_service_timer, 0);
+ 	INIT_WORK(&adapter->service_task, ixgbe_recovery_service_task);
+@@ -11502,8 +11501,7 @@ static int ixgbe_recovery_probe(struct ixgbe_adapter *adapter)
+ 	devl_unlock(adapter->devlink);
+ 
+ 	return 0;
+-shutdown_aci:
+-	mutex_destroy(&adapter->hw.aci.lock);
++err_release_hw_control:
+ 	ixgbe_release_hw_control(adapter);
+ 	return err;
  }
- 
- static int post_sendmsg(struct smb_direct_transport *t,
-@@ -1179,12 +1177,13 @@ static int smb_direct_post_send_data(str
- 	for (i = 0; i < niov; i++) {
- 		struct ib_sge *sge;
- 		int sg_cnt;
-+		int npages;
- 
- 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
- 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
- 					    iov[i].iov_base, iov[i].iov_len,
- 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
--					    DMA_TO_DEVICE);
-+					    DMA_TO_DEVICE, &npages);
- 		if (sg_cnt <= 0) {
- 			pr_err("failed to map buffer\n");
- 			ret = -ENOMEM;
-@@ -1192,7 +1191,7 @@ static int smb_direct_post_send_data(str
- 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
- 			pr_err("buffer not fitted into sges\n");
- 			ret = -E2BIG;
--			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
-+			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
- 					DMA_TO_DEVICE);
- 			goto err;
- 		}
+-- 
+2.51.0
+
 
 
 
