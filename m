@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aD42BTtgg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:31 +0100
+	id MDmiOgRfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD806E7E00
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:05:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9EE7BA9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 111083025D2E
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B10E53048E27
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CB82C3254;
-	Wed,  4 Feb 2026 15:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0252641325F;
+	Wed,  4 Feb 2026 14:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTRxUVfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogWu4ntr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6579B2BEFED;
-	Wed,  4 Feb 2026 15:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABC640FDAE;
+	Wed,  4 Feb 2026 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217272; cv=none; b=O3wowQp5rLpnY+CM8v4BcFwey4QhDw4khuWSrTH8Vxag9L7PoKZwjWC7SOnLXb3Z41KzdaPxDc+WbAMjGmW/+VJgKRX3PrZ/BHzP2Epa2QGfUc3Saih8iLql4N6js1fCBak7/PiZWpenNMs1kniJubyUgg5daYmIB3W1o6zLuQs=
+	t=1770216706; cv=none; b=mOc7A3RlEk8Bm0pr0MNkTid+iWT1kZy8LrolLgJYouhJHgXXhHnvkitvM7Ews6aXro5f3AW2bAFHP+BHcexzMgkSxFSNalBl57f26yLSwMuYY7U5BLmfy+oDN3eppILUHpQP5hz4ngtfcGvEPmXP4MH9BlFaNVNvV6iiF/AkqSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217272; c=relaxed/simple;
-	bh=chxGI0Wj+tr9zJIxzjXbY2Dsafi0QQE4zqEhCWXiLmI=;
+	s=arc-20240116; t=1770216706; c=relaxed/simple;
+	bh=8m7GuHDMpbGjehG3ps+dL6yG55CTW5bM9RT0yq4aElo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yqw41VDY2m7c3i6yvxA7IMvIbLjPsL/yESA2OhySqzQ3WgV3SK0TTuRKCRXQfY9hesAlGwF9cuJespePLeKOIK9UJO32i3o3hjcRjLKnEgOeSH/kqyRqcwmBqaTo0Jq3pryuJfdtRVo4P9opZAKVjG1iEeswE9jtl2fq45W85nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTRxUVfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DF9C2BC86;
-	Wed,  4 Feb 2026 15:01:11 +0000 (UTC)
+	 MIME-Version; b=ZCKx+h9WKOwxshqDyi3S/cntWybY2Zq8xtBBa5XX9BYf8H0pU+lpQVGcEXe8zO3NcmXGoZABB61WmjNTC7sGvmZi3AIVdpRCsJt04SGSWV5d+n7trjnKH+JPaQXdSEd1TIDW6gxnGYLQK37Ign5+C4Qk5oFSBotsTN3anfEn5GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogWu4ntr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC7EC4CEF7;
+	Wed,  4 Feb 2026 14:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217272;
-	bh=chxGI0Wj+tr9zJIxzjXbY2Dsafi0QQE4zqEhCWXiLmI=;
+	s=korg; t=1770216706;
+	bh=8m7GuHDMpbGjehG3ps+dL6yG55CTW5bM9RT0yq4aElo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JTRxUVfprZtmax2VEUMQ/8w2rS0MqIwaxMo3BoJQMETizQKixSN0UAhlQJHLvVYSs
-	 WsFZcwolJ1cfkE5WyhS+bhBnMTY+bLUzC3KG5H26sNTbufDk0omrjgHsb3T7hiBCHt
-	 lDBjOy544Y+T+Vs1D1J71mNQAdSgxEwSHVr1ov9k=
+	b=ogWu4ntrnStERoyqn0Qex7dFLUwk99KAINjHTHwVj0323F+FvhAh4tmRgBtoTryQa
+	 yIEQzfXnke6ADwegBGaQag2oI2yHB7cpBmHy/dSRgmJ61nqJC1HRMICR65dK7TOVGQ
+	 zVChRIIO7LTkI2SJUkQlMaleMDE2fNAklMNUUzfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 5.15 175/206] drm/ttm: fix undefined behavior in bit shift for TTM_TT_FLAG_PRIV_POPULATED
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 143/161] iio: adc: exynos_adc: fix OF populate on driver rebind
 Date: Wed,  4 Feb 2026 15:40:06 +0100
-Message-ID: <20260204143904.515368980@linuxfoundation.org>
+Message-ID: <20260204143856.892888522@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,135 +64,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213717-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,amd.com,163.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213549-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: AD806E7E00
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5EC9EE7BA9
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream 387659939c00156f8d6bab0fbc55b4eaf2b6bc5b commit ]
+[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
 
-Shifting signed 32-bit value by 31 bits is undefined, so changing
-significant bit to unsigned. The UBSAN warning calltrace like below:
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-UBSAN: shift-out-of-bounds in ./include/drm/ttm/ttm_tt.h:122:26
-left shift of 1 by 31 places cannot be represented in type 'int'
-Call Trace:
- <TASK>
- dump_stack_lvl+0x7d/0xa5
- dump_stack+0x15/0x1b
- ubsan_epilogue+0xe/0x4e
- __ubsan_handle_shift_out_of_bounds+0x1e7/0x20c
- ttm_bo_move_memcpy+0x3b4/0x460 [ttm]
- bo_driver_move+0x32/0x40 [drm_vram_helper]
- ttm_bo_handle_move_mem+0x118/0x200 [ttm]
- ttm_bo_validate+0xfa/0x220 [ttm]
- drm_gem_vram_pin_locked+0x70/0x1b0 [drm_vram_helper]
- drm_gem_vram_pin+0x48/0xb0 [drm_vram_helper]
- drm_gem_vram_plane_helper_prepare_fb+0x53/0xe0 [drm_vram_helper]
- drm_gem_vram_simple_display_pipe_prepare_fb+0x26/0x30 [drm_vram_helper]
- drm_simple_kms_plane_prepare_fb+0x4d/0xe0 [drm_kms_helper]
- drm_atomic_helper_prepare_planes+0xda/0x210 [drm_kms_helper]
- drm_atomic_helper_commit+0xc3/0x1e0 [drm_kms_helper]
- drm_atomic_commit+0x9c/0x160 [drm]
- drm_client_modeset_commit_atomic+0x33a/0x380 [drm]
- drm_client_modeset_commit_locked+0x77/0x220 [drm]
- drm_client_modeset_commit+0x31/0x60 [drm]
- __drm_fb_helper_restore_fbdev_mode_unlocked+0xa7/0x170 [drm_kms_helper]
- drm_fb_helper_set_par+0x51/0x90 [drm_kms_helper]
- fbcon_init+0x316/0x790
- visual_init+0x113/0x1d0
- do_bind_con_driver+0x2a3/0x5c0
- do_take_over_console+0xa9/0x270
- do_fbcon_takeover+0xa1/0x170
- do_fb_registered+0x2a8/0x340
- fbcon_fb_registered+0x47/0xe0
- register_framebuffer+0x294/0x4a0
- __drm_fb_helper_initial_config_and_unlock+0x43c/0x880 [drm_kms_helper]
- drm_fb_helper_initial_config+0x52/0x80 [drm_kms_helper]
- drm_fbdev_client_hotplug+0x156/0x1b0 [drm_kms_helper]
- drm_fbdev_generic_setup+0xfc/0x290 [drm_kms_helper]
- bochs_pci_probe+0x6ca/0x772 [bochs]
- local_pci_probe+0x4d/0xb0
- pci_device_probe+0x119/0x320
- really_probe+0x181/0x550
- __driver_probe_device+0xc6/0x220
- driver_probe_device+0x32/0x100
- __driver_attach+0x195/0x200
- bus_for_each_dev+0xbb/0x120
- driver_attach+0x27/0x30
- bus_add_driver+0x22e/0x2f0
- driver_register+0xa9/0x190
- __pci_register_driver+0x90/0xa0
- bochs_pci_driver_init+0x52/0x1000 [bochs]
- do_one_initcall+0x76/0x430
- do_init_module+0x61/0x28a
- load_module+0x1f82/0x2e50
- __do_sys_finit_module+0xf8/0x190
- __x64_sys_finit_module+0x23/0x30
- do_syscall_64+0x58/0x80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
- </TASK>
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
 
-Fixes: 3312be8f6fc8 ("drm/ttm: move populated state into page flags")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20221031113350.4180975-1-cuigaosheng1@huawei.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
-[ The context change is due to the commit 43d46f0b78bb
-("drm/ttm: s/FLAG_SG/FLAG_EXTERNAL/") in v5.16
-which is irrelevant to the logic of this patch.
-In addition, v6.1 has included the fix. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org	# 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/ttm/ttm_tt.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/exynos_adc.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/include/drm/ttm/ttm_tt.h
-+++ b/include/drm/ttm/ttm_tt.h
-@@ -43,7 +43,7 @@ struct ttm_operation_ctx;
- #define TTM_PAGE_FLAG_SG              (1 << 8)
- #define TTM_PAGE_FLAG_NO_RETRY	      (1 << 9)
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -718,14 +718,7 @@ static const struct iio_chan_spec exynos
+ 	ADC_CHANNEL(9, "adc9"),
+ };
  
--#define TTM_PAGE_FLAG_PRIV_POPULATED  (1 << 31)
-+#define TTM_PAGE_FLAG_PRIV_POPULATED  (1U << 31)
+-static int exynos_adc_remove_devices(struct device *dev, void *c)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-
+-	platform_device_unregister(pdev);
  
- /**
-  * struct ttm_tt
+-	return 0;
+-}
+ 
+ static int exynos_adc_ts_open(struct input_dev *dev)
+ {
+@@ -924,8 +917,7 @@ static int exynos_adc_probe(struct platf
+ 	return 0;
+ 
+ err_of_populate:
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	if (has_ts) {
+ 		input_unregister_device(info->input);
+ 		free_irq(info->tsirq, info);
+@@ -954,8 +946,7 @@ static int exynos_adc_remove(struct plat
+ 		free_irq(info->tsirq, info);
+ 		input_unregister_device(info->input);
+ 	}
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	iio_device_unregister(indio_dev);
+ 	free_irq(info->irq, info);
+ 	if (info->data->exit_hw)
 
 
 
