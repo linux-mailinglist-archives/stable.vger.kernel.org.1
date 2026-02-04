@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-213842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGlSAJ5lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:30 +0100
+	id EJeGLEtkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:22:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8EEE8A63
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F08E865A
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ABAB3057E96
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D33EA3029858
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF8222E3F0;
-	Wed,  4 Feb 2026 15:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844A642668D;
+	Wed,  4 Feb 2026 15:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6w7L+SL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udEMXEhY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36752D6E73;
-	Wed,  4 Feb 2026 15:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48966426689;
+	Wed,  4 Feb 2026 15:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217698; cv=none; b=KJrppcirntuGoXuHabWqITrN17RxXccqUgur/He256usaWgJpbceKEY4vvztTpS+stA7qI3DPckYEqiFRK70SXYnnhWjGyvXv/YOkyRxtamHMfboa3Uo4gwN1gD3PQuJIhfcmMZQhtFO3wKugrQd2JBaBV/G1IRhk0nVNaIaUn8=
+	t=1770217582; cv=none; b=Lm974L90Ny5IxekvvTt2wcphW0RvIFAFrYgcklVn3tPuz3dHQiaFuYHaGMrTkrA9eTDx1wRH0Q2MNu7OaEjE24b923oJ2yAknu/iNjt3CN1ISrhrf8E7eTor4ka19j35MDgrydK8m3DBVfLZUJAMxCGKWgPrk61fnWGSNWv/kvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217698; c=relaxed/simple;
-	bh=2XEcskkxwG+cqwAyhz6h4PvNNE+X2yiYCBtW9OxKhxw=;
+	s=arc-20240116; t=1770217582; c=relaxed/simple;
+	bh=XLNhqVR+lsN8C92JfVxzTP+gF/pr7uQoxWmMkwVq/pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNgy5WPYzQLBUlE7I3LE+k/fsl8rp8rXrfpB0+5NQSHYVrIiTligsLuERKpvc02OcANGaJ8b48wxwZ+O4+MAZpFU1sfd6rpNA1i+UD4XaQF4zjuVxif3zUfh9HK1pveklH5eLEvXXLlvBTn4da9TZ5WvVBzuJHsGPAHbaX+KMuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6w7L+SL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D58C4CEF7;
-	Wed,  4 Feb 2026 15:08:17 +0000 (UTC)
+	 MIME-Version; b=smB7G7/mSBg5xu5Ng7wCGOBR1N2Asls059tjCdu9L6MkL9Da6l6PMZ8oJSL9/BIKOIUiZjMOPPw9Gu7fleYKxsKJNu1QBeA3rrBmTHaihYaJPg5R2gvpsQLmuYjzamIhoa4yzVEZkQrFjzpayAYFdujEZqDpg+JTNAOraB6kl8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udEMXEhY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE4FC4CEF7;
+	Wed,  4 Feb 2026 15:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217698;
-	bh=2XEcskkxwG+cqwAyhz6h4PvNNE+X2yiYCBtW9OxKhxw=;
+	s=korg; t=1770217582;
+	bh=XLNhqVR+lsN8C92JfVxzTP+gF/pr7uQoxWmMkwVq/pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6w7L+SL656uGpaVU0pcBdOsw0/aJzgMdlqgR8sAl/Dp8ELn4LsXFr2I+LIBIN2bf
-	 2jj46+gnwdqB/2WiChstOvzDQuTsYJoHl946kOrAQQTZGpNkxNSN0kvECHSO0xnzBd
-	 3PgFEwC294LfI9E95WajyTPt+tGjlpmeDWIfXL1E=
+	b=udEMXEhY6sBAbqsGsPTKAIyshpSDQ0qNDuraKi6FYeQ/RcwTLvpIpFsQ36PE8ODaf
+	 Wk2ZudP2muVgbsbxv1blMWughpbO90iQEnu0SgREOi+XdsnVKhRNIOHGKAF+mWG5Rp
+	 aCnauDC/3DiaEtwUpeTxSyqY5UD9tuYO499m0t64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaochen Shen <shenxiaochen@open-hieco.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>
-Subject: [PATCH 6.1 058/280] x86/resctrl: Fix memory bandwidth counter width for Hygon
-Date: Wed,  4 Feb 2026 15:37:12 +0100
-Message-ID: <20260204143911.740066961@linuxfoundation.org>
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 059/280] mm/page_alloc: make percpu_pagelist_high_fraction reads lock-free
+Date: Wed,  4 Feb 2026 15:37:13 +0100
+Message-ID: <20260204143911.776218429@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -70,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +82,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213842-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213809-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,88 +91,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[open-hieco.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:email,intel.com:email]
-X-Rspamd-Queue-Id: 7C8EEE8A63
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.cz:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 55F08E865A
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaochen Shen <shenxiaochen@open-hieco.net>
+From: Aboorva Devarajan <aboorvad@linux.ibm.com>
 
-commit 7517e899e1b87b4c22a92c7e40d8733c48e4ec3c upstream.
+commit b9efe36b5e3eb2e91aa3d706066428648af034fc upstream.
 
-The memory bandwidth calculation relies on reading the hardware counter
-and measuring the delta between samples. To ensure accurate measurement,
-the software reads the counter frequently enough to prevent it from
-rolling over twice between reads.
+When page isolation loops indefinitely during memory offline, reading
+/proc/sys/vm/percpu_pagelist_high_fraction blocks on pcp_batch_high_lock,
+causing hung task warnings.
 
-The default Memory Bandwidth Monitoring (MBM) counter width is 24 bits.
-Hygon CPUs provide a 32-bit width counter, but they do not support the
-MBM capability CPUID leaf (0xF.[ECX=1]:EAX) to report the width offset
-(from 24 bits).
+Make procfs reads lock-free since percpu_pagelist_high_fraction is a
+simple integer with naturally atomic reads, writers still serialize via
+the mutex.
 
-Consequently, the kernel falls back to the 24-bit default counter width,
-which causes incorrect overflow handling on Hygon CPUs.
+This prevents hung task warnings when reading the procfs file during
+long-running memory offline operations.
 
-Fix this by explicitly setting the counter width offset to 8 bits (resulting
-in a 32-bit total counter width) for Hygon CPUs.
-
-Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
-Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209062650.1536952-3-shenxiaochen@open-hieco.net
+[akpm@linux-foundation.org: add comment, per Michal]
+  Link: https://lkml.kernel.org/r/aS_y9AuJQFydLEXo@tiehlicka
+Link: https://lkml.kernel.org/r/20251201060009.1420792-1-aboorvad@linux.ibm.com
+Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/resctrl/core.c     |   15 +++++++++++++--
- arch/x86/kernel/cpu/resctrl/internal.h |    3 +++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ mm/page_alloc.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -896,8 +896,19 @@ void resctrl_cpu_detect(struct cpuinfo_x
- 		c->x86_cache_occ_scale = ebx;
- 		c->x86_cache_mbm_width_offset = eax & 0xff;
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -9067,11 +9067,19 @@ int percpu_pagelist_high_fraction_sysctl
+ 	int old_percpu_pagelist_high_fraction;
+ 	int ret;
  
--		if (c->x86_vendor == X86_VENDOR_AMD && !c->x86_cache_mbm_width_offset)
--			c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
-+		if (!c->x86_cache_mbm_width_offset) {
-+			switch (c->x86_vendor) {
-+			case X86_VENDOR_AMD:
-+				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
-+				break;
-+			case X86_VENDOR_HYGON:
-+				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_HYGON;
-+				break;
-+			default:
-+				/* Leave c->x86_cache_mbm_width_offset as 0 */
-+				break;
-+			}
-+		}
- 	}
- }
- 
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -31,6 +31,9 @@
- #define MAX_MBA_BW_AMD			0x800
- #define MBM_CNTR_WIDTH_OFFSET_AMD	20
- 
-+/* Hygon MBM counter width as an offset from MBM_CNTR_WIDTH_BASE */
-+#define MBM_CNTR_WIDTH_OFFSET_HYGON	8
++	/*
++	 * Avoid using pcp_batch_high_lock for reads as the value is read
++	 * atomically and a race with offlining is harmless.
++	 */
 +
- #define RMID_VAL_ERROR			BIT_ULL(63)
- #define RMID_VAL_UNAVAIL		BIT_ULL(62)
- /*
++	if (!write)
++		return proc_dointvec_minmax(table, write, buffer, length, ppos);
++
+ 	mutex_lock(&pcp_batch_high_lock);
+ 	old_percpu_pagelist_high_fraction = percpu_pagelist_high_fraction;
+ 
+ 	ret = proc_dointvec_minmax(table, write, buffer, length, ppos);
+-	if (!write || ret < 0)
++	if (ret < 0)
+ 		goto out;
+ 
+ 	/* Sanity checking to avoid pcp imbalance */
 
 
 
