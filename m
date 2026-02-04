@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-213435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LYiLtlbg2mWlwMAu9opvQ
-	(envelope-from <stable+bounces-213435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:49 +0100
+	id cGl1Bt1bg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C10E7591
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CB0E7598
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A91E7302E7A1
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80A7E302F728
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0062417E0;
-	Wed,  4 Feb 2026 14:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DC02773E5;
+	Wed,  4 Feb 2026 14:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umQhAprk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5TJB+H1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D731C5D77;
-	Wed,  4 Feb 2026 14:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECC82417E0;
+	Wed,  4 Feb 2026 14:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216328; cv=none; b=Uk8pwqNeSrxFjQ5nOXiT+67G6DICKl48TNMFWg9KbnCHT+s0R6eGtK0Tdhp7sPP4naeUXNHrjhyG+imvfitcFl6WdblZ6T0fuDh9b13A/CEhY4ULOGzr5/ewmIxSrJYx3C8sBaJYZaRIZh6+FXN14YBg1Ycv7QDhwbW/1bjVvuA=
+	t=1770216331; cv=none; b=BNh75USGEjYCiAgqXACwcuhbpVV9bJ41gTpV9AjpC4LzaEDyhDKlRkvMc+9A3w2JbfMgc7AtWWXCz7xov8YNypgSnKI5wa8Iq/6KTOVVsn34eGPCUX81RfGfFecz78V0ja/CMOIWFqVBe+k+FPxCO4lhK6/Lkp3crCY4q+wZYIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216328; c=relaxed/simple;
-	bh=TGL1fpaAh/w+zt7IZxpimUMAq/Y2OKTanYquiyTwqwM=;
+	s=arc-20240116; t=1770216331; c=relaxed/simple;
+	bh=6BVBQ8wQj3DY8csYZkTdOWrhDqybrffhL6VhgqkaJS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tzn1PFDxkIS1XqGXZIZMsttSVvMWiWQf69dpyo1CWeKC2+6Ig1T+Sc4JTqHSlLvEefJqGtEUsJPcWfBJxhcIRu2uMXxcz4K7dPqDHiDArkXOCc1u7zqQ1BY33MrQzSj4MNECmLtPGWavi/QTBv1OMC1S7eCrzE4yhDcuo8lCD3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umQhAprk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D7EC4CEF7;
-	Wed,  4 Feb 2026 14:45:27 +0000 (UTC)
+	 MIME-Version; b=u+F36DdBerLDsIvMe6qDjBObU850W9tR6FIPsqOOZ3FwVuHLV3Wx2QVhrCIOPMMS6KwWltdkgl1LLAnRut2UBeWVPM6bPihazlF4DpWGjRBvB34iCcxJ/GLGmRxjq1sfC/fx0OEELQBnkwgtyktAXPzc/6/LBNWLwRTVk7uy/lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5TJB+H1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB3AC4CEF7;
+	Wed,  4 Feb 2026 14:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216328;
-	bh=TGL1fpaAh/w+zt7IZxpimUMAq/Y2OKTanYquiyTwqwM=;
+	s=korg; t=1770216331;
+	bh=6BVBQ8wQj3DY8csYZkTdOWrhDqybrffhL6VhgqkaJS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umQhAprksoCX74o2GfMMQKEs0Ysc3gkx3jDeX9f0Q+Tdee5LK1byzig/RDu5BshgM
-	 JB/RA2mBEyIdfQ93TiABYBxezo4wx/Wxh6SiqA8YtPjnZ4M7L+u5sc0/+wd2uekovB
-	 dazaTDWvxqf/92stlqzPlyFdlQJEWzmKIwuh9w1U=
+	b=U5TJB+H1eXNYZSvElMQVQfa5nAjDC8dZ+9gx7tQ9L5ygqjJngvXyDjMrqPbUO2Zuv
+	 UzTyFBK1lwmF6nhqTM6KMfXKabbGFmRTSNN3LZiTkwWusgbLqsxPbSpyYA0QKXVrJZ
+	 9jV/jbIFrRBpv653GcqyA8Q/Rb8KcOODnAPCxO0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
+	syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/161] amd-xgbe: avoid misleading per-packet error log
-Date: Wed,  4 Feb 2026 15:38:37 +0100
-Message-ID: <20260204143853.705132474@linuxfoundation.org>
+Subject: [PATCH 5.10 055/161] gue: Fix skb memleak with inner IP protocol 0.
+Date: Wed,  4 Feb 2026 15:38:38 +0100
+Message-ID: <20260204143853.741288212@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
 References: <20260204143851.755002596@linuxfoundation.org>
@@ -65,81 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213435-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213436-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 31C10E7591
+	TAGGED_RCPT(0.00)[stable,4d8c7d16b0e95c0d0f0d];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 99CB0E7598
 X-Rspamd-Action: no action
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit c158f985cf6c2c36c99c4f67af2ff3f5ebe09f8f ]
+[ Upstream commit 9a56796ad258786d3624eef5aefba394fc9bdded ]
 
-On the receive path, packet can be damaged because of buffer
-overflow in Rx FIFO. Avoid misleading per-packet error log when
-packet->errors is set, this can flood the log. Instead, rely on the
-standard rtnl_link_stats64 stats.
+syzbot reported skb memleak below. [0]
 
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260114163037.2062606-1-Raju.Rangoju@amd.com
+The repro generated a GUE packet with its inner protocol 0.
+
+gue_udp_recv() returns -guehdr->proto_ctype for "resubmit"
+in ip_protocol_deliver_rcu(), but this only works with
+non-zero protocol number.
+
+Let's drop such packets.
+
+Note that 0 is a valid number (IPv6 Hop-by-Hop Option).
+
+I think it is not practical to encap HOPOPT in GUE, so once
+someone starts to complain, we could pass down a resubmit
+flag pointer to distinguish two zeros from the upper layer:
+
+  * no error
+  * resubmit HOPOPT
+
+[0]
+BUG: memory leak
+unreferenced object 0xffff888109695a00 (size 240):
+  comm "syz.0.17", pid 6088, jiffies 4294943096
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 40 c2 10 81 88 ff ff 00 00 00 00 00 00 00 00  .@..............
+  backtrace (crc a84b336f):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    kmem_cache_alloc_noprof+0x3b4/0x590 mm/slub.c:5270
+    __build_skb+0x23/0x60 net/core/skbuff.c:474
+    build_skb+0x20/0x190 net/core/skbuff.c:490
+    __tun_build_skb drivers/net/tun.c:1541 [inline]
+    tun_build_skb+0x4a1/0xa40 drivers/net/tun.c:1636
+    tun_get_user+0xc12/0x2030 drivers/net/tun.c:1770
+    tun_chr_write_iter+0x71/0x120 drivers/net/tun.c:1999
+    new_sync_write fs/read_write.c:593 [inline]
+    vfs_write+0x45d/0x710 fs/read_write.c:686
+    ksys_write+0xa7/0x170 fs/read_write.c:738
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 37dd0247797b1 ("gue: Receive side for Generic UDP Encapsulation")
+Reported-by: syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6965534b.050a0220.38aacd.0001.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260115172533.693652-2-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/ipv4/fou.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 9cd6dac033630..3de7674a84675 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2112,7 +2112,7 @@ static void xgbe_get_stats64(struct net_device *netdev,
- 	s->multicast = pstats->rxmulticastframes_g;
- 	s->rx_length_errors = pstats->rxlengtherror;
- 	s->rx_crc_errors = pstats->rxcrcerror;
--	s->rx_fifo_errors = pstats->rxfifooverflow;
-+	s->rx_over_errors = pstats->rxfifooverflow;
+diff --git a/net/ipv4/fou.c b/net/ipv4/fou.c
+index b1a8e4eec3f6e..e63aa6b52460c 100644
+--- a/net/ipv4/fou.c
++++ b/net/ipv4/fou.c
+@@ -213,6 +213,9 @@ static int gue_udp_recv(struct sock *sk, struct sk_buff *skb)
+ 		return gue_control_message(skb, guehdr);
  
- 	s->tx_packets = pstats->txframecount_gb;
- 	s->tx_bytes = pstats->txoctetcount_gb;
-@@ -2568,9 +2568,6 @@ static int xgbe_rx_poll(struct xgbe_channel *channel, int budget)
- 			goto read_again;
+ 	proto_ctype = guehdr->proto_ctype;
++	if (unlikely(!proto_ctype))
++		goto drop;
++
+ 	__skb_pull(skb, sizeof(struct udphdr) + hdrlen);
+ 	skb_reset_transport_header(skb);
  
- 		if (error || packet->errors) {
--			if (packet->errors)
--				netif_err(pdata, rx_err, netdev,
--					  "error in received packet\n");
- 			dev_kfree_skb(skb);
- 			goto next_packet;
- 		}
 -- 
 2.51.0
 
