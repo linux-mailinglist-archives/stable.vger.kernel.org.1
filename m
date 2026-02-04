@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-213683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMOJEJNhg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:15 +0100
+	id 8JMXMlBcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F1BE811A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:11:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D2AE7630
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DDBC318F7D1
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A31FB300692D
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E67E42188B;
-	Wed,  4 Feb 2026 14:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9879C27FD56;
+	Wed,  4 Feb 2026 14:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/U6Ply1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0Zjw3+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B27421890;
-	Wed,  4 Feb 2026 14:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1662874E6;
+	Wed,  4 Feb 2026 14:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217158; cv=none; b=E/GJWZgznbE4CdXcOIqqevf+7W451taLt9ZhsHiZ1+sOk19ttmJNmIMQlUIJTLMQVff4j7b8oXh7N8DH2hdm5SCyUebeINsOg6rq9M9VzcDgBmC4qkc2e0bMfvDt75ys2H6EF4J/kcJYv0Nul/Aky5fCx05o00oLE4SJjuhZqEg=
+	t=1770216507; cv=none; b=p0IluzaJJcHbRmyTeGYYvLq9890P7cZD8Jch49l0FCulzNiTUl1mYd+QSGPqSV184F8nD1wpLtKG7hfmE8M9E76FwEXhXcDTUKGEW9exzcZeRx2KpkreVHTAycMQwwDJ1/UN5f4NGqTMF/QFDCKnX4cZ0IV1uVZb56zWNdpqqGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217158; c=relaxed/simple;
-	bh=VMpboJwLIRmyD2GV3kNW3P+AIycb951z1/sueT8vRWs=;
+	s=arc-20240116; t=1770216507; c=relaxed/simple;
+	bh=M9rHocOFP8E2lxg4uZklr69LfhLkliZwHIH+kxVKv9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQ8/qQhNhyZRLHRn9+9OJeAMelhXWkKRwLFQPxizTSN+AE/7X+jPHpJNxcdu4jKJ17KRvu/x57gerJ8UKt24w3VwdLVvisfK6cffUTq7dEDWUrlTPSb3YPyCnWgU9Oo47Mz2FYtLybidWnaiYxC6eFGL5QrWd2nKsxvCDWt828g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/U6Ply1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278D1C4CEF7;
-	Wed,  4 Feb 2026 14:59:16 +0000 (UTC)
+	 MIME-Version; b=saRrsPsyVBf5lXMVNRi1009dmmYcjHOGRVdZCMwva5UggOAz38iI6eIGZI3AhSQwzx90t675nsWpV/dUYmEJlWglFeDXpdKJcVwQUByPrD9iNoqR+ykXa072s0rPvkzXNjmbfaxfeJrexKmPZJhqEYixawkz53rt1PVTSSab/9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0Zjw3+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800EEC4CEF7;
+	Wed,  4 Feb 2026 14:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217157;
-	bh=VMpboJwLIRmyD2GV3kNW3P+AIycb951z1/sueT8vRWs=;
+	s=korg; t=1770216507;
+	bh=M9rHocOFP8E2lxg4uZklr69LfhLkliZwHIH+kxVKv9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/U6Ply1FqwQYnmtAohNhj5vAOvgHfH7JIJGmTRiBrDIjuSBDsQDQ9izTE4fqQFr7
-	 3yOvjHRKuCv708LQqIWWEtFvuefeYVzWghNRmrgSe2XpSf/baeb0qWk36/cMzCO2hh
-	 E60vQAE0RJzj98Q6kZew68ioOJu5/EagzywRFtko=
+	b=v0Zjw3+TKq+XNP8zRebhwVBZbTNkqGn1g3Tam5rtU0aYIQpaT2f4zKkp+Srtw4KH9
+	 uJ9423EyM6r3vW/Xna11aBYwOB49LPuvTqe0/01lEdgcVn7KsOh+buWWUEYipdbl97
+	 IAHlY3fptw3htmM5qYMPfvnz497u/ZhZa6W8X3fE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jake Keller <jacob.e.keller@intel.com>,
-	IWL <intel-wired-lan@lists.osuosl.org>,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/206] ice: stop counting UDP csum mismatch as rx_errors
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 109/161] can: kvaser_usb: kvaser_usb_read_bulk_callback(): fix URB memory leak
 Date: Wed,  4 Feb 2026 15:39:32 +0100
-Message-ID: <20260204143903.284706192@linuxfoundation.org>
+Message-ID: <20260204143855.666188691@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,93 +67,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213683-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213488-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cloudflare.com:email,osuosl.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 89F1BE811A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D2D2AE7630
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 05faf2c0a76581d0a7fdbb8ec46477ba183df95b ]
+commit 248e8e1a125fa875158df521b30f2cc7e27eeeaa upstream.
 
-Since the beginning, the Intel ice driver has counted receive checksum
-offload mismatches into the rx_errors member of the rtnl_link_stats64
-struct. In ethtool -S these show up as rx_csum_bad.nic.
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-I believe counting these in rx_errors is fundamentally wrong, as it's
-pretty clear from the comments in if_link.h and from every other statistic
-the driver is summing into rx_errors, that all of them would cause a
-"hardware drop" except for the UDP checksum mismatch, as well as the fact
-that all the other causes for rx_errors are L2 reasons, and this L4 UDP
-"mismatch" is an outlier.
+In kvaser_usb_set_{,data_}bittiming() -> kvaser_usb_setup_rx_urbs(), the
+URBs for USB-in transfers are allocated, added to the dev->rx_submitted
+anchor and submitted. In the complete callback
+kvaser_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
+kvaser_usb_remove_interfaces() the URBs are freed by calling
+usb_kill_anchored_urbs(&dev->rx_submitted).
 
-A last nail in the coffin is that rx_errors is monitored in production and
-can indicate a bad NIC/cable/Switch port, but instead some random series of
-UDP packets with bad checksums will now trigger this alert. This false
-positive makes the alert useless and affects us as well as other companies.
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in usb_kill_anchored_urbs().
 
-This packet with presumably a bad UDP checksum is *already* passed to the
-stack, just not marked as offloaded by the hardware/driver. If it is
-dropped by the stack it will show up as UDP_MIB_CSUMERRORS.
+Fix the memory leak by anchoring the URB in the
+kvaser_usb_read_bulk_callback() to the dev->rx_submitted anchor.
 
-And one more thing, none of the other Intel drivers, and at least bnxt_en
-and mlx5 both don't appear to count UDP offload mismatches as rx_errors.
-
-Here is a related customer complaint:
-https://community.intel.com/t5/Ethernet-Products/ice-rx-errros-is-too-sensitive-to-IP-TCP-attack-packets-Intel/td-p/1662125
-
-Fixes: 4f1fe43c920b ("ice: Add more Rx errors to netdev's rx_error counter")
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Jake Keller <jacob.e.keller@intel.com>
-Cc: IWL <intel-wired-lan@lists.osuosl.org>
-Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Acked-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 080f40a6fa28 ("can: kvaser_usb: Add support for Kvaser CAN/USB devices")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-3-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 04e3f6c424c0c..db5319a8eb241 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5841,7 +5841,6 @@ void ice_update_vsi_stats(struct ice_vsi *vsi)
- 				    pf->stats.illegal_bytes +
- 				    pf->stats.rx_len_errors +
- 				    pf->stats.rx_undersize +
--				    pf->hw_csum_rx_error +
- 				    pf->stats.rx_jabber +
- 				    pf->stats.rx_fragments +
- 				    pf->stats.rx_oversize;
--- 
-2.51.0
-
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -325,7 +325,14 @@ resubmit_urb:
+ 			  urb->transfer_buffer, KVASER_USB_RX_BUFFER_SIZE,
+ 			  kvaser_usb_read_bulk_callback, dev);
+ 
++	usb_anchor_urb(urb, &dev->rx_submitted);
++
+ 	err = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!err)
++		return;
++
++	usb_unanchor_urb(urb);
++
+ 	if (err == -ENODEV) {
+ 		for (i = 0; i < dev->nchannels; i++) {
+ 			if (!dev->nets[i])
+@@ -333,7 +340,7 @@ resubmit_urb:
+ 
+ 			netif_device_detach(dev->nets[i]->netdev);
+ 		}
+-	} else if (err) {
++	} else {
+ 		dev_err(&dev->intf->dev,
+ 			"Failed resubmitting read bulk urb: %d\n", err);
+ 	}
 
 
 
