@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-214323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UP3kCcpug2lNmwMAu9opvQ
-	(envelope-from <stable+bounces-214323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:38 +0100
+	id ACOAAtlng2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE33EE9E90
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729BBE9018
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01B7B30FE779
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:35:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F1043114DA7
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CEA2D8DA8;
-	Wed,  4 Feb 2026 15:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42DB41B358;
+	Wed,  4 Feb 2026 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5ZOKmqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpGw2eio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A01018859B;
-	Wed,  4 Feb 2026 15:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E1E40FD81;
+	Wed,  4 Feb 2026 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219307; cv=none; b=UvNsGh13BR2Yu4fFHYcAY6/FnMzRVA87gwIoTcIIJtCSn2EyrJlnkJ4r0K0H5+ZNTk8fD3iRuL5D7/K+ftNGwQdCurE2yLvmLkz4rSqPzgsXX7sW+HBgFojk8upEcYOA72KFeFh86Cz97OmaLOMzebXIvAheUOb5W2nYMef1gjU=
+	t=1770218898; cv=none; b=YQji5zGCIfKtaS6UvKs3+t9IeE5APRDavcbatTajGq6yDDZlX2tUPFKcSBaZx3KqjpIW/vqXgKv8jqEIpDwOTC+E2pTiqJF2ftI4iJKiqrjy3CFuGhfQ6CLQRI6fzxBW5nYl1hIHT/heDQoRqOFv00Vu92pr8bJw7c62xEjPePk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219307; c=relaxed/simple;
-	bh=u/Hxs4YRf/pTi0oLOo5Eu0FWIdqnqsXUff0+PgPs+ME=;
+	s=arc-20240116; t=1770218898; c=relaxed/simple;
+	bh=5eJLNObIloBjI8rjHIphd9xQ29JcGenpLuGDcLRXN7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSx5O/hP5YBBMSC4E7psYkSe9sKnl0PbVr2kuPlbBUT3XJlE9O5g+mIlf4L1Zx+q2zlyOBLAnNzGNATkAQdldUQJnBU68hK3Lal+5zms0rkTU+R0gM8ZnSpLXEzzJLwMUD/hIMIdxtBngDjcDo+MKzIFJbr+KDIONbJD8IbOcTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5ZOKmqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD82C4CEF7;
-	Wed,  4 Feb 2026 15:35:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tGwe3gEZ94tiy02Poe6yg7pDL8yvpb0UwXtPux8mQjfc3tdYZnAg4TQVTLcPq3tGYnntCWYakT1x7EGHarxPNZ3gPgjgtJEsfP5mzGZ6IoQXYz9nBdeXaemrGOnKCa0bn2RK/hy/XS0FXogpPgcVdxU/1H8jQXpuq6zKRZQJW/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpGw2eio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31CFC116C6;
+	Wed,  4 Feb 2026 15:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219306;
-	bh=u/Hxs4YRf/pTi0oLOo5Eu0FWIdqnqsXUff0+PgPs+ME=;
+	s=korg; t=1770218898;
+	bh=5eJLNObIloBjI8rjHIphd9xQ29JcGenpLuGDcLRXN7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5ZOKmqFaqgFtD2qvxAOUt9xDfgvoUjzLzjA4qMECNg13SDlMnmMV7fwR2LcW0Di3
-	 9qRZW1POms94iv9eYckRrWuGMmnCltRGYYISMPnAMHPH1W+o/YU7dXReAmY4jLzf8f
-	 cc9oYiB9bb47l2QuhsM8dKKQCW5dLQZDvWGtfQoU=
+	b=CpGw2eioHvKY9oWju/28ruF7TRW5jNdKQ+VWhYq8lD3KTNdRS+Y2b57Oe+rObuRrQ
+	 qRahVS579UhtixU6coH7vksNXIpTmLjEhnp7UZlNIZt4M9t+V/pmk8q5Rj3cbDdF2S
+	 Parz8JpxAPoyLjjzlymk9ivgnSx1whpPmJS18uUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.18 102/122] drm/tyr: depend on `COMMON_CLK` to fix build error
-Date: Wed,  4 Feb 2026 15:41:24 +0100
-Message-ID: <20260204143855.519621613@linuxfoundation.org>
+	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.12 87/87] bpf/selftests: test_select_reuseport_kern: Remove unused header
+Date: Wed,  4 Feb 2026 15:41:25 +0100
+Message-ID: <20260204143850.061076726@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +64,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-214200-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214323-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AE33EE9E90
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url,suse.com:email]
+X-Rspamd-Queue-Id: 729BBE9018
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 
-commit b0581f6ab952ffd135ca4402d2ee3da641538d6b upstream.
+commit 93cf4e537ed0c5bd9ba6cbdb2c33864547c1442f upstream.
 
-Tyr needs `CONFIG_COMMON_CLK` to build:
+test_select_reuseport_kern.c is currently including <stdlib.h>, but it
+does not use any definition from there.
 
-    error[E0432]: unresolved import `kernel::clk::Clk`
-     --> drivers/gpu/drm/tyr/driver.rs:3:5
-      |
-    3 | use kernel::clk::Clk;
-      |     ^^^^^^^^^^^^^^^^ no `Clk` in `clk`
+Remove stdlib.h inclusion from test_select_reuseport_kern.c
 
-    error[E0432]: unresolved import `kernel::clk::OptionalClk`
-     --> drivers/gpu/drm/tyr/driver.rs:4:5
-      |
-    4 | use kernel::clk::OptionalClk;
-      |     ^^^^^^^^^^^^^^^^^^^^^^^^ no `OptionalClk` in `clk`
+Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250227-remove_wrong_header-v1-1-bc94eb4e2f73@bootlin.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[shung-hsi.yu: Fix compilation error mentioned in footer of Alexis'
+patch with newer glibc header:
 
-Thus add the dependency to fix it.
+  [...]
+    CLNG-BPF [test_progs-cpuv4] test_select_reuseport_kern.bpf.o
+  In file included from progs/test_select_reuseport_kern.c:4:
+  /usr/include/bits/floatn.h:83:52: error: unsupported machine mode
+  '__TC__'
+     83 | typedef _Complex float __cfloat128 __attribute__ ((__mode__
+  (__TC__)));
+        |                                                    ^
+  /usr/include/bits/floatn.h:97:9: error: __float128 is not supported on
+  this target
+     97 | typedef __float128 _Float128;
 
-Fixes: cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali GPUs")
-Cc: stable@vger.kernel.org
-Acked-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20260124160948.67508-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+I'm not certain when the problem starts to occur, but I'm quite sure
+test_select_reuseport_kern.c were not meant to be using the C standard
+library in the first place.]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tyr/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/tyr/Kconfig
-+++ b/drivers/gpu/drm/tyr/Kconfig
-@@ -6,6 +6,7 @@ config DRM_TYR
- 	depends on RUST
- 	depends on ARM || ARM64 || COMPILE_TEST
- 	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
-+	depends on COMMON_CLK
- 	default n
- 	help
- 	  Rust DRM driver for ARM Mali CSF-based GPUs.
+--- a/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
++++ b/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright (c) 2018 Facebook */
+ 
+-#include <stdlib.h>
+ #include <linux/in.h>
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
 
 
 
