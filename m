@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-214059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHx7D6Ztg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:46 +0100
+	id yBYVIEFsg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940DAE9C3B
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:02:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D20FE9A37
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 88C683128832
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:23:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB2ED321B10F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8C14266B2;
-	Wed,  4 Feb 2026 15:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F322D594F;
+	Wed,  4 Feb 2026 15:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCu5PlD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1TkFmHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5E642189D;
-	Wed,  4 Feb 2026 15:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BAC2D4B68;
+	Wed,  4 Feb 2026 15:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218424; cv=none; b=uapKxciFeQZESsPBB5+L4P2U3MgX8I56EY0QOTnwqG+Y4r52Uv6+cQyKRik9V3+TKj63rnZ7X5knBIFv0quj+edKqkj59PLvvZJ0YRgnMI/cZc+D8pDztvbOgKp5BFJoUKglWXY2rukH08Ral+MsUqPrtdrmggV2YrOKAbrKu1s=
+	t=1770218685; cv=none; b=BsH7bzEDA+QJOKZnmpLt+hWYLHrvdrf0PuSP+E6iPfO1qAWmrG3eyfM3/GksHVFQMZJpBpNYpDwftdHDGZ5xf7KI5FEjjqQr1dyzroxtvNADxX3dFtS6zAMhl/BYTQIlCxERN7iUEy0wREQBqSs0aPV+ni4QbwVo/UFeedbbL2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218424; c=relaxed/simple;
-	bh=rneGumcGLSl/rPcDY+0xI+N0i8FGhcC5zWWACzQf7n0=;
+	s=arc-20240116; t=1770218685; c=relaxed/simple;
+	bh=pePw0sSoeCPYLQoHy1kL9oGGjZN2EpxB90iG8KUTZ2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drjJp1vl1evfit2rApAl5dEs9jSGEitmRg3yYxBTj4bRUkJsfw6DvIvGOgt/L+lGwaAE0A6WzH3xr5KxZClnXM0VjrWSEKr89xbIqqowGaB4Nfb6MCu404PCaYewpd0mgnlCmr7BG2LKgZ8j6e1di6mHKAD8vzZ1j9Ixz2i4tcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCu5PlD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B861EC4CEF7;
-	Wed,  4 Feb 2026 15:20:23 +0000 (UTC)
+	 MIME-Version; b=piOJvv508XkknLtpHAItl6pSNCtdSRpIT0xCtcPypZq0vhas01kDc4XJgsS/BNe6DhD59SB8i4OtFOmTs+Xz4/hB5Z5NHmUUXkgFJX3zwRncMq5b3BFx05JQLH1mLAFE1zSWqN/+norZRkvHl9aE+rpzAAFGNEFt18FjMZw5TQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1TkFmHl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743D3C4CEF7;
+	Wed,  4 Feb 2026 15:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218424;
-	bh=rneGumcGLSl/rPcDY+0xI+N0i8FGhcC5zWWACzQf7n0=;
+	s=korg; t=1770218684;
+	bh=pePw0sSoeCPYLQoHy1kL9oGGjZN2EpxB90iG8KUTZ2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCu5PlD40LFjraH9Jpt+90uQwwTKRjzpkVwMAqpJfMR0m1xTlm0N0aXkOfMHz6ww5
-	 62NDUIKVtgDQM82gXSGGtXXzYEUWHampTUYicwHuqOhfqHOaOuw2wuFFagxEtB9B70
-	 wTbxdixajvEk4FzQVCu8U0b6pbFxzzNAuNdHgeIU=
+	b=d1TkFmHlVE3xj7RmR0rCzC7T1tK6Q/FAv6WpOg6lQryjwqJGl/5takbI2TDM/dB+r
+	 Su0FvfGfZPKYj4ysNB/iLk7eQHleRYSx6ne/Z4bZuW3BwUGmffVxQU4NOzBNGWFaA4
+	 g/mcAHWqV1txUFfm/f7XLdVi4Lc/I4RK1rLeAwgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 26/72] ASoC: fsl: imx-card: Do not force slot width to sample width
+	Sai Sree Kartheek Adivi <s-adivi@ti.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 31/87] dma/pool: distinguish between missing and exhausted atomic pools
 Date: Wed,  4 Feb 2026 15:40:29 +0100
-Message-ID: <20260204143846.573371497@linuxfoundation.org>
+Message-ID: <20260204143848.032521157@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214059-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[broonie.kernel.org:query timed out];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214136-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 940DAE9C3B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
+X-Rspamd-Queue-Id: 9D20FE9A37
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Sai Sree Kartheek Adivi <s-adivi@ti.com>
 
-commit 9210f5ff6318163835d9e42ee68006be4da0f531 upstream.
+[ Upstream commit 56c430c7f06d838fe3b2077dbbc4cc0bf992312b ]
 
-imx-card currently sets the slot width to the physical sample width
-for I2S links. This breaks controllers that use fixed-width slots
-(e.g. 32-bit FIFO words), causing the unused bits in the slot to
-contain undefined data when playing 16-bit streams.
+Currently, dma_alloc_from_pool() unconditionally warns and dumps a stack
+trace when an allocation fails, with the message "Failed to get suitable
+pool".
 
-Do not override the slot width in the machine driver and let the CPU
-DAI select an appropriate default instead. This matches the behavior
-of simple-audio-card and avoids embedding controller-specific policy
-in the machine driver.
+This conflates two distinct failure modes:
+1. Configuration error: No atomic pool is available for the requested
+   DMA mask (a fundamental system setup issue)
+2. Resource Exhaustion: A suitable pool exists but is currently full (a
+   recoverable runtime state)
 
-On an i.MX8MP-based board using SAI as the I2S master with 32-bit slots,
-playing 16-bit audio resulted in spurious frequencies and an incorrect
-SAI data waveform, as the slot width was forced to 16 bits. After this
-change, audio artifacts are eliminated and the 16-bit samples correctly
-occupy the first half of the 32-bit slot, with the remaining bits padded
-with zeroes.
+This lack of distinction prevents drivers from using __GFP_NOWARN to
+suppress error messages during temporary pressure spikes, such as when
+awaiting synchronous reclaim of descriptors.
 
-Cc: stable@vger.kernel.org
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://patch.msgid.link/20260118205030.1532696-1-festevam@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Refactor the error handling to distinguish these cases:
+- If no suitable pool is found, keep the unconditional WARN regarding
+  the missing pool.
+- If a pool was found but is exhausted, respect __GFP_NOWARN and update
+  the warning message to explicitly state "DMA pool exhausted".
+
+Fixes: 9420139f516d ("dma-pool: fix coherent pool allocations for IOMMU mappings")
+Signed-off-by: Sai Sree Kartheek Adivi <s-adivi@ti.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260128133554.3056582-1-s-adivi@ti.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-card.c |    1 -
- 1 file changed, 1 deletion(-)
+ kernel/dma/pool.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -314,7 +314,6 @@ static int imx_aif_hw_params(struct snd_
- 			      SND_SOC_DAIFMT_PDM;
- 		} else {
- 			slots = 2;
--			slot_width = params_physical_width(params);
- 			fmt = (rtd->dai_link->dai_fmt & ~SND_SOC_DAIFMT_FORMAT_MASK) |
- 			      SND_SOC_DAIFMT_I2S;
- 		}
+diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+index 26392badc36b0..985d6aa102b67 100644
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -268,15 +268,20 @@ struct page *dma_alloc_from_pool(struct device *dev, size_t size,
+ {
+ 	struct gen_pool *pool = NULL;
+ 	struct page *page;
++	bool pool_found = false;
+ 
+ 	while ((pool = dma_guess_pool(pool, gfp))) {
++		pool_found = true;
+ 		page = __dma_alloc_from_pool(dev, size, pool, cpu_addr,
+ 					     phys_addr_ok);
+ 		if (page)
+ 			return page;
+ 	}
+ 
+-	WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
++	if (pool_found)
++		WARN(!(gfp & __GFP_NOWARN), "DMA pool exhausted for %s\n", dev_name(dev));
++	else
++		WARN(1, "Failed to get suitable pool for %s\n", dev_name(dev));
+ 	return NULL;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
