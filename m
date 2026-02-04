@@ -1,205 +1,142 @@
-Return-Path: <stable+bounces-213377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H1PAiFDg2nqkgMAu9opvQ
-	(envelope-from <stable+bounces-213377-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 14:01:21 +0100
+	id IDTaDaVDg2nqkgMAu9opvQ
+	(envelope-from <stable+bounces-213378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 14:03:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98514E61F2
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 14:01:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 994C3E623F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 14:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08B01307D4E4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 12:57:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0AA813049ED1
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 12:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE983E95B8;
-	Wed,  4 Feb 2026 12:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FF7407578;
+	Wed,  4 Feb 2026 12:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XOm7frjJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QuCMxX8R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CD63F23AF
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 12:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D163A1A3C
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 12:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770209822; cv=none; b=CO+1p2/Z8rH12Pq/qv8nw+TFToOBI4J4S51gDYDjtGefy4zsBIhf+1FDvGiq7t2mBxMad3l2rB1JWvUgE/Gsl0a3eCPmGNSyNUEDGnQMS7hs0gyHCtEvJlp69aeKPJd1YkJM5+ChmVpF49Fty3yCQVu/jcfSRvEOORHhTRpalkI=
+	t=1770209936; cv=none; b=Fsr50+PnKjOXalSHjYyr6gHHqSOEmbzHH94tBH0or7jJsdgclvxOaY+wI52wmHMlv9q71n33Ph423fKn5XuQaPHjTILx/aE+qgH92sFjXiqGB1UlgTor+C7JOJFCQFKhyho7sF0VgdZ39NPRuBHiKymBMz5nOEcPf8DSJMSctYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770209822; c=relaxed/simple;
-	bh=Rf8id0nHjDJXUac6IzxYUmRAht59ZMbwWCcvLZAdOdQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fXQyXDTIbxaH9D+78pvCFCFTTZbrbYg90QB0fprnsJDev5SpFj3l6NG3OzD5p40MehEgSD5hzdKGwwf8Iw8PFh9no8TMYXNg7/43dRWG0DwDY2AvmA/XwqCrBhAujSqKkEOP2XyIbtvIGM3N222q6vXhiw28OvPmOoBcJjYXYV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pimyn.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XOm7frjJ; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pimyn.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4806cfffca6so77403455e9.2
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 04:57:01 -0800 (PST)
+	s=arc-20240116; t=1770209936; c=relaxed/simple;
+	bh=57Q0kwm92dVcG0YliZgGBglpxNiTeV8kAqLQA2O64e4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ru2N0a700D6quXqhfUIwAp944Nz7zSpJXjT0PCLe2jq1WpiYthwahWc0JGEd1YGdWeaTiXnbKB4jNRNWgyl8w2J2DmL/jj5sMfNBIl8sO/RdIjgV69RMtpReiAsPblp8nARCajBJt+qXPj+MSGVaRA8S927wqansPqF+ppZjrxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QuCMxX8R; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4806b88d8c9so5520135e9.2
+        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 04:58:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770209820; x=1770814620; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uX/13QD1pht1i/ZEkncKyeU1jXZZG85yse+sUATL6IU=;
-        b=XOm7frjJPTaIAG7RgoqSRbo24gfGCVzR9dSLzWOurdGpAnoa5dKiQ46jPWNh/CeIpK
-         mAoawvSgIok99uO9DgJVsywPSw/wIejD+9eXdrUem7pAKwRt15FYhntz5E5iMq7m9th7
-         etCbKQnPHhkcE5v5kbsDUnkFOYsQOLWIilpRpiLG3imh0ufTXT7PG1NbD+ZU97ZHO8KI
-         ptZ4yGIvylgphVlTWZN/DHUjqaZk2Dh1mO1alU4x274RxLfnbJo/EiayM387fUMyE6y8
-         KOZq6Pn6crSBqgQh6R43bVzARgfraAbyDqMUzCWZbmL2yVgFNyCPzILq69z54N5CjKju
-         1Iqg==
+        d=gmail.com; s=20230601; t=1770209935; x=1770814735; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding
+         :disposition-notification-to:references:in-reply-to:date:cc:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=57Q0kwm92dVcG0YliZgGBglpxNiTeV8kAqLQA2O64e4=;
+        b=QuCMxX8RKYR+M/Jh/XF2wFy1LOGuzifnTqpzdg7sD6ibHC3881tM6giEoBh4NIkLMR
+         RdCY//OcayqQOKvQWpXOSMLiZLqFwT/3ivlBgXX5i3GalwNrTqG20c/lhL48DlNNeNai
+         4P2sp0vkEYUkM3WuI3O/lOfvqxw/RDSGAa74UDMlO3Huo6uAx7sjqIP2Hd/b/ClNtaUQ
+         VfoH5abnWwm5YlTz4RMio+iLHBu2lY+PztK6sMy7uCxepZBjrcLiDDz9SZ92gPSv0Wpa
+         SMYJtUV9Z8nsV9yL7srQs0K2J1iiVjRRFLf2293fDdSo0EALesy5JkqbWxBASFlrSY7C
+         QAFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770209820; x=1770814620;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uX/13QD1pht1i/ZEkncKyeU1jXZZG85yse+sUATL6IU=;
-        b=lQZ7hVIqziSU8WWoINy7HUy5Lp47K2W8PqDgpRSkALjg7m+7oIF0SsTXfF0KPczF43
-         V9VkA09rUKEWYc2xFx7t2mEe9HSP4DFSSQpwhqGzvjEzr4oxdKoO676sRFcmEvWamQbm
-         XM6VXBs0HApqHo+uZTzea1FBC0ydUBu3/WETxP1WMrtIw8z9yo5ZNXJ8xT54RHgKhLHQ
-         2+KVwiVkX8uYHTFc/7uR1NuCxNb1msu9AfK9GHfB+bjUEfuC/W2hUB5BEDuC+DmxQDNH
-         K/IfNx0wk1pDvq3XzfDgsNkNV+ndC1N1Y6K5bYfMNV1RKNOVoaTtvB29zQaQPNuAByZp
-         3Vng==
-X-Gm-Message-State: AOJu0YxshQsrBbBHRnDBrlg95jx3374dHBJWjajU474SYtA59ufAu3my
-	TN9eOPEaSgVa6A2hA74TK2JquLRocXq4KWVgITE6po2gbgwBvvLI1PeDd2KZ1XlvbJvvnatezc2
-	Vt2YK5YlmD+oyWQLvY4+xoHlQE9FbJFmdMNorcFe6GBYrqC7id60tnh+O5mUJeAE+1qlTtOrpod
-	MwqGdDZ7OQaieT+oSB0gITozfFhTjxN0U=
-X-Received: from wmnv6.prod.google.com ([2002:a05:600c:4446:b0:480:4a03:7b7a])
- (user=pimyn job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8b0f:b0:471:1717:411
- with SMTP id 5b1f17b1804b1-4830e97b082mr45247335e9.24.1770209819997; Wed, 04
- Feb 2026 04:56:59 -0800 (PST)
-Date: Wed,  4 Feb 2026 13:56:53 +0100
-In-Reply-To: <2026020339-trickery-vegan-e9c3@gregkh>
+        d=1e100.net; s=20230601; t=1770209935; x=1770814735;
+        h=mime-version:user-agent:content-transfer-encoding
+         :disposition-notification-to:references:in-reply-to:date:cc:to:from
+         :subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=57Q0kwm92dVcG0YliZgGBglpxNiTeV8kAqLQA2O64e4=;
+        b=kZMEDz4+/IYMkPaTfelrvZ77TgG2XpLXAxmM1SdBq9ZAn5hfHmKrcjJ7D+z3G6YBSZ
+         KM0ivfIRkuNmmgucWjsIKP2ms8zJgOtn9+ankpzD0B5rIw22rCrumMmrZzRvhtZKpGOa
+         +582s1c7kdjaFe8nxSEJV0bSEnyPDarN2U4dGP1VtXija6uvoAxW6LPqtFDGsgSrSJz2
+         AFYiy/c7PuXMhBaRXJcwva9r4/X88pfs/OTwEZCdwOXHyhnxOqmYJ1/LlmugTTryvgvy
+         SkQg0cECp647dDyPhZo61bjnzl3EtBhZi0cNDmh13KdAC+g0PmnRJQjlr2X8XMr2Qkn+
+         x9/g==
+X-Forwarded-Encrypted: i=1; AJvYcCVKG8SJD9w2ERAamftK/H3uOMJTcz3+CWBt4eSxZUN5He4HZ+X0PFcF7OhGcxshQhaXdI9/w3M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynQkgwAiNiSNp9iB2usWIzyezHBSdazu5eEl19lgPoDGb1EYA7
+	Jtv2xwpUNqNOvoeeaKckNeLSD3kZDe3b8pAaUsi1E8n86WKqtZ4ZhLKx
+X-Gm-Gg: AZuq6aIEevtS68SDdR6L2oSlILBj+uHRWzhZDRQk0DWK6HoKp+uyK6kOcn2wzREoNV2
+	HpUkhVYkdMEaMu8Jz6CKYUwUDkxU55eMgYE3LIXuQ8FLigk4rwi+RIWKDKmJrFz/QGWik1g9y/Y
+	mmQJqx0ARYp+kXBLwERGhVEFi7iemYlQCZqSamgfUdNyLaCnGlOfxZp+xyyDrLJSALWTv50u6Yb
+	TnkdtOHjjcR4l4HNWTn2o40ccbnoDNa0Y9cEtYVSkd/2SWJhv9PKTOikg1QowkbopDgzQRXPVZK
+	6q0v+lLfOQw40005/2Vy/pCJI/MG90e5uvLWjN0FJoH+34wLO7QSx0fTpsav7zSnv+7ZmJubPB6
+	VvnRFYEdM+rOo+LtCqsWyTpi3qfFp2wptrEtQP9/x7XdayjIGLRPiODCzBK+UQebfPmruN9mXZn
+	oHXpJLw45YLHromp4N4JntM0vt3QtGu2Xgxgnt1DTpwd9Td4XEj4eX8rd9LOZcOj6nfLcFEpppy
+	wp2Cw==
+X-Received: by 2002:a05:600c:3e1b:b0:477:7a78:3000 with SMTP id 5b1f17b1804b1-4830e981f9cmr23205715e9.6.1770209934567;
+        Wed, 04 Feb 2026 04:58:54 -0800 (PST)
+Received: from ?IPv6:2a00:f41:4842:718a:3ac6:8cea:3b72:7d9d? ([2a00:f41:4842:718a:3ac6:8cea:3b72:7d9d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4830ffc9f3asm19300975e9.19.2026.02.04.04.58.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 04:58:54 -0800 (PST)
+Message-ID: <3aefbee8ca6159ef9dbc5356246eae266bb6382d.camel@gmail.com>
+Subject: Re: [PATCH] HID: pidff: Fix condition effect bit clearing
+From: Tomasz =?UTF-8?Q?Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>
+To: Jiri Slaby <jirislaby@kernel.org>, jikos@kernel.org, bentiss@kernel.org,
+ 	sashal@kernel.org
+Cc: oleg@makarenk.ooo, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 04 Feb 2026 13:58:52 +0100
+In-Reply-To: <618af8dc-7698-4335-9d0a-fc7ec36cce9f@kernel.org>
+References: <20260203174241.2863219-1-tomasz.pakula.oficjalny@gmail.com>
+	 <618af8dc-7698-4335-9d0a-fc7ec36cce9f@kernel.org>
+Disposition-Notification-To: tomasz.pakula.oficjalny@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2026020339-trickery-vegan-e9c3@gregkh>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260204125653.1415809-1-pimyn@google.com>
-Subject: [PATCH 5.15.y] mm/kfence: randomize the freelist on initialization
-From: Pimyn Girgis <pimyn@google.com>
-To: stable@vger.kernel.org
-Cc: Pimyn Girgis <pimyn@google.com>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Marco Elver <elver@google.com>, 
-	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>, 
-	Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	HEADER_FORGED_MDN(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213377-lists,stable=lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[linux-foundation.org:query timed out];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-213378-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[dvyukov.google.com:query timed out,elver.google.com:query timed out,glider.google.com:query timed out,ernesto.martinezgarcia.tugraz.at:query timed out,gregkh.linuxfoundation.org:query timed out];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pimyn@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tugraz.at:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 98514E61F2
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tomaszpakulaoficjalny@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_MDN(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 994C3E623F
 X-Rspamd-Action: no action
 
-Randomize the KFENCE freelist during pool initialization to make
-allocation patterns less predictable.  This is achieved by shuffling the
-order in which metadata objects are added to the freelist using
-get_random_u32_below().
+On Wed, 2026-02-04 at 12:58 +0100, Jiri Slaby wrote:
+> You could use | directly in the if, perhaps with a comment.
+>=20
 
-Additionally, ensure the error path correctly calculates the address range
-to be reset if initialization fails, as the address increment logic has
-been moved to a separate loop.
+That's actually pretty neat. Didn't think about it. Thanks!
 
-Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Pimyn Girgis <pimyn@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 870ff19251bf3910dda7a7245da826924045fedd)
-Signed-off-by: Pimyn Girgis <pimyn@google.com>
-
-# Conflicts:
-#	mm/kfence/core.c
----
- mm/kfence/core.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
-
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index c49bc76b3a38..f94413a503f5 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -520,7 +520,7 @@ static bool __init kfence_init_pool(void)
- {
- 	unsigned long addr = (unsigned long)__kfence_pool;
- 	struct page *pages;
--	int i;
-+	int i, rand;
- 	char *p;
- 
- 	if (!__kfence_pool)
-@@ -576,13 +576,28 @@ static bool __init kfence_init_pool(void)
- 		INIT_LIST_HEAD(&meta->list);
- 		raw_spin_lock_init(&meta->lock);
- 		meta->state = KFENCE_OBJECT_UNUSED;
--		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
--		list_add_tail(&meta->list, &kfence_freelist);
-+		/* Use addr to randomize the freelist. */
-+		meta->addr = i;
- 
- 		/* Protect the right redzone. */
--		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
-+		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
- 			goto err;
-+	}
-+
-+	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
-+		rand = get_random_u32() % i;
-+		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
-+	}
- 
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		struct kfence_metadata *meta_1 = &kfence_metadata[i];
-+		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
-+
-+		list_add_tail(&meta_2->list, &kfence_freelist);
-+	}
-+
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		kfence_metadata[i].addr = addr;
- 		addr += 2 * PAGE_SIZE;
- 	}
- 
-@@ -597,6 +612,7 @@ static bool __init kfence_init_pool(void)
- 	return true;
- 
- err:
-+	addr += 2 * i * PAGE_SIZE;
- 	/*
- 	 * Only release unprotected pages, and do not try to go back and change
- 	 * page attributes due to risk of failing to do so as well. If changing
--- 
-2.53.0.rc2.204.g2597b5adb4-goog
-
+Tomasz
 
