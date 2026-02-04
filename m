@@ -1,162 +1,186 @@
-Return-Path: <stable+bounces-213325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDEXE1aSgmmhWQMAu9opvQ
-	(envelope-from <stable+bounces-213325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:27:02 +0100
+	id aHvOJUCVgmkRWgMAu9opvQ
+	(envelope-from <stable+bounces-213326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:39:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD053E0025
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:27:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDF3E0108
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 01:39:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3F0630A9AF3
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 00:27:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 868C0305193A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 00:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF36E19D074;
-	Wed,  4 Feb 2026 00:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA13020A5F3;
+	Wed,  4 Feb 2026 00:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3apMHEH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kh4vdi+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BB7128816
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 00:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC7320468E
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 00:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770164817; cv=none; b=Kn+ciYweyU253qVCYs+yo+khRJm25bXoZ0Hk+WCMGedSf9W/wCipnnJzvHgeh73Tu+HA5GDprfZ+ia6fWb3iTN3twWVfuAZj8mBlvhs5dNgQv3RG+GkrfIaCgkuh6P2QBAFH19ci1tqH+Jx1lWFR/2EzE8FhMatlS4GK7myvm58=
+	t=1770165564; cv=none; b=r6KjM4rx5Ol4AOCJUZS8YD+HWF3TJGHgmsOIsB4+e8JnAPXRR2CUFr1bIZd1o8NOd+7UwYOWBknRKOpXX/FDIq8Os83OER5utT1yZqqTRjT8W91Lh03a0isv9QguDWPJEYYgotGgCcPi96Zh8w4T7Z1cwuBJPqF3+gpc58b9B78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770164817; c=relaxed/simple;
-	bh=ZaNh73bMrH03v3eiBU4NbNgedfqZllF6g41hr77c8n8=;
+	s=arc-20240116; t=1770165564; c=relaxed/simple;
+	bh=XiDnzz7a21RlTighvkAstkAwuFqgncb3YkhJ5barOeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+mZlPWulomKuSHNld15ltZHSUdqtPsmLRYMlE9xcsP3IYvICaZ380ps9zqO+8vq/qIs3Khnirypg/pq7zMhoHXeg1CqbXmPDylMMK8mC/cNS/xqYgGjHHaugy2XarNfEQoSE/6iT9HKOASktEkABA7TkWCjLOVeDMdyiLUSeDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3apMHEH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040BBC116D0;
-	Wed,  4 Feb 2026 00:26:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d9RsByj9WfqdP51BriBNOLD0B8FBx7XMEYspL9zSWj8rRtiVpmGljh225SQkUYmdoH2p8q1Jf/qMzf5NHb8Qx+sv/nNGaz6vKvDVzJadpJqCMVL4TMijN7bAfJu5AgIdTbA0aF/0aRQGp7d9X/dZX/JNFK6dkKTq3L+lfseZrGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kh4vdi+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86486C116D0;
+	Wed,  4 Feb 2026 00:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770164817;
-	bh=ZaNh73bMrH03v3eiBU4NbNgedfqZllF6g41hr77c8n8=;
+	s=k20201202; t=1770165564;
+	bh=XiDnzz7a21RlTighvkAstkAwuFqgncb3YkhJ5barOeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3apMHEH1F2PY6tkCT6ZsmrPG7OTHcpyeXeBqjbWDds82bWhjmu6PAHF3mlxmp4Lm
-	 mVoIam84aOkFFEmeWrzF99/DBhDmZT4pq/kXYtZmr/GAVOZ2BLQXci96Uj73M+KRRr
-	 mnBRghK4kZFCcMaLK9jJJRqlQiAljg1tsQZhSYx2saBcCvqORb5EnA4QXszYnLKgsB
-	 GgCokPK9P1UMwnDAp5IdjjR9YcA+HSZgw2fFEtCGZ9cC1ComgaR2nlTrt0Ml4/osFc
-	 /ByPehIBth8v4jzgCuyfY96yJp3V50NwQGPpBSrj9swxaGJB5tgiiOsSTV9mw/N+gH
-	 xuLY1eRUDVkjg==
+	b=kh4vdi+uwYGoOUc4eYS/e3Nuja83pt1LarJO6Fu6Zvw3DH7LYcKEXN7qNQN3BYl4y
+	 4JotcmFU9IGewjmxohPqd/b0KYptrjPMXph/G+WNH6vHrmdHg/UoYgL9VdsGFUaFBq
+	 El7MhIuEYFDGMNl0N/MB+ipeOczisQXfW9MmGshVTDsrCNQrQ5i1f1v2tAyoNMAypH
+	 Pm4OP5E1skKaoloerKlrMsgDalMIh3RhuNlNX3VGdofJB37B7VYCgAHWt5S40IRrSC
+	 3VHnOc/dtIvLmfd1qETg4C/iGJxwIdGsRdvNV17QO0+Hc0sdrN4ZLWBWVX2TMES7Rd
+	 vQ2KxsiUQtzew==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] kho: init alloc tags when restoring pages from reserved memory
-Date: Tue,  3 Feb 2026 19:26:54 -0500
-Message-ID: <20260204002654.1462558-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] drm/amdgpu/gfx11: adjust KGQ reset sequence
+Date: Tue,  3 Feb 2026 19:39:21 -0500
+Message-ID: <20260204003922.1467007-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020303-drippy-appliance-a74c@gregkh>
-References: <2026020303-drippy-appliance-a74c@gregkh>
+In-Reply-To: <2026020327-overbid-collar-0ba9@gregkh>
+References: <2026020327-overbid-collar-0ba9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213325-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213326-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: BD053E0025
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 3BDF3E0108
 X-Rspamd-Action: no action
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit e86436ad0ad2a9aaf88802d69b68f02cbd1f04a9 ]
+[ Upstream commit 3eb46fbb601f9a0b4df8eba79252a0a85e983044 ]
 
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator.  When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and below warning message:
+Kernel gfx queues do not need to be reinitialized or
+remapped after a reset.  This fixes queue reset failures
+on APUs.
 
-alloc_tag was not set
-WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-RIP: 0010:___free_pages+0xb8/0x260
- kho_restore_vmalloc+0x187/0x2e0
- kho_test_init+0x3c4/0xa30
- do_one_initcall+0x62/0x2b0
- kernel_init_freeable+0x25b/0x480
- kernel_init+0x1a/0x1c0
- ret_from_fork+0x2d1/0x360
+v2: preserve init and remap for MMIO case.
 
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
-
-Link: https://lkml.kernel.org/r/20260122132740.176468-1-ranxiaokai627@163.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b3e9bfd86658 ("drm/amdgpu/gfx11: add ring reset callbacks")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4789
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b340ff216fdabfe71ba0cdd47e9835a141d08e10)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kexec_handover.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 45 ++++++++++++++------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 03d12e27189fc..db08c1a2e1f80 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -260,6 +260,14 @@ static struct page *kho_restore_page(phys_addr_t phys)
- 	if (info.order > 0)
- 		prep_compound_page(page, info.order);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index f218df42f5c8a..ce8b4e732e582 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -6568,36 +6568,39 @@ static void gfx_v11_0_emit_mem_sync(struct amdgpu_ring *ring)
+ static int gfx_v11_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
+ {
+ 	struct amdgpu_device *adev = ring->adev;
++	bool use_mmio = false;
+ 	int r;
  
-+	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
-+	clear_page_tag_ref(page);
-+	if (!is_folio) {
-+		/* Also do that for the non-compound tail pages */
-+		for (unsigned int i = 1; i < nr_pages; i++)
-+			clear_page_tag_ref(page + i);
-+	}
-+
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
- }
+ 	if (amdgpu_sriov_vf(adev))
+ 		return -EINVAL;
+ 
+-	r = amdgpu_mes_reset_legacy_queue(ring->adev, ring, vmid, false);
++	r = amdgpu_mes_reset_legacy_queue(ring->adev, ring, vmid, use_mmio);
+ 	if (r)
+ 		return r;
+ 
+-	r = amdgpu_bo_reserve(ring->mqd_obj, false);
+-	if (unlikely(r != 0)) {
+-		dev_err(adev->dev, "fail to resv mqd_obj\n");
+-		return r;
+-	}
+-	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
+-	if (!r) {
+-		r = gfx_v11_0_kgq_init_queue(ring, true);
+-		amdgpu_bo_kunmap(ring->mqd_obj);
+-		ring->mqd_ptr = NULL;
+-	}
+-	amdgpu_bo_unreserve(ring->mqd_obj);
+-	if (r) {
+-		dev_err(adev->dev, "fail to unresv mqd_obj\n");
+-		return r;
+-	}
++	if (use_mmio) {
++		r = amdgpu_bo_reserve(ring->mqd_obj, false);
++		if (unlikely(r != 0)) {
++			dev_err(adev->dev, "fail to resv mqd_obj\n");
++			return r;
++		}
++		r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
++		if (!r) {
++			r = gfx_v11_0_kgq_init_queue(ring, true);
++			amdgpu_bo_kunmap(ring->mqd_obj);
++			ring->mqd_ptr = NULL;
++		}
++		amdgpu_bo_unreserve(ring->mqd_obj);
++		if (r) {
++			dev_err(adev->dev, "fail to unresv mqd_obj\n");
++			return r;
++		}
+ 
+-	r = amdgpu_mes_map_legacy_queue(adev, ring);
+-	if (r) {
+-		dev_err(adev->dev, "failed to remap kgq\n");
+-		return r;
++		r = amdgpu_mes_map_legacy_queue(adev, ring);
++		if (r) {
++			dev_err(adev->dev, "failed to remap kgq\n");
++			return r;
++		}
+ 	}
+ 
+ 	return amdgpu_ring_test_ring(ring);
 -- 
 2.51.0
 
