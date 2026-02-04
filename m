@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-214022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNY4Ct9lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-214022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:35 +0100
+	id qOmEAuRtg2kFmwMAu9opvQ
+	(envelope-from <stable+bounces-214074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DE5E8B23
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:29:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07947E9CC1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0933E3114EAC
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D88FF3042658
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CC918859B;
-	Wed,  4 Feb 2026 15:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D753E41B37C;
+	Wed,  4 Feb 2026 15:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2hjQxwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5yevt5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B3529993F;
-	Wed,  4 Feb 2026 15:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC922C028C;
+	Wed,  4 Feb 2026 15:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218299; cv=none; b=DVzOwgN/Ou2UNHh+l0bcIYEda6dbqiZPsuPg5RL5PuEDDkDWGLD570uTsNHcbtbr8rrWrycy7ZoGI/2UX401SebPcbJ8NlUQPBWlapX7kSdUsnecWgLD5TEDP1KqqvCVN/x9iBjkxfYn1FEkuMTBDxVdyOEciDVEY7B46lbnzwU=
+	t=1770218476; cv=none; b=G8BRBbL+yjyXc1TTtMpD/2UxHlimM0FFDVqLTAghCoI3vIlbIHmChUjjThc9O1ZQBL5E5mbsJpKnZLMoZ2FsH0wJvEElkyhiVs/3jmYO/0motwQ34/Aw+6vgjcJ2NwZ7b5I8gMpCW28f7Tk8lGRCcB6OeQKbFlCC3xf/DW0Ihng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218299; c=relaxed/simple;
-	bh=6FcdnU3IMQB0Hppjwm8OlAHh3VSpuLZ2WmYQpr4pHVk=;
+	s=arc-20240116; t=1770218476; c=relaxed/simple;
+	bh=eBf88BVkRJt7f48fuUo/BwlgpZvuL7+QbgG5eOTDnbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NeBXKO52Srqh8QYBZmCJDGaKnewHCSLySPvD5K+LVMWaIkl5ZDJcA+xitAHZQGBtCOulElm5XFoIVYCvKfvQ6UlTIROqY38uxUoZOGrgP0eS/heoDmnmzqNIN1NnNmLtl8+VWFIIS+tqaF2Y2Z7qLh7PlIVOn/32r+bk1agoltU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2hjQxwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A3FC116C6;
-	Wed,  4 Feb 2026 15:18:18 +0000 (UTC)
+	 MIME-Version; b=S7gsb6J627P29PnPocTKyaSUPDnRi7TOAKsk+Sw64VTpQhGDXXqcUgQhzxheVQqsqxHaHrKAoZP5FltkMrPPcdL4/hfD/rUBPw7MOQlZ8uLfGWKzjHEbubENLjjxR9x/G1weTcEbhcLBH08NpIKQ96tweDbyMA9LeJhL89SD/qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5yevt5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CBFC4CEF7;
+	Wed,  4 Feb 2026 15:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218299;
-	bh=6FcdnU3IMQB0Hppjwm8OlAHh3VSpuLZ2WmYQpr4pHVk=;
+	s=korg; t=1770218476;
+	bh=eBf88BVkRJt7f48fuUo/BwlgpZvuL7+QbgG5eOTDnbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2hjQxwAEaXZYkZIcAOrOkRjo/w3fy97v5Hv3xWesWRcx8cN9bZriHrRqxNrhu871
-	 U/T0aMbvwqfz4gFF9/T1JO+kGoHOJ3AkEUOQmXI/5xsHYKU9SCKNtX9QZhYPzJy9bP
-	 l1UjdbbH9USQGaWMDwC6NkIyz74+Gey07vfmmVJE=
+	b=t5yevt5IJ3mMRhsaPpZeX7ai11xGclr4N8iD0HzaZ524Gj3SDze+oLatDsSmxLCZt
+	 0MPWUEv58TYlQrZe6RUORXOcIQw6Wftgqpi0ZmuP0nG9cJByqmHgMrXJ47Z/vJCtqS
+	 45nOQrNzAEWbT1JQkq4ISJCJtKC3qlwxKfk9tNxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 236/280] iio: adc: exynos_adc: fix OF populate on driver rebind
+Subject: [PATCH 6.6 07/72] net: mvpp2: cls: Fix memory leak in mvpp2_ethtool_cls_rule_ins()
 Date: Wed,  4 Feb 2026 15:40:10 +0100
-Message-ID: <20260204143918.116974590@linuxfoundation.org>
+Message-ID: <20260204143845.877702476@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214022-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214074-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,80 +87,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 80DE5E8B23
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 07947E9CC1
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
+[ Upstream commit 09f979d1f312627b31d2ee1e46f9692e442610cd ]
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+In mvpp2_ethtool_cls_rule_ins(), the ethtool_rule is allocated by
+ethtool_rx_flow_rule_create(). If the subsequent conversion to flow
+type fails, the function jumps to the clean_rule label.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+However, the clean_rule label only frees efs, skipping the cleanup
+of ethtool_rule, which leads to a memory leak.
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
+Fix this by jumping to the clean_eth_rule label, which properly calls
+ethtool_rx_flow_rule_destroy() before freeing efs.
+
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
+
+Fixes: f4f1ba18195d ("net: mvpp2: cls: Report an error for unsupported flow types")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260123065716.2248324-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/exynos_adc.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -721,14 +721,7 @@ static const struct iio_chan_spec exynos
- 	ADC_CHANNEL(9, "adc9"),
- };
- 
--static int exynos_adc_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
- 
--	return 0;
--}
- 
- static int exynos_adc_ts_open(struct input_dev *dev)
- {
-@@ -929,8 +922,7 @@ static int exynos_adc_probe(struct platf
- 	return 0;
- 
- err_of_populate:
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	if (has_ts) {
- 		input_unregister_device(info->input);
- 		free_irq(info->tsirq, info);
-@@ -959,8 +951,7 @@ static int exynos_adc_remove(struct plat
- 		free_irq(info->tsirq, info);
- 		input_unregister_device(info->input);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+index d2757cc116139..038382a0b8e9f 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+@@ -1389,7 +1389,7 @@ int mvpp2_ethtool_cls_rule_ins(struct mvpp2_port *port,
+ 	efs->rule.flow_type = mvpp2_cls_ethtool_flow_to_type(info->fs.flow_type);
+ 	if (efs->rule.flow_type < 0) {
+ 		ret = efs->rule.flow_type;
+-		goto clean_rule;
++		goto clean_eth_rule;
  	}
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	iio_device_unregister(indio_dev);
- 	free_irq(info->irq, info);
- 	if (info->data->exit_hw)
+ 
+ 	ret = mvpp2_cls_rfs_parse_rule(&efs->rule);
+-- 
+2.51.0
+
 
 
 
