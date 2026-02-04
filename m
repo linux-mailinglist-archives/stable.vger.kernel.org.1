@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCesJE9rg2m3mgMAu9opvQ
-	(envelope-from <stable+bounces-213826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:52:47 +0100
+	id AAg4LuVhg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA17E9861
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:52:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C2BE81D8
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 66425303119B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D127A30ED02A
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACB1426EBF;
-	Wed,  4 Feb 2026 15:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8B241325F;
+	Wed,  4 Feb 2026 14:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJ3UbItu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6EmZo51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E67A2D8777;
-	Wed,  4 Feb 2026 15:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D20286A4;
+	Wed,  4 Feb 2026 14:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217640; cv=none; b=kREgTDX2qj5cxwi1o8ALK3nqxFStWWyzgIpZzrO9W4pRP/SVPXmJj/ezdpy1Jzx+6LJ04+UfCi5Xvx8Z+LNsyBnuMzFmZxVm7yS+P16DgqtT8BDi9r+fTSauYUv1F4/qDhFJ51M/LNqzcCE8IX8nBgwfx/8QlEPwPpuvqOpJVZs=
+	t=1770216742; cv=none; b=TNhUZL7QYV5q1rl0qnVz9gTa674PlnyJLmJto25her3cr8W54K1Vx/4p2eY2NVEALRGzeHYrhE2IK1DeUZw7FEcYAK0q6W6W6MTymwify2+AN0j2HivPt20hFmpbiNP2DzQWkyEBPHq7WjMv2nYBAiBZiViG2Zj6Cgy6y0pK6xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217640; c=relaxed/simple;
-	bh=0gi683dkS28fucb8huYn4zGoWbxcR+Qzup/DgeUGJI4=;
+	s=arc-20240116; t=1770216742; c=relaxed/simple;
+	bh=woWI2tswE43FooyxNHwKxSlIciTFDyEsY06xCSq5tAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opHhYUEiTs/MV7V+LWiS34xc5lXiYmnk4b9HgruadS/R9D68f0NmuRlTqzPjqX0xzMLAFt8DMxNg4T0HMlO/W0gEbvERidhopCATQypyMook6oQNOmgi0Wy/8KCcUg5Uy2cZ4q+lnQtXwrj3uILdWXwp09fBCoKPJsWbMRyjsC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJ3UbItu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8CDC4CEF7;
-	Wed,  4 Feb 2026 15:07:19 +0000 (UTC)
+	 MIME-Version; b=g2QrAkKvDDpyRXS4pAa+Bp5roZOCH3Pts9N8HVLWGB/UE2kMYG7ySl02KOt3H5tPfseYxHGoyzX5RBWHz/1CxTQjbC3CNJXAXVRU9bruc3tq2CIF+sbJikKbQpHdRN9RlO20MYzcVWc+9/9q5nsLCXUi++tkBh2NB9ir0o/3gTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6EmZo51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AB0C4CEF7;
+	Wed,  4 Feb 2026 14:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217640;
-	bh=0gi683dkS28fucb8huYn4zGoWbxcR+Qzup/DgeUGJI4=;
+	s=korg; t=1770216742;
+	bh=woWI2tswE43FooyxNHwKxSlIciTFDyEsY06xCSq5tAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJ3UbItuvSAm3vlJwsi3OWHRYGVBm0UUw9GVuVzMVMlMo1j9A2FFDP/zzKVAAqo0P
-	 T6v0Krde1sa1Sjb8pCll7ykX2GXODR1A8R8WJZI3B/XikIDD47P41ZggRfJ2JjJAJV
-	 0tXY+LQAFCmTjFZwzncXQdmh4Ln+ILnJEanWt2z0=
+	b=y6EmZo51gEM+bq/6M1FHgARP2e5bssUm9maClL7tfkmXZTsC/VmhrGc+PpEpky56N
+	 aEFR3bqY58VGlnCPB8O2mxm4cH85/BghUB5bvkdd1Ezzokt5rYVaxIaGFz9F9ZLTg0
+	 Bg1+Mf53PxoWHIGcmpv4DZ5q0t88wEK1rACVxCqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 075/280] dmaengine: ti: dma-crossbar: fix device leak on am335x route allocation
+	Suraj Gupta <suraj.gupta2@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Folker Schwesinger <dev@folker-schwesinger.de>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 018/206] dmaengine: xilinx_dma: Fix uninitialized addr_width when "xlnx,addrwidth" property is missing
 Date: Wed,  4 Feb 2026 15:37:29 +0100
-Message-ID: <20260204143912.354869170@linuxfoundation.org>
+Message-ID: <20260204143858.858687407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,108 +71,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213560-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213826-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,ti.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6DA17E9861
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,folker-schwesinger.de:email]
+X-Rspamd-Queue-Id: 09C2BE81D8
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Suraj Gupta <suraj.gupta2@amd.com>
 
-commit 4fc17b1c6d2e04ad13fd6c21cfbac68043ec03f9 upstream.
+[ Upstream commit c0732fe78728718c853ef8e7af5bbb05262acbd1 ]
 
-Make sure to drop the reference taken when looking up the crossbar
-platform device during am335x route allocation.
+When device tree lacks optional "xlnx,addrwidth" property, the addr_width
+variable remained uninitialized with garbage values, causing incorrect
+DMA mask configuration and subsequent probe failure. The fix ensures a
+fallback to the default 32-bit address width when this property is missing.
 
-Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
-Cc: stable@vger.kernel.org	# 4.4
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-15-johan@kernel.org
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+Fixes: b72db4005fe4 ("dmaengine: vdma: Add 64 bit addressing support to the driver")
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Reviewed-by: Folker Schwesinger <dev@folker-schwesinger.de>
+Link: https://patch.msgid.link/20251021183006.3434495-1-suraj.gupta2@amd.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/dma-crossbar.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/dma/xilinx/xilinx_dma.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/ti/dma-crossbar.c
-+++ b/drivers/dma/ti/dma-crossbar.c
-@@ -78,34 +78,35 @@ static void *ti_am335x_xbar_route_alloca
- {
- 	struct platform_device *pdev = of_find_device_by_node(ofdma->of_node);
- 	struct ti_am335x_xbar_data *xbar = platform_get_drvdata(pdev);
--	struct ti_am335x_xbar_map *map;
-+	struct ti_am335x_xbar_map *map = ERR_PTR(-EINVAL);
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 48ac51447baee..ba5850ca39ddd 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -128,6 +128,7 @@
+ #define XILINX_MCDMA_MAX_CHANS_PER_DEVICE	0x20
+ #define XILINX_DMA_MAX_CHANS_PER_DEVICE		0x2
+ #define XILINX_CDMA_MAX_CHANS_PER_DEVICE	0x1
++#define XILINX_DMA_DFAULT_ADDRWIDTH		0x20
  
- 	if (dma_spec->args_count != 3)
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
+ #define XILINX_DMA_DMAXR_ALL_IRQ_MASK	\
+ 		(XILINX_DMA_DMASR_FRM_CNT_IRQ | \
+@@ -3013,7 +3014,7 @@ static int xilinx_dma_probe(struct platform_device *pdev)
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct xilinx_dma_device *xdev;
+ 	struct device_node *child, *np = pdev->dev.of_node;
+-	u32 num_frames, addr_width, len_width;
++	u32 num_frames, addr_width = XILINX_DMA_DFAULT_ADDRWIDTH, len_width;
+ 	int i, err;
  
- 	if (dma_spec->args[2] >= xbar->xbar_events) {
- 		dev_err(&pdev->dev, "Invalid XBAR event number: %d\n",
- 			dma_spec->args[2]);
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
+ 	/* Allocate and initialize the DMA engine structure */
+@@ -3082,7 +3083,9 @@ static int xilinx_dma_probe(struct platform_device *pdev)
  
- 	if (dma_spec->args[0] >= xbar->dma_requests) {
- 		dev_err(&pdev->dev, "Invalid DMA request line number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
+ 	err = of_property_read_u32(node, "xlnx,addrwidth", &addr_width);
+ 	if (err < 0)
+-		dev_warn(xdev->dev, "missing xlnx,addrwidth property\n");
++		dev_warn(xdev->dev,
++			 "missing xlnx,addrwidth property, using default value %d\n",
++			 XILINX_DMA_DFAULT_ADDRWIDTH);
  
- 	/* The of_node_put() will be done in the core for the node */
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "Can't get DMA master\n");
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map) {
- 		of_node_put(dma_spec->np);
--		return ERR_PTR(-ENOMEM);
-+		map = ERR_PTR(-ENOMEM);
-+		goto out_put_pdev;
- 	}
- 
- 	map->dma_line = (u16)dma_spec->args[0];
-@@ -119,6 +120,9 @@ static void *ti_am335x_xbar_route_alloca
- 
- 	ti_am335x_xbar_write(xbar->iomem, map->dma_line, map->mux_val);
- 
-+out_put_pdev:
-+	put_device(&pdev->dev);
-+
- 	return map;
- }
- 
+ 	if (addr_width > 32)
+ 		xdev->ext_addr = true;
+-- 
+2.51.0
+
 
 
 
