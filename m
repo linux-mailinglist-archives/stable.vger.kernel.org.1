@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-214290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNC7ECJug2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:50 +0100
+	id uOfOHZRng2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906CCE9D3C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:04:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC11E8F60
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA35030A1C58
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:33:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6CF6E30F2639
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD672D7D42;
-	Wed,  4 Feb 2026 15:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4152D8768;
+	Wed,  4 Feb 2026 15:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxZ+BF3z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxqKrwr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E72F2BE7C0;
-	Wed,  4 Feb 2026 15:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1295A3D994;
+	Wed,  4 Feb 2026 15:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219195; cv=none; b=Cs7OuRbHsoTm2jkRYhSuiZqP/3IVQrL1D/0H2Vm+34NrFgtfFvROxImYRArpUMSKG/dy3735FaCPugEjNqPRcMzb8IECg6edZmJOsKQ73egdoOFR4DFSbfisx2g0q7NZimQwcTxrEe+ygjNt3tNpyF5FxVJysAx/WleNuR//rAU=
+	t=1770218741; cv=none; b=F/EMg5x3ItQM+kP2/YzZ8z8mZuZ9M+Wbsh3E+80grmKRO73XQJ5X6Z7czoaU7w2IE5ISNmoKhUPHlojmXorkopFdRCQocvzM/V4tw8agmnaRtlPa4V1nzPoqMgoMMXeAmRspNNVH5N+XkaJ+P27DqlvsSF51iQybMlMdonfcBds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219195; c=relaxed/simple;
-	bh=Kot8Y0JpYrn5doUgO5WreQNJnN5CM7Mn+gmYooUaL+w=;
+	s=arc-20240116; t=1770218741; c=relaxed/simple;
+	bh=OXoCMu3ON9hTMBJcXPwdnsBoTa4GrppF81mVktQFAEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArhhpAadIkFHX70L5P6wfLQOGwr/3bNw4/FWkhcj51jMmp5enM/EUE/NyHUw2bm38BL0+EpY6QLY74QwA5bpXVl8RmuAkty+ArjJJdKo2OTmzFO7m5IbuNQe2BpQYVi26l3+lWAVWuwLUDw9uwcd/eFzxezjbge0707HMhYvP0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxZ+BF3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4A6C4CEF7;
-	Wed,  4 Feb 2026 15:33:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JXfaPj13vUArz5sQUr771UtwXTWqZflXNvq/1Y+3JKMYKv7fOCHJXUNXcNqJu6FI7hzYo9h+Rtt6O08UjOTNiKmeJU6Opdt8cT0d4Y2P7tsX2quMemjaMwPLlND3PTxuNeibwOHxJ5WaAN4gcPcbylGzF1tovRZL7ajCANKtkOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxqKrwr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F70C4CEF7;
+	Wed,  4 Feb 2026 15:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770219195;
-	bh=Kot8Y0JpYrn5doUgO5WreQNJnN5CM7Mn+gmYooUaL+w=;
+	s=korg; t=1770218741;
+	bh=OXoCMu3ON9hTMBJcXPwdnsBoTa4GrppF81mVktQFAEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxZ+BF3zoY2c8KGOOwBaIfuPwcYsNKK1edMMGd03oLR8h99lwhqRkX6Ji/P4Rjhea
-	 EduadnLaziRqr+ppmihRau58UDYUwB/El6axTJ09TFrWC+nRmBfuRQTGgDht6HVz3q
-	 u3l489KWCb3WlmtweN3xK7Em9OO+Q3BrahASZ2Rk=
+	b=hxqKrwr2mF3m05pWa9uWAuIxePt3rf6aZMuhn0erDcFxLM37aP6TK1ep4gKx+rFmP
+	 034zoy7i7QsE8Yh+AHWer7YVcS1+pcovi5/LzirBTBooaIcelS9KkbrQ687S7Nw3/e
+	 tuhQhNZ4q7b+RPJkOaKS9E4YWn+URZGCNSAVeGxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.18 061/122] pinctrl: meson: mark the GPIO controller as sleeping
-Date: Wed,  4 Feb 2026 15:40:43 +0100
-Message-ID: <20260204143854.051521838@linuxfoundation.org>
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	joonki.min@samsung-slsi.corp-partner.google.com,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 46/87] mm/kasan: fix KASAN poisoning in vrealloc()
+Date: Wed,  4 Feb 2026 15:40:44 +0100
+Message-ID: <20260204143848.572525337@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +70,185 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214290-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214153-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,samsung.com,oss.qualcomm.com,googlemail.com,linaro.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,samsung-slsi.corp-partner.google.com,intel.com,arm.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,qualcomm.com:email,samsung.com:email]
-X-Rspamd-Queue-Id: 906CCE9D3C
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,intel.com:email]
+X-Rspamd-Queue-Id: DFC11E8F60
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
-commit 28f24068387169722b508bba6b5257cb68b86e74 upstream.
+commit 9b47d4eea3f7c1f620e95bda1d6221660bde7d7b upstream.
 
-The GPIO controller is configured as non-sleeping but it uses generic
-pinctrl helpers which use a mutex for synchronization.
+A KASAN warning can be triggered when vrealloc() changes the requested
+size to a value that is not aligned to KASAN_GRANULE_SIZE.
 
-This can cause the following lockdep splat with shared GPIOs enabled on
-boards which have multiple devices using the same GPIO:
+    ------------[ cut here ]------------
+    WARNING: CPU: 2 PID: 1 at mm/kasan/shadow.c:174 kasan_unpoison+0x40/0x48
+    ...
+    pc : kasan_unpoison+0x40/0x48
+    lr : __kasan_unpoison_vmalloc+0x40/0x68
+    Call trace:
+     kasan_unpoison+0x40/0x48 (P)
+     vrealloc_node_align_noprof+0x200/0x320
+     bpf_patch_insn_data+0x90/0x2f0
+     convert_ctx_accesses+0x8c0/0x1158
+     bpf_check+0x1488/0x1900
+     bpf_prog_load+0xd20/0x1258
+     __sys_bpf+0x96c/0xdf0
+     __arm64_sys_bpf+0x50/0xa0
+     invoke_syscall+0x90/0x160
 
-BUG: sleeping function called from invalid context at
-kernel/locking/mutex.c:591
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
-kworker/u25:3
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-INFO: lockdep is turned off.
-irq event stamp: 46379
-hardirqs last  enabled at (46379): [<ffff8000813acb24>]
-_raw_spin_unlock_irqrestore+0x74/0x78
-hardirqs last disabled at (46378): [<ffff8000813abf38>]
-_raw_spin_lock_irqsave+0x84/0x88
-softirqs last  enabled at (46330): [<ffff8000800c71b4>]
-handle_softirqs+0x4c4/0x4dc
-softirqs last disabled at (46295): [<ffff800080010674>]
-__do_softirq+0x14/0x20
-CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
-6.19.0-rc4-next-20260105+ #11963 PREEMPT
-Tainted: [C]=CRAP
-Hardware name: Khadas VIM3 (DT)
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x24
-  __might_resched+0x144/0x248
-  __might_sleep+0x48/0x98
-  __mutex_lock+0x5c/0x894
-  mutex_lock_nested+0x24/0x30
-  pinctrl_get_device_gpio_range+0x44/0x128
-  pinctrl_gpio_set_config+0x40/0xdc
-  gpiochip_generic_config+0x28/0x3c
-  gpio_do_set_config+0xa8/0x194
-  gpiod_set_config+0x34/0xfc
-  gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
-  gpio_do_set_config+0xa8/0x194
-  gpiod_set_transitory+0x4c/0xf0
-  gpiod_configure_flags+0xa4/0x480
-  gpiod_find_and_request+0x1a0/0x574
-  gpiod_get_index+0x58/0x84
-  devm_gpiod_get_index+0x20/0xb4
-  devm_gpiod_get+0x18/0x24
-  mmc_pwrseq_emmc_probe+0x40/0xb8
-  platform_probe+0x5c/0xac
-  really_probe+0xbc/0x298
-  __driver_probe_device+0x78/0x12c
-  driver_probe_device+0xdc/0x164
-  __device_attach_driver+0xb8/0x138
-  bus_for_each_drv+0x80/0xdc
-  __device_attach+0xa8/0x1b0
+Introduce a dedicated kasan_vrealloc() helper that centralizes KASAN
+handling for vmalloc reallocations.  The helper accounts for KASAN granule
+alignment when growing or shrinking an allocation and ensures that partial
+granules are handled correctly.
 
-Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
-Cc: stable@vger.kernel.org
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@samsung.com/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Use this helper from vrealloc_node_align_noprof() to fix poisoning logic.
+
+[ryabinin.a.a@gmail.com: move kasan_enabled() check, fix build]
+  Link: https://lkml.kernel.org/r/20260119144509.32767-1-ryabinin.a.a@gmail.com
+Link: https://lkml.kernel.org/r/20260113191516.31015-1-ryabinin.a.a@gmail.com
+Fixes: d699440f58ce ("mm: fix vrealloc()'s KASAN poisoning logic")
+Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Reported-by: Maciej Żenczykowski <maze@google.com>
+Reported-by: <joonki.min@samsung-slsi.corp-partner.google.com>
+Closes: https://lkml.kernel.org/r/CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/kasan.h |   14 ++++++++++++++
+ mm/kasan/common.c     |   21 +++++++++++++++++++++
+ mm/vmalloc.c          |    7 ++-----
+ 3 files changed, 37 insertions(+), 5 deletions(-)
 
---- a/drivers/pinctrl/meson/pinctrl-meson.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson.c
-@@ -619,7 +619,7 @@ static int meson_gpiolib_register(struct
- 	pc->chip.set = meson_gpio_set;
- 	pc->chip.base = -1;
- 	pc->chip.ngpio = pc->data->num_pins;
--	pc->chip.can_sleep = false;
-+	pc->chip.can_sleep = true;
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -618,6 +618,17 @@ kasan_unpoison_vmap_areas(struct vm_stru
+ 		__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
+ }
  
- 	ret = gpiochip_add_data(&pc->chip, pc);
- 	if (ret) {
++void __kasan_vrealloc(const void *start, unsigned long old_size,
++		unsigned long new_size);
++
++static __always_inline void kasan_vrealloc(const void *start,
++					unsigned long old_size,
++					unsigned long new_size)
++{
++	if (kasan_enabled())
++		__kasan_vrealloc(start, old_size, new_size);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
+ 
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+@@ -647,6 +658,9 @@ kasan_unpoison_vmap_areas(struct vm_stru
+ 			  kasan_vmalloc_flags_t flags)
+ { }
+ 
++static inline void kasan_vrealloc(const void *start, unsigned long old_size,
++				unsigned long new_size) { }
++
+ #endif /* CONFIG_KASAN_VMALLOC */
+ 
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -590,4 +590,25 @@ void __kasan_unpoison_vmap_areas(struct
+ 			__kasan_unpoison_vmalloc(addr, size, flags | KASAN_VMALLOC_KEEP_TAG);
+ 	}
+ }
++
++void __kasan_vrealloc(const void *addr, unsigned long old_size,
++		unsigned long new_size)
++{
++	if (new_size < old_size) {
++		kasan_poison_last_granule(addr, new_size);
++
++		new_size = round_up(new_size, KASAN_GRANULE_SIZE);
++		old_size = round_up(old_size, KASAN_GRANULE_SIZE);
++		if (new_size < old_size)
++			__kasan_poison_vmalloc(addr + new_size,
++					old_size - new_size);
++	} else if (new_size > old_size) {
++		old_size = round_down(old_size, KASAN_GRANULE_SIZE);
++		__kasan_unpoison_vmalloc(addr + old_size,
++					new_size - old_size,
++					KASAN_VMALLOC_PROT_NORMAL |
++					KASAN_VMALLOC_VM_ALLOC |
++					KASAN_VMALLOC_KEEP_TAG);
++	}
++}
+ #endif
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4109,7 +4109,7 @@ void *vrealloc_noprof(const void *p, siz
+ 		if (want_init_on_free() || want_init_on_alloc(flags))
+ 			memset((void *)p + size, 0, old_size - size);
+ 		vm->requested_size = size;
+-		kasan_poison_vmalloc(p + size, old_size - size);
++		kasan_vrealloc(p, old_size, size);
+ 		return (void *)p;
+ 	}
+ 
+@@ -4117,16 +4117,13 @@ void *vrealloc_noprof(const void *p, siz
+ 	 * We already have the bytes available in the allocation; use them.
+ 	 */
+ 	if (size <= alloced_size) {
+-		kasan_unpoison_vmalloc(p + old_size, size - old_size,
+-				       KASAN_VMALLOC_PROT_NORMAL |
+-				       KASAN_VMALLOC_VM_ALLOC |
+-				       KASAN_VMALLOC_KEEP_TAG);
+ 		/*
+ 		 * No need to zero memory here, as unused memory will have
+ 		 * already been zeroed at initial allocation time or during
+ 		 * realloc shrink time.
+ 		 */
+ 		vm->requested_size = size;
++		kasan_vrealloc(p, old_size, size);
+ 		return (void *)p;
+ 	}
+ 
 
 
 
