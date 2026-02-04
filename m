@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHQQI/ppg2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-213967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:06 +0100
+	id yIKrBNVhg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E267AE95C2
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E08E81A4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C06CD313EDA0
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F3A031C2A01
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B79261B91;
-	Wed,  4 Feb 2026 15:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A539328643D;
+	Wed,  4 Feb 2026 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPsPpP03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvd/XAzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF1C413254;
-	Wed,  4 Feb 2026 15:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6885019DFAB;
+	Wed,  4 Feb 2026 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218112; cv=none; b=KrMonj3T54xqm5fn1SCqn4pcoUKZZj6vdaaxvW3vVVDwjw/M/kCMrTFHJe+YjSUV00YsbEbFZ0hJNSDotd+hxovWjDsRCLNXD1TS94BG8ParAlxIQzhWOTuBeQetCgOsVqVJTE0n3S6MmZxAq07Furey4BGweB0Zb+Mcldx2fFk=
+	t=1770217224; cv=none; b=bfLGBTIkC8GOTHYilaDyaZHEfyd7acb0LAjYggsJVBjVRxFZ3sMPB8U4kVQwPgLUmVnqTPy8pyaaAKuyrj9JklqFVaRL03gbnSj/E1VlwFUbZO29CU7YRJdZDIgBJga0i85hW7cpRuM1W1iBAjg6GyUA8RUptZjHGiiNDn1vF7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218112; c=relaxed/simple;
-	bh=h5dIhxU6O0StiXw8Ua24dY3EPoXj9Sl8IImOdoQCbVM=;
+	s=arc-20240116; t=1770217224; c=relaxed/simple;
+	bh=Zd81Z3dEdXHZkMQnZUW3i1OHPleCd7KlK+lA/kd5IEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PajwhsAQIyti58iqIkhtK07pd+2gauAy6Oedu50vABJzhKn3V0RiZppKUqgRKZvLSqDwM+bgYGJ0dcFuDdkQm6mTa1YxTwesMvntT8tv+SG1iYPSbfjUvJL3w1i1wZzagPxSvxwG7RMnVOfTRpBewfjDvWw3p/d90M2FKottXhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPsPpP03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851AAC4CEF7;
-	Wed,  4 Feb 2026 15:15:11 +0000 (UTC)
+	 MIME-Version; b=R4f61rGNYYVC8dMcgdMY1WDo6GNcTZNItLVUwrdPlWzYnuTrMwxi57RbMFzPCX3uVmnhih0bJ2zHLD5SzZ05+yY+VAlcSiOQQ9DxuhTUxQqIuR6OLGlZyinhFsHj1vfCaPg42CbM2ms48m2V75u8cm9rOMBE9z5mveOfAj3TM3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvd/XAzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E444AC116C6;
+	Wed,  4 Feb 2026 15:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218112;
-	bh=h5dIhxU6O0StiXw8Ua24dY3EPoXj9Sl8IImOdoQCbVM=;
+	s=korg; t=1770217224;
+	bh=Zd81Z3dEdXHZkMQnZUW3i1OHPleCd7KlK+lA/kd5IEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPsPpP03p3ub2qkwx/F0p5JXzSJKLCK/4ul+E2fhGGS2ZPEUyKAeYRvte3/ubUIrB
-	 a2qSsBVpZB/ikFQ3nMytIxssZN6NuiL+o63tiNFGuFiGkBpJ3b9mTTLmuH5mXP+cUP
-	 kgNCXBDZ/H4ProQbe0KH7I/a/8TYa1nTAKWJxM44=
+	b=vvd/XAzbjJzw/FwhxCtaM+j/fsp10X2M1NCo4WM3jSiNlRc6ilyPSvMrdIHpAs8YS
+	 ucmZH/1yRD7svFDd94DXnQavzVA3QNe2feW/8UM6t4p2R0hiXmbwRTAVoetAbKIhB+
+	 6zm90869LN4PVxXJJMFUSQvt0KxZYAOn1bIr5398=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@kernel.org>,
-	Jesung Yang <y.j3ms.n@gmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1 215/280] scripts: generate_rust_analyzer: Add compiler_builtins -> core dep
-Date: Wed,  4 Feb 2026 15:39:49 +0100
-Message-ID: <20260204143917.346947201@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 159/206] iio: adc: exynos_adc: fix OF populate on driver rebind
+Date: Wed,  4 Feb 2026 15:39:50 +0100
+Message-ID: <20260204143903.930128291@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +66,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213967-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213703-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: E267AE95C2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84E08E81A4
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 5157c328edb35bac05ce77da473c3209d20e0bbb upstream.
+[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
 
-Add a dependency edge from `compiler_builtins` to `core` to
-`scripts/generate_rust_analyzer.py` to match `rust/Makefile`. This has
-been incorrect since commit 8c4555ccc55c ("scripts: add
-`generate_rust_analyzer.py`")
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-Reviewed-by: Jesung Yang <y.j3ms.n@gmail.com>
-Acked-by: Benno Lossin <lossin@kernel.org>
-Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250723-rust-analyzer-pin-init-v1-1-3c6956173c78@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
+
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org	# 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/exynos_adc.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -73,7 +73,7 @@ def generate_crates(srctree, objtree, sy
-     append_crate(
-         "compiler_builtins",
-         srctree / "rust" / "compiler_builtins.rs",
--        [],
-+        ["core"],
-     )
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -721,14 +721,7 @@ static const struct iio_chan_spec exynos
+ 	ADC_CHANNEL(9, "adc9"),
+ };
  
-     append_crate(
+-static int exynos_adc_remove_devices(struct device *dev, void *c)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-
+-	platform_device_unregister(pdev);
+ 
+-	return 0;
+-}
+ 
+ static int exynos_adc_ts_open(struct input_dev *dev)
+ {
+@@ -929,8 +922,7 @@ static int exynos_adc_probe(struct platf
+ 	return 0;
+ 
+ err_of_populate:
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	if (has_ts) {
+ 		input_unregister_device(info->input);
+ 		free_irq(info->tsirq, info);
+@@ -959,8 +951,7 @@ static int exynos_adc_remove(struct plat
+ 		free_irq(info->tsirq, info);
+ 		input_unregister_device(info->input);
+ 	}
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	iio_device_unregister(indio_dev);
+ 	free_irq(info->irq, info);
+ 	if (info->data->exit_hw)
 
 
 
