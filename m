@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wG/YGuZsg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:34 +0100
+	id SE6nNR1lg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3DEE9B5A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:59:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94726E88F1
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 308AD3253F49
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 55BD23076277
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91A9284B37;
-	Wed,  4 Feb 2026 15:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A9D41C2F0;
+	Wed,  4 Feb 2026 15:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o92nHtav"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJOITvdg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65D27F163;
-	Wed,  4 Feb 2026 15:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C062218859B;
+	Wed,  4 Feb 2026 15:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218935; cv=none; b=ooVu4OKk95SaH06h3lH31r2Keo63FUV20tHBPI927IZDX5FjO/HuLEpC71c64BXwqAfVjFbFSgfD1fFx5fMwO6UYgqHdcc/8RKgfJorEyCN1aHKBulmBXRKTcmMDzjHAjiCttlCc3+5sdFO+q/kWcCL6Wnv9m1UUAAkDapDXTkc=
+	t=1770218152; cv=none; b=D17AhqPT9/9h2DRLNbWZ2Leffac3I+Yu1PX1p2JIKL/+Hz1lvKyTdI0UP6KJ5LkKxwwVrhhvhAQM4dU0vgBACI9+H0m0GAVk//qlG4sf4DjXODtmQVV2rEGTEETG/L237122v1KTffbM+ABdV6utucdgM6EzGGgPU7RHOnojYGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218935; c=relaxed/simple;
-	bh=k0yY5ZAQbzF+ht4D5bwzTMGPKxj5eBfygvZYVjUp8q8=;
+	s=arc-20240116; t=1770218152; c=relaxed/simple;
+	bh=PofuUck1i57DKHqT+dFF/Dq7H3+haRm99XXHJ9Og47A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OuG8A8p2dYbcHZw1IRr6Jbyn1StoVkBlZBp4uKSXqNx09DvswiiNizRLfzFCIgsN2Tnf3lvZ5e10cmFk0rBUYjJWWN6VKAOopQm4OrEI1Xe/vvyj7R/zaCgIU8mIolXRXPMZ9u9BxrngiMkq2iI5QrFsSGWjGe/uAP9W3tLouNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o92nHtav; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2DFC4CEF7;
-	Wed,  4 Feb 2026 15:28:54 +0000 (UTC)
+	 MIME-Version; b=EoQk4BTMmzV9triRmF3GEq6XQuuzXPvLc+NuGO2SPxhBAekDaHEVej/ZSlP5vmcCw3ffZTmdwVojmCUgb6WcArQGtkyZhBAOlzMl7xFcQJt+YOK+RGBrv9hPILPZ6Cgh/Gr6iE4klEUfARkkRNv0UwhyaguWjv2WSlEy6gSMFvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJOITvdg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B21C4CEF7;
+	Wed,  4 Feb 2026 15:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218935;
-	bh=k0yY5ZAQbzF+ht4D5bwzTMGPKxj5eBfygvZYVjUp8q8=;
+	s=korg; t=1770218152;
+	bh=PofuUck1i57DKHqT+dFF/Dq7H3+haRm99XXHJ9Og47A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o92nHtavfVm0Q9HlcVEhgw+zqlg5UetAX3BXW/w52V2LxYJ3C+q6ji4a/U7WnhdU5
-	 mHSCpZEa+RAWZ1kn9V0ZXcqVYqRy6fQSX6lkzBU0kYjC9Xbt1BeO9M0NjSrcMgDN+0
-	 6Yav+TNvPAwZ4SJ1JB8g/6BxEKX0WprcW3VE35t8=
+	b=lJOITvdgC7g2bjDicrTRJLjlIai30kFUOYk96q9JJUoBVZYYxxVuRbR73CLWk43rC
+	 rohuFEStpjZrfZEb/25vw5KmDPpp+EOBNqVc/5sVgrD12imwSzu1KnqCy7vwcphi1P
+	 GBsVRBqBv+ADArFG5RzUxGDrekzYImQzgdftCHog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+	Johan Hovold <johan@kernel.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 018/122] net: spacemit: Check for netif_carrier_ok() in emac_stats_update()
+Subject: [PATCH 6.1 226/280] dmaengine: stm32: dmamux: fix device leak on route allocation
 Date: Wed,  4 Feb 2026 15:40:00 +0100
-Message-ID: <20260204143852.522778230@linuxfoundation.org>
+Message-ID: <20260204143917.747046745@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214211-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213979-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,115 +88,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iscas.ac.cn:email,jmu.edu.cn:email]
-X-Rspamd-Queue-Id: 8B3DEE9B5A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,st.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 94726E88F1
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vivian Wang <wangruikang@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2c84959167d6493dbdac88965c7389b8ab88bf4e ]
+[ Upstream commit dd6e4943889fb354efa3f700e42739da9bddb6ef ]
 
-Some PHYs stop the refclk for power saving, usually while link down.
-This causes reading stats to time out.
+Make sure to drop the reference taken when looking up the DMA mux
+platform device during route allocation.
 
-Therefore, in emac_stats_update(), also don't update and reschedule if
-!netif_carrier_ok(). But that means we could be missing later updates if
-the link comes back up, so also reschedule when link up is detected in
-emac_adjust_link().
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-While we're at it, improve the comments and error message prints around
-this to reflect the better understanding of how this could happen.
-Hopefully if this happens again on new hardware, these comments will
-direct towards a solution.
-
-Closes: https://lore.kernel.org/r/20260119141620.1318102-1-amadeus@jmu.edu.cn/
-Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
-Co-developed-by: Chukun Pan <amadeus@jmu.edu.cn>
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-Link: https://patch.msgid.link/20260123-k1-ethernet-clarify-stat-timeout-v3-1-93b9df627e87@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
+Cc: stable@vger.kernel.org	# 4.15
+Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Link: https://patch.msgid.link/20251117161258.10679-11-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/spacemit/k1_emac.c | 34 ++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ drivers/dma/stm32-dmamux.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
-index 220eb5ce75833..88e9424d2d51a 100644
---- a/drivers/net/ethernet/spacemit/k1_emac.c
-+++ b/drivers/net/ethernet/spacemit/k1_emac.c
-@@ -1099,7 +1099,13 @@ static int emac_read_stat_cnt(struct emac_priv *priv, u8 cnt, u32 *res,
- 					100, 10000);
+--- a/drivers/dma/stm32-dmamux.c
++++ b/drivers/dma/stm32-dmamux.c
+@@ -88,23 +88,25 @@ static void *stm32_dmamux_route_allocate
+ 	struct stm32_dmamux_data *dmamux = platform_get_drvdata(pdev);
+ 	struct stm32_dmamux *mux;
+ 	u32 i, min, max;
+-	int ret;
++	int ret = -EINVAL;
+ 	unsigned long flags;
  
- 	if (ret) {
--		netdev_err(priv->ndev, "Read stat timeout\n");
-+		/*
-+		 * This could be caused by the PHY stopping its refclk even when
-+		 * the link is up, for power saving. See also comments in
-+		 * emac_stats_update().
-+		 */
-+		dev_err_ratelimited(&priv->ndev->dev,
-+				    "Read stat timeout. PHY clock stopped?\n");
- 		return ret;
+ 	if (dma_spec->args_count != 3) {
+ 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
  	}
  
-@@ -1147,17 +1153,25 @@ static void emac_stats_update(struct emac_priv *priv)
- 
- 	assert_spin_locked(&priv->stats_lock);
- 
--	if (!netif_running(priv->ndev) || !netif_device_present(priv->ndev)) {
--		/* Not up, don't try to update */
-+	/*
-+	 * We can't read statistics if the interface is not up. Also, some PHYs
-+	 * stop their reference clocks for link down power saving, which also
-+	 * causes reading statistics to time out. Don't update and don't
-+	 * reschedule in these cases.
-+	 */
-+	if (!netif_running(priv->ndev) ||
-+	    !netif_carrier_ok(priv->ndev) ||
-+	    !netif_device_present(priv->ndev)) {
- 		return;
+ 	if (dma_spec->args[0] > dmamux->dmamux_requests) {
+ 		dev_err(&pdev->dev, "invalid mux request number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
  	}
  
- 	for (i = 0; i < sizeof(priv->tx_stats) / sizeof(*tx_stats); i++) {
- 		/*
--		 * If reading stats times out, everything is broken and there's
--		 * nothing we can do. Reading statistics also can't return an
--		 * error, so just return without updating and without
--		 * rescheduling.
-+		 * If reading stats times out anyway, the stat registers will be
-+		 * stuck, and we can't really recover from that.
-+		 *
-+		 * Reading statistics also can't return an error, so just return
-+		 * without updating and without rescheduling.
- 		 */
- 		if (emac_tx_read_stat_cnt(priv, i, &res))
- 			return;
-@@ -1636,6 +1650,12 @@ static void emac_adjust_link(struct net_device *dev)
- 		emac_wr(priv, MAC_GLOBAL_CONTROL, ctrl);
+ 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
+-	if (!mux)
+-		return ERR_PTR(-ENOMEM);
++	if (!mux) {
++		ret = -ENOMEM;
++		goto err_put_pdev;
++	}
  
- 		emac_set_fc_autoneg(priv);
+ 	spin_lock_irqsave(&dmamux->lock, flags);
+ 	mux->chan_id = find_first_zero_bit(dmamux->dma_inuse,
+@@ -131,7 +133,6 @@ static void *stm32_dmamux_route_allocate
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", i - 1);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "can't get dma master\n");
+-		ret = -EINVAL;
+ 		goto error;
+ 	}
+ 
+@@ -158,6 +159,8 @@ static void *stm32_dmamux_route_allocate
+ 	dev_dbg(&pdev->dev, "Mapping DMAMUX(%u) to DMA%u(%u)\n",
+ 		mux->request, mux->master, mux->chan_id);
+ 
++	put_device(&pdev->dev);
 +
-+		/*
-+		 * Reschedule stats updates now that link is up. See comments in
-+		 * emac_stats_update().
-+		 */
-+		mod_timer(&priv->stats_timer, jiffies);
- 	}
+ 	return mux;
  
- 	phy_print_status(phydev);
--- 
-2.51.0
-
+ err_put_dma_spec_np:
+@@ -167,6 +170,9 @@ error:
+ 
+ error_chan_id:
+ 	kfree(mux);
++err_put_pdev:
++	put_device(&pdev->dev);
++
+ 	return ERR_PTR(ret);
+ }
+ 
 
 
 
