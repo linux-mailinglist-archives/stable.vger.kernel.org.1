@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EckZERxng2kFmgMAu9opvQ
-	(envelope-from <stable+bounces-213812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:52 +0100
+	id wDRDMbZdg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6F0E8E6C
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7A4E7914
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 22019316017D
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:13:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 21FFA3015FC4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7628B2D8771;
-	Wed,  4 Feb 2026 15:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE67A41B379;
+	Wed,  4 Feb 2026 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7cULtHT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yj1lkMHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B5D4218BB;
-	Wed,  4 Feb 2026 15:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EC741B376;
+	Wed,  4 Feb 2026 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217592; cv=none; b=EWCYRpdFintNGO1rvdLKRn+04DHLOv1805q7cSpGiqlFjhRRu998mxUw5f07WOusLOB/ljYINIc892exKt2yVrycJSoQOzy7BSF9TW7d79CuEj1cTZD0Ikp6aPl6c9VhoU1EZRI6WGKZzvTpeRE/uYTwtAER1F3BrMdRUX5tgyY=
+	t=1770216755; cv=none; b=AFIP33mWaUIZCEV/mIIRfd/MiQO5ADz0pJat6Du6/KyubgL4ujHypPZAMkK7GWS+1TU4uFS64DwaAKm1Kbe43KJz7UVVUmHeWrAVcLFpiXHHoslLOGoSG5Fa9lcpDwsaVPbVwfis1Z4RNgrEJZG4mPW+OCRsvlfxHQzYH0KkSpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217592; c=relaxed/simple;
-	bh=x7TOoUErqBmSKduDvgLK4Xwc9Vmk3fKT053BGx28rDI=;
+	s=arc-20240116; t=1770216755; c=relaxed/simple;
+	bh=Ckfx0r12ShjgKanOO67dLHEUBZG6jMGSowyuVJTa7sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5gQewaiYPY2j7B3l2zON0G8fRbi9glN87hJk/1C/ZB1B9jzMIZk4e2RZrJLGy+Mn94RD8X6yKuHzZ92jFqh/yAOUEFiqHzJ4FtmW09GOB7ilJXMLuXnZmrnXyTENV61K5fVO3x+49eTo8tkVWQby1tgGdDtUvTCFwUhLvwamuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7cULtHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBB2C4CEF7;
-	Wed,  4 Feb 2026 15:06:31 +0000 (UTC)
+	 MIME-Version; b=NtMxlodKOEtqWyR7TOrERHgD24bEPhGxxs0vfaM21SdKJDyJErWM0YjC1ZjR7je+KtufgaMIzqhjF6XLI2wpOe/yGR317zpqxgvbq+1lg6MhBGlsL5VthSuyf1BSDzqyeWb415i2tc+bv9LlCco9TXCla/HOSxLbuGVEQk3ToTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yj1lkMHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09645C116C6;
+	Wed,  4 Feb 2026 14:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217592;
-	bh=x7TOoUErqBmSKduDvgLK4Xwc9Vmk3fKT053BGx28rDI=;
+	s=korg; t=1770216755;
+	bh=Ckfx0r12ShjgKanOO67dLHEUBZG6jMGSowyuVJTa7sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7cULtHTUmmOqUqptjWZcdTbYH1sS6CL2jG6TpsuX1JYFk1zvGOv0tUHLx8i8N/Hi
-	 iOMEyD+HcLCsPsMHlWCN8TptPnbXUCX5vY0WCKbKsYOLczvfsUhT3AuQSMZHcSR8e1
-	 LU4LjdS41ulpxnXVY1YtbIAeQXaIC5CPeS7Mowpo=
+	b=Yj1lkMHf+fMgf1w+KOihNBEZLU0rZOw9Az3dQl0YTineY0it5C34KYw82FfXFI3rI
+	 UBFbyHleDFSwXQ8yMrwwHwIx2hZOb3CxV81p6xxu/YB+QaqnWMX1E0sNcYGMfSCsk+
+	 zBEZ9+bENfyQsiR/b8pBxHIDcK1MaIlvgotvDRdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kent.russell@amd.com,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 062/280] drm/amd: Clean up kfd node on surprise disconnect
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 005/206] btrfs: send: check for inline extents in range_is_hole_in_parent()
 Date: Wed,  4 Feb 2026 15:37:16 +0100
-Message-ID: <20260204143911.886376244@linuxfoundation.org>
+Message-ID: <20260204143858.392596933@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +70,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213564-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213812-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,frame.work:url]
-X-Rspamd-Queue-Id: 3D6F0E8E6C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: CD7A4E7914
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 28695ca09d326461f8078332aa01db516983e8a2 upstream.
+[ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
 
-When an eGPU is unplugged the KFD topology should also be destroyed
-for that GPU. This never happens because the fini_sw callbacks never
-get to run. Run them manually before calling amdgpu_device_ip_fini_early()
-when a device has already been disconnected.
+Before accessing the disk_bytenr field of a file extent item we need
+to check if we are dealing with an inline extent.
+This is because for inline extents their data starts at the offset of
+the disk_bytenr field. So accessing the disk_bytenr
+means we are accessing inline data or in case the inline data is less
+than 8 bytes we can actually cause an invalid
+memory access if this inline extent item is the first item in the leaf
+or access metadata from other items.
 
-This location is intentionally chosen to make sure that the kfd locking
-refcount doesn't get incremented unintentionally.
-
-Cc: kent.russell@amd.com
-Closes: https://community.frame.work/t/amd-egpu-on-linux/8691/33
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6a23e7b4332c10f8b56c33a9c5431b52ecff9aab)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/btrfs/send.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4102,6 +4102,14 @@ void amdgpu_device_fini_hw(struct amdgpu
- 	/* disable ras feature must before hw fini */
- 	amdgpu_ras_pre_fini(adev);
- 
-+	/*
-+	 * device went through surprise hotplug; we need to destroy topology
-+	 * before ip_fini_early to prevent kfd locking refcount issues by calling
-+	 * amdgpu_amdkfd_suspend()
-+	 */
-+	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+		amdgpu_amdkfd_device_fini_sw(adev);
-+
- 	amdgpu_device_ip_fini_early(adev);
- 
- 	amdgpu_irq_fini_hw(adev);
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index a46076788bd7e..32992b2fdd384 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -5892,6 +5892,8 @@ static int range_is_hole_in_parent(struct send_ctx *sctx,
+ 		extent_end = btrfs_file_extent_end(path);
+ 		if (extent_end <= start)
+ 			goto next;
++		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE)
++			return 0;
+ 		if (btrfs_file_extent_disk_bytenr(leaf, fi) == 0) {
+ 			search_start = extent_end;
+ 			goto next;
+-- 
+2.51.0
+
 
 
 
