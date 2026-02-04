@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-214156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHcgC7Nug2lNmwMAu9opvQ
-	(envelope-from <stable+bounces-214156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:15 +0100
+	id +P2wAy1ng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46859E9E47
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:07:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589F2E8E9D
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AC5CB31C74FB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDF1D31CBFF8
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35522D97BB;
-	Wed,  4 Feb 2026 15:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662ED2D6611;
+	Wed,  4 Feb 2026 15:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKHLwdhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqwW8H7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6679C2D9484;
-	Wed,  4 Feb 2026 15:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2967127F163;
+	Wed,  4 Feb 2026 15:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218751; cv=none; b=e6Sj3BewqWkO0CS3nBizY9o3dbgrhhqKt8GaEkJsw3Tac8wzJtXa3ukoLmolOaTUdxuC4FwE5XsRRwcloUXrN8b0ERWKhk5DaeBQmeNpSmpFqsoGjx+iSx43GA3PQ4jCQcEr4lhC7Lm+/x/XelMOADgaYkHaSjvNXclvNl7F2hg=
+	t=1770218493; cv=none; b=O7B1Zmsxe1k736ynnda+K/UTJfFVgWdt9T4MS8LfltbuWILBG2P47fJOrHsS5DTuoZOdqy+awGGLVORCTFcKSipJ9CdwsJHRbW7+HsyliqEXo9qekNAdEHKQfvL8xcbJ5FpYWGi2zRJe8DBHpQ8fJyYZbwoxbsC3U9bzSDAdfDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218751; c=relaxed/simple;
-	bh=7vP4WQkYXNVlsVmYr+1v12hucnuCdxoSDbBlsdFV7MU=;
+	s=arc-20240116; t=1770218493; c=relaxed/simple;
+	bh=czXbn2t4L6V5d33j3yQsHtb/AtK2dsnTsxmYJvI0Dc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgMQYO41GxEDybdIB1zcuWrlwsB2jhZs238iFyWfJVMIlDSfbVvW6xgQPhDWzd0KG7Q9EJTawstrgH8PZeF4fuQfcXZgFdViot3qp4ZjceC9YGFxUhu6Ljso56YRzeKhw8mjvf0yjIyxBBGOiqMKtYlgKuGzrOMxsCaBgx+lBdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKHLwdhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC15FC4CEF7;
-	Wed,  4 Feb 2026 15:25:50 +0000 (UTC)
+	 MIME-Version; b=ZggnTWI7hgj3Fw0EgUpdatHh5GZ5VOTJ8ooZyxGzd/dHHocv3bnVwVelWNN25cTo27nUZ8lDxyVoZLPEzEH68AgTjv+0bj/LnKjt5Q314g+zLflT/Fav1v5T097YktEiFfPWZFSpgaRhtW9DVh2Nl/0PxqfgnQdHs0AuNEgG7Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqwW8H7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8E8C4CEF7;
+	Wed,  4 Feb 2026 15:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218751;
-	bh=7vP4WQkYXNVlsVmYr+1v12hucnuCdxoSDbBlsdFV7MU=;
+	s=korg; t=1770218493;
+	bh=czXbn2t4L6V5d33j3yQsHtb/AtK2dsnTsxmYJvI0Dc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKHLwdhKnsfR9KQPmhdVgNaCcuzJB2QZQifKIiOjna0srqiwBUskqgLny215g/oQF
-	 RQISFo+gF/yZ2WB7fLFZJ+KlYIZfR/dKZcZEdLI9G4aDs2crYSCP7YYOWpZ6rJ+98I
-	 0FtbeBwSgtqS4N5QmR+D1aqo+7afDf7BJvSos4xg=
+	b=YqwW8H7cWGLgJAg8pBE/ZPOFtUmtK3mbFn+HQO+NHT4j6KwFsVLwU6uMIcfoFL2Ye
+	 XYFpkhk7a/pmnfwAvk94d1ejAGOZgqThMQGpCoRW6xWHEkiktU8zeht6vfGxQb4mDt
+	 IMnb8I26jzlauVBxYAsG1/93hTpAR1XchVlZsCc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f9c5fd1a0874f9069dce@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jake Keller <jacob.e.keller@intel.com>,
+	IWL <intel-wired-lan@lists.osuosl.org>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 17/87] nfc: nci: Fix race between rfkill and nci_unregister_device().
+Subject: [PATCH 6.6 12/72] ice: stop counting UDP csum mismatch as rx_errors
 Date: Wed,  4 Feb 2026 15:40:15 +0100
-Message-ID: <20260204143847.531619725@linuxfoundation.org>
+Message-ID: <20260204143846.061276065@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,230 +67,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214156-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214079-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f9c5fd1a0874f9069dce];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 46859E9E47
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[osuosl.org:email,cloudflare.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:url,intel.com:email]
+X-Rspamd-Queue-Id: 589F2E8E9D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
 
-[ Upstream commit d2492688bb9fed6ab6e313682c387ae71a66ebae ]
+[ Upstream commit 05faf2c0a76581d0a7fdbb8ec46477ba183df95b ]
 
-syzbot reported the splat below [0] without a repro.
+Since the beginning, the Intel ice driver has counted receive checksum
+offload mismatches into the rx_errors member of the rtnl_link_stats64
+struct. In ethtool -S these show up as rx_csum_bad.nic.
 
-It indicates that struct nci_dev.cmd_wq had been destroyed before
-nci_close_device() was called via rfkill.
+I believe counting these in rx_errors is fundamentally wrong, as it's
+pretty clear from the comments in if_link.h and from every other statistic
+the driver is summing into rx_errors, that all of them would cause a
+"hardware drop" except for the UDP checksum mismatch, as well as the fact
+that all the other causes for rx_errors are L2 reasons, and this L4 UDP
+"mismatch" is an outlier.
 
-nci_dev.cmd_wq is only destroyed in nci_unregister_device(), which
-(I think) was called from virtual_ncidev_close() when syzbot close()d
-an fd of virtual_ncidev.
+A last nail in the coffin is that rx_errors is monitored in production and
+can indicate a bad NIC/cable/Switch port, but instead some random series of
+UDP packets with bad checksums will now trigger this alert. This false
+positive makes the alert useless and affects us as well as other companies.
 
-The problem is that nci_unregister_device() destroys nci_dev.cmd_wq
-first and then calls nfc_unregister_device(), which removes the
-device from rfkill by rfkill_unregister().
+This packet with presumably a bad UDP checksum is *already* passed to the
+stack, just not marked as offloaded by the hardware/driver. If it is
+dropped by the stack it will show up as UDP_MIB_CSUMERRORS.
 
-So, the device is still visible via rfkill even after nci_dev.cmd_wq
-is destroyed.
+And one more thing, none of the other Intel drivers, and at least bnxt_en
+and mlx5 both don't appear to count UDP offload mismatches as rx_errors.
 
-Let's unregister the device from rfkill first in nci_unregister_device().
+Here is a related customer complaint:
+https://community.intel.com/t5/Ethernet-Products/ice-rx-errros-is-too-sensitive-to-IP-TCP-attack-packets-Intel/td-p/1662125
 
-Note that we cannot call nfc_unregister_device() before
-nci_close_device() because
-
-  1) nfc_unregister_device() calls device_del() which frees
-     all memory allocated by devm_kzalloc() and linked to
-     ndev->conn_info_list
-
-  2) nci_rx_work() could try to queue nci_conn_info to
-     ndev->conn_info_list which could be leaked
-
-Thus, nfc_unregister_device() is split into two functions so we
-can remove rfkill interfaces only before nci_close_device().
-
-[0]:
-DEBUG_LOCKS_WARN_ON(1)
-WARNING: kernel/locking/lockdep.c:238 at hlock_class kernel/locking/lockdep.c:238 [inline], CPU#0: syz.0.8675/6349
-WARNING: kernel/locking/lockdep.c:238 at check_wait_context kernel/locking/lockdep.c:4854 [inline], CPU#0: syz.0.8675/6349
-WARNING: kernel/locking/lockdep.c:238 at __lock_acquire+0x39d/0x2cf0 kernel/locking/lockdep.c:5187, CPU#0: syz.0.8675/6349
-Modules linked in:
-CPU: 0 UID: 0 PID: 6349 Comm: syz.0.8675 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/13/2026
-RIP: 0010:hlock_class kernel/locking/lockdep.c:238 [inline]
-RIP: 0010:check_wait_context kernel/locking/lockdep.c:4854 [inline]
-RIP: 0010:__lock_acquire+0x3a4/0x2cf0 kernel/locking/lockdep.c:5187
-Code: 18 00 4c 8b 74 24 08 75 27 90 e8 17 f2 fc 02 85 c0 74 1c 83 3d 50 e0 4e 0e 00 75 13 48 8d 3d 43 f7 51 0e 48 c7 c6 8b 3a de 8d <67> 48 0f b9 3a 90 31 c0 0f b6 98 c4 00 00 00 41 8b 45 20 25 ff 1f
-RSP: 0018:ffffc9000c767680 EFLAGS: 00010046
-RAX: 0000000000000001 RBX: 0000000000040000 RCX: 0000000000080000
-RDX: ffffc90013080000 RSI: ffffffff8dde3a8b RDI: ffffffff8ff24ca0
-RBP: 0000000000000003 R08: ffffffff8fef35a3 R09: 1ffffffff1fde6b4
-R10: dffffc0000000000 R11: fffffbfff1fde6b5 R12: 00000000000012a2
-R13: ffff888030338ba8 R14: ffff888030338000 R15: ffff888030338b30
-FS:  00007fa5995f66c0(0000) GS:ffff8881256f8000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7e72f842d0 CR3: 00000000485a0000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
- touch_wq_lockdep_map+0xcb/0x180 kernel/workqueue.c:3940
- __flush_workqueue+0x14b/0x14f0 kernel/workqueue.c:3982
- nci_close_device+0x302/0x630 net/nfc/nci/core.c:567
- nci_dev_down+0x3b/0x50 net/nfc/nci/core.c:639
- nfc_dev_down+0x152/0x290 net/nfc/core.c:161
- nfc_rfkill_set_block+0x2d/0x100 net/nfc/core.c:179
- rfkill_set_block+0x1d2/0x440 net/rfkill/core.c:346
- rfkill_fop_write+0x461/0x5a0 net/rfkill/core.c:1301
- vfs_write+0x29a/0xb90 fs/read_write.c:684
- ksys_write+0x150/0x270 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa59b39acb9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fa5995f6028 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fa59b615fa0 RCX: 00007fa59b39acb9
-RDX: 0000000000000008 RSI: 0000200000000080 RDI: 0000000000000007
-RBP: 00007fa59b408bf7 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa59b616038 R14: 00007fa59b615fa0 R15: 00007ffc82218788
- </TASK>
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-by: syzbot+f9c5fd1a0874f9069dce@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/695e7f56.050a0220.1c677c.036c.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260127040411.494931-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4f1fe43c920b ("ice: Add more Rx errors to netdev's rx_error counter")
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Jake Keller <jacob.e.keller@intel.com>
+Cc: IWL <intel-wired-lan@lists.osuosl.org>
+Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/nfc/nfc.h |  2 ++
- net/nfc/core.c        | 27 ++++++++++++++++++++++++---
- net/nfc/nci/core.c    |  4 +++-
- 3 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/net/nfc/nfc.h b/include/net/nfc/nfc.h
-index 3a3781838c672..473f58e646cc5 100644
---- a/include/net/nfc/nfc.h
-+++ b/include/net/nfc/nfc.h
-@@ -215,6 +215,8 @@ static inline void nfc_free_device(struct nfc_dev *dev)
- 
- int nfc_register_device(struct nfc_dev *dev);
- 
-+void nfc_unregister_rfkill(struct nfc_dev *dev);
-+void nfc_remove_device(struct nfc_dev *dev);
- void nfc_unregister_device(struct nfc_dev *dev);
- 
- /**
-diff --git a/net/nfc/core.c b/net/nfc/core.c
-index eebe9b511e0ed..96dc0e6786013 100644
---- a/net/nfc/core.c
-+++ b/net/nfc/core.c
-@@ -1147,14 +1147,14 @@ int nfc_register_device(struct nfc_dev *dev)
- EXPORT_SYMBOL(nfc_register_device);
- 
- /**
-- * nfc_unregister_device - unregister a nfc device in the nfc subsystem
-+ * nfc_unregister_rfkill - unregister a nfc device in the rfkill subsystem
-  *
-  * @dev: The nfc device to unregister
-  */
--void nfc_unregister_device(struct nfc_dev *dev)
-+void nfc_unregister_rfkill(struct nfc_dev *dev)
- {
--	int rc;
- 	struct rfkill *rfk = NULL;
-+	int rc;
- 
- 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
- 
-@@ -1175,7 +1175,16 @@ void nfc_unregister_device(struct nfc_dev *dev)
- 		rfkill_unregister(rfk);
- 		rfkill_destroy(rfk);
- 	}
-+}
-+EXPORT_SYMBOL(nfc_unregister_rfkill);
- 
-+/**
-+ * nfc_remove_device - remove a nfc device in the nfc subsystem
-+ *
-+ * @dev: The nfc device to remove
-+ */
-+void nfc_remove_device(struct nfc_dev *dev)
-+{
- 	if (dev->ops->check_presence) {
- 		del_timer_sync(&dev->check_pres_timer);
- 		cancel_work_sync(&dev->check_pres_work);
-@@ -1188,6 +1197,18 @@ void nfc_unregister_device(struct nfc_dev *dev)
- 	device_del(&dev->dev);
- 	mutex_unlock(&nfc_devlist_mutex);
- }
-+EXPORT_SYMBOL(nfc_remove_device);
-+
-+/**
-+ * nfc_unregister_device - unregister a nfc device in the nfc subsystem
-+ *
-+ * @dev: The nfc device to unregister
-+ */
-+void nfc_unregister_device(struct nfc_dev *dev)
-+{
-+	nfc_unregister_rfkill(dev);
-+	nfc_remove_device(dev);
-+}
- EXPORT_SYMBOL(nfc_unregister_device);
- 
- static int __init nfc_init(void)
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index f456a5911e7d1..1bdaf680b488c 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1292,6 +1292,8 @@ void nci_unregister_device(struct nci_dev *ndev)
- {
- 	struct nci_conn_info *conn_info, *n;
- 
-+	nfc_unregister_rfkill(ndev->nfc_dev);
-+
- 	/* This set_bit is not protected with specialized barrier,
- 	 * However, it is fine because the mutex_lock(&ndev->req_lock);
- 	 * in nci_close_device() will help to emit one.
-@@ -1309,7 +1311,7 @@ void nci_unregister_device(struct nci_dev *ndev)
- 		/* conn_info is allocated with devm_kzalloc */
- 	}
- 
--	nfc_unregister_device(ndev->nfc_dev);
-+	nfc_remove_device(ndev->nfc_dev);
- }
- EXPORT_SYMBOL(nci_unregister_device);
- 
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index e846246261b94..72e394dc68f4e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -6711,7 +6711,6 @@ void ice_update_vsi_stats(struct ice_vsi *vsi)
+ 				    pf->stats.illegal_bytes +
+ 				    pf->stats.rx_len_errors +
+ 				    pf->stats.rx_undersize +
+-				    pf->hw_csum_rx_error +
+ 				    pf->stats.rx_jabber +
+ 				    pf->stats.rx_fragments +
+ 				    pf->stats.rx_oversize;
 -- 
 2.51.0
 
