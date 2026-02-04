@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id II9FCwpbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:22 +0100
+	id oHTGM0Vpg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69DEE7416
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:43:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6218EE93DE
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 261DA30054CD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA51430A4E0E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CC140F8C6;
-	Wed,  4 Feb 2026 14:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8357E428498;
+	Wed,  4 Feb 2026 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XucmhrP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2ZKaYMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBE4280A3B;
-	Wed,  4 Feb 2026 14:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46068429822;
+	Wed,  4 Feb 2026 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216198; cv=none; b=ccoQZvn+iNVa7Vs/zR6ioSCFhvZMzAwcUnsfSaKH9xGtPN22VjayA7SqSElgrqE5frbe9CWX36Jq10i9RPf/Yca59Ek2PSaCoyTH2NMipxCGF5ta8poa/21G0VwTP5Up+NKQhtoQLYiX/PKEBsHy2jRbxbhKYvSY6v3DP2MPIfs=
+	t=1770217750; cv=none; b=aOOjKVmkxlNBr22SJStYcIprmbMRpRoebpQM/3FQy4j9boDclBPNPqEwwTtXSISjvuIga3Cw14+OyCJofqn/mMEz9FPSntOLxqVMUj1nC/n4J24JuruzOuWJRrg+rdiGNcT1yrMII5OjPBmYBs/beVP0lQb4/Pz40Oh2yEJwXqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216198; c=relaxed/simple;
-	bh=KM3GKyGob4DSP7wMC5LVLr5kRg7ZNmF5K/V5pBru4Eo=;
+	s=arc-20240116; t=1770217750; c=relaxed/simple;
+	bh=nR6Jq6r9wE7KGwi+CK1dBZS2ud9AgaVuoxdkkAXLeyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5sLEqSa8TVfgKQ9u5srS0C4x6GOTo5NE3TGhhagXu0cK2kV3hPKWaMc44w5Hia7vQaHxeKx4KjYvs0Vfr546gacd7C1+IOTyTAZ//xidvV7a9zcfgV7LRRNo9xdeZ1vs7XJY9JK8vBCnT9XJ9efA6NAM2Biq9vPUBQrp9GziKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XucmhrP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6BEC4CEF7;
-	Wed,  4 Feb 2026 14:43:18 +0000 (UTC)
+	 MIME-Version; b=bMLDItKCwsrLfz5ev1mfmWIv+pwamy7X/iIwGurfLsvrdm1e7A1UkC40fu4CkmdxSbRsUIVgZeCLdhOd/QGou+aZcPxADFtblmhjzhtnvCJlWGRH283mBW3C9jqtCVff4e0tjruuSI9yWW/dP66nh3dxBrJlkTL49ttA+FH7RtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2ZKaYMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FECEC4CEF7;
+	Wed,  4 Feb 2026 15:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216198;
-	bh=KM3GKyGob4DSP7wMC5LVLr5kRg7ZNmF5K/V5pBru4Eo=;
+	s=korg; t=1770217750;
+	bh=nR6Jq6r9wE7KGwi+CK1dBZS2ud9AgaVuoxdkkAXLeyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2XucmhrPm4WJ4sUHIrGehqmm2hT7kcFZO83BqrkE1rsqxGk5IeJ6NqiBClP969Cf3
-	 VRj3SZbtlvWDBrKYAwBZd3M86jcG9bVL/3geKMQ8auKr0wMsb99RS/utMpQWBdxLxr
-	 sPKsGxcyuD7Nri9wBq7mGvRixIhGZNf8ZCAh4akI=
+	b=l2ZKaYMklqbrIXx0idMrKfjH/gHPLXL7TpQxZT6mZaV3U6B++OX3MjXVPpqvpoQU/
+	 3xp9o8XUvGX56gsVTA5J3ONp7/XslZPCHz/AjSUt9q3dGm6D3Wx4qcuEO5OcBYuk2q
+	 QFPf44XO2fIig2hK6UdoyFmo+yT0HzAlxQLESBr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/161] phy: broadcom: ns-usb3: Fix Wvoid-pointer-to-enum-cast warning (again)
-Date: Wed,  4 Feb 2026 15:38:00 +0100
-Message-ID: <20260204143852.384862682@linuxfoundation.org>
+Subject: [PATCH 6.1 107/280] net: fou: use policy and operation tables generated from the spec
+Date: Wed,  4 Feb 2026 15:38:01 +0100
+Message-ID: <20260204143913.498139352@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +70,261 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213858-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213396-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B69DEE7416
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6218EE93DE
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fb21116099bbea1fc59efa9207e63c4be390ab72 ]
+[ Upstream commit 1d562c32e4392cc091c940918ee1ffd7bfcb9e96 ]
 
-"family" is an enum, thus cast of pointer on 64-bit compile test with
-clang W=1 causes:
+Generate and plug in the spec-based tables.
 
-  phy-bcm-ns-usb3.c:206:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+A little bit of renaming is needed in the FOU code.
 
-This was already fixed in commit bd6e74a2f0a0 ("phy: broadcom: ns-usb3:
-fix Wvoid-pointer-to-enum-cast warning") but then got bad in commit
-21bf6fc47a1e ("phy: Use device_get_match_data()").
-
-Note that after various discussions the preferred cast is via "unsigned
-long", not "uintptr_t".
-
-Fixes: 21bf6fc47a1e ("phy: Use device_get_match_data()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251224115533.154162-2-krzysztof.kozlowski@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns-usb3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/Makefile   |  2 +-
+ net/ipv4/fou_core.c | 47 +++++++-------------------------------------
+ net/ipv4/fou_nl.c   | 48 +++++++++++++++++++++++++++++++++++++++++++++
+ net/ipv4/fou_nl.h   | 25 +++++++++++++++++++++++
+ 4 files changed, 81 insertions(+), 41 deletions(-)
+ create mode 100644 net/ipv4/fou_nl.c
+ create mode 100644 net/ipv4/fou_nl.h
 
-diff --git a/drivers/phy/broadcom/phy-bcm-ns-usb3.c b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-index 45b366855e80d..e04a42fe6b654 100644
---- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-@@ -203,7 +203,7 @@ static int bcm_ns_usb3_mdio_probe(struct mdio_device *mdiodev)
- 	usb3->dev = dev;
- 	usb3->mdiodev = mdiodev;
+diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
+index e694a5e5b0302..d1c8d4beb77d4 100644
+--- a/net/ipv4/Makefile
++++ b/net/ipv4/Makefile
+@@ -26,7 +26,7 @@ obj-$(CONFIG_IP_MROUTE) += ipmr.o
+ obj-$(CONFIG_IP_MROUTE_COMMON) += ipmr_base.o
+ obj-$(CONFIG_NET_IPIP) += ipip.o
+ gre-y := gre_demux.o
+-fou-y := fou_core.o
++fou-y := fou_core.o fou_nl.o
+ obj-$(CONFIG_NET_FOU) += fou.o
+ obj-$(CONFIG_NET_IPGRE_DEMUX) += gre.o
+ obj-$(CONFIG_NET_IPGRE) += ip_gre.o
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index 9d4ae723d2e7d..4ee6c424d96b7 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -19,6 +19,8 @@
+ #include <uapi/linux/fou.h>
+ #include <uapi/linux/genetlink.h>
  
--	usb3->family = (enum bcm_ns_family)device_get_match_data(dev);
-+	usb3->family = (unsigned long)device_get_match_data(dev);
++#include "fou_nl.h"
++
+ struct fou {
+ 	struct socket *sock;
+ 	u8 protocol;
+@@ -662,20 +664,6 @@ static int fou_destroy(struct net *net, struct fou_cfg *cfg)
  
- 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
- 	err = of_address_to_resource(syscon_np, 0, &res);
+ static struct genl_family fou_nl_family;
+ 
+-static const struct nla_policy fou_nl_policy[FOU_ATTR_MAX + 1] = {
+-	[FOU_ATTR_PORT]			= { .type = NLA_U16, },
+-	[FOU_ATTR_AF]			= { .type = NLA_U8, },
+-	[FOU_ATTR_IPPROTO]		= { .type = NLA_U8, },
+-	[FOU_ATTR_TYPE]			= { .type = NLA_U8, },
+-	[FOU_ATTR_REMCSUM_NOPARTIAL]	= { .type = NLA_FLAG, },
+-	[FOU_ATTR_LOCAL_V4]		= { .type = NLA_U32, },
+-	[FOU_ATTR_PEER_V4]		= { .type = NLA_U32, },
+-	[FOU_ATTR_LOCAL_V6]		= { .len = sizeof(struct in6_addr), },
+-	[FOU_ATTR_PEER_V6]		= { .len = sizeof(struct in6_addr), },
+-	[FOU_ATTR_PEER_PORT]		= { .type = NLA_U16, },
+-	[FOU_ATTR_IFINDEX]		= { .type = NLA_S32, },
+-};
+-
+ static int parse_nl_config(struct genl_info *info,
+ 			   struct fou_cfg *cfg)
+ {
+@@ -767,7 +755,7 @@ static int parse_nl_config(struct genl_info *info,
+ 	return 0;
+ }
+ 
+-static int fou_nl_cmd_add_port(struct sk_buff *skb, struct genl_info *info)
++int fou_nl_add_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct net *net = genl_info_net(info);
+ 	struct fou_cfg cfg;
+@@ -780,7 +768,7 @@ static int fou_nl_cmd_add_port(struct sk_buff *skb, struct genl_info *info)
+ 	return fou_create(net, &cfg, NULL);
+ }
+ 
+-static int fou_nl_cmd_rm_port(struct sk_buff *skb, struct genl_info *info)
++int fou_nl_del_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct net *net = genl_info_net(info);
+ 	struct fou_cfg cfg;
+@@ -849,7 +837,7 @@ static int fou_dump_info(struct fou *fou, u32 portid, u32 seq,
+ 	return -EMSGSIZE;
+ }
+ 
+-static int fou_nl_cmd_get_port(struct sk_buff *skb, struct genl_info *info)
++int fou_nl_get_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct net *net = genl_info_net(info);
+ 	struct fou_net *fn = net_generic(net, fou_net_id);
+@@ -896,7 +884,7 @@ static int fou_nl_cmd_get_port(struct sk_buff *skb, struct genl_info *info)
+ 	return ret;
+ }
+ 
+-static int fou_nl_dump(struct sk_buff *skb, struct netlink_callback *cb)
++int fou_nl_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	struct net *net = sock_net(skb->sk);
+ 	struct fou_net *fn = net_generic(net, fou_net_id);
+@@ -919,33 +907,12 @@ static int fou_nl_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return skb->len;
+ }
+ 
+-static const struct genl_small_ops fou_nl_ops[] = {
+-	{
+-		.cmd = FOU_CMD_ADD,
+-		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+-		.doit = fou_nl_cmd_add_port,
+-		.flags = GENL_ADMIN_PERM,
+-	},
+-	{
+-		.cmd = FOU_CMD_DEL,
+-		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+-		.doit = fou_nl_cmd_rm_port,
+-		.flags = GENL_ADMIN_PERM,
+-	},
+-	{
+-		.cmd = FOU_CMD_GET,
+-		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+-		.doit = fou_nl_cmd_get_port,
+-		.dumpit = fou_nl_dump,
+-	},
+-};
+-
+ static struct genl_family fou_nl_family __ro_after_init = {
+ 	.hdrsize	= 0,
+ 	.name		= FOU_GENL_NAME,
+ 	.version	= FOU_GENL_VERSION,
+ 	.maxattr	= FOU_ATTR_MAX,
+-	.policy = fou_nl_policy,
++	.policy		= fou_nl_policy,
+ 	.netnsok	= true,
+ 	.module		= THIS_MODULE,
+ 	.small_ops	= fou_nl_ops,
+diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
+new file mode 100644
+index 0000000000000..6c3820f41dd5d
+--- /dev/null
++++ b/net/ipv4/fou_nl.c
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/fou.yaml */
++/* YNL-GEN kernel source */
++
++#include <net/netlink.h>
++#include <net/genetlink.h>
++
++#include "fou_nl.h"
++
++#include <linux/fou.h>
++
++/* Global operation policy for fou */
++const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
++	[FOU_ATTR_PORT] = { .type = NLA_U16, },
++	[FOU_ATTR_AF] = { .type = NLA_U8, },
++	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, },
++	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
++	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
++	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
++	[FOU_ATTR_LOCAL_V6] = { .len = 16, },
++	[FOU_ATTR_PEER_V4] = { .type = NLA_U32, },
++	[FOU_ATTR_PEER_V6] = { .len = 16, },
++	[FOU_ATTR_PEER_PORT] = { .type = NLA_U16, },
++	[FOU_ATTR_IFINDEX] = { .type = NLA_S32, },
++};
++
++/* Ops table for fou */
++const struct genl_small_ops fou_nl_ops[3] = {
++	{
++		.cmd		= FOU_CMD_ADD,
++		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
++		.doit		= fou_nl_add_doit,
++		.flags		= GENL_ADMIN_PERM,
++	},
++	{
++		.cmd		= FOU_CMD_DEL,
++		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
++		.doit		= fou_nl_del_doit,
++		.flags		= GENL_ADMIN_PERM,
++	},
++	{
++		.cmd		= FOU_CMD_GET,
++		.validate	= GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
++		.doit		= fou_nl_get_doit,
++		.dumpit		= fou_nl_get_dumpit,
++	},
++};
+diff --git a/net/ipv4/fou_nl.h b/net/ipv4/fou_nl.h
+new file mode 100644
+index 0000000000000..b7a68121ce6f7
+--- /dev/null
++++ b/net/ipv4/fou_nl.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: BSD-3-Clause */
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/fou.yaml */
++/* YNL-GEN kernel header */
++
++#ifndef _LINUX_FOU_GEN_H
++#define _LINUX_FOU_GEN_H
++
++#include <net/netlink.h>
++#include <net/genetlink.h>
++
++#include <linux/fou.h>
++
++/* Global operation policy for fou */
++extern const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1];
++
++/* Ops table for fou */
++extern const struct genl_small_ops fou_nl_ops[3];
++
++int fou_nl_add_doit(struct sk_buff *skb, struct genl_info *info);
++int fou_nl_del_doit(struct sk_buff *skb, struct genl_info *info);
++int fou_nl_get_doit(struct sk_buff *skb, struct genl_info *info);
++int fou_nl_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
++
++#endif /* _LINUX_FOU_GEN_H */
 -- 
 2.51.0
 
