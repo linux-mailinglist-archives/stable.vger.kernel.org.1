@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-214000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCApFi5lg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-214000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:38 +0100
+	id 6BghLtNng2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0416DE8908
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CBDBE900F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 30C52307A44F
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:18:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B67C3158B00
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983E74218A8;
-	Wed,  4 Feb 2026 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC5B42AA9;
+	Wed,  4 Feb 2026 15:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8V7wpZw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W444WRwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEC542189D;
-	Wed,  4 Feb 2026 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0288B41B36C;
+	Wed,  4 Feb 2026 15:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218224; cv=none; b=N0l+X4Pp6tplo2oB8lu1kKSlPtJBl17TS5fZ/O40rsyuW96dfsD5Xp9e4m0WPs9U6LIzIH/IDNxmny5mtj8Eqa4n0//En1SvH8b/bQuFcgxQeK76S4Wo63D3maguNFg+0PKehFTKhZZDG+jJH6p6aZ+SCysQbgC0UhtkeCiZVBI=
+	t=1770218666; cv=none; b=TRtYo66qehuiI3rs1pLV73kxjLICwslB6gUPIt6hEJhane2hRVxmBqOce97emeAekenXv67eKYu5VHsDSx3TCBt4hU7qwi9ZzY+2/0+2YZFC+YYWXxyvVIgPQ79O1KguMNYuux4/yhuM3vrLP6c863IhGCwSh/a0Uq5F0fdF06o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218224; c=relaxed/simple;
-	bh=QZTtrCH7eOfewMMPzN4wdk3udTVOWKlO3FW9C3L9B1U=;
+	s=arc-20240116; t=1770218666; c=relaxed/simple;
+	bh=TtloezVzmq+FnQ+zC1tXXvadb9OJI3q6gdHQpl++igA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=laTgY2CUD6vWarDPV03buN5k3xWmC3pfNbZgn2yj3XfK9W8Z/8Q/qyUlyURGV0tLw5CIWSKSHAl6AU2HsIHJdkmAe64m1LE3Je1ex/DKTuEa//Z0Lbc0hWNntVZNjImNu3C94dQo275VgZ4F1s8Vinj89wgt8/5bPQL0DWxM27Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8V7wpZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DECC4CEF7;
-	Wed,  4 Feb 2026 15:17:03 +0000 (UTC)
+	 MIME-Version; b=qZVN6u2v5nq2mg6s1aI25QCTG36GfVXLvEgQchi5iGjg1+aEhDpwHisoh6igON817hh38aULX494V7XfAycyPGf3YYowF24QQ9vKt8UpXVwwr7t/FNT6G8lbsxtoveEJrL1U0njP/OSIAcKuOOJgnKq4bJf2PZGYVCf8XAd7KGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W444WRwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F0DC4CEF7;
+	Wed,  4 Feb 2026 15:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218224;
-	bh=QZTtrCH7eOfewMMPzN4wdk3udTVOWKlO3FW9C3L9B1U=;
+	s=korg; t=1770218665;
+	bh=TtloezVzmq+FnQ+zC1tXXvadb9OJI3q6gdHQpl++igA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8V7wpZwrklRbxN/sXnDIYlijDgMhoc7ZNV2Rm3dJzKPCu+UPDmoh++4uOinpkeVn
-	 jr/sYnmaQ6mhAxpWgvpd6y4BMtnX8qadluVVIYPeASFaPhaL76Ot7UxFLlVcjo2RiM
-	 s1B0V6K3Mz5oeFfisErUV6CmRK0LmbxEFNONDIbg=
+	b=W444WRwmFowdMtvKZJYuNf98UvqNcVwr3VQ1yhARKrFezvCkQeDrO2oKTE0Usjhpp
+	 dVRMenW2c1m3FaHpPIjDisBbiNTRHSBhgwZa67iuOsDH+GRkDAgts4SjZlMYLt2AQt
+	 ZD4MFQec4wEH0WHSUA3reGiaUY/p9UqSl3lvkjqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
+	Tagir Garaev <tgaraev653@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 249/280] x86/fpu: Clear XSTATE_BV[i] in guest XSAVE state whenever XFD[i]=1
+Subject: [PATCH 6.12 25/87] ASoC: Intel: sof_es8336: fix headphone GPIO logic inversion
 Date: Wed,  4 Feb 2026 15:40:23 +0100
-Message-ID: <20260204143918.600342327@linuxfoundation.org>
+Message-ID: <20260204143847.815997789@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,207 +67,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214130-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214000-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0416DE8908
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 0CBDBE900F
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Tagir Garaev <tgaraev653@gmail.com>
 
-[ Upstream commit b45f721775947a84996deb5c661602254ce25ce6 ]
+[ Upstream commit 213c4e51267fd825cd21a08a055450cac7e0b7fb ]
 
-When loading guest XSAVE state via KVM_SET_XSAVE, and when updating XFD in
-response to a guest WRMSR, clear XFD-disabled features in the saved (or to
-be restored) XSTATE_BV to ensure KVM doesn't attempt to load state for
-features that are disabled via the guest's XFD.  Because the kernel
-executes XRSTOR with the guest's XFD, saving XSTATE_BV[i]=1 with XFD[i]=1
-will cause XRSTOR to #NM and panic the kernel.
+The headphone GPIO should be set to the inverse of speaker_en.
+When speakers are enabled, headphones should be disabled and vice versa.
 
-E.g. if fpu_update_guest_xfd() sets XFD without clearing XSTATE_BV:
+Currently both GPIOs are set to the same value (speaker_en), causing
+audio to play through both speakers and headphones simultaneously
+when headphones are plugged in.
 
-  ------------[ cut here ]------------
-  WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#29: amx_test/848
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 29 UID: 1000 PID: 848 Comm: amx_test Not tainted 6.19.0-rc2-ffa07f7fd437-x86_amx_nm_xfd_non_init-vm #171 NONE
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:exc_device_not_available+0x101/0x110
-  Call Trace:
-   <TASK>
-   asm_exc_device_not_available+0x1a/0x20
-  RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
-   switch_fpu_return+0x4a/0xb0
-   kvm_arch_vcpu_ioctl_run+0x1245/0x1e40 [kvm]
-   kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
-   __x64_sys_ioctl+0x8f/0xd0
-   do_syscall_64+0x62/0x940
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+Tested on Huawei Matebook (BOD-WXX9) with ES8336 codec.
 
-This can happen if the guest executes WRMSR(MSR_IA32_XFD) to set XFD[18] = 1,
-and a host IRQ triggers kernel_fpu_begin() prior to the vmexit handler's
-call to fpu_update_guest_xfd().
-
-and if userspace stuffs XSTATE_BV[i]=1 via KVM_SET_XSAVE:
-
-  ------------[ cut here ]------------
-  WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#14: amx_test/867
-  Modules linked in: kvm_intel kvm irqbypass
-  CPU: 14 UID: 1000 PID: 867 Comm: amx_test Not tainted 6.19.0-rc2-2dace9faccd6-x86_amx_nm_xfd_non_init-vm #168 NONE
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:exc_device_not_available+0x101/0x110
-  Call Trace:
-   <TASK>
-   asm_exc_device_not_available+0x1a/0x20
-  RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
-   fpu_swap_kvm_fpstate+0x6b/0x120
-   kvm_load_guest_fpu+0x30/0x80 [kvm]
-   kvm_arch_vcpu_ioctl_run+0x85/0x1e40 [kvm]
-   kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
-   __x64_sys_ioctl+0x8f/0xd0
-   do_syscall_64+0x62/0x940
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-The new behavior is consistent with the AMX architecture.  Per Intel's SDM,
-XSAVE saves XSTATE_BV as '0' for components that are disabled via XFD
-(and non-compacted XSAVE saves the initial configuration of the state
-component):
-
-  If XSAVE, XSAVEC, XSAVEOPT, or XSAVES is saving the state component i,
-  the instruction does not generate #NM when XCR0[i] = IA32_XFD[i] = 1;
-  instead, it operates as if XINUSE[i] = 0 (and the state component was
-  in its initial state): it saves bit i of XSTATE_BV field of the XSAVE
-  header as 0; in addition, XSAVE saves the initial configuration of the
-  state component (the other instructions do not save state component i).
-
-Alternatively, KVM could always do XRSTOR with XFD=0, e.g. by using
-a constant XFD based on the set of enabled features when XSAVEing for
-a struct fpu_guest.  However, having XSTATE_BV[i]=1 for XFD-disabled
-features can only happen in the above interrupt case, or in similar
-scenarios involving preemption on preemptible kernels, because
-fpu_swap_kvm_fpstate()'s call to save_fpregs_to_fpstate() saves the
-outgoing FPU state with the current XFD; and that is (on all but the
-first WRMSR to XFD) the guest XFD.
-
-Therefore, XFD can only go out of sync with XSTATE_BV in the above
-interrupt case, or in similar scenarios involving preemption on
-preemptible kernels, and it we can consider it (de facto) part of KVM
-ABI that KVM_GET_XSAVE returns XSTATE_BV[i]=0 for XFD-disabled features.
-
-Reported-by: Paolo Bonzini <pbonzini@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Move clearing of XSTATE_BV from fpu_copy_uabi_to_guest_fpstate
- to kvm_vcpu_ioctl_x86_set_xsave. - Paolo]
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 6e1ff1459e00 ("ASoC: Intel: sof_es8336: support a separate gpio to control headphone")
+Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
+Link: https://patch.msgid.link/20260121152435.101698-1-tgaraev653@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/fpu/core.c |   32 +++++++++++++++++++++++++++++---
- arch/x86/kvm/x86.c         |    9 +++++++++
- 2 files changed, 38 insertions(+), 3 deletions(-)
+ sound/soc/intel/boards/sof_es8336.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -294,10 +294,29 @@ EXPORT_SYMBOL_GPL(fpu_enable_guest_xfd_f
- #ifdef CONFIG_X86_64
- void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
- {
-+	struct fpstate *fpstate = guest_fpu->fpstate;
-+
- 	fpregs_lock();
--	guest_fpu->fpstate->xfd = xfd;
--	if (guest_fpu->fpstate->in_use)
--		xfd_update_state(guest_fpu->fpstate);
-+
-+	/*
-+	 * KVM's guest ABI is that setting XFD[i]=1 *can* immediately revert the
-+	 * save state to its initial configuration.  Likewise, KVM_GET_XSAVE does
-+	 * the same as XSAVE and returns XSTATE_BV[i]=0 whenever XFD[i]=1.
-+	 *
-+	 * If the guest's FPU state is in hardware, just update XFD: the XSAVE
-+	 * in fpu_swap_kvm_fpstate will clear XSTATE_BV[i] whenever XFD[i]=1.
-+	 *
-+	 * If however the guest's FPU state is NOT resident in hardware, clear
-+	 * disabled components in XSTATE_BV now, or a subsequent XRSTOR will
-+	 * attempt to load disabled components and generate #NM _in the host_.
-+	 */
-+	if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
-+		fpstate->regs.xsave.header.xfeatures &= ~xfd;
-+
-+	fpstate->xfd = xfd;
-+	if (fpstate->in_use)
-+		xfd_update_state(fpstate);
-+
- 	fpregs_unlock();
+diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
+index fc998fe4b1960..bc27229be7c24 100644
+--- a/sound/soc/intel/boards/sof_es8336.c
++++ b/sound/soc/intel/boards/sof_es8336.c
+@@ -120,7 +120,7 @@ static void pcm_pop_work_events(struct work_struct *work)
+ 	gpiod_set_value_cansleep(priv->gpio_speakers, priv->speaker_en);
+ 
+ 	if (quirk & SOF_ES8336_HEADPHONE_GPIO)
+-		gpiod_set_value_cansleep(priv->gpio_headphone, priv->speaker_en);
++		gpiod_set_value_cansleep(priv->gpio_headphone, !priv->speaker_en);
+ 
  }
- EXPORT_SYMBOL_GPL(fpu_update_guest_xfd);
-@@ -406,6 +425,13 @@ int fpu_copy_uabi_to_guest_fpstate(struc
- 		return -EINVAL;
  
- 	/*
-+	 * Disabled features must be in their initial state, otherwise XRSTOR
-+	 * causes an exception.
-+	 */
-+	if (WARN_ON_ONCE(ustate->xsave.header.xfeatures & kstate->xfd))
-+		return -EINVAL;
-+
-+	/*
- 	 * Nullify @vpkru to preserve its current value if PKRU's bit isn't set
- 	 * in the header.  KVM's odd ABI is to leave PKRU untouched in this
- 	 * case (all other components are eventually re-initialized).
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5341,9 +5341,18 @@ static void kvm_vcpu_ioctl_x86_get_xsave
- static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
- 					struct kvm_xsave *guest_xsave)
- {
-+	union fpregs_state *xstate = (union fpregs_state *)guest_xsave->region;
-+
- 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
- 		return 0;
- 
-+	/*
-+	 * For backwards compatibility, do not expect disabled features to be in
-+	 * their initial state.  XSTATE_BV[i] must still be cleared whenever
-+	 * XFD[i]=1, or XRSTOR would cause a #NM.
-+	 */
-+	xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
-+
- 	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
- 					      guest_xsave->region,
- 					      kvm_caps.supported_xcr0,
+-- 
+2.51.0
+
 
 
 
