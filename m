@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-213527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAN6LS1dg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:29 +0100
+	id qOjwMtBfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29319E77F3
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:52:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CEAE7D43
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 330CF303A4A8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D891301AA91
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9224741323E;
-	Wed,  4 Feb 2026 14:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CB027F163;
+	Wed,  4 Feb 2026 15:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBjwA27e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgvNIIh/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553172417E0;
-	Wed,  4 Feb 2026 14:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3C1285404;
+	Wed,  4 Feb 2026 15:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216633; cv=none; b=kM9WipkRBUSHaXUG/s/C8xq6C17S5Y1hx0RzOLKzv8QK5ZVZ8rnst7n6jDtfZPvJ0PMr9prkyfg3iK3UcZMewuLRPtsno7tUC71xd4QoX77TvHXdhVK5hp57hrljB4+QSbXt7YXfLgturKtaM5UXtmoK7cAke3usZxebmeldUsY=
+	t=1770217285; cv=none; b=ZbZ8ABJefZV0POE5BMh6EyB5Uxw2UGoQIcEGjMCyLcIUm0+cJlF7zESdL7xL5J9r6ylYCm7naxSLsrL1I+Ed8MhN+JP30F3QehBwQgiyWQvNFZlenOdK4Sh84hjz6ZMEHgUKyRxRmT7goJbFnO3k2GeR3JcqkyRqzkk9cCsjQEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216633; c=relaxed/simple;
-	bh=Z8gwROcuNwMK26ERewrsrqalstEH4wAoxra+OwinaEQ=;
+	s=arc-20240116; t=1770217285; c=relaxed/simple;
+	bh=PbmeEVhJLWXSR8RIhrPZa0gArUN8jK7rRuF5RbqMULs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtefON7MVwnRXIFNl4xxGnEHxO1hfWYaXJmDZJNVXOn3iG8BhX/VD1T6Q3jccJN7x6D1P3D1bHf6IPvVOMuZ/IwnDfuESWgm6yK3HMTdS6NQ28oGpjziM6IBwRBC+By4BBlUZ0OVGikSHjyd/s2XPt8wFTi3lXajBIw5TX076xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBjwA27e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDEDC116C6;
-	Wed,  4 Feb 2026 14:50:32 +0000 (UTC)
+	 MIME-Version; b=ngun3wc20lSyUroPvIEX2UaVneViGm229+Tlj4L8MGl+aCWNvOSPqnIwjGzpXAALY/6tzftkQeYOvm1Z6Ptx3r91G20WPZ0T74C8aqxf3KXe/Ca1ukqkgX30dDGXZiIgsWegtRj/OwLi928nHV2MM9+uGRJxrWabTv2qcOaNOXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgvNIIh/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B453C4CEF7;
+	Wed,  4 Feb 2026 15:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216632;
-	bh=Z8gwROcuNwMK26ERewrsrqalstEH4wAoxra+OwinaEQ=;
+	s=korg; t=1770217285;
+	bh=PbmeEVhJLWXSR8RIhrPZa0gArUN8jK7rRuF5RbqMULs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBjwA27e7Nw7nTOBlhD71avNi85amK0w/FdeK46UFHF9/lj1l7Hugeaw8RwYUye47
-	 Fv36zR0hucEv4/eY+VQ79N7Mo0/ekwlbG8I1Xe1gqGww8ILF7/pW82NAvRx9vVkfVL
-	 2fB27dqBHNDrg2xX32Rfvl56XCYtL+Ah8dgnZajE=
+	b=WgvNIIh/dWn8e3OtA/a4Rvp9lL1ZrQqeTRPSuSt8NXQSpBbuBB9rqBZdZFzxCSmhu
+	 8TZ2yCDA1hQlIHsqi7Iyub9ho/dUAE/+L3+PWCzfpZ0gT9pAXgp/zTOgQmJu18PZpH
+	 nAvcxY6VnTpHeTe7Au+Tk80CZR4sgJDrMGkr59wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	craftfever <craftfever@airmail.cc>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 147/161] ksm: use range-walk function to jump over holes in scan_get_next_rmap_item
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 5.15 179/206] espintcp: fix skb leaks
 Date: Wed,  4 Feb 2026 15:40:10 +0100
-Message-ID: <20260204143857.037871981@linuxfoundation.org>
+Message-ID: <20260204143904.663516480@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,262 +68,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,airmail.cc,linux.dev,zte.com.cn,linux-foundation.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213527-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,queasysnail.net,kernel.org,secunet.com,139.com];
+	TAGGED_FROM(0.00)[bounces-213721-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DM_SURBL(0.00)[airmail.cc:email];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,zte.com.cn:email]
-X-Rspamd-Queue-Id: 29319E77F3
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,secunet.com:email]
+X-Rspamd-Queue-Id: 13CEAE7D43
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit f5548c318d6520d4fa3c5ed6003eeb710763cbc5 ]
+[ Upstream commit 63c1f19a3be3169e51a5812d22a6d0c879414076 ]
 
-Currently, scan_get_next_rmap_item() walks every page address in a VMA to
-locate mergeable pages.  This becomes highly inefficient when scanning
-large virtual memory areas that contain mostly unmapped regions, causing
-ksmd to use large amount of cpu without deduplicating much pages.
+A few error paths are missing a kfree_skb.
 
-This patch replaces the per-address lookup with a range walk using
-walk_page_range().  The range walker allows KSM to skip over entire
-unmapped holes in a VMA, avoiding unnecessary lookups.  This problem was
-previously discussed in [1].
-
-Consider the following test program which creates a 32 TiB mapping in the
-virtual address space but only populates a single page:
-
-/* 32 TiB */
-const size_t size = 32ul * 1024 * 1024 * 1024 * 1024;
-
-int main() {
-        char *area = mmap(NULL, size, PROT_READ | PROT_WRITE,
-                          MAP_NORESERVE | MAP_PRIVATE | MAP_ANON, -1, 0);
-
-        if (area == MAP_FAILED) {
-                perror("mmap() failed\n");
-                return -1;
-        }
-
-        /* Populate a single page such that we get an anon_vma. */
-        *area = 0;
-
-        /* Enable KSM. */
-        madvise(area, size, MADV_MERGEABLE);
-        pause();
-        return 0;
-}
-
-$ ./ksm-sparse  &
-$ echo 1 > /sys/kernel/mm/ksm/run
-
-Without this patch ksmd uses 100% of the cpu for a long time (more then 1
-hour in my test machine) scanning all the 32 TiB virtual address space
-that contain only one mapped page.  This makes ksmd essentially deadlocked
-not able to deduplicate anything of value.  With this patch ksmd walks
-only the one mapped page and skips the rest of the 32 TiB virtual address
-space, making the scan fast using little cpu.
-
-Link: https://lkml.kernel.org/r/20251023035841.41406-1-pedrodemargomes@gmail.com
-Link: https://lkml.kernel.org/r/20251022153059.22763-1-pedrodemargomes@gmail.com
-Link: https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/ [1]
-Fixes: 31dbd01f3143 ("ksm: Kernel SamePage Merging")
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Co-developed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: craftfever <craftfever@airmail.cc>
-Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ change folio to page, replace pmdp_get_lockless with pmd_read_atomic and pmdp_get with
- READ_ONCE(*pmdp) ]
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+[ Minor context change fixed. ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/ksm.c |  115 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 105 insertions(+), 10 deletions(-)
+ net/ipv4/esp4.c     |    4 +++-
+ net/ipv6/esp6.c     |    4 +++-
+ net/xfrm/espintcp.c |    4 +++-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -38,6 +38,7 @@
- #include <linux/freezer.h>
- #include <linux/oom.h>
- #include <linux/numa.h>
-+#include <linux/pagewalk.h>
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -196,8 +196,10 @@ static int esp_output_tcp_finish(struct
  
- #include <asm/tlbflush.h>
- #include "internal.h"
-@@ -2223,6 +2224,89 @@ static struct rmap_item *get_next_rmap_i
- 	return rmap_item;
- }
+ 	sk = esp_find_tcp_sk(x);
+ 	err = PTR_ERR_OR_ZERO(sk);
+-	if (err)
++	if (err) {
++		kfree_skb(skb);
+ 		goto out;
++	}
  
-+struct ksm_next_page_arg {
-+	struct page *page;
-+	unsigned long addr;
-+};
-+
-+static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long end,
-+		struct mm_walk *walk)
-+{
-+	struct ksm_next_page_arg *private = walk->private;
-+	struct vm_area_struct *vma = walk->vma;
-+	pte_t *start_ptep = NULL, *ptep, pte;
-+	struct mm_struct *mm = walk->mm;
-+	struct page *page;
-+	spinlock_t *ptl;
-+	pmd_t pmd;
-+
-+	if (ksm_test_exit(mm))
-+		return 0;
-+
-+	cond_resched();
-+
-+	pmd = pmd_read_atomic(pmdp);
-+	if (!pmd_present(pmd))
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && pmd_leaf(pmd)) {
-+		ptl = pmd_lock(mm, pmdp);
-+		pmd = READ_ONCE(*pmdp);
-+
-+		if (!pmd_present(pmd)) {
-+			goto not_found_unlock;
-+		} else if (pmd_leaf(pmd)) {
-+			page = vm_normal_page_pmd(vma, addr, pmd);
-+			if (!page)
-+				goto not_found_unlock;
-+
-+			if (is_zone_device_page(page) || !PageAnon(page))
-+				goto not_found_unlock;
-+
-+			page += ((addr & (PMD_SIZE - 1)) >> PAGE_SHIFT);
-+			goto found_unlock;
-+		}
-+		spin_unlock(ptl);
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk))
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -214,8 +214,10 @@ static int esp_output_tcp_finish(struct
+ 
+ 	sk = esp6_find_tcp_sk(x);
+ 	err = PTR_ERR_OR_ZERO(sk);
+-	if (err)
++	if (err) {
++		kfree_skb(skb);
+ 		goto out;
 +	}
-+
-+	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-+	if (!start_ptep)
-+		return 0;
-+
-+	for (ptep = start_ptep; addr < end; ptep++, addr += PAGE_SIZE) {
-+		pte = ptep_get(ptep);
-+
-+		if (!pte_present(pte))
-+			continue;
-+
-+		page = vm_normal_page(vma, addr, pte);
-+		if (!page)
-+			continue;
-+
-+		if (is_zone_device_page(page) || !PageAnon(page))
-+			continue;
-+		goto found_unlock;
-+	}
-+
-+not_found_unlock:
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	return 0;
-+found_unlock:
-+	get_page(page);
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	private->page = page;
-+	private->addr = addr;
-+	return 1;
-+}
-+
-+static struct mm_walk_ops ksm_next_page_ops = {
-+	.pmd_entry = ksm_next_page_pmd_entry,
-+};
-+
- static struct rmap_item *scan_get_next_rmap_item(struct page **page)
+ 
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk))
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -170,8 +170,10 @@ int espintcp_queue_out(struct sock *sk,
  {
- 	struct mm_struct *mm;
-@@ -2302,29 +2386,40 @@ next_mm:
- 			ksm_scan.address = vma->vm_end;
+ 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
  
- 		while (ksm_scan.address < vma->vm_end) {
-+			struct ksm_next_page_arg ksm_next_page_arg;
-+			struct page *tmp_page = NULL;
-+			int found;
-+
- 			if (ksm_test_exit(mm))
- 				break;
--			*page = follow_page(vma, ksm_scan.address, FOLL_GET);
--			if (IS_ERR_OR_NULL(*page)) {
--				ksm_scan.address += PAGE_SIZE;
--				cond_resched();
--				continue;
-+
-+			found = walk_page_range_vma(vma, ksm_scan.address,
-+						    vma->vm_end,
-+						    &ksm_next_page_ops,
-+						    &ksm_next_page_arg);
-+
-+			if (found > 0) {
-+				tmp_page = ksm_next_page_arg.page;
-+				ksm_scan.address = ksm_next_page_arg.addr;
-+			} else {
-+				VM_WARN_ON_ONCE(found < 0);
-+				ksm_scan.address = vma->vm_end - PAGE_SIZE;
- 			}
--			if (PageAnon(*page)) {
--				flush_anon_page(vma, *page, ksm_scan.address);
--				flush_dcache_page(*page);
-+			if (tmp_page) {
-+				flush_anon_page(vma, tmp_page, ksm_scan.address);
-+				flush_dcache_page(tmp_page);
- 				rmap_item = get_next_rmap_item(slot,
- 					ksm_scan.rmap_list, ksm_scan.address);
- 				if (rmap_item) {
- 					ksm_scan.rmap_list =
- 							&rmap_item->rmap_list;
- 					ksm_scan.address += PAGE_SIZE;
-+					*page = tmp_page;
- 				} else
--					put_page(*page);
-+					put_page(tmp_page);
- 				mmap_read_unlock(mm);
- 				return rmap_item;
- 			}
--			put_page(*page);
- 			ksm_scan.address += PAGE_SIZE;
- 			cond_resched();
- 		}
+-	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog))
++	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog)) {
++		kfree_skb(skb);
+ 		return -ENOBUFS;
++	}
+ 
+ 	__skb_queue_tail(&ctx->out_queue, skb);
+ 
 
 
 
