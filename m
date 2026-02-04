@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIgALxFog2kbmgMAu9opvQ
-	(envelope-from <stable+bounces-214163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:57 +0100
+	id 8HYlLY5vg2lqmwMAu9opvQ
+	(envelope-from <stable+bounces-214268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:10:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17CC8E9098
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB04EE9F83
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 17:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 729783230E75
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43EA930996C4
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A9F3B52F5;
-	Wed,  4 Feb 2026 15:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371862D5C91;
+	Wed,  4 Feb 2026 15:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nI+aCPbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOi9kCYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888452DCF61;
-	Wed,  4 Feb 2026 15:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6B227702D;
+	Wed,  4 Feb 2026 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218774; cv=none; b=qVYdxXaBY4MbYYFyru4y24jnX8ttIndj5+8kxu4R0FNZ2ualpzqdx74upY9kmfcRNdebrYuueCd7rqgztK28yoPrtArpoojv21tOJcVS7Y7eHm0r2eDicV3D3cp0LnMhv5A8hLnUQzrA3yHG7HvWxbZB+5C6GUs36Qs69YNqdrk=
+	t=1770219121; cv=none; b=L00lvnnEbyX7u3p57opHmZAGvVEXU0B05RgQ4OQY6bg5jOC+cIIC3FgVSQkaWgznsYIRYntFidcdfcGrvQEv2y8TlvOuDVLkb1xxVxY8lyQ+1+EPF9MN5M5IVy1aRyCj2wpZdaVw9k1lPM/EsUMI0y2GJHl+K7XT52ttH5B9URw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218774; c=relaxed/simple;
-	bh=qpJcr3ACmJeqm++RZX76Fc+rDwWJloTYdo4lhyBMwAM=;
+	s=arc-20240116; t=1770219121; c=relaxed/simple;
+	bh=eUdMCAcMiJ+Xqdasf0Neum9nf/QzUwBm8o5ZITPdPa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpcHzsRRdzy46WbmsYG5+uv+NBo47oaQnxmF2fP8dssrEVjIAZAevVXkOY84T15pwIpPo2/GVlNdahCpN0O8fZrsAl2pljw7MXN0ipR7W0j3LULUxs4DocrN0DpU/wwIJt7p/wcZgFgjATfulWEFVINHGI9HzOZk7IryA9oIHMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nI+aCPbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E7BC4CEF7;
-	Wed,  4 Feb 2026 15:26:13 +0000 (UTC)
+	 MIME-Version; b=GMgOqQwL4/4sf36XSXksfX1YvQoX9711hjZUoWStWV7WcO+M67DHcz6s/xhazUOs6lQRbvxQBFqZxEVlQw9vfFrTzX1zuXRacKY8p9X+edmNpgFgprY10dsz1UI/Vh0DD5iZ9zVavJeCShSObKQqoIqfX3bkgDPbyPKWMB9cJEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOi9kCYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62812C4CEF7;
+	Wed,  4 Feb 2026 15:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218774;
-	bh=qpJcr3ACmJeqm++RZX76Fc+rDwWJloTYdo4lhyBMwAM=;
+	s=korg; t=1770219120;
+	bh=eUdMCAcMiJ+Xqdasf0Neum9nf/QzUwBm8o5ZITPdPa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nI+aCPbWVRnm9DhsJn9n4KppKuFur8X2URBlwAF2vl4BKaOkvNp3fK7CZFsnXnPkq
-	 LcW/wC8P2mFifhidGQoWNQ8a4aGzG6IV/VCQuvF5mhiB/8W1fEVXW9mv+bhRP+ZQQt
-	 1NSn62cstNqa2tqE/UNN+I9mpj2LZtW4c9L92mSQ=
+	b=fOi9kCYm8FkS5WytYTCAY7QZqp4xL+2cPJptdDr9aNyTF/ySyvNwdxQuvAxPUSRrG
+	 UgZHEYdo6P0kpD55eO4XS2tbMCRK2tMH6j3ngIIMxybLcNSu5XmYFMS9jPyNvFr5NW
+	 /rcnxQ2nPtA/IeyQANu/WetmqhsoWcdgSXYnGlaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@kernel.org>,
-	Jesung Yang <y.j3ms.n@gmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 58/87] scripts: generate_rust_analyzer: Add compiler_builtins -> core dep
+	Kohei Enju <kohei@enjuk.jp>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.18 074/122] efivarfs: fix error propagation in efivar_entry_get()
 Date: Wed,  4 Feb 2026 15:40:56 +0100
-Message-ID: <20260204143849.006151659@linuxfoundation.org>
+Message-ID: <20260204143854.513548497@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-214163-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214268-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 17CC8E9098
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CB04EE9F83
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Kohei Enju <kohei@enjuk.jp>
 
-commit 5157c328edb35bac05ce77da473c3209d20e0bbb upstream.
+commit 4b22ec1685ce1fc0d862dcda3225d852fb107995 upstream.
 
-Add a dependency edge from `compiler_builtins` to `core` to
-`scripts/generate_rust_analyzer.py` to match `rust/Makefile`. This has
-been incorrect since commit 8c4555ccc55c ("scripts: add
-`generate_rust_analyzer.py`")
+efivar_entry_get() always returns success even if the underlying
+__efivar_entry_get() fails, masking errors.
 
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-Reviewed-by: Jesung Yang <y.j3ms.n@gmail.com>
-Acked-by: Benno Lossin <lossin@kernel.org>
-Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250723-rust-analyzer-pin-init-v1-1-3c6956173c78@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This may result in uninitialized heap memory being copied to userspace
+in the efivarfs_file_read() path.
+
+Fix it by returning the error from __efivar_entry_get().
+
+Fixes: 2d82e6227ea1 ("efi: vars: Move efivar caching layer into efivarfs")
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |    2 +-
+ fs/efivarfs/vars.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -98,7 +98,7 @@ def generate_crates(srctree, objtree, sy
-     append_crate(
-         "compiler_builtins",
-         srctree / "rust" / "compiler_builtins.rs",
--        [],
-+        ["core"],
-     )
+--- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -552,7 +552,7 @@ int efivar_entry_get(struct efivar_entry
+ 	err = __efivar_entry_get(entry, attributes, size, data);
+ 	efivar_unlock();
  
-     append_crate(
+-	return 0;
++	return err;
+ }
+ 
+ /**
 
 
 
