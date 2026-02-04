@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACsMI65sg2kFmwMAu9opvQ
-	(envelope-from <stable+bounces-214018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:58:38 +0100
+	id AOncAvdng2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842A8E9B18
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:58:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A265BE905F
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:38:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5C12330B4AD4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B6BB3224045
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39442BD02A;
-	Wed,  4 Feb 2026 15:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0024219F9;
+	Wed,  4 Feb 2026 15:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTWkoQo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GE3KStNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B5E41B362;
-	Wed,  4 Feb 2026 15:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F51F41B37C;
+	Wed,  4 Feb 2026 15:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218286; cv=none; b=MjXqB9etWn3NQBpwmgW8lsniIkns4NSj2RqBKwwo0tpN4M8qDPiZF5AY2OzEJ3cCwygXM0tjgOLDx0BthUNcK6gdpetzVEQsHMhBKps+QjcGWu6sEFVEic9psdOdZ2qYYo/NV3xGTEMx6Z4Dv44z3DDJ095oBR9Cgrqsh8gRRE8=
+	t=1770218727; cv=none; b=RA4FKdXAmrNTXcj2LADaQQ8r6I7djP/QpH0YiXRnehwauKVgaRRKkGO+hp3RZve2Q8GEE4hmY38nhpY5rZTZH1M1VTdzJz+ui7LXERApHRwC70rT0oWkmdBl8gWDIGpT3MT2thK8VQg1TBr7n74CxR0RKmQk8pFeuLcUvV2qr4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218286; c=relaxed/simple;
-	bh=rCRHCOttSsxRTvHt0DAc8tzvh0zsoaGW/v8gueAmleY=;
+	s=arc-20240116; t=1770218727; c=relaxed/simple;
+	bh=xkIp0huhjp3z5DkBB7YBsFHf25KagRl36eTOSBnBjo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMs0wqpKduZMFRI45aLzx8gEwA4mgtMPSb2+qdvXRml/Wh06EMXz02KduIdH+XI4Egm1ZDmr9XSeYJnPFCON725PON0rxopWq3hiFSPSly4hAKvdYzrLhpEkRdkoL+gGB3hshNayMXHxxd8JyhDqkDuKPbmo2jnNqmvMc4GGy08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTWkoQo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99024C4CEF7;
-	Wed,  4 Feb 2026 15:18:05 +0000 (UTC)
+	 MIME-Version; b=s3iza7U6VsgOR+wAV7P0RyKmtL/GL+C/Sl5YE7/RQrW9PKvNGS5f8N7O+58/X3s/JxM5ul2Sip4K/OtHAgAbXWS5FnvppwtMK3SNTM/lLzwiSNkd6PwyLNkMvIhEWfo81fNDgwmfoTP8lp/tN1X61EDmv7l4hVgHT5gIuG66d28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GE3KStNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83F8C4CEF7;
+	Wed,  4 Feb 2026 15:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218286;
-	bh=rCRHCOttSsxRTvHt0DAc8tzvh0zsoaGW/v8gueAmleY=;
+	s=korg; t=1770218727;
+	bh=xkIp0huhjp3z5DkBB7YBsFHf25KagRl36eTOSBnBjo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTWkoQo+S0Fw8LGcS21FWVYMMwcrfxxaxu2mySPu412KLyMzYCVwFM1Wo48HrDNOT
-	 6vT0jjnMvPqCW4EAYHfamtjURYCBp8WlbAELEgEzRWUgygt0rXrUiJfAxqRXPVwDm/
-	 kpYV5pBMRWPYCDcRmShXir9VhqJD+4gRJjV6PEig=
+	b=GE3KStNiv2cHRO+tYVbNoSuCryXmWjfJXTkIdbuvz1/WXvMI2V3EZIEKItWSl8mTZ
+	 bSktKFTLO0FKP6MwKqWZxEDq8ylK/krjpVSbmqRWbaNsgkJOQex2/JK8vZ0tf38Rj+
+	 IGEolWwRIRSCUnmFg6Mwwf0Jgg/x/23Eaxx3nfKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 265/280] usbnet: Fix using smp_processor_id() in preemptible code warnings
-Date: Wed,  4 Feb 2026 15:40:39 +0100
-Message-ID: <20260204143919.234889816@linuxfoundation.org>
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 42/87] scsi: qla2xxx: edif: Fix dma_free_coherent() size
+Date: Wed,  4 Feb 2026 15:40:40 +0100
+Message-ID: <20260204143848.429921932@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.dev,redhat.com,163.com];
-	TAGGED_FROM(0.00)[bounces-214018-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,msgid.link:url]
-X-Rspamd-Queue-Id: 842A8E9B18
+	TAGGED_FROM(0.00)[bounces-214149-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A265BE905F
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
+commit 56bd3c0f749f45793d1eae1d0ddde4255c749bf6 upstream.
 
-Syzbot reported the following warning:
+Earlier in the function, the ha->flt buffer is allocated with size
+sizeof(struct qla_flt_header) + FLT_REGIONS_SIZE but freed in the error
+path with size SFP_DEV_SIZE.
 
-BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
-caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
-CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
- usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
- usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
- usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
- __dev_set_mtu net/core/dev.c:9443 [inline]
- netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
- netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
- dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
- dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
- dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
- sock_do_ioctl+0x19d/0x280 net/socket.c:1204
- sock_ioctl+0x42f/0x6a0 net/socket.c:1311
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-For historical and portability reasons, the netif_rx() is usually
-run in the softirq or interrupt context, this commit therefore add
-local_bh_disable/enable() protection in the usbnet_resume_rx().
-
-Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
-Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ The context change is due to the commit 2c04d279e857
-("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
-in v6.17 which is irrelevant to the logic of this patch.]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Fixes: 84318a9f01ce ("scsi: qla2xxx: edif: Add send, receive, and accept for auth_els")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260112134326.55466-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -704,6 +704,7 @@ void usbnet_resume_rx(struct usbnet *dev
- 	struct sk_buff *skb;
- 	int num = 0;
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -4484,7 +4484,7 @@ fail_lsrjt:
+ fail_elsrej:
+ 	dma_pool_destroy(ha->purex_dma_pool);
+ fail_flt:
+-	dma_free_coherent(&ha->pdev->dev, SFP_DEV_SIZE,
++	dma_free_coherent(&ha->pdev->dev, sizeof(struct qla_flt_header) + FLT_REGIONS_SIZE,
+ 	    ha->flt, ha->flt_dma);
  
-+	local_bh_disable();
- 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
- 
- 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
-@@ -712,6 +713,7 @@ void usbnet_resume_rx(struct usbnet *dev
- 	}
- 
- 	tasklet_schedule(&dev->bh);
-+	local_bh_enable();
- 
- 	netif_dbg(dev, rx_status, dev->net,
- 		  "paused rx queue disabled, %d skbs requeued\n", num);
+ fail_flt_buffer:
 
 
 
