@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-214017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGSxC11qg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:45 +0100
+	id WK86DiBng2kFmgMAu9opvQ
+	(envelope-from <stable+bounces-214070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4B2E9670
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D163E8E7E
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48E47317CE82
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6FEE31C8016
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135FB421A0C;
-	Wed,  4 Feb 2026 15:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756A3221F17;
+	Wed,  4 Feb 2026 15:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPxkwb8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq59Abb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8938421A06;
-	Wed,  4 Feb 2026 15:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396802BD02A;
+	Wed,  4 Feb 2026 15:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218282; cv=none; b=Euj+DTvIOKBGg3f4uH4ym7OddyBJboqJrcBJn3H+WwSuWz4zTh/XFsdaTbqjjgHRKY4RjvZzVXbHVwQQGCVAT97xwIMn6kLEKwA9fN3cYKeU+mhNu9ic1xS5u+KjcYfkk2cfWZS58g2wPid2ZHkpshDWFjxQARnX9xTA8kD0LXQ=
+	t=1770218462; cv=none; b=f0KCxY5ecH6p9NwUeckSFGDNrQsZfPAKbISWzCS+ooPv7/bLGaEGlDohHYtMcznD7yT2MkV4Gup27WWRt6G5IEK0FS1EKss6TTps87gF6LtWkPT841/KmvLnnf8lMkictEym1qUsXq1xCNPJsxj4J7n4FehVW4NYtTa/V2Y6B4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218282; c=relaxed/simple;
-	bh=xiiMY4qG/ZJjjmc6y5CHel5amUkYEgVrYj8HuZzMIoQ=;
+	s=arc-20240116; t=1770218462; c=relaxed/simple;
+	bh=zAqoZLXzv5DGTCVliBNZjcNcala5wVzSUhAMiRg/doE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgTidfT+9kBZ0pmS/3ENIGP6zYySF7N1UiNtkkslN9SVQcSi8r7fdo5EbXDoy6R9Ycy+xWnrkduyn0xHCjH6TTw5MUX4RstGEjE4U89+PPZK2gvVMMZKIiqlXfCFcClHiMqaKg3Bs3qFYbgeFQGFcwlA2g6G2UmwwrDXgE95WA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPxkwb8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA71C116C6;
-	Wed,  4 Feb 2026 15:18:02 +0000 (UTC)
+	 MIME-Version; b=bxjTUUMzQbP4HXhxAxnHIXM/YR6d9vgj8p2WgVlBTjyxDIxZ6X51m/XMKfXYV7/IDSd5wKQaIo4klN2Yw/aGzSfO9dvN6TuCsMRjScBabxrBaXhiv7ODFOoqYqHDoQR1DQh0Tf4Iprob+uhWzW8Khuoi2m3D7RHeE7DrKMqq7Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq59Abb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E30EC4CEF7;
+	Wed,  4 Feb 2026 15:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218282;
-	bh=xiiMY4qG/ZJjjmc6y5CHel5amUkYEgVrYj8HuZzMIoQ=;
+	s=korg; t=1770218462;
+	bh=zAqoZLXzv5DGTCVliBNZjcNcala5wVzSUhAMiRg/doE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPxkwb8QOWPEq2kb7k7IAdNV6FZrMWb6KizgK8LdYcJ3rqUoTEJJ1ia3QUKLfSIUW
-	 XZIYX6EFHbUp3der8/Sm357EgfJgjFtsJCjV1YgmQSjI9Ir1cl9BZzVgMGrCs7phH1
-	 3U7KUHD3MarEAe6XDaXe1Sf5wNA964b7awe2D6iE=
+	b=rq59Abb+EKCzLukFfHvIxamSaTnzSMw8YJfbPtv8CfKfMRU0plCckhqwkmymNXTMu
+	 j8D1g9fheIsqB1zp0+QUEPcDBjsPW+Gjyzd5zZSz1JvtVTnc9lmYc2e7NFeK96gEBu
+	 u0DnZU/u+5NjZ7iPAzLUpzQfRog6UEVlKapHHqQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubham Rana <s9.rana@samsung.com>,
-	Maninder Singh <maninder1.s@samsung.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 264/280] NFSD: fix race between nfsd registration and exports_proc
-Date: Wed,  4 Feb 2026 15:40:38 +0100
-Message-ID: <20260204143919.199074765@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Bernd Schubert <bernd@bsbernd.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 36/72] flex_proportions: make fprop_new_period() hardirq safe
+Date: Wed,  4 Feb 2026 15:40:39 +0100
+Message-ID: <20260204143846.932664338@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,198 +72,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,samsung.com,kernel.org,oracle.com,163.com];
-	TAGGED_FROM(0.00)[bounces-214017-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bsbernd.com,infradead.org,gmail.com,szeredi.hu,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-214070-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,samsung.com:email]
-X-Rspamd-Queue-Id: 8E4B2E9670
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,szeredi.hu:email]
+X-Rspamd-Queue-Id: 8D163E8E7E
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maninder Singh <maninder1.s@samsung.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit f7fb730cac9aafda8b9813b55d04e28a9664d17c ]
+commit dd9e2f5b38f1fdd49b1ab6d3a85f81c14369eacc upstream.
 
-As of now nfsd calls create_proc_exports_entry() at start of init_nfsd
-and cleanup by remove_proc_entry() at last of exit_nfsd.
+Bernd has reported a lockdep splat from flexible proportions code that is
+essentially complaining about the following race:
 
-Which causes kernel OOPs if there is race between below 2 operations:
-(i) exportfs -r
-(ii) mount -t nfsd none /proc/fs/nfsd
+<timer fires>
+run_timer_softirq - we are in softirq context
+  call_timer_fn
+    writeout_period
+      fprop_new_period
+        write_seqcount_begin(&p->sequence);
 
-for 5.4 kernel ARM64:
+        <hardirq is raised>
+        ...
+        blk_mq_end_request()
+	  blk_update_request()
+	    ext4_end_bio()
+	      folio_end_writeback()
+		__wb_writeout_add()
+		  __fprop_add_percpu_max()
+		    if (unlikely(max_frac < FPROP_FRAC_BASE)) {
+		      fprop_fraction_percpu()
+			seq = read_seqcount_begin(&p->sequence);
+			  - sees odd sequence so loops indefinitely
 
-CPU 1:
-el1_irq+0xbc/0x180
-arch_counter_get_cntvct+0x14/0x18
-running_clock+0xc/0x18
-preempt_count_add+0x88/0x110
-prep_new_page+0xb0/0x220
-get_page_from_freelist+0x2d8/0x1778
-__alloc_pages_nodemask+0x15c/0xef0
-__vmalloc_node_range+0x28c/0x478
-__vmalloc_node_flags_caller+0x8c/0xb0
-kvmalloc_node+0x88/0xe0
-nfsd_init_net+0x6c/0x108 [nfsd]
-ops_init+0x44/0x170
-register_pernet_operations+0x114/0x270
-register_pernet_subsys+0x34/0x50
-init_nfsd+0xa8/0x718 [nfsd]
-do_one_initcall+0x54/0x2e0
+Note that a deadlock like this is only possible if the bdi has configured
+maximum fraction of writeout throughput which is very rare in general but
+frequent for example for FUSE bdis.  To fix this problem we have to make
+sure write section of the sequence counter is irqsafe.
 
-CPU 2 :
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-
-PC is at : exports_net_open+0x50/0x68 [nfsd]
-
-Call trace:
-exports_net_open+0x50/0x68 [nfsd]
-exports_proc_open+0x2c/0x38 [nfsd]
-proc_reg_open+0xb8/0x198
-do_dentry_open+0x1c4/0x418
-vfs_open+0x38/0x48
-path_openat+0x28c/0xf18
-do_filp_open+0x70/0xe8
-do_sys_open+0x154/0x248
-
-Sometimes it crashes at exports_net_open() and sometimes cache_seq_next_rcu().
-
-and same is happening on latest 6.14 kernel as well:
-
-[    0.000000] Linux version 6.14.0-rc5-next-20250304-dirty
-...
-[  285.455918] Unable to handle kernel paging request at virtual address 00001f4800001f48
-...
-[  285.464902] pc : cache_seq_next_rcu+0x78/0xa4
-...
-[  285.469695] Call trace:
-[  285.470083]  cache_seq_next_rcu+0x78/0xa4 (P)
-[  285.470488]  seq_read+0xe0/0x11c
-[  285.470675]  proc_reg_read+0x9c/0xf0
-[  285.470874]  vfs_read+0xc4/0x2fc
-[  285.471057]  ksys_read+0x6c/0xf4
-[  285.471231]  __arm64_sys_read+0x1c/0x28
-[  285.471428]  invoke_syscall+0x44/0x100
-[  285.471633]  el0_svc_common.constprop.0+0x40/0xe0
-[  285.471870]  do_el0_svc_compat+0x1c/0x34
-[  285.472073]  el0_svc_compat+0x2c/0x80
-[  285.472265]  el0t_32_sync_handler+0x90/0x140
-[  285.472473]  el0t_32_sync+0x19c/0x1a0
-[  285.472887] Code: f9400885 93407c23 937d7c27 11000421 (f86378a3)
-[  285.473422] ---[ end trace 0000000000000000 ]---
-
-It reproduced simply with below script:
-while [ 1 ]
-do
-/exportfs -r
-done &
-
-while [ 1 ]
-do
-insmod /nfsd.ko
-mount -t nfsd none /proc/fs/nfsd
-umount /proc/fs/nfsd
-rmmod nfsd
-done &
-
-So exporting interfaces to user space shall be done at last and
-cleanup at first place.
-
-With change there is no Kernel OOPs.
-
-Co-developed-by: Shubham Rana <s9.rana@samsung.com>
-Signed-off-by: Shubham Rana <s9.rana@samsung.com>
-Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ The context change is due to the commit bd9d6a3efa97
-("NFSD: add rpc_status netlink support") in v6.7
-and the proper adoption is done. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Link: https://lkml.kernel.org/r/20260121112729.24463-2-jack@suse.cz
+Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reported-by: Bernd Schubert <bernd@bsbernd.com>
+Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Joanne Koong <joannelkoong@gmail.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ lib/flex_proportions.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1511,12 +1511,9 @@ static int __init init_nfsd(void)
- 	if (retval)
- 		goto out_free_pnfs;
- 	nfsd_lockd_init();	/* lockd->nfsd callbacks */
--	retval = create_proc_exports_entry();
--	if (retval)
--		goto out_free_lockd;
- 	retval = register_pernet_subsys(&nfsd_net_ops);
- 	if (retval < 0)
--		goto out_free_exports;
-+		goto out_free_lockd;
- 	retval = register_cld_notifier();
- 	if (retval)
- 		goto out_free_subsys;
-@@ -1525,17 +1522,19 @@ static int __init init_nfsd(void)
- 		goto out_free_cld;
- 	retval = register_filesystem(&nfsd_fs_type);
- 	if (retval)
-+		goto out_free_nfsd4;
-+	retval = create_proc_exports_entry();
-+	if (retval)
- 		goto out_free_all;
- 	return 0;
- out_free_all:
-+	unregister_filesystem(&nfsd_fs_type);
-+out_free_nfsd4:
- 	nfsd4_destroy_laundry_wq();
- out_free_cld:
- 	unregister_cld_notifier();
- out_free_subsys:
- 	unregister_pernet_subsys(&nfsd_net_ops);
--out_free_exports:
--	remove_proc_entry("fs/nfs/exports", NULL);
--	remove_proc_entry("fs/nfs", NULL);
- out_free_lockd:
- 	nfsd_lockd_shutdown();
- 	nfsd_drc_slab_free();
-@@ -1548,13 +1547,13 @@ out_free_slabs:
- 
- static void __exit exit_nfsd(void)
+--- a/lib/flex_proportions.c
++++ b/lib/flex_proportions.c
+@@ -64,13 +64,14 @@ void fprop_global_destroy(struct fprop_g
+ bool fprop_new_period(struct fprop_global *p, int periods)
  {
-+	remove_proc_entry("fs/nfs/exports", NULL);
-+	remove_proc_entry("fs/nfs", NULL);
- 	unregister_filesystem(&nfsd_fs_type);
- 	nfsd4_destroy_laundry_wq();
- 	unregister_cld_notifier();
- 	unregister_pernet_subsys(&nfsd_net_ops);
- 	nfsd_drc_slab_free();
--	remove_proc_entry("fs/nfs/exports", NULL);
--	remove_proc_entry("fs/nfs", NULL);
- 	nfsd_lockd_shutdown();
- 	nfsd4_free_slabs();
- 	nfsd4_exit_pnfs();
+ 	s64 events = percpu_counter_sum(&p->events);
++	unsigned long flags;
+ 
+ 	/*
+ 	 * Don't do anything if there are no events.
+ 	 */
+ 	if (events <= 1)
+ 		return false;
+-	preempt_disable_nested();
++	local_irq_save(flags);
+ 	write_seqcount_begin(&p->sequence);
+ 	if (periods < 64)
+ 		events -= events >> periods;
+@@ -78,7 +79,7 @@ bool fprop_new_period(struct fprop_globa
+ 	percpu_counter_add(&p->events, -events);
+ 	p->period += periods;
+ 	write_seqcount_end(&p->sequence);
+-	preempt_enable_nested();
++	local_irq_restore(flags);
+ 
+ 	return true;
+ }
 
 
 
