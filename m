@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-213501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKkVNXFcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:21 +0100
+	id 2Er/CnVog2kymgMAu9opvQ
+	(envelope-from <stable+bounces-214213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD872E7665
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:49:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC62E91C5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 771B23004621
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:49:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D57C03259413
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3FA413221;
-	Wed,  4 Feb 2026 14:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B062D593E;
+	Wed,  4 Feb 2026 15:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuRuY6mw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgHA2Ysq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D6C3ACF06;
-	Wed,  4 Feb 2026 14:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A07427F163;
+	Wed,  4 Feb 2026 15:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216552; cv=none; b=b9q0IYWmKAYQqMoqSQw+u0F3yZESPT7f51Vq0wyo+Fo8000pX5zo4IFdfAM9rpLeO00qddt4YqEpxtjA6bKTZNQ+4L0AHOqkW87y4YT1KzffDyjVKCa2dVBiWggeAET7a0mh72g6h7Hy2MufGc/jT/jnTOdg+QhAfHfTREYKQXU=
+	t=1770218942; cv=none; b=flURjKrpQY7IrPmOxNmYKDboNlSr+MjNZE/QD7qfJpetlH3ALhA7cS4n1jzeuaX2lJOJMeO75L84V0jRKQBHv4EszLnAAr5dc6V0oWaowbls4O5nI4H/LVUP7RLoeWeKDTCywItTmcwoTtb8JwxUgMrx2rnOgXgbIG5cLslrtD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216552; c=relaxed/simple;
-	bh=MSPrK59DVy4F08f5YtLI9OWBq58MAq9XyASaaYqx9s4=;
+	s=arc-20240116; t=1770218942; c=relaxed/simple;
+	bh=fW8YkMmwBeWot5NfO4UwNbbEbDAZT0u/G6MUt+tgTQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHO3ghNqDCpY906jJljqk2tOf2l2mJgnDTjfFPNYQrhsyKl2hdMkW7akzA4gjeUBhPc2tRUT6CYU+UqGNq/8bFBnzNWvp49lVgt5fRdGCU2Ejx/NAk3poOo4mMNyLzwRFVMlyPOnU0f6nP9fcXj5EarYt3I1J/9exFI6zkugap0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuRuY6mw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BB4C4CEF7;
-	Wed,  4 Feb 2026 14:49:10 +0000 (UTC)
+	 MIME-Version; b=rCnzPFkdw9nK02tdvmXXG+Jenxp2bnOVqcq+cZDZz8djt9Ct+i6a2RHcmFIU3k57cLEFoS45LlIdhGZC1koQM8uxOdDX4hOU9QiNZyrVdjHkogU8qU77NHsKVTmACmE6MqLUOSkSJVsCYH2qgRXiPMtV6wDWRfTPhFBOEkDb0fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgHA2Ysq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5D2C4CEF7;
+	Wed,  4 Feb 2026 15:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216551;
-	bh=MSPrK59DVy4F08f5YtLI9OWBq58MAq9XyASaaYqx9s4=;
+	s=korg; t=1770218941;
+	bh=fW8YkMmwBeWot5NfO4UwNbbEbDAZT0u/G6MUt+tgTQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuRuY6mwbFWQ0NJeYP3PPkwcF/aRO/6xy0Dc653hhN3IoXp8NI+wFtpYpW3Hhqr8B
-	 QzYbtc2HkSEcrGjXbLknLrV4th7GrqiQze75A+nqLpzmCNDGCrIRNG5YtEHAP4+6VC
-	 o3++ivTWwVma6emsCZyyNLNyf29gKUG8PKyvBFPk=
+	b=wgHA2Ysq4xh2x6UjNc7UMyRMq2iseAMSL6ctFWtbGh+qBp9vg12RNZVV1yQKelpak
+	 aUxws7bEBuNf6AfW+xSf9zYh/F1bjQ8vj3uuhUNLfv8Ho/VmmUSsSofosp5W/K9Vs9
+	 UtYZRoVSutATyDsrGl490JhyNKSMNe7lrq+hRvRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/161] rocker: fix memory leak in rocker_world_port_post_fini()
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-s390@vger.kernel.org
+Subject: [PATCH 6.18 002/122] btrfs: zlib: fix the folio leak on S390 hardware acceleration
 Date: Wed,  4 Feb 2026 15:39:44 +0100
-Message-ID: <20260204143856.099999927@linuxfoundation.org>
+Message-ID: <20260204143851.948762654@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +71,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-213501-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214213-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CD872E7665
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,bur.io:email]
+X-Rspamd-Queue-Id: 8CC62E91C5
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 8d7ba71e46216b8657a82ca2ec118bc93812a4d0 ]
+[ Upstream commit 0d0f1314e8f86f5205f71f9e31e272a1d008e40b ]
 
-In rocker_world_port_pre_init(), rocker_port->wpriv is allocated with
-kzalloc(wops->port_priv_size, GFP_KERNEL). However, in
-rocker_world_port_post_fini(), the memory is only freed when
-wops->port_post_fini callback is set:
+[BUG]
+After commit aa60fe12b4f4 ("btrfs: zlib: refactor S390x HW acceleration
+buffer preparation"), we no longer release the folio of the page cache
+of folio returned by btrfs_compress_filemap_get_folio() for S390
+hardware acceleration path.
 
-    if (!wops->port_post_fini)
-        return;
-    wops->port_post_fini(rocker_port);
-    kfree(rocker_port->wpriv);
+[CAUSE]
+Before that commit, we call kumap_local() and folio_put() after handling
+each folio.
 
-Since rocker_ofdpa_ops does not implement port_post_fini callback
-(it is NULL), the wpriv memory allocated for each port is never freed
-when ports are removed. This leads to a memory leak of
-sizeof(struct ofdpa_port) bytes per port on every device removal.
+Although the timing is not ideal (it release previous folio at the
+beginning of the loop, and rely on some extra cleanup out of the loop),
+it at least handles the folio release correctly.
 
-Fix this by always calling kfree(rocker_port->wpriv) regardless of
-whether the port_post_fini callback exists.
+Meanwhile the refactored code is easier to read, it lacks the call to
+release the filemap folio.
 
-Fixes: e420114eef4a ("rocker: introduce worlds infrastructure")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260123211030.2109-2-qikeyu2017@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[FIX]
+Add the missing folio_put() for copy_data_into_buffer().
+
+CC: linux-s390@vger.kernel.org # 6.18+
+Fixes: aa60fe12b4f4 ("btrfs: zlib: refactor S390x HW acceleration buffer preparation")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/rocker/rocker_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/btrfs/zlib.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index ec90f75289dbe..4073e3852adb5 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -1525,9 +1525,8 @@ static void rocker_world_port_post_fini(struct rocker_port *rocker_port)
- {
- 	struct rocker_world_ops *wops = rocker_port->rocker->wops;
- 
--	if (!wops->port_post_fini)
--		return;
--	wops->port_post_fini(rocker_port);
-+	if (wops->port_post_fini)
-+		wops->port_post_fini(rocker_port);
- 	kfree(rocker_port->wpriv);
- }
- 
+diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
+index 6caba8be7c845..10ed48d4a8466 100644
+--- a/fs/btrfs/zlib.c
++++ b/fs/btrfs/zlib.c
+@@ -139,6 +139,7 @@ static int copy_data_into_buffer(struct address_space *mapping,
+ 		data_in = kmap_local_folio(folio, offset);
+ 		memcpy(workspace->buf + cur - filepos, data_in, copy_length);
+ 		kunmap_local(data_in);
++		folio_put(folio);
+ 		cur += copy_length;
+ 	}
+ 	return 0;
 -- 
 2.51.0
 
