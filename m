@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-214165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEDTC3tqg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:15 +0100
+	id SNGQD59rg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5672FE9698
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5FDE98C7
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 350DB3074DCA
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B476A31CE346
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9593A3ECBFE;
-	Wed,  4 Feb 2026 15:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56DB41C2EF;
+	Wed,  4 Feb 2026 15:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQAvuUwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pRl3MJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594AD27702D;
-	Wed,  4 Feb 2026 15:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F7621FF4C;
+	Wed,  4 Feb 2026 15:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218781; cv=none; b=GdHuKic8h+NWzQjJGoY2iZ/9OQMf9Xee2Rlu3jDayhIg79wijSOMEdE1dbJnRmUclrbmNUXYYld88zNPebCafyRrDTqZtvMJBNSkoCk8VT5J/rfRFe6mm54Ug3KqyGSWgBs+ZR+nWf3/yt+4USsPos1kw2o8wCU4mwZS8X1nnDM=
+	t=1770218519; cv=none; b=DBcW2sA2kuRWYFajXQQbues+BNP3qcXIuoYqqb7OH2a3rGXsLhiJzi+CmWJb9K0Cz1oZPIrUIvaze0APw85WvJ1Nj3oA54/ELnI5pSoou6r21ofLwPjjwt8RuFhtoZUgTxEQy1osTRtpTWzGFcYNc0MH3WCYbTPUgrUlU83s59w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218781; c=relaxed/simple;
-	bh=5bVxUs5Z+KGlbrbRHTvJSsWL6YUQownL0bYp70P4zKE=;
+	s=arc-20240116; t=1770218519; c=relaxed/simple;
+	bh=PblyKgjD4AZT5z1UCIlZZqcbcKwcdgtGSpz6M6edUDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puFtlQd9QPUt8fCBWecAnOJZIWEx6Pvcei+e0rGVbVMDfqvwS8spCT8J62BI2iHIiV2lNyDpHmAMavCw1fWotgYVrYi2jxTGf5pjfQLRPEtg4eAYsJKyRQj8a1bU5CD0XwNcBQu84LjXLDEB6WMnGbBb/AQuUSy18wA34/FjSAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQAvuUwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21CFC4CEF7;
-	Wed,  4 Feb 2026 15:26:20 +0000 (UTC)
+	 MIME-Version; b=lQcQGzKy0bCh3DJiMItYBu2zp48LW5JKH0RZXDL7Vzx9Qgj6OaVU3ABgIFPmRlNnKDG1PQfIVmxvDBzHjeyPPy6hNb/PS09E7ss6SYSZxXx4CGGcPElks2LPgXtKfBAAR7Nulhbw6stkB34OhSNJAvm+7D1ewHqZYRba20/JtEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pRl3MJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE827C4CEF7;
+	Wed,  4 Feb 2026 15:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218781;
-	bh=5bVxUs5Z+KGlbrbRHTvJSsWL6YUQownL0bYp70P4zKE=;
+	s=korg; t=1770218519;
+	bh=PblyKgjD4AZT5z1UCIlZZqcbcKwcdgtGSpz6M6edUDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQAvuUwiboZtDhMgTb+L0p3dmdtV0nY2W9JzLP7CL5sKzwIA6K/bjYikRTu8Fo8sS
-	 MxjKYz9PvUlTUF/8x0cHtbJlx3bNto47uMd3Zfg+lEi1N10DxIUJq2trqgpt4qPA9C
-	 q5fRk8qmDZAB2m1EfeF6cgyT0NLxgGo2Ll9oOmfE=
+	b=0pRl3MJa/yZ4ipaIb9gerjRSPukTZjiTz4UKj8DVGjr8U4EF3NkWRGutGWg1Cx/22
+	 lbOFHi0mhbGSXAnPCvFvoppNOwOi+/QICEeUHgj+Vd7U/kB9Y1JloSuFb+xfaq3xDV
+	 2mJtSuqBlmcSkgiI13qdiAEOm/cJdT/VVcsIK/gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH 6.12 60/87] drm/imx/tve: fix probe device leak
+	JP Kobryn <inwardvessel@gmail.com>
+Subject: [PATCH 6.6 55/72] btrfs: prevent use-after-free on page private data in btrfs_subpage_clear_uptodate()
 Date: Wed,  4 Feb 2026 15:40:58 +0100
-Message-ID: <20260204143849.079061090@linuxfoundation.org>
+Message-ID: <20260204143847.627926052@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +65,119 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214165-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214087-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,pengutronix.de:email,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 5672FE9698
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8C5FDE98C7
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: JP Kobryn <inwardvessel@gmail.com>
 
-commit e535c23513c63f02f67e3e09e0787907029efeaf upstream.
+This is a stable-only patch. The issue was inadvertently fixed in 6.17 [0]
+as part of a refactoring, but this patch serves as a minimal targeted fix
+for prior kernels.
 
-Make sure to drop the reference taken to the DDC device during probe on
-probe failure (e.g. probe deferral) and on driver unbind.
+Users of find_lock_page() need to guard against the situation where
+releasepage() has been invoked during reclaim but the page was ultimately
+not removed from the page cache. This patch covers one location that was
+overlooked.
 
-Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television Encoder (TVEv2)")
-Cc: stable@vger.kernel.org	# 3.10
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251030163456.15807-1-johan@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+After acquiring the page, use set_page_extent_mapped() to ensure the page
+private state is valid. This is especially important in the subpage case,
+where the private field is an allocated struct containing bitmap and lock
+data.
+
+Without this protection, the race below is possible:
+
+[mm] page cache reclaim path        [fs] relocation in subpage mode
+shrink_page_list()
+  trylock_page() /* lock acquired */
+  try_to_release_page()
+    mapping->a_ops->releasepage()
+      btrfs_releasepage()
+        __btrfs_releasepage()
+          clear_page_extent_mapped()
+            btrfs_detach_subpage()
+              subpage = detach_page_private(page)
+              btrfs_free_subpage(subpage)
+                kfree(subpage) /* point A */
+                                        prealloc_file_extent_cluster()
+                                          find_lock_page()
+                                            page_cache_get_speculative()
+                                            lock_page() /* wait for lock */
+  if (...)
+    ...
+  else if (!mapping || !__remove_mapping(..))
+    /*
+     * __remove_mapping() returns zero when
+     * page_ref_freeze(page, refcount) fails /* point B */
+     */
+    goto keep_locked /* page remains in cache */
+keep_locked:
+  unlock_page(page) /* lock released */
+                                        /* lock acquired */
+                                        btrfs_subpage_clear_uptodate()
+                                          /* use-after-free */
+                                          subpage = page->private
+[0] 4e346baee95f ("btrfs: reloc: unconditionally invalidate the page cache for each cluster")
+
+Fixes: 9d9ea1e68a05 ("btrfs: subpage: fix relocation potentially overwriting last page data")
+Cc: stable@vger.kernel.org # 5.15 - 6.9
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imx/ipuv3/imx-tve.c |   13 +++++++++++++
+ fs/btrfs/relocation.c |   13 +++++++++++++
  1 file changed, 13 insertions(+)
 
---- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-+++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
-@@ -519,6 +519,13 @@ static const struct component_ops imx_tv
- 	.bind	= imx_tve_bind,
- };
- 
-+static void imx_tve_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2847,6 +2847,19 @@ static noinline_for_stack int prealloc_f
+ 		 * will re-read the whole page anyway.
+ 		 */
+ 		if (page) {
++			/*
++			 * releasepage() could have cleared the page private data while
++			 * we were not holding the lock. Reset the mapping if needed so
++			 * subpage operations can access a valid private page state.
++			 */
++			ret = set_page_extent_mapped(page);
++			if (ret) {
++				unlock_page(page);
++				put_page(page);
 +
-+	put_device(dev);
-+}
-+
- static int imx_tve_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -540,6 +547,12 @@ static int imx_tve_probe(struct platform
- 	if (ddc_node) {
- 		tve->ddc = of_find_i2c_adapter_by_node(ddc_node);
- 		of_node_put(ddc_node);
-+		if (tve->ddc) {
-+			ret = devm_add_action_or_reset(dev, imx_tve_put_device,
-+						       &tve->ddc->dev);
-+			if (ret)
 +				return ret;
-+		}
- 	}
- 
- 	tve->mode = of_get_tve_mode(np);
++			}
++
+ 			btrfs_subpage_clear_uptodate(fs_info, page, i_size,
+ 					round_up(i_size, PAGE_SIZE) - i_size);
+ 			unlock_page(page);
 
 
 
