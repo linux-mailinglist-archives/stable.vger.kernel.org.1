@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGADMp1dg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:21 +0100
+	id qGlSAJ5lg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23191E78CB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:54:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8EEE8A63
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66FCC3047BF4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:51:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ABAB3057E96
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8860D41B373;
-	Wed,  4 Feb 2026 14:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF8222E3F0;
+	Wed,  4 Feb 2026 15:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvhtTZlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6w7L+SL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5C141B36A;
-	Wed,  4 Feb 2026 14:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36752D6E73;
+	Wed,  4 Feb 2026 15:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216713; cv=none; b=Dcc0vJawAyqD3YolUGUvcgaje2EjjipadNQ49F4jtN2LCO6t1EmP+FYy94ggZ9izngi0SjFR0WoL+268YKYuLy66jFz0NHY/D5JwAaRz2t5gMQ9T6F00w3fNbNBtonjR8/sXT2reHQG1G+K9vcidoNIzI5irqxYSHLhpkDXNYb4=
+	t=1770217698; cv=none; b=KJrppcirntuGoXuHabWqITrN17RxXccqUgur/He256usaWgJpbceKEY4vvztTpS+stA7qI3DPckYEqiFRK70SXYnnhWjGyvXv/YOkyRxtamHMfboa3Uo4gwN1gD3PQuJIhfcmMZQhtFO3wKugrQd2JBaBV/G1IRhk0nVNaIaUn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216713; c=relaxed/simple;
-	bh=J4Fj19w7RjptKmur1FL9hGY1VQdqTBpgtl0n23pjWvQ=;
+	s=arc-20240116; t=1770217698; c=relaxed/simple;
+	bh=2XEcskkxwG+cqwAyhz6h4PvNNE+X2yiYCBtW9OxKhxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0XrV8k6olPvXhLm0fPb7FRlioYoio1NFvG+CheMNiPRh5WusFeESGVyFiSEwG42+LrpLIp6XsvBptF0abpWOZ4WLoppxtzOxYqhZFqi3RbfrVRhpR6VnLz61oeEnJXc4VrfJ8e/WsMpK3+oQonPzfYxAtyzOY1Cqitvgmr4pgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvhtTZlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC05FC116C6;
-	Wed,  4 Feb 2026 14:51:52 +0000 (UTC)
+	 MIME-Version; b=kNgy5WPYzQLBUlE7I3LE+k/fsl8rp8rXrfpB0+5NQSHYVrIiTligsLuERKpvc02OcANGaJ8b48wxwZ+O4+MAZpFU1sfd6rpNA1i+UD4XaQF4zjuVxif3zUfh9HK1pveklH5eLEvXXLlvBTn4da9TZ5WvVBzuJHsGPAHbaX+KMuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6w7L+SL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D58C4CEF7;
+	Wed,  4 Feb 2026 15:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216713;
-	bh=J4Fj19w7RjptKmur1FL9hGY1VQdqTBpgtl0n23pjWvQ=;
+	s=korg; t=1770217698;
+	bh=2XEcskkxwG+cqwAyhz6h4PvNNE+X2yiYCBtW9OxKhxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvhtTZlQS+zaWrdaLSX+QdPylKCnKSAzHyqQFyHvDche0jz0icQZaAnX6sXct6dWl
-	 r6Tb8IpqBy6go2dn4ug0gaK2WNEDePriiPdpzFJkLucotXDBKXeon32vXppck8E5qG
-	 /RWUXO7yocLcrS6+CmrOK48LMyFnDEpbNJSVV/cM=
+	b=y6w7L+SL656uGpaVU0pcBdOsw0/aJzgMdlqgR8sAl/Dp8ELn4LsXFr2I+LIBIN2bf
+	 2jj46+gnwdqB/2WiChstOvzDQuTsYJoHl946kOrAQQTZGpNkxNSN0kvECHSO0xnzBd
+	 3PgFEwC294LfI9E95WajyTPt+tGjlpmeDWIfXL1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 001/206] pnfs/flexfiles: Fix memory leak in nfs4_ff_alloc_deviceid_node()
+	Xiaochen Shen <shenxiaochen@open-hieco.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>
+Subject: [PATCH 6.1 058/280] x86/resctrl: Fix memory bandwidth counter width for Hygon
 Date: Wed,  4 Feb 2026 15:37:12 +0100
-Message-ID: <20260204143858.251222267@linuxfoundation.org>
+Message-ID: <20260204143911.740066961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +70,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213842-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213551-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,hammerspace.com:email]
-X-Rspamd-Queue-Id: 23191E78CB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[open-hieco.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:email,intel.com:email]
+X-Rspamd-Queue-Id: 7C8EEE8A63
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Xiaochen Shen <shenxiaochen@open-hieco.net>
 
-[ Upstream commit 0c728083654f0066f5e10a1d2b0bd0907af19a58 ]
+commit 7517e899e1b87b4c22a92c7e40d8733c48e4ec3c upstream.
 
-In nfs4_ff_alloc_deviceid_node(), if the allocation for ds_versions fails,
-the function jumps to the out_scratch label without freeing the already
-allocated dsaddrs list, leading to a memory leak.
+The memory bandwidth calculation relies on reading the hardware counter
+and measuring the delta between samples. To ensure accurate measurement,
+the software reads the counter frequently enough to prevent it from
+rolling over twice between reads.
 
-Fix this by jumping to the out_err_drain_dsaddrs label, which properly
-frees the dsaddrs list before cleaning up other resources.
+The default Memory Bandwidth Monitoring (MBM) counter width is 24 bits.
+Hygon CPUs provide a 32-bit width counter, but they do not support the
+MBM capability CPUID leaf (0xF.[ECX=1]:EAX) to report the width offset
+(from 24 bits).
 
-Fixes: d67ae825a59d6 ("pnfs/flexfiles: Add the FlexFile Layout Driver")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Consequently, the kernel falls back to the 24-bit default counter width,
+which causes incorrect overflow handling on Hygon CPUs.
+
+Fix this by explicitly setting the counter width offset to 8 bits (resulting
+in a 32-bit total counter width) for Hygon CPUs.
+
+Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
+Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251209062650.1536952-3-shenxiaochen@open-hieco.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayoutdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/core.c     |   15 +++++++++++++--
+ arch/x86/kernel/cpu/resctrl/internal.h |    3 +++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-index 11777d33a85e8..35cac4d3f2e8a 100644
---- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-@@ -103,7 +103,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
- 			      sizeof(struct nfs4_ff_ds_version),
- 			      gfp_flags);
- 	if (!ds_versions)
--		goto out_scratch;
-+		goto out_err_drain_dsaddrs;
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -896,8 +896,19 @@ void resctrl_cpu_detect(struct cpuinfo_x
+ 		c->x86_cache_occ_scale = ebx;
+ 		c->x86_cache_mbm_width_offset = eax & 0xff;
  
- 	for (i = 0; i < version_count; i++) {
- 		/* 20 = version(4) + minor_version(4) + rsize(4) + wsize(4) +
--- 
-2.51.0
-
+-		if (c->x86_vendor == X86_VENDOR_AMD && !c->x86_cache_mbm_width_offset)
+-			c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
++		if (!c->x86_cache_mbm_width_offset) {
++			switch (c->x86_vendor) {
++			case X86_VENDOR_AMD:
++				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
++				break;
++			case X86_VENDOR_HYGON:
++				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_HYGON;
++				break;
++			default:
++				/* Leave c->x86_cache_mbm_width_offset as 0 */
++				break;
++			}
++		}
+ 	}
+ }
+ 
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -31,6 +31,9 @@
+ #define MAX_MBA_BW_AMD			0x800
+ #define MBM_CNTR_WIDTH_OFFSET_AMD	20
+ 
++/* Hygon MBM counter width as an offset from MBM_CNTR_WIDTH_BASE */
++#define MBM_CNTR_WIDTH_OFFSET_HYGON	8
++
+ #define RMID_VAL_ERROR			BIT_ULL(63)
+ #define RMID_VAL_UNAVAIL		BIT_ULL(62)
+ /*
 
 
 
