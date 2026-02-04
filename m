@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-213468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MpDIcBcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:40 +0100
+	id OKOwN7hpg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:46:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9856E7723
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:50:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D92FE9530
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:46:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0D713038536
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:47:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AB2330AAB26
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4042773EE;
-	Wed,  4 Feb 2026 14:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A1B421EFB;
+	Wed,  4 Feb 2026 15:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5QlrrOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfhP9fb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFE8244675;
-	Wed,  4 Feb 2026 14:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DD7421EFE;
+	Wed,  4 Feb 2026 15:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216440; cv=none; b=rELn8betrFlcc6y2cNy2dIXh/DLOgLF1Q7t7L56nhyJHtAQ4GV2vq1Lqe7w+cKTYI5El5OYqwb5SxIuj6HtQnA5YyIl003VrMex6QYK5SuGjKl2z+SXc7JAOd2bGBuNOpT1/1PFkER8t7JTxRHLGNH36rVMooeSoDzSPepS1gGk=
+	t=1770217980; cv=none; b=WjlFO2/u92LPclSSGTcIDw76K0GnxW2Zu0CAPRwjXzD4Pw6VrIngA8exA2caX4/zVGJV5xQh/aRL4pUV8mYLZN7yTyW6oybqK18L1GcPsr1tJWnkz4JAGSiULoPfqAv816uCVo53lrQHxIjRLUuXQ90uENY/NSbsfuve67ZKuF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216440; c=relaxed/simple;
-	bh=D+X+EFep4PJnLmLaaRRo4Ezn8ey8cAn+qcVDkPo+qsM=;
+	s=arc-20240116; t=1770217980; c=relaxed/simple;
+	bh=Fwp8aShMoYTe8WepbfVD07pnX1xXZH3aQ5jZXEPCYe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZlGReVKIdyuQUO9y53X6v3NRP3IVRrlzsE/8rkntl+FZQ+lSxZq0/ZNTcvCRUUSpW8FHsejtjyXlbYSJt8j6JTCykAXZ0DAZJnwMrxpmaZBuS4BD/7qKfJcjRGX4xDfnU3UBhI/JrvxhLUU8N+ZpW17eGncsrQlZq/s/FMYMj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5QlrrOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990D9C4CEF7;
-	Wed,  4 Feb 2026 14:47:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f56C5J7vZaTzq/siMyp6a4vf0WL3kjpEMJFinHaqw/LEX8xm8K8D2SIOdVoea5SE71YHzRxy8nX8X9qg1snU+iYPKLLqNBScIaFgAXipGPde9ddrga4+Knhtqg08ikquTA1z5ytyhJjxjlvsna+iiHZWaqttQBRzfqttm/9pdC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfhP9fb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7CBC116C6;
+	Wed,  4 Feb 2026 15:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216440;
-	bh=D+X+EFep4PJnLmLaaRRo4Ezn8ey8cAn+qcVDkPo+qsM=;
+	s=korg; t=1770217980;
+	bh=Fwp8aShMoYTe8WepbfVD07pnX1xXZH3aQ5jZXEPCYe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5QlrrOX7RI8vYQsM5W7KeH5IV8OtbZaqlLTjSi3kZkqmNP3ZW0a+0M/0y4IFtiKn
-	 WbEXpU3+iCyrv6l8KPY5PqJk4vr5MY3y5H4/WupFYbCuOpjdOwtEmmopT0mGjKu36z
-	 vnKDXSs67lk/F7g/Ehf3q/Zn1rX+myLvBk8H83xY=
+	b=XfhP9fb9w+V6Ubx2hw24dDtspoNtjJwnWBfmODyvYqP2iFcx29InYdkt5av1akLWj
+	 t+jXZw+7yTYq3ocUdvtA9ZT4JO3T6oAeZ1DsMSj4Yly4Oj6zMrjmFaYsAzz/HZNaAV
+	 3KXK/rwwYGNXBXYDVWq6gD5bqStVsQKFAPv7qXD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weigang He <geoffreyhe2@gmail.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.10 088/161] of: fix reference count leak in of_alias_scan()
+	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Fernand Sieber <sieberf@amazon.com>
+Subject: [PATCH 6.1 177/280] perf/x86/intel: Do not enable BTS for guests
 Date: Wed,  4 Feb 2026 15:39:11 +0100
-Message-ID: <20260204143854.914158603@linuxfoundation.org>
+Message-ID: <20260204143915.987867790@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213468-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213927-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: D9856E7723
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3D92FE9530
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weigang He <geoffreyhe2@gmail.com>
+From: Fernand Sieber <sieberf@amazon.com>
 
-commit 81122fba08fa3ccafab6ed272a5c6f2203923a7e upstream.
+commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
 
-of_find_node_by_path() returns a device_node with its refcount
-incremented. When kstrtoint() fails or dt_alloc() fails, the function
-continues to the next iteration without calling of_node_put(), causing
-a reference count leak.
+By default when users program perf to sample branch instructions
+(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
+interprets this as a special case and enables BTS (Branch Trace Store)
+as an optimization to avoid taking an interrupt on every branch.
 
-Add of_node_put(np) before continue on both error paths to properly
-release the device_node reference.
+Since BTS doesn't virtualize, this optimization doesn't make sense when
+the request originates from a guest. Add an additional check that
+prevents this optimization for virtualized events (exclude_host).
 
-Fixes: 611cad720148 ("dt: add of_alias_scan and of_alias_get_id")
-Cc: stable@vger.kernel.org
-Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
-Link: https://patch.msgid.link/20260117091238.481243-1-geoffreyhe2@gmail.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/base.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/events/perf_event.h |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2018,13 +2018,17 @@ void of_alias_scan(void * (*dt_alloc)(u6
- 			end--;
- 		len = end - start;
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1421,13 +1421,22 @@ static inline bool intel_pmu_has_bts_per
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	unsigned int hw_event, bts_event;
  
--		if (kstrtoint(end, 10, &id) < 0)
-+		if (kstrtoint(end, 10, &id) < 0) {
-+			of_node_put(np);
- 			continue;
-+		}
+-	if (event->attr.freq)
++	/*
++	 * Only use BTS for fixed rate period==1 events.
++	 */
++	if (event->attr.freq || period != 1)
++		return false;
++
++	/*
++	 * BTS doesn't virtualize.
++	 */
++	if (event->attr.exclude_host)
+ 		return false;
  
- 		/* Allocate an alias_prop with enough space for the stem */
- 		ap = dt_alloc(sizeof(*ap) + len + 1, __alignof__(*ap));
--		if (!ap)
-+		if (!ap) {
-+			of_node_put(np);
- 			continue;
-+		}
- 		memset(ap, 0, sizeof(*ap) + len + 1);
- 		ap->alias = start;
- 		of_alias_add(ap, np, id, start, len);
+ 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
+ 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
+ 
+-	return hw_event == bts_event && period == 1;
++	return hw_event == bts_event;
+ }
+ 
+ static inline bool intel_pmu_has_bts(struct perf_event *event)
 
 
 
