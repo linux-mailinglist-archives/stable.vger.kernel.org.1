@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-213839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CP4HAZtlg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:27 +0100
+	id ULAWKglkg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644C3E8A4E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:28:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C63E85BF
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 387BD3054D33
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52A4130557D3
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4146427A1C;
-	Wed,  4 Feb 2026 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A102428462;
+	Wed,  4 Feb 2026 15:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0wcsCmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnLHlPMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679362D8DA8;
-	Wed,  4 Feb 2026 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5622E3F0;
+	Wed,  4 Feb 2026 15:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217688; cv=none; b=UPgDY5+BuSlWzOHvBe7Ier+ebPPPY7Xc7CHVUzAZM2foHne4UYpUIYEFfBhTss4eSoFuI5qWHboStZOYmSms+Oo1tgLiU/YfOB3bZgzUl8yiNVGEwueM35w+yvjhWsFVH4ekRDghbz1x8fm8bARRrL/BleuIyij2M3+yiCpiLXg=
+	t=1770217692; cv=none; b=WPxuUhzspem04d033sr0+cLSHZUB6M85XXi4sgk2oZ57u6g/daGCWoeyu7veo+S8g3xi/3NasKdCumHw5FaAN1ChOvmUbURYMla8/1uDfHEGX9FIkLrfdsrZd5eovkTNfwk36oDvYkxJXEyXghr1HZC6JIOA/2Y7nmwRFRAY8CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217688; c=relaxed/simple;
-	bh=uPBlSBBnacISHW7bd258C7AuZrRKIcJrvK9JXm+Axlk=;
+	s=arc-20240116; t=1770217692; c=relaxed/simple;
+	bh=y84wtPCTuDhOnidAVnaXd4ecnRcQjgMa2XzKz1EeDxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqPs5lp6+V87nZJGd9zgjjp7oJ73Zrce6MJOe8rxtaceEWCvszUqxZg7Olb+1J3cNAeo9q6ljYSOG4GUKcJ0zRZKkHl1o8cI+4+zgRmFHv3aDhBgvW0qoxUQBSf1x1U2TSaX9xvjL4blYeBsQ8i4SGaDwf1NZ6v6dtimrjKypA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0wcsCmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D29BC4CEF7;
-	Wed,  4 Feb 2026 15:08:05 +0000 (UTC)
+	 MIME-Version; b=YFbktUC9jSUmk2Hd669wd7J3pLkwZiBkQ1W529y+x0I8pq0osEMQ7TQvjZc4XsdjohcpqyfIY9kwn+lOEosyuHrGjaysxsIaPlQfITOyYosbMGNVoBB2JsO0vsWOIrvsBcePw/XGymw1533XwVtjNW3i71+EgNE6MZonk52KMW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnLHlPMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FBAC4CEF7;
+	Wed,  4 Feb 2026 15:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217688;
-	bh=uPBlSBBnacISHW7bd258C7AuZrRKIcJrvK9JXm+Axlk=;
+	s=korg; t=1770217691;
+	bh=y84wtPCTuDhOnidAVnaXd4ecnRcQjgMa2XzKz1EeDxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0wcsCmXk5Z7Dh3fbLXibuM8Higy6irq8RA7GEO/oBOMNTimx5OPaKQdnbna+DxIu
-	 3Tm1kUE5kVz+HUMw11Rw3yL5FhF5t6HpsqKUj3rKV7L7O5BR9NpMIiV+h0IuxgAj51
-	 jDkrNanC+BGkypmm32uDygvhftnADc1IpDKzezrg=
+	b=FnLHlPMyBsKPQG6+1pEWT2jV3M6BNzmNrsikkI2V24uIz3gB83As3qekUlQREdgbj
+	 uimDxdLQmeUqtt6tRgPElKfi84Ifzr7OMhbQGwoAc4p52WhRf4Ngf3AvZxTmfAgsCE
+	 HMC5zao75EB43k7TCmMu2vnS4PiDULU/IwgC2O7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 055/280] EDAC/x38: Fix a resource leak in x38_probe1()
-Date: Wed,  4 Feb 2026 15:37:09 +0100
-Message-ID: <20260204143911.630687340@linuxfoundation.org>
+Subject: [PATCH 6.1 056/280] EDAC/i3200: Fix a resource leak in i3200_probe1()
+Date: Wed,  4 Feb 2026 15:37:10 +0100
+Message-ID: <20260204143911.666484031@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
 References: <20260204143909.614719725@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213839-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213840-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,alien8.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 644C3E8A4E
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alien8.de:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 03C63E85BF
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
@@ -100,39 +100,40 @@ X-Rspamd-Action: no action
 
 From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit 0ff7c44106b4715fc27a2e455d9f57f1dfcfd54f upstream.
+commit d42d5715dcb559342ff356327b241c53a67584d9 upstream.
 
 If edac_mc_alloc() fails, also unmap the window.
 
   [ bp: Use separate labels, turning it into the classic unwind pattern. ]
 
-Fixes: df8bc08c192f ("edac x38: new MC driver module")
+Fixes: dd8ef1db87a4 ("edac: i3200 memory controller driver")
 Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223124350.1496325-1-lihaoxiang@isrc.iscas.ac.cn
+Link: https://patch.msgid.link/20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/x38_edac.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/edac/i3200_edac.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/edac/x38_edac.c
-+++ b/drivers/edac/x38_edac.c
-@@ -341,9 +341,12 @@ static int x38_probe1(struct pci_dev *pd
+--- a/drivers/edac/i3200_edac.c
++++ b/drivers/edac/i3200_edac.c
+@@ -358,10 +358,11 @@ static int i3200_probe1(struct pci_dev *
  	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = x38_channel_num;
+ 	layers[1].size = nr_channels;
  	layers[1].is_virt_csrow = false;
-+
+-	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers,
+-			    sizeof(struct i3200_priv));
 +
 +	rc = -ENOMEM;
- 	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, 0);
++	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, sizeof(struct i3200_priv));
  	if (!mci)
 -		return -ENOMEM;
 +		goto unmap;
  
  	edac_dbg(3, "MC: init mci\n");
  
-@@ -403,9 +406,9 @@ static int x38_probe1(struct pci_dev *pd
+@@ -421,9 +422,9 @@ static int i3200_probe1(struct pci_dev *
  	return 0;
  
  fail:
