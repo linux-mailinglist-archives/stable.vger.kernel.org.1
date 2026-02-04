@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-213579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFXtMxdeg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:23 +0100
+	id eCbkCVhbg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B37E79C0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:56:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F6BE74A9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7CC1E301779C
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BD6730115BD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68BE41B352;
-	Wed,  4 Feb 2026 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FF640F8C6;
+	Wed,  4 Feb 2026 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M65SaSUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYU+Tjhq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A40A27F749;
-	Wed,  4 Feb 2026 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9E2345CA5;
+	Wed,  4 Feb 2026 14:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216806; cv=none; b=FBmtb142c6k+8ZgO6Q02lGYLU6glL0JiuTrOHdKzho73WTv7gYUXAfqWLSdb3LCiUxHCdhui/zMdWMc1Pn2EsIC/qKqLZEOEvvI0uM/KhPtdEmiUuqzcG0OfRSwWHmg4bfAOu1OaYko6NQOxLeO0IZto6S9rlsgsT9Y3Kp2qN/o=
+	t=1770216230; cv=none; b=tfwysZrA1Qw1Yj6U2JuaoUqe5dSh1Vzg4QE/sPr06lpSFQ7vTPcFOkBHTdC17AbYVeDeB+xwpJiZUcSO2kEEXxEb3NsoinlN0eyGc62KeJHFBv6Xw8aI/QhSs3o4EQVEBD9/JV4jPEPlbFJqbHGId15zWKmZlAAlHKxSDn/dV4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216806; c=relaxed/simple;
-	bh=kBi+UpvZxoI8pP602xTjp5Xst37ebJjj9ZScOumLuz0=;
+	s=arc-20240116; t=1770216230; c=relaxed/simple;
+	bh=BRjZPXD4FFoS0YiBCgJFvgQZ3RLqddb2ViapOyHNHIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpEM2qUnw6hD5ZJX0PXWP9UqhI19MZ+cQeuttatB72pzPYH4sTJF5xkRwlb/sMBbGdQRiWbA7lJiVPcBF61io/8owct1PAC0Ma5mMXraW+1WR/SFtRqHdYbPIDtA0yktija+SMxi7FO/0mkt/ubmgQ0QkIsX1i/9lyJ0eceewtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M65SaSUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08BCC4CEF7;
-	Wed,  4 Feb 2026 14:53:25 +0000 (UTC)
+	 MIME-Version; b=j1W9EaOEqOR2Sh4ksgQj2YDm0wg5gebItLPDjmnbqFPhKt8k47JQCBbVha3ywRgUn+LkFXuviSNzaKu2hSE8mbo7BmI7yQWwarzCzBl9T3RVVKodvBOALzY/zEeT6MId0ypGU9g1u7aR/XSBfK9vehXvY0f2Vp3jkvP3REBq0nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYU+Tjhq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6663FC4CEF7;
+	Wed,  4 Feb 2026 14:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216806;
-	bh=kBi+UpvZxoI8pP602xTjp5Xst37ebJjj9ZScOumLuz0=;
+	s=korg; t=1770216230;
+	bh=BRjZPXD4FFoS0YiBCgJFvgQZ3RLqddb2ViapOyHNHIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M65SaSUAOcmUeL7iJomCXK5NBf+5kySP08/e/GXfagbpmt0eJbA+sAyjmsXSPVaFV
-	 nec5sY1Gd70fxMZFErOQdykuIqTbqG9O4OJvYMY1pnDLOTsg+CuH1rT56VpmOu0fFh
-	 Aes43FqcE6Pdm8/I1rO6n4jqXxQQm2mP3pj+JXcs=
+	b=QYU+TjhqdFmRtNF30OajoHulWnEcLoSaIqh7YyvfpZVRA3j7zYnMS9nhC1ZECz36j
+	 AXdbBYbQsek3zDoMySA33gjA+G8ykgBIrKe+K5onKdi1TvPo5I7Ym28+7iSC8T6KI7
+	 F5Ev8Shv8Kc71UsQnipN8bR7hdMT8s2t+1OFlxJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 037/206] EDAC/i3200: Fix a resource leak in i3200_probe1()
+	syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 005/161] ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()
 Date: Wed,  4 Feb 2026 15:37:48 +0100
-Message-ID: <20260204143859.545051646@linuxfoundation.org>
+Message-ID: <20260204143851.955016011@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +66,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213579-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213406-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,alien8.de:email]
-X-Rspamd-Queue-Id: D7B37E79C0
+	TAGGED_RCPT(0.00)[stable,d4dda070f833dc5dc89a];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 88F6BE74A9
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d42d5715dcb559342ff356327b241c53a67584d9 upstream.
+[ Upstream commit 81c734dae203757fb3c9eee6f9896386940776bd ]
 
-If edac_mc_alloc() fails, also unmap the window.
+Blamed commit did not take care of VLAN encapsulations
+as spotted by syzbot [1].
 
-  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
+Use skb_vlan_inet_prepare() instead of pskb_inet_may_pull().
 
-Fixes: dd8ef1db87a4 ("edac: i3200 memory controller driver")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+ BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+ BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+ BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+  IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+  ip6ip6_dscp_ecn_decapsulate+0x16f/0x1b0 net/ipv6/ip6_tunnel.c:729
+  __ip6_tnl_rcv+0xed9/0x1b50 net/ipv6/ip6_tunnel.c:860
+  ip6_tnl_rcv+0xc3/0x100 net/ipv6/ip6_tunnel.c:903
+ gre_rcv+0x1529/0x1b90 net/ipv6/ip6_gre.c:-1
+  ip6_protocol_deliver_rcu+0x1c89/0x2c60 net/ipv6/ip6_input.c:438
+  ip6_input_finish+0x1f4/0x4a0 net/ipv6/ip6_input.c:489
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+  ip6_input+0x9c/0x330 net/ipv6/ip6_input.c:500
+  ip6_mc_input+0x7ca/0xc10 net/ipv6/ip6_input.c:590
+  dst_input include/net/dst.h:474 [inline]
+  ip6_rcv_finish+0x958/0x990 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+  ipv6_rcv+0xf1/0x3c0 net/ipv6/ip6_input.c:311
+  __netif_receive_skb_one_core net/core/dev.c:6139 [inline]
+  __netif_receive_skb+0x1df/0xac0 net/core/dev.c:6252
+  netif_receive_skb_internal net/core/dev.c:6338 [inline]
+  netif_receive_skb+0x57/0x630 net/core/dev.c:6397
+  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
+  tun_get_user+0x5c0e/0x6c60 drivers/net/tun.c:1953
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
+  __se_sys_write fs/read_write.c:746 [inline]
+  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:4960 [inline]
+  slab_alloc_node mm/slub.c:5263 [inline]
+  kmem_cache_alloc_node_noprof+0x9e7/0x17a0 mm/slub.c:5315
+  kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:586
+  __alloc_skb+0x805/0x1040 net/core/skbuff.c:690
+  alloc_skb include/linux/skbuff.h:1383 [inline]
+  alloc_skb_with_frags+0xc5/0xa60 net/core/skbuff.c:6712
+  sock_alloc_send_pskb+0xacc/0xc60 net/core/sock.c:2995
+  tun_alloc_skb drivers/net/tun.c:1461 [inline]
+  tun_get_user+0x1142/0x6c60 drivers/net/tun.c:1794
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
+  __se_sys_write fs/read_write.c:746 [inline]
+  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 0 UID: 0 PID: 6465 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(none)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+
+Fixes: 8d975c15c0cd ("ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()")
+Reported-by: syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/695e88b2.050a0220.1c677c.036d.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260107163109.4188620-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/i3200_edac.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/ipv6/ip6_tunnel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/edac/i3200_edac.c
-+++ b/drivers/edac/i3200_edac.c
-@@ -358,10 +358,11 @@ static int i3200_probe1(struct pci_dev *
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = nr_channels;
- 	layers[1].is_virt_csrow = false;
--	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers,
--			    sizeof(struct i3200_priv));
-+
-+	rc = -ENOMEM;
-+	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, sizeof(struct i3200_priv));
- 	if (!mci)
--		return -ENOMEM;
-+		goto unmap;
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 6efad8d6653b6..855622a6a304f 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -876,7 +876,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
  
- 	edac_dbg(3, "MC: init mci\n");
+ 	skb_reset_network_header(skb);
  
-@@ -421,9 +422,9 @@ static int i3200_probe1(struct pci_dev *
- 	return 0;
- 
- fail:
-+	edac_mc_free(mci);
-+unmap:
- 	iounmap(window);
--	if (mci)
--		edac_mc_free(mci);
- 
- 	return rc;
- }
+-	if (!pskb_inet_may_pull(skb)) {
++	if (skb_vlan_inet_prepare(skb, true)) {
+ 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+ 		DEV_STATS_INC(tunnel->dev, rx_errors);
+ 		goto drop;
+-- 
+2.51.0
+
 
 
 
