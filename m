@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEGOBYVeg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:13 +0100
+	id 2GAZDWxng2kFmgMAu9opvQ
+	(envelope-from <stable+bounces-213849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7926BE7A94
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:58:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100CAE8F13
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3092230779A1
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:53:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9F31C304BDAB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C42141B367;
-	Wed,  4 Feb 2026 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA61428495;
+	Wed,  4 Feb 2026 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UISTYtxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOQQ+GfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39D4223323;
-	Wed,  4 Feb 2026 14:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E1042848B;
+	Wed,  4 Feb 2026 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216823; cv=none; b=iPhOZK3CVyLneHBBLXDMhyjD67S6XfhITlm4/M4zkAl4PhfvH3OvQ3gl5vTIMH0JMRf6V38PZwoDupBJEGFUo/ybKd6k/vL63ktMjrkT1rVDQTjT+daCoHNR+6GXJNxnS9RjS+m11aH2KNtNxJO4rOTPNYakPi6TxYDdsAcuO10=
+	t=1770217719; cv=none; b=W64FIJu6Xr9VeNn8wgwVrHZtovfYy2jP3HQc0ZkexfnwoTTtxQO9E34azisCzcptx95lu9yrKHYlEnsjReRKLV2nZRb4zus/ZquGHv74/mK24yQubxYwzzN61Wdv7dJILkk6R8tfzJezeEaTnNQsHKihZmL7xkARLpoC0GkmoC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216823; c=relaxed/simple;
-	bh=RaWDu2BHUtigv1V6wdi5qocO/zwieVbCTiglU0ZSG1M=;
+	s=arc-20240116; t=1770217719; c=relaxed/simple;
+	bh=YFEGzJgDftCYam0rj0wDKyhEtuBhS5VJLdkm75ktqN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BD5gaT8n/PM6MuL6lUnYlfGVaFrpT7fz+nriFfOzU/qfAXUsyB3zSs+7WBwp0QZ8t191Ulc1kD00A2/oGdgP0ZwccSgqpyBsz6msW/dpwsoonUpi0T+4IZm0Fn5J3uZesr03e2PZNuISop440DFf2RyVLfykqFstWYwz4rYcoGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UISTYtxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6186EC4CEF7;
-	Wed,  4 Feb 2026 14:53:42 +0000 (UTC)
+	 MIME-Version; b=ZOudht1oBzs+d+AS0AJgvcoXOJKxZbdYqTr13oZrhttcYZsc1Sqpy9Wa5D64QgDugSIflkmTwMJc5bdXeBKz5fEFbaLcJOPnHTclFeo93jI0qboPPrDS0F98z5MowI37Yu+i1YynUHDV8TlTyvJmCwnw6pv6s4KHr/vKkgHsS3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOQQ+GfK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0DFC4CEF7;
+	Wed,  4 Feb 2026 15:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216822;
-	bh=RaWDu2BHUtigv1V6wdi5qocO/zwieVbCTiglU0ZSG1M=;
+	s=korg; t=1770217718;
+	bh=YFEGzJgDftCYam0rj0wDKyhEtuBhS5VJLdkm75ktqN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UISTYtxrICM9npqB1pKasL7t2K7VLXvX7/53nmHYKUPuMEDg3fLI/Jv2NbTdHLlUV
-	 SXV0M2mztd2RQ5+6MslE2BJHeRVb3Zjk8so3XvUXkb0e33wu5jd18V7I9cGbF5IJnF
-	 6xDIUAS1/QiepCy1eduvxW82Nk/iYwq4Jdc1cRbw=
+	b=VOQQ+GfKVXDTzl7/1yZ/fFUVMQUDlgw4Vo3dk51Gzj6fw8h+2fAWmZyd4TZrjRh9X
+	 tEVaEZHVijVKxUkmMJEQfPyjGuq1nAMX/E3aenc8A7A3CYLdfqieU702drdbKV/nNZ
+	 1zRNc1F8Acadj3mvm85Fvb3vIntjPIlFWtf9tdzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kent.russell@amd.com,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 041/206] drm/amd: Clean up kfd node on surprise disconnect
-Date: Wed,  4 Feb 2026 15:37:52 +0100
-Message-ID: <20260204143859.691255047@linuxfoundation.org>
+	David Ahern <dsahern@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 099/280] selftests/net: convert fib-onlink-tests.sh to run it in unique namespace
+Date: Wed,  4 Feb 2026 15:37:53 +0100
+Message-ID: <20260204143913.214491091@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +70,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-213849-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213584-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7926BE7A94
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 100CAE8F13
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 28695ca09d326461f8078332aa01db516983e8a2 upstream.
+[ Upstream commit 3a06833b2adc0a902f2469ad4ce41ccd64f1f3ab ]
 
-When an eGPU is unplugged the KFD topology should also be destroyed
-for that GPU. This never happens because the fini_sw callbacks never
-get to run. Run them manually before calling amdgpu_device_ip_fini_early()
-when a device has already been disconnected.
+Remove PEER_CMD, which is not used in this test
 
-This location is intentionally chosen to make sure that the kfd locking
-refcount doesn't get incremented unintentionally.
+Here is the test result after conversion.
 
-Cc: kent.russell@amd.com
-Closes: https://community.frame.work/t/amd-egpu-on-linux/8691/33
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6a23e7b4332c10f8b56c33a9c5431b52ecff9aab)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ ]# ./fib-onlink-tests.sh
+ Error: ipv4: FIB table does not exist.
+ Flush terminated
+ Error: ipv6: FIB table does not exist.
+ Flush terminated
+
+ ########################################
+ Configuring interfaces
+
+   ...
+
+     TEST: Gateway resolves to wrong nexthop device - VRF      [ OK ]
+
+ Tests passed:  38
+ Tests failed:   0
+
+Acked-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231213060856.4030084-11-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4f5f148dd7c0 ("selftests: net: fib-onlink-tests: Convert to use namespaces by default")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/net/fib-onlink-tests.sh | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3999,6 +3999,14 @@ void amdgpu_device_fini_hw(struct amdgpu
+diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+index c287b90b8af80..ec2d6ceb1f08d 100755
+--- a/tools/testing/selftests/net/fib-onlink-tests.sh
++++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+@@ -3,6 +3,7 @@
  
- 	amdgpu_irq_fini_hw(adev);
+ # IPv4 and IPv6 onlink tests
  
-+	/*
-+	 * device went through surprise hotplug; we need to destroy topology
-+	 * before ip_fini_early to prevent kfd locking refcount issues by calling
-+	 * amdgpu_amdkfd_suspend()
-+	 */
-+	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+		amdgpu_amdkfd_device_fini_sw(adev);
-+
- 	amdgpu_device_ip_fini_early(adev);
++source lib.sh
+ PAUSE_ON_FAIL=${PAUSE_ON_FAIL:=no}
+ VERBOSE=0
  
- 	amdgpu_gart_dummy_page_fini(adev);
+@@ -74,9 +75,6 @@ TEST_NET4IN6[2]=10.2.1.254
+ # mcast address
+ MCAST6=ff02::1
+ 
+-
+-PEER_NS=bart
+-PEER_CMD="ip netns exec ${PEER_NS}"
+ VRF=lisa
+ VRF_TABLE=1101
+ PBR_TABLE=101
+@@ -176,8 +174,7 @@ setup()
+ 	set -e
+ 
+ 	# create namespace
+-	ip netns add ${PEER_NS}
+-	ip -netns ${PEER_NS} li set lo up
++	setup_ns PEER_NS
+ 
+ 	# add vrf table
+ 	ip li add ${VRF} type vrf table ${VRF_TABLE}
+@@ -219,7 +216,7 @@ setup()
+ cleanup()
+ {
+ 	# make sure we start from a clean slate
+-	ip netns del ${PEER_NS} 2>/dev/null
++	cleanup_ns ${PEER_NS} 2>/dev/null
+ 	for n in 1 3 5 7; do
+ 		ip link del ${NETIFS[p${n}]} 2>/dev/null
+ 	done
+-- 
+2.51.0
+
 
 
 
