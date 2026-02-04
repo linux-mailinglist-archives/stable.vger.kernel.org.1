@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-213849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GAZDWxng2kFmgMAu9opvQ
-	(envelope-from <stable+bounces-213849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:12 +0100
+	id ANN5IfNag2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:42:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100CAE8F13
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:36:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD4EE73EB
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9F31C304BDAB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:14:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7699A3005AB2
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA61428495;
-	Wed,  4 Feb 2026 15:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A9A40758D;
+	Wed,  4 Feb 2026 14:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOQQ+GfK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+atKEB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E1042848B;
-	Wed,  4 Feb 2026 15:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD1E1EA84;
+	Wed,  4 Feb 2026 14:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217719; cv=none; b=W64FIJu6Xr9VeNn8wgwVrHZtovfYy2jP3HQc0ZkexfnwoTTtxQO9E34azisCzcptx95lu9yrKHYlEnsjReRKLV2nZRb4zus/ZquGHv74/mK24yQubxYwzzN61Wdv7dJILkk6R8tfzJezeEaTnNQsHKihZmL7xkARLpoC0GkmoC4=
+	t=1770216176; cv=none; b=eL2SHz/u4Gzt8U8ZUDpne/qx1orU7KO/GQKBGbKTwfpJo7+EoOdEdWD9e4zs8f6upacj01mxBzvq99NlTwKgw2KKX7rqCJNrjQfmAsHLdqSEcdcRCLjL7qzjr3vI/AyHclvKTMcT9K5shtE9cngugHEJeC4X8jQs66Lb2yGAciQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217719; c=relaxed/simple;
-	bh=YFEGzJgDftCYam0rj0wDKyhEtuBhS5VJLdkm75ktqN8=;
+	s=arc-20240116; t=1770216176; c=relaxed/simple;
+	bh=WWh7jnSn1CcGzugELi/uCyBBWUM3no3SFjh27V8Htyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZOudht1oBzs+d+AS0AJgvcoXOJKxZbdYqTr13oZrhttcYZsc1Sqpy9Wa5D64QgDugSIflkmTwMJc5bdXeBKz5fEFbaLcJOPnHTclFeo93jI0qboPPrDS0F98z5MowI37Yu+i1YynUHDV8TlTyvJmCwnw6pv6s4KHr/vKkgHsS3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOQQ+GfK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0DFC4CEF7;
-	Wed,  4 Feb 2026 15:08:38 +0000 (UTC)
+	 MIME-Version; b=OYzc47unCjcBXMZrUMupAS26e/gwWwyvu255mGL8moD6H+yF8gzxeJ0CvODb31T3FIpkRAlvqrkEKhkbM3Fi/R8dPDCfKOu8Tel3MhRN7FFyNMVVyqiCi+ahc7AzMnvLKN4xnjbTxSIeoldv45r3OA18n+Zi6NQu0KGRweuSqfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+atKEB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EBCC4CEF7;
+	Wed,  4 Feb 2026 14:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217718;
-	bh=YFEGzJgDftCYam0rj0wDKyhEtuBhS5VJLdkm75ktqN8=;
+	s=korg; t=1770216175;
+	bh=WWh7jnSn1CcGzugELi/uCyBBWUM3no3SFjh27V8Htyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOQQ+GfKVXDTzl7/1yZ/fFUVMQUDlgw4Vo3dk51Gzj6fw8h+2fAWmZyd4TZrjRh9X
-	 tEVaEZHVijVKxUkmMJEQfPyjGuq1nAMX/E3aenc8A7A3CYLdfqieU702drdbKV/nNZ
-	 1zRNc1F8Acadj3mvm85Fvb3vIntjPIlFWtf9tdzU=
+	b=r+atKEB9g2f8eIJWewMHea0wrgVOouVVNy5rO2IJ7pGfxFY6An6yqiOmUpzviJBhl
+	 AcKz2jMbjW8K64sr9IEem6gr62gfbAggdsVcelwE2VugvMKYEfk4uvUxPFM08/i7dk
+	 QBSTQ0WP8DXu4OrRngfzJJgRX5zh2DNsZnimpNeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/280] selftests/net: convert fib-onlink-tests.sh to run it in unique namespace
+Subject: [PATCH 5.10 010/161] vsock/test: add a final full barrier after run all tests
 Date: Wed,  4 Feb 2026 15:37:53 +0100
-Message-ID: <20260204143913.214491091@linuxfoundation.org>
+Message-ID: <20260204143852.134524769@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,112 +70,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-213849-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213389-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 100CAE8F13
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1FD4EE73EB
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 3a06833b2adc0a902f2469ad4ce41ccd64f1f3ab ]
+[ Upstream commit c39a6a277e0e67ffff6a8efcbbf7e7e23ce9e38c ]
 
-Remove PEER_CMD, which is not used in this test
+If the last test fails, the other side still completes correctly,
+which could lead to false positives.
 
-Here is the test result after conversion.
+Let's add a final barrier that ensures that the last test has finished
+correctly on both sides, but also that the two sides agree on the
+number of tests to be performed.
 
- ]# ./fib-onlink-tests.sh
- Error: ipv4: FIB table does not exist.
- Flush terminated
- Error: ipv6: FIB table does not exist.
- Flush terminated
-
- ########################################
- Configuring interfaces
-
-   ...
-
-     TEST: Gateway resolves to wrong nexthop device - VRF      [ OK ]
-
- Tests passed:  38
- Tests failed:   0
-
-Acked-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231213060856.4030084-11-liuhangbin@gmail.com
+Fixes: 2f65b44e199c ("VSOCK: add full barrier between test cases")
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260108114419.52747-1-sgarzare@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 4f5f148dd7c0 ("selftests: net: fib-onlink-tests: Convert to use namespaces by default")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fib-onlink-tests.sh | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ tools/testing/vsock/util.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
-index c287b90b8af80..ec2d6ceb1f08d 100755
---- a/tools/testing/selftests/net/fib-onlink-tests.sh
-+++ b/tools/testing/selftests/net/fib-onlink-tests.sh
-@@ -3,6 +3,7 @@
+diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+index 93cbd6f603f97..356acac85d862 100644
+--- a/tools/testing/vsock/util.c
++++ b/tools/testing/vsock/util.c
+@@ -338,6 +338,18 @@ void run_tests(const struct test_case *test_cases,
  
- # IPv4 and IPv6 onlink tests
+ 		printf("ok\n");
+ 	}
++
++	printf("All tests have been executed. Waiting other peer...");
++	fflush(stdout);
++
++	/*
++	 * Final full barrier, to ensure that all tests have been run and
++	 * that even the last one has been successful on both sides.
++	 */
++	control_writeln("COMPLETED");
++	control_expectln("COMPLETED");
++
++	printf("ok\n");
+ }
  
-+source lib.sh
- PAUSE_ON_FAIL=${PAUSE_ON_FAIL:=no}
- VERBOSE=0
- 
-@@ -74,9 +75,6 @@ TEST_NET4IN6[2]=10.2.1.254
- # mcast address
- MCAST6=ff02::1
- 
--
--PEER_NS=bart
--PEER_CMD="ip netns exec ${PEER_NS}"
- VRF=lisa
- VRF_TABLE=1101
- PBR_TABLE=101
-@@ -176,8 +174,7 @@ setup()
- 	set -e
- 
- 	# create namespace
--	ip netns add ${PEER_NS}
--	ip -netns ${PEER_NS} li set lo up
-+	setup_ns PEER_NS
- 
- 	# add vrf table
- 	ip li add ${VRF} type vrf table ${VRF_TABLE}
-@@ -219,7 +216,7 @@ setup()
- cleanup()
- {
- 	# make sure we start from a clean slate
--	ip netns del ${PEER_NS} 2>/dev/null
-+	cleanup_ns ${PEER_NS} 2>/dev/null
- 	for n in 1 3 5 7; do
- 		ip link del ${NETIFS[p${n}]} 2>/dev/null
- 	done
+ void list_tests(const struct test_case *test_cases)
 -- 
 2.51.0
 
