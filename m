@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-213744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLVVM21gg2mfmAMAu9opvQ
-	(envelope-from <stable+bounces-213744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:21 +0100
+	id EJmHEJJog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DA7E7E6A
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:06:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F9FE9215
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DEC4302E7CB
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:02:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8542B3060509
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384D12BD02A;
-	Wed,  4 Feb 2026 15:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3B22DCF61;
+	Wed,  4 Feb 2026 15:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMjp3euW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXbz0g/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B7F28853E;
-	Wed,  4 Feb 2026 15:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B137C22E3F0;
+	Wed,  4 Feb 2026 15:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217360; cv=none; b=KPNVa1nUTbrT4M4NJdqM9mjvS/wCrBSAcmGD/65yknUCj/oOa0AU0B7sCCz6pnkUemq0UnjJrgW2kes1mvoFK17uOZweTnDFvGUsmvYIm8pdYBZwLw7s82hA4rJA2UDgaPlIArAsJo72wR4aB8S6WNRGOucYLbryQD4obmXDQZY=
+	t=1770218251; cv=none; b=u6AvbgF2P9XoCCLU8DUMrWit8QGd2BcCa8opezUxQgevD5xD8gxSeJbPZUgb7dNlz36oIgbWrlQ7nS4jzaiHU9iBfUpp/XkaZRTfhjccI7RXPk/HDAWMTrGlGrXKXn4gKeRaL6GWJOcALPJiZRHHxaSkv7iX6cZ38APrHyrB2Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217360; c=relaxed/simple;
-	bh=KXrrdqLHf2w3gui6a6OP9RndNRjyav3YMWNapFMBU6U=;
+	s=arc-20240116; t=1770218251; c=relaxed/simple;
+	bh=chFRESFH5kfA+VJwIGMwNdh6G8RM4zcp159MemJAkYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCHh4cgfvMi1zp8uhiC/vYV2CxDLQ87FZaISqzqAx/COWznO/G0ry/Ro2xiLIDrhIY0dytbdONk5yYRXcUN+KQI+BcV/Z5D8MlQmdssaueuzwmu6koW2fgTdffdNAeEdN6yn4gs5rY0UgqOCKM6FYPe3IOGgC2DiCoB6LiH2+x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMjp3euW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71BCFC4CEF7;
-	Wed,  4 Feb 2026 15:02:39 +0000 (UTC)
+	 MIME-Version; b=e4aTCBgLe8xoEPGE/ksuoZk7Gcq7h6Fh6l1NixGc3zlH4cCj1CoCr1rbBGUM+pEOggSGdm2wcvJckS9+0L3ywt5rZ0Afeh22rmUl/Q4hGoFWjNEzQvJweaAtfJ1XV4B61Ke57mzyskYH6ufkFwxJuxxP7zlHeat/KodKbd94XGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXbz0g/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C222AC4CEF7;
+	Wed,  4 Feb 2026 15:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217359;
-	bh=KXrrdqLHf2w3gui6a6OP9RndNRjyav3YMWNapFMBU6U=;
+	s=korg; t=1770218251;
+	bh=chFRESFH5kfA+VJwIGMwNdh6G8RM4zcp159MemJAkYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMjp3euWTdIkgknju7ndg+OiBcLGTJWhFffPu7RTSoVTJv6WfJ+Rnpdi24AQPwaSk
-	 Yw6oYTnhO7yJypjufIIyz47Eah5/R6KpU4h7UWAwRVwhB/4D6z2uT86cBsSeXCNbYg
-	 wGzl1byax4xtTNbEtNxo5H1TcZoPelV7x1Ab+pR8=
+	b=tXbz0g/waMZqy6Q3h+O+97WAUInP9XunnJil1KPPWuin65d7MPSVCpqcBIYft0CAR
+	 QlWahPBf0xC/EZswGH6kneb4RPu8HdcJt00KUTGZhza7rBhtLYvd9KdW+aIVAMEjNJ
+	 txT971A4qgqREkGqT+B23UlVW/OqwIR9rUyvwcAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Angaroni <marco.angaroni@italtel.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/206] mptcp: avoid dup SUB_CLOSED events after disconnect
+	"Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, hughd@google.com, jannh@google.com, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, pfalcato@suse.de, vbabka@suse.cz, Harry Yoo" <harry.yoo@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>
+Subject: [PATCH 6.1 256/280] Revert "mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()"
 Date: Wed,  4 Feb 2026 15:40:30 +0100
-Message-ID: <20260204143905.395067641@linuxfoundation.org>
+Message-ID: <20260204143918.906487854@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +68,220 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213744-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214008-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74DA7E7E6A
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 50F9FE9215
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit 280d654324e33f8e6e3641f76764694c7b64c5db ]
+This reverts commit 91750c8a4be42d73b6810a1c35d73c8a3cd0b481 which is
+commit 670ddd8cdcbd1d07a4571266ae3517f821728c3a upstream.
 
-In case of subflow disconnect(), which can also happen with the first
-subflow in case of errors like timeout or reset, mptcp_subflow_ctx_reset
-will reset most fields from the mptcp_subflow_context structure,
-including close_event_done. Then, when another subflow is closed, yet
-another SUB_CLOSED event for the disconnected initial subflow is sent.
-Because of the previous reset, there are no source address and
-destination port.
+While the commit fixes a race condition between NUMA balancing and THP
+migration, it causes a NULL-pointer-deref when the pmd temporarily
+transitions from pmd_trans_huge() to pmd_none(). Verifying whether the
+pmd value has changed under page table lock does not prevent the crash,
+as it occurs when acquiring the lock.
 
-A solution is then to also check the subflow's local id: it shouldn't be
-negative anyway.
+Since the original issue addressed by the commit is quite rare and
+non-fatal, revert the commit. A better backport solution that more
+closely matches the upstream semantics will be provided as a follow-up.
 
-Another solution would be not to reset subflow->close_event_done at
-disconnect time, but when reused. But then, probably the whole reset
-could be done when being reused. Let's not change this logic, similar
-to TCP with tcp_disconnect().
-
-Fixes: d82809b6c5f2 ("mptcp: avoid duplicated SUB_CLOSED events")
-Cc: stable@vger.kernel.org
-Reported-by: Marco Angaroni <marco.angaroni@italtel.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/603
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-1-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/mprotect.c |  101 +++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 58 insertions(+), 43 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2398,8 +2398,8 @@ static void __mptcp_close_ssk(struct soc
- void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- 		     struct mptcp_subflow_context *subflow)
- {
--	/* The first subflow can already be closed and still in the list */
--	if (subflow->close_event_done)
-+	/* The first subflow can already be closed or disconnected */
-+	if (subflow->close_event_done || READ_ONCE(subflow->local_id) < 0)
- 		return;
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -73,12 +73,10 @@ static inline bool can_change_pte_writab
+ }
  
- 	subflow->close_event_done = true;
+ static long change_pte_range(struct mmu_gather *tlb,
+-		struct vm_area_struct *vma, pmd_t *pmd, pmd_t pmd_old,
+-		unsigned long addr, unsigned long end, pgprot_t newprot,
+-		unsigned long cp_flags)
++		struct vm_area_struct *vma, pmd_t *pmd, unsigned long addr,
++		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
+ {
+ 	pte_t *pte, oldpte;
+-	pmd_t _pmd;
+ 	spinlock_t *ptl;
+ 	long pages = 0;
+ 	int target_node = NUMA_NO_NODE;
+@@ -88,15 +86,21 @@ static long change_pte_range(struct mmu_
+ 
+ 	tlb_change_page_size(tlb, PAGE_SIZE);
+ 
++	/*
++	 * Can be called with only the mmap_lock for reading by
++	 * prot_numa so we must check the pmd isn't constantly
++	 * changing from under us from pmd_none to pmd_trans_huge
++	 * and/or the other way around.
++	 */
++	if (pmd_trans_unstable(pmd))
++		return 0;
++
++	/*
++	 * The pmd points to a regular pte so the pmd can't change
++	 * from under us even if the mmap_lock is only hold for
++	 * reading.
++	 */
+ 	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
+-	/* Make sure pmd didn't change after acquiring ptl */
+-	_pmd = pmd_read_atomic(pmd);
+-	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
+-	barrier();
+-	if (!pmd_same(pmd_old, _pmd)) {
+-		pte_unmap_unlock(pte, ptl);
+-		return -EAGAIN;
+-	}
+ 
+ 	/* Get target node for single threaded private VMAs */
+ 	if (prot_numa && !(vma->vm_flags & VM_SHARED) &&
+@@ -284,6 +288,31 @@ static long change_pte_range(struct mmu_
+ 	return pages;
+ }
+ 
++/*
++ * Used when setting automatic NUMA hinting protection where it is
++ * critical that a numa hinting PMD is not confused with a bad PMD.
++ */
++static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
++{
++	pmd_t pmdval = pmd_read_atomic(pmd);
++
++	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	barrier();
++#endif
++
++	if (pmd_none(pmdval))
++		return 1;
++	if (pmd_trans_huge(pmdval))
++		return 0;
++	if (unlikely(pmd_bad(pmdval))) {
++		pmd_clear_bad(pmd);
++		return 1;
++	}
++
++	return 0;
++}
++
+ /* Return true if we're uffd wr-protecting file-backed memory, or false */
+ static inline bool
+ uffd_wp_protect_file(struct vm_area_struct *vma, unsigned long cp_flags)
+@@ -331,34 +360,22 @@ static inline long change_pmd_range(stru
+ 
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+-		long ret;
+-		pmd_t _pmd;
+-again:
++		long this_pages;
++
+ 		next = pmd_addr_end(addr, end);
+-		_pmd = pmd_read_atomic(pmd);
+-		/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-		barrier();
+-#endif
+ 
+ 		change_pmd_prepare(vma, pmd, cp_flags);
+ 		/*
+ 		 * Automatic NUMA balancing walks the tables with mmap_lock
+ 		 * held for read. It's possible a parallel update to occur
+-		 * between pmd_trans_huge(), is_swap_pmd(), and
+-		 * a pmd_none_or_clear_bad() check leading to a false positive
+-		 * and clearing. Hence, it's necessary to atomically read
+-		 * the PMD value for all the checks.
++		 * between pmd_trans_huge() and a pmd_none_or_clear_bad()
++		 * check leading to a false positive and clearing.
++		 * Hence, it's necessary to atomically read the PMD value
++		 * for all the checks.
+ 		 */
+-		if (!is_swap_pmd(_pmd) && !pmd_devmap(_pmd) && !pmd_trans_huge(_pmd)) {
+-			if (pmd_none(_pmd))
+-				goto next;
+-
+-			if (pmd_bad(_pmd)) {
+-				pmd_clear_bad(pmd);
+-				goto next;
+-			}
+-		}
++		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
++		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
++			goto next;
+ 
+ 		/* invoke the mmu notifier if the pmd is populated */
+ 		if (!range.start) {
+@@ -368,7 +385,7 @@ again:
+ 			mmu_notifier_invalidate_range_start(&range);
+ 		}
+ 
+-		if (is_swap_pmd(_pmd) || pmd_trans_huge(_pmd) || pmd_devmap(_pmd)) {
++		if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
+ 			if ((next - addr != HPAGE_PMD_SIZE) ||
+ 			    uffd_wp_protect_file(vma, cp_flags)) {
+ 				__split_huge_pmd(vma, pmd, addr, false, NULL);
+@@ -383,11 +400,11 @@ again:
+ 				 * change_huge_pmd() does not defer TLB flushes,
+ 				 * so no need to propagate the tlb argument.
+ 				 */
+-				ret = change_huge_pmd(tlb, vma, pmd,
+-						      addr, newprot, cp_flags);
++				int nr_ptes = change_huge_pmd(tlb, vma, pmd,
++						addr, newprot, cp_flags);
+ 
+-				if (ret) {
+-					if (ret == HPAGE_PMD_NR) {
++				if (nr_ptes) {
++					if (nr_ptes == HPAGE_PMD_NR) {
+ 						pages += HPAGE_PMD_NR;
+ 						nr_huge_updates++;
+ 					}
+@@ -398,11 +415,9 @@ again:
+ 			}
+ 			/* fall through, the trans huge pmd just split */
+ 		}
+-		ret = change_pte_range(tlb, vma, pmd, _pmd, addr, next,
+-				       newprot, cp_flags);
+-		if (ret < 0)
+-			goto again;
+-		pages += ret;
++		this_pages = change_pte_range(tlb, vma, pmd, addr, next,
++					      newprot, cp_flags);
++		pages += this_pages;
+ next:
+ 		cond_resched();
+ 	} while (pmd++, addr = next, addr != end);
 
 
 
