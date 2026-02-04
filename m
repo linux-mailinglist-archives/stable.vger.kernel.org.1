@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-214171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHmdMn9qg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:19 +0100
+	id qOlBIvFog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C51E96A5
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F5CE92F7
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:42:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43B62301CB33
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A0EB306F01F
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDECD4218BD;
-	Wed,  4 Feb 2026 15:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601852D8773;
+	Wed,  4 Feb 2026 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaBPR1NF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzAdenEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B224541B34E;
-	Wed,  4 Feb 2026 15:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244BB2D0292;
+	Wed,  4 Feb 2026 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218801; cv=none; b=HMDQ720xIEUThYDOAAu8gfFbcC730UlIP7ehNnx07HM2V54+PckMnIcGGjBDjLwQnXN4iUQvHLXlYHRXW+3mnTMy5E4/HOlYWx+XFUefmGtX4nSiyKOBmTRNR+A2AWDUeK03O9ikUlFONl6/yu6YX1Ztm3InQTeJhR1KdD6nifY=
+	t=1770219154; cv=none; b=DioavmJNKy/mqcfnpiYsdPrWZJjBmnrhb9Ma2nUXSAna8zXqmXiVv01yKuP+5Nufv9HRv8nrzQv+noYb5uDxxctMNz76sk7SnyX+0EWGcCWNZbdxXfvnILqaY6LwldtijVw8YW5JwEVPVRa7vn5MJNWDt4jWI6zVXKLbdOyOrtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218801; c=relaxed/simple;
-	bh=kSKJiO9svrg/HDpYMg5XNtQvCyV0Ld2qH6ShONhGK1E=;
+	s=arc-20240116; t=1770219154; c=relaxed/simple;
+	bh=HMHkvgs6QEmAUNg6Lzl9T2RNrDp7NQlAgDenj/14Ce4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zr4WNTKIXnEKFavGjqFcYvMZ8stZvSdh7MQLcu2taCcSTC+zpOqE4WjdFRhKjGYR8r41gQ5HQyIvOMagqhNHnodUYcVhRA6AQD8pasxndo0kdw5Bh3PLr16P7eyfEcG1e+TTaeunqRCdd3w/VJwJfkltZPdJ7plWbegp7w2OPo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaBPR1NF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A71BC4CEF7;
-	Wed,  4 Feb 2026 15:26:40 +0000 (UTC)
+	 MIME-Version; b=CRaDI8dtS1FAfMazh+P77+ZgViqmtHH2fzyauWlC+PwKpSHQT9b4flTvLiPp0c4Qq7uQEg+KObxeQukCFFkR8ULtcCwvcRPnEqND9rB4InjppRA5zdRCUHM+eJWBeac1uqjte+8bWbYtlSKR5xQNX7Kq/vET1tQo7mi9Mcj1H94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzAdenEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8F7C4CEF7;
+	Wed,  4 Feb 2026 15:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218801;
-	bh=kSKJiO9svrg/HDpYMg5XNtQvCyV0Ld2qH6ShONhGK1E=;
+	s=korg; t=1770219154;
+	bh=HMHkvgs6QEmAUNg6Lzl9T2RNrDp7NQlAgDenj/14Ce4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaBPR1NFkEnHN5hOZ4GC1c7OApBkK04WxYSIgN8JaoDUsDJqJj8LcJVt26rgxqtaW
-	 CFn41RtQY7t+C8WBKAjNexzR7v3/wTuBGsmHIZcjQApP6pGDnwhWEUXckFYUco3+dA
-	 GmJatZonNoYfoY3AIq5BW81PSvQXJG8XcFI/9x3I=
+	b=uzAdenEMMI44UDl7FznRJGE4Z1fZmvLGlVJ4yI9QCV9Z6hfQEzM+2MYIuiT5TMXx+
+	 4/a4W/P1b1sRzqijReYD5Oi7R9m3dB4OLEnvkSlXkTMg4fnVrqts8iB+eiAfGSOUix
+	 imsviT49SrSBkZyeP5UgYhX1B9UUsLVW1IwKCJQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 66/87] drm/amdgpu: Fix cond_exec handling in amdgpu_ib_schedule()
-Date: Wed,  4 Feb 2026 15:41:04 +0100
-Message-ID: <20260204143849.293416525@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Bernd Schubert <bernd@bsbernd.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 083/122] flex_proportions: make fprop_new_period() hardirq safe
+Date: Wed,  4 Feb 2026 15:41:05 +0100
+Message-ID: <20260204143854.838266553@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
-References: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +72,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bsbernd.com,infradead.org,gmail.com,szeredi.hu,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-214278-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214171-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 21C51E96A5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,infradead.org:email,bsbernd.com:email,linux-foundation.org:email,szeredi.hu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D4F5CE92F7
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jan Kara <jack@suse.cz>
 
-commit b1defcdc4457649db236415ee618a7151e28788c upstream.
+commit dd9e2f5b38f1fdd49b1ab6d3a85f81c14369eacc upstream.
 
-The EXEC_COUNT field must be > 0.  In the gfx shadow
-handling we always emit a cond_exec packet after the gfx_shadow
-packet, but the EXEC_COUNT never gets patched.  This leads
-to a hang when we try and reset queues on gfx11 APUs.
+Bernd has reported a lockdep splat from flexible proportions code that is
+essentially complaining about the following race:
 
-Fixes: c68cbbfd54c6 ("drm/amdgpu: cleanup conditional execution")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4789
-Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ba205ac3d6e83f56c4f824f23f1b4522cb844ff3)
-Cc: stable@vger.kernel.org
+<timer fires>
+run_timer_softirq - we are in softirq context
+  call_timer_fn
+    writeout_period
+      fprop_new_period
+        write_seqcount_begin(&p->sequence);
+
+        <hardirq is raised>
+        ...
+        blk_mq_end_request()
+	  blk_update_request()
+	    ext4_end_bio()
+	      folio_end_writeback()
+		__wb_writeout_add()
+		  __fprop_add_percpu_max()
+		    if (unlikely(max_frac < FPROP_FRAC_BASE)) {
+		      fprop_fraction_percpu()
+			seq = read_seqcount_begin(&p->sequence);
+			  - sees odd sequence so loops indefinitely
+
+Note that a deadlock like this is only possible if the bdi has configured
+maximum fraction of writeout throughput which is very rare in general but
+frequent for example for FUSE bdis.  To fix this problem we have to make
+sure write section of the sequence counter is irqsafe.
+
+Link: https://lkml.kernel.org/r/20260121112729.24463-2-jack@suse.cz
+Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reported-by: Bernd Schubert <bernd@bsbernd.com>
+Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Joanne Koong <joannelkoong@gmail.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c |    5 +++--
+ lib/flex_proportions.c |    5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-@@ -223,7 +223,7 @@ int amdgpu_ib_schedule(struct amdgpu_rin
+--- a/lib/flex_proportions.c
++++ b/lib/flex_proportions.c
+@@ -64,13 +64,14 @@ void fprop_global_destroy(struct fprop_g
+ bool fprop_new_period(struct fprop_global *p, int periods)
+ {
+ 	s64 events = percpu_counter_sum(&p->events);
++	unsigned long flags;
  
- 	amdgpu_ring_ib_begin(ring);
+ 	/*
+ 	 * Don't do anything if there are no events.
+ 	 */
+ 	if (events <= 1)
+ 		return false;
+-	preempt_disable_nested();
++	local_irq_save(flags);
+ 	write_seqcount_begin(&p->sequence);
+ 	if (periods < 64)
+ 		events -= events >> periods;
+@@ -78,7 +79,7 @@ bool fprop_new_period(struct fprop_globa
+ 	percpu_counter_add(&p->events, -events);
+ 	p->period += periods;
+ 	write_seqcount_end(&p->sequence);
+-	preempt_enable_nested();
++	local_irq_restore(flags);
  
--	if (ring->funcs->emit_gfx_shadow)
-+	if (ring->funcs->emit_gfx_shadow && adev->gfx.cp_gfx_shadow)
- 		amdgpu_ring_emit_gfx_shadow(ring, shadow_va, csa_va, gds_va,
- 					    init_shadow, vmid);
- 
-@@ -279,7 +279,8 @@ int amdgpu_ib_schedule(struct amdgpu_rin
- 				       fence_flags | AMDGPU_FENCE_FLAG_64BIT);
- 	}
- 
--	if (ring->funcs->emit_gfx_shadow && ring->funcs->init_cond_exec) {
-+	if (ring->funcs->emit_gfx_shadow && ring->funcs->init_cond_exec &&
-+	    adev->gfx.cp_gfx_shadow) {
- 		amdgpu_ring_emit_gfx_shadow(ring, 0, 0, 0, false, 0);
- 		amdgpu_ring_init_cond_exec(ring, ring->cond_exe_gpu_addr);
- 	}
+ 	return true;
+ }
 
 
 
