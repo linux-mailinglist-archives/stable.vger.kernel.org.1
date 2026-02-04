@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-214215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPBpAYVog2kymgMAu9opvQ
-	(envelope-from <stable+bounces-214215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:53 +0100
+	id wFPiJ/dpg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55373E91F8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:40:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC85EE95B4
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E142F318E868
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:29:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 542C0313BCCB
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200BD2D8DA8;
-	Wed,  4 Feb 2026 15:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D099F423A8A;
+	Wed,  4 Feb 2026 15:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kx6izNyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWzcKsY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F82D5926;
-	Wed,  4 Feb 2026 15:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C5E2BE03C;
+	Wed,  4 Feb 2026 15:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218948; cv=none; b=ZLxq8GlygnMAFI+Qf6WrRu63HRsxLnLOrloYrWFRCtarVOhW3sI17/gLK51axkV97/ZygoeZfOZp0veUCMnRlxU8eiS80UvgUReTyiV6QCoxMpZ5MRtufXA+4NimZdtnEBFMfBxQRS5fGMKssbhu5DUpH3laeJUhH8mcVAES09k=
+	t=1770218098; cv=none; b=bAu1ztfdC6I6ORj/+PSpm8bFhI49/5/y0eJr+gZY4EdHdqJTTnl5DZ0ziwEVGilMnXmlJPAjKeTNUWEeBqsf/Q9cAOcd8eKwUoKisFkIyPYp2wpINFDtkczEACDH5tEHR30s5dBYPnGLlxbz91l2EZ1DmNOpdlv22e7rx/2XXZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218948; c=relaxed/simple;
-	bh=6/ChFsO9rdI7f98uaUQey9r7Nh0nL2AvqHjc1jLMxro=;
+	s=arc-20240116; t=1770218098; c=relaxed/simple;
+	bh=WLK4wQ4Tpz1a00GZZLipyOBUPgY2NSsrUWzhn1mQsOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwSuqaQW6zq9WX5NummnY/4i30SuDKy84uHqKNR2Lv+wSPDxoSNdEINo8sTHVqpnZXDPukEgN0QPS7tBkyXxexPjov1cJNm7QgdsWUK9Pe0CuAhwS5mZVU+u3gBCgdSmdNySCvyoctKpeho6RLLyzaeIs+wjHLad5kzzF0ymylk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kx6izNyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECCDC4CEF7;
-	Wed,  4 Feb 2026 15:29:07 +0000 (UTC)
+	 MIME-Version; b=qK1qE6/CF2wfp5Dy1n+Wt7CyPL0jt8RJaPRWy+TIp45XgdGu+JiPLcA5KSzndgW1x81iujwGNB5h7jM5NS+3qaWXtn4vGUyzTrQOEom6VqVOmpgKSf6+Q/A5VW9bvVuwE3HgXU3H4JazGdAR/BjlAzrp34GtiDQxdZz7sG/BJiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWzcKsY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2A2C4CEF7;
+	Wed,  4 Feb 2026 15:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218948;
-	bh=6/ChFsO9rdI7f98uaUQey9r7Nh0nL2AvqHjc1jLMxro=;
+	s=korg; t=1770218098;
+	bh=WLK4wQ4Tpz1a00GZZLipyOBUPgY2NSsrUWzhn1mQsOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kx6izNyLSBFgKAPuO8LDBvnEYozBiMM6jEr2avhtyK8JElUl3d2XDIPqPfs5ySY1T
-	 dwjM6tH+OqPtfu6zEOA4yc/mHU7c3LEihltAG46GUP2Pfs7yprCEpyidTsCJDe3mEt
-	 fOgmPMN6lr+raxyXPh01R0eWNnSfFDZIv2We/1ek=
+	b=UWzcKsY+zrADAlsaqAgxPweSxNbKrbpduEm7vNAvrz1HDrKPQ2XW8Me79OYiKIRcm
+	 y+dw93qMLReToZeM9fvofWfVByJlCsOO8PE9B+7HkLMsQSW/LUZTSCGQf5O5Dm7EPW
+	 XL/h178aktiDLoB/U4L0k3e4o+0E/xOa4R9oCrLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 003/122] can: at91_can: Fix memory leak in at91_can_probe()
-Date: Wed,  4 Feb 2026 15:39:45 +0100
-Message-ID: <20260204143851.986205653@linuxfoundation.org>
+	Kohei Enju <kohei@enjuk.jp>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 212/280] efivarfs: fix error propagation in efivar_entry_get()
+Date: Wed,  4 Feb 2026 15:39:46 +0100
+Message-ID: <20260204143917.238431314@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,66 +78,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214215-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213963-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email]
-X-Rspamd-Queue-Id: 55373E91F8
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: EC85EE95B4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 0baa4d3170d72a2a8dc93bf729d6d04ad113dc72 ]
+commit 4b22ec1685ce1fc0d862dcda3225d852fb107995 upstream.
 
-In at91_can_probe(), the dev structure is allocated via alloc_candev().
-However, if the subsequent call to devm_phy_optional_get() fails, the
-code jumps directly to exit_iounmap, missing the call to free_candev().
-This results in a memory leak of the allocated net_device structure.
+efivar_entry_get() always returns success even if the underlying
+__efivar_entry_get() fails, masking errors.
 
-Fix this by jumping to the exit_free label instead, which ensures that
-free_candev() is called to properly release the memory.
+This may result in uninitialized heap memory being copied to userspace
+in the efivarfs_file_read() path.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
+Fix it by returning the error from __efivar_entry_get().
 
-Fixes: 3ecc09856afb ("can: at91_can: add CAN transceiver support")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20260122114128.643752-1-zilin@seu.edu.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2d82e6227ea1 ("efi: vars: Move efivar caching layer into efivarfs")
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/at91_can.c | 2 +-
+ fs/efivarfs/vars.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/at91_can.c b/drivers/net/can/at91_can.c
-index 191707d7e3dac..d6dcb2be56342 100644
---- a/drivers/net/can/at91_can.c
-+++ b/drivers/net/can/at91_can.c
-@@ -1100,7 +1100,7 @@ static int at91_can_probe(struct platform_device *pdev)
- 	if (IS_ERR(transceiver)) {
- 		err = PTR_ERR(transceiver);
- 		dev_err_probe(&pdev->dev, err, "failed to get phy\n");
--		goto exit_iounmap;
-+		goto exit_free;
- 	}
+--- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -609,7 +609,7 @@ int efivar_entry_get(struct efivar_entry
+ 	err = __efivar_entry_get(entry, attributes, size, data);
+ 	efivar_unlock();
  
- 	dev->netdev_ops	= &at91_netdev_ops;
--- 
-2.51.0
-
+-	return 0;
++	return err;
+ }
+ 
+ /**
 
 
 
