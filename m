@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-213442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDDyICZcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:06 +0100
+	id CAS3NwRfg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04096E75F8
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A95FE7BAA
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED6383010167
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE9AB300DCF3
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783BE2773E5;
-	Wed,  4 Feb 2026 14:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66C2421F05;
+	Wed,  4 Feb 2026 14:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EO5O6dSY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH2ld16m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFFD1C5D77;
-	Wed,  4 Feb 2026 14:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A48141C2EB;
+	Wed,  4 Feb 2026 14:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216352; cv=none; b=X3Cshhk+Q/m2k13nrw6yaQuZX+fsHl+ZYL86Tgib3hVL+W2Zjjsski0COqPy0d4c16j2eqhS7YVAX5MMzgBd/wm2PLvJh1LrHJhDbNiz0SsMcrGg/Y5iROHoxSFoc3ordzOGJABFWlEvD4JyNK+7rjsJVEMs/QBEtvfswvvZz3w=
+	t=1770216998; cv=none; b=M5MgJv6M92cHkrU7VEOfxjg9tafY9AGfu8dLh3CXtgiFvAhNL2J2KDXb6rckFsH1MVAv7mlR629XBDsyAi3ORciu7l0+pPC608/66afcBkDD74ZDfUZwLWfc8c3yFxvEzRh27kEQjHc+cWgZQUUo4jWzcy+pILhKwR5NuRwv7M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216352; c=relaxed/simple;
-	bh=Qnr6/aQaIL6gxjR2B7P+vYmM0jYScfiyLaLtixsjOko=;
+	s=arc-20240116; t=1770216998; c=relaxed/simple;
+	bh=PljIYR1X3FB6++nxGXXP9g/9+B3LaIK5ZBjt9lKzlB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUwhZlX9qAv99YGuFeQugd/vlE5nlBrVYPbhXRZoc5vxoQndi9Hseqix7x0qqaVWFM2G/FDkbloMId8AFKnA9dD0CgWrGe9/NVR4QD8wklZk7T4W0s6q0J7MbTeoXbi4hKOVdBieAMikd9vS6Ego1lE3lazOlfPUn5g719tRzOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EO5O6dSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884BFC4CEF7;
-	Wed,  4 Feb 2026 14:45:51 +0000 (UTC)
+	 MIME-Version; b=OHb4mgoNKTRs/L5eH351jnaQiONnYbwfGEv50umzy0ixpnnATI9bKZvbfEtV9GWYNs34Fpk3hRAMCcNbBVufY0a5hY8/ngUErNGbE4l7T/UdAKabpcxqoDnNXrm9/A7p0Ke81JxbY7Foln8eyOlnwojOCLYTB/iFC3j9S/tBgG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH2ld16m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0126C4CEF7;
+	Wed,  4 Feb 2026 14:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216352;
-	bh=Qnr6/aQaIL6gxjR2B7P+vYmM0jYScfiyLaLtixsjOko=;
+	s=korg; t=1770216998;
+	bh=PljIYR1X3FB6++nxGXXP9g/9+B3LaIK5ZBjt9lKzlB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EO5O6dSYDbtTmGc3SGLFhOUO9OEw5zYwZtkrUcH+ZGBLIAjDbiaTD+5bivhf5c6Ba
-	 aN2pCpB/7b6amxH5aHDqPkbk5jlJEyPpA0O/EG3mPOW+HvmuDNiQJDJj4vTuwE8zO/
-	 Cg7Nio9DJbHd/a2rUjH6cPOA+KZJrSoLRKb7jz+k=
+	b=BH2ld16mG/1FNNtpju4DyTgYaBr+yGbsT3mhN/R6XurZA8zYLh99Fh49uKtAphhA3
+	 +27jb7ssvZ6gJzcX+2Z4JwOXM0AMHAK4KzMYWZCT4Ka4oUE3pAjDCoP7Q3sdChgMjl
+	 lLfRFialj+JJ5TcgHNGc8u8IcjcwXq9zsKUARKMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 028/161] USB: serial: ftdi_sio: add support for PICAXE AXE027 cable
+	Jakub Kicinski <kuba@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Maciek Machnikowski <maciek@machnikowski.net>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 060/206] testptp: Add support for testing ptp_clock_info .adjphase callback
 Date: Wed,  4 Feb 2026 15:38:11 +0100
-Message-ID: <20260204143852.774363816@linuxfoundation.org>
+Message-ID: <20260204143900.378030415@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
+References: <20260204143858.193781818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +71,121 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213442-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,machnikowski.net,nvidia.com,davemloft.net];
+	TAGGED_FROM(0.00)[bounces-213637-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,opendcc.de:url]
-X-Rspamd-Queue-Id: 04096E75F8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,davemloft.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9A95FE7BAA
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit c0afe95e62984ceea171c3ea319beaf84a21181c upstream.
+[ Upstream commit 3a9a9a6139286584d1199f555fa4f96f592a3217 ]
 
-The vendor provides instructions to write "0403 bd90" to
-/sys/bus/usb-serial/drivers/ftdi_sio/new_id; see:
-https://picaxe.com/docs/picaxe_linux_instructions.pdf
+Invoke clock_adjtime syscall with tx.modes set with ADJ_OFFSET when testptp
+is invoked with a phase adjustment offset value. Support seconds and
+nanoseconds for the offset value.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Richard Cochran <richardcochran@gmail.com>
+Cc: Maciek Machnikowski <maciek@machnikowski.net>
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    1 +
- drivers/usb/serial/ftdi_sio_ids.h |    2 ++
- 2 files changed, 3 insertions(+)
+ tools/testing/selftests/ptp/testptp.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -828,6 +828,7 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID, 1) },
-+	{ USB_DEVICE(FTDI_VID, FTDI_AXE027_PID) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TURTELIZER_PID, 1) },
- 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_USB60F) },
- 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_SCU18) },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -89,6 +89,8 @@
- #define LMI_LM3S_EVAL_BOARD_PID		0xbcd9
- #define LMI_LM3S_ICDI_BOARD_PID		0xbcda
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index b943a594ea733..eec05f659950a 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -134,6 +134,7 @@ static void usage(char *progname)
+ 		"            1 - external time stamp\n"
+ 		"            2 - periodic output\n"
+ 		" -n val     shift the ptp clock time by 'val' nanoseconds\n"
++		" -o val     phase offset (in nanoseconds) to be provided to the PHC servo\n"
+ 		" -p val     enable output with a period of 'val' nanoseconds\n"
+ 		" -H val     set output phase to 'val' nanoseconds (requires -p)\n"
+ 		" -w val     set output pulse width to 'val' nanoseconds (requires -p)\n"
+@@ -167,6 +168,7 @@ int main(int argc, char *argv[])
+ 	int adjfreq = 0x7fffffff;
+ 	int adjtime = 0;
+ 	int adjns = 0;
++	int adjphase = 0;
+ 	int capabilities = 0;
+ 	int extts = 0;
+ 	int flagtest = 0;
+@@ -188,7 +190,7 @@ int main(int argc, char *argv[])
  
-+#define FTDI_AXE027_PID		0xBD90 /* PICAXE AXE027 USB download cable */
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:p:P:sSt:T:w:z"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:z"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -228,6 +230,9 @@ int main(int argc, char *argv[])
+ 		case 'n':
+ 			adjns = atoi(optarg);
+ 			break;
++		case 'o':
++			adjphase = atoi(optarg);
++			break;
+ 		case 'p':
+ 			perout = atoll(optarg);
+ 			break;
+@@ -327,6 +332,18 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
+ 
++	if (adjphase) {
++		memset(&tx, 0, sizeof(tx));
++		tx.modes = ADJ_OFFSET | ADJ_NANO;
++		tx.offset = adjphase;
 +
- #define FTDI_TURTELIZER_PID	0xBDC8 /* JTAG/RS-232 adapter by egnite GmbH */
- 
- /* OpenDCC (www.opendcc.de) product id */
++		if (clock_adjtime(clkid, &tx) < 0) {
++			perror("clock_adjtime");
++		} else {
++			puts("phase adjustment okay");
++		}
++	}
++
+ 	if (gettime) {
+ 		if (clock_gettime(clkid, &ts)) {
+ 			perror("clock_gettime");
+-- 
+2.51.0
+
 
 
 
