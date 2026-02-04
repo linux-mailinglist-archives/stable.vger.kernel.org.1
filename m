@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-214031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBjFL41qg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:33 +0100
+	id oGhMHptrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-214083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6A4E96DB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:49:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A39FEE98B9
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB72F31A0396
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:20:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E70813100A00
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009C83D994;
-	Wed,  4 Feb 2026 15:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC0E41B357;
+	Wed,  4 Feb 2026 15:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc2JXHs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJf6c9RC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79472D5926;
-	Wed,  4 Feb 2026 15:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EED027F163;
+	Wed,  4 Feb 2026 15:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218329; cv=none; b=YDxX1yZd2yj7Lf1eDWW2lt10yD4JbTFZ2qX5lMVM+zDyUDbxF4ZSwMewvFDMv7NNj6iEt+/JVxZjJpGoHh5fOUTEQzXoVbpOsazCL9hB5KRk6cE5orYdqg0ZKvRnrMUdl/3zJDII0f/KSaHfb+TpYyvtZDzaBF2FkGU3Ko8KvVA=
+	t=1770218506; cv=none; b=DmYrm3We0mmWxtr4cY5g6IfBlAlWDu/QPFMEsih9AnBKgLVyVw2F9FfVMT5HetodMXDyYxUGOhrxJFrocS/6cjUVPmOhlsrVNmbC3htcnPSPQtK4WeU58ZWkIcEJ91MpIICQB8C09SWLhwO/Jnl3H2Pp8jeqSkt/87uCO2+NF08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218329; c=relaxed/simple;
-	bh=Foe20KgQiX48bUfWcSEMWLHPQDFYwjAIb3RJE0D+Qc8=;
+	s=arc-20240116; t=1770218506; c=relaxed/simple;
+	bh=bP4vu1D54tJTi0XBoSIH/IDbRgoudvmi53zjVO6DHxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rq9+6faT15pjONuos0p6jTSoAXfvEGpqrlAGEgSrw3UCH1J4XDsEdztneS9hcKykm1f1c+SDPptsrmNlSiYS6gLiO++g5zkzueRbseYix1bJvf3VthiaCDDkixU9Yjh2EaInQzkAIPfMWkMnEvcMlvrRVxw0XoFOWCvF8SNQkH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc2JXHs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9DDC116C6;
-	Wed,  4 Feb 2026 15:18:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=idRNIwAF8xr+gG+hZJS48DYj6tm6K77z3PcO/VGQ6yicv69l9iR8QaWR25+fMnrpzLXpsvEP1lTYxHl8tGOJJhK6W5J0iB+q1JM1BGQzQ8bbvb4tlaolWMbqWNMCeREN7+lIe+bAF+d7jXJC33uO7RMyMhyeH6Z4Xv5tX3/tldY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJf6c9RC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE652C4CEF7;
+	Wed,  4 Feb 2026 15:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218329;
-	bh=Foe20KgQiX48bUfWcSEMWLHPQDFYwjAIb3RJE0D+Qc8=;
+	s=korg; t=1770218506;
+	bh=bP4vu1D54tJTi0XBoSIH/IDbRgoudvmi53zjVO6DHxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mc2JXHs7SdVVPLYK+xz3alQQ6ZzW23u0QgJYZSak7chbCfp9dTz9H2zpVm+pEzRO7
-	 /BUNCHPDEMeG1mcuV63UB3mgxkq3JvLXfHNkUuctxFAoxf8+0uji3oD94y1RV1gwrs
-	 sVWbwoCNBsdFANLgtjkX7CpBwkaGw9nTCsBXw5s4=
+	b=xJf6c9RCGz4ltOyIcvDlxazWU373FIS9RrvgklRMbKJ8jZ2uZJ4VwBFCOaT/olOUp
+	 0/sYtZvmgEvOfhVrxFv4aVTg9H8zvSGAk0fX1ZCHIwF0vB0Rxz7TgSdi4AAcDE1NUj
+	 L2otwZBged9eIrSPJCyWMwScs0jNOE8qGGPLv8+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.1 280/280] ksmbd: fix recursive locking in RPC handle list access
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 6.6 51/72] wifi: mac80211: move TDLS work to wiphy work
 Date: Wed,  4 Feb 2026 15:40:54 +0100
-Message-ID: <20260204143919.782852887@linuxfoundation.org>
+Message-ID: <20260204143847.480899530@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,193 +63,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,freebox.fr,kernel.org,microsoft.com,139.com];
-	TAGGED_FROM(0.00)[bounces-214031-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214083-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[freebox.fr:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,139.com:email]
-X-Rspamd-Queue-Id: 2A6A4E96DB
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A39FEE98B9
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 88f170814fea74911ceab798a43cbd7c5599bed4 ]
+[ Upstream commit 777b26002b73127e81643d9286fadf3d41e0e477 ]
 
-Since commit 305853cce3794 ("ksmbd: Fix race condition in RPC handle list
-access"), ksmbd_session_rpc_method() attempts to lock sess->rpc_lock.
+Again, to have the wiphy locked for it.
 
-This causes hung connections / tasks when a client attempts to open
-a named pipe. Using Samba's rpcclient tool:
-
- $ rpcclient //192.168.1.254 -U user%password
- $ rpcclient $> srvinfo
- <connection hung here>
-
-Kernel side:
-  "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-  task:kworker/0:0 state:D stack:0 pid:5021 tgid:5021 ppid:2 flags:0x00200000
-  Workqueue: ksmbd-io handle_ksmbd_work
-  Call trace:
-  __schedule from schedule+0x3c/0x58
-  schedule from schedule_preempt_disabled+0xc/0x10
-  schedule_preempt_disabled from rwsem_down_read_slowpath+0x1b0/0x1d8
-  rwsem_down_read_slowpath from down_read+0x28/0x30
-  down_read from ksmbd_session_rpc_method+0x18/0x3c
-  ksmbd_session_rpc_method from ksmbd_rpc_open+0x34/0x68
-  ksmbd_rpc_open from ksmbd_session_rpc_open+0x194/0x228
-  ksmbd_session_rpc_open from create_smb2_pipe+0x8c/0x2c8
-  create_smb2_pipe from smb2_open+0x10c/0x27ac
-  smb2_open from handle_ksmbd_work+0x238/0x3dc
-  handle_ksmbd_work from process_scheduled_works+0x160/0x25c
-  process_scheduled_works from worker_thread+0x16c/0x1e8
-  worker_thread from kthread+0xa8/0xb8
-  kthread from ret_from_fork+0x14/0x38
-  Exception stack(0x8529ffb0 to 0x8529fff8)
-
-The task deadlocks because the lock is already held:
-  ksmbd_session_rpc_open
-    down_write(&sess->rpc_lock)
-    ksmbd_rpc_open
-      ksmbd_session_rpc_method
-        down_read(&sess->rpc_lock)   <-- deadlock
-
-Adjust ksmbd_session_rpc_method() callers to take the lock when necessary.
-
-Fixes: 305853cce3794 ("ksmbd: Fix race condition in RPC handle list access")
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+(cherry picked from commit 777b26002b73127e81643d9286fadf3d41e0e477)
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |    7 ++-----
- fs/smb/server/smb2pdu.c           |    9 ++++++++-
- fs/smb/server/transport_ipc.c     |   12 ++++++++++++
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ net/mac80211/ieee80211_i.h |    4 ++--
+ net/mac80211/mlme.c        |    7 ++++---
+ net/mac80211/tdls.c        |   11 ++++++-----
+ 3 files changed, 12 insertions(+), 10 deletions(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -147,14 +147,11 @@ void ksmbd_session_rpc_close(struct ksmb
- int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -530,7 +530,7 @@ struct ieee80211_if_managed {
+ 
+ 	/* TDLS support */
+ 	u8 tdls_peer[ETH_ALEN] __aligned(2);
+-	struct delayed_work tdls_peer_del_work;
++	struct wiphy_delayed_work tdls_peer_del_work;
+ 	struct sk_buff *orig_teardown_skb; /* The original teardown skb */
+ 	struct sk_buff *teardown_skb; /* A copy to send through the AP */
+ 	spinlock_t teardown_lock; /* To lock changing teardown_skb */
+@@ -2599,7 +2599,7 @@ int ieee80211_tdls_mgmt(struct wiphy *wi
+ 			const u8 *extra_ies, size_t extra_ies_len);
+ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 			const u8 *peer, enum nl80211_tdls_operation oper);
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk);
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk);
+ int ieee80211_tdls_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 				  const u8 *addr, u8 oper_class,
+ 				  struct cfg80211_chan_def *chandef);
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6866,8 +6866,8 @@ void ieee80211_sta_setup_sdata(struct ie
+ 			ieee80211_beacon_connection_loss_work);
+ 	wiphy_work_init(&ifmgd->csa_connection_drop_work,
+ 			ieee80211_csa_connection_drop_work);
+-	INIT_DELAYED_WORK(&ifmgd->tdls_peer_del_work,
+-			  ieee80211_tdls_peer_del_work);
++	wiphy_delayed_work_init(&ifmgd->tdls_peer_del_work,
++				ieee80211_tdls_peer_del_work);
+ 	wiphy_delayed_work_init(&ifmgd->ml_reconf_work,
+ 				ieee80211_ml_reconf_work);
+ 	timer_setup(&ifmgd->timer, ieee80211_sta_timer, 0);
+@@ -7881,7 +7881,8 @@ void ieee80211_mgd_stop(struct ieee80211
+ 			  &ifmgd->beacon_connection_loss_work);
+ 	wiphy_work_cancel(sdata->local->hw.wiphy,
+ 			  &ifmgd->csa_connection_drop_work);
+-	cancel_delayed_work_sync(&ifmgd->tdls_peer_del_work);
++	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++				  &ifmgd->tdls_peer_del_work);
+ 	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
+ 				  &ifmgd->ml_reconf_work);
+ 
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -21,7 +21,7 @@
+ /* give usermode some time for retries in setting up the TDLS session */
+ #define TDLS_PEER_SETUP_TIMEOUT	(15 * HZ)
+ 
+-void ieee80211_tdls_peer_del_work(struct work_struct *wk)
++void ieee80211_tdls_peer_del_work(struct wiphy *wiphy, struct wiphy_work *wk)
  {
- 	struct ksmbd_session_rpc *entry;
--	int method;
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_local *local;
+@@ -1224,9 +1224,9 @@ ieee80211_tdls_mgmt_setup(struct wiphy *
+ 		return ret;
+ 	}
  
--	down_read(&sess->rpc_lock);
-+	lockdep_assert_held(&sess->rpc_lock);
- 	entry = xa_load(&sess->rpc_handle_list, id);
--	method = entry ? entry->method : 0;
--	up_read(&sess->rpc_lock);
+-	ieee80211_queue_delayed_work(&sdata->local->hw,
+-				     &sdata->u.mgd.tdls_peer_del_work,
+-				     TDLS_PEER_SETUP_TIMEOUT);
++	wiphy_delayed_work_queue(sdata->local->hw.wiphy,
++				 &sdata->u.mgd.tdls_peer_del_work,
++				 TDLS_PEER_SETUP_TIMEOUT);
+ 	return 0;
  
--	return method;
-+	return entry ? entry->method : 0;
- }
+ out_unlock:
+@@ -1526,7 +1526,8 @@ int ieee80211_tdls_oper(struct wiphy *wi
+ 	}
  
- void ksmbd_session_destroy(struct ksmbd_session *sess)
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4308,8 +4308,15 @@ static int smb2_get_info_file_pipe(struc
- 	 * pipe without opening it, checking error condition here
- 	 */
- 	id = req->VolatileFileId;
--	if (!ksmbd_session_rpc_method(sess, id))
-+
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
-+	if (!ksmbd_session_rpc_method(sess, id)) {
-+		up_read(&sess->rpc_lock);
- 		return -ENOENT;
-+	}
-+	up_read(&sess->rpc_lock);
+ 	if (ret == 0 && ether_addr_equal(sdata->u.mgd.tdls_peer, peer)) {
+-		cancel_delayed_work(&sdata->u.mgd.tdls_peer_del_work);
++		wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++					  &sdata->u.mgd.tdls_peer_del_work);
+ 		eth_zero_addr(sdata->u.mgd.tdls_peer);
+ 	}
  
- 	ksmbd_debug(SMB, "FileInfoClass %u, FileId 0x%llx\n",
- 		    req->FileInfoClass, req->VolatileFileId);
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -775,6 +775,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_writ
- 	if (!msg)
- 		return NULL;
- 
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
- 	msg->type = KSMBD_EVENT_RPC_REQUEST;
- 	req = (struct ksmbd_rpc_command *)msg->payload;
- 	req->handle = handle;
-@@ -783,6 +786,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_writ
- 	req->flags |= KSMBD_RPC_WRITE_METHOD;
- 	req->payload_sz = payload_sz;
- 	memcpy(req->payload, payload, payload_sz);
-+	up_read(&sess->rpc_lock);
- 
- 	resp = ipc_msg_send_request(msg, req->handle);
- 	ipc_msg_free(msg);
-@@ -799,6 +803,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_read
- 	if (!msg)
- 		return NULL;
- 
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
- 	msg->type = KSMBD_EVENT_RPC_REQUEST;
- 	req = (struct ksmbd_rpc_command *)msg->payload;
- 	req->handle = handle;
-@@ -806,6 +813,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_read
- 	req->flags |= rpc_context_flags(sess);
- 	req->flags |= KSMBD_RPC_READ_METHOD;
- 	req->payload_sz = 0;
-+	up_read(&sess->rpc_lock);
- 
- 	resp = ipc_msg_send_request(msg, req->handle);
- 	ipc_msg_free(msg);
-@@ -826,6 +834,9 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioct
- 	if (!msg)
- 		return NULL;
- 
-+	lockdep_assert_not_held(&sess->rpc_lock);
-+
-+	down_read(&sess->rpc_lock);
- 	msg->type = KSMBD_EVENT_RPC_REQUEST;
- 	req = (struct ksmbd_rpc_command *)msg->payload;
- 	req->handle = handle;
-@@ -834,6 +845,7 @@ struct ksmbd_rpc_command *ksmbd_rpc_ioct
- 	req->flags |= KSMBD_RPC_IOCTL_METHOD;
- 	req->payload_sz = payload_sz;
- 	memcpy(req->payload, payload, payload_sz);
-+	up_read(&sess->rpc_lock);
- 
- 	resp = ipc_msg_send_request(msg, req->handle);
- 	ipc_msg_free(msg);
 
 
 
