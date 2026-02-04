@@ -1,154 +1,720 @@
-Return-Path: <stable+bounces-214366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABAbAsS8g2kgtwMAu9opvQ
-	(envelope-from <stable+bounces-214366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 22:40:20 +0100
+	id s+i3B4rFg2kHuQMAu9opvQ
+	(envelope-from <stable+bounces-214367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 23:17:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622D7ECCBE
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 22:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C8EECF47
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 23:17:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28799300E397
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 21:39:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E763300D17B
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 22:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7899A1BC46;
-	Wed,  4 Feb 2026 21:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED63310768;
+	Wed,  4 Feb 2026 22:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="TUOXtWYG"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="jsZGvbzw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C3739525A
-	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 21:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC362C028C
+	for <stable@vger.kernel.org>; Wed,  4 Feb 2026 22:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770241175; cv=none; b=lZq1V38wHCIz3t1sBY2/hd5aljN34CWa/kvZIJuoZKWmW/IRFB2fEJnt4AndnOcIJNsGk2XXiXnZRvIf4vpOlQ9pCIU3MPwyKtXhBbFojYeMGzo1h3tETEVWjEevFSEFoHUIy6cYeHeSPyRxCd/kkXTLkX0vlyBWn4zlTtevIKQ=
+	t=1770243462; cv=none; b=NblxqnwQBI+rgOZnO4ZrHfBr9c6y97hdNvfB7pt0A29+bV1Pfk7DOiVG77aM6iNbTxQrFrBVLXgbuu+iriYCjLm2QzbiiKHLaf0xEKGI5AWZWrV4gwIOW65TIyASnSH+u4z3PjPdiEgnhCMT8BcYzELAg2KMfRlkujJlEng+EjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770241175; c=relaxed/simple;
-	bh=yIyBO22gdX+03XlD2vJu6z0wiYLNMKGiocjqRG5zoYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ttMXAV7kH7TLGjJGzk/uvW46Er91biMfQJrxAoqDVD0dwMugg8h+DZsUf2ab6p1cYYlaAOMYrZrfiYkNbNFRKBm4Y8fi8uXjk5mFFwiPQ2ZS6b4SNK7aKPRMl1Fk0I4873MwpkX5g5FmQMHEpMY4xbifiW9KNHarD0m8baVpTSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=TUOXtWYG; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2b740872a01so404513eec.1
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 13:39:34 -0800 (PST)
+	s=arc-20240116; t=1770243462; c=relaxed/simple;
+	bh=LwRgORfTdp1rfDO5Rs44wUevT0v1b5ixr92+tbSGu7E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jOeAdOve1DNmD4uC0TYGH4GwiMK4MX3ENoKEhhnkx8dyA86oB8fjPksnXE2emeh4mZIcFmSqA0EXbOTV+ELF9lunmdoOVqKoR7JDit+LlXOvGgFJLs9MXtBG/OcfgXUMmVCS7fft19NLIIHm9MCfoxPJUfHVmC37rZt+MKNRxa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=jsZGvbzw; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4359a16a400so327936f8f.1
+        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 14:17:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1770241174; x=1770845974; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IqdmuWK6GfCtv8Zt1a9cnHoLg2M8wAjxRFOas0xgkbY=;
-        b=TUOXtWYGucn22iZtWaz8mC/5eJ7QrJvcUmAdYCiiguTazKdHvhxdJniZ4XckjLgcJT
-         7IjJpNagHZWtxo79bhYCehv2JRHNL9AcVo6792cU6RzpwIhMlQfElLV70p/7YBtdSh5F
-         ROKqq8i7LOZnYWqBFNFHLrgP6g0PsPmKAcXqE=
+        d=googlemail.com; s=20230601; t=1770243460; x=1770848260; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FdmnEHLUkOwdTeKQiBTTTy4aoO1XnQ2/LFeT+WVMkVc=;
+        b=jsZGvbzw2sKm0Qz3FWu22QKz+2yyb4W5FxSN95y6iyupB2AW+Mgqm9mXsAOC8KBzjR
+         oTq5sAdbxDtOABvRodHe1Pz/jtPk5R34ezP3yo/ODsmn6Eio82o0sUlNBMVkh8TfTo7N
+         73jx6uM90OIW88tziIXl2WRVCk/RR/G1DkPdvnFmIXL2Fo3dOcqqv5gOvRTBOiu6CB72
+         rozqsMFtnHwZqQy5v+ngDHocSaq/EbqzPsd6r+ItjTteXeoGymXfZtVtlvwf1uKxjHQg
+         6Z7N5jyGuwM4Q+zZo25jL+BSAm4uKxmE+bUD0w5BlUxS8/fx4Ih8PvvnTCp7Y/CVTLQT
+         F+0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770241174; x=1770845974;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=IqdmuWK6GfCtv8Zt1a9cnHoLg2M8wAjxRFOas0xgkbY=;
-        b=kwqwRhPyvnMfVowaZHip06EkSCoYvdLEG8nl3pJTquUBSk+iS0Ucfej1kzgU95OUQz
-         0PfOfODPflnC/YIlCEOn54E7bQOFpOcgiIwD0soxB8xtEvgtRGvqaNQXI92w/2K0Tbmr
-         bHKCNlTd6YObLX0BjgWSaZjXlx+wRbt0p8FqLPg97DIXuusptXUgXxsRMm+8uvt9isHv
-         ASaOrDwGUzpndehJ33MEPbcTBCY5xGJzP5cx6Nc5nGhTQinMD80Dl+Xd865vdN/BRTzQ
-         gk9f7JCE7qINAbhi4LtqDo4kCAU5EM7G/61Ih2cYmNYTDr2949xU96Ghx5bQeWZA1bOg
-         s7fQ==
-X-Gm-Message-State: AOJu0YzW/OxB6es3q4CXiHW2Fm+/ZrT+Dyv0C++fT5YQdXpVj/W/1fss
-	cvQDmqYvvRqgURVGj+Vhkj+L0DBx5b80m+oI3vk7dWq1Ap4gzTM2DKObWg9AA9rNXA==
-X-Gm-Gg: AZuq6aJFZmTU0B977oOu7KV2uzpUsw6f6UreoE1hOgwBDbhE1CELCVtFa1JqaZcEtH6
-	kMVHt6jq3/cDeGHC9zEnJgOlM4KLoLlfPwGCZSXc9/NUsNtD1FTFMIBK2MEOATQExIxe9k8E6hy
-	hSEhOAr9w8X8Qc2Ydpd+5H3BP7Na+5guKJASDJqPaOW42QqGaH1xLFUPqFHz+2PwkoVR9pSw31k
-	F40diT0h0SOepB+V4pvIlPvo229tv6BauIS3yIh+DOMvShN9hhW/81m0eCUxPQm+WUlg1VVi3ec
-	Q6e+m504L8VV5ByNQRy3PmECjR8tWKbm0O2ydK1sOceYZLhZy6T9x18IbqGWDoAwl6cVavnT3pv
-	NsLqHeOp60ucMP8DQYyi4AxsaoBMAN7pMClqtu7+5vuPI8wcy9PkrOslAuhzv+qgsAO8/8E8Wgv
-	bz6SiWzqB1hO4AblxGuFNYoEtUWsk+6Qc=
-X-Received: by 2002:a05:7301:4b03:b0:2b7:e2db:4a14 with SMTP id 5a478bee46e88-2b8329dfacbmr1949567eec.34.1770241173961;
-        Wed, 04 Feb 2026 13:39:33 -0800 (PST)
-Received: from fedora64.linuxtx.org ([216.147.121.74])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b832e1299bsm2540989eec.6.2026.02.04.13.39.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 13:39:33 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 4 Feb 2026 14:39:30 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.18 000/122] 6.18.9-rc1 review
-Message-ID: <aYO8ki5ZSu4ff-2T@fedora64.linuxtx.org>
-References: <20260204143851.857060534@linuxfoundation.org>
+        d=1e100.net; s=20230601; t=1770243460; x=1770848260;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FdmnEHLUkOwdTeKQiBTTTy4aoO1XnQ2/LFeT+WVMkVc=;
+        b=Va8VLI0RRc0owf8v6eYoRCU2+VvcJmjhwgbafAb3+2+Ur2EAFa/Yowjgcsw61Zh0Af
+         wiFE9Mox8CEK7JxC88biqWVUtclWY+zMi6KojMBeW/dGfIjcy5Thx+c2UYGsWCRoeuHy
+         ousiLW2mPlukCVF85JswT79CjWS9Bcvg9lR1e+F0Oy122ZX2xZYrr5oJlx29ok8lPott
+         b2uy+IcJ0/h2AIIskpPKbhyuv7mPnbJEJJQBaj8C63FddgCBHT3tiZrI46jGglP+5Wxm
+         ZLN1xFkTC+N+40JBhueAVpkHn1xy/vz1vlFZlL2OD1uZIiF9Cj5HK0vUl+tA8QlZr7MY
+         hVbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTfc/wUiyZUaD4exDh2oORmxbe+4AVKaM7hK/YMYOmsT2LgptC3kDk07TgpPP+zJ6reyN09BU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9/Mxw8Kaoak8hQj1XA49Yi6oiL6aItyvhzGoaCZM3ZBX5cxpl
+	5hEnAdaSZ3kWv0puGh3acW/rqxKu+NEh/OaZS/AnAck+nlimh5KaKbM=
+X-Gm-Gg: AZuq6aK/sIjwMQEbtR6C0goC1e5bDNeBs6U/dQonwfq4D4lvnlXKFkWXj7nP5zA9zXg
+	Z0sCoPF6xtNDPLinVmLr9wZGQjvQrEXG03kg4mL9MchNGa5PTOpadJIz0K7VL6q9F6QCwnLdimH
+	WcsvSOVqyInEPuhgp1cmFiochli51YyIfFacRRXSwt6L3nIUpMNKvKEdd3/7FxHtE0rMMxt5AAj
+	u7j2mMMBgAl0tFuJ7Enub2TExXTKKqgWASUUIjUSpN3AvT56U7kVTEnLO958la3nkVbVg+lk7qy
+	L+Eea1LsoYQvaiA1Hr6xZuYOqEsX2kqyCguopD67mDBFnIiNVDMW28dXPgstMut6sDfLePCW0qv
+	AxUh817B+L8hGvRv0DBIfE5hjJNj6u+e1RH71pbJ/ClTJD/nx5LQjtFg50Psfuh70+2KboJmEIS
+	EP+vYUsveqExYjZM+lXIdwqa/fXLgbaWFQN5AXcMnNVHVtQgxkAo/I8xXe8csjNQ==
+X-Received: by 2002:a05:6000:26c6:b0:435:9ee1:f91a with SMTP id ffacd0b85a97d-436180588camr7043921f8f.53.1770243459796;
+        Wed, 04 Feb 2026 14:17:39 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b4d5e.dip0.t-ipconnect.de. [91.43.77.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436180588bfsm9435893f8f.26.2026.02.04.14.17.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Feb 2026 14:17:39 -0800 (PST)
+Message-ID: <25910fd9-ecc8-4119-9abc-2ab6baf5ce77@googlemail.com>
+Date: Wed, 4 Feb 2026 23:17:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/280] 6.1.162-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260204143909.614719725@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[linuxtx.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[fedoraproject.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214366-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-214367-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
 	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxtx.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jforbes@fedoraproject.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fedoraproject.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxtx.org:dkim,fedora64.linuxtx.org:mid]
-X-Rspamd-Queue-Id: 622D7ECCBE
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:mid,googlemail.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linus:email]
+X-Rspamd-Queue-Id: 16C8EECF47
 X-Rspamd-Action: no action
 
-On Wed, Feb 04, 2026 at 03:39:42PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.9 release.
-> There are 122 patches in this series, all will be posted as a response
+Hi Greg,
+
+Am 04.02.2026 um 15:36 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.162 release.
+> There are 280 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
 > Responses should be made by Fri, 06 Feb 2026 14:38:23 +0000.
 > Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+It seems that this time, I cannot even build this RC. When I run "make menuconfig" I get a big serious of warning and 
+error messages; something seems to be really messed up here...
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+
+root@linus:/usr/src/linux-stable-rc# vim .config
+root@linus:/usr/src/linux-stable-rc# make menuconfig
+scripts/kconfig/Makefile:215: Warnung: Das Musterrezept hat das Peer-Ziel „scripts/kconfig/mconf-bin“ nicht aktualisiert.
+   HOSTCC  scripts/kconfig/mconf.o
+   HOSTCC  scripts/kconfig/lxdialog/checklist.o
+   HOSTCC  scripts/kconfig/lxdialog/inputbox.o
+   HOSTCC  scripts/kconfig/lxdialog/menubox.o
+   HOSTCC  scripts/kconfig/lxdialog/textbox.o
+   HOSTCC  scripts/kconfig/lxdialog/util.o
+   HOSTCC  scripts/kconfig/lxdialog/yesno.o
+   HOSTLD  scripts/kconfig/mconf
+/usr/bin/ld: scripts/kconfig/lxdialog/yesno.o: warning: relocation against `acs_map' in read-only section `.text'
+/usr/bin/ld: scripts/kconfig/mconf.o: in function `show_help':
+mconf.c:(.text+0xa1b): undefined reference to `stdscr'
+/usr/bin/ld: mconf.c:(.text+0xa20): undefined reference to `getmaxx'
+/usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `print_arrows':
+checklist.c:(.text+0x2c): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x43): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x49): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x51): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x65): undefined reference to `waddnstr'
+/usr/bin/ld: checklist.c:(.text+0x75): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x97): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x9d): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0xa5): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0xab): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0xb3): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0xb9): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0xc1): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0xc7): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0xf2): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0xf8): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x100): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x13a): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x140): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x148): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x14e): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x156): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x15c): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x164): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x16a): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x172): undefined reference to `waddch'
+/usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `print_item':
+checklist.c:(.text+0x1de): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x1eb): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x20c): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x225): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x23c): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x25c): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x26d): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x284): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x296): undefined reference to `waddnstr'
+/usr/bin/ld: checklist.c:(.text+0x2aa): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x2b2): undefined reference to `wrefresh'
+/usr/bin/ld: checklist.c:(.text+0x2da): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x2f6): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x307): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x31a): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x32c): undefined reference to `waddnstr'
+/usr/bin/ld: checklist.c:(.text+0x349): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x359): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x388): undefined reference to `wprintw'
+/usr/bin/ld: checklist.c:(.text+0x3b8): undefined reference to `wprintw'
+/usr/bin/ld: checklist.c:(.text+0x3d3): undefined reference to `wprintw'
+/usr/bin/ld: checklist.c:(.text+0x3ee): undefined reference to `wprintw'
+/usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `print_buttons':
+checklist.c:(.text+0x46a): undefined reference to `wmove'
+/usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `dialog_checklist':
+checklist.c:(.text+0x565): undefined reference to `stdscr'
+/usr/bin/ld: checklist.c:(.text+0x56a): undefined reference to `getmaxy'
+/usr/bin/ld: checklist.c:(.text+0x57d): undefined reference to `stdscr'
+/usr/bin/ld: checklist.c:(.text+0x582): undefined reference to `getmaxx'
+/usr/bin/ld: checklist.c:(.text+0x5a7): undefined reference to `stdscr'
+/usr/bin/ld: checklist.c:(.text+0x5ac): undefined reference to `getmaxx'
+/usr/bin/ld: checklist.c:(.text+0x5b8): undefined reference to `stdscr'
+/usr/bin/ld: checklist.c:(.text+0x5d0): undefined reference to `getmaxy'
+/usr/bin/ld: checklist.c:(.text+0x5e1): undefined reference to `stdscr'
+/usr/bin/ld: checklist.c:(.text+0x60a): undefined reference to `newwin'
+/usr/bin/ld: checklist.c:(.text+0x61a): undefined reference to `keypad'
+/usr/bin/ld: checklist.c:(.text+0x64b): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x658): undefined reference to `wmove'
+/usr/bin/ld: checklist.c:(.text+0x666): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x66e): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x682): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x68e): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x6a1): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x6a7): undefined reference to `acs_map'
+/usr/bin/ld: checklist.c:(.text+0x6af): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x6d2): undefined reference to `wattrset'
+/usr/bin/ld: checklist.c:(.text+0x717): undefined reference to `subwin'
+/usr/bin/ld: checklist.c:(.text+0x729): undefined reference to `keypad'
+/usr/bin/ld: checklist.c:(.text+0x8b5): undefined reference to `wnoutrefresh'
+/usr/bin/ld: checklist.c:(.text+0x8bf): undefined reference to `wnoutrefresh'
+/usr/bin/ld: checklist.c:(.text+0x8c4): undefined reference to `doupdate'
+/usr/bin/ld: checklist.c:(.text+0x8e4): undefined reference to `wgetch'
+/usr/bin/ld: checklist.c:(.text+0x9f7): undefined reference to `wrefresh'
+/usr/bin/ld: checklist.c:(.text+0xa40): undefined reference to `delwin'
+/usr/bin/ld: checklist.c:(.text+0xa48): undefined reference to `delwin'
+/usr/bin/ld: checklist.c:(.text+0xaa8): undefined reference to `scrollok'
+/usr/bin/ld: checklist.c:(.text+0xab5): undefined reference to `wscrl'
+/usr/bin/ld: checklist.c:(.text+0xabf): undefined reference to `scrollok'
+/usr/bin/ld: checklist.c:(.text+0xb12): undefined reference to `wnoutrefresh'
+/usr/bin/ld: checklist.c:(.text+0xb1a): undefined reference to `wrefresh'
+/usr/bin/ld: checklist.c:(.text+0xb79): undefined reference to `wnoutrefresh'
+/usr/bin/ld: checklist.c:(.text+0xb81): undefined reference to `wrefresh'
+/usr/bin/ld: checklist.c:(.text+0xbe2): undefined reference to `scrollok'
+/usr/bin/ld: checklist.c:(.text+0xbef): undefined reference to `wscrl'
+/usr/bin/ld: checklist.c:(.text+0xbf9): undefined reference to `scrollok'
+/usr/bin/ld: checklist.c:(.text+0xc56): undefined reference to `wnoutrefresh'
+/usr/bin/ld: checklist.c:(.text+0xc5e): undefined reference to `wrefresh'
+/usr/bin/ld: checklist.c:(.text+0xc68): undefined reference to `wgetch'
+/usr/bin/ld: checklist.c:(.text+0xcdc): undefined reference to `doupdate'
+/usr/bin/ld: checklist.c:(.text+0xcf1): undefined reference to `doupdate'
+/usr/bin/ld: checklist.c:(.text+0xd16): undefined reference to `delwin'
+/usr/bin/ld: checklist.c:(.text+0xd1e): undefined reference to `delwin'
+/usr/bin/ld: checklist.c:(.text+0xdb8): undefined reference to `delwin'
+/usr/bin/ld: checklist.c:(.text+0xdc0): undefined reference to `delwin'
+/usr/bin/ld: checklist.c:(.text+0xe08): undefined reference to `doupdate'
+/usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `print_arrows':
+checklist.c:(.text+0xdd): undefined reference to `waddch'
+/usr/bin/ld: checklist.c:(.text+0x122): undefined reference to `waddnstr'
+/usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `print_buttons':
+checklist.c:(.text+0x47c): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/inputbox.o: in function `print_buttons':
+inputbox.c:(.text+0x63): undefined reference to `wmove'
+/usr/bin/ld: scripts/kconfig/lxdialog/inputbox.o: in function `dialog_inputbox':
+inputbox.c:(.text+0xd6): undefined reference to `stdscr'
+/usr/bin/ld: inputbox.c:(.text+0xdb): undefined reference to `getmaxy'
+/usr/bin/ld: inputbox.c:(.text+0xee): undefined reference to `stdscr'
+/usr/bin/ld: inputbox.c:(.text+0xf3): undefined reference to `getmaxx'
+/usr/bin/ld: inputbox.c:(.text+0x106): undefined reference to `stdscr'
+/usr/bin/ld: inputbox.c:(.text+0x10b): undefined reference to `getmaxx'
+/usr/bin/ld: inputbox.c:(.text+0x112): undefined reference to `stdscr'
+/usr/bin/ld: inputbox.c:(.text+0x124): undefined reference to `getmaxy'
+/usr/bin/ld: inputbox.c:(.text+0x137): undefined reference to `stdscr'
+/usr/bin/ld: inputbox.c:(.text+0x15a): undefined reference to `newwin'
+/usr/bin/ld: inputbox.c:(.text+0x16a): undefined reference to `keypad'
+/usr/bin/ld: inputbox.c:(.text+0x19c): undefined reference to `wattrset'
+/usr/bin/ld: inputbox.c:(.text+0x1ab): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x1ba): undefined reference to `acs_map'
+/usr/bin/ld: inputbox.c:(.text+0x1c2): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0x1d2): undefined reference to `acs_map'
+/usr/bin/ld: inputbox.c:(.text+0x1dd): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0x1f3): undefined reference to `wattrset'
+/usr/bin/ld: inputbox.c:(.text+0x1f9): undefined reference to `acs_map'
+/usr/bin/ld: inputbox.c:(.text+0x201): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0x21f): undefined reference to `wattrset'
+/usr/bin/ld: inputbox.c:(.text+0x246): undefined reference to `getcury'
+/usr/bin/ld: inputbox.c:(.text+0x250): undefined reference to `getcurx'
+/usr/bin/ld: inputbox.c:(.text+0x2a6): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x2b4): undefined reference to `wattrset'
+/usr/bin/ld: inputbox.c:(.text+0x2e8): undefined reference to `waddnstr'
+/usr/bin/ld: inputbox.c:(.text+0x307): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x30f): undefined reference to `wrefresh'
+/usr/bin/ld: inputbox.c:(.text+0x31c): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x382): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x3ea): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x41f): undefined reference to `flash'
+/usr/bin/ld: inputbox.c:(.text+0x434): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x487): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x4da): undefined reference to `delwin'
+/usr/bin/ld: inputbox.c:(.text+0x55c): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0x5ab): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x5d5): undefined reference to `delwin'
+/usr/bin/ld: inputbox.c:(.text+0x5f4): undefined reference to `delwin'
+/usr/bin/ld: inputbox.c:(.text+0x635): undefined reference to `delwin'
+/usr/bin/ld: inputbox.c:(.text+0x6c2): undefined reference to `delwin'
+/usr/bin/ld: inputbox.c:(.text+0x75a): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x79f): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x7a7): undefined reference to `wrefresh'
+/usr/bin/ld: inputbox.c:(.text+0x7af): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x7de): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x7fc): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x85e): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x879): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x890): undefined reference to `wattrset'
+/usr/bin/ld: inputbox.c:(.text+0x8dd): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x918): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0x933): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0x946): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x94e): undefined reference to `wrefresh'
+/usr/bin/ld: inputbox.c:(.text+0x956): undefined reference to `wgetch'
+/usr/bin/ld: inputbox.c:(.text+0x9b7): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0x9ed): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0xa07): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0xa18): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0xa33): undefined reference to `wattrset'
+/usr/bin/ld: inputbox.c:(.text+0xa8b): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0xac5): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0xae6): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0xaf9): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0xb01): undefined reference to `wrefresh'
+/usr/bin/ld: inputbox.c:(.text+0xb59): undefined reference to `wmove'
+/usr/bin/ld: inputbox.c:(.text+0xb93): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0xbad): undefined reference to `waddch'
+/usr/bin/ld: inputbox.c:(.text+0xbc0): undefined reference to `wmove'
+/usr/bin/ld: scripts/kconfig/lxdialog/inputbox.o: in function `print_buttons':
+inputbox.c:(.text+0x75): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/menubox.o: in function `do_print_item':
+menubox.c:(.text+0x6d): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x7a): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x82): undefined reference to `wclrtoeol'
+/usr/bin/ld: menubox.c:(.text+0x9a): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0xab): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0xc0): undefined reference to `waddnstr'
+/usr/bin/ld: menubox.c:(.text+0xd8): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0xeb): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x108): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x14a): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x15d): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x16f): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x181): undefined reference to `waddch'
+/usr/bin/ld: scripts/kconfig/lxdialog/menubox.o: in function `print_buttons':
+menubox.c:(.text+0x253): undefined reference to `wmove'
+/usr/bin/ld: scripts/kconfig/lxdialog/menubox.o: in function `print_arrows.constprop.0':
+menubox.c:(.text+0x28d): undefined reference to `getcury'
+/usr/bin/ld: menubox.c:(.text+0x299): undefined reference to `getcurx'
+/usr/bin/ld: menubox.c:(.text+0x2ac): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x2c2): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x2c8): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x2d0): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x2e4): undefined reference to `waddnstr'
+/usr/bin/ld: menubox.c:(.text+0x2f4): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x2fc): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0x317): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x31d): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x325): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x32b): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x333): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x339): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x341): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x347): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x34f): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x35e): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x38a): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x390): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x398): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x3ac): undefined reference to `waddnstr'
+/usr/bin/ld: menubox.c:(.text+0x3c2): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x3c8): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x3d0): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x3d6): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x3de): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x3e4): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x3ec): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x3f2): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x3fa): undefined reference to `waddch'
+/usr/bin/ld: scripts/kconfig/lxdialog/menubox.o: in function `dialog_menu':
+menubox.c:(.text+0x446): undefined reference to `stdscr'
+/usr/bin/ld: menubox.c:(.text+0x44b): undefined reference to `getmaxy'
+/usr/bin/ld: menubox.c:(.text+0x452): undefined reference to `stdscr'
+/usr/bin/ld: menubox.c:(.text+0x459): undefined reference to `getmaxx'
+/usr/bin/ld: menubox.c:(.text+0x49f): undefined reference to `stdscr'
+/usr/bin/ld: menubox.c:(.text+0x4a4): undefined reference to `getmaxx'
+/usr/bin/ld: menubox.c:(.text+0x4b0): undefined reference to `stdscr'
+/usr/bin/ld: menubox.c:(.text+0x4ca): undefined reference to `getmaxy'
+/usr/bin/ld: menubox.c:(.text+0x4d6): undefined reference to `stdscr'
+/usr/bin/ld: menubox.c:(.text+0x50b): undefined reference to `newwin'
+/usr/bin/ld: menubox.c:(.text+0x51b): undefined reference to `keypad'
+/usr/bin/ld: menubox.c:(.text+0x54d): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x55a): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x568): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x570): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x582): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x58e): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x5a1): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x5b5): undefined reference to `wbkgdset'
+/usr/bin/ld: menubox.c:(.text+0x5bb): undefined reference to `acs_map'
+/usr/bin/ld: menubox.c:(.text+0x5c3): undefined reference to `waddch'
+/usr/bin/ld: menubox.c:(.text+0x5e2): undefined reference to `wattrset'
+/usr/bin/ld: menubox.c:(.text+0x621): undefined reference to `subwin'
+/usr/bin/ld: menubox.c:(.text+0x631): undefined reference to `keypad'
+/usr/bin/ld: menubox.c:(.text+0x7ac): undefined reference to `wnoutrefresh'
+/usr/bin/ld: menubox.c:(.text+0x7f5): undefined reference to `wmove'
+/usr/bin/ld: menubox.c:(.text+0x7fd): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0x805): undefined reference to `wgetch'
+/usr/bin/ld: menubox.c:(.text+0x933): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0x93b): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0x97e): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0x986): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0xab9): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0xac6): undefined reference to `wscrl'
+/usr/bin/ld: menubox.c:(.text+0xad0): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0xadd): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0xb81): undefined reference to `wnoutrefresh'
+/usr/bin/ld: menubox.c:(.text+0xb89): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0xbe6): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0xcc3): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0xccb): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0xf96): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0xfca): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0xfd7): undefined reference to `wscrl'
+/usr/bin/ld: menubox.c:(.text+0xfe1): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0xff3): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0x1066): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0x106e): undefined reference to `delwin'
+/usr/bin/ld: menubox.c:(.text+0x111a): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0x112c): undefined reference to `wscrl'
+/usr/bin/ld: menubox.c:(.text+0x1136): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0x113e): undefined reference to `wrefresh'
+/usr/bin/ld: menubox.c:(.text+0x11f4): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0x1231): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0x123e): undefined reference to `wscrl'
+/usr/bin/ld: menubox.c:(.text+0x1248): undefined reference to `scrollok'
+/usr/bin/ld: menubox.c:(.text+0x1250): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/menubox.o: in function `do_print_item':
+menubox.c:(.text+0x126): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/menubox.o: in function `print_buttons':
+menubox.c:(.text+0x265): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/menubox.o: in function `print_arrows.constprop.0':
+menubox.c:(.text+0x374): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/textbox.o: in function `refresh_text_box':
+textbox.c:(.text+0x2da): undefined reference to `wmove'
+/usr/bin/ld: textbox.c:(.text+0x2e7): undefined reference to `waddch'
+/usr/bin/ld: textbox.c:(.text+0x304): undefined reference to `waddnstr'
+/usr/bin/ld: textbox.c:(.text+0x30c): undefined reference to `wclrtoeol'
+/usr/bin/ld: textbox.c:(.text+0x33d): undefined reference to `wnoutrefresh'
+/usr/bin/ld: textbox.c:(.text+0x350): undefined reference to `wattrset'
+/usr/bin/ld: textbox.c:(.text+0x364): undefined reference to `wbkgdset'
+/usr/bin/ld: textbox.c:(.text+0x39c): undefined reference to `getmaxx'
+/usr/bin/ld: textbox.c:(.text+0x3a6): undefined reference to `getmaxy'
+/usr/bin/ld: textbox.c:(.text+0x3b4): undefined reference to `wmove'
+/usr/bin/ld: textbox.c:(.text+0x3c7): undefined reference to `wprintw'
+/usr/bin/ld: textbox.c:(.text+0x3d7): undefined reference to `wmove'
+/usr/bin/ld: scripts/kconfig/lxdialog/textbox.o: in function `dialog_textbox':
+textbox.c:(.text+0x48a): undefined reference to `stdscr'
+/usr/bin/ld: textbox.c:(.text+0x48f): undefined reference to `getmaxy'
+/usr/bin/ld: textbox.c:(.text+0x496): undefined reference to `stdscr'
+/usr/bin/ld: textbox.c:(.text+0x49e): undefined reference to `getmaxx'
+/usr/bin/ld: textbox.c:(.text+0x4c4): undefined reference to `stdscr'
+/usr/bin/ld: textbox.c:(.text+0x4d9): undefined reference to `getmaxx'
+/usr/bin/ld: textbox.c:(.text+0x4e0): undefined reference to `stdscr'
+/usr/bin/ld: textbox.c:(.text+0x4f5): undefined reference to `getmaxy'
+/usr/bin/ld: textbox.c:(.text+0x508): undefined reference to `stdscr'
+/usr/bin/ld: textbox.c:(.text+0x530): undefined reference to `newwin'
+/usr/bin/ld: textbox.c:(.text+0x540): undefined reference to `keypad'
+/usr/bin/ld: textbox.c:(.text+0x55c): undefined reference to `subwin'
+/usr/bin/ld: textbox.c:(.text+0x56d): undefined reference to `wattrset'
+/usr/bin/ld: textbox.c:(.text+0x581): undefined reference to `wbkgdset'
+/usr/bin/ld: textbox.c:(.text+0x58e): undefined reference to `keypad'
+/usr/bin/ld: textbox.c:(.text+0x5c0): undefined reference to `wattrset'
+/usr/bin/ld: textbox.c:(.text+0x5cf): undefined reference to `wmove'
+/usr/bin/ld: textbox.c:(.text+0x5dc): undefined reference to `acs_map'
+/usr/bin/ld: textbox.c:(.text+0x5e4): undefined reference to `waddch'
+/usr/bin/ld: textbox.c:(.text+0x5f2): undefined reference to `acs_map'
+/usr/bin/ld: textbox.c:(.text+0x5fe): undefined reference to `waddch'
+/usr/bin/ld: textbox.c:(.text+0x611): undefined reference to `wattrset'
+/usr/bin/ld: textbox.c:(.text+0x625): undefined reference to `wbkgdset'
+/usr/bin/ld: textbox.c:(.text+0x62b): undefined reference to `acs_map'
+/usr/bin/ld: textbox.c:(.text+0x633): undefined reference to `waddch'
+/usr/bin/ld: textbox.c:(.text+0x670): undefined reference to `wnoutrefresh'
+/usr/bin/ld: textbox.c:(.text+0x678): undefined reference to `getcury'
+/usr/bin/ld: textbox.c:(.text+0x683): undefined reference to `getcurx'
+/usr/bin/ld: textbox.c:(.text+0x6ca): undefined reference to `wgetch'
+/usr/bin/ld: textbox.c:(.text+0x763): undefined reference to `delwin'
+/usr/bin/ld: textbox.c:(.text+0x76b): undefined reference to `delwin'
+/usr/bin/ld: textbox.c:(.text+0x82c): undefined reference to `wgetch'
+/usr/bin/ld: textbox.c:(.text+0x9d4): undefined reference to `delwin'
+/usr/bin/ld: textbox.c:(.text+0x9dc): undefined reference to `delwin'
+/usr/bin/ld: scripts/kconfig/lxdialog/textbox.o: in function `refresh_text_box':
+textbox.c:(.text+0x3ed): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `init_one_color':
+util.c:(.text+0x2ef): undefined reference to `init_pair'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `attr_clear':
+util.c:(.text+0x324): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x335): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x36c): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x387): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x3a0): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x3b0): undefined reference to `getmaxy'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `dialog_clear':
+util.c:(.text+0x3e1): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x3e6): undefined reference to `getmaxy'
+/usr/bin/ld: util.c:(.text+0x3ed): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x3f4): undefined reference to `getmaxx'
+/usr/bin/ld: util.c:(.text+0x401): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x428): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x42d): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x434): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x440): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x47c): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x48f): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x4a6): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x4c2): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x4c9): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x4d2): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x4de): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x502): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x50c): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0x52b): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x542): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0x59a): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x5a7): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0x5ae): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x5b8): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x5cc): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x5d2): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x5d7): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x5de): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x5e8): undefined reference to `waddch'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `init_dialog':
+util.c:(.text+0x61a): undefined reference to `initscr'
+/usr/bin/ld: util.c:(.text+0x621): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x626): undefined reference to `getcury'
+/usr/bin/ld: util.c:(.text+0x62d): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x638): undefined reference to `getcurx'
+/usr/bin/ld: util.c:(.text+0x63f): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x64a): undefined reference to `getmaxy'
+/usr/bin/ld: util.c:(.text+0x651): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x658): undefined reference to `getmaxx'
+/usr/bin/ld: util.c:(.text+0x6ea): undefined reference to `has_colors'
+/usr/bin/ld: util.c:(.text+0x6f7): undefined reference to `start_color'
+/usr/bin/ld: util.c:(.text+0x866): undefined reference to `has_colors'
+/usr/bin/ld: util.c:(.text+0x997): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0x9a1): undefined reference to `keypad'
+/usr/bin/ld: util.c:(.text+0x9a6): undefined reference to `cbreak'
+/usr/bin/ld: util.c:(.text+0x9ab): undefined reference to `noecho'
+/usr/bin/ld: util.c:(.text+0xc01): undefined reference to `endwin'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `end_dialog':
+util.c:(.text+0xc39): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0xc3e): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0xc45): undefined reference to `stdscr'
+/usr/bin/ld: util.c:(.text+0xc4a): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `print_title':
+util.c:(.text+0xca9): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0xcb6): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0xcc8): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0xcd4): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0xce7): undefined reference to `waddnstr'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `print_autowrap':
+util.c:(.text+0xe18): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0xe28): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0xe30): undefined reference to `getcury'
+/usr/bin/ld: util.c:(.text+0xe3a): undefined reference to `getcurx'
+/usr/bin/ld: util.c:(.text+0xe9d): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0xead): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0xeb5): undefined reference to `getcury'
+/usr/bin/ld: util.c:(.text+0xebd): undefined reference to `getcurx'
+/usr/bin/ld: util.c:(.text+0xf65): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0xf75): undefined reference to `waddnstr'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `print_button':
+util.c:(.text+0xfa3): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0xfba): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0xfce): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0xff5): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x101d): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x1039): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x1046): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x1054): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x1066): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0x1074): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x1088): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0x10ba): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x10c7): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x10d5): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x10e7): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0x110a): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x111e): undefined reference to `waddnstr'
+/usr/bin/ld: util.c:(.text+0x1145): undefined reference to `wattrset'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `draw_box':
+util.c:(.text+0x118d): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x11a4): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x11b9): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x11c1): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x11ff): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x122d): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x1248): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x124d): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x126e): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x1273): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x1293): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x129b): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x12aa): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x12b2): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x12c4): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x12c9): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x12e1): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x12e6): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x12f2): undefined reference to `acs_map'
+/usr/bin/ld: util.c:(.text+0x12fa): undefined reference to `waddch'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `draw_shadow':
+util.c:(.text+0x133e): undefined reference to `has_colors'
+/usr/bin/ld: util.c:(.text+0x136a): undefined reference to `wattrset'
+/usr/bin/ld: util.c:(.text+0x137c): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x1398): undefined reference to `winch'
+/usr/bin/ld: util.c:(.text+0x13a3): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x13cc): undefined reference to `wmove'
+/usr/bin/ld: util.c:(.text+0x13d4): undefined reference to `winch'
+/usr/bin/ld: util.c:(.text+0x13df): undefined reference to `waddch'
+/usr/bin/ld: util.c:(.text+0x13e7): undefined reference to `winch'
+/usr/bin/ld: util.c:(.text+0x13f2): undefined reference to `waddch'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `on_key_esc':
+util.c:(.text+0x1513): undefined reference to `nodelay'
+/usr/bin/ld: util.c:(.text+0x151d): undefined reference to `keypad'
+/usr/bin/ld: util.c:(.text+0x1525): undefined reference to `wgetch'
+/usr/bin/ld: util.c:(.text+0x1530): undefined reference to `wgetch'
+/usr/bin/ld: util.c:(.text+0x1544): undefined reference to `wgetch'
+/usr/bin/ld: util.c:(.text+0x1555): undefined reference to `nodelay'
+/usr/bin/ld: util.c:(.text+0x1562): undefined reference to `keypad'
+/usr/bin/ld: util.c:(.text+0x159e): undefined reference to `ungetch'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `attr_clear':
+util.c:(.text+0x3c9): undefined reference to `wtouchln'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `dialog_clear':
+util.c:(.text+0x4f1): undefined reference to `wnoutrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `end_dialog':
+util.c:(.text+0xc53): undefined reference to `endwin'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `print_title':
+util.c:(.text+0xcfc): undefined reference to `waddch'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `print_button':
+util.c:(.text+0x10a7): undefined reference to `wmove'
+/usr/bin/ld: scripts/kconfig/lxdialog/util.o: in function `draw_shadow':
+util.c:(.text+0x140d): undefined reference to `wnoutrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/yesno.o: in function `print_buttons':
+yesno.c:(.text+0x6d): undefined reference to `wmove'
+/usr/bin/ld: scripts/kconfig/lxdialog/yesno.o: in function `dialog_yesno':
+yesno.c:(.text+0xc2): undefined reference to `stdscr'
+/usr/bin/ld: yesno.c:(.text+0xc7): undefined reference to `getmaxy'
+/usr/bin/ld: yesno.c:(.text+0xda): undefined reference to `stdscr'
+/usr/bin/ld: yesno.c:(.text+0xdf): undefined reference to `getmaxx'
+/usr/bin/ld: yesno.c:(.text+0xf0): undefined reference to `stdscr'
+/usr/bin/ld: yesno.c:(.text+0xf5): undefined reference to `getmaxx'
+/usr/bin/ld: yesno.c:(.text+0xfc): undefined reference to `stdscr'
+/usr/bin/ld: yesno.c:(.text+0x10b): undefined reference to `getmaxy'
+/usr/bin/ld: yesno.c:(.text+0x11d): undefined reference to `stdscr'
+/usr/bin/ld: yesno.c:(.text+0x13e): undefined reference to `newwin'
+/usr/bin/ld: yesno.c:(.text+0x14e): undefined reference to `keypad'
+/usr/bin/ld: yesno.c:(.text+0x180): undefined reference to `wattrset'
+/usr/bin/ld: yesno.c:(.text+0x18e): undefined reference to `wmove'
+/usr/bin/ld: yesno.c:(.text+0x19b): undefined reference to `acs_map'
+/usr/bin/ld: yesno.c:(.text+0x1a3): undefined reference to `waddch'
+/usr/bin/ld: yesno.c:(.text+0x1c2): undefined reference to `acs_map'
+/usr/bin/ld: yesno.c:(.text+0x1ce): undefined reference to `waddch'
+/usr/bin/ld: yesno.c:(.text+0x1e1): undefined reference to `wattrset'
+/usr/bin/ld: yesno.c:(.text+0x1e7): undefined reference to `acs_map'
+/usr/bin/ld: yesno.c:(.text+0x1ef): undefined reference to `waddch'
+/usr/bin/ld: yesno.c:(.text+0x20d): undefined reference to `wattrset'
+/usr/bin/ld: yesno.c:(.text+0x23f): undefined reference to `wgetch'
+/usr/bin/ld: yesno.c:(.text+0x26b): undefined reference to `delwin'
+/usr/bin/ld: yesno.c:(.text+0x29b): undefined reference to `delwin'
+/usr/bin/ld: yesno.c:(.text+0x2ba): undefined reference to `delwin'
+/usr/bin/ld: yesno.c:(.text+0x2df): undefined reference to `delwin'
+/usr/bin/ld: yesno.c:(.text+0x30d): undefined reference to `delwin'
+/usr/bin/ld: yesno.c:(.text+0x344): undefined reference to `wrefresh'
+/usr/bin/ld: yesno.c:(.text+0x373): undefined reference to `wrefresh'
+/usr/bin/ld: scripts/kconfig/lxdialog/yesno.o: in function `print_buttons':
+yesno.c:(.text+0x7f): undefined reference to `wrefresh'
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
+collect2: error: ld returned 1 exit status
+make[1]: *** [scripts/Makefile.host:123: scripts/kconfig/mconf] Fehler 1
+make: *** [Makefile:703: menuconfig] Fehler 2
+root@linus:/usr/src/linux-stable-rc#
+
+
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
