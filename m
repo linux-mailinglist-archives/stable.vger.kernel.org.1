@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGUHIoZpg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-213897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:10 +0100
+	id OM2SJhdcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:47:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1284CE94D7
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30691E75D2
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D5AB30EE6AD
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:16:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CD1E30440AA
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1AF4218B9;
-	Wed,  4 Feb 2026 15:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34D3274B5F;
+	Wed,  4 Feb 2026 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkLfPoc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VldjAhrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AE528D8D0;
-	Wed,  4 Feb 2026 15:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865BC1C5D77;
+	Wed,  4 Feb 2026 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217879; cv=none; b=jQAIird+CADw80O1Q2Q9evJnDW6HgX/+AwcpD4RbDjh/IP8sxPMHQ9suhOhJxnG8royUrTyKYGYo/4UTHRQGkw+WvDMYy4dJxKfuilD//JXkJKvqJW31iP0ULdQblpYzu6i87UiHFuTnok6OSbkLK2deBS40S/3/XFu+VF0RacM=
+	t=1770216338; cv=none; b=eh4KLkNkRxl5WBTnUghAqTIybg8M7kFBpnEgp8Zqoc3Ndq/YrkPXC+gH1eqtkxxrViUC0tG1yBxTAYqyLLGzb2+4q9NN28fSX094x0FPJVxPF+quyjv3MujJwnyqmIb2BPUu+wRRaFQQuJ9LEZvoMBRZm58a1P8okIe7wRZKCBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217879; c=relaxed/simple;
-	bh=1zzNIXVGasxxtuA0XRCaDveXtkmGjx3Nvr7g8RwD+7A=;
+	s=arc-20240116; t=1770216338; c=relaxed/simple;
+	bh=yIR65TYqZSRxKiKI5ThMrLKm1cCUpNdomoig4mL77bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KhzAhlrBNP5h+0G8U/d/mdSgqNBAMJ/59gmp4oKvj/a0QjxRahIrWlrQMUqt1ae4oaiVlgNT5uS+rETq+bCBXtUQteQEu5Q1nO01mC/EmxLFJQAx3XPna22lg6r+RXVSPJ3BokYeWFp798knb58lX7Y+L5Xp3l3XbxsR5DuWvUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkLfPoc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7348DC4CEF7;
-	Wed,  4 Feb 2026 15:11:18 +0000 (UTC)
+	 MIME-Version; b=X5jOLVL0ZTH3nrULM7eRQmss4Mb53dQS95xuPXsdEqEk7KzSuWmiUqdFRUmx+nIt4xMgx56ZkVVLavHc96pqzv4H3xZg9nqrbP9sI/dVffHxSa5wOdIiNEWHOvOlQWwlK2PlVmvHwwrBAGPNaxTouccgRThZPwIo9CqnmKatZ5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VldjAhrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47ACC4CEF7;
+	Wed,  4 Feb 2026 14:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217878;
-	bh=1zzNIXVGasxxtuA0XRCaDveXtkmGjx3Nvr7g8RwD+7A=;
+	s=korg; t=1770216338;
+	bh=yIR65TYqZSRxKiKI5ThMrLKm1cCUpNdomoig4mL77bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkLfPoc1+Pbos4gpSM4D5hii1uKGMFmTv3A22ZH8nHN6q825kEezw+KGWy6SJYrPA
-	 HnZ6weSfgDKQIbaiqc+JEqle/iGHCKc3u/ndIpZDBHV/VN00e8w6LyPETd99GhzkGH
-	 xAAEYSq9xowwHcO4yLfVs7dZYAayaJgNP5QhxX2U=
+	b=VldjAhrWefOMmP6KI1LPTE9rwUmuXSNRJjRTzeCvtU5xEIfgvUvSzRaPPXIM/L2lf
+	 Xg2PM9no5HVfiV3blAMmpwgEoFzYBW36tywVdnQEtfuNqm4U2ABPha6MIRxabNVTnY
+	 Yf1gY8GJDL4znh5MFWKwdzimAm2lEvC7ZrHadIkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Stanislav Fomichev <sdf@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/280] drm/amd/pm: Workaround SI powertune issue on Radeon 430 (v2)
+Subject: [PATCH 5.10 057/161] net: fou: rename the source for linking
 Date: Wed,  4 Feb 2026 15:38:40 +0100
-Message-ID: <20260204143914.887916284@linuxfoundation.org>
+Message-ID: <20260204143853.812910442@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-213897-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213438-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 1284CE94D7
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 30691E75D2
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 764a90eb02268a23b1bb98be5f4a13671346804a ]
+[ Upstream commit 08d323234d10eab077cbf0093eeb5991478a261a ]
 
-Radeon 430 and 520 are OEM GPUs from 2016~2017
-They have the same device id: 0x6611 and revision: 0x87
+We'll need to link two objects together to form the fou module.
+This means the source can't be called fou, the build system expects
+fou.o to be the combined object.
 
-On the Radeon 430, powertune is buggy and throttles the GPU,
-never allowing it to reach its maximum SCLK. Work around this
-bug by raising the TDP limits we program to the SMC from
-24W (specified by the VBIOS on Radeon 430) to 32W.
-
-Disabling powertune entirely is	not a viable workaround,
-because	it causes the Radeon 520 to heat up above 100 C,
-which I prefer to avoid.
-
-Additionally, revise the maximum SCLK limit. Considering the
-above issue, these GPUs never reached a high SCLK on Linux,
-and the workarounds were added before the GPUs were released,
-so the workaround likely didn't target these specifically.
-Use 780 MHz (the maximum SCLK according to the VBIOS on the
-Radeon 430). Note that the Radeon 520 VBIOS has a higher
-maximum SCLK: 905 MHz, but in practice it doesn't seem to
-perform better with the higher clock, only heats up more.
-
-v2:
-Move the workaround to si_populate_smc_tdp_limits.
-
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 966d70f1e160bdfdecaf7ff2b3f22ad088516e9f)
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ net/ipv4/Makefile              | 1 +
+ net/ipv4/{fou.c => fou_core.c} | 0
+ 2 files changed, 1 insertion(+)
+ rename net/ipv4/{fou.c => fou_core.c} (100%)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index a8278fa75ff9a..bcc4d9fa5b0d2 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -2265,6 +2265,12 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
- 		if (ret)
- 			return ret;
- 
-+		if (adev->pdev->device == 0x6611 && adev->pdev->revision == 0x87) {
-+			/* Workaround buggy powertune on Radeon 430 and 520. */
-+			tdp_limit = 32;
-+			near_tdp_limit = 28;
-+		}
-+
- 		smc_table->dpm2Params.TDPLimit =
- 			cpu_to_be32(si_scale_power_for_smc(tdp_limit, scaling_factor) * 1000);
- 		smc_table->dpm2Params.NearTDPLimit =
-@@ -3448,10 +3454,15 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 		    (adev->pdev->revision == 0x80) ||
- 		    (adev->pdev->revision == 0x81) ||
- 		    (adev->pdev->revision == 0x83) ||
--		    (adev->pdev->revision == 0x87) ||
-+		    (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device != 0x6611) ||
- 		    (adev->pdev->device == 0x6604) ||
- 		    (adev->pdev->device == 0x6605)) {
- 			max_sclk = 75000;
-+		} else if (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device == 0x6611) {
-+			/* Radeon 430 and 520 */
-+			max_sclk = 78000;
- 		}
- 	}
- 
+diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
+index bbdd9c44f14e3..e694a5e5b0302 100644
+--- a/net/ipv4/Makefile
++++ b/net/ipv4/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_IP_MROUTE) += ipmr.o
+ obj-$(CONFIG_IP_MROUTE_COMMON) += ipmr_base.o
+ obj-$(CONFIG_NET_IPIP) += ipip.o
+ gre-y := gre_demux.o
++fou-y := fou_core.o
+ obj-$(CONFIG_NET_FOU) += fou.o
+ obj-$(CONFIG_NET_IPGRE_DEMUX) += gre.o
+ obj-$(CONFIG_NET_IPGRE) += ip_gre.o
+diff --git a/net/ipv4/fou.c b/net/ipv4/fou_core.c
+similarity index 100%
+rename from net/ipv4/fou.c
+rename to net/ipv4/fou_core.c
 -- 
 2.51.0
 
