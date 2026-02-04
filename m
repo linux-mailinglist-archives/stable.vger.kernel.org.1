@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-213680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAfvJalfg2lzmAMAu9opvQ
-	(envelope-from <stable+bounces-213680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:05 +0100
+	id QFwPItpcg2mJlQMAu9opvQ
+	(envelope-from <stable+bounces-213521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9193E7CDB
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:03:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B06E7780
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EFAB301FBFE
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:59:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 73018300FECD
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C66141B371;
-	Wed,  4 Feb 2026 14:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB4841B343;
+	Wed,  4 Feb 2026 14:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOGDeGtt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNN9q76+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606AF35029F;
-	Wed,  4 Feb 2026 14:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608733AEF30;
+	Wed,  4 Feb 2026 14:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217147; cv=none; b=ox7mXNfIP5M85DLRDYTVcEy6plrzg4MUJ4qzGo7qAi9ZAkjvmUV5vTFHKKjazLh6VJ4jJAOq0TjaYEH9SFTWZ8fxyOahjR6/uTQ0VNZo4mKiLIBdx2YTr2rW/KrrmhqM4cU0otGIzfuy3Iv7325JNPRIoU9l8C4TU3KqqNTr6F0=
+	t=1770216614; cv=none; b=oOJcDFYNfU7gkn3CgqBl+F9EGBfy0Vi4pCMDyforv//tv2aKZnBimeb4BXsvvnnj6oQbMPOj0pekclar9vdQ9WoZ6VFHB4t3yA3WNaaHbi/9ZxMP8eX2N5Dfosz4KqlzMUjJp7+4Uk9xOguwai8N3aGodzl/Iem5eeYcWSBG110=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217147; c=relaxed/simple;
-	bh=rZWSHZbQqSWw+25zwR1Y+U4SRNfks3+4AwsNzqGTnWE=;
+	s=arc-20240116; t=1770216614; c=relaxed/simple;
+	bh=gKIfTL5ICpg1zMTN0GWEnlYUST1qHFsm5u+xji+MBb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nw28Ik8cxt63ZksjGyii6pXV800QqzHyK0JyQZAE1pDlyAf6eXeLhdMKIr+fjxXjZYN3R0m/i+6uMovIywk0c5fzhdXVcvrQ5ShPWUOsO341EUrv1r2v0719Avhj0X0bxhvwRHvqXtNdL10zZAXDwneGs+giD5/RGt5yWQIDTQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOGDeGtt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95248C4CEF7;
-	Wed,  4 Feb 2026 14:59:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KIjnktQDdqwZu9rfd6BbAM8ElQpRpplPerJ4KeF0KydEhbwS1SlNbcDNQwjEunWbr/4cZQ2+L34+E+ZiGRh8PmZE5yXSzHw4bZKWDwMYyHPR+7wAHvXAdRezR/iF75DRTU/xAErXk/c8lPxMRoHG92lo1vtlxWpU6IC0efF9lt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNN9q76+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF3EC4CEF7;
+	Wed,  4 Feb 2026 14:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217147;
-	bh=rZWSHZbQqSWw+25zwR1Y+U4SRNfks3+4AwsNzqGTnWE=;
+	s=korg; t=1770216614;
+	bh=gKIfTL5ICpg1zMTN0GWEnlYUST1qHFsm5u+xji+MBb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOGDeGttNMAIubnBS0Exqz1npjebhzRmZo4GRE4OhR+Qdm3qTWcQJJD87SVKNvPPn
-	 BxvndgQmm30MBdxQDPNMdIcTbkZ4dUnrVs0PfBXBFmUxvifP7bWx3LlIsXnYSWEB6Q
-	 gMci1D7aOqa3rZSA8d54xa0FfnA9ZOQ1Kwui9fC4=
+	b=NNN9q76+TJMtV/o7acdikQYOxy7EUyjQkGhkmbhRoTZWzhOk3NGbSN0DdYqE8dj3V
+	 fov+DIaCWdLdxeCnQnJadZgayYxgvxfy3AX6gmBUmoRSV2fMPWrvWER4Wgu9+W+keN
+	 /ttiGhjdjtt8h4z1IdzqbhdkNsXptZvKkvC1VWRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/206] ipv6: use the right ifindex when replying to icmpv6 from localhost
+	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Fernand Sieber <sieberf@amazon.com>
+Subject: [PATCH 5.10 106/161] perf/x86/intel: Do not enable BTS for guests
 Date: Wed,  4 Feb 2026 15:39:29 +0100
-Message-ID: <20260204143903.176534455@linuxfoundation.org>
+Message-ID: <20260204143855.559808924@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +63,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213680-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213521-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A9193E7CDB
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,infradead.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: B5B06E7780
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Fernand Sieber <sieberf@amazon.com>
 
-[ Upstream commit 03cbcdf93866e61beb0063392e6dbb701f03aea2 ]
+commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
 
-When replying to a ICMPv6 echo request that comes from localhost address
-the right output ifindex is 1 (lo) and not rt6i_idev dev index. Use the
-skb device ifindex instead. This fixes pinging to a local address from
-localhost source address.
+By default when users program perf to sample branch instructions
+(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
+interprets this as a special case and enables BTS (Branch Trace Store)
+as an optimization to avoid taking an interrupt on every branch.
 
-$ ping6 -I ::1 2001:1:1::2 -c 3
-PING 2001:1:1::2 (2001:1:1::2) from ::1 : 56 data bytes
-64 bytes from 2001:1:1::2: icmp_seq=1 ttl=64 time=0.037 ms
-64 bytes from 2001:1:1::2: icmp_seq=2 ttl=64 time=0.069 ms
-64 bytes from 2001:1:1::2: icmp_seq=3 ttl=64 time=0.122 ms
+Since BTS doesn't virtualize, this optimization doesn't make sense when
+the request originates from a guest. Add an additional check that
+prevents this optimization for virtualized events (exclude_host).
 
-2001:1:1::2 ping statistics
-3 packets transmitted, 3 received, 0% packet loss, time 2032ms
-rtt min/avg/max/mdev = 0.037/0.076/0.122/0.035 ms
-
-Fixes: 1b70d792cf67 ("ipv6: Use rt6i_idev index for echo replies to a local address")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260121194409.6749-1-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/icmp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/events/perf_event.h |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 71a69166a6bd2..8601c76f3cc93 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -761,7 +761,9 @@ static void icmpv6_echo_reply(struct sk_buff *skb)
- 	fl6.daddr = ipv6_hdr(skb)->saddr;
- 	if (saddr)
- 		fl6.saddr = *saddr;
--	fl6.flowi6_oif = icmp6_iif(skb);
-+	fl6.flowi6_oif = ipv6_addr_loopback(&fl6.daddr) ?
-+			 skb->dev->ifindex :
-+			 icmp6_iif(skb);
- 	fl6.fl6_icmp_type = type;
- 	fl6.flowi6_mark = mark;
- 	fl6.flowi6_uid = sock_net_uid(net, NULL);
--- 
-2.51.0
-
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1088,13 +1088,22 @@ static inline bool intel_pmu_has_bts_per
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	unsigned int hw_event, bts_event;
+ 
+-	if (event->attr.freq)
++	/*
++	 * Only use BTS for fixed rate period==1 events.
++	 */
++	if (event->attr.freq || period != 1)
++		return false;
++
++	/*
++	 * BTS doesn't virtualize.
++	 */
++	if (event->attr.exclude_host)
+ 		return false;
+ 
+ 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
+ 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
+ 
+-	return hw_event == bts_event && period == 1;
++	return hw_event == bts_event;
+ }
+ 
+ static inline bool intel_pmu_has_bts(struct perf_event *event)
 
 
 
