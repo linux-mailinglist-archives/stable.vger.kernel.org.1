@@ -1,135 +1,185 @@
-Return-Path: <stable+bounces-214339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFR2DzqRg2lCpQMAu9opvQ
-	(envelope-from <stable+bounces-214339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 19:34:34 +0100
+	id KPxCKq6Zg2lnpwMAu9opvQ
+	(envelope-from <stable+bounces-214342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 20:10:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93573EBB14
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 19:34:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067D3EBF06
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 20:10:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7D90309A1C8
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 18:30:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49B1B300D9D3
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 19:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F9A4279FE;
-	Wed,  4 Feb 2026 18:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="I0BY7Y2K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC5242848B;
+	Wed,  4 Feb 2026 19:10:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gentwo.org (gentwo.org [62.72.0.81])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93FD426ED6;
-	Wed,  4 Feb 2026 18:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.72.0.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F37631A551;
+	Wed,  4 Feb 2026 19:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770229837; cv=none; b=FWFZaL3RHlnZk1YmTwvIG67JSn2qpHleYUDy59h7/ghzvWSMeVY63vf8JiLVgoKGJX3eKuZj/hKjHc3IvHFfm75Rf3RmjOXa1HVoQ0sL3F8fC8Lp9Wpp1gJOkRwT9ndH1zEB7g3fGoLCKyR7iP3LWzt1k3lmPgjbW4uQj9u7iwU=
+	t=1770232235; cv=none; b=W/fVeUYDKE/bK1H3JuWALUD/UJmDZ1AD2zTzBpLIdWx1rxTd5CVKLC58jDvUOg1xCWUs3REEF29O/kJowvBiTjOiw5Kuo6Xn4kJ5yoAFsk9ZsgKPzevROtlBOwY7zdY1i9kD+FSDVdY35OthihYM79FUPTjU1tpCezFaAJ0VnP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770229837; c=relaxed/simple;
-	bh=OdUb25hwDf7Td6RZQE9eems/6ez37ij9pWo0A8i9afc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=NbNBWg45wdoRvJjCVzKEsTJ1FIXgRoN8t77rjpUs8tSY5J2GhLjYh3qjnZa+jmrZ7vjIGmBc/l9NLlv4OceKlgmzdYzo0rTXavgM9E0cfzI9K9Kb4m9O2vhOXaRentD6U05iXTrLpqJXda9n/KXQMsOtV2HH+lgGAobQBeocKNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=I0BY7Y2K; arc=none smtp.client-ip=62.72.0.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1770229486;
-	bh=OdUb25hwDf7Td6RZQE9eems/6ez37ij9pWo0A8i9afc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=I0BY7Y2Ka/1RFhZQ0vnJeovKXCgV64QfqBLB20+WoAG393kfyRXpGop8523cdl0VA
-	 dzsVy17LbKM3hf65ipzajQZTot0/H11NeCXwD+vyWP8lZnbpMvbf/NHRoS+yVYF7YQ
-	 Z/izDqFw7B8V9Orz+bH1Ur0dya3OhhPoiq7Axm1k=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 98963401E2; Wed, 04 Feb 2026 10:24:46 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 95C19400CA;
-	Wed, 04 Feb 2026 10:24:46 -0800 (PST)
-Date: Wed, 4 Feb 2026 10:24:46 -0800 (PST)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-cc: Hao Li <hao.li@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-    Petr Tesarik <ptesarik@suse.com>, David Rientjes <rientjes@google.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Uladzislau Rezki <urezki@gmail.com>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-    bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-    kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org, 
-    "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v4 00/22] slab: replace cpu (partial) slabs with
- sheaves
-In-Reply-To: <665ff739-73d8-4996-95e0-f09c3e5b6552@suse.cz>
-Message-ID: <2abde505-1e35-8d74-2806-7a3cd430e306@gentwo.org>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz> <imzzlzuzjmlkhxc7hszxh5ba7jksvqcieg5rzyryijkkdhai5q@l2t4ye5quozb> <390d6318-08f3-403b-bf96-4675a0d1fe98@suse.cz> <pdmjsvpkl5nsntiwfwguplajq27ak3xpboq3ab77zrbu763pq7@la3hyiqigpir>
- <665ff739-73d8-4996-95e0-f09c3e5b6552@suse.cz>
+	s=arc-20240116; t=1770232235; c=relaxed/simple;
+	bh=9u3TpbK8w1K/52y6osmChvPV8cT5NfL2XOGtxTZpVt8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nMk89aKOlx70YAS6VwNss1iGsyY9cblVEJSSqPWq7F2eMbETBVPARWOVjMf1YCGC7TMO3aXbi+OTbItZmhyuT32AYq9f3PshP40jgtFkhhEg/THNQAgviN0+zjbPS68/VyxxdwBCDy/pKmcVqMT7IH2OnTsG6bpeCEBUbKe92eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vnhcR-003mff-1y;
+	Wed, 04 Feb 2026 18:28:50 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vnhcP-00000001Z6M-1D42;
+	Wed, 04 Feb 2026 19:28:49 +0100
+Message-ID: <03a74299797f4864d0e563cd9517276f690a4bf0.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 004/161] btrfs: send: check for inline extents in
+ range_is_hole_in_parent()
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>, Qu Wenruo	
+ <wqu@suse.com>, David Sterba <dsterba@suse.com>, Sasha Levin
+ <sashal@kernel.org>
+Date: Wed, 04 Feb 2026 19:28:42 +0100
+In-Reply-To: <20260204143851.919366239@linuxfoundation.org>
+References: <20260204143851.755002596@linuxfoundation.org>
+	 <20260204143851.919366239@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-RFIWeTG+HjFqmv3KQ/AZ"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gentwo.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gentwo.org:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.dev,oracle.com,suse.com,google.com,linux-foundation.org,gmail.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-214339-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gentwo.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cl@gentwo.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-214342-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gentwo.org:mid,gentwo.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 93573EBB14
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.986];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,decadent.org.uk:mid]
+X-Rspamd-Queue-Id: 067D3EBF06
 X-Rspamd-Action: no action
 
-On Wed, 4 Feb 2026, Vlastimil Babka wrote:
 
-> > So I think the performance of the percpu partial list and the sheaves mechanism
-> > is roughly the same, which is consistent with our expectations.
->
-> Thanks!
+--=-RFIWeTG+HjFqmv3KQ/AZ
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There are other considerations that usually do not show up well in
-benchmark tests.
+On Wed, 2026-02-04 at 15:37 +0100, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Qu Wenruo <wqu@suse.com>
+>=20
+> [ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
+>=20
+> Before accessing the disk_bytenr field of a file extent item we need
+> to check if we are dealing with an inline extent.
+> This is because for inline extents their data starts at the offset of
+> the disk_bytenr field. So accessing the disk_bytenr
+> means we are accessing inline data or in case the inline data is less
+> than 8 bytes we can actually cause an invalid
+> memory access if this inline extent item is the first item in the leaf
+> or access metadata from other items.
+>=20
+> Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole write=
+s for sparse files")
+> Reviewed-by: Filipe Manana <fdmanana@suse.com>
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> Reviewed-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/btrfs/send.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+> index d86b4d13cae48..f144171ed6b7e 100644
+> --- a/fs/btrfs/send.c
+> +++ b/fs/btrfs/send.c
+> @@ -5892,6 +5892,8 @@ static int range_is_hole_in_parent(struct send_ctx =
+*sctx,
+>  		extent_end =3D btrfs_file_extent_end(path);
+>  		if (extent_end <=3D start)
+>  			goto next;
+> +		if (btrfs_file_extent_type(leaf, fi) =3D=3D BTRFS_FILE_EXTENT_INLINE)
+> +			return 0;
 
-The sheaves cannot do the spatial optimizations that cpu partial lists
-provide. Fragmentation in slab caches (and therefore the nubmer of
-partial slab pages) will increase since
+This will leak path, unless (at least) commits 4c74a32ad323 "btrfs:
+DEFINE_FREE for struct btrfs_path" and 4ca6f24a52c4 "btrfs: more trivial
+BTRFS_PATH_AUTO_FREE conversions" are also backported.
 
-1. The objects are not immediately returned to their slab pages but end up
-in some queuing structure.
+That could be avoided by using { ret =3D 0; goto out; } here instead of
+simply returning.
 
-2. Available objects from a single slab page are not allocated in sequence
-to empty partial pages and remove the page from the partial lists.
+Ben.
 
-Objects are put into some queue on free and are processed on a FIFO basis.
-Objects allocated may come from lots of different slab pages potentially
-increasing TLB pressure.
+>  		if (btrfs_file_extent_disk_bytenr(leaf, fi) =3D=3D 0) {
+>  			search_start =3D extent_end;
+>  			goto next;
 
+--=20
+Ben Hutchings
+A free society is one where it is safe to be unpopular.
+                                                      - Adlai Stevenson
 
+--=-RFIWeTG+HjFqmv3KQ/AZ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmmDj9oACgkQ57/I7JWG
+EQncew/+Iyth7KNx3FDeNq+Afm9f/o3lbgKI62BFWgkB7KZ1s64q/PaJlUcP4dem
+4k0so1SZJZhJJbvYP508hsJNaFdGwRiAHgvqk3KiryN/84b1tz5doqm95AS+mVig
+u8hermHnGTrfzpGKXIvbmhMZnJqvg5occ5m6rsX0EXDbcas1WoatgiKlaRJWlwcO
+yBDhb932v9aWoVobvXe/Bxh4ZQBaAd4IO10x2d2oEAiuijFw2qNpApCio6aQAhyE
+7mPiZ8ov0+w5Ku7JXOWzQcq1tzC4d3LjV7LKwBcnPUGEaC+EvanlDZAQ8ZwDK/LZ
+XoIbJ1s0f1xHhsP4DIG51hHfbxWAnqaQpLjeUjJdv6GjsGf9zVDwQTwQmQxV30Wq
+4hhoK2vgtVhtLIRV2V7/JoZZAoMK5rfeQj6Eu8j0/Er1Wh7vwfwBNKrrpz7v4Ve8
+PnqHCG2vkMKH+NMu4qQ9B7MwoS/2Sdf2p0AWUwl4Q2yg9Smkp/DJVDgeNv2z53ek
+mhDwTYPDNDB2qGNIDsWAXBlOQ7JQ8aWVVEOGTRZIW3vyEyWRwEfracRZAaLP95VU
+nMYpZzeuBjpwDVP4pm4pYJulE+4EXOPnIWc8cRUOG4TFH0H4DLZeHUqlyBFUiKFy
+Xo0kCeMKGp47U9uNrr5GsTgVN5EGVpaNk+wMSkahJoj67GTVt6E=
+=tjw6
+-----END PGP SIGNATURE-----
+
+--=-RFIWeTG+HjFqmv3KQ/AZ--
 
