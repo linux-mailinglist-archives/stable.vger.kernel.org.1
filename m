@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-214006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLjdOUpqg2l+mgMAu9opvQ
-	(envelope-from <stable+bounces-214006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:26 +0100
+	id wItVNtRmg2nQmQMAu9opvQ
+	(envelope-from <stable+bounces-214058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5C4E964D
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42729E8DE6
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0363316DD95
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:19:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8D030AFA2C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAA44219F3;
-	Wed,  4 Feb 2026 15:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361114266A4;
+	Wed,  4 Feb 2026 15:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlNB7Msr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iodbU7bo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731192D8DA3;
-	Wed,  4 Feb 2026 15:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEF84266AF;
+	Wed,  4 Feb 2026 15:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218244; cv=none; b=lLgw5xQE50RGflwyQPPon/Im/4j8g9w7Txp6I/1D5KZQYyaOTU86j6ON1IHwpvF5zBeKo0KLenBcK1F5/qg+EURCkKi8qlM/JWNs5VDT3VM8RfrfGHQNWVMjvkEx2h/ZQiN8HBUCphABTb9OnHBQC9/mw7HNeVdamzgikxUUFYA=
+	t=1770218421; cv=none; b=D+DTYnzvM3KjEyIMcbCxciPSuKzrSF2lOTcCmfkSEEotkOpFDzEn7EBb5Xn8aHoRpzbmkywvbDIe3o0tS8puMsnl9PbOgm+KgpI46RWSQH/7aYbg//ZfZ3duerhJW4qQuMnUxdd8T5mhFnexvzjzyh5KwDenwYta1VSLC17PdS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218244; c=relaxed/simple;
-	bh=j6+996mCEXFWnuV7qFE3p8PbjrThv1+uZMi1THc88xU=;
+	s=arc-20240116; t=1770218421; c=relaxed/simple;
+	bh=O8quuI1XRNkbxFGvEKhL0zpHIGof1iAsQSiXDAR6xck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JE0xTFv7S5I7A51ijP36Jke+lEGGF0p9Afr5+GRF/wgZJSs5d4EIuFxWix4Hjr9IKvVV21yup58MPHJjbuOzPnLIh0pb4ijej1IGDm3bT0nKPW63gntZHOwTj/07vwK1+ObBsykwMwZ1++B+gzuzJMqU7fkCmMUXC8uPC37KbWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlNB7Msr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05EAC4CEF7;
-	Wed,  4 Feb 2026 15:17:23 +0000 (UTC)
+	 MIME-Version; b=olER61rl88YS0SIjyPlL3BssNc21utN3R+tKhYokk6EMgrwjOAoYMvqkLdnxr5yYgRva+BxRtuVOgBUHo2IYtsR7a/7x52cGU/u6AwYZU5YFtjG51ClsN7HAoQpT17rmF3RiWFEDpSIGj0E29SerwmcH/o7FioYCRIlk8LLLa/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iodbU7bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CED0C19425;
+	Wed,  4 Feb 2026 15:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218244;
-	bh=j6+996mCEXFWnuV7qFE3p8PbjrThv1+uZMi1THc88xU=;
+	s=korg; t=1770218420;
+	bh=O8quuI1XRNkbxFGvEKhL0zpHIGof1iAsQSiXDAR6xck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlNB7MsrMp/W/7TK9gODV1GijunRzfzzBy5B1nd53yAXN0oBHGgIIHJkm2RAyhGVQ
-	 M7oLQfXm3X+4q0NybHXRR+/TonFmzTcP8Mpo1f7uAvf8LpcgDvJvsVDpoQ/Hsk8WIC
-	 le0K6VAupoLzrOvEUJLJfXNKQMGjFxjIdLWgU9VA=
+	b=iodbU7bor51N7jGPVeOUFbcYJTEEpc+9QGcR6PfGZSjCtAQ7c6EBL0veIyP5qfQgY
+	 sI1fzS59W2Bl/41O/CKx0ukycuPkaM7oo98+42e0MknMIS7glaRnIVmauy7tx250pm
+	 S8+jbgCjuPYg+sJAVob3/hyS2dXUCWSs/CQI9mS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Oak Zeng <Oak.Zeng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 254/280] drm/amdkfd: fix a memory leak in device_queue_manager_init()
+	Alice Ryhl <aliceryhl@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.6 25/72] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi` target
 Date: Wed,  4 Feb 2026 15:40:28 +0100
-Message-ID: <20260204143918.789079688@linuxfoundation.org>
+Message-ID: <20260204143846.536861062@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
-References: <20260204143909.614719725@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214006-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214058-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,80 +88,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: 4B5C4E964D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rust-lang.org:url]
+X-Rspamd-Queue-Id: 42729E8DE6
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 80614c509810fc051312d1a7ccac8d0012d6b8d0 upstream.
+commit af20ae33e7dd949f2e770198e74ac8f058cb299d upstream.
 
-If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
-to release the memory allocated by allocate_hiq_sdma_mqd().
-Move deallocate_hiq_sdma_mqd() up to ensure proper function
-visibility at the point of use.
+`rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
+and we apply `rustfmt` to the macro expanded sources generated by the
+`.rsi` target.
 
-Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
+However, under an `O=` pointing to an external folder (i.e. not just
+a subdir), `rustfmt` will not find the file when checking the parent
+folders. Since the edition is configured in this file, this can lead to
+errors when it encounters newer syntax, e.g.
+
+    error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an operator, found `"rust_minimal"`
+      --> samples/rust/rust_minimal.rsi:29:49
+       |
+    28 | impl ::kernel::ModuleMetadata for RustMinimal {
+       |                                               - while parsing this item list starting here
+    29 |     const NAME: &'static ::kernel::str::CStr = c"rust_minimal";
+       |                                                 ^^^^^^^^^^^^^^ expected one of 8 possible tokens
+    30 | }
+       | - the item list ends here
+       |
+       = note: you may be trying to write a c-string literal
+       = note: c-string literals require Rust 2021 or later
+       = help: pass `--edition 2024` to `rustc`
+       = note: for more on editions, read https://doc.rust-lang.org/edition-guide
+
+A workaround is to use `RUSTFMT=n`, which is documented in the `Makefile`
+help for cases where macro expanded source may happen to break `rustfmt`
+for other reasons, but this is not one of those cases.
+
+One solution would be to pass `--edition`, but we want `rustfmt` to
+use the entire configuration, even if currently we essentially use the
+default configuration.
+
+Thus explicitly give the path to the config file to `rustfmt` instead.
+
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260115183832.46595-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ scripts/Makefile.build |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2257,6 +2257,14 @@ static int allocate_hiq_sdma_mqd(struct
- 	return retval;
- }
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -294,7 +294,7 @@ $(obj)/%.o: $(src)/%.rs FORCE
+ quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+       cmd_rustc_rsi_rs = \
+ 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
+-	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
++	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) --config-path $(srctree)/.rustfmt.toml $@
  
-+static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
-+				    struct kfd_mem_obj *mqd)
-+{
-+	WARN(!mqd, "No hiq sdma mqd trunk to free");
-+
-+	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
-+}
-+
- struct device_queue_manager *device_queue_manager_init(struct kfd_dev *dev)
- {
- 	struct device_queue_manager *dqm;
-@@ -2382,19 +2390,13 @@ struct device_queue_manager *device_queu
- 	if (!dqm->ops.initialize(dqm))
- 		return dqm;
- 
-+	deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
-+
- out_free:
- 	kfree(dqm);
- 	return NULL;
- }
- 
--static void deallocate_hiq_sdma_mqd(struct kfd_dev *dev,
--				    struct kfd_mem_obj *mqd)
--{
--	WARN(!mqd, "No hiq sdma mqd trunk to free");
--
--	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
--}
--
- void device_queue_manager_uninit(struct device_queue_manager *dqm)
- {
- 	dqm->ops.uninitialize(dqm);
+ $(obj)/%.rsi: $(src)/%.rs FORCE
+ 	$(call if_changed_dep,rustc_rsi_rs)
 
 
 
