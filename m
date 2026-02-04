@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-213758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFpCHgdkg2nAmAMAu9opvQ
-	(envelope-from <stable+bounces-213758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:43 +0100
+	id KMqROsVog2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-214244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E210AE85B0
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:21:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE5AE9277
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD4523138200
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:09:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D3E732A3CED
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F180742E010;
-	Wed,  4 Feb 2026 15:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911F82D879A;
+	Wed,  4 Feb 2026 15:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvTMltks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DX3qZHml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10F641C2E1;
-	Wed,  4 Feb 2026 15:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AEE2D8768;
+	Wed,  4 Feb 2026 15:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770217408; cv=none; b=mKQ930xONL5dvrqgIIWS4Fr+zzEfIfd2bEO1jQN25Tm8aiM2SusuDz31ll7n+hufhgYK3O1x+cvK/FiW+a8C2ZHBEMQhbUDfB985mZVeIjA3tzLcLDsLT5bZHdv9dMhMGg6j9COdoQXv1+hfCPCbSk6L6wO/ebhNYJHqv7mUCYk=
+	t=1770219044; cv=none; b=X96bnKtbzBRFmDejIDZvwENwlvRTnKdRP1EmAfBIVtsFB4WVWfHJCH659/XJDqqOo9/4wJTAd8/I4d3FPIxAwaNIR4FpFwUWqWt5g1LbWlkzR8yQd7jqq5NMkEvFJBwxROwA1C7ya11MgnAiSde73+ISfG40NGY9NleWmmIWPg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770217408; c=relaxed/simple;
-	bh=ZUym/sVbFHsC92DefzaxGEbCgt7YsgIqnNjCa6seFxI=;
+	s=arc-20240116; t=1770219044; c=relaxed/simple;
+	bh=MLZAk5Xtr51M9d0fjWomJ67di+I1lGWYEiZx2rX5xoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aYEy+mc9rYIX8uLkB2Ore0i/kUw6vTIfDqqTqDwFy44pDJbcEZMWpw926ZmBe5EGEvpLjKY+3YbN1DP0KHdC2CWdIrhuTz/frKx2z3H+uIYV+RmK2OaHisd3FgfWQZ/FGQCJL/wbqhJQ4VocrQS8VSEcuJ2fPwcT9FP7kpu6JIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvTMltks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEF3C4CEF7;
-	Wed,  4 Feb 2026 15:03:27 +0000 (UTC)
+	 MIME-Version; b=dzSabKwRCpSTOtb51DyZtw5RuUD8gw5LpNDjghC3dPzMooJSFY4DVMMcWX2Z6c45XjaRXVFxxRFV7ywPY6sOr7/0CIKA1PFY50msh72q6F0bjvtyavCOLArtRfIme3vWNpHt0rDe6NdA0a7rULifmvRoRu0NnM0ksDpCqtVUvvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DX3qZHml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937FDC116C6;
+	Wed,  4 Feb 2026 15:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770217408;
-	bh=ZUym/sVbFHsC92DefzaxGEbCgt7YsgIqnNjCa6seFxI=;
+	s=korg; t=1770219044;
+	bh=MLZAk5Xtr51M9d0fjWomJ67di+I1lGWYEiZx2rX5xoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvTMltksy4P52VSjAXKh8X33qXigF910UkpMQAGOh3iCtR90FEo0YBgJc0exdtmEp
-	 WS0g9FE9nRS8ZcmMoWFhGuEPxf0gSEFMr+wTF2uRj690wCh9VgqtYAZTR/dFeJCiag
-	 vut31Peds/Rn31G3C44OBbdpIsTxJPplUgIZ5UI0=
+	b=DX3qZHmlyVYHjV/xmZ2hG9Bc+GXpp5BMX1v53gUU3SDZ7lwzVemau68NlLd/Chjva
+	 pCTpcEDDgkasadhYQqM3rcpSEhDCekB/hDLpMnmQ7dHLUUJa/G5efuG7ZBomCr5ZFr
+	 T9S2X53Z1KBTaSPv94YcwvSg2xDuqCVWxu0NKjWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 5.15 201/206] team: Move team device type change at the end of team_port_add
+	Christoph Hellwig <hch@infradead.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Shida Zhang <zhangshida@kylinos.cn>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 050/122] bcache: fix improper use of bi_end_io
 Date: Wed,  4 Feb 2026 15:40:32 +0100
-Message-ID: <20260204143905.469264145@linuxfoundation.org>
+Message-ID: <20260204143853.657011920@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143858.193781818@linuxfoundation.org>
-References: <20260204143858.193781818@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+References: <20260204143851.857060534@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,151 +67,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-213758-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,nvidia.com,kernel.org,163.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214244-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,a2a3b519de727b0f7903];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,nvidia.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: E210AE85B0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,kylinos.cn:email,kernel.dk:email]
+X-Rspamd-Queue-Id: 4CE5AE9277
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Nikola Z. Ivanov" <zlatistiv@gmail.com>
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-[ Upstream commit 0ae9cfc454ea5ead5f3ddbdfe2e70270d8e2c8ef ]
+[ Upstream commit 53280e398471f0bddbb17b798a63d41264651325 ]
 
-Attempting to add a port device that is already up will expectedly fail,
-but not before modifying the team device header_ops.
+Don't call bio->bi_end_io() directly. Use the bio_endio() helper
+function instead, which handles completion more safely and uniformly.
 
-In the case of the syzbot reproducer the gre0 device is
-already in state UP when it attempts to add it as a
-port device of team0, this fails but before that
-header_ops->create of team0 is changed from eth_header to ipgre_header
-in the call to team_dev_type_check_change.
-
-Later when we end up in ipgre_header() struct ip_tunnel* points to nonsense
-as the private data of the device still holds a struct team.
-
-Example sequence of iproute2 commands to reproduce the hang/BUG():
-ip link add dev team0 type team
-ip link add dev gre0 type gre
-ip link set dev gre0 up
-ip link set dev gre0 master team0
-ip link set dev team0 up
-ping -I team0 1.1.1.1
-
-Move team_dev_type_check_change down where all other checks have passed
-as it changes the dev type with no way to restore it in case
-one of the checks that follow it fail.
-
-Also make sure to preserve the origial mtu assignment:
-  - If port_dev is not the same type as dev, dev takes mtu from port_dev
-  - If port_dev is the same type as dev, port_dev takes mtu from dev
-
-This is done by adding a conditional before the call to dev_set_mtu
-to prevent it from assigning port_dev->mtu = dev->mtu and instead
-letting team_dev_type_check_change assign dev->mtu = port_dev->mtu.
-The conditional is needed because the patch moves the call to
-team_dev_type_check_change past dev_set_mtu.
-
-Testing:
-  - team device driver in-tree selftests
-  - Add/remove various devices as slaves of team device
-  - syzbot
-
-Reported-by: syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a2a3b519de727b0f7903
-Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20251122002027.695151-1-zlatistiv@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 4da7c5c3ec34 ("bcache: fix I/O accounting leak in detached_dev_do_request")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c |   23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ drivers/md/bcache/request.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -1181,10 +1181,6 @@ static int team_port_add(struct team *te
- 		return -EPERM;
+diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
+index af345dc6fde14..82fdea7dea7aa 100644
+--- a/drivers/md/bcache/request.c
++++ b/drivers/md/bcache/request.c
+@@ -1104,7 +1104,7 @@ static void detached_dev_end_io(struct bio *bio)
  	}
  
--	err = team_dev_type_check_change(dev, port_dev);
--	if (err)
--		return err;
--
- 	if (port_dev->flags & IFF_UP) {
- 		NL_SET_ERR_MSG(extack, "Device is up. Set it down before adding it as a team port");
- 		netdev_err(dev, "Device %s is up. Set it down before adding it as a team port\n",
-@@ -1202,10 +1198,16 @@ static int team_port_add(struct team *te
- 	INIT_LIST_HEAD(&port->qom_list);
+ 	kfree(ddip);
+-	bio->bi_end_io(bio);
++	bio_endio(bio);
+ }
  
- 	port->orig.mtu = port_dev->mtu;
--	err = dev_set_mtu(port_dev, dev->mtu);
--	if (err) {
--		netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
--		goto err_set_mtu;
-+	/*
-+	 * MTU assignment will be handled in team_dev_type_check_change
-+	 * if dev and port_dev are of different types
-+	 */
-+	if (dev->type == port_dev->type) {
-+		err = dev_set_mtu(port_dev, dev->mtu);
-+		if (err) {
-+			netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
-+			goto err_set_mtu;
-+		}
+ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
+@@ -1121,7 +1121,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
+ 	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
+ 	if (!ddip) {
+ 		bio->bi_status = BLK_STS_RESOURCE;
+-		bio->bi_end_io(bio);
++		bio_endio(bio);
+ 		return;
  	}
  
- 	memcpy(port->orig.dev_addr, port_dev->dev_addr, port_dev->addr_len);
-@@ -1280,6 +1282,10 @@ static int team_port_add(struct team *te
- 		}
- 	}
+@@ -1136,7 +1136,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
  
-+	err = team_dev_type_check_change(dev, port_dev);
-+	if (err)
-+		goto err_set_dev_type;
-+
- 	if (dev->flags & IFF_UP) {
- 		netif_addr_lock_bh(dev);
- 		dev_uc_sync_multiple(port_dev, dev);
-@@ -1298,6 +1304,7 @@ static int team_port_add(struct team *te
- 
- 	return 0;
- 
-+err_set_dev_type:
- err_set_slave_promisc:
- 	__team_option_inst_del_port(team, port);
- 
+ 	if ((bio_op(bio) == REQ_OP_DISCARD) &&
+ 	    !bdev_max_discard_sectors(dc->bdev))
+-		bio->bi_end_io(bio);
++		detached_dev_end_io(bio);
+ 	else
+ 		submit_bio_noacct(bio);
+ }
+-- 
+2.51.0
+
 
 
 
