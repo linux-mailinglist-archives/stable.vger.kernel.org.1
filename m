@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-214105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJL6Og5ng2ntmQMAu9opvQ
-	(envelope-from <stable+bounces-214105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:38 +0100
+	id eHUTO7png2ntmQMAu9opvQ
+	(envelope-from <stable+bounces-214182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:30 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AE5E8E56
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:34:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC87E8FD5
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 648903093787
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:25:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 59A4931072FE
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AAD42315F;
-	Wed,  4 Feb 2026 15:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2191418859B;
+	Wed,  4 Feb 2026 15:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5NtcPCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9Y6XT7h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A57042188E;
-	Wed,  4 Feb 2026 15:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95A82BEFED;
+	Wed,  4 Feb 2026 15:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218581; cv=none; b=SMryazuns/UZbAkRFRrhIjwRq0MhrYL8QWOTUYcVsq4JhL+FVY40eVRdSfAzbCaPCHD5F3GWWwSF7oO8ccmRKNpC7rz4euyjJYzwTXdLFmAeEpiWU5e90D2LZU8vEB3iljfLHDbBHdN6v92Ytu5WIDf7Au2Q3ULUt8qcwlT+hOA=
+	t=1770218838; cv=none; b=WpyymfAx8xUPNd7jgxfWkqTj58estF8i1Dm5QkyrlSOLKxeGUn3IeW+ofvvM1CE2eBp7hvtJ0Dc/WlGi48+CJZzVPjMZg+RrFeGggHZYfoJERPzZEaRgQ1WdvqWleps7KZAxaV7m+MQbPUwubxaNsweOOcKBuS0DlXh+iIFn6Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218581; c=relaxed/simple;
-	bh=3ztzBiwU5wUE3pbaXmAb77q+03JxqlA4l2ZKbuXMrcE=;
+	s=arc-20240116; t=1770218838; c=relaxed/simple;
+	bh=eknv+vQq88jTNr51PLkApTP7lOz/OiLSwmJ5VIOl7gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfUpr0On4pskLxyaGV0W9tT3+XrD1S6oNZ7PhSlo8SvLiJ2J5UzA/0fbmEqzG6mtKjBSDQFBQZr1S0soCws63QakR56aY4z6U/MVosWyOFgq0M7cWLkEnEnX64gSzgu8EGTcyZdjm45U2lH9WHXwXU05vgtbzKzSJXBmOySgsuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5NtcPCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7E9C4CEF7;
-	Wed,  4 Feb 2026 15:22:59 +0000 (UTC)
+	 MIME-Version; b=AQR5V7nDAcvDdGdT/AfIYiI/h1k6p9ZoMNdjelZLr+UeVwwzgJtpnsKHB8EAB1e70vX7AhDC1u4lt1hspdJkfB8QGXF9xt5MTiAaMRxH8FbhhEAnWSRRWeaG4JMDbsl+bEGxn7+CZNuStJ84xxN3rHF2Z7rnlwNn5UQSLbjErks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9Y6XT7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC13C4CEF7;
+	Wed,  4 Feb 2026 15:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770218580;
-	bh=3ztzBiwU5wUE3pbaXmAb77q+03JxqlA4l2ZKbuXMrcE=;
+	s=korg; t=1770218838;
+	bh=eknv+vQq88jTNr51PLkApTP7lOz/OiLSwmJ5VIOl7gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5NtcPCRM2LQayb9Ms6vst/UKEWFMrScpbR4u/vZVeJlLjUvuIE/mttfxYgGbpSO6
-	 WbnO8c2RL40/01hh65BQoNkhmTp5GNuRQUP9iKc5ikdH80gMtKy3Z2LbKWQUkxy35X
-	 7H+awN75WBjYpkg88q1fxFgXxIIttqVD6yTjf8Fg=
+	b=s9Y6XT7hWYOWjfE/x9+ONAqxZayQOnaUfCrKvXd3YOT4qT8giCSvDKAe+HTeALFtf
+	 x8hedGnYKp/h7AA8fXYJEc95GfKY+cJkbXmknrARSLR6LrdmLChSLlgI2U2CkiI/OH
+	 CD26tNYlfMQGCZ0UGNGXskAT1wvcuSWzvWZPE968=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.6 71/72] Revert "net: Remove conditional threaded-NAPI wakeup based on task state."
+	JP Kobryn <inwardvessel@gmail.com>,
+	Qu Wenruo <wqu@suse.com>
+Subject: [PATCH 6.12 76/87] btrfs: prevent use-after-free on folio private data in btrfs_subpage_clear_uptodate()
 Date: Wed,  4 Feb 2026 15:41:14 +0100
-Message-ID: <20260204143848.216983148@linuxfoundation.org>
+Message-ID: <20260204143849.655692755@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
-References: <20260204143845.603454952@linuxfoundation.org>
+In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+References: <20260204143846.906385641@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,99 +66,126 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214182-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214105-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 69AE5E8E56
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 8DC87E8FD5
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: JP Kobryn <inwardvessel@gmail.com>
 
-This reverts commit 03765d5c18084eab40351fda09bc6fc1a343cd07 which is
-commit 56364c910691f6d10ba88c964c9041b9ab777bd6 upstream.
+This is a stable-only patch. The issue was inadvertently fixed in 6.17 [0]
+as part of a refactoring, but this patch serves as a minimal targeted fix
+for prior kernels.
 
-It is only for issues around PREEMPT_RT, which is not in the 6.6.y tree,
-so revert this for now.
+Users of filemap_lock_folio() need to guard against the situation where
+release_folio() has been invoked during reclaim but the folio was
+ultimately not removed from the page cache. This patch covers one location
+that was overlooked.
 
-Link: https://lore.kernel.org/r/20260120103833.4kssDD1Y@linutronix.de
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Wen Yang <wen.yang@linux.dev>
+After acquiring the folio, use set_folio_extent_mapped() to ensure the
+folio private state is valid. This is especially important in the subpage
+case, where the private field is an allocated struct containing bitmap and
+lock data.
+
+Without this protection, the race below is possible:
+
+[mm] page cache reclaim path        [fs] relocation in subpage mode
+shrink_folio_list()
+  folio_trylock() /* lock acquired */
+  filemap_release_folio()
+    mapping->a_ops->release_folio()
+      btrfs_release_folio()
+        __btrfs_release_folio()
+          clear_folio_extent_mapped()
+            btrfs_detach_subpage()
+              subpage = folio_detach_private(folio)
+              btrfs_free_subpage(subpage)
+                kfree(subpage) /* point A */
+
+                                   prealloc_file_extent_cluster()
+                                     filemap_lock_folio()
+                                       folio_try_get() /* inc refcount */
+                                       folio_lock() /* wait for lock */
+
+  if (...)
+    ...
+  else if (!mapping || !__remove_mapping(..))
+    /*
+     * __remove_mapping() returns zero when
+     * folio_ref_freeze(folio, refcount) fails /* point B */
+     */
+    goto keep_locked /* folio remains in cache */
+
+keep_locked:
+  folio_unlock(folio) /* lock released */
+
+                                   /* lock acquired */
+                                   btrfs_subpage_clear_uptodate()
+                                     /* use-after-free */
+                                     subpage = folio_get_private(folio)
+
+[0] 4e346baee95f ("btrfs: reloc: unconditionally invalidate the page cache for each cluster")
+
+Fixes: 9d9ea1e68a05 ("btrfs: subpage: fix relocation potentially overwriting last page data")
+Cc: stable@vger.kernel.org # 6.10-6.16
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/btrfs/relocation.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4539,7 +4539,13 @@ static inline void ____napi_schedule(str
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2811,6 +2811,20 @@ static noinline_for_stack int prealloc_f
+ 		 * will re-read the whole page anyway.
  		 */
- 		thread = READ_ONCE(napi->thread);
- 		if (thread) {
--			set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
-+			/* Avoid doing set_bit() if the thread is in
-+			 * INTERRUPTIBLE state, cause napi_thread_wait()
-+			 * makes sure to proceed with napi polling
-+			 * if the thread is explicitly woken from here.
+ 		if (!IS_ERR(folio)) {
++			/*
++			 * release_folio() could have cleared the folio private data
++			 * while we were not holding the lock. Reset the mapping if
++			 * needed so subpage operations can access a valid private
++			 * folio state.
 +			 */
-+			if (READ_ONCE(thread->__state) != TASK_INTERRUPTIBLE)
-+				set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
- 			wake_up_process(thread);
- 			return;
- 		}
-@@ -6695,6 +6701,8 @@ static int napi_poll(struct napi_struct
- 
- static int napi_thread_wait(struct napi_struct *napi)
- {
-+	bool woken = false;
++			ret = set_folio_extent_mapped(folio);
++			if (ret) {
++				folio_unlock(folio);
++				folio_put(folio);
 +
- 	set_current_state(TASK_INTERRUPTIBLE);
- 
- 	while (!kthread_should_stop()) {
-@@ -6703,13 +6711,15 @@ static int napi_thread_wait(struct napi_
- 		 * Testing SCHED bit is not enough because SCHED bit might be
- 		 * set by some other busy poll thread or by napi_disable().
- 		 */
--		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state)) {
-+		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state) || woken) {
- 			WARN_ON(!list_empty(&napi->poll_list));
- 			__set_current_state(TASK_RUNNING);
- 			return 0;
- 		}
- 
- 		schedule();
-+		/* woken being true indicates this thread owns this napi. */
-+		woken = true;
- 		set_current_state(TASK_INTERRUPTIBLE);
- 	}
- 	__set_current_state(TASK_RUNNING);
++				return ret;
++			}
++
+ 			btrfs_subpage_clear_uptodate(fs_info, folio, i_size,
+ 					round_up(i_size, PAGE_SIZE) - i_size);
+ 			folio_unlock(folio);
 
 
 
