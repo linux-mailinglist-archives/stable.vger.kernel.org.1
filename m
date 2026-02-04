@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-213405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QED3ClRbg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:36 +0100
+	id wHIKHctrg2l+mgMAu9opvQ
+	(envelope-from <stable+bounces-213878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAFAE74A2
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:44:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729FFE990B
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A925E301051B
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:43:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DC17A305982E
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A27240F8C6;
-	Wed,  4 Feb 2026 14:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF6341C30C;
+	Wed,  4 Feb 2026 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL1vwJFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOx3SncZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1723280A3B;
-	Wed,  4 Feb 2026 14:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC4B221F17;
+	Wed,  4 Feb 2026 15:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216228; cv=none; b=U2wkicP/uIeViOCxN8tjYFGeV0CjBgTKoELsbPUWRba7rf/atRUqughJgA5KeNLiy3d2LrKMmkrRiIfjqJuGQ4XxsKUK97pUbH/HHc7xfRLE8sRKzsAs+7ItrJmNxuESpMU7kgiaXdcG/lRZVdKAXXNqoyS+NYfK6g2GOi5E7WQ=
+	t=1770217815; cv=none; b=c293o8SAUih6wAv8ovddVaoxWaAhhkoN19ZjxHwxh+4Viv8GbNA/xfjekPZMYIHLMXXvgXQy705NkqO3JSS8GgAkC+yegghwKc5Npb2qTrdqNAcbB8d2Ko/nBYjeKPeBqIvnIgT9m3lAd0BHwBrXowgBfOYabw3kQHTVcs54T2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216228; c=relaxed/simple;
-	bh=ojvybpUOVABD/T8gQD28sGV2jGI5unZxtdSfJ9Gi6Fg=;
+	s=arc-20240116; t=1770217815; c=relaxed/simple;
+	bh=0E9YX59eDMih1j/AXtgc8mPo+lYRkZG7L9IY6SFUots=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTcbvZTcVpxjYN9NVZxP21XbNfcFo2I0c91p61TK3a+RrunEhGZ1RUMu7wBr+KWw6nWpKcQroOigyqsGs1p0rtVoNk0tc1GZaOyaU7fXGCKjXBOjjWRpZzo6we20DP1hp8KRkPPbQASJid4RbGe+OK3hb5+rO6Q8CRp+Q6Z4hFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL1vwJFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27224C4CEF7;
-	Wed,  4 Feb 2026 14:43:46 +0000 (UTC)
+	 MIME-Version; b=cyRqF/f7/BD30xGgIVXyPKetumN2McI6yLEd/ND/MI5HyRm5aXIzR7Jed1lxmAgJs80VKiOnmEA0qT7YWlX+CL/6SoS5LcIkCk/vWUUvIKDSeTdrOPsN+Txmb2GTkatIWyVI6Zh/7jTSUIepP00jEOqkVZ+/39mJ/n4EaKTlGGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOx3SncZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16417C4CEF7;
+	Wed,  4 Feb 2026 15:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216227;
-	bh=ojvybpUOVABD/T8gQD28sGV2jGI5unZxtdSfJ9Gi6Fg=;
+	s=korg; t=1770217815;
+	bh=0E9YX59eDMih1j/AXtgc8mPo+lYRkZG7L9IY6SFUots=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PL1vwJFBVu4GDHNTSlZy5We19qE3t5DYbQYsIOzB+qzW9W3fzCIQlcNgjd4QaYJ0V
-	 P5jysMTHmlns7upeo+e09BvcTIuRP+iWOT3XKQmARdHMTnjS7KH9f6/fdaIR9bkEwg
-	 5qNf8nzc7r3yECGrtv3KBUeTFP8MXLkGkl7QKtEk=
+	b=dOx3SncZ0gdaAnHFFiyy50KAT1dgEv04nOfm5r0cjgtg7Zw6h+ESIHJNSqw1x0mym
+	 DXHs8AX8E9xat7qvvzr2JbKm+4RGKd2TCUyvSyQeEMIQsrqW62S4OpYwJIKXhGPkZq
+	 dQ4JvMGKAvbacJ59CPePFy/ZrUWDIwfuSMkOi50s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Niklas Cassel <niklas.cassel@wdc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/161] btrfs: send: check for inline extents in range_is_hole_in_parent()
+Subject: [PATCH 6.1 093/280] ata: libata: cleanup fua support detection
 Date: Wed,  4 Feb 2026 15:37:47 +0100
-Message-ID: <20260204143851.919366239@linuxfoundation.org>
+Message-ID: <20260204143913.001562869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-213405-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-213878-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,55 +90,237 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 8CAFAE74A2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email,lst.de:email,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 729FFE990B
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
+[ Upstream commit 4d2e4980a5289ae31a1cff40d258b68573182a37 ]
 
-Before accessing the disk_bytenr field of a file extent item we need
-to check if we are dealing with an inline extent.
-This is because for inline extents their data starts at the offset of
-the disk_bytenr field. So accessing the disk_bytenr
-means we are accessing inline data or in case the inline data is less
-than 8 bytes we can actually cause an invalid
-memory access if this inline extent item is the first item in the leaf
-or access metadata from other items.
+Move the detection of a device FUA support from
+ata_scsiop_mode_sense()/ata_dev_supports_fua() to device scan time in
+ata_dev_configure().
 
-Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+The function ata_dev_config_fua() is introduced to detect if a device
+supports FUA and this support is indicated using the new device flag
+ATA_DFLAG_FUA.
+
+In order to blacklist known buggy devices, the horkage flag
+ATA_HORKAGE_NO_FUA is introduced. Similarly to other horkage flags, the
+libata.force= arguments "fua" and "nofua" are also introduced to allow
+a user to control this horkage flag through the "force" libata
+module parameter.
+
+The ATA_DFLAG_FUA device flag is set only and only if all the following
+conditions are met:
+* libata.fua module parameter is set to 1
+* The device supports the WRITE DMA FUA EXT command,
+* The device is not marked with the ATA_HORKAGE_NO_FUA flag, either from
+  the blacklist or set by the user with libata.force=nofua
+* The device supports NCQ (while this is not mandated by the standards,
+  this restriction is introduced to avoid problems with older non-NCQ
+  devices).
+
+Enabling or diabling libata FUA support for all devices can now also be
+done using the "force=[no]fua" module parameter when libata.fua is set
+to 1.
+
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Stable-dep-of: c8c6fb886f57 ("ata: libata: Print features also for ATAPI devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../admin-guide/kernel-parameters.txt         |  3 ++
+ drivers/ata/libata-core.c                     | 30 ++++++++++++++++++-
+ drivers/ata/libata-scsi.c                     | 30 ++-----------------
+ include/linux/libata.h                        |  8 +++--
+ 4 files changed, 39 insertions(+), 32 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index d86b4d13cae48..f144171ed6b7e 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -5892,6 +5892,8 @@ static int range_is_hole_in_parent(struct send_ctx *sctx,
- 		extent_end = btrfs_file_extent_end(path);
- 		if (extent_end <= start)
- 			goto next;
-+		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE)
-+			return 0;
- 		if (btrfs_file_extent_disk_bytenr(leaf, fi) == 0) {
- 			search_start = extent_end;
- 			goto next;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 05ab068c1cc6d..b026eb1c4c7db 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2852,6 +2852,9 @@
+ 			* [no]setxfer: Indicate if transfer speed mode setting
+ 			  should be skipped.
+ 
++			* [no]fua: Disable or enable FUA (Force Unit Access)
++			  support for devices supporting this feature.
++
+ 			* dump_id: Dump IDENTIFY data.
+ 
+ 			* disable: Disable this device.
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 98d610c37e8c7..31c8156a4f3d3 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -2513,6 +2513,28 @@ static void ata_dev_config_chs(struct ata_device *dev)
+ 			     dev->heads, dev->sectors);
+ }
+ 
++static void ata_dev_config_fua(struct ata_device *dev)
++{
++	/* Ignore FUA support if its use is disabled globally */
++	if (!libata_fua)
++		goto nofua;
++
++	/* Ignore devices without support for WRITE DMA FUA EXT */
++	if (!(dev->flags & ATA_DFLAG_LBA48) || !ata_id_has_fua(dev->id))
++		goto nofua;
++
++	/* Ignore known bad devices and devices that lack NCQ support */
++	if (!ata_ncq_supported(dev) || (dev->horkage & ATA_HORKAGE_NO_FUA))
++		goto nofua;
++
++	dev->flags |= ATA_DFLAG_FUA;
++
++	return;
++
++nofua:
++	dev->flags &= ~ATA_DFLAG_FUA;
++}
++
+ static void ata_dev_config_devslp(struct ata_device *dev)
+ {
+ 	u8 *sata_setting = dev->link->ap->sector_buf;
+@@ -2601,7 +2623,8 @@ static void ata_dev_print_features(struct ata_device *dev)
+ 		return;
+ 
+ 	ata_dev_info(dev,
+-		     "Features:%s%s%s%s%s%s\n",
++		     "Features:%s%s%s%s%s%s%s\n",
++		     dev->flags & ATA_DFLAG_FUA ? " FUA" : "",
+ 		     dev->flags & ATA_DFLAG_TRUSTED ? " Trust" : "",
+ 		     dev->flags & ATA_DFLAG_DA ? " Dev-Attention" : "",
+ 		     dev->flags & ATA_DFLAG_DEVSLP ? " Dev-Sleep" : "",
+@@ -2762,6 +2785,7 @@ int ata_dev_configure(struct ata_device *dev)
+ 			ata_dev_config_chs(dev);
+ 		}
+ 
++		ata_dev_config_fua(dev);
+ 		ata_dev_config_devslp(dev);
+ 		ata_dev_config_sense_reporting(dev);
+ 		ata_dev_config_zac(dev);
+@@ -4199,6 +4223,9 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
+ 	 */
+ 	{ "SATADOM-ML 3ME",		NULL,	ATA_HORKAGE_NO_LOG_DIR },
+ 
++	/* Buggy FUA */
++	{ "Maxtor",		"BANC1G10",	ATA_HORKAGE_NO_FUA },
++
+ 	/* End Marker */
+ 	{ }
+ };
+@@ -6351,6 +6378,7 @@ static const struct ata_force_param force_tbl[] __initconst = {
+ 	force_horkage_onoff(lpm,	ATA_HORKAGE_NOLPM),
+ 	force_horkage_onoff(setxfer,	ATA_HORKAGE_NOSETXFER),
+ 	force_horkage_on(dump_id,	ATA_HORKAGE_DUMP_ID),
++	force_horkage_onoff(fua,	ATA_HORKAGE_NO_FUA),
+ 
+ 	force_horkage_on(disable,	ATA_HORKAGE_DISABLE),
+ };
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index c838bc8cc4f3d..430970db482a8 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -2283,30 +2283,6 @@ static unsigned int ata_msense_rw_recovery(u8 *buf, bool changeable)
+ 	return sizeof(def_rw_recovery_mpage);
+ }
+ 
+-/*
+- * We can turn this into a real blacklist if it's needed, for now just
+- * blacklist any Maxtor BANC1G10 revision firmware
+- */
+-static int ata_dev_supports_fua(u16 *id)
+-{
+-	unsigned char model[ATA_ID_PROD_LEN + 1], fw[ATA_ID_FW_REV_LEN + 1];
+-
+-	if (!libata_fua)
+-		return 0;
+-	if (!ata_id_has_fua(id))
+-		return 0;
+-
+-	ata_id_c_string(id, model, ATA_ID_PROD, sizeof(model));
+-	ata_id_c_string(id, fw, ATA_ID_FW_REV, sizeof(fw));
+-
+-	if (strcmp(model, "Maxtor"))
+-		return 1;
+-	if (strcmp(fw, "BANC1G10"))
+-		return 1;
+-
+-	return 0; /* blacklisted */
+-}
+-
+ /**
+  *	ata_scsiop_mode_sense - Simulate MODE SENSE 6, 10 commands
+  *	@args: device IDENTIFY data / SCSI command of interest.
+@@ -2330,7 +2306,7 @@ static unsigned int ata_scsiop_mode_sense(struct ata_scsi_args *args, u8 *rbuf)
+ 	};
+ 	u8 pg, spg;
+ 	unsigned int ebd, page_control, six_byte;
+-	u8 dpofua, bp = 0xff;
++	u8 dpofua = 0, bp = 0xff;
+ 	u16 fp;
+ 
+ 	six_byte = (scsicmd[0] == MODE_SENSE);
+@@ -2393,9 +2369,7 @@ static unsigned int ata_scsiop_mode_sense(struct ata_scsi_args *args, u8 *rbuf)
+ 		goto invalid_fld;
+ 	}
+ 
+-	dpofua = 0;
+-	if (ata_dev_supports_fua(args->id) && (dev->flags & ATA_DFLAG_LBA48) &&
+-	    (!(dev->flags & ATA_DFLAG_PIO) || dev->multi_count))
++	if (dev->flags & ATA_DFLAG_FUA)
+ 		dpofua = 1 << 4;
+ 
+ 	if (six_byte) {
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 99886930fb819..d7f86de11d18e 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -90,6 +90,7 @@ enum {
+ 	ATA_DFLAG_ACPI_FAILED	= (1 << 6), /* ACPI on devcfg has failed */
+ 	ATA_DFLAG_AN		= (1 << 7), /* AN configured */
+ 	ATA_DFLAG_TRUSTED	= (1 << 8), /* device supports trusted send/recv */
++	ATA_DFLAG_FUA		= (1 << 9), /* device supports FUA */
+ 	ATA_DFLAG_DMADIR	= (1 << 10), /* device requires DMADIR */
+ 	ATA_DFLAG_CFG_MASK	= (1 << 12) - 1,
+ 
+@@ -114,9 +115,9 @@ enum {
+ 	ATA_DFLAG_D_SENSE	= (1 << 29), /* Descriptor sense requested */
+ 	ATA_DFLAG_ZAC		= (1 << 30), /* ZAC device */
+ 
+-	ATA_DFLAG_FEATURES_MASK	= ATA_DFLAG_TRUSTED | ATA_DFLAG_DA | \
+-				  ATA_DFLAG_DEVSLP | ATA_DFLAG_NCQ_SEND_RECV | \
+-				  ATA_DFLAG_NCQ_PRIO,
++	ATA_DFLAG_FEATURES_MASK	= (ATA_DFLAG_TRUSTED | ATA_DFLAG_DA |	\
++				   ATA_DFLAG_DEVSLP | ATA_DFLAG_NCQ_SEND_RECV | \
++				   ATA_DFLAG_NCQ_PRIO | ATA_DFLAG_FUA),
+ 
+ 	ATA_DEV_UNKNOWN		= 0,	/* unknown device */
+ 	ATA_DEV_ATA		= 1,	/* ATA device */
+@@ -389,6 +390,7 @@ enum {
+ 	ATA_HORKAGE_NO_NCQ_ON_ATI = (1 << 27),	/* Disable NCQ on ATI chipset */
+ 	ATA_HORKAGE_NO_ID_DEV_LOG = (1 << 28),	/* Identify device log missing */
+ 	ATA_HORKAGE_NO_LOG_DIR	= (1 << 29),	/* Do not read log directory */
++	ATA_HORKAGE_NO_FUA	= (1 << 30),	/* Do not use FUA */
+ 
+ 	 /* DMA mask for user DMA control: User visible values; DO NOT
+ 	    renumber */
 -- 
 2.51.0
 
