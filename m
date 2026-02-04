@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-213486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213955-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFffE2Ndg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:23 +0100
+	id qAKVEAtlg2nAmAMAu9opvQ
+	(envelope-from <stable+bounces-213955-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB3FE785E
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:53:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045E9E88A0
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F3DBE30616C4
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:48:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E123130839C1
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF831295D90;
-	Wed,  4 Feb 2026 14:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EF0423A6C;
+	Wed,  4 Feb 2026 15:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMizNWZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOiw6OqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D6B27FD56;
-	Wed,  4 Feb 2026 14:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6755A40FD81;
+	Wed,  4 Feb 2026 15:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216500; cv=none; b=QfR0BHkAOGQE9qAjeV3HtcODkmia1cHxkoXICd3mdBRJPRHZYHHXxr+oy3NQePYXJo6K13eHm2x4TKDpmPtCw45VGWMnuHZygkw3bSe7ud2d76IL2NL5QBvnS76DaT5aQi4CMdK3HGGMTT4xOyPzl6zm7mD5JtfCuBEBTy7Aleg=
+	t=1770218071; cv=none; b=Ypqrospn+7zfOMnqsdNEIcDT5osDKoQ1kwxbESkqAcncwzoWRajxuLyXjIgtdjCwNQQxvjhtUGUnHBE//N69cxuaCVw5AIbpOMQl3UoMAnczgsVcxnjKgRlbtwf/zbMDh+BIM1J83CvhgZGnewSUAlerxYDJldnYMR7cu5Nywuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216500; c=relaxed/simple;
-	bh=OUHYiHeXnW9ieoTYq0TCyXTUnqAJwadtPLUffGMQ8A8=;
+	s=arc-20240116; t=1770218071; c=relaxed/simple;
+	bh=VYcUvEzPhMNEalBPS4HeF+QOkteM9riyhgArfK5eSfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvw82oWKxt966ty19USPy3aUmXWASdFt9z+ZY7eTU9wRFNXCGXJkvKzRDgz7D7ZWBcGWk4bo0clkssIz/4M54JdKyo/48Y+dQtZPTfMRODHZLYUpC+CBEQSBLMR+HSoHgcHwET6NG85ladOynwWoelHxFLBYl8lTsoBQj1I+ZS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMizNWZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5B5C116C6;
-	Wed,  4 Feb 2026 14:48:19 +0000 (UTC)
+	 MIME-Version; b=MVOmE9iX8WlELCcXYtVzzClaHtkgkbXh8lJYnt9FYhhkGWQ7umfs5xMfZw8T8PhCr7hlmBE8udITLOz5zzw2WCtU7BXaSushDsbSM/2dcA4oO/S6NyGkRIPNITIGCXxT0D/P+oUAHYVNT/6XCtqMLtJoQNtcS+RSgUPWc4fdFCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOiw6OqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D165AC4CEF7;
+	Wed,  4 Feb 2026 15:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216500;
-	bh=OUHYiHeXnW9ieoTYq0TCyXTUnqAJwadtPLUffGMQ8A8=;
+	s=korg; t=1770218071;
+	bh=VYcUvEzPhMNEalBPS4HeF+QOkteM9riyhgArfK5eSfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMizNWZmGeeGxXKY7W9TtrqtmvbWc+zQbfE8gzU+hNpOF6bPgzY4O5R1+irNboiEx
-	 Rpx7Qsp5wDNeq26jt94Eb6XrbQa5MK5hIp41AYw/3Vjf95o6ZJiaXvXAPn99wfqxq8
-	 +4wItBwl3bcEAhUX9EqWjPVHFBaZDjn8X83CNAQw=
+	b=uOiw6OqJpk6zkdCyIAI52fsl641DnuPStT65sw3gWIHpCM36n0GH8NE7AT/p81O3o
+	 ZUgA23nCfxqtCBjGadwXxnHff1g6Ve6hBddq1CofSoayzCnsUCwZBmrhAi47XIb8dP
+	 qUofT5WefRTGKviTppP3n5Knrjq/1LK21vCuYsaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.10 107/161] irqchip/gic-v3-its: Avoid truncating memory addresses
+	syzbot+f2d245f1d76bbfa50e4c@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 196/280] nfc: llcp: Fix memleak in nfc_llcp_send_ui_frame().
 Date: Wed,  4 Feb 2026 15:39:30 +0100
-Message-ID: <20260204143855.595223646@linuxfoundation.org>
+Message-ID: <20260204143916.658754695@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +67,203 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213486-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-213955-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arndb.de:email]
-X-Rspamd-Queue-Id: 9DB3FE785E
+	TAGGED_RCPT(0.00)[stable,f2d245f1d76bbfa50e4c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 045E9E88A0
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
+[ Upstream commit 165c34fb6068ff153e3fc99a932a80a9d5755709 ]
 
-On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
-allocations to be backed by addresses physical memory above the 32-bit
-address limit, as found while experimenting with larger VMSPLIT
-configurations.
+syzbot reported various memory leaks related to NFC, struct
+nfc_llcp_sock, sk_buff, nfc_dev, etc. [0]
 
-This caused the qemu virt model to crash in the GICv3 driver, which
-allocates the 'itt' object using GFP_KERNEL. Since all memory below
-the 4GB physical address limit is in ZONE_DMA in this configuration,
-kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
-ITS driver stores the physical address in a 32-bit 'unsigned long'
-variable.
+The leading log hinted that nfc_llcp_send_ui_frame() failed
+to allocate skb due to sock_error(sk) being -ENXIO.
 
-Change the itt_addr variable to the correct phys_addr_t type instead,
-along with all other variables in this driver that hold a physical
-address.
+ENXIO is set by nfc_llcp_socket_release() when struct
+nfc_llcp_local is destroyed by local_cleanup().
 
-The gicv5 driver correctly uses u64 variables, while all other irqchip
-drivers don't call virt_to_phys or similar interfaces. It's expected that
-other device drivers have similar issues, but fixing this one is
-sufficient for booting a virtio based guest.
+The problem is that there is no synchronisation between
+nfc_llcp_send_ui_frame() and local_cleanup(), and skb
+could be put into local->tx_queue after it was purged in
+local_cleanup():
 
-Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  CPU1                          CPU2
+  ----                          ----
+  nfc_llcp_send_ui_frame()      local_cleanup()
+  |- do {                       '
+     |- pdu = nfc_alloc_send_skb(..., &err)
+     |                          .
+     |                          |- nfc_llcp_socket_release(local, false, ENXIO);
+     |                          |- skb_queue_purge(&local->tx_queue);      |
+     |                          '                                          |
+     |- skb_queue_tail(&local->tx_queue, pdu);                             |
+    ...                                                                    |
+     |- pdu = nfc_alloc_send_skb(..., &err)                                |
+                                       ^._________________________________.'
+
+local_cleanup() is called for struct nfc_llcp_local only
+after nfc_llcp_remove_local() unlinks it from llcp_devices.
+
+If we hold local->tx_queue.lock then, we can synchronise
+the thread and nfc_llcp_send_ui_frame().
+
+Let's do that and check list_empty(&local->list) before
+queuing skb to local->tx_queue in nfc_llcp_send_ui_frame().
+
+[0]:
+[   56.074943][ T6096] llcp: nfc_llcp_send_ui_frame: Could not allocate PDU (error=-6)
+[   64.318868][ T5813] kmemleak: 6 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+BUG: memory leak
+unreferenced object 0xffff8881272f6800 (size 1024):
+  comm "syz.0.17", pid 6096, jiffies 4294942766
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    27 00 03 40 00 00 00 00 00 00 00 00 00 00 00 00  '..@............
+  backtrace (crc da58d84d):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4979 [inline]
+    slab_alloc_node mm/slub.c:5284 [inline]
+    __do_kmalloc_node mm/slub.c:5645 [inline]
+    __kmalloc_noprof+0x3e3/0x6b0 mm/slub.c:5658
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    sk_prot_alloc+0x11a/0x1b0 net/core/sock.c:2239
+    sk_alloc+0x36/0x360 net/core/sock.c:2295
+    nfc_llcp_sock_alloc+0x37/0x130 net/nfc/llcp_sock.c:979
+    llcp_sock_create+0x71/0xd0 net/nfc/llcp_sock.c:1044
+    nfc_sock_create+0xc9/0xf0 net/nfc/af_nfc.c:31
+    __sock_create+0x1a9/0x340 net/socket.c:1605
+    sock_create net/socket.c:1663 [inline]
+    __sys_socket_create net/socket.c:1700 [inline]
+    __sys_socket+0xb9/0x1a0 net/socket.c:1747
+    __do_sys_socket net/socket.c:1761 [inline]
+    __se_sys_socket net/socket.c:1759 [inline]
+    __x64_sys_socket+0x1b/0x30 net/socket.c:1759
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+BUG: memory leak
+unreferenced object 0xffff88810fbd9800 (size 240):
+  comm "syz.0.17", pid 6096, jiffies 4294942850
+  hex dump (first 32 bytes):
+    68 f0 ff 08 81 88 ff ff 68 f0 ff 08 81 88 ff ff  h.......h.......
+    00 00 00 00 00 00 00 00 00 68 2f 27 81 88 ff ff  .........h/'....
+  backtrace (crc 6cc652b1):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4979 [inline]
+    slab_alloc_node mm/slub.c:5284 [inline]
+    kmem_cache_alloc_node_noprof+0x36f/0x5e0 mm/slub.c:5336
+    __alloc_skb+0x203/0x240 net/core/skbuff.c:660
+    alloc_skb include/linux/skbuff.h:1383 [inline]
+    alloc_skb_with_frags+0x69/0x3f0 net/core/skbuff.c:6671
+    sock_alloc_send_pskb+0x379/0x3e0 net/core/sock.c:2965
+    sock_alloc_send_skb include/net/sock.h:1859 [inline]
+    nfc_alloc_send_skb+0x45/0x80 net/nfc/core.c:724
+    nfc_llcp_send_ui_frame+0x162/0x360 net/nfc/llcp_commands.c:766
+    llcp_sock_sendmsg+0x14c/0x1d0 net/nfc/llcp_sock.c:814
+    sock_sendmsg_nosec net/socket.c:727 [inline]
+    __sock_sendmsg net/socket.c:742 [inline]
+    __sys_sendto+0x2d8/0x2f0 net/socket.c:2244
+    __do_sys_sendto net/socket.c:2251 [inline]
+    __se_sys_sendto net/socket.c:2247 [inline]
+    __x64_sys_sendto+0x28/0x30 net/socket.c:2247
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 94f418a20664 ("NFC: UI frame sending routine implementation")
+Reported-by: syzbot+f2d245f1d76bbfa50e4c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/697569c7.a00a0220.33ccc7.0014.GAE@google.com/T/#u
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260125010214.1572439-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/nfc/llcp_commands.c | 17 ++++++++++++++++-
+ net/nfc/llcp_core.c     |  4 +++-
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -609,7 +609,7 @@ static struct its_collection *its_build_
- 						 struct its_cmd_block *cmd,
- 						 struct its_cmd_desc *desc)
- {
--	unsigned long itt_addr;
-+	phys_addr_t itt_addr;
- 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
+diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
+index e2680a3bef799..b652323bc2c12 100644
+--- a/net/nfc/llcp_commands.c
++++ b/net/nfc/llcp_commands.c
+@@ -778,8 +778,23 @@ int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock, u8 ssap, u8 dsap,
+ 		if (likely(frag_len > 0))
+ 			skb_put_data(pdu, msg_ptr, frag_len);
  
- 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
-@@ -780,7 +780,7 @@ static struct its_vpe *its_build_vmapp_c
- 					   struct its_cmd_desc *desc)
- {
- 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
--	unsigned long vpt_addr, vconf_addr;
-+	phys_addr_t vpt_addr, vconf_addr;
- 	u64 target;
- 	bool alloc;
++		spin_lock(&local->tx_queue.lock);
++
++		if (list_empty(&local->list)) {
++			spin_unlock(&local->tx_queue.lock);
++
++			kfree_skb(pdu);
++
++			len -= remaining_len;
++			if (len == 0)
++				len = -ENXIO;
++			break;
++		}
++
+ 		/* No need to check for the peer RW for UI frames */
+-		skb_queue_tail(&local->tx_queue, pdu);
++		__skb_queue_tail(&local->tx_queue, pdu);
++
++		spin_unlock(&local->tx_queue.lock);
  
-@@ -2408,10 +2408,10 @@ retry_baser:
- 	baser->psz = psz;
- 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
- 
--	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
-+	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
- 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
- 		its_base_type_string[type],
--		(unsigned long)virt_to_phys(base),
-+		(u64)virt_to_phys(base),
- 		indirect ? "indirect" : "flat", (int)esz,
- 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
- 
+ 		remaining_len -= frag_len;
+ 		msg_ptr += frag_len;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index 18be13fb9b75a..ced99d2a90cc1 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -314,7 +314,9 @@ static struct nfc_llcp_local *nfc_llcp_remove_local(struct nfc_dev *dev)
+ 	spin_lock(&llcp_devices_lock);
+ 	list_for_each_entry_safe(local, tmp, &llcp_devices, list)
+ 		if (local->dev == dev) {
+-			list_del(&local->list);
++			spin_lock(&local->tx_queue.lock);
++			list_del_init(&local->list);
++			spin_unlock(&local->tx_queue.lock);
+ 			spin_unlock(&llcp_devices_lock);
+ 			return local;
+ 		}
+-- 
+2.51.0
+
 
 
 
