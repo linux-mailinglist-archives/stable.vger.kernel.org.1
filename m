@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-213447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-213881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PsbHDhcg2mJlQMAu9opvQ
-	(envelope-from <stable+bounces-213447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:24 +0100
+	id gNFZNm5pg2kbmgMAu9opvQ
+	(envelope-from <stable+bounces-213881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2F0E7614
-	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 15:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3240FE948C
+	for <lists+stable@lfdr.de>; Wed, 04 Feb 2026 16:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17D6F301C5BE
-	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 14:46:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2984630DBA1C
+	for <lists+stable@lfdr.de>; Wed,  4 Feb 2026 15:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0C927FD56;
-	Wed,  4 Feb 2026 14:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEC741C313;
+	Wed,  4 Feb 2026 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fU1PSU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXDQwTqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF9C1C5D77;
-	Wed,  4 Feb 2026 14:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205D728853A;
+	Wed,  4 Feb 2026 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770216369; cv=none; b=S2lL4kkYYqLFSeV4j2zMLNBveDcDPpTVlwzoQaGOskv07YYxpKb/jn19sZ9f6jhxvHfQH+3ohEWBSE5sXkxBoEUzMHGMmLkqlv8N48HwrbxO2njTacvM7I7KkvfA/7f6FqqTWItyhJlbwr4OnFTr5jSg0fjuQCct7C9t8aFa6Sc=
+	t=1770217825; cv=none; b=Y4iD79p1k5GZmj24o99g9Tm5LIfEtlpPc2g0RgNjIdPPALrCGYYOBnlxrrbFpyVmFs7SfmljZ8zqsvJvrNx3+1GN61wuLfz5sxzkqSdgErvP2H8FMTsFG4NE3mkBCknB5/zdnZ8WxuzZJwC6pAZ+3Gy+5yqFsxOOiMC1NKfcQHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770216369; c=relaxed/simple;
-	bh=29kNnOFL4HCYowHuqAq2JR8pRcPNUJ2fK0msuWkhxJ8=;
+	s=arc-20240116; t=1770217825; c=relaxed/simple;
+	bh=mknn42S5slKzscwMF37v9BGDbDhF+3okKwyacmNJHt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IehLE5vrnMILUi2mH98HFRQWst1Dhb0OqFULaAT/2srbP9oZfmFY4fA0Aitr8YHJ23TUWJJjxXEirEnNYjxmmdwRJoteQg/AX2twNFh7Ya1rw0gXqAMKJBP3vEB9hphovbb+gjxGzjdeFGY/wLHM3yca/GgiEvR7CCtWPLdCty0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fU1PSU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E65C4CEF7;
-	Wed,  4 Feb 2026 14:46:08 +0000 (UTC)
+	 MIME-Version; b=bnCS0tch+DzN1/X93IewMjRSGXVpmfFpePy9Sq0OzpDMi7nXqn0w35be8B9+cly5Knz/un/vzIkZtMC8z6xCyq4GN617oNqWzirZtkAH6E9t81rP0gRkm7K5Au9eYtQzp8GYF+9kzoVTnfKKzpJBp17xoxvThCdTi7GlghtyvA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXDQwTqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972C1C4CEF7;
+	Wed,  4 Feb 2026 15:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770216369;
-	bh=29kNnOFL4HCYowHuqAq2JR8pRcPNUJ2fK0msuWkhxJ8=;
+	s=korg; t=1770217825;
+	bh=mknn42S5slKzscwMF37v9BGDbDhF+3okKwyacmNJHt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fU1PSU3XONogDz3P1qQ/oqyq5bDtoj37/V597PU1YDH2aqqH0iZUu3pudcQdRq6Z
-	 S8e9NH8NypnTZI37GINBazJIw7B6inbOqsxx9DZSunXWWCQdr+XKGPAxvVfwHWuK1n
-	 jQ4ogX1/0uCsDhYBOy3bd27VWS0XgKdrDUkmi+68=
+	b=CXDQwTqCZpUTponxFTQrhtBf1r9R2oKdkwPS/ndfkj07Gveqr9c7MK6+mRyeP0R6w
+	 I/9bzmrb7njX1vyTtjoFVpqVUsD/Q4pu1iHDLCeXlcOLSKoUcMhTijZvp3wA5yt2T1
+	 1r2qGdzewn9NIkaiCpiKz9+4BAbHqWdncQM//HQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaochen Shen <shenxiaochen@open-hieco.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Reinette Chatre <reinette.chatre@intel.com>
-Subject: [PATCH 5.10 033/161] x86/resctrl: Add missing resctrl initialization for Hygon
-Date: Wed,  4 Feb 2026 15:38:16 +0100
-Message-ID: <20260204143852.950566156@linuxfoundation.org>
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 123/280] arm64: dts: rockchip: remove dangerous max-link-speed from helios64
+Date: Wed,  4 Feb 2026 15:38:17 +0100
+Message-ID: <20260204143914.061377761@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260204143851.755002596@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
+In-Reply-To: <20260204143909.614719725@linuxfoundation.org>
+References: <20260204143909.614719725@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,84 +75,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rock-chips.com,manjaro.org,gmail.com,sntech.de];
+	TAGGED_FROM(0.00)[bounces-213881-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-213447-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0E2F0E7614
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sntech.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rock-chips.com:email]
+X-Rspamd-Queue-Id: 3240FE948C
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaochen Shen <shenxiaochen@open-hieco.net>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-commit 6ee98aabdc700b5705e4f1833e2edc82a826b53b upstream.
+commit 0368e4afcf20f377c81fa77b1c7d0dee4a625a44 upstream.
 
-Hygon CPUs supporting Platform QoS features currently undergo partial resctrl
-initialization through resctrl_cpu_detect() in the Hygon BSP init helper and
-AMD/Hygon common initialization code. However, several critical data
-structures remain uninitialized for Hygon CPUs in the following paths:
+Shawn Lin from Rockchip strongly discourages attempts to use their
+RK3399 PCIe core at 5.0 GT/s speed, citing concerns about catastrophic
+failures that may happen. Even if the odds are low, drop from last user
+of this non-default property for the RK3399 platform, helios64 board
+dts.
 
- - get_mem_config()-> __rdt_get_mem_config_amd():
-     rdt_resource::membw,alloc_capable
-     hw_res::num_closid
-
- - rdt_init_res_defs()->rdt_init_res_defs_amd():
-     rdt_resource::cache
-     hw_res::msr_base,msr_update
-
-Add the missing AMD/Hygon common initialization to ensure proper Platform QoS
-functionality on Hygon CPUs.
-
-Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
-Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Fixes: 755fff528b1b ("arm64: dts: rockchip: add variables for pcie completion to helios64")
+Link: https://lore.kernel.org/all/e8524bf8-a90c-423f-8a58-9ef05a3db1dd@rock-chips.com/
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209062650.1536952-2-shenxiaochen@open-hieco.net
+Reported-by: Shawn Lin <shawn.lin@rock-chips.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/43bb639c120f599106fca2deee6c6599b2692c5c.1763415706.git.geraldogabriel@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/resctrl/core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -834,7 +834,8 @@ static __init bool get_mem_config(void)
+--- a/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
+@@ -427,7 +427,6 @@
  
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		return __get_mem_config_intel(&rdt_resources_all[RDT_RESOURCE_MBA]);
--	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
- 		return __rdt_get_mem_config_amd(&rdt_resources_all[RDT_RESOURCE_MBA]);
- 
- 	return false;
-@@ -960,7 +961,8 @@ static __init void rdt_init_res_defs(voi
- {
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		rdt_init_res_defs_intel();
--	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
- 		rdt_init_res_defs_amd();
- }
- 
+ &pcie0 {
+ 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+-	max-link-speed = <2>;
+ 	num-lanes = <2>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
 
 
 
