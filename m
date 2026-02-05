@@ -1,207 +1,240 @@
-Return-Path: <stable+bounces-214511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBN3HdXEhGk45QMAu9opvQ
-	(envelope-from <stable+bounces-214511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:27:01 +0100
+	id +PXUGWnFhGk45QMAu9opvQ
+	(envelope-from <stable+bounces-214512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:29:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AD9F5357
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:27:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064CFF53DF
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1FF830427D2
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 16:25:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45DFD3047074
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 16:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27A0436373;
-	Thu,  5 Feb 2026 16:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F64B438FE5;
+	Thu,  5 Feb 2026 16:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmwwKR3q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EbNj22Vv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF042652A2;
-	Thu,  5 Feb 2026 16:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E703A9620
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 16:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770308707; cv=none; b=U0KpZOB6CbWADS57pg6/b0Z5OWmxNQDNMT+fP7OnNCcsS10zrb0Ygelz4Hh/qXs8TU90qP7vJqhffBlvw/v3yprOQbHmBzK+pv5Syc++xCFWguXT0UGgRVIQCpKak5nDHTWt5XsfWNE1qWf1hpAHOzDBUXb5EfYtXrsbOeynJYM=
+	t=1770308799; cv=none; b=bcHbOeXPZhY2BW5AkvcV/0ZTqaMXyrvuShVaOUoY4nu4QO5u9SV/5UGvrewXahi3F6z4LCKtasCSxaS4jZf8s/VNNJrGhO2pPgE+Rm8NbPmiHCfvQIizdHetsQRjC2Q16WcHoommX6IF9JtupKsYmljzKyMmcjLRRpvbAFwBNZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770308707; c=relaxed/simple;
-	bh=84qaqPxEsgHGe/T0FWu7nRcv/Mo+gLApGH55V/x/h2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nF6gVqqlVMfBv7G6Db6S7nQHtX2MmW/LsUH93dNZJl1UTDrv+PlS1rXbWvadg3gN3qy+C3PXB61+0scuzQXaZ8T+EJWqWgkDCYpTRnGPA6cCr9uIA0BJJPgmdKKjhGop2AWpQhcJFn1iCTZGfZOvwmz/thCMjHiRGpQcFpxmnIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmwwKR3q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302FDC4CEF7;
-	Thu,  5 Feb 2026 16:25:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770308707;
-	bh=84qaqPxEsgHGe/T0FWu7nRcv/Mo+gLApGH55V/x/h2I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VmwwKR3qhMK+NrUZRRtgBnryaElNsjTfXIwf6hiaeF2xUzk6pU3m11HhrL2Zbfmfg
-	 H0MGa4guLesIM+jh/k1TraxmkmaGG5DVRRZOiHrNzPp65PVsilB2gcqNiaZGitGlIX
-	 q1Scf9JAmwufqOJM/FdsAoE9PshyASPwVFts/ARk=
-Date: Thu, 5 Feb 2026 17:25:03 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-	Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH 6.12] tools/power turbostat: Fix compilation on older
- compilers
-Message-ID: <2026020556-deprive-icky-9cd1@gregkh>
-References: <20260205155907.1361830-1-kniv@yandex-team.ru>
+	s=arc-20240116; t=1770308799; c=relaxed/simple;
+	bh=9r9EfnqgpePHSmknjj3jV71TCwg0Aj5TNW2hpF8F0ic=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SKpKLx53EMhwkIPx7RXpxwkkCuekDlckCKu76CNa1F1K0OL+3y/yUXgTheM1Lzk3UboxEJfGjvueGPoZdu1BqiyclTZ8EEoEAXg+5xOiDN6x2GHIILn4Mca5z85o9Xtzbk0c4n75+/a8CGNwZ5xJCsYWuzO1J0D3hmdF60k7+m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EbNj22Vv; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c62239decbeso422332a12.2
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 08:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770308798; x=1770913598; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JyEXpPncVH2GhAUyxHXUUpWjlgv8nEIxYO25mhp+H1s=;
+        b=EbNj22Vv7QktYbdgH2aSSzrOQAWfDBs4vk65Rhuq+5CZxEp6kDql2lQzAcLMEKiAxb
+         IvF4pZjqFA21TcfAoQdthQU9P6ueM8EeCgKfJx51iaDwuqkQ+TkJKc0C0FRs3hM+5/Q7
+         qlZZ/38Sj0efdTIFY5CYweUFL9hRdwH7vpEEGnvzFTWTuT48DrjpINunAl4Q+db6LQmC
+         u4aqhsBiO7kmbNVsEEdhlV+6oVJBWARyRSGj2SLbuV1ap+lunJgwUfRP7rupMbvYtftd
+         1IJLOrxVBAjbe8ra8c8owzZJmeBrsgAiY6kaMhz67viVJzpgYjJf53RWysA7lA0CM6/W
+         SNiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770308798; x=1770913598;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JyEXpPncVH2GhAUyxHXUUpWjlgv8nEIxYO25mhp+H1s=;
+        b=U035fYrUxmPSroo16VDimeVav+Rpx6AlRnFGJz8ghk6j+RsAbG5lrRYSGL4bO0fukj
+         mdb87MIB7MJp7un+hWBLmsXaa56tgJk0jroXcvv8C1YtXnwvKaTSEMqN9QarFmDBYw6j
+         +QXFl7RhtD31EY8f3u6itA1/FvwLFx1a2W87OTEqX+3njMdwKXIw5PGn62ZEJzMuPL5T
+         KFnkpbYmBXDh9sNjiwBebcOVczJ+omryi6ENQ3ElrgfvVo6zyrJtG1yWl8gLi8/umVbI
+         BmCbXW64snR5edwgLtCavPDHl78HIaymUQpsOiFRoyNVbYCR2rKlG2763TCs47b//Cau
+         7H2g==
+X-Forwarded-Encrypted: i=1; AJvYcCW75AFT/j3TI5JxTh36WN/yi0h+3pulBnXEd6hrDbNWUn9UliA7fOhcyQjhMLT4GbxmJD3uO6Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3hoZK9x6fHa48N1mIKljIMoFHeoG3PYqugvAFcF2CFtFAQYEZ
+	A1Kekrx0EG2QSOkx5pOdj8E01f5jbh6vb+KrI5mg7yxV6pN/kg1MM0lm
+X-Gm-Gg: AZuq6aJpzFzyWWb1rE//cMGjI6dSI8ehsg/kGLp4AWqXrd7P0z1NyZfOBrleQQJ7gDJ
+	AmfnefQeYxNR/A35M/3aMWU9F9uO13oVqmRXUmrx+r/MgNq0ifWqha68HXCaivy4ic3Z95aMj10
+	qHuMPw0xN0kPd0PxdY+7IGhqJtJFPswOu1o5C5NX/Ppn2oHQIoxu7lSFqw3hgx9Xho6TRIaXZa5
+	+8wgoHNUhChvUXhlp3c4xTME1lgDUPoVQ8LzAJ10Qric61Eryk7kCEyOybuE1iN842s7Nkvp4J6
+	zl4d0kYXtMsPC6CcMkJKVqG+aMeb1dhJxj4jLWZ38SYIOFADl26BSrjbPj1WQrjPhnObtkCZrfI
+	kqWUUWBnuTS9OAPue+dSl0JZVVeIAAeBSS/XyYSkjsyqeKJOLOS0tl4ik3r7Q8ac928VqQzGi2g
+	PMqmKCctn1fTP5s1PTHSjWPYEbaivTlPX/lS23
+X-Received: by 2002:a17:90b:1b11:b0:340:d578:f2a2 with SMTP id 98e67ed59e1d1-354870db3e3mr6719407a91.6.1770308798217;
+        Thu, 05 Feb 2026 08:26:38 -0800 (PST)
+Received: from localhost.localdomain ([114.79.136.72])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6c8553e6b1sm5444208a12.32.2026.02.05.08.26.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 08:26:37 -0800 (PST)
+From: Prithvi Tambewagh <activprithvi@gmail.com>
+To: martin.petersen@oracle.com,
+	d.bogdanov@yadro.com,
+	bvanassche@acm.org
+Cc: linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3] scsi: target: fix recursive locking in __configfs_open_file()
+Date: Thu,  5 Feb 2026 21:56:24 +0530
+Message-Id: <20260205162624.117957-1-activprithvi@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205155907.1361830-1-kniv@yandex-team.ru>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214511-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-214512-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[activprithvi@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yandex-team.ru:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 16AD9F5357
+	DBL_BLOCKED_OPENRESOLVER(0.00)[yadro.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 064CFF53DF
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 06:59:07PM +0300, Nikolay Kuratov wrote:
-> Currently turbostat.c can't be built on pre-gcc-11 compilers
-> due to error: a label can only be part of a statement and a declaration
-> is not a statement.
-> 
-> Fix this by adding braces around case labels.
-> 
-> Fixes: 640540beb883 ("tools/power turbostat: Add MTL's PMT DC6 builtin counter")
-> Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-> ---
->  tools/power/x86/turbostat/turbostat.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-> index b663a76d31f1..85d40d3c6384 100644
-> --- a/tools/power/x86/turbostat/turbostat.c
-> +++ b/tools/power/x86/turbostat/turbostat.c
-> @@ -2799,7 +2799,7 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
->  
->  	for (i = 0, ppmt = sys.pmt_tp; ppmt; i++, ppmt = ppmt->next) {
->  		switch (ppmt->type) {
-> -		case PMT_TYPE_RAW:
-> +		case PMT_TYPE_RAW: {
->  			if (pmt_counter_get_width(ppmt) <= 32)
->  				outp += sprintf(outp, "%s0x%08x", (printed++ ? delim : ""),
->  						(unsigned int)t->pmt_counter[i]);
-> @@ -2807,14 +2807,14 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
->  				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), t->pmt_counter[i]);
->  
->  			break;
-> -
-> -		case PMT_TYPE_XTAL_TIME:
-> +		}
-> +		case PMT_TYPE_XTAL_TIME: {
->  			const unsigned long value_raw = t->pmt_counter[i];
->  			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
->  
->  			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
->  			break;
-> -		}
-> +		}}
->  	}
->  
->  	/* C1 */
-> @@ -2880,7 +2880,7 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
->  
->  	for (i = 0, ppmt = sys.pmt_cp; ppmt; i++, ppmt = ppmt->next) {
->  		switch (ppmt->type) {
-> -		case PMT_TYPE_RAW:
-> +		case PMT_TYPE_RAW: {
->  			if (pmt_counter_get_width(ppmt) <= 32)
->  				outp += sprintf(outp, "%s0x%08x", (printed++ ? delim : ""),
->  						(unsigned int)c->pmt_counter[i]);
-> @@ -2888,14 +2888,14 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
->  				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), c->pmt_counter[i]);
->  
->  			break;
-> -
-> -		case PMT_TYPE_XTAL_TIME:
-> +		}
-> +		case PMT_TYPE_XTAL_TIME: {
->  			const unsigned long value_raw = c->pmt_counter[i];
->  			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
->  
->  			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
->  			break;
-> -		}
-> +		}}
->  	}
->  
->  	fmt8 = "%s%.2f";
-> @@ -3079,7 +3079,7 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
->  
->  	for (i = 0, ppmt = sys.pmt_pp; ppmt; i++, ppmt = ppmt->next) {
->  		switch (ppmt->type) {
-> -		case PMT_TYPE_RAW:
-> +		case PMT_TYPE_RAW: {
->  			if (pmt_counter_get_width(ppmt) <= 32)
->  				outp += sprintf(outp, "%s0x%08x", (printed++ ? delim : ""),
->  						(unsigned int)p->pmt_counter[i]);
-> @@ -3087,14 +3087,14 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
->  				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), p->pmt_counter[i]);
->  
->  			break;
-> -
-> -		case PMT_TYPE_XTAL_TIME:
-> +		}
-> +		case PMT_TYPE_XTAL_TIME: {
->  			const unsigned long value_raw = p->pmt_counter[i];
->  			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
->  
->  			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
->  			break;
-> -		}
-> +		}}
->  	}
->  
->  done:
-> -- 
-> 2.34.1
-> 
-> 
+In flush_write_buffer, &p->frag_sem is acquired and then the loaded store
+function is called, which, here, is target_core_item_dbroot_store().
+This function called filp_open(), following which these functions were
+called (in reverse order), according to the call trace:
 
-<formletter>
+down_read
+__configfs_open_file
+do_dentry_open
+vfs_open
+do_open
+path_openat
+do_filp_open
+file_open_name
+filp_open
+target_core_item_dbroot_store
+flush_write_buffer
+configfs_write_iter
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+target_core_item_dbroot_store() tries to validate the new file path by
+trying to open the file path provided to it; however, in this case,
+the bug report shows:
 
-</formletter>
+db_root: not a directory: /sys/kernel/config/target/dbroot
+
+indicating that the same configfs file was tried to be opened, on which
+it is currently working on. Thus, it is trying to acquire frag_sem
+semaphore of the same file of which it already holds the semaphore obtained
+in flush_write_buffer(), leading to acquiring the semaphore in a nested
+manner and a possibility of recursive locking.
+
+Fix this by modifying target_core_item_dbroot_store() to use kern_path()
+instead of filp_open() to avoid opening the file using filesystem-specific
+function __configfs_open_file(), and further modifying it to make this
+fix compatible.
+
+Reported-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f6e8174215573a84b797
+Tested-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+---
+Changes since v2:
+ - Add Reviewed-by tag received from Dmitry Bogdanov, which was accidentally
+   left to be added in v2 patch.
+
+v2 link: https://lore.kernel.org/linux-scsi/20260122154051.64132-1-activprithvi@gmail.com/T/#u
+Reference for Reviewed-by Tag: https://lore.kernel.org/all/20260108191523.303114-1-activprithvi@gmail.com/T/#mb22d0fc06e747e2b2df8320a15afd2a0670fd0e7
+
+
+Changes since v1:
+ - Update commit message to reflect the fact that same file, which code was 
+   currently operating on, was tried to be opened again, leading to 
+   acquiring the same semaphore in nested manner & possibility of recursive
+   locking.
+
+v1 link: https://lore.kernel.org/all/20260108191523.303114-1-activprithvi@gmail.com/T/
+
+ drivers/target/target_core_configfs.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index b19acd662726..f29052e6a87d 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -108,8 +108,8 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
+ 					const char *page, size_t count)
+ {
+ 	ssize_t read_bytes;
+-	struct file *fp;
+ 	ssize_t r = -EINVAL;
++	struct path path = {};
+ 
+ 	mutex_lock(&target_devices_lock);
+ 	if (target_devices) {
+@@ -131,17 +131,18 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
+ 		db_root_stage[read_bytes - 1] = '\0';
+ 
+ 	/* validate new db root before accepting it */
+-	fp = filp_open(db_root_stage, O_RDONLY, 0);
+-	if (IS_ERR(fp)) {
++	r = kern_path(db_root_stage, LOOKUP_FOLLOW, &path);
++	if (r) {
+ 		pr_err("db_root: cannot open: %s\n", db_root_stage);
+ 		goto unlock;
+ 	}
+-	if (!S_ISDIR(file_inode(fp)->i_mode)) {
+-		filp_close(fp, NULL);
++	if (!d_is_dir(path.dentry)) {
++		path_put(&path);
+ 		pr_err("db_root: not a directory: %s\n", db_root_stage);
++		r = -ENOTDIR;
+ 		goto unlock;
+ 	}
+-	filp_close(fp, NULL);
++	path_put(&path);
+ 
+ 	strscpy(db_root, db_root_stage);
+ 	pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
+
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+-- 
+2.34.1
+
 
