@@ -1,201 +1,170 @@
-Return-Path: <stable+bounces-214462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFV7D4mhhGmI3wMAu9opvQ
-	(envelope-from <stable+bounces-214462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:56:25 +0100
+	id QECwAb+ihGmI3wMAu9opvQ
+	(envelope-from <stable+bounces-214463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 15:01:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820F0F39C5
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:56:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEFAF3AE0
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 15:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33F78301A3BE
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 13:51:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5FFF630106B7
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 13:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866683D3D12;
-	Thu,  5 Feb 2026 13:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3193ECBC1;
+	Thu,  5 Feb 2026 13:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KV2ZKLPL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UzWW8/S1";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KV2ZKLPL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UzWW8/S1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z70YqVEz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145C63AE6E5
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 13:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3185A3E95B7;
+	Thu,  5 Feb 2026 13:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770299481; cv=none; b=lVCx8TGfYSdm0UMDXCZk5sfNztRucMVEmQq7kjzOky0Fdy1zKVXwRKEAFv5oO+JnJoZBt45bLjY18RubWLDEv85cmZiKtUkz8xsqebsL29+G95ELvM8sZrVq89yg3WEK3W4zNU/MxSSQK0qd+oNT63259SZoRKPt1g3Icm4q/Nk=
+	t=1770299980; cv=none; b=bML64U523T6n2u40S+i6MXPKsKmAMC8lHD+X5m4LUAb4K2JstflE4vpd1lHo5KzAIQnjqtX+ws6Ur+Qh+IVPODsc9k4OETiIneHK3AKhWyRy+vCN2HL7wWhk5QkqnyMXKeKKvU3PgnAhfAuftyRDwV+VpODtlGjeXftwWZkH8A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770299481; c=relaxed/simple;
-	bh=kID9LT+3vkAWDNh860FDVKv2s5vZydEPh7O+Os3Pgto=;
+	s=arc-20240116; t=1770299980; c=relaxed/simple;
+	bh=ZoZxGJKEcr+rDLNuV6CwT7p+enyxHKL6Ly9DF2grNc8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MdYxVfipTt+/MzITqH0hIug/bWIOYdn6CfiufqRifa+eKizlKfBTT+65laqj6G3g6DgWK/rHdjolmorN1bz+3fa0jEKRWTL7vKOkNC5p3+1fRLEkOeWmFQn1NqywYViva0PGRkJi4kXyhuyaFJWYwXj66lsQqHPxUsKwGmj5X4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KV2ZKLPL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UzWW8/S1; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KV2ZKLPL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UzWW8/S1; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 622943E7B0;
-	Thu,  5 Feb 2026 13:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770299479;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
-	b=KV2ZKLPLIiH/uNsqr6JiJRhtoGdAIesqvKD2y+u+Yn3P3yoXgCoqa75Zyzzm7uKrurtjXG
-	lq2qhsEI9Aw3emvwWHTEshZgzNWl0rtaUZJ1KHXBFjfDmJYRgSYIZAV3mu6bDWSm+Jr2zJ
-	e4e9ldwOTy4Hlo+CUxQzSN0ys1eLZ6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770299479;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
-	b=UzWW8/S1a9bIoY0LDuSCdGZCHYxSz8X1wryLTHJiaAOv9kjDJdenrLFjUidWDYti2wZvb1
-	RNVYVKFhPzKTQjDw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770299479;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
-	b=KV2ZKLPLIiH/uNsqr6JiJRhtoGdAIesqvKD2y+u+Yn3P3yoXgCoqa75Zyzzm7uKrurtjXG
-	lq2qhsEI9Aw3emvwWHTEshZgzNWl0rtaUZJ1KHXBFjfDmJYRgSYIZAV3mu6bDWSm+Jr2zJ
-	e4e9ldwOTy4Hlo+CUxQzSN0ys1eLZ6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770299479;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
-	b=UzWW8/S1a9bIoY0LDuSCdGZCHYxSz8X1wryLTHJiaAOv9kjDJdenrLFjUidWDYti2wZvb1
-	RNVYVKFhPzKTQjDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3DBBD3EA63;
-	Thu,  5 Feb 2026 13:51:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rS3oDleghGnbSwAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Thu, 05 Feb 2026 13:51:19 +0000
-Date: Thu, 5 Feb 2026 14:51:18 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 004/161] btrfs: send: check for inline extents in
- range_is_hole_in_parent()
-Message-ID: <20260205135118.GX26902@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <20260204143851.755002596@linuxfoundation.org>
- <20260204143851.919366239@linuxfoundation.org>
- <03a74299797f4864d0e563cd9517276f690a4bf0.camel@decadent.org.uk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CgTug+H5Sx2emYaIOUfgkUQ7tNmiO9MESY1d+BmUKxGWjzgS3GKWvNrsLzvvvqU7ijZJoHzhBglZwIhiCCUFxYi6QtdQsrxOBvcdrVu6SUFwLwCxySaKkzqRSYDlymbKlihOSeVr7vgwjb0A5F8RoKZ5JrTXLETljLJ+ZYAl6uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z70YqVEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20937C4CEF7;
+	Thu,  5 Feb 2026 13:59:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770299979;
+	bh=ZoZxGJKEcr+rDLNuV6CwT7p+enyxHKL6Ly9DF2grNc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z70YqVEzFyvGxPzb/SrIN8T0K2SQdwf7T264WU3xGPw2j1Py0FXx4oBWS63XTlL62
+	 g0SvDjwzrNMUe98Xqmpm1XTMENDzr7Eo3d1F6tx+zOFqy2KTwZl7ubAyIrnu+keF6J
+	 4XAJGmgaqdyAlDmKxjYRFe15uTPPCpQavcURiTg8=
+Date: Thu, 5 Feb 2026 14:59:36 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Peter Schneider <pschneider1968@googlemail.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 000/280] 6.1.162-rc1 review
+Message-ID: <2026020520-trustee-implement-f17d@gregkh>
+References: <20260204143909.614719725@linuxfoundation.org>
+ <25910fd9-ecc8-4119-9abc-2ab6baf5ce77@googlemail.com>
+ <2026020510-ember-darkroom-37f6@gregkh>
+ <2026020526-frisbee-coauthor-8ca3@gregkh>
+ <8bb7a822-2643-4511-9c14-c3bc2d1bfb07@googlemail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <03a74299797f4864d0e563cd9517276f690a4bf0.camel@decadent.org.uk>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8bb7a822-2643-4511-9c14-c3bc2d1bfb07@googlemail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	TAGGED_FROM(0.00)[bounces-214462-lists,stable=lfdr.de];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[suse.cz];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	HAS_REPLYTO(0.00)[dsterba@suse.cz];
-	RCVD_COUNT_FIVE(0.00)[6];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dsterba@suse.cz,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-214463-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	RSPAMD_URIBL_FAIL(0.00)[linus:query timed out,linuxfoundation.org:query timed out];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:replyto,suse.cz:dkim,suse.cz:mid]
-X-Rspamd-Queue-Id: 820F0F39C5
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linus:email]
+X-Rspamd-Queue-Id: 5CEFAF3AE0
 X-Rspamd-Action: no action
 
-On Wed, Feb 04, 2026 at 07:28:42PM +0100, Ben Hutchings wrote:
-> On Wed, 2026-02-04 at 15:37 +0100, Greg Kroah-Hartman wrote:
-> > 5.10-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Qu Wenruo <wqu@suse.com>
-> > 
-> > [ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
-> > 
-> > Before accessing the disk_bytenr field of a file extent item we need
-> > to check if we are dealing with an inline extent.
-> > This is because for inline extents their data starts at the offset of
-> > the disk_bytenr field. So accessing the disk_bytenr
-> > means we are accessing inline data or in case the inline data is less
-> > than 8 bytes we can actually cause an invalid
-> > memory access if this inline extent item is the first item in the leaf
-> > or access metadata from other items.
-> > 
-> > Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
-> > Reviewed-by: Filipe Manana <fdmanana@suse.com>
-> > Signed-off-by: Qu Wenruo <wqu@suse.com>
-> > Reviewed-by: David Sterba <dsterba@suse.com>
-> > Signed-off-by: David Sterba <dsterba@suse.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  fs/btrfs/send.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-> > index d86b4d13cae48..f144171ed6b7e 100644
-> > --- a/fs/btrfs/send.c
-> > +++ b/fs/btrfs/send.c
-> > @@ -5892,6 +5892,8 @@ static int range_is_hole_in_parent(struct send_ctx *sctx,
-> >  		extent_end = btrfs_file_extent_end(path);
-> >  		if (extent_end <= start)
-> >  			goto next;
-> > +		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE)
-> > +			return 0;
+On Thu, Feb 05, 2026 at 01:35:37PM +0100, Peter Schneider wrote:
+> Hi Greg,
 > 
-> This will leak path, unless (at least) commits 4c74a32ad323 "btrfs:
-> DEFINE_FREE for struct btrfs_path" and 4ca6f24a52c4 "btrfs: more trivial
-> BTRFS_PATH_AUTO_FREE conversions" are also backported.
+> Am 05.02.2026 um 09:33 schrieb Greg Kroah-Hartman:
+> > On Thu, Feb 05, 2026 at 09:31:30AM +0100, Greg Kroah-Hartman wrote:
+> > > On Wed, Feb 04, 2026 at 11:17:38PM +0100, Peter Schneider wrote:
+> > > > Hi Greg,
+> > > > 
+> > > > Am 04.02.2026 um 15:36 schrieb Greg Kroah-Hartman:
+> > > > > This is the start of the stable review cycle for the 6.1.162 release.
+> > > > > There are 280 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > > > 
+> > > > > Responses should be made by Fri, 06 Feb 2026 14:38:23 +0000.
+> > > > > Anything received after that time might be too late.
+> > > > 
+> > > > It seems that this time, I cannot even build this RC. When I run "make
+> > > > menuconfig" I get a big serious of warning and error messages; something
+> > > > seems to be really messed up here...
+> > > > 
+> > > > 
+> > > > root@linus:/usr/src/linux-stable-rc# vim .config
+> > > > root@linus:/usr/src/linux-stable-rc# make menuconfig
+> > > > scripts/kconfig/Makefile:215: Warnung: Das Musterrezept hat das Peer-Ziel „scripts/kconfig/mconf-bin“ nicht aktualisiert.
+> > > >    HOSTCC  scripts/kconfig/mconf.o
+> > > >    HOSTCC  scripts/kconfig/lxdialog/checklist.o
+> > > >    HOSTCC  scripts/kconfig/lxdialog/inputbox.o
+> > > >    HOSTCC  scripts/kconfig/lxdialog/menubox.o
+> > > >    HOSTCC  scripts/kconfig/lxdialog/textbox.o
+> > > >    HOSTCC  scripts/kconfig/lxdialog/util.o
+> > > >    HOSTCC  scripts/kconfig/lxdialog/yesno.o
+> > > >    HOSTLD  scripts/kconfig/mconf
+> > > > /usr/bin/ld: scripts/kconfig/lxdialog/yesno.o: warning: relocation against `acs_map' in read-only section `.text'
+> > > > /usr/bin/ld: scripts/kconfig/mconf.o: in function `show_help':
+> > > > mconf.c:(.text+0xa1b): undefined reference to `stdscr'
+> > > > /usr/bin/ld: mconf.c:(.text+0xa20): undefined reference to `getmaxx'
+> > > > /usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `print_arrows':
+> > > > checklist.c:(.text+0x2c): undefined reference to `wmove'
+> > > 
+> > > <snip>
+> > > 
+> > > Ick, yes, I can reproduce this myself here, something is odd.  Let me
+> > > track it down...
+> > 
+> > Ok, found the offending commit, will push out a -rc2 in a bit with this
+> > fixed, thanks for testing!
+> > 
+> > greg k-h
 > 
-> That could be avoided by using { ret = 0; goto out; } here instead of
-> simply returning.
+> I was too tired yesterday evening to investigate my build error and poke
+> around deeper, but today I looked into it again, and I found that when I
+> revert the two kconfig patches in this RC
+> 
+> 7c177eca9e7af1f0a56171b7718a1b05aaa0f237 "kconfig: fix static linking of nconf"
+> eb5defa1e8284b8b79653beadc92c273c170db7d "kconfig: refactor Makefile to reduce process forks"
+> 
+> then my build error goes away, the build succeeds and the produced kernel seems to work fine.
 
-Right, the original patch assumes the automatic cleanup of btrfs_path, so
-for anything below it needs to be updated as you say.
+Yes, those are the commits I dropped, thanks for verifying.
+
+greg k-h
 
