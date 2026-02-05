@@ -1,155 +1,338 @@
-Return-Path: <stable+bounces-214431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJPED2BghGny2gMAu9opvQ
-	(envelope-from <stable+bounces-214431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:18:24 +0100
+	id KLcnJrBjhGkK2wMAu9opvQ
+	(envelope-from <stable+bounces-214432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:32:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76B6F07FB
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:18:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370DAF0D0B
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D5CD03016710
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 09:14:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E982B3034B08
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 09:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23F1389445;
-	Thu,  5 Feb 2026 09:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDBD392811;
+	Thu,  5 Feb 2026 09:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RmYYZMit"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UF9hmW7y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475D4389E17
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 09:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770282841; cv=pass; b=h40Wgykao6GyC2LTEzr+kDYeW4d88H0JfPulU8hKbD+vg6anqi/xQjTiHRy0uzO/s1Ubt6nX8RkcXEPTjPof+M2lAM1f2y6TOr0kGfW2u3/qJKNjClVrGP8JmN+sfI8xOPonI7esiJbOLizq6qJKxD1OjqmtVDR2fQmuc+7oqiQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770282841; c=relaxed/simple;
-	bh=kZy9He49zevIscQI8TKi266PdhFwv75woDxw06ZBjks=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oU01d53bvlXu6u3n7MUSUKmzRuiOxiKBtsIAE020JssDTzJ9B26bcCe7eHnxKnYs0Wz//mJoRAcsm20aZxPF8C/7YDZy19MNrLdjIrP2LnJArW8IFs/qz827LgzkZ715/TOI+GoAb4jGyxx9txBWxmVYNix4FxdguilQKBvWuII=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RmYYZMit; arc=pass smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4806b43beb6so4993555e9.3
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 01:14:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770282840; cv=none;
-        d=google.com; s=arc-20240605;
-        b=exWQrgo3SvZsFfOUTxFPldVCmLIFAwaEnsEzanWHpK9w93mtN0XfCb9sPeKuPXvihV
-         3NIljna20zXMZ+fLsFGYoxF9lcd/1VCe/lA2warjoYbCfQtXF4NBh6epOCXOW+TcZ8I/
-         druNoG4btFq9HSUWtvEqYbTdz5wzVR+d4LvkaU0lJKirTJdrYO+YC/HGf9eZkr0dcmKY
-         1SfhNdKh6lo+LSj9jX2WxPN/al37F0x0fxpW8vHml6hWrjiWR5StX0JxjrfkuTRbHORk
-         hEkfLl45Wbql1a2LFPw7eyj84076Zcg6LAR/JISYURK9FK2gIGID/Nmok1LWIJi+kJeE
-         2fLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kZy9He49zevIscQI8TKi266PdhFwv75woDxw06ZBjks=;
-        fh=9K5ujsQeUFORUAhnaZUdk2S17UPrL7Z+Z2H91is0Y+4=;
-        b=RbsT3ZL1qX8skhNg/AQ4PjjW5OWRR9IALSDJRHVHE6yZWB1iUGlfP5SfaNgzgyLh5D
-         UqaMRSbBR8i4uFn+FuGKEg8W2D7cu37op+0RmTZ5sUJgYkk/ERKIFjJO98Rx+SX7E7I8
-         KyDKGwQARBJ0CGzYpjR2g6OoNx8qWTna7Zh+XllyMGZEu13p6GdWvf0t+mMG5I10p0+j
-         6D+WAMy6zOpSKeHqvubEqXaIRy1BL2y8ySvLMbhUvwccX6qOvTou6/6kYSlbco711Z/D
-         mPrE5bTv9vNZKQtd5nFFD92TUqoa2xrQrnxsSSCO5/denpodv4E8qU0UKXMTKDKfrKSo
-         J1ZQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770282840; x=1770887640; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kZy9He49zevIscQI8TKi266PdhFwv75woDxw06ZBjks=;
-        b=RmYYZMit+tWQploXo45nSdx5BJu/qw+y8FJT1TxG1W2WxV3lrYLOl+lL/FWCk4bBCx
-         vlGJKH4cqyEB9FzN+vk+hGkVqMVshDhXNnFmOS5hrp98/3HlOqDnqAXE1tCQ0rSCxbpA
-         C8sbxX4W55MH6ar50yCqMRJ1l7BgUERPlAhK7KzQ4TlaeN1cV8BN/MhJchX7CsAC5QGM
-         KBOxgm+iyFhgTFzvKsZ1zpPDdsyY14FWKotFa3DVT0Kn3H027lQFxHGw/L2FVc/Tof5o
-         UcK8i1+B1V0LmVmZV0A6R0Lge399bL9WDlDccIAyuqbrDcC3PHHTU7F0Bo+6GbCS1L/N
-         V9CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770282840; x=1770887640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kZy9He49zevIscQI8TKi266PdhFwv75woDxw06ZBjks=;
-        b=vnkp/FFhFw8a8iQ3uDqsRTPGQaOemyv5VMzrziRx3CM1L+bag+J/3iOl43Up3bI8rm
-         1o8KqozJWjvEZoOAs2hfJe4BWSzBDKYLlqLcRSB6QMARxOKtGfJyd6bABDmkC9n7Pa9r
-         gt3nC5LDCSwnAid58aSaPlAj3AfVho5Okp6Y/3+Giy98jMwQ1SeTydDS5IDg8HA7NyVR
-         NRoiK9HHaCCHxyq0duciNfmKnmG1AP79+9FThc6PfgVqJGOhk9kxvwBiWus4dJomC1Oi
-         nfkXnhyjmTiseVcWegWZSx8Nf9gfdOhNcfuSpHt3QBaI+JXQxQoRdMMisLCkGTwWQ15o
-         ecWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmiupxjpQKR/MtAaTtSExKsL5EEpL2Orj2HFGSnJ1kdrcCfRR9gp3efpTIJzsuTILO6oUH3O0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyy0SZIW7huBdhaP7TQ23sWmQARMLMAKlsmHcUzoIxIOJFQxbI6
-	MGvjmmMudtXUmIhDX86fVE5lPhGSrFStz+jKoExge01Db0V7AmAHiq204ZdpaZloQVIS4q+ge+M
-	RbLmYt4gKme23TRMrqluhFmMuJLDeRJakRh/O9zMB
-X-Gm-Gg: AZuq6aKC7X6hxvcfJyXZilaDbA6cIaJoCMR+rO6mVW+x38FydyVDDn47isyTDQT2NY4
-	hrxOBPGaOhVjgRyzjy66hk6q5V0hQGoKLLcPF/0TUwrDXGgiKwli6A/BUcuzl081azOpA3qeNxf
-	RnBbydMZRUKgNWpIxZ6SmKEqW/QnZ4trMlCOxuKp55GMZlXqV9Sz1IScoAdr9dN4NZoCuPYmhVR
-	RZmd8hX//nCAR1ihJ5MzU7BJ4707vlaM1U0iPq/7lwt5gAjmllrmXM2xzszX5VjLlDbbCf2KEAU
-	Uc+GkdKFhySdMELkNDl/MJxySg==
-X-Received: by 2002:a05:600c:1d04:b0:47e:e946:3a72 with SMTP id
- 5b1f17b1804b1-4830e979529mr86636545e9.27.1770282839548; Thu, 05 Feb 2026
- 01:13:59 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC138E5D9;
+	Thu,  5 Feb 2026 09:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770283752; cv=none; b=dGZzDLmzkFAEj71J07kNoA7o+Nm+HP1iJ1KRQloy29x9zVRLPxIO1tlROuztbLFIniRjFzZ8zJQpOa/Wln3s62QOO3swnsB2v6K+J2GG1LOgLe0OtKfo19ezTh4PNtZvt5Z6iBt7iQzdPtsQHyA6C+sQUAmzgLka7OkEy6K+x3U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770283752; c=relaxed/simple;
+	bh=DEyMEUPk136lRe1+oXjf7E/xgzmujjzXLznYtwyuRTU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e7c2xUCf44F8xEW9StkBY+X1SBnQoZDAS9l9ax+/4ejrfWeOw9i3llsTZOgbsryrmD7hnF+FXN6rKExMDQXxB7QLoQORTKKni/rcQmSK5IkU40l3JgqUrQRMuKjth4PW9ON4cSagT7be1ePe+hUUDUTv3dbwEzXBZPGyYd5BE6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UF9hmW7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E5FC4CEF7;
+	Thu,  5 Feb 2026 09:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770283751;
+	bh=DEyMEUPk136lRe1+oXjf7E/xgzmujjzXLznYtwyuRTU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UF9hmW7ym4UvBc2PdHLX27wnkftTF9KCY70BRMNx5VCJPL3CEh543a/cR4OubxhD7
+	 cGSmss8J1TbGDp0c4QI40YqyjkuwDTxmCXv6P1ZOI6A8G6+sGf2/jnIRPaRNOa6D34
+	 7xX9LxT3DA67zjqAYfLCqC0yaOGWBk4Me56LXM7CS0U89Y3a1xKzX8/hUR9qVYx90K
+	 EGpIlC6/8JscRmNi6vw2uzzc/s81W4a1I3bTHwlPZYax2daFRM7Fdg+y0Dn/hFsoT2
+	 XyiZU/eNqiWba0drfG57+Vro5K7RC7rKIPOwgPUq+ZOdh+/NG4lrKCppNqoD3cKO5s
+	 TSZwTErnNB3CQ==
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	tzungbi@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
+Date: Thu,  5 Feb 2026 09:28:40 +0000
+Message-ID: <20260205092840.2574840-1-tzungbi@kernel.org>
+X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260204143858.193781818@linuxfoundation.org> <20260204143905.245830999@linuxfoundation.org>
- <20260204184810.GA2715873@ax162>
-In-Reply-To: <20260204184810.GA2715873@ax162>
-From: Pimyn Girgis <pimyn@google.com>
-Date: Thu, 5 Feb 2026 10:13:48 +0100
-X-Gm-Features: AZwV_QjqlCzx2sZYGhkrTvRiOprnY_rvYth7AxrlqHjxRYRPxTSZ_CfZuKQ-TKo
-Message-ID: <CAJWNTGz0Yd4W3piDT5RFzmmKPhcUaNu0pSEgMOF3U0FmfsyzVA@mail.gmail.com>
-Subject: Re: [PATCH 5.15 195/206] mm/kfence: randomize the freelist on initialization
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Marco Elver <elver@google.com>, 
-	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>, Kees Cook <kees@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214432-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pimyn@google.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214431-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+]
-X-Rspamd-Queue-Id: B76B6F07FB
+	FROM_NEQ_ENVFROM(0.00)[tzungbi@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 370DAF0D0B
 X-Rspamd-Action: no action
 
-On Wed, Feb 4, 2026 at 7:48=E2=80=AFPM Nathan Chancellor <nathan@kernel.org=
-> wrote:
-> This introduces a new instance of -Wsometimes-uninitialized, as pointed
-> out by this KernelCI report:
->
-> https://lore.kernel.org/177022794292.7001.3716577555750776270@22d5995788c=
-3/
+Since commit aab5c6f20023 ("gpio: set device type for GPIO chips"),
+`gdev->dev.release` is unset.  As a result, the reference count to
+`gdev->dev` isn't dropped on the error handling paths.
 
-Thanks! I'll be sending a V2 shortly.
+Drop the reference on errors.
+
+Also reorder the instructions to make the error handling simpler.
+Now gpiochip_add_data_with_key() roughly looks like:
+
+   >>> Some memory allocation.  Go to ERR ZONE 1 on errors.
+   >>> device_initialize().
+
+   gpiodev_release() takes over the responsibility for freeing the
+   resources of `gdev->dev`.  The subsequent error handling paths
+   shouldn't go through ERR ZONE 1 again which leads to double free.
+
+   >>> Some initialization mainly on `gdev`.
+   >>> The rest of initialization.  Go to ERR ZONE 2 on errors.
+   >>> Chip registration success and exit.
+
+   >>> ERR ZONE 2.  gpio_device_put() and exit.
+   >>> ERR ZONE 1.
+
+Cc: stable@vger.kernel.org
+Fixes: aab5c6f20023 ("gpio: set device type for GPIO chips")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+---
+v3:
+- Remove the parentheses in the commit message.
+- Add code comment before setting the device type.
+- Add R-b tag.
+
+v2: https://lore.kernel.org/all/20260203060210.972243-1-tzungbi@kernel.org
+- Reorder the instructions again to make the error handling simpler which
+  fixes https://lore.kernel.org/all/20260116081036.352286-2-tzungbi@kernel.org
+  too.
+- Modify the commit message slightly.
+
+v1: https://lore.kernel.org/all/20260116081036.352286-4-tzungbi@kernel.org
+
+ drivers/gpio/gpiolib.c | 101 ++++++++++++++++++++---------------------
+ 1 file changed, 48 insertions(+), 53 deletions(-)
+
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index c52200eaaaff..5757c0475990 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -893,13 +893,15 @@ static const struct device_type gpio_dev_type = {
+ #define gcdev_unregister(gdev)		device_del(&(gdev)->dev)
+ #endif
+ 
++/*
++ * An initial reference count has been held in gpiochip_add_data_with_key().
++ * The caller should drop the reference via gpio_device_put() on errors.
++ */
+ static int gpiochip_setup_dev(struct gpio_device *gdev)
+ {
+ 	struct fwnode_handle *fwnode = dev_fwnode(&gdev->dev);
+ 	int ret;
+ 
+-	device_initialize(&gdev->dev);
+-
+ 	/*
+ 	 * If fwnode doesn't belong to another device, it's safe to clear its
+ 	 * initialized flag.
+@@ -965,9 +967,11 @@ static void gpiochip_setup_devs(void)
+ 	list_for_each_entry_srcu(gdev, &gpio_devices, list,
+ 				 srcu_read_lock_held(&gpio_devices_srcu)) {
+ 		ret = gpiochip_setup_dev(gdev);
+-		if (ret)
++		if (ret) {
++			gpio_device_put(gdev);
+ 			dev_err(&gdev->dev,
+ 				"Failed to initialize gpio device (%d)\n", ret);
++		}
+ 	}
+ }
+ 
+@@ -1048,71 +1052,72 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	int base = 0;
+ 	int ret;
+ 
+-	/*
+-	 * First: allocate and populate the internal stat container, and
+-	 * set up the struct device.
+-	 */
+ 	gdev = kzalloc(sizeof(*gdev), GFP_KERNEL);
+ 	if (!gdev)
+ 		return -ENOMEM;
+-
+-	gdev->dev.type = &gpio_dev_type;
+-	gdev->dev.bus = &gpio_bus_type;
+-	gdev->dev.parent = gc->parent;
+-	rcu_assign_pointer(gdev->chip, gc);
+-
+ 	gc->gpiodev = gdev;
+ 	gpiochip_set_data(gc, data);
+ 
+-	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+-
+ 	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
+ 	if (ret < 0)
+ 		goto err_free_gdev;
+ 	gdev->id = ret;
+ 
+-	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
++	ret = init_srcu_struct(&gdev->srcu);
+ 	if (ret)
+ 		goto err_free_ida;
++	rcu_assign_pointer(gdev->chip, gc);
+ 
+-	if (gc->parent && gc->parent->driver)
+-		gdev->owner = gc->parent->driver->owner;
+-	else if (gc->owner)
+-		/* TODO: remove chip->owner */
+-		gdev->owner = gc->owner;
+-	else
+-		gdev->owner = THIS_MODULE;
++	ret = init_srcu_struct(&gdev->desc_srcu);
++	if (ret)
++		goto err_cleanup_gdev_srcu;
++
++	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
++	if (ret)
++		goto err_cleanup_desc_srcu;
++
++	device_initialize(&gdev->dev);
++	/*
++	 * After this point any allocated resources to `gdev` will be
++	 * free():ed by gpiodev_release().  If you add new resources
++	 * then make sure they get free():ed there.
++	 */
++	gdev->dev.type = &gpio_dev_type;
++	gdev->dev.bus = &gpio_bus_type;
++	gdev->dev.parent = gc->parent;
++	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+ 
+ 	ret = gpiochip_get_ngpios(gc, &gdev->dev);
+ 	if (ret)
+-		goto err_free_dev_name;
++		goto err_put_device;
++	gdev->ngpio = gc->ngpio;
+ 
+ 	gdev->descs = kcalloc(gc->ngpio, sizeof(*gdev->descs), GFP_KERNEL);
+ 	if (!gdev->descs) {
+ 		ret = -ENOMEM;
+-		goto err_free_dev_name;
++		goto err_put_device;
+ 	}
+ 
+ 	gdev->label = kstrdup_const(gc->label ?: "unknown", GFP_KERNEL);
+ 	if (!gdev->label) {
+ 		ret = -ENOMEM;
+-		goto err_free_descs;
++		goto err_put_device;
+ 	}
+ 
+-	gdev->ngpio = gc->ngpio;
+ 	gdev->can_sleep = gc->can_sleep;
+-
+ 	rwlock_init(&gdev->line_state_lock);
+ 	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+ 	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
+-
+-	ret = init_srcu_struct(&gdev->srcu);
+-	if (ret)
+-		goto err_free_label;
+-
+-	ret = init_srcu_struct(&gdev->desc_srcu);
+-	if (ret)
+-		goto err_cleanup_gdev_srcu;
++#ifdef CONFIG_PINCTRL
++	INIT_LIST_HEAD(&gdev->pin_ranges);
++#endif
++	if (gc->parent && gc->parent->driver)
++		gdev->owner = gc->parent->driver->owner;
++	else if (gc->owner)
++		/* TODO: remove chip->owner */
++		gdev->owner = gc->owner;
++	else
++		gdev->owner = THIS_MODULE;
+ 
+ 	scoped_guard(mutex, &gpio_devices_lock) {
+ 		/*
+@@ -1128,7 +1133,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 			if (base < 0) {
+ 				ret = base;
+ 				base = 0;
+-				goto err_cleanup_desc_srcu;
++				goto err_put_device;
+ 			}
+ 
+ 			/*
+@@ -1148,14 +1153,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 		ret = gpiodev_add_to_list_unlocked(gdev);
+ 		if (ret) {
+ 			gpiochip_err(gc, "GPIO integer space overlap, cannot add chip\n");
+-			goto err_cleanup_desc_srcu;
++			goto err_put_device;
+ 		}
+ 	}
+ 
+-#ifdef CONFIG_PINCTRL
+-	INIT_LIST_HEAD(&gdev->pin_ranges);
+-#endif
+-
+ 	if (gc->names)
+ 		gpiochip_set_desc_names(gc);
+ 
+@@ -1249,25 +1250,19 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	scoped_guard(mutex, &gpio_devices_lock)
+ 		list_del_rcu(&gdev->list);
+ 	synchronize_srcu(&gpio_devices_srcu);
+-	if (gdev->dev.release) {
+-		/* release() has been registered by gpiochip_setup_dev() */
+-		gpio_device_put(gdev);
+-		goto err_print_message;
+-	}
++err_put_device:
++	gpio_device_put(gdev);
++	goto err_print_message;
++
+ err_cleanup_desc_srcu:
+ 	cleanup_srcu_struct(&gdev->desc_srcu);
+ err_cleanup_gdev_srcu:
+ 	cleanup_srcu_struct(&gdev->srcu);
+-err_free_label:
+-	kfree_const(gdev->label);
+-err_free_descs:
+-	kfree(gdev->descs);
+-err_free_dev_name:
+-	kfree(dev_name(&gdev->dev));
+ err_free_ida:
+ 	ida_free(&gpio_ida, gdev->id);
+ err_free_gdev:
+ 	kfree(gdev);
++
+ err_print_message:
+ 	/* failures here can mean systems won't boot... */
+ 	if (ret != -EPROBE_DEFER) {
+-- 
+2.53.0.rc2.204.g2597b5adb4-goog
+
 
