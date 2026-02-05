@@ -1,260 +1,164 @@
-Return-Path: <stable+bounces-214442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOVqHhh+hGl/3AMAu9opvQ
-	(envelope-from <stable+bounces-214442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:25:12 +0100
+	id KGQmJSSAhGl/3AMAu9opvQ
+	(envelope-from <stable+bounces-214443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:33:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD2F1D4B
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:25:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0416EF1EA6
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64574301B164
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 11:25:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 727A6300D977
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 11:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C33E3ACEF3;
-	Thu,  5 Feb 2026 11:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1C73AA1AB;
+	Thu,  5 Feb 2026 11:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R3RE1kRZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g1R8NPXJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF332DECBA;
-	Thu,  5 Feb 2026 11:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770290697; cv=none; b=r6ztML/XnQCFUBPRuno+yO9viJKaw4bBtAd8fK+P/y/Gtb5xem6SBPnkest0Jx2YuPbbUbgaRR/kH6puYpAW7ER6sEMoGGTHJSIc4npQW6dPug77FZ0YVlxsAo41Fr9pNE7/BM7M0tbCZTKpntcbyVCkSYNdZgV9rfdPCu9jCcM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770290697; c=relaxed/simple;
-	bh=RP9knd9zSX2JAIs659+W5o/dC9K4wTQXWG+rnTYiOmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HCy+75s26DKS9as+6mzBRlBhMw7u7xBITZzvGTIt6gjv1n2N2d1sMRbGhNYcPxI8XSHpstpnkWQ3Jem12sDbshrsXJTsznVfFBY/ul2lc73JvshubY/nTfmoQq566L80OGufMCCg50x7UKVdTCyIyS/EHGHXx95F7gfNLg9uU2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R3RE1kRZ; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770290696; x=1801826696;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RP9knd9zSX2JAIs659+W5o/dC9K4wTQXWG+rnTYiOmo=;
-  b=R3RE1kRZ8rQODIPILR2FRT+S1GXzBrUIo0RBmTDnSKJBDXS4WaJaYHsN
-   SkgxVhHgJC5xB3LDsFqn8EC4RPOuzuv2d7ohjHLxSB+G7vSaeYDtmCBai
-   xwaMIxFULj/9FaM5CAzleKQYImQDL0uY2HhaSbEPXJCUz38PV+dEERIec
-   TSNwCLwH4RwAe8I9jegOwLhsc2jWjg8ddpFV9yrK9oQemkkbXASNn5F9z
-   iiUgjlTPFNAnK+om2r3niI8lAF9kgw/wWTtaVJWBUpqzpsMtqusEIvIMe
-   JL9IdaDzC3mZp6fuXWT2AkKic6P4LXrT/7Z7T4Tfk53qygqcjWpLEodne
-   g==;
-X-CSE-ConnectionGUID: S41xPsFLRMmQoijjTtUAfg==
-X-CSE-MsgGUID: Yh7Te6NVQ/y+BXtIR+rB8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82926597"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="82926597"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 03:24:56 -0800
-X-CSE-ConnectionGUID: seo9ZN/4SAWUD9WMECvqkw==
-X-CSE-MsgGUID: AZffPS4XS5G5/6egn3q4Mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="209841174"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa007.fm.intel.com with ESMTP; 05 Feb 2026 03:24:52 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 432ED95; Thu, 05 Feb 2026 12:24:51 +0100 (CET)
-Date: Thu, 5 Feb 2026 12:24:51 +0100
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: WangYuli <wangyuli@aosc.io>
-Cc: mario.limonciello@amd.com, thomas.lendacky@amd.com, john.allen@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	andriy.shevchenko@linux.intel.com, jsd@semihalf.com,
-	andi.shyti@kernel.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	bp@alien8.de, ashish.kalra@amd.com, markhas@chromium.org,
-	jarkko.nikula@linux.intel.com, wsa@kernel.org,
-	WangYuli <wangyl5933@chinaunicom.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: designware: Enable PSP semaphore for AMDI0010 and
- fix probe deferral
-Message-ID: <20260205112451.GX2275908@black.igk.intel.com>
-References: <20260205103047.19127-1-wangyuli@aosc.io>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CECB3659E4
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 11:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770291166; cv=pass; b=G+QG6blbBYRJHjyQeYVNQYL1JDodFS9mfW2oeYMbheg00kN04rdiAXH0uolQSDC5M1qYlfFxBvFoZbTC5jUQ86HlbeGLPmLkLAU/qyddwa6zG0DbWoYlFxS/Yr5P4+a65zkFZU1srIB9RgGozt4v+Mf5DC5po9U5xoypblvn4Qw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770291166; c=relaxed/simple;
+	bh=HUFONjuQLtbcVub/kPg3eEuVXzFRYkS/YmMcr8CvBmw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cnl2HK+cSCr7M7nmwnKKWcDPhdkoQXaNJbjbKeAs2zMhQeAEyW63wr3VxILauzPzBiMIzqhcNeF4qD8BzEY34KgSyh9deVgytVMCA6VWQmbuCfknSaipHTwyY2beUIEsZazWRRWBFSbVBD6mBnlUJn2W03BzceWjOd27L5G5FSQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g1R8NPXJ; arc=pass smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b8870ac4c4eso127908766b.2
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 03:32:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770291165; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PA74Os/E5F9AnfKCwsHxCL3Z8EcriAQyXctzSg5fy19Eakmm3WxKl8brqpw5Wr+/4o
+         OgtKGYzv5J5hJGGuMvfabbtfqUBdWMC+nNCQLceH/0nti5gYVLyf5PIQgEA+/dnwer7z
+         2QZ1E+isxbDL1MQLMpexoZkyihvBJeZxJmTPJ+Lufn7Rcru1YSSXU+SVIXClbI75l5Ma
+         Yt6VcxC7s0LdD2zsXthqJta0IBS3Q6z9NYnPfp9npR5ePQySyaWWIzmgYfrcA+SO5Ykb
+         KhjWr0jrIkgGfG0xL6jFKMvc6T5rxg2tXDdpQvi+7ZXqvg1dmm3z7H7/vZ3qNxq5xszl
+         iDpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HUFONjuQLtbcVub/kPg3eEuVXzFRYkS/YmMcr8CvBmw=;
+        fh=xeIZHBfxxJDariAGwE9zoSKCsxY/OeBrRiEPwBI+f2E=;
+        b=gvyEYStnVfrPRme1Gmj13KEHsICujZvHKQtajd9ygtIMHKkZJonqHGIBAbmFPILTES
+         IEGWMzytdxqZhEn0yH5DHfa6RMJY0NWmqOr2JYRlPVKU/aB7PBebTSGzlS/aSl4g2XTy
+         Aao5mXYuRWX4F9H3Wj5G2qQB43dVYA0oNU78sMIWaATUTxTHcGLsGMlzGARGYjNMpY3K
+         bIGhbzZTa9gcWpODuumpYKB0+iiXK48BEKDP8INbTCJvRlexHhkRQZuABwUxr8hEN5vN
+         0hT5jmb812Q5NuSuTFebW6CoCBEV+bJ9nBgRXnJbVkEXch0wBnlksaSsOMf9pKyNFDLb
+         wG4Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770291165; x=1770895965; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HUFONjuQLtbcVub/kPg3eEuVXzFRYkS/YmMcr8CvBmw=;
+        b=g1R8NPXJmqlbh0s6QNCVaexLZnsZreCXZAPFsB6BNxojxrfe9fBHAfchjFwIEzvGZt
+         nYc0z4aAa29qE9fbGN+GaP+WSuo6Dn+xsSNbofoOYLGPzIpbTscCPZVvYWcwelVnYBdE
+         ERlf9SUv3+M0tr49ppwJ5X73VjQEuCCFQxjLhHMbWCwYJJT/3nWEy7G5bR7836ORTDWW
+         umizugVxCg4JrUAm1p5BsmymiuGj2VOvaKB/4Ds2xD5ByjANV7/GjTFIRGFi8fIUrTsL
+         EoKLdYMlqGj1YwBC0BmAdL3TmFce5YBp2DIZyysu5JOpD0m378Ndbd1Tb4ieugCyoyC/
+         5Waw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770291165; x=1770895965;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HUFONjuQLtbcVub/kPg3eEuVXzFRYkS/YmMcr8CvBmw=;
+        b=AiO/ZoZ0gMXS8D8FcVL977N/Bx7A7r3CVDYf2QEnr3t0jgwY0IrWKa+Mf2Nhwd46DS
+         2h5Iozx813/MP9lIpt3A8D1qR+YQtf+jT69qYKx4YCKQ9FDItc/YtFmwywsKAFfbcRpf
+         OCcQxvhoDLEH+nJ1kk/AxuBZBOHM9uQbOrSztR4xJw37XPab3ubOfeL1NdPCpGEyR2xI
+         McXOoI/v2tmWPXUCynGBhqqenpB0+I3Ipwhwzn0je4/uX0wgG5KsuJ6jCakqWdy/kjAp
+         M8r0r5UUMcPQAIGzFoCWMEHhYgGrqtdcovPODMNBvN1BBPeh/o1hoTF1sEPA6LF7pvvO
+         xWgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU51/Cz/SnlGGPgU7BPoV4qMcj529frZ0EHl/DRsgWlbyM9mHmcvKDtYho4d1JIZ7wUr3rYQbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxolayUfnKmsHNyMlVI/TRQmiAQzununk+TE1VyMWaTK4yZ/tno
+	kN6lQ2We+drPhoFMsTIvPrK1RK6h5tHSh/W2Lf8O0dG8giRif61B6b73aCdr0s7Ft8V2PgttIki
+	+3ctkhCN1neT3rgoYaSkr6/VviWfHDwU=
+X-Gm-Gg: AZuq6aLPZuQPuJwnHj9EvexvIf4SK5LruZM6oxDTG63WZa1XIHt3xLhzOjIIjHaIlg9
+	xWFf/Td7aF2NtTV5biC+4pkaYJJ6cIbWxsA8i5PNmSAGIHBNVDngrac0WX0AF63qINbtTgd+aEM
+	qP697qNJ9E/lL6gevRGOg2evq4kEMT+MTKVt1FsyK4ElX/kOHaXXsZyfv3GasvMN/m/5505RSlf
+	NBVi0dqWQ4A/xvhvlKgFAYYh0HRK/qDZO8uc9Y6FXKJlFFtK35sbUahcWtGUvJaNy4ZrsdUWjeR
+	yWha8kWLrZtQ9s2QEIR2c9HGMGmeZk1taw/yFxH7UpbLjScOuT432zVB2E/owjLAwBZtmzY=
+X-Received: by 2002:a17:907:84b:b0:b88:448c:be01 with SMTP id
+ a640c23a62f3a-b8e9f0a8c35mr390932366b.18.1770291164318; Thu, 05 Feb 2026
+ 03:32:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260205103047.19127-1-wangyuli@aosc.io>
+References: <20260205-inv-icm45600-fix-int1-drive-bit-v1-1-72a78cd07150@tdk.com>
+In-Reply-To: <20260205-inv-icm45600-fix-int1-drive-bit-v1-1-72a78cd07150@tdk.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 5 Feb 2026 13:32:08 +0200
+X-Gm-Features: AZwV_QiXOqOOjplTg2gMyP4sKVgxsZvWFdsBXBYnOUNPtfQwvHW7PXHB16Yg_2M
+Message-ID: <CAHp75VdmVP45+3r6HoC-Gf7FfXMJdmfTV739LLDAtdX_f_xu7Q@mail.gmail.com>
+Subject: Re: [PATCH] iio: imu: inv_icm45600: fix INT1 drive bit inverted
+To: jean-baptiste.maneyrol@tdk.com
+Cc: Remi Buisson <remi.buisson@tdk.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214442-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-214443-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mika.westerberg@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andyshevchenko@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chinaunicom.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim]
-X-Rspamd-Queue-Id: 3BFD2F1D4B
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0416EF1EA6
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 06:30:47PM +0800, WangYuli wrote:
-> From: WangYuli <wangyl5933@chinaunicom.cn>
-> 
-> AMD Strix Point platforms use the AMDI0010 ACPI HID for their I2C
-> controllers, but this entry was missing the ARBITRATION_SEMAPHORE flag
-> that enables PSP-based bus arbitration.
-> 
-> Without proper arbitration, when both the x86 host and AMD PSP
-> (Platform Security Processor) attempt to access the shared I2C bus
-> simultaneously, the DesignWare controller loses arbitration and reports:
-> 
->   i2c_designware AMDI0010:01: i2c_dw_handle_tx_abort: lost arbitration
-> 
-> This causes communication failures with I2C devices such as touchpads
-> (e.g., BLTP7853 HID-over-I2C).
-> 
-> Add the ARBITRATION_SEMAPHORE flag to the AMDI0010 entry to enable PSP
-> mailbox-based I2C bus arbitration, consistent with how AMDI0019 was
-> handled for AMD Cezanne platforms.
-> 
-> However, simply enabling this flag exposes a latent bug introduced by
-> commit 440da737cf8d ("i2c: designware: Use PCI PSP driver for
-> communication"): the driver unconditionally returns -EPROBE_DEFER when
-> psp_check_platform_access_status() fails, causing an infinite probe
-> deferral loop on platforms that lack PSP platform access support.
-> 
-> The problem is that psp_check_platform_access_status() returned -ENODEV
-> for all failure cases, but there are two distinct scenarios:
-> 
->   1. PSP is still initializing (psp pointer exists but platform_access_data
->      is not yet ready, while vdata->platform_access indicates support) -
->      this is a transient condition that warrants probe deferral.
-> 
->   2. The platform genuinely lacks PSP platform access support (either no
->      psp pointer, or vdata->platform_access is not set) - this is a
->      permanent condition where probe deferral would loop indefinitely.
-> 
-> Fix this by updating psp_check_platform_access_status() to return:
-> 
->   - -EPROBE_DEFER: when PSP exists with platform_access capability but
->     platform_access_data is not yet initialized (transient)
->   - -ENODEV: when the platform lacks PSP platform access support (permanent)
-> 
-> Then update the I2C driver to pass through the actual return code from
-> psp_check_platform_access_status() instead of forcing -EPROBE_DEFER,
-> allowing the driver to fail gracefully on unsupported platforms.
-> 
-> Tested on MECHREVO XINGYAO 14 with AMD Ryzen AI 9 H 365.
-> 
-> Fixes: 440da737cf8d ("i2c: designware: Use PCI PSP driver for communication")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: WangYuli <wangyl5933@chinaunicom.cn>
-> ---
->  drivers/crypto/ccp/platform-access.c        |  7 ++++++-
->  drivers/i2c/busses/i2c-designware-amdpsp.c  | 11 +++++++++--
->  drivers/i2c/busses/i2c-designware-platdrv.c |  2 +-
->  include/linux/psp-platform-access.h         |  5 +++--
->  4 files changed, 19 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/crypto/ccp/platform-access.c b/drivers/crypto/ccp/platform-access.c
-> index 1b8ed3389733..3f20cf194cb6 100644
-> --- a/drivers/crypto/ccp/platform-access.c
-> +++ b/drivers/crypto/ccp/platform-access.c
-> @@ -46,7 +46,12 @@ int psp_check_platform_access_status(void)
->  {
->  	struct psp_device *psp = psp_get_master_device();
->  
-> -	if (!psp || !psp->platform_access_data)
-> +	/* PSP driver not loaded yet, caller should defer */
-> +	if ((!psp) || (!psp->platform_access_data && psp->vdata->platform_access))
-> +		return -EPROBE_DEFER;
-> +
-> +	/* PSP loaded but platform_access not supported by hardware */
-> +	if (!psp->platform_access_data && !psp->vdata->platform_access)
->  		return -ENODEV;
->  
->  	return 0;
-> diff --git a/drivers/i2c/busses/i2c-designware-amdpsp.c b/drivers/i2c/busses/i2c-designware-amdpsp.c
-> index 404571ad61a8..341232767177 100644
-> --- a/drivers/i2c/busses/i2c-designware-amdpsp.c
-> +++ b/drivers/i2c/busses/i2c-designware-amdpsp.c
-> @@ -269,6 +269,7 @@ static const struct i2c_lock_operations i2c_dw_psp_lock_ops = {
->  int i2c_dw_amdpsp_probe_lock_support(struct dw_i2c_dev *dev)
->  {
->  	struct pci_dev *rdev;
-> +	int ret;
->  
->  	if (!IS_REACHABLE(CONFIG_CRYPTO_DEV_CCP_DD))
->  		return -ENODEV;
-> @@ -291,8 +292,14 @@ int i2c_dw_amdpsp_probe_lock_support(struct dw_i2c_dev *dev)
->  		_psp_send_i2c_req = psp_send_i2c_req_doorbell;
->  	pci_dev_put(rdev);
->  
-> -	if (psp_check_platform_access_status())
-> -		return -EPROBE_DEFER;
-> +	/*
-> +	 * Check if PSP platform access is available.
-> +	 * Returns 0 on success, -EPROBE_DEFER if PSP driver not loaded,
-> +	 * -ENODEV if platform_access is not supported by hardware.
-> +	 */
+On Thu, Feb 5, 2026 at 11:55=E2=80=AFAM Jean-Baptiste Maneyrol via B4 Relay
+<devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
+>
+> Drive bit must be set for open-drain mode and be cleared for push-pull
+> mode.
 
-This is useless comment.
+Any pointers to the datasheet? (to the particular section / table that
+explains this bit)
 
-> +	ret = psp_check_platform_access_status();
-> +	if (ret)
-> +		return ret;
->  
->  	psp_i2c_dev = dev->dev;
->  
-> diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-> index 7be99656a67d..63b1c06ee111 100644
-> --- a/drivers/i2c/busses/i2c-designware-platdrv.c
-> +++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-> @@ -345,7 +345,7 @@ static const struct acpi_device_id dw_i2c_acpi_match[] = {
->  	{ "80860F41", ACCESS_NO_IRQ_SUSPEND },
->  	{ "808622C1", ACCESS_NO_IRQ_SUSPEND },
->  	{ "AMD0010", ACCESS_INTR_MASK },
-> -	{ "AMDI0010", ACCESS_INTR_MASK },
-> +	{ "AMDI0010", ACCESS_INTR_MASK | ARBITRATION_SEMAPHORE },
->  	{ "AMDI0019", ACCESS_INTR_MASK | ARBITRATION_SEMAPHORE },
->  	{ "AMDI0510", 0 },
->  	{ "APMC0D0F", 0 },
-> diff --git a/include/linux/psp-platform-access.h b/include/linux/psp-platform-access.h
-> index 540abf7de048..84dbdbeb61d6 100644
-> --- a/include/linux/psp-platform-access.h
-> +++ b/include/linux/psp-platform-access.h
-> @@ -64,8 +64,9 @@ int psp_ring_platform_doorbell(int msg, u32 *result);
->   * if platform features has initialized.
->   *
->   * Returns:
-> - * 0          platform features is ready
-> - * -%ENODEV   platform features is not ready or present
-> + *  0:            platform features is ready
-> + *  -%ENODEV:     platform_access is not supported by hardware
-> + *  -%EPROBE_DEFER: PSP driver not ready or platform features not yet initialized
->   */
->  int psp_check_platform_access_status(void);
->  
-> -- 
-> 2.51.0
+...
+
+Assuming it's correct, with added reference to the datasheet
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
