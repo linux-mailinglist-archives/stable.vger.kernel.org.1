@@ -1,179 +1,202 @@
-Return-Path: <stable+bounces-214500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPazEqi+hGnG4wMAu9opvQ
-	(envelope-from <stable+bounces-214500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:00:40 +0100
+	id gHelF9y+hGnG4wMAu9opvQ
+	(envelope-from <stable+bounces-214503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:01:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB376F4E66
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:00:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31172F4E7C
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:01:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE3DC3049EDD
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:59:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B147430067B7
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 16:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E18A42E000;
-	Thu,  5 Feb 2026 15:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8618042EEDE;
+	Thu,  5 Feb 2026 16:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A2r0PMnS"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="GLbTAMDr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805AE410D3B;
-	Thu,  5 Feb 2026 15:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A5442EED3;
+	Thu,  5 Feb 2026 16:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770307141; cv=none; b=FI8QDW9btOdoWgu1BdA3XXsQovhJ4pfRzdhG1dbxrLGgQKictCLGe9nHaUr9uG5pY0MRkp30sPB8nTh6Zdhl7wt9NewbczhF8IqFXwbjMp7nE/KNL6m3el1cFyviUlYv3Rc55nfwop64MnC5F6khZtjFI5k6kRp3S7eUs/MY8Z8=
+	t=1770307279; cv=none; b=D3/t7iPTxQr72HWDd3mUjwbRB5HSJ4Rt/BjwCJt+pBa/gikluPF6krx3K7TmABMmtFPKRraiZ5gprgWl309S3ZrPNeAvBq2Llf1iJbj6fAo4i8xlrf+j1/esYYyUzGOi+f/tMHSYMsK6H9JXq10PNFXAr2rQH0uff0j4IgN2T6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770307141; c=relaxed/simple;
-	bh=+Maq/Ja5fq6IOMPPPKM/sCWeYbp9JRlP9qRuhlrodnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nk1HW6G28lFkwGlwP3hMszWlah3FVEi+NZgdEdADyN/1wgOoDCIjXh5iDs5ymi4Jx8wmzVJFUV7x8Sj9lcVH9wIS1Mo5cc7cWxuCBoOjUac4BKhk6e37PnFpt+5D7OAvz0tXTbcg3eyuzXmTAiGLuagJL9yA13s/1T0fGUY9Ul0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A2r0PMnS; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770307141; x=1801843141;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+Maq/Ja5fq6IOMPPPKM/sCWeYbp9JRlP9qRuhlrodnQ=;
-  b=A2r0PMnSBacZXNSR04ValcaP6MlAUtsyOj49wxtfKyum2WzbB2pIT96P
-   PUlnACqS0tX+YjLe9IOQdq69Hi2ChrPfttjrKFKOn1U8q82F6nMMPV5HB
-   US5Ryq8LMeB28HatDrj2YHh1VSmARSvZyme2aB4rVQksCmilQuqo6niYJ
-   ntwCzGa33xrn4oc7AULbh55N0AEcUUieQkVFgpg+id/AvnhlqTLnIeu0D
-   WzdocDZrC9DkHP/4ZH7Ps3brn6r2BS0WFkvwUEl9aDQS+/btC0ikaWcMr
-   vMLQh6oNQXwmeA4hnyOr6ieEuS4aMCSwloPnN/XRA5As6ocHMkfFF+tmf
-   A==;
-X-CSE-ConnectionGUID: NgtEG54ESDim4uchtg0XsA==
-X-CSE-MsgGUID: pcy3m9f/T/mOcN3QH3tYSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71405647"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="71405647"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 07:59:00 -0800
-X-CSE-ConnectionGUID: CVYJPfyYTAGNCiucIfV65Q==
-X-CSE-MsgGUID: di5xYG7nSL+IsUhWqpegnw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="215061965"
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.111.86]) ([10.125.111.86])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 07:58:59 -0800
-Message-ID: <78f1be06-0945-4519-98b6-343987926382@intel.com>
-Date: Thu, 5 Feb 2026 07:58:58 -0800
+	s=arc-20240116; t=1770307279; c=relaxed/simple;
+	bh=1aExNJ4dg3bFCao+qWzBlH0ctl1Qbnoom4aGVW8TiUQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IrpxGq8jGGpEZwyOssYr6cBBC80j7nrbtK9UHyxAB8GwIVwEL1/sjrUkBZU0h1s9/taNoBJt1x5ubG21E3kwDZlJ1c+SVTikPGdr1olKlc9n4fJrotPIDoiGl6IhEBd0Kqz7IzmX9YjO7k+8yZXCwwD8Zzp78lF57cNA5a5dqOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=GLbTAMDr; arc=none smtp.client-ip=178.154.239.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2d:3530:0:640:eca4:0])
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 3A5E9C0158;
+	Thu, 05 Feb 2026 18:59:49 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:520::1:23])
+	by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id Vxsat90A1iE0-IoQhRHPR;
+	Thu, 05 Feb 2026 18:59:48 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1770307188;
+	bh=jlNYN1+0n1QnHoL24dFOgHU9nQnN7JrjdVpiB/9jeB4=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=GLbTAMDrH/pmwX5erJhvd/VKUF7N9rUOibnb7apcqIsH9hhMiKiodn0Qvn9EXb/Z5
+	 MJz/LGPg8PCUZYWwNFd5xsf963NWdSo6I3IzyAtIJbYMcAO7JPdYPRg0N+QvtWG221
+	 ig/8s3TaxGVynYxOFSN8BmS5WNXxEhcCKuPKjFZ8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.12] tools/power turbostat: Fix compilation on older compilers
+Date: Thu,  5 Feb 2026 18:59:07 +0300
+Message-Id: <20260205155907.1361830-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
-To: Sean Christopherson <seanjc@google.com>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: "Nikunj A. Dadhania" <nikunj@amd.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, bp@alien8.de, thomas.lendacky@amd.com, tglx@kernel.org,
- mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
- pbonzini@redhat.com, x86@kernel.org, jon.grimm@amd.com,
- stable@vger.kernel.org
-References: <20260205051030.1225975-1-nikunj@amd.com>
- <2026020559-igloo-revolver-1442@gregkh>
- <59781811-a98b-4289-89e4-58e8247241f8@amd.com>
- <2026020546-wrongness-duplex-bccd@gregkh> <aYS8MQLcGs08PxYK@google.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aYS8MQLcGs08PxYK@google.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-7.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[yandex-team.ru:D:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[yandex-team.ru,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[yandex-team.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-214500-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214503-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[yandex-team.ru:query timed out];
+	FROM_NEQ_ENVFROM(0.00)[kniv@yandex-team.ru,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[yandex-team.ru:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BB376F4E66
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 31172F4E7C
 X-Rspamd-Action: no action
 
-On 2/5/26 07:50, Sean Christopherson wrote:
->>>> That sounds like new hardware support, if you really want that, why not
->>>> just use newer kernel versions with this fix in it?  Obviously no one is
->>>> running those kernels on that hardware today, so this isn't a regression 🙂
-> I disagree, this absolutely is a regression.  Kernels without commit 14619d912b65
-> will boot on this "new" hardware, kernels with the commit will not.
+Currently turbostat.c can't be built on pre-gcc-11 compilers
+due to error: a label can only be part of a statement and a declaration
+is not a statement.
 
-Yeah, it is a regression for sure. It's a weird one, but it is a regression.
+Fix this by adding braces around case labels.
 
-We need to either disable FRED on SEV-ES/SNP+FRED systems or fix it. We
-obviously want to fix it in mainline. I guess stable could do something
-different here and disable FRED instead if it wanted. That would avoid
-even a whiff of appearing to add new hardware support.
+Fixes: 640540beb883 ("tools/power turbostat: Add MTL's PMT DC6 builtin counter")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+---
+ tools/power/x86/turbostat/turbostat.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-I'd personally prefer to just keep stable and mainline as close as possible.
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index b663a76d31f1..85d40d3c6384 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -2799,7 +2799,7 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 
+ 	for (i = 0, ppmt = sys.pmt_tp; ppmt; i++, ppmt = ppmt->next) {
+ 		switch (ppmt->type) {
+-		case PMT_TYPE_RAW:
++		case PMT_TYPE_RAW: {
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+ 				outp += sprintf(outp, "%s0x%08x", (printed++ ? delim : ""),
+ 						(unsigned int)t->pmt_counter[i]);
+@@ -2807,14 +2807,14 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), t->pmt_counter[i]);
+ 
+ 			break;
+-
+-		case PMT_TYPE_XTAL_TIME:
++		}
++		case PMT_TYPE_XTAL_TIME: {
+ 			const unsigned long value_raw = t->pmt_counter[i];
+ 			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+-		}
++		}}
+ 	}
+ 
+ 	/* C1 */
+@@ -2880,7 +2880,7 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 
+ 	for (i = 0, ppmt = sys.pmt_cp; ppmt; i++, ppmt = ppmt->next) {
+ 		switch (ppmt->type) {
+-		case PMT_TYPE_RAW:
++		case PMT_TYPE_RAW: {
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+ 				outp += sprintf(outp, "%s0x%08x", (printed++ ? delim : ""),
+ 						(unsigned int)c->pmt_counter[i]);
+@@ -2888,14 +2888,14 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), c->pmt_counter[i]);
+ 
+ 			break;
+-
+-		case PMT_TYPE_XTAL_TIME:
++		}
++		case PMT_TYPE_XTAL_TIME: {
+ 			const unsigned long value_raw = c->pmt_counter[i];
+ 			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+-		}
++		}}
+ 	}
+ 
+ 	fmt8 = "%s%.2f";
+@@ -3079,7 +3079,7 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 
+ 	for (i = 0, ppmt = sys.pmt_pp; ppmt; i++, ppmt = ppmt->next) {
+ 		switch (ppmt->type) {
+-		case PMT_TYPE_RAW:
++		case PMT_TYPE_RAW: {
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+ 				outp += sprintf(outp, "%s0x%08x", (printed++ ? delim : ""),
+ 						(unsigned int)p->pmt_counter[i]);
+@@ -3087,14 +3087,14 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 				outp += sprintf(outp, "%s0x%016llx", (printed++ ? delim : ""), p->pmt_counter[i]);
+ 
+ 			break;
+-
+-		case PMT_TYPE_XTAL_TIME:
++		}
++		case PMT_TYPE_XTAL_TIME: {
+ 			const unsigned long value_raw = p->pmt_counter[i];
+ 			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+-		}
++		}}
+ 	}
+ 
+ done:
+-- 
+2.34.1
 
-P.S. #VC and #VE are a scourge
 
