@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-214564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLhAEMcLhWmj7gMAu9opvQ
-	(envelope-from <stable+bounces-214564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 22:29:43 +0100
+	id oKoSEesLhWmj7gMAu9opvQ
+	(envelope-from <stable+bounces-214565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 22:30:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CBCF7A68
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 22:29:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A416FF7A86
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 22:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D0C93040760
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 21:27:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0ACD304972B
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 21:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0AC33122C;
-	Thu,  5 Feb 2026 21:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D237331A7B;
+	Thu,  5 Feb 2026 21:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gf2+AAxu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0w0d1jl"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578A6331A41;
-	Thu,  5 Feb 2026 21:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6C83314B6;
+	Thu,  5 Feb 2026 21:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770326838; cv=none; b=jw3gqifJVwCKA6uxiSpnAwsNCrygdgfhfhAsPsF/+AZUqWm1DtjY1G53vOAW0PDQT/0gXZ1D27czVQ7YKin0wn+FuwCHFH/xkOKbhrNBQuoVaXbEoU6LWh6P8MwpzLoQOQmZYY+RUxCNxAWiMMvPgEjTExU1duhU6zPgQ5Qe/pI=
+	t=1770326839; cv=none; b=KmKivKGd/gj+2zocveOSTtWP0cBEUU/o41GacsRB8AnvSNHwEQqbDxZ+2M5H/fPK0rg0r0wRi/obTKRA6Z8v5fi2yTB7zHHUznXAD8BYRZ7xNEyFNLuIjzHl5T3ePs51nnhESWbKx9rtckIyy0wY9k5V8HqVvfIbavZO+Vb/XW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770326838; c=relaxed/simple;
-	bh=NWrTPZOFlr6x2yxpIgAuRviSFNZBnl3Tc4TgBPhPdiU=;
+	s=arc-20240116; t=1770326839; c=relaxed/simple;
+	bh=xNQkaxGsTCbWDl52Vkp0iBpPK4UvLflBEiUVAMUzD6I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=g7AdOvW3o2L4YNI9fBwU0Vf7iiSfYxnGGeHpIKaNPxdD2KQEJ0w/xAyz07DomaBJg50Ok1U06egLvV4hu4087ixBsiPzUTH99fXyGXCqRYmN/NjmrIJFBuCToQtrj7Fqu7zjCMOKlMwlH06Bqubc/cGcntAQAnoRIPzNoLn/GA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gf2+AAxu; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=Ll2t2CkEhARQ2Q58gIRAVl7jVI2z9Brvhg0VbfanOXV2uxJIAqt3wbFj1bhrmcBrcpI1BlIdYnz3fT1ROn1ULqP6yoDhw8SzNfmdjYQQD0dJAVbMbWNXbm5rbUPYukHda5llBuXMb2Ij4IWz5ULro+EuuNQ0h9UrOQs5M/aO6ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0w0d1jl; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770326838; x=1801862838;
+  t=1770326840; x=1801862840;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NWrTPZOFlr6x2yxpIgAuRviSFNZBnl3Tc4TgBPhPdiU=;
-  b=gf2+AAxu45YMrvNlNC1BSOmyYfBMV8PkPI9zy+c1HjyrGDPg177/0gL2
-   ObuWyLdgtH67P7SrTd6KYTrIAq9hX1BdC6E+raUaWvHI6rEJA67u/jmRR
-   6GRWqqVqQK/xB+07Tk8jI55DjJF3K4EnhAhkvbahOb2LY8nZDno0FCuKu
-   L22D8a2zij5n7Nu9uO8rBMZSyni1P8izBta8EvZNPXuwVYoVHErY3Tb6J
-   FqbwGz+pzOlAOxMIXEWon20CY4RVyrHq7D0eZagG2GK+cPtj5S1D287II
-   PaGwV+ZeI8MViJ2iYFSMU8MVx3jtxPphVoOKHnUPZV5oHEnwIuTVgHKaR
-   A==;
-X-CSE-ConnectionGUID: zVTiXZxeTM+LJsc+Eyag8g==
-X-CSE-MsgGUID: KCsCjUeDQYqEPfYBi91sPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="75386238"
+  bh=xNQkaxGsTCbWDl52Vkp0iBpPK4UvLflBEiUVAMUzD6I=;
+  b=J0w0d1jlribZsHS4vm8Rhx5cB2rGPoIoZysTrkRAPJNFuKi+7r2Gxmr6
+   k4mMGo7Zqj5HrADfZuw97oUywVUmF5U2AFYWOFfi6brtTPycO6dmQg8Se
+   N+6uwayoR3GWAUoK3mWGKyP/G1JRZe09XgULf3jyphwpaTzHlfdfV3cuo
+   FhbSzELhotxSrAYQIFv12NDmpxhFdy1kBqBLmG9ibMqhJsT9ILOZSXYRn
+   DBXm47OWUMX3kPbHcC/TN/HfpVKI6bvA9dVu7fnGTvQP6JQXe5/yPiYYV
+   gEYR3pgJDwkAMeNDV1icKzIpEBVh+jeuEOXTZIqUNXcRg5bGKQFkrsfGJ
+   g==;
+X-CSE-ConnectionGUID: IC83O4KNT5K1WH8OkNZv4w==
+X-CSE-MsgGUID: 7XD+8PV6TNmPaL24iOzsgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="75386252"
 X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
-   d="scan'208";a="75386238"
+   d="scan'208";a="75386252"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 13:27:18 -0800
-X-CSE-ConnectionGUID: ImH2EQZIRTmi6Y/3kt8v1g==
-X-CSE-MsgGUID: USDARmWSS0+BLRsggv2efw==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 13:27:19 -0800
+X-CSE-ConnectionGUID: AM2sskbETVyFnCk4RIEMqg==
+X-CSE-MsgGUID: BKWtdomuRgeoqSKv1gt/kw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
-   d="scan'208";a="233617382"
+   d="scan'208";a="233617393"
 Received: from b04f130c83f2.jf.intel.com ([10.165.154.98])
-  by fmviesa002.fm.intel.com with ESMTP; 05 Feb 2026 13:27:17 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 05 Feb 2026 13:27:18 -0800
 From: Tim Chen <tim.c.chen@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Tim Chen <tim.c.chen@linux.intel.com>,
@@ -81,9 +81,9 @@ Cc: Tim Chen <tim.c.chen@linux.intel.com>,
 	Zhao Liu <zhao1.liu@intel.com>,
 	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
 	Arjan Van De Ven <arjan.van.de.ven@intel.com>
-Subject: [PATCH 6.18 1/2] sched: Create architecture specific sched domain distances
-Date: Thu,  5 Feb 2026 13:33:33 -0800
-Message-Id: <185f0a2768d139eae4fac27ab8862bc4868f11ae.1768948644.git.tim.c.chen@linux.intel.com>
+Subject: [PATCH 6.18 2/2] sched/topology: Fix sched domain build error for GNR, CWF in SNC-3 mode
+Date: Thu,  5 Feb 2026 13:33:34 -0800
+Message-Id: <741531fc98d3c3d364451113b26c4900a868348a.1768948644.git.tim.c.chen@linux.intel.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <cover.1768948644.git.tim.c.chen@linux.intel.com>
 References: <cover.1768948644.git.tim.c.chen@linux.intel.com>
@@ -101,7 +101,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -109,9 +109,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[19];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214564-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214565-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tim.c.chen@linux.intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -120,258 +120,188 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,linux.intel.com:mid,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A2CBCF7A68
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.intel.com:mid,infradead.org:email]
+X-Rspamd-Queue-Id: A416FF7A86
 X-Rspamd-Action: no action
 
-[ Upstream commit 06f2c90885e92992d1ce55d3f35b65b44d5ecc25 ]
+[ Upstream commit 4d6dd05d07d00bc3bd91183dab4d75caa8018db9 ]
 
-Allow architecture specific sched domain NUMA distances that are
-modified from actual NUMA node distances for the purpose of building
-NUMA sched domains.
+It is possible for Granite Rapids (GNR) and Clearwater Forest
+(CWF) to have up to 3 dies per package. When sub-numa cluster (SNC-3)
+is enabled, each die will become a separate NUMA node in the package
+with different distances between dies within the same package.
 
-Keep actual NUMA distances separately if modified distances
-are used for building sched domains. Such distances
-are still needed as NUMA balancing benefits from finding the
-NUMA nodes that are actually closer to a task numa_group.
+For example, on GNR, we see the following numa distances for a 2 socket
+system with 3 dies per socket:
 
-Consolidate the recording of unique NUMA distances in an array to
-sched_record_numa_dist() so the function can be reused to record NUMA
-distances when the NUMA distance metric is changed.
+    package 1       package2
+	----------------
+	|               |
+    ---------       ---------
+    |   0   |       |   3   |
+    ---------       ---------
+	|               |
+    ---------       ---------
+    |   1   |       |   4   |
+    ---------       ---------
+	|               |
+    ---------       ---------
+    |   2   |       |   5   |
+    ---------       ---------
+	|               |
+	----------------
 
-No functional change and additional distance array
-allocated if there're no arch specific NUMA distances
-being defined.
+node distances:
+node     0    1    2    3    4    5
+0:   	10   15   17   21   28   26
+1:   	15   10   15   23   26   23
+2:   	17   15   10   26   23   21
+3:   	21   28   26   10   15   17
+4:   	23   26   23   15   10   15
+5:   	26   23   21   17   15   10
+
+The node distances above led to 2 problems:
+
+1. Asymmetric routes taken between nodes in different packages led to
+asymmetric scheduler domain perspective depending on which node you
+are on.  Current scheduler code failed to build domains properly with
+asymmetric distances.
+
+2. Multiple remote distances to respective tiles on remote package create
+too many levels of domain hierarchies grouping different nodes between
+remote packages.
+
+For example, the above GNR topology lead to NUMA domains below:
+
+Sched domains from the perspective of a CPU in node 0, where the number
+in bracket represent node number.
+
+NUMA-level 1    [0,1] [2]
+NUMA-level 2    [0,1,2] [3]
+NUMA-level 3    [0,1,2,3] [5]
+NUMA-level 4    [0,1,2,3,5] [4]
+
+Sched domains from the perspective of a CPU in node 4
+NUMA-level 1    [4] [3,5]
+NUMA-level 2    [3,4,5] [0,2]
+NUMA-level 3    [0,2,3,4,5] [1]
+
+Scheduler group peers for load balancing from the perspective of CPU 0
+and 4 are different.  Improper task could be chosen for load balancing
+between groups such as [0,2,3,4,5] [1].  Ideally you should choose nodes
+in 0 or 2 that are in same package as node 1 first.  But instead tasks
+in the remote package node 3, 4, 5 could be chosen with an equal chance
+and could lead to excessive remote package migrations and imbalance of
+load between packages.  We should not group partial remote nodes and
+local nodes together.
+Simplify the remote distances for CWF and GNR for the purpose of
+sched domains building, which maintains symmetry and leads to a more
+reasonable load balance hierarchy.
+
+The sched domains from the perspective of a CPU in node 0 NUMA-level 1
+is now
+NUMA-level 1    [0,1] [2]
+NUMA-level 2    [0,1,2] [3,4,5]
+
+The sched domains from the perspective of a CPU in node 4 NUMA-level 1
+is now
+NUMA-level 1    [4] [3,5]
+NUMA-level 2    [3,4,5] [0,1,2]
+
+We have the same balancing perspective from node 0 or node 4.  Loads are
+now balanced equally between packages.
 
 Co-developed-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- kernel/sched/topology.c | 108 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 86 insertions(+), 22 deletions(-)
+ arch/x86/kernel/smpboot.c | 70 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 444bdfdab731..711076aa4980 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1590,10 +1590,17 @@ static void claim_allocations(int cpu, struct sched_domain *sd)
- #ifdef CONFIG_NUMA
- enum numa_topology_type sched_numa_topology_type;
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index eb289abece23..5709c9cab195 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -515,6 +515,76 @@ static void __init build_sched_topology(void)
+ 	set_sched_topology(topology);
+ }
  
-+/*
-+ * sched_domains_numa_distance is derived from sched_numa_node_distance
-+ * and provides a simplified view of NUMA distances used specifically
-+ * for building NUMA scheduling domains.
-+ */
- static int			sched_domains_numa_levels;
-+static int			sched_numa_node_levels;
- 
- int				sched_max_numa_distance;
- static int			*sched_domains_numa_distance;
-+static int			*sched_numa_node_distance;
- static struct cpumask		***sched_domains_numa_masks;
- #endif /* CONFIG_NUMA */
- 
-@@ -1845,10 +1852,10 @@ bool find_numa_distance(int distance)
- 		return true;
- 
- 	rcu_read_lock();
--	distances = rcu_dereference(sched_domains_numa_distance);
-+	distances = rcu_dereference(sched_numa_node_distance);
- 	if (!distances)
- 		goto unlock;
--	for (i = 0; i < sched_domains_numa_levels; i++) {
-+	for (i = 0; i < sched_numa_node_levels; i++) {
- 		if (distances[i] == distance) {
- 			found = true;
- 			break;
-@@ -1924,14 +1931,34 @@ static void init_numa_topology_type(int offline_node)
- 
- #define NR_DISTANCE_VALUES (1 << DISTANCE_BITS)
- 
--void sched_init_numa(int offline_node)
-+/*
-+ * An architecture could modify its NUMA distance, to change
-+ * grouping of NUMA nodes and number of NUMA levels when creating
-+ * NUMA level sched domains.
-+ *
-+ * A NUMA level is created for each unique
-+ * arch_sched_node_distance.
-+ */
-+static int numa_node_dist(int i, int j)
- {
--	struct sched_domain_topology_level *tl;
--	unsigned long *distance_map;
-+	return node_distance(i, j);
++#ifdef CONFIG_NUMA
++static int sched_avg_remote_distance;
++static int avg_remote_numa_distance(void)
++{
++	int i, j;
++	int distance, nr_remote, total_distance;
++
++	if (sched_avg_remote_distance > 0)
++		return sched_avg_remote_distance;
++
++	nr_remote = 0;
++	total_distance = 0;
++	for_each_node_state(i, N_CPU) {
++		for_each_node_state(j, N_CPU) {
++			distance = node_distance(i, j);
++
++			if (distance >= REMOTE_DISTANCE) {
++				nr_remote++;
++				total_distance += distance;
++			}
++		}
++	}
++	if (nr_remote)
++		sched_avg_remote_distance = total_distance / nr_remote;
++	else
++		sched_avg_remote_distance = REMOTE_DISTANCE;
++
++	return sched_avg_remote_distance;
 +}
 +
 +int arch_sched_node_distance(int from, int to)
-+			     __weak __alias(numa_node_dist);
-+
-+static bool modified_sched_node_distance(void)
 +{
-+	return numa_node_dist != arch_sched_node_distance;
-+}
++	int d = node_distance(from, to);
 +
-+static int sched_record_numa_dist(int offline_node, int (*n_dist)(int, int),
-+				  int **dist, int *levels)
-+{
-+	unsigned long *distance_map __free(bitmap) = NULL;
- 	int nr_levels = 0;
- 	int i, j;
- 	int *distances;
--	struct cpumask ***masks;
- 
- 	/*
- 	 * O(nr_nodes^2) de-duplicating selection sort -- in order to find the
-@@ -1939,17 +1966,16 @@ void sched_init_numa(int offline_node)
- 	 */
- 	distance_map = bitmap_alloc(NR_DISTANCE_VALUES, GFP_KERNEL);
- 	if (!distance_map)
--		return;
-+		return -ENOMEM;
- 
- 	bitmap_zero(distance_map, NR_DISTANCE_VALUES);
- 	for_each_cpu_node_but(i, offline_node) {
- 		for_each_cpu_node_but(j, offline_node) {
--			int distance = node_distance(i, j);
-+			int distance = n_dist(i, j);
- 
- 			if (distance < LOCAL_DISTANCE || distance >= NR_DISTANCE_VALUES) {
- 				sched_numa_warn("Invalid distance value range");
--				bitmap_free(distance_map);
--				return;
-+				return -EINVAL;
- 			}
- 
- 			bitmap_set(distance_map, distance, 1);
-@@ -1962,18 +1988,46 @@ void sched_init_numa(int offline_node)
- 	nr_levels = bitmap_weight(distance_map, NR_DISTANCE_VALUES);
- 
- 	distances = kcalloc(nr_levels, sizeof(int), GFP_KERNEL);
--	if (!distances) {
--		bitmap_free(distance_map);
--		return;
--	}
-+	if (!distances)
-+		return -ENOMEM;
- 
- 	for (i = 0, j = 0; i < nr_levels; i++, j++) {
- 		j = find_next_bit(distance_map, NR_DISTANCE_VALUES, j);
- 		distances[i] = j;
- 	}
--	rcu_assign_pointer(sched_domains_numa_distance, distances);
-+	*dist = distances;
-+	*levels = nr_levels;
++	switch (boot_cpu_data.x86_vfm) {
++	case INTEL_GRANITERAPIDS_X:
++	case INTEL_ATOM_DARKMONT_X:
 +
-+	return 0;
-+}
++		if (!x86_has_numa_in_package || topology_max_packages() == 1 ||
++		    d < REMOTE_DISTANCE)
++			return d;
 +
-+void sched_init_numa(int offline_node)
-+{
-+	struct sched_domain_topology_level *tl;
-+	int nr_levels, nr_node_levels;
-+	int i, j;
-+	int *distances, *domain_distances;
-+	struct cpumask ***masks;
- 
--	bitmap_free(distance_map);
-+	/* Record the NUMA distances from SLIT table */
-+	if (sched_record_numa_dist(offline_node, numa_node_dist, &distances,
-+				   &nr_node_levels))
-+		return;
++		/*
++		 * With SNC enabled, there could be too many levels of remote
++		 * NUMA node distances, creating NUMA domain levels
++		 * including local nodes and partial remote nodes.
++		 *
++		 * Trim finer distance tuning for NUMA nodes in remote package
++		 * for the purpose of building sched domains. Group NUMA nodes
++		 * in the remote package in the same sched group.
++		 * Simplify NUMA domains and avoid extra NUMA levels including
++		 * different remote NUMA nodes and local nodes.
++		 *
++		 * GNR and CWF don't expect systems with more than 2 packages
++		 * and more than 2 hops between packages. Single average remote
++		 * distance won't be appropriate if there are more than 2
++		 * packages as average distance to different remote packages
++		 * could be different.
++		 */
++		WARN_ONCE(topology_max_packages() > 2,
++			  "sched: Expect only up to 2 packages for GNR or CWF, "
++			  "but saw %d packages when building sched domains.",
++			  topology_max_packages());
 +
-+	/* Record modified NUMA distances for building sched domains */
-+	if (modified_sched_node_distance()) {
-+		if (sched_record_numa_dist(offline_node, arch_sched_node_distance,
-+					   &domain_distances, &nr_levels)) {
-+			kfree(distances);
-+			return;
-+		}
-+	} else {
-+		domain_distances = distances;
-+		nr_levels = nr_node_levels;
++		d = avg_remote_numa_distance();
 +	}
-+	rcu_assign_pointer(sched_numa_node_distance, distances);
-+	WRITE_ONCE(sched_max_numa_distance, distances[nr_node_levels - 1]);
-+	WRITE_ONCE(sched_numa_node_levels, nr_node_levels);
- 
- 	/*
- 	 * 'nr_levels' contains the number of unique distances
-@@ -1991,6 +2045,8 @@ void sched_init_numa(int offline_node)
- 	 *
- 	 * We reset it to 'nr_levels' at the end of this function.
- 	 */
-+	rcu_assign_pointer(sched_domains_numa_distance, domain_distances);
++	return d;
++}
++#endif /* CONFIG_NUMA */
 +
- 	sched_domains_numa_levels = 0;
- 
- 	masks = kzalloc(sizeof(void *) * nr_levels, GFP_KERNEL);
-@@ -2016,10 +2072,13 @@ void sched_init_numa(int offline_node)
- 			masks[i][j] = mask;
- 
- 			for_each_cpu_node_but(k, offline_node) {
--				if (sched_debug() && (node_distance(j, k) != node_distance(k, j)))
-+				if (sched_debug() &&
-+				    (arch_sched_node_distance(j, k) !=
-+				     arch_sched_node_distance(k, j)))
- 					sched_numa_warn("Node-distance not symmetric");
- 
--				if (node_distance(j, k) > sched_domains_numa_distance[i])
-+				if (arch_sched_node_distance(j, k) >
-+				    sched_domains_numa_distance[i])
- 					continue;
- 
- 				cpumask_or(mask, mask, cpumask_of_node(k));
-@@ -2059,7 +2118,6 @@ void sched_init_numa(int offline_node)
- 	sched_domain_topology = tl;
- 
- 	sched_domains_numa_levels = nr_levels;
--	WRITE_ONCE(sched_max_numa_distance, sched_domains_numa_distance[nr_levels - 1]);
- 
- 	init_numa_topology_type(offline_node);
- }
-@@ -2067,14 +2125,18 @@ void sched_init_numa(int offline_node)
- 
- static void sched_reset_numa(void)
+ void set_cpu_sibling_map(int cpu)
  {
--	int nr_levels, *distances;
-+	int nr_levels, *distances, *dom_distances = NULL;
- 	struct cpumask ***masks;
- 
- 	nr_levels = sched_domains_numa_levels;
-+	sched_numa_node_levels = 0;
- 	sched_domains_numa_levels = 0;
- 	sched_max_numa_distance = 0;
- 	sched_numa_topology_type = NUMA_DIRECT;
--	distances = sched_domains_numa_distance;
-+	distances = sched_numa_node_distance;
-+	if (sched_numa_node_distance != sched_domains_numa_distance)
-+		dom_distances = sched_domains_numa_distance;
-+	rcu_assign_pointer(sched_numa_node_distance, NULL);
- 	rcu_assign_pointer(sched_domains_numa_distance, NULL);
- 	masks = sched_domains_numa_masks;
- 	rcu_assign_pointer(sched_domains_numa_masks, NULL);
-@@ -2083,6 +2145,7 @@ static void sched_reset_numa(void)
- 
- 		synchronize_rcu();
- 		kfree(distances);
-+		kfree(dom_distances);
- 		for (i = 0; i < nr_levels && masks; i++) {
- 			if (!masks[i])
- 				continue;
-@@ -2129,7 +2192,8 @@ void sched_domains_numa_masks_set(unsigned int cpu)
- 				continue;
- 
- 			/* Set ourselves in the remote node's masks */
--			if (node_distance(j, node) <= sched_domains_numa_distance[i])
-+			if (arch_sched_node_distance(j, node) <=
-+			    sched_domains_numa_distance[i])
- 				cpumask_set_cpu(cpu, sched_domains_numa_masks[i][j]);
- 		}
- 	}
+ 	bool has_smt = __max_threads_per_core > 1;
 -- 
 2.32.0
 
