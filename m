@@ -1,154 +1,201 @@
-Return-Path: <stable+bounces-214461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBblEHafhGmI3wMAu9opvQ
-	(envelope-from <stable+bounces-214461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:47:34 +0100
+	id SFV7D4mhhGmI3wMAu9opvQ
+	(envelope-from <stable+bounces-214462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:56:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D304F3802
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:47:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820F0F39C5
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 778A1301022C
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 13:46:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33F78301A3BE
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 13:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7753382F7;
-	Thu,  5 Feb 2026 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866683D3D12;
+	Thu,  5 Feb 2026 13:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="yJbtVxFn"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KV2ZKLPL";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UzWW8/S1";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KV2ZKLPL";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UzWW8/S1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp108.iad3b.emailsrvr.com (smtp108.iad3b.emailsrvr.com [146.20.161.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6293B5302
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 13:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145C63AE6E5
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 13:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770299187; cv=none; b=Mn6E8KDNSTVwRQfI/Isw2G6urIp3XDK+jJrn8vg6pADY02QSSVfyEIVI7RYpVA1287LfOC7oimVuwFEfO0PQiLw9zBjIQ9HFBQZAPgJuKu6rt705dAJfy+jgcZG4XWRfYfRfFtYKGM7MS01iF9Re4dLRf7Ge64hkH5YnCVgbYJE=
+	t=1770299481; cv=none; b=lVCx8TGfYSdm0UMDXCZk5sfNztRucMVEmQq7kjzOky0Fdy1zKVXwRKEAFv5oO+JnJoZBt45bLjY18RubWLDEv85cmZiKtUkz8xsqebsL29+G95ELvM8sZrVq89yg3WEK3W4zNU/MxSSQK0qd+oNT63259SZoRKPt1g3Icm4q/Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770299187; c=relaxed/simple;
-	bh=6RFjsnwE7oRBF/UOXwO8EHiTojFkgrhOShswYXvJUFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ks5y6LKjzUMrbaZJQPFldIiwWBZNo/LNikx9Hu5V9bKoYABHRkAE70Ou1yu6igYM5WlYques5be2OlWEBM5YYQX9WNDlgRqZrA4ySDYp/fY+AAv7XfPA8UJNL4DWgA3EN/QcU7s1T2CoUy5OY8JBfcvPUApQJpKY/rtDmSBcacU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=yJbtVxFn; arc=none smtp.client-ip=146.20.161.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1770298805;
-	bh=6RFjsnwE7oRBF/UOXwO8EHiTojFkgrhOShswYXvJUFE=;
-	h=From:To:Subject:Date:From;
-	b=yJbtVxFnrIkNDVgQyIvkvhVdPmY35/Qo6g9cX5zsMp2e84ro3l1njHkT0YnlzFs6A
-	 yhaO46nYVxG/PNEFj6vMb3HPinV+Rs9MimI1N5TzAQzV9paChjFR6KlC904aPTH+o5
-	 S+MaIPmQcbHagYen9k/FE+jAQLIRoT7vn60YlN4U=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp22.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id E34036029C;
-	Thu,  5 Feb 2026 08:40:04 -0500 (EST)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] comedi: me4000: Fix potential overrun of firmware buffer
-Date: Thu,  5 Feb 2026 13:39:49 +0000
-Message-ID: <20260205133949.71722-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1770299481; c=relaxed/simple;
+	bh=kID9LT+3vkAWDNh860FDVKv2s5vZydEPh7O+Os3Pgto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MdYxVfipTt+/MzITqH0hIug/bWIOYdn6CfiufqRifa+eKizlKfBTT+65laqj6G3g6DgWK/rHdjolmorN1bz+3fa0jEKRWTL7vKOkNC5p3+1fRLEkOeWmFQn1NqywYViva0PGRkJi4kXyhuyaFJWYwXj66lsQqHPxUsKwGmj5X4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KV2ZKLPL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UzWW8/S1; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KV2ZKLPL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UzWW8/S1; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 622943E7B0;
+	Thu,  5 Feb 2026 13:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770299479;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
+	b=KV2ZKLPLIiH/uNsqr6JiJRhtoGdAIesqvKD2y+u+Yn3P3yoXgCoqa75Zyzzm7uKrurtjXG
+	lq2qhsEI9Aw3emvwWHTEshZgzNWl0rtaUZJ1KHXBFjfDmJYRgSYIZAV3mu6bDWSm+Jr2zJ
+	e4e9ldwOTy4Hlo+CUxQzSN0ys1eLZ6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770299479;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
+	b=UzWW8/S1a9bIoY0LDuSCdGZCHYxSz8X1wryLTHJiaAOv9kjDJdenrLFjUidWDYti2wZvb1
+	RNVYVKFhPzKTQjDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770299479;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
+	b=KV2ZKLPLIiH/uNsqr6JiJRhtoGdAIesqvKD2y+u+Yn3P3yoXgCoqa75Zyzzm7uKrurtjXG
+	lq2qhsEI9Aw3emvwWHTEshZgzNWl0rtaUZJ1KHXBFjfDmJYRgSYIZAV3mu6bDWSm+Jr2zJ
+	e4e9ldwOTy4Hlo+CUxQzSN0ys1eLZ6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770299479;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=63RyASxkcM4F025EolOaK9mj0Ir2CweXFhvCwSQW1vg=;
+	b=UzWW8/S1a9bIoY0LDuSCdGZCHYxSz8X1wryLTHJiaAOv9kjDJdenrLFjUidWDYti2wZvb1
+	RNVYVKFhPzKTQjDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3DBBD3EA63;
+	Thu,  5 Feb 2026 13:51:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rS3oDleghGnbSwAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Thu, 05 Feb 2026 13:51:19 +0000
+Date: Thu, 5 Feb 2026 14:51:18 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Ben Hutchings <ben@decadent.org.uk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 004/161] btrfs: send: check for inline extents in
+ range_is_hole_in_parent()
+Message-ID: <20260205135118.GX26902@suse.cz>
+Reply-To: dsterba@suse.cz
+References: <20260204143851.755002596@linuxfoundation.org>
+ <20260204143851.919366239@linuxfoundation.org>
+ <03a74299797f4864d0e563cd9517276f690a4bf0.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Classification-ID: b0f65736-4d63-416c-bbcc-335a45d6056c-1-1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <03a74299797f4864d0e563cd9517276f690a4bf0.camel@decadent.org.uk>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mev.co.uk,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[mev.co.uk:s=20221208-6x11dpa4];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214461-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	TAGGED_FROM(0.00)[bounces-214462-lists,stable=lfdr.de];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abbotti@mev.co.uk,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mev.co.uk:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[suse.cz];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	HAS_REPLYTO(0.00)[dsterba@suse.cz];
+	RCVD_COUNT_FIVE(0.00)[6];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dsterba@suse.cz,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mev.co.uk:email,mev.co.uk:dkim,mev.co.uk:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D304F3802
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:replyto,suse.cz:dkim,suse.cz:mid]
+X-Rspamd-Queue-Id: 820F0F39C5
 X-Rspamd-Action: no action
 
-`me4000_xilinx_download()` loads the firmware that was requested by
-`request_firmware()`.  It is possible for it to overrun the source
-buffer because it blindly trusts the file format.  It reads a data
-stream length from the first 4 bytes into variable `file_length` and
-reads the data stream contents of length `file_length` from offset 16
-onwards.
+On Wed, Feb 04, 2026 at 07:28:42PM +0100, Ben Hutchings wrote:
+> On Wed, 2026-02-04 at 15:37 +0100, Greg Kroah-Hartman wrote:
+> > 5.10-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Qu Wenruo <wqu@suse.com>
+> > 
+> > [ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
+> > 
+> > Before accessing the disk_bytenr field of a file extent item we need
+> > to check if we are dealing with an inline extent.
+> > This is because for inline extents their data starts at the offset of
+> > the disk_bytenr field. So accessing the disk_bytenr
+> > means we are accessing inline data or in case the inline data is less
+> > than 8 bytes we can actually cause an invalid
+> > memory access if this inline extent item is the first item in the leaf
+> > or access metadata from other items.
+> > 
+> > Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
+> > Reviewed-by: Filipe Manana <fdmanana@suse.com>
+> > Signed-off-by: Qu Wenruo <wqu@suse.com>
+> > Reviewed-by: David Sterba <dsterba@suse.com>
+> > Signed-off-by: David Sterba <dsterba@suse.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  fs/btrfs/send.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+> > index d86b4d13cae48..f144171ed6b7e 100644
+> > --- a/fs/btrfs/send.c
+> > +++ b/fs/btrfs/send.c
+> > @@ -5892,6 +5892,8 @@ static int range_is_hole_in_parent(struct send_ctx *sctx,
+> >  		extent_end = btrfs_file_extent_end(path);
+> >  		if (extent_end <= start)
+> >  			goto next;
+> > +		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE)
+> > +			return 0;
+> 
+> This will leak path, unless (at least) commits 4c74a32ad323 "btrfs:
+> DEFINE_FREE for struct btrfs_path" and 4ca6f24a52c4 "btrfs: more trivial
+> BTRFS_PATH_AUTO_FREE conversions" are also backported.
+> 
+> That could be avoided by using { ret = 0; goto out; } here instead of
+> simply returning.
 
-Add a test to ensure that the supplied firmware is long enough to
-contain the header and the data stream.  On failure, log an error and
-return `-EINVAL`.
-
-Note: The firmware loading was totally broken before commit ac584af59945
-("staging: comedi: me4000: fix firmware downloading"), but that is the
-most sensible target for this fix.
-
-Fixes: ac584af59945 ("staging: comedi: me4000: fix firmware downloading")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
- drivers/comedi/drivers/me4000.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/comedi/drivers/me4000.c b/drivers/comedi/drivers/me4000.c
-index 7dd3a0071863..effe9fdbbafe 100644
---- a/drivers/comedi/drivers/me4000.c
-+++ b/drivers/comedi/drivers/me4000.c
-@@ -315,6 +315,18 @@ static int me4000_xilinx_download(struct comedi_device *dev,
- 	unsigned int val;
- 	unsigned int i;
- 
-+	/* Get data stream length from header. */
-+	if (size >= 4) {
-+		file_length = (((unsigned int)data[0] & 0xff) << 24) +
-+			      (((unsigned int)data[1] & 0xff) << 16) +
-+			      (((unsigned int)data[2] & 0xff) << 8) +
-+			      ((unsigned int)data[3] & 0xff);
-+	}
-+	if (size < 16 || file_length > size - 16) {
-+		dev_err(dev->class_dev, "Firmware length inconsistency\n");
-+		return -EINVAL;
-+	}
-+
- 	if (!xilinx_iobase)
- 		return -ENODEV;
- 
-@@ -346,10 +358,6 @@ static int me4000_xilinx_download(struct comedi_device *dev,
- 	outl(val, devpriv->plx_regbase + PLX9052_CNTRL);
- 
- 	/* Download Xilinx firmware */
--	file_length = (((unsigned int)data[0] & 0xff) << 24) +
--		      (((unsigned int)data[1] & 0xff) << 16) +
--		      (((unsigned int)data[2] & 0xff) << 8) +
--		      ((unsigned int)data[3] & 0xff);
- 	usleep_range(10, 1000);
- 
- 	for (i = 0; i < file_length; i++) {
--- 
-2.51.0
-
+Right, the original patch assumes the automatic cleanup of btrfs_path, so
+for anything below it needs to be updated as you say.
 
