@@ -1,153 +1,170 @@
-Return-Path: <stable+bounces-214403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGazLrZDhGm/2AMAu9opvQ
-	(envelope-from <stable+bounces-214403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:16:06 +0100
+	id uJspCpRGhGk/2QMAu9opvQ
+	(envelope-from <stable+bounces-214404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:28:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2302BEF5D4
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:16:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7851CEF6B1
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 069053012E8C
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 07:15:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15F3E300F5C9
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 07:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B220355802;
-	Thu,  5 Feb 2026 07:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874D035CB66;
+	Thu,  5 Feb 2026 07:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FrJOAgGm"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26376333752;
-	Thu,  5 Feb 2026 07:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8F535C1BE
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 07:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770275727; cv=none; b=YaaAExK31sMddKsGyVzyuyKxHv9LJGqK+rNQqyE0pXgB+xQrt0rzlTq9mXWMYxahZ7J/LXvTRCB5DFTO3zN20rTyfgS/9ddiua8XGWq2mHGW1aKxUDYT8/u/waV/YXbv/tKOyJSCkPot4ZNPFDLQUc88XrULb/+b6RkS7W02OHo=
+	t=1770276497; cv=none; b=dISLYMFpL7KjYAgu8F8Q/71xJL1rFLqP5jVFf76+tZz+iy86eEC7trfp80b8RNvdrN9Ra3aK9Agt3sHvx0EjgZr/8zjOhqYbOnmyC9Fklk9chfpIM6iickrh2cdza78kzvJwRD2YGiideSMONcvsxLP/A/0/o/X5WPbHCFmg5OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770275727; c=relaxed/simple;
-	bh=QY29ciufELzeFfuZMGuEPNUze18iJI/TvdOQEqqW+Lg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FmeoqMg9IRNW5m+6tsIyTg0D3ghZaC/f14dATsH3HFquwoa66gRvKJXEuW7ZNEje3qUzJX6Vt+Cw9WFrwktoQoPkdd4mSxQHAG7KNv30jlAK/GtGSL7CMFdxPktLcMRI0hLFYTfVvp3j7thZw1ctg5IXTehnMZbqAGx+jHEA8Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4BD78339;
-	Wed,  4 Feb 2026 23:15:19 -0800 (PST)
-Received: from [192.168.0.16] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A7B8A3F778;
-	Wed,  4 Feb 2026 23:15:22 -0800 (PST)
-Message-ID: <29b3287e-0a08-4648-9e54-32889c99b1e3@arm.com>
-Date: Thu, 5 Feb 2026 07:15:19 +0000
+	s=arc-20240116; t=1770276497; c=relaxed/simple;
+	bh=nBWTlLRpovucR5n9qdE4ohF8B8r8nH86ErV4xZp1QvM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PcbJtR0ZltVkP9qpBUThnVA7cvmPN+xsoAdWIpZ0CBlDUrCYAa/eis81uu5vwnGJHi7mRL1+rVJyw9cl7jtuqkxFZuZkB99kdAaKuaqvCpr3+jhJcwSinFiOW9I48ytcMpxZLIZKjMhS6RUrr2cmlEozgWimFd5w22x2IR2FAPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FrJOAgGm; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a947d01939so949115ad.0
+        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 23:28:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770276496; x=1770881296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=niJZqEjbqtJ5TvXSUsWFtbCn8etz6FeqYsyIqQwjnjY=;
+        b=FrJOAgGm0m86SFRDuJPOi3QGgglkcU9ysWU/BWkm+GjkB3n1Os26AeLp7Vr6rGg21e
+         bkrbgZQm7fprpwxBL7S9FtNme3Ee5gv5SoABkb3l2GenfZzQaL9xl0e8ty4Fe1DQRm+g
+         BxiR4577Dgt0BDNtp5VlnKDi84AmEWj04nUej7Dn4le4MeZv007+651y1yodI3GOT41O
+         MKYxcZHSMl4qI70O/eBzsOmK3/iodsuTgy0FyV95I2uPMXq/IomLYZFySa4cVGbFFokA
+         zVQQ4FPHqc47/rNYIP137LvjOHzS5e9721cNOSaP66mctvYaSydz6ml4pF5zwF95fiSW
+         OnuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770276496; x=1770881296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=niJZqEjbqtJ5TvXSUsWFtbCn8etz6FeqYsyIqQwjnjY=;
+        b=DIACPdMT7R1weOMUOEOffAkDJHAh7JXHAz097dgQEG50d5EhwZx7LE9qsPTIgf0cDL
+         33p7bmwoZ2bUITvA16B5XjHrP+Y2m444hz7v89w6XgIGCynQaHN9dPRnJYCucSfEguDy
+         CeIk6Z3mVtWyNRFY4bJCxAxnznVF6Qt5eekItqoL6dEhR5a+BGrkt3Dhb/lqko7zp1R/
+         oJgBT7M8YvyBjNYS3vywSTIjZfHFk7Nr20qSEW87RSI+c1PdeFs2OEEhzBFS/PlTThOX
+         USYixh3lU/ECcwP5UMTcol6P01JwP3+XfuPaB+B/phe39m/pF2nBRWhVPxPCX8lIqIVy
+         tw2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWCG7Sc6FGqSkO3l/s+v1It5W5IfLVs3locjGZqwKpnGEBM/2P3ZvrmTXKXCZgX8NS665Ke2D0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvAP/7h5VbgjX/wzqWfmnfDbTxBzG2Mj8fnzbrfd1PrYnnkKQ1
+	jcjSER2y3qwz453YbJmZqXePwoXcBW+eMBiqsva+hs2/LkjTYSZqNhcs
+X-Gm-Gg: AZuq6aKFFlM+qAgj5ICTlxZP4YPzvGLBpEJLKRnHmyYyjmzFtWHhA+CIsCwf32ei0Y4
+	kmsvA+XbuRu+3xZ3GwZ862tpI0PaoYPfcKqcVcrlubuCe6gLqs7bDg0LHD6Q/o6s62eMVqBh35W
+	I/oydboYmK/pO/Bn2BNqo1vpeQijhdWGFjU7+juH6hwSPEQbNfZTg4RnKF2Dxtjz7xqE4RozTTX
+	nS/XoqzYqjTtgY/UZCIXyZu9bIpnwcbGhzXPnlExbBALunW0xI2KTjVe6FHytbY1odUEYU3FdEE
+	zi8ltb1IpNUmb4etj8smyKK75+3BUkxF96ohJixcax/aSJu6AxVYlY6vmwoyFL5IyBWQTtA+JH7
+	YKBkyti3vaQ1A+EkTirelX9A3iUXKNFoyQ+6tNyF8bK2dFWgs/9TVwRy/lq/r8y+g2jXXZ6u94y
+	pi9BvNLkCIgClyZMZwYwTraoLtJA==
+X-Received: by 2002:a17:902:e88d:b0:2a0:b02b:210c with SMTP id d9443c01a7336-2a933bca77emr65582155ad.1.1770276496431;
+        Wed, 04 Feb 2026 23:28:16 -0800 (PST)
+Received: from localhost.localdomain ([119.204.109.83])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a93396747esm41646545ad.80.2026.02.04.23.28.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 23:28:15 -0800 (PST)
+From: James Kim <james010kim@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: mporter@kernel.crashing.org,
+	alex.bou9@gmail.com,
+	James Kim <james010kim@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] rapidio: mport_cdev: fix sequential UAF in dma_req_free()
+Date: Thu,  5 Feb 2026 16:27:24 +0900
+Message-Id: <20260205072724.3347647-1-james010kim@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
- Avoid discarding useful information" on 5.15 LTS
-To: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Doug Smythies <dsmythies@telus.net>
-Cc: "'Rafael J. Wysocki'" <rafael@kernel.org>,
- 'Harshvardhan Jha' <harshvardhan.j.jha@oracle.com>,
- 'Sasha Levin' <sashal@kernel.org>,
- 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
- stable@vger.kernel.org, 'Daniel Lezcano' <daniel.lezcano@linaro.org>
-References: <004e01dc90b1$4b28f9e0$e17aeda0$@telus.net>
- <002601dc916e$6acbe650$4063b2f0$@telus.net>
- <CAJZ5v0gcSb_6QPMfHkjSMJ6OOF+PaCZrUKOafYQ++tHE2jBB4w@mail.gmail.com>
- <3b0720d2-9b72-48d0-998a-1fd091cec44f@arm.com>
- <5d4b624c-f993-49aa-95ab-5f279f7f6599@oracle.com>
- <8fd5a9d4-e555-4db1-aa02-8fe5b8a2962c@arm.com>
- <3395ad0b-425e-40f5-844c-627cff471353@oracle.com>
- <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com>
- <CAJZ5v0j+jfTHog+rVO0816mofk7nSSKCt7dbwSa2QCpYSN013Q@mail.gmail.com>
- <005401dc9638$b3e2ea40$1ba8bec0$@telus.net>
- <m7pzdjfjcm2gr4gpru3rk26o2wn5iarihff6kz3o7n3slsvonx@k6jkyemuywgk>
-Content-Language: en-US
-From: Christian Loehle <christian.loehle@arm.com>
-In-Reply-To: <m7pzdjfjcm2gr4gpru3rk26o2wn5iarihff6kz3o7n3slsvonx@k6jkyemuywgk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.982];
-	R_DKIM_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.loehle@arm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214403-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[kernel.crashing.org,gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 2302BEF5D4
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214404-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[james010kim@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7851CEF6B1
 X-Rspamd-Action: no action
 
-On 2/5/26 02:37, Sergey Senozhatsky wrote:
-> On (26/02/04 16:45), Doug Smythies wrote:
->>>> What is "established" and "newer" for a stable kernel is quite handwavy
->>>> IMO but even here Sergey's regression report is a clear data point...
->>>
->>> Which wasn't known at the time commit 85975daeaa4d went in.
->>>
->>>> Your report is only restoring 5.15 (and others) performance to 5.15
->>>> upstream-ish levels which is within the expectations of running a stable
->>>> kernel. No doubt it's frustrating either way!
->>>
->>> That is a consequence of the time it takes for mainline changes to
->>> propagate to distributions (Chrome OS in this particular case) at
->>> which point they get tested on a wider range of systems.  Until that
->>> happens, it is not really guaranteed that the given change will stay
->>> in.
->>>
->>> In this particular case, restoring commit 85975daeaa4d would cause the
->>> same problems on the systems adversely affected by it to become
->>> visible again and I don't think it would be fair to say "Too bad" to
->>> the users of those systems.  IMV, it cannot be restored without a way
->>> to at least limit the adverse effect on performance.
->>
->> I have been going over the old emails and the turbostat data again and again
->> and again.
->>
->> I still do not understand how to breakdown Sergey's results into its
->> component contributions. I am certain there is power limit throttling
->> during the test, but have no idea to much or how little it contributes to the
->> differing results.
->>
->> I think more work is needed to fully understand Sergey's test results from October.
->> I struggle with the dramatic test results difference of base=84.5 and revert=59.5
->> as being due to only the idle code changes.
->>
->> That is why I keep asking for a test to be done with the CPU clock frequency limited
->> such that power limit throttling can not occur. I don't know what limit to use, but suggest
->> 2.2 GHZ to start with. Capture turbostat data with the tests. And record the test results.
-> 
-> 
->> @Sergey: are you willing to do the test?
-> 
-> I can run tests, not immediately, though, but within some reasonable
-> time frame.
-> 
-> (I'll need some help with instructions/etc.)
-> 
+dma_req_free() drops the mapping reference under buf_mutex and then
+dereferences req->map again to unlock the mutex.
 
-@Doug given this is on Chromebooks base=84.5 and revert=59.5 doesn't necessarily mean
-29.6% decrease in system performance in a traditional throughput sense.
-The "benchmark" might me measuring dropped frames, user input latency or what have you.
-Nonetheless @Sergey do feel free to expand.
+If kref_put() drops the last reference, mport_release_mapping() frees
+the mapping, and the subsequent mutex_unlock() dereferences a freed
+object. This is a sequential (non-racy) use-after-free.
+
+Fix this by caching map and md before kref_put() and using the cached
+md for mutex unlocking.
+
+Fixes: 4b0986a36 ("rapidio: add mport character device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: James Kim <james010kim@gmail.com>
+---
+ drivers/rapidio/devices/rio_mport_cdev.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/rapidio/devices/rio_mport_cdev.c b/drivers/rapidio/devices/rio_mport_cdev.c
+index 7df466e22282..5fb6ec439028 100644
+--- a/drivers/rapidio/devices/rio_mport_cdev.c
++++ b/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -582,9 +582,14 @@ static void dma_req_free(struct kref *ref)
+ 	}
+ 
+ 	if (req->map) {
+-		mutex_lock(&req->map->md->buf_mutex);
+-		kref_put(&req->map->ref, mport_release_mapping);
+-		mutex_unlock(&req->map->md->buf_mutex);
++		struct rio_mport_mapping *map = req->map;
++		struct mport_dev *md = map->md;
++
++		mutex_lock(&md->buf_mutex);
++		kref_put(&map->ref, mport_release_mapping);
++		mutex_unlock(&md->buf_mutex);
++
++		req->map = NULL;
+ 	}
+ 
+ 	kref_put(&priv->dma_ref, mport_release_dma);
+-- 
+2.25.1
+
 
