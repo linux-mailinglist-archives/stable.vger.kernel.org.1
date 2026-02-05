@@ -1,170 +1,167 @@
-Return-Path: <stable+bounces-214404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJspCpRGhGk/2QMAu9opvQ
-	(envelope-from <stable+bounces-214404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:28:20 +0100
+	id cDUvIU9IhGk/2QMAu9opvQ
+	(envelope-from <stable+bounces-214405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:35:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7851CEF6B1
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:28:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73D5EF770
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15F3E300F5C9
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 07:28:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F5883014654
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 07:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874D035CB66;
-	Thu,  5 Feb 2026 07:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40073356A30;
+	Thu,  5 Feb 2026 07:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FrJOAgGm"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="PT0cKKWN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8F535C1BE
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 07:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBE431B11E
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 07:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770276497; cv=none; b=dISLYMFpL7KjYAgu8F8Q/71xJL1rFLqP5jVFf76+tZz+iy86eEC7trfp80b8RNvdrN9Ra3aK9Agt3sHvx0EjgZr/8zjOhqYbOnmyC9Fklk9chfpIM6iickrh2cdza78kzvJwRD2YGiideSMONcvsxLP/A/0/o/X5WPbHCFmg5OE=
+	t=1770276878; cv=none; b=nbtBh+/bjO2q1oOFUO5ogN7vEf6srgFmaMYzsqQWgeQeSG6GWFJgU38p0gTMXH1NJnukcyrbBUaij4u3MaHWSfVyEQ2RBhMn4sj6+4ECSNbkyRCNo1zLPsk5UarBL5EC8EM8G8ftN0oE4H4OVC2h49eJqbQdAfG8mMKQ5OqOoHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770276497; c=relaxed/simple;
-	bh=nBWTlLRpovucR5n9qdE4ohF8B8r8nH86ErV4xZp1QvM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PcbJtR0ZltVkP9qpBUThnVA7cvmPN+xsoAdWIpZ0CBlDUrCYAa/eis81uu5vwnGJHi7mRL1+rVJyw9cl7jtuqkxFZuZkB99kdAaKuaqvCpr3+jhJcwSinFiOW9I48ytcMpxZLIZKjMhS6RUrr2cmlEozgWimFd5w22x2IR2FAPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FrJOAgGm; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a947d01939so949115ad.0
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 23:28:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770276496; x=1770881296; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=niJZqEjbqtJ5TvXSUsWFtbCn8etz6FeqYsyIqQwjnjY=;
-        b=FrJOAgGm0m86SFRDuJPOi3QGgglkcU9ysWU/BWkm+GjkB3n1Os26AeLp7Vr6rGg21e
-         bkrbgZQm7fprpwxBL7S9FtNme3Ee5gv5SoABkb3l2GenfZzQaL9xl0e8ty4Fe1DQRm+g
-         BxiR4577Dgt0BDNtp5VlnKDi84AmEWj04nUej7Dn4le4MeZv007+651y1yodI3GOT41O
-         MKYxcZHSMl4qI70O/eBzsOmK3/iodsuTgy0FyV95I2uPMXq/IomLYZFySa4cVGbFFokA
-         zVQQ4FPHqc47/rNYIP137LvjOHzS5e9721cNOSaP66mctvYaSydz6ml4pF5zwF95fiSW
-         OnuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770276496; x=1770881296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=niJZqEjbqtJ5TvXSUsWFtbCn8etz6FeqYsyIqQwjnjY=;
-        b=DIACPdMT7R1weOMUOEOffAkDJHAh7JXHAz097dgQEG50d5EhwZx7LE9qsPTIgf0cDL
-         33p7bmwoZ2bUITvA16B5XjHrP+Y2m444hz7v89w6XgIGCynQaHN9dPRnJYCucSfEguDy
-         CeIk6Z3mVtWyNRFY4bJCxAxnznVF6Qt5eekItqoL6dEhR5a+BGrkt3Dhb/lqko7zp1R/
-         oJgBT7M8YvyBjNYS3vywSTIjZfHFk7Nr20qSEW87RSI+c1PdeFs2OEEhzBFS/PlTThOX
-         USYixh3lU/ECcwP5UMTcol6P01JwP3+XfuPaB+B/phe39m/pF2nBRWhVPxPCX8lIqIVy
-         tw2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWCG7Sc6FGqSkO3l/s+v1It5W5IfLVs3locjGZqwKpnGEBM/2P3ZvrmTXKXCZgX8NS665Ke2D0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvAP/7h5VbgjX/wzqWfmnfDbTxBzG2Mj8fnzbrfd1PrYnnkKQ1
-	jcjSER2y3qwz453YbJmZqXePwoXcBW+eMBiqsva+hs2/LkjTYSZqNhcs
-X-Gm-Gg: AZuq6aKFFlM+qAgj5ICTlxZP4YPzvGLBpEJLKRnHmyYyjmzFtWHhA+CIsCwf32ei0Y4
-	kmsvA+XbuRu+3xZ3GwZ862tpI0PaoYPfcKqcVcrlubuCe6gLqs7bDg0LHD6Q/o6s62eMVqBh35W
-	I/oydboYmK/pO/Bn2BNqo1vpeQijhdWGFjU7+juH6hwSPEQbNfZTg4RnKF2Dxtjz7xqE4RozTTX
-	nS/XoqzYqjTtgY/UZCIXyZu9bIpnwcbGhzXPnlExbBALunW0xI2KTjVe6FHytbY1odUEYU3FdEE
-	zi8ltb1IpNUmb4etj8smyKK75+3BUkxF96ohJixcax/aSJu6AxVYlY6vmwoyFL5IyBWQTtA+JH7
-	YKBkyti3vaQ1A+EkTirelX9A3iUXKNFoyQ+6tNyF8bK2dFWgs/9TVwRy/lq/r8y+g2jXXZ6u94y
-	pi9BvNLkCIgClyZMZwYwTraoLtJA==
-X-Received: by 2002:a17:902:e88d:b0:2a0:b02b:210c with SMTP id d9443c01a7336-2a933bca77emr65582155ad.1.1770276496431;
-        Wed, 04 Feb 2026 23:28:16 -0800 (PST)
-Received: from localhost.localdomain ([119.204.109.83])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a93396747esm41646545ad.80.2026.02.04.23.28.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 23:28:15 -0800 (PST)
-From: James Kim <james010kim@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: mporter@kernel.crashing.org,
-	alex.bou9@gmail.com,
-	James Kim <james010kim@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] rapidio: mport_cdev: fix sequential UAF in dma_req_free()
-Date: Thu,  5 Feb 2026 16:27:24 +0900
-Message-Id: <20260205072724.3347647-1-james010kim@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1770276878; c=relaxed/simple;
+	bh=0zjVYBoQPtQ1txu5iltn5GIOXQfuwncEJMvjBs8PUrY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sqQchtqsX/VEhfO/87bXDUyFgObA8quX897XRLSxA5mztNAhjav/R+y88K+WyuM8oDG4HD/sltQyhXNPK6vCfbvHnJd6BWOgxlvUsjjmNGbapymlFbW8+nQ4GQX4wIsVvAbgGzfohfWerlk7JxtAzq3ZZSEu0q1xun423pILwew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=PT0cKKWN; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6004b.ext.cloudfilter.net ([10.0.30.210])
+	by cmsmtp with ESMTPS
+	id noTYvRjZ9CxrGntsqvXQaq; Thu, 05 Feb 2026 07:34:36 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id ntspvXuqlK8vzntspvg7x1; Thu, 05 Feb 2026 07:34:36 +0000
+X-Authority-Analysis: v=2.4 cv=cJDgskeN c=1 sm=1 tr=0 ts=6984480c
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=qDPJzqd3ahirEYLJiIkMdaPwf95xn2ZVT+tPnLRxOKY=; b=PT0cKKWNZGjZpLdtHTHQJy8ZPL
+	5FRY6iPSNA70j3vxwKueoIb9wctFDtmL/beBDMr8cvWr+wsPR9pv60WaOVr820tctlzVt5lelj4u3
+	TeWlLx1MoZ9C5grmdx6hXoGc7tpHpo1hBrXq4SmtpN14xa1UdjwiWclKKz/9LIjWy1qJIGXIylf3p
+	sqeIZBpOC25YbKRjsrPMFQRpEeGEgIbTe5VQH0cRvtnNbxIl8LcaA5xQO2xKIbj9x4GbxIrQyWmll
+	PK3Q1inmznFM3qSgHQetDfZfjsipZ6letjkSHmL76mf2KfmMEL/36Zsjdj9jQ3VHFX/NHLKZW0PF0
+	05BKD2cQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:33456 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vntsp-00000004FEH-1St5;
+	Thu, 05 Feb 2026 00:34:35 -0700
+Message-ID: <0ba223e1-04e7-4374-9d62-643b3b43ed70@w6rz.net>
+Date: Wed, 4 Feb 2026 23:34:33 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/122] 6.18.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260204143851.857060534@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vntsp-00000004FEH-1St5
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:33456
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfEE6NeplWTnXApj3aX1tGKkkCmZ8fMSNw21j5XgltCdQpQyPdfrgGndR9ioOnEv3PnuhD/R0oh3cAX/99CE0v55T/2enFOwFISUWhlhv/hcQHZWPKliJ
+ dZ7swJxHzCndGVSP7KWwBV5LI33MlpvGt0q0j7Xed+RBxvfuA9WTlGt1hydnKX5RGWuCYP8f5G82FA==
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.crashing.org,gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214404-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[james010kim@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214405-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7851CEF6B1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,w6rz.net:mid,w6rz.net:email]
+X-Rspamd-Queue-Id: E73D5EF770
 X-Rspamd-Action: no action
 
-dma_req_free() drops the mapping reference under buf_mutex and then
-dereferences req->map again to unlock the mutex.
+On 2/4/26 06:39, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.9 release.
+> There are 122 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 06 Feb 2026 14:38:23 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-If kref_put() drops the last reference, mport_release_mapping() frees
-the mapping, and the subsequent mutex_unlock() dereferences a freed
-object. This is a sequential (non-racy) use-after-free.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Fix this by caching map and md before kref_put() and using the cached
-md for mutex unlocking.
-
-Fixes: 4b0986a36 ("rapidio: add mport character device support")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Kim <james010kim@gmail.com>
----
- drivers/rapidio/devices/rio_mport_cdev.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/rapidio/devices/rio_mport_cdev.c b/drivers/rapidio/devices/rio_mport_cdev.c
-index 7df466e22282..5fb6ec439028 100644
---- a/drivers/rapidio/devices/rio_mport_cdev.c
-+++ b/drivers/rapidio/devices/rio_mport_cdev.c
-@@ -582,9 +582,14 @@ static void dma_req_free(struct kref *ref)
- 	}
- 
- 	if (req->map) {
--		mutex_lock(&req->map->md->buf_mutex);
--		kref_put(&req->map->ref, mport_release_mapping);
--		mutex_unlock(&req->map->md->buf_mutex);
-+		struct rio_mport_mapping *map = req->map;
-+		struct mport_dev *md = map->md;
-+
-+		mutex_lock(&md->buf_mutex);
-+		kref_put(&map->ref, mport_release_mapping);
-+		mutex_unlock(&md->buf_mutex);
-+
-+		req->map = NULL;
- 	}
- 
- 	kref_put(&priv->dma_ref, mport_release_dma);
--- 
-2.25.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
