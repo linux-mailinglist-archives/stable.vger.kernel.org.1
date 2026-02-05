@@ -1,252 +1,133 @@
-Return-Path: <stable+bounces-214446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CATuGd+ChGl/3AMAu9opvQ
-	(envelope-from <stable+bounces-214446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:45:35 +0100
+	id YPKGIZGDhGl/3AMAu9opvQ
+	(envelope-from <stable+bounces-214447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:48:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA11F2030
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:45:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74FAF20C9
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 55C053006807
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 11:45:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EEB6303C03F
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 11:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A4E3B8D41;
-	Thu,  5 Feb 2026 11:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798E03ACEF1;
+	Thu,  5 Feb 2026 11:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="SjTMG8ts"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIQz61a+"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.113.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B9F3B8BCB;
-	Thu,  5 Feb 2026 11:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.182.113.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CADB3A7F41;
+	Thu,  5 Feb 2026 11:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770291930; cv=none; b=dMD9xaTF9aKgrpeLsgMFJ/4HWZGZwsRsaLU899cnqCawPl9qCRUR620dMpQGBv1M+DZOaY5iYsX6yQtkJBr1psdfW0nNhjYBRfHxX/uQBS1+TbikopscSidhHMRJwJQxIQa+tGeKZfWf3qEMNMUclCx5MUAW9gijd80TJYdJMaQ=
+	t=1770292033; cv=none; b=K1i0GP8BDqGyVQ2aMGqrueoywC4Mn6oHZdeLNFlD6FF6OBtx+tAWmVbndzLny//8HnN3kWys7Za1VkE/ECnkUwdyLHwcQceRffdbdSAzbKib4439Vx2FI66sszqjg6fgWTj5/0DQHBU1+OFOgbVvvSdhX7x+8VeAwUtB+8WklGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770291930; c=relaxed/simple;
-	bh=2U3SDM4RgtE9NaX/1qtN59G3QnhBSoijwJ9vHSkQPGg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sW+zLIh4ECYuK8E6JyjfehpGhSIX/sLSHG5SLkqiJ4gvOtWnhAFjt4otZj/Fj1u1s4q3o3Kznk1rLyMxtvqgi+rmcgEBohpwDQjgXN8MmlP9CqJV2NyF2+CK1DPtzcKEGMSm4DF5/axpg9d8iO/STZxd171JMRcooKhnODSE4GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=SjTMG8ts; arc=none smtp.client-ip=217.182.113.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 85B613E8B0;
-	Thu,  5 Feb 2026 11:45:21 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 3B087400D6;
-	Thu,  5 Feb 2026 11:45:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1770291917; bh=2U3SDM4RgtE9NaX/1qtN59G3QnhBSoijwJ9vHSkQPGg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SjTMG8tsd5SsngDfTH8nXlcZGJDQBwm1yq0V3KWCQw6a2tREKHehVOGSsDdYaCa+j
-	 u1ZJxn88R0wAG0IloG6xdo2wuJREyo7Ek+WPIZFS0gh9NKeGM0Jk7h1z1K44di00GE
-	 M0I2P2/RKucEXQIRJbqVyda6XwK1G1vVVp0dj+LQ=
-Received: from avenger-XINGYAO-Series (unknown [114.244.128.38])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 1F6F442007;
-	Thu,  5 Feb 2026 11:45:05 +0000 (UTC)
-From: WangYuli <wangyuli@aosc.io>
-To: mario.limonciello@amd.com,
-	thomas.lendacky@amd.com,
-	john.allen@amd.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	mika.westerberg@linux.intel.com,
-	andriy.shevchenko@linux.intel.com,
-	jsd@semihalf.com,
-	andi.shyti@kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	bp@alien8.de,
-	ashish.kalra@amd.com,
-	wangyuli@aosc.io,
-	markhas@chromium.org,
-	jarkko.nikula@linux.intel.com,
-	wsa@kernel.org,
-	WangYuli <wangyl5933@chinaunicom.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] i2c: designware: Enable PSP semaphore for AMDI0010 and fix probe deferral
-Date: Thu,  5 Feb 2026 19:44:51 +0800
-Message-ID: <20260205114451.30445-1-wangyuli@aosc.io>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1770292033; c=relaxed/simple;
+	bh=hs8kLSGS3PwA6/jnjtWyjHzz4nIfmL8O9/NjihE8PIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WoldeAl1goamttgOfuH5r1VuveFJDZvY2t2CMzWkqh2MH71wS/5LfLj34bWG/+kt1weVUGNcvN9xm2VNaOSJNmDrWvvrId8Yryr9UsvAhoSDT1uUfMikUxzqEVzQePhaDU0WqeAFCUJ9kKhokNoQuvZKOBUoXIGkIuQWNkD29RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIQz61a+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD50C4CEF7;
+	Thu,  5 Feb 2026 11:47:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770292032;
+	bh=hs8kLSGS3PwA6/jnjtWyjHzz4nIfmL8O9/NjihE8PIU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BIQz61a+VVmJEJoArs5tro3MAhjVNs9oDTYyCpLCQElgbdV66PqCtswFafVmmLE/j
+	 XdHFJJm5QB6FV+SkkonUXHRkeexaVTwrxn03/9XgSfDiLr2He29gQqZx1oc6WHpMSd
+	 61Sm3STFALsTPga0pzPDaMHNx/flMf9dRDr9/97ZfSRDKeJjNnvPmSt6rY2aacmecg
+	 GDZOMpuS/J3ZQd/X96YA96UwpNgwOWQJGOIkUGIa+MjpRCsQqzvCKnHKSEQioMBf0v
+	 pJYzxpgeALcxcdJItrIgfRIA82yIo+YdFW868j4qmfkB2A6TMtWL/KAxhM6c6RglZK
+	 QyyM4xs4czoUA==
+Date: Thu, 5 Feb 2026 11:47:06 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/122] 6.18.9-rc1 review
+Message-ID: <113faaa7-91ae-4903-a3a7-2e93176f68b8@sirena.org.uk>
+References: <20260204143851.857060534@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="E1ofbk94bSHCjB4t"
+Content-Disposition: inline
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+X-Cookie: Non-sequiturs make me eat lampshades.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[aosc.io:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[aosc.io];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214447-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214446-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangyuli@aosc.io,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[aosc.io:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chinaunicom.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0AA11F2030
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: D74FAF20C9
 X-Rspamd-Action: no action
 
-From: WangYuli <wangyl5933@chinaunicom.cn>
 
-AMD Strix Point platforms use the AMDI0010 ACPI HID for their I2C
-controllers, but this entry was missing the ARBITRATION_SEMAPHORE flag
-that enables PSP-based bus arbitration.
+--E1ofbk94bSHCjB4t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Without proper arbitration, when both the x86 host and AMD PSP
-(Platform Security Processor) attempt to access the shared I2C bus
-simultaneously, the DesignWare controller loses arbitration and reports:
+On Wed, Feb 04, 2026 at 03:39:42PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.9 release.
+> There are 122 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-  i2c_designware AMDI0010:01: i2c_dw_handle_tx_abort: lost arbitration
+Tested-by: Mark Brown <broonie@kernel.org>
 
-This causes communication failures with I2C devices such as touchpads
-(e.g., BLTP7853 HID-over-I2C).
+--E1ofbk94bSHCjB4t
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Add the ARBITRATION_SEMAPHORE flag to the AMDI0010 entry to enable PSP
-mailbox-based I2C bus arbitration, consistent with how AMDI0019 was
-handled for AMD Cezanne platforms.
+-----BEGIN PGP SIGNATURE-----
 
-However, simply enabling this flag exposes a latent bug introduced by
-commit 440da737cf8d ("i2c: designware: Use PCI PSP driver for
-communication"): the driver unconditionally returns -EPROBE_DEFER when
-psp_check_platform_access_status() fails, causing an infinite probe
-deferral loop on platforms that lack PSP platform access support.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmEgzkACgkQJNaLcl1U
+h9DfjQf9HSWOThNPgda12Mbe32mgTY1rPFEPsfWjNPriMyPPcPQciDIyjRZOKOOQ
+agpRaCucWQFIjweTEOc661JSdxIn5ONx+bAUKJ22GYamxMq7sBfJ+MvjHNTm70a8
+h7XwmXpAHDYN4CI7cc6ayaak2FvSuWO9wWJNmW6tRWJhOKOVPcHZJTRN2HTdnXmx
+SNvO/9XwifBuYujt+OZD4YAykE7txofFF9aXYSmwYW+/c3Ps2QH8zFeZECCyg083
+d0pRwKOtulfpDSt0cixk7SFd2PNpARAfOn+H9bjDwsMDqF4EKryXvZtQwGU4C74b
+XB46zx78XZjC2LLJe+xmqSl87m7c2Q==
+=6hLr
+-----END PGP SIGNATURE-----
 
-The problem is that psp_check_platform_access_status() returned -ENODEV
-for all failure cases, but there are two distinct scenarios:
-
-  1. PSP is still initializing (psp pointer exists but platform_access_data
-     is not yet ready, while vdata->platform_access indicates support) -
-     this is a transient condition that warrants probe deferral.
-
-  2. The platform genuinely lacks PSP platform access support (either no
-     psp pointer, or vdata->platform_access is not set) - this is a
-     permanent condition where probe deferral would loop indefinitely.
-
-Fix this by updating psp_check_platform_access_status() to return:
-
-  - -EPROBE_DEFER: when PSP exists with platform_access capability but
-    platform_access_data is not yet initialized (transient)
-  - -ENODEV: when the platform lacks PSP platform access support (permanent)
-
-Then update the I2C driver to pass through the actual return code from
-psp_check_platform_access_status() instead of forcing -EPROBE_DEFER,
-allowing the driver to fail gracefully on unsupported platforms.
-
-Tested on MECHREVO XINGYAO 14 with AMD Ryzen AI 9 H 365.
-
-Fixes: 440da737cf8d ("i2c: designware: Use PCI PSP driver for communication")
-Cc: stable@vger.kernel.org
-Signed-off-by: WangYuli <wangyl5933@chinaunicom.cn>
----
-Changelog:
-  v2: Remove useless comments.
----
- drivers/crypto/ccp/platform-access.c        | 7 ++++++-
- drivers/i2c/busses/i2c-designware-amdpsp.c  | 6 ++++--
- drivers/i2c/busses/i2c-designware-platdrv.c | 2 +-
- include/linux/psp-platform-access.h         | 5 +++--
- 4 files changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/crypto/ccp/platform-access.c b/drivers/crypto/ccp/platform-access.c
-index 1b8ed3389733..3f20cf194cb6 100644
---- a/drivers/crypto/ccp/platform-access.c
-+++ b/drivers/crypto/ccp/platform-access.c
-@@ -46,7 +46,12 @@ int psp_check_platform_access_status(void)
- {
- 	struct psp_device *psp = psp_get_master_device();
- 
--	if (!psp || !psp->platform_access_data)
-+	/* PSP driver not loaded yet, caller should defer */
-+	if ((!psp) || (!psp->platform_access_data && psp->vdata->platform_access))
-+		return -EPROBE_DEFER;
-+
-+	/* PSP loaded but platform_access not supported by hardware */
-+	if (!psp->platform_access_data && !psp->vdata->platform_access)
- 		return -ENODEV;
- 
- 	return 0;
-diff --git a/drivers/i2c/busses/i2c-designware-amdpsp.c b/drivers/i2c/busses/i2c-designware-amdpsp.c
-index 404571ad61a8..8c1449993e72 100644
---- a/drivers/i2c/busses/i2c-designware-amdpsp.c
-+++ b/drivers/i2c/busses/i2c-designware-amdpsp.c
-@@ -269,6 +269,7 @@ static const struct i2c_lock_operations i2c_dw_psp_lock_ops = {
- int i2c_dw_amdpsp_probe_lock_support(struct dw_i2c_dev *dev)
- {
- 	struct pci_dev *rdev;
-+	int ret;
- 
- 	if (!IS_REACHABLE(CONFIG_CRYPTO_DEV_CCP_DD))
- 		return -ENODEV;
-@@ -291,8 +292,9 @@ int i2c_dw_amdpsp_probe_lock_support(struct dw_i2c_dev *dev)
- 		_psp_send_i2c_req = psp_send_i2c_req_doorbell;
- 	pci_dev_put(rdev);
- 
--	if (psp_check_platform_access_status())
--		return -EPROBE_DEFER;
-+	ret = psp_check_platform_access_status();
-+	if (ret)
-+		return ret;
- 
- 	psp_i2c_dev = dev->dev;
- 
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index 7be99656a67d..63b1c06ee111 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -345,7 +345,7 @@ static const struct acpi_device_id dw_i2c_acpi_match[] = {
- 	{ "80860F41", ACCESS_NO_IRQ_SUSPEND },
- 	{ "808622C1", ACCESS_NO_IRQ_SUSPEND },
- 	{ "AMD0010", ACCESS_INTR_MASK },
--	{ "AMDI0010", ACCESS_INTR_MASK },
-+	{ "AMDI0010", ACCESS_INTR_MASK | ARBITRATION_SEMAPHORE },
- 	{ "AMDI0019", ACCESS_INTR_MASK | ARBITRATION_SEMAPHORE },
- 	{ "AMDI0510", 0 },
- 	{ "APMC0D0F", 0 },
-diff --git a/include/linux/psp-platform-access.h b/include/linux/psp-platform-access.h
-index 540abf7de048..84dbdbeb61d6 100644
---- a/include/linux/psp-platform-access.h
-+++ b/include/linux/psp-platform-access.h
-@@ -64,8 +64,9 @@ int psp_ring_platform_doorbell(int msg, u32 *result);
-  * if platform features has initialized.
-  *
-  * Returns:
-- * 0          platform features is ready
-- * -%ENODEV   platform features is not ready or present
-+ *  0:            platform features is ready
-+ *  -%ENODEV:     platform_access is not supported by hardware
-+ *  -%EPROBE_DEFER: PSP driver not ready or platform features not yet initialized
-  */
- int psp_check_platform_access_status(void);
- 
--- 
-2.51.0
-
+--E1ofbk94bSHCjB4t--
 
