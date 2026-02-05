@@ -1,121 +1,241 @@
-Return-Path: <stable+bounces-214374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDvnM4/mg2nZvQMAu9opvQ
-	(envelope-from <stable+bounces-214374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 01:38:39 +0100
+	id cGwMDSTog2n+vQMAu9opvQ
+	(envelope-from <stable+bounces-214375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 01:45:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74425ED734
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 01:38:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E119ED7B6
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 01:45:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29E7930107D9
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 00:38:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0821130046BC
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 00:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D0A1DF965;
-	Thu,  5 Feb 2026 00:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF5F11CAF;
+	Thu,  5 Feb 2026 00:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B50tG9/0"
+	dkim=pass (2048-bit key) header.d=telus.net header.i=@telus.net header.b="KKAL3hSd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDCE1DE894
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 00:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AA378F29
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 00:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770251913; cv=none; b=RMk/4S1hohMu64oRDltT+s0TwUZirDxGWyP0AuSVoWt2OovGpwHP1RRS8W4t1bQ4GQzeWTWwGrONlg5vgcyqj7OK21hz/YiL1gCaY37nYVZjZ1bsEgO8BhYJQChoilmYPNbGIrZrUN0d4r9Ud1bw0yKTLA81uAATpvBitZHS0/E=
+	t=1770252317; cv=none; b=beFW1Cfrdd/3Ho7YsfmBBMnXiL5zjY/BPE88Lo11wRqekmIk14sF1l/0NT389ddsYn7Id0oAdP4hnHBYLKPhH8Y/4FCCBl15sSV7zxTkgC2HFa8a4zGwjUDrd75inDgiLlZ4FFdQX6V+y12kfpirzUA7Bd2/xRrXTQyOrm60CmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770251913; c=relaxed/simple;
-	bh=+a4nidgfFaCoFca3mcn2cJExAPTlfk87g7q+Mh9VSho=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lmU5GG7kdJQ64Y29NY0LAzNptREeCbkLbhRQf4k5V4UKq15WSj41YSJ2WZCNUxcKgH0hA8g8aHzXUZpjjD8QyIJKQ9hUWtz/8HfkwyfZKckGb4x5vrVsaGNp+OPTTw2qS7LHEP89AQkayeCcgWTKRwS7YKiDG6Xv9sdBo0MuDMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B50tG9/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F526C16AAE
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 00:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770251913;
-	bh=+a4nidgfFaCoFca3mcn2cJExAPTlfk87g7q+Mh9VSho=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=B50tG9/077nldiCga5MWFBVCZommaIRpY54grguMgH9S8C1ka9WJ74i7piX2QZj4x
-	 FaqJljsRmBlSfUtPAhbsYFF+We20/nqz1tehT5wkHldDtS8eOfVdahJJgeXtue6P6x
-	 PI32ALbkCLEewWQ1ubHUaQCnremgWXxTBxR+2LtWzifx2kKG76RMs4ea12cwUU54uf
-	 tOaCjF7i9Cu9/8NfSGG7KSSQ0TDIXVTTmBY13abEEcfLiLub7omzo/NQTaLY2rU1bB
-	 TiFwOxExmx4i4D/pTtGm4bLy+vwK1kkQ+wb/QNBVak2/P47gvHybNnuvdsh4z95CPp
-	 CMd4lRebjyv9A==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b8845cb580bso58812566b.3
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 16:38:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVWSrXpn88E1WwF2cUBvQ8IQDdoUSMyqRTI5lEcXd0h/lhiQv+yBJHlSv4ab4XjwwdQDbU1F4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIdXF4kPSzmGKuGrNj35lalP167Hp9gsP5Pv592ifXZG1Y2X1s
-	vdtneCk9JdI7YuOU4glRY9BQ5Cn39poqinNeyIWWq9WBzQF32F8lKjHaI/WI1BrI0I+PMY5fSKd
-	I6+UJtsEions3P1QfBK2HLTPKKCNZgkM=
-X-Received: by 2002:a17:907:9405:b0:b8e:5e2:79fe with SMTP id
- a640c23a62f3a-b8e9f0a7b29mr343960266b.15.1770251911905; Wed, 04 Feb 2026
- 16:38:31 -0800 (PST)
+	s=arc-20240116; t=1770252317; c=relaxed/simple;
+	bh=cQ/WPxDukKKYwR+3W0GcZJqJXzQDFdAYPmqOo64qgxQ=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=f00TvQGWEgofOuhKCaTPQkfAbv4QkD/wDE2AV9D9OvD31rXdhBfswHdGLf2HAfrB3vZgo8zkAeADd0fiFs3/dMUcz4fDRrULF3qDde4WCpAvJyMk8WaqypLVdSwQAAN5ROgXP2yOHOKpt/mh/1uPL7v0ru0rKY6Ud2Um30m8PLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=telus.net; spf=pass smtp.mailfrom=telus.net; dkim=pass (2048-bit key) header.d=telus.net header.i=@telus.net header.b=KKAL3hSd; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=telus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=telus.net
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81df6a302b1so468464b3a.2
+        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 16:45:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=telus.net; s=google; t=1770252317; x=1770857117; darn=vger.kernel.org;
+        h=thread-index:content-language:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=USq1SkpNeqX2htOZXLF0dfWcb51OlHBhdVgjyNb/L6Q=;
+        b=KKAL3hSdijxeGoHIzOuR7QXMkbPiMT7tu3TAEbfwLrhPcCSx8Lk1u9863bWTbXgKn8
+         oThFL0HKsLkAnvR+4QQNS8eKZlpZdELrIf3g5eDQAPyZsWGj1dQ9L3IUbMzjeHTo9xuW
+         z3gf3AkZoB2Xe/IEEqWjmGUAix8xDstmITqL54ZSEK2rPwad4NT+QuwJTa1wcFcV8Pbp
+         QhexagWHnMuFoDFIHKggLUcqQknzV0h91OoSvn3aUbF7ufinMTPAuvTqalgRdpLKbc1q
+         0jaP0QOupcUqEKUHYP+fvfILADlFadY71uOnCVrjEOc0tLo4D9sdhiFq9i1hKq60YwpR
+         w7Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770252317; x=1770857117;
+        h=thread-index:content-language:content-transfer-encoding
+         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=USq1SkpNeqX2htOZXLF0dfWcb51OlHBhdVgjyNb/L6Q=;
+        b=jh5p/vLlpr/2Eekafa/uqsHYLFFHYPUmGEcN/Byc7Pcf/iMCGh/lfHKniyFpZfAChc
+         7JVsBySNoqAUwg3z1FFVqANxwVg31PHF1EEKlCvCQWGrcsftDylBMiHEtzd/U4eyqLCL
+         xEz78+JOgtAK+g2gsRZofhW36YSq321kixGULzN5TeGB0bfGPKjrMe5R/V8uiYV0bvVA
+         RWLI1xRlJM/FjRT+vLg73A6y7Rre4msA7rPpRDtbQ6LOHvDc6ocf+ipJ/Jf85ise0png
+         1e/lormHPsf/xiEyEDT7Wjf7/IzzqNOra3kHa3rPF55GCq5GJuyHfIfb5S53irAD6ryg
+         i9KA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFp7dnTaBcOlKt/bRqWXFV/RNCYSfcrMYkNS33d0CYh+OXGklwQFnpLoR9jWA7WCmYGarnI1w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwON/hjCdsnAldLtuSnng/Zl/LFLga5xrJsPiQT1ZqbMcboOeWT
+	C1+v+3EBOzcLyCMG3boquW6IBqk7GEE1CvUieU458RUOGN08x0XbpGVTLKszBhlhk48=
+X-Gm-Gg: AZuq6aK5YRmHlBjLMpt/CUPZhu+mtjgdEEROPXKbvKPbIyctTUvmmtA6QFuPMTMr8W6
+	ZERmzjS5yYkNuHsVq9e9BWS1e7cQncvlb53kiUUTxfvC1f4D9np7aQefAh26IkpUBi+m0jZkZ6U
+	0m8VNmlpRAtPlxU2vvYnW6xkhwCdXSpyfqx7oacf1KiCjC3cIQrY8AWBA7EtwF516Zl8vclXqXq
+	+7FM984OZz6KfBYgy12Q0+DKSBp9uo9mzH7DxQUD3IV1uCDhA8/ad75zZxs5/aNhAjgV6Oe9zQy
+	trumyHZrmxn9Pv/82GtZYZA+YTLFSMKyBB/tzBHZhSAEgGewb/qfA8k5/9WogrtMNIlnPeppUM1
+	boLsPhWlBxQCO4q2vCSvqTf9LGDVbG8AJCR79LC5gRbsE7y7+nghE744JpfUh4/8XOLA/qJzl9Q
+	IDos8Sd6aZoB0ktpQLInH8HYEEgKZB96giPNOUi28phARmGLfdeJk2pD0NdwYBObgAdg==
+X-Received: by 2002:a05:6a00:390b:b0:81f:9b09:ad02 with SMTP id d2e1a72fcca58-8241c1b3c10mr4484858b3a.1.1770252317023;
+        Wed, 04 Feb 2026 16:45:17 -0800 (PST)
+Received: from DougS18 (s66-183-142-209.bc.hsia.telus.net. [66.183.142.209])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8241d1cc84asm3772957b3a.23.2026.02.04.16.45.16
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 04 Feb 2026 16:45:16 -0800 (PST)
+From: "Doug Smythies" <dsmythies@telus.net>
+To: "'Rafael J. Wysocki'" <rafael@kernel.org>,
+	"'Christian Loehle'" <christian.loehle@arm.com>,
+	"'Harshvardhan Jha'" <harshvardhan.j.jha@oracle.com>,
+	"'Sergey Senozhatsky'" <senozhatsky@chromium.org>
+Cc: "'Sasha Levin'" <sashal@kernel.org>,
+	"'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
+	<linux-pm@vger.kernel.org>,
+	<stable@vger.kernel.org>,
+	"'Daniel Lezcano'" <daniel.lezcano@linaro.org>,
+	"Doug Smythies" <dsmythies@telus.net>
+References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com> <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com> <005401dc64a4$75f1d770$61d58650$@telus.net> <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com> <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com> <849ee0ff-e15b-4b69-84de-6503e3b3168d@oracle.com> <003e01dc9013$e3bc5060$ab34f120$@telus.net> <004e01dc90b1$4b28f9e0$e17aeda0$@telus.net> <002601dc916e$6acbe650$4063b2f0$@telus.net> <CAJZ5v0gcSb_6QPMfHkjSMJ6OOF+PaCZrUKOafYQ++tHE2jBB4w@mail.gmail.com> <3b0720d2-9b72-48d0-998a-1fd091cec44f@arm.com> <5d4b624c-f993-49aa-95ab-5f279f7f6599@oracle.com> <8fd5a9d4-e555-4db1-aa02-8fe5b8a2962c@arm.com> <3395ad0b-425e-40f5-844c-627cff471353@oracle.com> <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com> <CAJZ5v0j+jfTHog+rVO0816mofk7nSSKCt7dbwSa2QCpYSN013Q@mail.gmail.com>
+In-Reply-To: <CAJZ5v0j+jfTHog+rVO0816mofk7nSSKCt7dbwSa2QCpYSN013Q@mail.gmail.com>
+Subject: RE: Performance regressions introduced via Revert "cpuidle: menu: Avoid discarding useful information" on 5.15 LTS
+Date: Wed, 4 Feb 2026 16:45:18 -0800
+Message-ID: <005401dc9638$b3e2ea40$1ba8bec0$@telus.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260204230643.387345-1-henrique.carvalho@suse.com>
-In-Reply-To: <20260204230643.387345-1-henrique.carvalho@suse.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Thu, 5 Feb 2026 09:38:20 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd9SMURYO5HNLh_tZfju=OnYiGqdLuDmRr4gnDZkb2bQ_w@mail.gmail.com>
-X-Gm-Features: AZwV_QgLbCcVWeIxytf8GRNtA0kX3BqLBfCf2VKNeHyaBf9a5ELyU_fsEOxI_LE
-Message-ID: <CAKYAXd9SMURYO5HNLh_tZfju=OnYiGqdLuDmRr4gnDZkb2bQ_w@mail.gmail.com>
-Subject: Re: [PATCH] smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
-To: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: smfrench@gmail.com, senozhatsky@chromium.org, tom@talpey.com, 
-	linux-cifs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+	charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-ca
+Thread-Index: AQHo/NwLGJZTeO77XmxNlnPhSwOGkAKJCFtJAex1orYBu9KCwgGuBEkcAe/o8FIB5x3ejgFHdCyGAj6zVaYCBiXTGgCgaPhQAgSxF3QCdRKf4wD6zBBnAsuKJa4A5XOx7rSCKx/Q
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[telus.net,none];
+	R_DKIM_ALLOW(-0.20)[telus.net:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214374-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[telus.net:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214375-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 74425ED734
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dsmythies@telus.net,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,chromium.org:email,arm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5E119ED7B6
 X-Rspamd-Action: no action
 
-On Thu, Feb 5, 2026 at 8:10=E2=80=AFAM Henrique Carvalho
-<henrique.carvalho@suse.com> wrote:
+On 2026.02.03 08:46 Rafael J. Wysocki wrote:
+
+-----Original Message-----
+From: Rafael J. Wysocki <rafael@kernel.org>=20
+Sent: February 3, 2026 8:46 AM
+To: Christian Loehle <christian.loehle@arm.com>
+Cc: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>; Rafael J. Wysocki =
+<rafael@kernel.org>; Doug Smythies <dsmythies@telus.net>; Sasha Levin =
+<sashal@kernel.org>; Greg Kroah-Hartman <gregkh@linuxfoundation.org>; =
+linux-pm@vger.kernel.org; stable@vger.kernel.org; Daniel Lezcano =
+<daniel.lezcano@linaro.org>; Sergey Senozhatsky =
+<senozhatsky@chromium.org>
+Subject: Re: Performance regressions introduced via Revert "cpuidle: =
+menu: Avoid discarding useful information" on 5.15 LTS
+
+> On Tue, Feb 3, 2026 at 10:31=E2=80=AFAM Christian Loehle wrote:
+>> On 2/3/26 09:16, Harshvardhan Jha wrote:
+>>> On 03/02/26 2:37 PM, Christian Loehle wrote:
+>>>> On 2/2/26 17:31, Harshvardhan Jha wrote:
 >
-> On kthread_run() failure in ksmbd_tcp_new_connection(), the transport is
-> freed via free_transport(), which does not decrement active_num_conn,
-> leaking this counter.
+> [cut]
 >
-> Replace free_transport() with ksmbd_tcp_disconnect().
+>>>> FWIW Jasper Lake seems to be supported from 5.6 on, see
+>>>> b2d32af0bff4 ("x86/cpu: Add Jasper Lake to Intel family")
+>>>
+>>> Oh I see, but shouldn't avoiding regressions on established =
+platforms be
+>>> a priority over further optimizing for specific newer platforms like
+>>> Jasper Lake?
+>>>
+>> Well avoiding regressions on established platforms is what lead to
+>> 10fad4012234 Revert "cpuidle: menu: Avoid discarding useful =
+information"
+>> being applied and backported.
+>> The expectation for stable is that we avoid regressions and =
+potentially
+>> miss out on improvements. If you want the latest greatest performance =
+you
+>> should probably run a latest greatest kernel.
+>> The original
+>> 85975daeaa4d cpuidle: menu: Avoid discarding useful information
+>> was seen as a fix and overall improvement,
 >
-> Fixes: 0d0d4680db22e ("ksmbd: add max connections parameter")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Looks good to me:)
-Applied it to #ksmbd-for-next-next.
-Thanks!
+> Note, however, that commit 85975daeaa4d carries no Fixes: tag and no
+> Cc: stable.  It was picked up into stable kernels for another reason.
+>
+>> that's why it was backported, but Sergey's regression report =
+contradicted that.
+>
+> Exactly.
+>
+>> What is "established" and "newer" for a stable kernel is quite =
+handwavy
+>> IMO but even here Sergey's regression report is a clear data point...
+>
+> Which wasn't known at the time commit 85975daeaa4d went in.
+>
+>> Your report is only restoring 5.15 (and others) performance to 5.15
+>> upstream-ish levels which is within the expectations of running a =
+stable
+>> kernel. No doubt it's frustrating either way!
+>
+> That is a consequence of the time it takes for mainline changes to
+> propagate to distributions (Chrome OS in this particular case) at
+> which point they get tested on a wider range of systems.  Until that
+> happens, it is not really guaranteed that the given change will stay
+> in.
+>
+> In this particular case, restoring commit 85975daeaa4d would cause the
+> same problems on the systems adversely affected by it to become
+> visible again and I don't think it would be fair to say "Too bad" to
+> the users of those systems.  IMV, it cannot be restored without a way
+> to at least limit the adverse effect on performance.
+
+I have been going over the old emails and the turbostat data again and =
+again
+and again.
+
+I still do not understand how to breakdown Sergey's results into its
+component contributions. I am certain there is power limit throttling
+during the test, but have no idea to much or how little it contributes =
+to the
+differing results.
+
+I think more work is needed to fully understand Sergey's test results =
+from October.
+I struggle with the dramatic test results difference of base=3D84.5 and =
+revert=3D59.5
+as being due to only the idle code changes.
+
+That is why I keep asking for a test to be done with the CPU clock =
+frequency limited
+such that power limit throttling can not occur. I don't know what limit =
+to use, but suggest
+2.2 GHZ to start with. Capture turbostat data with the tests. And record =
+the test results.
+@Sergey: are you willing to do the test?
+
+>
+> I have an idea to test, but getting something workable out of it may
+> be a challenge, even if it turns out to be a good one.
+
+
 
