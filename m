@@ -1,200 +1,202 @@
-Return-Path: <stable+bounces-214387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGPcLfAbhGmyywMAu9opvQ
-	(envelope-from <stable+bounces-214387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 05:26:24 +0100
+	id YD3dG4SahGmh3gMAu9opvQ
+	(envelope-from <stable+bounces-214458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:26:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64873EE879
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 05:26:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA1CF33AC
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 14:26:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31DB73026148
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 04:18:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4680F3024970
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 13:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29F92DC344;
-	Thu,  5 Feb 2026 04:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FE83A0B0C;
+	Thu,  5 Feb 2026 13:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lNSstRse"
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="qw3DsE13"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3592550CD
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 04:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770265103; cv=none; b=GSgxJvFnpcTG2zwj3x72OEbFinjLiyxV4GJnG0uXP0ncoMTHPbOwjWo9huYROp0MHPLoc12xA+CTg0PLiB9nObpB44mPHuRMQu6EeZQCgEL5LJXXT7d/3YTHLWkCBirNFwVWgC9xl+QmzKo7rbPMqJD5upaeCvGl43hg+dzAKoI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770265103; c=relaxed/simple;
-	bh=SE1wJiKFUbwmRhEJCp7iSLKdvgEcrpon2J3lDhjSELQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xp4G8hQU8qAToMjRqrqN5yG0flavnUyvBnaLiQ3rDyXgZMuPqbg/4iBxEZfd41yKt2FCkTGgyLe1bUvmWuK3Y7W1AjQfCMiisITINxT9dqtmv0N4rmdzZv/p40DU+R5KUdacNIQfKKVVYzZGxFmJkK4crKy9u6GHMQwVC2yffYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lNSstRse; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a8fba3f769so1781365ad.2
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 20:18:23 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789C83AEF25
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 13:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770297869; cv=pass; b=QpEkLu16+MobgA/1e39oXOFET4WsRbSpaOGg9vaTe55O8+YPV48zHe5TVVtH3baqaB2Q8h40ZVjkApEudMqBtQa4YMMeRsg/qXOKrdZWGAGnS26rAgN7bWX8urbl1GvQCHK5o0YcrdUxtj8O/xq1XhqrpHMrMS5McGmS8dHphqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770297869; c=relaxed/simple;
+	bh=PQuFRfseGtjZCs2LnFMBc+gFccaReHz9yiCewWdr7tU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BWaUvPEMZUxVwYVBzwmhJxH9RIzT10xlEmJ5cYN3bE2h5MkzX+ezEZcdl+6kuPGl7SeMGFBZoIxvV2Ak1cqkxaKVPPLIbAlSu2jSmwc03h9uESEZpoXrW/gDtaWg6CKIpl31/J5pCq/qmMoOvHp84cZOhbivsIXmkwUC1SU4B94=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=qw3DsE13; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-649db2b6cdcso1049655d50.0
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 05:24:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770297868; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DB4KcRKAROFeN2tWw4a9FkYmLE3v9Pi8wdv9uYVYipaDy84ob2mW6j+Jb2LOtHZ8dK
+         JRybKe0mjVLKEMqCBZfXHRPn4t4VknP01UKiBIdozAdK58SLHOt4ICR62QAu+V94zyie
+         aBuMDNhSGeNLOo5FNaxqRy1OItns1htJXINhT/IyTr5Ming//nSe8vqMA/Ms7jAAMGjR
+         2VLodBiSDey5tXoG/e5MdpeCNp4WLivwRTEEcP2kdYn/hHpj/uiUiDKCL3Swc8kPafPb
+         0sP4QbwkpHv+Z8lLTeTAumcUR7JJcXiAa2CzVqxTBz1VmxGj59gubiEqxu3+4VsvTjhI
+         E6pA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=wWJQJSQM4MiepsuGDOp1upIX0oDFGMRimS+E9jTjoNE=;
+        fh=l/mBXrBsif/z5QHUbECDZJwOd6YRRAwkNV2v2jbNelU=;
+        b=N28G4j4m94gk4TGivZ+4W8MInclDw/BxHJWST+81wrZWSEJTs+pbUYl3v+1z7EOCHH
+         g5cedIybOpk8eFUNX2rRp6F8zP5SstdqHp2FRN2iyDHX/SZ8rQjw4xj5AySTLHBhHbpZ
+         FEbUZDkn/82qS2RJtXzkOvqc3rxbeIUp7Zr+OvC4p6JGv7eril5qWkoV3VxBI6lgfoK5
+         D0bMDS53GCoDSdVDXrAyQKAHKSdtjtJ0sYYte10tc/k9X7JWO+oJAum1i3knjbSodO9+
+         PMaTgmilZw1iPfHAsRyXQtz/FYMdHhsPk8+SxPHsvkQLRM0QLhbrlA/yQ7zyxABKnOQe
+         tOSA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770265103; x=1770869903; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qmoelReQ9efimA3AVqzRHYairlBZ6Gd+e/kQdjhRrb4=;
-        b=lNSstRseGd933pQvrTVtfZH0pXDyb8IxLXEshlWpLDQ9pY9rc+F16CfG1iZfF35tg+
-         j+k2/Uk/new/dXj4K+cHUSBUnhb7MmDr4dKlgAVkLsdsbII2+g54Z2TlP7rwvZJvabBe
-         3fXir0ua2gRb9ti6nOSVqtFs8G8g9RH+Hwg/xVv/lgKvzIwRetqHubED/r+wpj/okf2x
-         dN9jYZ2gZTTT2xJxmNlUdbUkNuDCTIaiZIxgzxXeKTa5jESsf7L6+op7y8XK5PQRwpx8
-         hBlbmX6BRKltGAc+ClCgbHgA8ALivJuDojqh0yfJmPg+oejBKhu9OTUBeUxg/esAii89
-         V02g==
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1770297868; x=1770902668; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wWJQJSQM4MiepsuGDOp1upIX0oDFGMRimS+E9jTjoNE=;
+        b=qw3DsE13v7+EoTqjyjal4HGchLU6/Kz4inyuxlaBwiJJpIo1o1GYheITKd/nGBeh0V
+         X9lXAQsLBlqt4PWxbaGuQhqJYgpRRWBh9dy5pgJybPNLJ71rAWmWZXdOlC+TwEVCTJul
+         jKEjdrmfmqXZdfHcmlihvxaz1ch5SJ9yoZVErymoNjflHeXEYURN+BDot24MrZ3/R85j
+         JZ/HYqGE+yqRaJ+GIzH3FjWvJwGRWOv0SJrQEcGDtk4pOkqxCeYKZcWcwD6liC7GbZmF
+         H3yxegOoG9py7XaWsEEUnF9T9byDtmksuI1CO58GaXc2RRg9+ublVRAiULfVV0kjUeIQ
+         nQoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770265103; x=1770869903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qmoelReQ9efimA3AVqzRHYairlBZ6Gd+e/kQdjhRrb4=;
-        b=NnqI+e77jOluMwnNjGoEN+W5K2A+2gMRUlIFPYt9NLBmLR6bNmchgkKnZOgyajnyrk
-         u06PIIzPWdLssD/pwJ2p3lvzGRYCjh6cdsmMsPWT8/Zd/BaLgci83aBzPdFT1y+kEhTv
-         /BP5GTqt1fl9bn5AmEhf0VB/8Vr+5GjW7WwgRDSdctAdzq6W7cOxCUxe6Fxu8ij/P25m
-         gsid+GgEsWbGBi8UhvcTP0/MARGE/OzV0/NSqiJiiZQygBdV75w5sq/VXli8QvS60Y/t
-         1ugJDwqFWoMCcFr2s7YYRaBz3FdkHtSHd1CPSgN2K2JgKw1vira8eYqfKyp0KKLLOWH0
-         vyhw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrolWODnyT3GinmApakxu4QZdDQ6Wftbmc1wMe7YOaJppSrqu1hkhN6yhNu2WpFAPFy6Vj0x0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyP4IfMW3Xf+70OYgaM2tzsPJPGrD/9rNzzZE0LMdqw6UhnEsVW
-	tyoGtAwUBt0IenkEQ/GcBXSfFpw5E68HXyYy9c/goNgk/uaMz9b7gxC5
-X-Gm-Gg: AZuq6aKivIGQx6it4ugWV5Qxg6V7WVZj855wQllNx7VaeAuwDz6ahkRgMr6EHHBN5yl
-	4f4gWXBFGFtYEh2U3h/kmNpVJCmg39sPeBOAnq+GzJqBMVxUP8Z7sHByyACZDHR0e27U3SY64PD
-	YjKjl6aRw8PmvBkg+V0qgy9Zh4jn6MokLwvSB0vD+bqKSw7Civu3mTg5I5j0l4jMQ/A/R0B9a5x
-	bUNl5DQ281/yMmW2HDA587crCKfR1KvE5yqRqqKx8oHm9qmZqjkQjCXei81pGi4ermqxQmlvP6o
-	IMVflk63RRbwgn4e5b4R47Xg3ozoL3wNXw5UTqn1rCsB6+/1YHZg34dO9Qq64ROb7TUkCWxNdi0
-	okzArZg9n2oSrNrvLWAaQOSSt+T6ZgFLBJcALhfUifKZoGa6T1ySbiBqsO1nWjz9tDYVkPlQJu1
-	XPqLQ=
-X-Received: by 2002:a17:902:e88d:b0:299:e215:f62d with SMTP id d9443c01a7336-2a933b9d409mr62869745ad.5.1770265102795;
-        Wed, 04 Feb 2026 20:18:22 -0800 (PST)
-Received: from misys ([58.120.241.145])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a93396b2eesm38037785ad.78.2026.02.04.20.18.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 20:18:22 -0800 (PST)
-From: HeeSu Kim <mlksvender@gmail.com>
-To: nathan@kernel.org
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@google.com,
-	charmitro@posteo.net,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
-	nsc@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org,
-	tmgross@umich.edu,
-	HeeSu Kim <mlksvender@gmail.com>
-Subject: [PATCH v5 2/2] rust: Makefile: bound rustdoc workaround to affected versions
-Date: Thu,  5 Feb 2026 22:18:15 +0900
-Message-ID: <20260205131815.2943152-2-mlksvender@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260205131815.2943152-1-mlksvender@gmail.com>
-References: <20260203221224.GA2703490@ax162>
- <20260205131815.2943152-1-mlksvender@gmail.com>
+        d=1e100.net; s=20230601; t=1770297868; x=1770902668;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wWJQJSQM4MiepsuGDOp1upIX0oDFGMRimS+E9jTjoNE=;
+        b=GElfgp4cUmVyk5U3jY4tw7BGbox7Xm9k1UHAQGEcaSrV453xD42QLaAI9Bb/4UCY9A
+         2RhQK4q8xVsS5PKPBn5K9rQtVbG4NljIJ1nVa3kEwNOtJtK3rsNSxZ8nprQDfofAkl5o
+         iLxMMOGfRnOCHLGoFNLcZYlRokJkrE/5abuIoJvWGvNpWL2L/6J0gZpBpuZXXVPu69+Z
+         Wve131NMVE8ta6kOimP02n8kE4J6rBvjhSQtaL9ArKXAfeorF7HbFOWiyf6ygoWkVmp5
+         tN7/dLrQ5iTVjNxFLUfn2NWBey5VoGeknIJZGUtlbb3scetwYeOtB+q/uH9jgGXpnluY
+         GHLg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBcO56uJsP5kWBoXVHrJhaPGLn3dQeVIKqrgeJh7FY3iIuSVvqjGok3H25z6RPy6k+hdIkO58=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxmp5ohdkeUQE5Y0HDRsSqQIaSWuZU7KrTREWybH/ahjNV9LvI5
+	E8HR0ZgT8R33A6QlPlqxrbQI/4tMgfk8x+4Q+E9Xq+jZ4if+9ezitQ9CibbZ4YYR0oduivo57Cy
+	ZYUBV+wXJqAyJenP9/h4ue/Np4pobu8OgVDXGVI8d
+X-Gm-Gg: AZuq6aITiKh1UEqm3Vek2OBcKtXA7fgOdXNi0CwgFsD/UZvfVst6p6yfzy41BTtpKJg
+	PaYfaJMzMhLjirdogwAw47CEycKLZBJov4UuPLR9f7Ft4zZ+Nd+8QGb4ALsgVv/b43/qLpZ2U+Z
+	lQkp42RbNhVj6p87BBDgYZgwPpM2t1mKMmjGBE748vG7zfZz693RTdBkkwkgpFFgI+wisG1H9Qs
+	SeCaRzJI09dcBCOEeH/OxcSGIgtVZAlOzaawiuaXDmmX6oZORuce43j6hFtELA76pHld1OKp92g
+	106YT/IdMA==
+X-Received: by 2002:a53:7205:0:b0:649:c19c:eb88 with SMTP id
+ 956f58d0204a3-649db4ae1e4mr4304752d50.68.1770297868399; Thu, 05 Feb 2026
+ 05:24:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260204132428.224465-1-p@1g4.org> <20260204132428.224465-2-p@1g4.org>
+In-Reply-To: <20260204132428.224465-2-p@1g4.org>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Thu, 5 Feb 2026 10:24:17 -0300
+X-Gm-Features: AZwV_QiIasAvBGy1qaVysi7TUiI88O9EzRAY9ErTDlI3XE43KPKDUv_79hUS2-w
+Message-ID: <CA+NMeC9wKrU0PmLKe8k=MRsDk+T6F65Gqz4hpsvHP0=_-qjVLQ@mail.gmail.com>
+Subject: Re: [PATCH net v4 1/1] net/sched: act_gate: protect parameters with
+ RCU on replace
+To: Paul Moses <p@1g4.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.84 / 15.00];
-	DATE_IN_FUTURE(4.00)[8];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[mojatatu-com.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-214387-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	FREEMAIL_CC(0.00)[kernel.org,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,gmail.com,umich.edu];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mlksvender@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214458-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[mojatatu.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[victor@mojatatu.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 64873EE879
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: CAA1CF33AC
 X-Rspamd-Action: no action
 
-The `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround was added to
-handle a rustdoc bug where target modifiers were not properly saved [1].
+> Convert act_gate parameters to an RCU protected snapshot. Allocate a new
+> snapshot on CREATE and REPLACE, swap it under tcf_lock, and free the old
+> snapshot via call_rcu() to avoid races with the hrtimer callback and the
+> dump path.
+> [...]
+> @@ -323,23 +393,9 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+> [...]
+> +               err = gate_clockid_to_offset(clockid, &tk_offset, extack);
 
-This bug was fixed in Rust 1.90.0 [2]. Restrict the workaround to only
-apply for Rust 1.88.x and 1.89.x versions that are affected by the
-bug, preserving ABI compatibility checks on newer compiler versions.
+I don't believe you really need this function.
+You can get the tk_offset once after you've determined which
+clockid will be used.
 
-Link: https://github.com/rust-lang/rust/issues/144521 [1]
-Link: https://github.com/rust-lang/rust/pull/144523 [2]
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DG4JM9PU51M0.1YRGM9HVTY24U@garyguo.net/
-Cc: stable@vger.kernel.org # Useful in 6.18.y and later.
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
----
-Changes in v5:
-- Split rustc-max-version macro into separate patch for easier backporting
+> [...]
+> +
+> +       if (use_old_entries) {
+> +               cur_p = rcu_dereference_protected(gact->param,
+> +                                                 lockdep_rtnl_is_held());
+>  [...]
+> +               if (!tb[TCA_GATE_BASE_TIME])
+> +                       basetime = cur_p->tcfg_basetime;
 
-Changes in v4:
-- Add rustc-max-version macro for cleaner version bounds
-- Use rustc-max-version instead of test-lt for readability
+This doesn't look right.
+If you have an update that provides a new set of entries
+and not basetime, you'll end up updating basetime to
+the default variable's value (0). I believe the same is
+happening to the other attributes you are looking at
+here - prio, gflags, and etc.
 
-Changes in v3:
-- Remove Fixes: tag (this is a feature, not a fix)
-- Use full URLs with Link: tags instead of GitHub-style references
-- Add Link: to lore.kernel.org for Suggested-by attribution
-- Add Cc: stable for potential backporting to 6.18.y
+>  [...]
+> +
+> +       if (ret != ACT_P_CREATED) {
+> +               cur_p = rcu_dereference_protected(gact->param,
+> +                                                 lockdep_rtnl_is_held());
 
-Changes in v2:
-- Change approach: bound to affected Rust versions instead of ARM64-only
-  (the flag is simply ignored on non-ARM64 architectures)
+Can you try to acquire cur_p only once and reuse it?
+It will look cleaner.
 
- rust/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> [...]
+>  static void tcf_gate_cleanup(struct tc_action *a)
+>  {
+>         struct tcf_gate *gact = to_gate(a);
+>         struct tcf_gate_params *p;
+>
+> -       p = &gact->param;
+>         hrtimer_cancel(&gact->hitimer);
+> -       release_entry_list(&p->entries);
+> +       p = rcu_replace_pointer(gact->param, NULL, lockdep_rtnl_is_held());
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 5c0155b83454..1e8a75bc2878 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -136,7 +136,8 @@ pin_init-flags := \
- 
- # `rustdoc` did not save the target modifiers, thus workaround for
- # the time being (https://github.com/rust-lang/rust/issues/144521).
--rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
-+# The bug was fixed in Rust 1.90.0, so only apply for 1.88.x and 1.89.x.
-+rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),$(if $(call rustc-max-version,108999),-Cunsafe-allow-abi-mismatch=fixed-x18))
- 
- # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
- doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
--- 
-2.52.0
+You won't always have the rtnl_lock in this situation.
+For example, if a gate action instance is attached to flower on an ingress
+qdisc, this might be called without the rtnl_lock.
+Take a look at what act_vlan is doing in the cleanup callback.
 
+cheers,
+Victor
 
