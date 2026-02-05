@@ -1,194 +1,168 @@
-Return-Path: <stable+bounces-214434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHXdB6NohGlK2wMAu9opvQ
-	(envelope-from <stable+bounces-214434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:53:39 +0100
+	id OGXYOVJphGlK2wMAu9opvQ
+	(envelope-from <stable+bounces-214435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:56:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981ABF10D7
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:53:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 511E6F1152
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 10:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B31BB3003D08
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 09:53:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD9913012248
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 09:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8FB3A1E71;
-	Thu,  5 Feb 2026 09:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3193A4F2F;
+	Thu,  5 Feb 2026 09:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M9uWMtCs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCa3tlHY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB372D6409
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 09:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07BD2D6409;
+	Thu,  5 Feb 2026 09:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770285216; cv=none; b=iKCeL1vvWrlAPlIr/cLB6VRq5h8OvflLEwK8Sdcy01GXQNmg6CrTjXNkYGhSbNPUBI0br21RjS2TiITwYJ8E4mmpFfh+7Qm90ap8ux6RmU+7BPQOrev6zKC6mZWg1MuNTWFvWuDDOabkDt1wTkvYOSp9XTuQ/kt6uJqkcCPv9vw=
+	t=1770285347; cv=none; b=jr4fpRWJrH9bOZjTueflvLZpCwZ9jBQWE30U4IckIH+DTZ3xJDAZfg84rLwsXI+NC1uI/rDK9FIH2f0Zydjt41ujPSti4nQnntT54NRxtJr5xXP82UDJMUuN5T9qJJGXbonVnwSsjPW1gWn//MF9zH3ZZeiR+WnIMYl1HASw1yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770285216; c=relaxed/simple;
-	bh=nrLmXI00R22/uTzGDWoYGQOtxvzoA9Jtfjuq8R2VEFQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i9JOw2zHSDsm9ut08oo0vYfnPAAhJVbX8QF+Rpmaw44k0MWnunQqUk/m7CasKnpvsnvW1doe1dY01IP/N17gXvG99GaZ1u+VebwM86nquYduFgQWWrM0q8MzOkn5vlroM+UU7vh3MkEqJ1nLGE73YGgAjFmReEWY7zlcO7w1NtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pimyn.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M9uWMtCs; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pimyn.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-432db1a9589so557234f8f.0
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 01:53:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770285214; x=1770890014; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JYgfYWIutLhTE2tDgvjPMDw6no3HeV4x5//st/pkrho=;
-        b=M9uWMtCsw0uy1z8nVJ//JBcEjM3rMQT9/E9cxlDF8ot1PpuCBiag4uc5XHMXm9CeFX
-         4Glydfw0l66MXLnR9FBVuu5B0n9TlOoe6gIx2DeDaRDfNC7CGnLxNNWvjvgO0wzWFVab
-         Uvgx+ycCkH1+RcBWz2Du3OH8mNlHstDCHIlBWXASZ++9mDsfJ4ddbbVRr7zP2yJDs1uO
-         49LthvvJUZwrdTkQEAaSCcYvXwU4dPj+KMXDWwu3hn1ee6o2zdBWVYzh82R6dLpou30s
-         J4oBM0LfI6S0o8R4rTakOUTpUbw9GPmBdIGSC+WU3DQk1r8KR5zl+eBI8O/2iOQklnW/
-         Buew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770285214; x=1770890014;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JYgfYWIutLhTE2tDgvjPMDw6no3HeV4x5//st/pkrho=;
-        b=iDqom5aUTmPbhqZWvIGibbGSNcfGc04cuO2cX2MSmWYT0/6aBmVdMCk072KmS2Nesr
-         iVHT4bTYPqQtJ/h5F0aH3OXLhmkRMg33sBmYxX/JiScneYS6TxZmsRNoWoM2Y7ay5j59
-         2+FyTmmQXGlv7WVn1usj+cVQ44XDgiPgbVvp/6rkxrXHluqpYNSrCYxIH0BJz4jBW9SF
-         6dSlzASq6Ogx46IwJM1LM5Hn79bjub+qKA23K4gK1OTsXpSxH7iih+rUaCuhkfQ8gP59
-         t6AvYXCTNf1DkHRPKWlOxfFy8dsbwAT/DRxFFYAi1DwMKkOIg8mnOVoJTXzKfwmKWDgm
-         JO1w==
-X-Gm-Message-State: AOJu0YxbM3Ea0GfZnYPv8rZfyLNwIE2i0XUhccO+2kESwGbrWO8XueOu
-	lA72EulbExZw+SoTEWD+hT2sdSe8LkdoHuxZ6stZhtxnzYQFlpRha2g4MjRkiZ8jB7IZGx8cy7f
-	pKd0IGxyAHMONJVrUSbTHkbxNyzOyqE03CpD5/15fQmyo1sLp4oZMYeQwzAvjoSKhI6WsvqoYdr
-	XL8zrm4A+qhRIUz2jkAMZtsJwrnRd0aDk=
-X-Received: from wrs7.prod.google.com ([2002:a05:6000:647:b0:436:2782:284c])
- (user=pimyn job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:1849:b0:432:c092:ee50
- with SMTP id ffacd0b85a97d-4361805da87mr8689162f8f.50.1770285214205; Thu, 05
- Feb 2026 01:53:34 -0800 (PST)
-Date: Thu,  5 Feb 2026 10:53:23 +0100
-In-Reply-To: <2026020339-trickery-vegan-e9c3@gregkh>
+	s=arc-20240116; t=1770285347; c=relaxed/simple;
+	bh=jBuAOB8bdqvBnhj5fUSQazKsMCWV4Cz4HIYyuTqlq/s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qKoPNKyksfzHTYlvHbYL/OMoz/UO6Q51HhmUix//N46B9n+hzIHgfd9IuYTtU7KCZR1P/2jnfCMMcBHzwSR+9DsHvDCnIHUe6mfsegq3EWxlkK+SYp0mC5qMzHAGBkCBpIAFiPBXdcY3w/Tus9xNnp+xICphEk2zYFbdSWgN6FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCa3tlHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7161DC4CEF7;
+	Thu,  5 Feb 2026 09:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770285346;
+	bh=jBuAOB8bdqvBnhj5fUSQazKsMCWV4Cz4HIYyuTqlq/s=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=CCa3tlHYW74kvgHYRDB0TPc+LPDzkPbaZ6B8rOtFcrro+q53kiRXSvIL1GFk+QjuA
+	 zRtLItsY/MjyC8FU1LvbWnNBgv4RvYpaICTFFYz2LdP+7/eHz5uPbuIEaQS2s9SOHB
+	 qhasp+FuMo/C7xhFp65jiREGj7n230spo64gTyp8Erfn/tjPVJqgg8uGQuAru0BL97
+	 fNWXYPpa0yrUqORtNXgiup8VFzs4bS/7jCKiWl8pGQwzWpcfJogZAKcGCLm5Yab6xZ
+	 jrzR1DcuZSxmR3sAxMQI6671cHKChdXnwsiyqsRbUueG7/QJBBQi4ueH31LJHmw0ML
+	 2P81/jIZ0PLAQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F33BEC1E89;
+	Thu,  5 Feb 2026 09:55:46 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Date: Thu, 05 Feb 2026 10:55:38 +0100
+Subject: [PATCH] iio: imu: inv_icm45600: fix INT1 drive bit inverted
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2026020339-trickery-vegan-e9c3@gregkh>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260205095323.3149138-1-pimyn@google.com>
-Subject: [PATCH 5.15.y v2] mm/kfence: randomize the freelist on initialization
-From: Pimyn Girgis <pimyn@google.com>
-To: stable@vger.kernel.org
-Cc: Pimyn Girgis <pimyn@google.com>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Marco Elver <elver@google.com>, 
-	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>, 
-	Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260205-inv-icm45600-fix-int1-drive-bit-v1-1-72a78cd07150@tdk.com>
+X-B4-Tracking: v=1; b=H4sIABlphGkC/x2NQQrDMAwEvxJ0rkBWmhT6ldBDYqvtHuoGO5hAy
+ N8repxl2DmoWoFVuncHFWuo+GaHcOkovuf8MkZyJhUdRWVg5MaIn+swivATuw9b4FTQjBdsfEt
+ Bbe5NY1Lyl7WYW//C9DjPH2evK0pxAAAA
+X-Change-ID: 20260205-inv-icm45600-fix-int1-drive-bit-7d12ea3e2cd2
+To: Remi Buisson <remi.buisson@tdk.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770285345; l=2029;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=jonlpc2vCCKoNTffAcqdw9gt54oqvhg5uNYQzxvrOqc=;
+ b=5vsMRdNmsBMDk/bEXxMe0CHV8sOVUQ5BP6DYKkfDmmjilUh4irqWX5vYNYJUnCQ06gj6iVmPx
+ TmZGs1Xjzz+ADbgOMIgddjMr17moPL0PV9EPmuuF4y4pfMmvp//E53u
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_RHS_MATCH_TO(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214434-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214435-lists,stable=lfdr.de,jean-baptiste.maneyrol.tdk.com];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[jean-baptiste.maneyrol@tdk.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pimyn@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,tugraz.at:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 981ABF10D7
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tdk.com:replyto,tdk.com:email,tdk.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 511E6F1152
 X-Rspamd-Action: no action
 
-Randomize the KFENCE freelist during pool initialization to make
-allocation patterns less predictable.  This is achieved by shuffling the
-order in which metadata objects are added to the freelist using
-get_random_u32_below().
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Additionally, ensure the error path correctly calculates the address range
-to be reset if initialization fails, as the address increment logic has
-been moved to a separate loop.
+Drive bit must be set for open-drain mode and be cleared for push-pull
+mode.
 
-Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Pimyn Girgis <pimyn@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 870ff19251bf3910dda7a7245da826924045fedd)
-Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Fixes: 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in iio devices")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
 ---
- mm/kfence/core.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ drivers/iio/imu/inv_icm45600/inv_icm45600.h      | 2 +-
+ drivers/iio/imu/inv_icm45600/inv_icm45600_core.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index c49bc76b3a38..e1a555eeec45 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -520,7 +520,7 @@ static bool __init kfence_init_pool(void)
- {
- 	unsigned long addr = (unsigned long)__kfence_pool;
- 	struct page *pages;
--	int i;
-+	int i, rand;
- 	char *p;
+diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600.h b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+index c5b5446f6c3b43150512bcc4357cee385080b634..1c796d4b2a4038203f734f80d7bf7bad138c3497 100644
+--- a/drivers/iio/imu/inv_icm45600/inv_icm45600.h
++++ b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+@@ -205,7 +205,7 @@ struct inv_icm45600_sensor_state {
+ #define INV_ICM45600_SPI_SLEW_RATE_38NS			0
  
- 	if (!__kfence_pool)
-@@ -576,13 +576,30 @@ static bool __init kfence_init_pool(void)
- 		INIT_LIST_HEAD(&meta->list);
- 		raw_spin_lock_init(&meta->lock);
- 		meta->state = KFENCE_OBJECT_UNUSED;
--		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
--		list_add_tail(&meta->list, &kfence_freelist);
-+		/* Use addr to randomize the freelist. */
-+		meta->addr = i;
- 
- 		/* Protect the right redzone. */
--		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
-+		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE))) {
-+			addr += 2 * i * PAGE_SIZE;
- 			goto err;
-+		}
-+	}
-+
-+	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
-+		rand = get_random_u32() % i;
-+		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
-+	}
- 
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		struct kfence_metadata *meta_1 = &kfence_metadata[i];
-+		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
-+
-+		list_add_tail(&meta_2->list, &kfence_freelist);
-+	}
-+
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		kfence_metadata[i].addr = addr;
- 		addr += 2 * PAGE_SIZE;
+ #define INV_ICM45600_REG_INT1_CONFIG2			0x0018
+-#define INV_ICM45600_INT1_CONFIG2_PUSH_PULL		BIT(2)
++#define INV_ICM45600_INT1_CONFIG2_OPEN_DRAIN		BIT(2)
+ #define INV_ICM45600_INT1_CONFIG2_LATCHED		BIT(1)
+ #define INV_ICM45600_INT1_CONFIG2_ACTIVE_HIGH		BIT(0)
+ #define INV_ICM45600_INT1_CONFIG2_ACTIVE_LOW		0x00
+diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+index ab1cb7b9dba435a3280e50ab77cd16e903c7816c..b028044d609a41f6d4b747383323130ded0d2e79 100644
+--- a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
++++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+@@ -637,8 +637,8 @@ static int inv_icm45600_irq_init(struct inv_icm45600_state *st, int irq,
+ 		break;
  	}
  
+-	if (!open_drain)
+-		val |= INV_ICM45600_INT1_CONFIG2_PUSH_PULL;
++	if (open_drain)
++		val |= INV_ICM45600_INT1_CONFIG2_OPEN_DRAIN;
+ 
+ 	ret = regmap_write(st->map, INV_ICM45600_REG_INT1_CONFIG2, val);
+ 	if (ret)
+
+---
+base-commit: d820183f371d9aa8517a1cd21fe6edacf0f94b7f
+change-id: 20260205-inv-icm45600-fix-int1-drive-bit-7d12ea3e2cd2
+
+Best regards,
 -- 
-2.53.0.rc2.204.g2597b5adb4-goog
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
 
 
