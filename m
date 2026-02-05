@@ -1,131 +1,115 @@
-Return-Path: <stable+bounces-214493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMydEDi4hGnG4wMAu9opvQ
-	(envelope-from <stable+bounces-214493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:33:12 +0100
+	id GG0wIhG7hGnG4wMAu9opvQ
+	(envelope-from <stable+bounces-214494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:45:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C45F4A77
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:33:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3D6F4B8C
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF9663034301
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:32:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44429300DDCC
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB29423A8E;
-	Thu,  5 Feb 2026 15:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9EE423A90;
+	Thu,  5 Feb 2026 15:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="libPGa7j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhqNppQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B56423A99
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 15:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7235E3ACA79;
+	Thu,  5 Feb 2026 15:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770305554; cv=none; b=JBRfXY/GjOFFaU0+oj9NAQwbBADlzxQ4AYodD/rULKDI+ikhE1uLABVMxU0uekDxOkIjqT7Rj9/IymvmelmisZRGzLyHl7vh68WtE0KF3KnCXC0LzrQT686aRolv/L2BgR0hLwOsltcmmYhM033rK67FAju1VRUpYzVWjzdaxAE=
+	t=1770306317; cv=none; b=OaA0QMRGTQkKe7Kz9Ihfn/fmOkx5Qq9yoflIZ46UXq7ixiHokCS/cUKNvUJ/p5eID+s1u4Af9/vV0oKDcsygulFo6JVzvOKLtjc5xVpPzoiv0AS3pqH77kGOfjgAj/uH80vGGFx1oKytr0ItdXiOmJwpMBJnOmlveA+WJCLPuhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770305554; c=relaxed/simple;
-	bh=NkSRuhIkbLPVZrxTQaZV1VAjFjjIRy3T5AMSUuV3gbQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JTtEIAIhBwU40hlFT9Ma4FZBt55qAbnnxCMe0mdnEXvRo93XzT6YZYawnTf1yerHc2m/+pABG/k3X7PgzbgS9cUcrFs06wwjczYim/5+2s9aA6iCCSUQ9c4drrQRQ15k4StWGF8JeBRKfge/n9k3ZrYvlIZf4DJiwD4xOaNZQqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=libPGa7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF49CC4CEF7;
-	Thu,  5 Feb 2026 15:32:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770305553;
-	bh=NkSRuhIkbLPVZrxTQaZV1VAjFjjIRy3T5AMSUuV3gbQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=libPGa7juMyiJuct+dPnMDaonyPMoOO6L9UDJ+iQF9SzTg1osafQabUOo/bfrtAMb
-	 pLksSyPUy+k9LbDAWTE3Q4aUl18T8jjTwjKUDvnNh5yTZIigy3NZW4NXvLobA6OgAx
-	 3rrrMcaJ6OaqVT21RwGo6PynUnKyamic7+hK8fhA=
-Date: Thu, 5 Feb 2026 16:32:29 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pimyn Girgis <pimyn@google.com>
-Cc: stable@vger.kernel.org, Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Marco Elver <elver@google.com>,
-	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 5.15.y v3] mm/kfence: randomize the freelist on
- initialization
-Message-ID: <2026020508-rabid-heaviness-d146@gregkh>
-References: <2026020339-trickery-vegan-e9c3@gregkh>
- <20260205145055.3333340-1-pimyn@google.com>
+	s=arc-20240116; t=1770306317; c=relaxed/simple;
+	bh=uobxKLkuOBwbIbLzb95tMe/LEUsUFlMKgIPYxgjyKqI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=dZFYC/YsvanzD+ipmDTIt86lCpCsTuID4CjogE33MIeiUawPSmvY54X9HsQLEWIqMgF3lr89N2ZfPzUuo13XyqzyllLnEFRSzuy7KER6+obLIzZrMYfYJyK8mMc7lbWgdauPviLgMIe9QETHrbKbL9Ui19TRXjMJOsFL+G7EeKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhqNppQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2C1C4CEF7;
+	Thu,  5 Feb 2026 15:45:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770306317;
+	bh=uobxKLkuOBwbIbLzb95tMe/LEUsUFlMKgIPYxgjyKqI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jhqNppQXR+VqnQdPergHzWaTiushtgo/NJtJmt0gVmqZ2XX0RKIxeB3RyzX8A+mZV
+	 UOvaQOkV4uQ5KlfQ8yZBcTio9GPW9xdKJa0H98YDsCachgFrf30lMG8RvNMcwupZxx
+	 SOSi5IFUixSioWe3+bLVubZdoZ7mtu5tjaZTkAvH8O7Tt+0yp/kNVkfOxp78YkMi9H
+	 Tf2o8qfDnu/zXbK1GSG66+AwhaaPTcjIgXhmTBv4KMfnqh4mdLgMNZzrrfPNpSnsqe
+	 xbAzN2tCg4tGz380UIzKL5YQLNgaJs6TLPlkOq3BZZt3YkOHExQN/s/aXXARriDeA4
+	 lBmNQpefZAiQg==
+From: Lee Jones <lee@kernel.org>
+To: linux-kernel@vger.kernel.org, Marek Vasut <marex@nabladev.com>
+Cc: stable@vger.kernel.org, Lee Jones <lee@kernel.org>, 
+ Pascal PAILLET-LME <p.paillet@st.com>, Paul Cercueil <paul@crapouillou.net>, 
+ Sean Nyekjaer <sean@geanix.com>, kernel@dh-electronics.com
+In-Reply-To: <20260122111423.62591-1-marex@nabladev.com>
+References: <20260122111423.62591-1-marex@nabladev.com>
+Subject: Re: (subset) [PATCH v3] mfd: stpmic1: Attempt system shutdown
+ twice in case PMIC is confused
+Message-Id: <177030631510.1671534.13234805087946567100.b4-ty@kernel.org>
+Date: Thu, 05 Feb 2026 15:45:15 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205145055.3333340-1-pimyn@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-52d38
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214493-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214494-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tugraz.at:email,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B4C45F4A77
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DF3D6F4B8C
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 03:50:55PM +0100, Pimyn Girgis wrote:
-> Randomize the KFENCE freelist during pool initialization to make
-> allocation patterns less predictable.  This is achieved by shuffling the
-> order in which metadata objects are added to the freelist using
-> get_random_u32_below().
+On Thu, 22 Jan 2026 12:13:21 +0100, Marek Vasut wrote:
+> Attempt to shut down again, in case the first attempt failed.
+> The STPMIC1 might get confused and the first regmap_update_bits()
+> returns with -ETIMEDOUT / -110 . If that or similar transient
+> failure occurs, try to shut down again. If the second attempt
+> fails, there is some bigger problem, report it to user.
 > 
-> Additionally, ensure the error path correctly calculates the address range
-> to be reset if initialization fails, as the address increment logic has
-> been moved to a separate loop.
 > 
-> Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
-> Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-> Signed-off-by: Pimyn Girgis <pimyn@google.com>
-> Reviewed-by: Alexander Potapenko <glider@google.com>
-> Cc: Dmitry Vyukov <dvyukov@google.com>
-> Cc: Marco Elver <elver@google.com>
-> Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
-> Cc: Greg KH <gregkh@linuxfoundation.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 870ff19251bf3910dda7a7245da826924045fedd)
-> Signed-off-by: Pimyn Girgis <pimyn@google.com>
-> ---
-> v2: handle addr calculation for error path  within appropriate loop
+> [...]
 
-What changed in v3?
+Applied, thanks!
 
-Yes, it's a nit, but please, we have a process :)
+[1/1] mfd: stpmic1: Attempt system shutdown twice in case PMIC is confused
+      commit: ff05fecc5007a1680e2e828e708586ae5ffb30a5
 
-thanks,
+--
+Lee Jones [李琼斯]
 
-greg k-h
 
