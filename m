@@ -1,165 +1,255 @@
-Return-Path: <stable+bounces-214518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214519-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPBIIMbOhGk45QMAu9opvQ
-	(envelope-from <stable+bounces-214518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:09:26 +0100
+	id eHL5NOzPhGk45QMAu9opvQ
+	(envelope-from <stable+bounces-214519-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:14:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0A2F5ADD
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:09:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49136F5BAE
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A54C5302AC20
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:05:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D9B13004D0A
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F5843901D;
-	Thu,  5 Feb 2026 17:05:06 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21A943CECB;
+	Thu,  5 Feb 2026 17:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FnAFNpA7";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Y6uINJCv"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA3122339;
-	Thu,  5 Feb 2026 17:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636E443CEC2
+	for <Stable@vger.kernel.org>; Thu,  5 Feb 2026 17:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770311106; cv=none; b=uu1VUWKRHN8mNka0ISuYMYBMvRdMdpS0zSJP6ihD7jngrkSECuOQtNGGAbUpPNx1a2xB/M4NVKMo2IhZMFCPkO2HD2l7cBtL+k1Bi9L9xsUnwmlJ7oRragOsG98mgqVSDw6EfHdANGh+l7SXJHBnDcdQd+8rrilOlK9u7jJhJ94=
+	t=1770311658; cv=none; b=QUd725ejOUEw17T7z7TFz6V/prpWns7p55I7njCAE0vjJvn0B7z6HcFs+VwiaVh/pqqrfINw1duTurz38E03yMn1t9nxrqtgXf9VIYLSehRfKYy8I370+sUA/Aox8kyTQDvTpc3Yfh70/58GlLSW/dat9eqrSPq8I2l817yECB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770311106; c=relaxed/simple;
-	bh=yeo2wB04oGFPCgyn3vFEiz2R8Iukuc+Up7EtscG+zJ4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OzcrnLsBcx/nuFi/iV32le8jLIQmqqrQgbBxvpNrQq+rXSTwCapOp3xGfl4xGK65PGt1XWgofbVKMgJSRZRqdFs8oVbl50nqOhMmYFgx0OjJ1QIbNJylahSuXCTt32l6LERCCSYuOmL7AU4uaFVnOp+fG+62u+08lu4MZMy+El8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vo2mu-003uwf-35;
-	Thu, 05 Feb 2026 17:05:04 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vo2ms-00000001gxP-47hH;
-	Thu, 05 Feb 2026 18:05:02 +0100
-Message-ID: <ec318a7c1b9a06836b8694a1b63e187d3f53bd80.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 050/161] selftests/net: convert fib-onlink-tests.sh
- to run it in unique namespace
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, David Ahern <dsahern@kernel.org>, Hangbin Liu
-	 <liuhangbin@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Sasha Levin
-	 <sashal@kernel.org>
-Date: Thu, 05 Feb 2026 18:04:57 +0100
-In-Reply-To: <20260204143853.562371909@linuxfoundation.org>
-References: <20260204143851.755002596@linuxfoundation.org>
-	 <20260204143853.562371909@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-RivGEGcaunz9EBHkBTBK"
-User-Agent: Evolution 3.56.2-8 
+	s=arc-20240116; t=1770311658; c=relaxed/simple;
+	bh=hpmfNzSCIC5ApGBDTE0elE5AkmLDZ9OmsstHpD/oKEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Gtfu+7jIEFbBzkq5pqHKJhfT6KIb2qBS2KE3lQBQx4e6VDlEMEPzlA3AOsBNWmBFUr/545k6cogSlCHzkkbZwQeqJ2gjPmpyGobV6Z3X3jV4SJRbAQqcw7wu/sH2COikv6NCjDqCSZ2lcriivpBZJcNkFGEYNxuklsP13oMRQC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FnAFNpA7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Y6uINJCv; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 615FrNwC872270
+	for <Stable@vger.kernel.org>; Thu, 5 Feb 2026 17:14:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=K6uxAlpDaZ6
+	EBOUxGU3VxAdAbWdRRiS7if5bxpU1zcw=; b=FnAFNpA7+DcHitGvUXjDDHYr6NA
+	aF9O7SilomV2gGQE7liag2QkVCRDQv++knj0DWjAdS0uNKDlLHt+qsdb4NiSR4WS
+	nDZZRtVlBHvTeg/ri4gFz3W9JKqwXF8UJrZ59PJ+ovlnSL/OR+locMQ+qLwhm+lm
+	Yu3voBdLWpAxQK+MvoYIETH9fAezKLrPkwatdWeFomzYIqAr95GxyvDrzD2Z8BsQ
+	EvXDsJaVDcC38dLwemuU0aHmtCejwxJVEDp90tpcaX5W6MLDMxjYNpwodRlC/04W
+	oJrQB9dgzWMs+EeO4d/nIbKXXHBNXSw/Gz1XcNUu7NpHgl9/7AWuB2gQl2A==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c4x8bg92f-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Thu, 05 Feb 2026 17:14:17 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c6ad709d8fso301829985a.1
+        for <Stable@vger.kernel.org>; Thu, 05 Feb 2026 09:14:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1770311657; x=1770916457; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K6uxAlpDaZ6EBOUxGU3VxAdAbWdRRiS7if5bxpU1zcw=;
+        b=Y6uINJCvEvTft0AI0ovJr0uRGmK8rh1NuAKI6hHfCmRhB2YodN7qzrIvm53N9UrrDP
+         n2XTWU5K+ZI902LlI1l1TdEq92EqLlx1x13jsxDu3jFhOoEI/zJs11ECA8TALGV0nwWq
+         zEFTgXItP5IXzyodbqRUt7hiQE3ZxZmmDc7oBS0cZaWSrmKM3qSPEELf6R/NjDXBCezG
+         GuZXbOUUsUom0ZZrxagcOF5/mP4je0ATsDKcRRiZc6jzDLWn4Jua1klMmuRGwheHBPxp
+         6AwENNRsPmQUAoULQh90npkgFSahNEvWuk+rtrMFkmoYX3gacXur+88fY74Srs9rcGjz
+         DmNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770311657; x=1770916457;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=K6uxAlpDaZ6EBOUxGU3VxAdAbWdRRiS7if5bxpU1zcw=;
+        b=HkecP1o8be1aC8GfQRJ+OVlha52R4t7LuU+2kIevsV+foe/JBbItLEUh7/vfZsux66
+         XExWfUJwA8chElLF8J8aMGieGomR4hgPbqZ7uh5aRSUZi1UPzcBh7EN+fXWyv3HnTrJF
+         ce/L6jS9rkpg8nUyVAk4ZMTaH4SLfP6wDp3SWgUr27/8bIxjhp9bUbgSyfmly9zKxO0z
+         PuX/nrZxkkjsb7S+Zcg+c9CUblUs1SIewTv9Cp63d1bNFFK52kOg/m+q/c3JJDeNBCYX
+         Udl0LMEJnwzD9nyxXUpdX+9mxWUlJlHCfzFpks3LZcYW8CTkuEpJEoVnsY5ve+fFyoiP
+         Aozw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmOLd4xGmV69tK6VbCjMfDS1znTkz8g4q879ALZPotd1bOp1J2JH9xg0f1lePdun1cI/5zX0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxztlWl48nFGRE0CXxq5v/VYOrssI6fHNK+7oAizQHYI2EL7dTF
+	XtZBFkmTIATOsT1tAjUtAzFZbEtCgVLpHrYLnjXUq65N+Sga6mtfvTvr1OrxTOoHTpsX8rl00kd
+	KRUxSIVK7XuReEzS4CNUbKqrMUSI/J7pryo3veEUt6SySzj+s7aM1kkXbqz8=
+X-Gm-Gg: AZuq6aKJaGpK8yTm7NU2s/Djns7sx2auhhW3qgG3cqSzehQRwZG07Fhk2zcTv0Sfyy1
+	cXLBLdDxnzBLYAyYaORbZGqwFKIZSwgqb8kjGbaY2OwBPphHDrn7dQxkIB/Qc179yVbQKrOQl6H
+	e7tXUrZltkATCAXBeHk9exNuSEQ1ZJi/TWvEqRWLOfGn9tP9whIwQasijCTGHz73g3i6KTksAPZ
+	mBclQ1r2hJmeO6S7zm5gA8yEdNZn9P9PtAOtexZnYZ4Rk5l9b7dXZm4n+Uoy0/kXzx5Cggd1T0p
+	1sc+5Ld6Gd3Ook8570vXw9rOZPvIh7N3eipSp7iFH/ul0RNDvcEgl3Nvn9/G1xB4afTG2fi8pxF
+	JBTpY9LC1fJjBsY3kM3ynztDkFheeJWHGN5aPwU6DSEU=
+X-Received: by 2002:a05:620a:440a:b0:8c6:b16c:a56 with SMTP id af79cd13be357-8ca40c5c033mr475106685a.38.1770311656773;
+        Thu, 05 Feb 2026 09:14:16 -0800 (PST)
+X-Received: by 2002:a05:620a:440a:b0:8c6:b16c:a56 with SMTP id af79cd13be357-8ca40c5c033mr475100885a.38.1770311656230;
+        Thu, 05 Feb 2026 09:14:16 -0800 (PST)
+Received: from localhost.localdomain ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43618057f87sm14802849f8f.21.2026.02.05.09.14.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 09:14:15 -0800 (PST)
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+To: broonie@kernel.org
+Cc: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+        cnor+dt@kernel.org, srini@kernel.org, perex@perex.cz, tiwai@suse.com,
+        alexey.klimov@linaro.org, mohammad.rafi.shaik@oss.qualcomm.com,
+        quic_wcheng@quicinc.com, johan@kernel.org,
+        dmitry.baryshkov@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com,
+        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+        Stable@vger.kernel.org
+Subject: [PATCH 01/10] ASoC: qcom: q6apm: fix array out of bounds on lpass ports
+Date: Thu,  5 Feb 2026 12:14:02 -0500
+Message-ID: <20260205171411.34908-2-srinivas.kandagatla@oss.qualcomm.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260205171411.34908-1-srinivas.kandagatla@oss.qualcomm.com>
+References: <20260205171411.34908-1-srinivas.kandagatla@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=GaoaXAXL c=1 sm=1 tr=0 ts=6984cfe9 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=MyalSr31lt99Fa30PzAA:9
+ a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-ORIG-GUID: vJ1oO_jB8qVg-Vgl7z3kjNF-UQZ73Lzh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDEzMCBTYWx0ZWRfX/rq95WleTJpa
+ KB1V7vbkAbnpD5T0NDsUCtfwFNa5za+ArYPJcsV4L5R5INvI+jnhctHLiGnLf1ulrLbFUYkMgJC
+ xk1C/Ccdvy6ClnlD4EYREexYsX5O2G016WYresb2EN60RSLNB3e/4+e2fmY2Su8CSElxPs8tJ/i
+ UcPVqCsNYxBHcFPjB0ZNRw+9Yaz63sF6wfDw8nckU6KMdATg7/wcMxBUsKK+eBOPcO+fe7KElwO
+ tvBkecJUKkTGoL9SUaBo9q7JlH3w/cGwcdmz/QzV5yQDTJVvqI9W6Bx8pG79CieXZRkWYdlKeV/
+ +Gp70JsvWos8YINMJgThf2qEd2G2kj1QzJRZ4Ch+NvLJ8AeSmQyV0lerBAAsLAhzxl+hQ3wInnR
+ yH6mwIT2yQL53X1MA9fk3rAy0KdPH9m2vjaARsK/uMl27jVXaGTvDYY8fir9iHP+vbL2WQh0LWm
+ kUqGUp89iP9BE4mxrJw==
+X-Proofpoint-GUID: vJ1oO_jB8qVg-Vgl7z3kjNF-UQZ73Lzh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-05_04,2026-02-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602050130
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DMARC_NA(0.00)[decadent.org.uk];
-	TAGGED_FROM(0.00)[bounces-214518-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,perex.cz,suse.com,linaro.org,oss.qualcomm.com,quicinc.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214519-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[srinivas.kandagatla@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
+	TAGGED_RCPT(0.00)[stable,dt];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: DD0A2F5ADD
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 49136F5BAE
 X-Rspamd-Action: no action
 
+lpass ports numbers have been added but the apm driver never got updated
+with new max port value that it uses to store dai specific data.
 
---=-RivGEGcaunz9EBHkBTBK
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This will result in array out of bounds and weird driver behaviour.
+Fix this by adding a new LPASS_MAX_PORT which is can be used by driver
+instead of using number and any new port additional can only be done in
+one place, which should avoid these type of mistakes in future.
 
-On Wed, 2026-02-04 at 15:38 +0100, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Hangbin Liu <liuhangbin@gmail.com>
->=20
-> [ Upstream commit 3a06833b2adc0a902f2469ad4ce41ccd64f1f3ab ]
-[...]
-> Stable-dep-of: 4f5f148dd7c0 ("selftests: net: fib-onlink-tests: Convert t=
-o use namespaces by default")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  tools/testing/selftests/net/fib-onlink-tests.sh | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
->=20
-> diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/test=
-ing/selftests/net/fib-onlink-tests.sh
-> index c287b90b8af80..ec2d6ceb1f08d 100755
-> --- a/tools/testing/selftests/net/fib-onlink-tests.sh
-> +++ b/tools/testing/selftests/net/fib-onlink-tests.sh
-> @@ -3,6 +3,7 @@
-> =20
->  # IPv4 and IPv6 onlink tests
-> =20
-> +source lib.sh
-[...]
+Also update the driver to use this LPASS_MAX_PORT.
 
-tools/testing/selftests/net/lib.sh doesn't exist in 5.10, so this can't
-work.
+Fixes: 55b5fb369c02 ("ASoC: dt-bindings: qcom,q6dsp-lpass-ports: Add USB_RX port")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+---
+ include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h | 1 +
+ sound/soc/qcom/lpass.h                             | 2 +-
+ sound/soc/qcom/qdsp6/q6afe.h                       | 3 ++-
+ sound/soc/qcom/qdsp6/q6apm.h                       | 2 +-
+ 4 files changed, 5 insertions(+), 3 deletions(-)
 
-Ben.
+diff --git a/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h b/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
+index 6d1ce7f5da51..609bc278f726 100644
+--- a/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
++++ b/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
+@@ -140,6 +140,7 @@
+ #define DISPLAY_PORT_RX_6	134
+ #define DISPLAY_PORT_RX_7	135
+ #define USB_RX			136
++#define LPASS_MAX_PORT		(USB_RX + 1)
+ 
+ #define LPASS_CLK_ID_PRI_MI2S_IBIT	1
+ #define LPASS_CLK_ID_PRI_MI2S_EBIT	2
+diff --git a/sound/soc/qcom/lpass.h b/sound/soc/qcom/lpass.h
+index de3ec6f594c1..99b0b6651fad 100644
+--- a/sound/soc/qcom/lpass.h
++++ b/sound/soc/qcom/lpass.h
+@@ -17,7 +17,7 @@
+ #include "lpass-hdmi.h"
+ 
+ #define LPASS_AHBIX_CLOCK_FREQUENCY		131072000
+-#define LPASS_MAX_PORTS			(DISPLAY_PORT_RX_7 + 1)
++#define LPASS_MAX_PORTS			(LPASS_MAX_PORT)
+ #define LPASS_MAX_MI2S_PORTS			(8)
+ #define LPASS_MAX_DMA_CHANNELS			(8)
+ #define LPASS_MAX_HDMI_DMA_CHANNELS		(4)
+diff --git a/sound/soc/qcom/qdsp6/q6afe.h b/sound/soc/qcom/qdsp6/q6afe.h
+index a29abe4ce436..ce4b04da1730 100644
+--- a/sound/soc/qcom/qdsp6/q6afe.h
++++ b/sound/soc/qcom/qdsp6/q6afe.h
+@@ -2,8 +2,9 @@
+ 
+ #ifndef __Q6AFE_H__
+ #define __Q6AFE_H__
++#include <dt-bindings/sound/qcom,q6afe.h>
+ 
+-#define AFE_PORT_MAX		137
++#define AFE_PORT_MAX		LPASS_MAX_PORT
+ 
+ #define MSM_AFE_PORT_TYPE_RX 0
+ #define MSM_AFE_PORT_TYPE_TX 1
+diff --git a/sound/soc/qcom/qdsp6/q6apm.h b/sound/soc/qcom/qdsp6/q6apm.h
+index 7ce08b401e31..189ed8a1a60d 100644
+--- a/sound/soc/qcom/qdsp6/q6apm.h
++++ b/sound/soc/qcom/qdsp6/q6apm.h
+@@ -16,7 +16,7 @@
+ #include <linux/soc/qcom/apr.h>
+ #include "audioreach.h"
+ 
+-#define APM_PORT_MAX		127
++#define APM_PORT_MAX		LPASS_MAX_PORT
+ #define APM_PORT_MAX_AUDIO_CHAN_CNT 8
+ #define PCM_CHANNEL_NULL 0
+ #define PCM_CHANNEL_FL    1	/* Front left channel. */
+-- 
+2.47.3
 
---=20
-Ben Hutchings
-Horngren's Observation:
-              Among economists, the real world is often a special case.
-
---=-RivGEGcaunz9EBHkBTBK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmmEzbkACgkQ57/I7JWG
-EQnqtA/9FZb+WK5U6IEaPob+b4oC/gZnLdRPjTzqo5hRBWDupfRpFgjIfHyy9hzZ
-tRKFCWCY7eqO1Fn+5YE0Q2jccDHWjKSMrTHivYBMca2SLa1hK+wCDKzmAjgV7wNu
-+oskWgLOQwduoGSg1o/3CcW6yTkOaQWPOfqUGIjIPgfUTpMHxt3WYiaN3QDatwDp
-h5+xdcN7mxnlfwgUkIkWnp8pXG3gTOAhfvBcGmOA7KfEqJO+9RWKF0qdF8CqXH4B
-FoGhPsFEppvgEXtY0yl/QJrXEnvemsvQsMx79ICqV3ifdjkYu+cp9G9iVZqY2nS+
-3Vk21TosqiyS6XuBx0XCPGvQayPHg45YkM9cP9zTPpCbjHvV/2CG0aENxFnC8tVW
-Mk9hMXFFec4SxuBJtaR7gGB4CLxHAqrY70zK6e07xT2+dx8TT/uoUrwknW6/wVXW
-yLVRDV3YPFE10x37sloWnqC4vYH5PApiIhajDM6hEycQFwxZEu2KKqRBSDFxcA1D
-Au4LkQxEYFyPi/BlgvordThYIbrJn+kai13cBwPEGPICHVeeZUX8hwOrdPZOMpg7
-qEIpB6H4LQcKLDcvinUQpY37iTBu7u0yl/HUtcksmNTYkD6tBEfwRRj6XtpEkYNJ
-S4rX3DCj9U4RubZAVCUl5seGm0E7Z8liljXseDqD5TeBbYNynPM=
-=5ofZ
------END PGP SIGNATURE-----
-
---=-RivGEGcaunz9EBHkBTBK--
 
