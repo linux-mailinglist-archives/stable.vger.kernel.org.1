@@ -1,216 +1,212 @@
-Return-Path: <stable+bounces-214547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBW2AAzvhGkU6wMAu9opvQ
-	(envelope-from <stable+bounces-214547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:27:08 +0100
+	id 4MF9ML/yhGkF7AMAu9opvQ
+	(envelope-from <stable+bounces-214548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:42:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572FDF6D6F
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:27:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EB1F6E99
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:42:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29756301E3C2
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 19:27:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 800B6301A380
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 19:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462CC326D4D;
-	Thu,  5 Feb 2026 19:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9388329E43;
+	Thu,  5 Feb 2026 19:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5X6RIDW"
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NDgwXnos"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090212EAB6F;
-	Thu,  5 Feb 2026 19:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460BC237180;
+	Thu,  5 Feb 2026 19:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770319619; cv=none; b=KpVxfQg0u09AEZlcOwl9T6o8KrbC0O1hnZtw/wuApjTXF7YfqzTZloDOcrFxAeGAADmKn0gFjk8sv9cX2h8N6hDPLKKt1hfOUQs/LnwlvzIYacKJfYkt8WGw3PXJK3xvZLc8KC8YCTnwfjC5TsuBbV+DiCmkn5InTAnkDKoRTiY=
+	t=1770320570; cv=none; b=VR7ydH0fhcYPXxL2XAszY/OrVNmBu2rGkqSPLLk+t0nssDdOg5Yr3VvBUcJ+jg6v0i9Lwcoe0U076Qyo/1sWxFImknXXeXE2iL9eysru8/f+ZkzDC7QzRp46XuGqekOvr20BQWo2KnwPZBitR/XE50sMpqyZrZMJDcRukqQQ3xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770319619; c=relaxed/simple;
-	bh=U4MKUfFI6DFpBMRrK587zNgEG4Th8lIO/6CXoEt2aMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fAL88CUfKWudunUz0IqiYe072/3ZgO1ESEU8v6y2ygUrL/qK9IZXlbR5htctrJ3iUTacdyy2HHwaqSaus8JJDWkbSJAl/7EjYWmtN4qi5THGa/G2DjycZjzBrsAhBnUHp4ipZUr45FoxBgAlJr0BuIuXdkai6n1rwxJrOGZBfcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5X6RIDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CA3C4CEF7;
-	Thu,  5 Feb 2026 19:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770319618;
-	bh=U4MKUfFI6DFpBMRrK587zNgEG4Th8lIO/6CXoEt2aMo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=j5X6RIDWYLsTuF5XlVWpU13HyZPPz/wHyGcqmQ3X3N9MwQ6bM+l9ubhTxmOa60Mn6
-	 V5S4nhCT/smAjtNWVhzfy63/UCr2Q2QRagzp0M2bHQo2dGW2VIcCnzVf5ZEEiHsxkO
-	 JtlmK9cRSy74oGgT1u8RZdnxGNITP0FP4dtnxAyTyCb/7yqvUGurr2zC3JLlGP9oGO
-	 Y8uXtpEjw28u/LIWBLZzTdsKUC4xfE/yBtWH1PMspUYVXferMBp3fxwx28VohOhunm
-	 Bfw3xn3Af5hHUXUqXWnS8zmJo4f8uG62A2jYWRm/nIq7roBxvZ+s4o5EsTVEhYa9Fc
-	 Wh/e1wsDwZdVg==
-Date: Thu, 5 Feb 2026 19:26:49 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Remi Buisson
- <Remi.Buisson@tdk.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: inv_icm45600: fix regulator put warning when
- probe fails
-Message-ID: <20260205192649.4df4b110@jic23-huawei>
-In-Reply-To: <FR3P281MB1757021D0A44A69C2940FC07CE99A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20260205-inv-icm45600-fix-regulator-put-warning-v1-1-314ec12512cb@tdk.com>
-	<aYTDF9BNwzXmd2J8@smile.fi.intel.com>
-	<FR3P281MB1757021D0A44A69C2940FC07CE99A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1770320570; c=relaxed/simple;
+	bh=yGbjG/3x17Gc8ursq9S4mbSj7b2C4VF9UohLgcoN0UI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EOg+dUwRKT24MqUuKYBXS/RH/uyHdQZPmvxAjN5sZwiVZWpZaxi0NMJReqdvfL+0WuxJLkY7NUPTFJ0IJDDKC5+AIYU2s/G9Y0e0oEEsDBzl8ZUwLsoPFTS33S7kGV6zPdqGJYARUMV93JZ8Fuox8UY+371PepMZESDdAdq6RKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NDgwXnos; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 615JBZ862007036;
+	Thu, 5 Feb 2026 11:42:43 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=LHRvTXfg8AbW1lXErrTD00I8bbUcnPJ8/ywKnH2zqZw=; b=NDgwXnosaKwf
+	duCJnkOix1Q8t3LsjJqUutfJXOKFYRmYnfqMyTgz/Hp5MaujhdDZLSA1vpw6lbXh
+	oq+n1+4h0SRGhEXH3/ntwbUQ9wOrGgEzuYk1EQHKvTcE8BdrFQQOWeeHW/x+4dcD
+	0xgmqjKkXmmOr9L6tkpBcr8vnL3KQjPULMcX/PKS18CTZ0uoqvkgyr3bpfLuNAFD
+	NByR/rhO/sngBJ0hYfQZTkpjRntodi/34gQVp1VMbN+E5RP+R3R4wsfu5H1eIeVv
+	Y9qW/Vi1PSZtGe5j3U9SpXbJi01pFSfpQhK9biA9rkvV9LB3q3c7Wxw5UhZmopq3
+	8db4/qj/pA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4c50qtgtm0-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 05 Feb 2026 11:42:43 -0800 (PST)
+Received: from devbig003.atn7.facebook.com (2620:10d:c0a8:1c::1b) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Thu, 5 Feb 2026 19:42:28 +0000
+From: Chris Mason <clm@meta.com>
+To: "Darrick J. Wong" <djwong@kernel.org>
+CC: <cem@kernel.org>, <r772577952@gmail.com>, <stable@vger.kernel.org>,
+        <hch@lst.de>, <linux-xfs@vger.kernel.org>
+Subject: Re: [PATCH 2/4] xfs: only call xf{array,blob}_destroy if we have a valid pointer
+Date: Thu, 5 Feb 2026 11:40:27 -0800
+Message-ID: <20260205194211.2307232-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <176897723586.207608.15038929489815852871.stgit@frogsfrogsfrogs>
+References: <176897723519.207608.4983293162799232099.stgit@frogsfrogsfrogs> <176897723586.207608.15038929489815852871.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=FMsWBuos c=1 sm=1 tr=0 ts=6984f2b3 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=dnfRgSOjAGpcwWFSCwIA:9
+X-Proofpoint-GUID: GAZ8RJT2CftIGwfIF13ZTVH2bAIgBYUB
+X-Proofpoint-ORIG-GUID: GAZ8RJT2CftIGwfIF13ZTVH2bAIgBYUB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDE0OSBTYWx0ZWRfX8vP+o/AVqulL
+ +ZJpAlAoRNqjMTAtwx1h1omhHoT9uh7htBC+mE3kbV1i0LuS+e2uv/c/SdFmpKEmJE9MnACcDhE
+ F9xLpP/MNld5q1qlU19TgT7TrJM0q2Q43Cr/N+8Ho7B2VUFbZCG+Ti7BOyC5nIrwBRlnTq/JR0j
+ 7yctaXZBHfWYV38QVBMDFHJJjW9BFG6fGcxnfyDJZkL4t5DJAYJ7mp7mKtBMGjOWF2JSYBWzlsI
+ x/lfwSfK43GZIgZca5mbJ4uipyDNh7u4Z8KLjxkTxkyJHsZjr0vRWsPdqxlV3WVXp+6ZBRMaFEl
+ E8kkKmZJBkla74Fu2raBbN/oNwmzcDMjcNnTCNf3FNYUnrKSN3tvR2FW8nsGz9MnaDkDWA+GdR/
+ rcT/Wxi8hLv3X5uET4w3ZtDcPkzEm32WPwSQrYQB1LqpRZCDd07hi1ws55wCZ5cG13lhyYwiqpC
+ yzgxmtGdxdC3/v2h6qA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-05_04,2026-02-05_03,2025-10-01_01
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[meta.com,reject];
+	R_DKIM_ALLOW(-0.20)[meta.com:s=s2048-2025-q2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214547-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lst.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tdk.com:email]
-X-Rspamd-Queue-Id: 572FDF6D6F
+	TAGGED_FROM(0.00)[bounces-214548-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[clm@meta.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[meta.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:mid,meta.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 40EB1F6E99
 X-Rspamd-Action: no action
 
-On Thu, 5 Feb 2026 17:19:28 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+"Darrick J. Wong" <djwong@kernel.org> wrote:
+> From: Darrick J. Wong <djwong@kernel.org>
+> 
+> Only call the xfarray and xfblob destructor if we have a valid pointer,
+> and be sure to null out that pointer afterwards.  Note that this patch
+> fixes a large number of commits, most of which were merged between 6.9
+> and 6.10.
 
-> >From:=C2=A0Andy Shevchenko <andriy.shevchenko@intel.com>
-> >Sent:=C2=A0Thursday, February 5, 2026 17:19
-> >To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> >Cc:=C2=A0Remi Buisson <Remi.Buisson@tdk.com>; Jonathan Cameron <jic23@ke=
-rnel.org>; David Lechner <dlechner@baylibre.com>; Nuno S=C3=A1 <nuno.sa@ana=
-log.com>; Andy Shevchenko <andy@kernel.org>; Jonathan Cameron <Jonathan.Cam=
-eron@huawei.com>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; li=
-nux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>; stable@vger.kern=
-el.org <stable@vger.kernel.org>
-> >Subject:=C2=A0Re: [PATCH] iio: imu: inv_icm45600: fix regulator put warn=
-ing when probe fails
-> >=C2=A0
-> >On Thu, Feb 05, 2026 at 02:=E2=80=8A35:=E2=80=8A33PM +0100, Jean-Baptist=
-e Maneyrol via B4 Relay wrote: > When the driver probe fails we encounter a=
- regulator put warning > because vddio regulator is not stopped before rele=
-ase. The issue > comes from
-> >ZjQcmQRYFpfptBannerStart
-> >This Message Is From an External Sender
-> >This message came from outside your organization.
-> >=C2=A0
-> >ZjQcmQRYFpfptBannerEnd
-> >On Thu, Feb 05, 2026 at 02:35:33PM +0100, Jean-Baptiste Maneyrol via B4 =
-Relay wrote:
-> > =20
-> >> When the driver probe fails we encounter a regulator put warning
-> >> because vddio regulator is not stopped before release. The issue
-> >> comes from pm_runtime not already setup when core probe fails and
-> >> the vddio regulator disable callback is called.
-> >>=20
-> >> Fix the issue by deleting pm_runtime check in the vddio regulator
-> >> disable callback and handing over the vddio disable management to
-> >> pm_runtime by deleting the disable remove action before setting up
-> >> pm_runtime. =20
-> >
-> >...
-> > =20
-> >> +	/* hand over vddio management to pm_runtime */
-> >> +	devm_remove_action(dev, inv_icm45600_disable_vddio_reg, st); =20
-> >
-> >First of all, note "remove" vs. "release". Have you tried to remove and =
-insert
-> >module several times? Does kmemleak happy about this? =20
->=20
-> Hello Andy,
->=20
-> remove is used on purpose, since we want to avoid disabling the vddio reg=
-ulator
-> here.
->=20
-> The problem we are facing here is that vddio regulator disable is handle =
-by 2
-> different resource managements: manually with devm_ and with pm_runtime. =
-It
-> is needed because we want pm_runtime to be able to disable vddio when the=
- chip
-> is suspended. And we also want to avoid the manual vddio disable during t=
-he
-> driver probe for code clarity. To prevent vddio regulator to be disabled =
-2 times
-> when the driver unloads, the manual vddio disable has a check on pm_runti=
-me.
-> But when there is an issue in probe (like chip not responding), the vddio
-> disable callback is not working correctly because pm_runtime has not been=
- setup.
+Hi everyone,
 
-I'm curious that pm_runtime_status_suspend() returns true under those circu=
-mstances.
-ah. pm_runtime_init() does that.  It's a bit ugly but maybe a commented
-extra all to pm_runtime_set_active() before registering the devm callback t=
-o turn
-the power off?
+I'm trying out my AI review prompts on a few more trees, and I ran it
+on the fuse-iomap-cache branch:
 
->=20
-> The most easiest way to fix this is to remove the devm vddio disable when
-> pm_runtime is setup to avoid any double free resources. pm_runtime will d=
-isable
-> vddio, thus there is no risk of resource leak.
+https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/log/?h=fuse-iomap-cache
 
-This is making life rather complex.  Also what happens if runtime PM is not
-configured into the kernel?
+This was the latest email lore could find, apologies if I grabbed the wrong one.
 
-I'm really not keen on using devm then ripping it out again. That just
-makes a mess of the ordering.
+Hopefully the review below is useful, please let me know if there are places it
+has gone wildly wrong.  I kept the header to make it obvious exactly which
+commit I'd run through.
 
-These devm / runtime pm interactions are rather unfortunate.
+I was really going for the fuse patches, but this ended up in my git
+rev-list output, and it looks valid to me:
 
-Jonathan
+commit 1e4e64674c788423e24610612e4981eb1dc9b28b
+Author: Darrick J. Wong <djwong@kernel.org>
 
+xfs: only call xf{array,blob}_destroy if we have a valid pointer
 
+This patch adds null pointer checks before calling xfarray_destroy and
+xfblob_destroy functions across multiple XFS scrub/repair teardown
+functions, and nulls out the pointers afterwards to prevent dangling
+pointer issues.
 
->=20
-> Hope I'm clear enough.
->=20
-> Thanks,
-> JB
->=20
-> >
-> >Second, calling devm_*() for release resources is very exceptional situa=
-tion.
-> >This usually means that something is wrong to begin with in the probe.
-> >
-> >Can you find a better way without calling devm_*() for releasing resourc=
-es?
-> >
-> >--=20
-> >With Best Regards,
-> >Andy Shevchenko
->  =20
+Cc: r772577952@gmail.com
+Cc: <stable@vger.kernel.org> # v6.12
+Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
+
+> diff --git a/fs/xfs/scrub/agheader_repair.c b/fs/xfs/scrub/agheader_repair.c
+> index a2f6a7f71d839..6e3fef36d6614 100644
+> --- a/fs/xfs/scrub/agheader_repair.c
+> +++ b/fs/xfs/scrub/agheader_repair.c
+
+[ ... ]
+
+> diff --git a/fs/xfs/scrub/dir_repair.c b/fs/xfs/scrub/dir_repair.c
+> index 7a21b688a4715..d5a55eabf6801 100644
+> --- a/fs/xfs/scrub/dir_repair.c
+> +++ b/fs/xfs/scrub/dir_repair.c
+> @@ -172,8 +172,12 @@ xrep_dir_teardown(
+>  	struct xrep_dir		*rd = sc->buf;
+>
+>  	xrep_findparent_scan_teardown(&rd->pscan);
+> -	xfblob_destroy(rd->dir_names);
+> -	xfarray_destroy(rd->dir_entries);
+> +	if (rd->dir_names)
+> +		xfblob_destroy(rd->dir_names);
+> +	rd->dir_names = NULL;
+> +	if (rd->dir_entries)
+> +		xfarray_destroy(rd->dir_entries);
+> +	rd->dir_names = NULL;
+                 ^^^^^^^^^^
+
+In xrep_dir_teardown, after destroying rd->dir_entries, the code sets
+rd->dir_names = NULL instead of rd->dir_entries = NULL. This leaves
+dir_entries as a dangling pointer after the xfarray is freed.
+
+The commit message states the patch should "be sure to null out that
+pointer afterwards", and the pattern in xrep_agi_buf_cleanup correctly
+nulls both iunlink_prev and iunlink_next pointers. This change should
+null both dir_names (line 177) and dir_entries (line 180), but line 180
+incorrectly nulls dir_names again.
+
+Shouldn't line 180 be rd->dir_entries = NULL?
+
+[ ... ]
+
+> Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
+
+The existing Fixes: tag points to commit ab97f4b1c03075, but this is not
+the first commit that introduced the bug. The bug was first introduced by
+commit f1184081ac97 ("xfs: teach scrub to check file nlinks") on
+2024-02-22, which unconditionally called xfarray_destroy without checking
+for NULL pointers. The commit ab97f4b1c03075 (2024-04-15) is one of
+several later commits that perpetuated the same bug pattern.
+
+Should the Fixes: tag reference f1184081ac97 instead?
 
 
