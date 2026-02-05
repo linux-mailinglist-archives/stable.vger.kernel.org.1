@@ -1,212 +1,162 @@
-Return-Path: <stable+bounces-214548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MF9ML/yhGkF7AMAu9opvQ
-	(envelope-from <stable+bounces-214548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:42:55 +0100
+	id MLYEAXb2hGmB7AMAu9opvQ
+	(envelope-from <stable+bounces-214549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:58:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EB1F6E99
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3AAF6F44
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 800B6301A380
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 19:42:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E8C7301A719
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 19:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9388329E43;
-	Thu,  5 Feb 2026 19:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E2D32A3D4;
+	Thu,  5 Feb 2026 19:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NDgwXnos"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nhwk3gWe"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460BC237180;
-	Thu,  5 Feb 2026 19:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43E132A3DE
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 19:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770320570; cv=none; b=VR7ydH0fhcYPXxL2XAszY/OrVNmBu2rGkqSPLLk+t0nssDdOg5Yr3VvBUcJ+jg6v0i9Lwcoe0U076Qyo/1sWxFImknXXeXE2iL9eysru8/f+ZkzDC7QzRp46XuGqekOvr20BQWo2KnwPZBitR/XE50sMpqyZrZMJDcRukqQQ3xw=
+	t=1770321521; cv=none; b=e8PeSyIgjiS20zd4fdVZPBb7JrKceeyAi/gFwWjd7iLOEJZufvJyXJYfQzh8l0ZGOSYApbJXzKgFuyxrdgjd9CHTEte1L7OqZNRkKcmdnNZAghoOWEWzbFn8ukvv4RpOH6FkEACPEgkeXSPvrioY1oZvijEjN0YpUzdRBhBfRTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770320570; c=relaxed/simple;
-	bh=yGbjG/3x17Gc8ursq9S4mbSj7b2C4VF9UohLgcoN0UI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EOg+dUwRKT24MqUuKYBXS/RH/uyHdQZPmvxAjN5sZwiVZWpZaxi0NMJReqdvfL+0WuxJLkY7NUPTFJ0IJDDKC5+AIYU2s/G9Y0e0oEEsDBzl8ZUwLsoPFTS33S7kGV6zPdqGJYARUMV93JZ8Fuox8UY+371PepMZESDdAdq6RKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NDgwXnos; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 615JBZ862007036;
-	Thu, 5 Feb 2026 11:42:43 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=LHRvTXfg8AbW1lXErrTD00I8bbUcnPJ8/ywKnH2zqZw=; b=NDgwXnosaKwf
-	duCJnkOix1Q8t3LsjJqUutfJXOKFYRmYnfqMyTgz/Hp5MaujhdDZLSA1vpw6lbXh
-	oq+n1+4h0SRGhEXH3/ntwbUQ9wOrGgEzuYk1EQHKvTcE8BdrFQQOWeeHW/x+4dcD
-	0xgmqjKkXmmOr9L6tkpBcr8vnL3KQjPULMcX/PKS18CTZ0uoqvkgyr3bpfLuNAFD
-	NByR/rhO/sngBJ0hYfQZTkpjRntodi/34gQVp1VMbN+E5RP+R3R4wsfu5H1eIeVv
-	Y9qW/Vi1PSZtGe5j3U9SpXbJi01pFSfpQhK9biA9rkvV9LB3q3c7Wxw5UhZmopq3
-	8db4/qj/pA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4c50qtgtm0-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 05 Feb 2026 11:42:43 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c0a8:1c::1b) by
- mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Thu, 5 Feb 2026 19:42:28 +0000
-From: Chris Mason <clm@meta.com>
-To: "Darrick J. Wong" <djwong@kernel.org>
-CC: <cem@kernel.org>, <r772577952@gmail.com>, <stable@vger.kernel.org>,
-        <hch@lst.de>, <linux-xfs@vger.kernel.org>
-Subject: Re: [PATCH 2/4] xfs: only call xf{array,blob}_destroy if we have a valid pointer
-Date: Thu, 5 Feb 2026 11:40:27 -0800
-Message-ID: <20260205194211.2307232-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <176897723586.207608.15038929489815852871.stgit@frogsfrogsfrogs>
-References: <176897723519.207608.4983293162799232099.stgit@frogsfrogsfrogs> <176897723586.207608.15038929489815852871.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1770321521; c=relaxed/simple;
+	bh=wjOJpS1Be0lrIXHOKRw7AA2oLGRcmSqsJg9FgPtL5Qg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I09KzVjaXXZkFiiOuxocF4s/a1UzLmUp4zYSViom+nc64Glm2hRntE2QsRVuBNCe7h5PY/9RvMS+U+P4y6wEWoytYmp+XwnWgnYah9ydUyzFO2ivX7n8NerkB9NT+n5+tniJ6+zwh3Qmq4m7WuHEia4k4lqhAY59rGzLCQY15OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nhwk3gWe; arc=none smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b71515d8adso1232337eec.1
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 11:58:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770321520; x=1770926320; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ij/zLdrWcWHh7R5tlgMoxwCAW7LC/FBBeDjIZZrZTEQ=;
+        b=Nhwk3gWeZKShuR9/8o7tbKVoWoOD3MubpbfTuc3qur04pMWQdXLSqnqON4VQ27qZei
+         uG9s41bScTP8agqCQjv/NsgEDjNleqaidRb52sH6cla+iPGGH5xHecGW+UCi0+1A1RDC
+         8j/wQBv0/ZSt4aEZWejp8zVALeaFHN2snG6aQFNMtLGHAl2PIHoO49UhSMs9jlkzHmP1
+         qbttoV/tC+NJdXcgdNgsX0SUrN9tv2EC+8iaj91Cnzc7qRT4JI3gXtNO7FMHroxLkzX6
+         kg7Ffr+OlYQ2hDbgGgXSWlGYCaugomI7RXyZ+K844M/8HyKNQgw6AWmYK76/Tc08sjI6
+         rMuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770321520; x=1770926320;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ij/zLdrWcWHh7R5tlgMoxwCAW7LC/FBBeDjIZZrZTEQ=;
+        b=kgrykbSfjyZEIWULVtGSorU48fsz02IIeilaz8RJYy4azvU4jCsGdHQEN8KZhrkeNO
+         8+iEjuA9rZGa827+qjDzKKYi/r/XXEM+vT/zeS3eRCiGQRXkc8g3bjDJHKP2y/LaPIeT
+         6Tzl1+xjZjPW75WwvBG4X7Ta4/IjeHTHgL6/2/extaC2FpwDaR3EAIuV4jJk+0k4QLHx
+         zm8HomF19a2l5q0IRttOVCY5SD8X14cQAIh5KP09/6hihRq6Bo5b69SexAal0jTWb+xF
+         c6rx6VgFtdscB4moiuwgBql6SDwUkVld8pm31evwgUr0zzicBZsTzb9+VDCwq+zm0LvT
+         4JnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUHvBUMPPbd3HXq3Cgat+je/eA8Hvft2Pw0GM54W0YBht4lmLkwwIK4O3fX1KB6KrDH8Dj8XXg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEO153m3sPSvF5xQ30PWrt9hfkOPxvLAEjm7B5WmXrFYyN7bPo
+	z/FhAoSOEbcgJfZdWcwY573WJHVqxB/Ga4SN5NYBJpKDUNVKO3y1+bkP
+X-Gm-Gg: AZuq6aLqF1BZFPCqfpdo9lVHZG7dXL7xcxNs4graypbwhedKHzLvB6tsRTUZ6dKVnmh
+	ys8jYUIzThhju7/1Af3Hx/hEsdMSEq7jyYS3W5aVnQeHPujxXmEi5wjBLqg8tPn7AykkcR4g8iG
+	ENd1THr2FRi4qASB1+hIS16RRxR65LqrcuWPfqQNvbhAMY+5H8R3jfqZpi9r0ZrpxEUTnkQyess
+	J9eY6XTscpifPhuTNo/DktrtYNjmNyjPtqEZI4r6zkXBZwbKo9Ivs0uD2WzF42lMi9eJiDFG0C3
+	viz3OBqGGn2HS5wY8OYsM+FYf0qpV0ntGEA5awhCLzYLVkyGm2gbz7r5oiIsU0dg56KGLjNAooA
+	pXHoiEMehypifQEwsUV6NhqduHVDAzbEO1FTS1axwxjkfuh2Z1gdcEHfNJpSuLXR8x6DXauEFci
+	+cWvpmesU27QLWnnX8KL7iKKNqE6Eb3yWj5OOcxg==
+X-Received: by 2002:a05:7301:198e:b0:2ac:1e68:2342 with SMTP id 5a478bee46e88-2b856a4247emr95411eec.39.1770321519939;
+        Thu, 05 Feb 2026 11:58:39 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855af6452sm287924eec.9.2026.02.05.11.58.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Feb 2026 11:58:39 -0800 (PST)
+Message-ID: <90ef9551-f188-4645-9cf5-efa49d6c3005@gmail.com>
+Date: Thu, 5 Feb 2026 11:58:37 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=FMsWBuos c=1 sm=1 tr=0 ts=6984f2b3 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
- a=dnfRgSOjAGpcwWFSCwIA:9
-X-Proofpoint-GUID: GAZ8RJT2CftIGwfIF13ZTVH2bAIgBYUB
-X-Proofpoint-ORIG-GUID: GAZ8RJT2CftIGwfIF13ZTVH2bAIgBYUB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDE0OSBTYWx0ZWRfX8vP+o/AVqulL
- +ZJpAlAoRNqjMTAtwx1h1omhHoT9uh7htBC+mE3kbV1i0LuS+e2uv/c/SdFmpKEmJE9MnACcDhE
- F9xLpP/MNld5q1qlU19TgT7TrJM0q2Q43Cr/N+8Ho7B2VUFbZCG+Ti7BOyC5nIrwBRlnTq/JR0j
- 7yctaXZBHfWYV38QVBMDFHJJjW9BFG6fGcxnfyDJZkL4t5DJAYJ7mp7mKtBMGjOWF2JSYBWzlsI
- x/lfwSfK43GZIgZca5mbJ4uipyDNh7u4Z8KLjxkTxkyJHsZjr0vRWsPdqxlV3WVXp+6ZBRMaFEl
- E8kkKmZJBkla74Fu2raBbN/oNwmzcDMjcNnTCNf3FNYUnrKSN3tvR2FW8nsGz9MnaDkDWA+GdR/
- rcT/Wxi8hLv3X5uET4w3ZtDcPkzEm32WPwSQrYQB1LqpRZCDd07hi1ws55wCZ5cG13lhyYwiqpC
- yzgxmtGdxdC3/v2h6qA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-05_04,2026-02-05_03,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/160] 5.10.249-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260205143430.733102763@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260205143430.733102763@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[meta.com,reject];
-	R_DKIM_ALLOW(-0.20)[meta.com:s=s2048-2025-q2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lst.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214549-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214548-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[clm@meta.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[meta.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:mid,meta.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 40EB1F6E99
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: 4D3AAF6F44
 X-Rspamd-Action: no action
 
-"Darrick J. Wong" <djwong@kernel.org> wrote:
-> From: Darrick J. Wong <djwong@kernel.org>
+On 2/5/26 06:44, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.249 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Only call the xfarray and xfblob destructor if we have a valid pointer,
-> and be sure to null out that pointer afterwards.  Note that this patch
-> fixes a large number of commits, most of which were merged between 6.9
-> and 6.10.
+> Responses should be made by Sat, 07 Feb 2026 14:34:03 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.249-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Hi everyone,
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-I'm trying out my AI review prompts on a few more trees, and I ran it
-on the fuse-iomap-cache branch:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/log/?h=fuse-iomap-cache
-
-This was the latest email lore could find, apologies if I grabbed the wrong one.
-
-Hopefully the review below is useful, please let me know if there are places it
-has gone wildly wrong.  I kept the header to make it obvious exactly which
-commit I'd run through.
-
-I was really going for the fuse patches, but this ended up in my git
-rev-list output, and it looks valid to me:
-
-commit 1e4e64674c788423e24610612e4981eb1dc9b28b
-Author: Darrick J. Wong <djwong@kernel.org>
-
-xfs: only call xf{array,blob}_destroy if we have a valid pointer
-
-This patch adds null pointer checks before calling xfarray_destroy and
-xfblob_destroy functions across multiple XFS scrub/repair teardown
-functions, and nulls out the pointers afterwards to prevent dangling
-pointer issues.
-
-Cc: r772577952@gmail.com
-Cc: <stable@vger.kernel.org> # v6.12
-Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
-
-> diff --git a/fs/xfs/scrub/agheader_repair.c b/fs/xfs/scrub/agheader_repair.c
-> index a2f6a7f71d839..6e3fef36d6614 100644
-> --- a/fs/xfs/scrub/agheader_repair.c
-> +++ b/fs/xfs/scrub/agheader_repair.c
-
-[ ... ]
-
-> diff --git a/fs/xfs/scrub/dir_repair.c b/fs/xfs/scrub/dir_repair.c
-> index 7a21b688a4715..d5a55eabf6801 100644
-> --- a/fs/xfs/scrub/dir_repair.c
-> +++ b/fs/xfs/scrub/dir_repair.c
-> @@ -172,8 +172,12 @@ xrep_dir_teardown(
->  	struct xrep_dir		*rd = sc->buf;
->
->  	xrep_findparent_scan_teardown(&rd->pscan);
-> -	xfblob_destroy(rd->dir_names);
-> -	xfarray_destroy(rd->dir_entries);
-> +	if (rd->dir_names)
-> +		xfblob_destroy(rd->dir_names);
-> +	rd->dir_names = NULL;
-> +	if (rd->dir_entries)
-> +		xfarray_destroy(rd->dir_entries);
-> +	rd->dir_names = NULL;
-                 ^^^^^^^^^^
-
-In xrep_dir_teardown, after destroying rd->dir_entries, the code sets
-rd->dir_names = NULL instead of rd->dir_entries = NULL. This leaves
-dir_entries as a dangling pointer after the xfarray is freed.
-
-The commit message states the patch should "be sure to null out that
-pointer afterwards", and the pattern in xrep_agi_buf_cleanup correctly
-nulls both iunlink_prev and iunlink_next pointers. This change should
-null both dir_names (line 177) and dir_entries (line 180), but line 180
-incorrectly nulls dir_names again.
-
-Shouldn't line 180 be rd->dir_entries = NULL?
-
-[ ... ]
-
-> Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
-
-The existing Fixes: tag points to commit ab97f4b1c03075, but this is not
-the first commit that introduced the bug. The bug was first introduced by
-commit f1184081ac97 ("xfs: teach scrub to check file nlinks") on
-2024-02-22, which unconditionally called xfarray_destroy without checking
-for NULL pointers. The commit ab97f4b1c03075 (2024-04-15) is one of
-several later commits that perpetuated the same bug pattern.
-
-Should the Fixes: tag reference f1184081ac97 instead?
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
