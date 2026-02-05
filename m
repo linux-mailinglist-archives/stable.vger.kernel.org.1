@@ -1,235 +1,153 @@
-Return-Path: <stable+bounces-214402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBhwHyNDhGmh2AMAu9opvQ
-	(envelope-from <stable+bounces-214402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:13:39 +0100
+	id CGazLrZDhGm/2AMAu9opvQ
+	(envelope-from <stable+bounces-214403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:16:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B59EF588
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:13:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2302BEF5D4
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8675D300009B
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 07:12:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 069053012E8C
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 07:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B88C35B644;
-	Thu,  5 Feb 2026 07:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="EXnfzp5J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B220355802;
+	Thu,  5 Feb 2026 07:15:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A745330D54;
-	Thu,  5 Feb 2026 07:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26376333752;
+	Thu,  5 Feb 2026 07:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770275532; cv=none; b=sjYL/Zi9dD+/1xIqgyCa54GaPe+Mku92ZRxpSW//Wq91ljEJGZQ2gK1QmNDFPn0EBj+IgChkCZ0mxCBi7w3C/0+jEfS+QolTjsBej9YpXUHg7HHTFbT8UQlKBt48HCasTJuXYT/3uXTbihgM0IFT6mwDWquxid/MVLqD5AXb2ao=
+	t=1770275727; cv=none; b=YaaAExK31sMddKsGyVzyuyKxHv9LJGqK+rNQqyE0pXgB+xQrt0rzlTq9mXWMYxahZ7J/LXvTRCB5DFTO3zN20rTyfgS/9ddiua8XGWq2mHGW1aKxUDYT8/u/waV/YXbv/tKOyJSCkPot4ZNPFDLQUc88XrULb/+b6RkS7W02OHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770275532; c=relaxed/simple;
-	bh=+SgpBM1wt8fzDyxb1Mb/lCh5EyM467OZfKUOULjFlag=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=pc0APpioNP6ldQ5CwdV5fbQtgt//MNDZD1vnEzYzWYN1BEITNmokF9Kym1uMY84O6d9vnTEf75IcYGtfzOshnWRL1invSvgBux6HeWRjstbaIAw+3K6wueNkaQc5I1g9jvTH4IHOy6oNiLOYpYD5oitqKvPE8DlTBYrkKIvat7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=EXnfzp5J; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6157BQ7I342018
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 4 Feb 2026 23:11:27 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6157BQ7I342018
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770275488;
-	bh=t5vl7rEljQtqYzx5YQxqo86uvVKDEblp7dz4uhZ8FXk=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=EXnfzp5JW8Ge1i3W/BT1b/L0MWeZ3ogRu/o+Cpm3CJu4zPaJxCoBxKSqdVIGAZBGR
-	 Id25c4NCHxPC6vpclCGdPP/H34M3E28A361AHfYTX97JaHNK97Wwcwyxv5ZVHFOxU1
-	 3CsKpKDvkUHNANKy5abU0ZWV8ZxK1p3GyQVHnvHy1B/KCOUOi9VwZeluTNt3MaM4bK
-	 2RAAuOSEXDa2MnEgyuppGejcjSFC1q4ihk95xaIzjHxPmgs/9z4SnNxGRyeszowkC2
-	 4I/i4VrFfemVzJeEN/UAGuc0lnlKHRCQ03A4HOfOr/XNMIoiljxx5qbvWOLItc9K38
-	 THeR8pYhYcoUg==
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1770275727; c=relaxed/simple;
+	bh=QY29ciufELzeFfuZMGuEPNUze18iJI/TvdOQEqqW+Lg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FmeoqMg9IRNW5m+6tsIyTg0D3ghZaC/f14dATsH3HFquwoa66gRvKJXEuW7ZNEje3qUzJX6Vt+Cw9WFrwktoQoPkdd4mSxQHAG7KNv30jlAK/GtGSL7CMFdxPktLcMRI0hLFYTfVvp3j7thZw1ctg5IXTehnMZbqAGx+jHEA8Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4BD78339;
+	Wed,  4 Feb 2026 23:15:19 -0800 (PST)
+Received: from [192.168.0.16] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A7B8A3F778;
+	Wed,  4 Feb 2026 23:15:22 -0800 (PST)
+Message-ID: <29b3287e-0a08-4648-9e54-32889c99b1e3@arm.com>
+Date: Thu, 5 Feb 2026 07:15:19 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
-From: Xin Li <xin@zytor.com>
-In-Reply-To: <20260205051030.1225975-1-nikunj@amd.com>
-Date: Wed, 4 Feb 2026 23:11:16 -0800
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bp@alien8.de,
-        thomas.lendacky@amd.com, tglx@kernel.org, mingo@redhat.com,
-        dave.hansen@linux.intel.com, hpa@zytor.com, seanjc@google.com,
-        pbonzini@redhat.com, x86@kernel.org, jon.grimm@amd.com,
-        stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D313F34B-8463-4D48-B09C-07322D6808B0@zytor.com>
-References: <20260205051030.1225975-1-nikunj@amd.com>
-To: Nikunj A Dadhania <nikunj@amd.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Doug Smythies <dsmythies@telus.net>
+Cc: "'Rafael J. Wysocki'" <rafael@kernel.org>,
+ 'Harshvardhan Jha' <harshvardhan.j.jha@oracle.com>,
+ 'Sasha Levin' <sashal@kernel.org>,
+ 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
+ stable@vger.kernel.org, 'Daniel Lezcano' <daniel.lezcano@linaro.org>
+References: <004e01dc90b1$4b28f9e0$e17aeda0$@telus.net>
+ <002601dc916e$6acbe650$4063b2f0$@telus.net>
+ <CAJZ5v0gcSb_6QPMfHkjSMJ6OOF+PaCZrUKOafYQ++tHE2jBB4w@mail.gmail.com>
+ <3b0720d2-9b72-48d0-998a-1fd091cec44f@arm.com>
+ <5d4b624c-f993-49aa-95ab-5f279f7f6599@oracle.com>
+ <8fd5a9d4-e555-4db1-aa02-8fe5b8a2962c@arm.com>
+ <3395ad0b-425e-40f5-844c-627cff471353@oracle.com>
+ <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com>
+ <CAJZ5v0j+jfTHog+rVO0816mofk7nSSKCt7dbwSa2QCpYSN013Q@mail.gmail.com>
+ <005401dc9638$b3e2ea40$1ba8bec0$@telus.net>
+ <m7pzdjfjcm2gr4gpru3rk26o2wn5iarihff6kz3o7n3slsvonx@k6jkyemuywgk>
+Content-Language: en-US
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <m7pzdjfjcm2gr4gpru3rk26o2wn5iarihff6kz3o7n3slsvonx@k6jkyemuywgk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026012301];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214402-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[zytor.com:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xin@zytor.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.982];
+	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zytor.com:email,zytor.com:dkim,zytor.com:mid]
-X-Rspamd-Queue-Id: E7B59EF588
+	FROM_NEQ_ENVFROM(0.00)[christian.loehle@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214403-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 2302BEF5D4
 X-Rspamd-Action: no action
 
+On 2/5/26 02:37, Sergey Senozhatsky wrote:
+> On (26/02/04 16:45), Doug Smythies wrote:
+>>>> What is "established" and "newer" for a stable kernel is quite handwavy
+>>>> IMO but even here Sergey's regression report is a clear data point...
+>>>
+>>> Which wasn't known at the time commit 85975daeaa4d went in.
+>>>
+>>>> Your report is only restoring 5.15 (and others) performance to 5.15
+>>>> upstream-ish levels which is within the expectations of running a stable
+>>>> kernel. No doubt it's frustrating either way!
+>>>
+>>> That is a consequence of the time it takes for mainline changes to
+>>> propagate to distributions (Chrome OS in this particular case) at
+>>> which point they get tested on a wider range of systems.  Until that
+>>> happens, it is not really guaranteed that the given change will stay
+>>> in.
+>>>
+>>> In this particular case, restoring commit 85975daeaa4d would cause the
+>>> same problems on the systems adversely affected by it to become
+>>> visible again and I don't think it would be fair to say "Too bad" to
+>>> the users of those systems.  IMV, it cannot be restored without a way
+>>> to at least limit the adverse effect on performance.
+>>
+>> I have been going over the old emails and the turbostat data again and again
+>> and again.
+>>
+>> I still do not understand how to breakdown Sergey's results into its
+>> component contributions. I am certain there is power limit throttling
+>> during the test, but have no idea to much or how little it contributes to the
+>> differing results.
+>>
+>> I think more work is needed to fully understand Sergey's test results from October.
+>> I struggle with the dramatic test results difference of base=84.5 and revert=59.5
+>> as being due to only the idle code changes.
+>>
+>> That is why I keep asking for a test to be done with the CPU clock frequency limited
+>> such that power limit throttling can not occur. I don't know what limit to use, but suggest
+>> 2.2 GHZ to start with. Capture turbostat data with the tests. And record the test results.
+> 
+> 
+>> @Sergey: are you willing to do the test?
+> 
+> I can run tests, not immediately, though, but within some reasonable
+> time frame.
+> 
+> (I'll need some help with instructions/etc.)
+> 
 
-
-> On Feb 4, 2026, at 9:10=E2=80=AFPM, Nikunj A Dadhania <nikunj@amd.com> =
-wrote:
->=20
-> FRED enabled SEV-ES and SNP guests fail to boot due to the following
-> issues in the early boot sequence:
->=20
-> * FRED does not have a #VC exception handler in the dispatch logic
-
-
-This should be a separate patch.
-
-
->=20
-> * For secondary CPUs, FRED is enabled before setting up the FRED MSRs, =
-and
->  console output triggers a #VC which cannot be handled
-
-Yes, this is a problem.  I ever looked into it for TDX, and had the =
-following patch:
-
-Can you please check if it works for you (#VC handler is set in the =
-bringup IDT on AMD)?
-
-
-    x86/smp: Set up exception handling before cr4_init()
-   =20
-    The current AP boot sequence initializes CR4 before setting up
-    exception handling.  With FRED enabled, however, CR4.FRED is set
-    prior to initializing the FRED configuration MSRs, introducing a
-    brief window where a triple fault could occur.  This isn't
-    considered a problem, as the early boot code is carefully designed
-    to avoid triggering exceptions.  Moreover, if an exception does
-    occur at this stage, it's preferable for the CPU to triple fault
-    rather than risk a potential exploit.
-   =20
-    However, under TDX, printk() triggers a #VE, so any logging during
-    this small window results in a triple fault.
-   =20
-    Swap the order of cr4_init() and cpu_init_exception_handling(),
-    since cr4_init() only involves reading from and writing to CR4,
-    and setting up exception handling does not depend on any specific
-    CR4 bits being set (Arguably CR4.PAE, CR4.PSE and CR4.PGE are
-    related but they are already set before start_secondary() anyway).
-   =20
-    Notably, this triple fault can still occur before FRED is enabled,
-    while the bringup IDT is in use, since it lacks a #VE handler.
-   =20
-    BTW, on 32-bit systems, loading CR3 with swapper_pg_dir is moved
-    ahead of cr4_init(), which appears to be harmless.
-   =20
-    Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index eb289abece23..24497258c16b 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -231,13 +231,6 @@ static void ap_calibrate_delay(void)
-  */
- static void notrace __noendbr start_secondary(void *unused)
- {
--	/*
--	 * Don't put *anything* except direct CPU state initialization
--	 * before cpu_init(), SMP booting is too fragile that we want to
--	 * limit the things done here to the most necessary things.
--	 */
--	cr4_init();
--
- 	/*
- 	 * 32-bit specific. 64-bit reaches this code with the correct =
-page
- 	 * table established. Yet another historical divergence.
-@@ -248,8 +241,37 @@ static void notrace __noendbr start_secondary(void =
-*unused)
- 		__flush_tlb_all();
- 	}
-=20
-+	/*
-+	 * AP startup assembly code has setup the following before =
-calling
-+	 * start_secondary() on 64-bit:
-+	 *
-+	 * 1) CS set to __KERNEL_CS.
-+	 * 2) CR3 switched to the init_top_pgt.
-+	 * 3) CR4.PAE, CR4.PSE and CR4.PGE are set.
-+	 * 4) GDT set to per-CPU gdt_page.
-+	 * 5) ALL data segments set to the NULL descriptor.
-+	 * 6) MSR_GS_BASE set to per-CPU offset.
-+	 * 7) IDT set to bringup IDT.
-+	 * 8) CR0 set to CR0_STATE.
-+	 *
-+	 * So it's ready to setup exception handling.
-+	 */
- 	cpu_init_exception_handling(false);
-=20
-+	/*
-+	 * Ensure bits set in cr4_pinned_bits are set in CR4.
-+	 *
-+	 * cr4_pinned_bits is a subset of cr4_pinned_mask, which =
-includes
-+	 * the following bits:
-+	 *         X86_CR4_SMEP
-+	 *         X86_CR4_SMAP
-+	 *         X86_CR4_UMIP
-+	 *         X86_CR4_FSGSBASE
-+	 *         X86_CR4_CET
-+	 *         X86_CR4_FRED
-+	 */
-+	cr4_init();
-+
- 	/*
- 	 * Load the microcode before reaching the AP alive =
-synchronization
- 	 * point below so it is not part of the full per CPU serialized
-@@ -275,6 +297,11 @@ static void notrace __noendbr start_secondary(void =
-*unused)
- 	 */
- 	cpuhp_ap_sync_alive();
-=20
-+	/*
-+	 * Don't put *anything* except direct CPU state initialization
-+	 * before cpu_init(), SMP booting is too fragile that we want to
-+	 * limit the things done here to the most necessary things.
-+	 */
- 	cpu_init();
- 	fpu__init_cpu();
- 	rcutree_report_cpu_starting(raw_smp_processor_id());
-
+@Doug given this is on Chromebooks base=84.5 and revert=59.5 doesn't necessarily mean
+29.6% decrease in system performance in a traditional throughput sense.
+The "benchmark" might me measuring dropped frames, user input latency or what have you.
+Nonetheless @Sergey do feel free to expand.
 
