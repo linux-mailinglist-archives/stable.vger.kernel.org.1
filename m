@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-214421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPluOKZUhGkx2gMAu9opvQ
-	(envelope-from <stable+bounces-214421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:28:22 +0100
+	id kDJ2DQBVhGkx2gMAu9opvQ
+	(envelope-from <stable+bounces-214422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:29:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472F1EFE32
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE0DEFE45
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F59D303A6E9
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 08:26:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61284300EF9B
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 08:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA4936214C;
-	Thu,  5 Feb 2026 08:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AAC36214F;
+	Thu,  5 Feb 2026 08:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="ZFoaNkDD"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Gp+MXe+O"
 X-Original-To: stable@vger.kernel.org
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10904362143;
-	Thu,  5 Feb 2026 08:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990C433F37D;
+	Thu,  5 Feb 2026 08:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770279997; cv=none; b=EqPC4aSYKvnl62qKtQ3NF6EJNpvHdJ7hdmvMBBMjWSwaLI5gn4cbFkjb4wXTP6b4dxeaPBUaDNhMWpNbp0nQAIaPqfpPxbdzhOJWnz0tpsex4J9hpK/GY7d4Lw1cJiC/JhtSvqBwK/+kjZRPYzqr8NXMivl1OMzoTjhA8ZTTzEA=
+	t=1770280100; cv=none; b=iIgVQqHdBaongnM2h1AJtwtCF9qrIsZF2U0eOOHVBC6K4MIsLag3c2XxOkHUM1rj3KqzEYXrG/ClSICvxo4E29LzLbTrA096qvfAUeQGwB39I56lrz9dtYqxdCLDfB+EeYRFuVYBRMf0i+mqHxqkWOe/3u+R4wyMK4+bi2YaDbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770279997; c=relaxed/simple;
-	bh=wmJ7fByinoHPUYfvpDGPNK6BxbIbXFCCcc7rZxoW1z0=;
+	s=arc-20240116; t=1770280100; c=relaxed/simple;
+	bh=A3awokezcYpQ/7ZWlgrcbLyfe5jVoyACpijvArVvveg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EyVTY8Xr0bakXDkpAKbuw5+TjcIs8086WXNBAjErKJfDGKd8vCjgL5Xz2L3+iLRDursByURKW+RTk3ICq9K26q03a/Fq0l2FrK+gdhdQmyMZzJ0bVRlp7V5xQUnjCrbnpV9vLdMtSAVHR4l44gpf7V5yVY6aM507VPhjiu78+Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=ZFoaNkDD; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=l3F3crbxhke8SjqYqKIPl24rGUmtDptJV8VUbAH/8o4DDXXYKfolrR3eDe+8RK7eVophHYTpdCXMsPOCW9jaYBgM8JykxmDhhZeviEEbqv4gkfRlNiDnfA/x4GtGfzqwgA5RhiPWbSOswbY3DRzw0XFlYwWAl4zsmu5/RQK96gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Gp+MXe+O; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 9623B1FA65;
-	Thu,  5 Feb 2026 09:26:34 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id 208861FA94;
+	Thu,  5 Feb 2026 09:28:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1770279995;
-	bh=ytEPcRZ+vpftJH6ei2YD+mfiF96bUkJzJYMxRgCH3B0=; h=From:To:Subject;
-	b=ZFoaNkDD9yDpp+0iG5XO1uoc4OB3GooZe12USvCG17SyWhnDixmd3JHV0i9VC4ZJO
-	 dgsKSy+jrk/A0DVIYV1uCglGQIy2yRP5cfVRY40xOSpHa4oBeTN9QIlT/PoHr3wQXl
-	 GM3it+W/hwY1fR8O5hMpdau8JbP8UGA/Y/6JBTqc4ZzyrmTOpSaYeYljaiSetKXmjm
-	 8yImwB925EL77xw9qBMaE32aGUn1/MCXLnNOrMh+WLdUQ+3494hwmZvXBnNsEcMp5C
-	 rDr/K5Mkvcdv5fcDmji0d7v3qdixJK/m37CouxFc2sXNV0QBUbnX0wng63p40Xjc1W
-	 XO2Q60DjnK0zA==
-Date: Thu, 5 Feb 2026 09:26:30 +0100
+	s=default; t=1770280098;
+	bh=6xeO6HF+8wKyfdj5hCH5AaPvV0doI5eKSqCsZeyclX8=; h=From:To:Subject;
+	b=Gp+MXe+OeXr/iTBnZRm69fTJnmvdmgQ/LD1tNEfsML00HQEKfXEQnfspIl7usP0DL
+	 DWt5NH6jR+IajAxN6ShVIU+RP2wcIBL1kX48Pc4reTht1vYQEBJ4ksSVowa8dcLIGY
+	 XXd+94hSTgezNuZK016E/qc08KQGegdSG1cTNhaiJGwxJe3/6e1rYAgu67qWVeVqdd
+	 nQQl2mY91cNVYAdzeZLATFww0S7TOEVWDiZ11Z/nTU1Xjskvp1PeRgbipJMuy6QOmX
+	 PfbAIlZtrTKd/zvXXUW5l+4m8TL20vqGhT/Ss7IcEc9Uvp9zhosqJFqsO3RyLGwDLI
+	 qKJbwOZCoOcNA==
+Date: Thu, 5 Feb 2026 09:28:14 +0100
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -57,9 +57,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
 	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
 	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 00/87] 6.12.69-rc1 review
-Message-ID: <20260205082630.GA16166@francesco-nb>
-References: <20260204143846.906385641@linuxfoundation.org>
+Subject: Re: [PATCH 6.6 00/72] 6.6.123-rc1 review
+Message-ID: <20260205082814.GA16405@francesco-nb>
+References: <20260204143845.603454952@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260204143846.906385641@linuxfoundation.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214421-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214422-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -99,20 +99,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[toradex.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dolcini.it:dkim]
-X-Rspamd-Queue-Id: 472F1EFE32
+X-Rspamd-Queue-Id: 8AE0DEFE45
 X-Rspamd-Action: no action
 
-On Wed, Feb 04, 2026 at 03:39:58PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.69 release.
-> There are 87 patches in this series, all will be posted as a response
+On Wed, Feb 04, 2026 at 03:40:03PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.123 release.
+> There are 72 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Compiled and tested on
 
- - Verdin AM62
- - Verdin iMX8MP
- - Toradex SMARC iMX8MP
+ - Verdin iMX8MM
+ - Colibri iMX6
+ - Apalis iMX6
+ - Colibri iMX6ULL
+ - Colibri iMX7
 
 Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
