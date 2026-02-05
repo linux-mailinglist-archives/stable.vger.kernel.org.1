@@ -1,190 +1,172 @@
-Return-Path: <stable+bounces-214543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAQDJpvphGkj6gMAu9opvQ
-	(envelope-from <stable+bounces-214543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:03:55 +0100
+	id wMfWCuHrhGmw6gMAu9opvQ
+	(envelope-from <stable+bounces-214544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:13:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED24F6AC9
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:03:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1947F6BF0
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 20:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B57F83007497
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 19:03:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CA2463022916
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 19:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C61330DED5;
-	Thu,  5 Feb 2026 19:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2327C313E2F;
+	Thu,  5 Feb 2026 19:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vw6I11wU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AI/GyRR4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988BA30DD2A
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 19:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9FB279DB3;
+	Thu,  5 Feb 2026 19:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770318229; cv=none; b=iw/S2wrVK7Y9FuaiJQLUjSWH/XyQcITzqiWoqs6MFwuUMnN/8ZD/lgM9z0NN/kM1p/EGL5WD0gkC9LEBFXW9s4ZiU8XNvFbN+Y+ViD+jB62g0pB/TFqiMTP42dqPiqS6HXiGqRyeGp27GYLD2ncDsd9lUlr8jQbRNC12rcayRzk=
+	t=1770318809; cv=none; b=LW+URbp+M5Ij8ACLAOv6ho6vq4SAS7FfXPe8Y0eaGOxoXFG6wZnU/mWxjv5onQXR4FM4ZkrbEVMDzcQcHc2r0t/J+ORXNXYLwAIVpYM92dWFWW6qYagak9DRoR3UH8zWHvuuwKiawIEmy64HL3ChWM1V5VXaAGhLeT45rcZR4G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770318229; c=relaxed/simple;
-	bh=/wD2ni17a+X09DLamcGiBxtnqEVcXchS+9wo3LaM3xU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QDmvXcQeYD8kT5XiYwv6jHY8wBnNo+d23Y4xGtRKxHwFNX63TXgOWtUVlEcQvI13ElpnJoSKJdiozhiy1+L+rQqJnnm9E+UViXNtovdGc4p5z81wGPKczHB/v3iheXrx8s43/uC9VZ4skaa0PtLtW0xT0A9ipM3REtlPh8nIglg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vw6I11wU; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48069a48629so12224085e9.0
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 11:03:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770318227; x=1770923027; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Laz+RPoNLyJoC2bBJYm8bZttzdcZ3Pgrc3YN6EdV/1U=;
-        b=Vw6I11wUJ3Eeqrrfy2t1h+ZHAHQv8cWJ8syejGn4GrwNIaLYe6yjLPopKQUw7hMvN6
-         6yei9QaaZhXp3TMBn0fx4v/9rGRdjw3r/ivhs7moo0BrxAv1BJ1R2YN71zVEIJJWJxKi
-         ceNG1kR4zdVX/yCLnQKzc9wqOdZgvALsjd3j7rqkMD+tBdH9yToQevxwwn399wtjTRHA
-         kjnIuzubD4jL/+QIcnVb1+pKKA8iu/SSackuOzJmZJFpHcE0BE0Yn7MJJmY7rCaodqis
-         dqLoFrM+sG34k7lrYqKb+lMwLsZAGBVEX1T6IhQi2pwrCgInP/keTwieiwFXZKfpSvU+
-         FO3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770318227; x=1770923027;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Laz+RPoNLyJoC2bBJYm8bZttzdcZ3Pgrc3YN6EdV/1U=;
-        b=InXb5EolBdWuwP5d/bZYFejao2+/rBH19i00+j3shMmXOMx/9YCZc4iKF9+014tT+Q
-         UMn3Pt0JpA0qzdNVEXG89IOrIT+KP8fW57Dg+UX9aREXa8JQzvVCyj19Q2+5Yok34zxG
-         852xcYNTe9nbEMq/f8YMaQenw9oMcXXhmcYERp607W6IKEtfK4PF/Wz5ySwLsR9Fi9q6
-         WY7gV76ABaKDz1ZEmbKbEi4azZwRASaaqPejrOitGoUCV9F+p4q5s/nB4nAy8nnSFyEw
-         CkeZWVZjzE5Hnj1e3S4eVghRutGUdr7VzMK4K8noB8Wn+Gp5y3bxFG0ylxi5AUS3bLVQ
-         PJ0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ1tQXoOpZ0BDPIscwfL9ZK/PVf3WWCYykjW0+eVBsNkf4cg6rdj00LHAbVF4ajAShL2OcQjU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0o7YitNt6YCkcUAYr/UERMdp2/Q5frbLQnxpwpSvXPnb4yJti
-	g73Ls7Um81jDJc97Ef/MSSHCwD1HEAfR5N51I3mSdF80f2xtym79aFlm
-X-Gm-Gg: AZuq6aLWAKH9AVmepXNxkZXtnAllyMNck7RuC+o21vZZhd2kq0WTJ070cRmyQdOpyDd
-	q8foXPvIm6c882I7HrjrxxazahEFSdYC8UKKFJN7GGhqoyjESmCW6Jv3lYE218KC6OLlqaIWQuu
-	GEO2DaePgEEm1SSJeemGRK25X7s4g+5eWZN3Qeh6/ZkbGsZLiuRey15YCXzH3qneDhvDAZtw/xm
-	c191PBKdbZOXsQAERk0xPopxLMn3XE8hyw630jsrnqwRDKI0Ssi1C47XZk/R4pAXp2hBS8sL8FL
-	FgcE4wYCa6K6BXRx45Ai+71IJXq1zaNCy1M4vjfPjJKF0Ks3k8ckz4pLkF8ktYBYsuu1/Jo6yT0
-	L6jD1wnpgr1qKRUq9rne+VV7LeFnSp1obCrBR4oFlgdaS5lK5YrsfFg1QAEfiBycxBm8YkWOFe2
-	jqro5Fu17XXbE6EN2i5V/7J0ZVomb90j1syO2vLip5HZVV1km0024+x6H9FLHiAd/MnWw=
-X-Received: by 2002:a05:600c:8489:b0:477:c478:46d7 with SMTP id 5b1f17b1804b1-48320216cb8mr7006905e9.22.1770318226602;
-        Thu, 05 Feb 2026 11:03:46 -0800 (PST)
-Received: from 0.1.2.1.2.0.a.2.dynamic.cust.swisscom.net ([2a02:1210:8642:2b00:82ee:73ff:feb8:99e3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436296c0f2esm235375f8f.19.2026.02.05.11.03.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 11:03:46 -0800 (PST)
-Message-ID: <ddd1f32c073f155f61104ad92d4fe7de327ca11d.camel@gmail.com>
-Subject: Re: [PATCH net 2/2] net: cpsw_new: Fix potential unregister of
- netdev that has not been registered yet
-From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-To: Kevin Hao <haokexin@gmail.com>, netdev@vger.kernel.org
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros
- <rogerq@kernel.org>,  Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet	 <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni	 <pabeni@redhat.com>, Vladimir
- Oltean <vladimir.oltean@nxp.com>, Saeed Mahameed	 <saeedm@nvidia.com>,
- Daniel Zahka <daniel.zahka@gmail.com>, Lorenzo Bianconi	
- <lorenzo@kernel.org>, Nicolas Dichtel <nicolas.dichtel@6wind.com>, Murali
- Karicheri <m-karicheri2@ti.com>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, Grygorii Strashko	
- <grygorii.strashko@ti.com>, linux-omap@vger.kernel.org,
- stable@vger.kernel.org
-Date: Thu, 05 Feb 2026 20:03:45 +0100
-In-Reply-To: <20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com>
-References: <20260205-cpsw-error-path-v1-0-6e58bae6b299@gmail.com>
-	 <20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+	s=arc-20240116; t=1770318809; c=relaxed/simple;
+	bh=tbP9h1k5B3yJWSPqrDUODMYf9Jvid9ANIt8ghdoN3/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uOUcnLE57kZ7nLfM27vi3zayQGYAjG19rn+8EN3VSnt5bcoOO9ucZf5MAt2tuIhlLIinj2oDYu7lC5Aju6rpnSJDPwU5ltC69e8YLnWmBYB3ojNyGMM2UAUWiklIh7f44/C+iiT4G6Ryo2cp570X2wUSUTq8w1Rk1oxU7APTP7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AI/GyRR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E43C4CEF7;
+	Thu,  5 Feb 2026 19:13:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770318809;
+	bh=tbP9h1k5B3yJWSPqrDUODMYf9Jvid9ANIt8ghdoN3/E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AI/GyRR4yvA9o/8v/j3DAv1n0c0wPVbf55qafkDTFU5w3mONpCZRxgiUFwTMdj33B
+	 dOXHBJz+KmjxOnBPPVja8barysKJoc2t106sUK/chAc6kY+ieKa4pMnfQq9rihtmpa
+	 YCVLEoxSr0Sl1hIO5rFZ77RV401EPxvAl+dwDuHTFEcx/fGKd4FxIo9JG9mUn5+QUE
+	 yS25l4NNgd1XjMWbTUab23E0kZ18/KcWg2tfS4t97yayAdSWe5PyteWkAcvtjeEV5M
+	 V+tEDa6XPMBhicd1k+xeCSxdLq+k5EBOBcXQGyk5Cs3BlQ13b84uR+f7h+MsviPDay
+	 Du6MM8YpKTzBA==
+Date: Thu, 5 Feb 2026 19:13:21 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, Remi Buisson <remi.buisson@tdk.com>,
+ David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] iio: imu: inv_icm45600: fix INT1 drive bit inverted
+Message-ID: <20260205191321.7e5f7b49@jic23-huawei>
+In-Reply-To: <20260205-inv-icm45600-fix-int1-drive-bit-v3-1-9c60c354dadb@tdk.com>
+References: <20260205-inv-icm45600-fix-int1-drive-bit-v3-1-9c60c354dadb@tdk.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214543-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[ti.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,nxp.com,nvidia.com,gmail.com,6wind.com,linaro.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-214544-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexandersverdlin@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2ED24F6AC9
+	TAGGED_RCPT(0.00)[stable,jean-baptiste.maneyrol.tdk.com];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tdk.com:email]
+X-Rspamd-Queue-Id: D1947F6BF0
 X-Rspamd-Action: no action
 
-On Thu, 2026-02-05 at 10:47 +0800, Kevin Hao wrote:
-> If an error occurs during register_netdev() for the first MAC in
-> cpsw_register_ports(), even though cpsw->slaves[0].ndev is set to NULL,
-> cpsw->slaves[1].ndev would remain unchanged. This could later cause
-> cpsw_unregister_ports() to attempt unregistering the second MAC.
-> To address this, add a check for ndev->reg_state before calling
-> unregister_netdev(). With this change, setting cpsw->slaves[i].ndev
-> to NULL becomes unnecessary and can be removed accordingly.
->=20
-> Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based d=
-river part 1 - dual-emac")
-> Signed-off-by: Kevin Hao <haokexin@gmail.com>
+On Thu, 05 Feb 2026 17:59:14 +0100
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> Drive bit must be set for open-drain mode and be cleared for push-pull
+> mode.
+> 
+> Referring to datasheet DS-000576_ICM-45605.pdf section 17.23
+> INT1_CONFIG2.
+> 
+> Fixes: 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in iio devices")
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
 > Cc: stable@vger.kernel.org
-> ---
-> =C2=A0drivers/net/ethernet/ti/cpsw_new.c | 3 +--
-> =C2=A01 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti=
-/cpsw_new.c
-> index b9fc31eb06134dae33427eaba06341c39eb4b41c..7f42f58a4b031fab4c93680c1=
-53383e8eeb8f7f8 100644
-> --- a/drivers/net/ethernet/ti/cpsw_new.c
-> +++ b/drivers/net/ethernet/ti/cpsw_new.c
-> @@ -1472,7 +1472,7 @@ static void cpsw_unregister_ports(struct cpsw_commo=
-n *cpsw)
-> =C2=A0
-> =C2=A0	for (i =3D 0; i < cpsw->data.slaves; i++) {
-> =C2=A0		ndev =3D cpsw->slaves[i].ndev;
-> -		if (!ndev)
-> +		if (!ndev || ndev->reg_state !=3D NETREG_REGISTERED)
-> =C2=A0			continue;
-> =C2=A0
-> =C2=A0		priv =3D netdev_priv(ndev);
-> @@ -1494,7 +1494,6 @@ static int cpsw_register_ports(struct cpsw_common *=
-cpsw)
-> =C2=A0		if (ret) {
-> =C2=A0			dev_err(cpsw->dev,
-> =C2=A0				"cpsw: err registering net device%d\n", i);
-> -			cpsw->slaves[i].ndev =3D NULL;
-> =C2=A0			break;
-> =C2=A0		}
-> =C2=A0	}
+Applied to the fixes-togreg branch of iio.git. Note that has a
+random base at the moment, so I'll wait for release or rc1 and then
+rebase on that before pushing out.
 
---=20
-Alexander Sverdlin.
+Thanks,
+
+Jonathan
+
+> ---
+> Changes in v3:
+> - Add precisions in datasheet reference
+> - Add missing reviewed-by tag
+> - Link to v2: https://lore.kernel.org/r/20260205-inv-icm45600-fix-int1-drive-bit-v2-1-5e72608ea154@tdk.com
+> 
+> Changes in v2:
+> - Add datasheet precision where to find the bits
+> - Link to v1: https://lore.kernel.org/r/20260205-inv-icm45600-fix-int1-drive-bit-v1-1-72a78cd07150@tdk.com
+> ---
+>  drivers/iio/imu/inv_icm45600/inv_icm45600.h      | 2 +-
+>  drivers/iio/imu/inv_icm45600/inv_icm45600_core.c | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600.h b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> index c5b5446f6c3b43150512bcc4357cee385080b634..1c796d4b2a4038203f734f80d7bf7bad138c3497 100644
+> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> @@ -205,7 +205,7 @@ struct inv_icm45600_sensor_state {
+>  #define INV_ICM45600_SPI_SLEW_RATE_38NS			0
+>  
+>  #define INV_ICM45600_REG_INT1_CONFIG2			0x0018
+> -#define INV_ICM45600_INT1_CONFIG2_PUSH_PULL		BIT(2)
+> +#define INV_ICM45600_INT1_CONFIG2_OPEN_DRAIN		BIT(2)
+>  #define INV_ICM45600_INT1_CONFIG2_LATCHED		BIT(1)
+>  #define INV_ICM45600_INT1_CONFIG2_ACTIVE_HIGH		BIT(0)
+>  #define INV_ICM45600_INT1_CONFIG2_ACTIVE_LOW		0x00
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> index ab1cb7b9dba435a3280e50ab77cd16e903c7816c..b028044d609a41f6d4b747383323130ded0d2e79 100644
+> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> @@ -637,8 +637,8 @@ static int inv_icm45600_irq_init(struct inv_icm45600_state *st, int irq,
+>  		break;
+>  	}
+>  
+> -	if (!open_drain)
+> -		val |= INV_ICM45600_INT1_CONFIG2_PUSH_PULL;
+> +	if (open_drain)
+> +		val |= INV_ICM45600_INT1_CONFIG2_OPEN_DRAIN;
+>  
+>  	ret = regmap_write(st->map, INV_ICM45600_REG_INT1_CONFIG2, val);
+>  	if (ret)
+> 
+> ---
+> base-commit: d820183f371d9aa8517a1cd21fe6edacf0f94b7f
+> change-id: 20260205-inv-icm45600-fix-int1-drive-bit-7d12ea3e2cd2
+> 
+> Best regards,
+
 
