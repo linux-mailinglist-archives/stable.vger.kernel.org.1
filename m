@@ -1,65 +1,90 @@
-Return-Path: <stable+bounces-214527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJ+kD+3RhGk45QMAu9opvQ
-	(envelope-from <stable+bounces-214527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:22:53 +0100
+	id MAY/AxbShGk45QMAu9opvQ
+	(envelope-from <stable+bounces-214528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:23:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95168F5DB4
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:22:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75840F5DC4
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:23:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C4283010694
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:21:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 62238301C959
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F91030C61E;
-	Thu,  5 Feb 2026 17:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336BE43D4E8;
+	Thu,  5 Feb 2026 17:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KZW++YAA"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AB42FD695;
-	Thu,  5 Feb 2026 17:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF97D43CEE9
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 17:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770312094; cv=none; b=IIOUOWJt6V5YRz6UOB2yX6EUqK9K1vu246rlGluyzCPZ6UDgla5ooWPmUedl0HFLac/bZ0mrXfXda1hKsKsDAIIbsikuZfYiKSlvLs0Fuj19k5KqsyudGwLV00tZHc68S7npWdwNrBFpTMXv37jnB3sQpvqFzbAXDSh16li4WHk=
+	t=1770312211; cv=none; b=GLeEiOe8ytKLVsBvQYijuU+8yoI6GVZ/MiA5Mj5RXZ4kCx3fIf1ebdVmT+ONqbfB5wWLl6SEjWWQpHNA3oqxSNvpT2gfokta6vz79oPttmhSBvZnPbxyx52lNAZlugi7CSNdcV1ZpiEt/eppxbYmhcgg38bERhOoSOv1dzvhhmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770312094; c=relaxed/simple;
-	bh=uTsec6yyiGGMFNvFYNW0gTc6U50ogspJ8Sofd+VmZ+o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELThE+1H+V/d1X8bdfA9ZQEzZOX3p19yzPcD3Hasb0mkMvki6wx/HzQkCbLNmQ7fRSKQNwPlpadP6grDC+AGGTjqq9O1MqKWVR3DxTxLBC5CYB36YEflQ5QKg7iIoEXHNJbx+V3UhXanSYVIFAonHsSEKdLhlPjJfRigldIKxso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.1 000/276] 6.1.162-rc2 review
-Date: Thu,  5 Feb 2026 17:21:25 +0000
-Message-ID: <20260205172127.15781-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260205143450.492803005@linuxfoundation.org>
-References: <20260205143450.492803005@linuxfoundation.org>
+	s=arc-20240116; t=1770312211; c=relaxed/simple;
+	bh=IIn3uaeCxcPp/5+0kpXP9/e64YESCdwAQ/3PXIdDHVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HviSAwhZKW7bZc5dAZrBerv1q4DyZwaysBJp1sYPSLGTmYCFUWol3ob9fF/bsAgXGrwFpoZpFLQ96VJTKoIE7tlqPomt8wtY0eHfJW+cYgGWGo9NK7oPwIDCz0sFGwAIHERX4OukOk/BEGxlBl9diYUAHBUUZsGFr4zf4L4NhVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KZW++YAA; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82318702afbso1022375b3a.1
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 09:23:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770312210; x=1770917010; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+yuBsGZrwpORrmTJvhOPX4f7OMrH7yvsvWogFITeQFU=;
+        b=KZW++YAAXx6E539ie9dkvNUAl3uHnAxxJNsEpUkKn2hxl8hBGdGxnEel7lwl2cTk6J
+         oBlC/zfpKHRVll7cOr4RGDCF1lRfI92zfSt6Ytyx53qutste+NIDltqzbDPTcNRRDTeR
+         OdNfRIHrvwocg9qzjhgiRsBaj/S1l96Yhpeu6s8m4P3+IiCQh+R2fLwNb0ivdm2metS/
+         IPGP8OBiboGZHTtvaPUq+BzXf0UrHKMa+/P0u2KzGaGyMpqgSIM2osmsf2Ui7tMcQOsK
+         jwS2fbCmPZ7qkQjJM7i/aDaY8XTOMI6m2UREIfcSYJjr/ngLv62z6Qva9VMRK087qgS1
+         Gbow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770312210; x=1770917010;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+yuBsGZrwpORrmTJvhOPX4f7OMrH7yvsvWogFITeQFU=;
+        b=O75oRWJtfmQJfi+5r6O6ChLAWKNC5VtHAQwmuB1+eMtgUAdef/jB+XBl6cKjEMJt/I
+         f6Qd5DBHcha39xyaCxcl4IYGTnE/8ChtjWf6uRW490XM5ohikDiVw4QSlrgtKR4hFwhe
+         vPVyxQyzPUjC7qi7zKNA18gYgis0DuGMtNf+N9crO3WBv73cYzjIX3GNEJKgWl5KhKKe
+         PeNH4mbPtrDruWurUBnU16JqmjSXq0Mrz+fjVzJcEJstUFJhoWw43DU9htC8TYdfpIms
+         1aEjn7tCqrqqmV28KTB/KhSbSVW7lkwGs44kKWgFYP+kkS+LZ206D1BI4ZRPZvgOR5el
+         qcjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQjGLo4iEKl0ACBn3LktTVG8aIQbRQgOglIun0/gya4BNYVM2YTa6E/eTxEQxAGJ81UUEyYcU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSySpR+nTH+UbzD3Vrh4xEkUsAm4hwFr4nkLmYklGTiVheiZhE
+	Es+J4bwBPKOafpfxnUcqX/saJO/jMSPJdF9niYj+jtUlKd4lFz3/Wtvm
+X-Gm-Gg: AZuq6aLeXvtuCZmATZUVV2fs2sy3LafairdnMcsXlJQEHp23h6Jy5nqWMk0nH+/qtZC
+	RyQ9L53o1avnYmiwC5ieDGLxVsFnc8gIouMsusYSQptYorHf+xvP2SKtKAKI0ubEglXpWL+hT2k
+	eoJSIle/omBV4r7uJSBo+zu6K2m1wU6Jpnt23j/ecuZn7SANiEDpTByHRSH5/xIAatdhJJlhwfI
+	ck53VxFBPBeHKNXjVutLEy+w1bC8fDXZUVIjXGlcC2YvVMJ30yAfC6tcYwRMi0/O77Tv3WPtJjk
+	VYPQB0++qdXNNCaZGRAUL6jgzq7bFwA8NMglkrkX5RMdy71DrJzSJg4Ql7woH/yjOXzn1R0PEGY
+	0NQhJG/n/8OXVwavHFwwHzfwCL6k6ByHnlrPJcvLGHocTS+tS6jRwvZFDiDhN+B+FsZgn54Hclk
+	czXEgt+rDUaKO4U1Jrs+aqvA==
+X-Received: by 2002:a05:6a21:a8d:b0:38e:9cc5:217e with SMTP id adf61e73a8af0-393ad005985mr117777637.32.1770312210076;
+        Thu, 05 Feb 2026 09:23:30 -0800 (PST)
+Received: from mint.. ([106.205.245.146])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6dcb5e5f98sm29117a12.17.2026.02.05.09.23.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 09:23:29 -0800 (PST)
+From: Dhyan K Prajapati <dhyan19022009@gmail.com>
+X-Google-Original-From: Dhyan K Prajapati <dhyaan19022009@gmail.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	dhyaan19022009-hue <dhyaan19022009@gmail.com>
+Subject: [PATCH v3 wireless] mac80211: fix NULL pointer dereference in monitor mode
+Date: Thu,  5 Feb 2026 22:53:12 +0530
+Message-ID: <20260205172313.16652-1-dhyaan19022009@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,43 +93,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214527-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214528-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[librecast.net];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	FROM_NEQ_ENVFROM(0.00)[dhyan19022009@gmail.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,librecast.net:mid,librecast.net:email]
-X-Rspamd-Queue-Id: 95168F5DB4
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 75840F5DC4
 X-Rspamd-Action: no action
 
-# Librecast Test Results
+From: dhyaan19022009-hue <dhyaan19022009@gmail.com>
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+Signed-off-by: dhyaan19022009-hue <dhyaan19022009@gmail.com>
+---
+ net/mac80211/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-CPU/kernel: Linux auntie 6.1.162-rc2-00277-gdad6f0d7f8e3 #1 SMP PREEMPT_DYNAMIC Thu Feb  5 17:19:33 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index b05e313c7..190222c26 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -416,6 +416,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 	case NL80211_IFTYPE_MONITOR:
+ 		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+ 			return;
++		if (!link->conf->bss)
++			return;
+ 		break;
+ 	default:
+ 		break;
+-- 
+2.43.0
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
