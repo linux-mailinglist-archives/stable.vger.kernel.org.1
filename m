@@ -1,141 +1,169 @@
-Return-Path: <stable+bounces-214536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KETrDIzXhGlo5gMAu9opvQ
-	(envelope-from <stable+bounces-214536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:46:52 +0100
+	id iMBFCOXXhGlo5gMAu9opvQ
+	(envelope-from <stable+bounces-214537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:48:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6F5F6244
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:46:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C14DF62AD
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BB19130069AB
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:46:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D92983042D52
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C10C3002D1;
-	Thu,  5 Feb 2026 17:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E14C30274B;
+	Thu,  5 Feb 2026 17:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tviH4W/X"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeMkSvW9"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3792FD694;
-	Thu,  5 Feb 2026 17:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84D63009F2
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 17:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770313599; cv=none; b=AjNELhYkQD6aB15Q02eUgaeLyOGsby6Ol65oTquMrQpPO28+ETs7g6rNQFp9MOiy4TAU5wE5FogGfv7F2Q1uG5gZLtxEXb7Tef3FqNdZ8el0B59lL0UgKZjB62a0Lkwt4n1038tGQFL1lTQtflnwTC9r7bMQomSsFUNnv04u1WI=
+	t=1770313623; cv=none; b=mFqJQFQopROAhacD6nhTUYDYV2lS4046GeuGIWnh/ATfHfDHKLt1klnF/cp0NOgNUXNQqtzCcMuYd9S/oTUVy7LCswiTp2Tlrv+84iCjpSS/ZcDCu8UfuuxBe267Z2cDG/XC2ckjk6Hc1pH/qXRUz6m45kff0BoWrUDCxySqSjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770313599; c=relaxed/simple;
-	bh=7aSaaOD1wAyXzpiKz5g41lBowXvkYDhSHVoGvS6fwi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HimwUBGv8vCoFc3jMBcAKK8mCdGApxcOAbROgTcC5XIGG0z3GwCfad6HptlQLkkpBqnFEG9vMp9xinq9VZTiz/K8V/G8LX/e4epKPKuTcnTAKcCm2VM52fX2tvBmSzKFCvfE9iuffdP7lFJtPjRWGEQiwWTUUP9aHTAXBN4zS9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tviH4W/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC66C4CEF7;
-	Thu,  5 Feb 2026 17:46:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770313598;
-	bh=7aSaaOD1wAyXzpiKz5g41lBowXvkYDhSHVoGvS6fwi8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tviH4W/XnR2jjICYwA1lADtCmaHEIMH67SSdc84JAJuewl5zJcDBmoONOAIMQjlSF
-	 v/M/moWb69dmJE2tFaIs2tx4NVOlRAeqyLE+BQp0glLFUrEHU6Ah44/YVlO9lW8eOC
-	 20VTHoxdGqu5+2+wzF2JOZDZ3nNWd36fw038i2NuyMN4CLrhCRgNEyInZbyBNsdNP2
-	 ovQTW+gRIFCpFG1077Cdn2p+fNRcTze4RIkzukeqzRAk5NW/9IyjE4aNEIqzqRUweH
-	 TXCiBps/SK5nUtDr4RoqTnsXMjlfq3Kwqy342LcBQtXdIdy/25a4Z99zI7eIKg50ix
-	 JNvYUo6FsU7Ew==
-Date: Thu, 5 Feb 2026 17:46:32 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Cc: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, srini@kernel.org, perex@perex.cz,
-	tiwai@suse.com, alexey.klimov@linaro.org,
-	mohammad.rafi.shaik@oss.qualcomm.com, quic_wcheng@quicinc.com,
-	johan@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
-	konrad.dybcio@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Stable@vger.kernel.org
-Subject: Re: [PATCH 01/10] ASoC: qcom: q6apm: fix array out of bounds on
- lpass ports
-Message-ID: <a8706da6-20fb-456e-a428-4c7b2c5bc26b@sirena.org.uk>
-References: <20260205171411.34908-1-srinivas.kandagatla@oss.qualcomm.com>
- <20260205171411.34908-2-srinivas.kandagatla@oss.qualcomm.com>
+	s=arc-20240116; t=1770313623; c=relaxed/simple;
+	bh=jiUemKPKlmRMVN2/Lj60IZso0aiEzOeF5BiA1KJE6b0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xi9qpgy+YmAjNf52poAQDReBRKInnoX6zgq61w724gb6Kr6MEI37AobTmK968MXfmy7jkmbQZuJWcv0nmgB15ErMJ02mmLXTlgWU7xjTtpojUi1lF2BVGivm3ajUEslgNLxdc1ThkUCPnU/8C5Dtj/zVP7urHKIEiwimCd8sbXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeMkSvW9; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-81e93c5961cso1132734b3a.0
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 09:47:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770313623; x=1770918423; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EWxi5x9NQqhptmr8FMyD2h3Sur2tKgh7uRV919QBxv0=;
+        b=IeMkSvW9u61F3jTO+5Dp9dJuNMcsorVhUyt/EpdX5NGbW9gYJ912doXkqrwxVNhab2
+         3ihKgd0GB10vydyQjOJg9dSOu6Y9k3rzxknUHjjbfQBN6KTnMvRyeGuU8d8AQS8/qZ/M
+         U8HWpAQUXGehq1RxhgLFwpyYs1eEbJb4UimckgOFaeeJs0zSrgMj6+6EFM8t75xY/gZS
+         0+Wrqne4geXH9TZjbzFBeXuaO9Adqw/7VVFUlo4jFFzUDlh9jm5NWnqLAEa+q5jeTU21
+         T0AEYsBVJdhgzDkuB9oM2QS48g6tUzsy1E8o+Y8sfJs8+BO03mLJ4ZsLnJwS09ffUz3M
+         E5yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770313623; x=1770918423;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EWxi5x9NQqhptmr8FMyD2h3Sur2tKgh7uRV919QBxv0=;
+        b=edEOVIV5RDhQcWfJA60BR8wiDp7QSuf/b4Jrj3me201Zcys1b2W9T6frU+um+f3rQk
+         zs3Dx8IZqARzhG4FSkHhAZxXHpSMiiCdLNeXIc1FwkJ5tHX4+N6IHOLicBHV8wHPp+no
+         gRj0HeO3IAEYmEzlNXu/ybgG4W7OfQwts2800kq7czZ57tkxLzESAYI8MlWY/wzpxiNu
+         B/3odwItBbr7MOIymNMsS2hxxhOly50ocsKkm7m5m+hCuiA4AHQFZAaFuaxSAkKX9aMm
+         U2yNoCPnYOrNpMTaQLUkKkY84RbGNbNzeu7dMTz178H1x0jKtl69cE+QPYmdy8oJtvhN
+         5RnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXP4ausnCfkZ+RVPCI5f0B64TSGBoxn1a05j6Wd3AROdSUeV6mZnOlXeEqmRjNnmykTiQyWjuA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwskVFaFjX4uWWvX0BYN57G7+YoG+owrr5fJXwYxi3V56nynrfN
+	G9zKMW4fPGM5Qy8tJvt2KigmnA2tMZ3RNsRyy7HGDdEu3Yd0ynVHjEvc
+X-Gm-Gg: AZuq6aJn0Rdjd6O5mL4vpRqu/StW9NV6Tvns09goSH7pbgMJm4RvguRcy26Fg2+DNiA
+	fR389eZLFyb9tKwPLlq5DNvDBWXM3g3iFIkn2yP0RonyApHdSjR0M7CyHzRYAkRtcEF3YlO8n3O
+	SnQIDQYHyJitsEb0Ls9kIhwV+r5KBBR0igBw+gvAcBBYlIcYq2xkaEJjyuwDC5/utRhxjXEPISJ
+	4Dcs3NJTiDiL3V+HJgkKiTdwHQwvkEF/r/I+gsJTE4HcGMd6isfm1Q8ADNG8dNGAeILjdJADUh3
+	HucCmvFs+mMmgAov2fDXbsVsXWWaE3Kzofhim8H492kpYce8j+ubFGbODtXL+tdCQOUwiGOlUjt
+	KePqWi3XLWd+riw8YUhiRXbdlhCN4QnsuyP/uMaGcdoI/uf8TppDLG0eTBScRctrv/Dt8YWHrq/
+	rASdfpiLsS0vBc
+X-Received: by 2002:a05:6a20:d504:b0:38f:df47:87ae with SMTP id adf61e73a8af0-393ad4630damr136816637.79.1770313623221;
+        Thu, 05 Feb 2026 09:47:03 -0800 (PST)
+Received: from mint.. ([2401:4900:53f5:8722:5847:8ba8:5649:5c92])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-354b1e3ca08sm96940a91.4.2026.02.05.09.47.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 09:47:02 -0800 (PST)
+From: Dhyan K Prajapati <dhyan19022009@gmail.com>
+X-Google-Original-From: Dhyan K Prajapati <dhyaan19022009@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	dhyaan19022009-hue <dhyaan19022009@gmail.com>
+Subject: [PATCH v5 wireless] mac80211: fix NULL pointer dereference in monitor mode
+Date: Thu,  5 Feb 2026 23:16:50 +0530
+Message-ID: <20260205174650.4575-1-dhyaan19022009@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JjPNQsqvp/h1upzL"
-Content-Disposition: inline
-In-Reply-To: <20260205171411.34908-2-srinivas.kandagatla@oss.qualcomm.com>
-X-Cookie: Non-sequiturs make me eat lampshades.
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214537-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214536-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,perex.cz,suse.com,linaro.org,oss.qualcomm.com,quicinc.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8A6F5F6244
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dhyan19022009@gmail.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:email]
+X-Rspamd-Queue-Id: 9C14DF62AD
 X-Rspamd-Action: no action
 
+From: dhyaan19022009-hue <dhyaan19022009@gmail.com>
 
---JjPNQsqvp/h1upzL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Crash trace:
+  RIP: iwlagn_bss_info_changed+0x19d/0x640 [iwldvm]
+  Code: 49 8b 46 10 <8b> 10
+  RAX: 0000000000000000 (NULL link->conf->bss)
+wifi: mac80211: fix NULL pointer deref regression in link notify
+Commit c57e5b974514 ("wifi: mac80211: fix WARN_ON for monitor mode on
+some devices") reorganized link change notifications. This caused a
+regression for hardware using IEEE80211_HW_WANT_MONITOR_VIF. In monitor
+mode, link->conf->bss is uninitialized, but current logic allows these
+notifications to reach driver callbacks, causing a deterministic NULL
+dereference in drivers like iwldvm. Fix this by validating the BSS
+context before driver notification.
+Device: Intel Centrino Advanced-n 6205
+Fixes: c57e5b974514 ("wifi: mac80211: fix WARN_ON for monitor mode on some devices")
+Cc: stable@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Dhyan K Prajapati <dhyaan19022009@gmail.com>
+---
+ net/mac80211/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On Thu, Feb 05, 2026 at 12:14:02PM -0500, Srinivas Kandagatla wrote:
-> lpass ports numbers have been added but the apm driver never got updated
-> with new max port value that it uses to store dai specific data.
->=20
-> This will result in array out of bounds and weird driver behaviour.
-> Fix this by adding a new LPASS_MAX_PORT which is can be used by driver
-> instead of using number and any new port additional can only be done in
-> one place, which should avoid these type of mistakes in future.
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index b05e313c7..190222c26 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -416,6 +416,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 	case NL80211_IFTYPE_MONITOR:
+ 		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+ 			return;
++		if (!link->conf->bss)
++			return;
+ 		break;
+ 	default:
+ 		break;
+-- 
+2.43.0
 
-It would probably be good to improve the valdiation in the driver when
-it starts using port numbers.
-
---JjPNQsqvp/h1upzL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmE13cACgkQJNaLcl1U
-h9ATEQf/UngOgVnrXCDhmOJZtvNHZOS7HDTpZxoMsAtt3rPrvHjc4RKJDTXBZO8l
-iP8KUwPvKjfI12cQykbMAhBBNsbsQbKCdsZUD+1XnjJqlVg2tQdn0IqGSNGsUuBU
-SckANvagdMprhVxYw7l4iu7ubZSjI/zrBc4TP2vqsdnvVeKXE+hFP1q3PSeszhoj
-9SbR7+jMH8vks6UHMNoBb9BIhD0/8nSrxu+z+iIzwwSBYpq1LbZW+lW8PjwI9dTk
-IgUu371hrv4nAQ1ynToK2KnGbLX47smvexDLUjXLCGRry8NMZluIq9vVfyIbAvxg
-Nwat89cmz6f9FprXSKdzhmFqIY7uoA==
-=oxM2
------END PGP SIGNATURE-----
-
---JjPNQsqvp/h1upzL--
 
