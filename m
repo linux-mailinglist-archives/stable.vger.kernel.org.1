@@ -1,225 +1,190 @@
-Return-Path: <stable+bounces-214507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJeULovBhGnG4wMAu9opvQ
-	(envelope-from <stable+bounces-214507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:12:59 +0100
+	id GIA3CCrChGk45QMAu9opvQ
+	(envelope-from <stable+bounces-214508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:15:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3D6F50D9
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:12:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B4CF5181
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5DE3303C89B
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 16:12:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7484D300BD86
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 16:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D30143635D;
-	Thu,  5 Feb 2026 16:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB5F3ACEEE;
+	Thu,  5 Feb 2026 16:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DUPkmlNy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jqNujL+D"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916B4332ED7;
-	Thu,  5 Feb 2026 16:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CED02C0F91
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 16:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770307917; cv=none; b=HQPQfCConvz9r43E8vJjWNoYB1TdsHFTNgv48pJ48XjuIDE2CsAZHPIMeo7pmjW8q9/Bs0XQ7cN9TOOnS304cIA9BJTroVPvM1mtLOYNe+ymskjDVPmfNbLdtZpttojCOy4ga0FGeyVGwW2egessCaFQfjEfqpWkbyRY4aAlE/k=
+	t=1770308132; cv=none; b=HyECsWVfusIeVgfDTkQTIRdnfi0gjiojjXG21mNp4YpBRe5177mCrZhBB5d8qjYgq7hVo2lsJajACNFPXjYL+gQp50TvQONZrlYimq4TuWzPur1KtydYh6ABarIGYF4LvQInDFgUirVgpcbDalJafk/rn1eyYfU6l0mvV7ToHl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770307917; c=relaxed/simple;
-	bh=HvhUK5xEygbMvaSMIxihgEmri6gWlx1DNlFyIrDNiD0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hgH8qHhzCcpPwZEg7TT/5Ddnf1U4ij8DQIKJqzDd9TNqJkIYiNfkCxoXqBkSkdgfqzY0nMnBTC0WwY/zge4D5LUvvnoR5AUVvC9ylTFS6fiLQ/ERAz6mMZ5supXGeQ4iJk2G87ML1tID799ZDGbkZB0SRy/T0sjZkFUbUp/k8uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DUPkmlNy; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1770308132; c=relaxed/simple;
+	bh=jSTGMS76wzaOXx16IoRmWUKxzuVmR27lmFqETn3KgOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RaZ44y0JRuJ4eVrXwEJNXdBc3CspdNzIWM1mv1WQKu9eHlGSjqPkMG5WuKNjyHQb+BtStF3Gad8T1E06Gte4xLut8iKfXHMaeBSyhdUwbBAIbSQhg4H86Knq+10g3qc0E6sddRzmWzqlMCgorR6hLn7HjXbemR+st1+sRKppiOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jqNujL+D; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770307917; x=1801843917;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HvhUK5xEygbMvaSMIxihgEmri6gWlx1DNlFyIrDNiD0=;
-  b=DUPkmlNyZ+9EpwrqS4CXRjEBrWAFiNEOo8SpaPArxI0zafoh8KkFES0S
-   EEbWigdvnKAePhAfvN8QpNYORVt9KyLfhw5vhp6qSNuXS7In4jVa3PJZO
-   FXzYxLx+LrAbbF+Q1zB1Bt29ZauM6O1zSlouBy2LYi2vJoSrJ/uSdpF4z
-   5BGB/EUzklbHq5ZCWISWdEAC+UIceNSBNjZ58f/hptdJkhvko7Crjs7W+
-   HUIfGRlupZgqcQ3jnSDrCohdY3MYtJqfuO/wEysjzij/ej+MByZqRncIC
-   x+rjh5YUJGFkh4JryrGxZXo14jMPlXtryI7QkIsSTb92NOhvGMJeKXWCg
-   A==;
-X-CSE-ConnectionGUID: N/y6B3T5QmCN5Nb3nbAdmQ==
-X-CSE-MsgGUID: IyNPEdZySWmhkvZWXv5iKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="74109976"
+  t=1770308133; x=1801844133;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=jSTGMS76wzaOXx16IoRmWUKxzuVmR27lmFqETn3KgOM=;
+  b=jqNujL+DcxIhWLMfVx1PVGKyxQ2CK+XIMbfbkBA2AMzsyX5FrmFSJNPV
+   sZ6TeA7OAPInr2+ZXsun0i3oTmaJtaZLcSPcShBfeMP8kuu5RZc1q4TCt
+   2IOMwqI+hJl+a7HLkP+5auZQkwuRjMbEM4FlFsj79wx26mhKZ2hVgyeKU
+   0dCxiOWFw5iMNKRPn070OUzxfeJqj02FRCEk58ZtBDa1KFrgdteZpvhZi
+   i56qMSgYKcT1GSGq4EX+omHhXhp7UGgw7N9KuJHHm8E8pXxeQFtIhFgSC
+   wOlhh6JvYJpFOlpWFSWegIciQt10U4cQrxZHoz/Gr6k3g1nJouXsG2Kh8
+   Q==;
+X-CSE-ConnectionGUID: SyyXoQ6ZQPG7ncm4YX9YzA==
+X-CSE-MsgGUID: XFCzrQRCT52Qx9h/AwKBkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82142977"
 X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="74109976"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:11:56 -0800
-X-CSE-ConnectionGUID: yWtr/tgTTXKWCiqqLOxPeA==
-X-CSE-MsgGUID: XFWHKgSaTIOxeB3uP2IJ2w==
+   d="scan'208";a="82142977"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:15:32 -0800
+X-CSE-ConnectionGUID: fx2G/4XkS1GuMC2Xq9k9zg==
+X-CSE-MsgGUID: 0fgGELw1QF6L/H6IXH+iSQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="248175267"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.142])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:11:51 -0800
-Date: Thu, 5 Feb 2026 18:11:49 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: WangYuli <wangyuli@aosc.io>
-Cc: mario.limonciello@amd.com, thomas.lendacky@amd.com, john.allen@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	mika.westerberg@linux.intel.com, jsd@semihalf.com,
-	andi.shyti@kernel.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	bp@alien8.de, ashish.kalra@amd.com, markhas@chromium.org,
-	jarkko.nikula@linux.intel.com, wsa@kernel.org,
-	WangYuli <wangyl5933@chinaunicom.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: designware: Enable PSP semaphore for AMDI0010 and
- fix probe deferral
-Message-ID: <aYTBRVtpUA6xavV7@smile.fi.intel.com>
-References: <20260205103047.19127-1-wangyuli@aosc.io>
+   d="scan'208";a="210379389"
+Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.45])
+  by orviesa009.jf.intel.com with ESMTP; 05 Feb 2026 08:15:32 -0800
+From: Jia Yao <jia.yao@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Jia Yao <jia.yao@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	stable@vger.kernel.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH v3] drm/xe: Add bounds check on pat_index to prevent OOB kernel read in madvise
+Date: Thu,  5 Feb 2026 16:15:29 +0000
+Message-ID: <20260205161529.1819276-1-jia.yao@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260203172045.1154546-1-jia.yao@intel.com>
+References: <20260203172045.1154546-1-jia.yao@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205103047.19127-1-wangyuli@aosc.io>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214507-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214508-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jia.yao@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,smile.fi.intel.com:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: 7F3D6F50D9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 79B4CF5181
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 06:30:47PM +0800, WangYuli wrote:
+When user provides a bogus pat_index value through the madvise IOCTL, the
+xe_pat_index_get_coh_mode() function performs an array access without
+validating bounds. This allows a malicious user to trigger an out-of-bounds
+kernel read from the xe->pat.table array.
 
-> AMD Strix Point platforms use the AMDI0010 ACPI HID for their I2C
-> controllers, but this entry was missing the ARBITRATION_SEMAPHORE flag
-> that enables PSP-based bus arbitration.
-> 
-> Without proper arbitration, when both the x86 host and AMD PSP
-> (Platform Security Processor) attempt to access the shared I2C bus
-> simultaneously, the DesignWare controller loses arbitration and reports:
-> 
->   i2c_designware AMDI0010:01: i2c_dw_handle_tx_abort: lost arbitration
-> 
-> This causes communication failures with I2C devices such as touchpads
-> (e.g., BLTP7853 HID-over-I2C).
-> 
-> Add the ARBITRATION_SEMAPHORE flag to the AMDI0010 entry to enable PSP
-> mailbox-based I2C bus arbitration, consistent with how AMDI0019 was
-> handled for AMD Cezanne platforms.
-> 
-> However, simply enabling this flag exposes a latent bug introduced by
-> commit 440da737cf8d ("i2c: designware: Use PCI PSP driver for
-> communication"): the driver unconditionally returns -EPROBE_DEFER when
-> psp_check_platform_access_status() fails, causing an infinite probe
-> deferral loop on platforms that lack PSP platform access support.
-> 
-> The problem is that psp_check_platform_access_status() returned -ENODEV
-> for all failure cases, but there are two distinct scenarios:
-> 
->   1. PSP is still initializing (psp pointer exists but platform_access_data
->      is not yet ready, while vdata->platform_access indicates support) -
->      this is a transient condition that warrants probe deferral.
-> 
->   2. The platform genuinely lacks PSP platform access support (either no
->      psp pointer, or vdata->platform_access is not set) - this is a
->      permanent condition where probe deferral would loop indefinitely.
-> 
-> Fix this by updating psp_check_platform_access_status() to return:
-> 
->   - -EPROBE_DEFER: when PSP exists with platform_access capability but
->     platform_access_data is not yet initialized (transient)
->   - -ENODEV: when the platform lacks PSP platform access support (permanent)
-> 
-> Then update the I2C driver to pass through the actual return code from
-> psp_check_platform_access_status() instead of forcing -EPROBE_DEFER,
-> allowing the driver to fail gracefully on unsupported platforms.
-> 
-> Tested on MECHREVO XINGYAO 14 with AMD Ryzen AI 9 H 365.
+The vulnerability exists because the validation in madvise_args_are_sane()
+directly calls xe_pat_index_get_coh_mode(xe, args->pat_index.val) without
+first checking if pat_index is within [0, xe->pat.n_entries).
 
-...
+Although xe_pat_index_get_coh_mode() has a WARN_ON to catch this in debug
+builds, it still performs the unsafe array access in production kernels.
 
-> +++ b/drivers/crypto/ccp/platform-access.c
+v2(Matthew Auld)
+- Using array_index_nospec() to mitigate spectre attacks when the value
+is used
 
-> int psp_check_platform_access_status(void)
->  {
->  	struct psp_device *psp = psp_get_master_device();
->  
-> -	if (!psp || !psp->platform_access_data)
-> +	/* PSP driver not loaded yet, caller should defer */
-> +	if ((!psp) || (!psp->platform_access_data && psp->vdata->platform_access))
+v3(Matthew Auld)
+- Put the declarations at the start of the block
 
-Too many parentheses (it's not a macro).
+Fixes: ada7486c5668 ("drm/xe: Implement madvise ioctl for xe")
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Cc: <stable@vger.kernel.org> # v6.18+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Jia Yao <jia.yao@intel.com>
+---
+ drivers/gpu/drm/xe/xe_vm_madvise.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-> +		return -EPROBE_DEFER;
-> +
-> +	/* PSP loaded but platform_access not supported by hardware */
-> +	if (!psp->platform_access_data && !psp->vdata->platform_access)
->  		return -ENODEV;
-
-This can be refactored.
-
->  	return 0;
->  }
-
-	/* PSP driver not loaded yet, caller should defer */
-	if (!psp)
-		return -EPROBE_DEFER;
-
-	if (!psp->platform_access_data) {
-		if (psp->vdata->platform_access)
-			/* ...missing comment... */
-			return -EPROBE_DEFER;
-		else
-			/* PSP loaded but platform_access not supported by hardware */
-			return -ENODEV;
-	}
-
-...
-
->   * Returns:
-> - * 0          platform features is ready
-> - * -%ENODEV   platform features is not ready or present
-> + *  0:            platform features is ready
-> + *  -%ENODEV:     platform_access is not supported by hardware
-> + *  -%EPROBE_DEFER: PSP driver not ready or platform features not yet initialized
-
-Run kernel-doc and render this.
-
-You need "* *" for each item in the list.
-
+diff --git a/drivers/gpu/drm/xe/xe_vm_madvise.c b/drivers/gpu/drm/xe/xe_vm_madvise.c
+index add9a6ca2390..091e450b781c 100644
+--- a/drivers/gpu/drm/xe/xe_vm_madvise.c
++++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
+@@ -246,6 +246,10 @@ static int xe_vm_invalidate_madvise_range(struct xe_vm *vm, u64 start, u64 end)
+ 
+ static bool madvise_args_are_sane(struct xe_device *xe, const struct drm_xe_madvise *args)
+ {
++	s32 fd;
++	u16 pat_index;
++	u16 coh_mode;
++
+ 	if (XE_IOCTL_DBG(xe, !args))
+ 		return false;
+ 
+@@ -261,7 +265,7 @@ static bool madvise_args_are_sane(struct xe_device *xe, const struct drm_xe_madv
+ 	switch (args->type) {
+ 	case DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC:
+ 	{
+-		s32 fd = (s32)args->preferred_mem_loc.devmem_fd;
++		fd = (s32)args->preferred_mem_loc.devmem_fd;
+ 
+ 		if (XE_IOCTL_DBG(xe, fd < DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM))
+ 			return false;
+@@ -291,8 +295,11 @@ static bool madvise_args_are_sane(struct xe_device *xe, const struct drm_xe_madv
+ 		break;
+ 	case DRM_XE_MEM_RANGE_ATTR_PAT:
+ 	{
+-		u16 coh_mode = xe_pat_index_get_coh_mode(xe, args->pat_index.val);
++		if (XE_IOCTL_DBG(xe, args->pat_index.val >= xe->pat.n_entries))
++			return false;
+ 
++		pat_index = array_index_nospec(args->pat_index.val, xe->pat.n_entries);
++		coh_mode = xe_pat_index_get_coh_mode(xe, pat_index);
+ 		if (XE_IOCTL_DBG(xe, !coh_mode))
+ 			return false;
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
