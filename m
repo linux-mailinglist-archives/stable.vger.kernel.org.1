@@ -1,125 +1,189 @@
-Return-Path: <stable+bounces-214495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GbeEYy8hGnG4wMAu9opvQ
-	(envelope-from <stable+bounces-214495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:51:40 +0100
+	id SJ64KeO8hGnG4wMAu9opvQ
+	(envelope-from <stable+bounces-214496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:53:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C00F4C98
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:51:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3506DF4CCC
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84403304E308
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:49:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32ABF302DB43
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A137242980D;
-	Thu,  5 Feb 2026 15:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296FC40B6CE;
+	Thu,  5 Feb 2026 15:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dT8oAQQj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q+tFbijU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B15429801;
-	Thu,  5 Feb 2026 15:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD23535CBB0
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 15:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770306541; cv=none; b=b7KKx0t+kKauIvH5Z4c70QvwanARDSa3nVeHjVVAtapa6S6LTID2qs9FDRtty9uxRym27z0RoWHyuwjzOhRBS09IsWyYlJcEiQexK7zpddsuEiiI8SpYux29H6o7TIZEp10YCuUlG4lT5cWn1oFgAtG28041KituJnLoJ4lZ4/Q=
+	t=1770306611; cv=none; b=pdY1i7W16iXFg/mzkk7wv2hn0dzVmeCQ0fSHTK7ZMa83npI3EVeDiFxQb5q0I7R1e6yrdPgDEssW9mdh/HWUzIm/KxU4j2zzgnyirlaqiYRnCWk6ucHDjTs+ep5ny3/JnNGU7B+v65TNMZzN93fCha3WAot+OLxsbKbDNfA6Imo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770306541; c=relaxed/simple;
-	bh=t8Qq7n3GBnTkkcRxUptPvkwYXSftlw+UTn4NgWQJVRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O3I5i7WPZvor1Sn2SbMUOj2MeuK2dPN5oIZ6IaWAgtIk8HdWKpXc6txyvMcHqWrvVizZK8kMPlEqCJ+HqiMj5GDBnt/qemIKPf7VrD3ok1yV3P5IcJJt/b+IJUWuGzFrHNKjQ8rF3Yud1+TFhlVZs51hGt92RgywTVcKI34o4C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dT8oAQQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605DDC4CEF7;
-	Thu,  5 Feb 2026 15:49:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770306540;
-	bh=t8Qq7n3GBnTkkcRxUptPvkwYXSftlw+UTn4NgWQJVRI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dT8oAQQjBRumDKEXiaiAXR9ZiL6YWgA9SGoPGAvrz54iDCRk5ChA17Xz4x/0mIMWc
-	 HyW42z/+EOLSUcXT/H66ZKEvz1uiHY8XgxeSC/ls9LQvsC2wQ9w096drncwG+vWKcz
-	 S2W6C7yZQMhuWCE8QgavFGrWQahdmFAuoBjuewpuBmh2t0OjrXY7NT+y4Dmp/O9voo
-	 Y9o1wfhp9UP2rA/+9JuJyXdU1rc3Mu6hIRe1KkV5qNHaixiuyhnK2fmA+IYqlmwj+N
-	 QQSdgERFM7reK8lmF+4bpOkabKoXRUcYtyCfdlzJsWFyeUztpN60iuRLsNLhYnKwl7
-	 YMPeHWtI/VapQ==
-Date: Thu, 5 Feb 2026 07:48:59 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bo Sun <bo@mboxify.com>
-Cc: pabeni@redhat.com, sgoutham@marvell.com, lcherian@marvell.com,
- gakula@marvell.com, jerinj@marvell.com, hkelam@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net 1/1] octeontx2-af: CGX: fix bitmap leaks
-Message-ID: <20260205074859.27392792@kernel.org>
-In-Reply-To: <ba2c3143-0761-4903-ac0e-88ca502b4e50@mboxify.com>
-References: <20251020143112.357819-1-bo@mboxify.com>
-	<20251020143112.357819-2-bo@mboxify.com>
-	<20251022182226.00967149@kernel.org>
-	<ba2c3143-0761-4903-ac0e-88ca502b4e50@mboxify.com>
+	s=arc-20240116; t=1770306611; c=relaxed/simple;
+	bh=iUZ5tnMQyhw9uCy640eejDGHzA+wNQ5AYMIrZOw3mCQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZlXOZGTHQnzy1+pPmfH0jr0lyZ8YfMTrhKeV//kGzyrKw/mqr+NVRfU2+K+miUxPfvf+L7lkKo2QzzPUi7Wcj3e+htoemZmqg24J9xoA2DG7z0qwFpFNXo2Jy6FWWE/O1COWMH8qE87d3jSxQIHcV7hEITsL3ebXIvJzU6t9uMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q+tFbijU; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34cc8bf226cso983768a91.3
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 07:50:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770306611; x=1770911411; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JhwK1VS71v2DkiCt5Bja3+qO4VJWz2Pt2URd2uZcACk=;
+        b=Q+tFbijUIZ0KN7eFv6kvu/OGDbfybROYLOoq535qiSmhWt0Qo7Qy57QuTy1R/d31oE
+         oxdUXuLU2aREzoFcoHzoBbvLs0ziGdVH42v2QKkPlCURV9ePVAoacEK3U6Njs2IvYDhp
+         E3gEkVIWp51y6u7GTcfPy7q8SO6s+atcS8Rwk8zFGcaKm4Sb91/oSWtYl+bSPYWBWlid
+         BflVmujolrdWrKvCVWiugVZZUVDxQGyRFI+HA32HiA5B/qxDqvTKZORhraOVbQHVsDeL
+         zY0iQYZEWAmaPHxDCrBdQROvf+v9Lt9aYolOJrAgYYkFZpmX6nVqVhcVbuCSgeD6Bq0j
+         TkiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770306611; x=1770911411;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JhwK1VS71v2DkiCt5Bja3+qO4VJWz2Pt2URd2uZcACk=;
+        b=E7zquaHlYip+Szukk3NVV0wbBIML/tpQgS+tfCEIJWmirlMYQSJoT4vx2vtPkTFkaC
+         oP7Qizvj3hd1Vhdwh2iWUYEwkAMfDs6hybt5pjGB5qlsPcK3VU3GPJRo/EljSmLp3MxQ
+         Cxiq4/1lFact3Y0lT21sKAUhpy6w+fus3i2f2K9rbr3NncG/6OERgECFhXUk93KnkS4o
+         gGhqZKoLOQ7oDvk5KEWiaB2RuIbR0XrYESKXddjJvtIZ3zTHRRssMNvMWDYdF7z0OFuf
+         AhLvu95ZpGxeimSug1KXOYrY21Sd2c52729dyoecjAAXIaB6/IhfH2QDTS30mJsMlg2N
+         I5GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxcy2qCK1waZA26flujAwTKsinE4kkEZEalZWJ1KhvQ/iNdQXM6rrOO3UrfRn8wI7NtnffK6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHhHSYnUx7OYd1r/0kcbnDKmsyWt/uu9SbejvQ9dIIdkgmRX9/
+	gqWiXi2nVhggQwm2PKbt1fPLdgCToWI5aNO8FPFdSD8dTMb4MlvbRU1rwX5bVxvvmeHauSada4c
+	+5FIYDw==
+X-Received: from pjps6.prod.google.com ([2002:a17:90a:a106:b0:352:ba61:b351])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5102:b0:354:a332:1a61
+ with SMTP id 98e67ed59e1d1-354a3321ccemr1617875a91.5.1770306611136; Thu, 05
+ Feb 2026 07:50:11 -0800 (PST)
+Date: Thu, 5 Feb 2026 07:50:09 -0800
+In-Reply-To: <2026020546-wrongness-duplex-bccd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260205051030.1225975-1-nikunj@amd.com> <2026020559-igloo-revolver-1442@gregkh>
+ <59781811-a98b-4289-89e4-58e8247241f8@amd.com> <2026020546-wrongness-duplex-bccd@gregkh>
+Message-ID: <aYS8MQLcGs08PxYK@google.com>
+Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
+From: Sean Christopherson <seanjc@google.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "Nikunj A. Dadhania" <nikunj@amd.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	bp@alien8.de, thomas.lendacky@amd.com, tglx@kernel.org, mingo@redhat.com, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com, 
+	pbonzini@redhat.com, x86@kernel.org, jon.grimm@amd.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214495-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214496-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 62C00F4C98
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3506DF4CCC
 X-Rspamd-Action: no action
 
-On Thu, 5 Feb 2026 21:35:29 +0800 Bo Sun wrote:
-> >> Fixes: e740003874ed ("octeontx2-af: Flow control resource management")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Bo Sun <bo@mboxify.com>  
+On Thu, Feb 05, 2026, Greg KH wrote:
+> On Thu, Feb 05, 2026 at 11:40:11AM +0530, Nikunj A. Dadhania wrote:
 > > 
-> > Looks like rvu_free_bitmap() exists. We should probably use it?  
-> 
-> Apologies for the late reply.
-> You're right that rvu_free_bitmap() exists. I stayed with direct kfree()
-> for consistency with the existing code in cgx_lmac_exit(), because which
-> already uses kfree(lmac->mac_to_index_bmap.bmap).
-> 
-> That said, I'm OK with either way:
-> 1. Keep kfree() to match the existing pattern in this function
-> 2. Switch all three bitmap frees (including mac_to_index_bmap) to use
-> rvu_free_bitmap() for consistency with the alloc/free API pairing
-> 
-> What's your preference?
+> > 
+> > On 2/5/2026 11:25 AM, Greg KH wrote:
+> > > On Thu, Feb 05, 2026 at 05:10:30AM +0000, Nikunj A Dadhania wrote:
+> > >> FRED enabled SEV-ES and SNP guests fail to boot due to the following
+> > >> issues in the early boot sequence:
+> > >>
+> > >> * FRED does not have a #VC exception handler in the dispatch logic
+> > >>
+> > >> * For secondary CPUs, FRED is enabled before setting up the FRED MSRs, and
+> > >>   console output triggers a #VC which cannot be handled
+> > >>
+> > >> * Early FRED #VC exceptions should use boot_ghcb until per-CPU GHCBs are
+> > >>   initialized
+> > >>
+> > >> Fix these issues to ensure SEV-ES/SNP guests can handle #VC exceptions
+> > >> correctly during early boot when FRED is enabled.
+> > >>
+> > >> Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
+> > >> Cc: stable@vger.kernel.org # 6.9+
+> > >> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+> > >> ---
+> > >>
+> > >> Reason to add stable tag:
+> > >>
+> > >> With FRED support for SVM here 
+> > >> https://lore.kernel.org/kvm/20260129063653.3553076-1-shivansh.dhiman@amd.com,
+> > >> SVM and SEV guests running 6.9 and later kernels will support FRED.
+> > >> However, *SEV-ES and SNP guests cannot support FRED* and will fail to boot
+> > >> with the following error:
+> > >>
+> > >>     [    0.005144] Using GB pages for direct mapping
+> > >>     [    0.008402] Initialize FRED on CPU0
+> > >>     qemu-system-x86_64: cpus are not resettable, terminating
+> > >>
+> > >> Three problems were identified as detailed in the commit message above and
+> > >> is fixed with this patch.
+> > >>
+> > >> I would like the patch to be backported to the LTS kernels (6.12 and 6.18) to
+> > >> ensure SEV-ES and SNP guests running these stable kernel versions can boot
+> > >> with FRED enabled on FRED-enabled hypervisors.
+> > > 
+> > > That sounds like new hardware support, if you really want that, why not
+> > > just use newer kernel versions with this fix in it?  Obviously no one is
+> > > running those kernels on that hardware today, so this isn't a regression :)
 
-3. do what I implied, just use rvu_free_bitmap() in this single case
-for the fix. Follow up separately with a patch to remaining sites if
-any to convert from kfree() to rvu_free_bitmap(). We want the fix
-itself to be small, the cleanup should be separate.
+I disagree, this absolutely is a regression.  Kernels without commit 14619d912b65
+will boot on this "new" hardware, kernels with the commit will not.
+
+> > Fair point.
+> > 
+> > However, the situation is a bit nuanced: FRED hardware is available now, and
+> > users running current stable kernels as guests will encounter boot
+> > failures when the hypervisor is updated to support FRED. While not a traditional
+> > regression, it creates a compatibility gap where stable guest kernels cannot run
+> > on updated hypervisors.
+> 
+> Great, then upgrade those guest kernels as they have never been able to
+> run on those hypervisors :)
+
+As above, *upgrading* from e.g. 6.6 to 6.12 will suddenly fail to boot.
+
+> > Other option would be to disable FRED for SEV-ES and SNP guest in stable kernel.
+> 
+> That's a choice for the hypervisor vendors to choose.
+
+No, because the hypervisor has no clue what kernel version the guest is running.
 
