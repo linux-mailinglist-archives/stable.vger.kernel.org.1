@@ -1,211 +1,158 @@
-Return-Path: <stable+bounces-214385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMCnAe8ShGkTyAMAu9opvQ
-	(envelope-from <stable+bounces-214385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 04:47:59 +0100
+	id QKgPEiEghGl9zQMAu9opvQ
+	(envelope-from <stable+bounces-214388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 05:44:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DDECEE63C
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 04:47:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4929EE908
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 05:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9B003012276
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 03:47:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5117B3011BCA
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 04:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4342E62CE;
-	Thu,  5 Feb 2026 03:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B22EB873;
+	Thu,  5 Feb 2026 04:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UyCz1ArS"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Slq9P7Mx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A074C22339;
-	Thu,  5 Feb 2026 03:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA9D13D638;
+	Thu,  5 Feb 2026 04:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770263274; cv=none; b=TWhSYz8YDcwffdE4YaEf4tGl7cjwqS1a2STG2lu1p3RDjvLlpUb7La5CJge4CE7ek4hxAOyiCPHj+CairVfRLwPVeg1BNToCMFmOyQWKC2W6s0cATK8qTAFj8aRZ24+gaIxcTVCbGfjbMmK7vEW8sH+E4lEj7EaRRHhKy+t+QDQ=
+	t=1770266652; cv=none; b=NYEsvTiXyvPxar8067/HNsIFfsRsvwWBlwUpY6MVL5w7cuxYhnOPuRRqY2U/cgclmfycP53HSdSCmOkM7rje/72VzjvgG6HSGxtmq+GKo9471QLiFVXMTIUZmquGQjA0XuZxnPi+AYoSW+SrI1iMEe8rBT0qIjgSIbxl6EFjpmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770263274; c=relaxed/simple;
-	bh=AlJYk0vwR6a7z3G1T7gdtCSo68C6OKgODawm43o+LVc=;
-	h=Date:To:From:Subject:Message-Id; b=TLFM7jdFlZVInB+fyHefOhOlBk3WNwPdJ56znurrOEo+fKs2QDil0X1V+k2F09Zh7GKTGZBIDeHT2NCqNUsW7OycvkQxb0vVcSdTzydAuczmxVsp8U826a4PrUKaJdHFhu6nwzcAm8gBp4s6+DxHcj2W9VeJ5t2uwvMHTeGPbuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UyCz1ArS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147B3C4CEF7;
-	Thu,  5 Feb 2026 03:47:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770263274;
-	bh=AlJYk0vwR6a7z3G1T7gdtCSo68C6OKgODawm43o+LVc=;
-	h=Date:To:From:Subject:From;
-	b=UyCz1ArSigO634pH2KsNbD6bi6ljow4j49SVWeOiCRhNdre8mOrvixDWU+WQrTPcL
-	 UjbYvCHRJG9NlF4CUMtFmRQCYQtWMIzl//AASscYNLKzdwHqBJzeFjEfKefqeLrUBU
-	 yazgyhbf3T7NhGVJ9G8wjSXzR+FXAtvskWLPTlok=
-Date: Wed, 04 Feb 2026 19:47:53 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,lance.yang@linux.dev,gavinguo@igalia.com,david@kernel.org,baolin.wang@linux.alibaba.com,richard.weiyang@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-fix-early-failure-try_to_migrate-when-split-huge-pmd-for-shared-thp.patch added to mm-new branch
-Message-Id: <20260205034754.147B3C4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1770266652; c=relaxed/simple;
+	bh=YRKqY4diyF8doqJDA4W4NazZaHGmEdCJXjkaWVD12eo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d5mQMkLAWv4NBhUOcaP+qLzh1UNdquRVah5q1WHyabjmA8KC5ilDM7r+m/agVC175A4v9zr0IKaA+BOA5dKFxqlQ0H9ih+XRYNLHcg0RSmpUShAM5t+xo8wNumMIo4NjD7JvwGTL1FXlLzWic8rbhaEVc3aaNgb+wxKmu3ThBLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Slq9P7Mx; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=6u
+	jW4S3BmnE5I/KumRvyvVLPfurFc/bwqHvYqbe8qTw=; b=Slq9P7MxuuEa/ewiE1
+	kxjaBJkLkcFnxOwJDeMhCMArmS0JioB/BBwnxvbUrNZIZ3SZr14/6Ga/l5SR/T/2
+	Yv4zQfJszC1Edz9ZtMgV4PmyuL3QRGjqn6Xuxj2k/9avQFHaFOMBmVNrjnX6RIC2
+	4I2J3fGuKqFoI8Q+bQI6FaSRs=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wCXpKgLIIRpKYGxJg--.59689S2;
+	Thu, 05 Feb 2026 12:43:56 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15.y] gfs2: Fix NULL pointer dereference in gfs2_log_flush
+Date: Thu,  5 Feb 2026 12:41:47 +0800
+Message-Id: <20260205044147.1948143-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXpKgLIIRpKYGxJg--.59689S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw15Aw13CrW3KryUWry5CFg_yoW8ur4xpr
+	ykKr1rAr4DXa15W3WUKrsYqrnYgan09F1avr4rCwsxXF4aq3ZI93W3KaykJFs3Xr4xZryj
+	9FWqga13Gry5GrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRjFALUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3QyGIGmEIAwt5wAA38
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214385-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214388-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.dev,igalia.com,kernel.org,linux.alibaba.com,gmail.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,nvidia.com:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 5DDECEE63C
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,163.com];
+	DKIM_TRACE(0.00)[163.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A4929EE908
 X-Rspamd-Action: no action
 
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-The patch titled
-     Subject: mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared thp
-has been added to the -mm mm-new branch.  Its filename is
-     mm-huge_memory-fix-early-failure-try_to_migrate-when-split-huge-pmd-for-shared-thp.patch
+[ Upstream commit 35264909e9d1973ab9aaa2a1b07cda70f12bb828 ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-fix-early-failure-try_to_migrate-when-split-huge-pmd-for-shared-thp.patch
+In gfs2_jindex_free(), set sdp->sd_jdesc to NULL under the log flush
+lock to provide exclusion against gfs2_log_flush().
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+In gfs2_log_flush(), check if sdp->sd_jdesc is non-NULL before
+dereferencing it.  Otherwise, we could run into a NULL pointer
+dereference when outstanding glock work races with an unmount
+(glock_work_func -> run_queue -> do_xmote -> inode_go_sync ->
+gfs2_log_flush).
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Wei Yang <richard.weiyang@gmail.com>
-Subject: mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared thp
-Date: Thu, 5 Feb 2026 03:31:13 +0000
-
-Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-split_huge_pmd_locked()") return false unconditionally after
-split_huge_pmd_locked() which may fail early during try_to_migrate() for
-shared thp.  This will lead to unexpected folio split failure.
-
-One way to reproduce:
-
-    Create an anonymous thp range and fork 512 children, so we have a
-    thp shared mapped in 513 processes. Then trigger folio split with
-    /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
-    order 0.
-
-Without the above commit, we can successfully split to order 0.  With the
-above commit, the folio is still a large folio.
-
-The reason is the above commit return false after split pmd
-unconditionally in the first process and break try_to_migrate().
-
-On memory pressure or failure, we would try to reclaim unused memory or
-limit bad memory after folio split.  If failed to split it, we will leave
-some more memory unusable than expected.
-
-The tricky thing in the above reproduction method is current debugfs
-interface leverage function split_huge_pages_pid(), which will iterate the
-whole pmd range and do folio split on each base page address.  This means
-it will try 512 times, and each time split one pmd from pmd mapped to pte
-mapped thp.  If there are less than 512 shared mapped process, the folio
-is still split successfully at last.  But in real world, we usually try it
-for once.
-
-This patch fixes this by restarting page_vma_mapped_walk() after
-split_huge_pmd_locked().  We cannot simply return "true" to fix the
-problem, as that would affect another case:
-split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
-leave the folio mapped through PTEs; we would return "true" from
-try_to_migrate_one() in that case as well.  While that is mostly harmless,
-we could end up walking the rmap, wasting some cycles.
-
-Link: https://lkml.kernel.org/r/20260205033113.30724-1-richard.weiyang@gmail.com
-Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Cc: Gavin Guo <gavinguo@igalia.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+[ The context change is due to the commit 4d927b03a688
+("gfs2: Rename gfs2_withdrawn to gfs2_withdrawing_or_withdrawn") in v6.8
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 ---
+ fs/gfs2/log.c   | 3 ++-
+ fs/gfs2/super.c | 4 ++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
- mm/rmap.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
---- a/mm/rmap.c~mm-huge_memory-fix-early-failure-try_to_migrate-when-split-huge-pmd-for-shared-thp
-+++ a/mm/rmap.c
-@@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct fo
- 			__maybe_unused pmd_t pmdval;
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 9a96842aeab3..e7867b0f6c62 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -1094,7 +1094,8 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 	lops_before_commit(sdp, tr);
+ 	if (gfs2_withdrawn(sdp))
+ 		goto out_withdraw;
+-	gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
++	if (sdp->sd_jdesc)
++		gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
+ 	if (gfs2_withdrawn(sdp))
+ 		goto out_withdraw;
  
- 			if (flags & TTU_SPLIT_HUGE_PMD) {
-+				/*
-+				 * split_huge_pmd_locked() might leave the
-+				 * folio mapped through PTEs. Retry the walk
-+				 * so we can detect this scenario and properly
-+				 * abort the walk.
-+				 */
- 				split_huge_pmd_locked(vma, pvmw.address,
- 						      pvmw.pmd, true);
--				ret = false;
--				page_vma_mapped_walk_done(&pvmw);
--				break;
-+				flags &= ~TTU_SPLIT_HUGE_PMD;
-+				page_vma_mapped_walk_restart(&pvmw);
-+				continue;
- 			}
- #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 			pmdval = pmdp_get(pvmw.pmd);
-_
-
-Patches currently in -mm which might be from richard.weiyang@gmail.com are
-
-mm-huge_memory-fix-early-failure-try_to_migrate-when-split-huge-pmd-for-shared-thp.patch
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 268651ac9fc8..3345bc071e44 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -67,9 +67,13 @@ void gfs2_jindex_free(struct gfs2_sbd *sdp)
+ 	sdp->sd_journals = 0;
+ 	spin_unlock(&sdp->sd_jindex_spin);
+ 
++	down_write(&sdp->sd_log_flush_lock);
+ 	sdp->sd_jdesc = NULL;
++	up_write(&sdp->sd_log_flush_lock);
++
+ 	while (!list_empty(&list)) {
+ 		jd = list_first_entry(&list, struct gfs2_jdesc, jd_list);
++		BUG_ON(jd->jd_log_bio);
+ 		gfs2_free_journal_extents(jd);
+ 		list_del(&jd->jd_list);
+ 		iput(jd->jd_inode);
+-- 
+2.34.1
 
 
