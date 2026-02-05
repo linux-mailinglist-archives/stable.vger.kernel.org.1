@@ -1,214 +1,179 @@
-Return-Path: <stable+bounces-214499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mP3+LgfAhGnG4wMAu9opvQ
-	(envelope-from <stable+bounces-214499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:06:31 +0100
+	id wPazEqi+hGnG4wMAu9opvQ
+	(envelope-from <stable+bounces-214500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:00:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3BDF4F48
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:06:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB376F4E66
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:00:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 648F33006835
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:58:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE3DC3049EDD
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E4642DFF0;
-	Thu,  5 Feb 2026 15:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E18A42E000;
+	Thu,  5 Feb 2026 15:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="nY8tgY1t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A2r0PMnS"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BB7421F0C;
-	Thu,  5 Feb 2026 15:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770307126; cv=pass; b=FmDeH91We89OntnB9LlGPBzdP7yDpvBECGZEmNsATKM8dKwJ4yuQBYKa61KXzk7NV998naHc0cXO0wbLvkHP8Enu3KVKW+XkSSynvyFeMoEMCLoDDluISsTaIzXpGiJMAM4um1BTJmusOwptm4NkDmNrPwG23VWC38AG5td/Cyc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770307126; c=relaxed/simple;
-	bh=Fi4VXOVvvEEM9yWZmbVIB2tdGgQxZe5fTXPkIeISGP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AWqENH64HNyi+v+AlPQ1XCcAMaYblpQss8MHemXmtmoRODe8pKhAjeKdgMuJafuNiD3gDicNuzGoX+OXnv6qEcSf07h7fVuq27rr5n0yUI8v+OPIClhPG+HD71x147jKlCLWVrDuRbbxasdE2mG1ZV77AnJeHAf95b90xp8/7Jc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=nY8tgY1t; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
-ARC-Seal: i=1; a=rsa-sha256; t=1770307096; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=LQdDS0sD9D9Nnv/1Z9zKLRa2h2j0LzjEp7mXNBpdyDWKa+NqBvy4WWANgCCail15iuYliP0LX4bYoa56Q83RF7KOYP0VlihvWpnKUqPClgy4RSHyst7RUTaYwfpmeMKnq4vRq/UtDKKlvUq0LHKtof8DgYTIGbjq+OhYlZE53EM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1770307096; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=JjgyVvQvDBdLV0lASR43tNdGfYV4elj5vN9l8aB40pM=; 
-	b=CZ5Cz66ShZvrQHbcPHMgkcJZapk+/APN60SeoFYszw+WZVajE9fzff7P/wCRQEjvKPQi+vvNhyIBR/hcpfFI4N4pwHUFOE/EXpGpM9nKzvOeaQCxBUj8uEVMy4iBEGGLHpE/CuHXnrqnqKB+3t2UGQINwmHaYG1iEMlDJCE4vm8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770307096;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=JjgyVvQvDBdLV0lASR43tNdGfYV4elj5vN9l8aB40pM=;
-	b=nY8tgY1t/Dkhjz9KHtwgnxxqNL0p9D6mn0eW/qK4OPN1lDeF/9PdYpQw04p0eGUF
-	kZ/+6IgEhlXpDkX9a9/s1l3QP5X0UysbUaPDqBwUQ84dFPuBP1X5KuL4sq7Vbc7Q7A1
-	JvhO4qu/MjsXtEv2TXJ1h8dAn3l+KV/NMaUvcsHg=
-Received: by mx.zohomail.com with SMTPS id 1770307094687863.0131325581174;
-	Thu, 5 Feb 2026 07:58:14 -0800 (PST)
-From: Yao Zi <me@ziyao.cc>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Yao Zi <me@ziyao.cc>,
-	linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v2] MIPS: Work around LLVM bug when gp is used as global register variable
-Date: Thu,  5 Feb 2026 15:56:44 +0000
-Message-ID: <20260205155644.34421-1-me@ziyao.cc>
-X-Mailer: git-send-email 2.52.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805AE410D3B;
+	Thu,  5 Feb 2026 15:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770307141; cv=none; b=FI8QDW9btOdoWgu1BdA3XXsQovhJ4pfRzdhG1dbxrLGgQKictCLGe9nHaUr9uG5pY0MRkp30sPB8nTh6Zdhl7wt9NewbczhF8IqFXwbjMp7nE/KNL6m3el1cFyviUlYv3Rc55nfwop64MnC5F6khZtjFI5k6kRp3S7eUs/MY8Z8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770307141; c=relaxed/simple;
+	bh=+Maq/Ja5fq6IOMPPPKM/sCWeYbp9JRlP9qRuhlrodnQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nk1HW6G28lFkwGlwP3hMszWlah3FVEi+NZgdEdADyN/1wgOoDCIjXh5iDs5ymi4Jx8wmzVJFUV7x8Sj9lcVH9wIS1Mo5cc7cWxuCBoOjUac4BKhk6e37PnFpt+5D7OAvz0tXTbcg3eyuzXmTAiGLuagJL9yA13s/1T0fGUY9Ul0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A2r0PMnS; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770307141; x=1801843141;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+Maq/Ja5fq6IOMPPPKM/sCWeYbp9JRlP9qRuhlrodnQ=;
+  b=A2r0PMnSBacZXNSR04ValcaP6MlAUtsyOj49wxtfKyum2WzbB2pIT96P
+   PUlnACqS0tX+YjLe9IOQdq69Hi2ChrPfttjrKFKOn1U8q82F6nMMPV5HB
+   US5Ryq8LMeB28HatDrj2YHh1VSmARSvZyme2aB4rVQksCmilQuqo6niYJ
+   ntwCzGa33xrn4oc7AULbh55N0AEcUUieQkVFgpg+id/AvnhlqTLnIeu0D
+   WzdocDZrC9DkHP/4ZH7Ps3brn6r2BS0WFkvwUEl9aDQS+/btC0ikaWcMr
+   vMLQh6oNQXwmeA4hnyOr6ieEuS4aMCSwloPnN/XRA5As6ocHMkfFF+tmf
+   A==;
+X-CSE-ConnectionGUID: NgtEG54ESDim4uchtg0XsA==
+X-CSE-MsgGUID: pcy3m9f/T/mOcN3QH3tYSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71405647"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="71405647"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 07:59:00 -0800
+X-CSE-ConnectionGUID: CVYJPfyYTAGNCiucIfV65Q==
+X-CSE-MsgGUID: di5xYG7nSL+IsUhWqpegnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="215061965"
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.111.86]) ([10.125.111.86])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 07:58:59 -0800
+Message-ID: <78f1be06-0945-4519-98b6-343987926382@intel.com>
+Date: Thu, 5 Feb 2026 07:58:58 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
+To: Sean Christopherson <seanjc@google.com>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: "Nikunj A. Dadhania" <nikunj@amd.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, bp@alien8.de, thomas.lendacky@amd.com, tglx@kernel.org,
+ mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
+ pbonzini@redhat.com, x86@kernel.org, jon.grimm@amd.com,
+ stable@vger.kernel.org
+References: <20260205051030.1225975-1-nikunj@amd.com>
+ <2026020559-igloo-revolver-1442@gregkh>
+ <59781811-a98b-4289-89e4-58e8247241f8@amd.com>
+ <2026020546-wrongness-duplex-bccd@gregkh> <aYS8MQLcGs08PxYK@google.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aYS8MQLcGs08PxYK@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [10.34 / 15.00];
-	URIBL_BLACK(7.50)[ziyao.cc:email,ziyao.cc:dkim,ziyao.cc:mid];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214499-lists,stable=lfdr.de];
-	R_DKIM_ALLOW(0.00)[ziyao.cc:s=zmail];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	GREYLIST(0.00)[pass,body];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-214500-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[alpha.franken.de,kernel.org,gmail.com,google.com,linutronix.de];
-	DKIM_TRACE(0.00)[ziyao.cc:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FROM_NEQ_ENVFROM(0.00)[me@ziyao.cc,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[ziyao.cc,quarantine];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
-	NEURAL_SPAM(0.00)[0.996];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ziyao.cc:email,ziyao.cc:dkim,ziyao.cc:mid,gnu.org:url]
-X-Rspamd-Queue-Id: 5C3BDF4F48
-X-Rspamd-Action: add header
-X-Spam: Yes
+	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BB376F4E66
+X-Rspamd-Action: no action
 
-On MIPS, __current_thread_info is defined as global register variable
-locating in $gp, and is simply assigned with new address during kernel
-relocation.
+On 2/5/26 07:50, Sean Christopherson wrote:
+>>>> That sounds like new hardware support, if you really want that, why not
+>>>> just use newer kernel versions with this fix in it?  Obviously no one is
+>>>> running those kernels on that hardware today, so this isn't a regression 🙂
+> I disagree, this absolutely is a regression.  Kernels without commit 14619d912b65
+> will boot on this "new" hardware, kernels with the commit will not.
 
-This however is broken with LLVM, which always restores $gp if it finds
-$gp is clobbered in any form, including when intentionally through a
-global register variable. This is against GCC's documentation[1], which
-requires a callee-saved register used as global register variable not to
-be restored if it's clobbered.
+Yeah, it is a regression for sure. It's a weird one, but it is a regression.
 
-As a result, $gp will continue to point to the unrelocated kernel after
-the epilog of relocate_kernel(), leading to an early crash in init_idle,
+We need to either disable FRED on SEV-ES/SNP+FRED systems or fix it. We
+obviously want to fix it in mainline. I guess stable could do something
+different here and disable FRED instead if it wanted. That would avoid
+even a whiff of appearing to add new hardware support.
 
-[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff81afada8, ra == ffffffff81afad90
-[    0.000000] Oops[#1]:
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W           6.19.0-rc5-00262-gd3eeb99bbc99-dirty #188 VOLUNTARY
-[    0.000000] Tainted: [W]=WARN
-[    0.000000] Hardware name: loongson,loongson64v-4core-virtio
-[    0.000000] $ 0   : 0000000000000000 0000000000000000 0000000000000001 0000000000000000
-[    0.000000] $ 4   : ffffffff80b80ec0 ffffffff80b53d48 0000000000000000 00000000000f4240
-[    0.000000] $ 8   : 0000000000000100 ffffffff81d82f80 ffffffff81d82f80 0000000000000001
-[    0.000000] $12   : 0000000000000000 ffffffff81776f58 00000000000005da 0000000000000002
-[    0.000000] $16   : ffffffff80b80e40 0000000000000000 ffffffff80b81614 9800000005dfbe80
-[    0.000000] $20   : 00000000540000e0 ffffffff81980000 0000000000000000 ffffffff80f81c80
-[    0.000000] $24   : 0000000000000a26 ffffffff8114fb90
-[    0.000000] $28   : ffffffff80b50000 ffffffff80b53d40 0000000000000000 ffffffff81afad90
-[    0.000000] Hi    : 0000000000000000
-[    0.000000] Lo    : 0000000000000000
-[    0.000000] epc   : ffffffff81afada8 init_idle+0x130/0x270
-[    0.000000] ra    : ffffffff81afad90 init_idle+0x118/0x270
-[    0.000000] Status: 540000e2	KX SX UX KERNEL EXL
-[    0.000000] Cause : 00000008 (ExcCode 02)
-[    0.000000] BadVA : 0000000000000000
-[    0.000000] PrId  : 00006305 (ICT Loongson-3)
-[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
-[    0.000000] Stack : 9800000005dfbf00 ffffffff8178e950 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 ffffffff81970000 000000000000003f ffffffff810a6528
-[    0.000000]         0000000000000001 9800000005dfbe80 9800000005dfbf00 ffffffff81980000
-[    0.000000]         ffffffff810a6450 ffffffff81afb6c0 0000000000000000 ffffffff810a2258
-[    0.000000]         ffffffff81d82ec8 ffffffff8198d010 ffffffff81b67e80 ffffffff8197dd98
-[    0.000000]         ffffffff81d81c80 ffffffff81930000 0000000000000040 0000000000000000
-[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 000000000000009e ffffffff9fc01000 0000000000000000
-[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 ffffffff81ae86dc ffffffff81b3c741 0000000000000002
-[    0.000000]         ...
-[    0.000000] Call Trace:
-[    0.000000] [<ffffffff81afada8>] init_idle+0x130/0x270
-[    0.000000] [<ffffffff81afb6c0>] sched_init+0x5c8/0x6c0
-[    0.000000] [<ffffffff81ae86dc>] start_kernel+0x27c/0x7a8
+I'd personally prefer to just keep stable and mainline as close as possible.
 
-This bug has been reported to LLVM[2] and affects version from (at
-least) 18 to 21. Let's work around this by using inline assembly to
-assign $gp before a fix is widely available.
-
-Cc: stable@vger.kernel.org
-Link: https://gcc.gnu.org/onlinedocs/gcc-15.2.0/gcc/Global-Register-Variables.html # [1]
-Link: https://github.com/llvm/llvm-project/issues/176546 # [2]
-Signed-off-by: Yao Zi <me@ziyao.cc>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
----
-
-Changed from v1:
-- Include a link to LLVM upstream issue in comment
-- Collect tags
-- Link to v1: https://lore.kernel.org/linux-mips/20260118090235.60670-1-me@ziyao.cc/
-
- arch/mips/kernel/relocate.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
-index 7f1c136ad850..59833210542f 100644
---- a/arch/mips/kernel/relocate.c
-+++ b/arch/mips/kernel/relocate.c
-@@ -420,7 +420,20 @@ void *__init relocate_kernel(void)
- 			goto out;
- 
- 		/* The current thread is now within the relocated image */
-+#ifndef CONFIG_CC_IS_CLANG
- 		__current_thread_info = RELOCATED(&init_thread_union);
-+#else
-+		/*
-+		 * LLVM may wrongly restore $gp ($28) in epilog even if it's
-+		 * intentionally modified. Work around this by using inline
-+		 * assembly to assign $gp. $gp couldn't be listed as output or
-+		 * clobber, or LLVM will still restore its original value.
-+		 * See also LLVM upstream issue
-+		 * https://github.com/llvm/llvm-project/issues/176546
-+		 */
-+		asm volatile("move $28, %0" : :
-+			     "r" (RELOCATED(&init_thread_union)));
-+#endif
- 
- 		/* Return the new kernel's entry point */
- 		kernel_entry = RELOCATED(start_kernel);
--- 
-2.52.0
-
+P.S. #VC and #VE are a scourge
 
