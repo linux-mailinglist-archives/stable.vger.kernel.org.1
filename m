@@ -1,437 +1,260 @@
-Return-Path: <stable+bounces-214441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MImEIRJ9hGl/3AMAu9opvQ
-	(envelope-from <stable+bounces-214441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:20:50 +0100
+	id UOVqHhh+hGl/3AMAu9opvQ
+	(envelope-from <stable+bounces-214442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:25:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96696F1CB3
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:20:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD2F1D4B
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 12:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 241EF3002F46
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 11:20:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64574301B164
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 11:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418182609E3;
-	Thu,  5 Feb 2026 11:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C33E3ACEF3;
+	Thu,  5 Feb 2026 11:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pVpUnWyt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R3RE1kRZ"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012046.outbound.protection.outlook.com [40.93.195.46])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A762D13C918
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 11:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770290443; cv=fail; b=Tc0KVuPz4Ai5w5V5O4GSgN96Dry6YzxQXWwzNwYgyTFs2XKDT2m70e2zRDViuFpUQbAYlp0XFsxAWSgOrPZVF9uAC8sl9Jodu1YO2K/yEYkgqIxrsWJ6gQoTIkAmawguHrWsJmrFBjU+ZjndN5sGqiWGBb262GA7WT0/MkEZmvs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770290443; c=relaxed/simple;
-	bh=m+PoCf8g3CpCEf+aKR2JxhwmmijTjPJmsXigyWhfRqU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CDmLqr50wz/yj+fmWvk3G7Z1tMY7CFyQMzqxFHFNAq9tceO7alEhf5whl4HGTVstwBaMmkhV37kquYXp4FSMOM4mgfaDwAxmy8U1HLhioP9Llc+XAwIqWp/Em2uW0yQIuL6wEdL7QTWvTava1TsWteAwUCtRZ6Oe06ZqRTFWGRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pVpUnWyt; arc=fail smtp.client-ip=40.93.195.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DPcPpqs0qWd6ApkAyrMSuDVZoyDMouM44OYjux6H3X1ZAuCEDSrTdnkLt2Al3zabtvLghPuzIQ0ZfbsbwL1MztPmvFOx21XIH+WwP8Zt4kH8hBN6fWWIJ2G6a6e+BSiP5jGVFCaWVEyMKjs1ZUTkyL/faibmFaENEXrl9quh2GhfgpxiaNd8JpEgBsPlX+hQwKrgKpjNa2kC8i/uNMxUK2g8oZPQLLHX7Y8P2agr8W2Xk3gaTXblqNyhlU2caR1mA8ww0THlGMhr00kcFbBVIFmPfdzbXEmFUGOM4rDR95Zix21MqZhC2VL6WXijDG9DmA5bzj1rEBHJDlSq/BY4mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hiCDtWV/mBkJHYnCYr3XysCgcRP8AwBhd/kGvb9UfO4=;
- b=QliihnfmpXaj0YEf4JHZxgeI49saW63rTnmTI/4m5GjqDE9/FDCk1RWHsxFMRAImtPYLJwpawJm/DBHl0BOcPF0KvhExTwypOoG90YbYa/xr1Kpcqshh4RPV8G2byF03j6KOJiYRmRZ98q+Bc5MwSti4JF5sj8Xjxrq7N+uaZoTIPwrfnaAb31Oa+YOYsp1fifu7Qr3UkrrFypvG9J3PLEwUH7/68rMBpv7cxFiVMvD8J7cXZ8yvMUiNaK4DWYYazDY1nylSQU0Nh2i8V+wHCh40nDY2M/HEMxUmdHejy9kdQzWLJ73EbQcJ/DN39q5FcU71Rm/SgiVqAr/N/bJ1uQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hiCDtWV/mBkJHYnCYr3XysCgcRP8AwBhd/kGvb9UfO4=;
- b=pVpUnWyt1RkgqrSkJc99J0JEa3sqgASe1y/ZjeKhAVzGaOwZlGj8NbJBBhH3LEtk3vVdc1VktDWPI4Ial/xwuJmPW9jTLS5aoZJNl2MfZbVU+vlDOG8NRTlsSzsgiiWLLNLti4noMPlNAyX3rFW8/veBe5f14z9tEyz90O6Q1l4F8VieQEyGdmUWnJwt59G3r36bcmGlmaKD1r/IaCcaTvqIEeF94gRtUvYNuOb5ghLFKuHNYlwtcaBM70Kjk/Xbo8VCR7pGnuaY1r6/1jcIImH3nFElR9GkKMbxv9j6TaFIVr2GxfVdNGntLhKv3kIQyNaGoKdbEMgfKFNyto0acA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by CH3PR12MB9430.namprd12.prod.outlook.com (2603:10b6:610:1cd::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Thu, 5 Feb
- 2026 11:20:36 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9587.013; Thu, 5 Feb 2026
- 11:20:36 +0000
-Message-ID: <a1fa9630-2661-4a62-9b38-8154d8ef05b1@nvidia.com>
-Date: Thu, 5 Feb 2026 22:20:31 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: Fix a hmm_range_fault() livelock / starvation
- problem
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Alistair Popple <apopple@nvidia.com>,
- Ralph Campbell <rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>,
- Jason Gunthorpe <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Matthew Brost <matthew.brost@intel.com>,
- John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY5PR04CA0025.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::35) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF332DECBA;
+	Thu,  5 Feb 2026 11:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770290697; cv=none; b=r6ztML/XnQCFUBPRuno+yO9viJKaw4bBtAd8fK+P/y/Gtb5xem6SBPnkest0Jx2YuPbbUbgaRR/kH6puYpAW7ER6sEMoGGTHJSIc4npQW6dPug77FZ0YVlxsAo41Fr9pNE7/BM7M0tbCZTKpntcbyVCkSYNdZgV9rfdPCu9jCcM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770290697; c=relaxed/simple;
+	bh=RP9knd9zSX2JAIs659+W5o/dC9K4wTQXWG+rnTYiOmo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HCy+75s26DKS9as+6mzBRlBhMw7u7xBITZzvGTIt6gjv1n2N2d1sMRbGhNYcPxI8XSHpstpnkWQ3Jem12sDbshrsXJTsznVfFBY/ul2lc73JvshubY/nTfmoQq566L80OGufMCCg50x7UKVdTCyIyS/EHGHXx95F7gfNLg9uU2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R3RE1kRZ; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770290696; x=1801826696;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RP9knd9zSX2JAIs659+W5o/dC9K4wTQXWG+rnTYiOmo=;
+  b=R3RE1kRZ8rQODIPILR2FRT+S1GXzBrUIo0RBmTDnSKJBDXS4WaJaYHsN
+   SkgxVhHgJC5xB3LDsFqn8EC4RPOuzuv2d7ohjHLxSB+G7vSaeYDtmCBai
+   xwaMIxFULj/9FaM5CAzleKQYImQDL0uY2HhaSbEPXJCUz38PV+dEERIec
+   TSNwCLwH4RwAe8I9jegOwLhsc2jWjg8ddpFV9yrK9oQemkkbXASNn5F9z
+   iiUgjlTPFNAnK+om2r3niI8lAF9kgw/wWTtaVJWBUpqzpsMtqusEIvIMe
+   JL9IdaDzC3mZp6fuXWT2AkKic6P4LXrT/7Z7T4Tfk53qygqcjWpLEodne
+   g==;
+X-CSE-ConnectionGUID: S41xPsFLRMmQoijjTtUAfg==
+X-CSE-MsgGUID: Yh7Te6NVQ/y+BXtIR+rB8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82926597"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="82926597"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 03:24:56 -0800
+X-CSE-ConnectionGUID: seo9ZN/4SAWUD9WMECvqkw==
+X-CSE-MsgGUID: AZffPS4XS5G5/6egn3q4Mg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="209841174"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa007.fm.intel.com with ESMTP; 05 Feb 2026 03:24:52 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 432ED95; Thu, 05 Feb 2026 12:24:51 +0100 (CET)
+Date: Thu, 5 Feb 2026 12:24:51 +0100
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: WangYuli <wangyuli@aosc.io>
+Cc: mario.limonciello@amd.com, thomas.lendacky@amd.com, john.allen@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	andriy.shevchenko@linux.intel.com, jsd@semihalf.com,
+	andi.shyti@kernel.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	bp@alien8.de, ashish.kalra@amd.com, markhas@chromium.org,
+	jarkko.nikula@linux.intel.com, wsa@kernel.org,
+	WangYuli <wangyl5933@chinaunicom.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] i2c: designware: Enable PSP semaphore for AMDI0010 and
+ fix probe deferral
+Message-ID: <20260205112451.GX2275908@black.igk.intel.com>
+References: <20260205103047.19127-1-wangyuli@aosc.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|CH3PR12MB9430:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3f11047-523e-4ac1-7ff1-08de64a89597
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QnRFZDlPQ3VkSlFjT1ppbjFtRFd5S0I3VVplNjdMRklZVlp5L0xFZlBINWdS?=
- =?utf-8?B?dUFVZUJxdXEzR3UxSjVUczhZVTY1WW9kazMwOUV6OWZLaUUyQUFrSUtieXQv?=
- =?utf-8?B?OFY1dnJrd2xPY2h2cFZzcFlldzZBRzlSbkk4UDRGaWdodVh5K2thTkZHTzBD?=
- =?utf-8?B?WkJoZmZ4eUU5MVF4eWhPaHgxRm5JOGpIQ05GbDVpVlVhSkZWN25vcUpJd2xL?=
- =?utf-8?B?cG9WeGUrMmZwK0NRKzZRUHR5VDFPbUJOclh3YngwM3BlZjhKOHd0aVVTOEJ3?=
- =?utf-8?B?NXF3WkRqQzBZbXpTMzFLYmJZVVJEQkN5NTNibUpmbTRDbVZ3dDR1d29RZE9U?=
- =?utf-8?B?V2t6bmhjblNHZ1MyUS95UnlTOU9HTzI4SkF5eFc3U09pcHlZWG9CVXJLVndt?=
- =?utf-8?B?UDJyc0NnUThFV2NUWW15blFnbEVwNzJ1aVRUQnc3eXVmRWE2bUxzeTRNakVY?=
- =?utf-8?B?ZEZiSEozZml4bjdzakZkU0w2MUNGQXoyNDY4ekJKbGluOFdiU3hibVQ4RUdK?=
- =?utf-8?B?VzJ2ZGRnUXJPSkxSV1pmbDJMM3AyQ014UE5kQy90eEVGc1JET1diV0l1THJW?=
- =?utf-8?B?Q3JqbVEzcmhqUjVpTFIxUS9WNWJtMnd6Q0pxMXptT0UyVDhjUWlOdE51ZWlT?=
- =?utf-8?B?eDdEYmwxeGF0RVNiU1NnRko0YUJka25RTjAvc2g4SVo3cUEyM2pWZ28wN2Fn?=
- =?utf-8?B?TzczV3JZOFdGS2VGbXdwOUhSd25idmJQSXZhSy9pRHp0dTRTKzVMV0UzNXNw?=
- =?utf-8?B?OEROOEdYTFRFRlNiRTE0U2VGNEpkQThkWXJZd3NoajdITkl1cUZON2d1bDlu?=
- =?utf-8?B?UFpjQ1l5SGZFWVpmc0gra1ZUYWZYcGxLamlMWWJVTTNrNEpxbG5iT0JYNk5G?=
- =?utf-8?B?ZkRrMWw4dUEyaVdnQ3FLRmxxYUhkbzRUNzdqb1UrL3dmZjZUS2VaNW9RcXVJ?=
- =?utf-8?B?WjYrWVQ4YUpsWDZMVjBsZ2RaK2lVQzByeDIzNVQ5QWJJK3ZiVzVhaXYzaFJr?=
- =?utf-8?B?VmhuVmMyU296djhnUVNwd1RtY2N4UlI5dHRjeTd0Zzh0R3pHdldUWkdKZ0sr?=
- =?utf-8?B?NEVtWGc3VU4xTjNyL3pqUUt1YWpnZjdtSTVmQzJCbUZuUFlQalhoSDRpZzBz?=
- =?utf-8?B?cEJSN3JONmR6bk1ETjdvakRmaGRJbm5jU3ZqOHhGYmVNN1BHVTJTUU04QS9u?=
- =?utf-8?B?UG9aWURVUHMxMmNFNjJpemFGR2dHR0k4N0hjcXoxQmkwcUJCMTVYanAvTTBx?=
- =?utf-8?B?bW9FbFlkbXZHU29sQTVOdHBqSmdPS1VUcmFkc214RmdRTWpsMCt3OWVrODM3?=
- =?utf-8?B?aDdhOXk5N3hONmxJMlN4T2U2eTI0TFFoY3pJSDZnSFpZTWNmdmZyNk55eGZS?=
- =?utf-8?B?dUdEeHJWcGI1ekZhOFNERjdGdW5zTHpNU0E2NzlVYTQrYXlJUHBLUlRyblZt?=
- =?utf-8?B?Z3h1TFV2OURJWUFZeGw1bkgyQVpTNmVTZ25jZUlabTlWdyt3N05UQVZwT1Ny?=
- =?utf-8?B?VGpoVEdKWjN4WWNhMmFFUHFOQlZkWGdzeUFhTW44WVdkWUpwQVg5NUkzQUFT?=
- =?utf-8?B?WnlSQkM2SXIwTDQyR2RmdEljZktLMFptK1U4VUxWdTIvV1I1Y0psRnpldG9F?=
- =?utf-8?B?a0RvU2RqV29RWWVkYTN2VndPUmZQbEpXQ0JiL0x1WndCd0M1QUZUbFFKckNN?=
- =?utf-8?B?ZGZWR2lLRDFoRmltRHZHNmRFajdUQUhHdVFaOGNpRUl4MWZVS3p5ZlR1V3VP?=
- =?utf-8?B?N0FLYTdoeHlPK0NQeVJmalJiZ1pMalZHeTUzcXhqYjlkZjVWNHJOUHBGZnBt?=
- =?utf-8?B?bzRtV09UVkQxMDcrRXFHdTk0UllXNzNOYnd0RSsvOGxwMHZSNUZRMldadHlh?=
- =?utf-8?B?NXFWUk9DNk5Oc0hNeDc1cHJWOUN2eXFqM2lRU3J6TnNhaUtGNEJ4SnhhZ2ZM?=
- =?utf-8?B?Q3AvdjVMV3VQcXF1VHIySGJBTm1NKzEyVmk0dFl2QWl4VGt0MEFnakN4NEp1?=
- =?utf-8?B?QStPWkF6NFNIQzFiYzNzcml5b1NPVWlMdkZRc1YwYnJ6V2d2Z1prWFhSMEV5?=
- =?utf-8?B?aEtscmFQRnVzNzRWUFNwU3hDU0FSOWpyaUFoQVJ6RWZydlZmajVOTmljd05r?=
- =?utf-8?Q?SNb0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUNUTmgwak16d3lUL043MC9Ia1BhOFVHd2xyYTNQS1k4SUFvYXlzV09kcXNQ?=
- =?utf-8?B?SkNsWVVuaTVpM1BMMG1YZGxieGo4Q1E5dHdNOFBzUW9NbUNZZ21saE13UXRM?=
- =?utf-8?B?VUY2OEdaaXc4eU1YVXlCUFQ0d3FvbGlzeHZxaW80STZEL0s1WGhZSjRqTE15?=
- =?utf-8?B?Q245WEpaQjVKbmVpNEhvNUJhUlR0Rm8wRUZGYVNwZG5jY0MzRldWdGZuaHVi?=
- =?utf-8?B?QjdybzEybU1hRnJSMjU5Yk1BRkFobEtPb0dvWEVXZkJrZHZPZ1JOK1owVm84?=
- =?utf-8?B?aW1nWUM3UWRBd09ObzJhTW5UM2t0UWdteitHcHg5VWNIaDE0Nk5TaDJoN3lF?=
- =?utf-8?B?cnI0cXFjVWFkT0hrYlB3V1BDZjRzd0tVV2tGTnNQWlFuZ2xJRUhSUzU2c2Np?=
- =?utf-8?B?Zmh4L1Y0eFROYlRBdUpmMEdOUm4rUElCZnFKR0Y0dGdMU1VQOWNheEdWZTZa?=
- =?utf-8?B?bE51d0RhVlNtZ3FIc3I5QU5EZkNSQit1R2JZb2lQOHdLejZ6Vm1VeDhNN3RF?=
- =?utf-8?B?dlg3UVJaSFRJeXhDNGZTQXJaMzMycFJYdDVlVlJleDRsSkR4YTA0QSsxNWlP?=
- =?utf-8?B?SHIzNUNCOFFzOTdMc3FDK1BBeHNQdWl0OEExYnd4dWVNbVZyL0F4dlNpN2hC?=
- =?utf-8?B?VTAxOGcvZWZyL1p0YkJickh1d0w2aDVHNDZra2pwQ2FJV2Z5K0FEMDBUUDN4?=
- =?utf-8?B?YWdNdG4zODloWlN2NkZ4eER6aFMzSGlRVVdCanYwb3I1YTRFMDdiNUQ2c1h4?=
- =?utf-8?B?blRRYTdqek05Wkk5c3RqTVB6Z0F1WkY2cC9HT0VWT0RFa1pSZTkxcmlLa3Zl?=
- =?utf-8?B?RzVnNXJYTUpZUThhKzFrK3NHT3pjVTNRK3V6clhPVGo4ZGlTNXkvWE1iWHhp?=
- =?utf-8?B?VGlJekpTeDBXNkl4TWtoTnQwYzA2dHJ5UnBhR0ZDKzAybGdqUDYyU216eVZ1?=
- =?utf-8?B?cWgxakRXdU8rZnRSQUNoTnJ0bHlha2ZoUjVmY0M1WkQveDRXanJROTVVMG1Y?=
- =?utf-8?B?aEZtQ1RhZElOSGp2NmVTTkRjaXpyVkVXV2ZncWh0TWVEOUJaSklpcnFKTlVH?=
- =?utf-8?B?YXNMOE91eStRd3ZLbjJTWkNYWHd5QTlpRUNhdUdCTHptMnRJeE9WMGxXdGJs?=
- =?utf-8?B?b3dUQTJEdEcwSGNZcWpIc0VTNXhPNjVFQUpwSWtiUWNkRXRmYkZwN2JBOUhh?=
- =?utf-8?B?MmpFM2dpMldnUk9weUJDNkEvNjcvQnNFN084UVYxRCt6TWlRcmxNcjFkZ0Va?=
- =?utf-8?B?a1kzTE9mSTVuRVZUR0pDL2NkcGJWb2EvZ05OdHpLWGkyMDk3Q2U0TGtrbWR6?=
- =?utf-8?B?UElqczZ5djh0T25JTmxWWVhKSFlxT0xmdzkrZzRYNE9objY3MURXZTVkQ0JW?=
- =?utf-8?B?SkxtbE45NlplaFBXbVlqU2pZazliRktoeTFEY3ZrRlMrS2hqMlJtOWdzczJw?=
- =?utf-8?B?YXJYV2xpZlI4UXlmaEJaa1R3LzBXSFRGVytTdXcrL0dzcnRPL012OVh5UGhB?=
- =?utf-8?B?dlRsb1BrTy9RMzl5STJPS3JndVVSaGJVbWtqZlhMOG9uRWtUYU16cFJzUDVv?=
- =?utf-8?B?TnZXYW5ONW9SZWxiUDN2T3QzSGhMTXFuVU4vTkhmVzdtQWlBdGhBV2ZnTHVC?=
- =?utf-8?B?dmtWdmNydzZaQU5HSm5BWW1ydThLTDdadGxudGNFODk3UVRPTEdkWUtSWTJQ?=
- =?utf-8?B?UTZ3Q1RyM2ZRNmd2NktBcHlLYi9tZ0RLb2pLNU9Bek1yOS9MWDBpN0p3QzVi?=
- =?utf-8?B?T1FhYStiUkhPSXlaS3BKMURPVFIvVzNIR2UvS2hJT3VUbG1pci93QzU5YmY5?=
- =?utf-8?B?SDlHdTg2eWtWQmdhNGNwNDlGTHBPSHY2VUhFUEUwdHRPUG9LM1RxZVFLMjhB?=
- =?utf-8?B?OEtMQWpXYU14R1Jya0tHNDBBUkZCU044QVFOZUtnL0ZRci96RnBNbGZvNzNL?=
- =?utf-8?B?bW1obUxyelRsbFJFam1WNVdUclZmNVQyOWd0VFZVSElEUnJoUVZjaWlKakxM?=
- =?utf-8?B?bWZiRWtHeVY3eE5udTVGM3JRdGVRVHVleWlpMmJxTjdnanV2ckNFZjE1c0k4?=
- =?utf-8?B?TnFGTGhZR1FTOXVGZkVJQ3prenIvWXhlcENHU0NnRG4zMmFWalpYdm5iOGNG?=
- =?utf-8?B?MkRWd0d5SHFWNkRRNmJXRmtXUTZIZ3VxSEFhbDBKK0xYOHdSVTBGakM5aEJp?=
- =?utf-8?B?bVQ5T1BNbm1QaVM1MG8zcWdFSE9CV3Jaa2tacGFHZVRQT1p1YVMvQ1JsYjlX?=
- =?utf-8?B?cG9XT3h0R0F3aUJRYnpWZHhsOEpVU0Z0N1VpZmlFLzA4RnZOSEhZbFFLVkNB?=
- =?utf-8?B?R3U1TFA3MFdsSkcvWHdQQW9pLy9uZkVMcXlhclBhV2x5Wk9UUXZ5VjUwclF3?=
- =?utf-8?Q?uR2+ir6HvpHmYr8Mdl9PP7tIoSawHecJVEYvaDox+CZ+c?=
-X-MS-Exchange-AntiSpam-MessageData-1: gMzWXmWopVFPog==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3f11047-523e-4ac1-7ff1-08de64a89597
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 11:20:36.2094
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2TurRzqLyVhVtNYBeHfii3kqK7ivfq04ahU76XS33mLxYfnqazw9XIWoBruJVJwulAViX9BfL94BXtwoO8kguw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9430
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260205103047.19127-1-wangyuli@aosc.io>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214441-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214442-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[balbirs@nvidia.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[mika.westerberg@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lists.freedesktop.org:email,ziepe.ca:email,nvidia.com:mid,nvidia.com:email,Nvidia.com:dkim,lst.de:email,kvack.org:email,linux-foundation.org:email,intel.com:email,mellanox.com:email]
-X-Rspamd-Queue-Id: 96696F1CB3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chinaunicom.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim]
+X-Rspamd-Queue-Id: 3BFD2F1D4B
 X-Rspamd-Action: no action
 
-On 2/5/26 22:10, Thomas Hellström wrote:
-> If hmm_range_fault() fails a folio_trylock() in do_swap_page,
-> trying to acquire the lock of a device-private folio for migration,
-> to ram, the function will spin until it succeeds grabbing the lock.
+On Thu, Feb 05, 2026 at 06:30:47PM +0800, WangYuli wrote:
+> From: WangYuli <wangyl5933@chinaunicom.cn>
 > 
-> However, if the process holding the lock is depending on a work
-> item to be completed, which is scheduled on the same CPU as the
-> spinning hmm_range_fault(), that work item might be starved and
-> we end up in a livelock / starvation situation which is never
-> resolved.
+> AMD Strix Point platforms use the AMDI0010 ACPI HID for their I2C
+> controllers, but this entry was missing the ARBITRATION_SEMAPHORE flag
+> that enables PSP-based bus arbitration.
 > 
-> This can happen, for example if the process holding the
-> device-private folio lock is stuck in
->    migrate_device_unmap()->lru_add_drain_all()
-> The lru_add_drain_all() function requires a short work-item
-> to be run on all online cpus to complete.
+> Without proper arbitration, when both the x86 host and AMD PSP
+> (Platform Security Processor) attempt to access the shared I2C bus
+> simultaneously, the DesignWare controller loses arbitration and reports:
 > 
-> A prerequisite for this to happen is:
-> a) Both zone device and system memory folios are considered in
->    migrate_device_unmap(), so that there is a reason to call
->    lru_add_drain_all() for a system memory folio while a
->    folio lock is held on a zone device folio.
-> b) The zone device folio has an initial mapcount > 1 which causes
->    at least one migration PTE entry insertion to be deferred to
->    try_to_migrate(), which can happen after the call to
->    lru_add_drain_all().
-> c) No or voluntary only preemption.
+>   i2c_designware AMDI0010:01: i2c_dw_handle_tx_abort: lost arbitration
 > 
-> This all seems pretty unlikely to happen, but indeed is hit by
-> the "xe_exec_system_allocator" igt test.
+> This causes communication failures with I2C devices such as touchpads
+> (e.g., BLTP7853 HID-over-I2C).
 > 
-
-Do you have a stack trace from the test? I am trying to visualize the
-livelock/starvation, but I can't from the description.
-
-> Resolve this by waiting for the folio to be unlocked if the
-> folio_trylock() fails in the do_swap_page() function.
+> Add the ARBITRATION_SEMAPHORE flag to the AMDI0010 entry to enable PSP
+> mailbox-based I2C bus arbitration, consistent with how AMDI0019 was
+> handled for AMD Cezanne platforms.
 > 
-> Rename the migration_entry_wait_on_locked() function to
-> softleaf_entry_wait_unlock() and update its documentation to
-> indicate the new use-case.
+> However, simply enabling this flag exposes a latent bug introduced by
+> commit 440da737cf8d ("i2c: designware: Use PCI PSP driver for
+> communication"): the driver unconditionally returns -EPROBE_DEFER when
+> psp_check_platform_access_status() fails, causing an infinite probe
+> deferral loop on platforms that lack PSP platform access support.
 > 
-> Future code improvements might consider moving
-> the lru_add_drain_all() call in migrate_device_unmap() to be
-> called *after* all pages have migration entries inserted.
-> That would eliminate also b) above.
+> The problem is that psp_check_platform_access_status() returned -ENODEV
+> for all failure cases, but there are two distinct scenarios:
 > 
-> v2:
-> - Instead of a cond_resched() in the hmm_range_fault() function,
->   eliminate the problem by waiting for the folio to be unlocked
->   in do_swap_page() (Alistair Popple, Andrew Morton)
-> v3:
-> - Add a stub migration_entry_wait_on_locked() for the
->   !CONFIG_MIGRATION case. (Kernel Test Robot)
-> v4:
-> - Rename migrate_entry_wait_on_locked() to
->   softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+>   1. PSP is still initializing (psp pointer exists but platform_access_data
+>      is not yet ready, while vdata->platform_access indicates support) -
+>      this is a transient condition that warrants probe deferral.
 > 
-> Suggested-by: Alistair Popple <apopple@nvidia.com>
-> Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Jason Gunthorpe <jgg@mellanox.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Leon Romanovsky <leon@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: linux-mm@kvack.org
-> Cc: <dri-devel@lists.freedesktop.org>
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v6.15+
-> Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+>   2. The platform genuinely lacks PSP platform access support (either no
+>      psp pointer, or vdata->platform_access is not set) - this is a
+>      permanent condition where probe deferral would loop indefinitely.
+> 
+> Fix this by updating psp_check_platform_access_status() to return:
+> 
+>   - -EPROBE_DEFER: when PSP exists with platform_access capability but
+>     platform_access_data is not yet initialized (transient)
+>   - -ENODEV: when the platform lacks PSP platform access support (permanent)
+> 
+> Then update the I2C driver to pass through the actual return code from
+> psp_check_platform_access_status() instead of forcing -EPROBE_DEFER,
+> allowing the driver to fail gracefully on unsupported platforms.
+> 
+> Tested on MECHREVO XINGYAO 14 with AMD Ryzen AI 9 H 365.
+> 
+> Fixes: 440da737cf8d ("i2c: designware: Use PCI PSP driver for communication")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: WangYuli <wangyl5933@chinaunicom.cn>
 > ---
->  include/linux/migrate.h |  8 +++++++-
->  mm/filemap.c            | 15 ++++++++++-----
->  mm/memory.c             |  3 ++-
->  mm/migrate.c            |  8 ++++----
->  mm/migrate_device.c     |  2 +-
->  5 files changed, 24 insertions(+), 12 deletions(-)
+>  drivers/crypto/ccp/platform-access.c        |  7 ++++++-
+>  drivers/i2c/busses/i2c-designware-amdpsp.c  | 11 +++++++++--
+>  drivers/i2c/busses/i2c-designware-platdrv.c |  2 +-
+>  include/linux/psp-platform-access.h         |  5 +++--
+>  4 files changed, 19 insertions(+), 6 deletions(-)
 > 
-> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> index 26ca00c325d9..3cc387f1957d 100644
-> --- a/include/linux/migrate.h
-> +++ b/include/linux/migrate.h
-> @@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
->  
->  int migrate_huge_page_move_mapping(struct address_space *mapping,
->  		struct folio *dst, struct folio *src);
-> -void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-> +void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
->  		__releases(ptl);
->  void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
->  int folio_migrate_mapping(struct address_space *mapping,
-> @@ -97,6 +97,12 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
->  	return -ENOSYS;
->  }
->  
-> +static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-> +	__releases(ptl)
-> +{
-> +	spin_unlock(ptl);
-> +}
-> +
->  #endif /* CONFIG_MIGRATION */
->  
->  #ifdef CONFIG_NUMA_BALANCING
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index ebd75684cb0a..d98e4883f13d 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -1379,14 +1379,16 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
->  
->  #ifdef CONFIG_MIGRATION
->  /**
-> - * migration_entry_wait_on_locked - Wait for a migration entry to be removed
-> - * @entry: migration swap entry.
-> + * softleaf_entry_wait_on_locked - Wait for a migration entry or
-> + * device_private entry to be removed.
-> + * @entry: migration or device_private swap entry.
->   * @ptl: already locked ptl. This function will drop the lock.
->   *
-> - * Wait for a migration entry referencing the given page to be removed. This is
-> + * Wait for a migration entry referencing the given page, or device_private
-> + * entry referencing a dvice_private page to be unlocked. This is
->   * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
->   * this can be called without taking a reference on the page. Instead this
-> - * should be called while holding the ptl for the migration entry referencing
-> + * should be called while holding the ptl for @entry referencing
->   * the page.
->   *
->   * Returns after unlocking the ptl.
-> @@ -1394,7 +1396,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
->   * This follows the same logic as folio_wait_bit_common() so see the comments
->   * there.
->   */
-> -void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-> +void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
->  	__releases(ptl)
+> diff --git a/drivers/crypto/ccp/platform-access.c b/drivers/crypto/ccp/platform-access.c
+> index 1b8ed3389733..3f20cf194cb6 100644
+> --- a/drivers/crypto/ccp/platform-access.c
+> +++ b/drivers/crypto/ccp/platform-access.c
+> @@ -46,7 +46,12 @@ int psp_check_platform_access_status(void)
 >  {
->  	struct wait_page_queue wait_page;
-> @@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
->  	 * If a migration entry exists for the page the migration path must hold
->  	 * a valid reference to the page, and it must take the ptl to remove the
->  	 * migration entry. So the page is valid until the ptl is dropped.
-> +	 * Similarly any path attempting to drop the last reference to a
-> +	 * device-private page needs to grab the ptl to remove the device-private
-> +	 * entry.
->  	 */
->  	spin_unlock(ptl);
+>  	struct psp_device *psp = psp_get_master_device();
 >  
-> diff --git a/mm/memory.c b/mm/memory.c
-> index da360a6eb8a4..20172476a57f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  				unlock_page(vmf->page);
->  				put_page(vmf->page);
->  			} else {
-> -				pte_unmap_unlock(vmf->pte, vmf->ptl);
-> +				pte_unmap(vmf->pte);
-> +				softleaf_entry_wait_on_locked(entry, vmf->ptl);
->  			}
->  		} else if (softleaf_is_hwpoison(entry)) {
->  			ret = VM_FAULT_HWPOISON;
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 4688b9e38cd2..cf6449b4202e 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
->  	if (!softleaf_is_migration(entry))
->  		goto out;
+> -	if (!psp || !psp->platform_access_data)
+> +	/* PSP driver not loaded yet, caller should defer */
+> +	if ((!psp) || (!psp->platform_access_data && psp->vdata->platform_access))
+> +		return -EPROBE_DEFER;
+> +
+> +	/* PSP loaded but platform_access not supported by hardware */
+> +	if (!psp->platform_access_data && !psp->vdata->platform_access)
+>  		return -ENODEV;
 >  
-> -	migration_entry_wait_on_locked(entry, ptl);
-> +	softleaf_entry_wait_on_locked(entry, ptl);
->  	return;
->  out:
->  	spin_unlock(ptl);
-> @@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm_area_struct *vma, unsigned long addr, p
->  		 * If migration entry existed, safe to release vma lock
->  		 * here because the pgtable page won't be freed without the
->  		 * pgtable lock released.  See comment right above pgtable
-> -		 * lock release in migration_entry_wait_on_locked().
-> +		 * lock release in softleaf_entry_wait_on_locked().
->  		 */
->  		hugetlb_vma_unlock_read(vma);
-> -		migration_entry_wait_on_locked(entry, ptl);
-> +		softleaf_entry_wait_on_locked(entry, ptl);
->  		return;
->  	}
+>  	return 0;
+> diff --git a/drivers/i2c/busses/i2c-designware-amdpsp.c b/drivers/i2c/busses/i2c-designware-amdpsp.c
+> index 404571ad61a8..341232767177 100644
+> --- a/drivers/i2c/busses/i2c-designware-amdpsp.c
+> +++ b/drivers/i2c/busses/i2c-designware-amdpsp.c
+> @@ -269,6 +269,7 @@ static const struct i2c_lock_operations i2c_dw_psp_lock_ops = {
+>  int i2c_dw_amdpsp_probe_lock_support(struct dw_i2c_dev *dev)
+>  {
+>  	struct pci_dev *rdev;
+> +	int ret;
 >  
-> @@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
->  	ptl = pmd_lock(mm, pmd);
->  	if (!pmd_is_migration_entry(*pmd))
->  		goto unlock;
-> -	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
-> +	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
->  	return;
->  unlock:
->  	spin_unlock(ptl);
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 23379663b1e1..deab89fd4541 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
->  		}
+>  	if (!IS_REACHABLE(CONFIG_CRYPTO_DEV_CCP_DD))
+>  		return -ENODEV;
+> @@ -291,8 +292,14 @@ int i2c_dw_amdpsp_probe_lock_support(struct dw_i2c_dev *dev)
+>  		_psp_send_i2c_req = psp_send_i2c_req_doorbell;
+>  	pci_dev_put(rdev);
 >  
->  		if (softleaf_is_migration(entry)) {
-> -			migration_entry_wait_on_locked(entry, ptl);
-> +			softleaf_entry_wait_on_locked(entry, ptl);
->  			spin_unlock(ptl);
->  			return -EAGAIN;
->  		}
+> -	if (psp_check_platform_access_status())
+> -		return -EPROBE_DEFER;
+> +	/*
+> +	 * Check if PSP platform access is available.
+> +	 * Returns 0 on success, -EPROBE_DEFER if PSP driver not loaded,
+> +	 * -ENODEV if platform_access is not supported by hardware.
+> +	 */
 
-Balbir
+This is useless comment.
+
+> +	ret = psp_check_platform_access_status();
+> +	if (ret)
+> +		return ret;
+>  
+>  	psp_i2c_dev = dev->dev;
+>  
+> diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
+> index 7be99656a67d..63b1c06ee111 100644
+> --- a/drivers/i2c/busses/i2c-designware-platdrv.c
+> +++ b/drivers/i2c/busses/i2c-designware-platdrv.c
+> @@ -345,7 +345,7 @@ static const struct acpi_device_id dw_i2c_acpi_match[] = {
+>  	{ "80860F41", ACCESS_NO_IRQ_SUSPEND },
+>  	{ "808622C1", ACCESS_NO_IRQ_SUSPEND },
+>  	{ "AMD0010", ACCESS_INTR_MASK },
+> -	{ "AMDI0010", ACCESS_INTR_MASK },
+> +	{ "AMDI0010", ACCESS_INTR_MASK | ARBITRATION_SEMAPHORE },
+>  	{ "AMDI0019", ACCESS_INTR_MASK | ARBITRATION_SEMAPHORE },
+>  	{ "AMDI0510", 0 },
+>  	{ "APMC0D0F", 0 },
+> diff --git a/include/linux/psp-platform-access.h b/include/linux/psp-platform-access.h
+> index 540abf7de048..84dbdbeb61d6 100644
+> --- a/include/linux/psp-platform-access.h
+> +++ b/include/linux/psp-platform-access.h
+> @@ -64,8 +64,9 @@ int psp_ring_platform_doorbell(int msg, u32 *result);
+>   * if platform features has initialized.
+>   *
+>   * Returns:
+> - * 0          platform features is ready
+> - * -%ENODEV   platform features is not ready or present
+> + *  0:            platform features is ready
+> + *  -%ENODEV:     platform_access is not supported by hardware
+> + *  -%EPROBE_DEFER: PSP driver not ready or platform features not yet initialized
+>   */
+>  int psp_check_platform_access_status(void);
+>  
+> -- 
+> 2.51.0
 
