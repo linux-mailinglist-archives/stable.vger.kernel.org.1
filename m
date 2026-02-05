@@ -1,177 +1,162 @@
-Return-Path: <stable+bounces-214529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6E1pJJHUhGlo5gMAu9opvQ
-	(envelope-from <stable+bounces-214529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:34:09 +0100
+	id +Lp8ERHVhGlo5gMAu9opvQ
+	(envelope-from <stable+bounces-214531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:36:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A25F5FA5
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:34:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D9CF600D
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 18:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E1E5E3006019
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:34:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AFF230514AD
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 17:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B942F0678;
-	Thu,  5 Feb 2026 17:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DD72F12BA;
+	Thu,  5 Feb 2026 17:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="Am7bi8fW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="er8bfm37"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kf7yf/w+"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069A32566F7;
-	Thu,  5 Feb 2026 17:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7238C2BE64F;
+	Thu,  5 Feb 2026 17:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770312844; cv=none; b=rd0k+oSOoZKTtJ5KTP4deHnuduPITbkQ+jX1ShCfrUA7vabwqlIOTVf6fxRP24X6SSfgi7zLPAmy5O8R/dKGwDrY+RL9liSAVsldV0XNJHVYZt6wHgIrkODgXPU+uvE3a2hSn4Le6U+s3yEs0YxYjlKZDw2kJgn+ZDpqbfnluSs=
+	t=1770312871; cv=none; b=O/vRZfDWf9duOhvWbBOq9AKxddDpGGxxVANCEKqNda47rTucgpmIdhq59/cw2iMiav3MwTnDr2fPeF1YZ+s+I1Lbv0P0neqUEGMGmcihYq3Ny91pyc1uP6hx8PU4tD8qoWMGg3ZnTxU/v7ti7rwzv7evHDBODPWAy8LH7NJBGvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770312844; c=relaxed/simple;
-	bh=YmAZPLraaYyAH8QEMoajkTgspFcmml8cxhuWo8X6dQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qTrlJyI3VmBTbp4rTVxilG3VJP4ftIzZeWko4/xYspwfIrpB7oATLDBWpJQfYTs87nyRFigMDEaR18JbmXMDosQtq2a9ywCvLXLD+0Z/vAoP9N/cfeWmrjv/XXMOxt1pAJHkzpYpzyWyEbXeVWYng553tFZd+lwREEUjnqIXFbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=Am7bi8fW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=er8bfm37; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 0B7361D0007E;
-	Thu,  5 Feb 2026 12:34:03 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Thu, 05 Feb 2026 12:34:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1770312842; x=1770399242; bh=Bdr3a4RsfY
-	7loaV4EGK1omAkpqA0BNuHOWy3YIZ/14E=; b=Am7bi8fWs/fTDVULBUBy7522mC
-	2QBtGyYfLxObp28fQSEPQNP8V3mJ599FGipR05dd5da6xYNqeU/v1NhkxzXkn9ye
-	ymWLvdA3kCIqkHNAPO7ROTvfO4Q6/lTT0rwW9e0nB1Mn5Hudl2IKCxIgak+mnDOZ
-	AcYyB2qusJ8cKZiKQ84YBQdNMWifd7Q4h0DYBVlFQpPq9rp2gUUCBCwFv7/a6/Hl
-	R8kbaeRH/3xuWLgcaVERfLJZUxhYq0Rjrr/PtmMkc4eCyQam3rbYiG9bYUOeP5Ik
-	NXzD4at4K2Ckromx5JliuvzB3MPsna59yTj4S7/WTvl4B7yFKfyOoRGB1QkQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1770312842; x=1770399242; bh=Bdr3a4RsfY7loaV4EGK1omAkpqA0BNuHOWy
-	3YIZ/14E=; b=er8bfm372OpLa4w1LWK9KzYiVq7EX5BcrmbjXCBeJp2asQtJg8D
-	0u80Cnjjy94tcYr1ocSE5jKPKngfhoDBBDxbgN0noWLhhCrXYH5JX5rEqrC/sDSr
-	1hGLkjUvbhEoECi+PfQvDq+joBbDGo1OZXw9Jo98kQt/3qUpqKzIAfYqCqIwIF/t
-	FufwyVnrEbMFfTu1a5FHXD662WwqRaGLSbCMoArpfdsqD2EsD7DmBIu1hbKutymS
-	ZyJNXRYwDUGGbkC3PKEzU57sTNZslQWzM9HWHaqqONGZLQZDldJUy6gpVXL9k/vF
-	bFLkcna8JnNyDFIWZXuJ88nFYlMkk/yALuw==
-X-ME-Sender: <xms:itSEaRnnGHqIXgZCLBjyZCJBM76MC8ITR-o-z2KuKh_TOWhNis6Whg>
-    <xme:itSEaZgn8SJu34GqdbWLzWlC2jbFbjEb0gnd9RQSgvUaq4cGAoOCcHrilrWnq1Azs
-    JQm_G-Ou0eOaerntG0QIopgSXoekX8CqbxLLwS2tzJI46MCLaw>
-X-ME-Received: <xmr:itSEabhOTlQdY4XVmXRaSdUyAGA9kgO175BJZ9brOlKkYwpCXD95VkXwos0eHKNCGxkgp05u9vGaHy984zW9KZ-Os-C6Ebnlx4vLxg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeehleduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehueehgf
-    dtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgrihhn
-    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepuddv
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguhhihrghnudeltddvvddttdelse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepjhhohhgrnhhnvghsrdgsvghrghesihhnthgv
-    lhdrtghomhdprhgtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopeguhhihrggrnhduledtvddvtddtleesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:itSEabvHdv-QuczPnE2QA4G8MpdznTOHqGo0bvdGx1vRTUPqQHMlMA>
-    <xmx:itSEaTta4I6gPbUGRmN8oIMmPHYGdzTfVuxiQcPtczdhuW2tC_iJUw>
-    <xmx:itSEaZq0e-8W1G3HECEyviJ2M-eXlDV_-hO4TFxqwaX-iq7dl-pf6w>
-    <xmx:itSEaaLJUEWpdXgd7lWhyWgS6Lu0j2aougop0JcrHrrB9yATnipcXw>
-    <xmx:itSEafAMeimhLYb66njjsEqp58ItFnOxqzBqJ2WsdyRJQYMeZrvRzVvx>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Feb 2026 12:34:02 -0500 (EST)
-Date: Thu, 5 Feb 2026 18:34:00 +0100
-From: Greg KH <greg@kroah.com>
-To: Dhyan K Prajapati <dhyan19022009@gmail.com>
-Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, stable@vger.kernel.org,
-	dhyaan19022009-hue <dhyaan19022009@gmail.com>
-Subject: Re: [PATCH v3 wireless] mac80211: fix NULL pointer dereference in
- monitor mode
-Message-ID: <2026020553-consult-widow-3d06@gregkh>
-References: <20260205172313.16652-1-dhyaan19022009@gmail.com>
+	s=arc-20240116; t=1770312871; c=relaxed/simple;
+	bh=2C16gBetgYeprk8qMWPd4VtC9f+xr40ryhjM9KIq00Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FD+VFWDXmEuoKJZU78bXgcLTgdR6na7SnYIqhcAtOQ8tes2H03ltghtgkqNz5ruNvglpistS/ttw57UAIO1RsxBBhroj50raE1/AyLhY96tf36XjTCVRJWupVLSyHfb70PaN4WVnwOUTKIMGJEVbqKhgmVV9TYEMSxDrtjfkYvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kf7yf/w+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71217C116D0;
+	Thu,  5 Feb 2026 17:34:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770312871;
+	bh=2C16gBetgYeprk8qMWPd4VtC9f+xr40ryhjM9KIq00Y=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Kf7yf/w+xVTMSXALSpMBjZEM5+9KulzLgbhPaAmI0NZ1s882hZqgIp16o4Aqzk6Vb
+	 g7+74uXyMaZq9CyjqkFhe83dSqxNv6JKy1O6j6Ai2vme/k7+netnAIt1M6wVmazSZ6
+	 r69y3XUIWTwINf/l0kXfc2yFoFefGWAcfGtVr722PjqYWYrCyUPZYwoTd5TxVOIaUT
+	 hiOTnKEnUdH3p3H/lWgtN3gd23y5fqZHa+wQz8XFh8jA5aOnVI9DNQOHRHLRiNpRRy
+	 7xLnjyDYoZmulR957gNAN+V7EqvRLditkQM9AbWD0Ol5c9lmVA6U98PxLCHrbNXQD6
+	 FP4c4GhNESxpQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net v2 0/4] mptcp: misc fixes for v6.19-rc8
+Date: Thu, 05 Feb 2026 18:34:20 +0100
+Message-Id: <20260205-net-mptcp-misc-fixes-6-19-rc8-v2-0-c2720ce75c34@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205172313.16652-1-dhyaan19022009@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJzUhGkC/42NTQ6CMBCFr0Jm7Zi2kRFceQ/DotQBJkohU0I0h
+ LvbcAKX7+97GyRW4QS3YgPlVZJMMQt3KiAMPvaM8swanHFknLlg5AXHeQkzjpICdvLhhIS2Rg0
+ VkicKFXnruitkxqx8NDLiAXkKTTYHScuk3+NztUf0J361aDC0ZVl3LbWl8fcXa+T3edIemn3ff
+ 1IfGbTQAAAA
+X-Change-ID: 20260204-net-mptcp-misc-fixes-6-19-rc8-6a66c86a12f7
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ stable@vger.kernel.org, 
+ syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>, 
+ linux-kselftest@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1936; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=2C16gBetgYeprk8qMWPd4VtC9f+xr40ryhjM9KIq00Y=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJbriy0WeYXLrFO663/Ks+w4KbLjCWzbl6Iuphc6/lBq
+ eLU+vvrOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACbi3sLIMHfyyVZG5oXzp2/R
+ nTz3cdZv39wCvoPb1Rg4d8g/XdGov4nhf30s04XLn8vdli+5LZgr+105vnbqbeHKB2cMNi5+o6V
+ 1hBkA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm3,messagingengine.com:s=fm3];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214531-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214529-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,kernel.org,syzkaller.appspotmail.com,infradead.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim]
-X-Rspamd-Queue-Id: A3A25F5FA5
+	TAGGED_RCPT(0.00)[stable,f56f7d56e2c6e11a01b6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D7D9CF600D
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 10:53:12PM +0530, Dhyan K Prajapati wrote:
-> From: dhyaan19022009-hue <dhyaan19022009@gmail.com>
-> 
-> Signed-off-by: dhyaan19022009-hue <dhyaan19022009@gmail.com>
-> ---
->  net/mac80211/main.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-> index b05e313c7..190222c26 100644
-> --- a/net/mac80211/main.c
-> +++ b/net/mac80211/main.c
-> @@ -416,6 +416,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
->  	case NL80211_IFTYPE_MONITOR:
->  		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
->  			return;
-> +		if (!link->conf->bss)
-> +			return;
->  		break;
->  	default:
->  		break;
-> -- 
-> 2.43.0
-> 
-> 
+Here are various unrelated fixes:
 
-<formletter>
+- Patch 1: when removing an MPTCP in-kernel PM endpoint, always mark the
+  corresponding ID as "available". Syzbot found a corner case where it
+  is not marked as such. A fix for up to v5.10.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+- Patch 2: Linked to the previous patch, the variable name was confusing
+  and was probably partly responsible for the issue fixed by patch 1. No
+  "Fixes" tag: no need to backport that for the moment, but better to
+  avoid confusion now.
 
-</formletter>
+- Patch 3: fix all existing kdoc warnings linked to MPTCP code. No
+  "Fixes" tag: they were there for a while, and not considered as
+  important to backport.
+
+- Patch 4: silence a compiler (false-positive) warning in the selftests.
+  No "Fixes" tag: it is a false-positive warning, only seen with some
+  versions.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Changes in v2:
+- patch 1: clarify commit message (NIPA Review assistant)
+- patch 3: also modify mptcp_pm.yaml (NIPA ynl)
+- Link to v1: https://patch.msgid.link/20260204-net-mptcp-misc-fixes-6-19-rc8-v1-0-cb559fb6b50a@kernel.org
+
+---
+Matthieu Baerts (NGI0) (4):
+      mptcp: pm: in-kernel: always set ID as avail when rm endp
+      mptcp: pm: in-kernel: clarify mptcp_pm_remove_anno_addr()
+      mptcp: fix kdoc warnings
+      selftests: mptcp: connect: fix maybe-uninitialize warn
+
+ Documentation/netlink/specs/mptcp_pm.yaml         |  1 +
+ include/uapi/linux/mptcp_pm.h                     |  2 +-
+ net/mptcp/pm_kernel.c                             | 29 ++++++++++-------------
+ net/mptcp/token.c                                 | 16 +++++++------
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |  2 +-
+ 5 files changed, 24 insertions(+), 26 deletions(-)
+---
+base-commit: bbf4a17ad9ffc4e3d7ec13d73ecd59dea149ed25
+change-id: 20260204-net-mptcp-misc-fixes-6-19-rc8-6a66c86a12f7
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
