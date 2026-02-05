@@ -1,289 +1,189 @@
-Return-Path: <stable+bounces-214427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEuyK+hVhGlb2gMAu9opvQ
-	(envelope-from <stable+bounces-214427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:33:44 +0100
+	id KMOfG8RVhGlb2gMAu9opvQ
+	(envelope-from <stable+bounces-214425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:33:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40169EFEE2
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:33:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1ABAEFEB7
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 09:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EAEDF300CA23
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 08:33:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A979F300EC89
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 08:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B099E364047;
-	Thu,  5 Feb 2026 08:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDDA346E47;
+	Thu,  5 Feb 2026 08:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="Ixam7Zkq"
+	dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b="HjcjDghD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail115-118.sinamail.sina.com.cn (mail115-118.sinamail.sina.com.cn [218.30.115.118])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBAA363C4D
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 08:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.118
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770280416; cv=none; b=CR77CanLMvCnQjjeieCdD+5DOVkkyJHVSm184CzpHb6c64GQcjehysd5DSgsCvAbT08R9MiITpOwbFp1ywyGyxqS85g922EPYSBO4fm1olA3PeNw2ws7FPJ0z1+h4Og9ftnKwUQ1GivH/Utl9Q8L6j14rBqMHUPBYviJ8fi1X/M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770280416; c=relaxed/simple;
-	bh=gbbhikzvubqB/8G/3oDW4QIusEY8RtwoT9paPhj9Qvg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Njn8kNMfVdAFgZR5VX6hD0yH2EXBXToDuazJy+WTvGkWpcfeT9hzk4Xn3q6JPpCdIkfGG+3Bu/aklmYP1OYFJI5KscwWNFWVy1V9aonAHXyt6rikhCbl/ug8+ElQeHP65eDJR69+/1vyr3fzqcP26nYWH6EnhQUfgAKHEk+sRho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=Ixam7Zkq; arc=none smtp.client-ip=218.30.115.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770280415;
-	bh=4msyyaTdA7+MLTi59JzT42QQWuTGGjQCjniA0lGrM3A=;
-	h=From:Subject:Date:Message-Id;
-	b=Ixam7Zkq8YYlLHLA3N6pzpuh43rJYHVdxOEMXLp+sbbECwKNqHi+VBvMV+IgSoQyP
-	 Z8Ljw4+owPLNmv3pk0NpK+rc/IaVHgC0Qq4dN3vMK1+Ev3poXlMnd4ZR4VniXayhOn
-	 fWZsgDZNp04I/Jc1i65t30DXqb30ZWxr/2HLbTjA=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.24) with ESMTP
-	id 698455B100001357; Thu, 5 Feb 2026 16:32:55 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 77787310747974
-X-SMAIL-UIID: 5EF18411531649878E0132F651235EE7-20260205-163255-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	k.chen@smail.nju.edu.cn
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	slava@dubeyko.com,
-	sashal@kernel.org,
-	yang.chenzhi@vivo.com,
-	frank.li@vivo.com,
-	penguin-kernel@I-love.SAKURA.ne.jp,
-	liushixin2@huawei.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 6.12.y] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
-Date: Thu,  5 Feb 2026 16:32:49 +0800
-Message-Id: <20260205083249.2883473-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E6D3446CA
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 08:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770280383; cv=pass; b=dvAzHkwahHY7BWN+Ugji5JXSc4AfUULshubT7nwco9byNhZBWL2eHl71OzcB9eCAeRNLtEpFBf40zdw6Jc/mMdX8vE+6gZY3f7swhHVQRk5CFTM4Cn1J6NvRMaGFWAvRFMjq+hYxgv35zsjj6moAxwJmTJ/F5vhhrHuOC8JcuAw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770280383; c=relaxed/simple;
+	bh=4nRf6SHJsVhZfYah+s5gm1QOcWTJwdFxjn6FWyPfPpI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iL6VO1WZ1G8nwR3Ii3eg3XVMxCi6HFhCMugyMg1gUkzFCQ91Ev8X/sr+820KC1Z0o16TtE8N85apv+rq4na1RW7UTi21J38U8nQxnMlZPh2qBAipLT3PTxWH68aQbSk5IuCOBFveTmUdSAgyfn9CYmwc0Po6uf49hH/1UZutPMw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net; spf=pass smtp.mailfrom=flipper.net; dkim=pass (2048-bit key) header.d=flipper.net header.i=@flipper.net header.b=HjcjDghD; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=flipper.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flipper.net
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6582e8831aeso1101856a12.1
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 00:33:03 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770280382; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XD+vXzOKEBcgq1FZGg7GkLSJKEmjUIlES7kvgbdOrj+G9+DnO0Jt92Yv+XM+H9wsvW
+         JjGB/626ZTdDi4WFJX4frzwoSRAW/9GYyujiIG/88IODO2wJSTUrODGOZdQMc7+dmAny
+         t2HbeRwfN9xtv5OX1ztObPrcKrX1LMFRuDYM1on/yq/K5Eba1eEHAPaM28LIYn9tDzKT
+         h9RCV/LwBp+G+pROJ1JwSQqDkEtOTQpqFGRTcZGAVTdzEqVJZVIdoxzQw7x6rJqd31gZ
+         XoOf2uC5ElwwU3Wi/4jTyAF1FVyPcXbiI6YYsvrjygWO1eipHwDm7m/UJFfSWaVKEOwM
+         fnqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4nRf6SHJsVhZfYah+s5gm1QOcWTJwdFxjn6FWyPfPpI=;
+        fh=NI+QTnbAEwL7bgaZu801E0qdOkm7FBJzOMCVYjR9yCE=;
+        b=UhMY+cnF15vuaTF8xat44iqVzyXZNGJ42k5dfIKCSkha01eQ3O8oFQtUUDKoz8aVv2
+         OxPHxScqpZncWJupH/ebNJhvrDTpcLPyyikbqlrNhqWm6vdvfvuiRQ6xsqdWKdUocwGE
+         Czt1QaJC4R2x6hg+LxgzBr+nf+hpJqGe7PUW/Y1M95CE+ofuOfCkopQop4dzGT0Ebaeq
+         hsyvESWnx/bjSg/BVj/WPlsAqvFBi+EMVlkULEZ6avbZmmnCcBAqyBJpN2YM9H4K/kCM
+         0coxDvK3x84FXkStcVvIIWRFr6ztwMdYD8YT/yhReKjLkumkDYXYdAqAhNN3BcRhAN4C
+         4zlw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flipper.net; s=google; t=1770280382; x=1770885182; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4nRf6SHJsVhZfYah+s5gm1QOcWTJwdFxjn6FWyPfPpI=;
+        b=HjcjDghDS/90cGDiNRVffTvIvz0gqHw2tenTaaodvNszai2MyVomSf+bHa73gQdxBg
+         doZEZZ+RFD1NqfNhAIWk2ZXiSu+5422TIROD/L3lcaZFi0LJkLStltJgBLHCo7Z7TIN+
+         Qx14E0+EHu0G+bXlr47C0hn0yRGBWpVpg49hpRvHZ5AB1nzvOo9xwCN3qyD6X0wipujk
+         1SMuYmgAQ4BOtlgTEjWpoOoAsK0xChsMwp5/5sVpenSig/T0/TiCziPf5kPWnpSvN5Hv
+         oz1KNNoYCKc+xK4d3bl4lSF9Ht9REYLObBeDaDPHGS1souRnzKY++t/Nae1J0Td1trec
+         eDuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770280382; x=1770885182;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4nRf6SHJsVhZfYah+s5gm1QOcWTJwdFxjn6FWyPfPpI=;
+        b=fglDHdLTafeqHZEUxhqA2uYGLoc784qIy5UaSphyCH4XEalKTZDIv/s5kKXOp6aKGv
+         saOlkVXQDT2s9DL4XJb9xbrd9L9hJUHZzPBKhXIoIxMO6ZcFlbw/RFrKBEigFuorVK3D
+         CT2shhVauoOZgrry31rWK2kiBsw3F9OShb6TrEdxSZnDJxUYXaY059hiqLAJCXcZeohN
+         xwXWpc7Kvf/16/eZB29XvK1DaR8l1g9bzn5ACWE9HvrYcacLvz1RBKkzD9Dcw7INaoOO
+         bahviDYWypj1M0CnWm91fRQos8IzVh9T2yEv258slPI1A5YVhO47vhhgJ5Q9vP4j0Zkq
+         VDgw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9ZnKUQsLZDBOjpp2K8mKsHmmAHE5ZXUt81W/I2G1b9TgktM0gQuc++aqNdymU67jzxTkElTg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUcO5F8GcbmrqousW7diNE/TjRm29/fhz2/A6OgsO4xGWOfLwC
+	+syJSdJ5e+gFTXdtWzwOhoIMnRjpCWuAA30aw804SwsnPJ6tOYw5f2XRLhtym7mKI9CAjhh8QlP
+	RXPtpvhzruW85hBXoAlCIGyRLNUl3FFWodwzM46SumA==
+X-Gm-Gg: AZuq6aL15PsagSv90ZrhQFa7xjC6eb3fbklBCMAQdAouJkeubnCBg4pIQd1+26ZktF7
+	QJA96lTcGzWH7ici9kO4qVaKUyY+f1QS57OF033Emy+wAWF/o2GfPtTWUWE8sD+XIbCSQ4Zm3Qt
+	fGbZW4LfGPRy13cOvnAfSJ3mLTenag4/EM7BLvubSl/KaG5wfFQR7Y10v0Aw+e9VGw8bOOc893E
+	hn6JF+jPVddafjw+p1tU4vOB0wi8a5TsJGhpxwPgpIGOPL0XLjn+ISb7Xzs7Ty6rtVWa6VHR8BD
+	GioNtGnZIbFDVUGlbP4YXhUDJYam
+X-Received: by 2002:a17:906:8f8a:b0:b88:637d:aa75 with SMTP id
+ a640c23a62f3a-b8e9f3c9e3emr429179066b.30.1770280381624; Thu, 05 Feb 2026
+ 00:33:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260129-ufs-rpmb-v1-1-691534ab723f@flipper.net>
+ <8149b8cb5a7b36a1543ca05666f33a6373674e0e.camel@gmail.com>
+ <CAKTNdwG=He3iJ8cPo4fFbcEwQQRrt_SGzoviMhi2a3kMXAO8hA@mail.gmail.com>
+ <ad7e2d0e5b219b4b2ef2aa7ab342513a2c66171f.camel@gmail.com>
+ <CAKTNdwG_RycHp++Z++D5HzcybSyQwvKbb++AhtXhNgE6sOoThQ@mail.gmail.com> <a729a7d1b63d0b7e78806bfec238d8db2705c693.camel@gmail.com>
+In-Reply-To: <a729a7d1b63d0b7e78806bfec238d8db2705c693.camel@gmail.com>
+From: Alexey Charkov <alchark@flipper.net>
+Date: Thu, 5 Feb 2026 12:32:51 +0400
+X-Gm-Features: AZwV_QiABBd14DLM48ZE4ziYazv0fNb_LhoTNM5ingrU5uicHByC4S43axTn9GU
+Message-ID: <CAKTNdwGE5oR-axDGYfBCsmG_p=G1oeKCDZ6GmYoRHMN1PXcJSg@mail.gmail.com>
+Subject: Re: [PATCH] scsi: ufs: core: Fix RPMB region size detection for UFS 2.2
+To: Bean Huo <huobean@gmail.com>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+	Bart Van Assche <bvanassche@acm.org>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Bean Huo <beanhuo@micron.com>, 
+	Can Guo <can.guo@oss.qualcomm.com>, linux-scsi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[flipper.net,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[flipper.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214427-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-214425-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[sina.cn];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[flipper.net:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sina.cn:+];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[alchark@flipper.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 40169EFEE2
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: D1ABAEFEB7
 X-Rspamd-Action: no action
 
-From: Kang Chen <k.chen@smail.nju.edu.cn>
+Hi Bean,
 
-[ Upstream commit bea3e1d4467bcf292c8e54f080353d556d355e26 ]
+On Wed, Feb 4, 2026 at 12:37=E2=80=AFPM Bean Huo <huobean@gmail.com> wrote:
+>
+> On Fri, 2026-01-30 at 18:49 +0400, Alexey Charkov wrote:
+> > > > The spec says it can only be up to 16MB maximum (see section 12.4.3=
+.1
+> > > > RPMB Resources), so it should always fit. Happy to add a comment ab=
+out
+> > > > that.
+> > > >
+> > > > Best regards,
+> > > > Alexey
+> > >
+> > > Hi Alexey,
+> > >
+> > > Thanks for the clarification on the 16MB RPMB limit - that addresses =
+the
+> > > overflow concern.
+> > >
+> > >
+> > > In your above operation, why not use SZ_128K to avoid the magic numbe=
+r?
+> > > BTW, please update your comment.
+> >
+> > Good point, thanks Bean! Will amend in v2.
+> >
+> > Best regards,
+> > Alexey
+>
+> Alexey,
+>
+> did you send your new version patch?
 
-BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
-Read of size 2 at addr ffff8880289ef218 by task syz.6.248/14290
+Just sent it out, thanks for your help!
 
-CPU: 0 UID: 0 PID: 14290 Comm: syz.6.248 Not tainted 6.16.4 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x5f0 mm/kasan/report.c:482
- kasan_report+0xca/0x100 mm/kasan/report.c:595
- hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
- hfsplus_listxattr+0x5b6/0xbd0 fs/hfsplus/xattr.c:738
- vfs_listxattr+0xbe/0x140 fs/xattr.c:493
- listxattr+0xee/0x190 fs/xattr.c:924
- filename_listxattr fs/xattr.c:958 [inline]
- path_listxattrat+0x143/0x360 fs/xattr.c:988
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe0e9fae16d
-Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fe0eae67f98 EFLAGS: 00000246 ORIG_RAX: 00000000000000c3
-RAX: ffffffffffffffda RBX: 00007fe0ea205fa0 RCX: 00007fe0e9fae16d
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000000
-RBP: 00007fe0ea0480f0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fe0ea206038 R14: 00007fe0ea205fa0 R15: 00007fe0eae48000
- </TASK>
-
-Allocated by task 14290:
- kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4333 [inline]
- __kmalloc_noprof+0x219/0x540 mm/slub.c:4345
- kmalloc_noprof include/linux/slab.h:909 [inline]
- hfsplus_find_init+0x95/0x1f0 fs/hfsplus/bfind.c:21
- hfsplus_listxattr+0x331/0xbd0 fs/hfsplus/xattr.c:697
- vfs_listxattr+0xbe/0x140 fs/xattr.c:493
- listxattr+0xee/0x190 fs/xattr.c:924
- filename_listxattr fs/xattr.c:958 [inline]
- path_listxattrat+0x143/0x360 fs/xattr.c:988
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-When hfsplus_uni2asc is called from hfsplus_listxattr,
-it actually passes in a struct hfsplus_attr_unistr*.
-The size of the corresponding structure is different from that of hfsplus_unistr,
-so the previous fix (94458781aee6) is insufficient.
-The pointer on the unicode buffer is still going beyond the allocated memory.
-
-This patch introduces two warpper functions hfsplus_uni2asc_xattr_str and
-hfsplus_uni2asc_str to process two unicode buffers,
-struct hfsplus_attr_unistr* and struct hfsplus_unistr* respectively.
-When ustrlen value is bigger than the allocated memory size,
-the ustrlen value is limited to an safe size.
-
-Fixes: 94458781aee6 ("hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()")
-Signed-off-by: Kang Chen <k.chen@smail.nju.edu.cn>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250909031316.1647094-1-k.chen@smail.nju.edu.cn
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
----
- fs/hfsplus/dir.c        |  2 +-
- fs/hfsplus/hfsplus_fs.h |  8 ++++++--
- fs/hfsplus/unicode.c    | 24 +++++++++++++++++++-----
- fs/hfsplus/xattr.c      |  6 +++---
- 4 files changed, 29 insertions(+), 11 deletions(-)
-
-diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
-index 33154c720a4e..d23f8c4cd717 100644
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -204,7 +204,7 @@ static int hfsplus_readdir(struct file *file, struct dir_context *ctx)
- 			fd.entrylength);
- 		type = be16_to_cpu(entry.type);
- 		len = NLS_MAX_CHARSET_SIZE * HFSPLUS_MAX_STRLEN;
--		err = hfsplus_uni2asc(sb, &fd.key->cat.name, strbuf, &len);
-+		err = hfsplus_uni2asc_str(sb, &fd.key->cat.name, strbuf, &len);
- 		if (err)
- 			goto out;
- 		if (type == HFSPLUS_FOLDER) {
-diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-index 6c19935d6f50..6122bbd5a837 100644
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -519,8 +519,12 @@ int hfsplus_strcasecmp(const struct hfsplus_unistr *s1,
- 		       const struct hfsplus_unistr *s2);
- int hfsplus_strcmp(const struct hfsplus_unistr *s1,
- 		   const struct hfsplus_unistr *s2);
--int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
--		    char *astr, int *len_p);
-+int hfsplus_uni2asc_str(struct super_block *sb,
-+			const struct hfsplus_unistr *ustr, char *astr,
-+			int *len_p);
-+int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+			      const struct hfsplus_attr_unistr *ustr,
-+			      char *astr, int *len_p);
- int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
- 		    int max_unistr_len, const char *astr, int len);
- int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
-diff --git a/fs/hfsplus/unicode.c b/fs/hfsplus/unicode.c
-index ebd326799f35..11e08a4a18b2 100644
---- a/fs/hfsplus/unicode.c
-+++ b/fs/hfsplus/unicode.c
-@@ -143,9 +143,8 @@ static u16 *hfsplus_compose_lookup(u16 *p, u16 cc)
- 	return NULL;
- }
- 
--int hfsplus_uni2asc(struct super_block *sb,
--		const struct hfsplus_unistr *ustr,
--		char *astr, int *len_p)
-+static int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
-+		    int max_len, char *astr, int *len_p)
- {
- 	const hfsplus_unichr *ip;
- 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
-@@ -158,8 +157,8 @@ int hfsplus_uni2asc(struct super_block *sb,
- 	ip = ustr->unicode;
- 
- 	ustrlen = be16_to_cpu(ustr->length);
--	if (ustrlen > HFSPLUS_MAX_STRLEN) {
--		ustrlen = HFSPLUS_MAX_STRLEN;
-+	if (ustrlen > max_len) {
-+		ustrlen = max_len;
- 		pr_err("invalid length %u has been corrected to %d\n",
- 			be16_to_cpu(ustr->length), ustrlen);
- 	}
-@@ -280,6 +279,21 @@ int hfsplus_uni2asc(struct super_block *sb,
- 	return res;
- }
- 
-+inline int hfsplus_uni2asc_str(struct super_block *sb,
-+			       const struct hfsplus_unistr *ustr, char *astr,
-+			       int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
-+}
-+
-+inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+				     const struct hfsplus_attr_unistr *ustr,
-+				     char *astr, int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
-+			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
-+}
-+
- /*
-  * Convert one or more ASCII characters into a single unicode character.
-  * Returns the number of ASCII characters corresponding to the unicode char.
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index 18dc3d254d21..c951fa9835aa 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -735,9 +735,9 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 			goto end_listxattr;
- 
- 		xattr_name_len = NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN;
--		if (hfsplus_uni2asc(inode->i_sb,
--			(const struct hfsplus_unistr *)&fd.key->attr.key_name,
--					strbuf, &xattr_name_len)) {
-+		if (hfsplus_uni2asc_xattr_str(inode->i_sb,
-+					      &fd.key->attr.key_name, strbuf,
-+					      &xattr_name_len)) {
- 			pr_err("unicode conversion failed\n");
- 			res = -EIO;
- 			goto end_listxattr;
--- 
-2.34.1
-
+Best regards,
+Alexey
 
