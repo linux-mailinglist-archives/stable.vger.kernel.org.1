@@ -1,308 +1,356 @@
-Return-Path: <stable+bounces-214565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKoSEesLhWmj7gMAu9opvQ
-	(envelope-from <stable+bounces-214565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 22:30:19 +0100
+	id KFrCLqAVhWkh8QMAu9opvQ
+	(envelope-from <stable+bounces-214567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 23:11:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A416FF7A86
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 22:30:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD751F7FD3
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 23:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0ACD304972B
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 21:27:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2E593031300
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 22:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D237331A7B;
-	Thu,  5 Feb 2026 21:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B333358D0;
+	Thu,  5 Feb 2026 22:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0w0d1jl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="v1sEiV/3"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6C83314B6;
-	Thu,  5 Feb 2026 21:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7C5335557;
+	Thu,  5 Feb 2026 22:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770326839; cv=none; b=KmKivKGd/gj+2zocveOSTtWP0cBEUU/o41GacsRB8AnvSNHwEQqbDxZ+2M5H/fPK0rg0r0wRi/obTKRA6Z8v5fi2yTB7zHHUznXAD8BYRZ7xNEyFNLuIjzHl5T3ePs51nnhESWbKx9rtckIyy0wY9k5V8HqVvfIbavZO+Vb/XW0=
+	t=1770329434; cv=none; b=JqHpFRDZV+csnsqdTgU7eHDOrjo+QjGy5lcoTfT0UnjRxznMT1DFUY/1lznv/qMfn76Ms7kUzMdhaUCHLsDkb7tCWCCymhIr0f9BxDQxT5xxoo0y+5Xs7Y8x+8IdnJk4mRCBRjP8B4p66Iq74Qhb2UR3pPJwqDTLcdukxM1/nEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770326839; c=relaxed/simple;
-	bh=xNQkaxGsTCbWDl52Vkp0iBpPK4UvLflBEiUVAMUzD6I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ll2t2CkEhARQ2Q58gIRAVl7jVI2z9Brvhg0VbfanOXV2uxJIAqt3wbFj1bhrmcBrcpI1BlIdYnz3fT1ROn1ULqP6yoDhw8SzNfmdjYQQD0dJAVbMbWNXbm5rbUPYukHda5llBuXMb2Ij4IWz5ULro+EuuNQ0h9UrOQs5M/aO6ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0w0d1jl; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770326840; x=1801862840;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xNQkaxGsTCbWDl52Vkp0iBpPK4UvLflBEiUVAMUzD6I=;
-  b=J0w0d1jlribZsHS4vm8Rhx5cB2rGPoIoZysTrkRAPJNFuKi+7r2Gxmr6
-   k4mMGo7Zqj5HrADfZuw97oUywVUmF5U2AFYWOFfi6brtTPycO6dmQg8Se
-   N+6uwayoR3GWAUoK3mWGKyP/G1JRZe09XgULf3jyphwpaTzHlfdfV3cuo
-   FhbSzELhotxSrAYQIFv12NDmpxhFdy1kBqBLmG9ibMqhJsT9ILOZSXYRn
-   DBXm47OWUMX3kPbHcC/TN/HfpVKI6bvA9dVu7fnGTvQP6JQXe5/yPiYYV
-   gEYR3pgJDwkAMeNDV1icKzIpEBVh+jeuEOXTZIqUNXcRg5bGKQFkrsfGJ
-   g==;
-X-CSE-ConnectionGUID: IC83O4KNT5K1WH8OkNZv4w==
-X-CSE-MsgGUID: 7XD+8PV6TNmPaL24iOzsgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="75386252"
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
-   d="scan'208";a="75386252"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 13:27:19 -0800
-X-CSE-ConnectionGUID: AM2sskbETVyFnCk4RIEMqg==
-X-CSE-MsgGUID: BKWtdomuRgeoqSKv1gt/kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
-   d="scan'208";a="233617393"
-Received: from b04f130c83f2.jf.intel.com ([10.165.154.98])
-  by fmviesa002.fm.intel.com with ESMTP; 05 Feb 2026 13:27:18 -0800
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Tim Chen <tim.c.chen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Tim Chen <tim.c.chen@intel.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Len Brown <len.brown@intel.com>,
-	linux-kernel@vger.kernel.org,
-	Chen Yu <yu.c.chen@intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Arjan Van De Ven <arjan.van.de.ven@intel.com>
-Subject: [PATCH 6.18 2/2] sched/topology: Fix sched domain build error for GNR, CWF in SNC-3 mode
-Date: Thu,  5 Feb 2026 13:33:34 -0800
-Message-Id: <741531fc98d3c3d364451113b26c4900a868348a.1768948644.git.tim.c.chen@linux.intel.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <cover.1768948644.git.tim.c.chen@linux.intel.com>
-References: <cover.1768948644.git.tim.c.chen@linux.intel.com>
+	s=arc-20240116; t=1770329434; c=relaxed/simple;
+	bh=FyS1HZqau5GWt2HsCyDb4h5tFLAlSa3CW+a+YXdseKg=;
+	h=Date:To:From:Subject:Message-Id; b=k/HQ+ZJOR0VP74tHqw2q2zfdTMpKYq73oRBfP5YaRgdnR1Hg0oOmR9Q+t5Ktx2JQKrY4iHfZzJgJMpFEL5tkFHca1a+5gmyE/0xETrDOPSFd2oKi519pvQbPK1rY4j5+X7Y28WY75k6/wbgLPdMNQ4h39sMH81rFaF7cwdWXvdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=v1sEiV/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6BEC4AF0B;
+	Thu,  5 Feb 2026 22:10:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770329433;
+	bh=FyS1HZqau5GWt2HsCyDb4h5tFLAlSa3CW+a+YXdseKg=;
+	h=Date:To:From:Subject:From;
+	b=v1sEiV/3TORv0AkKhNsiKQ00XWMC/aewy/QBTbXrdSlfJXb9Prp9Q7iZ15LN3AdHU
+	 X1qCzncjsiWIWJknZNggRu49VTHEQp9p00oE3Y+t8hjh7fSFLV7GqL7gM4wdB674no
+	 Br5hvZmAnfjJxYPfZamPwYebeTqZ6qvtsUYKA8xI=
+Date: Thu, 05 Feb 2026 14:10:32 -0800
+To: mm-commits@vger.kernel.org,yonghong.song@linux.dev,syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com,surenb@google.com,stable@vger.kernel.org,song@kernel.org,shakeel.butt@linux.dev,sdf@fomichev.me,martin.lau@linux.dev,kpsingh@kernel.org,jolsa@kernel.org,john.fastabend@gmail.com,haoluo@google.com,eddyz87@gmail.com,daniel@iogearbox.net,ast@kernel.org,andrii@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] procfs-avoid-fetching-build-id-while-holding-vma-lock.patch removed from -mm tree
+Message-Id: <20260205221033.4A6BEC4AF0B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214565-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-214567-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,linux.dev,syzkaller.appspotmail.com,google.com,kernel.org,fomichev.me,gmail.com,iogearbox.net,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tim.c.chen@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable,4e70c8e0a2017b432f7a];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.intel.com:mid,infradead.org:email]
-X-Rspamd-Queue-Id: A416FF7A86
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,iogearbox.net:email,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: DD751F7FD3
 X-Rspamd-Action: no action
 
-[ Upstream commit 4d6dd05d07d00bc3bd91183dab4d75caa8018db9 ]
 
-It is possible for Granite Rapids (GNR) and Clearwater Forest
-(CWF) to have up to 3 dies per package. When sub-numa cluster (SNC-3)
-is enabled, each die will become a separate NUMA node in the package
-with different distances between dies within the same package.
+The quilt patch titled
+     Subject: procfs: avoid fetching build ID while holding VMA lock
+has been removed from the -mm tree.  Its filename was
+     procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
 
-For example, on GNR, we see the following numa distances for a 2 socket
-system with 3 dies per socket:
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-    package 1       package2
-	----------------
-	|               |
-    ---------       ---------
-    |   0   |       |   3   |
-    ---------       ---------
-	|               |
-    ---------       ---------
-    |   1   |       |   4   |
-    ---------       ---------
-	|               |
-    ---------       ---------
-    |   2   |       |   5   |
-    ---------       ---------
-	|               |
-	----------------
+------------------------------------------------------
+From: Andrii Nakryiko <andrii@kernel.org>
+Subject: procfs: avoid fetching build ID while holding VMA lock
+Date: Thu, 29 Jan 2026 13:53:40 -0800
 
-node distances:
-node     0    1    2    3    4    5
-0:   	10   15   17   21   28   26
-1:   	15   10   15   23   26   23
-2:   	17   15   10   26   23   21
-3:   	21   28   26   10   15   17
-4:   	23   26   23   15   10   15
-5:   	26   23   21   17   15   10
+Fix PROCMAP_QUERY to fetch optional build ID only after dropping mmap_lock
+or per-VMA lock, whichever was used to lock VMA under question, to avoid
+deadlock reported by syzbot:
 
-The node distances above led to 2 problems:
+ -> #1 (&mm->mmap_lock){++++}-{4:4}:
+        __might_fault+0xed/0x170
+        _copy_to_iter+0x118/0x1720
+        copy_page_to_iter+0x12d/0x1e0
+        filemap_read+0x720/0x10a0
+        blkdev_read_iter+0x2b5/0x4e0
+        vfs_read+0x7f4/0xae0
+        ksys_read+0x12a/0x250
+        do_syscall_64+0xcb/0xf80
+        entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-1. Asymmetric routes taken between nodes in different packages led to
-asymmetric scheduler domain perspective depending on which node you
-are on.  Current scheduler code failed to build domains properly with
-asymmetric distances.
+ -> #0 (&sb->s_type->i_mutex_key#8){++++}-{4:4}:
+        __lock_acquire+0x1509/0x26d0
+        lock_acquire+0x185/0x340
+        down_read+0x98/0x490
+        blkdev_read_iter+0x2a7/0x4e0
+        __kernel_read+0x39a/0xa90
+        freader_fetch+0x1d5/0xa80
+        __build_id_parse.isra.0+0xea/0x6a0
+        do_procmap_query+0xd75/0x1050
+        procfs_procmap_ioctl+0x7a/0xb0
+        __x64_sys_ioctl+0x18e/0x210
+        do_syscall_64+0xcb/0xf80
+        entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-2. Multiple remote distances to respective tiles on remote package create
-too many levels of domain hierarchies grouping different nodes between
-remote packages.
+ other info that might help us debug this:
 
-For example, the above GNR topology lead to NUMA domains below:
+  Possible unsafe locking scenario:
 
-Sched domains from the perspective of a CPU in node 0, where the number
-in bracket represent node number.
+        CPU0                    CPU1
+        ----                    ----
+   rlock(&mm->mmap_lock);
+                                lock(&sb->s_type->i_mutex_key#8);
+                                lock(&mm->mmap_lock);
+   rlock(&sb->s_type->i_mutex_key#8);
 
-NUMA-level 1    [0,1] [2]
-NUMA-level 2    [0,1,2] [3]
-NUMA-level 3    [0,1,2,3] [5]
-NUMA-level 4    [0,1,2,3,5] [4]
+  *** DEADLOCK ***
 
-Sched domains from the perspective of a CPU in node 4
-NUMA-level 1    [4] [3,5]
-NUMA-level 2    [3,4,5] [0,2]
-NUMA-level 3    [0,2,3,4,5] [1]
+This seems to be exacerbated (as we haven't seen these syzbot reports
+before that) by the recent:
 
-Scheduler group peers for load balancing from the perspective of CPU 0
-and 4 are different.  Improper task could be chosen for load balancing
-between groups such as [0,2,3,4,5] [1].  Ideally you should choose nodes
-in 0 or 2 that are in same package as node 1 first.  But instead tasks
-in the remote package node 3, 4, 5 could be chosen with an equal chance
-and could lead to excessive remote package migrations and imbalance of
-load between packages.  We should not group partial remote nodes and
-local nodes together.
-Simplify the remote distances for CWF and GNR for the purpose of
-sched domains building, which maintains symmetry and leads to a more
-reasonable load balance hierarchy.
+	777a8560fd29 ("lib/buildid: use __kernel_read() for sleepable context")
 
-The sched domains from the perspective of a CPU in node 0 NUMA-level 1
-is now
-NUMA-level 1    [0,1] [2]
-NUMA-level 2    [0,1,2] [3,4,5]
+To make this safe, we need to grab file refcount while VMA is still locked, but
+other than that everything is pretty straightforward. Internal build_id_parse()
+API assumes VMA is passed, but it only needs the underlying file reference, so
+just add another variant build_id_parse_file() that expects file passed
+directly.
 
-The sched domains from the perspective of a CPU in node 4 NUMA-level 1
-is now
-NUMA-level 1    [4] [3,5]
-NUMA-level 2    [3,4,5] [0,1,2]
-
-We have the same balancing perspective from node 0 or node 4.  Loads are
-now balanced equally between packages.
-
-Co-developed-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
+[akpm@linux-foundation.org: fix up kerneldoc]
+Link: https://lkml.kernel.org/r/20260129215340.3742283-1-andrii@kernel.org
+Fixes: ed5d583a88a9 ("fs/procfs: implement efficient VMA querying API for /proc/<pid>/maps")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reported-by: <syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Tested-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Song Liu <song@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Yonghong Song <yonghong.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/x86/kernel/smpboot.c | 70 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index eb289abece23..5709c9cab195 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -515,6 +515,76 @@ static void __init build_sched_topology(void)
- 	set_sched_topology(topology);
- }
+ fs/proc/task_mmu.c      |   42 ++++++++++++++++++++++++--------------
+ include/linux/buildid.h |    3 ++
+ lib/buildid.c           |   42 +++++++++++++++++++++++++++-----------
+ 3 files changed, 60 insertions(+), 27 deletions(-)
+
+--- a/fs/proc/task_mmu.c~procfs-avoid-fetching-build-id-while-holding-vma-lock
++++ a/fs/proc/task_mmu.c
+@@ -656,6 +656,7 @@ static int do_procmap_query(struct mm_st
+ 	struct proc_maps_locking_ctx lock_ctx = { .mm = mm };
+ 	struct procmap_query karg;
+ 	struct vm_area_struct *vma;
++	struct file *vm_file = NULL;
+ 	const char *name = NULL;
+ 	char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf = NULL;
+ 	__u64 usize;
+@@ -727,21 +728,6 @@ static int do_procmap_query(struct mm_st
+ 		karg.inode = 0;
+ 	}
  
-+#ifdef CONFIG_NUMA
-+static int sched_avg_remote_distance;
-+static int avg_remote_numa_distance(void)
-+{
-+	int i, j;
-+	int distance, nr_remote, total_distance;
+-	if (karg.build_id_size) {
+-		__u32 build_id_sz;
+-
+-		err = build_id_parse(vma, build_id_buf, &build_id_sz);
+-		if (err) {
+-			karg.build_id_size = 0;
+-		} else {
+-			if (karg.build_id_size < build_id_sz) {
+-				err = -ENAMETOOLONG;
+-				goto out;
+-			}
+-			karg.build_id_size = build_id_sz;
+-		}
+-	}
+-
+ 	if (karg.vma_name_size) {
+ 		size_t name_buf_sz = min_t(size_t, PATH_MAX, karg.vma_name_size);
+ 		const struct path *path;
+@@ -775,10 +761,34 @@ static int do_procmap_query(struct mm_st
+ 		karg.vma_name_size = name_sz;
+ 	}
+ 
++	if (karg.build_id_size && vma->vm_file)
++		vm_file = get_file(vma->vm_file);
 +
-+	if (sched_avg_remote_distance > 0)
-+		return sched_avg_remote_distance;
+ 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
+ 	query_vma_teardown(&lock_ctx);
+ 	mmput(mm);
+ 
++	if (karg.build_id_size) {
++		__u32 build_id_sz;
 +
-+	nr_remote = 0;
-+	total_distance = 0;
-+	for_each_node_state(i, N_CPU) {
-+		for_each_node_state(j, N_CPU) {
-+			distance = node_distance(i, j);
-+
-+			if (distance >= REMOTE_DISTANCE) {
-+				nr_remote++;
-+				total_distance += distance;
++		if (vm_file)
++			err = build_id_parse_file(vm_file, build_id_buf, &build_id_sz);
++		else
++			err = -ENOENT;
++		if (err) {
++			karg.build_id_size = 0;
++		} else {
++			if (karg.build_id_size < build_id_sz) {
++				err = -ENAMETOOLONG;
++				goto out;
 +			}
++			karg.build_id_size = build_id_sz;
 +		}
 +	}
-+	if (nr_remote)
-+		sched_avg_remote_distance = total_distance / nr_remote;
-+	else
-+		sched_avg_remote_distance = REMOTE_DISTANCE;
 +
-+	return sched_avg_remote_distance;
-+}
++	if (vm_file)
++		fput(vm_file);
 +
-+int arch_sched_node_distance(int from, int to)
-+{
-+	int d = node_distance(from, to);
+ 	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
+ 					       name, karg.vma_name_size)) {
+ 		kfree(name_buf);
+@@ -798,6 +808,8 @@ static int do_procmap_query(struct mm_st
+ out:
+ 	query_vma_teardown(&lock_ctx);
+ 	mmput(mm);
++	if (vm_file)
++		fput(vm_file);
+ 	kfree(name_buf);
+ 	return err;
+ }
+--- a/include/linux/buildid.h~procfs-avoid-fetching-build-id-while-holding-vma-lock
++++ a/include/linux/buildid.h
+@@ -7,7 +7,10 @@
+ #define BUILD_ID_SIZE_MAX 20
+ 
+ struct vm_area_struct;
++struct file;
 +
-+	switch (boot_cpu_data.x86_vfm) {
-+	case INTEL_GRANITERAPIDS_X:
-+	case INTEL_ATOM_DARKMONT_X:
-+
-+		if (!x86_has_numa_in_package || topology_max_packages() == 1 ||
-+		    d < REMOTE_DISTANCE)
-+			return d;
-+
-+		/*
-+		 * With SNC enabled, there could be too many levels of remote
-+		 * NUMA node distances, creating NUMA domain levels
-+		 * including local nodes and partial remote nodes.
-+		 *
-+		 * Trim finer distance tuning for NUMA nodes in remote package
-+		 * for the purpose of building sched domains. Group NUMA nodes
-+		 * in the remote package in the same sched group.
-+		 * Simplify NUMA domains and avoid extra NUMA levels including
-+		 * different remote NUMA nodes and local nodes.
-+		 *
-+		 * GNR and CWF don't expect systems with more than 2 packages
-+		 * and more than 2 hops between packages. Single average remote
-+		 * distance won't be appropriate if there are more than 2
-+		 * packages as average distance to different remote packages
-+		 * could be different.
-+		 */
-+		WARN_ONCE(topology_max_packages() > 2,
-+			  "sched: Expect only up to 2 packages for GNR or CWF, "
-+			  "but saw %d packages when building sched domains.",
-+			  topology_max_packages());
-+
-+		d = avg_remote_numa_distance();
-+	}
-+	return d;
-+}
-+#endif /* CONFIG_NUMA */
-+
- void set_cpu_sibling_map(int cpu)
+ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
++int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size);
+ int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
+ int build_id_parse_buf(const void *buf, unsigned char *build_id, u32 buf_size);
+ 
+--- a/lib/buildid.c~procfs-avoid-fetching-build-id-while-holding-vma-lock
++++ a/lib/buildid.c
+@@ -279,7 +279,7 @@ static int get_build_id_64(struct freade
+ /* enough for Elf64_Ehdr, Elf64_Phdr, and all the smaller requests */
+ #define MAX_FREADER_BUF_SZ 64
+ 
+-static int __build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
++static int __build_id_parse(struct file *file, unsigned char *build_id,
+ 			    __u32 *size, bool may_fault)
  {
- 	bool has_smt = __max_threads_per_core > 1;
--- 
-2.32.0
+ 	const Elf32_Ehdr *ehdr;
+@@ -287,11 +287,7 @@ static int __build_id_parse(struct vm_ar
+ 	char buf[MAX_FREADER_BUF_SZ];
+ 	int ret;
+ 
+-	/* only works for page backed storage  */
+-	if (!vma->vm_file)
+-		return -EINVAL;
+-
+-	freader_init_from_file(&r, buf, sizeof(buf), vma->vm_file, may_fault);
++	freader_init_from_file(&r, buf, sizeof(buf), file, may_fault);
+ 
+ 	/* fetch first 18 bytes of ELF header for checks */
+ 	ehdr = freader_fetch(&r, 0, offsetofend(Elf32_Ehdr, e_type));
+@@ -319,8 +315,8 @@ out:
+ 	return ret;
+ }
+ 
+-/*
+- * Parse build ID of ELF file mapped to vma
++/**
++ * build_id_parse_nofault() - Parse build ID of ELF file mapped to vma
+  * @vma:      vma object
+  * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
+  * @size:     returns actual build id size in case of success
+@@ -332,11 +328,14 @@ out:
+  */
+ int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
+ {
+-	return __build_id_parse(vma, build_id, size, false /* !may_fault */);
++	if (!vma->vm_file)
++		return -EINVAL;
++
++	return __build_id_parse(vma->vm_file, build_id, size, false /* !may_fault */);
+ }
+ 
+-/*
+- * Parse build ID of ELF file mapped to VMA
++/**
++ * build_id_parse() - Parse build ID of ELF file mapped to VMA
+  * @vma:      vma object
+  * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
+  * @size:     returns actual build id size in case of success
+@@ -348,7 +347,26 @@ int build_id_parse_nofault(struct vm_are
+  */
+ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
+ {
+-	return __build_id_parse(vma, build_id, size, true /* may_fault */);
++	if (!vma->vm_file)
++		return -EINVAL;
++
++	return __build_id_parse(vma->vm_file, build_id, size, true /* may_fault */);
++}
++
++/**
++ * build_id_parse_file() - Parse build ID of ELF file
++ * @file:      file object
++ * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
++ * @size:     returns actual build id size in case of success
++ *
++ * Assumes faultable context and can cause page faults to bring in file data
++ * into page cache.
++ *
++ * Return: 0 on success; negative error, otherwise
++ */
++int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size)
++{
++	return __build_id_parse(file, build_id, size, true /* may_fault */);
+ }
+ 
+ /**
+_
+
+Patches currently in -mm which might be from andrii@kernel.org are
+
 
 
