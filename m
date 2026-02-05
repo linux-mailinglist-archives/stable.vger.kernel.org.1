@@ -1,189 +1,188 @@
-Return-Path: <stable+bounces-214496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ64KeO8hGnG4wMAu9opvQ
-	(envelope-from <stable+bounces-214496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:53:07 +0100
+	id wCIuNQm+hGnG4wMAu9opvQ
+	(envelope-from <stable+bounces-214497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:58:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3506DF4CCC
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:53:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D106F4D9A
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32ABF302DB43
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:50:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7333301CCE0
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296FC40B6CE;
-	Thu,  5 Feb 2026 15:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F77423153;
+	Thu,  5 Feb 2026 15:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q+tFbijU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VyAvWgYx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD23535CBB0
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 15:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7F43D3D15
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 15:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770306611; cv=none; b=pdY1i7W16iXFg/mzkk7wv2hn0dzVmeCQ0fSHTK7ZMa83npI3EVeDiFxQb5q0I7R1e6yrdPgDEssW9mdh/HWUzIm/KxU4j2zzgnyirlaqiYRnCWk6ucHDjTs+ep5ny3/JnNGU7B+v65TNMZzN93fCha3WAot+OLxsbKbDNfA6Imo=
+	t=1770306879; cv=none; b=sN6VFG9JR/WmtNF1WMri+fRorfJklB4RubabKr8XjKn9ToK9IxhEb3MVmvxI0uQNmLuTdQSWNTLb4MTl+ouqS+e3jOYOEHsMPkWb+unWC2qhL8C5Vk7symXSCw6wiLMyZldAUIrdqsl+t8ZOPGx76gJHjR/aakwZx3DBa8B40ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770306611; c=relaxed/simple;
-	bh=iUZ5tnMQyhw9uCy640eejDGHzA+wNQ5AYMIrZOw3mCQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZlXOZGTHQnzy1+pPmfH0jr0lyZ8YfMTrhKeV//kGzyrKw/mqr+NVRfU2+K+miUxPfvf+L7lkKo2QzzPUi7Wcj3e+htoemZmqg24J9xoA2DG7z0qwFpFNXo2Jy6FWWE/O1COWMH8qE87d3jSxQIHcV7hEITsL3ebXIvJzU6t9uMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q+tFbijU; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34cc8bf226cso983768a91.3
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 07:50:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770306611; x=1770911411; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JhwK1VS71v2DkiCt5Bja3+qO4VJWz2Pt2URd2uZcACk=;
-        b=Q+tFbijUIZ0KN7eFv6kvu/OGDbfybROYLOoq535qiSmhWt0Qo7Qy57QuTy1R/d31oE
-         oxdUXuLU2aREzoFcoHzoBbvLs0ziGdVH42v2QKkPlCURV9ePVAoacEK3U6Njs2IvYDhp
-         E3gEkVIWp51y6u7GTcfPy7q8SO6s+atcS8Rwk8zFGcaKm4Sb91/oSWtYl+bSPYWBWlid
-         BflVmujolrdWrKvCVWiugVZZUVDxQGyRFI+HA32HiA5B/qxDqvTKZORhraOVbQHVsDeL
-         zY0iQYZEWAmaPHxDCrBdQROvf+v9Lt9aYolOJrAgYYkFZpmX6nVqVhcVbuCSgeD6Bq0j
-         TkiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770306611; x=1770911411;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JhwK1VS71v2DkiCt5Bja3+qO4VJWz2Pt2URd2uZcACk=;
-        b=E7zquaHlYip+Szukk3NVV0wbBIML/tpQgS+tfCEIJWmirlMYQSJoT4vx2vtPkTFkaC
-         oP7Qizvj3hd1Vhdwh2iWUYEwkAMfDs6hybt5pjGB5qlsPcK3VU3GPJRo/EljSmLp3MxQ
-         Cxiq4/1lFact3Y0lT21sKAUhpy6w+fus3i2f2K9rbr3NncG/6OERgECFhXUk93KnkS4o
-         gGhqZKoLOQ7oDvk5KEWiaB2RuIbR0XrYESKXddjJvtIZ3zTHRRssMNvMWDYdF7z0OFuf
-         AhLvu95ZpGxeimSug1KXOYrY21Sd2c52729dyoecjAAXIaB6/IhfH2QDTS30mJsMlg2N
-         I5GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxcy2qCK1waZA26flujAwTKsinE4kkEZEalZWJ1KhvQ/iNdQXM6rrOO3UrfRn8wI7NtnffK6k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHhHSYnUx7OYd1r/0kcbnDKmsyWt/uu9SbejvQ9dIIdkgmRX9/
-	gqWiXi2nVhggQwm2PKbt1fPLdgCToWI5aNO8FPFdSD8dTMb4MlvbRU1rwX5bVxvvmeHauSada4c
-	+5FIYDw==
-X-Received: from pjps6.prod.google.com ([2002:a17:90a:a106:b0:352:ba61:b351])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5102:b0:354:a332:1a61
- with SMTP id 98e67ed59e1d1-354a3321ccemr1617875a91.5.1770306611136; Thu, 05
- Feb 2026 07:50:11 -0800 (PST)
-Date: Thu, 5 Feb 2026 07:50:09 -0800
-In-Reply-To: <2026020546-wrongness-duplex-bccd@gregkh>
+	s=arc-20240116; t=1770306879; c=relaxed/simple;
+	bh=XFEGS6YPAr2cAPFF7UHqKauKrnMV04eAqAL93LscOvw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tGKI8seTX+f1ENO3Jt1TUc++a5THGF7Utft5xJLi4qMzhIIUSNKGvWCAtFHh5g5iOjT9+udFGSGIFaa7dSSP9kRhh7ODtHSWiJku13TvIf/MbjcRguxVtj+xFwOpw1o+LGHb1u6U+l2MrPQ7kePjaqMEpH5dwYmTJ5Z7+H7mh7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VyAvWgYx; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770306878;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=unekZ9V6Ccuh1dPtLnAU4rfj+WzTBhAfwBkQdq/2gq4=;
+	b=VyAvWgYxlkWJVoHVEgIZXmhmVNo48+jOyjpRcxlAurQujHE7EDwPV6S55zhQgHwXvhUFiJ
+	mGfoRJ8Yg9ERys/Oxt9Dm6aWVOk8Xk8x2otzF08JEEXeOpiAYXlESF5hkY1wCQwugdsIlx
+	gj5sOcu0AM7xN7mLSptS3kfOoAsBDCQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-E8Zlkf_XPQezgN2S-yAKbA-1; Thu,
+ 05 Feb 2026 10:54:35 -0500
+X-MC-Unique: E8Zlkf_XPQezgN2S-yAKbA-1
+X-Mimecast-MFC-AGG-ID: E8Zlkf_XPQezgN2S-yAKbA_1770306873
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8FCC31956089;
+	Thu,  5 Feb 2026 15:54:33 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.22])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 395ED19373D8;
+	Thu,  5 Feb 2026 15:54:31 +0000 (UTC)
+From: Ming Lei <ming.lei@redhat.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org
+Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	stable@vger.kernel.org,
+	Jay Shin <jaeshin@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	coregee2000@gmail.com,
+	Ming Lei <ming.lei@redhat.com>
+Subject: [PATCH V2] blk-cgroup: fix UAF in __blkcg_rstat_flush()
+Date: Thu,  5 Feb 2026 23:54:23 +0800
+Message-ID: <20260205155425.342084-1-ming.lei@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260205051030.1225975-1-nikunj@amd.com> <2026020559-igloo-revolver-1442@gregkh>
- <59781811-a98b-4289-89e4-58e8247241f8@amd.com> <2026020546-wrongness-duplex-bccd@gregkh>
-Message-ID: <aYS8MQLcGs08PxYK@google.com>
-Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
-From: Sean Christopherson <seanjc@google.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "Nikunj A. Dadhania" <nikunj@amd.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	bp@alien8.de, thomas.lendacky@amd.com, tglx@kernel.org, mingo@redhat.com, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com, 
-	pbonzini@redhat.com, x86@kernel.org, jon.grimm@amd.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214496-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,vger.kernel.org,redhat.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-214497-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3506DF4CCC
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ming.lei@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 5D106F4D9A
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026, Greg KH wrote:
-> On Thu, Feb 05, 2026 at 11:40:11AM +0530, Nikunj A. Dadhania wrote:
-> > 
-> > 
-> > On 2/5/2026 11:25 AM, Greg KH wrote:
-> > > On Thu, Feb 05, 2026 at 05:10:30AM +0000, Nikunj A Dadhania wrote:
-> > >> FRED enabled SEV-ES and SNP guests fail to boot due to the following
-> > >> issues in the early boot sequence:
-> > >>
-> > >> * FRED does not have a #VC exception handler in the dispatch logic
-> > >>
-> > >> * For secondary CPUs, FRED is enabled before setting up the FRED MSRs, and
-> > >>   console output triggers a #VC which cannot be handled
-> > >>
-> > >> * Early FRED #VC exceptions should use boot_ghcb until per-CPU GHCBs are
-> > >>   initialized
-> > >>
-> > >> Fix these issues to ensure SEV-ES/SNP guests can handle #VC exceptions
-> > >> correctly during early boot when FRED is enabled.
-> > >>
-> > >> Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
-> > >> Cc: stable@vger.kernel.org # 6.9+
-> > >> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-> > >> ---
-> > >>
-> > >> Reason to add stable tag:
-> > >>
-> > >> With FRED support for SVM here 
-> > >> https://lore.kernel.org/kvm/20260129063653.3553076-1-shivansh.dhiman@amd.com,
-> > >> SVM and SEV guests running 6.9 and later kernels will support FRED.
-> > >> However, *SEV-ES and SNP guests cannot support FRED* and will fail to boot
-> > >> with the following error:
-> > >>
-> > >>     [    0.005144] Using GB pages for direct mapping
-> > >>     [    0.008402] Initialize FRED on CPU0
-> > >>     qemu-system-x86_64: cpus are not resettable, terminating
-> > >>
-> > >> Three problems were identified as detailed in the commit message above and
-> > >> is fixed with this patch.
-> > >>
-> > >> I would like the patch to be backported to the LTS kernels (6.12 and 6.18) to
-> > >> ensure SEV-ES and SNP guests running these stable kernel versions can boot
-> > >> with FRED enabled on FRED-enabled hypervisors.
-> > > 
-> > > That sounds like new hardware support, if you really want that, why not
-> > > just use newer kernel versions with this fix in it?  Obviously no one is
-> > > running those kernels on that hardware today, so this isn't a regression :)
+From: Michal Koutný <mkoutny@suse.com>
 
-I disagree, this absolutely is a regression.  Kernels without commit 14619d912b65
-will boot on this "new" hardware, kernels with the commit will not.
+When multiple blkgs in the same blkcg are released concurrently,
+a use-after-free can occur. The race happens when one blkg's
+__blkcg_rstat_flush() removes another blkg's iostat entries via
+llist_del_all(). The second blkg sees an empty list and proceeds
+to free itself while the first is still iterating over its entries.
 
-> > Fair point.
-> > 
-> > However, the situation is a bit nuanced: FRED hardware is available now, and
-> > users running current stable kernels as guests will encounter boot
-> > failures when the hypervisor is updated to support FRED. While not a traditional
-> > regression, it creates a compatibility gap where stable guest kernels cannot run
-> > on updated hypervisors.
-> 
-> Great, then upgrade those guest kernels as they have never been able to
-> run on those hypervisors :)
+Move the flush from __blkg_release() (RCU callback) to blkg_release()
+(before call_rcu). This ensures the RCU grace period waits for any
+concurrent flush's rcu_read_lock() section to complete before freeing.
 
-As above, *upgrading* from e.g. 6.6 to 6.12 will suddenly fail to boot.
+Cc: stable@vger.kernel.org
+Cc: Jay Shin <jaeshin@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Fixes: 20cb1c2fb756 ("blk-cgroup: Flush stats before releasing blkcg_gq")
+Reported-by: coregee2000@gmail.com
+Closes: https://lore.kernel.org/linux-block/CAHPqNmwT9oRpem3J3erS_W0uSQND47LGGSBsNxP8E6uSUish1w@mail.gmail.com/
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+---
+V2:
+	- take simpler approach from Michal Koutný 
 
-> > Other option would be to disable FRED for SEV-ES and SNP guest in stable kernel.
-> 
-> That's a choice for the hypervisor vendors to choose.
+ block/blk-cgroup.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-No, because the hypervisor has no clue what kernel version the guest is running.
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 3cffb68ba5d8..ec079c2c404e 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -163,20 +163,10 @@ static void blkg_free(struct blkcg_gq *blkg)
+ static void __blkg_release(struct rcu_head *rcu)
+ {
+ 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
+-	struct blkcg *blkcg = blkg->blkcg;
+-	int cpu;
+ 
+ #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+ 	WARN_ON(!bio_list_empty(&blkg->async_bios));
+ #endif
+-	/*
+-	 * Flush all the non-empty percpu lockless lists before releasing
+-	 * us, given these stat belongs to us.
+-	 *
+-	 * blkg_stat_lock is for serializing blkg stat update
+-	 */
+-	for_each_possible_cpu(cpu)
+-		__blkcg_rstat_flush(blkcg, cpu);
+ 
+ 	/* release the blkcg and parent blkg refs this blkg has been holding */
+ 	css_put(&blkg->blkcg->css);
+@@ -194,6 +184,17 @@ static void __blkg_release(struct rcu_head *rcu)
+ static void blkg_release(struct percpu_ref *ref)
+ {
+ 	struct blkcg_gq *blkg = container_of(ref, struct blkcg_gq, refcnt);
++	struct blkcg *blkcg = blkg->blkcg;
++	int cpu;
++
++	/*
++	 * Flush all the non-empty percpu lockless lists before releasing
++	 * us, given these stat belongs to us.
++	 *
++	 * blkg_stat_lock is for serializing blkg stat update
++	 */
++	for_each_possible_cpu(cpu)
++		__blkcg_rstat_flush(blkcg, cpu);
+ 
+ 	call_rcu(&blkg->rcu_head, __blkg_release);
+ }
+-- 
+2.47.0
+
 
