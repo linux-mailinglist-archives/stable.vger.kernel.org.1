@@ -1,209 +1,297 @@
-Return-Path: <stable+bounces-214454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLANIKGOhGl43QMAu9opvQ
-	(envelope-from <stable+bounces-214454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 13:35:45 +0100
+	id 8COhLNyQhGkh3gMAu9opvQ
+	(envelope-from <stable+bounces-214456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 13:45:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069ADF29AB
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 13:35:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A311F2C0E
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 13:45:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6CCD53006821
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 12:35:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EE97F30558F1
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 12:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8E335CBAF;
-	Thu,  5 Feb 2026 12:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512EF3D3D1E;
+	Thu,  5 Feb 2026 12:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="MNvGOeNF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZydxAir8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6770D2E62B5
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 12:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7A63D3D14
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 12:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770294940; cv=none; b=jOx3d5g4WRkjgmXkCMH1nSL7cC35FwwMPV58HEjiqAzV1Ov4dqmfIiyCHiqYyQ69vxOWsWQQCgyjUsTptw0Qaj0ThktUOVwj1/gvc6kEYvxnmVYKo6Hsrg9oBmUDc+B2mufrQwPw60h/Gc9G6Ear6+UyDTeLv9Xa/S8kFWOBKFo=
+	t=1770295289; cv=none; b=sMZy16XGQ1UljAutOQOQ6d62qfMRdLVtVHKv0WNzvJ90Ehm8lK33r6YQjwlIbmnictp5ZHUFd+B8+aDrf8DEbpDCDhNMiT3xjPkmsGTfrPoA7qhe6seaJOYzqCYgLsZsVMt5hdkbVD+XuzZcNOR7Su+HEJeOAITRo9JrkR1uZ4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770294940; c=relaxed/simple;
-	bh=+53hNWU4aBifgGqYzlqXVZY1azKSazPsTo4RB5ZisTs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K4RMkkCRSNhbNaVJ40rtpm1RgPZ5uoCAgcSPYH0H0WjlcT6q7G8U2I/TLkXm2rxgtV8M/n+5WQT16PkDpSLsLMzsHH3U9gDpjGPCRHyr3ZzSjNbs+iiAbNK+XnQisadD0yu0cLzf9miKX6bkCiArfJkbymm/XeZna8P2NF/V0Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=MNvGOeNF; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48068ed1eccso9419635e9.2
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 04:35:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1770294939; x=1770899739; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JMinWwuSYZAsnfOZ7eW4Hdd19Fsy4Vy9sVbUdrkHtqs=;
-        b=MNvGOeNFjRv9j2RzRZSO7DpCHN1+mXNFzTesb5cdGgu25PTvpHxuim2zHwtAymUjfY
-         r5JQfN/fhy5Srj3ghG8dRmZOmXB3G16g2COjSplL+KS/Muy8IJg3cGps4UcVOzrSi6uU
-         jqh08N3IeN3AG0iR7k+XQARbNTA6oFQ1oh4JZ3ZZ7OTSpJWrbJaTEeLtbyLEixKL9G8M
-         ShBbuS2k9IlVOHXjKDdlP8rtPKZNCa/vC/kVZ+0VQi6Cap67OFCAzkOXSdb/nRYuIDOS
-         rfCUxFAoRbrFXU3qGba2+p1me4BN63EibSTHj78Wi6Eikta3KnCclJPJm9dHI7IWcDBb
-         77uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770294939; x=1770899739;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JMinWwuSYZAsnfOZ7eW4Hdd19Fsy4Vy9sVbUdrkHtqs=;
-        b=eFWR9HPFJUzTe4IeTPoJ2ovnWd6dafnXdBXusBlYL5vXgVl11CvLBpjZKs1icbgqtL
-         6XJjzPZ9MxQdLf0Va75JPlEuPZvpY+vUEeKe9TV4WlcwttzpcdkBMeT1WoezyWOkDt9w
-         B4VjwasNEP4wYsXBkHHTNyAGs6JCFqij66nhHkp1i0FUEik0rQH4g6jSixVJOPvVdoIE
-         N+uNUZAZiQfgxDB5uJvJsuzV9lSLKLg0PURBn7oN/ujSacbFKs7SLwf/bwGhW7Jk2Tjg
-         R5wSquS0dch7I3nVi8RH240MK8/rquGkoeXf4KgUryWBlimEl+TnA/4z/GNlENYSYAuH
-         MrLg==
-X-Gm-Message-State: AOJu0YyN4MTjKoeKwQKRcOrn27LDcZO3nHW9iEk8gc3SfJfF7EuwFl4N
-	FXSwTyG6Pil1RlwS0oby2E8cpmK9JFeqNbjolmLRrrsijGRebtVGzag=
-X-Gm-Gg: AZuq6aJ1UlgKEq52SFoVkERcMp4Lesev8DBlTGR8ejVFmbs6HNxcAEsSOzpfeOAHLZz
-	MpFGf5dwKOJ0x2h/POjNUHVX94trriLEiUd4fzSgh69Rh+uf3V/Uy52lZFQbcBL/FtMjVfznzuv
-	fSVtlxCt+vyr9tYvMSH+IqFnX5r8eqYtmz4y29i7HBROaUrHDJ47eZhp2MCugHY2oJW5oUf9yqA
-	7hO7Ivbul3KKasUViFO/iiX2R/QJ2dwaAgVg246pqlW0+ZHrqpG4yawtv4b7b/on8MClo6WtzkS
-	UDgZbw3iro52MsyuWWHW79A676DAVxp1ksocMwkEcyuYuCPzy/SUx8ZCsao/eVkMzMUYLXpEd6O
-	bgv4S/WETKE7NeNMDRYj0jtUkkO8hE/RhM5f8SYY3HfvZEkeXzuXHvDJpewgqiMHUOm8ODLmg9d
-	oWqdTBuLMXdY/lcW/gcVTO2FWfEeql/OZqSMELJTmgeWvNrUB/t8wR/YjrquCtiR8=
-X-Received: by 2002:a05:600c:3b16:b0:480:3b4e:41b8 with SMTP id 5b1f17b1804b1-4830e9934d2mr89621855e9.33.1770294938500;
-        Thu, 05 Feb 2026 04:35:38 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b46dc.dip0.t-ipconnect.de. [91.43.70.220])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4361805edcfsm12882690f8f.35.2026.02.05.04.35.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Feb 2026 04:35:38 -0800 (PST)
-Message-ID: <8bb7a822-2643-4511-9c14-c3bc2d1bfb07@googlemail.com>
-Date: Thu, 5 Feb 2026 13:35:37 +0100
+	s=arc-20240116; t=1770295289; c=relaxed/simple;
+	bh=VimFjRK28/j+gUbIr3eJarghf07UCr9oX8jxWPGbwik=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dDTphKByS7n+lVLAzMKaekJ/QahaZdpSz6YDqoIUxCAHzqcY+45k33AH3cY7Oqtsw2MS3Uv7M2/+uhkRFr6rSIK+Jz3PKOX8HML1mMzjRR5SkfZkLbzsc4gpZKZDxF5lHKddCNe+11x65apq8mdXeLPfq4/JZ1YxWo0cqpwiaeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZydxAir8; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770295289; x=1801831289;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=VimFjRK28/j+gUbIr3eJarghf07UCr9oX8jxWPGbwik=;
+  b=ZydxAir8TcDsVbDLPGw38C3O+HfrF4WhVbRKgm4OBtubYkcMj3suIoVf
+   1lxwjw1nPm8ppCO2YvEtkIOsMk/Rct87P/BCl8wYKA1EkDtz+aoNW9Scz
+   5A27qmdpaWxeBWuFqi8IS9qi8PmXfPIpf2AyemDkXYsw5/cA3ql7EUN8t
+   BeTm01ZKUCsuTmibqrGVgEWVariMZVh59w4h547hEfK3mDL9jFdq6jczN
+   iFSCgY+dojcOZ6CkeFovbbrAnoyh2c6StHQ3SNVjTpSHQNwL75a15Lbvx
+   z/PnjrSQU/08F+tU/sRunKfiE1GVoRWEN/cTnrueEC0o5x/iOPYYZ7VpF
+   w==;
+X-CSE-ConnectionGUID: 6yuxwZm4RnibsC45BYnLyg==
+X-CSE-MsgGUID: FMxNp+ucSDOBh6UB4tvmmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="96947938"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="96947938"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 04:41:28 -0800
+X-CSE-ConnectionGUID: mhxCuNKwR16muqQBMfSf2g==
+X-CSE-MsgGUID: SHLCvZAzQGeIXi7ExROklg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="215486668"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.93]) ([10.245.244.93])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 04:41:25 -0800
+Message-ID: <050af3658287690c9f9b29a49bb3e31ecb4c273e.camel@linux.intel.com>
+Subject: Re: [PATCH v4] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Balbir Singh <balbirs@nvidia.com>, intel-xe@lists.freedesktop.org
+Cc: Alistair Popple <apopple@nvidia.com>, Ralph Campbell
+ <rcampbell@nvidia.com>,  Christoph Hellwig	 <hch@lst.de>, Jason Gunthorpe
+ <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>,  Leon Romanovsky	
+ <leon@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Matthew Brost
+	 <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
+	linux-mm@kvack.org, dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Date: Thu, 05 Feb 2026 13:41:22 +0100
+In-Reply-To: <a1fa9630-2661-4a62-9b38-8154d8ef05b1@nvidia.com>
+References: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
+	 <a1fa9630-2661-4a62-9b38-8154d8ef05b1@nvidia.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 000/280] 6.1.162-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260204143909.614719725@linuxfoundation.org>
- <25910fd9-ecc8-4119-9abc-2ab6baf5ce77@googlemail.com>
- <2026020510-ember-darkroom-37f6@gregkh>
- <2026020526-frisbee-coauthor-8ca3@gregkh>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <2026020526-frisbee-coauthor-8ca3@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214454-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-214456-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:mid,googlemail.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mailvelope.com:url,linus:email]
-X-Rspamd-Queue-Id: 069ADF29AB
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4A311F2C0E
 X-Rspamd-Action: no action
 
-Hi Greg,
+On Thu, 2026-02-05 at 22:20 +1100, Balbir Singh wrote:
+> On 2/5/26 22:10, Thomas Hellstr=C3=B6m wrote:
+> > If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+> > trying to acquire the lock of a device-private folio for migration,
+> > to ram, the function will spin until it succeeds grabbing the lock.
+> >=20
+> > However, if the process holding the lock is depending on a work
+> > item to be completed, which is scheduled on the same CPU as the
+> > spinning hmm_range_fault(), that work item might be starved and
+> > we end up in a livelock / starvation situation which is never
+> > resolved.
+> >=20
+> > This can happen, for example if the process holding the
+> > device-private folio lock is stuck in
+> > =C2=A0=C2=A0 migrate_device_unmap()->lru_add_drain_all()
+> > The lru_add_drain_all() function requires a short work-item
+> > to be run on all online cpus to complete.
+> >=20
+> > A prerequisite for this to happen is:
+> > a) Both zone device and system memory folios are considered in
+> > =C2=A0=C2=A0 migrate_device_unmap(), so that there is a reason to call
+> > =C2=A0=C2=A0 lru_add_drain_all() for a system memory folio while a
+> > =C2=A0=C2=A0 folio lock is held on a zone device folio.
+> > b) The zone device folio has an initial mapcount > 1 which causes
+> > =C2=A0=C2=A0 at least one migration PTE entry insertion to be deferred =
+to
+> > =C2=A0=C2=A0 try_to_migrate(), which can happen after the call to
+> > =C2=A0=C2=A0 lru_add_drain_all().
+> > c) No or voluntary only preemption.
+> >=20
+> > This all seems pretty unlikely to happen, but indeed is hit by
+> > the "xe_exec_system_allocator" igt test.
+> >=20
+>=20
+> Do you have a stack trace from the test? I am trying to visualize the
+> livelock/starvation, but I can't from the description.
 
-Am 05.02.2026 um 09:33 schrieb Greg Kroah-Hartman:
-> On Thu, Feb 05, 2026 at 09:31:30AM +0100, Greg Kroah-Hartman wrote:
->> On Wed, Feb 04, 2026 at 11:17:38PM +0100, Peter Schneider wrote:
->>> Hi Greg,
->>>
->>> Am 04.02.2026 um 15:36 schrieb Greg Kroah-Hartman:
->>>> This is the start of the stable review cycle for the 6.1.162 release.
->>>> There are 280 patches in this series, all will be posted as a response
->>>> to this one.  If anyone has any issues with these being applied, please
->>>> let me know.
->>>>
->>>> Responses should be made by Fri, 06 Feb 2026 14:38:23 +0000.
->>>> Anything received after that time might be too late.
->>>
->>> It seems that this time, I cannot even build this RC. When I run "make
->>> menuconfig" I get a big serious of warning and error messages; something
->>> seems to be really messed up here...
->>>
->>>
->>> root@linus:/usr/src/linux-stable-rc# vim .config
->>> root@linus:/usr/src/linux-stable-rc# make menuconfig
->>> scripts/kconfig/Makefile:215: Warnung: Das Musterrezept hat das Peer-Ziel „scripts/kconfig/mconf-bin“ nicht aktualisiert.
->>>    HOSTCC  scripts/kconfig/mconf.o
->>>    HOSTCC  scripts/kconfig/lxdialog/checklist.o
->>>    HOSTCC  scripts/kconfig/lxdialog/inputbox.o
->>>    HOSTCC  scripts/kconfig/lxdialog/menubox.o
->>>    HOSTCC  scripts/kconfig/lxdialog/textbox.o
->>>    HOSTCC  scripts/kconfig/lxdialog/util.o
->>>    HOSTCC  scripts/kconfig/lxdialog/yesno.o
->>>    HOSTLD  scripts/kconfig/mconf
->>> /usr/bin/ld: scripts/kconfig/lxdialog/yesno.o: warning: relocation against `acs_map' in read-only section `.text'
->>> /usr/bin/ld: scripts/kconfig/mconf.o: in function `show_help':
->>> mconf.c:(.text+0xa1b): undefined reference to `stdscr'
->>> /usr/bin/ld: mconf.c:(.text+0xa20): undefined reference to `getmaxx'
->>> /usr/bin/ld: scripts/kconfig/lxdialog/checklist.o: in function `print_arrows':
->>> checklist.c:(.text+0x2c): undefined reference to `wmove'
->>
->> <snip>
->>
->> Ick, yes, I can reproduce this myself here, something is odd.  Let me
->> track it down...
-> 
-> Ok, found the offending commit, will push out a -rc2 in a bit with this
-> fixed, thanks for testing!
-> 
-> greg k-h
+The spinning thread: (The backtrace varies slightly from time to time:)
 
-I was too tired yesterday evening to investigate my build error and poke around deeper, but today I looked into it 
-again, and I found that when I revert the two kconfig patches in this RC
+[  805.201476] watchdog: BUG: soft lockup - CPU#139 stuck for 52s!
+[kworker/u900:1:9985]
+[  805.201477] Modules linked in: xt_conntrack nft_chain_nat
+xt_MASQUERADE nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bridge
+stp llc xfrm_user xfrm_algo xt_addrtype nft_compat x_tables nf_tables
+mei_gsc_proxy pmt_crashlog mtd_intel_dg mei_gsc overlay qrtr
+snd_hda_codec_intelhdmi snd_hda_codec_hdmi intel_rapl_msr
+intel_rapl_common cfg80211 intel_uncore_frequency
+intel_uncore_frequency_common intel_ifs i10nm_edac sunrpc binfmt_misc
+skx_edac_common nfit xe x86_pkg_temp_thermal intel_powerclamp coretemp
+nls_iso8859_1 kvm_intel kvm drm_ttm_helper drm_suballoc_helper
+gpu_sched snd_hda_intel cmdlinepart drm_gpuvm snd_intel_dspcfg drm_exec
+spi_nor drm_gpusvm_helper snd_hda_codec drm_buddy pmt_telemetry
+dax_hmem snd_hwdep pmt_discovery mtd video irqbypass cxl_acpi qat_4xxx
+iaa_crypto snd_hda_core pmt_class ttm rapl ses cxl_port snd_pcm
+intel_cstate enclosure cxl_core intel_qat isst_if_mmio isst_if_mbox_pci
+drm_display_helper snd_timer snd cec idxd crc8 einj ast mei_me
+spi_intel_pci rc_core soundcore isst_if_common
+[  805.201496]  ipmi_ssif authenc i2c_i801 intel_vsec idxd_bus
+spi_intel i2c_algo_bit mei i2c_ismt i2c_smbus wmi joydev input_leds
+ipmi_si acpi_power_meter acpi_ipmi ipmi_devintf ipmi_msghandler
+acpi_pad mac_hid pfr_telemetry pfr_update sch_fq_codel msr efi_pstore
+dm_multipath nfnetlink dmi_sysfs autofs4 btrfs blake2b libblake2b
+raid10 raid456 async_raid6_recov async_memcpy async_pq async_xor
+async_tx xor raid6_pq raid1 raid0 linear rndis_host cdc_ether usbnet
+mii nvme hid_generic mpt3sas i40e nvme_core usbhid ahci
+ghash_clmulni_intel raid_class nvme_keyring scsi_transport_sas hid
+libahci nvme_auth libie hkdf libie_adminq pinctrl_emmitsburg
+aesni_intel
+[  805.201510] CPU: 139 UID: 0 PID: 9985 Comm: kworker/u900:1 Tainted:
+G S      W    L      6.19.0-rc7+ #18 PREEMPT(voluntary)=20
+[  805.201512] Tainted: [S]=3DCPU_OUT_OF_SPEC, [W]=3DWARN, [L]=3DSOFTLOCKUP
+[  805.201512] Hardware name: Supermicro SYS-421GE-TNRT/X13DEG-OA, BIOS
+2.5a 02/21/2025
+[  805.201513] Workqueue: xe_page_fault_work_queue
+xe_pagefault_queue_work [xe]
+[  805.201599] RIP: 0010:_raw_spin_unlock+0x16/0x40
+[  805.201602] Code: cc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90
+90 90 90 0f 1f 44 00 00 55 48 89 e5 c6 07 00 0f 1f 00 65 ff 0d fa a6 40
+01 <74> 10 5d 31 c0 31 d2 31 c9 31 f6 31 ff c3 cc cc cc cc 0f 1f 44 00
+[  805.201603] RSP: 0018:ffffd2a663a4f678 EFLAGS: 00000247
+[  805.201603] RAX: fffff85c67e35080 RBX: ffffd2a663a4f7b8 RCX:
+0000000000000000
+[  805.201604] RDX: ffff8b88fdd31a00 RSI: 0000000000000000 RDI:
+fffff75c86ff5928
+[  805.201605] RBP: ffffd2a663a4f678 R08: 0000000000000000 R09:
+0000000000000000
+[  805.201605] R10: 0000000000000000 R11: 0000000000000000 R12:
+0000631d10d42000
+[  805.201606] R13: ffffd2a663a4f7b8 R14: 00000001a4ca4067 R15:
+74000003ff9f8d42
+[  805.201606] FS:  0000000000000000(0000) GS:ffff8bc76202b000(0000)
+knlGS:0000000000000000
+[  805.201607] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  805.201608] CR2: 0000631d10c00088 CR3: 0000003de3040004 CR4:
+0000000000f72ef0
+[  805.201609] PKRU: 55555554
+[  805.201609] Call Trace:
+[  805.201610]  <TASK>
+[  805.201610]  do_swap_page+0x17c6/0x1b70
+[  805.201612]  ? sysvec_apic_timer_interrupt+0x57/0xc0
+[  805.201614]  ? asm_sysvec_apic_timer_interrupt+0x1b/0x20
+[  805.201615]  ? __pfx_default_wake_function+0x10/0x10
+[  805.201617]  ? ___pte_offset_map+0x1c/0x130
+[  805.201619]  __handle_mm_fault+0xa75/0x1020
+[  805.201621]  handle_mm_fault+0xeb/0x2f0
+[  805.201622]  ? handle_mm_fault+0x11a/0x2f0
+[  805.201623]  hmm_vma_fault.isra.0+0x5b/0xb0
+[  805.201625]  hmm_vma_walk_pmd+0x5c7/0xc40
+[  805.201627]  ? sysvec_apic_timer_interrupt+0x57/0xc0
+[  805.201629]  walk_pgd_range+0x5ba/0xbf0
+[  805.201631]  __walk_page_range+0x8e/0x220
+[  805.201633]  walk_page_range_mm_unsafe+0x149/0x210
+[  805.201635]  walk_page_range+0x2a/0x40
+[  805.201636]  hmm_range_fault+0x5c/0xb0
+[  805.201638]  drm_gpusvm_range_evict+0x11a/0x1d0 [drm_gpusvm_helper]
+[  805.201641]  __xe_svm_handle_pagefault+0x5fa/0xf00 [xe]
+[  805.201736]  ? select_task_rq_fair+0x9bc/0x2970
+[  805.201738]  xe_svm_handle_pagefault+0x3d/0xb0 [xe]
+[  805.201827]  xe_pagefault_queue_work+0x233/0x370 [xe]
+[  805.201905]  process_one_work+0x18d/0x370
+[  805.201907]  worker_thread+0x31a/0x460
+[  805.201908]  ? __pfx_worker_thread+0x10/0x10
+[  805.201909]  kthread+0x10b/0x220
+[  805.201910]  ? __pfx_kthread+0x10/0x10
+[  805.201912]  ret_from_fork+0x289/0x2c0
+[  805.201913]  ? __pfx_kthread+0x10/0x10
+[  805.201915]  ret_from_fork_asm+0x1a/0x30
+[  805.201917]  </TASK>
 
-7c177eca9e7af1f0a56171b7718a1b05aaa0f237 "kconfig: fix static linking of nconf"
-eb5defa1e8284b8b79653beadc92c273c170db7d "kconfig: refactor Makefile to reduce process forks"
+The thread holding the page-lock:
 
-then my build error goes away, the build succeeds and the produced kernel seems to work fine.
+[ 1629.938195] Workqueue: xe_page_fault_work_queue
+xe_pagefault_queue_work [xe]
+[ 1629.938340] Call Trace:
+[ 1629.938341]  <TASK>
+[ 1629.938342]  __schedule+0x47f/0x1890
+[ 1629.938346]  ? psi_group_change+0x1bd/0x4d0
+[ 1629.938350]  ? __pick_eevdf+0x70/0x180
+[ 1629.938353]  schedule+0x27/0xf0
+[ 1629.938357]  schedule_timeout+0xcf/0x110
+[ 1629.938361]  __wait_for_common+0x98/0x180
+[ 1629.938364]  ? __pfx_schedule_timeout+0x10/0x10
+[ 1629.938368]  wait_for_completion+0x24/0x40
+[ 1629.938370]  __flush_work+0x2b6/0x400
+[ 1629.938373]  ? kick_pool+0x77/0x1b0
+[ 1629.938377]  ? __pfx_wq_barrier_func+0x10/0x10
+[ 1629.938382]  flush_work+0x1c/0x30
+[ 1629.938384]  __lru_add_drain_all+0x19f/0x2a0
+[ 1629.938390]  lru_add_drain_all+0x10/0x20
+[ 1629.938392]  migrate_device_unmap+0x433/0x480
+[ 1629.938398]  migrate_vma_setup+0x245/0x300
+[ 1629.938403]  drm_pagemap_migrate_to_devmem+0x2a8/0xc00
+[drm_gpusvm_helper]
+[ 1629.938410]  ? krealloc_node_align_noprof+0x12f/0x3a0
+[ 1629.938413]  ? __xe_bo_create_locked+0x376/0x840 [xe]
+[ 1629.938529]  xe_drm_pagemap_populate_mm+0x25f/0x3a0 [xe]
+[ 1629.938721]  drm_pagemap_populate_mm+0x74/0xe0 [drm_gpusvm_helper]
+[ 1629.938731]  xe_svm_alloc_vram+0xad/0x270 [xe]
+[ 1629.938933]  ? xe_tile_local_pagemap+0x41/0x170 [xe]
+[ 1629.939095]  ? ktime_get+0x41/0x100
+[ 1629.939098]  __xe_svm_handle_pagefault+0xa90/0xf00 [xe]
+[ 1629.939279]  xe_svm_handle_pagefault+0x3d/0xb0 [xe]
+[ 1629.939460]  xe_pagefault_queue_work+0x233/0x370 [xe]
+[ 1629.939620]  process_one_work+0x18d/0x370
+[ 1629.939623]  worker_thread+0x31a/0x460
+[ 1629.939626]  ? __pfx_worker_thread+0x10/0x10
+[ 1629.939629]  kthread+0x10b/0x220
+[ 1629.939632]  ? __pfx_kthread+0x10/0x10
+[ 1629.939636]  ret_from_fork+0x289/0x2c0
+[ 1629.939639]  ? __pfx_kthread+0x10/0x10
+[ 1629.939642]  ret_from_fork_asm+0x1a/0x30
+[ 1629.939648]  </TASK>
 
-Beste Grüße,
-Peter Schneider
+The worker that this thread waits on in flush_work() is,=20
+most likely, the one starved on cpu-time on cpu #139.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Thanks,
+Thomas
 
