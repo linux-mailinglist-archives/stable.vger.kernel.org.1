@@ -1,172 +1,214 @@
-Return-Path: <stable+bounces-214498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILtPFkW+hGnG4wMAu9opvQ
-	(envelope-from <stable+bounces-214498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:59:01 +0100
+	id mP3+LgfAhGnG4wMAu9opvQ
+	(envelope-from <stable+bounces-214499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:06:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE24CF4DF4
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 16:59:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3BDF4F48
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 17:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DD56304606C
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:55:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 648F33006835
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 15:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9254A42B747;
-	Thu,  5 Feb 2026 15:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E4642DFF0;
+	Thu,  5 Feb 2026 15:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KCxCr3m1"
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="nY8tgY1t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525B042884B;
-	Thu,  5 Feb 2026 15:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770306936; cv=none; b=C+Op1MBFWoIsQeqTA4viRUl9PvFt6NUNPPs/8bSL2jUeh6ltQ2QoxFHm9hbR131x3DZvdWCFTl/Fr7WNNhX5Yho1MX0LOqWJvdvf5eAYjdXK4m8NOC/dXsCa0TIX6iwL+ba6AU2jxpm/6agHKnFM/O8H77pj9PBDBpnFJ0Ixims=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770306936; c=relaxed/simple;
-	bh=nLnqxFooA/49y7Qr2qOH02wcNjwl6i9vyPt+ZJikng8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Okxmk5meAiqFz8d+Gr109/SBt3YeGKOYbTmpoWePttjTCmD2iF+Or+yyCNqWV19cdR9J7vFHvUH58aOPQe2h51bc7da5TjeofU4zzPW8DlDTy/mJNrBMe9WXDQbQRgLXtWWPQLgq4TwzjXKhGIzUN3GlNrIMFTP6WSNDpXTohuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCxCr3m1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84943C4CEF7;
-	Thu,  5 Feb 2026 15:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770306935;
-	bh=nLnqxFooA/49y7Qr2qOH02wcNjwl6i9vyPt+ZJikng8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KCxCr3m15otPPxE5NJuhZjbQUaeB2FUvBRMuN2+fjC6L7rY9kHbVZE47aVoCk70NE
-	 OQlTj4DnMAHIXjaQzCPBv7NHxmhsDHatlGjFt8tHJojOcauwHAfmqImhFmXyo2Beab
-	 Px6zqBpWaZJyv+gT0E69C6KDkpR1eMNE0/KdBnqWnRuhqyI0smKb12m0KHz5PDWXzD
-	 A0Rc7cBkYSQOCKBoRr/XGjWslvBchIwm99XXnQiQN8gn1kAH9hO6/KfV+H3fC30k75
-	 W0rQgcNUL5x+feCkRpf12hFgmvD11uDc9NGIQVIcnIovGhzCDpH/TEf7HViuXXHRK4
-	 qPAfHvw+beUTA==
-Date: Thu, 5 Feb 2026 16:55:25 +0100
-From: Nicolas Schier <nsc@kernel.org>
-To: HeeSu Kim <mlksvender@gmail.com>
-Cc: nathan@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	bjorn3_gh@protonmail.com, boqun@google.com, charmitro@posteo.net,
-	dakr@kernel.org, gary@garyguo.net, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lossin@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH v5 1/2] kbuild: add rustc-max-version macro
-Message-ID: <aYS9bRugxr1rUvA3@levanger>
-Mail-Followup-To: Nicolas Schier <nsc@kernel.org>,
-	HeeSu Kim <mlksvender@gmail.com>, nathan@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com,
-	bjorn3_gh@protonmail.com, boqun@google.com, charmitro@posteo.net,
-	dakr@kernel.org, gary@garyguo.net, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lossin@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org,
-	tmgross@umich.edu
-References: <20260203221224.GA2703490@ax162>
- <20260205131815.2943152-1-mlksvender@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BB7421F0C;
+	Thu,  5 Feb 2026 15:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770307126; cv=pass; b=FmDeH91We89OntnB9LlGPBzdP7yDpvBECGZEmNsATKM8dKwJ4yuQBYKa61KXzk7NV998naHc0cXO0wbLvkHP8Enu3KVKW+XkSSynvyFeMoEMCLoDDluISsTaIzXpGiJMAM4um1BTJmusOwptm4NkDmNrPwG23VWC38AG5td/Cyc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770307126; c=relaxed/simple;
+	bh=Fi4VXOVvvEEM9yWZmbVIB2tdGgQxZe5fTXPkIeISGP0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AWqENH64HNyi+v+AlPQ1XCcAMaYblpQss8MHemXmtmoRODe8pKhAjeKdgMuJafuNiD3gDicNuzGoX+OXnv6qEcSf07h7fVuq27rr5n0yUI8v+OPIClhPG+HD71x147jKlCLWVrDuRbbxasdE2mG1ZV77AnJeHAf95b90xp8/7Jc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=nY8tgY1t; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+ARC-Seal: i=1; a=rsa-sha256; t=1770307096; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LQdDS0sD9D9Nnv/1Z9zKLRa2h2j0LzjEp7mXNBpdyDWKa+NqBvy4WWANgCCail15iuYliP0LX4bYoa56Q83RF7KOYP0VlihvWpnKUqPClgy4RSHyst7RUTaYwfpmeMKnq4vRq/UtDKKlvUq0LHKtof8DgYTIGbjq+OhYlZE53EM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770307096; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=JjgyVvQvDBdLV0lASR43tNdGfYV4elj5vN9l8aB40pM=; 
+	b=CZ5Cz66ShZvrQHbcPHMgkcJZapk+/APN60SeoFYszw+WZVajE9fzff7P/wCRQEjvKPQi+vvNhyIBR/hcpfFI4N4pwHUFOE/EXpGpM9nKzvOeaQCxBUj8uEVMy4iBEGGLHpE/CuHXnrqnqKB+3t2UGQINwmHaYG1iEMlDJCE4vm8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ziyao.cc;
+	spf=pass  smtp.mailfrom=me@ziyao.cc;
+	dmarc=pass header.from=<me@ziyao.cc>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770307096;
+	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=JjgyVvQvDBdLV0lASR43tNdGfYV4elj5vN9l8aB40pM=;
+	b=nY8tgY1t/Dkhjz9KHtwgnxxqNL0p9D6mn0eW/qK4OPN1lDeF/9PdYpQw04p0eGUF
+	kZ/+6IgEhlXpDkX9a9/s1l3QP5X0UysbUaPDqBwUQ84dFPuBP1X5KuL4sq7Vbc7Q7A1
+	JvhO4qu/MjsXtEv2TXJ1h8dAn3l+KV/NMaUvcsHg=
+Received: by mx.zohomail.com with SMTPS id 1770307094687863.0131325581174;
+	Thu, 5 Feb 2026 07:58:14 -0800 (PST)
+From: Yao Zi <me@ziyao.cc>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Yao Zi <me@ziyao.cc>,
+	linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v2] MIPS: Work around LLVM bug when gp is used as global register variable
+Date: Thu,  5 Feb 2026 15:56:44 +0000
+Message-ID: <20260205155644.34421-1-me@ziyao.cc>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205131815.2943152-1-mlksvender@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [10.34 / 15.00];
+	URIBL_BLACK(7.50)[ziyao.cc:email,ziyao.cc:dkim,ziyao.cc:mid];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214498-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-214499-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[ziyao.cc:s=zmail];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	GREYLIST(0.00)[pass,body];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[alpha.franken.de,kernel.org,gmail.com,google.com,linutronix.de];
+	DKIM_TRACE(0.00)[ziyao.cc:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nsc@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,gmail.com,umich.edu];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[me@ziyao.cc,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[ziyao.cc,quarantine];
+	TAGGED_RCPT(0.00)[stable,lkml];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BE24CF4DF4
-X-Rspamd-Action: no action
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	NEURAL_SPAM(0.00)[0.996];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ziyao.cc:email,ziyao.cc:dkim,ziyao.cc:mid,gnu.org:url]
+X-Rspamd-Queue-Id: 5C3BDF4F48
+X-Rspamd-Action: add header
+X-Spam: Yes
 
-On Thu, Feb 05, 2026 at 10:18:14PM +0900, HeeSu Kim wrote:
-> Add `rustc-max-version` macro to `scripts/Makefile.compiler` for
-> version upper bound checks, mirroring the existing `rustc-min-version`.
-> 
-> This will be used to bound workarounds to specific compiler version
-> ranges.
-> 
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72n39eU9WE=Yh0_yJzmqMxo=QAaU2pN0UqP9jZ7bT7rhgA@mail.gmail.com/
-> Acked-by: Nathan Chancellor <nathan@kernel.org>
-> Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
-> ---
-> Changes in v5:
-> - Split rustc-max-version macro into separate patch for easier backporting
->   (was part of the workaround patch in v4)
-> 
->  scripts/Makefile.compiler | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-> index ef91910de265..85268f6f1494 100644
-> --- a/scripts/Makefile.compiler
-> +++ b/scripts/Makefile.compiler
-> @@ -71,6 +71,10 @@ clang-min-version = $(call test-ge, $(CONFIG_CLANG_VERSION), $1)
->  # Usage: rustc-$(call rustc-min-version, 108500) += -Cfoo
->  rustc-min-version = $(call test-ge, $(CONFIG_RUSTC_VERSION), $1)
->  
-> +# rustc-max-version
-> +# Usage: rustc-$(call rustc-max-version, 109000) += -Cfoo
-> +rustc-max-version = $(call test-le, $(CONFIG_RUSTC_VERSION), $1)
-> +
+On MIPS, __current_thread_info is defined as global register variable
+locating in $gp, and is simply assigned with new address during kernel
+relocation.
 
-Acked-by: Nicolas Schier <nsc@kernel.org>
+This however is broken with LLVM, which always restores $gp if it finds
+$gp is clobbered in any form, including when intentionally through a
+global register variable. This is against GCC's documentation[1], which
+requires a callee-saved register used as global register variable not to
+be restored if it's clobbered.
 
+As a result, $gp will continue to point to the unrelocated kernel after
+the epilog of relocate_kernel(), leading to an early crash in init_idle,
 
+[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000000000, epc == ffffffff81afada8, ra == ffffffff81afad90
+[    0.000000] Oops[#1]:
+[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W           6.19.0-rc5-00262-gd3eeb99bbc99-dirty #188 VOLUNTARY
+[    0.000000] Tainted: [W]=WARN
+[    0.000000] Hardware name: loongson,loongson64v-4core-virtio
+[    0.000000] $ 0   : 0000000000000000 0000000000000000 0000000000000001 0000000000000000
+[    0.000000] $ 4   : ffffffff80b80ec0 ffffffff80b53d48 0000000000000000 00000000000f4240
+[    0.000000] $ 8   : 0000000000000100 ffffffff81d82f80 ffffffff81d82f80 0000000000000001
+[    0.000000] $12   : 0000000000000000 ffffffff81776f58 00000000000005da 0000000000000002
+[    0.000000] $16   : ffffffff80b80e40 0000000000000000 ffffffff80b81614 9800000005dfbe80
+[    0.000000] $20   : 00000000540000e0 ffffffff81980000 0000000000000000 ffffffff80f81c80
+[    0.000000] $24   : 0000000000000a26 ffffffff8114fb90
+[    0.000000] $28   : ffffffff80b50000 ffffffff80b53d40 0000000000000000 ffffffff81afad90
+[    0.000000] Hi    : 0000000000000000
+[    0.000000] Lo    : 0000000000000000
+[    0.000000] epc   : ffffffff81afada8 init_idle+0x130/0x270
+[    0.000000] ra    : ffffffff81afad90 init_idle+0x118/0x270
+[    0.000000] Status: 540000e2	KX SX UX KERNEL EXL
+[    0.000000] Cause : 00000008 (ExcCode 02)
+[    0.000000] BadVA : 0000000000000000
+[    0.000000] PrId  : 00006305 (ICT Loongson-3)
+[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____), tls=0000000000000000)
+[    0.000000] Stack : 9800000005dfbf00 ffffffff8178e950 0000000000000000 0000000000000000
+[    0.000000]         0000000000000000 ffffffff81970000 000000000000003f ffffffff810a6528
+[    0.000000]         0000000000000001 9800000005dfbe80 9800000005dfbf00 ffffffff81980000
+[    0.000000]         ffffffff810a6450 ffffffff81afb6c0 0000000000000000 ffffffff810a2258
+[    0.000000]         ffffffff81d82ec8 ffffffff8198d010 ffffffff81b67e80 ffffffff8197dd98
+[    0.000000]         ffffffff81d81c80 ffffffff81930000 0000000000000040 0000000000000000
+[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    0.000000]         0000000000000000 000000000000009e ffffffff9fc01000 0000000000000000
+[    0.000000]         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    0.000000]         0000000000000000 ffffffff81ae86dc ffffffff81b3c741 0000000000000002
+[    0.000000]         ...
+[    0.000000] Call Trace:
+[    0.000000] [<ffffffff81afada8>] init_idle+0x130/0x270
+[    0.000000] [<ffffffff81afb6c0>] sched_init+0x5c8/0x6c0
+[    0.000000] [<ffffffff81ae86dc>] start_kernel+0x27c/0x7a8
 
-(nit-picking; not crucial for this very patch set)
+This bug has been reported to LLVM[2] and affects version from (at
+least) 18 to 21. Let's work around this by using inline assembly to
+assign $gp before a fix is widely available.
 
-For readability, a less-than version check might be easier to read; and
-that would probably better match the suggested version range check:
+Cc: stable@vger.kernel.org
+Link: https://gcc.gnu.org/onlinedocs/gcc-15.2.0/gcc/Global-Register-Variables.html # [1]
+Link: https://github.com/llvm/llvm-project/issues/176546 # [2]
+Signed-off-by: Yao Zi <me@ziyao.cc>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+---
 
-    rustc-lt-version = $(if $(call rustc-min-version, $(1)),,y)
-    rustc-version-range = $(and $(call rustc-lt-version,$(2)), $(call rustc-min-version,$(1)))
+Changed from v1:
+- Include a link to LLVM upstream issue in comment
+- Collect tags
+- Link to v1: https://lore.kernel.org/linux-mips/20260118090235.60670-1-me@ziyao.cc/
 
-so that the actual version check could become
+ arch/mips/kernel/relocate.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-    # The bug was fixed in Rust 1.90.0, so only apply for 1.88.x to < 1.90.0
-    rustdoc_modifiers_workaround := $(if $(call rustc-version-range, 108800, 109000), \
-    		-Cunsafe-allow-abi-mismatch=fixed-x18)
-
-or:
-
-    ifeq ($(call rustc-version-range, 108800, 109000),y)
-    rustdoc_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
-    endif
-
-
+diff --git a/arch/mips/kernel/relocate.c b/arch/mips/kernel/relocate.c
+index 7f1c136ad850..59833210542f 100644
+--- a/arch/mips/kernel/relocate.c
++++ b/arch/mips/kernel/relocate.c
+@@ -420,7 +420,20 @@ void *__init relocate_kernel(void)
+ 			goto out;
+ 
+ 		/* The current thread is now within the relocated image */
++#ifndef CONFIG_CC_IS_CLANG
+ 		__current_thread_info = RELOCATED(&init_thread_union);
++#else
++		/*
++		 * LLVM may wrongly restore $gp ($28) in epilog even if it's
++		 * intentionally modified. Work around this by using inline
++		 * assembly to assign $gp. $gp couldn't be listed as output or
++		 * clobber, or LLVM will still restore its original value.
++		 * See also LLVM upstream issue
++		 * https://github.com/llvm/llvm-project/issues/176546
++		 */
++		asm volatile("move $28, %0" : :
++			     "r" (RELOCATED(&init_thread_union)));
++#endif
+ 
+ 		/* Return the new kernel's entry point */
+ 		kernel_entry = RELOCATED(start_kernel);
 -- 
-Nicolas
+2.52.0
+
 
