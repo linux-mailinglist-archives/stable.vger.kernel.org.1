@@ -1,85 +1,85 @@
-Return-Path: <stable+bounces-214378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJZlAtgEhGmHwwMAu9opvQ
-	(envelope-from <stable+bounces-214378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 03:47:52 +0100
+	id CIlMGO4EhGmHwwMAu9opvQ
+	(envelope-from <stable+bounces-214379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 03:48:14 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED32EE198
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 03:47:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F18ACEE1AE
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 03:48:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4356F300EAA3
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 02:47:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B4C5301C14D
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 02:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFBC28DB54;
-	Thu,  5 Feb 2026 02:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20832C08D5;
+	Thu,  5 Feb 2026 02:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LADdOVue"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKsBstF/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2CA1CDFD5
-	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 02:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430F11F8755
+	for <stable@vger.kernel.org>; Thu,  5 Feb 2026 02:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770259649; cv=none; b=eXEJQ+gToaXYSJAW8+iqAqLrivlKlj3x+KBCfPNsgnFga2SRenJKylg+Bad4JiVonwGMTsJQXDFxU71B/sXCJ7on02fUfyAXoRrDR4vct5YecuBQDWXUXSWPj/b1o9uR0UqrulFWUD0iAApl1nIMPcM0KwKLIrEW4I7rMP3ms7s=
+	t=1770259655; cv=none; b=DVZT9mo8eJzQ9AT9++v6MVcyMEC+uYoDB+bd+4SGJvQ3DauTmqbou8JUpX4AFEgoIeLbLgyXQQwqYUYeXyfj/4HTG/0Ql67pXgHW4exU/z3Qz4goxxZgIfuciWPeM+RjNGGfIXAuPIBIVAkLa1yUjwoMMglcB+nUd30J8a8Up6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770259649; c=relaxed/simple;
-	bh=NkPq/s5BiXpj1kYu6RXFoEWhOuxRY6zyl5jkhvFJ5Do=;
+	s=arc-20240116; t=1770259655; c=relaxed/simple;
+	bh=LM4w3ayI+D3t0rJOATqyc1N6jV2xUEBJsXzJpchcBWw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JC5J5wzbdX5AUQ/nizgF5M1/YgyFC89iZ6wvTbTkggMlOJ8ZymipFS1XvOvB40z4lubHw4aj/IYlIYU2PI/1tybEdvboYvl/z4HxYHt1E3BmDrNfDFFZj3ZhWCbkyO0gH4Qy/ATMk1MwzaN3Bd9WZfvfOLStLGPoBUdSCIdzqKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LADdOVue; arc=none smtp.client-ip=209.85.219.53
+	 In-Reply-To:To:Cc; b=U5vM4VGyaLHjw3hbeCtAaLwsJYCF1verovB2vOEbdzzVz8myUBanhnHFNdlM/gilMJJlb5HURQuPVH/yp9T+hFJI2+SY+0m6uuS1/E/eqafMicysmwO9g6fDTvOjqpg+Ne586KUPAY/Syhnh6m/gQp9pQqraVvuEgheR6q+hSOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKsBstF/; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8947ddce09fso4779906d6.3
-        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 18:47:28 -0800 (PST)
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8947e6ffd30so6278766d6.0
+        for <stable@vger.kernel.org>; Wed, 04 Feb 2026 18:47:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770259648; x=1770864448; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770259654; x=1770864454; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yLaqaSS4WB1Humpqpw9lfgDwEEvSzEjuIrUcj+p6NtY=;
-        b=LADdOVuew6VF+LM4JwJCLAx66PNHpy0lQPoIzNonCJ0+o46ezKcE5hWUr0b62PAhfK
-         w/4KpnhM/lTRDG6DT02HX50mt/ESqULUPw+F848WRFghtrNW+72YIlwNC46B1QNlDcTA
-         NyLazLFkb/9jR82XHfI8jwT+azV2sPl5x938Z5cG3Xn/KHRon1lcGBxIggbQ/EDQmeE+
-         jdy4eE3mTyab+DGI17gK4N6TbnucpBZNduTqW+HPImbQHFJQ0ZtImHZ+9AXUGO16402Q
-         nPPfLT9KM5Ueu0jk07gvLa2IotNzxCI7zrhD/FOgC3v1H1lxAFHfecMnzALLVVe0iYVG
-         9PeA==
+        bh=Jkp+zpklLnwgbsWysYnnsbXefJfZs3Z+JpdRtUJO3sk=;
+        b=hKsBstF/L8BXDDz7BXf5XGoxAdWlfYDHFefekPj+avmMF9Qt/rTjbw1fU4jDXNESrm
+         4H3YsMVQBLrlDiwORpkyGyL4s8lsr6ff6Su0330f4RXpjtsDzlqHf+PhB8Npc8+Ui+zd
+         2N9wbWwuLZb9hdeq79uIpbCmvLJiPo6SJfKNlfyZ+1bUPTBo34D2Igjc7IU9McUSHSH9
+         PJ2iopPgaEhRazL7ieS4Ia8KZ905NPZrLuSpUBzDag1VSQ9jstl3bN3EGbNTH9B8MLmL
+         CD1HOa/yzvxBUQqZHlH4k9x0vx/6arIPTWNkGtmnqKw878Wc9pee46cT3EI3c5d4759w
+         XiDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770259648; x=1770864448;
+        d=1e100.net; s=20230601; t=1770259654; x=1770864454;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=yLaqaSS4WB1Humpqpw9lfgDwEEvSzEjuIrUcj+p6NtY=;
-        b=I03rNrHV0HYE0ojNzZYPqE7Fba6HNzxiL7eEJV/mcdHca0wqQNdYhxAdDt9hD6qhq1
-         hp1dIFibW2VF62p5oTNq6e0a2M7tpfJ3ree8+MRVWhWgXJltAh1cl69ZCiXyPaYF/bV0
-         jMyAaMlIh+fWGPV3PmNqogPPHrCE8E5OrTWV/+vx6QLraJIKRUL1HupZan1UoTYTgcRU
-         KjFPdM7JypZsRtwquucPPBZMgs5mayDI7OKjYhUV+PgmywmWPkFXRMhqBud/yn37rVtB
-         VNKiwSO7HIjpp2IzVPozwXqNXkyKWaQieC329OP/JO5qFCW8z4SskEehA9S0KxpCdOxa
-         u/jQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIP2/Mr17b+8gzxZvQnrvLRnagdTPtnr0TEibR7EwlQ+h1l0ZHS7NIECGEOkaf40/rIPStBBU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXGuE+PB8z8ez4o69WaHZZz7c739B+NrkCvNmD3t0PopQYr7vK
-	w1TpMU+eLpMl1cm4mXrSgmIwFZElBclqTBLDSVCqCId0xoC6QMLyIzAh
-X-Gm-Gg: AZuq6aJTbwlJHuk5sQxvQKTJ+Ai0hRpqHZaFuBmr2xst4VSQ/ryA3jxIepwAoBftdcu
-	S8Q0z930tMn/Nv0s6hqwv0fZIRkBKInKKtuYRuENB4o6AdKd25njIYrvVPy98YH1o2x12dAIfgc
-	AtKKswRyGgqW1Q2/6gF1PtKp8TyC66udlr1D+h9kI/72B2C1AAnbovJl9ayYcFrNHf8U01RPlPj
-	36Uoj0SatBh5C6g1606Z2tUJr021CJZ4pnxYuOz/XFOOhJDYuA4oDFL5mbFuRJmwOahtvPvsSAp
-	I2kENbx7ftPop8qLjHkIK89jkhO2yrOV//dnr3kUzfoMNr3daBiC0qBFYJU2Vy9vrfyghK9uN+p
-	JG+Txv9aCreg/ZD2wPdg3DE4LkyUIXQNAb6MU156Zq4TgfliWJPwRtBrmRshRIIulvR/WoesINw
-	nqfADeJFpbOZ1IJDjb29xo
-X-Received: by 2002:a05:6214:501b:b0:88a:35cf:8db3 with SMTP id 6a1803df08f44-89522185775mr76334956d6.18.1770259647646;
-        Wed, 04 Feb 2026 18:47:27 -0800 (PST)
+        bh=Jkp+zpklLnwgbsWysYnnsbXefJfZs3Z+JpdRtUJO3sk=;
+        b=L4Hvul8cfWnmr/d2fRHUN9zANYjkx1dmLkGiL7e0NCiFh/yimWUuF6NITmT9eSk420
+         udurv6mfwON8nQijemuLcv3KZGDJBqph1wsWefNvtLAq6Wk7d6QD+Lc0xIKKhx7PyaLV
+         EpPfZirbuHL4YgNK82NpXJRvNGhbTb+kAUEN6+PyGv7O+z6QSZEcGFBSB7i8KvJGSvYo
+         0fF5LWDpKjRbYmPA5PDsLIeQ5bLvtMeyxoVORq8niOBw9bzriVAeGAlPUQt+m6KTn+UB
+         WBnxmm23sr6+rtvx3Viq/lNsu5Fsrg2RpzQiDCX3tGKTrfKfY+Cg6dHJXDp0HkJq37gF
+         ItgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXweSxBmwDc+VVU6L1b47fnS6ZmTlU7vc9DApQHOlfyUoIv8wplbBzywjPyAAEKuFZHiCPxFIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrcdZCYH/48QLZ/LVSkSf3fklmczSr2ggoGa3IbrySDYGRWF5e
+	arIIf/9m9RKBCdf28KmdybIZQ3I/ms8PjxMl4mZEadhhB2sY9Lak0KEy
+X-Gm-Gg: AZuq6aK1x0QD0b71bq1ofkvk3KHZaj4vcwB3Z5Dq7QRu1248fTYoE1JfQ5b8/0RFczB
+	PPcEGvgCATWMkOsJQBLmAkfCh63rzXEFE6LWbD/NTNZNz8oxdfEYGKqJ4U60sQrB9STYLbB+PcG
+	4ipxQzlJ1bGvYFew1u0xC8TA+i9sPxGZb5WLAJfxzK4NEVZyLuFJnCd4XflkTRHt3/Wma7Loxs+
+	j60wrb7hxk6sG/y05R5ubLaXexdwgX3rENIgYHQjAilnRmLygoQMjTAGWYXkUk7CdLjV9i/wsDL
+	PxoBYWyN7bc6oHoRR/SadxTf3Eyn0/va39Mgkhu81v6Kv76YdnQLakJdlSiXRDLtTEdWIjnt75U
+	X2ehKMkWtE4+YaA8Mlokm+IOJN0nU/aO5rzSJhRtg2zp8vyNv886yqnsHR5wgxaJNCPHqqqzQkP
+	KFOayPBOcmMNrfWb7/TTDC
+X-Received: by 2002:ad4:596f:0:b0:894:70f6:1694 with SMTP id 6a1803df08f44-895220fe1d7mr68191666d6.11.1770259654001;
+        Wed, 04 Feb 2026 18:47:34 -0800 (PST)
 Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ca2fd2b5e3sm308193085a.25.2026.02.04.18.47.21
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ca2fd2b5e3sm308193085a.25.2026.02.04.18.47.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 18:47:27 -0800 (PST)
+        Wed, 04 Feb 2026 18:47:33 -0800 (PST)
 From: Kevin Hao <haokexin@gmail.com>
-Date: Thu, 05 Feb 2026 10:47:02 +0800
-Subject: [PATCH net 1/2] net: cpsw_new: Fix unnecessary netdev
- unregistration in cpsw_probe() error path
+Date: Thu, 05 Feb 2026 10:47:03 +0800
+Subject: [PATCH net 2/2] net: cpsw_new: Fix potential unregister of netdev
+ that has not been registered yet
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,7 +88,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260205-cpsw-error-path-v1-1-6e58bae6b299@gmail.com>
+Message-Id: <20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com>
 References: <20260205-cpsw-error-path-v1-0-6e58bae6b299@gmail.com>
 In-Reply-To: <20260205-cpsw-error-path-v1-0-6e58bae6b299@gmail.com>
 To: netdev@vger.kernel.org
@@ -116,7 +116,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214378-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214379-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -136,81 +136,45 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5ED32EE198
+X-Rspamd-Queue-Id: F18ACEE1AE
 X-Rspamd-Action: no action
 
-The current error handling in cpsw_probe() has two issues:
-- cpsw_unregister_ports() may be called before cpsw_register_ports() has
-  been executed.
-
-- cpsw_unregister_ports() is already invoked within cpsw_register_ports()
-  in case of a register_netdev() failure, but the error path would call
-  it again.
+If an error occurs during register_netdev() for the first MAC in
+cpsw_register_ports(), even though cpsw->slaves[0].ndev is set to NULL,
+cpsw->slaves[1].ndev would remain unchanged. This could later cause
+cpsw_unregister_ports() to attempt unregistering the second MAC.
+To address this, add a check for ndev->reg_state before calling
+unregister_netdev(). With this change, setting cpsw->slaves[i].ndev
+to NULL becomes unnecessary and can be removed accordingly.
 
 Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
 Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 21af0a10626aaf0ce6ecb04837899801743f3894..b9fc31eb06134dae33427eaba06341c39eb4b41c 100644
+index b9fc31eb06134dae33427eaba06341c39eb4b41c..7f42f58a4b031fab4c93680c153383e8eeb8f7f8 100644
 --- a/drivers/net/ethernet/ti/cpsw_new.c
 +++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -2003,7 +2003,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 	/* setup netdevs */
- 	ret = cpsw_create_ports(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
+@@ -1472,7 +1472,7 @@ static void cpsw_unregister_ports(struct cpsw_common *cpsw)
  
- 	/* Grab RX and TX IRQs. Note that we also have RX_THRESHOLD and
- 	 * MISC IRQs which are always kept disabled with this driver so
-@@ -2017,14 +2017,14 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
+ 	for (i = 0; i < cpsw->data.slaves; i++) {
+ 		ndev = cpsw->slaves[i].ndev;
+-		if (!ndev)
++		if (!ndev || ndev->reg_state != NETREG_REGISTERED)
+ 			continue;
+ 
+ 		priv = netdev_priv(ndev);
+@@ -1494,7 +1494,6 @@ static int cpsw_register_ports(struct cpsw_common *cpsw)
+ 		if (ret) {
+ 			dev_err(cpsw->dev,
+ 				"cpsw: err registering net device%d\n", i);
+-			cpsw->slaves[i].ndev = NULL;
+ 			break;
+ 		}
  	}
- 
- 	ret = devm_request_irq(dev, cpsw->irqs_table[1], cpsw_tx_interrupt,
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
- 
- 	if (!cpsw->cpts)
-@@ -2034,7 +2034,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(&pdev->dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching misc irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
- 
- 	/* Enable misc CPTS evnt_pend IRQ */
-@@ -2043,7 +2043,7 @@ static int cpsw_probe(struct platform_device *pdev)
- skip_cpts:
- 	ret = cpsw_register_notifiers(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 
- 	ret = cpsw_register_devlink(cpsw);
- 	if (ret)
-@@ -2065,8 +2065,6 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
--clean_unregister_netdev:
--	cpsw_unregister_ports(cpsw);
- clean_cpts:
- 	cpts_release(cpsw->cpts);
- 	cpdma_ctlr_destroy(cpsw->dma);
 
 -- 
 2.52.0
