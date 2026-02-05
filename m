@@ -1,168 +1,235 @@
-Return-Path: <stable+bounces-214401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGZrHro+hGlU1wMAu9opvQ
-	(envelope-from <stable+bounces-214401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 07:54:50 +0100
+	id gBhwHyNDhGmh2AMAu9opvQ
+	(envelope-from <stable+bounces-214402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:13:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5ABEF2AC
-	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 07:54:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B59EF588
+	for <lists+stable@lfdr.de>; Thu, 05 Feb 2026 08:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3C21C30058C3
-	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 06:54:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8675D300009B
+	for <lists+stable@lfdr.de>; Thu,  5 Feb 2026 07:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF3D355038;
-	Thu,  5 Feb 2026 06:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B88C35B644;
+	Thu,  5 Feb 2026 07:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnI6RNMr"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="EXnfzp5J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F27E275844;
-	Thu,  5 Feb 2026 06:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A745330D54;
+	Thu,  5 Feb 2026 07:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770274485; cv=none; b=sLOZbo/uWpLSaUHRsP6M9oXnS9a9XQ+IUrkfe6azc9+yreOth8W/P13jfOIqfFsHIZTHwXgsljmemMJNd682scH5lCkBPWweWGgY6FAAb6BCL3KUdi9BGiHzFz0NPui5ugYoSwU87A91W+X0id5OEm0mDWGo0a/rwSe7raoC9/g=
+	t=1770275532; cv=none; b=sjYL/Zi9dD+/1xIqgyCa54GaPe+Mku92ZRxpSW//Wq91ljEJGZQ2gK1QmNDFPn0EBj+IgChkCZ0mxCBi7w3C/0+jEfS+QolTjsBej9YpXUHg7HHTFbT8UQlKBt48HCasTJuXYT/3uXTbihgM0IFT6mwDWquxid/MVLqD5AXb2ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770274485; c=relaxed/simple;
-	bh=EEyaIS7c/Np/w/ayZ/fwd6oYNont392luQLgCjnHcqU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k4TfkQjIqN8ZJb4ySR6dlZSUnlzHix2FMiaytYhj6tLh6zDJh6IiNJRRx5lqHqkURm72890uwNF0HcyJ5uk5eL676Bq05lYtHkO0ZMTZ5vYgXnLETz/SnX6V+TOFC28Prn9T3tnmAXVaF9A9NdGsuwX4QDrsYJ/hg+rsY/4nDRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnI6RNMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82EBC4CEF7;
-	Thu,  5 Feb 2026 06:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770274485;
-	bh=EEyaIS7c/Np/w/ayZ/fwd6oYNont392luQLgCjnHcqU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YnI6RNMrjB8P3QuDfeXZj4xszCtFy0YMF+8N8ZMfymdZ9gx4glVSoc6aRgF77Vk35
-	 GiPTaWQItTOr2z6lOoLDGYAUjBjrPbgaDWXzlw0W95uqE9vFGCkxQS5qrtPD/46hW5
-	 lTcRlZnhqDGHWw0Qh8GmOmADpM6NsRyEaOTZLcrli79mJ0YkVDip7IgU/J2yIegRsg
-	 jy25oKzOzuDLytA6X0XcVplJ2qcU+RDYgJBZBGeVhxbAvHmnUWr/epxFrwQLqomGMv
-	 nhXo0pvsdNRyyP+iVz1jw1cSNd1jN5v4rzs6EpgYzQBU/Qgs+SNAo3W6MLBHabzMRN
-	 TqZfvChTSpuBg==
-Message-ID: <54bf1026-7d71-466d-b6c0-8714c7230f9f@kernel.org>
-Date: Thu, 5 Feb 2026 07:54:41 +0100
+	s=arc-20240116; t=1770275532; c=relaxed/simple;
+	bh=+SgpBM1wt8fzDyxb1Mb/lCh5EyM467OZfKUOULjFlag=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=pc0APpioNP6ldQ5CwdV5fbQtgt//MNDZD1vnEzYzWYN1BEITNmokF9Kym1uMY84O6d9vnTEf75IcYGtfzOshnWRL1invSvgBux6HeWRjstbaIAw+3K6wueNkaQc5I1g9jvTH4IHOy6oNiLOYpYD5oitqKvPE8DlTBYrkKIvat7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=EXnfzp5J; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6157BQ7I342018
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 4 Feb 2026 23:11:27 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6157BQ7I342018
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1770275488;
+	bh=t5vl7rEljQtqYzx5YQxqo86uvVKDEblp7dz4uhZ8FXk=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=EXnfzp5JW8Ge1i3W/BT1b/L0MWeZ3ogRu/o+Cpm3CJu4zPaJxCoBxKSqdVIGAZBGR
+	 Id25c4NCHxPC6vpclCGdPP/H34M3E28A361AHfYTX97JaHNK97Wwcwyxv5ZVHFOxU1
+	 3CsKpKDvkUHNANKy5abU0ZWV8ZxK1p3GyQVHnvHy1B/KCOUOi9VwZeluTNt3MaM4bK
+	 2RAAuOSEXDa2MnEgyuppGejcjSFC1q4ihk95xaIzjHxPmgs/9z4SnNxGRyeszowkC2
+	 4I/i4VrFfemVzJeEN/UAGuc0lnlKHRCQ03A4HOfOr/XNMIoiljxx5qbvWOLItc9K38
+	 THeR8pYhYcoUg==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in
- uhdlc_memclean()
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, Zhao Qiang <qiang.zhao@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <20260204162548.94160-3-fourier.thomas@gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260204162548.94160-3-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
+From: Xin Li <xin@zytor.com>
+In-Reply-To: <20260205051030.1225975-1-nikunj@amd.com>
+Date: Wed, 4 Feb 2026 23:11:16 -0800
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bp@alien8.de,
+        thomas.lendacky@amd.com, tglx@kernel.org, mingo@redhat.com,
+        dave.hansen@linux.intel.com, hpa@zytor.com, seanjc@google.com,
+        pbonzini@redhat.com, x86@kernel.org, jon.grimm@amd.com,
+        stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D313F34B-8463-4D48-B09C-07322D6808B0@zytor.com>
+References: <20260205051030.1225975-1-nikunj@amd.com>
+To: Nikunj A Dadhania <nikunj@amd.com>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026012301];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214401-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214402-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[zytor.com:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xin@zytor.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	REDIRECTOR_URL(0.00)[aka.ms];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[aka.ms:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1B5ABEF2AC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,zytor.com:email,zytor.com:dkim,zytor.com:mid]
+X-Rspamd-Queue-Id: E7B59EF588
 X-Rspamd-Action: no action
 
 
 
-Le 04/02/2026 à 17:25, Thomas Fourier a écrit :
-> [Vous ne recevez pas souvent de courriers de fourier.thomas@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> The priv->rx_buffer and priv->dma_rx_addr are alloc'd together as
-
-You mean priv->rx_buffer and priv->tx_buffer I guess.
-
-> contiguous buffers in uhdlc_init() but freed as two buffers in
-> uhdlc_memclean().
-> 
-> Change the cleanup to only call dma_free_coherent() once on the whole
-> buffer.
-> 
-> Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-> ---
->   drivers/net/wan/fsl_ucc_hdlc.c | 10 +---------
->   1 file changed, 1 insertion(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-> index f999798a5612..59cd861d13d6 100644
-> --- a/drivers/net/wan/fsl_ucc_hdlc.c
-> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-> @@ -790,19 +790,11 @@ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
-> 
->          if (priv->rx_buffer) {
->                  dma_free_coherent(priv->dev,
-> -                                 RX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
-> +                                 (RX_BD_RING_LEN + TX_BD_RING_LEN) * MAX_RX_BUF_LENGTH,
->                                    priv->rx_buffer, priv->dma_rx_addr);
->                  priv->rx_buffer = NULL;
->                  priv->dma_rx_addr = 0;
-
-You also have to do:
-		priv->tx_buffer = NULL;
-		priv->dma_tx_addr = 0;
+> On Feb 4, 2026, at 9:10=E2=80=AFPM, Nikunj A Dadhania <nikunj@amd.com> =
+wrote:
+>=20
+> FRED enabled SEV-ES and SNP guests fail to boot due to the following
+> issues in the early boot sequence:
+>=20
+> * FRED does not have a #VC exception handler in the dispatch logic
 
 
-Which that and commit message fixed you can add Reviewed-by: Christophe 
-Leroy (CS GROUP) <chleroy@kernel.org>
+This should be a separate patch.
 
 
+>=20
+> * For secondary CPUs, FRED is enabled before setting up the FRED MSRs, =
+and
+>  console output triggers a #VC which cannot be handled
+
+Yes, this is a problem.  I ever looked into it for TDX, and had the =
+following patch:
+
+Can you please check if it works for you (#VC handler is set in the =
+bringup IDT on AMD)?
 
 
->          }
-> -
-> -       if (priv->tx_buffer) {
-> -               dma_free_coherent(priv->dev,
-> -                                 TX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
-> -                                 priv->tx_buffer, priv->dma_tx_addr);
-> -               priv->tx_buffer = NULL;
-> -               priv->dma_tx_addr = 0;
-> -       }
->   }
-> 
->   static int uhdlc_close(struct net_device *dev)
-> --
-> 2.43.0
-> 
-> 
+    x86/smp: Set up exception handling before cr4_init()
+   =20
+    The current AP boot sequence initializes CR4 before setting up
+    exception handling.  With FRED enabled, however, CR4.FRED is set
+    prior to initializing the FRED configuration MSRs, introducing a
+    brief window where a triple fault could occur.  This isn't
+    considered a problem, as the early boot code is carefully designed
+    to avoid triggering exceptions.  Moreover, if an exception does
+    occur at this stage, it's preferable for the CPU to triple fault
+    rather than risk a potential exploit.
+   =20
+    However, under TDX, printk() triggers a #VE, so any logging during
+    this small window results in a triple fault.
+   =20
+    Swap the order of cr4_init() and cpu_init_exception_handling(),
+    since cr4_init() only involves reading from and writing to CR4,
+    and setting up exception handling does not depend on any specific
+    CR4 bits being set (Arguably CR4.PAE, CR4.PSE and CR4.PGE are
+    related but they are already set before start_secondary() anyway).
+   =20
+    Notably, this triple fault can still occur before FRED is enabled,
+    while the bringup IDT is in use, since it lacks a #VE handler.
+   =20
+    BTW, on 32-bit systems, loading CR3 with swapper_pg_dir is moved
+    ahead of cr4_init(), which appears to be harmless.
+   =20
+    Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index eb289abece23..24497258c16b 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -231,13 +231,6 @@ static void ap_calibrate_delay(void)
+  */
+ static void notrace __noendbr start_secondary(void *unused)
+ {
+-	/*
+-	 * Don't put *anything* except direct CPU state initialization
+-	 * before cpu_init(), SMP booting is too fragile that we want to
+-	 * limit the things done here to the most necessary things.
+-	 */
+-	cr4_init();
+-
+ 	/*
+ 	 * 32-bit specific. 64-bit reaches this code with the correct =
+page
+ 	 * table established. Yet another historical divergence.
+@@ -248,8 +241,37 @@ static void notrace __noendbr start_secondary(void =
+*unused)
+ 		__flush_tlb_all();
+ 	}
+=20
++	/*
++	 * AP startup assembly code has setup the following before =
+calling
++	 * start_secondary() on 64-bit:
++	 *
++	 * 1) CS set to __KERNEL_CS.
++	 * 2) CR3 switched to the init_top_pgt.
++	 * 3) CR4.PAE, CR4.PSE and CR4.PGE are set.
++	 * 4) GDT set to per-CPU gdt_page.
++	 * 5) ALL data segments set to the NULL descriptor.
++	 * 6) MSR_GS_BASE set to per-CPU offset.
++	 * 7) IDT set to bringup IDT.
++	 * 8) CR0 set to CR0_STATE.
++	 *
++	 * So it's ready to setup exception handling.
++	 */
+ 	cpu_init_exception_handling(false);
+=20
++	/*
++	 * Ensure bits set in cr4_pinned_bits are set in CR4.
++	 *
++	 * cr4_pinned_bits is a subset of cr4_pinned_mask, which =
+includes
++	 * the following bits:
++	 *         X86_CR4_SMEP
++	 *         X86_CR4_SMAP
++	 *         X86_CR4_UMIP
++	 *         X86_CR4_FSGSBASE
++	 *         X86_CR4_CET
++	 *         X86_CR4_FRED
++	 */
++	cr4_init();
++
+ 	/*
+ 	 * Load the microcode before reaching the AP alive =
+synchronization
+ 	 * point below so it is not part of the full per CPU serialized
+@@ -275,6 +297,11 @@ static void notrace __noendbr start_secondary(void =
+*unused)
+ 	 */
+ 	cpuhp_ap_sync_alive();
+=20
++	/*
++	 * Don't put *anything* except direct CPU state initialization
++	 * before cpu_init(), SMP booting is too fragile that we want to
++	 * limit the things done here to the most necessary things.
++	 */
+ 	cpu_init();
+ 	fpu__init_cpu();
+ 	rcutree_report_cpu_starting(raw_smp_processor_id());
 
 
