@@ -1,63 +1,95 @@
-Return-Path: <stable+bounces-214612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACAFIRydhWlKEAQAu9opvQ
-	(envelope-from <stable+bounces-214612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:49:48 +0100
+	id sMgPMWKehWlKEAQAu9opvQ
+	(envelope-from <stable+bounces-214613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:55:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2757FB1E6
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:49:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41058FB267
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96737301B909
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 07:49:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C44CC301F9CC
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 07:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BEE3451C1;
-	Fri,  6 Feb 2026 07:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CA4346791;
+	Fri,  6 Feb 2026 07:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Rz1ZccTQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AXt8Cvoc"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BC23451B0;
-	Fri,  6 Feb 2026 07:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9800A34678C
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 07:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770364183; cv=none; b=uJZZZNnFV/tM2g6/OuTLJfbI16LcVK0Sko4BcTNpc3hnYIQ1wBI2vRA+kv5qTKXQAM/a9q6N/T5Iav6CUqiz/+IKTyHQ1AiSClkpaNj2JV6wrV6SNzPRqIbC+NedtZbaMCFLQj9LvsdzIxo7ctQooGMil8ZjLmA8pUOuwQ1n6ZY=
+	t=1770364501; cv=none; b=b705W4B8NHNT32iLAsM5c4HCgBIWCRCQD5mPL64hNw744p+sPmpz2OanV7Mpgql6NpWE5GeTP27dePGWTlv0WB6UoVuNA2ZlT+5sOU8znnwXbgjYd19fSc4UF2wUscoTZWHNF2TA30czsjI7qSMWK4FzN0Bci4Ah8EaDZxNisG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770364183; c=relaxed/simple;
-	bh=SeOijDDBbx/gt8b41/UY+Z9ZzrzLSuYGOCdDop6i7I4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cdXIaYyBVVjNvRCbXeROrcPmwXlLh/YK/2hmz9n6APkCWYQuq3mjlV95Jpcn07IE6T1YttNX7+Hw9kdd+UuSrmydUFJa5uFIWySUwpyi3vke2zaTFfRS7DeyVU7WxCSf+Zzjw29ZsraHUYfVWlCB64+gMNXdzDMfLKk0NszrTc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Rz1ZccTQ; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nQ
-	LVkl2V7v/t3JQEFAjk0mHOi1899CqsYo+GwAOjuHA=; b=Rz1ZccTQPIjhdFrqsu
-	W/uzXF32yWmesz8R/8JNcJDYyRiFOw37+MPZHUqcBfdabl1K9WfhxsipRTsFZd4Z
-	8PpP5lqQ4xoTlxGr0afbohL1Q6J52y94G+3SN2WhgnhbMJrhVXSzhfbjBt8IkvA/
-	miyIBTvxRRNYbLaKDsvaLWr7c=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDHlrDVnIVpn95DNQ--.7064S2;
-	Fri, 06 Feb 2026 15:48:40 +0800 (CST)
-From: zhangchen200426@163.com
-To: luiz.von.dentz@intel.com,
-	pav@iki.fi,
-	pmenzel@molgen.mpg.de,
-	kuniyu@google.com,
-	yang.li@amlogic.com,
-	ceggers@arri.de,
-	nishiyama.pedro@gmail.com,
-	marcel@holtmann.org
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	zhangchen <zhangchen01@kylinos.cn>
-Subject: [PATCH] Bluetooth: HCI: Fix hci0 not release in usb disconnect process
-Date: Fri,  6 Feb 2026 15:48:34 +0800
-Message-Id: <20260206074834.315761-1-zhangchen200426@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1770364501; c=relaxed/simple;
+	bh=Ny05s/gc+yVG1LmGDAqH30JecyHKc/c0Oc5NWLJGwcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B4/60yXQdsIKm2FN4r7xBbMWBy39+JyxKCqYEZsKGT9EDVJk1dVuRqWc71+HMU0HKbI9cyTTKxZYp04Lmuv4qK7k8TSsooTElb3zt1vIuV6Kv5i48ior6YEKsIGaWGAMiZgU1D8FcV8nXvPa3J1+1bvkIY4mLUD7Zh4MvzbbHMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AXt8Cvoc; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43596062728so2007680f8f.1
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 23:55:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770364500; x=1770969300; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Abtb1OgYuy0S1picWhTVTgjBvUwD0Cb9oXrZEBk5Z7U=;
+        b=AXt8CvocCjNaoS0EDoMzudKaxGRmRWIZnwl4knUZ8vC5ds4XcWgqMPATa2shpswFHx
+         4O58A6IVuHw+XoUS7xXuN4SANMp/W5lvafWWUjv5fjxw8zVpAF61aEprxOcRJan2pRLg
+         jJKEXtLrFUWWZREdvBjcnG75oX7rEKxX3ybxIMu28e3JuYtGp8CFUje0w4fGzz3vWyK2
+         GF3v/OEOdv322IUb5EWJzQD1+UvwBSl22/v2QPka7dDYLfsR9a9sfQ57eOj4JowZR6/E
+         TwTrFXW4bdDX7TTAEcz+iIquh2H0gN069tD0K+8efDCJ1rtu8AW3+qI7Ru0w0a6lVNlr
+         og3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770364500; x=1770969300;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Abtb1OgYuy0S1picWhTVTgjBvUwD0Cb9oXrZEBk5Z7U=;
+        b=KJm1y7IgjglwF/XFmLiHzPyipJzfSmm2n+WWgPL/RIDOskG30WvjXNTFtwUMklsvOo
+         uJx2Ly+WpKWVNd3rkSCTY587PtGb9WjRTMNePoLUKXm2B/9aKxoNvupYT3R60GiyiKyA
+         OyG5U/fjUv8yrdjLLX3GHn5bsgTjEaMzNcnV1OGfeycqklF/96NYY4ypRgsXbEvWI/+9
+         g6TS1IiWv7GqrNJX+mvdRCb3ts8CIc8OWXEhWozcksBFOTd7oxQPwh9DPp2XZXmpB+ky
+         q49RsTd+S+JUW0aRxZBhFEnl4VIP2Yt2w5EJgIlMai4/ep7lPI4x6Y+XQqYHjY4JC5WC
+         0NOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwHjNJE7PK9jcW5NcsJrp29wdaZueexyCmcKIfOLdaL/NY2I5tlgqb1XNlC32i6acYA+TuQQQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/YD26KlzHq2bOVkbfuOv54nArd50wcQztMR/+1gdoa8ECN8Am
+	jvxiAck73E556XBWTT8ljvhXFa6prpH8Y0g7NTLIy7GxvXqgW8JpITA=
+X-Gm-Gg: AZuq6aKcCOwI3A+GMZLPzfLl4vzeiwHIz+0V0VJSMeQLt8uG7P/+DatHPR4BYrjOLr3
+	Nk2dLZqPw4pMTl5N6/UdTYKSw5KwpbhnHeBEtOq6BgiDBXCbtOQeMIUYPg8+StFYWHS/U7L8n1X
+	yHD2rbxTdQJNEB5RniaRRPYmSPZsFF7m+H2ERs2MHdJvvKSXTM/8ziofxk09hNMbQ2VyoBXUbG0
+	WunB/x1JM67RFskl6MtrsWsixAlD5ejFebAgHkn9F++N2SNNBSUumf3kSYtF5M1kfY0NsrDez62
+	cWPxXJkho1aoadEN1LimjNM8fnCfEpTetY/Wo49GwVmYB5rWMqOxKrVuh/DLOhV3VOhL8oV6Tgn
+	SUnd4GifbLrXBp3g3yJCCSQcs0wc0gbo4vuXZrRa1+pVJQWLA2IzMerH7kJYrY1vkA5gLTPm7LL
+	4Y4qgx39Qf3BgXKjRO+lRUnxtLqLp4mBgpLMBKBo/q+/EsiBMHwrqbBxnorI5F4bc=
+X-Received: by 2002:a05:6000:4301:b0:436:1597:7c7c with SMTP id ffacd0b85a97d-436209a0dc0mr9908471f8f.13.1770364499853;
+        Thu, 05 Feb 2026 23:54:59 -0800 (PST)
+Received: from LGPC ([31.223.131.124])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436296bd3b8sm3836039f8f.11.2026.02.05.23.54.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 23:54:59 -0800 (PST)
+From: lukagejak5@gmail.com
+X-Google-Original-From: luka.gejak@linux.dev
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Luka Gejak <luka.gejak@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/26] staging: rtl8723bs: fix potential out-of-bounds read in  rtw_restruct_wmm_ie
+Date: Fri,  6 Feb 2026 08:54:14 +0100
+Message-ID: <20260206075439.103287-2-luka.gejak@linux.dev>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260206075439.103287-1-luka.gejak@linux.dev>
+References: <20260206075439.103287-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,226 +97,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgDHlrDVnIVpn95DNQ--.7064S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuw4DurWkGrWUWr4UJFy7ZFb_yoW3Ar1kpa
-	9Ika4fAw18Jr4Sg34rAa18JF9Yk3yI93y7CFZ7W3srG39Yy34UtryUAryYqF9ruryDJr1q
-	vF4Dta1a9Fy8Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jn2-5UUUUU=
-X-CM-SenderInfo: x2kd0whfkh0jaqqujli6rwjhhfrp/xtbC5xgZtWmFnNjukAAA3F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214612-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214613-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[intel.com,iki.fi,molgen.mpg.de,google.com,amlogic.com,arri.de,gmail.com,holtmann.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhangchen200426@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: D2757FB1E6
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lukagejak5@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 41058FB267
 X-Rspamd-Action: no action
 
-From: zhangchen <zhangchen01@kylinos.cn>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-If hci_resume_dev before hci_unregister_dev, the hci command will
-timeout and the reference count of hdev will not reset to zero.
-Then the node "hci0" will not release.
+The current code checks 'i + 5 < in_len' at the end of the if statement.
+However, it accesses 'in_ie[i + 5]' before that check, which can lead
+to an out-of-bounds read. Move the length check to the beginning of the
+conditional to ensure the index is within bounds before accessing the
+array.
 
-The output in question is as follows:
-[ 3391.553518][ 7] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
-[ 3391.553588][ 7] [T264732] Bluetooth: hci0: Opcode 0x0c01 failed: -110
-[ 3393.569514][ 3] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
-[ 3393.569515][ 3] [T264732] Bluetooth: hci0: Opcode 0x0c1a failed: -110
-[ 3393.709645][ 6] [T104579] usb 10-1: new full-speed USB device number 95 using xhci-hcd
-[ 3393.862194][ 6] [T104579] usb 10-1: New USB device found, idVendor=13d3, idProduct=3570, bcdDevice= 0.00
-[ 3393.862205][ 6] [T104579] usb 10-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[ 3393.862208][ 6] [T104579] usb 10-1: Product: Bluetooth Radio
-[ 3393.862210][ 6] [T104579] usb 10-1: Manufacturer: Realtek
-[ 3393.862212][ 6] [T104579] usb 10-1: SerialNumber: 00e04c000001
-[ 3393.867589][ 6] [T247244] Bluetooth: hci1: RTL: examining hci_ver=0b hci_rev=000b lmp_ver=0b lmp_subver=8852
-[ 3393.868573][ 6] [T247244] Bluetooth: hci1: RTL: rom_version status=0 version=1
-[ 3393.868583][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_fw.bin
-[ 3393.868672][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_config.bin
-[ 3393.869699][ 6] [T247244] Bluetooth: hci1: RTL: cfg_sz 6, total sz 65603
-
-The call sequence in question is as follows:
-usb disconnect:
-  btusb_disconnect
-   hci_unregister_dev
-    hci_dev_set_flag
-    hci_cmd_sync_clear
-    hci_unregister_suspend_notifier
-    hci_dev_do_close
-    device_del
-
-device resume:
-  hci_suspend_notifier
-   hci_resume_dev
-    hci_resume_sync
-     hci_set_event_mask_sync
-      __hci_cmd_sync_status
-       __hci_cmd_sync_status_sk
-        __hci_cmd_sync_sk
-         wait_event_interruptible_timeout
-
-The output after adding debug information in question is as follows:
-[ 6378.366215][ 6] [T434033] hci_resume_dev hci name hci0
-[ 6378.366218][ 6] [T434033] hci_resume_sync set event mask sync
-[ 6378.366219][ 6] [T434033] hci_set_event_mask_sync
-[ 6378.366220][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c01
-[ 6378.366227][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
-[ 6378.367632][ 6] [T420012] btusb_disconnect intf 0000000024117fc1
-[ 6378.367637][ 6] [T420012] btusb_disconnect hci_unregister_dev
-[ 6378.367638][ 6] [T420012] hci_unregister_dev 0000000064bfd783 name hci0 bus 1
-[ 6378.367641][ 6] [T420012] hci_unregister_dev set flag
-[ 6378.367804][ 6] [T420012] hci_unregister_dev cmd sync clear
-[ 6378.367807][ 6] [T420012] hci_unregister_dev unregister suspend notifier
-[ 6380.367544][ 6] [T434033] __hci_cmd_sync_sk cmd timeout
-[ 6380.367542][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
-[ 6380.367550][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
-[ 6380.367552][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c01 failed: -110
-[ 6380.367555][ 6] [T434033] hci_resume_sync clear event filter
-[ 6380.367556][ 6] [T434033] hci_resume_sync resume scan sync
-[ 6380.367558][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c1a
-[ 6380.367561][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
-[ 6382.383538][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
-[ 6382.383593][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
-[ 6382.383597][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c1a failed: -110
-
-The output after adding debug information in normal is as follows:
-[50.039156][ 6] [ T8360] btusb_disconnect intf 00000000fca35842
-[50.039160][ 6] [ T8360] btusb_disconnect hci_unregister_dev
-[50.039162][ 6] [ T8360] hci_unregister_dev 000000002422b946 name hci0 bus 1
-[50.039164][ 6] [ T8360] hci_unregister_dev set flag
-[50.039224][ 6] [ T8360] hci_unregister_dev cmd sync clear
-[50.039227][ 5] [ T8360] hci_unregister_dev unregister suspend notifier
-[50.043542][ 5] [ T8284] hci_resume_dev hci name hci0
-
-This patch add hci_cancel_cmd_sync in hci_unregister_dev to wake up
-hdev->req_wait_q, and stop __hci_cmd_sync_sk by judging the
-HCI_UNREGISTER flag. Then stopping hci_resume_dev process based on the
-returned error code.
-
-Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: zhangchen <zhangchen01@kylinos.cn>
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 ---
- net/bluetooth/hci_core.c |  6 ++++++
- net/bluetooth/hci_sync.c | 22 ++++++++++++++++------
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 3418d7b964a1..c977bcba3e76 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -50,6 +50,7 @@
- static void hci_rx_work(struct work_struct *work);
- static void hci_cmd_work(struct work_struct *work);
- static void hci_tx_work(struct work_struct *work);
-+static void hci_cancel_cmd_sync(struct hci_dev *hdev, int err);
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index 8e1e1c97f0c4..0b82b1f2f1ec 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -2000,7 +2000,10 @@ int rtw_restruct_wmm_ie(struct adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_
+ 	while (i < in_len) {
+ 		ielength = initial_out_len;
  
- /* HCI device list */
- LIST_HEAD(hci_dev_list);
-@@ -2695,6 +2696,8 @@ void hci_unregister_dev(struct hci_dev *hdev)
- 	hci_dev_set_flag(hdev, HCI_UNREGISTER);
- 	mutex_unlock(&hdev->unregister_lock);
- 
-+	hci_cancel_cmd_sync(hdev, EINTR);
-+
- 	write_lock(&hci_dev_list_lock);
- 	list_del(&hdev->list);
- 	write_unlock(&hci_dev_list_lock);
-@@ -2877,6 +2880,9 @@ int hci_resume_dev(struct hci_dev *hdev)
- 	ret = hci_resume_sync(hdev);
- 	hci_req_sync_unlock(hdev);
- 
-+	if (ret && hci_dev_test_flag(hdev, HCI_UNREGISTER))
-+		return 0;
-+
- 	mgmt_resuming(hdev, hdev->wake_reason, &hdev->wake_addr,
- 		      hdev->wake_addr_type);
- 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 6e76798ec786..f48d34fbfff2 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -174,10 +174,11 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
- 		return ERR_PTR(err);
- 
- 	err = wait_event_interruptible_timeout(hdev->req_wait_q,
--					       hdev->req_status != HCI_REQ_PEND,
-+					       hdev->req_status != HCI_REQ_PEND ||
-+					       hci_dev_test_flag(hdev, HCI_UNREGISTER),
- 					       timeout);
- 
--	if (err == -ERESTARTSYS)
-+	if (err == -ERESTARTSYS || hci_dev_test_flag(hdev, HCI_UNREGISTER))
- 		return ERR_PTR(-EINTR);
- 
- 	switch (hdev->req_status) {
-@@ -6296,6 +6297,7 @@ static int hci_resume_scan_sync(struct hci_dev *hdev)
-  */
- int hci_resume_sync(struct hci_dev *hdev)
- {
-+	int err;
- 	/* If not marked as suspended there nothing to do */
- 	if (!hdev->suspended)
- 		return 0;
-@@ -6303,10 +6305,14 @@ int hci_resume_sync(struct hci_dev *hdev)
- 	hdev->suspended = false;
- 
- 	/* Restore event mask */
--	hci_set_event_mask_sync(hdev);
-+	err = hci_set_event_mask_sync(hdev);
-+	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
-+		return err;
- 
- 	/* Clear any event filters and restore scan state */
--	hci_clear_event_filter_sync(hdev);
-+	err = hci_clear_event_filter_sync(hdev);
-+	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
-+		return err;
- 
- 	/* Resume scanning */
- 	hci_resume_scan_sync(hdev);
-@@ -6315,10 +6321,14 @@ int hci_resume_sync(struct hci_dev *hdev)
- 	hci_resume_monitor_sync(hdev);
- 
- 	/* Resume other advertisements */
--	hci_resume_advertising_sync(hdev);
-+	err = hci_resume_advertising_sync(hdev);
-+	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
-+		return err;
- 
- 	/* Resume discovery */
--	hci_resume_discovery_sync(hdev);
-+	err = hci_resume_discovery_sync(hdev);
-+	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
-+		return err;
- 
- 	return 0;
- }
+-		if (in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 && in_ie[i + 3] == 0x50  && in_ie[i + 4] == 0xF2 && in_ie[i + 5] == 0x02 && i + 5 < in_len) { /* WMM element ID and OUI */
++		if (i + 5 < in_len &&
++		    in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 &&
++		    in_ie[i + 3] == 0x50 && in_ie[i + 4] == 0xF2 &&
++		    in_ie[i + 5] == 0x02) {
+ 			for (j = i; j < i + 9; j++) {
+ 				out_ie[ielength] = in_ie[j];
+ 				ielength++;
 -- 
-2.25.1
+2.52.0
 
 
