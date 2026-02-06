@@ -1,189 +1,135 @@
-Return-Path: <stable+bounces-214645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDPxFj3OhWn0GgQAu9opvQ
-	(envelope-from <stable+bounces-214645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:19:25 +0100
+	id qPsJFrvMhWlWGgQAu9opvQ
+	(envelope-from <stable+bounces-214643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:12:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AA3FD1F2
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:19:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D2BFD0FC
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 22B693010777
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 11:17:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39194303DAB5
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 11:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A0C2FC876;
-	Fri,  6 Feb 2026 11:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F61395D85;
+	Fri,  6 Feb 2026 11:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="AJF4XAaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSy7jiO/"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE99347BDC
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 11:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E059362128;
+	Fri,  6 Feb 2026 11:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770376639; cv=none; b=ZzD2JBaF0G7AykXygsIbWf2XnPx+YxJkUX52IYAkyyYmrKpzEU2IjrrjcKKmKMVd/2SBBOmnmEfDygK9a1hgm5cVF76vmNGtFQgos+CQboqXzo8kFMZm+9pfLrWpZh1oWmUse6RYAaUCT0i1wh6c9R6XsfhA1uCruxF6BuZUHSM=
+	t=1770376192; cv=none; b=qGvcsjrRKjQRaDS8sSlKQBQFq+L95P5NwGtHV5C591elepJo+7XoDQAPEipqTOMEID6EifjJc8Ohrx/3LPW9D4zMiJvjNT3I0GiXOrAxS4ULZZHXjDy2dWu3nkEnx1Knc2m65Z7lUjVuJ4MRsMgPK+qP2TYeE6qj1odA0KNxz38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770376639; c=relaxed/simple;
-	bh=QMELl+UvsKNLFL3Ud8/cNQpUHJUvC+0STtpi77kPimk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hfgHJ2OP1WUAOYgulRM2mBt+pcpHTJ5tVwTqfGSBaCAbn/ldVfWirOR4EHJ95MzAD8adV6bk9wPGNprC17EAcsTlMa/V0FUw/UZmMP1UIfKg64dSQcGIEI3TUwFgh0yKnQbqHXhBD/jObCHJLUHccx3VdQIR2YV/6Ln4lZ/uq/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=AJF4XAaS; arc=none smtp.client-ip=188.68.63.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4f6rs43kd3z65Yh;
-	Fri,  6 Feb 2026 12:07:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1770376040;
-	bh=QMELl+UvsKNLFL3Ud8/cNQpUHJUvC+0STtpi77kPimk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AJF4XAaSvYLFEYjnvKfPKaJhlFHIDYM7Jy9R75ah0molaL/KnEKDHtFmRXtZMZgJn
-	 UCTBgI6hw4EHF2DQ5/cuNS15H8n3bWg4v2iZUOUS9+eXyX5sfj9b3Ir+ZtKFq08oLr
-	 RK8WTOCBoqUQ8Kdiko7/s9RUTclr1x3t3M7x1y3SyIzkUEfolIlQQ/zRl5TSth3DnX
-	 VmFNxMjJ7uafjEj91z2jNOC6cJ3YoQj5tt3dAYa/TP44N33rfzX7LADt0hjsG/20HH
-	 KZKA6X5fWoL5/MOf0fWX5LqnsR58bnbF6JKfsIn0WkbrnOZGqyPcgtfQ3Z8CGJYtJW
-	 9OAp3s94nxGnw==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4f6rs432fPz4yMB;
-	Fri,  6 Feb 2026 12:07:20 +0100 (CET)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4f6rs35g3nz8svH;
-	Fri,  6 Feb 2026 12:07:19 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id C93326733C;
-	Fri,  6 Feb 2026 12:07:18 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <a887162f-0822-44d0-8eeb-c38171603760@leemhuis.info>
-Date: Fri, 6 Feb 2026 12:07:18 +0100
+	s=arc-20240116; t=1770376192; c=relaxed/simple;
+	bh=NuZij6bd1aLQwa7nUP0F1qBKgfTU4ENmmVONN4IbSc4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PVf+3RUZnueqmTRJot0O7im+Kn5wMK+mkvW3MSYsI0+Du7tbwJqs3K4aFqovLKugc3gFy/vMWvSW2GTTg1kPWG8exWcG3KI3Gg9op1BiHKjrkrozOvFgcp8kKe6nPNViE6hN2oC4ooJVtF/BL5CxGEqDFT/rnPu3LvyxhflkWfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSy7jiO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DCEC116C6;
+	Fri,  6 Feb 2026 11:09:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770376191;
+	bh=NuZij6bd1aLQwa7nUP0F1qBKgfTU4ENmmVONN4IbSc4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xSy7jiO//JXQxmD2TIVjKn10l1Y9rqK+kqHepoEkAT425PYMG0TvnJ2u7KpBm3IiE
+	 nWuiv+nwmceGm40t/bj7xTXLT89qJhPMjiDtE/oOQEFrmaRzvLVRMeGL5ZsJfHIYMw
+	 zis+VmfEh3f/1PzRILUxFIqpnMde8ALWp0VQhFsY=
+Date: Fri, 6 Feb 2026 12:09:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ben Hutchings <ben@decadent.org.uk>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	David Ahern <dsahern@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 050/161] selftests/net: convert fib-onlink-tests.sh
+ to run it in unique namespace
+Message-ID: <2026020640-anchovy-gear-40e5@gregkh>
+References: <20260204143851.755002596@linuxfoundation.org>
+ <20260204143853.562371909@linuxfoundation.org>
+ <ec318a7c1b9a06836b8694a1b63e187d3f53bd80.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: lock contention: x86/kvm: Potential deadlock between
- shrinker_rwsem and kvm_lock under high VM load
-To: Zhangjiaji <zhangjiaji1@huawei.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: "huyu (D)" <huyu70@h-partners.com>,
- "Wangqinxiao (Tom)" <wangqinxiao@huawei.com>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- Liumengqiu <liumengqiu1@huawei.com>
-References: <505c34d2cef84117b7e995c211efc393@huawei.com>
- <eecb1d2d1f7a44ef8c757138cb1b3755@huawei.com>
- <a5ebab14f0444f8da03a6fa4d1978793@huawei.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <a5ebab14f0444f8da03a6fa4d1978793@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: 
- <177037603912.1314732.16995319748735008736@mxe9fb.netcup.net>
-X-NC-CID: vZFk1+DZj5IoL/BsS8w3vRTAdUyQZXasi91NvO3JWGNVtGTeIX0=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec318a7c1b9a06836b8694a1b63e187d3f53bd80.camel@decadent.org.uk>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214645-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214643-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 50AA3FD1F2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A6D2BFD0FC
 X-Rspamd-Action: no action
 
-On 2/2/26 02:19, Zhangjiaji wrote:
+On Thu, Feb 05, 2026 at 06:04:57PM +0100, Ben Hutchings wrote:
+> On Wed, 2026-02-04 at 15:38 +0100, Greg Kroah-Hartman wrote:
+> > 5.10-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Hangbin Liu <liuhangbin@gmail.com>
+> > 
+> > [ Upstream commit 3a06833b2adc0a902f2469ad4ce41ccd64f1f3ab ]
+> [...]
+> > Stable-dep-of: 4f5f148dd7c0 ("selftests: net: fib-onlink-tests: Convert to use namespaces by default")
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  tools/testing/selftests/net/fib-onlink-tests.sh | 9 +++------
+> >  1 file changed, 3 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+> > index c287b90b8af80..ec2d6ceb1f08d 100755
+> > --- a/tools/testing/selftests/net/fib-onlink-tests.sh
+> > +++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+> > @@ -3,6 +3,7 @@
+> >  
+> >  # IPv4 and IPv6 onlink tests
+> >  
+> > +source lib.sh
+> [...]
 > 
-> I'm hitting a lock contention / long stall issue on an x86 KVM host
-> under heavy VM load, and I'd like to ask for advice on the proper
-> fix direction.
+> tools/testing/selftests/net/lib.sh doesn't exist in 5.10, so this can't
+> work.
 
-Thx for the report. You CCed the stable and the regressions list, which
-leads to a few important questions:
+It doesn't exist in 6.1 or older either, so I'll go drop this from all
+of those queues.
 
-* Is mainline affected as well?
-* What was the last version where things where working?
-* Could you bisect? https://docs.kernel.org/admin-guide/bug-bisect.html
+Thanks for the review!
 
-Ciao, Thorsten
-
-> Problem summary When the host is under heavy VM pressure and a cache
-> drop is triggered, the reclaim path can hold shrinker_rwsem for a
-> long time due to lock contention on kvm_lock inside the KVM/MMU
-> shrinker, which then blocks systemd in a way that also holds
-> cgroup_mutex, causing cascading issues (e.g., journald log gaps).
-> 
-> Observed lock chain / flow
->> From what I see:
-> 
-> 1. drop_caches leads to slab reclaim and enters shrink_slab() 2.
-> shrink_slab() takes shrinker_rwsem 3. It then enters
-> do_shrink_slab() 4. During slab shrinking, the KVM/MMU shrinker
-> callback is invoked (e.g mmu_shrink_scan()) to reclaim KVM-related
-> caches 5. mmu_shrink_scan() attempts to take kvm_lock 6. Under heavy
-> VM load, kvm_lock is highly contended, so the shrinker callback
-> stalls and shrinker_rwsem remains held for an extended time
-> 
-> In parallel:
-> 
-> 7. systemd holds cgroup_mutex (e.g. during cgroup operations) and
-> then tries to acquire shrinker_rwsem 8. Because shrinker_rwsem is
-> still held by the drop_caches reclaim path, systemd blocks while
-> still holding cgroup_mutex 9. Other components (e.g. systemd-
-> journald) needing cgroup_mutex become blocked, leading to issues
-> such as logging stalls/gaps
-> 
-> Impact - Long stalls in systemd-controlled cgroup operations -
-> systemd-journald (and possibly others) blocked on cgroup_mutex,
-> causing log dropouts / discontinuities - Overall system
-> responsiveness degradation during the cache-drop operation
-> 
-> Questions 1. Is it expected/acceptable for a shrinker callback (KVM/
-> MMU shrinker) to contend on a highly contended lock like kvm_lock
-> while shrinker_rwsem is held? 2. Are there known recommendations to
-> avoid holding shrinker_rwsem across potentially blocking/contended
-> shrinker callbacks? 3. Would the preferred fix be on the KVM
-> shrinker side (e.g. using mutex_trylock()/spin_trylock() semantics
-> and returning SHRINK_STOP/-EAGAIN style behavior when contended), or
-> on the shrink_slab/shrinker infrastructure side? 4. Alternatively,
-> is there any known guidance for systemd/cgroup codepaths to avoid
-> waiting on shrinker_rwsem while holding cgroup_mutex (to avoid lock
-> chaining)?
-> 
-> Please let me know what the most useful information would be, and
-> what direction you would recommend for a fix.
-> 
-> Thanks, Huyu
-> 
-> 
-
+greg k-h
 
