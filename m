@@ -1,166 +1,309 @@
-Return-Path: <stable+bounces-214663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HELCSXzhWk+IgQAu9opvQ
-	(envelope-from <stable+bounces-214663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 14:56:53 +0100
+	id gMLQLUf+hWnUIwQAu9opvQ
+	(envelope-from <stable+bounces-214664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 15:44:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F220FE832
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 14:56:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992C0FF23B
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 15:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB04230886E7
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 13:53:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 119DC300B8FE
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 14:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351E93EDACF;
-	Fri,  6 Feb 2026 13:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F2541325D;
+	Fri,  6 Feb 2026 14:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="GUMnhvsR"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Fs9CxG/P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010059.outbound.protection.outlook.com [52.101.69.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965643ECBC2
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 13:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5743C199F;
+	Fri,  6 Feb 2026 14:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770385991; cv=pass; b=G6OrKPEJAaoFMz30YKpusSJz4ICpDCvU8ycSojFad+7MmD2oE8GfcxSo3nBtPnox6MDcbp/6avTKHABuWgX4buFV8aziTYtD8PR9+4bplWstpbY8PKT/4bp1J/O5IwrVnkHyvg5+c2GuMktNSKPNC98gXm8wCFH4m0DO2L42dSg=
+	t=1770388967; cv=fail; b=Y8sL6jPoboftqXTff0iIOZKUq+z6qI8QBEvJQWZNMZpDj8zJTXujIXnHByOXnbIHR5ROi+AWhrFwghemfC+BgzI/CvAgPmysOBBZAt9gwfCGaiy9BU1AjxhMbpvJY/lrkSyAb0cmkBcdcdp7xxh69ZFGqbzaYc8gjy1pfIuyXlo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770385991; c=relaxed/simple;
-	bh=xPmqZXtDaeZy1l7nPx4Li+ZJLcAZgcgfRCXJGOO8cs8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQ/HWJ5DV2XNHgRuWupjZJjZK3awckWs0IsPECJqnewFvTIIoecxGwoSeZXFDsmannuPag0vltEfrj7PkVD/N8azVcqjdp4+OH7L5AQnFSEWq8UO2AYoGNW4Q7QfjUM8mdutd4rV96VchRz9P30EGFrIX5W1wYHpq89XaYot8so=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=GUMnhvsR; arc=pass smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b8870ac4c4eso112603466b.2
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 05:53:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770385989; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CDk/2Cnsm3A2UERaITaI0YPlJZxXjKpcEebjAZPV0HwZF7aILAX4O7gXyifPXoFjkU
-         E9V8LS03enk7MZY1SWOzQXC9FQxYxvsjhYKx+MgTpnfeHh5PmyVqIXfLy+JriQexV3lI
-         y2h77tE/V9urhKTJcNbAQvJFNqdzX+jS+TK0AVKgce7dgKE9isUdAjjXNfQsemSlDYRu
-         xzmEfLIwrciJNw+9JTZg0crO5Y8d1kZermyOEXI07NsAOrohRl8FwSOrZ5DPvgjZFUiR
-         I8Ha+4KpEBZSQYV5Byil9nUmstekNApZmTdnW8UKEU4O2HbAPhiKBVb5qe6AagohDpQx
-         S8PQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=SA4i154NvMRBgrttmSXsePypeEvh1Nz55QBHELzuvgg=;
-        fh=bN1N9u37F9sfpeWZ2mDRMBHW5qqsdrFlcOzPW13gTq4=;
-        b=GZ6WICuGn+07Y3Xk6e5KnkW91OLZLaNzpGBFyHYA5SbdlrRdEY8UOg0MjMbBH2LPqF
-         Xu8/WMRczsRrEMVXchj5wjBgE/Pao9ux3FM85jibooCEvKsr7qJo0K0AIYozrrYdOyP9
-         fHDdCFUBO3fgJ8b56nRBXLb/Syu/JRRLPPApsbd/EhmNNKPzugaQqRFVVjvsmx0ymMVD
-         vXjG77zpIh9A1PyG4TxwBr1vSir7/X4SG7Fd4W960+o2rNXG1nMKzOxOkxWrk385tVB8
-         S1H+4uyGUoQ+SsO6PHNueoydcotJMeloOeffPQM++OnBV8hO8arHZQ2Glirn4B+Bz6qQ
-         UhxA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770385989; x=1770990789; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SA4i154NvMRBgrttmSXsePypeEvh1Nz55QBHELzuvgg=;
-        b=GUMnhvsRpQdc2P6UGsDnRgdMNy9ukv4ltQQpF8mJ+vETfz/qRt7NEfMezUeQQytsGY
-         L1J8CMB+vthekbNgFHd5hDFHLGXHJ/LcnACYF9VlyUHKt8Eqgt6rOc9WACVp/xS6aN9P
-         jaqMnQV9R+RxAQKjvy6oqpNNDY4RsC39f9jbzj1f0vppWHCqNxTcu4SyKaLq3oq5KRnf
-         pk0yRKaIQYIZ9YvlurRdGPxk3zDyfl2t4v8oFXy6vJI6UjXTt8+d/lXUGYuORwva/fGd
-         0NyFgFOjC5w2wrTilUuRJ+e/tbl6jIjEJvcQK+cLmjGWHNSX+1iE4Jz/UKDBYny6Q6Kc
-         ip+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770385989; x=1770990789;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SA4i154NvMRBgrttmSXsePypeEvh1Nz55QBHELzuvgg=;
-        b=gh4NU3Sqg/4MntKY+hv/B/nsEYA7GzRt6GlYgBcczGv/NOBc1Nx1KSU9v/SFMmKU9i
-         v0Ir2LyGBIGX1hn+NKdi3OGRzB8xybYaqaEe3WawTDacKRE50SGkTAttN9BoLnbhqHiu
-         U8j05UCQc8lex8dYv9KV+mBBwkxzw+4951Wn0wLipo5k4u9WvIjMCFxOO5iZkvJsEko1
-         VWVFzPwq6oeFUKTYzA3vp5YXj++tS5ZPd59Rmd2EfL8uG9lLqRkVg2s7Dg+4IepoKPq+
-         IMlV9heVj0oTgA/HaiLNB6D1bGqZ95MYByDlL7BM72oUkRoR+toIXxlrYFBUg2Oi1Z3Y
-         2Pww==
-X-Gm-Message-State: AOJu0Yw/Rb5u6TpO284sQt4dkmMHYBL2utqBv3axb7eQqlQl5+bAlyZz
-	f8eb6ez+4PxLFcivtzfFrhEomdXMZAuFDMRuRJvUaKU3pmBs8lA2SUQ7KFl3PxyAviPihgE3d4r
-	OzQVNB5shkN+p4NATGfPOmkUMr4ZPK6/dy4fUCWSYNw==
-X-Gm-Gg: AZuq6aKoonIrLuo+p3QXG9jRl5lghclCt/RDZxUSZH8jy4eMTuYjkbEwcaN0pteDL43
-	JzfYnglosXnUHKDDG8Ak87MmeT8I2IvuApZrUc1njcdsZXPBhE0rvrCM9ryoZjpb6UAa/9qcj6w
-	k9MNrtgdI2pZ33wTgJLsS5UpYBcCQbIwfLy+wkfS820S2GcynIF3+NP/qAmFjDsSK82RJo+zI8W
-	2EsHCHM6vjv8ou3eFT/+SCnJgx39K6s40rU1Sk/QAKalJDeXN1wJpl+bbD0oW9yi9HpyMNJ
-X-Received: by 2002:a17:906:fe02:b0:b8e:3d49:25db with SMTP id
- a640c23a62f3a-b8edf3ef349mr161838766b.54.1770385988903; Fri, 06 Feb 2026
- 05:53:08 -0800 (PST)
+	s=arc-20240116; t=1770388967; c=relaxed/simple;
+	bh=dM+HCta1Gom35/2HFvT1USezDKqYYcQZHYYz3GaHD2E=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=R3pH0tlde4tDChAsfX3ZNdPImqK0Xbqyc9U/VoCy1IFsR60jCNQHrwzgZxdaMlmKLnrX0YNSPP3mJrbusTHaKyq+I1HYPpGOSNDdp2bDM0THyMeuOsFRnP9QClffHoc8szLUGHqqjlPtwOjXEFYwEvP8ZGQPU8bYKQFpjJ8meQ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Fs9CxG/P; arc=fail smtp.client-ip=52.101.69.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uQk/NjR6DdlV82QkFmCsyTxo1ax6I+D6rVZQcphOpsG0jA7+dl/YKDynKFAPlWDPjJMDI4vUPml/lza83jRCu3akN3OHoapfEi3A3VGbAAbjG/rhZr+ZS8HhQfSJNHiYzt25RsYHD9G/XzwldnevIpwUYqy3hfhqggbpWn3VWZlWUhB8TN8kZrKsztf1BBnmIzJMZZ4J64L3KhXaOBsMSwivBhBsQQmUmAEX3Sx72LOSvNluQCE8S8yJYQJ59ho/gzPtKRS34nR7qA2h68wtIwCGcJ1mh1cleVXY+bbyI2DHwVYtTRfdHB9vhFl68f4UoSYCXaJWmrCUmBlq7FoyAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L3KF4fMdlEaSLMLUahVb/KsimO3j/RJJ69baKfKlVqM=;
+ b=cSYHegHerub4REnuHU7Xc94a0u9sDLwmdK1TbvnIWScfoFEG4G74SWDEdTac7DHBqB9Aehi26GZWLGGOGYWv2GRrPlr0f1PDSpDMb0xCrbedx63oEM67iyERpRHm7lqgZ4CPc/Gm0YW1q9S3rNrCPz2Z5ycSY/SQBY78sBrc5Q9O/V04IJbhoT9kPmYRAmBk8vggqSVmr4e91H/LA5p0a8Mdz79W9uCHb04af4ytK7eJ137z2kg3lCsv1se0U4Unq5yixfc8ZlOc6iJAo8yHPahvGXIR+TkN13IhUNCOXsF+G1IDRop495RIVvyd4zFZon0Vn7yTqHf5hEGjMn9gGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L3KF4fMdlEaSLMLUahVb/KsimO3j/RJJ69baKfKlVqM=;
+ b=Fs9CxG/PgJC717cTxx8qohtTGcL4CzNbV5hOYTlHVmSkHOrhP9jQ4H6TVqZuM8xQGH/3mZhlKa6y9y7BnNTZMMc5TRoejYsWDVSg2WZED1uDH5Xb45+WlHMZw1Yzoyui0IJR/jj2D4W+pfZLwBjgy9unom1HdcudC6Vb2OMqFjTsiSWvzc+j2WlSObERdmidPGXIzTWpYrnqGFEgmCCSRgf5zFxYrT3nIc/gVKjjaPYiQs79LVfnfo510jha/nE7dPprn2JWwTJo/Q0515qwXvNbRkJ5mdODQZWFBzA+drCdnWN3aNnzrzVVSGjzHClsD/9kE3p+Yha8NazIezyYxg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VE1PR04MB7213.eurprd04.prod.outlook.com (2603:10a6:800:1b3::8)
+ by AM0PR04MB7074.eurprd04.prod.outlook.com (2603:10a6:208:196::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Fri, 6 Feb
+ 2026 14:42:43 +0000
+Received: from VE1PR04MB7213.eurprd04.prod.outlook.com
+ ([fe80::3e5c:ea79:66ab:c67b]) by VE1PR04MB7213.eurprd04.prod.outlook.com
+ ([fe80::3e5c:ea79:66ab:c67b%2]) with mapi id 15.20.9587.013; Fri, 6 Feb 2026
+ 14:42:43 +0000
+From: Jacky Bai <ping.bai@nxp.com>
+Date: Fri, 06 Feb 2026 22:44:17 +0800
+Subject: [PATCH v4] pmdomain: imx: gpcv2: Fix the imx8mm gpu hang due to
+ wrong adb400 reset
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260206-imx8mm_gpu_power_domain-v4-1-52fb603da502@nxp.com>
+X-B4-Tracking: v=1; b=H4sIAED+hWkC/3XPwQ6CMAyA4VchOzvTdjCHJ9/DGIJj6g5jZOjEE
+ N7dQWLUA8e/Sb+mI+tNsKZn+2xkwUTbW9+myDcZ07e6vRpum9SMgCQgCm7doJyrrt2j6vzThKr
+ xrrYtL6Qm0gaQamRpuwvmYodFPp5S32x/9+G1HIo4Tz9muWpG5MBF3ijUOylLlId26LbaOzaLk
+ X4UgnWFOPKzQbg0gApB/SviV1n/L4qkiF1BEhUUoMuvMk3TG35iQB5IAQAA
+X-Change-ID: 20260113-imx8mm_gpu_power_domain-56c22ce012a1
+To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Lucas Stach <l.stach@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, stable@vger.kernel.org, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Jacky Bai <ping.bai@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770389068; l=3303;
+ i=ping.bai@nxp.com; s=20250804; h=from:subject:message-id;
+ bh=dM+HCta1Gom35/2HFvT1USezDKqYYcQZHYYz3GaHD2E=;
+ b=eTfA0C6Z6MCIGjE4a7xC9Z7cCcEaP1iF+Vx8qXRNK/QsQJJdj3ys8mhVmadQIfLND3PSw4SNr
+ p9juZib6suwAGWreFtfPgFnJyf3OmK4twPmB5LNyKMnnb5L4zjY4liS
+X-Developer-Key: i=ping.bai@nxp.com; a=ed25519;
+ pk=ckFjCfRynXBjQGmSmzOVI5hggMD9XnnNlwj/jcO/j1U=
+X-ClientProxiedBy: SI1PR02CA0060.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::17) To VE1PR04MB7213.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b3::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260204143851.857060534@linuxfoundation.org> <CAG=yYwnSJCp6W6+0MGG_aaj+Ao7Qhiza0FKvrP-4wf6f9x1SQQ@mail.gmail.com>
- <2026020601-persecute-avenging-f539@gregkh> <CAG=yYwmqwb-v-31bk5sXcBGtTQ3JGgH4Kse0nWAtbX5f01764A@mail.gmail.com>
- <2026020652-quarry-clench-2fd8@gregkh>
-In-Reply-To: <2026020652-quarry-clench-2fd8@gregkh>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Fri, 6 Feb 2026 19:22:32 +0530
-X-Gm-Features: AZwV_QjQQIAZjkHETPzdJnQsi4ToG4FQet8_ZVQlHhpyUdg-4_JuTjRFeG1QdFw
-Message-ID: <CAG=yYwmHBDLuUzGODNFjWmgRi7hOkc3-JLRwf0ayf0+7TcagTg@mail.gmail.com>
-Subject: Re: [PATCH 6.18 000/122] 6.18.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7213:EE_|AM0PR04MB7074:EE_
+X-MS-Office365-Filtering-Correlation-Id: 23ca5faf-e3fb-40e8-5c46-08de658dfc7b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|19092799006|366016|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?a0Rla041Y1BydE1JOGswN2cyR3l2RWRLRTFEYnlDczZZTTZjbE1hSlA1TTBQ?=
+ =?utf-8?B?LzlicE9vd01Zd3hDTGRwN2dPZW5UOUtrTkdIWUhWMXJ2NFdpdUEwWW0rR09v?=
+ =?utf-8?B?WjZORHJ3YnVYZzdsS1hxSTBRTEp6QTQ1RWhWY3NZVXdpNXRkWTRMWWliS2Qx?=
+ =?utf-8?B?NG0zb0F4K0ZsVS8vN2xCR3ZwVXhUc21ReityWm5CVkRPSzVxREgyRnR4Z25Y?=
+ =?utf-8?B?Ti9Ia0hWU0FraHNVbTJRSUlBY2xENkV5aEM0cEZZcUJ6OVA2YTNRY3MyeXNL?=
+ =?utf-8?B?UVdKTFZuRC9BeC9maGt0bmJUT1lKMHc0aEJqWlFlQ3hkZElvZzRDOTVGY0tH?=
+ =?utf-8?B?UFNCc3lkMFZ0RWVCdDVRTFRJeTJLUWNyR3dUZSsyY0dpNThheHdCQUxlbTVx?=
+ =?utf-8?B?cGdEbk1wdkowSjZMN2JFU2h0UURCeC91TjV1aDZRWGFzeHpMaHl4SEdZbVhP?=
+ =?utf-8?B?QXhnRGlUTXY3MndRK2I5QndmN3QvWGFTL2xVeFVvRmNCNXhMNkVicDlZMHBw?=
+ =?utf-8?B?QmpGWkpQaEcwUnA5SE1ZOFFab0FsKy9BSXFwMWZmelY0aTZjWEUzZVZkaC9y?=
+ =?utf-8?B?Z0JKcXBVdk5VMkdXVFVKQUg2OERlN3ZhdFRGRXhNZ3o3amZhKzVhSjhsQitX?=
+ =?utf-8?B?aTBNcTMxUmhWYkl2Z0tmU09OZ3RzMVNncnlxZlZwN0pKdDQxYzJNYmNvZU9v?=
+ =?utf-8?B?YmRnWjVhWXBBS3Z5YVhUSkFheGM4OXdNSlozNUVJc3dNRXYzTUc1UW1hOUl2?=
+ =?utf-8?B?Y0IyVFl3UTBWbkhzM2trR3RBbVlUbTNjcG5WSW55Uzlsb1NqWlF5RThka21p?=
+ =?utf-8?B?S3pYR01xQU9UbzR2VStBem1SYTFuRjZhRXU0Zy84bzdFc1hKcFI4V0VFeFdp?=
+ =?utf-8?B?TEF2Zm5QL0F2dmdDWDIwcjVUNVhEV2k1L01mZkQ2d0RwTEZrQnN0NUE3MjJr?=
+ =?utf-8?B?c1ZKS3ZvaC8rT0FjeTIxSERIcWlnZ01FTzJkMmV0Q1FPbWNxbjV4WnZNdFB0?=
+ =?utf-8?B?Q3YwbUwrVU1tSXdGN3FYWlB5Z3EvTkVJL0ZlOHpQdU9GMURvS240WHJRaVFQ?=
+ =?utf-8?B?U2c5cEZrUkxZazcwMkV0aENVTFNLTUsxNlBxbnczcHBlSkF1TXBLOU5LNDB2?=
+ =?utf-8?B?aHVNZk5WaGdHWmdXbFZod0lZZUFpZk5lMDJObHNGcGZlQ2sydU1rZ2pWNmU2?=
+ =?utf-8?B?RFlqRkxmWlNCTnFWbk02Zi9Ca3RDTnVDOXowazFNV3RJLy9MN1I5b1FjYldo?=
+ =?utf-8?B?NHNXU283ODBkcVB5ZDEwaXNwSDFaa2VGWkNDU2VycU40REJ0TEpxUDR4VUFI?=
+ =?utf-8?B?RWVzdnFXYjY1aUQyMitHRjBWUVhlaGUxNTJ4SHJyTGhTRnZFcXpQR3NmRjNP?=
+ =?utf-8?B?UFdkTGlOdDVvLzBBUDNVbkc4VEhoM2JVVjhuL2NDTEo4MCs2SXFTWXdOdVRR?=
+ =?utf-8?B?WmVVckRKekFNKzRGOGdXUFBvUDFNdzg1U1NQckJtb2QvTHBNTEZZQ3A4c3Jv?=
+ =?utf-8?B?bXZvczFkVkVkc2ZvWFgxUjVRZE5rOE9veVpVdHpoUjJnVnBDdUYyaHR0MXFP?=
+ =?utf-8?B?K0tvaWRUQloxYTZJVFlLelpXTjlHajdlZmNJZEQzaHFyVjFJbnhmQU15MDZV?=
+ =?utf-8?B?elBqYVAyTnRUS1c1L0NxRzc0Q1I5SjA5azgyUURKSE1yYU1zcExwbWVNeHhm?=
+ =?utf-8?B?a3dCQy9aSUFnWnE1SUtRR25kdDUzd25MQmdRRmRlNHVSQUJVQ1FXZE9pSm9R?=
+ =?utf-8?B?c1RNS3Z1R0lhRFF4VXhURW5yRG9GRjZIRG9NSExNK2ZiZTEvNFZUVW9RR3FV?=
+ =?utf-8?B?VlVUbmt5WmEzRU9sM2hiZFRvUm5vSURwaHdib0UrQnZpQ09xcC83UWVPZmIx?=
+ =?utf-8?B?TEIycTFzdnl3elFSZTRScnB2djRlNE10c2tpZlhpNEtoUEUwQi9rallYajVR?=
+ =?utf-8?B?U0JNOXdlVkpVTUtiaTJPdEllZFBSbjVCNGhCcVMvd3ZDUXY1Y0s3NDlCTjJU?=
+ =?utf-8?B?NjY2azY4U0tvTTNjVXR6Rm9vT1RVZ0l4eEdVNXVNRzNrY0c1QWROcVNERS9O?=
+ =?utf-8?B?WFArWVltWkF1OXJKOVl4ellnZWhxeGdhVThWWG1iTWNMR3RvenFrOGdQRTR5?=
+ =?utf-8?B?YkZZUWJiSmlPM00rK3NBOXlsTHpBWU51dFVieVlkTlo4RmNNYjdyejdIMmpJ?=
+ =?utf-8?Q?aAnE2zr/VjCCSehQESE4owP9/ZGyofE2oQNlTrBq8/12?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7213.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(19092799006)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MTVhQkM0TEc3aVBsU2V5bWxLMjNwRkppS0xvVkVsOU1PbHNLSXhpcFNKQ0Nw?=
+ =?utf-8?B?aWU4WFFoTXBaVVpLMW51NmlyOEZ0RkNjellZbHZ5cjh1WW84RmFYYmhMQmdW?=
+ =?utf-8?B?TUN4OUx5c1RuN2VaVUVLM0crZWxkVUU4RzRKb0J6WjZmK1FEWUdIV3prTjlv?=
+ =?utf-8?B?eWhZaU85ZUJWMU4xb082a2ZlQ2hITWRBTUtEZnQ5ck9za3lHTFgrUGtsVGpy?=
+ =?utf-8?B?L0kvQncvU0MxZlZFN05ibHV5YXBJZzJIeVNwK0g2ZDhITWNwS0VKdFRxRDBL?=
+ =?utf-8?B?YWFlRFdJL1prczlrRlV3UmlWbmpPaXpFMzAwRW05NEs5NDNob29GVEhNanVZ?=
+ =?utf-8?B?WVJiYTV0eWlCbVZ6S0VKMnB1amVCMlIyd2JwalRKcmhuVzNCMXZocCtKejNG?=
+ =?utf-8?B?Q0VYaUpYZDNtMkdSYWhlUEhEUzNtMUdYTHM0NHJ4TTEvY0p6OWJxQ3BxNFFr?=
+ =?utf-8?B?MkJlYUN1bWYwdXFVbnBsUjlqUkRhczE3ZkpUQkw2WGh1OWZnRTZCU0RVV25D?=
+ =?utf-8?B?Q1RkbXlaekYrVXlZUjB4UWFJYzJ0Tld6VFlKOHhGcGxhOEc4R2xuYm9VUFB3?=
+ =?utf-8?B?UUVnbkx5enVkV0FqUytjWWR5SXN4SkJ4MzF4KzAwYVUzVC9DOEo5VHJvTW5l?=
+ =?utf-8?B?TGhHMDZmWnIyb3JQQlk5d3FvM2pBTnNrS21sTmpueklLVUFQL3pLQlY4djI1?=
+ =?utf-8?B?TkVEVXhja3FJT3Z0WHZQaE81cktud2pZSmFMZkJ2VEhhOHBqSXoxM0xTVlk0?=
+ =?utf-8?B?WXdXN1hzTkcvdXAwSWdZcUJoY0N6Y3N6M3FvRzdFNmZNa0ZDVGozV3AwMFl2?=
+ =?utf-8?B?RXhQV1ljZmRHUFZPem41UUtxRnZjUTQvTGppcFV2ZVJYNXd4WXl1UkpyYWlU?=
+ =?utf-8?B?UjB1QW92eWpQS1YrNmVpTVV0dGpBOG91VFY5RFNGMEVIUWc0SVdza2tmeE9X?=
+ =?utf-8?B?d0h1NU5Kb013QUVsU3hTZ3B4R2t6NDdOUVRId3ZVRmZtMW1OTWVPelBxMkZH?=
+ =?utf-8?B?M0N2OVhnQWlmbHI5aHBJV3Ayd21YVDJrZXoxN1BOUmJocFoyMDJTSFJ5b2dP?=
+ =?utf-8?B?VFpRUEtUQ1Z1VERpc1krVmlhaXhwaDZHenAvQmllRk5JQ1JsQ05wQ1pBVzBa?=
+ =?utf-8?B?Wm1TTjA4dVNsK2tJUEJ0R3F2ZWFyR3ExNTFOcmJTRXlxZ0JjRUhDeEd6U2F2?=
+ =?utf-8?B?MWkxMlVmMXQrZUR1WEVQYk5zeEVMQ0p1MWJVNlZVMkJrdGZuRTd2eG9YcWNM?=
+ =?utf-8?B?NXQyL21QVjljYmowUUlnZjJQdm4rYm9OVmQ2d3R6U0psUnQ2SEN4YzlXeFhJ?=
+ =?utf-8?B?eFR4Z3dwdks2cjZnelJVWjQ3SmtvQjVYSUVxd05aL2N6OW5iRmdmQnhVNG1B?=
+ =?utf-8?B?UGFJdlRMdDNnYnpzT2huM2l3S0NmejBhNHBVdXUwTDZsZG9VdFZ5a01MREsw?=
+ =?utf-8?B?MDdRdFovWDFGVVNmazVHbHpqK2d3alVQMTBTZFNvUXdSRk1wcUtxaEQ0dHpL?=
+ =?utf-8?B?ZzlpZkVZUFJnY3lsNENSdEZlTDlMNStlUmxJUlVhWnpZOTJrM0NIbTIwMWQx?=
+ =?utf-8?B?Uk1adjBqNHNiNm5oZktkTFAyZnhhNTVmWUtZczRpVm53LzBtdU1tZEVENFhL?=
+ =?utf-8?B?WXZ5OGc1UnA3MDhITjRpZ1Z5RnRnMEx3Y0pYbGIwU0o4TmJBZEFySStNR2Fq?=
+ =?utf-8?B?akg4VmtlWWowK0swYmpnR2xEQnpVMlVSb0Y2bkNyS1FCU0p5WTl4V1JSSk9P?=
+ =?utf-8?B?WG40VDhQQTVzY20zMk5UcU9MQzkrYTFKN3cxcG9FN1RmSFVKZVdWNkwrZlVk?=
+ =?utf-8?B?YUpPQ3ZwOTJoY0l3OTNsNCs5OEVDTGUxNkhBbFVsN3Z4WXFEWUY4OEQ4UnRE?=
+ =?utf-8?B?Ti9IZEw3QldEdjRzejlZOXNoL2ZoKzI3QlJNbzZ3K3pTdkhGUjlIaTFCbi9n?=
+ =?utf-8?B?YmpiTjVwSmNQbG9LMFpWUm1ZR0VGZWpkZVlGM2xiRHZwLzZCekFsOVgrL2cv?=
+ =?utf-8?B?TXQwejhKOGRXNFN3cVVmdldLSWIxaXhZUkEzWXFNaEJrVnU1aVo4dm93SE9i?=
+ =?utf-8?B?c244SFV5SmVHNXBXV0dmWlBiRnFSaFVjL3J4V3VELzEwRlRIbk40dTZkY1Za?=
+ =?utf-8?B?dHNQMnk2ZTNhRXFKcnZZaG5aYVVkSUtvazlCRGpxbUFIeGJUN1BkdUVDT2Q4?=
+ =?utf-8?B?RjNZZWhCRXJrWnVMZGxnUllPVUxkVlpjUE4wcWhvU3JMaGNsb2NXeTZONC9Q?=
+ =?utf-8?B?aTJWYWdDTUFJenEva1FOZVg5bUloYUxWUk1lRmdSRU9WUmI4R2FYK0p2Y3Ny?=
+ =?utf-8?B?allWTTd2ZDRVQlhWZ0tlcDRGZnZoZ2ZoZUpPZmsyVlIvR1BDNVJ3Zz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23ca5faf-e3fb-40e8-5c46-08de658dfc7b
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7213.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 14:42:43.5224
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pkz5KKc8MF5zl7wDLqgNRbahmczr7NPBx3yzNUV5pxgXGm1jGEwsnQhfMujCt3IPXhwIVGROrDEA0/KI9GxKVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7074
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-214664-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[rajagiritech.edu.in];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214663-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_TO(0.00)[linaro.org,kernel.org,pengutronix.de,gmail.com,linuxfoundation.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,rajagiritech-edu-in.20230601.gappssmtp.com:dkim,rajagiritech.edu.in:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8F220FE832
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ping.bai@nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	NEURAL_HAM(-0.00)[-0.978];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,nxp.com:email,nxp.com:dkim,nxp.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 992C0FF23B
 X-Rspamd-Action: no action
 
->
-> So it works now?
->
-> I'm confused,
-anyway the build works well
-thanks related
+On i.MX8MM, the GPUMIX, GPU2D, and GPU3D blocks share a common reset
+domain. Due to this hardware limitation, powering off/on GPU2D or GPU3D
+also triggers a reset of the GPUMIX domain, including its ADB400 port.
+However, the ADB400 interface must always be placed into power‑down mode
+before being reset.
 
+Currently the GPUMIX and GPU2D/3D power domains rely on runtime PM to
+handle dependency ordering. In some corner cases, the GPUMIX power off
+sequence is skipped, leaving the ADB400 port active when GPU2D/3D reset.
+This causes the GPUMIX ADB400 port to be reset while still active,
+leading to unpredictable bus behavior and GPU hangs.
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+To avoid this, refine the power‑domain control logic so that the GPUMIX
+ADB400 port is explicitly powered down and powered up as part of the GPU
+power domain on/off sequence. This ensures proper ordering and prevents
+incorrect ADB400 reset.
 
---
-software engineer
-rajagiri school of engineering and technology
+Fixes: 055467378bf1 ("driver core: Enable fw_devlink=rpm by default")
+Cc: stable@vger.kernel.org
+Suggested-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Tested-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+---
+Changes in v4:
+- Add the Fixes tag
+- Link to v3: https://lore.kernel.org/r/20260123-imx8mm_gpu_power_domain-v3-1-3752618050c9@nxp.com
 
+Changes in v3:
+- Fix the Suggested-by tag typo
+- Link to v2: https://lore.kernel.org/r/20260120-imx8mm_gpu_power_domain-v2-1-be10fd018108@nxp.com
 
+Changes in v2:
+- add prefix to patch subject as suggested by Krzysztof
+- refine the patch to move the GPUMIX ADB400 into GPU power domain
+- Link to v1: https://lore.kernel.org/r/20260119-imx8mm_gpu_power_domain-v1-0-34d81c766916@nxp.com
+---
+ drivers/pmdomain/imx/gpcv2.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+index b7cea89140ee8923f32486eab953c0e1a36bf06d..a829f8da5be70d0392276bd135fb7fc1bbf10496 100644
+--- a/drivers/pmdomain/imx/gpcv2.c
++++ b/drivers/pmdomain/imx/gpcv2.c
+@@ -165,13 +165,11 @@
+ #define IMX8M_VPU_HSK_PWRDNREQN			BIT(5)
+ #define IMX8M_DISP_HSK_PWRDNREQN		BIT(4)
+ 
+-#define IMX8MM_GPUMIX_HSK_PWRDNACKN		BIT(29)
+-#define IMX8MM_GPU_HSK_PWRDNACKN		(BIT(27) | BIT(28))
++#define IMX8MM_GPU_HSK_PWRDNACKN		GENMASK(29, 27)
+ #define IMX8MM_VPUMIX_HSK_PWRDNACKN		BIT(26)
+ #define IMX8MM_DISPMIX_HSK_PWRDNACKN		BIT(25)
+ #define IMX8MM_HSIO_HSK_PWRDNACKN		(BIT(23) | BIT(24))
+-#define IMX8MM_GPUMIX_HSK_PWRDNREQN		BIT(11)
+-#define IMX8MM_GPU_HSK_PWRDNREQN		(BIT(9) | BIT(10))
++#define IMX8MM_GPU_HSK_PWRDNREQN		GENMASK(11, 9)
+ #define IMX8MM_VPUMIX_HSK_PWRDNREQN		BIT(8)
+ #define IMX8MM_DISPMIX_HSK_PWRDNREQN		BIT(7)
+ #define IMX8MM_HSIO_HSK_PWRDNREQN		(BIT(5) | BIT(6))
+@@ -794,8 +792,6 @@ static const struct imx_pgc_domain imx8mm_pgc_domains[] = {
+ 		.bits  = {
+ 			.pxx = IMX8MM_GPUMIX_SW_Pxx_REQ,
+ 			.map = IMX8MM_GPUMIX_A53_DOMAIN,
+-			.hskreq = IMX8MM_GPUMIX_HSK_PWRDNREQN,
+-			.hskack = IMX8MM_GPUMIX_HSK_PWRDNACKN,
+ 		},
+ 		.pgc   = BIT(IMX8MM_PGC_GPUMIX),
+ 		.keep_clocks = true,
+
+---
+base-commit: 0f853ca2a798ead9d24d39cad99b0966815c582a
+change-id: 20260113-imx8mm_gpu_power_domain-56c22ce012a1
+
+Best regards,
 -- 
-software engineer
-rajagiri school of engineering and technology
+Jacky Bai <ping.bai@nxp.com>
+
 
