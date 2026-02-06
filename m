@@ -1,290 +1,152 @@
-Return-Path: <stable+bounces-214575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SImuDOI8hWlY+gMAu9opvQ
-	(envelope-from <stable+bounces-214575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:14 +0100
+	id qKbNEPU8hWlY+gMAu9opvQ
+	(envelope-from <stable+bounces-214576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F3FF8C73
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A672DF8C7A
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D78830166DF
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 00:59:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22CDC3018771
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 00:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C4E21FF2E;
-	Fri,  6 Feb 2026 00:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD00A1FDE31;
+	Fri,  6 Feb 2026 00:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="F31i4m9O"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UCs/SgG8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail114-240.sinamail.sina.com.cn (mail114-240.sinamail.sina.com.cn [218.30.114.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF75C1D5CFE
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 00:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909F11D86FF
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 00:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770339545; cv=none; b=cIWS1bAf7F4OzoMP1Du8Jthx79sy+1AUJYvb2Xi2DKSP2Y4Nh7WfyaicwRdsHFG8SocVuVR1YMFw5djyRCVy3/37m8MV5dYK+J8O1C0Wl46+l8qxn0iMtxD6NQctYSpptDdoMoBvE/ESGkYS4sBoo0ZG7VPlKrRW2l96HHS2FVg=
+	t=1770339567; cv=none; b=iDWyrF6326VI8aOvPG7kXFoqDgErKHPwu7CrmUun2HVumRJ1lasWvoGYjX5THrMUQlFLZpSqYcTu8bfCUQ/akTAiFti13/1ItJoAERX3zo01DLgrYdCbo+fcWJJSNpTEV/D9rcygcMp7c8D2xT0ulyXDc6LRxjzndM5jC9WT2M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770339545; c=relaxed/simple;
-	bh=ZDU317g5GAq9kvSjDMk+t7qlAB0oXms+LdA1thglsAg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GcksX35tX185ygjfAPSedFiXv+em0v6n+JeBkp7EhZt0s/GSpuHRbObU7yBSA52YSDjgDf8GTB5Ac6b2pSAcDicW4sB2X+LAh+nKwLgLFsHHhVM2hz0ffGDsJf/wD8hvG4AY2ab3BgQvlj3DNsdUK1HcK1uw6dWMOHScia9e3hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=F31i4m9O; arc=none smtp.client-ip=218.30.114.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770339543;
-	bh=vJ2S4n+s94Fr7zM4B1DDMY6JoytNxiHt7LqmMoL4wI4=;
-	h=From:Subject:Date:Message-Id;
-	b=F31i4m9O4WTB7/uXPREDYbjrwGKxVScP/+7BrcCvjTxYmUKI9lWXW2Kqy9IO/LHRC
-	 w+Fr8Am6Glc/XSkHQOm6vLRDY58hKgMkmUXXFYUL0mI1MzFU+Ivkrn3EVSeoYpNZBc
-	 /4bWFIWDlcmxAH3hb2AV8/S2QYa7Dxg/bypFjGhQ=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.23) with ESMTP
-	id 69853C4200004A9D; Fri, 6 Feb 2026 08:56:36 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 2469458912931
-X-SMAIL-UIID: 4BF725AD640D4F4FB0FE55EF7AB45E6A-20260206-085636-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	k.chen@smail.nju.edu.cn
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	slava@dubeyko.com,
-	sashal@kernel.org,
-	yang.chenzhi@vivo.com,
-	frank.li@vivo.com,
-	penguin-kernel@I-love.SAKURA.ne.jp,
-	liushixin2@huawei.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 5.15.y] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
-Date: Fri,  6 Feb 2026 08:56:33 +0800
-Message-Id: <20260206005633.3165225-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1770339567; c=relaxed/simple;
+	bh=Z22E8Z/xOghP60bXDHWrbjG32oKG5M1OjVbLTZohHJQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nNWadEC0Rb7NVqxHeU+B2uF9ZOjSpLu9ptPtBQv4tjxeuD/UrmDohTf044d1WxAAkY70qAzTOJ+CX+IT0QF/HAmI8WdAsknqT8FIcIslhfEaXvo9F7ekO1H5X14ExpZWKGITYXm/+IqZzGsnuEjbamnyLW3AYPY8DOk02/U4e5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UCs/SgG8; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a13cd9a784so1281295ad.2
+        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 16:59:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770339567; x=1770944367; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=a/Tid1mYhZU5lXa7L9EYLX8oTkVKGe9BZFcSs1D+TSU=;
+        b=UCs/SgG8Ap/yPaEETn5YmJMt5b0rTtbjyB8ej7F54i7cKLIdqAN13bM8tWV02vQM7S
+         BZgSQ7icuJreWb4qwWfIcLrmS1FLD943NHvFgbmK6p5WcByBDyf7DjnhBUnc4oygZjYs
+         B5RAP1Ki+SX7cFlgIXULiJfttbbU2aBPrML/swcAMk3eCgXKtM6v/Lf6GBXdh3wwU5UX
+         Ca2aIRhFg5QjZAbt//ZnVkCZvkamHYDRf/R5TjKhffmFDIKYFvpwe7j3NRQzahOrFk1I
+         ycPEIuQf1JlqcDTedSWeI/JNxZTdh+26505JR6SFzI5GQXO68rSVhnQ3t/j/Qg6X1ZGE
+         210A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770339567; x=1770944367;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a/Tid1mYhZU5lXa7L9EYLX8oTkVKGe9BZFcSs1D+TSU=;
+        b=iY5+FJmY0nNzuZ5cFi6a9aYw3iaEwWyTwF6XmQSlzot6jlbJlVoULsk9anKb0i4rXy
+         yyim0XV21arbq1Q10mROpjnxGkVehwJ+21HYB6DVeJwnowzwv7t2QzMd/aZcRqbJ8ocU
+         hStPAsRqO2a1RJkmrw7gkHkbf/LxVz7JF6w4Tfm45N7QjACCBS2cIfOoDaQP8imhV5xO
+         4WgYhQ8RVpF5hbqMkQleN/+rNGn4EDvyb/etPhZBB+4dWONZK2lD46xC3aCsQy9MQ4p7
+         FkbSzNXBsT/3gqMPw4IsLxYK9PL/3qpRV80ZbhYd9iBj8+iKcWFHsElPzWWO5jeXVkMd
+         c9wA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEOswmQCIadGFQmh7cYrQbJVGxTl4XhwGbh8fV8spvUU/N4C9Uj2XOhX3i0oz8J8OGsi1Zt+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqGpK4tHQZ9kYJ5eAmaIo7QL41TWfjlITd7Krmz4/6+lGAVU37
+	Ms8KD1DjcMInl4SvWKSZSaxYfffLqfeC2MleHW8shosVzQg2XwdPgpOG9a+qw3H6W26EPEA+0d2
+	rBdhUtA==
+X-Received: from plbmj7.prod.google.com ([2002:a17:903:2b87:b0:29f:25b4:4dc4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e746:b0:2a1:3ee7:cc7a
+ with SMTP id d9443c01a7336-2a951666792mr10607745ad.17.1770339566983; Thu, 05
+ Feb 2026 16:59:26 -0800 (PST)
+Date: Thu, 5 Feb 2026 16:59:25 -0800
+In-Reply-To: <20260115011312.3675857-2-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260115011312.3675857-1-yosry.ahmed@linux.dev> <20260115011312.3675857-2-yosry.ahmed@linux.dev>
+Message-ID: <aYU87QeMg8_kTM-G@google.com>
+Subject: Re: [PATCH v4 01/26] KVM: SVM: Switch svm_copy_lbrs() to a macro
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-214575-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214576-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sina.cn:+];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[sina.cn];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dubeyko.com:email,nju.edu.cn:email,sina.cn:email,sina.cn:dkim,sina.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C5F3FF8C73
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A672DF8C7A
 X-Rspamd-Action: no action
 
-From: Kang Chen <k.chen@smail.nju.edu.cn>
+On Thu, Jan 15, 2026, Yosry Ahmed wrote:
+> In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
+> without a containing 'struct vmcb', and later even 'struct
+> vmcb_save_area_cached', make it a macro. Pull the call to
+> vmcb_mark_dirty() out to the callers.
+> 
+> Macros are generally not preferred compared to functions, mainly due to
+> type-safety. However, in this case it seems like having a simple macro
+> copying a few fields is better than copy-pasting the same 5 lines of
+> code in different places.
+> 
+> On the bright side, pulling vmcb_mark_dirty() calls to the callers makes
+> it clear that in one case, vmcb_mark_dirty() was being called on VMCB12.
+> It is not architecturally defined for the CPU to clear arbitrary clean
+> bits, and it is not needed, so drop that one call.
+> 
+> Technically fixes the non-architectural behavior of setting the dirty
+> bit on VMCB12.
 
-[ Upstream commit bea3e1d4467bcf292c8e54f080353d556d355e26 ]
+Stop. Bundling. Things. Together.
 
-BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
-Read of size 2 at addr ffff8880289ef218 by task syz.6.248/14290
+/shakes fist angrily
 
-CPU: 0 UID: 0 PID: 14290 Comm: syz.6.248 Not tainted 6.16.4 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x5f0 mm/kasan/report.c:482
- kasan_report+0xca/0x100 mm/kasan/report.c:595
- hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
- hfsplus_listxattr+0x5b6/0xbd0 fs/hfsplus/xattr.c:738
- vfs_listxattr+0xbe/0x140 fs/xattr.c:493
- listxattr+0xee/0x190 fs/xattr.c:924
- filename_listxattr fs/xattr.c:958 [inline]
- path_listxattrat+0x143/0x360 fs/xattr.c:988
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe0e9fae16d
-Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fe0eae67f98 EFLAGS: 00000246 ORIG_RAX: 00000000000000c3
-RAX: ffffffffffffffda RBX: 00007fe0ea205fa0 RCX: 00007fe0e9fae16d
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000000
-RBP: 00007fe0ea0480f0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fe0ea206038 R14: 00007fe0ea205fa0 R15: 00007fe0eae48000
- </TASK>
+I was absolutely not expecting a patch titled "KVM: SVM: Switch svm_copy_lbrs()
+to a macro" to end with a Fixes tag, and I was *really* not expecting it to also
+be Cc'd for stable.
 
-Allocated by task 14290:
- kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4333 [inline]
- __kmalloc_noprof+0x219/0x540 mm/slub.c:4345
- kmalloc_noprof include/linux/slab.h:909 [inline]
- hfsplus_find_init+0x95/0x1f0 fs/hfsplus/bfind.c:21
- hfsplus_listxattr+0x331/0xbd0 fs/hfsplus/xattr.c:697
- vfs_listxattr+0xbe/0x140 fs/xattr.c:493
- listxattr+0xee/0x190 fs/xattr.c:924
- filename_listxattr fs/xattr.c:958 [inline]
- path_listxattrat+0x143/0x360 fs/xattr.c:988
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+At a glance, I genuinely can't tell if you added a Fixes to scope the backport,
+or because of the dirty vmcb12 bits thing.
 
-When hfsplus_uni2asc is called from hfsplus_listxattr,
-it actually passes in a struct hfsplus_attr_unistr*.
-The size of the corresponding structure is different from that of hfsplus_unistr,
-so the previous fix (94458781aee6) is insufficient.
-The pointer on the unicode buffer is still going beyond the allocated memory.
-
-This patch introduces two warpper functions hfsplus_uni2asc_xattr_str and
-hfsplus_uni2asc_str to process two unicode buffers,
-struct hfsplus_attr_unistr* and struct hfsplus_unistr* respectively.
-When ustrlen value is bigger than the allocated memory size,
-the ustrlen value is limited to an safe size.
-
-Fixes: 94458781aee6 ("hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()")
-Signed-off-by: Kang Chen <k.chen@smail.nju.edu.cn>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250909031316.1647094-1-k.chen@smail.nju.edu.cn
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
----
- fs/hfsplus/dir.c        |  2 +-
- fs/hfsplus/hfsplus_fs.h |  8 ++++++--
- fs/hfsplus/unicode.c    | 24 +++++++++++++++++++-----
- fs/hfsplus/xattr.c      |  6 +++---
- 4 files changed, 29 insertions(+), 11 deletions(-)
-
-diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
-index 98a30ca6354c..17e651bd04ad 100644
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -204,7 +204,7 @@ static int hfsplus_readdir(struct file *file, struct dir_context *ctx)
- 			fd.entrylength);
- 		type = be16_to_cpu(entry.type);
- 		len = NLS_MAX_CHARSET_SIZE * HFSPLUS_MAX_STRLEN;
--		err = hfsplus_uni2asc(sb, &fd.key->cat.name, strbuf, &len);
-+		err = hfsplus_uni2asc_str(sb, &fd.key->cat.name, strbuf, &len);
- 		if (err)
- 			goto out;
- 		if (type == HFSPLUS_FOLDER) {
-diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-index 8396964b056f..610ba01f19c3 100644
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -516,8 +516,12 @@ int hfsplus_strcasecmp(const struct hfsplus_unistr *s1,
- 		       const struct hfsplus_unistr *s2);
- int hfsplus_strcmp(const struct hfsplus_unistr *s1,
- 		   const struct hfsplus_unistr *s2);
--int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
--		    char *astr, int *len_p);
-+int hfsplus_uni2asc_str(struct super_block *sb,
-+			const struct hfsplus_unistr *ustr, char *astr,
-+			int *len_p);
-+int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+			      const struct hfsplus_attr_unistr *ustr,
-+			      char *astr, int *len_p);
- int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
- 		    int max_unistr_len, const char *astr, int len);
- int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
-diff --git a/fs/hfsplus/unicode.c b/fs/hfsplus/unicode.c
-index ebd326799f35..11e08a4a18b2 100644
---- a/fs/hfsplus/unicode.c
-+++ b/fs/hfsplus/unicode.c
-@@ -143,9 +143,8 @@ static u16 *hfsplus_compose_lookup(u16 *p, u16 cc)
- 	return NULL;
- }
- 
--int hfsplus_uni2asc(struct super_block *sb,
--		const struct hfsplus_unistr *ustr,
--		char *astr, int *len_p)
-+static int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
-+		    int max_len, char *astr, int *len_p)
- {
- 	const hfsplus_unichr *ip;
- 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
-@@ -158,8 +157,8 @@ int hfsplus_uni2asc(struct super_block *sb,
- 	ip = ustr->unicode;
- 
- 	ustrlen = be16_to_cpu(ustr->length);
--	if (ustrlen > HFSPLUS_MAX_STRLEN) {
--		ustrlen = HFSPLUS_MAX_STRLEN;
-+	if (ustrlen > max_len) {
-+		ustrlen = max_len;
- 		pr_err("invalid length %u has been corrected to %d\n",
- 			be16_to_cpu(ustr->length), ustrlen);
- 	}
-@@ -280,6 +279,21 @@ int hfsplus_uni2asc(struct super_block *sb,
- 	return res;
- }
- 
-+inline int hfsplus_uni2asc_str(struct super_block *sb,
-+			       const struct hfsplus_unistr *ustr, char *astr,
-+			       int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
-+}
-+
-+inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+				     const struct hfsplus_attr_unistr *ustr,
-+				     char *astr, int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
-+			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
-+}
-+
- /*
-  * Convert one or more ASCII characters into a single unicode character.
-  * Returns the number of ASCII characters corresponding to the unicode char.
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index 7ad3071debd6..53c8e3c0b8c1 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -737,9 +737,9 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 			goto end_listxattr;
- 
- 		xattr_name_len = NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN;
--		if (hfsplus_uni2asc(inode->i_sb,
--			(const struct hfsplus_unistr *)&fd.key->attr.key_name,
--					strbuf, &xattr_name_len)) {
-+		if (hfsplus_uni2asc_xattr_str(inode->i_sb,
-+					      &fd.key->attr.key_name, strbuf,
-+					      &xattr_name_len)) {
- 			pr_err("unicode conversion failed\n");
- 			res = -EIO;
- 			goto end_listxattr;
--- 
-2.34.1
-
+First fix the dirty behavior (and probably tag it for stable to avoid creating
+an unnecessary backport conflict), then in a separate patch macrofy the helper.
+Yeah, checkpatch will "suggest" that the stable@ patch should have Fixes, but
+for us humans, that's _useful_ information, because it says "hey you, this is a
+dependency for an upcoming fix!".  As written, I look at this patch and go "huh?".
+(and then I look at the next patch and it all makes sense).
 
