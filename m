@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-214729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JoeK79JhmmdLgQAu9opvQ
-	(envelope-from <stable+bounces-214729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:06:23 +0100
+	id OC+sLTdShmnQLwQAu9opvQ
+	(envelope-from <stable+bounces-214730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:42:31 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50808103038
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:06:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C53103306
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05497303274D
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 20:05:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9FC3E303FDEB
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 20:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C9B302756;
-	Fri,  6 Feb 2026 20:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD28930CD9E;
+	Fri,  6 Feb 2026 20:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="i6iburd6";
-	dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="SdPRbV7z"
+	dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="F6TjauNH";
+	dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="LXfdjBI5"
 X-Original-To: stable@vger.kernel.org
 Received: from devnull.danielhodges.dev (vps-2f6e086e.vps.ovh.us [135.148.138.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2A81684B0;
-	Fri,  6 Feb 2026 20:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4B2EC0A7;
+	Fri,  6 Feb 2026 20:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.148.138.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770408332; cv=none; b=Rnu/A2QJzq5nKl45Z126K9Ksc12YVucQIaNQoa6uvSNmxlVQ9suLgpl6sMaK/cFC/FIuZKkhsZIRO3SvVynykzOAuMpFB/83Pgzypw2wSu8j9Fp4+JuEoVP4ziusUzRKZLLjf7ZaJAzcRuCQCMB6Ef2AO0cqxjz2FE903fMQvA0=
+	t=1770410515; cv=none; b=AU3CPNYJnae74U2ypgE5YUhH+8ZsSxAJOy7tIFm9QVFhSA7wDAPUs9G7hIvyTmM8X+SBFIIi2phoZ9vWyTrfRy8mCI+K0Yc6ViLhck1WKR11f52z1e35L7jHD1Ukl0TjLU/9E+sP6uWcgtRdLtpYajpCxfh1rNBF2QPf+zPjP0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770408332; c=relaxed/simple;
-	bh=OW+Q3rzodi0tW38z+786M3YCC3DeD5z4t0v6YdGlt2A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fE/nkZCR8qV3yPcsKwVMQAlqxtfQHT6fV5bcwWsBLHTyhFd949dVEXZGBHD17XJGpZYvAid8wU467UzkSPtr7k4/Zae8LdQm5nSXYZw1AHuFDvaTLtqv8aCC+bZHzV6n8tjrNn85wsYAuKbv8zZYgUAC1z3nKgoWsYvaAwcZsQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev; spf=pass smtp.mailfrom=danielhodges.dev; dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=i6iburd6; dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=SdPRbV7z; arc=none smtp.client-ip=135.148.138.8
+	s=arc-20240116; t=1770410515; c=relaxed/simple;
+	bh=mtIS6L7p5weFzGrtJCr2iaB11dBNt2cH07r6/GTGfd8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c6pIq4him+oG1V6zaHBI+MyGMLRfSiveyrBQCNnuLeUs6BTX74K/ehiGKMcU0kbJecgQIqxxS/1xmrxLfFff7tkuxVGJl2Vktsmepy4/ciJnuEuW9Bc53DY9gyzDRsU6HqQsDhDewUtOEwOjV/9Ahx+eJWO7Yv5gMf9cs4AuvjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev; spf=pass smtp.mailfrom=danielhodges.dev; dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=F6TjauNH; dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=LXfdjBI5; arc=none smtp.client-ip=135.148.138.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danielhodges.dev
 DKIM-Signature: v=1; a=rsa-sha256; s=202510r; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770408330; bh=5QQtgVbtkot2rgxT7w3IBYs
-	aUEG80YUdurHvF76mGi8=; b=i6iburd6bUi2yiOeQ92+nHXUYxNSjyhEnBRGyuSMP/HQUBnoya
-	J3fWye8Z9O6gKjy7sQ9sp6hmD7lc3iz13A8v5Ugwc5RDqa74QeE0cnIY3PndahfFkFPBJBNbQ5/
-	kpFZaHq/+s4bthT16wC0m/VM5GSQjbPYBSnzNnW66uNHI2EsPuk8c9zVw+anDNOvMi7I2CvCoLX
-	vUfmrkWhZPytkq3YVf44ZVsnjwWsQvYR6MVT31WcBSZ7156U83SfEZYLhMIWequdWM7SqNvJBQf
-	/syEfw3kcog1znFazvPcWNF5Nj40T0etTu7qlGVoxO4e+Llycb0pIf944SP+LWqdtMw==;
+	h=Message-ID:Date:Subject:To:From; t=1770410506; bh=WwAnzenkq1Xn7RsL/ac0kPI
+	OggL6T09Nc3LDc7PsTmM=; b=F6TjauNHBoJdFIzFzdVSDaqM4p64bZIiEik3ZdtjYUx4tPndRZ
+	5SQYcOxGYO4n2sffH0AMdjkMyR5P5qK22cNsGKpzI1MeVZxlkaycZRijPRrQMFsUP1yMV8cEBVV
+	dM9RH05MlUBEnG1Cic8H/Enkq14aCpIfgsW57S0tvHkd4n0QbfG2dL4FcWjyObwE5chGfutqcHU
+	0jdZ/C2zg3ujoN9+6MBBG5YRWPti3nV9FkHpOdACJM0hTC07kblwCBcP4zaiXysMMLRdZl1D/AD
+	VBAT9BiMRtQTrmVZpdQP+oUet5oitvLWA7YzQHEOKUO1yyoFW339Y5V1F7880xg8r9A==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202510e; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770408330; bh=5QQtgVbtkot2rgxT7w3IBYs
-	aUEG80YUdurHvF76mGi8=; b=SdPRbV7zHGtxVuFTg8s2NS6qMmuPmN/qOmRAyiKsZlyhOGmYmP
-	roY0mMPhtXSdpKirQd88UKXNOrxH1nS0f4Bw==;
+	h=Message-ID:Date:Subject:To:From; t=1770410506; bh=WwAnzenkq1Xn7RsL/ac0kPI
+	OggL6T09Nc3LDc7PsTmM=; b=LXfdjBI5DUaW0Nn5AQNI0OEYjQY6oV0HvFlPDv55L9QLtKcGk7
+	RT9W6RBZ6MWwJFhFveNONZAe36rH/D1/cDDQ==;
 From: Daniel Hodges <git@danielhodges.dev>
-To: mani@kernel.org,
-	kwilczynski@kernel.org
-Cc: kishon@kernel.org,
-	bhelgaas@google.com,
-	mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org,
+To: chuck.lever@oracle.com,
+	anna@kernel.org,
+	trondmy@kernel.org
+Cc: linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Daniel Hodges <git@danielhodges.dev>
-Subject: [PATCH] PCI: epf-mhi: return 0 on success instead of positive jiffies
-Date: Fri,  6 Feb 2026 15:05:29 -0500
-Message-ID: <20260206200529.10784-1-git@danielhodges.dev>
+	jlayton@kernel.org,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Daniel Hodges <git@danielhodges.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path
+Date: Fri,  6 Feb 2026 15:41:46 -0500
+Message-ID: <20260206204146.21093-1-git@danielhodges.dev>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -82,7 +83,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214729-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214730-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[danielhodges.dev:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
@@ -90,55 +91,55 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[danielhodges.dev:email,danielhodges.dev:dkim,danielhodges.dev:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 50808103038
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,danielhodges.dev:email,danielhodges.dev:dkim,danielhodges.dev:mid]
+X-Rspamd-Queue-Id: 15C53103306
 X-Rspamd-Action: no action
 
-wait_for_completion_timeout() returns the number of jiffies remaining
-on success (positive value) or 0 on timeout. The pci_epf_mhi_edma_read()
-and pci_epf_mhi_edma_write() functions use the return value directly as
-their own return value, only converting timeout (0) to -ETIMEDOUT.
+Commit 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c") added
+a kref_get(&gss_auth->kref) call to balance the gss_put_auth() done
+in gss_release_msg(), but forgot to add a corresponding kref_put()
+on the error path when kstrdup_const() fails.
 
-On success, they return the positive jiffies value. The callers in
-drivers/bus/mhi/ep/ring.c check for errors with "if (ret < 0)" for
-read_sync and "if (ret)" for write_sync. This causes write_sync success
-cases to be incorrectly treated as errors since the positive jiffies
-value is non-zero.
+If service_name is non-NULL and kstrdup_const() fails, the function
+jumps to err_put_pipe_version which calls put_pipe_version() and
+kfree(gss_msg), but never releases the gss_auth reference. This leads
+to a kref leak where the gss_auth structure is never freed.
 
-Fix by setting ret to 0 when wait_for_completion_timeout() succeeds.
+Add a forward declaration for gss_free_callback() and call kref_put()
+in the err_put_pipe_version error path to properly release the
+reference taken earlier.
 
-Fixes: 7b99aaaddabb ("PCI: epf-mhi: Add eDMA support")
+Fixes: 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c")
 Cc: stable@vger.kernel.org
 Signed-off-by: Daniel Hodges <git@danielhodges.dev>
 ---
- drivers/pci/endpoint/functions/pci-epf-mhi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/sunrpc/auth_gss/auth_gss.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-index 6643a88c7a0c..2f077d0b7957 100644
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -367,6 +367,8 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl,
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
+diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
+index 5c095cb8cb20..bb3c3db2713b 100644
+--- a/net/sunrpc/auth_gss/auth_gss.c
++++ b/net/sunrpc/auth_gss/auth_gss.c
+@@ -39,6 +39,8 @@ static const struct rpc_authops authgss_ops;
+ static const struct rpc_credops gss_credops;
+ static const struct rpc_credops gss_nullops;
  
- err_unmap:
-@@ -438,6 +440,8 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl,
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
++static void gss_free_callback(struct kref *kref);
++
+ #define GSS_RETRY_EXPIRED 5
+ static unsigned int gss_expired_cred_retry_delay = GSS_RETRY_EXPIRED;
  
- err_unmap:
+@@ -551,6 +553,7 @@ gss_alloc_msg(struct gss_auth *gss_auth,
+ 	}
+ 	return gss_msg;
+ err_put_pipe_version:
++	kref_put(&gss_auth->kref, gss_free_callback);
+ 	put_pipe_version(gss_auth->net);
+ err_free_msg:
+ 	kfree(gss_msg);
 -- 
 2.52.0
 
