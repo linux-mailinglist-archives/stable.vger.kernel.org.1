@@ -1,153 +1,178 @@
-Return-Path: <stable+bounces-214591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMd+IsZjhWl3BAQAu9opvQ
-	(envelope-from <stable+bounces-214591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 04:45:10 +0100
+	id qFALECpuhWnqBQQAu9opvQ
+	(envelope-from <stable+bounces-214592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:29:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A462F9D2E
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 04:45:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2ABCFA144
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA5D9302837A
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 03:45:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C941C3023D06
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 04:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7173A33342D;
-	Fri,  6 Feb 2026 03:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8362DB781;
+	Fri,  6 Feb 2026 04:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="BitVipMj"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="oTyE/ygt";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NPY18KoO"
 X-Original-To: stable@vger.kernel.org
-Received: from jpms-ob01.noc.sony.co.jp (jpms-ob01.noc.sony.co.jp [211.125.140.164])
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FA1333730;
-	Fri,  6 Feb 2026 03:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780E82DB79C;
+	Fri,  6 Feb 2026 04:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770349504; cv=none; b=HIbZd5rPUKwuaReS9h3xXin6Tq+0PiVm33KSXHv96EdX8YxHVlgl7CKQKV9eI6i5JFiYeRAEyvJeGOhKgZYRs7yNSXeBmxLSJkrYYdAPm6J4rYP9zSPvvoUKNarnwhjLXX8W8n9yitUbX+ED/fog+XfQ4BMMkp/P+65BxL8Jb+E=
+	t=1770351852; cv=none; b=bWVRm7ayfGoH5s6nWLKoO541nQtLPbmMKCpkZvynr8w5E6VIpQuIVvIlzdhf52NThyIv9PlAoK7ilJXNQ0PEpdOONd+Ya6x+nd653pN6D3sO9XCNA/gBEm2lwxL/q64BjDVvPJVMbtM6JJ0ANk1ekxWKYGy0KixMg++kJ+yno8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770349504; c=relaxed/simple;
-	bh=hnE5I4/wZ5Znpn5z3YA2kW21UHAlwuw/qzxayvYooEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aa5nF73T+8POQy1jc8L8SCighRKp2Rbf/BraY+A7WcZoPSYg0ruUhnUdCJKgRPzP0iMmHFVEn/6nXscXaUUaTDFUoRiWSn5YxGEqH1/Gn3vVX1buYZixxdbKmPoYhFqKHEL7qXMoqsmF6Sdb87Mo0ws9HZf813g+opQmFO5z6mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=BitVipMj; arc=none smtp.client-ip=211.125.140.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1770349504; x=1801885504;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IuPnlqREwJB3pbqSqs+4wA7Rlfs308sbPiaPxE9gRow=;
-  b=BitVipMjANx8XmpHpr7NpGZhZrLBn7nvnAhMDgtFMiwmANVf0j9wOcDb
-   kvvWQ7barMOJpb5QdynBIitZOq7E5V39XRwcYJaUAMfBuzDyo6NksNjdQ
-   6ydQO72THnbp14AGDTmPXUKzwCP3B4V7bxUpWj/7MP7kNfXNq+9wEJBU2
-   22GztKGo8xeqqL5FUUYDNpUGdD6TB/g12VDhK8zPbB8rjN4N8Xq+C3Vqs
-   DMnlBjP2sizxuDjiJ0MFlZ9sLwIR429iQ/6QNEDdGjM25bu4ocEbm5/us
-   alc9gEYxL8V/sCX8CMSj+686hm7I+2NCIlGjCTME9hdZ2RQ+oe5s/+Awe
-   g==;
-Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
-  by jpms-ob01.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 12:45:02 +0900
-X-IronPort-AV: E=Sophos;i="6.21,275,1763391600"; 
-   d="scan'208";a="578775205"
-Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
-  by jpmta-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 12:45:01 +0900
-Date: Fri, 6 Feb 2026 12:44:57 +0900
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	jailhouse-dev@googlegroups.com, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org, Rahul Bukte <rahul.bukte@sony.com>,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Tim Bird <tim.bird@sony.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] x86/x2apic: disable x2apic on resume if the kernel
- expects so
-Message-ID: <aYVjuSkdOlBh06_S@JPC00244420>
-References: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
- <20260202-x2apic-fix-v1-1-71c8f488a88b@sony.com>
- <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
- <aYMOqXTYMJ_IlEFA@JPC00244420>
- <722b53a7-7560-4a1b-ab26-73eeed3dffa5@intel.com>
- <aYQzhRN83rJx6DSb@JPC00244420>
- <e5ac3272-795b-488c-b767-290fd50f2105@intel.com>
+	s=arc-20240116; t=1770351852; c=relaxed/simple;
+	bh=WGfRZc2d6BbOHdLirPkD53miOV0K2vlSBbSRkGoJ+1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NYxnmvrI0FKOywmUA41G1f2JViQK4BbwOYBppnOSOBfqrrQK+FpnNrfMvrgTz4TntX9YQGeLwWtXD7/tYbAMjUUhLAWPdYClK1P/Gx/xlSWBOWl5AOPHFJSnDTPnlm4+wf1JCYr5XYgZRz8n+gWj72kM6o97as6bJSVcsb30BbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=oTyE/ygt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NPY18KoO; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id A207114001FF;
+	Thu,  5 Feb 2026 23:24:11 -0500 (EST)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-05.internal (MEProxy); Thu, 05 Feb 2026 23:24:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1770351851;
+	 x=1770438251; bh=N1wzTV/WZL6Xg9Hp3hlRbBWtAfyVnxsaZovfh6WpJDc=; b=
+	oTyE/ygt4zc/soUpvdUnzeTlY2gBj6537nqjH8RmNLuJKWnChk/dVz67lV/B17WP
+	1CdKjd9uVWxFYkMhBGwDcedS067/Uf+ptyypsD61ZAuztQP0vKI2OwCwCjfAEgll
+	5854Q7PG/pnWe0ILsLht2TZJSjuB/LCNseU8vAc+M2Bo09LNPa3UpZm1PXkm0W31
+	VVfFyzkaMay+KTUJZ/0Hs6AjiO3nMOyJpXuE8UxwKf/Fy4Y+RoEheIzczIOUs8L/
+	Fv0cbvNI5E1aex08izLImeEUvxkEmBlhqh0JasFmkh2lOVaYySD1+j+BMo1bXhem
+	4P4TmWcVeUYbftjH+lv0wg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1770351851; x=
+	1770438251; bh=N1wzTV/WZL6Xg9Hp3hlRbBWtAfyVnxsaZovfh6WpJDc=; b=N
+	PY18KoOwoD0jlTy7bPXBVVeJL5P3+hwwLRD8tNRHq3d19qAMiXD9CphyazuEc5aB
+	vqh56PS5///P2slCxrwP4NLkCkS30YlSKImw2sK7FoW8AJTVKkLhlC/X8mMxUyLd
+	uPXZFvFo+DgUNeUOL9adj1pxemmA/PBMWKxQsZBEkwiByEg0Yy56qvb8R+9eHMSq
+	7xwrhc+oYbQXKN+jFoyD0FOrtAVWd4KikdM0xrAPnisukmJO8gV5i7SS0W/LTTfJ
+	obFtcbLoHt7kTbTqWcnRXPbGNxE0ZM9M1ocbk7+hz2pC/Ls6hnMkCse9szcXyl2H
+	2LMBYpgFQXChZuFEDSjLw==
+X-ME-Sender: <xms:6myFaW2jySURGtW037zOauUZCGB32nspB1_U9UzJ4RolxDrh4V73aw>
+    <xme:6myFaU_SLUoEieoXVfh_qQHmxef88k0EcNYqua8WsGvrrl6cRa4GaZJJ77KahHg6p
+    nmla2IvIvo7WOD6q_R1a5Jq3vESrseSrZ5VIzV5CMFePg-XxguwHFJn>
+X-ME-Received: <xmr:6myFaaZsXSz1jHWt4Ydq_NA86-zq2hRwQUdN7rh2WHWtpAaxP0uHm697PkhSw_pkOdn_EAXm0-g53oFd6o4m2pNBzF3-aA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeejvddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
+    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthh
+    gvsheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgush
+    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehl
+    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehroh
+    gvtghkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
+X-ME-Proxy: <xmx:6myFabxQ30NODEmM30HFBvx-mCe1jODOHHWAmGXqmRsyGKBcTvBg1g>
+    <xmx:6myFaQ8BWnnZtU7DSHSCsTUbZ9tb_BG9TN5wYh-AnBmAZius32Linw>
+    <xmx:6myFafyDdUTb1W9LCzU4ZrZ6BhqyHUeDBPw7oke6YjjCqBbNs8ja8Q>
+    <xmx:6myFadu7t_gTFxDV-8ZV3EI1lR35VCb25VQ5v9adR3BUB9KJSZGuWQ>
+    <xmx:62yFaTKLQhE4wooFUIdOv1tmdH2pa9sKhIRg-MBBW1wctRiTKa_Zhd2M>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Feb 2026 23:24:08 -0500 (EST)
+Message-ID: <05eeb289-29f0-4ab8-b08c-c003ec307017@pobox.com>
+Date: Thu, 5 Feb 2026 20:24:07 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e5ac3272-795b-488c-b767-290fd50f2105@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/160] 5.10.249-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260205143430.733102763@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260205143430.733102763@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sony.com,none];
-	R_DKIM_ALLOW(-0.20)[sony.com:s=s1jp];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214591-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-214592-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	DKIM_TRACE(0.00)[sony.com:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shashank.mahadasyam@sony.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2A462F9D2E
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pobox.com:email,pobox.com:dkim,pobox.com:mid]
+X-Rspamd-Queue-Id: E2ABCFA144
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 03:18:58PM -0800, Sohil Mehta wrote:
-> Maybe a warning would be useful to encourage firmware to fix this going
-> forward. I don't have a strong preference on the wording, but how about?
+On 2/5/26 06:44, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.249 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> pr_warn_once("x2apic unexpectedly re-enabled by the firmware during
-> resume.\n");
+> Responses should be made by Sat, 07 Feb 2026 14:34:03 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.249-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-That works
+Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well, no 
+regressions observed.
 
-> A few nits:
-> 
-> For the code comments, you can use more of the line width. Generally, 72
-> (perhaps even 80) chars is okay for comments dependent on the code in
-> the vicinity.
-> 
-> The tip tree has slightly unique preferences, such as capitalizing the
-> first word of the patch title.
-> 
-> Please refer:
-> https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#patch-submission-notes
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Thanks! I noticed that I also didn't use '()' for function names in the
-commit message. I'll fix all these and add the pr_warn_once in v2.
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
