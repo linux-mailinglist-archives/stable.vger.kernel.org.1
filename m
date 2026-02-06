@@ -1,187 +1,142 @@
-Return-Path: <stable+bounces-214620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GODwJQqthWkRFAQAu9opvQ
-	(envelope-from <stable+bounces-214620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:57:46 +0100
+	id kI6QFKWvhWkRFAQAu9opvQ
+	(envelope-from <stable+bounces-214622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:08:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11272FBB64
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:57:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BFEFBD51
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D4E99301DDA1
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 08:57:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C85C730530E2
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 09:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B7934EEFC;
-	Fri,  6 Feb 2026 08:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A457C355021;
+	Fri,  6 Feb 2026 09:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b="uEMIYC1R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ob2sUAV4"
 X-Original-To: stable@vger.kernel.org
-Received: from jpms-ob02.noc.sony.co.jp (jpms-ob02.noc.sony.co.jp [211.125.140.165])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D55834EEF8;
-	Fri,  6 Feb 2026 08:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.125.140.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F51354AFD
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 09:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770368260; cv=none; b=ku+SgHw8SvUBUa4KIwwhwgF4NONEW4hfnLkvks4KVi7nbwP7bsM/JiRwgE5/q0ikE9qt9T7vkPeE2BjM0ogmuYg457CoTJvmxBtOMpBnkP4/8Y3sveXxwW6vLWDua2I2GZ8BxJoeC0kU8vexy5t6mNaEdaDzoKYMN5t4e3KZpSo=
+	t=1770368589; cv=none; b=pTFm794+n3vb/ZCKSTAnyNQYFBnhMxOtfRwmwuhOF5cgShbtoqz0/mLvlA4h68jSF4belQMoyXz3ptRo0LYbj35AXRKtlrJITPZgSkVrSzjPSKlCtZBcodNZbFdDJZ1/aMKE5wYKqL0LYM2AIer+YEVf6kaT5RCcBUmghkWHqak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770368260; c=relaxed/simple;
-	bh=vrOFC/HRC3Ie5qc3U5lHi8XBQUfAXuurChWS05yIt2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dXo2BkPkqhoM0FymUR5N7ImJ1M5B/k0nBoqUrsaf06VC5eQhQFFl1cn8QkwNB/dXEUxg37LhgyACKZCL3ngJ27HFWwd1yMIuu8giPX8/hIrqHlKYEJtmRCTcjEwumWF5wsfUvPR9k5gHTTfHWcaAivpH6ND9VLDyNoXZxJgnCKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com; spf=pass smtp.mailfrom=sony.com; dkim=pass (2048-bit key) header.d=sony.com header.i=@sony.com header.b=uEMIYC1R; arc=none smtp.client-ip=211.125.140.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sony.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=sony.com; s=s1jp; t=1770368259; x=1801904259;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pC/nHVWjvFbxMPwxtThf4k2nFuf59ielNHdSV23cY9U=;
-  b=uEMIYC1RfNigzWhXRFhPYZ4U07jE2eVeQPcHfoJSWvtbspbiospcwrKQ
-   JPlk2uOI+a3kC742ugj6KzpdL4U0YKVX4nRBaN7Jbg/GSuju5t+oJ/TT5
-   v1fqEkEbvzr++PJJAaQHy3DF+ofqKUlpmEZY/sMQHWQmTkUiqS45ouLfA
-   YuPBAjHprVcfR0bMOvdMRJijy4KQRs7DcSv430CjXS0UAG6ifeJYVmLDN
-   Q8YXHAbKO7GdjSSZCqiFALa0FX1gr23Oc6uiWncE8njpnPN6+blYjZvLo
-   t7UQFnAeaIM3O7fpQ/m5wzgCtWINfIhmuUyV1gHwkBaZGEmlmrnOuwjeW
-   w==;
-Received: from unknown (HELO jpmta-ob02.noc.sony.co.jp) ([IPv6:2001:cf8:0:6e7::7])
-  by jpms-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 17:57:37 +0900
-X-IronPort-AV: E=Sophos;i="6.21,276,1763391600"; 
-   d="scan'208";a="578880254"
-Received: from unknown (HELO JPC00244420) ([IPv6:2001:cf8:1:573:0:dddd:6b3e:119e])
-  by jpmta-ob02.noc.sony.co.jp with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 17:57:36 +0900
-Date: Fri, 6 Feb 2026 17:57:31 +0900
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	jailhouse-dev@googlegroups.com, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org, Rahul Bukte <rahul.bukte@sony.com>,
-	Daniel Palmer <daniel.palmer@sony.com>,
-	Tim Bird <tim.bird@sony.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] x86/x2apic: disable x2apic on resume if the kernel
- expects so
-Message-ID: <aYWs-wvDuS53BHMe@JPC00244420>
-References: <20260202-x2apic-fix-v1-0-71c8f488a88b@sony.com>
- <20260202-x2apic-fix-v1-1-71c8f488a88b@sony.com>
- <0149c37d-7065-4c72-ab56-4cea1a6c15d0@intel.com>
- <aYMOqXTYMJ_IlEFA@JPC00244420>
- <722b53a7-7560-4a1b-ab26-73eeed3dffa5@intel.com>
- <aYQzhRN83rJx6DSb@JPC00244420>
- <e5ac3272-795b-488c-b767-290fd50f2105@intel.com>
+	s=arc-20240116; t=1770368589; c=relaxed/simple;
+	bh=tKfdQ0ne2qYG4J7V6pzJ/nncuATXkssSO/aUoqjKBis=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m9zdVSM5bDa39Ce2Gp0cUrmnH/XmIZ61micancUxuQwNL/YiPlkBbrHBtQ31l6RGMDAG0XVZS4ZXOzQ7OGM9xKueWZbvckxLQEWnqP4cviisce2cM3Jvi7tLrPBjOgrFuZOnM5g1oaD9e03MIPQ/G0zh3X6yJy1PfuK1PW+0U+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ob2sUAV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED27AC19422
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 09:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770368589;
+	bh=tKfdQ0ne2qYG4J7V6pzJ/nncuATXkssSO/aUoqjKBis=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ob2sUAV4PefUT1LtEPfS0PZJDK2FUkr6G0ZgF1+j1ABgAPGu31hztlPb8VUUVygOl
+	 qNfoHK6HC7qmFfLgc1ywqyfST+GQZiVnMClFqO0lGDVC9K1IC5WpFvCk8ekgjYls1G
+	 6rzcOKjx+0Iywny0H5595/JkAR9mWqXfMAZUDrZQpeMdtMXp0UogVc4GY8MoSQ2kdo
+	 9shJMAe8gpzAIWrkYHcp4zWfmQiiE0sGRdsg9iZ8r6n7MJ68wAn3cvghcXDV2ASO61
+	 dz3wmBJTNh+Wyw6HrmzbAfCksuIBbWqjDlDmzs/9IcM1Mnpcmq8GgAV4ygbqo5+5uj
+	 nEU74gRR9kJow==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-382f9930e54so21367771fa.1
+        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 01:03:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX+q+xLBmL6LBI157mOLwRje5q4bAf2EalcoJ6v9W/Qk2ybHt890EGfwZJ/ChejvowKPCL5wSk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdyAQZC9iLKLFngWRi0IHXnThnY0TR9OzLjHIO6JkdrJyHJ2ML
+	OeDH9dKiCwneWpCTDXN4wMoeDwbLbKU2FK5Nc8/+/32YfJ6jDMhg9NNw8vijcHBQ1A9l+h7sRsL
+	V0s0vvHfLAGYyeBE8NS+Gbs/J3W+o0ZufnzW78RJJhw==
+X-Received: by 2002:a2e:b2d4:0:b0:383:1bcc:119b with SMTP id
+ 38308e7fff4ca-386a0bcb53emr13479141fa.13.1770368587526; Fri, 06 Feb 2026
+ 01:03:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e5ac3272-795b-488c-b767-290fd50f2105@intel.com>
+References: <20260205092840.2574840-1-tzungbi@kernel.org>
+In-Reply-To: <20260205092840.2574840-1-tzungbi@kernel.org>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Fri, 6 Feb 2026 10:02:54 +0100
+X-Gmail-Original-Message-ID: <CAMRc=MfQCG3fAPdbtLO2iNqyu=Dq3-Urn9V5=FQBNVD5p-vyfg@mail.gmail.com>
+X-Gm-Features: AZwV_QhFxeNBrmL9SPtme8oEV7zOBaeeXsHDys3k0_o0PdrX3hZCqOL2zDnGfrc
+Message-ID: <CAMRc=MfQCG3fAPdbtLO2iNqyu=Dq3-Urn9V5=FQBNVD5p-vyfg@mail.gmail.com>
+Subject: Re: [PATCH v3] gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
+To: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Linus Walleij <linusw@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sony.com,none];
-	R_DKIM_ALLOW(-0.20)[sony.com:s=s1jp];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-214622-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214620-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	DKIM_TRACE(0.00)[sony.com:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shashank.mahadasyam@sony.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sony.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 11272FBB64
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: F0BFEFBD51
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 03:18:58PM -0800, Sohil Mehta wrote:
-> On 2/4/2026 10:07 PM, Shashank Balaji wrote:
-> > On Wed, Feb 04, 2026 at 10:53:28AM -0800, Sohil Mehta wrote:
-> 
-> >> It's a bit odd then that the firmware chooses to enable x2apic without
-> >> the OS requesting it.
-> > 
-> > Well, the firmware has a setting saying "Enable x2apic", which was
-> > enabled. So it did what the setting says
-> > 
-> 
-> The expectation would be that firmware would restore to the same state
-> before lapic_suspend().
+On Thu, Feb 5, 2026 at 10:29=E2=80=AFAM Tzung-Bi Shih <tzungbi@kernel.org> =
+wrote:
+>
+> Since commit aab5c6f20023 ("gpio: set device type for GPIO chips"),
+> `gdev->dev.release` is unset.  As a result, the reference count to
+> `gdev->dev` isn't dropped on the error handling paths.
+>
+> Drop the reference on errors.
+>
+> Also reorder the instructions to make the error handling simpler.
+> Now gpiochip_add_data_with_key() roughly looks like:
+>
+>    >>> Some memory allocation.  Go to ERR ZONE 1 on errors.
+>    >>> device_initialize().
+>
+>    gpiodev_release() takes over the responsibility for freeing the
+>    resources of `gdev->dev`.  The subsequent error handling paths
+>    shouldn't go through ERR ZONE 1 again which leads to double free.
+>
+>    >>> Some initialization mainly on `gdev`.
+>    >>> The rest of initialization.  Go to ERR ZONE 2 on errors.
+>    >>> Chip registration success and exit.
+>
+>    >>> ERR ZONE 2.  gpio_device_put() and exit.
+>    >>> ERR ZONE 1.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: aab5c6f20023 ("gpio: set device type for GPIO chips")
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> ---
 
-I'm a bit out of my depth here, but I went looking around, and this is from the
-latest ACPI spec (v6.6) [1]:
+This looks good, I will queue this right after v7.0-rc1 is tagged
+because this is way too risky for rc8. Let's let it spend a couple
+weeks in next.
 
-	When executing from the power-on reset vector as a result of waking
-	from an S2 or S3 sleep state, the platform firmware performs only the
-	hardware initialization required to restore the system to either the
-	state the platform was in prior to the initial operating system boot,
-	or to the pre-sleep configuration state. In multiprocessor systems,
-	non-boot processors should be placed in the same state as prior to the
-	initial operating system boot.
-
-	(further ahead)
-
-	 If this is an S2 or S3 wake, then the platform runtime firmware
-	 restores minimum context of the system before jumping to the waking
-	 vector. This includes:
-
-	 	CPU configuration. Platform runtime firmware restores the
-		pre-sleep configuration or initial boot configuration of each
-		CPU (MSR, MTRR, firmware update, SMBase, and so on). Interrupts
-		must be disabled (for IA-32 processors, disabled by CLI
-		instruction).
-
-		(and other things)
-
-I suppose, in my case, the firmware is restoring initial boot
-configuration on S3 resume. And initial boot configuration of x2apic is
-set from the firmware's UI "Enable x2apic".
-
-> Maybe a warning would be useful to encourage firmware to fix this going
-> forward. I don't have a strong preference on the wording, but how about?
-> 
-> pr_warn_once("x2apic unexpectedly re-enabled by the firmware during
-> resume.\n");
-
-At least as per the spec, it's not something the firmware needs to fix,
-and it's not unexpected re-enablement.
-
-Am I missing something?
-
-But it _is_ surprising that this bug went unnoticed for so long :)
-
-[1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
+Bart
 
