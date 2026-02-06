@@ -1,214 +1,159 @@
-Return-Path: <stable+bounces-214669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJgrM/0OhmkbJgQAu9opvQ
-	(envelope-from <stable+bounces-214669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 16:55:41 +0100
+	id iAyRKkwNhmkRJQQAu9opvQ
+	(envelope-from <stable+bounces-214667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 16:48:28 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC37FFEEF
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 16:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6A8FFE35
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 16:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 148C430398A0
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 15:54:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 945AB302C5ED
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 15:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F4F2DE717;
-	Fri,  6 Feb 2026 15:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A11F2D8780;
+	Fri,  6 Feb 2026 15:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kha5r/Zw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oY0vaaiG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E092DC772
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 15:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17212882DE;
+	Fri,  6 Feb 2026 15:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770393269; cv=none; b=IHcZdhrhYAZiVZM6uVFC8f6BlspMIYvaS/A02tu36o2Fx5zlGilakH4mdQispzqKdHBIE+IF/wqmJpV6cxG5lzb7Z0r8mXDXHmrH9ZWn6c5OpYwoa9QWLlQNS3ra1ecfOQ0l00wQimQEFuc8YnOsaEzykXdZTqV4Gcf++s6U9I4=
+	t=1770392903; cv=none; b=COC7CvZ6CzS3uuFUNt8R2rux95XqaH3+8R25+nascDh0ATZsAh0tnjrLkM2r348J1ZlryOV1ZLeWrHtYeuPxrrpRxqxc3r9PVvGYJjTbymyxA4jPXw9C2HDg38Du2AE9ddOGZ53Apz92LoU2Wp8nwR62wsU8QXuoguHQIlmCRlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770393269; c=relaxed/simple;
-	bh=4wDpwikNwz5IQP5Nd+9I5r1hpnWC+g14izf4MF/exts=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Udp6NTeRSi/ODSFVeOI1GhFfU4MsvVHn18zt67jadhmV14TsSOfR02Cw7HGuSiHepYagYLkt/28da5pqEs64XgqUd5cP4yUmTQLjdrt5HQmhX5f8VSpBBVhVv/gWChn9PmjEkmVRbNCerTV+mSmKEScvCtjliC2UK9KOHI1PRFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=kha5r/Zw; arc=none smtp.client-ip=209.85.218.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-b8860d6251bso298219166b.3
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 07:54:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1770393267; x=1770998067; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=etMVOc7KD+4rAqRuGUMOzPeLpua4ifj9Amz+IzMXTTE=;
-        b=kha5r/ZwIIm4HCDGcbS/fYDS/djVlYYSUrzi9N8JE31X5luAZSrG4Mp8yqP9q74AWw
-         PtoefZ8VAs48wrLtHEZY++G/E5SBfVGPhmsYZhTIC17lA8qVZUiXx9a8WmQg1P9RPGJh
-         J0iKha+vG8al3TFqhdlywjB+EO5Q0/OCbM8QA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770393267; x=1770998067;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=etMVOc7KD+4rAqRuGUMOzPeLpua4ifj9Amz+IzMXTTE=;
-        b=WwwUo8BVbz38sRWesmY/X40vVLZ+OT5tjw1kCjqFFzkc5QRvmH0btdHAEg9h+T56GT
-         V8zSUuuq/hHGThVJlef7G1A1LLe6W3jygLkPWbQe7gZ8T+9G3PPzxQYmreEaeu4QLcnw
-         K1sFqkkkm6dnNtEo/yKFpKx4O9sbWAw+jLNiu0yJDUd8l9MqZmgmqSwqN4Kx4qWQKCYl
-         p+2ba/Cfy9K58xIIagEQo1RkUzK7XNEoQuPttzT1NmOCwrybIb14LEQAB4zPBq5EfRFi
-         +zLbHwKzb1fGcn/SPQMk3hyEcdCyJYpt1pbhXu+QTNAeNBebx8XybYpenkW/RmxXxJOp
-         KHhA==
-X-Forwarded-Encrypted: i=1; AJvYcCViIq8O2+fqVCfyqygLwBbJFX1/H+s2OhjtXZYCE8WD0v4IscxWRNJE3y7emRducAZ2Jn7g8Ak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlXc2jXfRJRUQV1Knj/PHDzq3HhZCSHCrxQOUk/Iuubmh1UBZR
-	QMtFIgUIgotBXCUMxYIo7h1cLcGbN5poc5KAUAa/GSNjN8AqjNkHqPV92AK6VBwgmYOhYcx1NTj
-	nXrWLlyPDoeg=
-X-Gm-Gg: AZuq6aKvS3yFq4j7eCw22w0vLa0lyJ0Yk+dWP0HA83JUzUJohJYfTKW7PhTSf4Cq2Vj
-	7bSRayyVYaqlsehEtgTBQFEvdWxZduyVpd4A511Gadaxf8IuFfPKwHy8OMNhcOq0OPEvrKeLKTI
-	a/oJsewrCzZyAdstbEiyuKwerYyoSmLqtrqr04hD29iEuVLm+fX7VU4m8ww41X2YTJRfiRFjusP
-	ybZl8DdDSrBsAEQ/sRu3+KBTYFeT8Hsyqh4oxyuE+wp9GAtwwlsl0gidopsa4oLWp6IDzo/jNz1
-	AWpy6mFlhl5hQW1P1k2bHFd0MOEfFfYNFef9NfR9fnOwS2PcL+qeKXJcgYAS41fEUB3jCl7Mjab
-	+tunykA9BPI0I3V4Z6g6mc4mQQSPOOBHuX/k83ziyygIqBIuw95+isaQH7jT2I+xZ5B3kkmz9mO
-	5aZ1j00K+XeQyAkNB2UMMhHafYvTzdvFEoe6I1aRHApbkzYr4Phw==
-X-Received: by 2002:a17:907:a4c:b0:b87:c92:25bf with SMTP id a640c23a62f3a-b8edf34d44dmr182244866b.33.1770393266643;
-        Fri, 06 Feb 2026 07:54:26 -0800 (PST)
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com. [209.85.221.53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8eda7a3624sm91969766b.23.2026.02.06.07.54.26
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Feb 2026 07:54:26 -0800 (PST)
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43622089851so1753189f8f.3
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 07:54:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV28XcsQtn50J4Am3tznO2Qvv1x3ZegajnX5lHec+K7/T5ntop+MQ6Qk8h2zDUHxXCbyyXYqCU=@vger.kernel.org
-X-Received: by 2002:a05:6000:200d:b0:430:fa58:a03d with SMTP id
- ffacd0b85a97d-436293ae118mr4862176f8f.63.1770392781791; Fri, 06 Feb 2026
- 07:46:21 -0800 (PST)
+	s=arc-20240116; t=1770392903; c=relaxed/simple;
+	bh=u0kXhBG7RKykT4a2plJUwV+qAtS+NbaloqTIo40MoRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N9SVMbGQNgclD3BmfMSFSJfT/d1swyjBYd9TgyN3nd9l5zu/pCcuPFKvgV03PmzGrxnhx+/TXZ1KKVhmktuWNJacDMcj8vhHwaSAuZ78XF6DRY4YKcaZm+UYwSmDzEmAW0MhfWpR6jexnG5M4/k3UHjW59MSTd8fn/GFHx3K2aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oY0vaaiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCE1C19422;
+	Fri,  6 Feb 2026 15:48:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770392902;
+	bh=u0kXhBG7RKykT4a2plJUwV+qAtS+NbaloqTIo40MoRc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oY0vaaiG77HJNetYFwAFKR1W7fx/9iZr6G410Djd7mCwWzY9pY0w6BHiW73xnVuGO
+	 yHHfdUEeUSCz85Vk3pUX5QZx2te+ICxuoOoKmiaUHFoTIXZ3HoF7wN1yC4hiPMEq6Q
+	 iPVG/XgcUEGHuPs0TzMPnpYyHcH0DMC9OfVWcrOx6gbx983HFT7qwnpLrKg/XuaZ2m
+	 MzKfWyN3ZTnbZxa3QRfFh/jZoesgng4kJD4sESkvrBA4bgy95M/gLKhuQ1PDs/+Cbr
+	 fCv7Ks5x1euNZGqEpaeqhcwN3R0biCIg9qTidgAC3h8FXKF1pV1AEKt5BpoXXL070G
+	 1WmWRszSmuIgQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1voO4B-00000009Bya-1fUT;
+	Fri, 06 Feb 2026 15:48:19 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supports
+Date: Fri,  6 Feb 2026 15:48:16 +0000
+Message-ID: <20260206154816.3582887-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260206123758.374555-1-fra.schnyder@gmail.com>
-In-Reply-To: <20260206123758.374555-1-fra.schnyder@gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 6 Feb 2026 07:46:10 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=UO3wHqGKep67pY04PgBJKgvOgDf8u1qxeXmWkgVMLXiQ@mail.gmail.com>
-X-Gm-Features: AZwV_Qhcv-IxPe6r_qqtTYtGlVNepLgatAVvPPQTa8PlDibDivxEWQ2rEGCs3tI
-Message-ID: <CAD=FV=UO3wHqGKep67pY04PgBJKgvOgDf8u1qxeXmWkgVMLXiQ@mail.gmail.com>
-Subject: Re: [PATCH v1] drm/bridge: ti-sn65dsi86: Enable HPD polling if IRQ is
- not used
-To: Franz Schnyder <fra.schnyder@gmail.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Franz Schnyder <franz.schnyder@toradex.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, Francesco Dolcini <francesco@dolcini.it>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, tglx@kernel.org, robin.murphy@arm.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214669-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-214667-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,toradex.com,lists.freedesktop.org,vger.kernel.org,dolcini.it];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,toradex.com:email,chromium.org:email,chromium.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2CC37FFEEF
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EF6A8FFE35
 X-Rspamd-Action: no action
 
-Hi,
+The ITS driver blindly assumes that EventIDs are in abundant supply,
+to the point where it never checks how many the HW actually supports.
 
-On Fri, Feb 6, 2026 at 4:38=E2=80=AFAM Franz Schnyder <fra.schnyder@gmail.c=
-om> wrote:
->
-> From: Franz Schnyder <franz.schnyder@toradex.com>
->
-> Fallback to polling to detect hotplug events on systems without
-> interrupts.
->
-> On systems where the interrupt line of the bridge is not connected,
-> the bridge cannot notify hotplug events. Only add the
-> DRM_BRIDGE_OP_HPD flag if an interrupt has been registered
-> otherwise remain in polling mode.
->
-> Fixes: 9133bc3f0564 ("drm/bridge: ti-sn65dsi86: Add support for DisplayPo=
-rt mode with HPD")
-> Fixes: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort c=
-onnector type")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
-> ---
->  drivers/gpu/drm/bridge/ti-sn65dsi86.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+It turns out that some pretty esoteric integrations make it so that
+only a few bits are available, all the way down to a. single. bit.
 
-It's weird that you have two fixes, but upon closer inspection, I see
-why you tagged it as you did.
+Enforce the advertised limitation at the point of allocating the
+device structure, and hope that the endpoint driver can deal with
+such limitation.
 
-The first commit that landed, commit 55e8ff842051 ("drm/bridge:
-ti-sn65dsi86: Add HPD for DisplayPort connector type"), was still
-using polling mode and just using the HPD line for polling. That
-commit incorrectly set the flag "DRM_BRIDGE_OP_HPD". So the proper
-backport to kernels with just that commit would be to take away that
-flag. Unfortunately, I didn't notice this problem during the review
-and I don't personally have any hardware using this bridge for DP,
-only eDP.
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/irqchip/irq-gic-v3-its.c   | 4 ++++
+ include/linux/irqchip/arm-gic-v3.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-The second commit that landed, commit 9133bc3f0564 ("drm/bridge:
-ti-sn65dsi86: Add support for DisplayPort mode with HPD"), actually
-added support for the HPD interrupt. After this commit, your fix
-(which makes the flag "DRM_BRIDGE_OP_HPD" depend on the IRQ) is the
-correct one.
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 2988def30972b..a51e8e6a81819 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3475,6 +3475,7 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 	int lpi_base;
+ 	int nr_lpis;
+ 	int nr_ites;
++	int id_bits;
+ 	int sz;
+ 
+ 	if (!its_alloc_device_table(its, dev_id))
+@@ -3486,7 +3487,10 @@ static struct its_device *its_create_device(struct its_node *its, u32 dev_id,
+ 	/*
+ 	 * Even if the device wants a single LPI, the ITT must be
+ 	 * sized as a power of two (and you need at least one bit...).
++	 * Also honor the ITS's own EID limit.
+ 	 */
++	id_bits = FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
++	nvecs = min_t(unsigned int, nvecs, BIT(id_bits));
+ 	nr_ites = max(2, nvecs);
+ 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+ 	sz = max(sz, ITS_ITT_ALIGN);
+diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
+index 70c0948f978eb..0225121f30138 100644
+--- a/include/linux/irqchip/arm-gic-v3.h
++++ b/include/linux/irqchip/arm-gic-v3.h
+@@ -394,6 +394,7 @@
+ #define GITS_TYPER_VLPIS		(1UL << 1)
+ #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
+ #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
++#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
+ #define GITS_TYPER_IDBITS_SHIFT		8
+ #define GITS_TYPER_DEVBITS_SHIFT	13
+ #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
+-- 
+2.47.3
 
-Unfortunately, I think the above will confuse the stable scripts.
-Since your patch applied cleanly atop the first commit then it will
-picked to any kernels with it, even if they don't have the second
-commit.
-
-I think the first commit landed in v6.16 and the second commit isn't
-yet in any stable release.
-
-Maybe the right way to look at this is to just call the 2nd patch a
-prereq? So this:
-
-Fixes: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for
-DisplayPort connector type")
-Cc: <stable@vger.kernel.org> # 6.16: 9133bc3f0564: drm/bridge: ti-sn65dsi86=
-: Add
-
-That will cause the 2nd patch to get picked up for stable too, but
-that would be preferable to having just your fix without the 2nd
-patch. Alternatively, you could try to add some other note to the
-stable team to help them arrive at the right backport.
-
-In any case:
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-
-I'm going to let this sit on the lists for a little while in case
-folks want to comment on the above.
-
--Doug
 
