@@ -1,107 +1,290 @@
-Return-Path: <stable+bounces-214572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id VXyQKeIzhWlg+AMAu9opvQ
-	(envelope-from <stable+bounces-214572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:20:50 +0100
+	id eJu8Akk4hWlf+QMAu9opvQ
+	(envelope-from <stable+bounces-214573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:39:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A71F8903
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:20:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618F6F8B15
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:39:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61D423019F3E
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 00:20:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A629A301CCCE
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 00:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8171F9ECB;
-	Fri,  6 Feb 2026 00:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B032236E0;
+	Fri,  6 Feb 2026 00:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EWfudXEu"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="YQS3CFIU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail115-63.sinamail.sina.com.cn (mail115-63.sinamail.sina.com.cn [218.30.115.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B045464F;
-	Fri,  6 Feb 2026 00:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1B22222CB
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 00:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770337245; cv=none; b=LGkc7XBTG/3Zkb87PIwV58kcXb6mZaqmtOBgj7cNGfWSCCYo/uc2ngxFJatZHFzrN2WlRTF6xYMcEbzmegOZ6CULzxfLAMjx2jBGwS0hGm2FTsj8v+6KhE9GhMZSGPSd4gYbVTTgPrywqsM/J35RPylbEcrsPLb3I0hOMrIk6ng=
+	t=1770338347; cv=none; b=Xagc/kUH8bGTMLem0d/7ZxQM4hDJhlNWpshlKs7CGgeHlTe3v/BLJlCcnzg4DmWeuByj/cS8h7Vxuih+oP823Hr4kKh0Zy+/yf20R5LJI0vk7pu1ZeGeLqVXeNIjsHechb6wq2KjlbRbcJfL7nVjuNWUl5kWDFIDDGkuzPgMkDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770337245; c=relaxed/simple;
-	bh=ubKJbnulOAyzDI9B4u1CgFhXfA/SNhowArR6YqnHVIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YXyXEYqIijZsF482AXE/faaC3lRgvH0vudLniz29Jk7GxeSjWNB0cuMichGjjSypNnJQa1XxGU23OQnaYQ6n4LkAe06BAKkjCuxbU73zyTNus6V55FY370pKL9o/7SWbjQ6P3bunlyC56L9h2l6QKgI+Ce4MuoXZytnI+NomyYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EWfudXEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84415C4CEF7;
-	Fri,  6 Feb 2026 00:20:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770337244;
-	bh=ubKJbnulOAyzDI9B4u1CgFhXfA/SNhowArR6YqnHVIQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EWfudXEubGovkjWKLOGSdR1BNcLbO9WiToWG+aMLD+GAJDAAbL6esi2pch82SKqfv
-	 yZ7V047baeR8O4lw7AyIdQfNH1/br6Vz/wpbS6Tz7bPChP01dORhHAeNZcYGXzgWXN
-	 aNcHvB+rZ8H2TkkpbPfemoiUYah8WvBEvq3NnnNsn3dtnGxznBxz2IUVqdaBBsqCMM
-	 BmvEZxy6sS0xFA8cgY4mxqUuP/fuZSWZJRJb1o9tdC/bqSGTSjTUbywrAPP0SloWsn
-	 2L6MO3hMYIhysLCSGsZ+ZnO8PgJabC7omOAz3TBJFwFW+GWFgDBXVPQ79vuIMx4sai
-	 g/0MGcOP9as2g==
-Date: Thu, 5 Feb 2026 16:20:43 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Dhyan K Prajapati <dhyan19022009@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Johannes Berg
- <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, stable@vger.kernel.org, Dhyan K Prajapati
- <dhyaan19022009@gmail.com>, Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH v6 wireless] mac80211: fix NULL pointer dereference in
- monitor mode
-Message-ID: <20260205162043.7c4530bf@kernel.org>
-In-Reply-To: <20260205175213.5005-1-dhyaan19022009@gmail.com>
-References: <20260205175213.5005-1-dhyaan19022009@gmail.com>
+	s=arc-20240116; t=1770338347; c=relaxed/simple;
+	bh=7Lr+Jd+p0CxGH3iyACVEtBsrDP/7GtYhBytNr+mvc/k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UJhr2Mr6rPs3IsRN3XmyZv2tKS0Wocmo4b0zBuZzfQ4JrViAs8UfW2HYZ2BpaUh9He6ZR74oCMTx6JXHkIobF5Iry9KonyeEmAfKTxECjkFF/clzhC12G/2q8uB7ZvUEEs+sQY3AQvIu+4lIEzUU96vnsgcdHsVD0pjLkktKqLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=YQS3CFIU; arc=none smtp.client-ip=218.30.115.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770338346;
+	bh=+LRgbuKOSQBYe2jv0v2SWhrEsGoDWBAq3E9lcsPmO6M=;
+	h=From:Subject:Date:Message-Id;
+	b=YQS3CFIUj56W/5tqJdwN0GDxBghcfniGE3VtRibcJIqEP/pLj1bgHq2Vbcc6oAtYf
+	 fZEWZJ2EFMcH/Kqege17a2S713VUc9xE2gmBh0erUrECUNqbQji00weHViXS1cv1ET
+	 sm9QxjzqBTqgaB6+34kWCDbU1Eco8uvrO21F99Sc=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.22) with ESMTP
+	id 6985381E000037B3; Fri, 6 Feb 2026 08:38:56 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 2669537602233
+X-SMAIL-UIID: 6751CB90589A44F0BCEEFE54E2FE4451-20260206-083856-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	k.chen@smail.nju.edu.cn
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	slava@dubeyko.com,
+	sashal@kernel.org,
+	yang.chenzhi@vivo.com,
+	frank.li@vivo.com,
+	penguin-kernel@I-love.SAKURA.ne.jp,
+	liushixin2@huawei.com,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH 6.1.y] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
+Date: Fri,  6 Feb 2026 08:38:53 +0800
+Message-Id: <20260206003853.3162465-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214572-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,intel.com,vger.kernel.org,gmail.com,sipsolutions.net];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-214573-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F1A71F8903
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nju.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dubeyko.com:email]
+X-Rspamd-Queue-Id: 618F6F8B15
 X-Rspamd-Action: no action
 
-On Thu,  5 Feb 2026 23:22:13 +0530 Dhyan K Prajapati wrote:
-> Cc: netdev@vger.kernel.org
+From: Kang Chen <k.chen@smail.nju.edu.cn>
 
-If you have to CC netdev on your failed attempts to produce a patch
-please follow our posting guidance:
+[ Upstream commit bea3e1d4467bcf292c8e54f080353d556d355e26 ]
 
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#tl-dr
+BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
+Read of size 2 at addr ffff8880289ef218 by task syz.6.248/14290
+
+CPU: 0 UID: 0 PID: 14290 Comm: syz.6.248 Not tainted 6.16.4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x5f0 mm/kasan/report.c:482
+ kasan_report+0xca/0x100 mm/kasan/report.c:595
+ hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
+ hfsplus_listxattr+0x5b6/0xbd0 fs/hfsplus/xattr.c:738
+ vfs_listxattr+0xbe/0x140 fs/xattr.c:493
+ listxattr+0xee/0x190 fs/xattr.c:924
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x143/0x360 fs/xattr.c:988
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe0e9fae16d
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe0eae67f98 EFLAGS: 00000246 ORIG_RAX: 00000000000000c3
+RAX: ffffffffffffffda RBX: 00007fe0ea205fa0 RCX: 00007fe0e9fae16d
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000000
+RBP: 00007fe0ea0480f0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fe0ea206038 R14: 00007fe0ea205fa0 R15: 00007fe0eae48000
+ </TASK>
+
+Allocated by task 14290:
+ kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4333 [inline]
+ __kmalloc_noprof+0x219/0x540 mm/slub.c:4345
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ hfsplus_find_init+0x95/0x1f0 fs/hfsplus/bfind.c:21
+ hfsplus_listxattr+0x331/0xbd0 fs/hfsplus/xattr.c:697
+ vfs_listxattr+0xbe/0x140 fs/xattr.c:493
+ listxattr+0xee/0x190 fs/xattr.c:924
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x143/0x360 fs/xattr.c:988
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+When hfsplus_uni2asc is called from hfsplus_listxattr,
+it actually passes in a struct hfsplus_attr_unistr*.
+The size of the corresponding structure is different from that of hfsplus_unistr,
+so the previous fix (94458781aee6) is insufficient.
+The pointer on the unicode buffer is still going beyond the allocated memory.
+
+This patch introduces two warpper functions hfsplus_uni2asc_xattr_str and
+hfsplus_uni2asc_str to process two unicode buffers,
+struct hfsplus_attr_unistr* and struct hfsplus_unistr* respectively.
+When ustrlen value is bigger than the allocated memory size,
+the ustrlen value is limited to an safe size.
+
+Fixes: 94458781aee6 ("hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()")
+Signed-off-by: Kang Chen <k.chen@smail.nju.edu.cn>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250909031316.1647094-1-k.chen@smail.nju.edu.cn
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+---
+ fs/hfsplus/dir.c        |  2 +-
+ fs/hfsplus/hfsplus_fs.h |  8 ++++++--
+ fs/hfsplus/unicode.c    | 24 +++++++++++++++++++-----
+ fs/hfsplus/xattr.c      |  6 +++---
+ 4 files changed, 29 insertions(+), 11 deletions(-)
+
+diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
+index 98a30ca6354c..17e651bd04ad 100644
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -204,7 +204,7 @@ static int hfsplus_readdir(struct file *file, struct dir_context *ctx)
+ 			fd.entrylength);
+ 		type = be16_to_cpu(entry.type);
+ 		len = NLS_MAX_CHARSET_SIZE * HFSPLUS_MAX_STRLEN;
+-		err = hfsplus_uni2asc(sb, &fd.key->cat.name, strbuf, &len);
++		err = hfsplus_uni2asc_str(sb, &fd.key->cat.name, strbuf, &len);
+ 		if (err)
+ 			goto out;
+ 		if (type == HFSPLUS_FOLDER) {
+diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
+index e13da1fe2c2a..3d324e4465d0 100644
+--- a/fs/hfsplus/hfsplus_fs.h
++++ b/fs/hfsplus/hfsplus_fs.h
+@@ -518,8 +518,12 @@ int hfsplus_strcasecmp(const struct hfsplus_unistr *s1,
+ 		       const struct hfsplus_unistr *s2);
+ int hfsplus_strcmp(const struct hfsplus_unistr *s1,
+ 		   const struct hfsplus_unistr *s2);
+-int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
+-		    char *astr, int *len_p);
++int hfsplus_uni2asc_str(struct super_block *sb,
++			const struct hfsplus_unistr *ustr, char *astr,
++			int *len_p);
++int hfsplus_uni2asc_xattr_str(struct super_block *sb,
++			      const struct hfsplus_attr_unistr *ustr,
++			      char *astr, int *len_p);
+ int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
+ 		    int max_unistr_len, const char *astr, int len);
+ int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
+diff --git a/fs/hfsplus/unicode.c b/fs/hfsplus/unicode.c
+index ebd326799f35..11e08a4a18b2 100644
+--- a/fs/hfsplus/unicode.c
++++ b/fs/hfsplus/unicode.c
+@@ -143,9 +143,8 @@ static u16 *hfsplus_compose_lookup(u16 *p, u16 cc)
+ 	return NULL;
+ }
+ 
+-int hfsplus_uni2asc(struct super_block *sb,
+-		const struct hfsplus_unistr *ustr,
+-		char *astr, int *len_p)
++static int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
++		    int max_len, char *astr, int *len_p)
+ {
+ 	const hfsplus_unichr *ip;
+ 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
+@@ -158,8 +157,8 @@ int hfsplus_uni2asc(struct super_block *sb,
+ 	ip = ustr->unicode;
+ 
+ 	ustrlen = be16_to_cpu(ustr->length);
+-	if (ustrlen > HFSPLUS_MAX_STRLEN) {
+-		ustrlen = HFSPLUS_MAX_STRLEN;
++	if (ustrlen > max_len) {
++		ustrlen = max_len;
+ 		pr_err("invalid length %u has been corrected to %d\n",
+ 			be16_to_cpu(ustr->length), ustrlen);
+ 	}
+@@ -280,6 +279,21 @@ int hfsplus_uni2asc(struct super_block *sb,
+ 	return res;
+ }
+ 
++inline int hfsplus_uni2asc_str(struct super_block *sb,
++			       const struct hfsplus_unistr *ustr, char *astr,
++			       int *len_p)
++{
++	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
++}
++
++inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
++				     const struct hfsplus_attr_unistr *ustr,
++				     char *astr, int *len_p)
++{
++	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
++			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
++}
++
+ /*
+  * Convert one or more ASCII characters into a single unicode character.
+  * Returns the number of ASCII characters corresponding to the unicode char.
+diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
+index beedc1a2237a..5af9992a2e57 100644
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -737,9 +737,9 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
+ 			goto end_listxattr;
+ 
+ 		xattr_name_len = NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN;
+-		if (hfsplus_uni2asc(inode->i_sb,
+-			(const struct hfsplus_unistr *)&fd.key->attr.key_name,
+-					strbuf, &xattr_name_len)) {
++		if (hfsplus_uni2asc_xattr_str(inode->i_sb,
++					      &fd.key->attr.key_name, strbuf,
++					      &xattr_name_len)) {
+ 			pr_err("unicode conversion failed\n");
+ 			res = -EIO;
+ 			goto end_listxattr;
+-- 
+2.34.1
+
 
