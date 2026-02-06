@@ -1,292 +1,264 @@
-Return-Path: <stable+bounces-214696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEH9MS4uhmn4KAQAu9opvQ
-	(envelope-from <stable+bounces-214696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:08:46 +0100
+	id 8MOlGasuhmn4KAQAu9opvQ
+	(envelope-from <stable+bounces-214697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:10:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282C6101A55
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:08:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA549101A6D
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD7BE300EFBB
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 18:08:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5143F3019522
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 18:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF33426D0C;
-	Fri,  6 Feb 2026 18:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA507426D0C;
+	Fri,  6 Feb 2026 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ipww/TbM"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dQR78MUI";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MUB08aK4";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dQR78MUI";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MUB08aK4"
 X-Original-To: stable@vger.kernel.org
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013025.outbound.protection.outlook.com [40.93.196.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A335721A92F
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 18:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770401323; cv=fail; b=IIbBW8prbb91Kc2yJKErlxN42yFmTsnSSMyuIMgDvcS7JvzM1zuosvhzGSDiFCx7NpRwt7db9rUNQdBjPJHsggXvIGEVBOP9cd8HtE5R/vxadKkj23kYlAGBBfbYtECdysDFtzfM/l2oji29cZk9bExt0AZNluCf3VQqbsG4V0Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770401323; c=relaxed/simple;
-	bh=czQq07RKxroZeoHXJq4p5/vsQx+hPRexwMQfIZC8drM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Sstml9KuwMdQEeEyGIhJJhkBN0lGYNI6ApoqwOLv2uYZyR3XbSwCP9uKFEfufItJapXwMkXZWJFZWZupSkVMQ173TK05Ep8ENp6UhEIVlJFHMG/AUWPOvsxuPrrwyGT7Iau8krUHcNWcaj/9ai5reAgbn3axKxblb/njip/GlSk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ipww/TbM; arc=fail smtp.client-ip=40.93.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=osYuA0lX9fmGU/l+T9S8FRvykJkAXmnDklln0AYt+z++8ZDXGIED7QKWR2glkE7heKuRHC0Cm/K3Y/IoPSepe4TW1dzZqunvHfOIshs2+P8+yQEuevGGsh+lFUvj4FcISae56RHlD+X6h44QyCn+hZ0Y18O3Lltjnc+r7KRZxTSM5jPmCoMkHMf5vyirJrz/WobmCQ2R+zNdKt0UTZrIL84BRpgulLXnax4/S+2+z0Y4h39iAsEYBL7NPW7mK0qt5/BYnih/ZfTU8/obtVj6UGJU7Xwb2xZp8cXUOkNv4eBA+lzFLo8RvWJTONYj5DxFKzofPrzl9wuT0inM9Zz+TQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g7riYsWGba2mVWlXppRYKpiuuG8Hi6hHEHD+hw1Z+F4=;
- b=bwTKYSt7Xq9zXiJzorgo6Zco3U1I8oeucj1qq1KffcX1IDgLWlVFbpbrI+azW/sKaZ9fiGP1YmNUKccQtCtvX02lgYQ4mW3AtRKjib83SX/n+pVi4Czi1MlcN0I5AriG+mzSCWoQFXELP2RUea9/p5l2K0TCmONhVDGvFIzkBt+rrp2O/xk9mFslS7fkwgCkPD2RGdZIEz5l3/a1TxZ30zcVJ+h8Wm2nTH4ZVjW0sDGD16HdIVM/HIJmH8Au6yACdFAHbsaDL8CV2ZB/2ijUknWOcxoyC3zLG8uukmTeqzmnmz0QqinCGTR77S2g6Gfh2ResTbTu8OM8fBFzASvkLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g7riYsWGba2mVWlXppRYKpiuuG8Hi6hHEHD+hw1Z+F4=;
- b=ipww/TbMYIG53kIFEKWG3DIIWreuNu59QAlk4PRbzXYwZMUfn9/LeXbvbrPRWw1w+4nACI9W0naEzT9gwhigZSwMGEwNuQpzcWl/hFzk+y/egafGgT9xOurJYMj9QoPDJH18ddB3YfpeaWLoUobr0+BDZFj2IcAvUhc5D+h7MrKynsf6zu1yTEATVQ9rAY59jFmDi6YtAShyjGPdk8cCl677DbZCDpARAclZP5LzEHCrZsQDBL7NQxGiGD4WQc+jL9t+5TWb5JvePBSpu1dXpZT8rrXr2PrcvwqofSGExjRwIS8qvJNpI2BSV1xJNEfrsKI0pFi4LRJ43PU2Di0beA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA0PR12MB8325.namprd12.prod.outlook.com (2603:10b6:208:407::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Fri, 6 Feb
- 2026 18:08:35 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9587.013; Fri, 6 Feb 2026
- 18:08:35 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@suse.cz,
- chrisl@kernel.org, kasong@tencent.com, hughd@google.com, ryncsn@gmail.com,
- stable@vger.kernel.org, David Hildenbrand <david@kernel.org>,
- surenb@google.com, Matthew Wilcox <willy@infradead.org>, mhocko@suse.com,
- hannes@cmpxchg.org, jackmanb@google.com
-Subject: Re: [PATCH] mm/page_alloc: clear page->private in split_page() for
- tail pages
-Date: Fri, 06 Feb 2026 13:08:30 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <3BB6BA1D-3756-4FC6-B00D-79DF49D75C51@nvidia.com>
-In-Reply-To: <20260206174017.128673-1-mikhail.v.gavrilov@gmail.com>
-References: <CABXGCs03XcXt5GDae7d74ynC6P6G2gLw3ZrwAYvSQ3PwP0mGXA@mail.gmail.com>
- <20260206174017.128673-1-mikhail.v.gavrilov@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: SJ0PR05CA0076.namprd05.prod.outlook.com
- (2603:10b6:a03:332::21) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2597D21A92F
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 18:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770401448; cv=none; b=M4hO39idHFms4utW5JjnGZdqOx9g+oTB0LBnGKNF0BZ12fpB0NQ9acNFpL363gqiokzro9V8VK4A/z5mNaVm7D6DZxwBX54LUGljEyYOv5x2foPolGOcbrF2myIErBLXHGjnAcyQ0jFix+bjiFNwwtW3BHNsKifKEQTFgy+YwSg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770401448; c=relaxed/simple;
+	bh=lwLAnJNjppjjGJebpqAKka9LSoaU7aYOVMhGwc9xCr0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FNbWY+Zeyq3/sfIFBhp3m/dAEQrpAuZWU9pOk/o+giyR2Nb3dxdXyTXFhcDeYR19gWRgdX9BBw1CRieMH7xL4ekL6+0jSAvOkZL8AUskw1IVDUVw0doufty/3QNUtTxNt5EmJaVztyprI7dqp09oP9Z11d49qSr4ngx6BKwMSDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dQR78MUI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MUB08aK4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dQR78MUI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MUB08aK4; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 373AE5BCF8;
+	Fri,  6 Feb 2026 18:10:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770401446; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
+	b=dQR78MUI55Hr6sofCLq5cbGPiddAghs1SLbohtg6alhlWIhGnkzSD0JhUalhxyN5A4H2I5
+	QbX8pTN5cQHmp7x+PY1B/cDNkjtp6B5zazsyAsDPYabXJTUxMNPYdT2oi1KJXXesBm9GZJ
+	qugU4Al3yRmq8rvWAaLQhibKMB0pQHI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770401446;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
+	b=MUB08aK4l4yrOqI+AbpH3DMQZa1SPSGsXs7wDmxa2NP7NjzDUtx2XZuVQblK15j1tH75/u
+	bwMjzzN2W9hf4TDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dQR78MUI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MUB08aK4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770401446; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
+	b=dQR78MUI55Hr6sofCLq5cbGPiddAghs1SLbohtg6alhlWIhGnkzSD0JhUalhxyN5A4H2I5
+	QbX8pTN5cQHmp7x+PY1B/cDNkjtp6B5zazsyAsDPYabXJTUxMNPYdT2oi1KJXXesBm9GZJ
+	qugU4Al3yRmq8rvWAaLQhibKMB0pQHI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770401446;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
+	b=MUB08aK4l4yrOqI+AbpH3DMQZa1SPSGsXs7wDmxa2NP7NjzDUtx2XZuVQblK15j1tH75/u
+	bwMjzzN2W9hf4TDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 134B03EA63;
+	Fri,  6 Feb 2026 18:10:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 72ouAqYuhmn/NwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 06 Feb 2026 18:10:46 +0000
+Message-ID: <2ce1eac3-98fd-448f-8a73-01bb3cb5a7d5@suse.cz>
+Date: Fri, 6 Feb 2026 19:10:45 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PR12MB8325:EE_
-X-MS-Office365-Filtering-Correlation-Id: db8dd7ce-c8ba-446d-2cb8-08de65aabf02
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cTREMWZ2NDNrejNtWXdFOU5iVlp5RitVUUw3YWpqeWlqQkhWcGFBRUp2bE14?=
- =?utf-8?B?TFdEdnBab0txWXVnVHdIZXdpSXppNUZHcWlPVkZBMWRHQlhENGl5aXBFODBH?=
- =?utf-8?B?NWNhczVyL2tRaHdtZkFnaHlXck4wekZHZXdrN0M4WjhNL0FzcDZzVnE2Zi9J?=
- =?utf-8?B?ZGZDclVINzdBUlhOWWZPaE13K3k2Wkkxd1BDdDhaSSs5TVBDb1B6dFIzd09a?=
- =?utf-8?B?enJJUWV2T1dlN2psWkczaDB0MTdaZnJCSmdIR2xKbklXbEt6U3dDbzlnMkVw?=
- =?utf-8?B?YW82aVlhZEZWYk9SbEF4UEpPZ2JYVzdXK0FyTENKZ2JvN2hnTWJCYVg2ZklG?=
- =?utf-8?B?YS9SMDVrZ3NFWUJXSU4vQkRRZlVUNWtBOHUrTk1kVE43dldGRnkzTFN5eVlP?=
- =?utf-8?B?bXBEL2NPTmNOcGZEU3hWUkNvVWpHanc5d29UVFROa0s1amVuczJUcG0wbzk5?=
- =?utf-8?B?dUFCM01veWx0WXlpcFF4ZFhEZ1JPTkEvem45RVFkdU1lMWRlYW1pcGRMUUg5?=
- =?utf-8?B?TnRMZkd5cFJ0eEEyd3RBQU5zcElrYmY4d1RpN3ltOVRYYUEvcDR6UmJ2NjdO?=
- =?utf-8?B?Q0dQYzFrdXZzcDFpR0JYMis5L002U1V3d2x2Q0tyVEFwaE1KY2FZOG9hM1My?=
- =?utf-8?B?RzJydmlrN20zYkl6NVJqdTZSeklYU0xtRGZDQWpxSys0WDdjUm9lZE52Tk9k?=
- =?utf-8?B?bTBsSzZsRlNKZ3hLWWl0SWxmdXREMFBCVnBqNTJib3Z1Y1hHYXpTOGtneDZJ?=
- =?utf-8?B?bFlERzlEb2ZFS0ZMMHJhYndZdXBpU0ZxSkJkMGRCSlk5YzBDSnZUMWtLeXlE?=
- =?utf-8?B?Y3BiVHR6aTZzQ1lRZE9xZ2RCL3RESk1IMjgxSFcrZk1lYzRPTVFRUUN5L3BG?=
- =?utf-8?B?V2xhaXNMNlNFZEFpNWN1c2VGRUY3UzNCUjNaVzNNd3FTUGlRVE9BTERwVFVv?=
- =?utf-8?B?ajhBbEozK3N0aC9aVUVKaFdIWkxzeEtHSXFFendJVnBBTCsyNnlKR2JGMEF0?=
- =?utf-8?B?U2xoNTRJV01wcU5RZzN5NVVzK200MkxiWWZ3Y3RRNlFNNGhzd21XaEVEWEh4?=
- =?utf-8?B?WEhqZHd2bk9CdnhsdGhBcDBEeElNanpvUlpBN0hEYXNnWktiaVk5VUYzRnZO?=
- =?utf-8?B?OEpuRUI2czh3WlNsKzFQa3FxZUdYa01BVkM0b0pCV21lNTZIR2JaNjJvM0Q2?=
- =?utf-8?B?N2VxaVVPZnJNOWE4clZaODdaWHdUdXQ3VjI2YURBc3djRm1DTlVlR3I4anU0?=
- =?utf-8?B?dCtic2VlV1ZPdmhjemZ2RHV1bUlGdGxMNk5JT29rdW1SNG1ldld2ZldRTldx?=
- =?utf-8?B?UDFTcHBhbVQ2a2ltZDlLdXA4Vnl2UEppaEVwUkJHaUNydHREK1RWWDRvY241?=
- =?utf-8?B?bCtJYzVzRjJadERBdW9HQUwya0V6U1k1bDI3S21xeU5vYjhkZmxjNjZvUjNX?=
- =?utf-8?B?ZjhBZ0lRMk1va2grN2JBVWJ2YjNrdU5uZXhDZFhGSEtMdlNwRm50S2Z3VElK?=
- =?utf-8?B?cEhlcXRHazNjVmlVVHBNdUtUZ25NRGZTa0NlOGl6dlpDRlNCVnBsY2lDZ2ln?=
- =?utf-8?B?WjZ5QmZZUjJwWnZBaktkeWZ3bDhJR09EU2RFWXlSR1Z5eml1aUZzK2tRRHJM?=
- =?utf-8?B?TmtMMWFzeFVQbmNjendndTRiVS9SZGtOckhoRUI3NWM0QmdoYk5nWHVqZ1pH?=
- =?utf-8?B?VzlQTkh2dkpjR2VTN1M0M01PQ0w4cVh4ZEV0aUJzUGRPR3pNWEJBMW96ZmlK?=
- =?utf-8?B?UE9FWm82L3hhZWpNaGVkSWhzTU5GVlZXWTBkdmppYnp3MHIwTmQxY0ZYNWpC?=
- =?utf-8?B?eFI3Z09ZMnRVbHlJN1g4YnVFRkY3elBVb245YXlHdnVKcGszK3I0ZVh5N1RE?=
- =?utf-8?B?RitlYjlCNDBUbk9OOFI4QVNzVkd2cWtIUExDQTByQWxPSFdMU1ZGVGFIem9P?=
- =?utf-8?B?VUxWVGlLcEVRTVhIcytlVm5MWTN3ck92NGtuZWRmWURMcy9oTUhJN3ZpMFFY?=
- =?utf-8?B?V2JVbnU0WmVycVNZNkpOcnIrQlRwYnAyMVJGMU92YjVmZys5aENsRCsvSDNp?=
- =?utf-8?B?YWpZQUQ1dW9GdXN6QUt3OUVGWjdxRHFiV0lJUENyYzRSSzlzMUZwMmt0Uzd0?=
- =?utf-8?Q?u1Vw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UklyT0E2eU84MzFzVERjTHNZMkNiZGRxaXByTVdaYmpTQmFERFU1cmpjZ2RE?=
- =?utf-8?B?WXo1cUZacUlYQjFNYVhmc2Z5cGl4NXgySVVKUFNGS0VPa0oyWTFEQTl5ZXVT?=
- =?utf-8?B?cmNzVldwOWNoK0FnRXhIZnpydkkyVTFEMTJNenkvQ2ZpbDZDR1FlUjRJeVgr?=
- =?utf-8?B?ZEw3K0dibGE5ZDVqVEhVWk9IdmFGVzIvczB1WXVnSlhSQmhMMDhnak5kampx?=
- =?utf-8?B?bGFpMEhWemdHOFp4YVRic0NISDF2VmszWWxtTXB3eC9ETlpObHpINi9FSjFj?=
- =?utf-8?B?b083eFFZOERMQjdXM0xtQ2pQdTJnTEtkVW1EelMrcFpPblVZTG5leXRqSDFi?=
- =?utf-8?B?SFRkVjVOQlpUYU5BTTRaTnBpWDJWdVFWcFF6N2ZuK2lKUDZEc1NKalM2cEg4?=
- =?utf-8?B?N0JZYTE3b1BNWWpXSFpSWTJZb0hPdWw1NUozMjl6alZDR1RKOE1SM2lJWEE3?=
- =?utf-8?B?d3cxa2NZazFVVjdRdFI2VFlQbVNnYUV5dEdSU2hsQUx4WmZoNWpZOHRkVlNj?=
- =?utf-8?B?VkxTVmFVYzVUWkFKSFd0SlJkUkxCc3NhTE1KWWhwNTkxMS9mMDVGcnRJdk5s?=
- =?utf-8?B?QUNNNE5DVitYbVNqSjg0bVpqZzQrYmhob1FTdVpFME5XZGpOWEx3eUxPaVpt?=
- =?utf-8?B?KzhWNElCK2JjcllnanR3dHVaVGxSaVZPSHQ1WWhIc3JmODhDd1Y4SmpMaTB3?=
- =?utf-8?B?WVIraEFtV21vRXFXdXhMYmFMTjNhVWNjZUtEV2V5MHVUd2VqSEhOUUFyOHQ0?=
- =?utf-8?B?bDJ1Zm5DbnpNQkcwN2oweDZLci9FSms0amZRWTFRTzJmaHh4RVh2MXRja3VV?=
- =?utf-8?B?bTU0THVxYUx6VlVsYm9mV2g1ZVNXdmxTOXhxakhUSjZ4anhQbTlpVVlxblVP?=
- =?utf-8?B?bnlTUUlpbGk5ZmtnREtyUzA5QXRrS0d1WXdFeXgraG9LSUVqOHZwNHVpc0xY?=
- =?utf-8?B?VGs2dnJ5Z2dFaklkR2twNVpiKzNyb2haRHY5NWs0NTVHNE5aeGVmeURsZlVn?=
- =?utf-8?B?b04xVWVOeWNTekFCKy9WckdHbGJmczk4cytUTXNtUHl0NE96UjBXYkR6Z21z?=
- =?utf-8?B?bUErMkxNQ2E4QW4wc2QvRG9Zbk83cFk4UStiSUNreUZaNTlCT3haeEJQZ3Vk?=
- =?utf-8?B?SEc3ZE0vRjIxZ05qK1dLSTdrVER5dzBLamx2dUxxRXJwalc1MEdweG1iSFpn?=
- =?utf-8?B?ejhZNTMreWM1UlZRY1BTOXN4MC9nTmZveE5YaWxWRUVWdUs0dTlwUVBnVlRE?=
- =?utf-8?B?QTl3bVpzWHpWYmpEblQzeFFTa1huRW1UWUtOKzlYMEViZGpvbnpodzNmREY3?=
- =?utf-8?B?Q3FjbVEvbEJURy9rYjZTUVhaRXUzK2l6WURnQmNLeFVjMTNSYkFQb1FWZUVw?=
- =?utf-8?B?R0Y2bFNyL1BlMTZyRUc2aFZseHVmMU1MSG9YR1pFMzV5SE9oc3dhY0M3KzN6?=
- =?utf-8?B?UEx5S3lXa3YzcDk0VGRZbGRYdE1rdUdUZkFPWDA2N2V2akNqVUI4bDVnMXNn?=
- =?utf-8?B?MmZpWjFqNUdVN2NINm5paEhaSjZGUGFKbGVFRVlpdzZ1U280UEVaMjBrWmk3?=
- =?utf-8?B?YU9XY2E5bGFqajN4Q0dDUWtUTmQzSVEybE5NQUdibGkwSE9xVUgvOThnZWVG?=
- =?utf-8?B?d1IrWUNxL21HVlB4TjdjRlNxZWZSRWt4OEJsZFZSTkRYM2QzNW9vVXZINEEz?=
- =?utf-8?B?b3Z5d09qNkJxQm5OcDJLSnlmcDR3Ylh2QzdWWFFOSGc2ZHJqdTI4Z05PTldD?=
- =?utf-8?B?VGo5WU9QWWVML2ZOd3lOQ3JiTGtGdXI0MnZ3Zlg2RjY0aVJtMnhBNzFQZUtP?=
- =?utf-8?B?NXoyVGpxY2MwMkVZOEp3MkhFbzlsWml5ckk0QWNPZnE3RWtZVlZwcXQvZEFl?=
- =?utf-8?B?ZUZKbTZWOFc2N2dITm5yNFhkWVN0OUlYYmtpR2Q4ZzV4OVc1anZPWWxGWVVp?=
- =?utf-8?B?QjNQbGk4UjMxVzd1V1FvaUMyanVla05qam1KWC9hajVmSHo4YlY4SFovRVFV?=
- =?utf-8?B?ZHV3SXozanJtM0VWdHA4VVBkMjFwS2NwWG5RTDJpL21IYVVjRTJkY3dVeGhu?=
- =?utf-8?B?QmRRcXYvdWUzT0JxT1dSZytvZ0VVL1dqeUxpaHkvV0l1Qzl0WUQ0QjJNeHBI?=
- =?utf-8?B?eWc2WURMUWlWQXZsOGRwODBGMjBvWmZWN3BzNENVaitIbXZ1Wm9hVWQrSWtk?=
- =?utf-8?B?WVFvemdIbjBVRUZ3UmU5dlFNSlZvNjJtc29MVlU0QndsRTBXRWpVS0x3Z0FJ?=
- =?utf-8?B?OW4rczVGY3UrTGhkbWl0eW5UV3VDWXQ1ZFNHZmFqa2lEWlRwQ1piWHhvcmZS?=
- =?utf-8?Q?RrhIsQrus4Tkv0rkHV?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db8dd7ce-c8ba-446d-2cb8-08de65aabf02
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 18:08:35.8300
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bLSUfiXezz5rMqipMGLO1WGnK5zEwji0SVCnwZz+echvzNaW7uvHL+VWFKprvCTu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8325
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/slab: skip get_from_any_partial() if !allow_spin
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260206171348.35886-1-harry.yoo@oracle.com>
+ <20260206171348.35886-2-harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260206171348.35886-2-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214696-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	TAGGED_FROM(0.00)[bounces-214697-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[suse.cz];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kvack.org,linux-foundation.org,suse.cz,kernel.org,tencent.com,google.com,gmail.com,vger.kernel.org,infradead.org,suse.com,cmpxchg.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ziy@nvidia.com,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.cz,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,Nvidia.com:dkim]
-X-Rspamd-Queue-Id: 282C6101A55
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:mid,suse.cz:dkim]
+X-Rspamd-Queue-Id: BA549101A6D
 X-Rspamd-Action: no action
 
-+willy, david, and others included in Andrew=E2=80=99s mm-commit email.
-
-On 6 Feb 2026, at 12:40, Mikhail Gavrilov wrote:
-
-> When vmalloc allocates high-order pages and splits them via split_page(),
-> tail pages may retain stale page->private values from previous use by the
-> buddy allocator.
-
-Do you have a reproducer for this issue? Last time I checked page->private
-usage, I find users clears ->private before free a page. I wonder which one
-I was missing. The comment above page_private() does say ->private can
-be used on tail pages. If pages are freed with non-zero private in
-tail pages, we need to either correct the violating user or clear
-all pages ->private in post_alloc_hook() in addition to the head one.
-Clearing ->private in split_page() looks like a hack instead of a fix.
-
->
-> This causes a use-after-free in the swap subsystem. The swap code uses
-> vmalloc_to_page() to get struct page pointers for swap_map, then uses
-> page->private to track swap count continuations. In add_swap_count_
-> continuation(), the condition "if (!page_private(head))" assumes fresh
-> pages have page->private =3D=3D 0, but tail pages from split_page() may h=
-ave
-> non-zero stale values.
->
-> When page->private accidentally contains a value like SWP_CONTINUED (32),
-> swap_count_continued() incorrectly assumes the continuation list is valid
-> and iterates over uninitialized page->lru, which may contain LIST_POISON
-> values from a previous list_del(), causing a crash:
->
->   KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead0000=
-00000107]
->   RIP: 0010:__do_sys_swapoff+0x1151/0x1860
->
-> Fix this by clearing page->private for tail pages in split_page(). Note
-> that we don't touch page->lru to avoid breaking split_free_page() which
-> may have the head page on a list.
->
-> Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be sp=
-lit rather than compound")
+On 2/6/26 18:13, Harry Yoo wrote:
+> Lockdep complains when get_from_any_partial() is called in an NMI
+> context, because current->mems_allowed_seq is seqcount_spinlock_t and
+> not NMI-safe:
+> 
+>   ================================
+>   WARNING: inconsistent lock state
+>   6.19.0-rc5-kfree-rcu+ #315 Tainted: G                 N
+>   --------------------------------
+>   inconsistent {INITIAL USE} -> {IN-NMI} usage.
+>   kunit_try_catch/9989 [HC1[1]:SC0[0]:HE0:SE1] takes:
+>   ffff889085799820 (&____s->seqcount#3){.-.-}-{0:0}, at: ___slab_alloc+0x58f/0xc00
+>   {INITIAL USE} state was registered at:
+>     lock_acquire+0x185/0x320
+>     kernel_init_freeable+0x391/0x1150
+>     kernel_init+0x1f/0x220
+>     ret_from_fork+0x736/0x8f0
+>     ret_from_fork_asm+0x1a/0x30
+>   irq event stamp: 56
+>   hardirqs last  enabled at (55): [<ffffffff850a68d7>] _raw_spin_unlock_irq+0x27/0x70
+>   hardirqs last disabled at (56): [<ffffffff850858ca>] __schedule+0x2a8a/0x6630
+>   softirqs last  enabled at (0): [<ffffffff81536711>] copy_process+0x1dc1/0x6a10
+>   softirqs last disabled at (0): [<0000000000000000>] 0x0
+> 
+>   other info that might help us debug this:
+>    Possible unsafe locking scenario:
+> 
+>          CPU0
+>          ----
+>     lock(&____s->seqcount#3);
+>     <Interrupt>
+>       lock(&____s->seqcount#3);
+> 
+>    *** DEADLOCK ***
+> 
+> According to Documentation/locking/seqlock.rst, seqcount_t is not
+> NMI-safe and seqcount_latch_t should be used when read path can interrupt
+> the write-side critical section. In this case, return NULL and fall back
+> to slab allocation if !allow_spin.
+> 
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 > ---
->  mm/page_alloc.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index cbf758e27aa2..3604a00e2118 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -3122,8 +3122,14 @@ void split_page(struct page *page, unsigned int or=
-der)
->  	VM_BUG_ON_PAGE(PageCompound(page), page);
->  	VM_BUG_ON_PAGE(!page_count(page), page);
->
-> -	for (i =3D 1; i < (1 << order); i++)
-> +	for (i =3D 1; i < (1 << order); i++) {
->  		set_page_refcounted(page + i);
-> +		/*
-> +		 * Tail pages may have stale page->private from buddy
-> +		 * allocator or previous use. Clear it.
-> +		 */
-> +		set_page_private(page + i, 0);
-> +	}
->  	split_page_owner(page, order, 0);
->  	pgalloc_tag_split(page_folio(page), order, 0);
->  	split_page_memcg(page, order);
-> --=20
-> 2.53.0
+>  mm/slub.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 102fb47ae013..d46464654c15 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3789,6 +3789,14 @@ static void *get_from_any_partial(struct kmem_cache *s, struct partial_context *
+>  	enum zone_type highest_zoneidx = gfp_zone(pc->flags);
+>  	unsigned int cpuset_mems_cookie;
+>  
+> +	/*
+> +	 * read_mems_allow_begin() accesses current->mems_allowed_seq,
+> +	 * a seqcount_spinlock_t that is not NMI-safe. Skip allocation
+> +	 * when GFP flags indicate spinning is not allowed.
+> +	 */
+> +	if (!gfpflags_allow_spinning(pc->flags))
+> +		return NULL;
 
+I think it would be less restrictive to just continue, but skip the
+read_mems_allowed_retry() part in the do-while loop, so just make it one
+iteration for !allow_spin. If lockdep doesn't like even the
+read_mems_allowed_begin() (not clear to me), skip it too?
 
-Best Regards,
-Yan, Zi
+> +
+>  	/*
+>  	 * The defrag ratio allows a configuration of the tradeoffs between
+>  	 * inter node defragmentation and node local allocations. A lower
+
 
