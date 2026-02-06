@@ -1,98 +1,63 @@
-Return-Path: <stable+bounces-214611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IA6RNsmVhWk7DwQAu9opvQ
-	(envelope-from <stable+bounces-214611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:18:33 +0100
+	id ACAFIRydhWlKEAQAu9opvQ
+	(envelope-from <stable+bounces-214612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:49:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31797FAE5D
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:18:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2757FB1E6
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 08:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5D2E3013A4B
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 07:18:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96737301B909
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 07:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC388303A05;
-	Fri,  6 Feb 2026 07:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BEE3451C1;
+	Fri,  6 Feb 2026 07:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VqsTypsa"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Rz1ZccTQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8797B2DB7B2
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 07:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BC23451B0;
+	Fri,  6 Feb 2026 07:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770362291; cv=none; b=Ps2yVBu4KX1E+hf84o1rxWHP5/Xdu9DWd08w0RBqAJR0IA0VfYoTrhRgVeDt7M3BKq2IYCjDjfIt6sK07jidoLp9QkZXQjMp3ri8Iyu9YNdm+kTryqKe39C/G5PhoNCe/zcspORhjtBOOjWIJJDe1DpxMvXg34o6Cbi3HVTgexs=
+	t=1770364183; cv=none; b=uJZZZNnFV/tM2g6/OuTLJfbI16LcVK0Sko4BcTNpc3hnYIQ1wBI2vRA+kv5qTKXQAM/a9q6N/T5Iav6CUqiz/+IKTyHQ1AiSClkpaNj2JV6wrV6SNzPRqIbC+NedtZbaMCFLQj9LvsdzIxo7ctQooGMil8ZjLmA8pUOuwQ1n6ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770362291; c=relaxed/simple;
-	bh=D1NGpPueV5ikgZjAQhEwikv1d6XuL86z97qEh4blo9g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S7huZRpoLna1EJyfcJMCEYCXdlAX8fJW7nZDDmdC9rEiPYywSRlsh18YeNBvrTCw7KlJIXabmyB0QpwEUs95R2qA/psiesfkk3Bd0tjXDQv/mMgH4zXaTawtaB8K2T4X7Bup6HK5ApYvC1xUxFJPpVRUl2YO0Mfn7wGAMmOFKFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VqsTypsa; arc=none smtp.client-ip=74.125.82.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-2b81ebac5d6so2356552eec.1
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 23:18:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770362291; x=1770967091; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uAcAS6itCCUdJZBNZ7FOwqjOX6f/eCKZuoH9k6MbHEI=;
-        b=VqsTypsaSw7d9Dh7VjDOiV1Vp2x4rKUIon5aoaf4Ow3FZ+aaXEHe+mjynhxLFUnDMU
-         9y+Dr6sMGrcZQ91NNOIDJIDonLQDSDx17UyOkwNawVwLaLUjAQJ9djre0U2297YqaKCu
-         ZYcqXPOEH4ZF2WjZgS4ZMR9924qhDB4uofSqHd4Cma5FHxvPkzQ6oK0eScpxfdR5PCd4
-         PEeWyOk+NH1xTaf/MjA2QU6bA8HHp8dmfZ2Kwo96EQ+LhGtIEBsV7h3nZzxZYV7w28us
-         fYRVnGzRdU7E+9AW1aJZq7fFtKLFESvY+9oerqs+bX0Xns+F+e3aI07eA2TwSQbRvYhM
-         rrPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770362291; x=1770967091;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uAcAS6itCCUdJZBNZ7FOwqjOX6f/eCKZuoH9k6MbHEI=;
-        b=g5htNY6bPqSN5nbONiuQFZR0NhTDq4l1zvTQ4eBgjGywE49rHtnUMtw/ZajjxmkCsU
-         1hDU6jZgqr3MfDcAY+kPcI3psXS1AfdPjSUsqIhCWOHuhNFw+dvMKbNGWtneWeVZZUDe
-         /kx9Gl9CAqnGMzxbrK4jP9LfKT6nV1hws/Lh+KUyHmyNRGCXfmWHebbgKpSLipkiMYfA
-         6W8HpTBfUKRXNxOPaqF4MaU4vWRiMIvIS8b0QN3Q2PYhyVW4cJhpm+qL7ZTSxIOj6LAZ
-         m4EjxJJtY5jrBl/qMct71LxUiv/D5J+5Fu8dDpDIfL316iGbV9zh6eyAfhqZ9CPGcQWq
-         y7ng==
-X-Forwarded-Encrypted: i=1; AJvYcCUEv4ixFYQRCJT5HqQlUjbmYEcyQDl06eAHGR0Z7x5JsBX1mHePe/8MS95aKeDQqGUajVWe48E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMCFvR8/NwukVWWRfYWMmtKiLOLwYcZnQnlJWqTdu//TX/mnOp
-	tHXcyIcw7ADVrWPfTipc+KkMU11KfSHQluQbIaxDiURdiSG/oEvMS92M
-X-Gm-Gg: AZuq6aJWYl9TB3DwI4SjsgLWw04M5ygsdjgoFzx26dPAbvC+gWX3GAiXHMSADm96zyV
-	2kYAimnzNcB1CdNenQy9QYcxpIoLOl3wudeezVHvtICoxC4tVGZCNkFq43+AcNYS9hbKDTfxjY2
-	3Orhiur8M4Urx56XVvFBJov2xR5vpIVL3G+Guas0dKfhP//fJJ6taTil4LMB6SyGuuwTkGTwXg4
-	vHzPb69HiZBl+/lxS3lEi3mzMPvbAUPh8VKg4lI/vSa2Ig6J/V3U4i0on+aCJmeLA+lpVYKzTSi
-	erocG5WFG10VffBPc86y+aE5yw9B8M8U4BXVBFnuMFmhilHkssbeYCb09ESudOpM8BzhTMWOwNz
-	QUOYb+w1OyRDCsKjGVImSJrq9dxhj/iyi9olNx71fgUvjUfwrKw1tD0myZkra9Z6y0hikiNBRJ3
-	b8JeGKcl3skc0JF29ZHxdimjCRN2442CoJsO3TQ6wNxMeYzfeJ7j5St2C/zZAD7OCgcTrFzQJ0Z
-	bIOLO3jCJ7ZDzqXH+XpkuzPOf3dv88XOWEbyou38kLiBOtlD2FgT9OKgS2BEYgprmXhOyyynaYI
-	WJal
-X-Received: by 2002:a05:7300:d51a:b0:2b8:31e5:91b with SMTP id 5a478bee46e88-2b856830c4bmr889249eec.32.1770362290531;
-        Thu, 05 Feb 2026 23:18:10 -0800 (PST)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855c7f5fcsm1107052eec.29.2026.02.05.23.18.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 23:18:10 -0800 (PST)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	s=arc-20240116; t=1770364183; c=relaxed/simple;
+	bh=SeOijDDBbx/gt8b41/UY+Z9ZzrzLSuYGOCdDop6i7I4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cdXIaYyBVVjNvRCbXeROrcPmwXlLh/YK/2hmz9n6APkCWYQuq3mjlV95Jpcn07IE6T1YttNX7+Hw9kdd+UuSrmydUFJa5uFIWySUwpyi3vke2zaTFfRS7DeyVU7WxCSf+Zzjw29ZsraHUYfVWlCB64+gMNXdzDMfLKk0NszrTc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Rz1ZccTQ; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nQ
+	LVkl2V7v/t3JQEFAjk0mHOi1899CqsYo+GwAOjuHA=; b=Rz1ZccTQPIjhdFrqsu
+	W/uzXF32yWmesz8R/8JNcJDYyRiFOw37+MPZHUqcBfdabl1K9WfhxsipRTsFZd4Z
+	8PpP5lqQ4xoTlxGr0afbohL1Q6J52y94G+3SN2WhgnhbMJrhVXSzhfbjBt8IkvA/
+	miyIBTvxRRNYbLaKDsvaLWr7c=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDHlrDVnIVpn95DNQ--.7064S2;
+	Fri, 06 Feb 2026 15:48:40 +0800 (CST)
+From: zhangchen200426@163.com
+To: luiz.von.dentz@intel.com,
+	pav@iki.fi,
+	pmenzel@molgen.mpg.de,
+	kuniyu@google.com,
+	yang.li@amlogic.com,
+	ceggers@arri.de,
+	nishiyama.pedro@gmail.com,
+	marcel@holtmann.org
+Cc: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	Mirko Lindner <mlindner@marvell.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH] net: ethernet: marvell: skge: remove incorrect conflicting PCI ID
-Date: Thu,  5 Feb 2026 23:17:14 -0800
-Message-ID: <20260206071724.15268-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	zhangchen <zhangchen01@kylinos.cn>
+Subject: [PATCH] Bluetooth: HCI: Fix hci0 not release in usb disconnect process
+Date: Fri,  6 Feb 2026 15:48:34 +0800
+Message-Id: <20260206074834.315761-1-zhangchen200426@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,74 +65,226 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgDHlrDVnIVpn95DNQ--.7064S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuw4DurWkGrWUWr4UJFy7ZFb_yoW3Ar1kpa
+	9Ika4fAw18Jr4Sg34rAa18JF9Yk3yI93y7CFZ7W3srG39Yy34UtryUAryYqF9ruryDJr1q
+	vF4Dta1a9Fy8Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jn2-5UUUUU=
+X-CM-SenderInfo: x2kd0whfkh0jaqqujli6rwjhhfrp/xtbC5xgZtWmFnNjukAAA3F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,marvell.com,networkplumber.org,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-214611-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_FROM(0.00)[bounces-214612-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[intel.com,iki.fi,molgen.mpg.de,google.com,amlogic.com,arri.de,gmail.com,holtmann.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhangchen200426@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 31797FAE5D
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
+X-Rspamd-Queue-Id: D2757FB1E6
 X-Rspamd-Action: no action
 
-The ID 1186:4302 is matched by both r8169 and skge. The same device ID
-should not be in more than one driver, because in that case, which
-driver is used is unpredictable. I downloaded the latest drivers for
-all hardware revisions of the D-Link DGE-530T from D-Link's website,
-and the only drivers which contain this ID are Realtek drivers.
-Therefore, remove this device ID from skge.
+From: zhangchen <zhangchen01@kylinos.cn>
 
-In the kernel bug report which requested addition of this device ID,
-someone created a patch to add the ID to skge. Then, it was pointed
-out that this device is an "r8169 in disguise", and a patch was created
-to add it to r8169. Somehow, both of these patches got merged. See the
-link below.
+If hci_resume_dev before hci_unregister_dev, the hci command will
+timeout and the reference count of hdev will not reset to zero.
+Then the node "hci0" will not release.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=38862
-Fixes: c074304c2bcf ("add pci-id for DGE-530T")
+The output in question is as follows:
+[ 3391.553518][ 7] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 3391.553588][ 7] [T264732] Bluetooth: hci0: Opcode 0x0c01 failed: -110
+[ 3393.569514][ 3] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 3393.569515][ 3] [T264732] Bluetooth: hci0: Opcode 0x0c1a failed: -110
+[ 3393.709645][ 6] [T104579] usb 10-1: new full-speed USB device number 95 using xhci-hcd
+[ 3393.862194][ 6] [T104579] usb 10-1: New USB device found, idVendor=13d3, idProduct=3570, bcdDevice= 0.00
+[ 3393.862205][ 6] [T104579] usb 10-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 3393.862208][ 6] [T104579] usb 10-1: Product: Bluetooth Radio
+[ 3393.862210][ 6] [T104579] usb 10-1: Manufacturer: Realtek
+[ 3393.862212][ 6] [T104579] usb 10-1: SerialNumber: 00e04c000001
+[ 3393.867589][ 6] [T247244] Bluetooth: hci1: RTL: examining hci_ver=0b hci_rev=000b lmp_ver=0b lmp_subver=8852
+[ 3393.868573][ 6] [T247244] Bluetooth: hci1: RTL: rom_version status=0 version=1
+[ 3393.868583][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_fw.bin
+[ 3393.868672][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_config.bin
+[ 3393.869699][ 6] [T247244] Bluetooth: hci1: RTL: cfg_sz 6, total sz 65603
+
+The call sequence in question is as follows:
+usb disconnect:
+  btusb_disconnect
+   hci_unregister_dev
+    hci_dev_set_flag
+    hci_cmd_sync_clear
+    hci_unregister_suspend_notifier
+    hci_dev_do_close
+    device_del
+
+device resume:
+  hci_suspend_notifier
+   hci_resume_dev
+    hci_resume_sync
+     hci_set_event_mask_sync
+      __hci_cmd_sync_status
+       __hci_cmd_sync_status_sk
+        __hci_cmd_sync_sk
+         wait_event_interruptible_timeout
+
+The output after adding debug information in question is as follows:
+[ 6378.366215][ 6] [T434033] hci_resume_dev hci name hci0
+[ 6378.366218][ 6] [T434033] hci_resume_sync set event mask sync
+[ 6378.366219][ 6] [T434033] hci_set_event_mask_sync
+[ 6378.366220][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c01
+[ 6378.366227][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
+[ 6378.367632][ 6] [T420012] btusb_disconnect intf 0000000024117fc1
+[ 6378.367637][ 6] [T420012] btusb_disconnect hci_unregister_dev
+[ 6378.367638][ 6] [T420012] hci_unregister_dev 0000000064bfd783 name hci0 bus 1
+[ 6378.367641][ 6] [T420012] hci_unregister_dev set flag
+[ 6378.367804][ 6] [T420012] hci_unregister_dev cmd sync clear
+[ 6378.367807][ 6] [T420012] hci_unregister_dev unregister suspend notifier
+[ 6380.367544][ 6] [T434033] __hci_cmd_sync_sk cmd timeout
+[ 6380.367542][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 6380.367550][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
+[ 6380.367552][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c01 failed: -110
+[ 6380.367555][ 6] [T434033] hci_resume_sync clear event filter
+[ 6380.367556][ 6] [T434033] hci_resume_sync resume scan sync
+[ 6380.367558][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c1a
+[ 6380.367561][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
+[ 6382.383538][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 6382.383593][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
+[ 6382.383597][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c1a failed: -110
+
+The output after adding debug information in normal is as follows:
+[50.039156][ 6] [ T8360] btusb_disconnect intf 00000000fca35842
+[50.039160][ 6] [ T8360] btusb_disconnect hci_unregister_dev
+[50.039162][ 6] [ T8360] hci_unregister_dev 000000002422b946 name hci0 bus 1
+[50.039164][ 6] [ T8360] hci_unregister_dev set flag
+[50.039224][ 6] [ T8360] hci_unregister_dev cmd sync clear
+[50.039227][ 5] [ T8360] hci_unregister_dev unregister suspend notifier
+[50.043542][ 5] [ T8284] hci_resume_dev hci name hci0
+
+This patch add hci_cancel_cmd_sync in hci_unregister_dev to wake up
+hdev->req_wait_q, and stop __hci_cmd_sync_sk by judging the
+HCI_UNREGISTER flag. Then stopping hci_resume_dev process based on the
+returned error code.
+
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Signed-off-by: zhangchen <zhangchen01@kylinos.cn>
 ---
- drivers/net/ethernet/marvell/skge.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/bluetooth/hci_core.c |  6 ++++++
+ net/bluetooth/hci_sync.c | 22 ++++++++++++++++------
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/skge.c b/drivers/net/ethernet/marvell/skge.c
-index 05349a0b2db1..cf4e26d337bb 100644
---- a/drivers/net/ethernet/marvell/skge.c
-+++ b/drivers/net/ethernet/marvell/skge.c
-@@ -78,7 +78,6 @@ static const struct pci_device_id skge_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_SYSKONNECT, 0x4320) }, /* SK-98xx V2.0 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4b01) },	  /* D-Link DGE-530T (rev.B) */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4c00) },	  /* D-Link DGE-530T */
--	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4302) },	  /* D-Link DGE-530T Rev C1 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4320) },	  /* Marvell Yukon 88E8001/8003/8010 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x5005) },	  /* Belkin */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_CNET, 0x434E) }, 	  /* CNet PowerG-2000 */
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 3418d7b964a1..c977bcba3e76 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -50,6 +50,7 @@
+ static void hci_rx_work(struct work_struct *work);
+ static void hci_cmd_work(struct work_struct *work);
+ static void hci_tx_work(struct work_struct *work);
++static void hci_cancel_cmd_sync(struct hci_dev *hdev, int err);
+ 
+ /* HCI device list */
+ LIST_HEAD(hci_dev_list);
+@@ -2695,6 +2696,8 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	hci_dev_set_flag(hdev, HCI_UNREGISTER);
+ 	mutex_unlock(&hdev->unregister_lock);
+ 
++	hci_cancel_cmd_sync(hdev, EINTR);
++
+ 	write_lock(&hci_dev_list_lock);
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
+@@ -2877,6 +2880,9 @@ int hci_resume_dev(struct hci_dev *hdev)
+ 	ret = hci_resume_sync(hdev);
+ 	hci_req_sync_unlock(hdev);
+ 
++	if (ret && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return 0;
++
+ 	mgmt_resuming(hdev, hdev->wake_reason, &hdev->wake_addr,
+ 		      hdev->wake_addr_type);
+ 
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 6e76798ec786..f48d34fbfff2 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -174,10 +174,11 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		return ERR_PTR(err);
+ 
+ 	err = wait_event_interruptible_timeout(hdev->req_wait_q,
+-					       hdev->req_status != HCI_REQ_PEND,
++					       hdev->req_status != HCI_REQ_PEND ||
++					       hci_dev_test_flag(hdev, HCI_UNREGISTER),
+ 					       timeout);
+ 
+-	if (err == -ERESTARTSYS)
++	if (err == -ERESTARTSYS || hci_dev_test_flag(hdev, HCI_UNREGISTER))
+ 		return ERR_PTR(-EINTR);
+ 
+ 	switch (hdev->req_status) {
+@@ -6296,6 +6297,7 @@ static int hci_resume_scan_sync(struct hci_dev *hdev)
+  */
+ int hci_resume_sync(struct hci_dev *hdev)
+ {
++	int err;
+ 	/* If not marked as suspended there nothing to do */
+ 	if (!hdev->suspended)
+ 		return 0;
+@@ -6303,10 +6305,14 @@ int hci_resume_sync(struct hci_dev *hdev)
+ 	hdev->suspended = false;
+ 
+ 	/* Restore event mask */
+-	hci_set_event_mask_sync(hdev);
++	err = hci_set_event_mask_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	/* Clear any event filters and restore scan state */
+-	hci_clear_event_filter_sync(hdev);
++	err = hci_clear_event_filter_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	/* Resume scanning */
+ 	hci_resume_scan_sync(hdev);
+@@ -6315,10 +6321,14 @@ int hci_resume_sync(struct hci_dev *hdev)
+ 	hci_resume_monitor_sync(hdev);
+ 
+ 	/* Resume other advertisements */
+-	hci_resume_advertising_sync(hdev);
++	err = hci_resume_advertising_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	/* Resume discovery */
+-	hci_resume_discovery_sync(hdev);
++	err = hci_resume_discovery_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	return 0;
+ }
 -- 
-2.43.0
+2.25.1
 
 
