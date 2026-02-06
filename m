@@ -1,142 +1,133 @@
-Return-Path: <stable+bounces-214622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kI6QFKWvhWkRFAQAu9opvQ
-	(envelope-from <stable+bounces-214622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:08:53 +0100
+	id kISpHqi0hWmbFQQAu9opvQ
+	(envelope-from <stable+bounces-214623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:30:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BFEFBD51
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:08:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8564FC09F
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C85C730530E2
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 09:03:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2338304C7CD
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 09:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A457C355021;
-	Fri,  6 Feb 2026 09:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EBC35C1BE;
+	Fri,  6 Feb 2026 09:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ob2sUAV4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A0NuhpTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F51354AFD
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 09:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5D93451D6;
+	Fri,  6 Feb 2026 09:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770368589; cv=none; b=pTFm794+n3vb/ZCKSTAnyNQYFBnhMxOtfRwmwuhOF5cgShbtoqz0/mLvlA4h68jSF4belQMoyXz3ptRo0LYbj35AXRKtlrJITPZgSkVrSzjPSKlCtZBcodNZbFdDJZ1/aMKE5wYKqL0LYM2AIer+YEVf6kaT5RCcBUmghkWHqak=
+	t=1770369937; cv=none; b=ap1VhRCvkZZdmbS1EM0BbxQ+61KvVzwd31+OK5zx17J3yB7g9Sl5caLXsFhUBXp5Ozyx3K1pbSzv2YY0Xkt84k9L7NwCADvNy1yZ4ov86/6c8ZTuJm7phGB4n9r1KhsAPPlsMMAUbUQ3cYn1FDAcBMUxQb6P1Z2acCHhPKkAFL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770368589; c=relaxed/simple;
-	bh=tKfdQ0ne2qYG4J7V6pzJ/nncuATXkssSO/aUoqjKBis=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m9zdVSM5bDa39Ce2Gp0cUrmnH/XmIZ61micancUxuQwNL/YiPlkBbrHBtQ31l6RGMDAG0XVZS4ZXOzQ7OGM9xKueWZbvckxLQEWnqP4cviisce2cM3Jvi7tLrPBjOgrFuZOnM5g1oaD9e03MIPQ/G0zh3X6yJy1PfuK1PW+0U+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ob2sUAV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED27AC19422
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 09:03:08 +0000 (UTC)
+	s=arc-20240116; t=1770369937; c=relaxed/simple;
+	bh=67OyxViVbqWaZ9u1J6mM1zos017CAbzXMNfe9CvI6sU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cOliY1WnCj7AgLJXqlIOfQRcBl8jRAm1OhiqoPRSRzyfc7MxsUaQOpC9Um4Hhw9LHR5WMh3TgfhUoJpbG6nllZQ+228AkuQI4MLAJCgAvj9GnBe6uT2MRWFpG+DmjKJTuX9cfp4BKDFuA9m8PUk1AEhhdihNM97anec3hpayk9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A0NuhpTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4E7C116C6;
+	Fri,  6 Feb 2026 09:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770368589;
-	bh=tKfdQ0ne2qYG4J7V6pzJ/nncuATXkssSO/aUoqjKBis=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ob2sUAV4PefUT1LtEPfS0PZJDK2FUkr6G0ZgF1+j1ABgAPGu31hztlPb8VUUVygOl
-	 qNfoHK6HC7qmFfLgc1ywqyfST+GQZiVnMClFqO0lGDVC9K1IC5WpFvCk8ekgjYls1G
-	 6rzcOKjx+0Iywny0H5595/JkAR9mWqXfMAZUDrZQpeMdtMXp0UogVc4GY8MoSQ2kdo
-	 9shJMAe8gpzAIWrkYHcp4zWfmQiiE0sGRdsg9iZ8r6n7MJ68wAn3cvghcXDV2ASO61
-	 dz3wmBJTNh+Wyw6HrmzbAfCksuIBbWqjDlDmzs/9IcM1Mnpcmq8GgAV4ygbqo5+5uj
-	 nEU74gRR9kJow==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-382f9930e54so21367771fa.1
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 01:03:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX+q+xLBmL6LBI157mOLwRje5q4bAf2EalcoJ6v9W/Qk2ybHt890EGfwZJ/ChejvowKPCL5wSk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdyAQZC9iLKLFngWRi0IHXnThnY0TR9OzLjHIO6JkdrJyHJ2ML
-	OeDH9dKiCwneWpCTDXN4wMoeDwbLbKU2FK5Nc8/+/32YfJ6jDMhg9NNw8vijcHBQ1A9l+h7sRsL
-	V0s0vvHfLAGYyeBE8NS+Gbs/J3W+o0ZufnzW78RJJhw==
-X-Received: by 2002:a2e:b2d4:0:b0:383:1bcc:119b with SMTP id
- 38308e7fff4ca-386a0bcb53emr13479141fa.13.1770368587526; Fri, 06 Feb 2026
- 01:03:07 -0800 (PST)
+	s=k20201202; t=1770369936;
+	bh=67OyxViVbqWaZ9u1J6mM1zos017CAbzXMNfe9CvI6sU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A0NuhpTqbEk5NqdLLnmPLcYYlBqWHvFRnuDHBes85Bps01UDtc/ARVoJgMGAz99tW
+	 CR6ggmJA+PtWSfa9iX4Iu1GDBc+dqVmSLDlGf4p3xgXx6erJumefExCM7E7OD9KhNs
+	 AMAxgmYRfSa993oM8dw6ZwxUBIjbq5+D3QheYaOUf3jk0Ef87roEgI9FG5hBS+/JHE
+	 X82qC9QIq2Ld5gRbA0Ezy8xA9u1CMPcHXMawSl6+nnBumAFY6NlTfTRA0WPsreVf+m
+	 KagWlnoASP+dCXDCMGW9dVfu4QKfE41zBNMOeXQFS7lNXVTociUAMbRl3/09u/FpcS
+	 GJA8eBzjY5APg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.6 00/72] 6.6.123-rc1 review
+Date: Fri,  6 Feb 2026 10:25:23 +0100
+Message-ID: <20260206092523.87951-1-ojeda@kernel.org>
+In-Reply-To: <20260204143845.603454952@linuxfoundation.org>
+References: <20260204143845.603454952@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260205092840.2574840-1-tzungbi@kernel.org>
-In-Reply-To: <20260205092840.2574840-1-tzungbi@kernel.org>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Fri, 6 Feb 2026 10:02:54 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MfQCG3fAPdbtLO2iNqyu=Dq3-Urn9V5=FQBNVD5p-vyfg@mail.gmail.com>
-X-Gm-Features: AZwV_QhFxeNBrmL9SPtme8oEV7zOBaeeXsHDys3k0_o0PdrX3hZCqOL2zDnGfrc
-Message-ID: <CAMRc=MfQCG3fAPdbtLO2iNqyu=Dq3-Urn9V5=FQBNVD5p-vyfg@mail.gmail.com>
-Subject: Re: [PATCH v3] gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
-To: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Linus Walleij <linusw@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214622-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,denx.de,gmx.de,sladewatkins.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-214623-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: F0BFEFBD51
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: C8564FC09F
 X-Rspamd-Action: no action
 
-On Thu, Feb 5, 2026 at 10:29=E2=80=AFAM Tzung-Bi Shih <tzungbi@kernel.org> =
-wrote:
+On Wed, 04 Feb 2026 15:40:03 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 >
-> Since commit aab5c6f20023 ("gpio: set device type for GPIO chips"),
-> `gdev->dev.release` is unset.  As a result, the reference count to
-> `gdev->dev` isn't dropped on the error handling paths.
->
-> Drop the reference on errors.
->
-> Also reorder the instructions to make the error handling simpler.
-> Now gpiochip_add_data_with_key() roughly looks like:
->
->    >>> Some memory allocation.  Go to ERR ZONE 1 on errors.
->    >>> device_initialize().
->
->    gpiodev_release() takes over the responsibility for freeing the
->    resources of `gdev->dev`.  The subsequent error handling paths
->    shouldn't go through ERR ZONE 1 again which leads to double free.
->
->    >>> Some initialization mainly on `gdev`.
->    >>> The rest of initialization.  Go to ERR ZONE 2 on errors.
->    >>> Chip registration success and exit.
->
->    >>> ERR ZONE 2.  gpio_device_put() and exit.
->    >>> ERR ZONE 1.
->
-> Cc: stable@vger.kernel.org
-> Fixes: aab5c6f20023 ("gpio: set device type for GPIO chips")
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> ---
+> This is the start of the stable review cycle for the 6.6.123 release.
+> There are 72 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 06 Feb 2026 14:38:23 +0000.
+> Anything received after that time might be too late.
 
-This looks good, I will queue this right after v7.0-rc1 is tagged
-because this is way too risky for rc8. Let's let it spend a couple
-weeks in next.
+Boot-tested under QEMU for Rust x86_64:
 
-Bart
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
+
+Cheers,
+Miguel
 
