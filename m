@@ -1,152 +1,162 @@
-Return-Path: <stable+bounces-214576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKbNEPU8hWlY+gMAu9opvQ
-	(envelope-from <stable+bounces-214576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:33 +0100
+	id gJkiHhdAhWme+gMAu9opvQ
+	(envelope-from <stable+bounces-214577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 02:12:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A672DF8C7A
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20125F8E43
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 02:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22CDC3018771
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 00:59:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8508930058F4
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 01:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD00A1FDE31;
-	Fri,  6 Feb 2026 00:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224A32309B2;
+	Fri,  6 Feb 2026 01:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UCs/SgG8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZmRfZVF5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909F11D86FF
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 00:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA5922652D
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 01:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770339567; cv=none; b=iDWyrF6326VI8aOvPG7kXFoqDgErKHPwu7CrmUun2HVumRJ1lasWvoGYjX5THrMUQlFLZpSqYcTu8bfCUQ/akTAiFti13/1ItJoAERX3zo01DLgrYdCbo+fcWJJSNpTEV/D9rcygcMp7c8D2xT0ulyXDc6LRxjzndM5jC9WT2M4=
+	t=1770340370; cv=none; b=THPXyGDl9JXMRBWqDkOqdnw7znJZm1ICUBXMMJcVpHGv46J4MTf5RBYwQgX4Me2MmGt8iYugGRifaZh6SYD7qfdgzC2l+lfwEWxbOWHQGNHnn1iPRAGon/LGc+aCPbajr7YYv6BC9pJ+2bZ/yJehODk3ZrY+p1eCOOWkePsOzDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770339567; c=relaxed/simple;
-	bh=Z22E8Z/xOghP60bXDHWrbjG32oKG5M1OjVbLTZohHJQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nNWadEC0Rb7NVqxHeU+B2uF9ZOjSpLu9ptPtBQv4tjxeuD/UrmDohTf044d1WxAAkY70qAzTOJ+CX+IT0QF/HAmI8WdAsknqT8FIcIslhfEaXvo9F7ekO1H5X14ExpZWKGITYXm/+IqZzGsnuEjbamnyLW3AYPY8DOk02/U4e5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UCs/SgG8; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a13cd9a784so1281295ad.2
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 16:59:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770339567; x=1770944367; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a/Tid1mYhZU5lXa7L9EYLX8oTkVKGe9BZFcSs1D+TSU=;
-        b=UCs/SgG8Ap/yPaEETn5YmJMt5b0rTtbjyB8ej7F54i7cKLIdqAN13bM8tWV02vQM7S
-         BZgSQ7icuJreWb4qwWfIcLrmS1FLD943NHvFgbmK6p5WcByBDyf7DjnhBUnc4oygZjYs
-         B5RAP1Ki+SX7cFlgIXULiJfttbbU2aBPrML/swcAMk3eCgXKtM6v/Lf6GBXdh3wwU5UX
-         Ca2aIRhFg5QjZAbt//ZnVkCZvkamHYDRf/R5TjKhffmFDIKYFvpwe7j3NRQzahOrFk1I
-         ycPEIuQf1JlqcDTedSWeI/JNxZTdh+26505JR6SFzI5GQXO68rSVhnQ3t/j/Qg6X1ZGE
-         210A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770339567; x=1770944367;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a/Tid1mYhZU5lXa7L9EYLX8oTkVKGe9BZFcSs1D+TSU=;
-        b=iY5+FJmY0nNzuZ5cFi6a9aYw3iaEwWyTwF6XmQSlzot6jlbJlVoULsk9anKb0i4rXy
-         yyim0XV21arbq1Q10mROpjnxGkVehwJ+21HYB6DVeJwnowzwv7t2QzMd/aZcRqbJ8ocU
-         hStPAsRqO2a1RJkmrw7gkHkbf/LxVz7JF6w4Tfm45N7QjACCBS2cIfOoDaQP8imhV5xO
-         4WgYhQ8RVpF5hbqMkQleN/+rNGn4EDvyb/etPhZBB+4dWONZK2lD46xC3aCsQy9MQ4p7
-         FkbSzNXBsT/3gqMPw4IsLxYK9PL/3qpRV80ZbhYd9iBj8+iKcWFHsElPzWWO5jeXVkMd
-         c9wA==
-X-Forwarded-Encrypted: i=1; AJvYcCXEOswmQCIadGFQmh7cYrQbJVGxTl4XhwGbh8fV8spvUU/N4C9Uj2XOhX3i0oz8J8OGsi1Zt+Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqGpK4tHQZ9kYJ5eAmaIo7QL41TWfjlITd7Krmz4/6+lGAVU37
-	Ms8KD1DjcMInl4SvWKSZSaxYfffLqfeC2MleHW8shosVzQg2XwdPgpOG9a+qw3H6W26EPEA+0d2
-	rBdhUtA==
-X-Received: from plbmj7.prod.google.com ([2002:a17:903:2b87:b0:29f:25b4:4dc4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e746:b0:2a1:3ee7:cc7a
- with SMTP id d9443c01a7336-2a951666792mr10607745ad.17.1770339566983; Thu, 05
- Feb 2026 16:59:26 -0800 (PST)
-Date: Thu, 5 Feb 2026 16:59:25 -0800
-In-Reply-To: <20260115011312.3675857-2-yosry.ahmed@linux.dev>
+	s=arc-20240116; t=1770340370; c=relaxed/simple;
+	bh=KrvUykdzoWqc5N96BU+dGTXvtUZcMP99lptlQr+kl3o=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=hV7zPfENGvTyiH3zUG/BwB31y+5blxm+Gpj86QzwMCET3e3nFQuqMWOmm0tJfz96grDKRcATtgldxiwep1ZQh7wm84T1L9bsMFJnr9xvIe9TAy/1kXFnHWbz0yahL8pAZO9sfxrDSuZ37MP4J2ooxGuMkE3zg3GkMG4VjQxsVeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZmRfZVF5; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260115011312.3675857-1-yosry.ahmed@linux.dev> <20260115011312.3675857-2-yosry.ahmed@linux.dev>
-Message-ID: <aYU87QeMg8_kTM-G@google.com>
+MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770340367;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JPnsENJNlvmMUEplunXnoKZyWAIlu9yV3pp07k9kFr4=;
+	b=ZmRfZVF5YLlTB6wYynMGFnQKwEvMoYinvqVkI96oqtz1e58yj5+hl6DoRD1Zq1D/5WRuLP
+	7Ds6DkyC4r7fDTYTAWdtYiQXXc1Sv6ONrJq2R8044GhdQt0wDDpfttFwpY9DmkGoC2lBF4
+	OUw2RVRCA69cTAQ3asHXqK8koIdZ2e0=
+Date: Fri, 06 Feb 2026 01:12:38 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Yosry Ahmed" <yosry.ahmed@linux.dev>
+Message-ID: <b92c2a7c7bcdc02d49eb0c0d481f682bf5d10c76@linux.dev>
+TLS-Required: No
 Subject: Re: [PATCH v4 01/26] KVM: SVM: Switch svm_copy_lbrs() to a macro
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <aYU87QeMg8_kTM-G@google.com>
+References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
+ <20260115011312.3675857-2-yosry.ahmed@linux.dev>
+ <aYU87QeMg8_kTM-G@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214576-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214577-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A672DF8C7A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:mid,linux.dev:dkim]
+X-Rspamd-Queue-Id: 20125F8E43
 X-Rspamd-Action: no action
 
-On Thu, Jan 15, 2026, Yosry Ahmed wrote:
-> In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
-> without a containing 'struct vmcb', and later even 'struct
-> vmcb_save_area_cached', make it a macro. Pull the call to
-> vmcb_mark_dirty() out to the callers.
-> 
-> Macros are generally not preferred compared to functions, mainly due to
-> type-safety. However, in this case it seems like having a simple macro
-> copying a few fields is better than copy-pasting the same 5 lines of
-> code in different places.
-> 
-> On the bright side, pulling vmcb_mark_dirty() calls to the callers makes
-> it clear that in one case, vmcb_mark_dirty() was being called on VMCB12.
-> It is not architecturally defined for the CPU to clear arbitrary clean
-> bits, and it is not needed, so drop that one call.
-> 
-> Technically fixes the non-architectural behavior of setting the dirty
-> bit on VMCB12.
+February 5, 2026 at 4:59 PM, "Sean Christopherson" <seanjc@google.com> wr=
+ote:
 
-Stop. Bundling. Things. Together.
 
-/shakes fist angrily
+>=20
+>=20On Thu, Jan 15, 2026, Yosry Ahmed wrote:
+>=20
+>=20>=20
+>=20> In preparation for using svm_copy_lbrs() with 'struct vmcb_save_are=
+a'
+> >  without a containing 'struct vmcb', and later even 'struct
+> >  vmcb_save_area_cached', make it a macro. Pull the call to
+> >  vmcb_mark_dirty() out to the callers.
+> >=20=20
+>=20>  Macros are generally not preferred compared to functions, mainly d=
+ue to
+> >  type-safety. However, in this case it seems like having a simple mac=
+ro
+> >  copying a few fields is better than copy-pasting the same 5 lines of
+> >  code in different places.
+> >=20=20
+>=20>  On the bright side, pulling vmcb_mark_dirty() calls to the callers=
+ makes
+> >  it clear that in one case, vmcb_mark_dirty() was being called on VMC=
+B12.
+> >  It is not architecturally defined for the CPU to clear arbitrary cle=
+an
+> >  bits, and it is not needed, so drop that one call.
+> >=20=20
+>=20>  Technically fixes the non-architectural behavior of setting the di=
+rty
+> >  bit on VMCB12.
+> >=20
+>=20Stop. Bundling. Things. Together.
+>=20
+>=20/shakes fist angrily
+>=20
+>=20I was absolutely not expecting a patch titled "KVM: SVM: Switch svm_c=
+opy_lbrs()
+> to a macro" to end with a Fixes tag, and I was *really* not expecting i=
+t to also
+> be Cc'd for stable.
+>=20
+>=20At a glance, I genuinely can't tell if you added a Fixes to scope the=
+ backport,
+> or because of the dirty vmcb12 bits thing.
+>=20
+>=20First fix the dirty behavior (and probably tag it for stable to avoid=
+ creating
+> an unnecessary backport conflict), then in a separate patch macrofy the=
+ helper.
+> Yeah, checkpatch will "suggest" that the stable@ patch should have Fixe=
+s, but
+> for us humans, that's _useful_ information, because it says "hey you, t=
+his is a
+> dependency for an upcoming fix!". As written, I look at this patch and =
+go "huh?".
+> (and then I look at the next patch and it all makes sense).
 
-I was absolutely not expecting a patch titled "KVM: SVM: Switch svm_copy_lbrs()
-to a macro" to end with a Fixes tag, and I was *really* not expecting it to also
-be Cc'd for stable.
-
-At a glance, I genuinely can't tell if you added a Fixes to scope the backport,
-or because of the dirty vmcb12 bits thing.
-
-First fix the dirty behavior (and probably tag it for stable to avoid creating
-an unnecessary backport conflict), then in a separate patch macrofy the helper.
-Yeah, checkpatch will "suggest" that the stable@ patch should have Fixes, but
-for us humans, that's _useful_ information, because it says "hey you, this is a
-dependency for an upcoming fix!".  As written, I look at this patch and go "huh?".
-(and then I look at the next patch and it all makes sense).
+I agree, but fixing the dirty behavior on its own requires open-coding th=
+e function, then the following patch would change it to a macro and use i=
+t again. I was trying to minimize the noise of moving code back and forth=
+..
 
