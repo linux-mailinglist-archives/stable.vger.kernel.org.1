@@ -1,162 +1,196 @@
-Return-Path: <stable+bounces-214594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKn+LN1uhWnqBQQAu9opvQ
-	(envelope-from <stable+bounces-214594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:32:29 +0100
+	id iL/XCD1yhWkyBwQAu9opvQ
+	(envelope-from <stable+bounces-214595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:46:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4B6FA1AD
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:32:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C64FA288
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BFEFA300DF4A
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 04:32:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2637C3018D54
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 04:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C21335BB4;
-	Fri,  6 Feb 2026 04:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9632E1F0E;
+	Fri,  6 Feb 2026 04:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="mSAH2xIy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gb0hV1/2"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181C1338F40;
-	Fri,  6 Feb 2026 04:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECA03EBF19;
+	Fri,  6 Feb 2026 04:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770352334; cv=none; b=M0jpC86fAi5Nf6KSbSdJ5d2MC8Ah2RIXFqMpBtHEUM0ffELZaMyGCmggeyWtYGA/uPiYtOORPvRuyX3CuqRK4YORh4ymzUfzcES/Jz7P3kC5n0D1q6xvI1EOpK0hJMdNzXVYQsCrbdPUfEqhkkyN8KQjJb6szLV2LetV+uB489g=
+	t=1770353206; cv=none; b=VKtzm9yoS/ibqdNz1p4BmE3aqHa2HS+nLjcJ/m4FWX08VlvdzByEcLuCiyilSOaRqacnPBUX5UQbznLidgDqtJMCYEOVWyy8CUV1dMWXN69es4a4FysKM7Ynbw6Trk4z58E2xvF2d9SPTncezNqW/+hVt/R0u91//TzK0eDTd20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770352334; c=relaxed/simple;
-	bh=BbOOS0pWroSW/3/E5wqcJrdhWdMAyw+4cG24+VR43aI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZqni5RWa5joyfuHd5w9XOImG/wqxsXka1mtwXZJVks6Pit37JRokfpxuMI72YpxK94px52Fn64SsK16MqbeHV7V9v9IN9qv6tjsxl+BmCnWN7ONlek4CWAepjE4LVH4wZ7pO0q42J2FWwK6xV1EVN+e4Mc93gIcrwpf/Rwmw24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=mSAH2xIy; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=qr
-	3LVoOJqpEYjoT7a1xDOpnKMJ8q6Fi6UAoB055FyKQ=; b=mSAH2xIywMiN4NWJgL
-	oOlitNnqti8W2haqwcBKXPNlMx1EiG7SwjW2jaRZuCxYTK/j/a5sd3GunkLRLm/o
-	NBSx4t38ylHfmq1ihvSmVXS7ELxqMcQwF15NHKXOx5w8jVxh1SBI9/C0bODLhaGK
-	fNdM0czovFKpu2KxaSMOyUe5U=
-Received: from ubuntu24-z.. (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgC3sLWbboVpASh5QQ--.27597S3;
-	Fri, 06 Feb 2026 12:31:27 +0800 (CST)
-From: ranxiaokai627@163.com
-To: graf@amazon.com,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	akpm@linux-foundation.org
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com,
-	stable@vger.kernel.org
-Subject: [PATCH -next 1/2] kho: fix missing early_memunmap() call in kho_populate()
-Date: Fri,  6 Feb 2026 04:31:20 +0000
-Message-ID: <20260206043121.197564-2-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260206043121.197564-1-ranxiaokai627@163.com>
-References: <20260206043121.197564-1-ranxiaokai627@163.com>
+	s=arc-20240116; t=1770353206; c=relaxed/simple;
+	bh=3wyrS6FuHzMi0+gcu8RfA1Uj4G7edrBpeSx7MqKTXc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GFiqBiHq95pRONSqHfO9JnK5dJx55ZcgfTmO2WHahsCTadPTNDi4ZFrCQX/atonktMMMHANBRAEbxswRUWtgFknIjVtIIJPrATYJjX88bR04ZtKOvqtKZS8KljdJVxgJS5tyb62GO76tMh0l19a3zAO/+D8u3XFi96LlyV1on4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gb0hV1/2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8686C116C6;
+	Fri,  6 Feb 2026 04:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770353205;
+	bh=3wyrS6FuHzMi0+gcu8RfA1Uj4G7edrBpeSx7MqKTXc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gb0hV1/2aS4cm+FFVdaFLDw82LwMIn15ByAImVqGV/EmXaq1YC99V5YDtygkhEgbE
+	 wXANfGHqz39YEnOYDCjXev6WmJ6Dn0RxkECibf5B/Sqlvqh5oW7ZlL0YK9rG3KSO03
+	 rfnwjbBht1vdJL2nYXdcJj/gSrfy5PCNkwYjvthR6RF8Y1y31DUeAVy4xhx/mO/eQY
+	 jRYleYWKz++PjArgHMKffQTojav69bI+hkYUrv3g6UMeOZ9kagGRtZDdM7tqk8AbbZ
+	 036WeX8Ic3Y1qqSpaLEpq/6xuZ1TEBtWjf3D3CYEDE/mHePD12Yynk3dLYpGVN75S9
+	 c+OljczaNLADQ==
+Date: Thu, 5 Feb 2026 20:46:45 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Chris Mason <clm@meta.com>
+Cc: cem@kernel.org, r772577952@gmail.com, stable@vger.kernel.org,
+	hch@lst.de, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 2/4] xfs: only call xf{array,blob}_destroy if we have a
+ valid pointer
+Message-ID: <20260206044645.GT7712@frogsfrogsfrogs>
+References: <176897723519.207608.4983293162799232099.stgit@frogsfrogsfrogs>
+ <176897723586.207608.15038929489815852871.stgit@frogsfrogsfrogs>
+ <20260205194211.2307232-1-clm@meta.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgC3sLWbboVpASh5QQ--.27597S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF4fAF1rGw1xtw18WFWktFb_yoW8WF4fpr
-	yrG3WxCw48Jayqqa17J3WxW34rW3ykK3W3ta4jk34fAFnxXr1kuFWxX3WIyF12qFySgw12
-	yFs5tayrW3WkCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zErcTPUUUUU=
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7R9+ymmFbp-e1AAA3R
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260205194211.2307232-1-clm@meta.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,kvack.org,vger.kernel.org,zte.com.cn,163.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214594-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[163.com:+];
-	FROM_NO_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ranxiaokai627@163.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214595-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lst.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D4B6FA1AD
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74C64FA288
 X-Rspamd-Action: no action
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Thu, Feb 05, 2026 at 11:40:27AM -0800, Chris Mason wrote:
+> "Darrick J. Wong" <djwong@kernel.org> wrote:
+> > From: Darrick J. Wong <djwong@kernel.org>
+> > 
+> > Only call the xfarray and xfblob destructor if we have a valid pointer,
+> > and be sure to null out that pointer afterwards.  Note that this patch
+> > fixes a large number of commits, most of which were merged between 6.9
+> > and 6.10.
+> 
+> Hi everyone,
+> 
+> I'm trying out my AI review prompts on a few more trees, and I ran it
+> on the fuse-iomap-cache branch:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/log/?h=fuse-iomap-cache
+> 
+> This was the latest email lore could find, apologies if I grabbed the wrong one.
+> 
+> Hopefully the review below is useful, please let me know if there are places it
+> has gone wildly wrong.  I kept the header to make it obvious exactly which
+> commit I'd run through.
+> 
+> I was really going for the fuse patches, but this ended up in my git
+> rev-list output, and it looks valid to me:
+> 
+> commit 1e4e64674c788423e24610612e4981eb1dc9b28b
+> Author: Darrick J. Wong <djwong@kernel.org>
+> 
+> xfs: only call xf{array,blob}_destroy if we have a valid pointer
+> 
+> This patch adds null pointer checks before calling xfarray_destroy and
+> xfblob_destroy functions across multiple XFS scrub/repair teardown
+> functions, and nulls out the pointers afterwards to prevent dangling
+> pointer issues.
+> 
+> Cc: r772577952@gmail.com
+> Cc: <stable@vger.kernel.org> # v6.12
+> Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
+> 
+> > diff --git a/fs/xfs/scrub/agheader_repair.c b/fs/xfs/scrub/agheader_repair.c
+> > index a2f6a7f71d839..6e3fef36d6614 100644
+> > --- a/fs/xfs/scrub/agheader_repair.c
+> > +++ b/fs/xfs/scrub/agheader_repair.c
+> 
+> [ ... ]
+> 
+> > diff --git a/fs/xfs/scrub/dir_repair.c b/fs/xfs/scrub/dir_repair.c
+> > index 7a21b688a4715..d5a55eabf6801 100644
+> > --- a/fs/xfs/scrub/dir_repair.c
+> > +++ b/fs/xfs/scrub/dir_repair.c
+> > @@ -172,8 +172,12 @@ xrep_dir_teardown(
+> >  	struct xrep_dir		*rd = sc->buf;
+> >
+> >  	xrep_findparent_scan_teardown(&rd->pscan);
+> > -	xfblob_destroy(rd->dir_names);
+> > -	xfarray_destroy(rd->dir_entries);
+> > +	if (rd->dir_names)
+> > +		xfblob_destroy(rd->dir_names);
+> > +	rd->dir_names = NULL;
+> > +	if (rd->dir_entries)
+> > +		xfarray_destroy(rd->dir_entries);
+> > +	rd->dir_names = NULL;
+>                  ^^^^^^^^^^
+> 
+> In xrep_dir_teardown, after destroying rd->dir_entries, the code sets
+> rd->dir_names = NULL instead of rd->dir_entries = NULL. This leaves
+> dir_entries as a dangling pointer after the xfarray is freed.
+> 
+> The commit message states the patch should "be sure to null out that
+> pointer afterwards", and the pattern in xrep_agi_buf_cleanup correctly
+> nulls both iunlink_prev and iunlink_next pointers. This change should
+> null both dir_names (line 177) and dir_entries (line 180), but line 180
+> incorrectly nulls dir_names again.
+> 
+> Shouldn't line 180 be rd->dir_entries = NULL?
 
-kho_populate() returns without calling early_memunmap() on success
-path, this will cause early ioremap virtual address space leak.
+Yep.  Will fix this.
 
-Fixes: b50634c5e84a ("kho: cleanup error handling in kho_populate()")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
----
+> [ ... ]
+> 
+> > Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
+> 
+> The existing Fixes: tag points to commit ab97f4b1c03075, but this is not
+> the first commit that introduced the bug. The bug was first introduced by
+> commit f1184081ac97 ("xfs: teach scrub to check file nlinks") on
+> 2024-02-22, which unconditionally called xfarray_destroy without checking
+> for NULL pointers. The commit ab97f4b1c03075 (2024-04-15) is one of
+> several later commits that perpetuated the same bug pattern.
+> 
+> Should the Fixes: tag reference f1184081ac97 instead?
 
-b50634c5e84a ("kho: cleanup error handling in kho_populate()")
-has not landed in upstream, so
-Cc: <stable@vger.kernel.org> is unnecessary?
+Strictly speaking there should have been separate patches for each of
+the files fixed in this patch, but I went with the more recent commit
+which was introduced in 6.12 rather than the oldest commit from 6.9
+because only 6.12 is receiving fixes anyway.
 
- kernel/liveupdate/kexec_handover.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index fb3a7b67676e..76b714db175d 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1463,6 +1463,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 	struct kho_scratch *scratch = NULL;
- 	phys_addr_t mem_map_phys;
- 	void *fdt = NULL;
-+	int populated = 0;
- 	int err;
- 
- 	/* Validate the input FDT */
-@@ -1529,16 +1530,17 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 	kho_in.scratch_phys = scratch_phys;
- 	kho_in.mem_map_phys = mem_map_phys;
- 	kho_scratch_cnt = scratch_cnt;
--	pr_info("found kexec handover data.\n");
- 
--	return;
-+	populated = 1;
-+	pr_info("found kexec handover data.\n");
- 
- err_unmap_scratch:
- 	early_memunmap(scratch, scratch_len);
- err_unmap_fdt:
- 	early_memunmap(fdt, fdt_len);
- err_report:
--	pr_warn("disabling KHO revival\n");
-+	if (!populated)
-+		pr_warn("disabling KHO revival\n");
- }
- 
- /* Helper functions for kexec_file_load */
--- 
-2.25.1
-
-
+--D
 
