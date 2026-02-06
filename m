@@ -1,72 +1,73 @@
-Return-Path: <stable+bounces-214657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4J6OARPqhWk0IQQAu9opvQ
-	(envelope-from <stable+bounces-214657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 14:18:11 +0100
+	id qFb3J43qhWk0IQQAu9opvQ
+	(envelope-from <stable+bounces-214659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 14:20:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55512FDFD7
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 14:18:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FCDFE00F
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 14:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2604F300F188
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 13:18:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBCA6302F733
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 13:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6CF36D4EA;
-	Fri,  6 Feb 2026 13:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFD5372B29;
+	Fri,  6 Feb 2026 13:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJdHmsaD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cF7BGvO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282195B5AB;
-	Fri,  6 Feb 2026 13:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F7633DEC0;
+	Fri,  6 Feb 2026 13:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770383888; cv=none; b=KGNjmHNT11DSXd3Q2fuwihlGe27wJxPJQMzkpVrNdOWh+fiLI7oDrDGKc4n7QU1rrEMotUfugVIeBOReoSO9dvD/Dc1WFQsF15uCveU3NSCGKdAMG85tXj315Wizh0bp/xqFd6OyF6yZxtTbJxQz/0ntDL1xpFBOh9mfzkwBhS4=
+	t=1770384008; cv=none; b=acjQhJHE1F1pAEXWV0SC7k8So3ECt270+ucfwVSuzHgnjneBCxEPvNvUgjjzSWuM8Y5OlHQBIXWd0M6hfbbyuA5uTo1q9l9kgnpCfUqZULlvR70vKIaa4zUmlx7YF65s0wUrPNbwEZB40nXjmfi1eD8XKicQp590YZa/xox+cuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770383888; c=relaxed/simple;
-	bh=f8yHgE4ymsyl9+mh++5Npa8yArm3D9qnM/5eaTm6niw=;
+	s=arc-20240116; t=1770384008; c=relaxed/simple;
+	bh=uaU/dMUcVTcHujWPlqo/mvSW1CuYUm0aE/ikpDeezWE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jk9OCfSeMW6JX/uSthY23GmcwCRifVAHHXsIcMcBwg8GHsesVApIWrJOxLnipNC7YcbxSH6mf+SO/8M38MSKWYBTS3b2mfD53OoNz6yzEysfHPOamvrhGk401thM4g+DtZv7y4mGB11W/clbQNcv+Rfg8VByi3JBPrDBI/Tnkhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJdHmsaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A47AC116C6;
-	Fri,  6 Feb 2026 13:18:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QCIBTMDiRJoPqDLBT6KHWhFqnnUHhCmB1mgbmnfgeAoWPJu7zU/vBc95rviCgaxJ28nMwY9SatvZRKO1nhNDHhA4EQJO3+OKl08wUkvNR1Zh5+X67ikY9qx8qaQrrlAvFFjdHDH1DsY1oKu9V/3Nr42M7zckvr5Se2dqWdBhFpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cF7BGvO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F16C116C6;
+	Fri,  6 Feb 2026 13:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770383887;
-	bh=f8yHgE4ymsyl9+mh++5Npa8yArm3D9qnM/5eaTm6niw=;
+	s=korg; t=1770384008;
+	bh=uaU/dMUcVTcHujWPlqo/mvSW1CuYUm0aE/ikpDeezWE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XJdHmsaDNTLZ9MPn37WYYZnv8f9Q8KS3N5A1NIQmfBfJRCbrK71E4LnLkx+nxcLWz
-	 36zIgleMyfyzXFco7TXr5mpJ7cjZ7z0EglVtnazXlP5dGvX0FM6oPpqYaqPGs/CDK1
-	 3v7AaVVPIyV2dg8EPOmBfSb98IcF2rg1Nvpa3MGI=
-Date: Fri, 6 Feb 2026 14:18:04 +0100
+	b=cF7BGvO5/bPKJ0bFdyGQaGD0X3H6GiIb4uQl6/5qXL4BvCXngttPfHoBfRw/Ge2i+
+	 Dc3RIYoYFmxdZAfPUUCGCk0sydvNRY1SPFkC3M1ARQ/YtjQyc5QE5w97h8f5H+1xPx
+	 Wl0tatDAbNgeIIHZOD3OKiaIKq05xPH9qM12C1m8=
+Date: Fri, 6 Feb 2026 14:20:03 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
 	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
 	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
 	sr@sladewatkins.com
-Subject: Re: [PATCH 5.10 000/160] 5.10.249-rc2 review
-Message-ID: <2026020646-lash-celestial-2c7a@gregkh>
-References: <20260205143430.733102763@linuxfoundation.org>
- <CAG=yYwnDVbTB3Y+zX8yLATGRKeZzSXNu-eiU-ABReZhJ0vep3A@mail.gmail.com>
- <2026020619-eccentric-retaining-86ef@gregkh>
- <CAG=yYwkOvV_=hhzSkQ06UqUW2X_FOm6saGqBaz4hLxqAg_WcvQ@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/122] 6.18.9-rc1 review
+Message-ID: <2026020652-quarry-clench-2fd8@gregkh>
+References: <20260204143851.857060534@linuxfoundation.org>
+ <CAG=yYwnSJCp6W6+0MGG_aaj+Ao7Qhiza0FKvrP-4wf6f9x1SQQ@mail.gmail.com>
+ <2026020601-persecute-avenging-f539@gregkh>
+ <CAG=yYwmqwb-v-31bk5sXcBGtTQ3JGgH4Kse0nWAtbX5f01764A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAG=yYwkOvV_=hhzSkQ06UqUW2X_FOm6saGqBaz4hLxqAg_WcvQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG=yYwmqwb-v-31bk5sXcBGtTQ3JGgH4Kse0nWAtbX5f01764A@mail.gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -75,18 +76,18 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214657-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214659-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -94,32 +95,54 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 55512FDFD7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 04FCDFE00F
 X-Rspamd-Action: no action
 
-On Fri, Feb 06, 2026 at 06:29:08PM +0530, Jeffrin Thalakkottoor wrote:
+On Fri, Feb 06, 2026 at 06:47:50PM +0530, Jeffrin Thalakkottoor wrote:
+> On Fri, Feb 6, 2026 at 6:01 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
 > >
-> > What config causes this?  What target are you building, libbpf?
+> > On Fri, Feb 06, 2026 at 05:29:58PM +0530, Jeffrin Thalakkottoor wrote:
+> > >  Build error related
+> > > screenshot  below.
+> > >
+> > > --------------------<screenshot>-----------------------
+> > >
+> > > $make -j 4
+> > >   DESCEND objtool
+> > >   DESCEND bpf/resolve_btfids
+> > >   INSTALL libsubcmd_headers
+> > >   INSTALL libbpf_headers
+> > >   INSTALL libsubcmd_headers
+> > > make[5]: *** No rule to make target 'str_error.h', needed by
+> > > '/home/jeffrin/kernel/linux-stable-rc/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf.o'.
+> > > Stop.
+> > > make[4]: *** [Makefile:152:
+> > > /home/jeffrin/kernel/linux-stable-rc/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf-in.o]
+> > > Error 2
+> > > make[3]: *** [Makefile:61:
+> > > /home/jeffrin/kernel/linux-stable-rc/tools/bpf/resolve_btfids//libbpf/libbpf.a]
+> > > Error 2
+> > > make[2]: *** [Makefile:76: bpf/resolve_btfids] Error 2
+> > > make[1]: *** [/home/jeffrin/kernel/linux-stable-rc/Makefile:1449:
+> > > tools/bpf/resolve_btfids] Error 2
+> > > make[1]: *** Waiting for unfinished jobs....
+> > >   CALL    scripts/checksyscalls.sh
+> > > make: *** [Makefile:248: __sub-make] Error 2
+> > > -----------------------<screenshot>---------------------------
+> >
+> > What .config causes this?
 > >
 > 
-> May be the attached config causes this. iam not building libbpf alone.
+> iam confused . but may be the attached  config  is now giving a clean compile
 
-I tried your config, with gcc:
-$ gcc --version
-gcc (GCC) 15.2.1 20260103
+So it works now?
 
-And it built just fine.
-
-I did have to do a 'make clean' first.  Did you try that out?
-
-Have you ever built this kernel successfully?  If so, can you use 'git
-bisect' to track down the offending commit for you?
-
-thanks,
+I'm confused,
 
 greg k-h
 
