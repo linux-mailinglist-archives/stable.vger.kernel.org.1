@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-214713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KN52N688hmnzLAQAu9opvQ
-	(envelope-from <stable+bounces-214713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:10:39 +0100
+	id AEY6Jbw8hmnzLAQAu9opvQ
+	(envelope-from <stable+bounces-214714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:10:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B6D10277A
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:10:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5DC1027A0
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C9263016EEE
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 19:10:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C3BA300D76D
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 19:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B9643637F;
-	Fri,  6 Feb 2026 19:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000EC43C07B;
+	Fri,  6 Feb 2026 19:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Fm7BGsTf"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cYkUgsYk"
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8EF43637C
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 19:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEE143C06F
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 19:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770404967; cv=none; b=IYxlSCRrz0YxFzrku8oVyOwlOnDfwxDHGmWi7sK11YfqRHAlCm4p9xnZx+E3OMhRY845Y5sLPAnvP16p+PBzSDkcjfeKaPVB31aMlgAekqX03H4joUpcuFYKzFZive8ONryt8baRdJixDgYPRawHgn/5g1kgCc6lVidbTBxLqZY=
+	t=1770404968; cv=none; b=pdxVlyrCTIfo++8XBVs8OIOYQ6GTODmyzsFm7kfvB/Ynaklp8rmPGWqkbggCRZtv+YkIumpWQnSVJWJG/CD4+Oq9w02VtJC8XwoB8C9Lb9jiRpYoLHacDINV2UwrgMIt491N0Xjx8d3tp8ucSmJtEnG1KFqvPHqrlyC6GYNIMd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770404967; c=relaxed/simple;
-	bh=2vnKk/0j7NLk9BjwTNt9Niw69jc7ATz5F/Nd5t15a4o=;
+	s=arc-20240116; t=1770404968; c=relaxed/simple;
+	bh=ODb2/IeBwTyKMp4WD85zCZj6S9Ai9FchMpNcAg0S+no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqRHOhpdUdLyHBnJvCqwgrbPI7VFkX4BEDwNNTo3Kj6HV5F3CjDEHGIqlaPoqYY9sEnhwtRfWWV5qpafiaw/ipIJnrpDyNNsq+B5gdvvUnkbIhEFyOb5WFDfMamrKUMGNQHGQt5Driy/wbq1cbhfX4dFVjb2Wfck3qtupN9gwmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Fm7BGsTf; arc=none smtp.client-ip=91.218.175.173
+	 MIME-Version; b=WZ642jaL8IaoBLLPYGtgl+Dqrj3BD7kFfiXh+T3Mvm6toMvGMCoeVkkHXbt87BzmGC2gqdgtp3kYlinE9f3TXhx5tgrwFYFR+HOp2vz8ewdkxGPxclHfsUW+Gn6E6qXasqPu9z0aEAGJngSsJ1DGDMPD6gQCfwNVbJOOncnUYq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cYkUgsYk; arc=none smtp.client-ip=91.218.175.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770404965;
+	t=1770404967;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c6WQRdiodBhsWPUMc6qwrczfvDz8gYzPH1Tbgvdt5pE=;
-	b=Fm7BGsTfRWg1kE4MkhV9dsmaUgDzTexuDMoiPg/81KrQ+WMa0qMQJfYBVSSs1u7fqoPCW/
-	GHUZTvFPgN0g2Q6HhWiY90t7Nu9xmUA3+yYu/vJ/QRR96FP/wV2nA0JiQcSY9gOkNbwNTe
-	46gbbZUCbLCGDpSW/zypISUEmBQPz98=
+	bh=iUgewoR9hSRJHPl5m11yn7PrfmFETAQcerjNyaq/Mfs=;
+	b=cYkUgsYkjTu4mizejs2EwuPQugsVehayIX12RSQc1G2FjrUPlGmMglVDBoxIVQgJWdOwkh
+	ZGPbabTcSAbIEZiCFOyNX8DDLTNftsppEW5nmSsgEfApvnZ0+nUSdgfGNKU+gRyEzziZPS
+	ZCeV9/r70YY/lGXbMu6MwlnBqemATh8=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v5 10/26] KVM: nSVM: Make nested_svm_merge_msrpm() return an errno
-Date: Fri,  6 Feb 2026 19:08:35 +0000
-Message-ID: <20260206190851.860662-11-yosry.ahmed@linux.dev>
+Subject: [PATCH v5 11/26] KVM: nSVM: Call nested_svm_merge_msrpm() from enter_svm_guest_mode()
+Date: Fri,  6 Feb 2026 19:08:36 +0000
+Message-ID: <20260206190851.860662-12-yosry.ahmed@linux.dev>
 In-Reply-To: <20260206190851.860662-1-yosry.ahmed@linux.dev>
 References: <20260206190851.860662-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -72,11 +72,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214713-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214714-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,88 +88,79 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 88B6D10277A
+X-Rspamd-Queue-Id: 5D5DC1027A0
 X-Rspamd-Action: no action
 
-In preparation for moving nested_svm_merge_msrpm() within
-enter_svm_guest_mode(), which returns an errno, return an errno from
-nested_svm_merge_msrpm().
+In preparation for unifying the VMRUN failure code paths, move calling
+nested_svm_merge_msrpm() into enter_svm_guest_mode() next to the
+nested_svm_load_cr3() call (the other failure path in
+enter_svm_guest_mode()).
+
+Adding more uses of the from_vmrun parameter is not pretty, but it is
+plumbed all the way to nested_svm_load_cr3() so it's not going away soon
+anyway.
 
 No functional change intended.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/kvm/svm/nested.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 607d99172e2b..6e7238fed7ab 100644
+index 6e7238fed7ab..c16b68a07369 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -276,7 +276,7 @@ int __init nested_svm_init_msrpm_merge_offsets(void)
-  * is optimized in that it only merges the parts where KVM MSR permission bitmap
-  * may contain zero bits.
-  */
--static bool nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
-+static int nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	nsvm_msrpm_merge_t *msrpm02 = svm->nested.msrpm;
-@@ -303,17 +303,19 @@ static bool nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
- #endif
+@@ -956,6 +956,12 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
+ 	if (ret)
+ 		return ret;
  
- 	if (!(vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_MSR_PROT)))
--		return true;
-+		return 0;
++	if (from_vmrun) {
++		ret = nested_svm_merge_msrpm(vcpu);
++		if (ret)
++			return ret;
++	}
++
+ 	if (!from_vmrun)
+ 		kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
  
- 	for (i = 0; i < nested_svm_nr_msrpm_merge_offsets; i++) {
- 		const int p = nested_svm_msrpm_merge_offsets[i];
- 		nsvm_msrpm_merge_t l1_val;
- 		gpa_t gpa;
-+		int r;
+@@ -1034,22 +1040,17 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
  
- 		gpa = svm->nested.ctl.msrpm_base_pa + (p * sizeof(l1_val));
+ 	svm->nested.nested_run_pending = 1;
  
--		if (kvm_vcpu_read_guest(vcpu, gpa, &l1_val, sizeof(l1_val)))
--			return false;
-+		r = kvm_vcpu_read_guest(vcpu, gpa, &l1_val, sizeof(l1_val));
-+		if (r)
-+			return r;
+-	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, vmcb12, true))
+-		goto out_exit_err;
+-
+-	if (!nested_svm_merge_msrpm(vcpu))
+-		goto out;
+-
+-out_exit_err:
+-	svm->nested.nested_run_pending = 0;
+-	svm->nmi_l1_to_l2 = false;
+-	svm->soft_int_injected = false;
++	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, vmcb12, true)) {
++		svm->nested.nested_run_pending = 0;
++		svm->nmi_l1_to_l2 = false;
++		svm->soft_int_injected = false;
  
- 		msrpm02[p] = msrpm01[p] | l1_val;
- 	}
-@@ -325,7 +327,7 @@ static bool nested_svm_merge_msrpm(struct kvm_vcpu *vcpu)
- #endif
- 	svm->vmcb->control.msrpm_base_pa = __sme_set(__pa(svm->nested.msrpm));
+-	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
+-	svm->vmcb->control.exit_info_1  = 0;
+-	svm->vmcb->control.exit_info_2  = 0;
++		svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
++		svm->vmcb->control.exit_info_1  = 0;
++		svm->vmcb->control.exit_info_2  = 0;
  
--	return true;
-+	return 0;
- }
+-	nested_svm_vmexit(svm);
++		nested_svm_vmexit(svm);
++	}
  
- /*
-@@ -1035,7 +1037,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	if (enter_svm_guest_mode(vcpu, vmcb12_gpa, vmcb12, true))
- 		goto out_exit_err;
- 
--	if (nested_svm_merge_msrpm(vcpu))
-+	if (!nested_svm_merge_msrpm(vcpu))
- 		goto out;
- 
- out_exit_err:
-@@ -1930,7 +1932,7 @@ static bool svm_get_nested_state_pages(struct kvm_vcpu *vcpu)
- 		if (CC(!load_pdptrs(vcpu, vcpu->arch.cr3)))
- 			return false;
- 
--	if (!nested_svm_merge_msrpm(vcpu)) {
-+	if (nested_svm_merge_msrpm(vcpu)) {
- 		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		vcpu->run->internal.suberror =
- 			KVM_INTERNAL_ERROR_EMULATION;
+ out:
+ 	kvm_vcpu_unmap(vcpu, &map);
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
 
