@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-214706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOIFC2A8hmnzLAQAu9opvQ
-	(envelope-from <stable+bounces-214706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:09:20 +0100
+	id uKx3AFg9hmnzLAQAu9opvQ
+	(envelope-from <stable+bounces-214707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:13:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27C2102738
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:09:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52706102843
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9924C30090AA
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 19:09:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F9A93084BE6
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 19:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FC942982C;
-	Fri,  6 Feb 2026 19:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BBB42B722;
+	Fri,  6 Feb 2026 19:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cAqVjA83"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="v3Rhvqa/"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111BA428849;
-	Fri,  6 Feb 2026 19:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A2942980D
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 19:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770404953; cv=none; b=tO38odeFUMRsFgow2G65dcAO44s3xrdP85PGcP/gftFzX9R4CVkO4DhTqfxbfupHp0d8+F1/2ok05XBbvCGbeM+XkkVTkdO9z/M4SeZ+xHAbwzE/2vyDCOiW+r0yJsRbqto78H2OnLdDGImPLFhxy6K9KL9DNgMEKFNiSzBP/u8=
+	t=1770404955; cv=none; b=LjVmmVH4SKAAmKE+69+hKulriG+sJFjLWQndd/A0oEBazpvy8YFOWGrsUDokKB1P66u6WsIswulXScHry+2xGmbXN6YMWDke/NaFuSkEsB4bdjf35nTb+VoX7/JiuOBGYqjKJLtTTX2fqrdAhVPEsz9yWhbRbxYDNwybXeOpwvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770404953; c=relaxed/simple;
-	bh=jI/gSwWMQ9StivbdaamvYHJefB/eGDkVK85zxxekHKs=;
+	s=arc-20240116; t=1770404955; c=relaxed/simple;
+	bh=isGG8ianhv/yw+W1p+iiSxxVnSDJaWSOJuSdJgsuuCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsdSdxNbfWSM7hTINWOZbGBOnUA550oV+4+c0FLHu0XmvRg0vJHtRVFhno3T22l9dCM0eWuQrHt9k38jdZ9YsWVDuLQCocMEPPEk7vfK4Nfusu1ks5/IGxGfvwE2qS+7lmBvQecMx7SqgEQPAVGLTYY8YyX8kRDN1OxrnBUCneU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cAqVjA83; arc=none smtp.client-ip=91.218.175.180
+	 MIME-Version; b=SdB7KOszpN3ULA2NyuJbab8R/rfdicFmMMnObREgTC5bY/9j1rBcX8LiGDax9x3LaEjwQEE0n7YARtq0y4Q3dZWG5mlulWIRJJ1mU9vwvaT0Blnupgxvh+2L7fA+2W+HRPrerwpcBBgRze379RQuGvx0DPnxRjqwVZiI6Kv81qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=v3Rhvqa/; arc=none smtp.client-ip=91.218.175.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770404951;
+	t=1770404953;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xkoeMVQBPtbUztRZ+o14K0G1l1ptUD5ctfFp1SATztU=;
-	b=cAqVjA83XzCr89dULnBmzUTcUn31qnXkOyqf5eD3Q12kh/BHyYWqW2E34+IVdxWYxaNITH
-	HyRgZfn9Fg5Ppt+9blxGmsoOR2t+5orhvCHxorn3VadVhrObAki8B7dOEeseTMX5yBL622
-	FgJAbBeRpz5hDyn6ZcIkLIkZ9iIbE4w=
+	bh=OFoKAHgIstDnIh2zPPIUgBzptuNqEXzOrzi2QTRbj4g=;
+	b=v3Rhvqa/PVNH75m1jAFzLyTvMKU89UEF90/zZ4+PvZeBtNokN6DLesI9RsvNdrIw2gIKoI
+	ROb1kNVmEeF8EYMPOY8hD1pztEm2zcf+a1UxxR1Rm8jUyN8sZJ0fKfuxDmWXJGr/cideW+
+	hhcKB+J6jekE5ckRBiknnQLQRs0hKOc=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 02/26] KVM: SVM: Switch svm_copy_lbrs() to a macro
-Date: Fri,  6 Feb 2026 19:08:27 +0000
-Message-ID: <20260206190851.860662-3-yosry.ahmed@linux.dev>
+	stable@vger.kernel.org,
+	Jim Mattson <jmattson@google.com>
+Subject: [PATCH v5 03/26] KVM: SVM: Add missing save/restore handling of LBR MSRs
+Date: Fri,  6 Feb 2026 19:08:28 +0000
+Message-ID: <20260206190851.860662-4-yosry.ahmed@linux.dev>
 In-Reply-To: <20260206190851.860662-1-yosry.ahmed@linux.dev>
 References: <20260206190851.860662-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -67,123 +68,112 @@ Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214706-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-214707-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C27C2102738
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 52706102843
 X-Rspamd-Action: no action
 
-In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
-without a containing 'struct vmcb', and later even 'struct
-vmcb_save_area_cached', make it a macro.
+MSR_IA32_DEBUGCTLMSR and LBR MSRs are currently not enumerated by
+KVM_GET_MSR_INDEX_LIST, and LBR MSRs cannot be set with KVM_SET_MSRS. So
+save/restore is completely broken.
 
-Macros are generally not preferred compared to functions, mainly due to
-type-safety. However, in this case it seems like having a simple macro
-copying a few fields is better than copy-pasting the same 5 lines of
-code in different places.
+Fix it by adding the MSRs to msrs_to_save_base, and allowing writes to
+LBR MSRs from userspace only (as they are read-only MSRs). Additionally,
+to correctly restore L1's LBRs while L2 is running, make sure the LBRs
+are copied from the captured VMCB01 save area in svm_copy_vmrun_state().
 
+Fixes: 24e09cbf480a ("KVM: SVM: enable LBR virtualization")
 Cc: stable@vger.kernel.org
+Reported-by: Jim Mattson <jmattson@google.com>
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c |  8 ++++----
- arch/x86/kvm/svm/svm.c    |  9 ---------
- arch/x86/kvm/svm/svm.h    | 10 +++++++++-
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ arch/x86/kvm/svm/nested.c |  3 +++
+ arch/x86/kvm/svm/svm.c    | 20 ++++++++++++++++++++
+ arch/x86/kvm/x86.c        |  3 +++
+ 3 files changed, 26 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index a31f3be1e16e..f7d5db0af69a 100644
+index f7d5db0af69a..52d853684592 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -709,10 +709,10 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12
- 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
- 		 * svm_set_msr's definition of reserved bits.
- 		 */
--		svm_copy_lbrs(vmcb02, vmcb12);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb12->save);
- 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
- 	} else {
--		svm_copy_lbrs(vmcb02, vmcb01);
-+		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
+@@ -1100,6 +1100,9 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
+ 		to_save->isst_addr = from_save->isst_addr;
+ 		to_save->ssp = from_save->ssp;
  	}
- 	vmcb_mark_dirty(vmcb02, VMCB_LBR);
- 	svm_update_lbrv(&svm->vcpu);
-@@ -1234,9 +1234,9 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
++
++	if (lbrv)
++		svm_copy_lbrs(to_save, from_save);
+ }
  
- 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
- 		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
--		svm_copy_lbrs(vmcb12, vmcb02);
-+		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
- 	} else {
--		svm_copy_lbrs(vmcb01, vmcb02);
-+		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
- 		vmcb_mark_dirty(vmcb01, VMCB_LBR);
- 	}
- 
+ void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 98cbd7c7beed..798f2c84d80b 100644
+index 798f2c84d80b..d93414db6559 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -841,15 +841,6 @@ static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
- 	 */
- }
+@@ -3071,6 +3071,26 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+ 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+ 		svm_update_lbrv(vcpu);
+ 		break;
++	case MSR_IA32_LASTBRANCHFROMIP:
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.br_from = data;
++		break;
++	case MSR_IA32_LASTBRANCHTOIP:
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.br_to = data;
++		break;
++	case MSR_IA32_LASTINTFROMIP:
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.last_excp_from = data;
++		break;
++	case MSR_IA32_LASTINTTOIP:
++		if (!msr->host_initiated)
++			return 1;
++		svm->vmcb->save.last_excp_to = data;
++		break;
+ 	case MSR_VM_HSAVE_PA:
+ 		/*
+ 		 * Old kernels did not validate the value written to
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index db3f393192d9..416899b5dbe4 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -351,6 +351,9 @@ static const u32 msrs_to_save_base[] = {
+ 	MSR_IA32_U_CET, MSR_IA32_S_CET,
+ 	MSR_IA32_PL0_SSP, MSR_IA32_PL1_SSP, MSR_IA32_PL2_SSP,
+ 	MSR_IA32_PL3_SSP, MSR_IA32_INT_SSP_TAB,
++	MSR_IA32_DEBUGCTLMSR,
++	MSR_IA32_LASTBRANCHFROMIP, MSR_IA32_LASTBRANCHTOIP,
++	MSR_IA32_LASTINTFROMIP, MSR_IA32_LASTINTTOIP,
+ };
  
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
--{
--	to_vmcb->save.dbgctl		= from_vmcb->save.dbgctl;
--	to_vmcb->save.br_from		= from_vmcb->save.br_from;
--	to_vmcb->save.br_to		= from_vmcb->save.br_to;
--	to_vmcb->save.last_excp_from	= from_vmcb->save.last_excp_from;
--	to_vmcb->save.last_excp_to	= from_vmcb->save.last_excp_to;
--}
--
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
- {
- 	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index ebd7b36b1ceb..44d767cd1d25 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -713,8 +713,16 @@ static inline void *svm_vcpu_alloc_msrpm(void)
- 	return svm_alloc_permissions_map(MSRPM_SIZE, GFP_KERNEL_ACCOUNT);
- }
- 
-+#define svm_copy_lbrs(to, from)					\
-+do {								\
-+	(to)->dbgctl		= (from)->dbgctl;		\
-+	(to)->br_from		= (from)->br_from;		\
-+	(to)->br_to		= (from)->br_to;		\
-+	(to)->last_excp_from	= (from)->last_excp_from;	\
-+	(to)->last_excp_to	= (from)->last_excp_to;		\
-+} while (0)
-+
- void svm_vcpu_free_msrpm(void *msrpm);
--void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
- void svm_enable_lbrv(struct kvm_vcpu *vcpu);
- void svm_update_lbrv(struct kvm_vcpu *vcpu);
- 
+ static const u32 msrs_to_save_pmu[] = {
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
 
