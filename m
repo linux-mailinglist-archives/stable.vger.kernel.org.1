@@ -1,196 +1,151 @@
-Return-Path: <stable+bounces-214595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iL/XCD1yhWkyBwQAu9opvQ
-	(envelope-from <stable+bounces-214595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:46:53 +0100
+	id sMrPCsx1hWngBwQAu9opvQ
+	(envelope-from <stable+bounces-214596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 06:02:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C64FA288
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 05:46:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D09FA32C
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 06:02:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2637C3018D54
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 04:46:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 537A930309AF
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 05:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9632E1F0E;
-	Fri,  6 Feb 2026 04:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88572E6CA8;
+	Fri,  6 Feb 2026 05:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gb0hV1/2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KukJk880"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECA03EBF19;
-	Fri,  6 Feb 2026 04:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790A22E2DD2;
+	Fri,  6 Feb 2026 05:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770353206; cv=none; b=VKtzm9yoS/ibqdNz1p4BmE3aqHa2HS+nLjcJ/m4FWX08VlvdzByEcLuCiyilSOaRqacnPBUX5UQbznLidgDqtJMCYEOVWyy8CUV1dMWXN69es4a4FysKM7Ynbw6Trk4z58E2xvF2d9SPTncezNqW/+hVt/R0u91//TzK0eDTd20=
+	t=1770354114; cv=none; b=Qs8eZcuJ7l7um783eD8ZZGl9e8M1t0ZHwEdejYUs4cJ2sbEw+kPmZCtJb05t20xKbpHwK13fiDUz1ee7gAwi1lWvEKGKFExZfQgrTjiyWb0KJlUvFb3By6WUxgDdD+VDK/AXiQrsqo+XlxeVjpX9pTVzq5hX0qXynGQPbEHPusc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770353206; c=relaxed/simple;
-	bh=3wyrS6FuHzMi0+gcu8RfA1Uj4G7edrBpeSx7MqKTXc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GFiqBiHq95pRONSqHfO9JnK5dJx55ZcgfTmO2WHahsCTadPTNDi4ZFrCQX/atonktMMMHANBRAEbxswRUWtgFknIjVtIIJPrATYJjX88bR04ZtKOvqtKZS8KljdJVxgJS5tyb62GO76tMh0l19a3zAO/+D8u3XFi96LlyV1on4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gb0hV1/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8686C116C6;
-	Fri,  6 Feb 2026 04:46:45 +0000 (UTC)
+	s=arc-20240116; t=1770354114; c=relaxed/simple;
+	bh=awsnYHluhMYiSyOtcwgGx116nbhXaUrMrdS3ZQpowTk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ReQ0Fecd0QzWmPS31Zc/vmB7R7B8GNFuxfzcCprDK45dHO7zlsETQnvCqx5fTwIIRcVVpYODoVxABsTHJ0eXGr7WTpU0t3bSGl4IUdIe73K5/2FVUibma3ryokvtsWuK7eq1ezg7xavl+jyleWvBuw/B27rS1R0EFI+0/mNlsVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KukJk880; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1745DC16AAE;
+	Fri,  6 Feb 2026 05:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770353205;
-	bh=3wyrS6FuHzMi0+gcu8RfA1Uj4G7edrBpeSx7MqKTXc8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gb0hV1/2aS4cm+FFVdaFLDw82LwMIn15ByAImVqGV/EmXaq1YC99V5YDtygkhEgbE
-	 wXANfGHqz39YEnOYDCjXev6WmJ6Dn0RxkECibf5B/Sqlvqh5oW7ZlL0YK9rG3KSO03
-	 rfnwjbBht1vdJL2nYXdcJj/gSrfy5PCNkwYjvthR6RF8Y1y31DUeAVy4xhx/mO/eQY
-	 jRYleYWKz++PjArgHMKffQTojav69bI+hkYUrv3g6UMeOZ9kagGRtZDdM7tqk8AbbZ
-	 036WeX8Ic3Y1qqSpaLEpq/6xuZ1TEBtWjf3D3CYEDE/mHePD12Yynk3dLYpGVN75S9
-	 c+OljczaNLADQ==
-Date: Thu, 5 Feb 2026 20:46:45 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Chris Mason <clm@meta.com>
-Cc: cem@kernel.org, r772577952@gmail.com, stable@vger.kernel.org,
-	hch@lst.de, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 2/4] xfs: only call xf{array,blob}_destroy if we have a
- valid pointer
-Message-ID: <20260206044645.GT7712@frogsfrogsfrogs>
-References: <176897723519.207608.4983293162799232099.stgit@frogsfrogsfrogs>
- <176897723586.207608.15038929489815852871.stgit@frogsfrogsfrogs>
- <20260205194211.2307232-1-clm@meta.com>
+	s=k20201202; t=1770354114;
+	bh=awsnYHluhMYiSyOtcwgGx116nbhXaUrMrdS3ZQpowTk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KukJk880K6NnbRiGcQFsNjp8X07faD28UcXBZDbAECOYIy/jSDdG7AEYTGhh9YFaf
+	 alGeSBJN8Wl4Dyu/dHP/uC8l5nFTn6Xb7mhRcAyHppQ2kZ9VBak/5JO+/050vv+V2/
+	 VgAC+cOTUrkWCifdB6c5W/IFJuqbHhpUWFHhbNHvMsnYtsO56EHhBgPpGsKOXJHic7
+	 7lExmnphPv0JVb0mrSMbIq4Tx3t2FnASQTMZVlLQqq7EjtAHPJjw0KhBGuFtEnbrt5
+	 NtTbQsJeIWjaJ9pnE9yshT+nhImeGNOaZr5WirjathqMwuOSjTPWtkj7toivfcDJGC
+	 PAnP0YedhLT+A==
+From: Eric Biggers <ebiggers@kernel.org>
+To: dm-devel@lists.linux.dev,
+	Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>,
+	linux-kernel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 01/22] dm-verity-fec: correctly reject too-small FEC devices
+Date: Thu,  5 Feb 2026 20:59:20 -0800
+Message-ID: <20260206045942.52965-2-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260206045942.52965-1-ebiggers@kernel.org>
+References: <20260206045942.52965-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205194211.2307232-1-clm@meta.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214595-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214596-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lst.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 74C64FA288
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 97D09FA32C
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 11:40:27AM -0800, Chris Mason wrote:
-> "Darrick J. Wong" <djwong@kernel.org> wrote:
-> > From: Darrick J. Wong <djwong@kernel.org>
-> > 
-> > Only call the xfarray and xfblob destructor if we have a valid pointer,
-> > and be sure to null out that pointer afterwards.  Note that this patch
-> > fixes a large number of commits, most of which were merged between 6.9
-> > and 6.10.
-> 
-> Hi everyone,
-> 
-> I'm trying out my AI review prompts on a few more trees, and I ran it
-> on the fuse-iomap-cache branch:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git/log/?h=fuse-iomap-cache
-> 
-> This was the latest email lore could find, apologies if I grabbed the wrong one.
-> 
-> Hopefully the review below is useful, please let me know if there are places it
-> has gone wildly wrong.  I kept the header to make it obvious exactly which
-> commit I'd run through.
-> 
-> I was really going for the fuse patches, but this ended up in my git
-> rev-list output, and it looks valid to me:
-> 
-> commit 1e4e64674c788423e24610612e4981eb1dc9b28b
-> Author: Darrick J. Wong <djwong@kernel.org>
-> 
-> xfs: only call xf{array,blob}_destroy if we have a valid pointer
-> 
-> This patch adds null pointer checks before calling xfarray_destroy and
-> xfblob_destroy functions across multiple XFS scrub/repair teardown
-> functions, and nulls out the pointers afterwards to prevent dangling
-> pointer issues.
-> 
-> Cc: r772577952@gmail.com
-> Cc: <stable@vger.kernel.org> # v6.12
-> Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
-> 
-> > diff --git a/fs/xfs/scrub/agheader_repair.c b/fs/xfs/scrub/agheader_repair.c
-> > index a2f6a7f71d839..6e3fef36d6614 100644
-> > --- a/fs/xfs/scrub/agheader_repair.c
-> > +++ b/fs/xfs/scrub/agheader_repair.c
-> 
-> [ ... ]
-> 
-> > diff --git a/fs/xfs/scrub/dir_repair.c b/fs/xfs/scrub/dir_repair.c
-> > index 7a21b688a4715..d5a55eabf6801 100644
-> > --- a/fs/xfs/scrub/dir_repair.c
-> > +++ b/fs/xfs/scrub/dir_repair.c
-> > @@ -172,8 +172,12 @@ xrep_dir_teardown(
-> >  	struct xrep_dir		*rd = sc->buf;
-> >
-> >  	xrep_findparent_scan_teardown(&rd->pscan);
-> > -	xfblob_destroy(rd->dir_names);
-> > -	xfarray_destroy(rd->dir_entries);
-> > +	if (rd->dir_names)
-> > +		xfblob_destroy(rd->dir_names);
-> > +	rd->dir_names = NULL;
-> > +	if (rd->dir_entries)
-> > +		xfarray_destroy(rd->dir_entries);
-> > +	rd->dir_names = NULL;
->                  ^^^^^^^^^^
-> 
-> In xrep_dir_teardown, after destroying rd->dir_entries, the code sets
-> rd->dir_names = NULL instead of rd->dir_entries = NULL. This leaves
-> dir_entries as a dangling pointer after the xfarray is freed.
-> 
-> The commit message states the patch should "be sure to null out that
-> pointer afterwards", and the pattern in xrep_agi_buf_cleanup correctly
-> nulls both iunlink_prev and iunlink_next pointers. This change should
-> null both dir_names (line 177) and dir_entries (line 180), but line 180
-> incorrectly nulls dir_names again.
-> 
-> Shouldn't line 180 be rd->dir_entries = NULL?
+Fix verity_fec_ctr() to reject too-small FEC devices by correctly
+computing the number of parity blocks as 'f->rounds * f->roots'.
+Previously it incorrectly used 'div64_u64(f->rounds * f->roots,
+v->fec->roots << SECTOR_SHIFT)' which is a much smaller value.
 
-Yep.  Will fix this.
+Note that the units of 'rounds' are blocks, not bytes.  This matches the
+units of the value returned by dm_bufio_get_device_size(), which are
+also blocks.  A later commit will give 'rounds' a clearer name.
 
-> [ ... ]
-> 
-> > Fixes: ab97f4b1c03075 ("xfs: repair AGI unlinked inode bucket lists")
-> 
-> The existing Fixes: tag points to commit ab97f4b1c03075, but this is not
-> the first commit that introduced the bug. The bug was first introduced by
-> commit f1184081ac97 ("xfs: teach scrub to check file nlinks") on
-> 2024-02-22, which unconditionally called xfarray_destroy without checking
-> for NULL pointers. The commit ab97f4b1c03075 (2024-04-15) is one of
-> several later commits that perpetuated the same bug pattern.
-> 
-> Should the Fixes: tag reference f1184081ac97 instead?
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ drivers/md/dm-verity-fec.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Strictly speaking there should have been separate patches for each of
-the files fixed in this patch, but I went with the more recent commit
-which was introduced in 6.12 rather than the oldest commit from 6.9
-because only 6.12 is receiving fixes anyway.
+diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
+index 7583607a8aa62..5c276d0fc20c0 100644
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -623,11 +623,11 @@ int verity_fec_ctr_alloc(struct dm_verity *v)
+  */
+ int verity_fec_ctr(struct dm_verity *v)
+ {
+ 	struct dm_verity_fec *f = v->fec;
+ 	struct dm_target *ti = v->ti;
+-	u64 hash_blocks, fec_blocks;
++	u64 hash_blocks;
+ 	int ret;
+ 
+ 	if (!verity_fec_is_enabled(v)) {
+ 		verity_fec_dtr(v);
+ 		return 0;
+@@ -704,12 +704,11 @@ int verity_fec_ctr(struct dm_verity *v)
+ 		return PTR_ERR(f->bufio);
+ 	}
+ 
+ 	dm_bufio_set_sector_offset(f->bufio, f->start << (v->data_dev_block_bits - SECTOR_SHIFT));
+ 
+-	fec_blocks = div64_u64(f->rounds * f->roots, v->fec->roots << SECTOR_SHIFT);
+-	if (dm_bufio_get_device_size(f->bufio) < fec_blocks) {
++	if (dm_bufio_get_device_size(f->bufio) < f->rounds * f->roots) {
+ 		ti->error = "FEC device is too small";
+ 		return -E2BIG;
+ 	}
+ 
+ 	f->data_bufio = dm_bufio_client_create(v->data_dev->bdev,
+-- 
+2.52.0
 
---D
 
