@@ -1,232 +1,211 @@
-Return-Path: <stable+bounces-214724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EsIK2hAhmmFLQQAu9opvQ
-	(envelope-from <stable+bounces-214724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:26:32 +0100
+	id qCmACCc/hmnzLAQAu9opvQ
+	(envelope-from <stable+bounces-214725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:21:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1446A102B5A
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:26:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B792102A3C
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 20:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 391133063B7E
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 19:19:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0FD16300F9A5
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 19:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B0E30649C;
-	Fri,  6 Feb 2026 19:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7433093B6;
+	Fri,  6 Feb 2026 19:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J2t9KC/k"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TFcL0oW5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF122FF161
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 19:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770405554; cv=pass; b=r+bDZbHapMeV8vdA5GqBGYZxXG9aBZYIoW6Xh36movGxxQgpuCR6hBunRzT2Jh1GYC5GTIjzNh+RpjRmRIpz0lybkAs9IqH/t4Xr72/N33J3nGKiAbj0BmTuzud4Og7ks/IRj3dOpy7UQ14mOpzpY3uhZfG7digVQPWuXo+EcEc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770405554; c=relaxed/simple;
-	bh=8rnsjteWqNgEKS4ck2l7RQkyQJPRY1LgHDc7jaFq98k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aNt4bx1lwHrCURPRRgC1AAkD3CS7JN0t3mSTowAR3X82hdF/2CFQuaB55hUBdZP1gR4OlWnKNRbzlO/iA48j8Ysr5/zDC5wto9i8iXPMCFJrwtZnGFTnBSopPetqDNcLpVuHtJk8MOlBjZulfaCwiDsGo3ncbphHlyh5GXjVNXQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J2t9KC/k; arc=pass smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4359a302794so731129f8f.1
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 11:19:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770405552; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YC1zZz9UGHu0Hq4pja13d+qmlNZ9SLJauNu9CnCd1bXAE2zGkifn/9BznfZCRNgKLj
-         bDhmJoR+mx2ilKYJ/Bm8txwZdp0RytEtRuTtChHfJ/lz3h7vtQjfZpwH3whSoPReHMs9
-         8LxefORZ7FHViLFfaEwoGU6NgHOeF9dKHJo8YfCOUHwZCpXz5XU2e+T/+iKajuCrSFiQ
-         NhQWIcMD3JlAghea3ZLnTVRmz0HBy+GoRl6urEg3dvbshLu+k2jbxS4ksUpu4Og7ql7+
-         y2BDF1k5ue1DK7AmGR+iDFB+yFcugve+GTpDcjsxbEjJUjsxsHFwxam1122IHK+NdkCb
-         N2bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fvh5DMP0qO3wt6PHVaJkcnU2bdJYis/SM/P7hxyNSCA=;
-        fh=/MidIX0LfeGpvuZ+ga96ghErR0rUYUcFDFeR8MDfpds=;
-        b=DzqFiCQTg8kjezupfUTjLXF3F4cMce6d2RrdcBZLEX+VROrj+qxa3r7V0vtAenl8TB
-         SdV0KfYMdV5PcbOoisr7HznPnhOPMrjwf2YrEU8kukzWzRN36FPGFnXeFHLHAz73jSfn
-         68svhmxPDBGWQE12XETSvCLLsuilGCVabAY0eBKGabn1tJgpj5UijarM1XO7JvEsTL19
-         WFJSJSvEO5TZhF+i9PoDTVCRZznQpcSNAfS1zZ1wNv2TL7dLvo/kWfcGcvfUcxCiA/Zf
-         CtFrVayLVGHKxG1Qh1bKv5YXtTzJSmU7MQ3pApFqZQXRGzJPmrUh2Bl+ODOl2xEAn0ht
-         nY9A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770405552; x=1771010352; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fvh5DMP0qO3wt6PHVaJkcnU2bdJYis/SM/P7hxyNSCA=;
-        b=J2t9KC/kuoLNsuNFhcV67w1r/q/z0FR1Fg/wBA+KuMV52mqJYRn14miMWoyK+Ddmow
-         RGarlKerYeBSmhezHNS8elqx0Dkc/4Mt3FUqWgeZwRUH0SCOfCG5uL677MfiPm7KpLtP
-         yTHgNJJe5KGAuFz72I5QQ05EhNyK6GIfFuR5V4EWPMjoWyY1xX5aGiy4wdrP+umI86Mx
-         Vq1elMJBfqpKrs9Vpz+QLXBTbkOjEDMnPwjSEHNW4YXHDKBGFQsr7fSrjIrQIKdyHjIL
-         hdbtiOLLMbKP6U/5pS60xMEFHNsu1ueNjZ9VFDj/u17VG6/AzcFz3/npL2eWC69BnPlX
-         D+Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770405552; x=1771010352;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fvh5DMP0qO3wt6PHVaJkcnU2bdJYis/SM/P7hxyNSCA=;
-        b=SanxXQ2UdaMyIszzYMocd+qX9Shfle1ewgwoFuB4rTCFcplxjkJc3mlDvX9d2kDe2K
-         OV6sn/sq1NpYjoUPlFyhEMxeWp5D0n8lROARap/rfco3T24doPx/Fq3zGnPjN5XjK9m0
-         65RC4wl9fkXgnwxLC7prkvpGfkEed5de9k43ImgmlPBgf0xV0pYP8IiOg5ULGpVCX7lt
-         H6ElAu57CD5k1FZFZOX3GlQ22oWT7E5QsbiRnzJ3LEJ40eXk8mdZSvvPi/p1okmM9nU2
-         g70TWVl3TvdpGkDQiGxC39h3RaDybaExVDZg9oGKBQO2mafUJc8r7Zru0jJlKyOHBZyD
-         hBcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXeH87r9GZFMsHR3K7eTxYEoiWsEukY7kR1/Dbb/4kecWWC7Cs5pC3C1+kASkzfkv8sswZ7fE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSKO08VwIUDWaBKp5NrFaI6o45kb2ratI1cuMYQLTi8hegmn1o
-	5nKyYT/o+ynyfMVNmXW/d1d5EBGLwXjQfDP0Ladf35TYhsafS3QyYjiKnzAx0HWIkc1g5H3J7R/
-	1LGylfvimtRamsViJ7tlMGHkGWHQtVdQ=
-X-Gm-Gg: AZuq6aKVAC5YQeGErcZUEqFPiJiJZWW30kXD3/CSnTg2WbiU8ns4LG8+PGAvNDEXXPg
-	P+13DnDwnypypSq5vOKlzdgrF4MjzoMr3L1pmCQSGX+onogCAjoJBZVmrS6l/bG9lsWWdYoxql8
-	5WYhHrlTLdY4StrdttbaCwbwqmL9PL4G5LECgUyh0tyXeNtHnhyMFfs49P0MSl8l7QlQZla/rmE
-	gUFMGMI0YRvow9OCRIV9CUuF/sQjewZA0rk0eGsziDxSHd2VJ75uP6NKAwQd2pjogGao7aUIHqi
-	oyW8yt8GJ97HUKdPCF2TDLpvieCtM9AC/O8gajWTFcjBZPVuo5Xk/G06DRZ+ousRMNUlOfrFhfs
-	5kbCrl8c4MkOxlMbe6dovcyFu
-X-Received: by 2002:a05:6000:24c6:b0:430:f985:a7b2 with SMTP id
- ffacd0b85a97d-4362938a74bmr5832110f8f.51.1770405552209; Fri, 06 Feb 2026
- 11:19:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5CB3093DE;
+	Fri,  6 Feb 2026 19:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770405577; cv=none; b=gx2HOnMpEQteEn9RTYGZQcnbdpLoS0gr8h5XzYgwRT7tbkkAKfWcCpPKY9yXi7RTpIQ0WyjyA0m18pV3P00bVpfciskR34m7dRTR1G1lZG3pzyax+wC4mhG/fFScivVAwOOkrIFNas0SMfuizj/NX/7lilfYP/lcmhn0xlTaQJw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770405577; c=relaxed/simple;
+	bh=otLnrbw7BdRmEwMu22GOgdmD5WAOxTne253r8HWDLKI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uRI25jCJmiG1+nnlOasOi2lIYkmjX3STtFJkg+KhJh9TFfWHvtQ5EA9IZvBEujaG6PeB/LQRJkPe4KMkZmFHYmpOesi+wVPuE/0fAwh4TuI80zraA6Bjg6IV1gqSEG9iwMKjLTLN1E3H1yNnMSxuoDW02B9lXPtiiYDTDombCc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TFcL0oW5; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770405577; x=1801941577;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=otLnrbw7BdRmEwMu22GOgdmD5WAOxTne253r8HWDLKI=;
+  b=TFcL0oW5JtBOdpFVpNrD6AyS+se/MicRetuNF/PC8qK06Q/KiTm3fuMA
+   PF4752SyWIulXJZC6m5T4i0UfzLc252t3btaOQJfD8RsAj7gYbgBJHSX5
+   Wy9TetHgG0KqHcp1OS2zHHkcSRFUJ2BPOyvbCWSnwSnjQNTvVZu8o++Iq
+   hfbDgcniK3Ttyg0OS7ROPB1uYNYo6WPUdocBNl2quP5OXh9H0PumlmF/n
+   R0c8kh5nqUg+FWKw74Rr4CLO6oGCJENot/o5WIbYUPnkL5wamA26S9k9e
+   RDLSf//W7kMcFbDPEf3XjCy4yCTF6TndhNOj21GzD5ibUzYg3X50r9ZjJ
+   Q==;
+X-CSE-ConnectionGUID: GJBPH2KxTf2ptG3D5WvspQ==
+X-CSE-MsgGUID: OdKzRkmFSVKU4YnGvfYOTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="74219915"
+X-IronPort-AV: E=Sophos;i="6.21,277,1763452800"; 
+   d="scan'208";a="74219915"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 11:19:36 -0800
+X-CSE-ConnectionGUID: D40UAiYaQGSs9p6zDhiRUg==
+X-CSE-MsgGUID: Sn8/cLx7RLqzgWLf5pDzPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,277,1763452800"; 
+   d="scan'208";a="210992383"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.111.156]) ([10.125.111.156])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 11:19:36 -0800
+Message-ID: <a7be319d-381f-469d-9d5b-ddcf43d884e4@intel.com>
+Date: Fri, 6 Feb 2026 11:19:35 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260206171348.35886-1-harry.yoo@oracle.com> <20260206171348.35886-2-harry.yoo@oracle.com>
- <2ce1eac3-98fd-448f-8a73-01bb3cb5a7d5@suse.cz>
-In-Reply-To: <2ce1eac3-98fd-448f-8a73-01bb3cb5a7d5@suse.cz>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 6 Feb 2026 11:19:01 -0800
-X-Gm-Features: AZwV_QgOmEJlQPiQCkEAMnSvrww4GS3Jp7SWFouow-nGLlJkXss3_AON0w3rSVU
-Message-ID: <CAADnVQ+1RBXBWNQtshEfFNZEp0tDZOFKf_vedyjgdz=wqWdG8A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/slab: skip get_from_any_partial() if !allow_spin
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	linux-mm <linux-mm@kvack.org>, stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] x86/smp: Set up exception handling before cr4_init()
+To: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ peterz@infradead.org, andrew.cooper3@citrix.com, sohil.mehta@intel.com,
+ nikunj@amd.com, thomas.lendacky@amd.com, seanjc@google.com,
+ stable@vger.kernel.org
+References: <20260206185035.1250577-1-xin@zytor.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <20260206185035.1250577-1-xin@zytor.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214724-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-214725-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexeistarovoitov@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,mail.gmail.com:mid,suse.cz:email]
-X-Rspamd-Queue-Id: 1446A102B5A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: 2B792102A3C
 X-Rspamd-Action: no action
 
-On Fri, Feb 6, 2026 at 10:10=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 2/6/26 18:13, Harry Yoo wrote:
-> > Lockdep complains when get_from_any_partial() is called in an NMI
-> > context, because current->mems_allowed_seq is seqcount_spinlock_t and
-> > not NMI-safe:
-> >
-> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >   WARNING: inconsistent lock state
-> >   6.19.0-rc5-kfree-rcu+ #315 Tainted: G                 N
-> >   --------------------------------
-> >   inconsistent {INITIAL USE} -> {IN-NMI} usage.
-> >   kunit_try_catch/9989 [HC1[1]:SC0[0]:HE0:SE1] takes:
-> >   ffff889085799820 (&____s->seqcount#3){.-.-}-{0:0}, at: ___slab_alloc+=
-0x58f/0xc00
-> >   {INITIAL USE} state was registered at:
-> >     lock_acquire+0x185/0x320
-> >     kernel_init_freeable+0x391/0x1150
-> >     kernel_init+0x1f/0x220
-> >     ret_from_fork+0x736/0x8f0
-> >     ret_from_fork_asm+0x1a/0x30
-> >   irq event stamp: 56
-> >   hardirqs last  enabled at (55): [<ffffffff850a68d7>] _raw_spin_unlock=
-_irq+0x27/0x70
-> >   hardirqs last disabled at (56): [<ffffffff850858ca>] __schedule+0x2a8=
-a/0x6630
-> >   softirqs last  enabled at (0): [<ffffffff81536711>] copy_process+0x1d=
-c1/0x6a10
-> >   softirqs last disabled at (0): [<0000000000000000>] 0x0
-> >
-> >   other info that might help us debug this:
-> >    Possible unsafe locking scenario:
-> >
-> >          CPU0
-> >          ----
-> >     lock(&____s->seqcount#3);
-> >     <Interrupt>
-> >       lock(&____s->seqcount#3);
-> >
-> >    *** DEADLOCK ***
-> >
-> > According to Documentation/locking/seqlock.rst, seqcount_t is not
-> > NMI-safe and seqcount_latch_t should be used when read path can interru=
-pt
-> > the write-side critical section. In this case, return NULL and fall bac=
-k
-> > to slab allocation if !allow_spin.
-> >
-> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock=
-().")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > ---
-> >  mm/slub.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 102fb47ae013..d46464654c15 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -3789,6 +3789,14 @@ static void *get_from_any_partial(struct kmem_ca=
-che *s, struct partial_context *
-> >       enum zone_type highest_zoneidx =3D gfp_zone(pc->flags);
-> >       unsigned int cpuset_mems_cookie;
-> >
-> > +     /*
-> > +      * read_mems_allow_begin() accesses current->mems_allowed_seq,
-> > +      * a seqcount_spinlock_t that is not NMI-safe. Skip allocation
-> > +      * when GFP flags indicate spinning is not allowed.
-> > +      */
-> > +     if (!gfpflags_allow_spinning(pc->flags))
-> > +             return NULL;
->
-> I think it would be less restrictive to just continue, but skip the
-> read_mems_allowed_retry() part in the do-while loop, so just make it one
-> iteration for !allow_spin. If lockdep doesn't like even the
-> read_mems_allowed_begin() (not clear to me), skip it too?
+> +	/*
+> +	 * AP startup assembly code has setup the following before calling
+> +	 * start_secondary() on 64-bit:
+> +	 *
+> +	 * 1) CS set to __KERNEL_CS.
+> +	 * 2) CR3 switched to the init_top_pgt.
+> +	 * 3) CR4.PAE, CR4.PSE and CR4.PGE are set.
+> +	 * 4) GDT set to per-CPU gdt_page.
+> +	 * 5) ALL data segments set to the NULL descriptor.
+> +	 * 6) MSR_GS_BASE set to per-CPU offset.
+> +	 * 7) IDT set to bringup IDT.
+> +	 * 8) CR0 set to CR0_STATE.
+> +	 *
+> +	 * So it's ready to setup exception handling.
+> +	 */
+>  	cpu_init_exception_handling(false);
 
-+1
-Just unconditional return NULL seems too restrictive.
+This is fine because very little of that ^ is ever going to change. It's
+not great that it duplicates the assembly logic, but it's good
+documentation I guess.
+
+> +	/*
+> +	 * Ensure bits set in cr4_pinned_bits are set in CR4.
+> +	 *
+> +	 * cr4_pinned_bits is a subset of cr4_pinned_mask, which includes
+> +	 * the following bits:
+> +	 *         X86_CR4_SMEP
+> +	 *         X86_CR4_SMAP
+> +	 *         X86_CR4_UMIP
+> +	 *         X86_CR4_FSGSBASE
+> +	 *         X86_CR4_CET
+> +	 *         X86_CR4_FRED
+> +	 */
+> +	cr4_init();
+
+I'm not as big of a fan of this comment. The next pinned bit that gets
+added will make this stale. Could we try to make this more timeless, please?
+
+I'm also not sure I like the asymmetry of this between the boot and
+secondary CPUs. On a boot CPU, CR4.SMEP will get set via
+identify_boot_cpu() and eventually setup_smep(). On a secondary CPU,
+it'll get set in cr4_init() and *not* in setup_smep().
+
+This asymmetry is (I think) part of what the root of the problem is here
+and how this bug came to be.
+
+I really think the current pinning behavior is too invasive. It has zero
+benefit to be pinning CR bits this early in bringup. It's only causing pain.
+
+I _really_ think we need a defined per-cpu point where pinning comes
+into effect. Marking the CPU online is one idea.
+
+Thoughts?
 
