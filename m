@@ -1,66 +1,69 @@
-Return-Path: <stable+bounces-214730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OC+sLTdShmnQLwQAu9opvQ
-	(envelope-from <stable+bounces-214730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:42:31 +0100
+	id KI92ExlThmnQLwQAu9opvQ
+	(envelope-from <stable+bounces-214731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:46:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C53103306
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:42:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE8D10336B
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 21:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FC3E303FDEB
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 20:41:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B241B303C4EB
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 20:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD28930CD9E;
-	Fri,  6 Feb 2026 20:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC0C3101D8;
+	Fri,  6 Feb 2026 20:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="F6TjauNH";
-	dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="LXfdjBI5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tu5OlpZD"
 X-Original-To: stable@vger.kernel.org
-Received: from devnull.danielhodges.dev (vps-2f6e086e.vps.ovh.us [135.148.138.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4B2EC0A7;
-	Fri,  6 Feb 2026 20:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.148.138.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806812BB1D;
+	Fri,  6 Feb 2026 20:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770410515; cv=none; b=AU3CPNYJnae74U2ypgE5YUhH+8ZsSxAJOy7tIFm9QVFhSA7wDAPUs9G7hIvyTmM8X+SBFIIi2phoZ9vWyTrfRy8mCI+K0Yc6ViLhck1WKR11f52z1e35L7jHD1Ukl0TjLU/9E+sP6uWcgtRdLtpYajpCxfh1rNBF2QPf+zPjP0M=
+	t=1770410746; cv=none; b=p3ZMH293Ge/Rl2ecEf0jGDn05e/yhda1jtdWCaWxAaou37IjGB4dETdyNRTKo5+OMkzpNqeNW2pCeKcTwbqkH/LxTnwhwLvGr+7KeJ1ZP6/Nz54zNmWlWnomulWlS6Ly5TgCA6MQ9AVHToLKFHq3AOsUImOqaPivsHZOFToOvNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770410515; c=relaxed/simple;
-	bh=mtIS6L7p5weFzGrtJCr2iaB11dBNt2cH07r6/GTGfd8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c6pIq4him+oG1V6zaHBI+MyGMLRfSiveyrBQCNnuLeUs6BTX74K/ehiGKMcU0kbJecgQIqxxS/1xmrxLfFff7tkuxVGJl2Vktsmepy4/ciJnuEuW9Bc53DY9gyzDRsU6HqQsDhDewUtOEwOjV/9Ahx+eJWO7Yv5gMf9cs4AuvjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev; spf=pass smtp.mailfrom=danielhodges.dev; dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=F6TjauNH; dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=LXfdjBI5; arc=none smtp.client-ip=135.148.138.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danielhodges.dev
-DKIM-Signature: v=1; a=rsa-sha256; s=202510r; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770410506; bh=WwAnzenkq1Xn7RsL/ac0kPI
-	OggL6T09Nc3LDc7PsTmM=; b=F6TjauNHBoJdFIzFzdVSDaqM4p64bZIiEik3ZdtjYUx4tPndRZ
-	5SQYcOxGYO4n2sffH0AMdjkMyR5P5qK22cNsGKpzI1MeVZxlkaycZRijPRrQMFsUP1yMV8cEBVV
-	dM9RH05MlUBEnG1Cic8H/Enkq14aCpIfgsW57S0tvHkd4n0QbfG2dL4FcWjyObwE5chGfutqcHU
-	0jdZ/C2zg3ujoN9+6MBBG5YRWPti3nV9FkHpOdACJM0hTC07kblwCBcP4zaiXysMMLRdZl1D/AD
-	VBAT9BiMRtQTrmVZpdQP+oUet5oitvLWA7YzQHEOKUO1yyoFW339Y5V1F7880xg8r9A==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202510e; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770410506; bh=WwAnzenkq1Xn7RsL/ac0kPI
-	OggL6T09Nc3LDc7PsTmM=; b=LXfdjBI5DUaW0Nn5AQNI0OEYjQY6oV0HvFlPDv55L9QLtKcGk7
-	RT9W6RBZ6MWwJFhFveNONZAe36rH/D1/cDDQ==;
-From: Daniel Hodges <git@danielhodges.dev>
-To: chuck.lever@oracle.com,
-	anna@kernel.org,
-	trondmy@kernel.org
-Cc: linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jlayton@kernel.org,
-	neil@brown.name,
-	okorniev@redhat.com,
-	Daniel Hodges <git@danielhodges.dev>,
+	s=arc-20240116; t=1770410746; c=relaxed/simple;
+	bh=O+HFQ1UozoePstlcPyJvGR3tRsRc5nWO8y2FvMc6lV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BRUdV5ZSwTJe2XJNXvvSoiT1VKPRuP1t5dCHIrpKA5JEUX8P2VLLUIs5Xj2EYLOJ30o1Vr8JBdgq5WzssscDAzS2F+2XIwTSiVu0vIJVpbk8NBiV0Yu7FT7hJN5XOv0s+Tx+jlGy0+dJf+jlTa4bFaf0cezXsaTAR4voQnt4mBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tu5OlpZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B797C116C6;
+	Fri,  6 Feb 2026 20:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770410746;
+	bh=O+HFQ1UozoePstlcPyJvGR3tRsRc5nWO8y2FvMc6lV8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tu5OlpZDwx5lFetlZQtYLmCeXVmb2Xq9b1daGWFb0+3dUJ17Z+8YIj+AqWKFLHSXV
+	 6k6nYj8IlGGJjZ36HaPWKoPnU/VC41kg+0wEiQbPqaRauvgu2rXsTl640DB2hPwMJx
+	 1mOV4/iu6aAwUb8E2pz4OVb200+D82iqdXeGkh+xtUBjog3YsNTZZkVkyAdyjqPJO1
+	 3MxRk48YrSEVFqk7Id5LWLLVI7NYVGC8QyeaMncmAIMS/fAXO6bstro81zLoQNPgTC
+	 NdzgZV2HPGyZxwmx8uoL2e7HOcaNexZ/rBu0DooOiE2O39FKR/B8ZfNcUO21SiFx8Y
+	 LeHY9bNpBmAvg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	David Wood <david@davidtw.co>,
+	Wesley Wiser <wwiser@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path
-Date: Fri,  6 Feb 2026 15:41:46 -0500
-Message-ID: <20260206204146.21093-1-git@danielhodges.dev>
-X-Mailer: git-send-email 2.52.0
+Subject: [PATCH] rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0
+Date: Fri,  6 Feb 2026 21:45:35 +0100
+Message-ID: <20260206204535.39431-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,78 +72,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[danielhodges.dev,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[danielhodges.dev:s=202510r,danielhodges.dev:s=202510e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[gmail.com,garyguo.net,protonmail.com,kernel.org,google.com,umich.edu,vger.kernel.org,davidtw.co];
+	TAGGED_FROM(0.00)[bounces-214731-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214730-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[danielhodges.dev:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[git@danielhodges.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,fjasle.eu];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,danielhodges.dev:email,danielhodges.dev:dkim,danielhodges.dev:mid]
-X-Rspamd-Queue-Id: 15C53103306
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ECE8D10336B
 X-Rspamd-Action: no action
 
-Commit 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c") added
-a kref_get(&gss_auth->kref) call to balance the gss_put_auth() done
-in gss_release_msg(), but forgot to add a corresponding kref_put()
-on the error path when kstrdup_const() fails.
+Custom target specifications are unstable, but starting with Rust 1.95.0,
+`rustc` requires to explicitly pass `-Zunstable-options` to use them [1]:
 
-If service_name is non-NULL and kstrdup_const() fails, the function
-jumps to err_put_pipe_version which calls put_pipe_version() and
-kfree(gss_msg), but never releases the gss_auth reference. This leads
-to a kref leak where the gss_auth structure is never freed.
+    error: error loading target specification: custom targets are unstable and require `-Zunstable-options`
+      |
+      = help: run `rustc --print target-list` for a list of built-in targets
 
-Add a forward declaration for gss_free_callback() and call kref_put()
-in the err_put_pipe_version error path to properly release the
-reference taken earlier.
+David (Rust compiler team lead), writes:
 
-Fixes: 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+   "We're destabilising custom targets to allow us to move forward with
+    build-std without accidentally exposing functionality that we'd like
+    to revisit prior to committing to. I'll start a thread on Zulip to
+    discuss with the RfL team how we can come up with an alternative
+    for them."
+
+Thus pass it.
+
+Cc: David Wood <david@davidtw.co>
+Cc: Wesley Wiser <wwiser@gmail.com>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/151534 [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- net/sunrpc/auth_gss/auth_gss.c | 3 +++
+ rust/Makefile | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
-index 5c095cb8cb20..bb3c3db2713b 100644
---- a/net/sunrpc/auth_gss/auth_gss.c
-+++ b/net/sunrpc/auth_gss/auth_gss.c
-@@ -39,6 +39,8 @@ static const struct rpc_authops authgss_ops;
- static const struct rpc_credops gss_credops;
- static const struct rpc_credops gss_nullops;
+diff --git a/rust/Makefile b/rust/Makefile
+index 4dcc2eff51cb..725158740fc6 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -552,6 +552,8 @@ $(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel
+ $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
  
-+static void gss_free_callback(struct kref *kref);
-+
- #define GSS_RETRY_EXPIRED 5
- static unsigned int gss_expired_cred_retry_delay = GSS_RETRY_EXPIRED;
++# `rustc` requires `-Zunstable-options` to use custom target specifications
++# since Rust 1.95.0 (https://github.com/rust-lang/rust/pull/151534).
+ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
+       cmd_rustc_library = \
+ 	OBJTREE=$(abspath $(objtree)) \
+@@ -562,6 +564,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
+ 		--crate-type rlib -L$(objtree)/$(obj) \
+ 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
+ 		--sysroot=/dev/null \
++		-Zunstable-options \
+ 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
+ 	$(cmd_objtool)
  
-@@ -551,6 +553,7 @@ gss_alloc_msg(struct gss_auth *gss_auth,
- 	}
- 	return gss_msg;
- err_put_pipe_version:
-+	kref_put(&gss_auth->kref, gss_free_callback);
- 	put_pipe_version(gss_auth->net);
- err_free_msg:
- 	kfree(gss_msg);
+
+base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
 -- 
-2.52.0
+2.53.0
 
 
