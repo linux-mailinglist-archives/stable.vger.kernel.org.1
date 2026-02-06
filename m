@@ -1,180 +1,290 @@
-Return-Path: <stable+bounces-214574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id s/VFAkk6hWn6+QMAu9opvQ
-	(envelope-from <stable+bounces-214574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:48:09 +0100
+	id SImuDOI8hWlY+gMAu9opvQ
+	(envelope-from <stable+bounces-214575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAB8F8C16
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:48:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F3FF8C73
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 01:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4E023023D9E
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 00:48:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D78830166DF
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 00:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123611F130B;
-	Fri,  6 Feb 2026 00:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C4E21FF2E;
+	Fri,  6 Feb 2026 00:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1fQCi5Hs"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="F31i4m9O"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail114-240.sinamail.sina.com.cn (mail114-240.sinamail.sina.com.cn [218.30.114.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFB31C84C0
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 00:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF75C1D5CFE
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 00:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770338881; cv=none; b=h53thOJA+zW61Gjhwrx7rc6MvfHm/9SqNPsjWHT6dGhyj684Dv4nAUCvfHEltIj6iTsJItXzXswOoebf49KRIl9M/5R0jJvt3at5ChNGTRhEQbKjNJrD6X29nlN5T4dNmZMoF2chumHKi20TmLTNFuIfKsDz1gznA81poX2EO7U=
+	t=1770339545; cv=none; b=cIWS1bAf7F4OzoMP1Du8Jthx79sy+1AUJYvb2Xi2DKSP2Y4Nh7WfyaicwRdsHFG8SocVuVR1YMFw5djyRCVy3/37m8MV5dYK+J8O1C0Wl46+l8qxn0iMtxD6NQctYSpptDdoMoBvE/ESGkYS4sBoo0ZG7VPlKrRW2l96HHS2FVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770338881; c=relaxed/simple;
-	bh=u57zmi9QATrJCwGbhOw9adxwygav5ddpIaPs/uKQ4Cs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=C0vdH8RewdKPc5as0xp4ZoptbEwyHRz2XTigQhKTvV9p8ohrSTyZEHJ7cDRFGUz1EWl4V2k47FcgsiWn+lRdlJEcfwmKl+4QkXfZM/ckbGqHBAhm6uH9lV30Vo2pEoO4mlMN+DHSfh979oE+oiMmWvkYb38RFpKekdL4/zP4VI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1fQCi5Hs; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a0f0c7a06eso14530425ad.2
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 16:48:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770338881; x=1770943681; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=THB1tEnnviDiuh79UQ78u6wkoEDwJvwa95g/THSVKMU=;
-        b=1fQCi5HsDP6jPJWu4GI2Nk7GNCeUeg+rTUgYtp1JiGXZI52IkXB+x1BSxFOtbEr5QM
-         /NO99FU1+66Aq0OiTYe4fHJhS4NTBoQWWQXzwJ7O5nZMnv0aoRXG+Ofc8MZGle9A/XMM
-         uP6T0ymBdKKMIbIem+Ay7GTf136/QEFCxrAfAlvm+4SbRisOcBzxXDcJk6PQbP795snd
-         XiLdVMf5ItAXUwHvzHyD4tb3qcnmiB05I2VgTvl3BAHbT5Mo7QP+qOstqr9/N5BnW440
-         Q7cTSQZ3o7/XUXbfj7YrNFcoxBar364eDD5Bd2pcVJXHYnRP96Xm2JFDBhwGp8puLVPw
-         GvWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770338881; x=1770943681;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=THB1tEnnviDiuh79UQ78u6wkoEDwJvwa95g/THSVKMU=;
-        b=c5FXwnP/U9AouxPr+h1nwxj/dVygbDK8ln2WV8cmZYI71xrFM/7rw+SEIdGdUDZVHO
-         0WWsNol1Zj6jxiiFme24RciaOp84wdNDSUaRexjgi7+W7QGpxtPLZOhAUjfs8xYg8PxG
-         9iAVZBT3Rri5jxbCE4rBI+wYdYDkBwgkKO26wSHhO7YiUQ9zUwvtTHfa+0/37Z3kch/A
-         lnRrsAJHNEGiVutJUuqbe5RV3w6+lMkfihtBCCMRxznriJdWD5nHDFKvcDbp2xvQKoSv
-         ug1tHFnUyR4m+IdZARvllsH3q0pCEEksb4YnobHH+0KW3WpPzGzBh8Amr0LSMzdyOLTc
-         FaZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbMm9Au5QgOCoSs3fyAYHD+CE6s+81tPo/POr7wEjjsGHVRt1H5mbvUAVXwlGJH3W9sa3CN7M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYDxsz3lp0M+tOfPcPv2cVMN3k8JpdubraynFyfeLNpiUwPwRi
-	3wMK7OLU7isdqdht6pyhjrxyi8nYsZ8MOmN4tv5HVGxn+uciy49SvhbkevYjeKc93r3Iecw+hCX
-	1g3MlbQ==
-X-Received: from plar21.prod.google.com ([2002:a17:902:c7d5:b0:2a7:78b9:f962])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f70e:b0:2a9:4bd9:bba1
- with SMTP id d9443c01a7336-2a952256f1fmr9497105ad.52.1770338881089; Thu, 05
- Feb 2026 16:48:01 -0800 (PST)
-Date: Thu, 5 Feb 2026 16:47:59 -0800
-In-Reply-To: <20260115011312.3675857-14-yosry.ahmed@linux.dev>
+	s=arc-20240116; t=1770339545; c=relaxed/simple;
+	bh=ZDU317g5GAq9kvSjDMk+t7qlAB0oXms+LdA1thglsAg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GcksX35tX185ygjfAPSedFiXv+em0v6n+JeBkp7EhZt0s/GSpuHRbObU7yBSA52YSDjgDf8GTB5Ac6b2pSAcDicW4sB2X+LAh+nKwLgLFsHHhVM2hz0ffGDsJf/wD8hvG4AY2ab3BgQvlj3DNsdUK1HcK1uw6dWMOHScia9e3hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=F31i4m9O; arc=none smtp.client-ip=218.30.114.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770339543;
+	bh=vJ2S4n+s94Fr7zM4B1DDMY6JoytNxiHt7LqmMoL4wI4=;
+	h=From:Subject:Date:Message-Id;
+	b=F31i4m9O4WTB7/uXPREDYbjrwGKxVScP/+7BrcCvjTxYmUKI9lWXW2Kqy9IO/LHRC
+	 w+Fr8Am6Glc/XSkHQOm6vLRDY58hKgMkmUXXFYUL0mI1MzFU+Ivkrn3EVSeoYpNZBc
+	 /4bWFIWDlcmxAH3hb2AV8/S2QYa7Dxg/bypFjGhQ=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.23) with ESMTP
+	id 69853C4200004A9D; Fri, 6 Feb 2026 08:56:36 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 2469458912931
+X-SMAIL-UIID: 4BF725AD640D4F4FB0FE55EF7AB45E6A-20260206-085636-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	k.chen@smail.nju.edu.cn
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	slava@dubeyko.com,
+	sashal@kernel.org,
+	yang.chenzhi@vivo.com,
+	frank.li@vivo.com,
+	penguin-kernel@I-love.SAKURA.ne.jp,
+	liushixin2@huawei.com,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH 5.15.y] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
+Date: Fri,  6 Feb 2026 08:56:33 +0800
+Message-Id: <20260206005633.3165225-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260115011312.3675857-1-yosry.ahmed@linux.dev> <20260115011312.3675857-14-yosry.ahmed@linux.dev>
-Message-ID: <aYU6P2qNEpRVWllL@google.com>
-Subject: Re: [PATCH v4 13/26] KVM: nSVM: Unify handling of VMRUN failures with
- proper cleanup
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214574-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-214575-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6DAB8F8C16
+	FREEMAIL_FROM(0.00)[sina.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dubeyko.com:email,nju.edu.cn:email,sina.cn:email,sina.cn:dkim,sina.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C5F3FF8C73
 X-Rspamd-Action: no action
 
-On Thu, Jan 15, 2026, Yosry Ahmed wrote:
-> @@ -983,6 +991,8 @@ static void __nested_svm_vmexit(struct vcpu_svm *svm)
->  	struct vmcb *vmcb01 = svm->vmcb01.ptr;
->  	struct kvm_vcpu *vcpu = &svm->vcpu;
->  
-> +	WARN_ON_ONCE(is_guest_mode(vcpu));
-> +
->  	svm->nested.vmcb12_gpa = 0;
->  	svm->nested.ctl.nested_cr3 = 0;
->  
-> @@ -1006,6 +1016,19 @@ static void __nested_svm_vmexit(struct vcpu_svm *svm)
->  		kvm_queue_exception(vcpu, DB_VECTOR);
->  }
->  
-> +static void nested_svm_failed_vmrun(struct vcpu_svm *svm, struct vmcb *vmcb12)
+From: Kang Chen <k.chen@smail.nju.edu.cn>
 
-I don't love the name.  "fail" has very specific meaning in VMX for VMLAUNCH and
-VMRESUME, as VM-Fail is not a VM-Exit, e.g. doesn't load host state from the VMCS.
+[ Upstream commit bea3e1d4467bcf292c8e54f080353d556d355e26 ]
 
-I also don't love that the name doesn't capture that this is synthesizing a #VMEXIT.
-Maybe nested_svm_vmrun_error_vmexit()?  I suppose nested_svm_failed_vmrun_vmexit()
-isn't too bad either, as that at least addresses my concerns about conflating it
-with VMX's VM-Fail.
+BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
+Read of size 2 at addr ffff8880289ef218 by task syz.6.248/14290
 
-> +{
-> +	WARN_ON(svm->vmcb == svm->nested.vmcb02.ptr);
+CPU: 0 UID: 0 PID: 14290 Comm: syz.6.248 Not tainted 6.16.4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x5f0 mm/kasan/report.c:482
+ kasan_report+0xca/0x100 mm/kasan/report.c:595
+ hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
+ hfsplus_listxattr+0x5b6/0xbd0 fs/hfsplus/xattr.c:738
+ vfs_listxattr+0xbe/0x140 fs/xattr.c:493
+ listxattr+0xee/0x190 fs/xattr.c:924
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x143/0x360 fs/xattr.c:988
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe0e9fae16d
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe0eae67f98 EFLAGS: 00000246 ORIG_RAX: 00000000000000c3
+RAX: ffffffffffffffda RBX: 00007fe0ea205fa0 RCX: 00007fe0e9fae16d
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000000
+RBP: 00007fe0ea0480f0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fe0ea206038 R14: 00007fe0ea205fa0 R15: 00007fe0eae48000
+ </TASK>
 
-WARN_ON_ONCE()
+Allocated by task 14290:
+ kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4333 [inline]
+ __kmalloc_noprof+0x219/0x540 mm/slub.c:4345
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ hfsplus_find_init+0x95/0x1f0 fs/hfsplus/bfind.c:21
+ hfsplus_listxattr+0x331/0xbd0 fs/hfsplus/xattr.c:697
+ vfs_listxattr+0xbe/0x140 fs/xattr.c:493
+ listxattr+0xee/0x190 fs/xattr.c:924
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x143/0x360 fs/xattr.c:988
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-> +
-> +	leave_guest_mode(vcpu);
+When hfsplus_uni2asc is called from hfsplus_listxattr,
+it actually passes in a struct hfsplus_attr_unistr*.
+The size of the corresponding structure is different from that of hfsplus_unistr,
+so the previous fix (94458781aee6) is insufficient.
+The pointer on the unicode buffer is still going beyond the allocated memory.
 
-Someone didn't test each patch.  "vcpu" doesn't exist until
-"KVM: nSVM: Restrict mapping VMCB12 on nested VMRUN".  Just pass in @vcpu and
-@vmcb12, i.e. don't pass @svm and then pull @vcpu back out.
+This patch introduces two warpper functions hfsplus_uni2asc_xattr_str and
+hfsplus_uni2asc_str to process two unicode buffers,
+struct hfsplus_attr_unistr* and struct hfsplus_unistr* respectively.
+When ustrlen value is bigger than the allocated memory size,
+the ustrlen value is limited to an safe size.
 
-> +	vmcb12->control.exit_code = SVM_EXIT_ERR;
-> +	vmcb12->control.exit_code_hi = -1u;
-> +	vmcb12->control.exit_info_1 = 0;
-> +	vmcb12->control.exit_info_2 = 0;
-> +	__nested_svm_vmexit(svm);
-> +}
+Fixes: 94458781aee6 ("hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()")
+Signed-off-by: Kang Chen <k.chen@smail.nju.edu.cn>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250909031316.1647094-1-k.chen@smail.nju.edu.cn
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+---
+ fs/hfsplus/dir.c        |  2 +-
+ fs/hfsplus/hfsplus_fs.h |  8 ++++++--
+ fs/hfsplus/unicode.c    | 24 +++++++++++++++++++-----
+ fs/hfsplus/xattr.c      |  6 +++---
+ 4 files changed, 29 insertions(+), 11 deletions(-)
 
-...
-
-> @@ -1224,6 +1232,8 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
->  	if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
->  		vmcb01->control.erap_ctl |= ERAP_CONTROL_CLEAR_RAP;
->  
-> +	/* VMRUN failures before switching to VMCB02 are handled by nested_svm_failed_vmrun() */
-
-Please don't add comments that just point elsewhere.  They inevitably become
-stale, and they don't help the reader understand "why" any of this matters.
-
-E.g. something like
-
-	/*
-	 * This helper is intended for use only when KVM synthesizing a #VMEXIT
-	 * after a successful nested VMRUN.  All VMRUN consistency checks must
-	 * be performed before loading guest state, and so should use the inner
-	 * helper.
-	 */ 
+diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
+index 98a30ca6354c..17e651bd04ad 100644
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -204,7 +204,7 @@ static int hfsplus_readdir(struct file *file, struct dir_context *ctx)
+ 			fd.entrylength);
+ 		type = be16_to_cpu(entry.type);
+ 		len = NLS_MAX_CHARSET_SIZE * HFSPLUS_MAX_STRLEN;
+-		err = hfsplus_uni2asc(sb, &fd.key->cat.name, strbuf, &len);
++		err = hfsplus_uni2asc_str(sb, &fd.key->cat.name, strbuf, &len);
+ 		if (err)
+ 			goto out;
+ 		if (type == HFSPLUS_FOLDER) {
+diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
+index 8396964b056f..610ba01f19c3 100644
+--- a/fs/hfsplus/hfsplus_fs.h
++++ b/fs/hfsplus/hfsplus_fs.h
+@@ -516,8 +516,12 @@ int hfsplus_strcasecmp(const struct hfsplus_unistr *s1,
+ 		       const struct hfsplus_unistr *s2);
+ int hfsplus_strcmp(const struct hfsplus_unistr *s1,
+ 		   const struct hfsplus_unistr *s2);
+-int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
+-		    char *astr, int *len_p);
++int hfsplus_uni2asc_str(struct super_block *sb,
++			const struct hfsplus_unistr *ustr, char *astr,
++			int *len_p);
++int hfsplus_uni2asc_xattr_str(struct super_block *sb,
++			      const struct hfsplus_attr_unistr *ustr,
++			      char *astr, int *len_p);
+ int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
+ 		    int max_unistr_len, const char *astr, int len);
+ int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
+diff --git a/fs/hfsplus/unicode.c b/fs/hfsplus/unicode.c
+index ebd326799f35..11e08a4a18b2 100644
+--- a/fs/hfsplus/unicode.c
++++ b/fs/hfsplus/unicode.c
+@@ -143,9 +143,8 @@ static u16 *hfsplus_compose_lookup(u16 *p, u16 cc)
+ 	return NULL;
+ }
+ 
+-int hfsplus_uni2asc(struct super_block *sb,
+-		const struct hfsplus_unistr *ustr,
+-		char *astr, int *len_p)
++static int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
++		    int max_len, char *astr, int *len_p)
+ {
+ 	const hfsplus_unichr *ip;
+ 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
+@@ -158,8 +157,8 @@ int hfsplus_uni2asc(struct super_block *sb,
+ 	ip = ustr->unicode;
+ 
+ 	ustrlen = be16_to_cpu(ustr->length);
+-	if (ustrlen > HFSPLUS_MAX_STRLEN) {
+-		ustrlen = HFSPLUS_MAX_STRLEN;
++	if (ustrlen > max_len) {
++		ustrlen = max_len;
+ 		pr_err("invalid length %u has been corrected to %d\n",
+ 			be16_to_cpu(ustr->length), ustrlen);
+ 	}
+@@ -280,6 +279,21 @@ int hfsplus_uni2asc(struct super_block *sb,
+ 	return res;
+ }
+ 
++inline int hfsplus_uni2asc_str(struct super_block *sb,
++			       const struct hfsplus_unistr *ustr, char *astr,
++			       int *len_p)
++{
++	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
++}
++
++inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
++				     const struct hfsplus_attr_unistr *ustr,
++				     char *astr, int *len_p)
++{
++	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
++			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
++}
++
+ /*
+  * Convert one or more ASCII characters into a single unicode character.
+  * Returns the number of ASCII characters corresponding to the unicode char.
+diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
+index 7ad3071debd6..53c8e3c0b8c1 100644
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -737,9 +737,9 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
+ 			goto end_listxattr;
+ 
+ 		xattr_name_len = NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN;
+-		if (hfsplus_uni2asc(inode->i_sb,
+-			(const struct hfsplus_unistr *)&fd.key->attr.key_name,
+-					strbuf, &xattr_name_len)) {
++		if (hfsplus_uni2asc_xattr_str(inode->i_sb,
++					      &fd.key->attr.key_name, strbuf,
++					      &xattr_name_len)) {
+ 			pr_err("unicode conversion failed\n");
+ 			res = -EIO;
+ 			goto end_listxattr;
+-- 
+2.34.1
 
 
