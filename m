@@ -1,264 +1,198 @@
-Return-Path: <stable+bounces-214697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MOlGasuhmn4KAQAu9opvQ
-	(envelope-from <stable+bounces-214697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:10:51 +0100
+	id kICSG0cxhmmtKQQAu9opvQ
+	(envelope-from <stable+bounces-214698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:21:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA549101A6D
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DAA101BA8
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 19:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5143F3019522
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 18:10:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A7D9300BDB3
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 18:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA507426D0C;
-	Fri,  6 Feb 2026 18:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF893358B9;
+	Fri,  6 Feb 2026 18:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dQR78MUI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MUB08aK4";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dQR78MUI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MUB08aK4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ltciiJGJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2597D21A92F
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 18:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770401448; cv=none; b=M4hO39idHFms4utW5JjnGZdqOx9g+oTB0LBnGKNF0BZ12fpB0NQ9acNFpL363gqiokzro9V8VK4A/z5mNaVm7D6DZxwBX54LUGljEyYOv5x2foPolGOcbrF2myIErBLXHGjnAcyQ0jFix+bjiFNwwtW3BHNsKifKEQTFgy+YwSg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770401448; c=relaxed/simple;
-	bh=lwLAnJNjppjjGJebpqAKka9LSoaU7aYOVMhGwc9xCr0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FNbWY+Zeyq3/sfIFBhp3m/dAEQrpAuZWU9pOk/o+giyR2Nb3dxdXyTXFhcDeYR19gWRgdX9BBw1CRieMH7xL4ekL6+0jSAvOkZL8AUskw1IVDUVw0doufty/3QNUtTxNt5EmJaVztyprI7dqp09oP9Z11d49qSr4ngx6BKwMSDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dQR78MUI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MUB08aK4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dQR78MUI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MUB08aK4; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 373AE5BCF8;
-	Fri,  6 Feb 2026 18:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770401446; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
-	b=dQR78MUI55Hr6sofCLq5cbGPiddAghs1SLbohtg6alhlWIhGnkzSD0JhUalhxyN5A4H2I5
-	QbX8pTN5cQHmp7x+PY1B/cDNkjtp6B5zazsyAsDPYabXJTUxMNPYdT2oi1KJXXesBm9GZJ
-	qugU4Al3yRmq8rvWAaLQhibKMB0pQHI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770401446;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
-	b=MUB08aK4l4yrOqI+AbpH3DMQZa1SPSGsXs7wDmxa2NP7NjzDUtx2XZuVQblK15j1tH75/u
-	bwMjzzN2W9hf4TDA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dQR78MUI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MUB08aK4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770401446; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
-	b=dQR78MUI55Hr6sofCLq5cbGPiddAghs1SLbohtg6alhlWIhGnkzSD0JhUalhxyN5A4H2I5
-	QbX8pTN5cQHmp7x+PY1B/cDNkjtp6B5zazsyAsDPYabXJTUxMNPYdT2oi1KJXXesBm9GZJ
-	qugU4Al3yRmq8rvWAaLQhibKMB0pQHI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770401446;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/HZRJRC66IWmHOORPxa6bQkcCHGqYhrHoSI1sU4DNEU=;
-	b=MUB08aK4l4yrOqI+AbpH3DMQZa1SPSGsXs7wDmxa2NP7NjzDUtx2XZuVQblK15j1tH75/u
-	bwMjzzN2W9hf4TDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 134B03EA63;
-	Fri,  6 Feb 2026 18:10:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 72ouAqYuhmn/NwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 06 Feb 2026 18:10:46 +0000
-Message-ID: <2ce1eac3-98fd-448f-8a73-01bb3cb5a7d5@suse.cz>
-Date: Fri, 6 Feb 2026 19:10:45 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B902D7DF2
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 18:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770402108; cv=pass; b=KnkNg5DYWy5wTpbkvSnvUcR1YsvOPDE0LbjqZYcMdmQQldj3susUekkjpRGsq4xrcj+f/CLVtXtSEdTPg5kyQE/sVNvfDwx4sLe8lZomn54sCAfqdysBE1DZaq88JhWZLlp8x0r4UAenPDyWY8pcX9DHgRQqeeq3G5v142EUq7E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770402108; c=relaxed/simple;
+	bh=P1xMJV1RX8usJkOhUgCSFWhXH1p1NkF7tpRo8hVA3gw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kqL6cI6q36OxfQ6HV9ZnaLIGVShc57zLmbiVBQI0W0O4oqiOdjLr6VwEprFzBvn92lWTnoCxqNzxqtpakH+yz7elBSaeBi7L+R3EBGaTstGWNNvjUMHez4DtWxm0Qlpgm2Ktg7N2z7o0ZjLxuU8cwdjVgcaZqUIlAhcFoQNHNlg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ltciiJGJ; arc=pass smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d1866473b0so1283091a34.1
+        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 10:21:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770402107; cv=none;
+        d=google.com; s=arc-20240605;
+        b=h+6hDL8IwqABXoyn+YyYhsFqAnP0QYB8Jwk0vc+ridDVg2ryVNIkzPHrdslFhVv7qC
+         68rgWWypmnpK2YJvpKQvMavkCxlfvfar+nkswUQm61P0Gzlk8QRc38DbGA1mZqAFQ7mA
+         xqB3zk3Z0WFahXGoVtGO2tEuQ429QswwPXaTquvBlLg0q2lwwTcuIXskWWgsSsQs7kho
+         /9qqXo4eIuy/2EkSJKAk/AHXb3LR/EFzRY2mBYkTnngyMmX2XXh2T9x1fCB1iQckIm3y
+         VkXlk3LM0xbB5f5yQF1GwfK7nNQZz8awfF96xCV1jy5H7ErkOLu6TCKi0St7sQ4TF1Ob
+         DNlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=P1xMJV1RX8usJkOhUgCSFWhXH1p1NkF7tpRo8hVA3gw=;
+        fh=px0ChSl/oWFL6bKdDoB4sro7y9g8Un7CWv18acc4Tb4=;
+        b=KVl+gB2klo+oqG+2zPo0/XT84HGjOrhVvBC/4pLL2Xr4rtqeLo3TqLtlkk5bnM9CVt
+         /cbnAc3HRht2IUebDzW13iI35Vyy82tmQd5c1AbBSA+25MhtwqQWMfhw7pWfDV2uAjzb
+         d1cluZOEG2M5LDSfESGWga1BqUm0jReI1yhIAgG0y1Y0wwYsAH157Yjm77mc+43s/M3w
+         q6Rd4kd3BhmuHvQFR4R10GnPTwTwxNQ9dOxpjq1kjUepuJxQcEFGT+hpfIAVEkyLER+p
+         U9EC1n9Qkt4Tk85DglyKHTPgyyDMAzUY0HTj6gIKewtN5+MArwaxdw3AzFRKN6rIUK+a
+         Dkxg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770402107; x=1771006907; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P1xMJV1RX8usJkOhUgCSFWhXH1p1NkF7tpRo8hVA3gw=;
+        b=ltciiJGJs270wH9NUqwVmI6C84+p3u7aD6qXdCxnpb4cfxqwVicdPuMmfd6S97arDT
+         Wrgt48jrCT+nr+c0eklSmokXdSheYYIZFqCqeSKTK60IZv8vCiP/UI0LXS9BVupcZHkZ
+         eTtG7GHKlj5Z1Acaw7vmcW0DKmQYNcZ/EHtDYRpxQx3x0j4nF99Ro0CLea9Hhdh9tnu0
+         3yTJkFp9CIRA25tPnYsM2D5wrgkmyWYima753ruzAn7TSEwdKAHdO0L/Nvr1ar72+lwq
+         qfB6cR1EQkJFOtKXn0D1BA+gFh2dSoAskkP2g3gCSMIXhswoY2w4DFz2prfzn72/Ybwn
+         4r/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770402107; x=1771006907;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=P1xMJV1RX8usJkOhUgCSFWhXH1p1NkF7tpRo8hVA3gw=;
+        b=nMLtcwDAOvw2BFlRB74mibRZ7CtbDRUU7swxN55jCXShNWC81TGdQP6QRB2MtWEr2B
+         uYPZMqsGpyeFg7TnXJ7J5i1LJX6EstPoXdh4tqhvr+apkvJZHBaG4kDAgXmAFfIDSrAd
+         p7FYzaAHZA5y/MmTlhYpDbvGIW9Qr/gpkcwtzvlfsZdgXwg5Yq22leqZk2+coteS6KUB
+         maLc5WhUdG5cUhYwRY8WM2qyaG35Jo8GmxhaypuR/xGha/h2WxbxeRw9X+1wmGXw1K5m
+         VsyZC/mZ+aS2LXyISXY9GjD8gND6tcridaF0v/+WQ7wg0wOT1KVC37CFQf/f8WwkVmqc
+         0sjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOa1Hhx6ZzgpTzt3IeRucHAT1sTbzEfvMJdWgXXShOCZk6ecXqEcd3484xCtqamg17fdh7vlE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw539fBWHlB2toyhcDTaqme+6a9vRo+bGAq5ThucmKec7UijG7g
+	OwMh+5Ir8USLinMbFIlDhyWuv5iEux+8KlN9cYQTncWOrkBlRsYJTwuSsqIrCwsMCLrNETMtiBH
+	Aej93c6mqL8VouiDxn3wa3cNdvItC+PY=
+X-Gm-Gg: AZuq6aJqaubKrtLfPBhqDUTCorXAO7FXYTjSowtqZo5IziufLDxKgOSHVKt/GDYnHZV
+	FbunfY4xsyh6YM1p5o914dADgF9/rbpMCs+xgq6Q59NU9INJnqBaM0U2vh2gdufREY2ON6EYWuV
+	5wnOnyvaocjGZN7ym7kaPNDjgjVZJXfnXk6t5s6LvTcZXI35Ujn1xQfL7efxbv7r1fsFP79CV5v
+	7v0xeHdPXSbR4CL/5G6Ip5ju4w2l5GKW5noAJndd/O3zzbdXIYaZ3GqhQ0Q2UQHWs2860fCxQ==
+X-Received: by 2002:a05:6830:3c88:b0:7cf:ddb7:8823 with SMTP id
+ 46e09a7af769-7d4643f2cacmr2508175a34.11.1770402106721; Fri, 06 Feb 2026
+ 10:21:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/slab: skip get_from_any_partial() if !allow_spin
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20260206171348.35886-1-harry.yoo@oracle.com>
- <20260206171348.35886-2-harry.yoo@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260206171348.35886-2-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
+References: <CABXGCs03XcXt5GDae7d74ynC6P6G2gLw3ZrwAYvSQ3PwP0mGXA@mail.gmail.com>
+ <20260206174017.128673-1-mikhail.v.gavrilov@gmail.com> <3BB6BA1D-3756-4FC6-B00D-79DF49D75C51@nvidia.com>
+In-Reply-To: <3BB6BA1D-3756-4FC6-B00D-79DF49D75C51@nvidia.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date: Fri, 6 Feb 2026 23:21:34 +0500
+X-Gm-Features: AZwV_Qgne92Nuw9ugbsrMJv72AiexOG9tkvmf158F-E6lOhbaFGhB4UAL2p1RZM
+Message-ID: <CABXGCsOMzrQTsByYraNby_MXnTuYBNt2vbWu65KCGX6bmi11iQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/page_alloc: clear page->private in split_page() for
+ tail pages
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@suse.cz, 
+	chrisl@kernel.org, kasong@tencent.com, hughd@google.com, ryncsn@gmail.com, 
+	stable@vger.kernel.org, David Hildenbrand <david@kernel.org>, surenb@google.com, 
+	Matthew Wilcox <willy@infradead.org>, mhocko@suse.com, hannes@cmpxchg.org, 
+	jackmanb@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	TAGGED_FROM(0.00)[bounces-214697-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214698-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[suse.cz];
+	FREEMAIL_CC(0.00)[kvack.org,linux-foundation.org,suse.cz,kernel.org,tencent.com,google.com,gmail.com,vger.kernel.org,infradead.org,suse.com,cmpxchg.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.cz,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:mid,suse.cz:dkim]
-X-Rspamd-Queue-Id: BA549101A6D
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: C5DAA101BA8
 X-Rspamd-Action: no action
 
-On 2/6/26 18:13, Harry Yoo wrote:
-> Lockdep complains when get_from_any_partial() is called in an NMI
-> context, because current->mems_allowed_seq is seqcount_spinlock_t and
-> not NMI-safe:
-> 
->   ================================
->   WARNING: inconsistent lock state
->   6.19.0-rc5-kfree-rcu+ #315 Tainted: G                 N
->   --------------------------------
->   inconsistent {INITIAL USE} -> {IN-NMI} usage.
->   kunit_try_catch/9989 [HC1[1]:SC0[0]:HE0:SE1] takes:
->   ffff889085799820 (&____s->seqcount#3){.-.-}-{0:0}, at: ___slab_alloc+0x58f/0xc00
->   {INITIAL USE} state was registered at:
->     lock_acquire+0x185/0x320
->     kernel_init_freeable+0x391/0x1150
->     kernel_init+0x1f/0x220
->     ret_from_fork+0x736/0x8f0
->     ret_from_fork_asm+0x1a/0x30
->   irq event stamp: 56
->   hardirqs last  enabled at (55): [<ffffffff850a68d7>] _raw_spin_unlock_irq+0x27/0x70
->   hardirqs last disabled at (56): [<ffffffff850858ca>] __schedule+0x2a8a/0x6630
->   softirqs last  enabled at (0): [<ffffffff81536711>] copy_process+0x1dc1/0x6a10
->   softirqs last disabled at (0): [<0000000000000000>] 0x0
-> 
->   other info that might help us debug this:
->    Possible unsafe locking scenario:
-> 
->          CPU0
->          ----
->     lock(&____s->seqcount#3);
->     <Interrupt>
->       lock(&____s->seqcount#3);
-> 
->    *** DEADLOCK ***
-> 
-> According to Documentation/locking/seqlock.rst, seqcount_t is not
-> NMI-safe and seqcount_latch_t should be used when read path can interrupt
-> the write-side critical section. In this case, return NULL and fall back
-> to slab allocation if !allow_spin.
-> 
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  mm/slub.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 102fb47ae013..d46464654c15 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -3789,6 +3789,14 @@ static void *get_from_any_partial(struct kmem_cache *s, struct partial_context *
->  	enum zone_type highest_zoneidx = gfp_zone(pc->flags);
->  	unsigned int cpuset_mems_cookie;
->  
-> +	/*
-> +	 * read_mems_allow_begin() accesses current->mems_allowed_seq,
-> +	 * a seqcount_spinlock_t that is not NMI-safe. Skip allocation
-> +	 * when GFP flags indicate spinning is not allowed.
-> +	 */
-> +	if (!gfpflags_allow_spinning(pc->flags))
-> +		return NULL;
+Hi, Yan
 
-I think it would be less restrictive to just continue, but skip the
-read_mems_allowed_retry() part in the do-while loop, so just make it one
-iteration for !allow_spin. If lockdep doesn't like even the
-read_mems_allowed_begin() (not clear to me), skip it too?
+On Fri, Feb 6, 2026 at 11:08=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> Do you have a reproducer for this issue?
 
-> +
->  	/*
->  	 * The defrag ratio allows a configuration of the tradeoffs between
->  	 * inter node defragmentation and node local allocations. A lower
+Yes, I have a stress test that reliably reproduces the crash.
+It cycles swapon/swapoff on 8GB zram under memory pressure:
+https://gist.github.com/NTMan/4ed363793ebd36bd702a39283f06cee1
 
+> Last time I checked page->private usage, I find users clears ->private be=
+fore free a page.
+> I wonder which one I was missing.
+
+The issue is not about freeing - it's about allocation.
+When buddy allocator merges/splits pages, it uses page->private to store or=
+der.
+When a high-order page is later allocated and split via split_page(),
+tail pages still have their old page->private values.
+The path is:
+1. Page freed =E2=86=92 free_pages_prepare() does NOT clear page->private
+2. Page goes to buddy allocator =E2=86=92 buddy uses page->private for orde=
+r
+3. Page allocated as high-order =E2=86=92 post_alloc_hook() only clears hea=
+d
+page's private
+4. split_page() called =E2=86=92 tail pages keep stale page->private
+
+> Clearing ->private in split_page() looks like a hack instead of a fix.
+
+I discussed this with Kairui Song earlier in the thread. We considered:
+
+1. Fix in post_alloc_hook() - would need to clear all pages, not just head
+2. Fix in swapfile.c - doesn't work because stale value could
+accidentally equal SWP_CONTINUED
+3. Fix in split_page() - ensures pages are properly initialized for
+independent use
+
+The comment in vmalloc.c says split pages should be usable
+independently ("some use page->mapping, page->lru, etc."), so
+split_page() initializing the pages seems appropriate.
+
+But I agree post_alloc_hook() might be a cleaner place. Would you
+prefer a patch there instead?
+
+--=20
+Best Regards,
+Mike Gavrilov.
 
