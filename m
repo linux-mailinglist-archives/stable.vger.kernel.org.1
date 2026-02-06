@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-214634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FsfN9m+hWnEFwQAu9opvQ
-	(envelope-from <stable+bounces-214634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:13:45 +0100
+	id mDCnHBy/hWnEFwQAu9opvQ
+	(envelope-from <stable+bounces-214635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:14:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5674DFC8C2
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:13:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BDFFC8E1
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32DA5301910D
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 10:13:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E957302881E
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 10:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068E8364EBC;
-	Fri,  6 Feb 2026 10:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD31361644;
+	Fri,  6 Feb 2026 10:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1PSNPKyH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hOCuBbrs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7D232D7DE
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 10:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A2E2FDC47
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 10:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770372822; cv=none; b=nlCOh+GQiLUmJGe07D2Ab0NI/y0HH3zwUo2XkHA83kJy9si6tN572T3SqhVzkBB76SM0eM1ospFnCfMsRrLyqDzRzJqLR1ElBziCejzKHIhAu4cakaEGl2Q+DLdZss9oes+fQjTzrwJME29za0HJ/koV2LMM5e98qYu6CNcv7zE=
+	t=1770372884; cv=none; b=MILCQ1gEvgDfbD852RLiYQk0tK5CEX9IyI6BFd0cW6nnx+o5QEU+CwGBta6ibC+OSuOvNHc2afb2HUBwWqbqpgjwhkeePmJI2WHRSBSf/DmXtlA9d/uzmgYEmiLJRtKu5T5D0ubR6uRy3hCKBAv1qbf99QwgKq8FrK5JyWxtIIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770372822; c=relaxed/simple;
-	bh=KYvVs86jpFGqET7KE++r/JCvZvSTDoSVsfghA8KCL24=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=YMlGtoJrbZLQ+sgCSlgl6xSkL+oSN3wxspFp4eSdfeqvrx67JiOEFYaIGPOlM41BuStLX/09qsNXCTqbY+8H6B+Fmm3YSlIKV9zICw962ZOqUkBakaKAZfPpT4c7hihBHXv9kcWGeugE0EBk6whrdU6Hmd6P4wB1up9gSS9+yOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1PSNPKyH; arc=none smtp.client-ip=209.85.216.73
+	s=arc-20240116; t=1770372884; c=relaxed/simple;
+	bh=S80eEenF23Jlftx8Nb2GoLHh0cNpf0uICWbwA4J24oU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RBakvgsfFfNjtlLoJDm/nV3UOypS18Wl2sOEOAzaT0FZ4/sENR5fbDrLnXcc1NySVW16tlSE7J8OT6d4PIObGfh+/k2oGzXgiz/nj4gcztkiOt0FawpDM5x6IUcl0CDf5cU+NFZwBU558S+f8/1ReVe1A6leY+1Al+jEmik9OpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hOCuBbrs; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3545dbb7ee6so1650808a91.3
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 02:13:42 -0800 (PST)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c5269fcecdeso366307a12.0
+        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 02:14:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770372822; x=1770977622; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770372883; x=1770977683; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=C8jOnXwPKl/fjBXLstxJ9vYgAS8HzUNg2s3m6R0efD4=;
-        b=1PSNPKyHWPhXw1OmP+x89EMrrDVF59vVoKAWxFGqF5dWxmskltt8QKzHRwXmfsr7sp
-         AKRwoAR2u3gW1QQHY+7BDJeVdMUqxRY6e1WdAmtaDbnz5CCuRf+OpyX/aBl3umGIieJW
-         PqqaFelIZBdTYrRM7wltfEreyrxPXWohZEchu4fRS3CEYLN1s0Rv6tSLDWsMT8rgPohE
-         QNaA9hHhfVjLEt/LCM23lpWg0cmsLEjgUeR/2rsUpNdChf2uWGUot+fIP+njxg+j2Cjd
-         76vgWBRVGB+3Tl61LWh8tezy/lFSZWc09ss6cj6eqrms/Dj1xUr+l/602mBIfSUuTqXI
-         oXhw==
+        bh=Zs6k6Yg8dxvKjSPzGnO8E07vhqHgQ2Yo/nScR5UofAg=;
+        b=hOCuBbrsdLyflv/pru3Pe2vzNhCKb+u37HwQzKPx0jQIl7OPu5uzDA30ejDWsxqiMc
+         NaZbOpMcfqHjGf7OYlcfxas3LE+Hh/i/6y8mffKx6e4LTxmLLCj2fAIE5/ewmfMeJnVh
+         DoTnLz9Zv8mYbNHH5mQe/rhBcRwZAFvk3qu2gaqmhkioOmLpln1rwP/DCrUaZuu42eOc
+         +hUoDlvENUWIz+KiUxk0k/lSEnmpwIHSDnjVBOVHKXNdUE/ALqdxa6Yp+3HiSOtcGVwM
+         5SdDBPp4NOYyTMHUZsJwPLtDn+L6RWKk6HAq2U7Cb0wRgW3Q2+HCSSLLbNwEENfLqoS4
+         uM/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770372822; x=1770977622;
+        d=1e100.net; s=20230601; t=1770372883; x=1770977683;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=C8jOnXwPKl/fjBXLstxJ9vYgAS8HzUNg2s3m6R0efD4=;
-        b=E0Hb3Nr5x6n/Dh3OZqzMHHKVXw8CU2aV0cEijjTxZejIXFwhyLxP/Gfinx99A8mxh5
-         w6iOQ4VYj0xSK5Rln+0N+pbau0Spi9/ytCJnr9V1hHkJ/pQD/FEJSq6HbjONkmc3W66R
-         7NIwPdL3dkWgg+zZv8NrZQCRUlrKW95zuQeWhpq0RN7LDxuV3Mx8b/97G/wkfXKytn1h
-         GmyCxlnJMjjFc/Qmuv7HBO/989uOQNl5khYsP8QeWOWX/71EPZCDAAD82AcQMrtb/tiK
-         fcE4OG+Af0p0vd0Mlq+jXY7woG8Jt/vq/0U0ZONKnmLpRjnivTWQMCgb2E2a9CSObZCl
-         Sn3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUmJABHNvoP2bmhaMmG5LRUKnqYZhIg0tzKTHai9gW4kMVC/+U7b1iJ4Na5/r4ni9jrxSHKU7s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOFmDUZiFYoMJHPEKOepjxWmTwdVwUgAy72i7dMQ+F2se6P+qo
-	Lz1/klzKf3ycLI56aifjUBLt61tf1pKDBIE6nMDmSZirpAO8Ip1WG9xTFnlQzix4IMU0mGnHAid
-	iXZ3Br5jHldX9byLdbXAlNm//Jw==
-X-Received: from pjso14.prod.google.com ([2002:a17:90a:c08e:b0:352:b687:3b20])
+        bh=Zs6k6Yg8dxvKjSPzGnO8E07vhqHgQ2Yo/nScR5UofAg=;
+        b=dtj3jq2Bgd+3ByWenG2b3zs06rFf93Y3Y7vGjPaatxw0x/lfPf9754l22OCFHwyOBL
+         ebRM/t0J8XdFY8vrGyeYJywtehMdhNci2R1yUWfqOteB37JtOr7Aa8HR4JZ6ke+90M0K
+         C+7LznNHo6ulcPobiC2pc6JlN4EUlZCLucUBV1qw/1aK2BC2FvyPYTEI1LdRaVn7NbUf
+         YCEwNDcghGj9p9w0h5psOMGOsHnbcpiPXwL31C6VEOCQoowQaSQVBZxaLjlaQkOPvayH
+         iRW9hkIwi6fkcMQCWWfTZGfPJ7C1S2EBNfWmysgvhqT5AIhgJVeaCl/RyXPN8R5r1h3c
+         fLtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVBpHnnqBC4SubrkjlfC92HVrXeE+TpVnsczr/eAH0zoyxIMqOVKpIZVK0AIvkm+7NLTL6fqj4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzviDRSkjCyLFa7DJbf3w0i9HDdewTjKOJfgkGrmTCWm5OA4ntj
+	ed3VqabJaj1ywpay2VFYigOFYXRbQQQVFNpxk00X9hdGUkcVgcV/Me1IUCq5KAEqLaAQmZjITYm
+	ZOiy8z/TfSL7hAFKlvNHbSlVlcg==
+X-Received: from pguz16.prod.google.com ([2002:a65:6110:0:b0:bd9:a349:94bb])
  (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:384d:b0:343:7714:4ca6 with SMTP id 98e67ed59e1d1-354b3cd821emr1827874a91.22.1770372822044;
- Fri, 06 Feb 2026 02:13:42 -0800 (PST)
-Date: Fri,  6 Feb 2026 10:13:36 +0000
+ 2002:a05:6300:2211:b0:35d:5d40:6d79 with SMTP id adf61e73a8af0-393acf58258mr2466129637.12.1770372883313;
+ Fri, 06 Feb 2026 02:14:43 -0800 (PST)
+Date: Fri,  6 Feb 2026 10:14:40 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,361 +73,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260206101336.4170728-1-joonwonkang@google.com>
-Subject: [PATCH v2 1/2] mailbox: Use per-thread completion to fix wrong
- completion order
+Message-ID: <20260206101440.4171445-1-joonwonkang@google.com>
+Subject: [PATCH v2 2/2] mailbox: Make mbox_send_message() return error code
+ when tx fails
 From: Joonwon Kang <joonwonkang@google.com>
 To: jassisinghbrar@gmail.com
-Cc: alexey.klimov@arm.com, jonathanh@nvidia.com, joonwonkang@google.com, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	stable@vger.kernel.org, sudeep.holla@arm.com, thierry.reding@gmail.com
+Cc: joonwonkang@google.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, lee@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[arm.com,nvidia.com,google.com,vger.kernel.org,gmail.com];
 	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-214634-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214635-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5674DFC8C2
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D5BDFFC8E1
 X-Rspamd-Action: no action
 
-Previously, a sender thread in mbox_send_message() could be woken up at
-a wrong time in blocking mode. It is because there was only a single
-completion for a channel whereas messages from multiple threads could be
-sent in any order; since the shared completion could be signalled in any
-order, it could wake up a wrong sender thread.
-
-This commit resolves the false wake-up issue with the following changes:
-- Completions are created just as many as the number of concurrent sender
-  threads
-- A completion is created on a sender thread's stack
-- Each slot of the message queue, i.e. `msg_data`, contains a pointer to
-  its target completion
-- tx_tick() signals the completion of the currently active slot of the
-  message queue
+When the mailbox controller failed transmitting message, the error code
+was only passed to the client's tx done handler and not to
+mbox_send_message(). For this reason, the function could return a false
+success. This commit resolves the issue by introducing the tx status and
+checking it before mbox_send_message() returns.
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/1490809381-28869-1-git-send-email-jaswinder.singh@linaro.org
 Signed-off-by: Joonwon Kang <joonwonkang@google.com>
 ---
-v1 -> v2: Considered the case where tx_tick() is called for a channel by
-  a thread due to timeout while another thread has active request on the
-  same channel. In that case, we mark that non-active request as canceled
-  and do not send the request to the controller.
+v1 -> v2: No major change.
 
-Link -> v1: The previous solution in the Link tries to have per-message
-  completion: `tx_cmpl[MBOX_TX_QUEUE_LEN]`; each completion belongs to
-  each slot of the message queue: `msg_data[i]`. Those completions take
-  up additional memory even when they are not used. Instead, this patch
-  tries to have per-"thread" completion; each completion belongs to each
-  sender thread and each slot of the message queue has a pointer to that
-  completion; `struct mbox_message` has the "pointer" field
-  `struct completion *tx_complete` which points to the completion which
-  is created on the stack of the sender, instead of owning the completion
-  by `struct completion tx_complete`. This way, we could avoid additional
-  memory use since a completion will be allocated only when necessary.
-  Plus, more importantly, we could avoid the window where the same
-  completion is reused by different sender threads which the previous
-  solution still has.
-
- drivers/mailbox/mailbox.c          | 87 ++++++++++++++++++++----------
- drivers/mailbox/tegra-hsp.c        |  2 +-
- include/linux/mailbox_controller.h | 20 ++++---
- 3 files changed, 73 insertions(+), 36 deletions(-)
+ drivers/mailbox/mailbox.c          | 20 +++++++++++++++-----
+ include/linux/mailbox_controller.h |  2 ++
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 617ba505691d..0af2f91132e0 100644
+index 0af2f91132e0..ed1b405a2999 100644
 --- a/drivers/mailbox/mailbox.c
 +++ b/drivers/mailbox/mailbox.c
-@@ -20,10 +20,13 @@
- 
- #include "mailbox.h"
- 
-+#define MBOX_DATA_CANCELED ((void *)0x01)
-+#define MBOX_IDX_NOT_DESIGNATED -1
-+
+@@ -26,7 +26,10 @@
  static LIST_HEAD(mbox_cons);
  static DEFINE_MUTEX(con_mutex);
  
--static int add_to_rbuf(struct mbox_chan *chan, void *mssg)
-+static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx_complete)
+-static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx_complete)
++static int add_to_rbuf(struct mbox_chan *chan,
++		       void *mssg,
++		       struct completion *tx_complete,
++		       int *tx_status)
  {
  	int idx;
  
-@@ -34,7 +37,8 @@ static int add_to_rbuf(struct mbox_chan *chan, void *mssg)
- 		return -ENOBUFS;
- 
+@@ -39,6 +42,7 @@ static int add_to_rbuf(struct mbox_chan *chan, void *mssg, struct completion *tx
  	idx = chan->msg_free;
--	chan->msg_data[idx] = mssg;
-+	chan->msg_data[idx].data = mssg;
-+	chan->msg_data[idx].tx_complete = tx_complete;
+ 	chan->msg_data[idx].data = mssg;
+ 	chan->msg_data[idx].tx_complete = tx_complete;
++	chan->msg_data[idx].tx_status = tx_status;
  	chan->msg_count++;
  
  	if (idx == MBOX_TX_QUEUE_LEN - 1)
-@@ -52,24 +56,33 @@ static void msg_submit(struct mbox_chan *chan)
- 	int err = -EBUSY;
+@@ -96,7 +100,7 @@ static void msg_submit(struct mbox_chan *chan)
+ 
+ static void tx_tick(struct mbox_chan *chan, int r, int idx)
+ {
+-	struct mbox_message mssg = {NULL, NULL};
++	struct mbox_message mssg = {NULL, NULL, NULL};
  
  	scoped_guard(spinlock_irqsave, &chan->lock) {
--		if (!chan->msg_count || chan->active_req)
-+		if (chan->active_req >= 0)
- 			break;
- 
--		count = chan->msg_count;
--		idx = chan->msg_free;
--		if (idx >= count)
--			idx -= count;
--		else
--			idx += MBOX_TX_QUEUE_LEN - count;
-+		while (chan->msg_count > 0) {
-+			count = chan->msg_count;
-+			idx = chan->msg_free;
-+			if (idx >= count)
-+				idx -= count;
-+			else
-+				idx += MBOX_TX_QUEUE_LEN - count;
-+
-+			data = chan->msg_data[idx].data;
-+			if (data != MBOX_DATA_CANCELED)
-+				break;
-+
-+			chan->msg_count--;
-+		}
- 
--		data = chan->msg_data[idx];
-+		if (!chan->msg_count)
-+			break;
- 
- 		if (chan->cl->tx_prepare)
- 			chan->cl->tx_prepare(chan->cl, data);
- 		/* Try to submit a message to the MBOX controller */
- 		err = chan->mbox->ops->send_data(chan, data);
- 		if (!err) {
--			chan->active_req = data;
-+			chan->active_req = idx;
- 			chan->msg_count--;
+ 		if (idx == MBOX_IDX_NOT_DESIGNATED || idx == chan->active_req) {
+@@ -107,6 +111,7 @@ static void tx_tick(struct mbox_chan *chan, int r, int idx)
+ 		} else {
+ 			chan->msg_data[idx].data = MBOX_DATA_CANCELED;
+ 			chan->msg_data[idx].tx_complete = NULL;
++			chan->msg_data[idx].tx_status = NULL;
+ 			return;
  		}
  	}
-@@ -81,27 +94,35 @@ static void msg_submit(struct mbox_chan *chan)
- 	}
- }
- 
--static void tx_tick(struct mbox_chan *chan, int r)
-+static void tx_tick(struct mbox_chan *chan, int r, int idx)
- {
--	void *mssg;
-+	struct mbox_message mssg = {NULL, NULL};
- 
- 	scoped_guard(spinlock_irqsave, &chan->lock) {
--		mssg = chan->active_req;
--		chan->active_req = NULL;
-+		if (idx == MBOX_IDX_NOT_DESIGNATED || idx == chan->active_req) {
-+			if (chan->active_req >= 0) {
-+				mssg = chan->msg_data[chan->active_req];
-+				chan->active_req = MBOX_IDX_NOT_DESIGNATED;
-+			}
-+		} else {
-+			chan->msg_data[idx].data = MBOX_DATA_CANCELED;
-+			chan->msg_data[idx].tx_complete = NULL;
-+			return;
-+		}
- 	}
- 
- 	/* Submit next message */
- 	msg_submit(chan);
- 
--	if (!mssg)
-+	if (!mssg.data)
- 		return;
- 
- 	/* Notify the client */
+@@ -121,8 +126,10 @@ static void tx_tick(struct mbox_chan *chan, int r, int idx)
  	if (chan->cl->tx_done)
--		chan->cl->tx_done(chan->cl, mssg, r);
-+		chan->cl->tx_done(chan->cl, mssg.data, r);
+ 		chan->cl->tx_done(chan->cl, mssg.data, r);
  
- 	if (r != -ETIME && chan->cl->tx_block)
--		complete(&chan->tx_complete);
-+		complete(mssg.tx_complete);
+-	if (r != -ETIME && chan->cl->tx_block)
++	if (r != -ETIME && chan->cl->tx_block) {
++		*mssg.tx_status = r;
+ 		complete(mssg.tx_complete);
++	}
  }
  
  static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
-@@ -114,10 +135,10 @@ static enum hrtimer_restart txdone_hrtimer(struct hrtimer *hrtimer)
- 	for (i = 0; i < mbox->num_chans; i++) {
- 		struct mbox_chan *chan = &mbox->chans[i];
- 
--		if (chan->active_req && chan->cl) {
-+		if (chan->active_req >= 0 && chan->cl) {
- 			txdone = chan->mbox->ops->last_tx_done(chan);
- 			if (txdone)
--				tx_tick(chan, 0);
-+				tx_tick(chan, 0, MBOX_IDX_NOT_DESIGNATED);
- 			else
- 				resched = true;
- 		}
-@@ -170,7 +191,7 @@ void mbox_chan_txdone(struct mbox_chan *chan, int r)
- 		return;
- 	}
- 
--	tx_tick(chan, r);
-+	tx_tick(chan, r, MBOX_IDX_NOT_DESIGNATED);
- }
- EXPORT_SYMBOL_GPL(mbox_chan_txdone);
- 
-@@ -190,7 +211,7 @@ void mbox_client_txdone(struct mbox_chan *chan, int r)
- 		return;
- 	}
- 
--	tx_tick(chan, r);
-+	tx_tick(chan, r, MBOX_IDX_NOT_DESIGNATED);
- }
- EXPORT_SYMBOL_GPL(mbox_client_txdone);
- 
-@@ -245,11 +266,19 @@ EXPORT_SYMBOL_GPL(mbox_client_peek_data);
- int mbox_send_message(struct mbox_chan *chan, void *mssg)
- {
+@@ -268,15 +275,16 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
  	int t;
-+	int idx;
-+	struct completion tx_complete;
+ 	int idx;
+ 	struct completion tx_complete;
++	int tx_status = 0;
  
  	if (!chan || !chan->cl)
  		return -EINVAL;
  
--	t = add_to_rbuf(chan, mssg);
-+	if (chan->cl->tx_block) {
-+		init_completion(&tx_complete);
-+		t = add_to_rbuf(chan, mssg, &tx_complete);
-+	} else {
-+		t = add_to_rbuf(chan, mssg, NULL);
-+	}
-+
- 	if (t < 0) {
- 		dev_err(chan->mbox->dev, "Try increasing MBOX_TX_QUEUE_LEN\n");
- 		return t;
-@@ -266,10 +295,11 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
- 		else
- 			wait = msecs_to_jiffies(chan->cl->tx_tout);
+ 	if (chan->cl->tx_block) {
+ 		init_completion(&tx_complete);
+-		t = add_to_rbuf(chan, mssg, &tx_complete);
++		t = add_to_rbuf(chan, mssg, &tx_complete, &tx_status);
+ 	} else {
+-		t = add_to_rbuf(chan, mssg, NULL);
++		t = add_to_rbuf(chan, mssg, NULL, NULL);
+ 	}
  
--		ret = wait_for_completion_timeout(&chan->tx_complete, wait);
-+		ret = wait_for_completion_timeout(&tx_complete, wait);
- 		if (ret == 0) {
-+			idx = t;
+ 	if (t < 0) {
+@@ -300,6 +308,8 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
+ 			idx = t;
  			t = -ETIME;
--			tx_tick(chan, t);
-+			tx_tick(chan, t, idx);
+ 			tx_tick(chan, t, idx);
++		} else if (tx_status < 0) {
++			t = tx_status;
  		}
  	}
  
-@@ -300,7 +330,7 @@ int mbox_flush(struct mbox_chan *chan, unsigned long timeout)
- 
- 	ret = chan->mbox->ops->flush(chan, timeout);
- 	if (ret < 0)
--		tx_tick(chan, ret);
-+		tx_tick(chan, ret, MBOX_IDX_NOT_DESIGNATED);
- 
- 	return ret;
- }
-@@ -319,9 +349,8 @@ static int __mbox_bind_client(struct mbox_chan *chan, struct mbox_client *cl)
- 	scoped_guard(spinlock_irqsave, &chan->lock) {
- 		chan->msg_free = 0;
- 		chan->msg_count = 0;
--		chan->active_req = NULL;
-+		chan->active_req = MBOX_IDX_NOT_DESIGNATED;
- 		chan->cl = cl;
--		init_completion(&chan->tx_complete);
- 
- 		if (chan->txdone_method	== TXDONE_BY_POLL && cl->knows_txdone)
- 			chan->txdone_method = TXDONE_BY_ACK;
-@@ -477,7 +506,7 @@ void mbox_free_channel(struct mbox_chan *chan)
- 	/* The queued TX requests are simply aborted, no callbacks are made */
- 	scoped_guard(spinlock_irqsave, &chan->lock) {
- 		chan->cl = NULL;
--		chan->active_req = NULL;
-+		chan->active_req = MBOX_IDX_NOT_DESIGNATED;
- 		if (chan->txdone_method == TXDONE_BY_ACK)
- 			chan->txdone_method = TXDONE_BY_POLL;
- 	}
-diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
-index ed9a0bb2bcd8..de7494ce0a9f 100644
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -497,7 +497,7 @@ static int tegra_hsp_mailbox_flush(struct mbox_chan *chan,
- 			mbox_chan_txdone(chan, 0);
- 
- 			/* Wait until channel is empty */
--			if (chan->active_req != NULL)
-+			if (chan->active_req >= 0)
- 				continue;
- 
- 			return 0;
 diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
-index 80a427c7ca29..67e08a440f5f 100644
+index 67e08a440f5f..6929774d3129 100644
 --- a/include/linux/mailbox_controller.h
 +++ b/include/linux/mailbox_controller.h
-@@ -105,16 +105,25 @@ struct mbox_controller {
+@@ -109,10 +109,12 @@ struct mbox_controller {
+  * struct mbox_message - Internal representation of a mailbox message
+  * @data:		Data packet
+  * @tx_complete:	Pointer to the transmission completion
++ * @tx_status:		Pointer to the transmission status
   */
- #define MBOX_TX_QUEUE_LEN	20
- 
-+/**
-+ * struct mbox_message - Internal representation of a mailbox message
-+ * @data:		Data packet
-+ * @tx_complete:	Pointer to the transmission completion
-+ */
-+struct mbox_message {
-+	void *data;
-+	struct completion *tx_complete;
-+};
-+
- /**
-  * struct mbox_chan - s/w representation of a communication chan
-  * @mbox:		Pointer to the parent/provider of this channel
-  * @txdone_method:	Way to detect TXDone chosen by the API
-  * @cl:			Pointer to the current owner of this channel
-- * @tx_complete:	Transmission completion
-- * @active_req:		Currently active request hook
-+ * @active_req:		Index of the currently active slot in the queue
-  * @msg_count:		No. of mssg currently queued
-  * @msg_free:		Index of next available mssg slot
-- * @msg_data:		Hook for data packet
-+ * @msg_data:		Queue of data packets
-  * @lock:		Serialise access to the channel
-  * @con_priv:		Hook for controller driver to attach private data
-  */
-@@ -122,10 +131,9 @@ struct mbox_chan {
- 	struct mbox_controller *mbox;
- 	unsigned txdone_method;
- 	struct mbox_client *cl;
--	struct completion tx_complete;
--	void *active_req;
-+	int active_req;
- 	unsigned msg_count, msg_free;
--	void *msg_data[MBOX_TX_QUEUE_LEN];
-+	struct mbox_message msg_data[MBOX_TX_QUEUE_LEN];
- 	spinlock_t lock; /* Serialise access to the channel */
- 	void *con_priv;
+ struct mbox_message {
+ 	void *data;
+ 	struct completion *tx_complete;
++	int *tx_status;
  };
+ 
+ /**
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
 
