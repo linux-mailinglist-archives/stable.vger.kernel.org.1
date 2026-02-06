@@ -1,65 +1,54 @@
-Return-Path: <stable+bounces-214600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2H/rORV2hWngBwQAu9opvQ
-	(envelope-from <stable+bounces-214600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 06:03:17 +0100
+	id 8IDeAG5/hWlmCgQAu9opvQ
+	(envelope-from <stable+bounces-214601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 06:43:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC85FA394
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 06:03:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E04FA692
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 06:43:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2AB99304D904
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 05:02:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1BAD300ACB1
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 05:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01BD33B6E3;
-	Fri,  6 Feb 2026 05:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45F6339B58;
+	Fri,  6 Feb 2026 05:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCYPOJ79"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nnsO6onU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AD233B6C2;
-	Fri,  6 Feb 2026 05:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD68E2E54B6
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 05:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770354116; cv=none; b=gKVRHXtDs3WQ24zuCUEbfaZr50Amkc1ZJGAonJlvuOab026CbGyQAu66B2rzyPlQ+WQ4G3AyxAS3DNd5uSpAKsLCADL9u7H46fWIgO8JmuFesFTnrIBYNRhZaIRw847203VKUhiBan3n9etWYUzOqZZXlsR+3aD806zBp5N6FD0=
+	t=1770356585; cv=none; b=HDT6sSJ1A7pmfjlvp0eom9FweBSk5T6IeBvlHobBiZxTX7CB9JXJn9Air5oivwvKmIngXbMUcIhNsnNAMfO0a5bI0WE9Zk3SaTek8FhIBnfrkg8aSQvTxoPE9i929M2r7dVqMJKT+Jjgy1ExBs78Kpb+qzwuT31W6MNwG7b42kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770354116; c=relaxed/simple;
-	bh=HEihQ3GqjiYSd4FKeWzWwMymUXxpIM+mdkN25ie7fqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iy1gYsonltUOJZganfgVzn2rkxucM3IbSlr1ZAcojmuKE7eD1rgvkL2HD+WbSDdJl/m9+e6cdboiV6H1KdASq06dHAJkBzBxTYUDG/rxiom3tXZ7TqEc+Z89BEU9mleA5xlhPEe11ztEX8GnTXOijfnykPkfKvsMi2gnkUZhtEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCYPOJ79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C708BC19425;
-	Fri,  6 Feb 2026 05:01:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770354116;
-	bh=HEihQ3GqjiYSd4FKeWzWwMymUXxpIM+mdkN25ie7fqo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCYPOJ79+EvyMnCWZurdXvf0YjW+/7x6MrisLpOZnVpnWDsFsCRgMnWsJCe+z0vjL
-	 jeGGclIosizPaXofS0FtEPtEmZZIOeoLZBzHuYJo+mK5jSD9NlKkHlHU4cdCkb31xb
-	 nHzAdE0MsQ8yiT77rNkeuoj1vsDc0jb0nUbez0urmASr8hwinnpvzvR1w57ylXytAV
-	 /4V+5I75uYtfqvsenCpe6FnpjGTnZjG9xSjxUSZee/Yfh+Z99VCs/s1H9F580byQyy
-	 /bmADZ6yYdlKDFz9B0eCj5fEGzKvyV1F925e8JHqNhJqE96IL6oCsIlH7aTn5BXXUc
-	 PISVjCdExhksw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: dm-devel@lists.linux.dev,
-	Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>,
-	linux-kernel@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 05/22] dm-verity-fec: fix reading parity bytes split across blocks (take 3)
-Date: Thu,  5 Feb 2026 20:59:24 -0800
-Message-ID: <20260206045942.52965-6-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260206045942.52965-1-ebiggers@kernel.org>
-References: <20260206045942.52965-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1770356585; c=relaxed/simple;
+	bh=SeOijDDBbx/gt8b41/UY+Z9ZzrzLSuYGOCdDop6i7I4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q6MQ1lVMydYHP67ciJqB3Jm98KiWn2bu6KEIDW+ZWzx1Dt5yLoCRWRDsKy9BuQXH08qzz2YHcVnatHbodKuFFxseZkuhbaz8qrzNxv9h1ypEa3WNJeBXzPBVI1e4TO27WUtv9wiGl36Ah/A+H/hr12DWh+Z1d2o3TFit/PU42hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nnsO6onU; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nQ
+	LVkl2V7v/t3JQEFAjk0mHOi1899CqsYo+GwAOjuHA=; b=nnsO6onUxWmP9z1aNW
+	wPAiWN8Iffs1EMJ6yNIxs/EcIbvX8cRLFqWC36RqEOUq7473QCxeOAX9s9eZawXe
+	gk+zacfmJaIGWlQEwfo6ftq83zGeypeS+1ZosnNR519qCAuEE9UGoSAl0WKIhevb
+	mWMudTUS2pxlP6HDD4u3fNrks=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgBHNvZWf4VpEqQ4NQ--.14272S2;
+	Fri, 06 Feb 2026 13:42:48 +0800 (CST)
+From: zhangchen200426@163.com
+To: zhangchen01@kylinos.cn
+Cc: stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: HCI: Fix hci0 not release in usb disconnect process
+Date: Fri,  6 Feb 2026 13:42:40 +0800
+Message-Id: <20260206054240.297057-1-zhangchen200426@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,221 +56,224 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgBHNvZWf4VpEqQ4NQ--.14272S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuw4DurWkGrWUWr4UJFy7ZFb_yoW3Ar1kpa
+	9Ika4fAw18Jr4Sg34rAa18JF9Yk3yI93y7CFZ7W3srG39Yy34UtryUAryYqF9ruryDJr1q
+	vF4Dta1a9Fy8Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Um1v-UUUUU=
+X-CM-SenderInfo: x2kd0whfkh0jaqqujli6rwjhhfrp/xtbCwBixTmmFf1iVsgAA3L
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214600-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-214601-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[zhangchen200426@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6FC85FA394
+	FREEMAIL_FROM(0.00)[163.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 92E04FA692
 X-Rspamd-Action: no action
 
-fec_decode_bufs() assumes that the parity bytes of the first RS codeword
-it decodes are never split across parity blocks.
+From: zhangchen <zhangchen01@kylinos.cn>
 
-This assumption is false.  Consider v->fec->block_size == 4096 &&
-v->fec->roots == 17 && fio->nbufs == 1, for example.  In that case, each
-call to fec_decode_bufs() consumes v->fec->roots * (fio->nbufs <<
-DM_VERITY_FEC_BUF_RS_BITS) = 272 parity bytes.
+If hci_resume_dev before hci_unregister_dev, the hci command will
+timeout and the reference count of hdev will not reset to zero.
+Then the node "hci0" will not release.
 
-Considering that the parity data for each message block starts on a
-block boundary, the byte alignment in the parity data will iterate
-through 272*i mod 4096 until the 3 parity blocks have been consumed.  On
-the 16th call (i=15), the alignment will be 4080 bytes into the first
-block.  Only 16 bytes remain in that block, but 17 parity bytes will be
-needed.  The code reads out-of-bounds from the parity block buffer.
+The output in question is as follows:
+[ 3391.553518][ 7] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 3391.553588][ 7] [T264732] Bluetooth: hci0: Opcode 0x0c01 failed: -110
+[ 3393.569514][ 3] [T247244] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 3393.569515][ 3] [T264732] Bluetooth: hci0: Opcode 0x0c1a failed: -110
+[ 3393.709645][ 6] [T104579] usb 10-1: new full-speed USB device number 95 using xhci-hcd
+[ 3393.862194][ 6] [T104579] usb 10-1: New USB device found, idVendor=13d3, idProduct=3570, bcdDevice= 0.00
+[ 3393.862205][ 6] [T104579] usb 10-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[ 3393.862208][ 6] [T104579] usb 10-1: Product: Bluetooth Radio
+[ 3393.862210][ 6] [T104579] usb 10-1: Manufacturer: Realtek
+[ 3393.862212][ 6] [T104579] usb 10-1: SerialNumber: 00e04c000001
+[ 3393.867589][ 6] [T247244] Bluetooth: hci1: RTL: examining hci_ver=0b hci_rev=000b lmp_ver=0b lmp_subver=8852
+[ 3393.868573][ 6] [T247244] Bluetooth: hci1: RTL: rom_version status=0 version=1
+[ 3393.868583][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_fw.bin
+[ 3393.868672][ 6] [T247244] Bluetooth: hci1: RTL: loading rtl_bt/rtl8852bu_config.bin
+[ 3393.869699][ 6] [T247244] Bluetooth: hci1: RTL: cfg_sz 6, total sz 65603
 
-Fortunately this doesn't normally happen, since it can occur only for
-certain non-default values of fec_roots *and* when the maximum number of
-buffers couldn't be allocated due to low memory.  For example with
-block_size=4096 only the following cases are affected:
+The call sequence in question is as follows:
+usb disconnect:
+  btusb_disconnect
+   hci_unregister_dev
+    hci_dev_set_flag
+    hci_cmd_sync_clear
+    hci_unregister_suspend_notifier
+    hci_dev_do_close
+    device_del
 
-    fec_roots=17: nbufs in [1, 3, 5, 15]
-    fec_roots=19: nbufs in [1, 229]
-    fec_roots=21: nbufs in [1, 3, 5, 13, 15, 39, 65, 195]
-    fec_roots=23: nbufs in [1, 89]
+device resume:
+  hci_suspend_notifier
+   hci_resume_dev
+    hci_resume_sync
+     hci_set_event_mask_sync
+      __hci_cmd_sync_status
+       __hci_cmd_sync_status_sk
+        __hci_cmd_sync_sk
+         wait_event_interruptible_timeout
 
-Regardless, fix it by refactoring how the parity blocks are read.
+The output after adding debug information in question is as follows:
+[ 6378.366215][ 6] [T434033] hci_resume_dev hci name hci0
+[ 6378.366218][ 6] [T434033] hci_resume_sync set event mask sync
+[ 6378.366219][ 6] [T434033] hci_set_event_mask_sync
+[ 6378.366220][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c01
+[ 6378.366227][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
+[ 6378.367632][ 6] [T420012] btusb_disconnect intf 0000000024117fc1
+[ 6378.367637][ 6] [T420012] btusb_disconnect hci_unregister_dev
+[ 6378.367638][ 6] [T420012] hci_unregister_dev 0000000064bfd783 name hci0 bus 1
+[ 6378.367641][ 6] [T420012] hci_unregister_dev set flag
+[ 6378.367804][ 6] [T420012] hci_unregister_dev cmd sync clear
+[ 6378.367807][ 6] [T420012] hci_unregister_dev unregister suspend notifier
+[ 6380.367544][ 6] [T434033] __hci_cmd_sync_sk cmd timeout
+[ 6380.367542][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 6380.367550][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
+[ 6380.367552][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c01 failed: -110
+[ 6380.367555][ 6] [T434033] hci_resume_sync clear event filter
+[ 6380.367556][ 6] [T434033] hci_resume_sync resume scan sync
+[ 6380.367558][ 6] [T434033] __hci_cmd_sync_sk hci name hci0 Opcode 0x0c1a
+[ 6380.367561][ 6] [T434033] __hci_cmd_sync_sk wait event interruptible timeout
+[ 6382.383538][ 6] [T197498] Bluetooth: hci0: command 0x0c01 tx timeout
+[ 6382.383593][ 6] [T434033] __hci_cmd_sync_sk hci0 end: err -110
+[ 6382.383597][ 6] [T434033] Bluetooth: hci0: Opcode 0x0c1a failed: -110
 
-Fixes: 6df90c02bae4 ("dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)")
+The output after adding debug information in normal is as follows:
+[50.039156][ 6] [ T8360] btusb_disconnect intf 00000000fca35842
+[50.039160][ 6] [ T8360] btusb_disconnect hci_unregister_dev
+[50.039162][ 6] [ T8360] hci_unregister_dev 000000002422b946 name hci0 bus 1
+[50.039164][ 6] [ T8360] hci_unregister_dev set flag
+[50.039224][ 6] [ T8360] hci_unregister_dev cmd sync clear
+[50.039227][ 5] [ T8360] hci_unregister_dev unregister suspend notifier
+[50.043542][ 5] [ T8284] hci_resume_dev hci name hci0
+
+This patch add hci_cancel_cmd_sync in hci_unregister_dev to wake up
+hdev->req_wait_q, and stop __hci_cmd_sync_sk by judging the
+HCI_UNREGISTER flag. Then stopping hci_resume_dev process based on the
+returned error code.
+
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: zhangchen <zhangchen01@kylinos.cn>
 ---
- drivers/md/dm-verity-fec.c | 100 ++++++++++++++++---------------------
- 1 file changed, 44 insertions(+), 56 deletions(-)
+ net/bluetooth/hci_core.c |  6 ++++++
+ net/bluetooth/hci_sync.c | 22 ++++++++++++++++------
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
-index d4a9367a2fee6..fcfacaec2989a 100644
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -31,40 +31,10 @@ static inline u64 fec_interleave(struct dm_verity *v, u64 offset)
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 3418d7b964a1..c977bcba3e76 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -50,6 +50,7 @@
+ static void hci_rx_work(struct work_struct *work);
+ static void hci_cmd_work(struct work_struct *work);
+ static void hci_tx_work(struct work_struct *work);
++static void hci_cancel_cmd_sync(struct hci_dev *hdev, int err);
  
- 	mod = do_div(offset, v->fec->rsn);
- 	return offset + mod * (v->fec->rounds << v->data_dev_block_bits);
- }
+ /* HCI device list */
+ LIST_HEAD(hci_dev_list);
+@@ -2695,6 +2696,8 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	hci_dev_set_flag(hdev, HCI_UNREGISTER);
+ 	mutex_unlock(&hdev->unregister_lock);
  
--/*
-- * Read error-correcting codes for the requested RS block. Returns a pointer
-- * to the data block. Caller is responsible for releasing buf.
-- */
--static u8 *fec_read_parity(struct dm_verity *v, u64 rsb, int index,
--			   unsigned int *offset, unsigned int par_buf_offset,
--			   struct dm_buffer **buf, unsigned short ioprio)
--{
--	u64 position, block, rem;
--	u8 *res;
--
--	/* We have already part of parity bytes read, skip to the next block */
--	if (par_buf_offset)
--		index++;
--
--	position = (index + rsb) * v->fec->roots;
--	block = div64_u64_rem(position, v->fec->io_size, &rem);
--	*offset = par_buf_offset ? 0 : (unsigned int)rem;
--
--	res = dm_bufio_read_with_ioprio(v->fec->bufio, block, buf, ioprio);
--	if (IS_ERR(res)) {
--		DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
--		      v->data_dev->name, (unsigned long long)rsb,
--		      (unsigned long long)block, PTR_ERR(res));
--		*buf = NULL;
--	}
--
--	return res;
--}
--
- /* Loop over each allocated buffer. */
- #define fec_for_each_buffer(io, __i) \
- 	for (__i = 0; __i < (io)->nbufs; __i++)
++	hci_cancel_cmd_sync(hdev, EINTR);
++
+ 	write_lock(&hci_dev_list_lock);
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
+@@ -2877,6 +2880,9 @@ int hci_resume_dev(struct hci_dev *hdev)
+ 	ret = hci_resume_sync(hdev);
+ 	hci_req_sync_unlock(hdev);
  
- /* Loop over each RS block in each allocated buffer. */
-@@ -100,28 +70,66 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
- 			   struct dm_verity_fec_io *fio, u64 rsb, int byte_index,
- 			   unsigned int block_offset, int neras)
++	if (ret && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return 0;
++
+ 	mgmt_resuming(hdev, hdev->wake_reason, &hdev->wake_addr,
+ 		      hdev->wake_addr_type);
+ 
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 6e76798ec786..f48d34fbfff2 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -174,10 +174,11 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		return ERR_PTR(err);
+ 
+ 	err = wait_event_interruptible_timeout(hdev->req_wait_q,
+-					       hdev->req_status != HCI_REQ_PEND,
++					       hdev->req_status != HCI_REQ_PEND ||
++					       hci_dev_test_flag(hdev, HCI_UNREGISTER),
+ 					       timeout);
+ 
+-	if (err == -ERESTARTSYS)
++	if (err == -ERESTARTSYS || hci_dev_test_flag(hdev, HCI_UNREGISTER))
+ 		return ERR_PTR(-EINTR);
+ 
+ 	switch (hdev->req_status) {
+@@ -6296,6 +6297,7 @@ static int hci_resume_scan_sync(struct hci_dev *hdev)
+  */
+ int hci_resume_sync(struct hci_dev *hdev)
  {
- 	int r, corrected = 0, res;
- 	struct dm_buffer *buf;
--	unsigned int n, i, j, offset, par_buf_offset = 0;
-+	unsigned int n, i, j, parity_pos, to_copy;
- 	uint16_t par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
- 	u8 *par, *block;
-+	u64 parity_block;
- 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
++	int err;
+ 	/* If not marked as suspended there nothing to do */
+ 	if (!hdev->suspended)
+ 		return 0;
+@@ -6303,10 +6305,14 @@ int hci_resume_sync(struct hci_dev *hdev)
+ 	hdev->suspended = false;
  
--	par = fec_read_parity(v, rsb, block_offset, &offset,
--			      par_buf_offset, &buf, bio->bi_ioprio);
--	if (IS_ERR(par))
-+	/*
-+	 * Compute the index of the first parity block that will be needed and
-+	 * the starting position in that block.  Then read that block.
-+	 *
-+	 * io_size is always a power of 2, but roots might not be.  Note that
-+	 * when it's not, a codeword's parity bytes can span a block boundary.
-+	 */
-+	parity_block = (rsb + block_offset) * v->fec->roots;
-+	parity_pos = parity_block & (v->fec->io_size - 1);
-+	parity_block >>= v->data_dev_block_bits;
-+	par = dm_bufio_read_with_ioprio(v->fec->bufio, parity_block, &buf,
-+					bio->bi_ioprio);
-+	if (IS_ERR(par)) {
-+		DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
-+		      v->data_dev->name, rsb, parity_block, PTR_ERR(par));
- 		return PTR_ERR(par);
-+	}
+ 	/* Restore event mask */
+-	hci_set_event_mask_sync(hdev);
++	err = hci_set_event_mask_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
  
- 	/*
- 	 * Decode the RS blocks we have in bufs. Each RS block results in
- 	 * one corrected target byte and consumes fec->roots parity bytes.
- 	 */
- 	fec_for_each_buffer_rs_block(fio, n, i) {
- 		block = fec_buffer_rs_block(v, fio, n, i);
--		for (j = 0; j < v->fec->roots - par_buf_offset; j++)
--			par_buf[par_buf_offset + j] = par[offset + j];
-+
-+		/*
-+		 * Copy the next 'roots' parity bytes to 'par_buf', reading
-+		 * another parity block if needed.
-+		 */
-+		to_copy = min(v->fec->io_size - parity_pos, v->fec->roots);
-+		for (j = 0; j < to_copy; j++)
-+			par_buf[j] = par[parity_pos++];
-+		if (to_copy < v->fec->roots) {
-+			parity_block++;
-+			parity_pos = 0;
-+
-+			dm_bufio_release(buf);
-+			par = dm_bufio_read_with_ioprio(v->fec->bufio,
-+							parity_block, &buf,
-+							bio->bi_ioprio);
-+			if (IS_ERR(par)) {
-+				DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
-+				      v->data_dev->name, rsb, parity_block,
-+				      PTR_ERR(par));
-+				return PTR_ERR(par);
-+			}
-+			for (; j < v->fec->roots; j++)
-+				par_buf[j] = par[parity_pos++];
-+		}
-+
- 		/* Decode an RS block using Reed-Solomon */
- 		res = decode_rs8(fio->rs, block, par_buf, v->fec->rsn,
- 				 NULL, neras, fio->erasures, 0, NULL);
- 		if (res < 0) {
- 			r = res;
-@@ -132,30 +140,10 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
- 		fio->output[block_offset] = block[byte_index];
+ 	/* Clear any event filters and restore scan state */
+-	hci_clear_event_filter_sync(hdev);
++	err = hci_clear_event_filter_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
  
- 		block_offset++;
- 		if (block_offset >= 1 << v->data_dev_block_bits)
- 			goto done;
--
--		/* Read the next block when we run out of parity bytes */
--		offset += (v->fec->roots - par_buf_offset);
--		/* Check if parity bytes are split between blocks */
--		if (offset < v->fec->io_size && (offset + v->fec->roots) > v->fec->io_size) {
--			par_buf_offset = v->fec->io_size - offset;
--			for (j = 0; j < par_buf_offset; j++)
--				par_buf[j] = par[offset + j];
--			offset += par_buf_offset;
--		} else
--			par_buf_offset = 0;
--
--		if (offset >= v->fec->io_size) {
--			dm_bufio_release(buf);
--
--			par = fec_read_parity(v, rsb, block_offset, &offset,
--					      par_buf_offset, &buf, bio->bi_ioprio);
--			if (IS_ERR(par))
--				return PTR_ERR(par);
--		}
- 	}
- done:
- 	r = corrected;
- error:
- 	dm_bufio_release(buf);
+ 	/* Resume scanning */
+ 	hci_resume_scan_sync(hdev);
+@@ -6315,10 +6321,14 @@ int hci_resume_sync(struct hci_dev *hdev)
+ 	hci_resume_monitor_sync(hdev);
+ 
+ 	/* Resume other advertisements */
+-	hci_resume_advertising_sync(hdev);
++	err = hci_resume_advertising_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	/* Resume discovery */
+-	hci_resume_discovery_sync(hdev);
++	err = hci_resume_discovery_sync(hdev);
++	if (err && hci_dev_test_flag(hdev, HCI_UNREGISTER))
++		return err;
+ 
+ 	return 0;
+ }
 -- 
-2.52.0
+2.25.1
 
 
