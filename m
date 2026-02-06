@@ -1,68 +1,71 @@
-Return-Path: <stable+bounces-214644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMTtNlHMhWlWGgQAu9opvQ
-	(envelope-from <stable+bounces-214644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:11:13 +0100
+	id ABu1KhjPhWlBGwQAu9opvQ
+	(envelope-from <stable+bounces-214646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:23:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807F4FD0B7
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:11:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAE8FD2D4
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C87F73006107
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 11:11:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E98A301B16A
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 11:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D330F395D85;
-	Fri,  6 Feb 2026 11:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AC339A800;
+	Fri,  6 Feb 2026 11:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVOE9dq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUP71Pqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AF7362128;
-	Fri,  6 Feb 2026 11:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC89393DEA;
+	Fri,  6 Feb 2026 11:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770376270; cv=none; b=t8t56B+bi+3y1mzw6ZVUl0mPZQu0CoTLW+gZoV6jttZDDyNPPXr7W2/Arg+N0dlzGai+rrgb8t7uWXN121t0RIimlGt9drlezZ3QOYzxVK032DnNco9oKfjINJPO9uBxE87KUcYkVJfguUrmwI0vJWsF+N+k78FTrHkxGPlN5l8=
+	t=1770376967; cv=none; b=V7LXdIaLl7YSX1Psd96HEdNwJirEFSjEhtOrqblfYjoO509q56K2HJjI0AuSAgHxUTzXIMZwPg60QWldboluuN1+07HVzUtiqlPCeuPdmm6gwnX4q48wdGiMXCwiZVMArKrhMJ105WTGCuZkEGDrD5FI/hd49N7Fe7j3o/iITeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770376270; c=relaxed/simple;
-	bh=CwVF0LjzvXWYlAbtCIziTcJ5dFxHE6Xr4xxR8q8HG0M=;
+	s=arc-20240116; t=1770376967; c=relaxed/simple;
+	bh=tipjZIAm+it3Cad0XHp1wNZYWgsdThdoedCXDuCJoeY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MHiz9Kb5D1ISLVNXLYTBsTyXprNEri5pWEDuB+z9iPMgH7oqxjx4MhDY9BQPKjnXV+f6wmYppKCzCghNArl23FdIU0mho5tLr4+PIZ9OMWTd1cmvbT3ctbdhEvVA0eFUPjxxlcKRfFg3DeJa9le2p8DvweKeqXrGZdMhrVaxndo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVOE9dq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF0AC116C6;
-	Fri,  6 Feb 2026 11:11:09 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IvozneCSvV2sWgxyUAKDxhzSZCIHnzXmi1hrx79ErBvYUp/CgnwtvZQF2zK8cc0XtXn2g/GgUgWIsElBAH1RhN0oKvZfFxxbtx7Nna2Q5u29Fllh73GKgiXfW/ys5p5YhAjA4/g6kT8TgbeImsfM0tH5TBEimOQua6oOcWtVmoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUP71Pqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D18EC116C6;
+	Fri,  6 Feb 2026 11:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770376270;
-	bh=CwVF0LjzvXWYlAbtCIziTcJ5dFxHE6Xr4xxR8q8HG0M=;
+	s=korg; t=1770376967;
+	bh=tipjZIAm+it3Cad0XHp1wNZYWgsdThdoedCXDuCJoeY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QVOE9dq0RgO+yDIGzkv20U4JYOlPDvJOppQe+PZM4Cvq+vV9Mv1+BkpexY/5aFPdB
-	 rkmssplVgUdRjsJH7D+DMqZuHosnGNn2fpLiY+l0t6CrKVAqxHHED1oeZkYOxgOPnk
-	 PRExnB9cQMFlC3uYWn47MXojDgFNN/ts9yDWF97M=
-Date: Fri, 6 Feb 2026 12:11:06 +0100
+	b=FUP71PqmjYMqOIT6aVR6NhHUb9yE0NLLUYqJz3VrL7UkmNG9F1iA6JMHf5n/u3Vd4
+	 LbpCUBRmzObzvFMsOEDTH9z4hD/f6xabQ92DrY562VqdYOHEVRvY7FHT6bWtuTbu0i
+	 3f8I+jlK1hCX/LQhzt25kL6XJXlKPJr54lfP0Mzo=
+Date: Fri, 6 Feb 2026 12:22:43 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	John Garry <john.garry@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 080/161] scsi: hisi_sas: Use managed PCI functions
-Message-ID: <2026020643-tuition-outlying-ad14@gregkh>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Ben Hutchings <ben@decadent.org.uk>, stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 5.10 070/161] iio: imu: st_lsm6dsx: fix iio_chan_spec for
+ sensors without event detection
+Message-ID: <2026020630-theater-transform-c228@gregkh>
 References: <20260204143851.755002596@linuxfoundation.org>
- <20260204143854.629264200@linuxfoundation.org>
- <bce38fd1f10ecc0ae3ec3ccf95da89f58ca3e623.camel@decadent.org.uk>
+ <20260204143854.274769162@linuxfoundation.org>
+ <eb892614c9cd28aa03922567f8a6d75ed2f594bc.camel@decadent.org.uk>
+ <b5f8757ebd48c3a11591a68e8b97017f7b9d7e31.camel@baylibre.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <bce38fd1f10ecc0ae3ec3ccf95da89f58ca3e623.camel@decadent.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b5f8757ebd48c3a11591a68e8b97017f7b9d7e31.camel@baylibre.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -70,18 +73,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214644-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214646-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -91,38 +94,74 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,hisilicon.com:email]
-X-Rspamd-Queue-Id: 807F4FD0B7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0BAE8FD2D4
 X-Rspamd-Action: no action
 
-On Fri, Feb 06, 2026 at 12:09:29AM +0100, Ben Hutchings wrote:
-> On Wed, 2026-02-04 at 15:39 +0100, Greg Kroah-Hartman wrote:
-> > 5.10-stable review patch.  If anyone has any objections, please let me know.
+On Fri, Feb 06, 2026 at 09:17:38AM +0100, Francesco Lavra wrote:
+> On Thu, 2026-02-05 at 23:44 +0100, Ben Hutchings wrote:
+> > On Wed, 2026-02-04 at 15:38 +0100, Greg Kroah-Hartman wrote:
+> > > 5.10-stable review patch.  If anyone has any objections, please let me
+> > > know.
+> > > 
+> > > ------------------
+> > > 
+> > > From: Francesco Lavra <flavra@baylibre.com>
+> > > 
+> > > commit c34e2e2d67b3bb8d5a6d09b0d6dac845cdd13fb3 upstream.
+> > > 
+> > > The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-
+> > > NULL
+> > > event_spec field, indicating support for IIO events. However, event
+> > > detection is not supported for all sensors, and if userspace tries to
+> > > configure accelerometer wakeup events on a sensor device that does not
+> > > support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a
+> > > NULL
+> > > pointer when trying to write to the wakeup register.
+> > > Define an additional struct iio_chan_spec array whose members have a
+> > > NULL
+> > > event_spec field, and use this array instead of st_lsm6dsx_acc_channels
+> > > for
+> > > sensors without event detection capability.
+> > [...]
+> > > @@ -1170,8 +1177,8 @@ static const struct st_lsm6dsx_settings
+> > >                 },
+> > >                 .channels = {
+> > >                         [ST_LSM6DSX_ID_ACC] = {
+> > > -                               .chan = st_lsm6dsx_acc_channels,
+> > > -                               .len =
+> > > ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> > > +                               .chan = st_lsm6ds0_acc_channels,
+> > > +                               .len =
+> > > ARRAY_SIZE(st_lsm6ds0_acc_channels),
+> > >                         },
+> > >                         [ST_LSM6DSX_ID_GYRO] = {
+> > >                                 .chan = st_lsm6dsx_gyro_channels,
 > > 
-> > ------------------
+> > In the upstream commit the 3rd hunk changed the entry for hardware IDs
+> > ST_LSM6DSO16IS_ID and ST_ISM330IS_ID.
 > > 
-> > From: Xiang Chen <chenxiang66@hisilicon.com>
+> > That entry was added by commit f35e1ee9cb5d "iio: imu: st_lsm6dsx: add
+> > support to LSM6DSO16IS" in 6.2.  So in this backport the 3rd hunk is
+> > changing configuration for other devices.
 > > 
-> > [ Upstream commit 4f6094f1663e2ed26a940f1842cdaa15c1dd649a ]
-> > 
-> > Use managed PCI functions such as pcim_enable_device() and
-> > pcim_iomap_regions() to simplify exception handling code.
-> > 
-> > Link: https://lore.kernel.org/r/1629799260-120116-2-git-send-email-john.garry@huawei.com
-> > Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-> > Signed-off-by: John Garry <john.garry@huawei.com>
-> > Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> > Stable-dep-of: d5077426e1a7 ("drm/amd/pm: Don't clear SI SMC table when setting power limit")
+> > I think the right thing to do for the 5.10-6.1 branches is to only apply
+> > the first 2 hunks.
 > 
-> WTF?  That's a totally unrelated driver.
-> 
-> Unless this is actually fixing something I think it can be dropped,
-> since there are no other patches to hisi_sas in this series.
+> Good catch. In the 5.10 branch, the third hunk is changing configuration
+> for ST_LSM6DSR_ID, ST_ISM330DHCX_ID, and ST_LSM6DSRX_ID, none of which
+> should have their configuration changed; so only the first two hunks should
+> be applied.
 
-Yes, that is odd, and wasn't tagged this way for 5.15.y.  Sasha,
-something went wrong with your scripts :(
+Oh that's crazy.  I stared at this for a long time as the patches really
+look "identical" when it comes to the original one.  You have no context
+for what entry is associated with what "configuration" as these
+structures are huge!
 
-Now dropped, thanks.
+I'll just drop this patch entirely from all of these queues and wait for
+someone to send me a version that they "know" is correct.
+
+thanks,
 
 greg k-h
 
