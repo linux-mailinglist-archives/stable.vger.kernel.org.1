@@ -1,167 +1,179 @@
-Return-Path: <stable+bounces-214646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABu1KhjPhWlBGwQAu9opvQ
-	(envelope-from <stable+bounces-214646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:23:04 +0100
+	id +P7VI+jXhWlZHQQAu9opvQ
+	(envelope-from <stable+bounces-214647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 13:00:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAE8FD2D4
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 12:23:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2C1FD6C1
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 13:00:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E98A301B16A
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 11:22:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0C07301DEDB
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 12:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AC339A800;
-	Fri,  6 Feb 2026 11:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA032EE5FD;
+	Fri,  6 Feb 2026 12:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUP71Pqm"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="PW2ylB+K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC89393DEA;
-	Fri,  6 Feb 2026 11:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770376967; cv=none; b=V7LXdIaLl7YSX1Psd96HEdNwJirEFSjEhtOrqblfYjoO509q56K2HJjI0AuSAgHxUTzXIMZwPg60QWldboluuN1+07HVzUtiqlPCeuPdmm6gwnX4q48wdGiMXCwiZVMArKrhMJ105WTGCuZkEGDrD5FI/hd49N7Fe7j3o/iITeU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770376967; c=relaxed/simple;
-	bh=tipjZIAm+it3Cad0XHp1wNZYWgsdThdoedCXDuCJoeY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvozneCSvV2sWgxyUAKDxhzSZCIHnzXmi1hrx79ErBvYUp/CgnwtvZQF2zK8cc0XtXn2g/GgUgWIsElBAH1RhN0oKvZfFxxbtx7Nna2Q5u29Fllh73GKgiXfW/ys5p5YhAjA4/g6kT8TgbeImsfM0tH5TBEimOQua6oOcWtVmoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUP71Pqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D18EC116C6;
-	Fri,  6 Feb 2026 11:22:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770376967;
-	bh=tipjZIAm+it3Cad0XHp1wNZYWgsdThdoedCXDuCJoeY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FUP71PqmjYMqOIT6aVR6NhHUb9yE0NLLUYqJz3VrL7UkmNG9F1iA6JMHf5n/u3Vd4
-	 LbpCUBRmzObzvFMsOEDTH9z4hD/f6xabQ92DrY562VqdYOHEVRvY7FHT6bWtuTbu0i
-	 3f8I+jlK1hCX/LQhzt25kL6XJXlKPJr54lfP0Mzo=
-Date: Fri, 6 Feb 2026 12:22:43 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>, stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 5.10 070/161] iio: imu: st_lsm6dsx: fix iio_chan_spec for
- sensors without event detection
-Message-ID: <2026020630-theater-transform-c228@gregkh>
-References: <20260204143851.755002596@linuxfoundation.org>
- <20260204143854.274769162@linuxfoundation.org>
- <eb892614c9cd28aa03922567f8a6d75ed2f594bc.camel@decadent.org.uk>
- <b5f8757ebd48c3a11591a68e8b97017f7b9d7e31.camel@baylibre.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DA532ED44
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 12:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770379237; cv=pass; b=VfzKnMnhWjxoIPXSz4fdNUn5ChCioyL9b5h9nLC6YUd5TIfuxPZmTf4KF0fPxGbpnHOM79tS5767BFRcLtf2WndZy5shYdxC1LmRnYfvpYaA2V3MvH0wduisTjSpOaCus4984vIpOKiiT8t0blPxBgVQ/kdOUUxAgSaHEX/f/FU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770379237; c=relaxed/simple;
+	bh=g20uevV4tVvJLv/9bgO5Hh+jgvBQc0njCfo+a67kzcI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d1pxaVJGtQYgFg7mgX3Q+Z2bId2FxRqKUoF/Lvs/+LxGXlNYwJpsvALZr0fLEgpG8IN0CCBOIM2vmlln0HzAWSqPy78SrLlyDoR34TIfsiVETITGFEZyQq6RyBcl8+LVeYERCtMwe8oFNeCP14gEazIu2H0UYGQQYwHErGOMRpA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=PW2ylB+K; arc=pass smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b8869cd7bb1so107445866b.1
+        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 04:00:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770379236; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SkFduLJaIPG133wWnFgOwTfe/6qKnDOMAEPOT+AF1z0DHVPfMFUpgU8PdhfTqAO3mQ
+         D+YqLLZe58BG7Uffkx6klv859bf5aGDqNoDzBVTqN5O/09cV8qL/Kl9njywUapXwV+P0
+         vxHb0AY7shfAvR3AXCS334Cg2RLm/Vi2olzkf0y+xnYpL1FW9cqXCAJFpz0rIOXAatrN
+         NsU9mLlzI19ni8P6an4eK+hxP0cYh+txv/VCBgaOOXceSJ62BCC+YZKXTTNLaQhfFXZM
+         1wbfIEur/DDM8dz7C/o/cJpeWO7pnyHqbFyShzBigfCT1MYnXO+9l2kAwtrVM1RBqVSh
+         d7cQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6I/x/WRhEO+daalBrvU8SHSRaTRx4bAG6z/mD8JVCJ8=;
+        fh=bN1N9u37F9sfpeWZ2mDRMBHW5qqsdrFlcOzPW13gTq4=;
+        b=Fr4H3QQ4Ps7ZmNKaP0ezT2l5u0+TGcjlIYolVNkOmq8YYkzpSyH2WhPSjbtc9KqOWr
+         tBBl252+mI/D74o1LKB8G3j1EcJx5o8za29AVHv5YkY8AvhmUOynFJv6D3pVeowRf8VW
+         nWk2mUrcD/zviRkAg+sAyHy+/xoeBSBr4ynS6NtKYnytni+UhNVnqKYa2jYQQDf6g7vf
+         afIFXkrWhl/eIcx3dK277JdAmUSC2+Z/hS4I5MimzfXh3641C8kblxTceJmt4eIFdTJ0
+         FpkjAw5HLVmD4+UOgN1KQ/GiPmIToN6FwjlWer0iAyqLtO5OUVMlqLBqiwB/tP3m6dak
+         dv8A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770379236; x=1770984036; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6I/x/WRhEO+daalBrvU8SHSRaTRx4bAG6z/mD8JVCJ8=;
+        b=PW2ylB+K483sgI6EECDPhPXiNxXLi6K0a+55Or3F8znRgtBsFXrYavTzLOi3O9ojwr
+         u2Du7AB7qZ284ph0AGJp/LkfC+i/2UHf93tKYVKyX6ZWYiSZ4WbhF7WpiL7E3NCkc4Vn
+         gJHAVkQTHmUvUrGOBg2wyCE5Rh8oYpE8EbJY3KKrfgnZpjVlT838jl7kQmDxLX04OEvP
+         b7FcS03erhHmuqsLnw9z0i43nI/RmYTlTqKqft6Zeb/wLZiKfTlfx/LSj6AkqSmXj+Dq
+         RJazPdMV7mnmVPgCnQZW/WBpTjTZcgj34eilpB4L3HzJ7EN3zX/Jb/ySPYhLTfbboVfi
+         5yjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770379236; x=1770984036;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6I/x/WRhEO+daalBrvU8SHSRaTRx4bAG6z/mD8JVCJ8=;
+        b=OFCGCRZQtfK/z45v/3xtKW3Gx10A5iTcAF/SThWn3dCXAidlqsyzgs24d0vk5TEOWx
+         SyRyDOi1xEyJLE9bsWzgtiDblFqlYpraqisDRNMd+9Gq2Yn3giCIS2KMs2PpqODj0IEd
+         XXswWxM0WFC47OSVFSgM1yWAzkNO/PgNG/etsIwCvJk+wQewyuHA1qQU5JOenR5mHq9k
+         Iap0fx138fr/Q9wiP9zquoZmswmRj8vVhORNlWcG4a1dw9PCeL1jfzBWD93WDrKymJp4
+         wCnpHIIBUoh6awnRHdBm92wB/kCDIrs/o5E9deHrBlvt9sXEjVhc7WWRJeccR+99N3cU
+         rqhg==
+X-Gm-Message-State: AOJu0Yw6ufSpNK9PeUj5nfI+W8iHRzn0KD58ZC4QiWsUjfOzDsBPSbsW
+	iC0Aqpt+1nFUU7euPAMpu/Bhl0cyO77knT5OApltdg0fptbxtD6xpqghAEuhu2XTFW4wBUbVtpk
+	q4onoxflvplWAKTn8Hgea/EPRJqGAzHDDllO5VN/Uo3cdqR6jE0i/x8N1dQ==
+X-Gm-Gg: AZuq6aJNVoaZHYgfXkb7kIr1SMVTSa7PZr6NCIIgJu4HV2/es5TYkMqpNFHzcSG+JhS
+	cptoqiVXNLdQxLCZ9jp4Kip+hQtkn+J/VS9GYEJQjFw9n3JbaonCnTXomtnLvQO0snmr3WCP4A5
+	QO7r29xpRfy7Q5uzr9OHM1SXVe5dvjnDgKCAZ6hfJWaFCl9iqUsu3FHyUYz0B2BwHpfpM7ffLRK
+	6UNeSdgRwl4ptSG3uKq7c7slVFwvqvCXHstoXgmHrgTmmFhWhtBb/BlFXKsPEzQyYGFI8/9
+X-Received: by 2002:a17:907:7f8a:b0:b86:fca7:3dc2 with SMTP id
+ a640c23a62f3a-b8edf15ce6cmr149172366b.10.1770379234954; Fri, 06 Feb 2026
+ 04:00:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b5f8757ebd48c3a11591a68e8b97017f7b9d7e31.camel@baylibre.com>
+References: <20260204143851.857060534@linuxfoundation.org>
+In-Reply-To: <20260204143851.857060534@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Fri, 6 Feb 2026 17:29:58 +0530
+X-Gm-Features: AZwV_QjOvgjK9NEvluJj9yu0cCeB3pX9VAK9jLAhSJ1LBGv7_CJIl-nLLopraP0
+Message-ID: <CAG=yYwnSJCp6W6+0MGG_aaj+Ao7Qhiza0FKvrP-4wf6f9x1SQQ@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/122] 6.18.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214646-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214647-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0BAE8FD2D4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,rajagiritech-edu-in.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: EC2C1FD6C1
 X-Rspamd-Action: no action
 
-On Fri, Feb 06, 2026 at 09:17:38AM +0100, Francesco Lavra wrote:
-> On Thu, 2026-02-05 at 23:44 +0100, Ben Hutchings wrote:
-> > On Wed, 2026-02-04 at 15:38 +0100, Greg Kroah-Hartman wrote:
-> > > 5.10-stable review patch.  If anyone has any objections, please let me
-> > > know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Francesco Lavra <flavra@baylibre.com>
-> > > 
-> > > commit c34e2e2d67b3bb8d5a6d09b0d6dac845cdd13fb3 upstream.
-> > > 
-> > > The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-
-> > > NULL
-> > > event_spec field, indicating support for IIO events. However, event
-> > > detection is not supported for all sensors, and if userspace tries to
-> > > configure accelerometer wakeup events on a sensor device that does not
-> > > support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a
-> > > NULL
-> > > pointer when trying to write to the wakeup register.
-> > > Define an additional struct iio_chan_spec array whose members have a
-> > > NULL
-> > > event_spec field, and use this array instead of st_lsm6dsx_acc_channels
-> > > for
-> > > sensors without event detection capability.
-> > [...]
-> > > @@ -1170,8 +1177,8 @@ static const struct st_lsm6dsx_settings
-> > >                 },
-> > >                 .channels = {
-> > >                         [ST_LSM6DSX_ID_ACC] = {
-> > > -                               .chan = st_lsm6dsx_acc_channels,
-> > > -                               .len =
-> > > ARRAY_SIZE(st_lsm6dsx_acc_channels),
-> > > +                               .chan = st_lsm6ds0_acc_channels,
-> > > +                               .len =
-> > > ARRAY_SIZE(st_lsm6ds0_acc_channels),
-> > >                         },
-> > >                         [ST_LSM6DSX_ID_GYRO] = {
-> > >                                 .chan = st_lsm6dsx_gyro_channels,
-> > 
-> > In the upstream commit the 3rd hunk changed the entry for hardware IDs
-> > ST_LSM6DSO16IS_ID and ST_ISM330IS_ID.
-> > 
-> > That entry was added by commit f35e1ee9cb5d "iio: imu: st_lsm6dsx: add
-> > support to LSM6DSO16IS" in 6.2.  So in this backport the 3rd hunk is
-> > changing configuration for other devices.
-> > 
-> > I think the right thing to do for the 5.10-6.1 branches is to only apply
-> > the first 2 hunks.
-> 
-> Good catch. In the 5.10 branch, the third hunk is changing configuration
-> for ST_LSM6DSR_ID, ST_ISM330DHCX_ID, and ST_LSM6DSRX_ID, none of which
-> should have their configuration changed; so only the first two hunks should
-> be applied.
+ Build error related
+screenshot  below.
 
-Oh that's crazy.  I stared at this for a long time as the patches really
-look "identical" when it comes to the original one.  You have no context
-for what entry is associated with what "configuration" as these
-structures are huge!
+--------------------<screenshot>-----------------------
 
-I'll just drop this patch entirely from all of these queues and wait for
-someone to send me a version that they "know" is correct.
+$make -j 4
+  DESCEND objtool
+  DESCEND bpf/resolve_btfids
+  INSTALL libsubcmd_headers
+  INSTALL libbpf_headers
+  INSTALL libsubcmd_headers
+make[5]: *** No rule to make target 'str_error.h', needed by
+'/home/jeffrin/kernel/linux-stable-rc/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf.o'.
+Stop.
+make[4]: *** [Makefile:152:
+/home/jeffrin/kernel/linux-stable-rc/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf-in.o]
+Error 2
+make[3]: *** [Makefile:61:
+/home/jeffrin/kernel/linux-stable-rc/tools/bpf/resolve_btfids//libbpf/libbpf.a]
+Error 2
+make[2]: *** [Makefile:76: bpf/resolve_btfids] Error 2
+make[1]: *** [/home/jeffrin/kernel/linux-stable-rc/Makefile:1449:
+tools/bpf/resolve_btfids] Error 2
+make[1]: *** Waiting for unfinished jobs....
+  CALL    scripts/checksyscalls.sh
+make: *** [Makefile:248: __sub-make] Error 2
+-----------------------<screenshot>---------------------------
 
-thanks,
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
-greg k-h
+--
+software engineer
+rajagiri school of engineering and technology
 
