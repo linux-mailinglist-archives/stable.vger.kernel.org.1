@@ -1,228 +1,391 @@
-Return-Path: <stable+bounces-214617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMQRET2lhWmSEQQAu9opvQ
-	(envelope-from <stable+bounces-214617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:24:29 +0100
+	id KIECBOeqhWlhEwQAu9opvQ
+	(envelope-from <stable+bounces-214618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:48:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694FFFB710
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:24:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8700FBAB2
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7EEC53013781
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 08:23:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F099C3006469
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 08:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF5734887B;
-	Fri,  6 Feb 2026 08:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DFD30B53C;
+	Fri,  6 Feb 2026 08:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mgml.me header.i=@mgml.me header.b="vCZ+vreC";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="ELBJjd9h"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="gzKb0T0T"
 X-Original-To: stable@vger.kernel.org
-Received: from e234-52.smtp-out.ap-northeast-1.amazonses.com (e234-52.smtp-out.ap-northeast-1.amazonses.com [23.251.234.52])
-	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
+Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A439B34847A;
-	Fri,  6 Feb 2026 08:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.251.234.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350730E82B
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 08:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770366207; cv=none; b=ga34r1cYDAnLhaS2peGHXicxuPmxQIXHT2ElzHuz0Dv9ek3cEROtuUM3LBn+yXhkynQYfDrt5br10qTC9dq+POuKO7X781UfI0nM9maZTrrkgmixsMd+cTtF0dEp9u7kyS+AvuLeD2q/vnaC5Q7s93SAl0wu8ikOF42ib3AOJg0=
+	t=1770367715; cv=none; b=F8pWhtfujId09Xt6ABS8cuTg2uConZWdX6aWxA48rcOhbuLBjsHHQ+sIwJdxkKEFn2BzD+mki/gpo1SV8QXEc6IC2E5YiG0M3MAbWUnFnGn+X3ry8Iziifqwx6ofRf4x7x2a7K/wiQiyykDYzrFcaJiPRClFxfiOnHDdrG4vmuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770366207; c=relaxed/simple;
-	bh=cAA85mXgihgT5EqXdE/1zzC9GDxcWUf9+c4NQoMN/L4=;
-	h=In-Reply-To:From:To:Cc:Subject:Message-ID:Date:MIME-Version:
-	 Content-Type; b=sYWmk7unmvX9Z2yC515SaEEhUyfqx9/a1Amp11cYi+hnaT242LgbMdyxdhXfnl3J7+cgt6Uo+MvTM8Is+5hZUV6BtArm7R004DQ2tCfYXaecg7dYsLTVogFrfSGFrozPKtaDMazL9GwMbjK6CJIY7IJPdkVlxY4ZvXOkrs710UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me; spf=pass smtp.mailfrom=send.mgml.me; dkim=pass (1024-bit key) header.d=mgml.me header.i=@mgml.me header.b=vCZ+vreC; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=ELBJjd9h; arc=none smtp.client-ip=23.251.234.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.mgml.me
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=mgml.me; t=1770366205;
-	h=In-Reply-To:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
-	bh=cAA85mXgihgT5EqXdE/1zzC9GDxcWUf9+c4NQoMN/L4=;
-	b=vCZ+vreCX066BG9U2rpQoM/BH1Hiozx2GZW+ehKtRpAWLUHSWD7HxHgwQCcJwy92
-	dCjONg3SLEBVHLTkBr4FQKcvQy3lmhrcqjv/xwgYpnN4nXjoj4g/24Brsx4Z0EeKkct
-	muK8PlGk1cXjYNlhEKz06US0wdL9VryoKAO9zB7o=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=suwteswkahkjx5z3rgaujjw4zqymtlt2; d=amazonses.com; t=1770366205;
-	h=In-Reply-To:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=cAA85mXgihgT5EqXdE/1zzC9GDxcWUf9+c4NQoMN/L4=;
-	b=ELBJjd9hqJVrYr99RzSeXeFrejJqUyM9MgC2Ig7WaAHsQDAHnMvKPUhKL2dCzQYl
-	AWiP9SjxzcA1KjI1ccjgoNNpVhXqQjeMXk0qbNVEI5NcME+a2cxEKN72fw6mxaYu6LN
-	M9KTk2R2aDE46MEwduBXvcX7dSa9hQZw++8aGmNo=
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-In-Reply-To: <aYTYUZXJjQV1BBAk@mail.minyard.net>
-From: Kenta Akagi <k@mgml.me>
-To: corey@minyard.net
-Cc: k@mgml.me, openipmi-developer@lists.sourceforge.net, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 0/1] ipmi: Fix double list_add when sender returns
- an error
-Message-ID: <0106019c320c7d2b-10ca1cdd-c2ab-407b-90b0-0eaf05fa16be-000000@ap-northeast-1.amazonses.com>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 6 Feb 2026 08:23:25 +0000
+	s=arc-20240116; t=1770367715; c=relaxed/simple;
+	bh=h8nrmHf3l0hJChLWTq1SjAaiXohkaA8Gu3JDY4Qoqmo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=dOzoMotqBZsjw9uMC/lZhyNd/ggBtfOS9tkZ7AihrHUPyG1h0h9EuhlN7hF7BKdB0ZfrVUKh94MthhGa1vQo3GlCw90bUqzYlpVI3XjNZ+nnvLLVo0JbwbtY3GDMRFINKx+WAxtia1SI+I/7dMKrtU1oDXpW/Dj3S8IHeSJBGyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=gzKb0T0T; arc=none smtp.client-ip=120.232.169.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=gzKb0T0TEiFU/ucDR95jLIgQESwnTSvVsI5Cea4UWa+z6uyHs9gxPuxi6EMAF4+agRqew+KG27tyb
+	 lPdQ/2V/2Ythj7RH5IopJzMvNSkN1Dz0q9R4jp7Rs3ucXJKlJDp73GRbAcFRJedQ8nQ+e6cNQpntcy
+	 yGUa5fkN7t4B+8wQ=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.129.7.232])
+	by rmsmtp-lg-appmail-28-12033 (RichMail) with SMTP id 2f016985aad6471-dbec2;
+	Fri, 06 Feb 2026 16:48:24 +0800 (CST)
+X-RM-TRANSID:2f016985aad6471-dbec2
+From: Rajani Kantha <681739313@139.com>
+To: jon@nutanix.com,
+	gauri.patwardhan@nutanix.com,
+	rahul.chunduru@nutanix.com,
+	harshit@nutanix.com,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	pauld@redhat.com,
+	william.ton@nutanix.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.6.y] sched/rt: Fix race in push_rt_task
+Date: Fri,  6 Feb 2026 16:48:17 +0800
+Message-Id: <20260206084817.2118-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Feedback-ID: ::1.ap-northeast-1.TOS0vxEE3Ar6ai29fkp2i/jb+l2iigajCGeLfF7S3sk=:AmazonSES
-X-SES-Outgoing: 2026.02.06-23.251.234.52
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mgml.me,none];
-	R_DKIM_ALLOW(-0.20)[mgml.me:s=resend,amazonses.com:s=suwteswkahkjx5z3rgaujjw4zqymtlt2];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214617-lists,stable=lfdr.de];
-	FORGED_MUA_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-214618-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[139.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[139.com:-];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[139.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[k@mgml.me,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[mgml.me:+,amazonses.com:+];
+	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amazonses.com:dkim,mgml.me:dkim,ap-northeast-1.amazonses.com:mid]
-X-Rspamd-Queue-Id: 694FFFB710
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B8700FBAB2
 X-Rspamd-Action: no action
 
+From: Harshit Agarwal <harshit@nutanix.com>
 
+commit 690e47d1403e90b7f2366f03b52ed3304194c793 upstream.
 
-On 2026/02/06 2:50, Corey Minyard wrote:
-> On Thu, Feb 05, 2026 at =
-11:47:38PM +0900, Kenta Akagi wrote:
->> In kernel 6.18.7, we encountered =
-the following panic.
->>
->>     [164050.860241] list_add double add: =
-new=3Dffff8a5833cd0000, prev=3Dffff8a5833cd0000, next=3Dffff8a387b2491b0.
->>     [164050.869744] ------------[ cut here ]------------
->>     [164050.874698] kernel BUG at lib/list_debug.c:35!
->>     [164050.879435] Oops: invalid opcode: 0000 [#1] SMP NOPTI
->>     [164050.884742] CPU: 5 UID: 0 PID: 99228 Comm: kworker/5:2 Kdump: =
-loaded Tainted: G S          E       6.18.7-20260127.el9.x86_64 #1 =
-PREEMPT(voluntary)
->>     [164050.899481] Tainted: [S]=3DCPU_OUT_OF_SPEC, =
-[E]=3DUNSIGNED_MODULE
->>     [164050.905470] Hardware name: Dell Inc. =
-PowerEdge R640/0X45NX, BIOS 2.15.1 06/15/2022
->>     [164050.913285] =
-Workqueue: events smi_work [ipmi_msghandler]
->>     [164050.918865] RIP: =
-0010:__list_add_valid_or_report+0xb6/0xc0
->>     [164050.924609] Code: c7 =
-e8 b1 c3 89 48 8b 16 48 89 f1 4c 89 e6 e8 e1 16 a9 ff 0f 0b 48 89 f2 4c 89 =
-e1 48 89 fe 48 c7 c7 40 b2 c3 89 e8 ca 16 a9 ff <0f> 0b 0f 1f 84 00 00 00 =
-00 00 90 90 90 90 90 90 90 90 90 90 90 90
->>     [164050.943787] RSP: =
-0018:ffffceacac91fdc0 EFLAGS: 00010246
->>     [164050.949271] RAX: =
-0000000000000058 RBX: ffff8a5833cd0000 RCX: 0000000000000000
->>     [164050.956665] RDX: 0000000000000000 RSI: 0000000000000001 RDI: =
-ffff8a773f89c1c0
->>     [164050.964054] RBP: ffff8a5833cd0000 R08: =
-0000000000000000 R09: ffffceacac91fc78
->>     [164050.971441] R10: =
-ffffceacac91fc70 R11: ffffffff8a7e10c8 R12: ffff8a387b2491b0
->>     [164050.978837] R13: 0000000000000000 R14: ffff8a387b249190 R15: =
-ffff8a387b2491b0
->>     [164050.986229] FS:  0000000000000000(0000) =
-GS:ffff8a77b459d000(0000) knlGS:0000000000000000
->>     [164050.994581] CS:=
-  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->>     [164051.000597] CR2: =
-00007ff95841be6c CR3: 000000063b022001 CR4: 00000000007726f0
->>     [164051.007997] PKRU: 55555554
->>     [164051.010970] Call Trace:
->>     [164051.013690]  <TASK>
->>     [164051.016055]  ? =
-mutex_lock+0xe/0x30
->>     [164051.019724]  deliver_response+0x59/0x100 =
-[ipmi_msghandler]
->>     [164051.025495]  smi_work+0xa0/0x370 =
-[ipmi_msghandler]
->>     [164051.030563]  process_one_work+0x19d/0x3d0
->>     [164051.034844]  worker_thread+0x23e/0x360
->>     [164051.038873]  ?=
- __pfx_worker_thread+0x10/0x10
->>     [164051.043423]  kthread+0xfb/0x230
->>     [164051.046850]  ? __pfx_kthread+0x10/0x10
->>     [164051.050872]  ?=
- __pfx_kthread+0x10/0x10
->>     [164051.054894]  ret_from_fork+0xe9/0x100
->>     [164051.058826]  ? __pfx_kthread+0x10/0x10
->>     [164051.062852]  =
-ret_from_fork_asm+0x1a/0x30
->>     [164051.067065]  </TASK>
->>
->> Because kdump was not properly configured, I was unable to inspect the
->> vmcore, but based on the oops and the current implementation, I infer
->> that the issue occurred via the following mechanism.
->=20
-> A fix for this is already queued in the next tree.  I should have it
-> out soon.
+Overview
+========
+When a CPU chooses to call push_rt_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_lowest_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
 
-Ah, sorry for I didn't notice that.
-I'll wait for the "ipmi: =
-Fix use-after-free and list corruption on sender error".
+Crashes
+=======
+This bug resulted in quite a few flavors of crashes triggering kernel
+panics with various crash signatures such as assert failures, page
+faults, null pointer dereferences, and queue corruption errors all
+coming from scheduler itself.
 
-Thanks,
-Akagi
+Some of the crashes:
+-> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >= MAX_RT_PRIO)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? do_error_trap+0x64/0xa0
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? exc_invalid_op+0x4c/0x60
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? pick_next_task_rt+0x6e/0x1d0
+   __schedule+0x5cb/0x790
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
 
->=20
-> -corey
->=20
->>
->> - The BMC becomes unstable
->> - Some kind of msg is queued in (hp_)xmit_msgs and smi_work runs
->> - (Because the BMC is unstable) intf->handlers->sender returns an error
->> - deliver_err_response() queues newmsg into intf->user_msg
->> - goto restart, but since intf->curr_msg is naturally non-NULL, no
->>   dequeue is performed from (hp_)xmit_msgs
->> - The same newmsg as =
-before the restart goes through the same flow and
->>   deliver_err_response=
- is executed, leading to a double add
->>
->> I took a quick look at the BMC =
-logs and there was a watchdog BMC reset
->> around the time of the panic, so=
- I'm pretty sure the BMC was unstable.
->>
->> I'm not sure if this is the =
-correct approach, but I submit a RFC PATCH
->> in the spirit of a bug report=
-. I would appreciate your feedback. You
->> can completely discard mine and =
-fix it as a separate patch if you
->> prefer.
->>
->> Thanks.
->>
->> =20
->> Kenta Akagi (1):
->>   ipmi: Fix double list_add when sender returns an =
-error
->>
->>  drivers/char/ipmi/ipmi_msghandler.c | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> --=20
->> 2.50.1
->>
->=20
+-> BUG: kernel NULL pointer dereference, address: 00000000000000c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? __warn+0x8a/0xe0
+   ? exc_page_fault+0x3d6/0x520
+   ? asm_exc_page_fault+0x1e/0x30
+   ? pick_next_task_rt+0xb5/0x1d0
+   ? pick_next_task_rt+0x8c/0x1d0
+   __schedule+0x583/0x7e0
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
+
+-> BUG: unable to handle page fault for address: ffff9464daea5900
+   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu != task_cpu(p))
+
+-> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? do_error_trap+0x64/0xa0
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? exc_invalid_op+0x4c/0x60
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   dequeue_rt_entity+0x1f/0x70
+   dequeue_task_rt+0x2d/0x70
+   __schedule+0x1a8/0x7e0
+   ? blk_finish_plug+0x25/0x40
+   schedule+0x3c/0xb0
+   futex_wait_queue_me+0xb6/0x120
+   futex_wait+0xd9/0x240
+   do_futex+0x344/0xa90
+   ? get_mm_exe_file+0x30/0x60
+   ? audit_exe_compare+0x58/0x70
+   ? audit_filter_rules.constprop.26+0x65e/0x1220
+   __x64_sys_futex+0x148/0x1f0
+   do_syscall_64+0x30/0x80
+   entry_SYSCALL_64_after_hwframe+0x62/0xc7
+
+-> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? spurious_kernel_fault+0x171/0x1c0
+   ? exc_page_fault+0x3b6/0x520
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? asm_exc_page_fault+0x1e/0x30
+   ? _cond_resched+0x15/0x30
+   ? futex_wait_queue_me+0xc8/0x120
+   ? futex_wait+0xd9/0x240
+   ? try_to_wake_up+0x1b8/0x490
+   ? futex_wake+0x78/0x160
+   ? do_futex+0xcd/0xa90
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? plist_del+0x6a/0xd0
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? dequeue_pushable_task+0x20/0x70
+   ? __schedule+0x382/0x7e0
+   ? asm_sysvec_reschedule_ipi+0xa/0x20
+   ? schedule+0x3c/0xb0
+   ? exit_to_user_mode_prepare+0x9e/0x150
+   ? irqentry_exit_to_user_mode+0x5/0x30
+   ? asm_sysvec_reschedule_ipi+0x12/0x20
+
+Above are some of the common examples of the crashes that were observed
+due to this issue.
+
+Details
+=======
+Let's look at the following scenario to understand this race.
+
+1) CPU A enters push_rt_task
+  a) CPU A has chosen next_task = task p.
+  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
+  c) CPU A identifies CPU X as a destination CPU (X < Z).
+  d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
+  e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
+     locked CPU X’s rq, and thus, CPU A must wait.
+
+2) At CPU Z
+  a) Previous task has completed execution and thus, CPU Z enters
+     schedule, locks its own rq after CPU A releases it.
+  b) CPU Z dequeues previous task and begins executing task p.
+  c) CPU Z unlocks its rq.
+  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
+     lock) which triggers the schedule function on CPU Z.
+  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
+  f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
+
+3) At CPU B
+  a) CPU B enters try_to_wake_up with input task p.
+  b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
+     B.state = WAKING.
+  c) CPU B via select_task_rq determines CPU Y as the target CPU.
+
+4) The race
+  a) CPU A acquires CPU X’s lock and relocks CPU Z.
+  b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
+     still on CPU Z.
+  c) CPU A failed to notice task p had been dequeued from CPU Z while
+     CPU A was waiting for locks in double_lock_balance. If CPU A knew
+     that task p had been dequeued, it would return NULL forcing
+     push_rt_task to give up the task p's migration.
+  d) CPU B updates task p.cpu = Y and calls ttwu_queue.
+  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
+     p.on_rq = 1.
+  f) CPU B unlocks CPU Y, triggering memory synchronization.
+  g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
+     has not migrated.
+  h) CPU A decides to migrate p to CPU X.
+
+This leads to A dequeuing p from Y's queue and various crashes down the
+line.
+
+Solution
+========
+The solution here is fairly simple. After obtaining the lock (at 4a),
+the check is enhanced to make sure that the task is still at the head of
+the pushable tasks list. If not, then it is anyway not suitable for
+being pushed out.
+
+Testing
+=======
+The fix is tested on a cluster of 3 nodes, where the panics due to this
+are hit every couple of days. A fix similar to this was deployed on such
+cluster and was stable for more than 30 days.
+
+Co-developed-by: Jon Kohler <jon@nutanix.com>
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Tested-by: Will Ton <william.ton@nutanix.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ kernel/sched/rt.c | 52 +++++++++++++++++++++++------------------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
+
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 91b1ee0d81fc..2d0acdd32108 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1963,6 +1963,26 @@ static int find_lowest_rq(struct task_struct *task)
+ 	return -1;
+ }
+ 
++static struct task_struct *pick_next_pushable_task(struct rq *rq)
++{
++	struct task_struct *p;
++
++	if (!has_pushable_tasks(rq))
++		return NULL;
++
++	p = plist_first_entry(&rq->rt.pushable_tasks,
++			      struct task_struct, pushable_tasks);
++
++	BUG_ON(rq->cpu != task_cpu(p));
++	BUG_ON(task_current(rq, p));
++	BUG_ON(p->nr_cpus_allowed <= 1);
++
++	BUG_ON(!task_on_rq_queued(p));
++	BUG_ON(!rt_task(p));
++
++	return p;
++}
++
+ /* Will lock the rq it finds */
+ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ {
+@@ -1993,18 +2013,16 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ 			/*
+ 			 * We had to unlock the run queue. In
+ 			 * the mean time, task could have
+-			 * migrated already or had its affinity changed.
+-			 * Also make sure that it wasn't scheduled on its rq.
++			 * migrated already or had its affinity changed,
++			 * therefore check if the task is still at the
++			 * head of the pushable tasks list.
+ 			 * It is possible the task was scheduled, set
+ 			 * "migrate_disabled" and then got preempted, so we must
+ 			 * check the task migration disable flag here too.
+ 			 */
+-			if (unlikely(task_rq(task) != rq ||
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !rt_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     task != pick_next_pushable_task(rq))) {
+ 
+ 				double_unlock_balance(rq, lowest_rq);
+ 				lowest_rq = NULL;
+@@ -2024,26 +2042,6 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ 	return lowest_rq;
+ }
+ 
+-static struct task_struct *pick_next_pushable_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_tasks(rq))
+-		return NULL;
+-
+-	p = plist_first_entry(&rq->rt.pushable_tasks,
+-			      struct task_struct, pushable_tasks);
+-
+-	BUG_ON(rq->cpu != task_cpu(p));
+-	BUG_ON(task_current(rq, p));
+-	BUG_ON(p->nr_cpus_allowed <= 1);
+-
+-	BUG_ON(!task_on_rq_queued(p));
+-	BUG_ON(!rt_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * If the current CPU has more than one RT task, see if the non
+  * running task can migrate over to a CPU that is running a task
+-- 
+2.17.1
+
 
 
