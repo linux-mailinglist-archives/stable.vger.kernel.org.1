@@ -1,175 +1,201 @@
-Return-Path: <stable+bounces-214629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJXlOK+7hWmOFgQAu9opvQ
-	(envelope-from <stable+bounces-214629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:00:15 +0100
+	id KGVTGh69hWmpFwQAu9opvQ
+	(envelope-from <stable+bounces-214630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:06:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A8CFC5AF
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:00:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCC7FC710
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 11:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B0296300B533
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 10:00:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2E413073F72
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 10:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDF02248AF;
-	Fri,  6 Feb 2026 10:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90533612EE;
+	Fri,  6 Feb 2026 10:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="fFZ7tNTS"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0cNdDJ/t"
 X-Original-To: stable@vger.kernel.org
-Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com [91.207.212.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC7F3016E7;
-	Fri,  6 Feb 2026 10:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C21B30F52A
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 10:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770372006; cv=none; b=atim/1fk7/dESUVjynVUphC1RuCY/QgUG9bpwD4WEdqZ76Ilk+dUvlvR56gGIUpZY7knl5ZHoC38OieDdY+dxQjGKd/blhYeWJbp+Iunn+HADf+KEWwUqacN754ae7hd19eo04rx9f72B/srbAo9BZ2u2IuImnGU0YKjOTD5XNM=
+	t=1770372141; cv=none; b=gcjKs1va55uQdrknu9TvqxDzzzgc6c4TJH59UDTARykVLlR93imCbtRLfjHTFNgF7ks5Fzd8rFQTPTmKntHA8YoRJLYOtsi2hJjjEKEAdhvavndDozxSaI/5OKQ3XhFiOPVLHV2dealz0kK680/Lwok/hVp+TLO0Es9GAJ/f1zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770372006; c=relaxed/simple;
-	bh=4CNEF2rSXxydPhjwJVDCmqmTux0K4eh1A0JWX//4kns=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=I2GXc0iIKoWZmKFRjI0pswuq4938/XR2f5NW3A+CUViO81cnMRqr+QmpFkjew+T4m8am0e4Dsy2UURdn/EnnpaQtraX+dIDulwmKJN3e/4ngzGx7yPAGHeuDPQNOAiqW/uUDGoriz03yFBY3FXwTu6srQrj9ncwtuw2cgOzcMLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=fFZ7tNTS; arc=none smtp.client-ip=91.207.212.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
-Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
-	by mx08-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6166Z4N73275617;
-	Fri, 6 Feb 2026 09:59:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=dk201812; bh=VMWortO+nbOriHa43v80+id
-	rMEdrIyPqpfdyd62/BgY=; b=fFZ7tNTSzvSxrrmJdtE4hnyeN9TUMm/pK32GYM9
-	1Bf8p16LCX43pNB9+VSZzXDYus4jqgB5YHk8dFddEgiW0/wnPbh7CSyvACgTRxrH
-	2FPCybCW/QvznyR3PSPE6Tb19/+T1eh9SBKfRmQkmfKOGWHOiV4BrviilQk95Kxv
-	6XrBG0VM3w3pbxE65HIiPuV/8UcNWA5JpTzdgdpcd2uCv/hN1fZ+qq9cXl7WL+jx
-	nEYifxeCpehPqX3FiyniAlKrJcih8rx1aENU3gLIlIem6q87AqgeqVZ+g8wVRpJu
-	G6HTH54czYMIsBVf2PsBSlDGRPf6NG8srQzO1zAt6yUJmlQ==
-Received: from hhmail01.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
-	by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4c4jfy0xpv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Feb 2026 09:59:54 +0000 (GMT)
-Received: from
- 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
- (172.25.6.240) by HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Fri, 6 Feb 2026 09:59:53 +0000
-From: Matt Coster <matt.coster@imgtec.com>
-Date: Fri, 6 Feb 2026 09:59:49 +0000
-Subject: [PATCH] drm/imagination: Fix ROGUE_MAX_COMPUTE_SHARED_REGISTERS
+	s=arc-20240116; t=1770372141; c=relaxed/simple;
+	bh=8T6OtLRymPVfCIUBMcoeVSXu87Rl1DjP1XQL/Jy/Qz0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Z2J4mYJHyNLIFLNH6nd6y13SGra3ZN4vjwRM9dLfpv6Lhk8EUAD6x784Wy5doRTl+OijdVTyuYs5S48YTH69HMGC5nRIVOyTgwUYx9u511YWBg+FAOHivhl55S9axWavDnOiQ4RGH/00ipFq6Gm/HELMGkEYAfbsnWACMlRd6UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0cNdDJ/t; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354bc535546so86867a91.3
+        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 02:02:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770372141; x=1770976941; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zt0Gi8eng1ewWpbYcR2xwSSE4Oxk3JAUhhCfKODhyE4=;
+        b=0cNdDJ/trXbMJOD7OCyoZXr6/dSf8yhMQnoP8BMnaUaNeJTQ4Pre5i8MtaBg8/n5qc
+         /MamlF5X9/UYTXscT/SGsyTM6BMwKE09FmJClYR8MLrnzvq+a/CQOK1Uy9oVOpjzIfJ1
+         V+QXt4uiw/JDLlSvrOdnfu4eEAHlykasIXJawWqtFBiSCEX/+PP9Fd2/+ncEkUD6+1m4
+         wDd5vZtPhpgYKPxrjkNl90TwwO/VJhmNn/PhMPX9bOhwtBAqyDfU5jcxTTtHBD685DMU
+         41yOaW9C1dgb6ZXK/Dd1hl7F2h+On7KuqyfYqWBhFA3YMFclmwpGZocqSlWyVnZ/rL2S
+         Wvkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770372141; x=1770976941;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zt0Gi8eng1ewWpbYcR2xwSSE4Oxk3JAUhhCfKODhyE4=;
+        b=gWA0LQ1Ww5s9MFhuLDLGR45zD4F0xlTAyPyDyfbyQPXGcf5BYxXoseVxwyDFUqicx4
+         7F3QVdOer+BRKN19oQu1sRyjrOlqn9oaoKswFA+O3cZ7bkzX/446x0KuREtV7jRbjaSU
+         femWGae/HmwEm96DIRmdueQO3hwiX/PWfVfyV1AI36sd350SDSQGo2zjBRYavAKb/ypr
+         ByqF3XIZxR40AOV/DKa1dNjV4S8T+4q/1Ozg8RX3rmE5Wete4MWlUQ4pIffaHRyW8ZRW
+         mnYRGtKdQ17oE7jxPFyKljlfNDFtHqhrmLONl+nVzBXZrxgNsb/b39mZ8dASKJvMZEko
+         dS3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVJv1Mx62AjFIcrgkq9RkWBOMo4zVtO2oQzrPVXRUhPV+3Iji6i9GFbAiq8feWb/6ErrM7in08=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygNrw5WYB/wowuD7xJN/orqby/Cwsbp+mzaDBsScKNt0QTAMVF
+	8B2R2QzCwoeovonAUFSjfnNwW+KqBH9TceOzB8WBynA1Of4q3ezGpWeVMH94zPdQuTHEGx2xX7M
+	HNbd6eheiZ5VeeCEFQoNfoDCBdg==
+X-Received: from pjbqx13.prod.google.com ([2002:a17:90b:3e4d:b0:34e:795d:fe31])
+ (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:350d:b0:34e:5516:6655 with SMTP id 98e67ed59e1d1-354b3c5bb83mr1709576a91.9.1770372140784;
+ Fri, 06 Feb 2026 02:02:20 -0800 (PST)
+Date: Fri,  6 Feb 2026 10:02:18 +0000
+In-Reply-To: <CABb+yY39rhTZbtA21MecYk-R9fh7VQQr5kZUgCw4z92mWhZ1Rg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260206-rogue-max-compute-shared-registers-v1-1-888249fa50b1@imgtec.com>
-X-B4-Tracking: v=1; b=H4sIAJS7hWkC/x3NQQqDMBBG4avIrDuQaDHgVUoXQf/EWWhkRosg3
- t3Q5bd57yKDCoyG5iLFT0zKWuFfDY1zXDNYpmpqXds73znWkg/wEk8ey7IdO9jmqJhYkcV2qHF
- KCR7Bv0PoqIY2RZLzP/l87/sBrs8cCnQAAAA=
-X-Change-ID: 20260130-rogue-max-compute-shared-registers-fffe1e714773
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard
-	<mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie
-	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-CC: Simon Perretta <simon.perretta@imgtec.com>,
-        Frank Binns
-	<frank.binns@imgtec.com>,
-        Brajesh Gupta <brajesh.gupta@imgtec.com>,
-        "Alessio
- Belle" <alessio.belle@imgtec.com>,
-        Alexandru Dadu
-	<alexandru.dadu@imgtec.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Matt Coster
-	<matt.coster@imgtec.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1237;
- i=matt.coster@imgtec.com; h=from:subject:message-id;
- bh=4CNEF2rSXxydPhjwJVDCmqmTux0K4eh1A0JWX//4kns=;
- b=owGbwMvMwCFWuUfy8817WRsYT6slMWS27p45K5Tp1Ya6viCXucsNd+4QlNpZrl230zX0RGzxO
- pM9Z9+ZdpSyMIhxMMiKKbLsWGG5Qu2PmpbEjV/FMHNYmUCGMHBxCsBEbv5jZHg4Ieej+ca5P3Y+
- fn4i3ztRfd1Nrpkb7ZYLbjp02yLu8roWhv851w4scHn79kv2pk//LebYqs6Sd/9xX2F9pLJO+KM
- thay8AA==
-X-Developer-Key: i=matt.coster@imgtec.com; a=openpgp;
- fpr=05A40CFCE7269D61D97100A1747F0A9036F90DFA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDA2NyBTYWx0ZWRfX5XdN1Vr9twWa
- cTeCgbfI01xNEO+tmZyDkuig5QeSmcIeHyHBGgDzBWdWU1WQ+BslAHj+571qJ9WwDQlOY8rgzrT
- FiTpFQKLUrGN8oMrvDFCslP3NSMnQgN03jmFT0v9oy0MwRFP/V0eGOnfy8ei1ZMmni0qeL/ukdA
- nRm87SgCciW8owoZaRQ+FzYzMpx1hJeH23Ee5ah0QanK5wdYkpLKNAvcvCuOqinchrVDSQZlwCe
- +2LOKt1xQzoSeo693n+RvqZzl7CiBJ2ySv2lLsxe8ZSNGfk9ko/DjiCn9QNnUAHTqsmUxHTgKTF
- VOtz5XaY/MuUUJ2xqj/1U275jbOm60WxhZP1Pc1eQFTTZnkx27UlzGS/uZUWglGDq2Tb/0fTSwt
- 2M7YZhzI0uAqB3C0tZ5iMt4bOgRfU1/G+1xF+2Z3+Z7owWAOTIBGfdlKRO26rZW1Sw8pkCaQnBq
- LVXdPKm9UXkxbCqHqsg==
-X-Proofpoint-ORIG-GUID: 1PNJdE0VR3sawAQTu5lzNjvDxrOGv42T
-X-Proofpoint-GUID: 1PNJdE0VR3sawAQTu5lzNjvDxrOGv42T
-X-Authority-Analysis: v=2.4 cv=GakaXAXL c=1 sm=1 tr=0 ts=6985bb9a cx=c_pps
- a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
- a=N16aOacbDtMA:10 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=VwQbUJbxAAAA:8 a=r_1tXGB3AAAA:8 a=81mkaI_6koO-tMsR8hIA:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
+Mime-Version: 1.0
+References: <CABb+yY39rhTZbtA21MecYk-R9fh7VQQr5kZUgCw4z92mWhZ1Rg@mail.gmail.com>
+X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
+Message-ID: <20260206100218.4163478-1-joonwonkang@google.com>
+Subject: Re: [PATCH 1/2 RESEND] mailbox: Use per-thread completion to fix
+From: Joonwon Kang <joonwonkang@google.com>
+To: jassisinghbrar@gmail.com
+Cc: alexey.klimov@arm.com, jonathanh@nvidia.com, joonwonkang@google.com, 
+	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	stable@vger.kernel.org, sudeep.holla@arm.com, thierry.reding@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[imgtec.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[imgtec.com:s=dk201812];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214629-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[imgtec.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matt.coster@imgtec.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[arm.com,nvidia.com,google.com,vger.kernel.org,gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-214630-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,imgtec.com:email,imgtec.com:dkim,imgtec.com:mid]
-X-Rspamd-Queue-Id: 20A8CFC5AF
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CBCC7FC710
 X-Rspamd-Action: no action
 
-Remove a spurious 2x multiplier from this def which can cause instability
-in larger compute workloads on hardware with enhancement 38020 present.
+> > Previously, a sender thread in mbox_send_message() could be woken up at
+> > a wrong time in blocking mode. It is because there was only a single
+> > completion for a channel whereas messages from multiple threads could be
+> > sent on the same channel in any order; since the shared completion could
+> > be signalled in any order, it could wake up a wrong sender thread.
+> >
+> > This commit resolves the false wake-up issue with the following changes:
+> > - Completions are created just as many as the number of concurrent sender
+> >   threads
+> > - A completion is created on a sender thread's stack
+> > - Each slot of the message queue, i.e. `msg_data`, contains a pointer to
+> >   its target completion
+> > - tx_tick() signals the completion of the currently active slot of the
+> >   message queue
+> >
+> Mailbox API does not support shared channels. Each channel is supposed
+> to be owned by one client. Though a client can serve multiple users of
+> the channel, but then it will have to serialize access to the channel.
+> The implication is mailbox_send_message should not be called before
+> the last call returns (in blocking mode).
 
-Fixes: b41ae495207e ("drm/imagination: Add GPU register headers")
-Cc: stable@vger.kernel.org
-Suggested-by: Simon Perretta <simon.perretta@imgtec.com>
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
----
- drivers/gpu/drm/imagination/pvr_rogue_defs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This sounds like a suddenly big change to the mailbox API after all other docs
+or discussion, e.g. Link in the commit message, imply that it supports multi-
+thread use case. I think it would be better to make it support multi-thread not
+to cause breaking changes to the mailbox client drivers. At least, we may be
+able to implement mbox_send_message() using mutex or other locks to still
+support multi-thread.
 
-diff --git a/drivers/gpu/drm/imagination/pvr_rogue_defs.h b/drivers/gpu/drm/imagination/pvr_rogue_defs.h
-index 932b01686008..1fde3be43afe 100644
---- a/drivers/gpu/drm/imagination/pvr_rogue_defs.h
-+++ b/drivers/gpu/drm/imagination/pvr_rogue_defs.h
-@@ -114,7 +114,7 @@
- 	ROGUE_CR_FWCORE_ADDR_REMAP_CONFIG0_CBASE_CLRMSK
- #define FWCORE_ADDR_REMAP_CONFIG0_SIZE_ALIGNSHIFT (12U)
- 
--#define ROGUE_MAX_COMPUTE_SHARED_REGISTERS (2 * 1024)
-+#define ROGUE_MAX_COMPUTE_SHARED_REGISTERS 1024
- #define ROGUE_MAX_VERTEX_SHARED_REGISTERS 1024
- #define ROGUE_MAX_PIXEL_SHARED_REGISTERS 1024
- #define ROGUE_CSRM_LINE_SIZE_IN_DWORDS (64 * 4 * 4)
+> Even with this patch, consider when threadA is active and threadB too
+> is waiting next. If the tx_tout races with threadA's transmission,
+> threadB may timeout and call tx_tick() on the channel thereby
+> affecting threadA. Which also eventually proceeds to complete on
+> threadB's tx_complete which was on the stack and hence no more exists
+> thereby causing UAF.
 
----
-base-commit: 5023ca80f9589295cb60735016e39fc5cc714243
-change-id: 20260130-rogue-max-compute-shared-registers-fffe1e714773
+Indeed, thanks for this input. Here we need to consider how tx_tick() is
+is called in conjunction with other events like timeout. tx_tick() can be
+called either when timeout occurs or by client or controller. Below is the
+break down of the cases.
 
+Case 1) Thread A is active and no timeout occurs to Thread B
+
+In this case, tx_tick() will be called once the tx is done for Thread A and
+then Thread B will go next. So, no problem.
+
+Case 2) Thread A is active but timeout occurs to Thread B
+
+This is the case that you pointed out. In this case, we could cancel the
+request for Thread B not disrupting the active request of Thread A and it
+should be okay to cancel it since it is before sending it to the controller,
+i.e. before the call to mbox->ops->send_data(). By not sending it, tx_tick()
+should also not be called either by client or controller. So, it should be no
+problem.
+
+Will create a new version of patch with this change.
+
+Case 3) Thread A is active but timeout occurs to Thread A and tx_tick() is
+called for Thread A
+
+Case 4) Thread A is done with tx, Thread B is now active but timeout occurs to
+Thread B and tx_tick() is called for Thread B
+
+These cases could occur, e.g. when there is no way for controller to know a tx
+done interrupt that it receives is for the currently active request or for the
+previous one, or when the timeout occurrs just before the controller is about
+to call mbox_chan_txdone(). If it happens anyway, it could also cause
+inconsistency of the mailbox internal status, but UAF will not occur with
+the patch which handles Case 2. However, these cases are out of topic for
+multi-thread support. It is more about the timeout support. It could occur even
+in a single thread as follows.
+
+- Thread A is active with a request and timeout occurs.
+- Thread A goes with the next request and is active again.
+- However, the controller calls mbox_chan_txdone(), thus tx_tick(), intending
+  for the first request.
+- The mailbox internal status goes inconsistent!
+- The controller may soon call another mbox_chan_txdone() for the second
+  request.
+
+So, these timeout cases are existing issues regardless of whether it is single-
+thread or multi-thread and should be considered orthogonally.
 
