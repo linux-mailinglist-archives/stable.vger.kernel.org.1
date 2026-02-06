@@ -1,189 +1,219 @@
-Return-Path: <stable+bounces-214581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COvPNwBDhWmA+wMAu9opvQ
-	(envelope-from <stable+bounces-214581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 02:25:20 +0100
+	id wKo7NrFIhWkN/QMAu9opvQ
+	(envelope-from <stable+bounces-214583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 02:49:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64873F8F43
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 02:25:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 391B7F911A
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 02:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 537A7301A163
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 01:25:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9506C3034553
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 01:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72257231C91;
-	Fri,  6 Feb 2026 01:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D830B248861;
+	Fri,  6 Feb 2026 01:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vrfdle7h"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="lF3G/MAh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-149.mail.qq.com (out203-205-221-149.mail.qq.com [203.205.221.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202101C84C0
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 01:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602EE246766
+	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 01:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770341118; cv=none; b=cQvnQz4Snpf09SJmtKv2PvA0+hiUlK85v3vIsuUAs7HokWkgR1DnG+42YQc6dubcafpiumEmcP1k8wzWr7aSEglBy0KlP60+wpxK4Z95TmgmBsiabWKpmVQTAwWtgPu5W/nW+vTDFMKdeKY6BSfx/GUQwXESI57q7e3WishGnCo=
+	t=1770342428; cv=none; b=PqGePkiqTaHf2kw5N3ygMjPiG00eiYHad67Rld2N9CU6qEQ0ct3X6qnEyamsJ5AWaCqzNDwoAK/2J6T6m/Pl7NFbcyCfZ0dfUbL8l4q1KqpaQ4KcJ2GbTkCK1frDIha6t6hX5N0hAwRNiTCy0JVP6X0dI1XDnwWYmFCjBJvcobo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770341118; c=relaxed/simple;
-	bh=y4reUzXwPFzss/EyunM3xBJJqk2DQfSN4mlbRZVQsVE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fEa2WzZNBDeoHGet51+HcFNvWb+fz5NdH4K/xQ05VtOkOL3h9BHywMCZOsX06jlPDpSew3CwjasKWD9WvLMcyBZUkgw/abNztuJvr/fAgUr1wgaKgdZs7ydH2vhOXpFP61hYI4SnEmztfY/Vv3Xs5aMYUXzCVR/t+StE3OAT4nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vrfdle7h; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34cc88eca7eso1376762a91.2
-        for <stable@vger.kernel.org>; Thu, 05 Feb 2026 17:25:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770341117; x=1770945917; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bByHMfzn4dhH09NijP3EyDZ/iv4YfYmEuujKD3yNi00=;
-        b=vrfdle7hJugO/UPVcDX0PVrMHFh0HBtxJMiPmqqtNje9UcC1QbxWu6IQlf5ySXDJzS
-         0TD7UxAtg95NbGifIi5nbSWHaYDABQm9aqu29YI0l65TSOmkdXElKrh283PG3XwJFyRa
-         hvEfclNhBZuXgZ7YDsbj2c1koS/2ine0OBE4KR2S8QyEmReQKJ04H0ifiB67fNzcUw6q
-         jL6RAKO7HMyKjxn4LIO6E7yGeKFXC2BEMR8Y2dREyDG7osZqPTKHorBSJa00yeGu+U8h
-         t7+2Cl7D7xwzOCOejJWzBb3dgcd+Wk98Ubf6+GGqPZxB6P3UYksyVbWEoAroupuHiPIi
-         hOSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770341117; x=1770945917;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bByHMfzn4dhH09NijP3EyDZ/iv4YfYmEuujKD3yNi00=;
-        b=Mnu0yxjza38eGZITpPBiymBk/3UcUK2Sxal0m0rr8ZIGAAFY24qhJwjsBdBs/nPb5l
-         UpobIwGijE2/2iMSEcEu+lba5AyL8dHCznNVA7YlF16+QRbrFjAUJTmQe8O/P+B+05Wj
-         HQjb/7SNrasgmEhkH+kybwbxUtKBGViZ0mDwyxIaACJfzpa38nn7M9FnafXes71JkatF
-         YfZaaRAvu8RYy2OzmVOF3xqhYUjABq4kSdqpdNb30X9EPEL4XkdQSUCzqKU4fPXWgGki
-         OCToyOHX7l6HozucPRpimUitrUUWgCMAxo8F82lIW7xdfI27AT12vVSDjI2VZWG44P43
-         8PfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpDJQPe3egjz+qlBO/OdhCJnTM4CkAe6CR7gKfFfUSu5WemR0V18K8yjJ/1RoNpCBS6f9X6DQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA+hInZ8b051mTEAUnBKI0cEZ5REV+VA5cNNDWW7Xynhb/z99E
-	MIP6wwJ/LVYS/ONp242dkgl2YmIyY41wh8c5gvGiHHjrXwIsOZ0iaCL+up2Ri3l9i/m/gvSeyVx
-	AHhGrRA==
-X-Received: from pjbil4.prod.google.com ([2002:a17:90b:1644:b0:352:d19a:6739])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c4d:b0:34a:b4a2:f0bf
- with SMTP id 98e67ed59e1d1-354b3c950b2mr763265a91.16.1770341117476; Thu, 05
- Feb 2026 17:25:17 -0800 (PST)
-Date: Thu, 5 Feb 2026 17:25:15 -0800
-In-Reply-To: <b92c2a7c7bcdc02d49eb0c0d481f682bf5d10c76@linux.dev>
+	s=arc-20240116; t=1770342428; c=relaxed/simple;
+	bh=3ibxz+s4gf8V8aSQh1sVx5rWOACbOVeYfzzRXi/ixDU=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=S0+/ItN9sW8mDMWHOUAavPR76sIMDEQVwX4E3jGMElka9k9/D8c8WW7bnn5BfM+5a0CvQfl2IsOjS28RDnoxsTUVv8nXLLDuDQEr3c9Sa3XNB3OMadwsc29qN8u25+N/5SfnQct2FFDLYI54Y26JtRaU7nufmldk2q29ax0bX1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=lF3G/MAh; arc=none smtp.client-ip=203.205.221.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1770342424;
+	bh=uw1r32b0CM640eCQc9QjEzgmUnvpFEhZUc97VyBDdbw=;
+	h=From:To:Cc:Subject:Date;
+	b=lF3G/MAhGjNaPzxEacgLSiieTfQdSe8FC7tzv63p3hLGuHOLfho4sXiJi6I32QWSe
+	 Cs15t6+KsUayFI4i0wm9gTDlydUSEBVjkmFkw10iWlcHPkHSlyl3RntwudfPiN/gO2
+	 MVx77UxMfgyAlFHqi8QcZ2HFCvecTu/+TrhtJmr0=
+Received: from ubuntu24.corp.ad.wrs.com ([183.241.55.101])
+	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
+	id BBA18C31; Fri, 06 Feb 2026 09:46:58 +0800
+X-QQ-mid: xmsmtpt1770342418ta2exuq5k
+Message-ID: <tencent_50D01A0E470EA6A8A19E36A3C6EF034CB205@qq.com>
+X-QQ-XMAILINFO: NsiJGDfdhhZG062EfB9J/jro9OpnylRtjIDFDsrB3tE4pLBp2qIRfXV56rAV8c
+	 aktM8bgYNCn02DROffXefsrHZHqPHrfCJRbEnx4vyq8W0g1EqJ9p/z5BCrnalvAQpgEyhjwOHclO
+	 WzhoRrl07JW6sksh5mHzoEodR0Gw3kconzatWT/3EHOPgE/Z4CsctC3QpCqztkqvGX2TTyjjzSJx
+	 QG0bY53Kq9ImF/XqH4aZLXzWoIkD7beRMoKStWasL3K51qKP586xDguVRRKM5JaYUgqgB2NEZHIF
+	 CkImuy4xXNoboucE8U8AQb3GifKqtosOPxiEZ/7I8gwBSTsTElFK8kf+XVhnmhp5SjpPuvD4rEg+
+	 HSPNvU6rC8DUmXUvQMdXpmZKeEUH85+8UQpBHDBC3X4yUZdIJftyXqALhNmWs7hctPgmF9qP0j1Y
+	 hF4yf5Xx0pDhuN3T/saHzhFgluH1EaBkPRXozY5Su/EFimKRe8Vj0MBAOcrRJ3mVYrr0Z86cGksv
+	 om7Kgr4/ghk3fX3KyqGuG90+9U+dbtc9Fhg/YeCO9qSt5MFERdqhfk1Vcrj1ULJ6k17GwLYm3JJG
+	 CrYqJAXsjM+rYhxZTOfK/xTEVLh0Iu0I/QQydXHDl1R5i7T6+S9EZxZYXLC6nWnnwEefkVbuds2b
+	 h3hovMMxKM5wR8iNmRStKKUk4O4CIbcs8inqQRzlxocboYxbsPZjbuTQVtxaxzSbBC6I4jJsb5EF
+	 uOILRAwgSfgujmi2H2OCDL+XoqRkc6GEf+h9HIkFonpBxW8Ym2g2sKxkWnf+Dhehau/WFAs6uGtF
+	 +EBGpZrYR1xDx/FJIPNu5boMsDPn+gCEvLg6GuDoXwAEEiY2GM9xpvnSEDdNJIZI8PWK6ZatLwPB
+	 F+0JBlaGv08+SPDhKPaX4Oa3HdnTJeLZ5ATWoFUTO9+lNFYiB1xsLVrePeDmAa8gMrf/VNOjw3D9
+	 slN3P89KSAA7PnDJ+i4qsMGD+fDFiqq6cUTz7lHsZi8zpAKsXBef6ot1OLgcuK9dntvxdEBUv1/0
+	 NzxRGHIzbI2d9xCOwAiX2mmW3DmtQk6yWaNMYVqo+B/HHiN32wHUIou3u9bRr34kufjqrcNA==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: alvalan9@foxmail.com
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: Ming Lei <ming.lei@redhat.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.12.y] ublk: fix deadlock when reading partition table
+Date: Fri,  6 Feb 2026 01:46:46 +0000
+X-OQ-MSGID: <20260206014646.4203-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
- <20260115011312.3675857-2-yosry.ahmed@linux.dev> <aYU87QeMg8_kTM-G@google.com>
- <b92c2a7c7bcdc02d49eb0c0d481f682bf5d10c76@linux.dev>
-Message-ID: <aYVC-1Pk01kQVJqD@google.com>
-Subject: Re: [PATCH v4 01/26] KVM: SVM: Switch svm_copy_lbrs() to a macro
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214581-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214583-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	FREEMAIL_CC(0.00)[redhat.com,purestorage.com,kernel.dk,foxmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[foxmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 64873F8F43
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,foxmail.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:mid,kernel.dk:email]
+X-Rspamd-Queue-Id: 391B7F911A
 X-Rspamd-Action: no action
 
-On Fri, Feb 06, 2026, Yosry Ahmed wrote:
-> February 5, 2026 at 4:59 PM, "Sean Christopherson" <seanjc@google.com> wrote:
-> > On Thu, Jan 15, 2026, Yosry Ahmed wrote:
-> > > In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
-> > >  without a containing 'struct vmcb', and later even 'struct
-> > >  vmcb_save_area_cached', make it a macro. Pull the call to
-> > >  vmcb_mark_dirty() out to the callers.
-> > >  
-> > >  Macros are generally not preferred compared to functions, mainly due to
-> > >  type-safety. However, in this case it seems like having a simple macro
-> > >  copying a few fields is better than copy-pasting the same 5 lines of
-> > >  code in different places.
-> > >  
-> > >  On the bright side, pulling vmcb_mark_dirty() calls to the callers makes
-> > >  it clear that in one case, vmcb_mark_dirty() was being called on VMCB12.
-> > >  It is not architecturally defined for the CPU to clear arbitrary clean
-> > >  bits, and it is not needed, so drop that one call.
-> > >  
-> > >  Technically fixes the non-architectural behavior of setting the dirty
-> > >  bit on VMCB12.
-> > > 
-> > Stop. Bundling. Things. Together.
-> > 
-> > /shakes fist angrily
-> > 
-> > I was absolutely not expecting a patch titled "KVM: SVM: Switch svm_copy_lbrs()
-> > to a macro" to end with a Fixes tag, and I was *really* not expecting it to also
-> > be Cc'd for stable.
-> > 
-> > At a glance, I genuinely can't tell if you added a Fixes to scope the backport,
-> > or because of the dirty vmcb12 bits thing.
-> > 
-> > First fix the dirty behavior (and probably tag it for stable to avoid creating
-> > an unnecessary backport conflict), then in a separate patch macrofy the helper.
-> > Yeah, checkpatch will "suggest" that the stable@ patch should have Fixes, but
-> > for us humans, that's _useful_ information, because it says "hey you, this is a
-> > dependency for an upcoming fix!". As written, I look at this patch and go "huh?".
-> > (and then I look at the next patch and it all makes sense).
-> 
-> I agree, but fixing the dirty behavior on its own requires open-coding the
-> function, then the following patch would change it to a macro and use it
-> again. I was trying to minimize the noise of moving code back and forth..
+From: Ming Lei <ming.lei@redhat.com>
 
-I don't follow.  Isn't it just this?
+[ Upstream commit c258f5c4502c9667bccf5d76fa731ab9c96687c1 ]
 
-@@ -848,8 +859,6 @@ void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
-        to_vmcb->save.br_to             = from_vmcb->save.br_to;
-        to_vmcb->save.last_excp_from    = from_vmcb->save.last_excp_from;
-        to_vmcb->save.last_excp_to      = from_vmcb->save.last_excp_to;
--
--       vmcb_mark_dirty(to_vmcb, VMCB_LBR);
+When one process(such as udev) opens ublk block device (e.g., to read
+the partition table via bdev_open()), a deadlock[1] can occur:
+
+1. bdev_open() grabs disk->open_mutex
+2. The process issues read I/O to ublk backend to read partition table
+3. In __ublk_complete_rq(), blk_update_request() or blk_mq_end_request()
+   runs bio->bi_end_io() callbacks
+4. If this triggers fput() on file descriptor of ublk block device, the
+   work may be deferred to current task's task work (see fput() implementation)
+5. This eventually calls blkdev_release() from the same context
+6. blkdev_release() tries to grab disk->open_mutex again
+7. Deadlock: same task waiting for a mutex it already holds
+
+The fix is to run blk_update_request() and blk_mq_end_request() with bottom
+halves disabled. This forces blkdev_release() to run in kernel work-queue
+context instead of current task work context, and allows ublk server to make
+forward progress, and avoids the deadlock.
+
+Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
+Link: https://github.com/ublk-org/ublksrv/issues/170 [1]
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+[axboe: rewrite comment in ublk]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ The fix omits the change in __ublk_do_auto_buf_reg() since this function
+  doesn't exist in Linux 6.12. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+---
+ drivers/block/ublk_drv.c | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index b874cb84bad9..2d46383e8d26 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1020,6 +1020,13 @@ static inline bool ubq_daemon_is_dying(struct ublk_queue *ubq)
+ 	return ubq->ubq_daemon->flags & PF_EXITING;
  }
  
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
-@@ -877,6 +886,8 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
-                            (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
-                            (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK));
- 
-+       vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
++static void ublk_end_request(struct request *req, blk_status_t error)
++{
++	local_bh_disable();
++	blk_mq_end_request(req, error);
++	local_bh_enable();
++}
 +
-        if (enable_lbrv && !current_enable_lbrv)
-                __svm_enable_lbrv(vcpu);
-        else if (!enable_lbrv && current_enable_lbrv)
-@@ -3079,7 +3090,6 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
-                        break;
+ /* todo: handle partial completion */
+ static inline void __ublk_complete_rq(struct request *req)
+ {
+@@ -1027,6 +1034,7 @@ static inline void __ublk_complete_rq(struct request *req)
+ 	struct ublk_io *io = &ubq->ios[req->tag];
+ 	unsigned int unmapped_bytes;
+ 	blk_status_t res = BLK_STS_OK;
++	bool requeue;
  
-                svm->vmcb->save.dbgctl = data;
--               vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
-                svm_update_lbrv(vcpu);
-                break;
-        case MSR_VM_HSAVE_PA:
+ 	/* called from ublk_abort_queue() code path */
+ 	if (io->flags & UBLK_IO_FLAG_ABORTED) {
+@@ -1064,14 +1072,30 @@ static inline void __ublk_complete_rq(struct request *req)
+ 	if (unlikely(unmapped_bytes < io->res))
+ 		io->res = unmapped_bytes;
+ 
+-	if (blk_update_request(req, BLK_STS_OK, io->res))
++	/*
++	 * Run bio->bi_end_io() with softirqs disabled. If the final fput
++	 * happens off this path, then that will prevent ublk's blkdev_release()
++	 * from being called on current's task work, see fput() implementation.
++	 *
++	 * Otherwise, ublk server may not provide forward progress in case of
++	 * reading the partition table from bdev_open() with disk->open_mutex
++	 * held, and causes dead lock as we could already be holding
++	 * disk->open_mutex here.
++	 *
++	 * Preferably we would not be doing IO with a mutex held that is also
++	 * used for release, but this work-around will suffice for now.
++	 */
++	local_bh_disable();
++	requeue = blk_update_request(req, BLK_STS_OK, io->res);
++	local_bh_enable();
++	if (requeue)
+ 		blk_mq_requeue_request(req, true);
+ 	else
+ 		__blk_mq_end_request(req, BLK_STS_OK);
+ 
+ 	return;
+ exit:
+-	blk_mq_end_request(req, res);
++	ublk_end_request(req, res);
+ }
+ 
+ static void ublk_complete_rq(struct kref *ref)
+@@ -1149,7 +1173,7 @@ static inline void __ublk_abort_rq(struct ublk_queue *ubq,
+ 	if (ublk_nosrv_dev_should_queue_io(ubq->dev))
+ 		blk_mq_requeue_request(rq, false);
+ 	else
+-		blk_mq_end_request(rq, BLK_STS_IOERR);
++		ublk_end_request(rq, BLK_STS_IOERR);
+ }
+ 
+ static inline void __ublk_rq_task_work(struct request *req,
+-- 
+2.43.0
+
 
