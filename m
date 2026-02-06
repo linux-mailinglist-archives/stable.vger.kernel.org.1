@@ -1,98 +1,67 @@
-Return-Path: <stable+bounces-214619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNMiGtSshWkRFAQAu9opvQ
-	(envelope-from <stable+bounces-214619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:56:52 +0100
+	id ON0SLa2thWkRFAQAu9opvQ
+	(envelope-from <stable+bounces-214621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:00:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB6AFBB4E
-	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 09:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB5BFBBFA
+	for <lists+stable@lfdr.de>; Fri, 06 Feb 2026 10:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B46323022960
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 08:55:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84B913049EF2
+	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 08:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE41E34E751;
-	Fri,  6 Feb 2026 08:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F4434F270;
+	Fri,  6 Feb 2026 08:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfxoWx9i"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="fjW5yjSU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4146D34DB79
-	for <stable@vger.kernel.org>; Fri,  6 Feb 2026 08:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375A434EF08;
+	Fri,  6 Feb 2026 08:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770368108; cv=none; b=SsmeAgsu1dkV74/whlHP6vSGA2jwykSuI072YmzHOhkV0gGFTqwggyosaOwksotfeKACGliEBLkMp+xc3gyGK9XIbzRXPKlWEi4yhBUwfFFzYBQVplS15P90RgLCJx/cKyTWvxtxVPqNbFZvQSmDXtTXXaaUZK0nwjkIi/mCGUc=
+	t=1770368292; cv=none; b=WPhnvrOQcZSf5dXDZY7VPA/QEKT17MnMbcE/2b2yqRmXIlsiORRY1z0HuEQ+8YhOxCFMnlGNAribkLl5Ug8BeIxpiCK9gOPOXPsyH4QpEHZrIxTRdRaDMdtcCwUnNpBbcKLqZ/sBAbkUhugDfceIoFc/hiI7lB50Ogjnf6vZGmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770368108; c=relaxed/simple;
-	bh=8gJloZSI1GQcrUYIaj8I3nBQOZEH48jxJXr5qkX/U14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WzxqB8igtmUx7Wmcey0eZCVGx9scrNEmERPm/Mf0lMkqxxl0F40nqMHDIMU47jSD+nFiVzJLp+Z2+tIrPp0zdTFCqtF19FaWOhyW/2qRoS/pHLALJcrV1WpWTy6YlwpTXg+l7cjZNSHKzDCVV6poSARoYhu54bHRIeNnKmkh6RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfxoWx9i; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-483103c7126so931445e9.2
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 00:55:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770368107; x=1770972907; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=H4CfwKcayH4xDR1+iMb7IfsfcQiFBuBvxK6Im43iVvY=;
-        b=OfxoWx9iiHt3ibQH7Cjb+JO8C9WfHwZ3XnqZ6lKqTG2L6fSy1c/G/chAKxqmR1bUQX
-         qO4+T+GMcw/y2pz6GHJVrgz/+kZLnMoCtxYjB5coSMlTwrQ1D5oIEetoyWWyjjkNZNYA
-         sHNFvVgit/wK5BRqSZCXKnW28s1j3OPvzJ4czCITMStB35nyWka/cFfjPpURHxOCgN0J
-         EwvxVD/PjDobxyZDqPqJOv+8UX65R4r8i0GW+/r/LiNzINr5hyygYO6SKKwZRtSHDhu8
-         u7bd6TOKxyK1cJX0P7Oa0zpO4klJG8ZOS+/oMD0PtXy6nf2V/E797XpdE4of8FD1YXMK
-         9LgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770368107; x=1770972907;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H4CfwKcayH4xDR1+iMb7IfsfcQiFBuBvxK6Im43iVvY=;
-        b=YOs07xMVmmrFhyKjqguvm3f/UH0aHJ4rqvv5gm5numipNmYMHDBQA2SnMfmfDmE/cT
-         5FFFF64BZRXGboG40MICgCHY/7MHnmSOEFKBSpkVqF0pkxV5wYjQVYirV92ug2j/eAm5
-         6i+xMZXLdlvNp04k3vcPAXILv79EVraUWXbnljZGcpdExPFbDuho/os2R4QpHaQNp2EP
-         VAHOXmv4vkehr6XSWYu2TuVuQjAbSSBPQzTc1KNUfwPJpbvSXzmMRPOHF/zGRfN1oxD1
-         ns89xmtcnwU/QUk9W3ukG7U4nj8bxgPhUPz056aXczqz83KdwvlCWlsbAjeTfjtFAE5u
-         f/KA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwAQsIWViskOfVpqE1A2VkVwRErMgYiUW88WtAss5QlEj/o7CBNMKF3r+ltJt10HrVqAmu7do=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyysMkSm5YAcmYKFLK5itp5vtI5N4HxrOEFw6zCKEeWScJJVRjb
-	gdvNSTrkFlkC5UgCP32vISBUwuY1b4Zg5YywjvdRJSy1o/8kmY5eld4T
-X-Gm-Gg: AZuq6aJAbCHDJCgiwDoYPnAxOuLiloo9x9gkPTmqbxp4NUC7TGL69TDtkQNCFPrkIyj
-	U0R41DVceUryTkedhzuAfEqa4seYmyly6mvlVikxoNRMR/eOweZ1d2WZDjWbIj2dTM2cyH+Y1Hl
-	gpHAMwGKRiBPraqf7fJhK9YtSkgsH9HiAJps6I5q4pvUTjyJqO+AxBWAAvvq1TzII35jWXCOIIQ
-	M/JuhXhqdcGaPHtkZpU5o0wUQyAdHLQ+WpoUVAy9ELfUhZ1vBJB9i3Gd/+ROUHyzf1YvW2LFKXb
-	DgppfEgIe7RIXgHpQ331kJMjyZWDnwCZEIFtm60C+VVPcxuXCPkddbrBpuINaihw9VOgY4pExKu
-	tPSZPN1r+94OfNtglU7L8kpiuxiX/SEXiDRzBcUukc1TW1FkHzQ3IlspDxof/x59LrZizwMuDlc
-	5Qem0MtiG/mizO2BGVE8K7Laxl9tC6F5sKQ4Sns1liRyas6CShhOw1+Vdy6XCoQdVDLEq4Rgk8F
-	fsEyQSc
-X-Received: by 2002:a05:6000:22c4:b0:431:8f8:7f2a with SMTP id ffacd0b85a97d-4362933ec57mr1767057f8f.1.1770368106350;
-        Fri, 06 Feb 2026 00:55:06 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-213.paris.inria.fr. [128.93.83.213])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-43629744ec6sm4878270f8f.35.2026.02.06.00.55.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 00:55:05 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	stable@vger.kernel.org,
-	Zhao Qiang <qiang.zhao@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net,v2] net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in uhdlc_memclean()
-Date: Fri,  6 Feb 2026 09:53:33 +0100
-Message-ID: <20260206085334.21195-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1770368292; c=relaxed/simple;
+	bh=flnjHEoBY3HUtOXQ6dE6yHiBRtjQpdYUNq/y2u3trfE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=spWp0Vt84ukdou5tU0NFHgHbiHDb458rN1mwFJsaP8q5kRZiTFzpUdFeTU9whlRwmaWOcsLMzDX8Yg32Ip3FB+IQt3UhONSIxvGGkxxwvfGpMv7rJr0LH+Tgxe7FVXVd5UAcnLBYTRzd6H1Sc6BVyJAXXeqQPNjHxUHRZA7mFlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=fjW5yjSU; arc=none smtp.client-ip=178.154.239.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:fa2:0:640:41ee:0])
+	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 99FBC80671;
+	Fri, 06 Feb 2026 11:56:47 +0300 (MSK)
+Received: from kniv-nix.yandex.net (unknown [2a02:6bf:8011:f00:53d8:bc95:ff12:7d7b])
+	by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id LuJfgZ0AH8c0-2i1O5uKp;
+	Fri, 06 Feb 2026 11:56:47 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1770368207;
+	bh=2a8lJpzmv7Jlx5zstJE2Bycr7GHKJKXbdcsHyNx0y+k=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=fjW5yjSU8Rb1axTQF5bdeAe+qcvFomQapqwC5jHPAD4GkLhD0FIB4HLV50OfJIT76
+	 ZDXN+9hO/+NMbyLbrjbbVcWHgCkh6I0CveM4Bsoks/YF7o7P0eNfXsxoCEOnairuHF
+	 ARjipxML0GuOW9JJIZEuXzgdytfaXw61VxBkWNng=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Todd Brandt <todd.e.brandt@intel.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Len Brown <len.brown@intel.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.12] tools/power turbostat: fix GCC9 build regression
+Date: Fri,  6 Feb 2026 11:55:39 +0300
+Message-Id: <20260206085539.1371685-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,84 +70,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-7.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[yandex-team.ru:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[yandex-team.ru,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[yandex-team.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,vger.kernel.org,nxp.com,lunn.ch,davemloft.net,google.com,redhat.com,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-214621-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[yandex-team.ru:+];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214619-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[kniv@yandex-team.ru,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BDB6AFBB4E
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yandex-team.ru:email,yandex-team.ru:dkim,yandex-team.ru:mid]
+X-Rspamd-Queue-Id: 1AB5BFBBFA
 X-Rspamd-Action: no action
 
-The priv->rx_buffer and priv->tx_buffer are alloc'd together as
-contiguous buffers in uhdlc_init() but freed as two buffers in
-uhdlc_memclean().
+From: Todd Brandt <todd.e.brandt@intel.com>
 
-Change the cleanup to only call dma_free_coherent() once on the whole
-buffer.
+From: Todd Brandt <todd.e.brandt@intel.com>
 
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+commit d4a058762f3d931aa1159b64ba94a09a04024f8c upstream.
+
+Fix build regression seen when using old gcc-9 compiler.
+
+Fixes: 640540beb883 ("tools/power turbostat: Add MTL's PMT DC6 builtin counter")
+Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 ---
-v1->v2:
-  - Cleanup priv->tx_buffer and priv->dma_tx_addr
-  - Fix buffer name in commit message
+ tools/power/x86/turbostat/turbostat.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
- drivers/net/wan/fsl_ucc_hdlc.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index f999798a5612..dff84731343c 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -790,18 +790,14 @@ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
- 
- 	if (priv->rx_buffer) {
- 		dma_free_coherent(priv->dev,
--				  RX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
-+				  (RX_BD_RING_LEN + TX_BD_RING_LEN) * MAX_RX_BUF_LENGTH,
- 				  priv->rx_buffer, priv->dma_rx_addr);
- 		priv->rx_buffer = NULL;
- 		priv->dma_rx_addr = 0;
--	}
- 
--	if (priv->tx_buffer) {
--		dma_free_coherent(priv->dev,
--				  TX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
--				  priv->tx_buffer, priv->dma_tx_addr);
- 		priv->tx_buffer = NULL;
- 		priv->dma_tx_addr = 0;
-+
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index b663a76d31f1..86ffe7e06a14 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -2798,6 +2798,8 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
  	}
- }
  
+ 	for (i = 0, ppmt = sys.pmt_tp; ppmt; i++, ppmt = ppmt->next) {
++		const unsigned long value_raw = t->pmt_counter[i];
++		const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 		switch (ppmt->type) {
+ 		case PMT_TYPE_RAW:
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+@@ -2809,9 +2811,6 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			const unsigned long value_raw = t->pmt_counter[i];
+-			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+-
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+ 		}
+@@ -2879,6 +2878,8 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 	}
+ 
+ 	for (i = 0, ppmt = sys.pmt_cp; ppmt; i++, ppmt = ppmt->next) {
++		const unsigned long value_raw = c->pmt_counter[i];
++		const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 		switch (ppmt->type) {
+ 		case PMT_TYPE_RAW:
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+@@ -2890,9 +2891,6 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			const unsigned long value_raw = c->pmt_counter[i];
+-			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+-
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+ 		}
+@@ -3078,6 +3076,8 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 	}
+ 
+ 	for (i = 0, ppmt = sys.pmt_pp; ppmt; i++, ppmt = ppmt->next) {
++		const unsigned long value_raw = p->pmt_counter[i];
++		const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 		switch (ppmt->type) {
+ 		case PMT_TYPE_RAW:
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+@@ -3089,9 +3089,6 @@ int format_counters(struct thread_data *t, struct core_data *c, struct pkg_data
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			const unsigned long value_raw = p->pmt_counter[i];
+-			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+-
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+ 		}
 -- 
-2.43.0
+2.34.1
 
 
