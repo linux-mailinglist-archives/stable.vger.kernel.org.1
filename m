@@ -1,106 +1,63 @@
-Return-Path: <stable+bounces-214812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPX2K194h2nYYQQAu9opvQ
-	(envelope-from <stable+bounces-214812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:37:35 +0100
+	id 6XS9HNN5h2lZYgQAu9opvQ
+	(envelope-from <stable+bounces-214813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:43:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055FB106BA7
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:37:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE09D106BCA
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82870300F9C4
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 17:37:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 990043004DEE
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 17:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C9B33ADB4;
-	Sat,  7 Feb 2026 17:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5102C2868AB;
+	Sat,  7 Feb 2026 17:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V9L1q5I5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+Qba+E5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C932DD60E
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 17:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130354C6C
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 17:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770485852; cv=none; b=iWERF3sc1iAKp/VxU4AwWGVQEunk2MfguwCvLcSlai/bWcvhvkAP/BmAJXFynuKZNHRwjqCIKNSrnxlB1hSUbXNbu6M6xWsJ2pz+IdvQoDVVMJimPHnCZoM1qgVUhmQsTRfi3H0PUXsMvPMNJ6rpOLU5/dTdacBC6wtTum/t1ZM=
+	t=1770486222; cv=none; b=ilnrf0ZXnut3EQ5zV27iLGWWvYJ4wkVt8OHik8MOpbo56g+KnkGV5UvgPf6TH6evtnQvXhWzMmOKbDCHLszUwu2IaBdspf1PLZpvewhC50/d+MROT4LJEfLkqTHy2iuMhN3hq549Pgu9AQowykN3G1ZDOIZvQ+7yW0SsZ/aJunQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770485852; c=relaxed/simple;
-	bh=E4fISVo2NO2WKZ/cPp0LpcDWkQPAsw8bdND+t6VEag0=;
+	s=arc-20240116; t=1770486222; c=relaxed/simple;
+	bh=R1USufZvyi9WYSOngvgp/ZOrKBafboTHm0kmHbkiE0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iO4sJ1J7znOnSRavPE71oBs6MH5C4kITEJOZraa/CU3CUHOpyLErEzkFqRDKulHVxoqqKEYsVRIuUayu5MaUHztxt4yuIgxVeMiHViKHBvef2ISKP6SBOqX+k1OnBOmkLneznW90sCYa5J2w+tMb86wdj5PDD9L0qgx9zIrAhIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V9L1q5I5; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-59e3810df30so3740904e87.0
-        for <stable@vger.kernel.org>; Sat, 07 Feb 2026 09:37:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770485850; x=1771090650; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OBcixq1sa+YFWzLNdSovpimwkwmojM9gmgxcC+Ozzp4=;
-        b=V9L1q5I54faY3hJl4daFHkvTZzzJcyHx6Je6OAUA6USikr5WltVZGdMkQmW57bRhOR
-         dCfzU7HQPnx4LmxHc1O9F/Flnzsh0BjR/ANw/mnAoA/PjS90+LNdVbobmYSjfEwha8/4
-         +ScXFrbsOaiMtF8lyK458turwLxyxIQrVXf9oFiM94FQSTSSbAwNP9EmNHGOckZzISFq
-         MfyxgBT0PZp3zNkZKeXf+1Thi1lEQskyi0X/hehhxMI3hl2RMtPBBMOa+1tSastRLiUd
-         zK2eT2C+1kVqTqlDJHO4KrUNAbXAwgsKWhogB+ztiXZQV5Op+ferpvhsANwsQdOwJIBI
-         Q1cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770485850; x=1771090650;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OBcixq1sa+YFWzLNdSovpimwkwmojM9gmgxcC+Ozzp4=;
-        b=odnXohIgKD6wtbYo6uKjXY3xUDxiVx8kmLc8azrkqQvXmIA7BVzb3insV8bLtv8QiI
-         CZGcOA4O/MZAzrY0B8XDFFBQpn7g1nKJSPFhRZjzFAp06cScbdadihF8EJCYctO9gS+r
-         iMrvJP89n8EsJBSDiNUBUpkWfcljucpnuDD2RoEaKfKTmIxGAJ+fvKy0aU/m0xYEOheG
-         Ox00QRuHPLGnkg36/i+J/VVG+sfhudsZ5926+ikS+dG7rGqX0nHuuJzSDNJdyTcnMBfY
-         sMx7hLdquC8PelVPz7f4M4Vigv3wWxU2L4vQhjQ3y7kVZWeQKFXvkM6x56EO3qS/G5gh
-         kIJg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMP4r/h+vmYxGybuerUEyd5ZVntfHRv1nlb7gfHzVL6qf4H4JZtjKte4cXtRUbjGYI+hXoJGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydQyuegk1Fyh9CuiGhpdDhy2pKt+8RztJtuA+wI5rvMOZuhgVB
-	KoC+C2OBGqXNAD3QA+RyIZwj01j8OzG/0Hmdd1PzcVE/+ezZ7HpRsriy
-X-Gm-Gg: AZuq6aKwUy5WH3KsnAiA7q77+gNRBuahyfL0Fp4lEBIPcu9iqbvlhYvNlOs6xbpow4a
-	9kIBZO8CLc4DTcQ7euPKuHJn8n5/R+xCGLGJ/g47VDtN3/BjmYw/nPfR+dEKsHwz+GgZPubHZJF
-	xePVVnrWnKg9+05Wgc8wwPTlxIvKeYwNV3Pjs4Wsna4gm/OGiLltOO2Yvo4nvhQNJLESwzO+/fQ
-	97XmIHb+H6aC/QZQXCFf2RTV4psXkpxKa7IfMm945yUaKAmfSjOHXVDlNylLSk3wxYGAi5BzkMN
-	UpqN0ntYMZGC64VD47fy8CFKQokGLu5okfN5DdpeeZQvxucdXuI4irU743snb9pUuYo996mChml
-	X8xMlAV0uMn1KHc1xAIDc/P2x+iQF4opODcxf4U4vHy3hlgfkPp0rj44GvbDplOrY2J3nNaik8o
-	PEiRTjhK9f2expU6UMKMKYWQ==
-X-Received: by 2002:a05:6512:3341:b0:59e:a2d:daa1 with SMTP id 2adb3069b0e04-59e450438bemr1745187e87.5.1770485850237;
-        Sat, 07 Feb 2026 09:37:30 -0800 (PST)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59e44cfd475sm1405628e87.29.2026.02.07.09.37.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Feb 2026 09:37:28 -0800 (PST)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	vbabka@suse.cz,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	npiggin@gmail.com,
-	linux-kernel@vger.kernel.org,
-	kasong@tencent.com,
-	hughd@google.com,
-	chrisl@kernel.org,
-	ryncsn@gmail.com,
-	stable@vger.kernel.org,
-	david@kernel.org,
-	willy@infradead.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH v3] mm/page_alloc: clear page->private in free_pages_prepare()
-Date: Sat,  7 Feb 2026 22:36:14 +0500
-Message-ID: <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
-References: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
+	 MIME-Version; b=C4HpG4L/5E4piUXDSRSwjOfyDyTXeVECK1077T51jQMt3/zvB33r8isvo8XgYvoblzonS8Nfmvfoo1JNaeJj0sHyE9vAJihJ1eWtCUPmpul8m8Py4Fl18LEqY5HkWh91R+dTZNy+TsZSv4Pm7LA9XBQ3u4b8aYDUo73WtUQkpEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+Qba+E5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDE4C116D0;
+	Sat,  7 Feb 2026 17:43:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770486221;
+	bh=R1USufZvyi9WYSOngvgp/ZOrKBafboTHm0kmHbkiE0o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=L+Qba+E52yrm1Xf60R0n1+uCDtklvJwjr/QVe6v1P1YdlY2zU5AWcj1iOv/LsF7Yv
+	 96WSEXb5gPO/Y2qiY5PjbP0wSy1CBlsaKJ8GGNDReRpltS7NyaII69qwPNY2GtD0sX
+	 OnQvNESvNLK1lCb4qrYULHWlAcFWk+Y8VZhEObsJKac6EsbzKfCfXnjFXekdr2FVCy
+	 dQosdZmSO5+KueCctQTZ0BOhl7H+feVaYqP+CXnpMy3/ObeOU9jYNAD/8MxNQ4hbqE
+	 dgmyzL4HC5aZhc7fWzjcfKEi3bNJu0SceZMKvJaOH4IDnSqbPn61IOqsYRAqcxoRYg
+	 eiOGhLIdph4Aw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Debarghya Kundu <debarghyak@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] gve: Fix stats report corruption on queue count change
+Date: Sat,  7 Feb 2026 12:43:39 -0500
+Message-ID: <20260207174339.471643-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026020743-case-starter-eeef@gregkh>
+References: <2026020743-case-starter-eeef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -109,80 +66,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-214812-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,suse.cz,google.com,suse.com,cmpxchg.org,nvidia.com,gmail.com,vger.kernel.org,tencent.com,kernel.org,infradead.org];
+	TAGGED_FROM(0.00)[bounces-214813-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 055FB106BA7
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CE09D106BCA
 X-Rspamd-Action: no action
 
-Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
-clear it before freeing pages. When these pages are later allocated as
-high-order pages and split via split_page(), tail pages retain stale
-page->private values.
+From: Debarghya Kundu <debarghyak@google.com>
 
-This causes a use-after-free in the swap subsystem. The swap code uses
-page->private to track swap count continuations, assuming freshly
-allocated pages have page->private == 0. When stale values are present,
-swap_count_continued() incorrectly assumes the continuation list is valid
-and iterates over uninitialized page->lru containing LIST_POISON values,
-causing a crash:
+[ Upstream commit 7b9ebcce0296e104a0d82a6b09d68564806158ff ]
 
-  KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
-  RIP: 0010:__do_sys_swapoff+0x1151/0x1860
+The driver and the NIC share a region in memory for stats reporting.
+The NIC calculates its offset into this region based on the total size
+of the stats region and the size of the NIC's stats.
 
-Fix this by clearing page->private in free_pages_prepare(), ensuring all
-freed pages have clean state regardless of previous use.
+When the number of queues is changed, the driver's stats region is
+resized. If the queue count is increased, the NIC can write past
+the end of the allocated stats region, causing memory corruption.
+If the queue count is decreased, there is a gap between the driver
+and NIC stats, leading to incorrect stats reporting.
 
-Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
+This change fixes the issue by allocating stats region with maximum
+size, and the offset calculation for NIC stats is changed to match
+with the calculation of the NIC.
+
 Cc: stable@vger.kernel.org
-Suggested-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
+Signed-off-by: Debarghya Kundu <debarghyak@google.com>
+Reviewed-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260202193925.3106272-2-hramamurthy@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ gve_num_tx_queues() => priv->tx_cfg.num_queues and no stopped queues ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/google/gve/gve_ethtool.c | 42 +++++++++++++------
+ drivers/net/ethernet/google/gve/gve_main.c    |  4 +-
+ 2 files changed, 31 insertions(+), 15 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index cbf758e27aa2..24ac34199f95 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1430,6 +1430,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
+index 7e60139f8ac57..86b26fc919434 100644
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -145,7 +145,8 @@ gve_get_ethtool_stats(struct net_device *netdev,
+ 		tmp_tx_pkts, tmp_tx_bytes;
+ 	u64 rx_buf_alloc_fail, rx_desc_err_dropped_pkt, rx_pkts,
+ 		rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes, tx_dropped;
+-	int stats_idx, base_stats_idx, max_stats_idx;
++	int rx_base_stats_idx, max_rx_stats_idx, max_tx_stats_idx;
++	int stats_idx, stats_region_len, nic_stats_len;
+ 	struct stats *report_stats;
+ 	int *rx_qid_to_stats_idx;
+ 	int *tx_qid_to_stats_idx;
+@@ -230,14 +231,33 @@ gve_get_ethtool_stats(struct net_device *netdev,
+ 	data[i++] = priv->stats_report_trigger_cnt;
+ 	i = GVE_MAIN_STATS_LEN;
  
- 	page_cpupid_reset_last(page);
- 	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-+	page->private = 0;
- 	reset_page_owner(page, order);
- 	page_table_check_free(page, order);
- 	pgalloc_tag_sub(page, 1 << order);
+-	/* For rx cross-reporting stats, start from nic rx stats in report */
+-	base_stats_idx = GVE_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
+-		GVE_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues;
+-	max_stats_idx = NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
+-		base_stats_idx;
++	rx_base_stats_idx = 0;
++	max_rx_stats_idx = 0;
++	max_tx_stats_idx = 0;
++	stats_region_len = priv->stats_report_len -
++				sizeof(struct gve_stats_report);
++	nic_stats_len = (NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
++		NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues) *
++		sizeof(struct stats);
++	if (unlikely((stats_region_len -
++				nic_stats_len) % sizeof(struct stats))) {
++		net_err_ratelimited("Starting index of NIC stats should be multiple of stats size");
++	} else {
++		/* For rx cross-reporting stats,
++		 * start from nic rx stats in report
++		 */
++		rx_base_stats_idx = (stats_region_len - nic_stats_len) /
++							sizeof(struct stats);
++		max_rx_stats_idx = NIC_RX_STATS_REPORT_NUM *
++			priv->rx_cfg.num_queues +
++			rx_base_stats_idx;
++		max_tx_stats_idx = NIC_TX_STATS_REPORT_NUM *
++			priv->tx_cfg.num_queues +
++			max_rx_stats_idx;
++	}
+ 	/* Preprocess the stats report for rx, map queue id to start index */
+ 	skip_nic_stats = false;
+-	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
++	for (stats_idx = rx_base_stats_idx; stats_idx < max_rx_stats_idx;
+ 		stats_idx += NIC_RX_STATS_REPORT_NUM) {
+ 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
+ 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
+@@ -294,13 +314,9 @@ gve_get_ethtool_stats(struct net_device *netdev,
+ 		i += priv->rx_cfg.num_queues * NUM_GVE_RX_CNTS;
+ 	}
+ 
+-	/* For tx cross-reporting stats, start from nic tx stats in report */
+-	base_stats_idx = max_stats_idx;
+-	max_stats_idx = NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
+-		max_stats_idx;
+-	/* Preprocess the stats report for tx, map queue id to start index */
+ 	skip_nic_stats = false;
+-	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
++	/* NIC TX stats start right after NIC RX stats */
++	for (stats_idx = max_rx_stats_idx; stats_idx < max_tx_stats_idx;
+ 		stats_idx += NIC_TX_STATS_REPORT_NUM) {
+ 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
+ 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 2e8b01b3ee444..963c76e4aa5d0 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -135,9 +135,9 @@ static int gve_alloc_stats_report(struct gve_priv *priv)
+ 	int tx_stats_num, rx_stats_num;
+ 
+ 	tx_stats_num = (GVE_TX_STATS_REPORT_NUM + NIC_TX_STATS_REPORT_NUM) *
+-		       priv->tx_cfg.num_queues;
++				priv->tx_cfg.max_queues;
+ 	rx_stats_num = (GVE_RX_STATS_REPORT_NUM + NIC_RX_STATS_REPORT_NUM) *
+-		       priv->rx_cfg.num_queues;
++				priv->rx_cfg.max_queues;
+ 	priv->stats_report_len = struct_size(priv->stats_report, stats,
+ 					     size_add(tx_stats_num, rx_stats_num));
+ 	priv->stats_report =
 -- 
-2.53.0
+2.51.0
 
 
