@@ -1,146 +1,319 @@
-Return-Path: <stable+bounces-214803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CE4SC1pgh2l+XQQAu9opvQ
-	(envelope-from <stable+bounces-214803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 16:55:06 +0100
+	id MBjVKKdgh2l+XQQAu9opvQ
+	(envelope-from <stable+bounces-214804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 16:56:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C580106701
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 16:55:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFAE7106729
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 16:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3940D300FB49
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 15:55:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B7BF030104B5
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 15:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29503358B6;
-	Sat,  7 Feb 2026 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85323358D6;
+	Sat,  7 Feb 2026 15:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="by8Gouef"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6IBAzm7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AD333554C
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2C1335098
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 15:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770479701; cv=none; b=e85IgutUDnwUJjZsIinhpdjhuFVZ3Hn2FciGRbAbKf6qlUKFYiU6MicGj98GvGkJ6Dv9tQV1u7EiWzvWywglXsb4ER1izrAqZakri9ZANqv4rPrGCXdZF3Tsl/A6ne18qdqeTRTqjRb9Wznkja9T2Z8WyuYjQFxugtIg4mU/IKM=
+	t=1770479778; cv=none; b=Vlit7gGCAjOF8dkoaQzVNKZoggumehPzs7AKORkJW80IiV9CJ0uzPy3Rq/14rPH2FBDTjgSnLi8fiOzCkN8Y6Svav5J1VVY8kPA+ephFYBj1K1/+3oUmDLERsFq2eMhEwp6PJG0kDj9pUos+teL9Y5WiLUNoQMVObdRPyhQscSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770479701; c=relaxed/simple;
-	bh=9raQbVAdeASulg9EYB1jZg68O3jCqH2Wtm6TdJ82Te0=;
+	s=arc-20240116; t=1770479778; c=relaxed/simple;
+	bh=MO/R0T94CHsCc/4IOnzXPjfb2N5HTQIrQ1XSZHC/JKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IdI1+wfVj2+8TCUX1nyKhQyWsh+M/7bCuMtBJfaZviL++E/P4/62IutLquUcMTsVdGhkEsEDh/24MHUSZqMo52w+akT5wWSlDWiF3auXetKyIycq2ULDCV1wMSW1/kvYIGq41Zl2CBa1YW2SsFve77n3nrFUOd2jxulUktFKUO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=by8Gouef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D1FC116D0;
-	Sat,  7 Feb 2026 15:55:00 +0000 (UTC)
+	 MIME-Version; b=e0YRzfH1K5yGSyK78bRFF6FhkKdwCBXIID7jEhdSCGTS+txe9lF8JNmyiEkCclxBaqZjAhWyO5RRtcOixYk+M8BcASTS5KsM7Uq2BXdXLTAnJogOVS6GvOW7hUgeSp0pa9TvDAqoz7yB+HSZXLbUtX/0qVachRHaQ+ISR/3FSno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6IBAzm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7D9C116D0;
+	Sat,  7 Feb 2026 15:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770479701;
-	bh=9raQbVAdeASulg9EYB1jZg68O3jCqH2Wtm6TdJ82Te0=;
+	s=k20201202; t=1770479778;
+	bh=MO/R0T94CHsCc/4IOnzXPjfb2N5HTQIrQ1XSZHC/JKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=by8GouefieoRrYG69ToygCNzxfAzeUvycivI8vrZiOIsCGNBOitzcarqEGyfHhR3q
-	 pMgHPFBi2dTbIj4W0bSs8U3zcboPClxKOFv+TwqDScqUZ19ezsIl+zEhIuC1seVZLp
-	 1npCB5arhdek9UtM3pccXQsqt4HjhEqY5Vi1oIjIWv3VlhWyU7nOdw3tltMjcuUIDb
-	 BYSY9PXyyVDaJjSgSTXgGMLaukCxlWGuyHyZ04R9hm1gHAzDhs/tO3aRWL8Jy5yi4F
-	 lGLspyi0sWUNHtR2I3g90kxQCeow5qxnccaBmUHErjlf57EMGZYXojV3NLlROsJdV6
-	 GSaZYVA/XVGdQ==
+	b=B6IBAzm79eo8RISe2OnZJMktBoapeFWs/M/pXfnWtMyDdIlhry7ZVjpQsB3FXmUMa
+	 msNofn9xlSECDmCEBx0xtkvCWJct7pyifLWVhLDEJ03Y0tEWtaMnF1XmGZSUBy91hg
+	 An/Oj9/i+JEAS+5LIr0K1I0Kf8v+No8ePVW8gvmxcJ0O3V7Z8Ir22X84Pj+e96gGDh
+	 Fr3B4w+uQbpQLIlOQloaL3jiV+Yl2M1vB1vu72vPFKHpvaLWdlVFnHkjZL+2Oz9xLh
+	 vTim1A5sZAs+Lut0GnpVfGpIcJfJ+Bc/5zWMsQtzw0GZPotTzniDz4eE7wXIlWTFRJ
+	 nymgqN8ZY1Ehg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"jempty.liang" <imntjempty@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] platform/x86: intel_telemetry: Fix swapped arrays in PSS output
-Date: Sat,  7 Feb 2026 10:54:58 -0500
-Message-ID: <20260207155458.405088-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y] tracing: Fix ftrace event field alignments
+Date: Sat,  7 Feb 2026 10:56:15 -0500
+Message-ID: <20260207155615.406518-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020727-cornflake-elope-4f66@gregkh>
-References: <2026020727-cornflake-elope-4f66@gregkh>
+In-Reply-To: <2026020749-flaxseed-protegee-a522@gregkh>
+References: <2026020749-flaxseed-protegee-a522@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214803-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[goodmis.org,efficios.com,arm.com,kernel.org,163.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214804-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 5C580106701
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,goodmis.org:email]
+X-Rspamd-Queue-Id: DFAE7106729
 X-Rspamd-Action: no action
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 25e9e322d2ab5c03602eff4fbf4f7c40019d8de2 ]
+[ Upstream commit 033c55fe2e326bea022c3cc5178ecf3e0e459b82 ]
 
-The LTR blocking statistics and wakeup event counters are incorrectly
-cross-referenced during debugfs output rendering. The code populates
-pss_ltr_blkd[] with LTR blocking data and pss_s0ix_wakeup[] with wakeup
-data, but the display loops reference the wrong arrays.
+The fields of ftrace specific events (events used to save ftrace internal
+events like function traces and trace_printk) are generated similarly to
+how normal trace event fields are generated. That is, the fields are added
+to a trace_events_fields array that saves the name, offset, size,
+alignment and signness of the field. It is used to produce the output in
+the format file in tracefs so that tooling knows how to parse the binary
+data of the trace events.
 
-This causes the "LTR Blocking Status" section to print wakeup events
-and the "Wakes Status" section to print LTR blockers, misleading power
-management analysis and S0ix residency debugging.
+The issue is that some of the ftrace event structures are packed. The
+function graph exit event structures are one of them. The 64 bit calltime
+and rettime fields end up 4 byte aligned, but the algorithm to show to
+userspace shows them as 8 byte aligned.
 
-Fix by aligning array usage with the intended output section labels.
+The macros that create the ftrace events has one for embedded structure
+fields. There's two macros for theses fields:
 
-Fixes: 87bee290998d ("platform:x86: Add Intel Telemetry Debugfs interfaces")
+  __field_desc() and __field_packed()
+
+The difference of the latter macro is that it treats the field as packed.
+
+Rename that field to __field_desc_packed() and create replace the
+__field_packed() to be a normal field that is packed and have the calltime
+and rettime use those.
+
+This showed up on 32bit architectures for function graph time fields. It
+had:
+
+ ~# cat /sys/kernel/tracing/events/ftrace/funcgraph_exit/format
+[..]
+        field:unsigned long func;       offset:8;       size:4; signed:0;
+        field:unsigned int depth;       offset:12;      size:4; signed:0;
+        field:unsigned int overrun;     offset:16;      size:4; signed:0;
+        field:unsigned long long calltime;      offset:24;      size:8; signed:0;
+        field:unsigned long long rettime;       offset:32;      size:8; signed:0;
+
+Notice that overrun is at offset 16 with size 4, where in the structure
+calltime is at offset 20 (16 + 4), but it shows the offset at 24. That's
+because it used the alignment of unsigned long long when used as a
+declaration and not as a member of a structure where it would be aligned
+by word size (in this case 4).
+
+By using the proper structure alignment, the format has it at the correct
+offset:
+
+ ~# cat /sys/kernel/tracing/events/ftrace/funcgraph_exit/format
+[..]
+        field:unsigned long func;       offset:8;       size:4; signed:0;
+        field:unsigned int depth;       offset:12;      size:4; signed:0;
+        field:unsigned int overrun;     offset:16;      size:4; signed:0;
+        field:unsigned long long calltime;      offset:20;      size:8; signed:0;
+        field:unsigned long long rettime;       offset:28;      size:8; signed:0;
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Link: https://patch.msgid.link/20251224032053.3915900-1-kaushlendra.kumar@intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reported-by: "jempty.liang" <imntjempty@163.com>
+Link: https://patch.msgid.link/20260204113628.53faec78@gandalf.local.home
+Fixes: 04ae87a52074e ("ftrace: Rework event_create_dir()")
+Closes: https://lore.kernel.org/all/20260130015740.212343-1-imntjempty@163.com/
+Closes: https://lore.kernel.org/all/20260202123342.2544795-1-imntjempty@163.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ Different variable types and some renames ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel_telemetry_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace.h         |  7 +++++--
+ kernel/trace/trace_entries.h | 32 ++++++++++++++++----------------
+ kernel/trace/trace_export.c  | 21 +++++++++++++++------
+ 3 files changed, 36 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/platform/x86/intel_telemetry_debugfs.c b/drivers/platform/x86/intel_telemetry_debugfs.c
-index 1d4d0fbfd63cc..e533de621ac4b 100644
---- a/drivers/platform/x86/intel_telemetry_debugfs.c
-+++ b/drivers/platform/x86/intel_telemetry_debugfs.c
-@@ -449,7 +449,7 @@ static int telem_pss_states_show(struct seq_file *s, void *unused)
- 	for (index = 0; index < debugfs_conf->pss_ltr_evts; index++) {
- 		seq_printf(s, "%-32s\t%u\n",
- 			   debugfs_conf->pss_ltr_data[index].name,
--			   pss_s0ix_wakeup[index]);
-+			   pss_ltr_blkd[index]);
- 	}
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 85eabb454bee9..ec372e0f2e716 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -67,14 +67,17 @@ enum trace_type {
+ #undef __field_fn
+ #define __field_fn(type, item)		type	item;
  
- 	seq_puts(s, "\n--------------------------------------\n");
-@@ -459,7 +459,7 @@ static int telem_pss_states_show(struct seq_file *s, void *unused)
- 	for (index = 0; index < debugfs_conf->pss_wakeup_evts; index++) {
- 		seq_printf(s, "%-32s\t%u\n",
- 			   debugfs_conf->pss_wakeup[index].name,
--			   pss_ltr_blkd[index]);
-+			   pss_s0ix_wakeup[index]);
- 	}
++#undef __field_packed
++#define __field_packed(type, item)	type	item;
++
+ #undef __field_struct
+ #define __field_struct(type, item)	__field(type, item)
  
- 	return 0;
+ #undef __field_desc
+ #define __field_desc(type, container, item)
+ 
+-#undef __field_packed
+-#define __field_packed(type, container, item)
++#undef __field_desc_packed
++#define __field_desc_packed(type, container, item)
+ 
+ #undef __array
+ #define __array(type, item, size)	type	item[size];
+diff --git a/kernel/trace/trace_entries.h b/kernel/trace/trace_entries.h
+index de294ae2c5c5a..a649dfcf9b7cd 100644
+--- a/kernel/trace/trace_entries.h
++++ b/kernel/trace/trace_entries.h
+@@ -79,8 +79,8 @@ FTRACE_ENTRY(funcgraph_entry, ftrace_graph_ent_entry,
+ 
+ 	F_STRUCT(
+ 		__field_struct(	struct ftrace_graph_ent,	graph_ent	)
+-		__field_packed(	unsigned long,	graph_ent,	func		)
+-		__field_packed(	unsigned int,	graph_ent,	depth		)
++		__field_desc_packed(unsigned long,	graph_ent,	func	)
++		__field_desc_packed(unsigned int,	graph_ent,	depth	)
+ 		__dynamic_array(unsigned long,	args				)
+ 	),
+ 
+@@ -96,9 +96,9 @@ FTRACE_ENTRY_PACKED(fgraph_retaddr_entry, fgraph_retaddr_ent_entry,
+ 
+ 	F_STRUCT(
+ 		__field_struct(	struct fgraph_retaddr_ent,	graph_ent	)
+-		__field_packed(	unsigned long,	graph_ent,	func		)
+-		__field_packed(	unsigned int,	graph_ent,	depth		)
+-		__field_packed(	unsigned long,	graph_ent,	retaddr		)
++		__field_desc_packed(	unsigned long,	graph_ent,	func	)
++		__field_desc_packed(	unsigned int,	graph_ent,	depth	)
++		__field_desc_packed(	unsigned long,	graph_ent,	retaddr	)
+ 	),
+ 
+ 	F_printk("--> %ps (%u) <- %ps", (void *)__entry->func, __entry->depth,
+@@ -122,12 +122,12 @@ FTRACE_ENTRY_PACKED(funcgraph_exit, ftrace_graph_ret_entry,
+ 
+ 	F_STRUCT(
+ 		__field_struct(	struct ftrace_graph_ret,	ret	)
+-		__field_packed(	unsigned long,	ret,		func	)
+-		__field_packed(	unsigned long,	ret,		retval	)
+-		__field_packed(	unsigned int,	ret,		depth	)
+-		__field_packed(	unsigned int,	ret,		overrun	)
+-		__field(unsigned long long,	calltime		)
+-		__field(unsigned long long,	rettime			)
++		__field_desc_packed(	unsigned long,	ret,	func	)
++		__field_desc_packed(	unsigned long,	ret,	retval	)
++		__field_desc_packed(	unsigned int,	ret,	depth	)
++		__field_desc_packed(	unsigned int,	ret,	overrun	)
++		__field_packed(unsigned long long,	calltime)
++		__field_packed(unsigned long long,	rettime	)
+ 	),
+ 
+ 	F_printk("<-- %ps (%u) (start: %llx  end: %llx) over: %u retval: %lx",
+@@ -145,11 +145,11 @@ FTRACE_ENTRY_PACKED(funcgraph_exit, ftrace_graph_ret_entry,
+ 
+ 	F_STRUCT(
+ 		__field_struct(	struct ftrace_graph_ret,	ret	)
+-		__field_packed(	unsigned long,	ret,		func	)
+-		__field_packed(	unsigned int,	ret,		depth	)
+-		__field_packed(	unsigned int,	ret,		overrun	)
+-		__field(unsigned long long,	calltime		)
+-		__field(unsigned long long,	rettime			)
++		__field_desc_packed(	unsigned long,	ret,	func	)
++		__field_desc_packed(	unsigned int,	ret,	depth	)
++		__field_desc_packed(	unsigned int,	ret,	overrun	)
++		__field_packed(unsigned long long,	calltime	)
++		__field_packed(unsigned long long,	rettime		)
+ 	),
+ 
+ 	F_printk("<-- %ps (%u) (start: %llx  end: %llx) over: %u",
+diff --git a/kernel/trace/trace_export.c b/kernel/trace/trace_export.c
+index 1698fc22afa0a..32a42ef31855d 100644
+--- a/kernel/trace/trace_export.c
++++ b/kernel/trace/trace_export.c
+@@ -42,11 +42,14 @@ static int ftrace_event_register(struct trace_event_call *call,
+ #undef __field_fn
+ #define __field_fn(type, item)				type item;
+ 
++#undef __field_packed
++#define __field_packed(type, item)			type item;
++
+ #undef __field_desc
+ #define __field_desc(type, container, item)		type item;
+ 
+-#undef __field_packed
+-#define __field_packed(type, container, item)		type item;
++#undef __field_desc_packed
++#define __field_desc_packed(type, container, item)	type item;
+ 
+ #undef __array
+ #define __array(type, item, size)			type item[size];
+@@ -104,11 +107,14 @@ static void __always_unused ____ftrace_check_##name(void)		\
+ #undef __field_fn
+ #define __field_fn(_type, _item) __field_ext(_type, _item, FILTER_TRACE_FN)
+ 
++#undef __field_packed
++#define __field_packed(_type, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
++
+ #undef __field_desc
+ #define __field_desc(_type, _container, _item) __field_ext(_type, _item, FILTER_OTHER)
+ 
+-#undef __field_packed
+-#define __field_packed(_type, _container, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
++#undef __field_desc_packed
++#define __field_desc_packed(_type, _container, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
+ 
+ #undef __array
+ #define __array(_type, _item, _len) {					\
+@@ -146,11 +152,14 @@ static struct trace_event_fields ftrace_event_fields_##name[] = {	\
+ #undef __field_fn
+ #define __field_fn(type, item)
+ 
++#undef __field_packed
++#define __field_packed(type, item)
++
+ #undef __field_desc
+ #define __field_desc(type, container, item)
+ 
+-#undef __field_packed
+-#define __field_packed(type, container, item)
++#undef __field_desc_packed
++#define __field_desc_packed(type, container, item)
+ 
+ #undef __array
+ #define __array(type, item, len)
 -- 
 2.51.0
 
