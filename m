@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-214814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mID/Gep5h2lZYgQAu9opvQ
-	(envelope-from <stable+bounces-214814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:44:10 +0100
+	id JyFzLY98h2nsYgQAu9opvQ
+	(envelope-from <stable+bounces-214815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:55:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2160106BD2
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:44:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5296106C43
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 18:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BDA7D300F16D
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 17:44:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 302093019064
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 17:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C172337BB5;
-	Sat,  7 Feb 2026 17:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AD229B200;
+	Sat,  7 Feb 2026 17:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzp7F/NM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuPBuO0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E509B4C6C
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 17:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3635C22F01
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 17:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770486246; cv=none; b=IF9VnXRHNqdF13OSYrC2INn1xuojS/a7kCnX/pE0mUJzqH0IGvZI+3ThZ6ldiYpg7QxQIsvBqOXvx745ffdFpjqQRsfI+IXEwvbNniz7kTvAah6OXYlEZu+hVud1gyo7cYs+Ug7motNMfY3baR67K1kVPFMFjJQbaRWGqArW5YY=
+	t=1770486923; cv=none; b=Arlee14HLgyT0za1GbDYOMju1SyVYMBpCJ4CkKz+bhWBh0/hpnLSCs2B6ULJFe3NhFAiZ7G2jmE4pcxRuILApQ/VF61ohGybRUrpCqS7TMD6WvihIUf3vBxI3oGXVN99PkThYLakin5/Dq4rIVdv/7Wm2uR62h22z7OAOVGa3SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770486246; c=relaxed/simple;
-	bh=xg2OML0fvrz7VyjJQgFelRcEreBVJHWTkLZY/e1GK0A=;
+	s=arc-20240116; t=1770486923; c=relaxed/simple;
+	bh=yJNn+svhDlsW5S4+WlRyno3jxX8vSKp/StGbLXdrREk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVUZ6Pg7HmMDSUA0vmgDGs8uB1qJ+6R+5kmswQjcMnrQOVlq9xD9u3wvGYgvIQoMGWRvQHcF6XzGSdXqDZg9aQPon+Zbs0D0//KIgZgbaeO9LxW3/35vNrOideDPnFAgONgIwocrRo4RAeztjg6KuQw5UVQxZt7mkccpIlF+8ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzp7F/NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D677EC116D0;
-	Sat,  7 Feb 2026 17:44:04 +0000 (UTC)
+	 MIME-Version; b=lXyVwgomTDX4cCSFAva2OfZRWPPKr9GgKHFyQNYJN3ax/h71sMqfLqc0JpOQ7bYBrMciqK9RffNQKwyjOkxAraKfw4V7jlXdhBMzxp6M4Gx/lOWQZo/MLYiYYLV4xtvQM/NiKIUjGvYPleua6/e8WISth1735kXnlke/RFuUcMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuPBuO0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1795EC116D0;
+	Sat,  7 Feb 2026 17:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770486245;
-	bh=xg2OML0fvrz7VyjJQgFelRcEreBVJHWTkLZY/e1GK0A=;
+	s=k20201202; t=1770486922;
+	bh=yJNn+svhDlsW5S4+WlRyno3jxX8vSKp/StGbLXdrREk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzp7F/NM1wlRdAysZKE+xTiE2WCGCUUov7vCzREZaqh2EK1EEF+LKbx3ZbEv0sx5M
-	 x8JirLCyGgkvEnZ2LK5m9cN3KGp9ekPQligAskR4N/WrxM9nC6zP4eCzwtl99ZmeQn
-	 Ff4Zwz3IFh8k/FDIstRbyOrFutQAxAGx+CP1g0Ous2pHSxqaXkl3ubWFbIeYCJ2FFt
-	 Hz06lhfFuwQ0i95Yx/mcEJQXyosiORfCMnjJxk5zgoLmXf4b58ax2TjKAH0Ph/Ta5k
-	 kn1y9nGW54kTwq7yMS1BbFYRBvksw0VBzqyDpKb/fSE6F4Vgn9wOdDCKNRUfdHbHo1
-	 87iI8lwhiXKSg==
+	b=iuPBuO0U1jKLXdNU5unUpz4Wk/rHYDOoaP4rN3EvrMMhXlJPlwzhwKFxqIbsKW7yn
+	 GWBzQt3wPGsVTkPrAuWrsj3BwrfYCIjgnBo1RFpwkZAAVN8GKWAhLW5/zRrAw0Zbrb
+	 nOXoBMRc+INfhP5dBZ4Moc5RD3fRYmd8et1Y75OCXMgmKcUPcnjDEoBjGjwbzKetrh
+	 rkJy3bmGTqbh/rHmEuLVnRMP0wtXuVlWdsiXleeYta6mnOhZpXj7giG80A0DVQHdAQ
+	 8ftjrH409H7uJQAlood2rQnyj6MUfTy7+ObhewssaKpD4/G5jHVmWD4yrZBaey3Zof
+	 vnLTfJ3L+gOMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Steven Rostedt <rostedt@goodmis.org>,
@@ -52,12 +52,12 @@ Cc: Steven Rostedt <rostedt@goodmis.org>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	"jempty.liang" <imntjempty@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] tracing: Fix ftrace event field alignments
-Date: Sat,  7 Feb 2026 12:44:03 -0500
-Message-ID: <20260207174403.472364-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] tracing: Fix ftrace event field alignments
+Date: Sat,  7 Feb 2026 12:55:20 -0500
+Message-ID: <20260207175520.482420-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020701-hangout-judgingly-acc2@gregkh>
-References: <2026020701-hangout-judgingly-acc2@gregkh>
+In-Reply-To: <2026020703-silencer-undercut-3cb3@gregkh>
+References: <2026020703-silencer-undercut-3cb3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,9 +81,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_CC(0.00)[goodmis.org,efficios.com,arm.com,kernel.org,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214814-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214815-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -93,8 +93,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,efficios.com:email,goodmis.org:email,arm.com:email]
-X-Rspamd-Queue-Id: D2160106BD2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,efficios.com:email,arm.com:email]
+X-Rspamd-Queue-Id: C5296106C43
 X-Rspamd-Action: no action
 
 From: Steven Rostedt <rostedt@goodmis.org>
@@ -172,7 +172,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 27 insertions(+), 15 deletions(-)
 
 diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 9a6568217fc97..494207311934e 100644
+index 7464e0c9c4b1d..ee32f56debd3b 100644
 --- a/kernel/trace/trace.h
 +++ b/kernel/trace/trace.h
 @@ -65,14 +65,17 @@ enum trace_type {
@@ -228,7 +228,7 @@ index cd41e863b51ce..f7ea8b4afd47f 100644
  
  	F_printk("<-- %ps (%d) (start: %llx  end: %llx) over: %d",
 diff --git a/kernel/trace/trace_export.c b/kernel/trace/trace_export.c
-index 58f3946081e21..b58d0349ff790 100644
+index d960f6b11b5e5..35c5d1b0fe5fb 100644
 --- a/kernel/trace/trace_export.c
 +++ b/kernel/trace/trace_export.c
 @@ -42,11 +42,14 @@ static int ftrace_event_register(struct trace_event_call *call,
@@ -265,7 +265,7 @@ index 58f3946081e21..b58d0349ff790 100644
  
  #undef __array
  #define __array(_type, _item, _len) {					\
-@@ -140,11 +146,14 @@ static struct trace_event_fields ftrace_event_fields_##name[] = {	\
+@@ -139,11 +145,14 @@ static struct trace_event_fields ftrace_event_fields_##name[] = {	\
  #undef __field_fn
  #define __field_fn(type, item)
  
