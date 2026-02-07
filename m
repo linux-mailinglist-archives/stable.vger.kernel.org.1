@@ -1,152 +1,288 @@
-Return-Path: <stable+bounces-214820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Jh5DiaPh2kzZwQAu9opvQ
-	(envelope-from <stable+bounces-214820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:14:46 +0100
+	id oPJrFVyPh2kzZwQAu9opvQ
+	(envelope-from <stable+bounces-214821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:15:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E43106F1A
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:14:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92628106F37
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7ACD301F784
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 19:14:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B80AF300A52F
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 19:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2BC33B6FD;
-	Sat,  7 Feb 2026 19:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEF333B946;
+	Sat,  7 Feb 2026 19:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="j07UJK2Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FnS2Iqv8"
 X-Original-To: stable@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFFA33B6F0;
-	Sat,  7 Feb 2026 19:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B2C33B6F7
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 19:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770491664; cv=none; b=VjPQunkN4+G6fUmwddpP9C0x7aNsePkh5h2iUYj2GwIrmf9X13MMLy0eX4kDffUMxfbORs3tciXOExa4uprmHKyOBVB5gliv92+4P/1G2JoQVvWv8+G1YSoeVRwiotOp76+fIi1phU3yNS83AfmuNjMWHDudY8ukwaMMmfNQBr4=
+	t=1770491684; cv=none; b=B0T92TfzLu19PdLhW5JvPhU4k5uGzkG11VSfEUpiVAGm1uNSY53vAqEecWFoeqkgEJ8Bw4rQvTKBwUqNe+xMLc+7sY87gFCv981OhLiGi9WeR4wXaZrllrJBEH4zt+AbWbK9HIxHNa5g7w5nnqVgBQQQXn8GMQY4qYesFZ51JLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770491664; c=relaxed/simple;
-	bh=TiYDGvrzsWr6bSZnAbY5TAGgZ/ddNnSDc0QvKT5qZ08=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s+O/PJ5MYAg9xQXS2zg9+J7HvfYJUwybNRzMpmskxmaTI1DfJwTLNo2Fi/KQl76b23JQgLCaGayfDNWd2z3i2SduAp0zlmLn53AmJt0aKa2YiCo+FHK+l5XLPY91q4JiZ0l5XeSI86qilo/thEbntfmhFcmzFII+wA2yIAsZptM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=j07UJK2Q; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id BB30F264FC;
-	Sat,  7 Feb 2026 20:14:22 +0100 (CET)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id Ei-tSKNkFk4u; Sat,  7 Feb 2026 20:14:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1770491661; bh=TiYDGvrzsWr6bSZnAbY5TAGgZ/ddNnSDc0QvKT5qZ08=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=j07UJK2QMNRcoEj2Ig2fZARE12zRxDWtJUNBpZOYt2DRHstjPgBry6RywjVEgW52j
-	 LnWe+l183tzEWtO/tci/XCVr4D+sLJDgvn2RjtyHlo2I5Bxr1ptsdo5beSpxhe3VMr
-	 5GYQBjddpnVc+9ksIo9p+S59QTYLEN7FWB9vJaqHvWcZe7gxmZh8EaYPMOTGHSyKbO
-	 q04KBbMa+OPW4q0+mIf4qm8yg3JC9mk3aOXAEWy7hIXxLLN3HyLZJ6De64ix3DDVkn
-	 2RwNiwPOLyC34T3jgtZP2mPo6h2j0oXPiXm/PjDvHDgQmGEAzNS2wLdr+251x3CGVK
-	 2bEDboaMKLdNw==
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-Date: Sun, 08 Feb 2026 00:43:58 +0530
-Subject: [PATCH v2 1/2] drm/bridge: samsung-dsim: enable MFLUSH_VS for
- Exynos 7870 DSIM
+	s=arc-20240116; t=1770491684; c=relaxed/simple;
+	bh=Y8Hvbl1yU41oux0q4TnLEx15uCoT4Kkerk8DwxshFCY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=vB43uuICh+6U5mEdDm9IigbwRWlUXhJz0U6uX3bsSq7qUp97QrkG7+MRz+4yvsHnB/j4uC16xEcKwObzOd1cV4WSXwRxjVktTYwxkf+9a2c4R7Vv1XdUq5HlE3oAKcKHck0vFNjltc466e5cfCZJQaCzlZNLGnmI37IhNnI4PAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FnS2Iqv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D58C116D0;
+	Sat,  7 Feb 2026 19:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770491684;
+	bh=Y8Hvbl1yU41oux0q4TnLEx15uCoT4Kkerk8DwxshFCY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FnS2Iqv8b1nSWyhix01sX8yc99Wf5xEqoLl0K4gl0FiFRFAs7LMBSsySFCl/i6pVQ
+	 CEpLNEj5zMTRFHvhYW7NbFjZJ38AQX06FQryMylE7IuNcXdWrY79OdvelSy+q12CVQ
+	 KxB3HMU60KMIuARGlH7iWDNjfWIm2NnQvj4oubAakxwxrDqK14pDp5PUlA7BsvbE/T
+	 7m8k8nIVmlExtclziTQMT/CZKO42A4RpRhc25SED19s6MEFa5RMUuMe496VBR0sHa2
+	 44MwAw1/rBk6vZNQmaCK6NI3ofbDthjB8JDahUakrsq4ViJ1SCMZV28SD4bPcYM+5Q
+	 XSogRB/CvSTvA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"jempty.liang" <imntjempty@163.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] tracing: Fix ftrace event field alignments
+Date: Sat,  7 Feb 2026 14:14:41 -0500
+Message-ID: <20260207191441.516221-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026020704-deranged-unwind-6beb@gregkh>
+References: <2026020704-deranged-unwind-6beb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260208-exynos-dsim-fixes-v2-1-a857e8130a2a@disroot.org>
-References: <20260208-exynos-dsim-fixes-v2-0-a857e8130a2a@disroot.org>
-In-Reply-To: <20260208-exynos-dsim-fixes-v2-0-a857e8130a2a@disroot.org>
-To: Inki Dae <inki.dae@samsung.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Kaustabh Chakraborty <kauschluss@disroot.org>, stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[disroot.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[disroot.org:s=mail];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214820-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[samsung.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kauschluss@disroot.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[disroot.org:+];
-	NEURAL_HAM(-0.00)[-0.977];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[goodmis.org,efficios.com,arm.com,kernel.org,163.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214821-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[disroot.org:email,disroot.org:dkim,disroot.org:mid,samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B2E43106F1A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,efficios.com:email,arm.com:email]
+X-Rspamd-Queue-Id: 92628106F37
 X-Rspamd-Action: no action
 
-Commit a36c533ad3e1 ("drm/bridge: samsung-dsim: Always flush display
-FIFO on vsync pulse") intends to enable FIFO flushing at v-sync pulse by
-not setting the active-low MFLUSH_VS bit.
+From: Steven Rostedt <rostedt@goodmis.org>
 
-However, in Exynos 7870 DSIM, the MFLUSH_VS bit is active-high. There is
-no publicly available documentation to the best of my knowledge, but
-downstream kernel code [1] supports this claim. Enable the bit for
-Exynos 7870.
+[ Upstream commit 033c55fe2e326bea022c3cc5178ecf3e0e459b82 ]
 
-Cc: stable@vger.kernel.org # v6.17 and later
-Link: https://github.com/samsungexynos7870/android_kernel_samsung_exynos7870/blob/a3762bb1761ae/drivers/video/fbdev/exynos/decon_7870/dsim_reg_7870.c#L699 [1]
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+The fields of ftrace specific events (events used to save ftrace internal
+events like function traces and trace_printk) are generated similarly to
+how normal trace event fields are generated. That is, the fields are added
+to a trace_events_fields array that saves the name, offset, size,
+alignment and signness of the field. It is used to produce the output in
+the format file in tracefs so that tooling knows how to parse the binary
+data of the trace events.
+
+The issue is that some of the ftrace event structures are packed. The
+function graph exit event structures are one of them. The 64 bit calltime
+and rettime fields end up 4 byte aligned, but the algorithm to show to
+userspace shows them as 8 byte aligned.
+
+The macros that create the ftrace events has one for embedded structure
+fields. There's two macros for theses fields:
+
+  __field_desc() and __field_packed()
+
+The difference of the latter macro is that it treats the field as packed.
+
+Rename that field to __field_desc_packed() and create replace the
+__field_packed() to be a normal field that is packed and have the calltime
+and rettime use those.
+
+This showed up on 32bit architectures for function graph time fields. It
+had:
+
+ ~# cat /sys/kernel/tracing/events/ftrace/funcgraph_exit/format
+[..]
+        field:unsigned long func;       offset:8;       size:4; signed:0;
+        field:unsigned int depth;       offset:12;      size:4; signed:0;
+        field:unsigned int overrun;     offset:16;      size:4; signed:0;
+        field:unsigned long long calltime;      offset:24;      size:8; signed:0;
+        field:unsigned long long rettime;       offset:32;      size:8; signed:0;
+
+Notice that overrun is at offset 16 with size 4, where in the structure
+calltime is at offset 20 (16 + 4), but it shows the offset at 24. That's
+because it used the alignment of unsigned long long when used as a
+declaration and not as a member of a structure where it would be aligned
+by word size (in this case 4).
+
+By using the proper structure alignment, the format has it at the correct
+offset:
+
+ ~# cat /sys/kernel/tracing/events/ftrace/funcgraph_exit/format
+[..]
+        field:unsigned long func;       offset:8;       size:4; signed:0;
+        field:unsigned int depth;       offset:12;      size:4; signed:0;
+        field:unsigned int overrun;     offset:16;      size:4; signed:0;
+        field:unsigned long long calltime;      offset:20;      size:8; signed:0;
+        field:unsigned long long rettime;       offset:28;      size:8; signed:0;
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reported-by: "jempty.liang" <imntjempty@163.com>
+Link: https://patch.msgid.link/20260204113628.53faec78@gandalf.local.home
+Fixes: 04ae87a52074e ("ftrace: Rework event_create_dir()")
+Closes: https://lore.kernel.org/all/20260130015740.212343-1-imntjempty@163.com/
+Closes: https://lore.kernel.org/all/20260202123342.2544795-1-imntjempty@163.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ Renames + context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/trace/trace.h         |  7 +++++--
+ kernel/trace/trace_entries.h | 14 +++++++-------
+ kernel/trace/trace_export.c  | 21 +++++++++++++++------
+ 3 files changed, 27 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 1d85e706c74b9..70f8946ad3b24 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -1089,6 +1089,13 @@ static int samsung_dsim_init_link(struct samsung_dsim *dsi)
- 			reg |= DSIM_HBP_DISABLE_MODE;
- 		if (dsi->mode_flags & MIPI_DSI_MODE_VIDEO_NO_HSA)
- 			reg |= DSIM_HSA_DISABLE_MODE;
-+
-+		/*
-+		 * For some hardware types, DSIM_MFLUSH_VS bit needs to be
-+		 * enabled explicitly.
-+		 */
-+		if (dsi->plat_data->hw_type == DSIM_TYPE_EXYNOS7870)
-+			reg |= DSIM_MFLUSH_VS;
- 	}
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 2f5558a097e9b..8dce0e205c8ed 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -56,14 +56,17 @@ enum trace_type {
+ #undef __field_fn
+ #define __field_fn(type, item)		type	item;
  
- 	if (dsi->mode_flags & MIPI_DSI_MODE_NO_EOT_PACKET)
-
++#undef __field_packed
++#define __field_packed(type, item)	type	item;
++
+ #undef __field_struct
+ #define __field_struct(type, item)	__field(type, item)
+ 
+ #undef __field_desc
+ #define __field_desc(type, container, item)
+ 
+-#undef __field_packed
+-#define __field_packed(type, container, item)
++#undef __field_desc_packed
++#define __field_desc_packed(type, container, item)
+ 
+ #undef __array
+ #define __array(type, item, size)	type	item[size];
+diff --git a/kernel/trace/trace_entries.h b/kernel/trace/trace_entries.h
+index 18c4a58aff797..6ea285cc3c21e 100644
+--- a/kernel/trace/trace_entries.h
++++ b/kernel/trace/trace_entries.h
+@@ -78,8 +78,8 @@ FTRACE_ENTRY_PACKED(funcgraph_entry, ftrace_graph_ent_entry,
+ 
+ 	F_STRUCT(
+ 		__field_struct(	struct ftrace_graph_ent,	graph_ent	)
+-		__field_packed(	unsigned long,	graph_ent,	func		)
+-		__field_packed(	int,		graph_ent,	depth		)
++		__field_desc_packed(	unsigned long,	graph_ent,	func	)
++		__field_desc_packed(	int,		graph_ent,	depth	)
+ 	),
+ 
+ 	F_printk("--> %ps (%d)", (void *)__entry->func, __entry->depth)
+@@ -92,11 +92,11 @@ FTRACE_ENTRY_PACKED(funcgraph_exit, ftrace_graph_ret_entry,
+ 
+ 	F_STRUCT(
+ 		__field_struct(	struct ftrace_graph_ret,	ret	)
+-		__field_packed(	unsigned long,	ret,		func	)
+-		__field_packed(	unsigned long,	ret,		overrun	)
+-		__field_packed(	unsigned long long, ret,	calltime)
+-		__field_packed(	unsigned long long, ret,	rettime	)
+-		__field_packed(	int,		ret,		depth	)
++		__field_desc_packed(	unsigned long,		ret,	func	)
++		__field_desc_packed(	unsigned long,		ret,	overrun	)
++		__field_desc_packed(	unsigned long long,	ret,	calltime)
++		__field_desc_packed(	unsigned long long,	ret,	rettime	)
++		__field_desc_packed(	int,			ret,	depth	)
+ 	),
+ 
+ 	F_printk("<-- %ps (%d) (start: %llx  end: %llx) over: %d",
+diff --git a/kernel/trace/trace_export.c b/kernel/trace/trace_export.c
+index 90f81d33fa3f5..78e2bb03b24a2 100644
+--- a/kernel/trace/trace_export.c
++++ b/kernel/trace/trace_export.c
+@@ -42,11 +42,14 @@ static int ftrace_event_register(struct trace_event_call *call,
+ #undef __field_fn
+ #define __field_fn(type, item)				type item;
+ 
++#undef __field_packed
++#define __field_packed(type, item)			type item;
++
+ #undef __field_desc
+ #define __field_desc(type, container, item)		type item;
+ 
+-#undef __field_packed
+-#define __field_packed(type, container, item)		type item;
++#undef __field_desc_packed
++#define __field_desc_packed(type, container, item)	type item;
+ 
+ #undef __array
+ #define __array(type, item, size)			type item[size];
+@@ -101,11 +104,14 @@ static void __always_unused ____ftrace_check_##name(void)		\
+ #undef __field_fn
+ #define __field_fn(_type, _item) __field_ext(_type, _item, FILTER_TRACE_FN)
+ 
++#undef __field_packed
++#define __field_packed(_type, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
++
+ #undef __field_desc
+ #define __field_desc(_type, _container, _item) __field_ext(_type, _item, FILTER_OTHER)
+ 
+-#undef __field_packed
+-#define __field_packed(_type, _container, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
++#undef __field_desc_packed
++#define __field_desc_packed(_type, _container, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
+ 
+ #undef __array
+ #define __array(_type, _item, _len) {					\
+@@ -139,11 +145,14 @@ static struct trace_event_fields ftrace_event_fields_##name[] = {	\
+ #undef __field_fn
+ #define __field_fn(type, item)
+ 
++#undef __field_packed
++#define __field_packed(type, item)
++
+ #undef __field_desc
+ #define __field_desc(type, container, item)
+ 
+-#undef __field_packed
+-#define __field_packed(type, container, item)
++#undef __field_desc_packed
++#define __field_desc_packed(type, container, item)
+ 
+ #undef __array
+ #define __array(type, item, len)
 -- 
-2.52.0
+2.51.0
 
 
