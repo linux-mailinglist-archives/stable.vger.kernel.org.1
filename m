@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-214837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHTiE1egh2mgawQAu9opvQ
-	(envelope-from <stable+bounces-214837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 21:28:07 +0100
+	id iAyuOoGph2mqbQQAu9opvQ
+	(envelope-from <stable+bounces-214838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 22:07:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6277A1070F6
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 21:28:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31410107202
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 22:07:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5BBC53003BFA
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 20:28:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4CD3300EF9C
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 21:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3222A33CEBC;
-	Sat,  7 Feb 2026 20:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D85B33D4E9;
+	Sat,  7 Feb 2026 21:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLKGuSbb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OJHzjzys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD172F49F4
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 20:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60BB2E36F1
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 21:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770496082; cv=none; b=G6lxcck9YCSh6foYHwUayLQHfrl2gmO6cF2tzYec7zX7ebV3MehHqyAAScep7jerRu/1z63aSNWUxCpNzWQWmF6SGXov6hKhaOFKQtzgdQMOkbqDMTUiSGTOGbxNsqqbI3MwRfy/Vp0tT4ng1N/75t5X58dd5ymf8hZfV4IhGp4=
+	t=1770498430; cv=none; b=r8uhc5v54uALkxZ5OQ5ULwXmNWx849ZejrlFvkZolHxefRqVOtweVFs82i2Yq2PU8x01BQWb3JwNuddbJIgAMtCcC5gAvjE1mhlTeXi/7WOHEtDyGbN9srDkmcogVwxuTVNoYC2wgGfOxmT1hekh9F8mfGzdeAgNZhjpeieterM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770496082; c=relaxed/simple;
-	bh=VnPXfTNbx6UJqt3AIpBm5SQFeSXUhTpD3GZPbguSv/k=;
+	s=arc-20240116; t=1770498430; c=relaxed/simple;
+	bh=0bSHiqgsXcPMGO7h9HRetz2eaZotSlzI4oWZ7iypKh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKXE23PdoYuQy3rUB+5i5a/r3+MIp5hy+s1MzgZwxJPfyB458/L5zYOZIM3vQphQDEApPDrccmbCyLZOHSzUlwWoDJv0yLsFndAL3qHaR3D93pdlA0/+TbLyAjaE3kGPhgdKdHroU382bX2jWKpIW086fvi97yArHs1EkEVd2Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLKGuSbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057D2C116D0;
-	Sat,  7 Feb 2026 20:28:00 +0000 (UTC)
+	 MIME-Version; b=ZBENHoSMeZ6kVa/A4D7LE6dxtGDUa2F3aF7HMzSr5EV4Xm0cxq00OB5EFg28mCP7oZILf0xcY7P2dEdjU3c6kg0h4vSKinVy4o5Iswtc+wJD4lgPfmOXHPLKWAFkwC57vkf/Wk9eN1cZ2Q8wEcbKr+0hzdXKNa3TrrraTQvt5T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OJHzjzys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1241C116D0;
+	Sat,  7 Feb 2026 21:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770496081;
-	bh=VnPXfTNbx6UJqt3AIpBm5SQFeSXUhTpD3GZPbguSv/k=;
+	s=k20201202; t=1770498430;
+	bh=0bSHiqgsXcPMGO7h9HRetz2eaZotSlzI4oWZ7iypKh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLKGuSbbEc2NpVQG+Axh26nDqEgXTUZs/yqkltQu6e8FavpUVvLqJjREB/ZIAuc9b
-	 uSRCg2QATx5wDipbK0v89GY86BACyLcfVNet2c/BAn/g6mzO7vgHl4FD91JQKQineM
-	 sYE0sDOZTYpQ0BB+CeZlFqyPfKA+QLiIWDLcEABU126QxIxKksBYm/k86iWbyVo2t5
-	 q69gwCHFlV5IFXjnWET3zdr0aQZkYvCxri4nnL7SmW4e2NkbiGeYNHJuRCTj7Vv8h9
-	 kSlVgNv5VXIxY76kKLt9w+li/rOyHJos4hZOrJEnSTXipV+xBgMzhWWv0bfxdLFd0v
-	 XmdUWfVy2Y4ZQ==
+	b=OJHzjzysExkYSM4Zv/OOoo9hEioX7rC8govT+jBXkvGPr+DzHy2NYZJu3klK+DOcM
+	 RERRLKSefnZnu4LI0jis+jqiSWUU5DDsFU0FaBfk2gb3ZnWM42eChGn9qEGzc/hkKJ
+	 lyCkvbNF+A6N3Ts/pb48syVS5Tvf7eaUJea+aM3zzC2RWhHcPZOOHPNA9I0OIterEj
+	 c7g2vR/mivW1Yas8j92WAXAVa7z8wAR0l8TfNnCEeWuPdm/AywRWqtkTOayEBCsmNm
+	 lNcaxI37E9kofV8QkMxXYZn8FfeDuCM4rqKd9yjvDE/G81emw6MPTbw912I1/V/rF8
+	 j525fLXv/OoIA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Zhiquan Li <zhiquan_li@163.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
-Date: Sat,  7 Feb 2026 15:27:59 -0500
-Message-ID: <20260207202759.545635-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
+Date: Sat,  7 Feb 2026 16:07:08 -0500
+Message-ID: <20260207210708.557817-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020754-payback-platonic-6ee5@gregkh>
-References: <2026020754-payback-platonic-6ee5@gregkh>
+In-Reply-To: <2026020755-gratitude-opulently-9cf8@gregkh>
+References: <2026020755-gratitude-opulently-9cf8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214837-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214838-lists,stable=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,plt:email]
-X-Rspamd-Queue-Id: 6277A1070F6
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,plt:email]
+X-Rspamd-Queue-Id: 31410107202
 X-Rspamd-Action: no action
 
 From: Zhiquan Li <zhiquan_li@163.com>
@@ -129,17 +129,17 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
-index 48645a2e29da9..9d6fab359ae3c 100644
+index a3bb36fb3cfc5..d819994874df1 100644
 --- a/tools/testing/selftests/kvm/Makefile
 +++ b/tools/testing/selftests/kvm/Makefile
-@@ -239,6 +239,7 @@ LINUX_TOOL_ARCH_INCLUDE = $(top_srcdir)/tools/arch/$(ARCH)/include
+@@ -212,6 +212,7 @@ LINUX_TOOL_ARCH_INCLUDE = $(top_srcdir)/tools/arch/$(ARCH)/include
  endif
  CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
- 	-Wno-gnu-variable-sized-type-not-at-end -MD -MP -DCONFIG_64BIT \
+ 	-Wno-gnu-variable-sized-type-not-at-end -MD\
 +	-U_FORTIFY_SOURCE \
- 	-fno-builtin-memcmp -fno-builtin-memcpy \
- 	-fno-builtin-memset -fno-builtin-strnlen \
- 	-fno-stack-protector -fno-PIE -fno-strict-aliasing \
+ 	-fno-builtin-memcmp -fno-builtin-memcpy -fno-builtin-memset \
+ 	-fno-builtin-strnlen \
+ 	-fno-stack-protector -fno-PIE -I$(LINUX_TOOL_INCLUDE) \
 -- 
 2.51.0
 
