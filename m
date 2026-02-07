@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-214825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id XrKsJK2Wh2kDaQQAu9opvQ
-	(envelope-from <stable+bounces-214825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:46:53 +0100
+	id Ts7KAnuYh2mraQQAu9opvQ
+	(envelope-from <stable+bounces-214826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:54:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DD2106FC5
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:46:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDC3106FD5
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 20:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 359CD3016CAF
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 19:46:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CC87301700F
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 19:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E49A270EDF;
-	Sat,  7 Feb 2026 19:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882832E1758;
+	Sat,  7 Feb 2026 19:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ickEY0pc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0daHQj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5232D3D544
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 19:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB393D544
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 19:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770493609; cv=none; b=Hj09zUZ/eHUc5vP+2Lc3L8JdYhEfTgpTy4BZ4AOnFDnMNsoILSVdZJoynD9wTXfISDi+mD76S+hQdT4TFpXJttPRym3eWE7FjtpUfgU7LhCsOaq4btAou33Kjk+AgZsZD7VL8jslHiVRujw9jWFjiwU05CRetbxSAoQOrosH0AI=
+	t=1770494070; cv=none; b=m0raqmC5GGkZguF8RWzOlWwgqOxNkLRkJ7LZaSJtZhdVnCGY17ogC5ftRfjLSSNHi+my01T+xrKD3ov5iX2jGPQ7OTSY6MX43uoPDdDs83b2ioKGrfCZYyCVl6ZU817EO1NnIiqJzQiQlVaoTxSIAD5fj2899PJ2pr/0iil+Dvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770493609; c=relaxed/simple;
-	bh=VBjULUzn120ur3IW6k8F7cC+diB1+mjC5RCg/BgAGLE=;
+	s=arc-20240116; t=1770494070; c=relaxed/simple;
+	bh=NihzeIaDcCdjEy0sGVfr5bSWgNwN/lew1mwTcVcX1WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fx+YwBZTt9KRvCSYSV1CIYk/Qvu6cNehgxTS/1c7fm/IuDZFo10iCKxm4Z7mz7nZr0q8lV+R4yUyxhI/NBmLzqBXagPqdBz+6TFO2j13MbJd69BE1KmreyFP6v+msFmcZPltIqTY4YaAl0fDvz2PtqAyVDuMr+8xrKqs+0x3p9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ickEY0pc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34090C116D0;
-	Sat,  7 Feb 2026 19:46:46 +0000 (UTC)
+	 MIME-Version; b=r+LR/Trv7TifrI1/5pbnaUlHlgqfcukmDbveUNYSffVd+ijpep1tAwnyDE2fy48g3u+bY+usd+w2H6athkRXlmPo54KeNJPVq5vpS2GC6MzqY+0KNIqP1fEWzKaF3x3mDyAQYSYmQvketOENCizir6UMO0m3FHK2T+lmtyxX5Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0daHQj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0375C116D0;
+	Sat,  7 Feb 2026 19:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770493608;
-	bh=VBjULUzn120ur3IW6k8F7cC+diB1+mjC5RCg/BgAGLE=;
+	s=k20201202; t=1770494069;
+	bh=NihzeIaDcCdjEy0sGVfr5bSWgNwN/lew1mwTcVcX1WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ickEY0pcBaGZljuy7Va/ofNFmTGJ/RviYzW51bCfTyYe42fg1gySpFfOlQuiRFT3a
-	 Q/ECW0VwEebREawPb+Sg1Gy8xeuVNdvDB+sqkxQGVZykPXuK0z7LuQFAfSLmnTqf4Z
-	 5oo5Q/QOWrleD3PF3sjgrdzD56qwQQSSGXR0j2fmGC5rekUx2bIVE63lVBbau0uGcu
-	 CIrFf5tUYnecLIWaRkTCOL5qXZdSNN6PqIy9aHsJwdPgVrjhXqlbW6wqw0KTDP4XB5
-	 D7NLllNCyjmZbZB9cs0LCtGcgP96VyEsLQuzTrInNAy/FdA1qB4Om4zIIUQWEs87V9
-	 HPeRtYhsZPPMg==
+	b=Z0daHQj/G8Vy9TXHBYLIAQnE+VOi4Mbm+1p/sopjsNS6Df08iuABvAJm+u8OlmGmd
+	 aCjNSg7v/Yi+aUldY1cUmO4MxkjSL893lQTZIAB2EckG08geQFVFMm+jwFj70AQ83A
+	 oKigodglBowXT7FPcFfMAqnqnuhVp38YouipXsKV31Vbrw0FIw5TLAEd5W/MnrNXKN
+	 dXyr9ddm4+gpeE66VztTmq3fL86aL+t7tTUstvakbsa29+Z/rE3wl2yHnE9zK1u14f
+	 WktlJiHX4+aAvm2DI71qf43EJg9kwMnVgkerE0zsPw/9McF23NUkahUZK4vAaBrmmE
+	 BKvOLv6thWxLg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Max Yuan <maxyuan@google.com>,
-	Jordan Rhee <jordanrhee@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Matt Olson <maolson@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Maurizio Lombardi <mlombard@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	John Meneghini <jmeneghi@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] gve: Correct ethtool rx_dropped calculation
-Date: Sat,  7 Feb 2026 14:46:45 -0500
-Message-ID: <20260207194645.533741-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/5] nvmet-tcp: add an helper to free the cmd buffers
+Date: Sat,  7 Feb 2026 14:54:19 -0500
+Message-ID: <20260207195423.535763-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026020704-caring-doornail-1175@gregkh>
-References: <2026020704-caring-doornail-1175@gregkh>
+In-Reply-To: <2026020740-kiln-galvanize-65e4@gregkh>
+References: <2026020740-kiln-galvanize-65e4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,13 +71,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214825-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214826-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -87,70 +85,119 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: D8DD2106FC5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[grimberg.me:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4FDC3106FD5
 X-Rspamd-Action: no action
 
-From: Max Yuan <maxyuan@google.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit c7db85d579a1dccb624235534508c75fbf2dfe46 ]
+[ Upstream commit 69b85e1f1d1d1e49601ec3e85d2031188657cca2 ]
 
-The gve driver's "rx_dropped" statistic, exposed via `ethtool -S`,
-incorrectly includes `rx_buf_alloc_fail` counts. These failures
-represent an inability to allocate receive buffers, not true packet
-drops where a received packet is discarded. This misrepresentation can
-lead to inaccurate diagnostics.
+Makes the code easier to read and to debug.
 
-This patch rectifies the ethtool "rx_dropped" calculation. It removes
-`rx_buf_alloc_fail` from the total and adds `xdp_tx_errors` and
-`xdp_redirect_errors`, which represent legitimate packet drops within
-the XDP path.
+Sets the freed pointers to NULL, it will be useful
+when destroying the queues to understand if the commands'
+buffers have been released already or not.
 
-Cc: stable@vger.kernel.org
-Fixes: 433e274b8f7b ("gve: Add stats for gve.")
-Signed-off-by: Max Yuan <maxyuan@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Reviewed-by: Matt Olson <maolson@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260202193925.3106272-3-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ removed rx_buf_alloc_fail from rx_dropped calculation ]
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 52a0a9854934 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/nvme/target/tcp.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index cbfd007449351..2a52cce7838e0 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -209,8 +209,7 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 	data[i++] = rx_bytes;
- 	data[i++] = tx_bytes;
- 	/* total rx dropped packets */
--	data[i++] = rx_skb_alloc_fail + rx_buf_alloc_fail +
--		    rx_desc_err_dropped_pkt;
-+	data[i++] = rx_skb_alloc_fail + rx_desc_err_dropped_pkt;
- 	/* Skip tx_dropped */
- 	i++;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 051798ef7431c..7eb4d06f12294 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -167,6 +167,8 @@ static struct workqueue_struct *nvmet_tcp_wq;
+ static const struct nvmet_fabrics_ops nvmet_tcp_ops;
+ static void nvmet_tcp_free_cmd(struct nvmet_tcp_cmd *c);
+ static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd);
++static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd);
++static void nvmet_tcp_unmap_pdu_iovec(struct nvmet_tcp_cmd *cmd);
  
-@@ -265,7 +264,6 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 			data[i++] = tmp_rx_bytes;
- 			/* rx dropped packets */
- 			data[i++] = tmp_rx_skb_alloc_fail +
--				tmp_rx_buf_alloc_fail +
- 				tmp_rx_desc_err_dropped_pkt;
- 			data[i++] = rx->rx_copybreak_pkt;
- 			data[i++] = rx->rx_copied_pkt;
+ static inline u16 nvmet_tcp_cmd_tag(struct nvmet_tcp_queue *queue,
+ 		struct nvmet_tcp_cmd *cmd)
+@@ -298,6 +300,16 @@ static int nvmet_tcp_check_ddgst(struct nvmet_tcp_queue *queue, void *pdu)
+ 	return 0;
+ }
+ 
++static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
++{
++	WARN_ON(unlikely(cmd->nr_mapped > 0));
++
++	kfree(cmd->iov);
++	sgl_free(cmd->req.sg);
++	cmd->iov = NULL;
++	cmd->req.sg = NULL;
++}
++
+ static void nvmet_tcp_unmap_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ {
+ 	struct scatterlist *sg;
+@@ -307,6 +319,8 @@ static void nvmet_tcp_unmap_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 
+ 	for (i = 0; i < cmd->nr_mapped; i++)
+ 		kunmap(sg_page(&sg[i]));
++
++	cmd->nr_mapped = 0;
+ }
+ 
+ static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+@@ -389,7 +403,7 @@ static int nvmet_tcp_map_data(struct nvmet_tcp_cmd *cmd)
+ 
+ 	return 0;
+ err:
+-	sgl_free(cmd->req.sg);
++	nvmet_tcp_free_cmd_buffers(cmd);
+ 	return NVME_SC_INTERNAL;
+ }
+ 
+@@ -640,10 +654,8 @@ static int nvmet_try_send_data(struct nvmet_tcp_cmd *cmd, bool last_in_batch)
+ 		}
+ 	}
+ 
+-	if (queue->nvme_sq.sqhd_disabled) {
+-		kfree(cmd->iov);
+-		sgl_free(cmd->req.sg);
+-	}
++	if (queue->nvme_sq.sqhd_disabled)
++		nvmet_tcp_free_cmd_buffers(cmd);
+ 
+ 	return 1;
+ 
+@@ -672,8 +684,7 @@ static int nvmet_try_send_response(struct nvmet_tcp_cmd *cmd,
+ 	if (left)
+ 		return -EAGAIN;
+ 
+-	kfree(cmd->iov);
+-	sgl_free(cmd->req.sg);
++	nvmet_tcp_free_cmd_buffers(cmd);
+ 	cmd->queue->snd_cmd = NULL;
+ 	nvmet_tcp_put_cmd(cmd);
+ 	return 1;
+@@ -1452,8 +1463,7 @@ static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd)
+ {
+ 	nvmet_req_uninit(&cmd->req);
+ 	nvmet_tcp_unmap_pdu_iovec(cmd);
+-	kfree(cmd->iov);
+-	sgl_free(cmd->req.sg);
++	nvmet_tcp_free_cmd_buffers(cmd);
+ }
+ 
+ static void nvmet_tcp_uninit_data_in_cmds(struct nvmet_tcp_queue *queue)
 -- 
 2.51.0
 
