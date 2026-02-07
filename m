@@ -1,130 +1,192 @@
-Return-Path: <stable+bounces-214742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WP2FKWd2hmn/NQQAu9opvQ
-	(envelope-from <stable+bounces-214742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 00:16:55 +0100
+	id OKeCB2iJhmmOOgQAu9opvQ
+	(envelope-from <stable+bounces-214743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 01:38:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9981041A1
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 00:16:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7287C104582
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 01:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 48E1D300F99E
-	for <lists+stable@lfdr.de>; Fri,  6 Feb 2026 23:16:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B97E303FDC2
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 00:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25F43033F5;
-	Fri,  6 Feb 2026 23:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8058921CC5B;
+	Sat,  7 Feb 2026 00:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="d9j6/Zj4";
-	dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="afAea9PZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8rol4Np"
 X-Original-To: stable@vger.kernel.org
-Received: from devnull.danielhodges.dev (vps-2f6e086e.vps.ovh.us [135.148.138.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A5E2C859;
-	Fri,  6 Feb 2026 23:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.148.138.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AE721767D;
+	Sat,  7 Feb 2026 00:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770419808; cv=none; b=e4r7bZ2UzhCW8zKgHM1p1dj+DgUtbjOfXAEbMkbDKXhd8OZnRsBpNwjA/FkT4eRtrCoC05yOfBZYwa9L9CZA87Sl8yrVuNaRDkRY5REOyA5E2jXKHfy4FuubrWLukcVDSC21e0LGuaTxFNgd/O3mrXIuxeqYbBMdZNBylL1qjBg=
+	t=1770424554; cv=none; b=duMrs17YYh1ysK4dbK5TWCGMCIs2Nnjf+8ZEr/2zZHZN3Tu8SaFaTksIIrG2swRwbPU/+76zXW80go0Otn/lz6sAs/1fKa/TBqf/uPZ/oXVdDjjfpLAPM74Y9gTRLZD/wplrrEU+sZBzP0/SkcMC8XlbGBk1XYYmdaDD1rujtwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770419808; c=relaxed/simple;
-	bh=Q5D/bWaiDMrUv8iCvFbPFkMO4GO9NMtVwxqehp18Zuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VTVqfhyvpO9KdQkOojF5e24gPGzZhN3rx3C4f3QxOPOAT0BbIjqJDoEmHEHbtaspUKW577P1ylJTTlT8nJxtKIyNgFmfg49L0HFn9kaP83r7TlCohoaYqxkazzER4h0NcGJ6FY5Ki+400fRFpGMrFDiRjkQyFnvfSE/ps+30JyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev; spf=pass smtp.mailfrom=danielhodges.dev; dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=d9j6/Zj4; dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=afAea9PZ; arc=none smtp.client-ip=135.148.138.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danielhodges.dev
-DKIM-Signature: v=1; a=rsa-sha256; s=202510r; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770419802; bh=WX7lfZq8e/BGAi/VMf9RDgS
-	VWFllsUsQSTQySqy6jso=; b=d9j6/Zj4rfhz3jG/pQUmGJ5RBG2bIiZ/yjSTPVc04xcPoqWjUp
-	7FW6yvhsE+Wk8V8CnkohXci7GXgpl7+hYmXqbAiqbJ86KiWWbIz7g9w7eq1qGvLqCJ5GcIarwOG
-	n/akHQnEanHLAwYwJwFpnwj9Df0D4rZMBuTOA+StraMxOEPuXQ1ccclEwZt+1JoFAZ+vP8df4aw
-	+eCFwWZV/PD3fgSnWAvPEFSVKmX08ZDp4GWST1nLnw9Vr690cE0h0Q/Uh/STV9bVeEMBrpgyxM8
-	+k6nAcd6mtPOz1js2wPwSr0/rDAzcZo8poZbSD6WHItGciuSjye5BnW2jNLoj67nxow==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202510e; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770419802; bh=WX7lfZq8e/BGAi/VMf9RDgS
-	VWFllsUsQSTQySqy6jso=; b=afAea9PZIwvmfVn9e0fC5NZocFEhxOs8TJrwqi2NSVH1Fg2+nG
-	v7T3GByntS/ngTWrCJKRU6gjwYS0t71wJ0AA==;
-From: Daniel Hodges <git@danielhodges.dev>
-To: Prasanth Ksr <prasanth.ksr@dell.com>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Mario Limonciello <mario.limonciello@dell.com>,
-	Divya Bharathi <divya.bharathi@dell.com>,
-	Dell.Client.Kernel@dell.com,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daniel Hodges <git@danielhodges.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/x86: dell-wmi-sysman: fix kobject leak on populate failure
-Date: Fri,  6 Feb 2026 18:16:42 -0500
-Message-ID: <20260206231642.30051-1-git@danielhodges.dev>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1770424554; c=relaxed/simple;
+	bh=WSoiTb459q4CuoijHEOgQ2VKDloBFwyEv6asKhqZYPk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WvJQ2hzITEXDP8vihyotT/jRcrZriveZOyd7HoALQtBhT5qDz4Qm56BFInPBk7FhJDGupG55kZUBVIf22n/L9LZLeo6InEFp9OB/hm2F3b7X2OkjtWJEZcxengG6bPm7iRE+hQMZRdIlHqWruEwLvL329zPkihIu82efuMZOATM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8rol4Np; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26083C116C6;
+	Sat,  7 Feb 2026 00:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770424554;
+	bh=WSoiTb459q4CuoijHEOgQ2VKDloBFwyEv6asKhqZYPk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h8rol4NpLDK5zjmr1rBQaT4Yz2UTR0MHEPg6U9gE7bwWdRx5ZyW5c1351b9FlxSNG
+	 Jc+5xLOzpor+oTv1l7Z9/XANoPWDIhPE6VQVQQnzurQEmtXFXXU2chf+EPT2DtbHFC
+	 rruxA4NmuBggPdRBUP7IVYIXwWTMCAfN51fXgzvybsX19KmI+6LDWRlpi9L8IZ9OtE
+	 E1RlRlrvdHX2vg3jqQUTnNKlIlxY8Us5tHX/AS9pXz5nyZAOW1G4+91HtK619Y+OGR
+	 ++ihZnX6eygaG0SgKQLIE2caRXgbNabSGpNTq/Di0TBleBujtX/5MMf8mEPtWBpXi9
+	 8yN5FIC7aix4w==
+Date: Fri, 6 Feb 2026 16:35:53 -0800
+From: Kees Cook <kees@kernel.org>
+To: Sai Ritvik Tanksalkar <stanksal@purdue.edu>
+Cc: "tony.luck@intel.com" <tony.luck@intel.com>,
+	"gpiccoli@igalia.com" <gpiccoli@igalia.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"anton.vorontsov@linaro.org" <anton.vorontsov@linaro.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] pstore/ram: fix buffer overflow in
+ persistent_ram_save_old()
+Message-ID: <202602061626.1C0B1DE0C@keescook>
+References: <SJ2PR22MB4268B38E0E4FF3EEB9979E04BE9CA@SJ2PR22MB4268.namprd22.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <SJ2PR22MB4268B38E0E4FF3EEB9979E04BE9CA@SJ2PR22MB4268.namprd22.prod.outlook.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[danielhodges.dev,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[danielhodges.dev:s=202510r,danielhodges.dev:s=202510e];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-214743-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214742-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[danielhodges.dev:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[git@danielhodges.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kees@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9B9981041A1
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[purdue.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7287C104582
 X-Rspamd-Action: no action
 
-When populate_enum_data(), populate_int_data(), populate_str_data(),
-or populate_po_data() fails after a successful kobject_init_and_add(),
-the code jumps to err_attr_init without calling kobject_put() on
-attr_name_kobj, leaking the kobject and its associated memory.
+On Sat, Jan 31, 2026 at 02:49:20PM +0000, Sai Ritvik Tanksalkar wrote:
+> persistent_ram_save_old() can be called multiple times for the same
+> persistent_ram_zone (e.g., via ramoops_pstore_read -> ramoops_get_next_prz
+> for PSTORE_TYPE_DMESG records).
 
-Add the missing kobject_put() call before the goto to properly release
-the kobject on error.
+Thanks for the report!
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
----
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 1 +
- 1 file changed, 1 insertion(+)
+> Currently, the function only allocates prz->old_log when it is NULL,
+> but it unconditionally updates prz->old_log_size to the current buffer
+> size and then performs memcpy_fromio() using this new size. If the
+> buffer size has grown since the first allocation (which can happen
+> across different kernel boot cycles), this leads to:
+> 
+> 1. A heap buffer overflow (OOB write) in the memcpy_fromio() calls.
+> 2. A subsequent OOB read when ramoops_pstore_read() accesses the buffer
+>    using the incorrect (larger) old_log_size.
+> 
+> The KASAN splat would look similar to:
+>   BUG: KASAN: slab-out-of-bounds in ramoops_pstore_read+0x...
+>   Read of size N at addr ... by task ...
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index f5402b714657..d9f6d24c84d6 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -497,6 +497,7 @@ static int init_bios_attributes(int attr_type, const char *guid)
- 		if (retval) {
- 			pr_debug("failed to populate %s\n",
- 				elements[ATTR_NAME].string.pointer);
-+			kobject_put(attr_name_kobj);
- 			goto err_attr_init;
- 		}
- 
+"would look"? Have you confirmed this for a real scenario? It seems like
+an extreme corner case that should be almost impossible to hit in
+practice:
+
+  0. Crash with a ramoops write of less-than-record-max-size bytes.
+  1. Reboot: ramoops registers, pstore_get_records(0) reads old crash,
+     allocates old_log with size X
+  2. Crash handler registered, timer started (if pstore_update_ms >= 0)
+  3. Oops happens (non-fatal, system continues)
+  4. pstore_dump() writes oops via ramoops_pstore_write() size Y (>X)
+  5. pstore_new_entry = 1, pstore_timer_kick() called
+  6. System continues running (not a panic oops)
+  7. Timer fires after pstore_update_ms milliseconds
+  8. pstore_timefunc() → schedule_work() → pstore_dowork() → pstore_get_records(1)
+  9. ramoops_get_next_prz() → persistent_ram_save_old()
+ 10. buffer_size() returns Y, but old_log is X bytes
+ 11. Y > X: memcpy_fromio() overflows heap
+
+  Requirements:
+  - a prior crash record exists that did not fill the record size
+    (almost impossible since the crash handler writes as much as it
+    can possibly fit into the record, capped by max record size and
+    the kmsg buffer almost always exceeds the max record size)
+  - pstore_update_ms >= 0 (disabled by default)
+  - Non-fatal oops (system survives)
+
+So, yes, this is technically possible, but very very hard to do. :)
+Unless you see another way?
+
+> Fix this by freeing and reallocating the buffer when the new size
+> exceeds the previously allocated size. This ensures old_log always has
+> sufficient space for the data being copied.
+> 
+> Fixes: 201e4aca5aa1 ("pstore/ram: Should update old dmesg buffer before reading")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pwnverse <stanksal@purdue.edu>
+> ---
+>  fs/pstore/ram_core.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+> index f1848cdd6d34..8df813a42a41 100644
+> --- a/fs/pstore/ram_core.c
+> +++ b/fs/pstore/ram_core.c
+> @@ -298,6 +298,14 @@ void persistent_ram_save_old(struct persistent_ram_zone *prz)
+>      if (!size)
+>          return;
+> 
+> +     /*
+> +      * If the existing buffer is too small, free it so a new one is
+> +      * allocated. This can happen when persistent_ram_save_old() is
+> +      * called multiple times with different buffer sizes.
+> +      */
+> +     if (prz->old_log && prz->old_log_size < size)
+
+This should be "!=", I think? Just to deal with leaving old data in if
+the size _shrinks_ too?
+
+> +           persistent_ram_free_old(prz);
+> +
+>      if (!prz->old_log) {
+>          persistent_ram_ecc_old(prz);
+>          prz->old_log = kvzalloc(size, GFP_KERNEL);
+> --
+> 2.43.0
+
 -- 
-2.52.0
-
+Kees Cook
 
