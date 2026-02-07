@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-214841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MM8YOIe2h2k6cQQAu9opvQ
-	(envelope-from <stable+bounces-214841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 23:02:47 +0100
+	id kKZnL863h2k6cQQAu9opvQ
+	(envelope-from <stable+bounces-214842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 23:08:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4A1107440
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 23:02:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4498B1074BC
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 23:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D084C3016ECA
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 22:02:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 190273011A50
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 22:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC9533D4FA;
-	Sat,  7 Feb 2026 22:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CE435503E;
+	Sat,  7 Feb 2026 22:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRqXTTbc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZqduA64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911D126FA77;
-	Sat,  7 Feb 2026 22:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C72426FA77;
+	Sat,  7 Feb 2026 22:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770501756; cv=none; b=GVry0xeXkKxEUdgTRfvsZ56IA8TJ7msbIDpq9iF3Mw+IgtwGDcSui2XUyfi/ts8kTT8B9icw9ExyDBmiOjD+e36LOjt/PFhPCP4JBOWkQ7gn/O9sZ5Yp3LAdaB9+OIW99JftSWC0lEvgw02AQUrwPdQLeu5tbyDiW/ZyXN8YtEU=
+	t=1770502091; cv=none; b=Pd8Fh54gLyvHHZkfVWY72eE9bZXZqWVdfmWHsx5SwrYc95Kc4+auhk5/qAgmsZKt3igxTWIwcAToKLPeLe8fIzNwi1gSfZz9nzJ70h5cuKAPeLQsF9SpjjTQU+DmFQj5b1oOX+geGivIo8iEqRN2PerfTBd9ik+k4gbBPHfVYrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770501756; c=relaxed/simple;
-	bh=lfcGFF8NdgjshgOUdzirLedNFsV9Zt9+VFJxLpuBxJM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nKapNiVU9qC0luYS2dhtNPCdLJHr0wqOWTQ7s6Ykwlg2sfEiAdpFMYM2pcMlDaolseXzorSGU2NDyF2vZH9FSNHnfi3UAuEXhKGY02WhNJsRcADu8KYwyk53Rc9BoghjjdyE6BLAjcbcESiAiJoPhxKFpDwBO621eczXjvVbpOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRqXTTbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6812CC116D0;
-	Sat,  7 Feb 2026 22:02:31 +0000 (UTC)
+	s=arc-20240116; t=1770502091; c=relaxed/simple;
+	bh=9IGgdZ3kY5iF+ftK2skFddHwkTgkMi6/QPrnTtu/PUY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=NZ3OQQwe3KjzRg0QQ9eghHliaJBI71Bl3GhxIH5rQNGvll0yl7bdT8yqDveK5u9nWBAWLoy2CVSqOnJ3smwwRvw6dNm4EN9EWIBs1wuXGyCW/qPKxqHaGSe6Hj2oHwcqhv8ZfWMe4gq0+X/kM3wcEeeZseEnva3uLHtbCU1zKTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZqduA64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE79AC116D0;
+	Sat,  7 Feb 2026 22:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770501756;
-	bh=lfcGFF8NdgjshgOUdzirLedNFsV9Zt9+VFJxLpuBxJM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YRqXTTbcGx40NrSqDqzfY/onQI7Oo//mZmwZDyNY/maP0p4HOQPI7MDjeHSgpXcgX
-	 v4bKJmWQvAk51DKDvBbnvx4blrRUsLdNewnoFGTBaCzTFVqefb+Qd6bnQOadW/LaJB
-	 HdS1hvjs7Hd3pvTGf54NcqlYVq82l6vB3dnc/ncKmGKGU1Q1kaef2CPUrnXr1RMPpu
-	 RcJlSKs0EIE/Wm74rWbYYQro8YLZELp6JbrqWqPyT9f91QOBAsdVRE2HPNtBRfCgJU
-	 e9DY0ErMD7D29hs8O3KJprmdTIj/4zYBLY0xu/eaFy+GEJwsdY2YhbSrTVRgRTdxMl
-	 sQ6c+OWqZyJgg==
-Message-ID: <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
-Date: Sat, 7 Feb 2026 23:02:27 +0100
+	s=k20201202; t=1770502091;
+	bh=9IGgdZ3kY5iF+ftK2skFddHwkTgkMi6/QPrnTtu/PUY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=dZqduA64+4APuYSKcyM4Q6f15K8xx2OrHRQrnc3prPGwKo/QKZ2ofY1bleRUurssr
+	 UYWIaQmvf6YIkG8pXCALoxNg7xRBsn+Vrdnv341prK8bpJHr89hIX4IpXjNn0ixBAJ
+	 aeyiPqVDkhl+sapMmXiNxFv+ETfUFpSair5o5e2lHSBLaMAGNRey0lR6GofQBo8ogs
+	 O7yqD7UTMqgJDi0QHfvMDWDK216oTTwnZy7A+aNcy9Ys+UwBbJEhVc2c+I9MiNzwgr
+	 KtMFXrm1fcJ7Gs1sXiSVc/vMEOIrxDOQHrSScnTaBuikIZz+oegiTJBJuhB2exQsMI
+	 ayPe6H96YTFcA==
+Message-ID: <51f96b31-fb59-4cda-9d33-e3cebc45686b@kernel.org>
+Date: Sat, 7 Feb 2026 23:08:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,6 +55,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3] mm/page_alloc: clear page->private in
  free_pages_prepare()
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
  mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
@@ -63,7 +64,7 @@ Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
  stable@vger.kernel.org, willy@infradead.org
 References: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
  <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -109,21 +110,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
+In-Reply-To: <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214841-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214842-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -140,109 +141,23 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4C4A1107440
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4498B1074BC
 X-Rspamd-Action: no action
 
-On 2/7/26 18:36, Mikhail Gavrilov wrote:
-
-Thanks!
-
-> Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
-> clear it before freeing pages. When these pages are later allocated as
-> high-order pages and split via split_page(), tail pages retain stale
-> page->private values.
 > 
-> This causes a use-after-free in the swap subsystem. The swap code uses
-> page->private to track swap count continuations, assuming freshly
-> allocated pages have page->private == 0. When stale values are present,
-> swap_count_continued() incorrectly assumes the continuation list is valid
-> and iterates over uninitialized page->lru containing LIST_POISON values,
-> causing a crash:
-> 
->    KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
->    RIP: 0010:__do_sys_swapoff+0x1151/0x1860
-> 
-> Fix this by clearing page->private in free_pages_prepare(), ensuring all
-> freed pages have clean state regardless of previous use.
+> -               /*
+> -                * page->private should not be set in tail pages. Fix up 
+> and warn once
+> -                * if private is unexpectedly set.
+> -                */
+> -               if (unlikely(new_folio->private)) {
+> -                       VM_WARN_ON_ONCE_PAGE(true, new_head);
+> -                       new_folio->private = NULL;
+> -               }
 
-I could have sworn we discussed something like that already in the past.
-
-I recall that freeing pages with page->private set was allowed. Although
-I once wondered whether we should actually change that.
-
-> 
-> Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-> ---
-
-Next time, please don't send patches as reply to another thread; that
-way it can easily get lost in a bigger thread.
-
-You want to get peoples attention :)
-
->   mm/page_alloc.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index cbf758e27aa2..24ac34199f95 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1430,6 +1430,7 @@ __always_inline bool free_pages_prepare(struct page *page,
->   
->   	page_cpupid_reset_last(page);
->   	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> +	page->private = 0;
-
-Should we be using set_page_private()? It's a bit inconsistent :)
-
-I wonder, if it's really just the split_page() problem, why not
-handle it there, where we already iterate over all ("tail") pages?
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index cbf758e27aa2..cbbcfdf3ed26 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3122,8 +3122,10 @@ void split_page(struct page *page, unsigned int order)
-         VM_BUG_ON_PAGE(PageCompound(page), page);
-         VM_BUG_ON_PAGE(!page_count(page), page);
-  
--       for (i = 1; i < (1 << order); i++)
-+       for (i = 1; i < (1 << order); i++) {
-                 set_page_refcounted(page + i);
-+               set_page_private(page, 0);
-+       }
-         split_page_owner(page, order, 0);
-         pgalloc_tag_split(page_folio(page), order, 0);
-         split_page_memcg(page, order);
-
-
-But then I thought about "what does actually happen during an folio split".
-
-We had a check in __split_folio_to_order() that got removed in 4265d67e405a, for some
-undocumented reason (and the patch got merged with 0 tags :( ). I assume because with zone-device
-there was a way to now got ->private properly set. But we removed the safety check for
-all other folios.
-
--               /*
--                * page->private should not be set in tail pages. Fix up and warn once
--                * if private is unexpectedly set.
--                */
--               if (unlikely(new_folio->private)) {
--                       VM_WARN_ON_ONCE_PAGE(true, new_head);
--                       new_folio->private = NULL;
--               }
-
-
-I would have thought that we could have triggered that check easily before. Why didn't we?
-
-Who would have cleared the private field of tail pages?
-
-@Zi Yan, any idea why the folio splitting code wouldn't have revealed a similar problem?
+BTW, I wonder whether we should bring that check back for non-device folios.
 
 -- 
 Cheers,
