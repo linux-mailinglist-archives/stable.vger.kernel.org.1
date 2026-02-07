@@ -1,142 +1,152 @@
-Return-Path: <stable+bounces-214761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BD6Nv9Bh2keVgQAu9opvQ
-	(envelope-from <stable+bounces-214761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 14:45:35 +0100
+	id WBoHLARIh2naVgQAu9opvQ
+	(envelope-from <stable+bounces-214762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 15:11:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4723810609C
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 14:45:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BB1106209
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 15:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 992B13019920
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 13:45:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8287E3004681
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 14:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83827243964;
-	Sat,  7 Feb 2026 13:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C65827CB04;
+	Sat,  7 Feb 2026 14:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBl/nIpB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HXZZWsbj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4100B14A91;
-	Sat,  7 Feb 2026 13:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770471930; cv=none; b=DcRRLi84SaszEBcCLkS38yErlO9+f1Q61H7SfYfxkJx+KXG0ISh08e1GFpZd62DX5HLoxdQX8XtbBJCXM9acvwuJz4S4OTTqhJu4KNKEYIZU3IADQEM+MzQMQz5gJ6Q18ubFzx7XL7wrtnM4qbDIDTLL/COl7OkVIyJn53bntt0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770471930; c=relaxed/simple;
-	bh=pMw1PWkNvxtyLId6Dmo/G3JTnzoAs8e4iYO5dVbhxI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tKJmXI17gcRcukqWyp4IyFuffgFdNUXPkV3LpqLfMkvT/768A5fM7toqRG5jp5/8fOOP9wj/oHUJ1DDLbfOea48cUlpsM+We5OyQ1jz1p4s9kLljchDYMPTgTQYB4yz4phSFrQCVYf+FmJV04odSvbGhXrxmAa1ORI/CPiUlSfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBl/nIpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5421FC116D0;
-	Sat,  7 Feb 2026 13:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770471929;
-	bh=pMw1PWkNvxtyLId6Dmo/G3JTnzoAs8e4iYO5dVbhxI0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EBl/nIpBFu5HqMyTYbWs/vVaZkjlMWTTiBTxzwUWQAm8Wp/jJaP6GOB2vTI2UzGya
-	 kLI6vkIXcSuPd9rt7FPCdlbkxYEPIusI/+m5YzGVog8gaOsLEDp3XJvplyRVaFrIMS
-	 zfIgInaHphXfmhUsnD+duHkpm5vLQ8Z7+k0O7xtE=
-Date: Sat, 7 Feb 2026 14:45:26 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: lukagejak5@gmail.com
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Luka Gejak <luka.gejak@linux.dev>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 01/26] staging: rtl8723bs: fix potential out-of-bounds
- read in  rtw_restruct_wmm_ie
-Message-ID: <2026020759-buddy-reboot-93b5@gregkh>
-References: <20260206075439.103287-1-luka.gejak@linux.dev>
- <20260206075439.103287-2-luka.gejak@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D857B270ED7
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 14:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770473468; cv=pass; b=LHYXGOIWhFa30ILILyeTcLXjEOpGfeyr/L4TQtLjNmJYvFGqz42giGKlzeTgwsnvsFzt6AxjY6f2fKRG57Y4p+7gzY78F5ysCEQR0W2K29GVedJUGrs53B+sAiAm28om25epz1MPOyGSxAd8OBHK8zu1lY0GE9Brq3lvrQQ8kQM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770473468; c=relaxed/simple;
+	bh=ynCu+LQOF1MUOSRJYtAv/zUlhtEmIi/2yBlF5GbMk/E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FNzxXXfszlaMl4IK29tUkudXVXklks+2S521Rkn2icqnved8FEF0aSr9e7j7a2qU0nGF9ah5qeqJti98+hQsgYhJcjrn7dTCpQyuq00mnHlWEEdrjD6k0EnkNvPNWBy/2ZXGgOzY/JLXYK05rVKb61WZik/qDMoNTyQ9+pu8J1o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HXZZWsbj; arc=pass smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7cfd95f77a3so1117153a34.0
+        for <stable@vger.kernel.org>; Sat, 07 Feb 2026 06:11:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770473467; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WdtkvEHuWnGGqZDxDR9uvVQNJbVsyTh/kM8T2XOjyksDgGeA791GEvS/l2Yjrp53Hp
+         Z73LR2wGnDaR05FSBF8nugAfzaYKZs8hN8xogKZEMLJoq5kZtGOqIBJqipr7BSMppdII
+         8o9rqNwZQ2ni9JUxRGEAy0wRGF5RdKkA1+j4STAilgpGXhp2dm70YakBf2Iit02hIWd4
+         kIgChBsscS2CCRd+DQvy7Fw4lIycfmx4BlDfrN3npkO3TfCLvShdzjuZT+VmxOTPHoYi
+         xKPj2u/ikpQrvLfTXR0oj83CZ4tM4lnjIOrWerZxD0TiF4dkpZLrXJNozvqhdKh+X6zD
+         sCEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ynCu+LQOF1MUOSRJYtAv/zUlhtEmIi/2yBlF5GbMk/E=;
+        fh=Q3jTn47ryul+XVismKcWR3m9O8U9j3f6GhTaR4IRX00=;
+        b=EQqpWa94MRmVF79Q+UP4Qkx1LsZNi/+l9z+pFHCIJrbLlnIICazifL/Nmgi26BKE7G
+         cAq9dQk9k+8ySQb1wlo9VILaPlrSEY10YnWrht9uE/hvXvLl0hh64Fav2MGfMxvfQ975
+         vwy4WKkpqCuX0ufQ0dySq1WwPG223Y/cxfeBMXlhfkQKQDX9LPBxHRfOYD16J8dIVpy4
+         jItdnO13pOCuNXxJXnLqnJ0c+/PimC9KGKFwWVFEhnxeaqpyfkODbY2A1iIq2MdU0YFV
+         yJX2I4ZqFKvou4KpXf3DHtbK66jQi/MwSs49/Q9SEqQQ2RPLoEq6Izr/hN13+dSoRhEX
+         zing==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770473467; x=1771078267; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ynCu+LQOF1MUOSRJYtAv/zUlhtEmIi/2yBlF5GbMk/E=;
+        b=HXZZWsbj16SxmGxJluLHif1QyEI+Kj0T0cSXxulZEgEKEVrSf72E59DVjMecna3sRC
+         5HUnqcc4IMmaOZoRySn3o4CBi8Nsa6chmQMoio8WeyaJfFp2PXS57L47zgFqHeh1AXHp
+         t7p6Yhh5wOomDLnvw6FI83ex0979JUfoJdp38u2m5ivQt6xb1P1l5VQgUbDLb/hrBHD5
+         bWWS68Z//qrawnwL43NuR2dD5syuqtnzlcPOtDxw5MI27enOg4L5Z8op6He6Ks51hh+d
+         MaoFeBL5yI+oTahjn8Cd3QHAgg8v2TBGg06BEf4md/8iL3L7GDMcxguZdroCNw0LLzLB
+         Afug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770473467; x=1771078267;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ynCu+LQOF1MUOSRJYtAv/zUlhtEmIi/2yBlF5GbMk/E=;
+        b=hgo+0oDqhs4KvkP17/yfXzJCBW7uvUtGJLpThQ1Z8SfCXdwW3PcorlLrWQ35z0Wfya
+         N5r0RLw+sipvgm77JGyhau7iwM4da9bwi86AYY5mE70y5ashFmAkF0dZTnqXiRFAs/W0
+         vA2Y1Ko3bYJJzQ0Xu2c5xN1fn+Y3aq2GC2rUFWWtz/4DHfwMc1GANCIlYiYMANfX/A5d
+         ncHD7mc+OP8GXYFso3QTZX2dTcAAxF6L9GkpJpW+YeEpP1WJWgMcESmX/lPr07YoIi9q
+         K9cIASx6XuvHxA7AXOmhOPBYf2aXefhlcvdwmb3GX5DoaY3H+N5uTgimS7rmpHCTq8Qb
+         jVxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpO90fhBdnfToQRQff55SaRL1KRuyW+U4/nFlPxzK0zhI68vfRtEymUpQZBIHR+SQNjwWq4MQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx39uYuhyA5wN5fmdQhOk5NTEXRHjyrEh5Lps9cbm3zaUzHhhJr
+	cSRo6EwNA9HUqwrSMXGjfLrGf6yN/2KFgmBW6SyDI6PDwrdLA5zzZ4B1CTmTVzFqDqWdc2Mw3uq
+	vcZ89jSyTf5aT/7v+DfB+3Wrm0anjSDc=
+X-Gm-Gg: AZuq6aLAyNocYrec4bEonC2RRi9QAucQUfsDXRoqWXuAf/PeaUHKMs9czBvXpGxP1Ej
+	Ae6+GJWZDAN4SdSaawvKmrarQ5gPZ+i5Q9DB2mzkz0npPN7JevJVM0r2SeFWbaZW/rjHwFODZl1
+	ozKu76WbFT6lotRskzUTyhLdJ1ZweazIob+Q7hjkagDNvCS6Gw2kpeyxWnJwbRMkVOo8Uc590gF
+	suhDmFvIXBf/i1/U8Drgl41CU4V7Ext/F+maSoKZVYLnjPAc8kR1MAak9n3dUkSxhU3+F3Nk0Cf
+	ROSaH9UC42Vjomwb4trMsxf8tumFjiq52HkWGxb1PirgJUSpxi6tuL3onnM8
+X-Received: by 2002:a05:6830:83a2:b0:7c9:5bef:e9b with SMTP id
+ 46e09a7af769-7d4643e5575mr3562820a34.3.1770473466626; Sat, 07 Feb 2026
+ 06:11:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206075439.103287-2-luka.gejak@linux.dev>
+References: <20260120121105.8959-1-hanguidong02@gmail.com>
+In-Reply-To: <20260120121105.8959-1-hanguidong02@gmail.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
+Date: Sat, 7 Feb 2026 22:10:55 +0800
+X-Gm-Features: AZwV_QgHv_bKbssi1BqytOrVelCG7ayxL_FlI4KKAvI-JSERB7Ri_i0u3T01qi0
+Message-ID: <CALbr=Lb1wp37PH8XyPOUMts-x0Spr04k9HZjbCP8Li1-y9J0Uw@mail.gmail.com>
+Subject: Re: [PATCH v2] media: dvb_demux: fix potential TOCTOU race conditions
+To: mchehab@kernel.org, mchehab+huawei@kernel.org
+Cc: hverkuil+cisco@kernel.org, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214762-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214761-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hanguidong02@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TAGGED_RCPT(0.00)[stable,huawei,cisco];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4723810609C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: C4BB1106209
 X-Rspamd-Action: no action
 
-On Fri, Feb 06, 2026 at 08:54:14AM +0100, lukagejak5@gmail.com wrote:
-> From: Luka Gejak <luka.gejak@linux.dev>
-> 
-> The current code checks 'i + 5 < in_len' at the end of the if statement.
-> However, it accesses 'in_ie[i + 5]' before that check, which can lead
-> to an out-of-bounds read. Move the length check to the beginning of the
-> conditional to ensure the index is within bounds before accessing the
-> array.
-> 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-> ---
->  drivers/staging/rtl8723bs/core/rtw_mlme.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-> index 8e1e1c97f0c4..0b82b1f2f1ec 100644
-> --- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-> @@ -2000,7 +2000,10 @@ int rtw_restruct_wmm_ie(struct adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_
->  	while (i < in_len) {
->  		ielength = initial_out_len;
->  
-> -		if (in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 && in_ie[i + 3] == 0x50  && in_ie[i + 4] == 0xF2 && in_ie[i + 5] == 0x02 && i + 5 < in_len) { /* WMM element ID and OUI */
-> +		if (i + 5 < in_len &&
-> +		    in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 &&
-> +		    in_ie[i + 3] == 0x50 && in_ie[i + 4] == 0xF2 &&
-> +		    in_ie[i + 5] == 0x02) {
->  			for (j = i; j < i + 9; j++) {
->  				out_ie[ielength] = in_ie[j];
->  				ielength++;
-> -- 
-> 2.52.0
-> 
-> 
+Hi Mauro,
 
-You still have an extra space in the subject line :(
+This is a gentle ping regarding the patch submitted on Jan 20.
 
-And I think I took some of these changes already, can you rebase the
-rest of these against my tree and resend them?
+I would appreciate it if you could take a look when you have a moment.
+Please let me know if there are any questions or if any further
+changes are needed.
 
-thanks,
-
-greg k-h
+Thanks.
 
