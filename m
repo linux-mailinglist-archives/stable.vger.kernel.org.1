@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-214759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBWgNiw5h2kuVQQAu9opvQ
-	(envelope-from <stable+bounces-214759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 14:07:56 +0100
+	id 0JsWFFk5h2kuVQQAu9opvQ
+	(envelope-from <stable+bounces-214760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 14:08:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D507105EC6
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 14:07:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D41105ED6
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 14:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 450A13013B70
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 13:07:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1378301A722
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 13:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF7B341063;
-	Sat,  7 Feb 2026 13:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C6D341063;
+	Sat,  7 Feb 2026 13:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4rqJYrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fr6jE4pC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19B22C3252;
-	Sat,  7 Feb 2026 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C2D2C3252;
+	Sat,  7 Feb 2026 13:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770469673; cv=none; b=hoC8gTmqhoeHSOnCSVsoktiWfzy+zYICMXtGuLZBNVZM8PEefb51X++NQtarBee1zZpveuz+AdVi9N/EOJdiWQxxIAMhnaXTNL4iYq086hAEnDD0IMwzKKc7Mag8TqfDJoBw+6Qg/KK2uIVfP4fb8IkAlUPcAOt8wfCqVuymwNc=
+	t=1770469716; cv=none; b=kfxmgZwuc6TNiO23rDdTPXK7aOkzeKhnf11+/UtrM3rWRk/Zss3ZxGQ1RP/gEXqy237xtOCrPPsVMM5BU2/8UfSBPT91ZKUmzNwOXZnwqD9XJu0wEVfyX6NwYqIGTMGvZeRYaZTzODv/80f/5D0zsHa7uNm3Jo3xjfVg2Bgb/mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770469673; c=relaxed/simple;
-	bh=SAxjMoq0gNFyEtiN9yRUX/imRsxV8cIsS7xThiEYu9s=;
+	s=arc-20240116; t=1770469716; c=relaxed/simple;
+	bh=NSfmqgdvywmJWDB73UCxwTR988iTbpCYUP1NM7is0/I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o9hdc4x+tbvRK2bKsBlmeAihKMgqlBt/VL52Ka8p6SnW2ci7h4r5Nv9pTmPHunD9tCMQbWO9sdLmgxViYmYqUQP1wNByuhtv9g7KEXaT6p94zfc6TOTp+7xvDJd0NWGFF/bjt7evy2hSyPiYrSLpCT7I1PFoXtYiSgF8SQ+dfOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4rqJYrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8593C116D0;
-	Sat,  7 Feb 2026 13:07:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rJPbagx9PQLhh9Vnanvn3KcPHeHz6es/VunE/BCzdUQIxja1FSF6bL6ihn/ExpuG1690qEMXvGLhVAIXHTPeKCGoXHKCqldZlcujnpdLGs6J/YO0ZFg8VHygUj04JMfXakm7imfMswobWPkZMCA/QFDyloR28CoE9XZRQ81mYfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fr6jE4pC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0FBC116D0;
+	Sat,  7 Feb 2026 13:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770469673;
-	bh=SAxjMoq0gNFyEtiN9yRUX/imRsxV8cIsS7xThiEYu9s=;
+	s=korg; t=1770469716;
+	bh=NSfmqgdvywmJWDB73UCxwTR988iTbpCYUP1NM7is0/I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K4rqJYrkXI5MRyk4SrRhE3rh3cR79+FY6nLykoR/dcSHjnnTT97uZmNcx0GGvDq6F
-	 dpks5JJ3Toh/IrGH/WT+fP4g19hHV3/LzwXJEi1qt6DZJlCcKRF++WFSZ8W/vDy1Xb
-	 StOJUGQdrOSJFUhCaLJKMHCmUYkY3J4YQEFJQPbU=
-Date: Sat, 7 Feb 2026 14:07:49 +0100
+	b=fr6jE4pCDOsJQQYYA5HcutzTK35lhlwNUX+XVdq7YMnRwPvU6z8vo5gqsw/7KqLMq
+	 C/fUBU6BqDSAop56tV4Sp5/WT7tkAuqWyH3Rl8LST3US/RJdsGV3MjmoETAoKZjZdt
+	 jhdENvd4aLufUYXtObTsl7GsS5EQ+ZKx/sazCfAw=
+Date: Sat, 7 Feb 2026 14:08:33 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Luka Gejak <lukagejak5@gmail.com>
 Cc: Dan Carpenter <dan.carpenter@linaro.org>, linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH v6 1/5] staging: rtl8723bs: fix potential out-of-bounds
  read in  rtw_restruct_wmm_ie
-Message-ID: <2026020709-breeder-delicacy-91bf@gregkh>
+Message-ID: <2026020716-starboard-uncurled-2334@gregkh>
 References: <20260130185658.207785-1-lukagejak5@gmail.com>
  <20260130185658.207785-2-lukagejak5@gmail.com>
 Precedence: bulk
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -75,22 +75,22 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214759-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214760-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4D507105EC6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A7D41105ED6
 X-Rspamd-Action: no action
 
 On Fri, Jan 30, 2026 at 07:56:54PM +0100, Luka Gejak wrote:
@@ -106,10 +106,31 @@ On Fri, Jan 30, 2026 at 07:56:54PM +0100, Luka Gejak wrote:
 > ---
 >  drivers/staging/rtl8723bs/core/rtw_mlme.c | 5 ++++-
 >  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+> index 98704179ad35..7dfc2678924e 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+> @@ -2000,7 +2000,10 @@ int rtw_restruct_wmm_ie(struct adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_
+>  	while (i < in_len) {
+>  		ielength = initial_out_len;
+>  
+> -		if (in_ie[i] == 0xDD && in_ie[i+2] == 0x00 && in_ie[i+3] == 0x50  && in_ie[i+4] == 0xF2 && in_ie[i+5] == 0x02 && i+5 < in_len) { /* WMM element ID and OUI */
+> +		if (i + 5 < in_len &&
+> +		    in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 &&
+> +		    in_ie[i + 3] == 0x50 && in_ie[i + 4] == 0xF2 &&
+> +		    in_ie[i + 5] == 0x02) {
+>  			for (j = i; j < i + 9; j++) {
+>  				out_ie[ielength] = in_ie[j];
+>  				ielength++;
+> -- 
+> 2.52.0
+> 
+> 
 
-Nit, you have an exta ' ' in the subject line :(
+Nope, I can't take this, as it doesn't apply to my tree at all :(
 
-I'll take it, just be more careful next time please.
+Please rebase and resend.
 
 thanks,
 
