@@ -1,191 +1,211 @@
-Return-Path: <stable+bounces-214751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFZoJhzOhmkRRAQAu9opvQ
-	(envelope-from <stable+bounces-214751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 06:31:08 +0100
+	id aBnTGRLahmnMRQQAu9opvQ
+	(envelope-from <stable+bounces-214752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 07:22:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4563B10506E
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 06:31:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C096C105143
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 07:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC04630247DA
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 05:31:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A1BD302350E
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 06:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003F950276;
-	Sat,  7 Feb 2026 05:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC2A2DB7BD;
+	Sat,  7 Feb 2026 06:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WbeFA12x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AkNl2v13"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFD7256C6C
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 05:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3982136E3F
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 06:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770442263; cv=none; b=am1MgZTmtylG1oLZNCBYTNWQui+w6Z2v+ypL+OtcK2yuUJ1VsXOBTU8ReGo3zvl6+5NrKiQkNSoGJDjaCYMr9abo2b3I+5nH7fTCACVHSGH3q3T808pnisCNmeTkOYbf4mAo48KXrvRpHLtIwZro1Eyc0U5sfopGca80AYvaIzw=
+	t=1770445321; cv=none; b=avBH5myOt43oHxeBtgnW+yosd1IyYkMNvQ2RUiR2OdWezZ7kutAgX0c9bgaB7uYConwSCyPLz5ZwX5ps8GbsHb+zUfeKC/QruMYgAr66e+rtXscT2jmlrpdVRWoHahQxUDKLI5RVeGEJ8AfFaWBm/PvwA5r3I6MdnqT3/4NtOGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770442263; c=relaxed/simple;
-	bh=6CMcImivz+9TGRX6cDLBO8eka/508xuj+j3Oja7JGm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hX9bL1zJEA+UvGkAub/6ykzHOeL1ci/IiFj1qND3wCjk+JBgRqu6QqkncwEmisbPBQVsjh3JQiwMiYFUILOHF6oZPWFecvQ708ho08CXsBeMQepMUxfMG9b5z9ZMd0zfgkhNB7fQL7og0v/yAuX82ibdp6kj0AkSri7ciQeTXhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WbeFA12x; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1770445321; c=relaxed/simple;
+	bh=khdehHZTZ3iPp0jMZpCIkxyJL29MISIPziLCk4adFEE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ogXkd9TihWulKT+az1TH6d3RC4VD6BKO/mrJpOKrSwYnJ/gHL1M20qEbavj5NPCUXuHEJKl5XOCIKPNaByK/mNp8ok75b2fw4KManbXhVuztCv+a6hLkZ9d9MO+5kpaewjLsYan0evlmge/ZMgJ26TEIRS6PLd87gIelYmDRQE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AkNl2v13; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a0d67f1877so8648985ad.2
-        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 21:31:03 -0800 (PST)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-894774491deso35605186d6.2
+        for <stable@vger.kernel.org>; Fri, 06 Feb 2026 22:22:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770442263; x=1771047063; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4r1/bFgz7fHK5C32YZ4rSXfMrTJXSkBGVxxwZofFjNE=;
-        b=WbeFA12xzJuk376PJZiXUbBxj3q4SsX5K4+QwxVDAomx05MQgsnby172h91hcuUfLV
-         NVvVky9zL+ugNcK2x+F3+7NTEsbymg5bRLirF18gCuscXZusUCNRAbrGv0ICVhPxBuza
-         wYql06qaBmonB735k4QT8N3BBSPsL7t9iIB2t856K+ckoA0Ir5cYTx7P09NaCcgMH28k
-         EOmIf5wbFcreXagevUeTrypxW1v7a2b/HGPDhnwWsQBvAx5d9d7n/1SRWbrbM8bAn3Gg
-         Lek7CT7Sxq5Wl47rVVfvpxwu/vdkXlG0MpQ5sDBTiURB6p4QsCj0WVLPaGH78EWVDsd5
-         ZwkA==
+        d=gmail.com; s=20230601; t=1770445320; x=1771050120; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Jvauz+ENBVr5yYmGZ77a3RAIpmuhMLwQfOQH7uwGMY=;
+        b=AkNl2v13GX3N7oIuzBnxLTUM+e0oV/kd5hBS4dfhSOUplKfEi1VovgzEOpO+GuvAWp
+         9B6enSbaDkZ5KMtBE2lhBpbEz4Bs3UsqYC0zkiZ4GA3qUjhw4IIzAIhCZmMhdcF939dU
+         gIsLyZU8qdSbyxk4DCqxsXNEFFVl7RfpoUh/G0PIHVHodxrlTkHk4AoKMd9icrgrEiOg
+         Hk4OY2lIqVIwjFGj0uZI3nUbpvtbXoKH0qkWEzQWl3BGjhAr3Cp8j3LWiNrJAdWEi7Kc
+         qfqaeXfgDILk1do9RDqgrgeVIQ/hDNSBfe1VzWfcsZjF53ur1pJgaF+Lm/8XPpa1jqtk
+         WFOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770442263; x=1771047063;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4r1/bFgz7fHK5C32YZ4rSXfMrTJXSkBGVxxwZofFjNE=;
-        b=LRnWcg7vKd804LJ6TjhSKzhThZ+8hJ5iLbn3yJFo8UVAcEVwZHsKTVXZbcGVw4o/BM
-         sXhEmmkd8xC19FaUhQRSPjvmK43rJwoCEpo12o52BZzIvnEy0kGBiovXNd4JpUDU4anp
-         bS7/YC4rpmgU4Q1B4/Z68kk2RVfrUSw417TgaBdvWB1WTx3ZOh4IlNH4XvBGIXhNZRIL
-         uyb7NzQa6p1nb4aIdjfGhs96IEyRR3Rj/D5rx8g7P9oarVWIOiPoN62h1RbgLt6sdtur
-         4SONhrsi+AbiYpOkd7Hmoki9H5cp0UCccNQEFpPU+06RyhPV6UjL6YIuKej4sr/m2dbt
-         P5uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrVwbb7VOSuzw0TFCc+OdtsaJ4sVG61GAyjzDsPalAs5WK93nbptWs7pwFkHUbZhfTqd30Tz4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymMLTg0wJbRRfpNqGA8gsI2hP4umiXmnD9G84GcHMx6zKUhgHu
-	u+ZqfUkWYKv3akemuKiDVmuh98PbBB5E2SE00wkXifgAOyyFpOfIVtKS
-X-Gm-Gg: AZuq6aI3VTUhDda3Ki5E9ts2Ca/sGqGLtPIFetd4lzA/Jzn5lSN9kGuetEuaiyKC/EB
-	qDXLr3ZsV5fHUJuNiawmJiE58uUNog4X4Dw2uK2UsErZOWRu6tgfFTtVFBgnmS8gLg5qjkUr6HF
-	xGm7/v57qOjjfCTaymBNk7h9ahxa0ZIMM8Xr0uOQkW582FpIHWnkC+P2P9G9RZpVW+0B9yvtszD
-	blxh7YhGtvTfOzq8DlGESKVW/8tI1jM1NdNMaHddSpbkUZH8n5rmElNV0YsBxFCCxrOEt1Dzj1s
-	C78/yKqO8dpIgYWdZ0Y8n4hSnydhhq0QAkpXCgzkjQbOiGNVhm3pdnELiIs+nXWodOLS6ONq7DV
-	sFhQTW8g+d4ms1vLBZIGQGu03QEzbZ3HsdJNSKI2Z+iugHqAsisoOE6agOPLZAQbCkCZBNO7Qlv
-	A+eILe3NN1YoysGbPW3cWowcZ3n3KUqwKsRJtd
-X-Received: by 2002:a17:902:cf07:b0:295:5dbe:f629 with SMTP id d9443c01a7336-2a951608c6bmr47072025ad.8.1770442262725;
-        Fri, 06 Feb 2026 21:31:02 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a96251b6edsm10731145ad.69.2026.02.06.21.31.01
+        d=1e100.net; s=20230601; t=1770445320; x=1771050120;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Jvauz+ENBVr5yYmGZ77a3RAIpmuhMLwQfOQH7uwGMY=;
+        b=lipH7eiYUGq6f8HrjXn7qMoF0CkTjsJEByGQZIEyIVbKfdwAXWBRbmKS0V2TApeYKa
+         XgMgT6xzJ271/VF/wGsI8gt9gezMpYBU1FgkEXSwHKkLslcZFcZgkY9MNDhaJtbgRYBA
+         6f+lNRxkmOabXicxeUAZg7mlQ+pvmKlcTNw+mnMX/o8liGm86TC1qfa/6Q3bgtFcWXcw
+         FvfbcMomMs3wKGEvBTntwfAuBTyK6OQe9BnDqBOO9Vlv2ENalW4iglFLuFPC6yn0ztlA
+         I4RrB1jUuBSCLw+FF9AxD8B7MZTNSJJHNjCsaU/XWQNfio7C6SHPHSX4qu5D9yaVumUA
+         rYlg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEoX6x8h7DnYuDmQMsRSKqMipO2sd3mDU0ogmSHxX3GuAj044LejlRwuNcAsKicH3gVP9J7C0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJETfKrO8NPUe66Nm3IfTFZ1SYoxQZTwVwAhjuvHSTjSSFIQl9
+	vuwug6QTD6JU++SXqngZO3wUZpVpGvEI2VdHvi0WRzsoP5BKaq9MEfYd
+X-Gm-Gg: AZuq6aL93Y/NkvWvNKgtkNWgV8W2Me+/LBiw0GAib6/cTQiG5FAOa3ZusaqfilO6Wt/
+	FMqUUdYijJ/WXQ5XINP7WkzQeiT4HMC5MREZkzkFE0NGP8JBHPhqrrPRwfRFBoyDRtK+qFgx39s
+	Jt4qeRhCPmZO14p51+01gsrO5HzfVgzeaqE6kxZoDIH45q+hv4B/CnV67OtSgBngxIqS4aBRsBQ
+	6eLDrMpaJl0ps6ihxizxK1uXVDpszABXfDsT8lpd80d6KWS0aUrtNIyDknPRrH+L4UrQC/HqX3c
+	lUe7V+ISE8bjr668vY+AofYGfZ949CC775VVWGclCdBiBBysS04cGwey4VlRjIaFVvMajVIEJwx
+	RvEUFU8j1a6+/pgB3mFCciRfCzpyfKY+u2x+Qi7FCivHLCW6jK7JSFuLGN1BYFato4ys0+4umCo
+	4NJXy4DSYDwEmUed0sNAK+
+X-Received: by 2002:a05:6214:27e2:b0:895:1855:f174 with SMTP id 6a1803df08f44-8953c8065a2mr72114296d6.24.1770445319801;
+        Fri, 06 Feb 2026 22:21:59 -0800 (PST)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8953bf58b06sm34858036d6.15.2026.02.06.22.21.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 21:31:02 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 6 Feb 2026 21:31:00 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Gui-Dong Han <hanguidong02@gmail.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com, Ben Hutchings <ben@decadent.org.uk>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler
- optimization induced race
-Message-ID: <3d81c0ff-bd80-4b06-9a59-545b5d94e6a4@roeck-us.net>
-References: <20260203121443.5482-1-hanguidong02@gmail.com>
+        Fri, 06 Feb 2026 22:21:59 -0800 (PST)
+From: Kevin Hao <haokexin@gmail.com>
+Date: Sat, 07 Feb 2026 14:21:46 +0800
+Subject: [PATCH net v3] net: ti: icssg-prueth: Add optional dependency on
+ HSR
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203121443.5482-1-hanguidong02@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260207-icssg-dep-v3-1-8c47c1937f81@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPnZhmkC/22MOQ7CMBBFrxJNjVHGhiBTcQ9E4WWcjEQW2ZEFi
+ nJ3LFcpKP/y3gaJIlOCe7NBpMyJ56kEdWrADWbqSbAvGWQru1a2SrBLqReeFmF1uAUnLSESlP8
+ SKfCnup4w0QqvUg6c1jl+qz9jnf6oMgoU1jgTrlJdglWPfjT8Prt5rJYsj2R3JGUhtTeE2qKmz
+ h/Jfd9/vjxfyuEAAAA=
+X-Change-ID: 20260203-icssg-dep-b9f7fc2be11e
+To: netdev@vger.kernel.org
+Cc: Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Roger Quadros <rogerq@ti.com>, Mohan Reddy Putluru <pmohan@couthit.com>, 
+ MD Danish Anwar <danishanwar@ti.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+X-Mailer: b4 0.14.2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214751-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214752-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,decadent.org.uk];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,ti.com,couthit.com,arndb.de,pengutronix.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,decadent.org.uk:email]
-X-Rspamd-Queue-Id: 4563B10506E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,davemloft.net:email,arndb.de:email,couthit.com:email]
+X-Rspamd-Queue-Id: C096C105143
 X-Rspamd-Action: no action
 
-On Tue, Feb 03, 2026 at 08:14:43PM +0800, Gui-Dong Han wrote:
-> Simply copying shared data to a local variable cannot prevent data
-> races. The compiler is allowed to optimize away the local copy and
-> re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
-> issue if the data changes between the check and the usage.
-> 
-> To enforce the use of the local variable, use READ_ONCE() when reading
-> the shared data and WRITE_ONCE() when updating it. Apply these macros to
-> the three identified locations (curr_sense, adc, and fault) where local
-> variables are used for error validation, ensuring the value remains
-> consistent.
-> 
-> Reported-by: Ben Hutchings <ben@decadent.org.uk>
-> Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
-> Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-> Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Commit 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame
+forward offload") introduced support for offloading HSR frame forwarding,
+which relies on functions such as is_hsr_master() provided by the HSR
+module. Although HSR provides stubs for configurations with HSR
+disabled, this driver still requires an optional dependency on HSR.
+Otherwise, build failures will occur when icssg-prueth is built-in
+while HSR is configured as a module.
+  ld.lld: error: undefined symbol: is_hsr_master
+  >>> referenced by icssg_prueth.c:710 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:710)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:681 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:681)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:1812 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:1812)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(prueth_netdevice_event) in archive vmlinux.a
 
-I don't claim to be an expert in this area, so I ran the patch through
-an AI review and asked it if it is both necessary and complete. It claims
-that this is the case, so I am going to apply this patch.
+  ld.lld: error: undefined symbol: hsr_get_port_ndev
+  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:712 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:712)
+  >>>               drivers/net/etherneteth_hsr_del_mcast) in archive vmlinux.a
+  >>> referenced by icssg_prueth.c:683 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:683)
+  >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
+  >>> referenced 1 more times
 
-For those interested, I attached the AI review results below.
+Fixes: 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame forward offload")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Cc: stable@vger.kernel.org
+---
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Roger Quadros <rogerq@ti.com>
+Cc: Mohan Reddy Putluru <pmohan@couthit.com>
+Cc: MD Danish Anwar <danishanwar@ti.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+---
+Changes in v3:
+- The implementation of the 'HSR if HSR' syntax has not yet been merged, use
+  'depends on HSR || !HSR' instead.
 
-Thanks,
-Guenter
+- Link to v2: https://lore.kernel.org/r/20260206-icssg-dep-v2-1-9dae19b19e6d@gmail.com
+
+Changes in v2:
+- Switch to the optional dependency as recommended by Jakub.
+
+- Link to v1: https://lore.kernel.org/r/20260203-icssg-dep-v1-1-bacaf5234fb3@gmail.com
+---
+ drivers/net/ethernet/ti/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
+index fe5b2926d8ab060d83f5a58d91e749a45c6cea18..c60b04921c62cab52983efa5aaafecdb9b7d4da4 100644
+--- a/drivers/net/ethernet/ti/Kconfig
++++ b/drivers/net/ethernet/ti/Kconfig
+@@ -192,6 +192,7 @@ config TI_ICSSG_PRUETH
+ 	depends on NET_SWITCHDEV
+ 	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
+ 	depends on PTP_1588_CLOCK_OPTIONAL
++	depends on HSR || !HSR
+ 	help
+ 	  Support dual Gigabit Ethernet ports over the ICSSG PRU Subsystem.
+ 	  This subsystem is available starting with the AM65 platform.
 
 ---
-[AI generated]
-Summary:
-  The patch addresses a theoretical data race and TOCTOU (Time-of-Check
-  Time-of-Use) issue where compiler optimizations could reload shared data
-  (data->adc, data->curr_sense, data->fault) after a validity check but
-  before usage. By employing READ_ONCE in the reader functions
-  (max16065_alarm_show, max16065_input_show, max16065_current_show) and
-  WRITE_ONCE in the updater (max16065_update_device), the change ensures
-  that the compiler treats these accesses as volatile, preventing reloads
-  and ensuring that the value checked is the same as the value used.
-  The logic correctly handles the "lockless reader / locked updater"
-  pattern common in hwmon drivers.
+base-commit: 6d2f142b1e4b203387a92519d9d2e34752a79dbb
+change-id: 20260203-icssg-dep-b9f7fc2be11e
 
-  Verification:
-   * Concurrency: The max16065_update_device function holds data->update_lock
-     during updates, ensuring only one thread updates the cache. The
-     READ_ONCE/WRITE_ONCE macros correctly protect against compiler
-     tearing/reordering for the readers that run outside this lock.
-   * Error Handling: Error codes from i2c_smbus_read_byte_data and
-     max16065_read_adc are correctly stored in the data structure and
-     checked in the show functions (via unlikely(val < 0)).
-   * Code Style: The changes follow kernel coding style and best practices
-     for concurrency annotations.
-   * Regressions: No regressions were found.
+Best regards,
+-- 
+Kevin Hao <haokexin@gmail.com>
 
-  False Positives Eliminated:
-   * Self-read in `max16065_update_device`: The line WRITE_ONCE(data->fault[0],
-     data->fault[0] | data->fault[1]); reads data->fault[0] without READ_ONCE.
-     This is safe because max16065_update_device holds the update_lock,
-     so no other thread can be modifying data->fault concurrently.
 
