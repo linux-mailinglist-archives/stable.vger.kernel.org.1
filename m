@@ -1,220 +1,248 @@
-Return-Path: <stable+bounces-214754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D+2BTkDh2mpSwQAu9opvQ
-	(envelope-from <stable+bounces-214754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 10:17:45 +0100
+	id 2MEwA0sXh2nBTQQAu9opvQ
+	(envelope-from <stable+bounces-214755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 11:43:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873091054CC
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 10:17:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB1C105980
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 11:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3E6E303BB31
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 09:17:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0527D301AF7F
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 10:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E777630F526;
-	Sat,  7 Feb 2026 09:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9CD33E351;
+	Sat,  7 Feb 2026 10:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Z2wAH+CH";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ibd3xx/G"
-X-Original-To: Stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RBmezeGz"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ECC30CD9E
-	for <Stable@vger.kernel.org>; Sat,  7 Feb 2026 09:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F3F311599
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 10:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770455830; cv=none; b=O2KAL869GNJIKyHvBPm3Cuh3usIdsmjWeaUC3Oz/2a48hPdICoHos425RHtbMst3JfzTHfkQ7nP2qpDV/27DiJpYGtp5cMpRQKWGQyMiYSxB5AuBHVmWgz1VCbCPx43cZC+946k/bDpPdS04rDW9x0L10Y9dY9/6yRDbviRb2/c=
+	t=1770460992; cv=none; b=rCAED2VeKst58WxpCReCn/gZxJnvDYcjY2TDc2zouHfzM04yLFJPSGM8hUbcY/V3kXDCmSA8w4ydNm/tpEnPvWWVm7k32uC5b6yOA46P1U9tOutxbe5sOhNmlcDKAPRoNvxvhB9/wfUoBnmdEWjmXhylzoYb5n2Q7b77GI14pSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770455830; c=relaxed/simple;
-	bh=9NTj8bze6eCT0gE44OzOQat7Pe7A3mxPsta0j/QPQbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sm4iQopbfiuTLJ0FKAJuAmDEJhFS8Vaaaoahe26sL/covgYzgtH0O4yeDutbYZnRePZilCxlkUV9ojMHrFkBZnbC7QRtvp3uIFArs2PpEjAopt4dT1KW5jgF95KBvg4wKTUkOy1G9n/S3s5x+RAxEnbTCzZ2klZvJ7j7kikwcTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Z2wAH+CH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ibd3xx/G; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6174Ou5m1740797
-	for <Stable@vger.kernel.org>; Sat, 7 Feb 2026 09:17:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=YDwncRQ168ONlLDkORs7Ecnl
-	lvkOETKSKd/v3Pe+RYk=; b=Z2wAH+CHV5GXOnQAn6e5aNvaVwV9hKHnoucdD0fl
-	WAkYpYb6KpaAPQj0WgxfwuFN1aBET/jgAh2lrBOmQMMckgZQO1U/tsZLXPGfYzqq
-	s5ONSI/h3f7ZJOEdnwJkEjmr3symPMvLIYrZcp5z5YLfzrDcdKx/4xdA/H5NI0qh
-	PSoCShabfnGrD0CxJHT05cwlQZRv5/KmplmXOHnpK1+8D2rqUKGiZ4/c3AeNgaQq
-	XU/1Kb7raBM5hrnaCA0PMSkTCI+EpH22y+6ZzC9Cj4ingc7nIy0ypOcAeyvLikB5
-	4vBQg9VVLI/hAfUHiDnNcxPIr/sVONHmf1GsF/Dq1KgWYw==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c5xbf8dkq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <Stable@vger.kernel.org>; Sat, 07 Feb 2026 09:17:09 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c711251ac5so774618385a.1
-        for <Stable@vger.kernel.org>; Sat, 07 Feb 2026 01:17:09 -0800 (PST)
+	s=arc-20240116; t=1770460992; c=relaxed/simple;
+	bh=VpylFaXQ5R9Ce/kUeXCB7cheL20SuIrXZ7nduGMGXJw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BY1D1DwTdrFze2MDMHAD4PrqY9Bswu7YZBL5ymf/GHvVbdTgEc/PIZeT6h1j5SxdYPGZWYRbZSBoI3rwLZXeYxcsvJkUXKEIpv4YfHWHDlDk2op0aO5YE3GSSJDPcUoFK/90kmblTOnlE4Q7bPUOPG8V1dHTPi/z7nuQribcm2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RBmezeGz; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4806fbc6bf3so17027705e9.2
+        for <stable@vger.kernel.org>; Sat, 07 Feb 2026 02:43:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1770455828; x=1771060628; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YDwncRQ168ONlLDkORs7EcnllvkOETKSKd/v3Pe+RYk=;
-        b=ibd3xx/GQCkUVLLxD1eA++Mt+5FKEhjD8G1S775JOdek75kxLB/xVwfp4UKvGv9BLZ
-         8NAE4hIZAnbsu+x4MF2s4Ag00zhwS0V+w+3CyCB0nvFGrkx5ZHaTJDdSvlwDbQNL+R8v
-         D6KhnY1WuT8uHDYe6f5j9CKilvmoi1EglBimtX6N/N8CQX6ZHF13GqAfU6VhJArHiTAb
-         2ux0BffePt4UO+XUzsxqVwsBIX7WIpNzQFsS3Xizum96HwlGBElGKMGLEe33ISzN1Jnn
-         2GOquFyALLDzeYRSz692b8SnRKZ2SvmH88Sm+ZloIQg1nzIA0xSPivO362b2mG+XCoSh
-         Id/A==
+        d=gmail.com; s=20230601; t=1770460990; x=1771065790; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nip7PxraMmxt86GWPJ7mOALMTbQ7LbZ8aEjfsVnU+KA=;
+        b=RBmezeGzM1CPVl4ZZOIomSaKBNoCtr/TMk9cmDAoGFvSZAexiZwA+CdYaQ/FqrfI5N
+         cpL/AM30x1w+byQ0LJEvuajI4kXSGlDWHMf9VniV6EpP/r7POyKF1+9IVo0HQU5TrrhP
+         PwFo91RHG6SGMcjA8L2GNn+ZXCjS2fjn+jOb9pOm1TtJP8MwXRryuIceQDkwcvXPnZ47
+         fXgCub9yF4lQzU2kHQtV/IUd1xbTgE3bLjZJWSpIXJenAXDHvahUSyR2+NmRbmSXjo4g
+         QyXQ1EindK2jWotPCH+w/xZgp0vnw00qihd6NtM6brNP65ReUd6Km2nW6LfzhtiXgTiw
+         +h3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770455828; x=1771060628;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YDwncRQ168ONlLDkORs7EcnllvkOETKSKd/v3Pe+RYk=;
-        b=igivuGSGj0HngB9XnQHQs5p3NyIpllAdCeZIC6qPJXlAPxOKjKeeNsTw3mUfcGySqD
-         MdUp/2Q6Xx2AWisGSlye4cavbF8uLvhSGVkSbKPnBWLZ8sChdTWtFWORlJePcFOS+TY3
-         V2q/dADUuWENxNRBLnmXZJp0k3NPa59fgkHKdAJO4Jg6i01RbmnmizgeFws3fdjTSU7p
-         jMzLh5PXOHIlXx9H940aiDBK3etFV6xXAZvND/DGpbCcvzV7wTGoWN3Rz86HWTN2y/Jd
-         ECM8j77+wtxXGUGp6v4GPiwb/5eM/L24jMWDl4OKEN9E2cocw3i0wZoUZLRJCN1GkhQK
-         Gs9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVhPtShkqS4uL8R6MhZxZr878e3E5chAkIVx0jxvnI9ahNyLLLRao4pe5v/uOSzIyK7KClYKVk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTCJbs2uoSX9sZvMldrEnhUhP6kwubTwomeIgAWL6HsrusEAgV
-	Gn1c0i+Bwh9ubqQ4p9osp9vFniWOZ4GYkc4TXnk+v3syVTzfE1PjFHoxUydYqgO9/5vV7CgiGbb
-	MqoaqrWTfpwHosJOU/VYIKFB58YA1hMtyZ7kQqk67eXncclzDCVLXrFA7Zw8pH6QL9cU=
-X-Gm-Gg: AZuq6aLcIzsQ6iSGgJ0V7e12uyYTbJzzxjq8RhpvnmnOud4hTB93o5j6+Mu0Qt6XWrM
-	Okje+X/24hkX72ZK68qsW2V79dG139C8JTOy4fe0jKtjhZlhO3ioCVmKU9QxEPMeB4wNp9Fzh2Z
-	xt8OhfMcC33jAd+L/VAxwxrd5QqjVG8QboTTYN+8sMInMtS4y6f2nKLgUpJ7W9B4hvHJo5TfDnQ
-	FBO1iwLg7gZQ0m3cBkbyqcIho0fioVNbYYAVwqxm8El8TRpl/6pdp22VtkUHeuaB8Bg7gK/ZQIg
-	BF0/eWhY7+mx5MVz6dXtsgciuh4EyznO0VU15pOrdGBsByYiW82/4qh5lfp2vKxSGzkcbKJKf9q
-	sgskcV//Z96P2xoTEJufF0MQiepkFon+NNmg8wZce+G2SWHC0XvJvhnZ4BF1luk5BKJSI5hQH7b
-	VIcG6C5k/9Y6fIs/EPu/nwnio=
-X-Received: by 2002:a05:620a:390a:b0:8c7:1b3f:5eab with SMTP id af79cd13be357-8caf17e3d13mr709725385a.60.1770455828530;
-        Sat, 07 Feb 2026 01:17:08 -0800 (PST)
-X-Received: by 2002:a05:620a:390a:b0:8c7:1b3f:5eab with SMTP id af79cd13be357-8caf17e3d13mr709722085a.60.1770455827958;
-        Sat, 07 Feb 2026 01:17:07 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-386b6158615sm10860231fa.0.2026.02.07.01.17.05
+        d=1e100.net; s=20230601; t=1770460990; x=1771065790;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nip7PxraMmxt86GWPJ7mOALMTbQ7LbZ8aEjfsVnU+KA=;
+        b=wSNk88koS2sf7DQ8s5GVo3dVsot7acIswTYxZhKIFHRaNpL+eQum2NxK0zp164kMGS
+         akl95pb/bB7aFoLcrMrqy/aVPmjV1RRHUxBjTH8UR2DTK/fQB0UHTXzeRPPyoq+WVNlH
+         eN/DcUK5Kg1ociOq23eJyblS7eJnutQHRaCBUYIzdECTcQXE2nf7dkbcjv7YLiv4TIoT
+         Ts9vl/hm5FtvCBkgXAtb/cRvwHcjlaTvYxWQgNX/Wc1LbR7O26T0eL1uy6XY4utYp8VB
+         nq2ZYYcTFXPD8vOVocwFl+keBuRcDZ1TcY/P0spF39t4nD8AddqlbVHB7fvU8jK1CRvZ
+         aWGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqi3M0wFUqMvkz50PJo439HcxfjUUJi/myWjlLtWwzfuL1WsO1OZeJLgc1tthh8aOmvYrArpE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJGKaM+yWYFmuYvFLKcsZGrOoYEdapdZNg02HIR7WJPx3Ze6Y6
+	dT6AER0z1bVJngxjgRKHH4JKxKLEcNBmwT9a7MoEgrdEAdKpYlDsu4Nc
+X-Gm-Gg: AZuq6aLyx+S+tlPQtHCtoSME7WRH1J2Fs2I2rrWkw0CDOhxb0LmhD+EMtWJnhR+dZyF
+	zSiSmmyPEvxdJ17Bixy6OLAQvnniBrMBQS+uc2v/UMBgOrkJQjXlaPtUKNkk+2fQXlzmTKs48+N
+	mQzcRLvlrFEvlWhdHCXZAioMSjAzO+sa6UvrfjIoOMRJpxYB+2qCYR9IKrAOuVkPW0I9SHKjJHI
+	g+EWQcgWd15FUaXWW0W37JaZyv7+1BXDd+wR7PPSHN7Z6o6hqSshNW+b2pazXuZorEV9rEc7JC+
+	Rx1kWWYIvft6NdRu0vGkdsu1cA2oKUbrNVdixh3sV2rbuDDKe8VVEoprIHGcYK5iuArNrU0uo79
+	A/H5eks527uXBZ/yrP0M1z+xbrMrOIdhz61M7AfOfW1yUJH1PRDr5YeBTKsmna5Nouns7x+Ucu7
+	/Q7RbSufsGC4J2hP7ONbd8c7+r7i0m/z4p3eM2xk99MfKb+sXG1vMm
+X-Received: by 2002:a05:600c:8489:b0:47d:3ffa:5f03 with SMTP id 5b1f17b1804b1-483202161b8mr88947085e9.21.1770460990170;
+        Sat, 07 Feb 2026 02:43:10 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483203d606fsm42725245e9.2.2026.02.07.02.43.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Feb 2026 01:17:07 -0800 (PST)
-Date: Sat, 7 Feb 2026 11:17:04 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Cc: broonie@kernel.org, lgirdwood@gmail.com, robh@kernel.org,
-        krzk+dt@kernel.org, cnor+dt@kernel.org, srini@kernel.org,
-        perex@perex.cz, tiwai@suse.com, alexey.klimov@linaro.org,
-        mohammad.rafi.shaik@oss.qualcomm.com, quic_wcheng@quicinc.com,
-        johan@kernel.org, konrad.dybcio@oss.qualcomm.com,
-        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Stable@vger.kernel.org
-Subject: Re: [PATCH 02/10] ASoC: qcom: q6apm-lpass-dai: Fix multiple graph
- opens
-Message-ID: <62fl655uwn4fevonuuhxs7rplpmcdgkghrivaihhptz3e6empc@snkbjhydc3mu>
-References: <20260205171411.34908-1-srinivas.kandagatla@oss.qualcomm.com>
- <20260205171411.34908-3-srinivas.kandagatla@oss.qualcomm.com>
+        Sat, 07 Feb 2026 02:43:09 -0800 (PST)
+Date: Sat, 7 Feb 2026 10:43:08 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Gui-Dong Han <hanguidong02@gmail.com>
+Cc: linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, Ben Hutchings
+ <ben@decadent.org.uk>, stable@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler
+ optimization induced race
+Message-ID: <20260207104308.1bc31102@pumpkin>
+In-Reply-To: <20260203121443.5482-1-hanguidong02@gmail.com>
+References: <20260203121443.5482-1-hanguidong02@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205171411.34908-3-srinivas.kandagatla@oss.qualcomm.com>
-X-Proofpoint-ORIG-GUID: XM41rgMm0SXtDqflPrJ_7W3teFw5q2WC
-X-Proofpoint-GUID: XM41rgMm0SXtDqflPrJ_7W3teFw5q2WC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA3MDA3MiBTYWx0ZWRfX5B+tyhj0e/P/
- vHH8rQcjCi7P9DZR9GuOyoBCH5jTi3lTY36XLY5FSs9kkcYtC2cl72bRoLA3Q1Z4Y1MzwPAHD1J
- yUTXXIGMINU2oyU4M44qsw+s3Km9j9sASDJQqU0SduY5ABVqHS4VKxoOyfTdma6ID+Q6uB/xDRm
- rMg4j3luo8eKlPv6yUUKVdxYt03wuoYOWXeo2y607skHbyyEQI4YIjEqlukPrmwsAZOKFuJb6dz
- 38ziWmCUystgrDyJqKoFSfQG7Y8hIwzwrMD4te48LG9s6Fgo3AAO9cAR2FXXHjCz06SObMV1X9O
- fuQzVq3jN6AWygsiqyIbd3q/KJFIhad5oLaIfcwrJNtnC3QXQQ2lzyZh/CjjRp5P3ezcuR8R7fC
- ygaU5tXY5gC1UbwVM+rMPJ0RLxqScjWp5rlbzTIeLecNuY57XQVXxe5DJHjqnkEiCjWXHtxN8kP
- 7tn5vKSwhfet1JjDE0w==
-X-Authority-Analysis: v=2.4 cv=aIb9aL9m c=1 sm=1 tr=0 ts=69870315 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=wNLNz8utBmpzwjt1yvAA:9 a=CjuIK1q_8ugA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-06_05,2026-02-05_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 suspectscore=0 phishscore=0 bulkscore=0
- lowpriorityscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602070072
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214754-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,perex.cz,suse.com,linaro.org,oss.qualcomm.com,quicinc.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:dkim];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214755-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[roeck-us.net,vger.kernel.org,gmail.com,decadent.org.uk];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 873091054CC
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com]
+X-Rspamd-Queue-Id: DCB1C105980
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 12:14:03PM -0500, Srinivas Kandagatla wrote:
-> As prepare can be called mulitple times, this can result in multiple
-> graph opens for playback path, fix this by checking if there is already a
-> graph instance.
-> 
-> This will result in a memory leaks, fix this by adding a check before
-> opening.
+On Tue,  3 Feb 2026 20:14:43 +0800
+Gui-Dong Han <hanguidong02@gmail.com> wrote:
 
-I think, the commit message should be improved by removing the first
-'fix this' sentence.
+> Simply copying shared data to a local variable cannot prevent data
+> races. The compiler is allowed to optimize away the local copy and
+> re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
+> issue if the data changes between the check and the usage.
+
+While the compiler is allowed to do this, is there any indication
+that either gcc or clang have ever done it?
+ISTR someone saying that they never did - although I thought that
+was the original justification for adding ACCESS_ONCE().
+
+READ_ONCE() also includes barriers to guarantee ordering between cpu.
+These are empty on x86 but add code to architectures where the cpu
+can (IIRC) re-order writes.
+This is worst on alpha but affects arm and probably ppc.
+
+For these cases is it enough to add the compile-time barrier() after
+reading the variable to a local.
+That will also generate better code on x86.
+
+The WRITE_ONCE() aren't needed at all, the compilers definitely
+guarantee to do a single memory access for aligned accesses that are
+less than the size of a word.
+
+This all stinks of being an AI generated patch.
+
+	David
 
 > 
-> Fixes: be1fae62cf25 ("ASoC: q6apm-lpass-dai: close graph on prepare errors")
-> Cc: Stable@vger.kernel.org
-> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+> To enforce the use of the local variable, use READ_ONCE() when reading
+> the shared data and WRITE_ONCE() when updating it. Apply these macros to
+> the three identified locations (curr_sense, adc, and fault) where local
+> variables are used for error validation, ensuring the value remains
+> consistent.
+> 
+> Reported-by: Ben Hutchings <ben@decadent.org.uk>
+> Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
+> Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+> Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
 > ---
->  sound/soc/qcom/qdsp6/q6apm-lpass-dais.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/hwmon/max16065.c | 26 +++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
 > 
-> diff --git a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-> index 528756f1332b..f68d4b4974f3 100644
-> --- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-> +++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-> @@ -181,7 +181,7 @@ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct s
->  	 * It is recommend to load DSP with source graph first and then sink
->  	 * graph, so sequence for playback and capture will be different
->  	 */
-> -	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-> +	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK && dai_data->graph[dai->id] == NULL) {
->  		graph = q6apm_graph_open(dai->dev, NULL, dai->dev, graph_id);
->  		if (IS_ERR(graph)) {
->  			dev_err(dai->dev, "Failed to open graph (%d)\n", graph_id);
-> -- 
-> 2.47.3
-> 
+> diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+> index 4c9e7892a73c..43fbb9b26b10 100644
+> --- a/drivers/hwmon/max16065.c
+> +++ b/drivers/hwmon/max16065.c
+> @@ -151,27 +151,27 @@ static struct max16065_data *max16065_update_device(struct device *dev)
+>  		int i;
+>  
+>  		for (i = 0; i < data->num_adc; i++)
+> -			data->adc[i]
+> -			  = max16065_read_adc(client, MAX16065_ADC(i));
+> +			WRITE_ONCE(data->adc[i],
+> +				   max16065_read_adc(client, MAX16065_ADC(i)));
+>  
+>  		if (data->have_current) {
+> -			data->adc[MAX16065_NUM_ADC]
+> -			  = max16065_read_adc(client, MAX16065_CSP_ADC);
+> -			data->curr_sense
+> -			  = i2c_smbus_read_byte_data(client,
+> -						     MAX16065_CURR_SENSE);
+> +			WRITE_ONCE(data->adc[MAX16065_NUM_ADC],
+> +				   max16065_read_adc(client, MAX16065_CSP_ADC));
+> +			WRITE_ONCE(data->curr_sense,
+> +				   i2c_smbus_read_byte_data(client, MAX16065_CURR_SENSE));
+>  		}
+>  
+>  		for (i = 0; i < 2; i++)
+> -			data->fault[i]
+> -			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
+> +			WRITE_ONCE(data->fault[i],
+> +				   i2c_smbus_read_byte_data(client, MAX16065_FAULT(i)));
+>  
+>  		/*
+>  		 * MAX16067 and MAX16068 have separate undervoltage and
+>  		 * overvoltage alarm bits. Squash them together.
+>  		 */
+>  		if (data->chip == max16067 || data->chip == max16068)
+> -			data->fault[0] |= data->fault[1];
+> +			WRITE_ONCE(data->fault[0],
+> +				   data->fault[0] | data->fault[1]);
+>  
+>  		data->last_updated = jiffies;
+>  		data->valid = true;
+> @@ -185,7 +185,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
+>  {
+>  	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
+>  	struct max16065_data *data = max16065_update_device(dev);
+> -	int val = data->fault[attr2->nr];
+> +	int val = READ_ONCE(data->fault[attr2->nr]);
+>  
+>  	if (val < 0)
+>  		return val;
+> @@ -203,7 +203,7 @@ static ssize_t max16065_input_show(struct device *dev,
+>  {
+>  	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
+>  	struct max16065_data *data = max16065_update_device(dev);
+> -	int adc = data->adc[attr->index];
+> +	int adc = READ_ONCE(data->adc[attr->index]);
+>  
+>  	if (unlikely(adc < 0))
+>  		return adc;
+> @@ -216,7 +216,7 @@ static ssize_t max16065_current_show(struct device *dev,
+>  				     struct device_attribute *da, char *buf)
+>  {
+>  	struct max16065_data *data = max16065_update_device(dev);
+> -	int curr_sense = data->curr_sense;
+> +	int curr_sense = READ_ONCE(data->curr_sense);
+>  
+>  	if (unlikely(curr_sense < 0))
+>  		return curr_sense;
 
--- 
-With best wishes
-Dmitry
 
