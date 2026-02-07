@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-214769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOk5MrROh2mjWAQAu9opvQ
-	(envelope-from <stable+bounces-214769-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 15:39:48 +0100
+	id MIwuEMJOh2mjWAQAu9opvQ
+	(envelope-from <stable+bounces-214770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 15:40:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E8D10636C
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 15:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A86210637A
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 15:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14E9A301724A
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 14:39:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E9B3301702D
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 14:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD1D27CB04;
-	Sat,  7 Feb 2026 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D299227CB04;
+	Sat,  7 Feb 2026 14:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5Yo2SEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cR5Ba2Dx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A86189F20
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 14:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973C3189F20
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 14:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770475184; cv=none; b=KqMax4chm021IabIHfHco4aVmE+E5nzawEkdIFYiUoCt5m8mBcJ6M79+XjqlrpoCta0zHeYH9bBd/mM591kZrGjaNDJTtr8I3u+F3Ht7OT/LGCxbiRUx7FKogBzq0Z7jOGlhF2+eVRWGG2Do2x/I/PajpQUeaFWbLyoLAlDZjrM=
+	t=1770475198; cv=none; b=oUp9LMc3I0sVRL2RB0YGR+nv5lYAy0iwNGn8rSzxCyWLypqPWBQ/mz5m8Hg+z2Wl068B9qrNd6C/rt/Ei5pJ514RrtMUv7PxB4Nm3j9HyaygnNNJOCMnpggSpXI67TpbLn6IPPFrfeSxOcXTuww+LPXePn5u6hbxZQ/fFAHhnUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770475184; c=relaxed/simple;
-	bh=KvJq2APxhqZZ2HyZ1y6hnvSFDvdjHtItHOmbOCBbcxA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tBCINFT5cq7oSGV6eek6JDGpPs2Nd6PmGRrQHUrOCFwo/s3XVdyQvjvr21WiQGuy0b4THrGgx7ajMjUxRjm70c3PcdmebqTWDzI/TGNNwWMY+pPUp1fYtnw3ouJ+WztNtGV6BmpqSsGdkOj9xFzMBfht0fzef5ADETrTMEx0oU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5Yo2SEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D16C116D0;
-	Sat,  7 Feb 2026 14:39:43 +0000 (UTC)
+	s=arc-20240116; t=1770475198; c=relaxed/simple;
+	bh=ue2bUpYUb6ZCQucmMuAyh4Y58XqWByshOJdixK74lp8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WWIZGX+UMe7su4Mm70wBwx3N9nlPtDWhYfBvRO3cBTYqw4pWzN587IlBmS5Tz1A97+Lh9qx3FQxdDYExZyDmA8gvdFzww7bzTn9DL0yqxz5qo2D0Kh8BSmRfyN91PbAK4lPSVc0oWvwOebBMeIV4TcxTRLZcJ1+OAE8fO/2NOKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cR5Ba2Dx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06EEC116D0;
+	Sat,  7 Feb 2026 14:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770475184;
-	bh=KvJq2APxhqZZ2HyZ1y6hnvSFDvdjHtItHOmbOCBbcxA=;
+	s=korg; t=1770475198;
+	bh=ue2bUpYUb6ZCQucmMuAyh4Y58XqWByshOJdixK74lp8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=b5Yo2SEzImXR53Y7AMu0cuDRGRXEEBGXvVDEqusQKrSAZW6XiXEaqXPoQ0iGugmvl
-	 IJAWs5iVsXwY8ZE/4PhOdb8oxAs2NKAXwPundUHlyEJbwTp9l/QugMNslfG3aUQF+N
-	 ppSD5yvK5KAkgao4yMUTlAQvnGBljl6ewhEhRS2U=
-Subject: FAILED: patch "[PATCH] pmdomain: imx8mp-blk-ctrl: Keep usb phy power domain on for" failed to apply to 6.1-stable tree
-To: xu.yang_2@nxp.com,ulf.hansson@linaro.org
+	b=cR5Ba2DxIk8dYXhz16LNvnkyVqUol2kAASo/4g8rNrA9JWDt/sh/SFysj5SB/N6z4
+	 taOEFrah50NW9M89Gpm8fwZgTJGs7PgfmCiAFU00/Fp9bS+9RTvjWPyZ4mNelu7nO0
+	 s5eqNz4z5fPwI10DdDaEJ3yT7GBxWqOLvIAE39CI=
+Subject: FAILED: patch "[PATCH] pmdomain: imx8m-blk-ctrl: fix out-of-range access of" failed to apply to 6.1-stable tree
+To: xu.yang_2@nxp.com,daniel.baluta@nxp.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 07 Feb 2026 15:39:41 +0100
-Message-ID: <2026020740-jubilant-willed-0be6@gregkh>
+Date: Sat, 07 Feb 2026 15:39:55 +0100
+Message-ID: <2026020754-trivial-grew-0df2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214769-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214770-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -77,13 +77,13 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 12E8D10636C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linaro.org:email,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 7A86210637A
 X-Rspamd-Action: no action
 
 
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x e2c4c5b2bbd4f688a0f9f6da26cdf6d723c53478
+git cherry-pick -x 6bd8b4a92a901fae1a422e6f914801063c345e8d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020740-jubilant-willed-0be6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026020754-trivial-grew-0df2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,52 +111,32 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e2c4c5b2bbd4f688a0f9f6da26cdf6d723c53478 Mon Sep 17 00:00:00 2001
+From 6bd8b4a92a901fae1a422e6f914801063c345e8d Mon Sep 17 00:00:00 2001
 From: Xu Yang <xu.yang_2@nxp.com>
-Date: Wed, 4 Feb 2026 19:11:42 +0800
-Subject: [PATCH] pmdomain: imx8mp-blk-ctrl: Keep usb phy power domain on for
- system wakeup
+Date: Fri, 30 Jan 2026 13:11:07 +0800
+Subject: [PATCH] pmdomain: imx8m-blk-ctrl: fix out-of-range access of
+ bc->domains
 
-USB system wakeup need its PHY on, so add the GENPD_FLAG_ACTIVE_WAKEUP
-flags to USB PHY genpd configuration.
+Fix out-of-range access of bc->domains in imx8m_blk_ctrl_remove().
 
+Fixes: 2684ac05a8c4 ("soc: imx: add i.MX8M blk-ctrl driver")
+Cc: stable@kernel.org
 Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
-Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-index 56bbfee8668d..8fc79f9723f0 100644
---- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-@@ -53,6 +53,7 @@ struct imx8mp_blk_ctrl_domain_data {
- 	const char * const *path_names;
- 	int num_paths;
- 	const char *gpc_name;
-+	const unsigned int flags;
- };
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 74bf4936991d..19e992d2ee3b 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -340,7 +340,7 @@ static void imx8m_blk_ctrl_remove(struct platform_device *pdev)
  
- #define DOMAIN_MAX_CLKS 3
-@@ -265,10 +266,12 @@ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hsio_domain_data[] = {
- 	[IMX8MP_HSIOBLK_PD_USB_PHY1] = {
- 		.name = "hsioblk-usb-phy1",
- 		.gpc_name = "usb-phy1",
-+		.flags = GENPD_FLAG_ACTIVE_WAKEUP,
- 	},
- 	[IMX8MP_HSIOBLK_PD_USB_PHY2] = {
- 		.name = "hsioblk-usb-phy2",
- 		.gpc_name = "usb-phy2",
-+		.flags = GENPD_FLAG_ACTIVE_WAKEUP,
- 	},
- 	[IMX8MP_HSIOBLK_PD_PCIE] = {
- 		.name = "hsioblk-pcie",
-@@ -724,6 +727,7 @@ static int imx8mp_blk_ctrl_probe(struct platform_device *pdev)
- 		domain->genpd.name = data->name;
- 		domain->genpd.power_on = imx8mp_blk_ctrl_power_on;
- 		domain->genpd.power_off = imx8mp_blk_ctrl_power_off;
-+		domain->genpd.flags = data->flags;
- 		domain->bc = bc;
- 		domain->id = i;
+ 	of_genpd_del_provider(pdev->dev.of_node);
  
+-	for (i = 0; bc->onecell_data.num_domains; i++) {
++	for (i = 0; i < bc->onecell_data.num_domains; i++) {
+ 		struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
+ 
+ 		pm_genpd_remove(&domain->genpd);
 
 
