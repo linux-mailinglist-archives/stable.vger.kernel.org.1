@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-214833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEJYEq+ch2nUagQAu9opvQ
-	(envelope-from <stable+bounces-214833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 21:12:31 +0100
+	id MIfeGbGch2nUagQAu9opvQ
+	(envelope-from <stable+bounces-214834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 21:12:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9991107071
-	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 21:12:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E121D107078
+	for <lists+stable@lfdr.de>; Sat, 07 Feb 2026 21:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A40D301469C
-	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 20:12:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 364833013722
+	for <lists+stable@lfdr.de>; Sat,  7 Feb 2026 20:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE37630C353;
-	Sat,  7 Feb 2026 20:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27233358B1;
+	Sat,  7 Feb 2026 20:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BI16z0RV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iA6oW4UB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913071482E8
-	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 20:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A3E1482E8
+	for <stable@vger.kernel.org>; Sat,  7 Feb 2026 20:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770495143; cv=none; b=gwq6dY0eCMqs2IP6lO5kSiVb9tg8jZVBv+Od98iCUIYYCE+oWKMlg8dUS/zoVh/WlmeZbhEIvwQXE/DZXsRcjqHmiYrWaoWVDywwTqzmTKe5FKMKTGFb11OyPQSNwDKRFlmurzZGcRkOdl9ihlzLl2k/Iw7lvibzDEXYPLxI93Q=
+	t=1770495144; cv=none; b=Tiq/VACki0bmH6dYfVMN9/LOJv2hwiX2Md285pbHlg6c+D7ZjfYX2K9sbrTm817oZBXlzLmRJl/0xlnUlKaeUkzx57V4IYFfUDzEIUWN6f/ipD71EyLRg/J9vXMpDvWKdxjkg9qMCcwP6PvCAzjgA+9jLOqO/MvAgL402I+NY0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770495143; c=relaxed/simple;
-	bh=nn2Us9YIZegIW/okw42kfhTE4CAaCZRxe+eJBNdiIv8=;
+	s=arc-20240116; t=1770495144; c=relaxed/simple;
+	bh=PeDsjtXZ88nUT1dGBGXmfKCfE64nAYVqNiMgEfmbj0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRSXXUiE0Lj6hrEk99uK2/FRzRunQB9tYrWbOmnV4KX2GeaC9YAU1DI0SreFZV4yXOrsIWfifkKC6ZZyxFj1aVH6gbKmvnMXxbHhzyeZEcbNWjIXToQKlJoIn+31cgf+1L/hJZWjohRVhp29BaeMQUwUYro+6PMEiO7UxMx6Mgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BI16z0RV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B662AC116D0;
-	Sat,  7 Feb 2026 20:12:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LitcZGPfxVfdXhiS3mCRZkEba80TJreGJnOsnrLHhHAXh2Rwe7MvQWRYXJrMKA/sPGIbJnUxeKYpkX083ZBWVEnNmknzVh82bIifqdW2WMFm18JPn967XUOREyvNfLigFK/eI5MaR6PeZlkw/Qj8M19ymQ5VPUTHN+ZA2jXnHu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iA6oW4UB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7C9C16AAE;
+	Sat,  7 Feb 2026 20:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770495143;
-	bh=nn2Us9YIZegIW/okw42kfhTE4CAaCZRxe+eJBNdiIv8=;
+	s=k20201202; t=1770495144;
+	bh=PeDsjtXZ88nUT1dGBGXmfKCfE64nAYVqNiMgEfmbj0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BI16z0RVC7Lf+5I3wAPnG07ptbZ8fuRLUcE8VMO6iTc/Y2Vm72+87Sj6EdECBH5NI
-	 vPvduefBNNG2iiPyHsdnPVFIwQ78sH7ZknJ6ZQ2FV3YgHMjd+nPpRpQAB9effY8KdS
-	 H6q778TAu10XBa0/y74/U6RcbZiqvyWm1VCNSLHiHFjvCicBTSveMTv7gsvcmau+n1
-	 AKXLyUG6Ejq3F514nCPceVP+lg1rJmXoNYfsm7JkKpvvBrJZau9YStGimJNKoBUVyo
-	 QievaqZoY0sEGWukfFVWk+LpPZ5ZoFlWPp3oHZpFY2B3eKrmyioYhOzr9cGK5lEBRh
-	 Sdy2vfOnT43XQ==
+	b=iA6oW4UBdeYJF81Wc+rY/IszwyJzodiY9QFMiny8RlJHAY57plHJyLvU4QKSLYKTT
+	 TnVNdtq+G7iZAal1Qfp8aCNg4QV+jFM+kkhdLsdLLTX7u4DoeSXcg8KtwYgdQGXaPf
+	 sTctVsmA8+uR/Hfqxzzagi4zHG5bk/3QnMezCcqFFzKMXOKQB9kbTSa4PopmXVH5OQ
+	 DuSBvEMzWpInl5qZM4idcrs8uH7jYxtRKOCB8IVpj1iFMAQ1nIr6b2NEjstAIlhizs
+	 rYzXpuTfOvrNLkwrPGEOxjrkTIs2NmOdR54PYYd3fStKgBOkx82UdB14OY31TXSBZ0
+	 76BO2nujemL8w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sagi Grimberg <sagi@grimberg.me>,
+Cc: "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Christoph Hellwig <hch@lst.de>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/5] nvmet-tcp: fix regression in data_digest calculation
-Date: Sat,  7 Feb 2026 15:12:17 -0500
-Message-ID: <20260207201219.540631-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y 4/5] nvmet-tcp: don't map pages which can't come from HIGHMEM
+Date: Sat,  7 Feb 2026 15:12:18 -0500
+Message-ID: <20260207201219.540631-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260207201219.540631-1-sashal@kernel.org>
 References: <2026020741-chitchat-symphonic-a96f@gregkh>
@@ -62,117 +67,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,kernel.org,intel.com,lst.de,zeniv.linux.org.uk,grimberg.me];
+	TAGGED_FROM(0.00)[bounces-214834-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214833-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[grimberg.me:email,lst.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B9991107071
+	DBL_BLOCKED_OPENRESOLVER(0.00)[grimberg.me:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lst.de:email,nvidia.com:email]
+X-Rspamd-Queue-Id: E121D107078
 X-Rspamd-Action: no action
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: "Fabio M. De Francesco" <fmdefrancesco@gmail.com>
 
-[ Upstream commit ed0691cf55140ce0f3fb100225645d902cce904b ]
+[ Upstream commit 5bfaba275ae6486700194cad962574e3eb7ae60d ]
 
-Data digest calculation iterates over command mapped iovec. However
-since commit bac04454ef9f we unmap the iovec before we handle the data
-digest, and since commit 69b85e1f1d1d we clear nr_mapped when we unmap
-the iov.
+kmap() is being deprecated in favor of kmap_local_page().[1]
 
-Instead of open-coding the command iov traversal, simply call
-crypto_ahash_digest with the command sg that is already allocated (we
-already do that for the send path). Rename nvmet_tcp_send_ddgst to
-nvmet_tcp_calc_ddgst and call it from send and recv paths.
+There are two main problems with kmap(): (1) It comes with an overhead as
+mapping space is restricted and protected by a global lock for
+synchronization and (2) it also requires global TLB invalidation when the
+kmap’s pool wraps and it might block when the mapping space is fully
+utilized until a slot becomes available.
 
-Fixes: 69b85e1f1d1d ("nvmet-tcp: add an helper to free the cmd buffers")
-Fixes: bac04454ef9f ("nvmet-tcp: fix kmap leak when data digest in use")
+The pages which will be mapped are allocated in nvmet_tcp_map_data(),
+using the GFP_KERNEL flag. This assures that they cannot come from
+HIGHMEM. This imply that a straight page_address() can replace the kmap()
+of sg_page(sg) in nvmet_tcp_map_pdu_iovec(). As a side effect, we might
+also delete the field "nr_mapped" from struct "nvmet_tcp_cmd" because,
+after removing the kmap() calls, there would be no longer any need of it.
+
+In addition, there is no reason to use a kvec for the command receive
+data buffers iovec, use a bio_vec instead and let iov_iter handle the
+buffer mapping and data copy.
+
+Test with blktests on a QEMU/KVM x86_32 VM, 6GB RAM, booting a kernel with
+HIGHMEM64GB enabled.
+
+[1] "[PATCH] checkpatch: Add kmap and kmap_atomic to the deprecated
+list" https://lore.kernel.org/all/20220813220034.806698-1-ira.weiny@intel.com/
+
+Cc: Chaitanya Kulkarni <chaitanyak@nvidia.com>
+Cc: Keith Busch <kbusch@kernel.org>
+Suggested-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+[sagi: added bio_vec plus minor naming changes]
 Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Stable-dep-of: 52a0a9854934 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 23 +++--------------------
- 1 file changed, 3 insertions(+), 20 deletions(-)
+ drivers/nvme/target/tcp.c | 44 ++++++++++++---------------------------
+ 1 file changed, 13 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index bf34849c15a20..bc0e860a2887f 100644
+index bc0e860a2887f..6fd4f74315f6c 100644
 --- a/drivers/nvme/target/tcp.c
 +++ b/drivers/nvme/target/tcp.c
-@@ -395,7 +395,7 @@ static int nvmet_tcp_map_data(struct nvmet_tcp_cmd *cmd)
- 	return NVME_SC_INTERNAL;
- }
+@@ -68,9 +68,8 @@ struct nvmet_tcp_cmd {
+ 	u32				pdu_len;
+ 	u32				pdu_recv;
+ 	int				sg_idx;
+-	int				nr_mapped;
+ 	struct msghdr			recv_msg;
+-	struct kvec			*iov;
++	struct bio_vec			*iov;
+ 	u32				flags;
  
--static void nvmet_tcp_send_ddgst(struct ahash_request *hash,
-+static void nvmet_tcp_calc_ddgst(struct ahash_request *hash,
+ 	struct list_head		entry;
+@@ -156,7 +155,6 @@ static const struct nvmet_fabrics_ops nvmet_tcp_ops;
+ static void nvmet_tcp_free_cmd(struct nvmet_tcp_cmd *c);
+ static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd);
+ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd);
+-static void nvmet_tcp_unmap_pdu_iovec(struct nvmet_tcp_cmd *cmd);
+ 
+ static inline u16 nvmet_tcp_cmd_tag(struct nvmet_tcp_queue *queue,
  		struct nvmet_tcp_cmd *cmd)
+@@ -290,35 +288,21 @@ static int nvmet_tcp_check_ddgst(struct nvmet_tcp_queue *queue, void *pdu)
+ 
+ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
  {
- 	ahash_request_set_crypt(hash, cmd->req.sg,
-@@ -403,23 +403,6 @@ static void nvmet_tcp_send_ddgst(struct ahash_request *hash,
- 	crypto_ahash_digest(hash);
+-	WARN_ON(unlikely(cmd->nr_mapped > 0));
+-
+ 	kfree(cmd->iov);
+ 	sgl_free(cmd->req.sg);
+ 	cmd->iov = NULL;
+ 	cmd->req.sg = NULL;
  }
  
--static void nvmet_tcp_recv_ddgst(struct ahash_request *hash,
--		struct nvmet_tcp_cmd *cmd)
+-static void nvmet_tcp_unmap_pdu_iovec(struct nvmet_tcp_cmd *cmd)
 -{
--	struct scatterlist sg;
--	struct kvec *iov;
+-	struct scatterlist *sg;
 -	int i;
 -
--	crypto_ahash_init(hash);
--	for (i = 0, iov = cmd->iov; i < cmd->nr_mapped; i++, iov++) {
--		sg_init_one(&sg, iov->iov_base, iov->iov_len);
--		ahash_request_set_crypt(hash, &sg, NULL, iov->iov_len);
--		crypto_ahash_update(hash);
--	}
--	ahash_request_set_crypt(hash, NULL, (void *)&cmd->exp_ddgst, 0);
--	crypto_ahash_final(hash);
+-	sg = &cmd->req.sg[cmd->sg_idx];
+-
+-	for (i = 0; i < cmd->nr_mapped; i++)
+-		kunmap(sg_page(&sg[i]));
+-
+-	cmd->nr_mapped = 0;
 -}
 -
- static void nvmet_setup_c2h_data_pdu(struct nvmet_tcp_cmd *cmd)
+-static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
++static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
  {
- 	struct nvme_tcp_data_pdu *pdu = cmd->data_pdu;
-@@ -444,7 +427,7 @@ static void nvmet_setup_c2h_data_pdu(struct nvmet_tcp_cmd *cmd)
+-	struct kvec *iov = cmd->iov;
++	struct bio_vec *iov = cmd->iov;
+ 	struct scatterlist *sg;
+ 	u32 length, offset, sg_offset;
++	int nr_pages;
  
- 	if (queue->data_digest) {
- 		pdu->hdr.flags |= NVME_TCP_F_DDGST;
--		nvmet_tcp_send_ddgst(queue->snd_hash, cmd);
-+		nvmet_tcp_calc_ddgst(queue->snd_hash, cmd);
+ 	length = cmd->pdu_len;
+-	cmd->nr_mapped = DIV_ROUND_UP(length, PAGE_SIZE);
++	nr_pages = DIV_ROUND_UP(length, PAGE_SIZE);
+ 	offset = cmd->rbytes_done;
+ 	cmd->sg_idx = offset / PAGE_SIZE;
+ 	sg_offset = offset % PAGE_SIZE;
+@@ -327,8 +311,9 @@ static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 	while (length) {
+ 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+ 
+-		iov->iov_base = kmap(sg_page(sg)) + sg->offset + sg_offset;
+-		iov->iov_len = iov_len;
++		iov->bv_page = sg_page(sg);
++		iov->bv_len = sg->length;
++		iov->bv_offset = sg->offset + sg_offset;
+ 
+ 		length -= iov_len;
+ 		sg = sg_next(sg);
+@@ -336,8 +321,8 @@ static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 		sg_offset = 0;
  	}
  
- 	if (cmd->queue->hdr_digest) {
-@@ -1156,7 +1139,7 @@ static void nvmet_tcp_prep_recv_ddgst(struct nvmet_tcp_cmd *cmd)
- {
- 	struct nvmet_tcp_queue *queue = cmd->queue;
+-	iov_iter_kvec(&cmd->recv_msg.msg_iter, READ, cmd->iov,
+-		cmd->nr_mapped, cmd->pdu_len);
++	iov_iter_bvec(&cmd->recv_msg.msg_iter, READ, cmd->iov,
++		      nr_pages, cmd->pdu_len);
+ }
  
--	nvmet_tcp_recv_ddgst(queue->rcv_hash, cmd);
-+	nvmet_tcp_calc_ddgst(queue->rcv_hash, cmd);
- 	queue->offset = 0;
- 	queue->left = NVME_TCP_DIGEST_LENGTH;
- 	queue->rcv_state = NVMET_TCP_RECV_DDGST;
+ static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
+@@ -913,7 +898,7 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
+ 	}
+ 
+ 	queue->rcv_state = NVMET_TCP_RECV_DATA;
+-	nvmet_tcp_map_pdu_iovec(cmd);
++	nvmet_tcp_build_pdu_iovec(cmd);
+ 	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
+ }
+ 
+@@ -966,7 +951,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+ 		goto err_proto;
+ 	}
+ 	cmd->pdu_recv = 0;
+-	nvmet_tcp_map_pdu_iovec(cmd);
++	nvmet_tcp_build_pdu_iovec(cmd);
+ 	queue->cmd = cmd;
+ 	queue->rcv_state = NVMET_TCP_RECV_DATA;
+ 
+@@ -1040,7 +1025,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
+ 	if (nvmet_tcp_need_data_in(queue->cmd)) {
+ 		if (nvmet_tcp_has_inline_data(queue->cmd)) {
+ 			queue->rcv_state = NVMET_TCP_RECV_DATA;
+-			nvmet_tcp_map_pdu_iovec(queue->cmd);
++			nvmet_tcp_build_pdu_iovec(queue->cmd);
+ 			return 0;
+ 		}
+ 		/* send back R2T */
+@@ -1160,7 +1145,6 @@ static int nvmet_tcp_try_recv_data(struct nvmet_tcp_queue *queue)
+ 		cmd->rbytes_done += ret;
+ 	}
+ 
+-	nvmet_tcp_unmap_pdu_iovec(cmd);
+ 	if (queue->data_digest) {
+ 		nvmet_tcp_prep_recv_ddgst(cmd);
+ 		return 0;
+@@ -1415,7 +1399,6 @@ static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
+ static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd)
+ {
+ 	nvmet_req_uninit(&cmd->req);
+-	nvmet_tcp_unmap_pdu_iovec(cmd);
+ 	nvmet_tcp_free_cmd_buffers(cmd);
+ }
+ 
+@@ -1428,7 +1411,6 @@ static void nvmet_tcp_uninit_data_in_cmds(struct nvmet_tcp_queue *queue)
+ 		if (nvmet_tcp_need_data_in(cmd))
+ 			nvmet_req_uninit(&cmd->req);
+ 
+-		nvmet_tcp_unmap_pdu_iovec(cmd);
+ 		nvmet_tcp_free_cmd_buffers(cmd);
+ 	}
+ 
 -- 
 2.51.0
 
