@@ -1,165 +1,170 @@
-Return-Path: <stable+bounces-214845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2rweHUbth2n0fAQAu9opvQ
-	(envelope-from <stable+bounces-214845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 02:56:22 +0100
+	id +AXwGwnvh2mUfQQAu9opvQ
+	(envelope-from <stable+bounces-214847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 03:03:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883DF107944
-	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 02:56:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE581079CF
+	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 03:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 77F753004DB2
-	for <lists+stable@lfdr.de>; Sun,  8 Feb 2026 01:56:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9FFA4301CDBC
+	for <lists+stable@lfdr.de>; Sun,  8 Feb 2026 02:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F9B308F28;
-	Sun,  8 Feb 2026 01:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668B030B527;
+	Sun,  8 Feb 2026 02:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0aJTX17I"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="IcSC0Ldd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2062F22A7E4;
-	Sun,  8 Feb 2026 01:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D7C2EE611;
+	Sun,  8 Feb 2026 02:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770515774; cv=none; b=Hikk8U5VL+4nD/P+CIMt8hr1tcZksp5yswhlEgzbus8aauD5ItNtt32VEwGR04ju3zZYy3ClGcgAxjwIdoCfoxFK/CPHp4nysaheQDB4LVD5D93PTh8RuEbYvYnS08c4FK16jvd/E8oaXTd4STRYNYln6Ih3rP95sDpXIRcitHI=
+	t=1770516198; cv=none; b=l7ko75GF5jQ5+s2YH5W5cp5Y9tP2EBFS+5xS4hJiX4UW8VJ0QaLcOmZ9hMouxI4Cj8E1rPhUl82zq0hA/nMLgtzNSJD7FEbYreX6nIJteDiSKpMmgoODMylJ7oAd/LCL2Mudmj7vAxUNnF5q7dwZ5h0d/jSiMXRh3KkD9JnMfrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770515774; c=relaxed/simple;
-	bh=qhT1YKDCoWAuQ/fbU+Jzft0KtxWaMjItJpa4qonB32w=;
-	h=Date:To:From:Subject:Message-Id; b=lzwU25oCmJoy7KRBc2Ia19Sxl/Ebuh9nDmOtfuR28euqEapTKOMEfgf7Wmv7TfcVc7DND1GRChyxbf01IJBTSrtdejry/iaz7qD5R7u+2e7e+NreQAKfIohf7ktzPk0jEXiP02CisRskMhzfJ8tpMJYbHTASc4TA8dRCyZpGbZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0aJTX17I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76245C116D0;
-	Sun,  8 Feb 2026 01:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770515773;
-	bh=qhT1YKDCoWAuQ/fbU+Jzft0KtxWaMjItJpa4qonB32w=;
-	h=Date:To:From:Subject:From;
-	b=0aJTX17Ii1LkYvrnwraMEyOiEFw4D2Tzij8J68TZ6use8Gqsq6q+yYbIKO2ab4SI6
-	 AoutnVbhAlZng8b0+SoHd2z8Mvtbcrunzm6gSvMRVkiaPjs0iUGzkdEBXKwXXd2wqO
-	 UTPYqL/Ta4GYHWkgBFMP8fB2B5PGm1Tt7Cyaakb8=
-Date: Sat, 07 Feb 2026 17:56:12 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,ryncsn@gmail.com,mhocko@suse.com,jackmanb@google.com,hughd@google.com,hannes@cmpxchg.org,chrisl@kernel.org,mikhail.v.gavrilov@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-page_alloc-clear-page-private-in-split_page-for-tail-pages.patch removed from -mm tree
-Message-Id: <20260208015613.76245C116D0@smtp.kernel.org>
+	s=arc-20240116; t=1770516198; c=relaxed/simple;
+	bh=3UQLfpu2oeslOEr+1oQYBjpvmLlhHTjumOiiEsqjwx4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=otqAWaMP7GhRhdRN0ykvisf9SYJ/9k6PxURmjci5xs0kmRNbf2mEuKvKAmonuRc/2goGP/G0XgMPK2As37dkdB0BEKNdQFO9Q1IHH/DjnUTPI2HrmCNuW9WNYn8G9PaPholUKQhns35vz6hFoFRkthpmNHod57w90qet3v8zMjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=IcSC0Ldd; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6181ri622265329;
+	Sun, 8 Feb 2026 02:02:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=GY9VcPnx9F8dhRXeZ6IF84NwU/hTOG/xJKtD6XGZ+0w=; b=
+	IcSC0Lddx/Q8zbB0mUNRAvTGXrTdq0mzSxBVR8YW2utPdppYGPCNsvIZoBfXy0Uo
+	snoCgt5jAOHF8hAuBqiukv4CheSKkxELYR64cbJQRkDpynY5JtDF8HaxFN4jc7AS
+	slf3d5imw6Rnk+MRj7fQZsfwQIVbBI0gDBYLc8rPcXXdFVXW+23o8g10EcX3dnYX
+	cmnuOmgADOPDZHIlwrcCR4zk/DTTQRuwvfeGzRGn3Pdz6LG+W+GbnRjycEydy1XD
+	362Vuv9WDajc5ASdCLb0crpDM6q3wwMird7WE6j7W/E/WvDyqjEZljvaXrq0CYpb
+	Id62/7xf7SHb1k4SS8WMCA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c5xhu8hus-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 08 Feb 2026 02:02:00 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6180NDNl006487;
+	Sun, 8 Feb 2026 02:01:59 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c5uubuk5h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 08 Feb 2026 02:01:59 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 61821sxZ016745;
+	Sun, 8 Feb 2026 02:01:58 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4c5uubuk3y-8;
+	Sun, 08 Feb 2026 02:01:58 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: James.Bottomley@HansenPartnership.com, Thomas Yen <thomasyen@google.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Stable Tree <stable@vger.kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Peter Wang <peter.wang@mediatek.com>, Bean Huo <beanhuo@micron.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        "Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+        Subhash Jadavani <subhashj@codeaurora.org>,
+        Dolev Raviv <draviv@codeaurora.org>,
+        Sujit Reddy Thumma <sthumma@codeaurora.org>,
+        "open list:UNIVERSAL FLASH STORAGE HOST CONTROLLER DRIVER" <linux-scsi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 1/1] scsi: ufs: core: Flush exception handling work when RPM level is zero
+Date: Sat,  7 Feb 2026 21:01:49 -0500
+Message-ID: <177051564483.3805738.2015850071936649322.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260129165156.956601-1-thomasyen@google.com>
+References: <20260129165156.956601-1-thomasyen@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-08_01,2026-02-05_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 phishscore=0
+ bulkscore=0 mlxlogscore=999 suspectscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2602080015
+X-Proofpoint-GUID: 3vv4Y2-uaE0UaywTp3QgNL-jzsZeRLgj
+X-Authority-Analysis: v=2.4 cv=FIsWBuos c=1 sm=1 tr=0 ts=6987ee98 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=HY6Y_zffv6qRMAXnt8oA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+ a=zZCYzV9kfG8A:10 cc=ntf awl=host:12103
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA4MDAxNSBTYWx0ZWRfX2fS0jj5ubVZY
+ bUqWqolqVhWqt03luNgZhZLkiW7AriSlqEqLApbJaksCETbMJ3Gwm7Ya1EDvRygg12+ahHOvJf/
+ 5KN28Jt71dLtUFtOK6nv3MI7qzegZK2RBj+CkYSQQrX+drkv6LtU5ckgmUwy+wrctdUVCdqwo1Z
+ v68NNfJ7khKgmdjpqris2LzNxyTJy+gNCvaM6dWJ829H08LSy/N+ePFoRu6FEvCZnI5/xCvjowX
+ KvmKXslsINm3cvj2CN7bHgBWAaYr8ZIioAh30hVL5NqDM00DhU4uI28r2Z8CDSohrP02K7JzBUd
+ gM+/vkTijcK8V30LRwJYZN12HcK09itYJj1iJhC2PECnKsvo3xHuE9ClvyclSXvqvK2ZqjAY0E8
+ fY1c98WxwQPXM9S0/CngqQH9XNvI0tW4JLOjwsMDJ5JtXi/5zTT4We7im9hV3ZbtLoRSr7k11GC
+ 7uWc11YB5skJbGZNF353wyuR5c0gJ9Ux66k9KuTw=
+X-Proofpoint-ORIG-GUID: 3vv4Y2-uaE0UaywTp3QgNL-jzsZeRLgj
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214845-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-214847-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,suse.cz,google.com,gmail.com,suse.com,cmpxchg.org,kernel.org,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:mid,oracle.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.994];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,nvidia.com:email,cmpxchg.org:email]
-X-Rspamd-Queue-Id: 883DF107944
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 1CE581079CF
 X-Rspamd-Action: no action
 
+On Fri, 30 Jan 2026 00:51:51 +0800, Thomas Yen wrote:
 
-The quilt patch titled
-     Subject: mm/page_alloc: clear page->private in split_page() for tail pages
-has been removed from the -mm tree.  Its filename was
-     mm-page_alloc-clear-page-private-in-split_page-for-tail-pages.patch
+> Ensure that the exception event handling work is explicitly flushed
+> during suspend when the runtime power management level is set to
+> UFS_PM_LVL_0.
+> 
+> When the RPM level is zero, the device power mode and link state both
+> remain active. Previously, the UFS core driver bypassed flushing
+> exception event handling jobs in this configuration. This created a race
+> condition where the driver could attempt to access the host controller
+> to handle an exception after the system had already entered a deep
+> power-down state, resulting in a system crash.
+> 
+> [...]
 
-This patch was dropped because an updated version will be issued
+Applied to 6.20/scsi-queue, thanks!
 
-------------------------------------------------------
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: mm/page_alloc: clear page->private in split_page() for tail pages
-Date: Fri, 6 Feb 2026 22:40:17 +0500
+[1/1] scsi: ufs: core: Flush exception handling work when RPM level is zero
+      https://git.kernel.org/mkp/scsi/c/f8ef441811ec
 
-When vmalloc allocates high-order pages and splits them via split_page(),
-tail pages may retain stale page->private values from previous use by the
-buddy allocator.
-
-This causes a use-after-free in the swap subsystem. The swap code uses
-vmalloc_to_page() to get struct page pointers for swap_map, then uses
-page->private to track swap count continuations. In add_swap_count_
-continuation(), the condition "if (!page_private(head))" assumes fresh
-pages have page->private == 0, but tail pages from split_page() may have
-non-zero stale values.
-
-When page->private accidentally contains a value like SWP_CONTINUED (32),
-swap_count_continued() incorrectly assumes the continuation list is valid
-and iterates over uninitialized page->lru, which may contain LIST_POISON
-values from a previous list_del(), causing a crash:
-
-  KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
-  RIP: 0010:__do_sys_swapoff+0x1151/0x1860
-
-Fix this by clearing page->private for tail pages in split_page(). Note
-that we don't touch page->lru to avoid breaking split_free_page() which
-may have the head page on a list.
-
-Link: https://lkml.kernel.org/r/20260206174017.128673-1-mikhail.v.gavrilov@gmail.com
-Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/page_alloc.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
---- a/mm/page_alloc.c~mm-page_alloc-clear-page-private-in-split_page-for-tail-pages
-+++ a/mm/page_alloc.c
-@@ -3129,9 +3129,14 @@ void split_page(struct page *page, unsig
- 
- 	VM_WARN_ON_PAGE(!page_count(page), page);
- 
--	for (i = 1; i < (1 << order); i++)
-+	for (i = 1; i < (1 << order); i++) {
- 		set_page_refcounted(page + i);
--
-+		/*
-+		 * Tail pages may have stale page->private from buddy
-+		 * allocator or previous use. Clear it.
-+		 */
-+		set_page_private(page + i, 0);
-+	}
- 	__split_page(page, order);
- }
- EXPORT_SYMBOL_GPL(split_page);
-_
-
-Patches currently in -mm which might be from mikhail.v.gavrilov@gmail.com are
-
-
+-- 
+Martin K. Petersen
 
