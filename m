@@ -1,174 +1,207 @@
-Return-Path: <stable+bounces-214850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CzNGq8yiGnTkwQAu9opvQ
-	(envelope-from <stable+bounces-214850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 07:52:31 +0100
+	id eK6kAuBFiGmMmwQAu9opvQ
+	(envelope-from <stable+bounces-214851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 09:14:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17DA10809F
-	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 07:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 631B4108144
+	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 09:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC1FE3013275
-	for <lists+stable@lfdr.de>; Sun,  8 Feb 2026 06:52:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E25B73011F2B
+	for <lists+stable@lfdr.de>; Sun,  8 Feb 2026 08:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CF72FC86C;
-	Sun,  8 Feb 2026 06:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64370346761;
+	Sun,  8 Feb 2026 08:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mxRCvF2f"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QZcxX1CF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173FE1F0991
-	for <stable@vger.kernel.org>; Sun,  8 Feb 2026 06:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2889B3019B2;
+	Sun,  8 Feb 2026 08:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770533540; cv=none; b=BpNaUArygtCLfz/60oHXqMUoD1zbMbfIx6RcY0hEwwf5hct+OoU2yIiejZGA29LexJDVkvXlXoZAiMYfaPhvxUwLGFdZf95YTYdSF8A+roZK2ZwHFU51EwB3YMWB1wTrLKXuiyf1noJhTVfcYUAQ6fioN9GKTt5qh5x2Vvk8r/k=
+	t=1770538458; cv=none; b=ustYZkG81Bn0lwZ1eTmrrwsuqDFm0DhF1wqns0Bc/OHxWHlvee01QOKwozTOrbVHRCRM0QRqDigf/ST7G+2/EtO0fdJExOouHsa1HKqzfo2b/QlaiZCYdaVYV3BmXfMCPP3X9V5sQNin2jM/vVVL4E6rkJnZ5OUXTjDFE3wjyJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770533540; c=relaxed/simple;
-	bh=9VFIjPBxwoGRGSoXqSlyljliNegIdwkaX2nY9SFEty4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1bKPF1z4n/knwAde2IrjL/+9U33zwRZ6oD3XNcWFqInife+7k547/BHb8ajucLdF8gnAOIk7m/6AlnZpk7nYBTnAjiKmdiXYDKWSc05yDIGxJZ8CKffvFwQ4fddbf1xMj8SHysINDqpwoc+fzypqsx35r8za9pDOeq6AunM9eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mxRCvF2f; arc=none smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1270adc5121so1678237c88.0
-        for <stable@vger.kernel.org>; Sat, 07 Feb 2026 22:52:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770533539; x=1771138339; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dReEHVsMABf9Kt8QZMUjOuTlIWBQGFjQqBnTmgC5NHI=;
-        b=mxRCvF2frkEhm5B2vnRto+de6ugUr2wR5kWWQWF6mDVI1cbpr4rV2zGUxceHeGnOHn
-         NVzv/uM37Ag1CT8o2DfWo1a9mCNQ9vFLoCbB7DzPS3tWXPZ2/62N3ZRubdFCu/8XDkPB
-         h4d3WXqzFLrgKuladSLOCDg0BcPMFNOfnc33o1GMpuqs4V8iQGWtK9Rm+5wj0bedus6x
-         r1yiSvvdjDAL4n35Y+b91ndOjB5DfPeXNfd73Hi7ekkGJIUXo1liKSyvdh3/ZOg+1GHJ
-         atPHuEADBJsRSYtZ8EUgnAgQBB8D8TR7n/MjYMi07K0tPfbTApb0SyIft7XT4c9I6XXY
-         HhlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770533539; x=1771138339;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dReEHVsMABf9Kt8QZMUjOuTlIWBQGFjQqBnTmgC5NHI=;
-        b=bNLJ+GTSJ1MsjEJbcczYHGfOy68FYABcb1Svmd1HoyMRzUMYHSfm9e3EMuMH9HyYVy
-         R6z9GN4WJPyDvZgUROGVBc/iljtqjmaX7Y+Lu5kjXj+/XD4sOn6nR5fNefV5EyLhVOpa
-         OARuuLelt2nck4jwuka9SdGKQT/9bkrFqMycrM75a7Nnwx8XA2LOF/KpqOf6tWD2oVe0
-         97OssirL+YUaFS5hX4x8WxU6LbYQK9KLopMr8lWRFcI5GtYbuEb4yoNSIVnTTxULv9SK
-         lkwDjwjCMyqQgS9FbGsU60UCJARQUuMkmGHZst+lBUfet70zzpRfmmJB6neqKofcLYm8
-         MY/g==
-X-Forwarded-Encrypted: i=1; AJvYcCVqNzsC7kazWg/CeP0KwnGOnzdbzccXUyLJmf0VZ6mjm5MsYiAXgplLsmedPaiiwpXAc+I0Ju0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywilm+5y+kLkOBDrCE2g3TIRs1K7UX1WIxsYojyW01eDyt55o4y
-	/7Wps1TsbVd7lPhwR8aTVXXSzGJv6SjXGnFQsIQoAiBiDTaKLVxyvutL11wSfw==
-X-Gm-Gg: AZuq6aJ8KL6HoaFWy29DgP4Q34/+lXy54U9jxhzmesHRpcbhDj3J/MVEAI73d5mCVAX
-	vCPs/agzGQjAA5SqA8ic5vVbHsA7OidF9WV8Vm9b3hNbeDsv4HpfA8vjQHmbJmozEtfbYRS4p8d
-	1OudbyruSdVbzGSSXum8UPs1odWm7ejCfSfTp59XYNgqTemJp3BKNzKTVYEnpapZnksUkpWOFO8
-	6zYGCPeCC2rpZlZWlMNUz0z50ZDsxLSTI7ckkaKPim+u371JFmIeRIaGhouOceH9j0q7rM1stF8
-	sR/rub9MCKKAtG7bblnuMj2IXr9hS7fprEglB+mZzDV5tGsxNtlIvCf5AwXTH4Z3tJOhzpGr7AR
-	t6lA1gHGL0QBPuPmA8Jauo36NkmiEqOxTUZJhW6bNXItykJgRRjzY3zo3lwVAF+8IyB1YpkT0cG
-	zn483mnkTU5rDNJFJ1xuAdl/332NZtOxeglx/2l8InJpaNXEFDML+XL4OWTRmHClsqXPpD
-X-Received: by 2002:a05:7022:6293:b0:11f:2c69:2d with SMTP id a92af1059eb24-127040740e6mr3812571c88.45.1770533539112;
-        Sat, 07 Feb 2026 22:52:19 -0800 (PST)
-Received: from binary.. ([177.39.58.68])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127041e5460sm5673025c88.6.2026.02.07.22.52.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Feb 2026 22:52:18 -0800 (PST)
-From: Maiquel Paiva <maiquelpaiva@gmail.com>
-To: linux-bluetooth@vger.kernel.org
-Cc: luiz.dentz@gmail.com,
-	gregkh@linuxfoundation.org,
-	marcel@holtmann.org,
-	Maiquel Paiva <maiquelpaiva@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] Bluetooth: mgmt: Fix race conditions in mesh handling
-Date: Sun,  8 Feb 2026 06:49:50 +0000
-Message-ID: <20260208064951.41392-3-maiquelpaiva@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260208064951.41392-1-maiquelpaiva@gmail.com>
-References: <20260208064951.41392-1-maiquelpaiva@gmail.com>
+	s=arc-20240116; t=1770538458; c=relaxed/simple;
+	bh=osmIWeG6nO+OKfrWV5NdR42mSwcp2dt7RPXhfBm3yHw=;
+	h=Date:To:From:Subject:Message-Id; b=eI6JE6t/Sl/JBAggsUUiMJpSDxjalq0CVYRWjJeHk/KbRy7Ik5urhWclJcMSZtm5C/TwQl0cvRQ9ltcUHFB7IBlKAZD68BcoqaTBKish+HMKOH4qn4jqQ4XUIQpslIEDrqoqxRWTcixd0auJqYwBlc2ZeagFc+so82P5r74yDng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QZcxX1CF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB961C4CEF7;
+	Sun,  8 Feb 2026 08:14:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770538457;
+	bh=osmIWeG6nO+OKfrWV5NdR42mSwcp2dt7RPXhfBm3yHw=;
+	h=Date:To:From:Subject:From;
+	b=QZcxX1CFtfwh6jDU+nXH2cvVtoHE+6u6oDrnd3IHu6GjaZ7AgYObGRyksDe+h2Lef
+	 5Cl2Po24Q82LSomeCcIJp1mCVcRK0D0n2jh07g1QW510nQoC47LdIkESqi9H0pbVdJ
+	 2hNMu9U6UpITLyk+NnK9OG9cAPR6Y/XnOxMf751A=
+Date: Sun, 08 Feb 2026 00:14:17 -0800
+To: mm-commits@vger.kernel.org,yonghong.song@linux.dev,ubizjak@gmail.com,stable@vger.kernel.org,sdf@fomichev.me,peterz@infradead.org,paulmck@kernel.org,ojeda@kernel.org,nilay@linux.ibm.com,nathan@kernel.org,namjain@linux.microsoft.com,martin.lau@linux.dev,kpsingh@kernel.org,kees@kernel.org,jolsa@kernel.org,john.fastabend@gmail.com,jason@zx2c4.com,hpa@zytor.com,hca@linux.ibm.com,haoluo@google.com,elver@google.com,eddyz87@gmail.com,daniel@iogearbox.net,bvanassche@acm.org,ast@kernel.org,andrii.nakryiko@gmail.com,alan.maguire@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-nonmm-stable] kcsan-compiler_types-avoid-duplicate-type-issues-in-bpf-type-format.patch removed from -mm tree
+Message-Id: <20260208081417.CB961C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linuxfoundation.org,holtmann.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-214851-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,linux.dev,gmail.com,fomichev.me,infradead.org,kernel.org,linux.ibm.com,linux.microsoft.com,zx2c4.com,zytor.com,google.com,iogearbox.net,acm.org,oracle.com,linux-foundation.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214850-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maiquelpaiva@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C17DA10809F
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 631B4108144
 X-Rspamd-Action: no action
 
-The functions mgmt_mesh_add and mgmt_mesh_find modify or traverse the
-mesh_pending list without locking, leading to potential race conditions
-and list corruption.
 
-Use guard(mutex) with hdev->mgmt_pending_lock to protect the critical
-sections. This ensures atomic access to the list and reference counter,
-preventing the race conditions.
+The quilt patch titled
+     Subject: kcsan, compiler_types: avoid duplicate type issues in BPF Type Format
+has been removed from the -mm tree.  Its filename was
+     kcsan-compiler_types-avoid-duplicate-type-issues-in-bpf-type-format.patch
 
-Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maiquel Paiva <maiquelpaiva@gmail.com>
+This patch was dropped because it was merged into the mm-nonmm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Alan Maguire <alan.maguire@oracle.com>
+Subject: kcsan, compiler_types: avoid duplicate type issues in BPF Type Format
+Date: Fri, 16 Jan 2026 09:17:30 +0000
+
+Enabling KCSAN is causing a large number of duplicate types in BTF for
+core kernel structs like task_struct [1].  This is due to the definition
+in include/linux/compiler_types.h
+
+`#ifdef __SANITIZE_THREAD__
+...
+`#define __data_racy volatile
+..
+`#else
+...
+`#define __data_racy
+...
+`#endif
+
+Because some objects in the kernel are compiled without KCSAN flags
+(KCSAN_SANITIZE) we sometimes get the empty __data_racy annotation for
+objects; as a result we get multiple conflicting representations of the
+associated structs in DWARF, and these lead to multiple instances of core
+kernel types in BTF since they cannot be deduplicated due to the
+additional modifier in some instances.
+
+Moving the __data_racy definition under CONFIG_KCSAN avoids this problem,
+since the volatile modifier will be present for both KCSAN and
+KCSAN_SANITIZE objects in a CONFIG_KCSAN=y kernel.
+
+Link: https://lkml.kernel.org/r/20260116091730.324322-1-alan.maguire@oracle.com
+Fixes: 31f605a308e6 ("kcsan, compiler_types: Introduce __data_racy type qualifier")
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Reported-by: Nilay Shroff <nilay@linux.ibm.com>
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+Suggested-by: Marco Elver <elver@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Bart van Assche <bvanassche@acm.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Naman Jain <namjain@linux.microsoft.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: "Paul E . McKenney" <paulmck@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/bluetooth/mgmt_util.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
-index bdce52363332..3c822d5e1f8b 100644
---- a/net/bluetooth/mgmt_util.c
-+++ b/net/bluetooth/mgmt_util.c
-@@ -397,8 +397,7 @@ struct mgmt_mesh_tx *mgmt_mesh_find(struct hci_dev *hdev, u8 handle)
- {
- 	struct mgmt_mesh_tx *mesh_tx;
+ include/linux/compiler_types.h |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
+
+--- a/include/linux/compiler_types.h~kcsan-compiler_types-avoid-duplicate-type-issues-in-bpf-type-format
++++ a/include/linux/compiler_types.h
+@@ -303,6 +303,22 @@ struct ftrace_likely_data {
+ # define __no_kasan_or_inline __always_inline
+ #endif
  
--	if (list_empty(&hdev->mesh_pending))
--		return NULL;
-+	guard(mutex)(&hdev->mgmt_pending_lock);
- 
- 	list_for_each_entry(mesh_tx, &hdev->mesh_pending, list) {
- 		if (mesh_tx->handle == handle)
-@@ -420,6 +419,8 @@ struct mgmt_mesh_tx *mgmt_mesh_add(struct sock *sk, struct hci_dev *hdev,
- 	if (!mesh_tx)
- 		return NULL;
- 
-+	guard(mutex)(&hdev->mgmt_pending_lock);
++#ifdef CONFIG_KCSAN
++/*
++ * Type qualifier to mark variables where all data-racy accesses should be
++ * ignored by KCSAN. Note, the implementation simply marks these variables as
++ * volatile, since KCSAN will treat such accesses as "marked".
++ *
++ * Defined here because defining __data_racy as volatile for KCSAN objects only
++ * causes problems in BPF Type Format (BTF) generation since struct members
++ * of core kernel data structs will be volatile in some objects and not in
++ * others.  Instead define it globally for KCSAN kernels.
++ */
++# define __data_racy volatile
++#else
++# define __data_racy
++#endif
 +
- 	hdev->mesh_send_ref++;
- 	if (!hdev->mesh_send_ref)
- 		hdev->mesh_send_ref++;
--- 
-2.43.0
+ #ifdef __SANITIZE_THREAD__
+ /*
+  * Clang still emits instrumentation for __tsan_func_{entry,exit}() and builtin
+@@ -314,16 +330,9 @@ struct ftrace_likely_data {
+  * disable all instrumentation. See Kconfig.kcsan where this is mandatory.
+  */
+ # define __no_kcsan __no_sanitize_thread __disable_sanitizer_instrumentation
+-/*
+- * Type qualifier to mark variables where all data-racy accesses should be
+- * ignored by KCSAN. Note, the implementation simply marks these variables as
+- * volatile, since KCSAN will treat such accesses as "marked".
+- */
+-# define __data_racy volatile
+ # define __no_sanitize_or_inline __no_kcsan notrace __maybe_unused
+ #else
+ # define __no_kcsan
+-# define __data_racy
+ #endif
+ 
+ #ifdef __SANITIZE_MEMORY__
+_
+
+Patches currently in -mm which might be from alan.maguire@oracle.com are
+
 
 
