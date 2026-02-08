@@ -1,194 +1,175 @@
-Return-Path: <stable+bounces-214870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Lgu7CwfeiGmPxgQAu9opvQ
-	(envelope-from <stable+bounces-214870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 20:03:35 +0100
+	id 2HoBM1UPiWnG1wQAu9opvQ
+	(envelope-from <stable+bounces-214871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 23:33:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671F8109F50
-	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 20:03:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB9C10A757
+	for <lists+stable@lfdr.de>; Sun, 08 Feb 2026 23:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1CED300CE47
-	for <lists+stable@lfdr.de>; Sun,  8 Feb 2026 19:03:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E5303006F0C
+	for <lists+stable@lfdr.de>; Sun,  8 Feb 2026 22:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E0E28852B;
-	Sun,  8 Feb 2026 19:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="i9gxM4h3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E8637B40E;
+	Sun,  8 Feb 2026 22:33:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F1A125A0;
-	Sun,  8 Feb 2026 19:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1FE35E53E;
+	Sun,  8 Feb 2026 22:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770577408; cv=none; b=Wg3lM86sFJnfTgtbMDvgRj8wHFIB/HUgAuiZtbqYZyM0Dfo4DIc0wbe6XUdU4oqsTndet5ZtsoIBygFTtn+nBBPOvjUZG6fJyejcZqP9iUiXzGcv1weQy1whP1a6846SsivY27HoyQHOMP31WhyqUoVOTNFxw9BV97BwxP4rnuI=
+	t=1770590031; cv=none; b=fNFpBAj+sPeA3jkNgH9CG43V3T7tkwitifqGv5uIyzpaYgd2TdaKvSZ2/R1jqKklAqC+PcVPxOqer0d74xzZhAQ71N6TItLvVy0tLWxCOzqWBrQMEbh/QPObpcopAGLHM5pUq/mH6+G3Ae/zHBBe36u5hRATGqkjN2O+5FLaMwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770577408; c=relaxed/simple;
-	bh=HO1gtYI+cuw1qebpMmTsoFuLK1nj3uaPVlm4u/66mJo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=SZ3nOVBK+UbJ17fNgmP9gFyLlmQFzg0lFSmR6rj9/NSplW/pcZLTBNmtY5DvuoTDGYjvq093spnxeBpO+k6i0TccAwpVOnDQB5GS4uNEGZtPOv3cnnQQZeQF1vH1X0IObhvfleAojLtFT654XMm5HXJrr/XLGd/zo/mVi46zcTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=i9gxM4h3; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from smtpclient.apple (c-24-130-165-117.hsd1.ca.comcast.net [24.130.165.117])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 618J2Dur2368556
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 8 Feb 2026 11:02:13 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 618J2Dur2368556
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770577336;
-	bh=360UmSY/czEHbtw9BfxwqbaGQOjWwnLSTv8AMRnkfYg=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=i9gxM4h3wUmagAFzK/BHtvtjNxpWLvpEv1fcUn4irEYdMLD47YuX2osGznqx4rcBP
-	 yCOolUqh3gHqrM+jPuV2ViRsZI4Upzas8zcDKglyfDLkhoEk0tZbPRpXSkOyhASYyw
-	 OGPqrtn7gUxGBWxX2Fx89RvincAcXlb3Lob3Hy1WyJBor5714KkY8QLmuyh73Tcqj1
-	 +gvbq0mlUCtEEhqPjFbpA2fhIxjwets6PJz97vkBa21AuBrBKp1h8gAVrBf+vrUOtx
-	 dc3ra9oDVsGCEG7y0PNTrM0mvpae5o4qj/PYsL7EcLxF0qtjpFEYnt87RGcjoJTqr6
-	 kYb+SaMlk3SMQ==
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1770590031; c=relaxed/simple;
+	bh=7Gb11f8llqiP05vAm+jWPcekzAsPkdq+KZWUGyCutCE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qZcCS6GjR9OKwewnepG66FE/hdmxiHCTvFQAu6eES8tIG2HkiGrIcHLHxAfnOQsYKnLO8ZLkDIgFbDFeT1t0tEd0MjvJy7AekWydpOVbltQr00T2Q7wYmxSgEto9MBAk+ZoEyEh+7AiE+qvyUpzJdQ+EEewy4WLtHwG9V1yZad0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vpDLa-004NSB-2g;
+	Sun, 08 Feb 2026 22:33:42 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vpDLY-00000002AqZ-2mCU;
+	Sun, 08 Feb 2026 23:33:40 +0100
+Message-ID: <000915fc444a6e1f840f3d4ed6493058aefe850f.camel@decadent.org.uk>
+Subject: Re: [PATCH] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler
+ optimization induced race
+From: Ben Hutchings <ben@decadent.org.uk>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Gui-Dong Han <hanguidong02@gmail.com>, linux@roeck-us.net, 
+	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	baijiaju1990@gmail.com, stable@vger.kernel.org
+Date: Sun, 08 Feb 2026 23:33:31 +0100
+In-Reply-To: <20260208114810.3709364b@pumpkin>
+References: <20260203121443.5482-1-hanguidong02@gmail.com>
+		<20260207104308.1bc31102@pumpkin>
+		<f6710a1f44d2b32df1cb9b09cddc6695bf76eec2.camel@decadent.org.uk>
+	 <20260208114810.3709364b@pumpkin>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-T+M+QQxxbnHCUy53ilaP"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v1] x86/smp: Set up exception handling before cr4_init()
-From: Xin Li <xin@zytor.com>
-In-Reply-To: <a7be319d-381f-469d-9d5b-ddcf43d884e4@intel.com>
-Date: Sun, 8 Feb 2026 11:02:02 -0800
-Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, peterz@infradead.org, andrew.cooper3@citrix.com,
-        sohil.mehta@intel.com, nikunj@amd.com, thomas.lendacky@amd.com,
-        seanjc@google.com, stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DAF4D431-5596-4FD1-BF8B-D7D753C0810C@zytor.com>
-References: <20260206185035.1250577-1-xin@zytor.com>
- <a7be319d-381f-469d-9d5b-ddcf43d884e4@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
+MIME-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026012301];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,roeck-us.net,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-214871-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214870-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[zytor.com:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DMARC_NA(0.00)[decadent.org.uk];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xin@zytor.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zytor.com:mid,zytor.com:dkim]
-X-Rspamd-Queue-Id: 671F8109F50
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8CB9C10A757
 X-Rspamd-Action: no action
 
 
->> + /*
->> +  * Ensure bits set in cr4_pinned_bits are set in CR4.
->> +  *
->> +  * cr4_pinned_bits is a subset of cr4_pinned_mask, which includes
->> +  * the following bits:
->> +  *         X86_CR4_SMEP
->> +  *         X86_CR4_SMAP
->> +  *         X86_CR4_UMIP
->> +  *         X86_CR4_FSGSBASE
->> +  *         X86_CR4_CET
->> +  *         X86_CR4_FRED
->> +  */
->> + cr4_init();
+--=-T+M+QQxxbnHCUy53ilaP
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, 2026-02-08 at 11:48 +0000, David Laight wrote:
+> On Sat, 07 Feb 2026 12:43:29 +0100
+> Ben Hutchings <ben@decadent.org.uk> wrote:
 >=20
-> I'm not as big of a fan of this comment. The next pinned bit that gets
-> added will make this stale. Could we try to make this more timeless, =
-please?
-
-Right, it=E2=80=99s still a potential problem.
-
+> > On Sat, 2026-02-07 at 10:43 +0000, David Laight wrote:
+> > > On Tue,  3 Feb 2026 20:14:43 +0800
+> > > Gui-Dong Han <hanguidong02@gmail.com> wrote:
+> > >  =20
+> > > > Simply copying shared data to a local variable cannot prevent data
+> > > > races. The compiler is allowed to optimize away the local copy and
+> > > > re-read the shared memory, causing a Time-of-Check Time-of-Use (TOC=
+TOU)
+> > > > issue if the data changes between the check and the usage. =20
+> > >=20
+> > > While the compiler is allowed to do this, is there any indication
+> > > that either gcc or clang have ever done it?
+> > > ISTR someone saying that they never did - although I thought that
+> > > was the original justification for adding ACCESS_ONCE(). =20
+> >=20
+> > They do it sometimes and it's precisely why these maros were added.  It
+> > makes no sense to me to look at what these compilers currrently do (for
+> > some particular versions, optimisation settings, and targets) and
+> > extrapolate that to the assertion that they will never optimise away a
+> > copy.
+> >=20
+> > > READ_ONCE() also includes barriers to guarantee ordering between cpu.
+> > > These are empty on x86 but add code to architectures where the cpu
+> > > can (IIRC) re-order writes.
+> > > This is worst on alpha but affects arm and probably ppc. =20
+> >=20
+> > No, READ_ONCE() and WRITE_ONCE() don't include any CPU memory barriers.
 >=20
-> I'm also not sure I like the asymmetry of this between the boot and
-> secondary CPUs. On a boot CPU, CR4.SMEP will get set via
-> identify_boot_cpu() and eventually setup_smep(). On a secondary CPU,
-> it'll get set in cr4_init() and *not* in setup_smep().
->=20
-> This asymmetry is (I think) part of what the root of the problem is =
-here
-> and how this bug came to be.
+> Look at the alpha version and the arm64 LTO code.
+> The latter changes the reads to have 'acquire' semantics to stop re-order=
+ing.
+> Needed for LTO, but the thought is it might be needed in other cases.
+[...]
 
-Are you proposing a single CPU initialization function for both BSP and
-APs?
+Oh, so they do.  Sorry for "correcting" you based on my old information.
 
-It reminds me that tglx proposed the following change when I was fixing
-a FRED boot order bug.
+Ben.
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 6de12b3c1b04..a4735d9b5a1d 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2176,7 +2176,7 @@ static inline void tss_setup_io_bitmap(struct =
-tss_struct *tss)
-  * Setup everything needed to handle exceptions from the IDT, including =
-the IST
-  * exceptions which use paranoid_entry().
-  */
--void cpu_init_exception_handling(void)
-+void cpu_init_exception_handling(bool boot_cpu)
- {
- 	struct tss_struct *tss =3D this_cpu_ptr(&cpu_tss_rw);
- 	int cpu =3D raw_smp_processor_id();
+--=20
+Ben Hutchings
+This sentence contradicts itself - no actually it doesn't.
 
+--=-T+M+QQxxbnHCUy53ilaP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-So something like
+-----BEGIN PGP SIGNATURE-----
 
-	void cpu_init(bool boot_cpu)
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmmJDzsACgkQ57/I7JWG
+EQkDDA//VjOtiDarG6iSTBQzccStbeO6FPXbLc0PywIXmS6jDEkhZIaT8FlMMH7g
+kQWLHz/e/ZfpeWjeXZUAk4mm41gfkTRwkLTf7qm17FNTHNovRTm9EhXPNDawyH0U
++i3YkQLafNtBzMfg1WI33bOutpvozuaXLOSu7ApT0jMWsnAnjYBf7+c6GJHc8sO7
+7K6t2cRupC1lwxL7lhbulvPYV85p7pEghhgkRRpmdQJuiAf4ieb4sD04ULMa6sLk
+pEntCRFoBVP5C6q8pBx3mdd6Iuo47Mhea+O4LQ1Xb6pKG3udCQyxFzTOs8bFQ9Aa
+897ckPbgok98sZZCd+l8IyKDJnWxn6OEN+0CYjUr9b/J9+kjY6bMY8IxohcvKFCz
+xWZBePuAe2NJPfdm8xzT5yX9EEwr2EYfPwLPATKoNcZPtAcvNc++UWszpDkba7FP
+sCrgGlLsQ2hkqCnv/kMlqOWJXJGtDehiguoRHk/MOd6JZCJuTUq/TCPxRcPq+bFt
+YaFlNn5kFJAFNkgm9EEzzJvF/4K3iqEu9vR2xhKSlJjR7SCH7rsLZpGQJ2sHC5zu
+NrMdB98P/CvQxon72XWx1oSELbDT/mtanH9ps4g1ns9iPlU6BufL9RHVPh7p/qfH
+NQLRCVRtCLZh4tUk8iWp5C/NrGNEMvsBJ2ZZsPgRcy9QZA0pxvM=
+=QMwg
+-----END PGP SIGNATURE-----
 
-and it gets called on both BSP and APs.
-
->=20
-> I really think the current pinning behavior is too invasive. It has =
-zero
-> benefit to be pinning CR bits this early in bringup. It's only causing =
-pain.
-
-
-Maybe someone can explain why it=E2=80=99s added like this before I find =
-time to
-dig into it.
-
-I=E2=80=99m curious why cr4_init() is not part of the following =
-cpu_init()? IOW,
-why does it need to be called so early in the existing code?
-
-
->=20
-> I _really_ think we need a defined per-cpu point where pinning comes
-> into effect. Marking the CPU online is one idea.
->=20
-> Thoughts?
-
-It seems a good fit.  Just that {on,off}line() are not called on BSP =
-(not
-a real problem).
-
-Question is that who would work on it ;) ?=
+--=-T+M+QQxxbnHCUy53ilaP--
 
