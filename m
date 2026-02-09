@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-215361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAUxENL3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:54 +0100
+	id CJsHIzH2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2EE111811
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09B5111509
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE23F30BC2B7
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF085304E0F9
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71262690EC;
-	Mon,  9 Feb 2026 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C42E37BE75;
+	Mon,  9 Feb 2026 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYAfc4as"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmhWdXhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB69285073;
-	Mon,  9 Feb 2026 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D294137AA8A;
+	Mon,  9 Feb 2026 14:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648544; cv=none; b=gKDx2nvNA7JuIFjtbCXERJg/3nZReOA+H78zWi/xfaZHdrl8ejUz/gzoVF2eSeJcwd0IlbEoXbRFu7InGbhhHGZsL3YbhW0GKf3QqlQNgPOjfSiIw5YIZyBRygfO+fJhblxWvvnZM2ITYQTaGqOzRDsUEPeeFDLcC83ZNLY4X/c=
+	t=1770648301; cv=none; b=sq66FsQPMqUGPLaEZMepRaSUGxO0CmhnFrgOqqXJm4KeFaXUOBbXaIxnaNoeyxXpYQl6z1eTMmZ2YAu1mDMOj34RbDvklXSIt8dNaGdFWY0PQVBnWWcNUOF4fZRqn+CCl2eAhojni/+jQpBNm7jl5CY9b8Xgen6o1byUGmxTGcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648544; c=relaxed/simple;
-	bh=Kr44/W87Htm4ANfP1gZa4hIlYXIqez2JRrStaiTm7nc=;
+	s=arc-20240116; t=1770648301; c=relaxed/simple;
+	bh=demjFFJYLBABCcZb/G45LLfBH6zZUfHSqof0znAs0ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rT8L2jAh91VJzrl6gOA979O3dvFW2ARqn24I7rKzJSvRgL9KGduHuazVtzACrRhwG7MyUjrnJL57wEud+95LpAzcmq1C+SAqJnB8pOOqn1EaDROhF9XOVWTlTIBSSL0hEZbnkTAp7m6UVMdDHkiSQYAFdD5FVhv2abp7mgdxA+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYAfc4as; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A15C116C6;
-	Mon,  9 Feb 2026 14:49:04 +0000 (UTC)
+	 MIME-Version; b=KPDzVjnEHlsCMYlbQXqqd294eEO4Xtvv1KWuaFWLz1r15WLzetKTUosJpT0LkzxDw8kn0KTrUNw0lc/IOADN3wzSTe43BFr5KrAgqyt1hssEZTs5b5PU5Ab3CFwcQ8aj3udhxo9ejii/hRY/z9FZzs/0MC+RTkmloa1b1kuKhuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmhWdXhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5738CC116C6;
+	Mon,  9 Feb 2026 14:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648544;
-	bh=Kr44/W87Htm4ANfP1gZa4hIlYXIqez2JRrStaiTm7nc=;
+	s=korg; t=1770648301;
+	bh=demjFFJYLBABCcZb/G45LLfBH6zZUfHSqof0znAs0ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYAfc4asmEuFkDNKXhgRtXSVxGSGaOJFuiwHMUQyjyFaHLmhw5pkWgRM9ZWyHiSts
-	 pX2a60V14FAsWx4hhj2wpwubqugHRj+XeIN2EEbTsmgUkRb4vbEcIifkDodqUY98RH
-	 5DpGgDVC+9I84uvKtKGk62lOQudpWa9ESEmTdTOA=
+	b=KmhWdXhhErtfX6MLeXPrvHYrMU4Czp9ksNZ1L87imzotDWlr0OVi/7Mzq0Tws2xli
+	 uxTcVpWfG037ZKeqS7prur9HAfzTf0Xff4wi00Fo5TbMq+Fo10dLU7I75f6u4tHHnh
+	 k1OdOxGSk8hcEbhKQ7gxp8lTdTWZHHLHAKPfGQaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 70/86] net: ethernet: adi: adin1110: Check return value of devm_gpiod_get_optional() in adin1110_check_spi()
+Subject: [PATCH 6.1 65/69] spi: tegra210-quad: Protect curr_xfer assignment in tegra_qspi_setup_transfer_one
 Date: Mon,  9 Feb 2026 15:24:33 +0100
-Message-ID: <20260209142307.296100610@linuxfoundation.org>
+Message-ID: <20260209142304.264326474@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +65,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215361-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215287-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,analog.com:email]
-X-Rspamd-Queue-Id: 8F2EE111811
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: E09B5111509
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 78211543d2e44f84093049b4ef5f5bfa535f4645 ]
+[ Upstream commit f5a4d7f5e32ba163cff893493ec1cbb0fd2fb0d5 ]
 
-The devm_gpiod_get_optional() function may return an ERR_PTR in case of
-genuine GPIO acquisition errors, not just NULL which indicates the
-legitimate absence of an optional GPIO.
+When the timeout handler processes a completed transfer and signals
+completion, the transfer thread can immediately set up the next transfer
+and assign curr_xfer to point to it.
 
-Add an IS_ERR() check after the call in adin1110_check_spi(). On error,
-return the error code to ensure proper failure handling rather than
-proceeding with invalid pointers.
+If a delayed ISR from the previous transfer then runs, it checks if
+(!tqspi->curr_xfer) (currently without the lock also -- to be fixed
+soon) to detect stale interrupts, but this check passes because
+curr_xfer now points to the new transfer. The ISR then incorrectly
+processes the new transfer's context.
 
-Fixes: 36934cac7aaf ("net: ethernet: adi: adin1110: add reset GPIO")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20260202040228.4129097-1-nichen@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Protect the curr_xfer assignment with the spinlock to ensure the ISR
+either sees NULL (and bails out) or sees the new value only after the
+assignment is complete.
+
+Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-3-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/adi/adin1110.c | 3 +++
+ drivers/spi/spi-tegra210-quad.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index 3c26176316a38..2bf5c81195360 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -1087,6 +1087,9 @@ static int adin1110_check_spi(struct adin1110_priv *priv)
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index c0cc5bd7e6d2f..d3d3e698bffa1 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -813,6 +813,7 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
+ 	u32 command1, command2, speed = t->speed_hz;
+ 	u8 bits_per_word = t->bits_per_word;
+ 	u32 tx_tap = 0, rx_tap = 0;
++	unsigned long flags;
+ 	int req_mode;
  
- 	reset_gpio = devm_gpiod_get_optional(&priv->spidev->dev, "reset",
- 					     GPIOD_OUT_LOW);
-+	if (IS_ERR(reset_gpio))
-+		return dev_err_probe(&priv->spidev->dev, PTR_ERR(reset_gpio),
-+				     "failed to get reset gpio\n");
- 	if (reset_gpio) {
- 		/* MISO pin is used for internal configuration, can't have
- 		 * anyone else disturbing the SDO line.
+ 	if (!has_acpi_companion(tqspi->dev) && speed != tqspi->cur_speed) {
+@@ -820,10 +821,12 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
+ 		tqspi->cur_speed = speed;
+ 	}
+ 
++	spin_lock_irqsave(&tqspi->lock, flags);
+ 	tqspi->cur_pos = 0;
+ 	tqspi->cur_rx_pos = 0;
+ 	tqspi->cur_tx_pos = 0;
+ 	tqspi->curr_xfer = t;
++	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 
+ 	if (is_first_of_msg) {
+ 		tegra_qspi_mask_clear_irq(tqspi);
 -- 
 2.51.0
 
