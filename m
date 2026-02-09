@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-214978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BXZBenuiWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-214978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:53 +0100
+	id 8GxkB/fwiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A255110492
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F84011082E
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5532E3014684
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:27:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C90D308A005
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE1D37AA91;
-	Mon,  9 Feb 2026 14:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1379C26A088;
+	Mon,  9 Feb 2026 14:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euLwyfTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwG4XYzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0735CB6B;
-	Mon,  9 Feb 2026 14:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA4F29C321;
+	Mon,  9 Feb 2026 14:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647270; cv=none; b=FBjVVf7S6i2W2hJlIsvCBrU0eKEXCjpkMOqw2mvuZEz2mNQJgwyI3BoeuNcAlxo3QosaRWOjrEieyFB1ONG9o+VLk+VgtRp/0SNFR4rj4ug33+w/NahqJl1JoHLnnvsW7Xa3yTvilowhN+lpMHzbxccHwqVp8l2qcNsrpmNR6s4=
+	t=1770647415; cv=none; b=BRHu09Srg64YL7axMwq+JUx8n0fDYMc8eNzPJ9alh+/yQtWtO2ILFM6nTxnHU3F5dwykKTMPeSWmgg6Qh0HYXflFxFXydi6yNlEQzhOUWeutgluw1B1sjvlOL02KZfUIqPBrTtMzjJanZ9BjPShxvbm6nwSbLA2ZF0LcdCLp9s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647270; c=relaxed/simple;
-	bh=rUvA6+rav0AaXU0ihG2ftAcR4N9B3Kks2Aky7pwnpkI=;
+	s=arc-20240116; t=1770647415; c=relaxed/simple;
+	bh=2wB+TbDSNYosdC+MJ0q1ayaR0FBAur6fjDw0DOL03mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzOQ0uKQvBhWv9KoWNhoSjXTt/cOWuh72EiyF4U+tbeiASEkWmxR00snEm8u69dQ9mI3XeLze3fOna+HM9QoGiDFDIuGBc5c+mCjJMEXjjNdptKQgw0ZAC6u0x22Agk1YGu0Tr46dv4fFoScjOBthK97FiacuS2o8j90mtrwbyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euLwyfTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0134C16AAE;
-	Mon,  9 Feb 2026 14:27:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DKno4jMo0ktxez8EfZUeWWwMUCZLeWnaZH5fJ9eKlXhwAygfEQKHzDfiW98PgtZCDzGNrxBFGafxY+IFXAddN3FNqB0XlqEbyMWm9xz9BUgX8mUYDAHVq4ObxPi/IhsSlCtwudrFKj0xqh7ZvHjLv5YV1+sy9QuGOjK6bJ9idoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwG4XYzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C0FC116C6;
+	Mon,  9 Feb 2026 14:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647270;
-	bh=rUvA6+rav0AaXU0ihG2ftAcR4N9B3Kks2Aky7pwnpkI=;
+	s=korg; t=1770647415;
+	bh=2wB+TbDSNYosdC+MJ0q1ayaR0FBAur6fjDw0DOL03mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=euLwyfTN49NFJCESZ3x4R2EstuehaGJ4X9cW3/be8WMWOxARE8OTBo5vx+Txv7jb8
-	 YQNBIOVuHl3msBwJMoKKFEcDjhfKaWcGLsGthDkk3wYfdEdOrvHi+EzXUyCk+jfq1P
-	 NLYADwjd50IiVw3uLZ/Vt9k/PZZ/JGySCFoMjgYQ=
+	b=WwG4XYzZzjA4yC25GrqnjZ7E6pvs0ARnnTwW0PpArmkC0opFbZfybJAjBeWbEftS6
+	 h6qkbUncN+2WHNrbA2fHaYm9URCFDuwAoTAA4NT1cbxJ9YefqLfIaefS/0O36colbn
+	 +SM+/7PwBYmTyRrSHYofpdB3tvZL1hXLqehQBqKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Peter Astrand <astrand@lysator.liu.se>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 048/175] wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
-Date: Mon,  9 Feb 2026 15:22:01 +0100
-Message-ID: <20260209142322.200456845@linuxfoundation.org>
+Subject: [PATCH 6.18 049/175] wifi: wlcore: ensure skb headroom before skb_push
+Date: Mon,  9 Feb 2026 15:22:02 +0100
+Message-ID: <20260209142322.235668305@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
 References: <20260209142320.474120190@linuxfoundation.org>
@@ -64,79 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214978-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215023-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b364457b2d1d4e4a3054];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 6A255110492
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,liu.se:email]
+X-Rspamd-Queue-Id: 6F84011082E
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Peter Åstrand <astrand@lysator.liu.se>
 
-[ Upstream commit ff4071c60018a668249dc6a2df7d16330543540e ]
+[ Upstream commit e75665dd096819b1184087ba5718bd93beafff51 ]
 
-ieee80211_ocb_rx_no_sta() assumes a valid channel context, which is only
-present after JOIN_OCB.
+This avoids occasional skb_under_panic Oops from wl1271_tx_work. In this case, headroom is
+less than needed (typically 110 - 94 = 16 bytes).
 
-RX may run before JOIN_OCB is executed, in which case the OCB interface
-is not operational. Skip RX peer handling when the interface is not
-joined to avoid warnings in the RX path.
-
-Reported-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b364457b2d1d4e4a3054
-Tested-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Link: https://patch.msgid.link/20251216035932.18332-1-moonhee.lee.ca@gmail.com
+Signed-off-by: Peter Astrand <astrand@lysator.liu.se>
+Link: https://patch.msgid.link/097bd417-e1d7-acd4-be05-47b199075013@lysator.liu.se
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ocb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ti/wlcore/tx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
-index a5d4358f122ae..ebb4f4d88c237 100644
---- a/net/mac80211/ocb.c
-+++ b/net/mac80211/ocb.c
-@@ -47,6 +47,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
- 	struct sta_info *sta;
- 	int band;
+diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
+index 464587d16ab20..f251627c24c6e 100644
+--- a/drivers/net/wireless/ti/wlcore/tx.c
++++ b/drivers/net/wireless/ti/wlcore/tx.c
+@@ -207,6 +207,11 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 	total_blocks = wlcore_hw_calc_tx_blocks(wl, total_len, spare_blocks);
  
-+	if (!ifocb->joined)
-+		return;
-+
- 	/* XXX: Consider removing the least recently used entry and
- 	 *      allow new one to be added.
- 	 */
+ 	if (total_blocks <= wl->tx_blocks_available) {
++		if (skb_headroom(skb) < (total_len - skb->len) &&
++		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
++			wl1271_free_tx_id(wl, id);
++			return -EAGAIN;
++		}
+ 		desc = skb_push(skb, total_len - skb->len);
+ 
+ 		wlcore_hw_set_tx_desc_blocks(wl, desc, total_blocks,
 -- 
 2.51.0
 
