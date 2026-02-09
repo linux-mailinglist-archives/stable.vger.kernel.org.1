@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-215103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GE5MEPyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:11 +0100
+	id aFefGRP2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEDC110BA8
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE80A1114B7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0E9E306A500
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9927B300EBDE
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841FA285060;
-	Mon,  9 Feb 2026 14:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C695F37B409;
+	Mon,  9 Feb 2026 14:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms3+G8Ew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuIHFX+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4893F1AF0AF;
-	Mon,  9 Feb 2026 14:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F8628312F;
+	Mon,  9 Feb 2026 14:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647685; cv=none; b=H6DLq3iOfPdlgUKV3MLz62j+aMqUOe/7hG6TLbUIcpYZV9/ORo4qcZjhQBt4SSi62ctb87CTRhheZnV60di9GjJUFWPvVXbLY9z5gu/Y6g2e2qGsYuuI8wJGnEta5RIKrrejUlV5UyxqBF23N77eVyBmH2lCujDrEOJszB/R9gw=
+	t=1770648769; cv=none; b=VXd9/BYMgQd89ZqGVuBOp68vNORVqaWdPDpioPQRKTIZUmpyM+IUBbqqFCUePbzGguQ26MmHwcaRaKmBV0QIRBfwydJardty/P58ui4CvR3RcecEfehZY1IkE4nCrwt02rPLjjwZjBKIFk9AyO17TP2lY/ZTxccXpHJmxtxxOz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647685; c=relaxed/simple;
-	bh=hR29LyBVHcxXF/YwHgakP61LjpU9vTn5lRiHVDIy3sQ=;
+	s=arc-20240116; t=1770648769; c=relaxed/simple;
+	bh=pKGFHG889NcL66GsqmwvL57QGx+X9jO1HuU33NEoUXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tE4ImZoaKPOgEKU8e5WekhUjgMl4FDFagFgtjS55WWng7JwtO8Lx64mh6eRsl9ezI0hZbLdWYjXrQFDFLDMtN0HIftWiRQ+j9Xym/iFZp/uCeUct4QMEf+BgF0iJP+lQ+cW9qy4TwOwORGTdODYbvBwZc1JLKQgDfwzWN1F1V/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms3+G8Ew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8083BC116C6;
-	Mon,  9 Feb 2026 14:34:44 +0000 (UTC)
+	 MIME-Version; b=T2y466O5y22bmS00W+dMCKzmfYKfJX70dKM18KxECgMHKyINRsJtzXZEUjP/GegL3WFk3CiIXfxgS6wKpgxxVBKZ3mn3MHSiyTrIK6lLPVCtzW6Ck93BiG0OVIb4c4sZO83yr1+Kmdz19N96dyF1a4DolX/OmhGp9DLe5XtidsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuIHFX+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D448BC116C6;
+	Mon,  9 Feb 2026 14:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647684;
-	bh=hR29LyBVHcxXF/YwHgakP61LjpU9vTn5lRiHVDIy3sQ=;
+	s=korg; t=1770648769;
+	bh=pKGFHG889NcL66GsqmwvL57QGx+X9jO1HuU33NEoUXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ms3+G8EwZIccLNkvGXnFSco784Qv/T1FShKSZypht6dD3StueT+CWyXDRkUC79saD
-	 uqXDK0BvXmb6H3VX1nMfSuDvFX8sJI8ljZcmgIDl7SE3ex3T3Kj/960YRoqInXQP93
-	 4+eLR6pmDNuzJvE+gm8JnAyXt6cA4i4t3zMVjqPc=
+	b=NuIHFX+K5M/ox3ScGkIrF+iv6NEgGsTvsrNCWIKWOJUfghlduAUmUFgcuk04DfEF3
+	 vploKkcr+8J8SEkCG4e3LZVAL7WWsbK5qAm72d6QOYCojJ1kppDp1U17XzxTe/gGmQ
+	 x4aWyHhHXY9fTvltgTuN02veZNUZpE80/vs6hLM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 174/175] ALSA: usb-audio: Use the right limit for PCM OOB check
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 5.15 10/75] clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function
 Date: Mon,  9 Feb 2026 15:24:07 +0100
-Message-ID: <20260209142326.735964474@linuxfoundation.org>
+Message-ID: <20260209142302.212268660@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +71,106 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215103-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-215431-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,linutronix.de,roeck-us.net,intel.com,kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 1CEDC110BA8
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,linutronix.de:email,goodmis.org:email,roeck-us.net:email]
+X-Rspamd-Queue-Id: AE80A1114B7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 70b4db7d258118a7464f039112a74ddb49a95b06 upstream.
+[ Upstream commit 73737a5833ace25a8408b0d3b783637cb6bf29d1 ]
 
-The recent fix commit for addressing the OOB access of PCM URB data
-buffer caused a regression on Behringer UMC2020HD device, resulting in
-choppy sound.  The fix used ep->max_urb_frames for the upper limit
-check, and this is no right value to be referred.
+A new "shutdown" timer state is being added to the generic timer code. One
+of the functions to change the timer into the state is called
+"timer_shutdown()". This means that there can not be other functions
+called "timer_shutdown()" as the timer code owns the "timer_*" name space.
 
-Use the actual buffer size (ctx->buffer_size) as the upper limit
-instead, which also avoids the regression on the device above.
+Rename timer_shutdown() to arch_timer_shutdown() to avoid this conflict.
 
-Fixes: ef5749ef8b30 ("ALSA: usb-audio: Prevent excessive number of frames")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220997
-Link: https://patch.msgid.link/20260121082025.718748-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lkml.kernel.org/r/20221106212702.002251651@goodmis.org
+Link: https://lore.kernel.org/all/20221105060155.409832154@goodmis.org/
+Link: https://lore.kernel.org/r/20221110064146.981725531@goodmis.org
+Link: https://lore.kernel.org/r/20221123201624.574672568@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/pcm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clocksource/arm_arch_timer.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/usb/pcm.c
-+++ b/sound/usb/pcm.c
-@@ -1553,7 +1553,8 @@ static int prepare_playback_urb(struct s
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -691,8 +691,8 @@ static irqreturn_t arch_timer_handler_vi
+ 	return timer_handler(ARCH_TIMER_MEM_VIRT_ACCESS, evt);
+ }
  
- 		for (i = 0; i < ctx->packets; i++) {
- 			counts = snd_usb_endpoint_next_packet_size(ep, ctx, i, avail);
--			if (counts < 0 || frames + counts >= ep->max_urb_frames)
-+			if (counts < 0 ||
-+			    (frames + counts) * stride > ctx->buffer_size)
- 				break;
- 			/* set up descriptor */
- 			urb->iso_frame_desc[i].offset = frames * stride;
+-static __always_inline int timer_shutdown(const int access,
+-					  struct clock_event_device *clk)
++static __always_inline int arch_timer_shutdown(const int access,
++					       struct clock_event_device *clk)
+ {
+ 	unsigned long ctrl;
+ 
+@@ -705,22 +705,22 @@ static __always_inline int timer_shutdow
+ 
+ static int arch_timer_shutdown_virt(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
+ }
+ 
+ static int arch_timer_shutdown_phys(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
+ }
+ 
+ static int arch_timer_shutdown_virt_mem(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
+ }
+ 
+ static int arch_timer_shutdown_phys_mem(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
+ }
+ 
+ static __always_inline void set_next_event(const int access, unsigned long evt,
 
 
 
