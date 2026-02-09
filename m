@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-215216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INZwLyLziWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:54 +0100
+	id GDqUMrn5iWkiFQAAu9opvQ
+	(envelope-from <stable+bounces-215487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:14:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437DF110E4D
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEA7111C11
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C374302DC8B
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09DE2306B08E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D06B37BE85;
-	Mon,  9 Feb 2026 14:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE9537C0FD;
+	Mon,  9 Feb 2026 14:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAancYoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QgvcZaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53023793BF;
-	Mon,  9 Feb 2026 14:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219822750E6;
+	Mon,  9 Feb 2026 14:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648063; cv=none; b=J/vxpq/bbrUVaMQiSXD1Eva2TL6Bhe+IVqDIzPhYDpeAMUWQWhnrIJGPCImQLSTMVDEGyERyRN/VbauJAv93aUigDZaZwshF94eRjvI60sagw56TB5T80sSpr1gYBxpW+SFxk7fOPg5QAQbSLzEcegYNArycS4ytIpJZ7tmgW10=
+	t=1770648957; cv=none; b=oCMuADVuq2EBVk/sfb+CseNmDU5cj8qpInxJBDRAOVbMeHaRbzQG1udFTUJIAdnllbJ2npaZoONYyZorc6EwDRbwr+6oa+16yl+ETNXsXTWdlcv3saGAcICZp5uM5kuEToETs+4R9zY1Y0RXMru9TQI4R7XyzV4BvOvCiGFOxdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648063; c=relaxed/simple;
-	bh=xJsx0CLiG5GPzhzKjoYx2b8ulVioLB7bQ0v8pgNvDU8=;
+	s=arc-20240116; t=1770648957; c=relaxed/simple;
+	bh=wuBAl2f9TKQqvrogeJTNyTTDXFS0hrVPxjJ4qhUJjUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPRu2+q1DElFClpvlFCLNPJcr02Kh3rjBVDR7Kkf3IXbOYc8zeeWoJmNXo1KnWAGXBi76voi9xJU10rmYE7TR4QJ13su0O5wSQorYmWmwukbvNwcq8BaolJGzUb/HsxPJg6FxFlKsLl99rwzevnQEGTz9IqnCfE3pjibApn+Owc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAancYoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A97C116C6;
-	Mon,  9 Feb 2026 14:41:01 +0000 (UTC)
+	 MIME-Version; b=iJsdp55dmZAsEi5jULDorq8x/4sNO8DYktugr4MjgadoZ0KS+LngXh7MSzt8ONXwSeNFjuaksfmsaHBHD1xlqj3MqfGp9LGomIZmudOMZDJ4uccKxf8c2X+46XTrIGx/OZ968a6gZMZZ/Wqk613QgybGJ6/0QyOXsSwmADbhY+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QgvcZaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F47C19422;
+	Mon,  9 Feb 2026 14:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648062;
-	bh=xJsx0CLiG5GPzhzKjoYx2b8ulVioLB7bQ0v8pgNvDU8=;
+	s=korg; t=1770648957;
+	bh=wuBAl2f9TKQqvrogeJTNyTTDXFS0hrVPxjJ4qhUJjUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAancYoX5y8H+cAr9J44UNDV8X3SgpZstWeRiqNI7vIiMnHssLDkKUdVPO5M5LHUx
-	 neXZnD9CV4wAszrGYTcMI1xUXf49hnuU3LM1cqPk/GhRVysKOcKPoe7A7H5Ywtc+Nu
-	 7hQE7ty5BuvY4fQtR0FdwoTQ4r1yvYPAN4h88boI=
+	b=2QgvcZaqNM2EJcdKZpTO6BmxjMM5nlBCWbreMgNAKskeTjq+BQ5V0TIMY40uC3u9Q
+	 4WavficKpdwAAf2YRSBgqhf+axkMQcEHGnwiKMStxsHXMvFnjMzZfIt3mA9o9QK+bP
+	 47OGxmpV3FkK2Ibw9/hX1MqPuevHjnqS0lOWljpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/113] spi: tegra210-quad: Protect curr_xfer clearing in tegra_qspi_non_combined_seq_xfer
+	Yipeng Zou <zouyipeng@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 22/75] timers: Fix NULL function pointer race in timer_shutdown_sync()
 Date: Mon,  9 Feb 2026 15:24:19 +0100
-Message-ID: <20260209142314.123101925@linuxfoundation.org>
+Message-ID: <20260209142302.644935298@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +66,120 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215216-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215487-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 437DF110E4D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 2BEA7111C11
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-[ Upstream commit 6d7723e8161f3c3f14125557e19dd080e9d882be ]
+commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c upstream.
 
-Protect the curr_xfer clearing in tegra_qspi_non_combined_seq_xfer()
-with the spinlock to prevent a race with the interrupt handler that
-reads this field to check if a transfer is in progress.
+There is a race condition between timer_shutdown_sync() and timer
+expiration that can lead to hitting a WARN_ON in expire_timers().
 
-Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20260126-tegra_xfer-v2-5-6d2115e4f387@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue occurs when timer_shutdown_sync() clears the timer function
+to NULL while the timer is still running on another CPU. The race
+scenario looks like this:
+
+CPU0					CPU1
+					<SOFTIRQ>
+					lock_timer_base()
+					expire_timers()
+					base->running_timer = timer;
+					unlock_timer_base()
+					[call_timer_fn enter]
+					mod_timer()
+					...
+timer_shutdown_sync()
+lock_timer_base()
+// For now, will not detach the timer but only clear its function to NULL
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
+					[call_timer_fn exit]
+					lock_timer_base()
+					base->running_timer = NULL;
+					unlock_timer_base()
+					...
+					// Now timer is pending while its function set to NULL.
+					// next timer trigger
+					<SOFTIRQ>
+					expire_timers()
+					WARN_ON_ONCE(!fn) // hit
+					...
+lock_timer_base()
+// Now timer will detach
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
+
+The problem is that timer_shutdown_sync() clears the timer function
+regardless of whether the timer is currently running. This can leave a
+pending timer with a NULL function pointer, which triggers the
+WARN_ON_ONCE(!fn) check in expire_timers().
+
+Fix this by only clearing the timer function when actually detaching the
+timer. If the timer is running, leave the function pointer intact, which is
+safe because the timer will be properly detached when it finishes running.
+
+Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/time/timer.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 28552a8f27c14..edc9d400728a1 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1200,6 +1200,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 	struct spi_transfer *transfer;
- 	bool is_first_msg = true;
- 	int ret = 0, val = 0;
-+	unsigned long flags;
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1360,10 +1360,11 @@ static int __try_to_del_timer_sync(struc
  
- 	msg->status = 0;
- 	msg->actual_length = 0;
-@@ -1271,7 +1272,9 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 		msg->actual_length += xfer->len + dummy_bytes;
+ 	base = lock_timer_base(timer, &flags);
  
- complete_xfer:
-+		spin_lock_irqsave(&tqspi->lock, flags);
- 		tqspi->curr_xfer = NULL;
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
+-	if (base->running_timer != timer)
++	if (base->running_timer != timer) {
+ 		ret = detach_if_pending(timer, base, true);
+-	if (shutdown)
+-		timer->function = NULL;
++		if (shutdown)
++			timer->function = NULL;
++	}
  
- 		if (ret < 0) {
- 			tegra_qspi_transfer_end(spi);
--- 
-2.51.0
-
+ 	raw_spin_unlock_irqrestore(&base->lock, flags);
+ 
 
 
 
