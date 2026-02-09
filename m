@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-215231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KfBDLLziWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:18 +0100
+	id SFyaG4vziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA22110FE6
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10F6110F75
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92AD5301092E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F3936302EAA7
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5196A37C115;
-	Mon,  9 Feb 2026 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B04A37C0E1;
+	Mon,  9 Feb 2026 14:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kedtTl4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAW6518F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121DA37C103;
-	Mon,  9 Feb 2026 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF6237BE8C;
+	Mon,  9 Feb 2026 14:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648113; cv=none; b=KDk12cioMo/jDAlux/qXZ99WobgG3EvF2ChvnS4984AXDJSl/90NfN+/fKrG6vnt+c9AbNNLcw3nzGC562FykPyFDKhI3N6NIJaSBHgM1vKTurXXwrh3PnqpMmJSILnr+XpF6gt+2/27OvoHXEFYbIKsaN6CWJjM6iVU5T2jxDw=
+	t=1770648365; cv=none; b=qgkjhZpvhyVmpy28UlAhZ3wXrwhmvZw7oMxZ73IZB14VTA54tJQrSH7/e4401a8vF36/6hkMdCfUmB6MjB7Fhk3Bqttk3m7bYSLJODtwq4Zskp8fJ4XRhs5uX2YpcNeMy6ObGT9HqRk/wJiFkR2l5NkHKHlX/CDxX/GSwAWN9TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648113; c=relaxed/simple;
-	bh=7/fyce0YFTCNzHc8zGPyHKtANgv6xDpJaQNjv4w3FO4=;
+	s=arc-20240116; t=1770648365; c=relaxed/simple;
+	bh=SDb6YwbuhHekVKBwlYmSToyZ/Zk++eMKtemWYMigdZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ub9Bck9OBnWPS62zJ3NmhTEQDBAmWfYw84PyTD/SUkN6+YrKhA0jaJYwg2hTvfl+A6waZiHizjL5kvXZG4GQ8PpsSJo/us962LM0t4FAc8wSH93y0rCzsQLjuFU5JJHtux01dRedpIjxzxb3v6plAmc6N9zJcihpw3Ov/qNllmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kedtTl4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702EAC19425;
-	Mon,  9 Feb 2026 14:41:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pb0ojakgPye0Yy35J1QT7ywY0RlhI3RvckE8yW8FquplC10Qiq2UDsYIC3l82gRAgAmXt4zs0XtVTYck8CNDNUIpdipu7VDNnkwDkccOUL272ohaQKiMm3L/OPNNDx3cSj+DrtmEj/molcP1XIiGm2vMwpuZUdV7+Ljtx1qiRMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAW6518F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27D3C19422;
+	Mon,  9 Feb 2026 14:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648113;
-	bh=7/fyce0YFTCNzHc8zGPyHKtANgv6xDpJaQNjv4w3FO4=;
+	s=korg; t=1770648365;
+	bh=SDb6YwbuhHekVKBwlYmSToyZ/Zk++eMKtemWYMigdZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kedtTl4v5nC29Zk23EhuEhsw8iiwoRhja4oR+s5wIxtMdTxX3GdL/+IbgWXJQIyzc
-	 crzY12AfjbY/7A8JLy3ZuD4dWirezfz34YMpVL/E02kYqcocZeA9c/wRJeNteLh+2W
-	 cTiTywwAJ/aC+GM9/lqfbBX88zVoJMYEN8ej1bdc=
+	b=yAW6518FrhBFnWMZvaXMqs7exuXSihpo1xInO/rlTp8hXVu6SUGLDaULsfIt+rmOS
+	 3monvWXAV2Tw97v6smJRTP9m0SP+el/GCZjIgkNqHIFfqMATtJq8GSlz4Naqgjy9GI
+	 oM4Kr12bUW9VlSElgROsbiQ4mIAL2+aDQO6RHZNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/69] pmdomain: imx8mp-blk-ctrl: Keep gpc power domain on for system wakeup
+	Jon Kohler <jon@nutanix.com>,
+	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
+	Rahul Chunduru <rahul.chunduru@nutanix.com>,
+	Harshit Agarwal <harshit@nutanix.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Phil Auld <pauld@redhat.com>,
+	Will Ton <william.ton@nutanix.com>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.6 16/86] sched/rt: Fix race in push_rt_task
 Date: Mon,  9 Feb 2026 15:23:39 +0100
-Message-ID: <20260209142302.324822818@linuxfoundation.org>
+Message-ID: <20260209142305.361957813@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +69,326 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-215306-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215231-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nutanix.com,infradead.org,goodmis.org,redhat.com,139.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9EA22110FE6
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,goodmis.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: E10F6110F75
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Harshit Agarwal <harshit@nutanix.com>
 
-[ Upstream commit e9ab2b83893dd03cf04d98faded81190e635233f ]
+commit 690e47d1403e90b7f2366f03b52ed3304194c793 upstream.
 
-Current design will power off all dependent GPC power domains in
-imx8mp_blk_ctrl_suspend(), even though the user device has enabled
-wakeup capability. The result is that wakeup function never works
-for such device.
+Overview
+========
+When a CPU chooses to call push_rt_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_lowest_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
 
-An example will be USB wakeup on i.MX8MP. PHY device '382f0040.usb-phy'
-is attached to power domain 'hsioblk-usb-phy2' which is spawned by hsio
-block control. A virtual power domain device 'genpd:3:32f10000.blk-ctrl'
-is created to build connection with 'hsioblk-usb-phy2' and it depends on
-GPC power domain 'usb-otg2'. If device '382f0040.usb-phy' enable wakeup,
-only power domain 'hsioblk-usb-phy2' keeps on during system suspend,
-power domain 'usb-otg2' is off all the time. So the wakeup event can't
-happen.
+Crashes
+=======
+This bug resulted in quite a few flavors of crashes triggering kernel
+panics with various crash signatures such as assert failures, page
+faults, null pointer dereferences, and queue corruption errors all
+coming from scheduler itself.
 
-In order to further establish a connection between the power domains
-related to GPC and block control during system suspend, register a genpd
-power on/off notifier for the power_dev. This allows us to prevent the GPC
-power domain from being powered off, in case the block control power
-domain is kept on to serve system wakeup.
+Some of the crashes:
+-> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >= MAX_RT_PRIO)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? do_error_trap+0x64/0xa0
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? exc_invalid_op+0x4c/0x60
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? pick_next_task_rt+0x6e/0x1d0
+   __schedule+0x5cb/0x790
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
 
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
+-> BUG: kernel NULL pointer dereference, address: 00000000000000c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? __warn+0x8a/0xe0
+   ? exc_page_fault+0x3d6/0x520
+   ? asm_exc_page_fault+0x1e/0x30
+   ? pick_next_task_rt+0xb5/0x1d0
+   ? pick_next_task_rt+0x8c/0x1d0
+   __schedule+0x583/0x7e0
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
+
+-> BUG: unable to handle page fault for address: ffff9464daea5900
+   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu != task_cpu(p))
+
+-> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? do_error_trap+0x64/0xa0
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? exc_invalid_op+0x4c/0x60
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   dequeue_rt_entity+0x1f/0x70
+   dequeue_task_rt+0x2d/0x70
+   __schedule+0x1a8/0x7e0
+   ? blk_finish_plug+0x25/0x40
+   schedule+0x3c/0xb0
+   futex_wait_queue_me+0xb6/0x120
+   futex_wait+0xd9/0x240
+   do_futex+0x344/0xa90
+   ? get_mm_exe_file+0x30/0x60
+   ? audit_exe_compare+0x58/0x70
+   ? audit_filter_rules.constprop.26+0x65e/0x1220
+   __x64_sys_futex+0x148/0x1f0
+   do_syscall_64+0x30/0x80
+   entry_SYSCALL_64_after_hwframe+0x62/0xc7
+
+-> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? spurious_kernel_fault+0x171/0x1c0
+   ? exc_page_fault+0x3b6/0x520
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? asm_exc_page_fault+0x1e/0x30
+   ? _cond_resched+0x15/0x30
+   ? futex_wait_queue_me+0xc8/0x120
+   ? futex_wait+0xd9/0x240
+   ? try_to_wake_up+0x1b8/0x490
+   ? futex_wake+0x78/0x160
+   ? do_futex+0xcd/0xa90
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? plist_del+0x6a/0xd0
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? dequeue_pushable_task+0x20/0x70
+   ? __schedule+0x382/0x7e0
+   ? asm_sysvec_reschedule_ipi+0xa/0x20
+   ? schedule+0x3c/0xb0
+   ? exit_to_user_mode_prepare+0x9e/0x150
+   ? irqentry_exit_to_user_mode+0x5/0x30
+   ? asm_sysvec_reschedule_ipi+0x12/0x20
+
+Above are some of the common examples of the crashes that were observed
+due to this issue.
+
+Details
+=======
+Let's look at the following scenario to understand this race.
+
+1) CPU A enters push_rt_task
+  a) CPU A has chosen next_task = task p.
+  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
+  c) CPU A identifies CPU X as a destination CPU (X < Z).
+  d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
+  e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
+     locked CPU X’s rq, and thus, CPU A must wait.
+
+2) At CPU Z
+  a) Previous task has completed execution and thus, CPU Z enters
+     schedule, locks its own rq after CPU A releases it.
+  b) CPU Z dequeues previous task and begins executing task p.
+  c) CPU Z unlocks its rq.
+  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
+     lock) which triggers the schedule function on CPU Z.
+  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
+  f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
+
+3) At CPU B
+  a) CPU B enters try_to_wake_up with input task p.
+  b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
+     B.state = WAKING.
+  c) CPU B via select_task_rq determines CPU Y as the target CPU.
+
+4) The race
+  a) CPU A acquires CPU X’s lock and relocks CPU Z.
+  b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
+     still on CPU Z.
+  c) CPU A failed to notice task p had been dequeued from CPU Z while
+     CPU A was waiting for locks in double_lock_balance. If CPU A knew
+     that task p had been dequeued, it would return NULL forcing
+     push_rt_task to give up the task p's migration.
+  d) CPU B updates task p.cpu = Y and calls ttwu_queue.
+  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
+     p.on_rq = 1.
+  f) CPU B unlocks CPU Y, triggering memory synchronization.
+  g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
+     has not migrated.
+  h) CPU A decides to migrate p to CPU X.
+
+This leads to A dequeuing p from Y's queue and various crashes down the
+line.
+
+Solution
+========
+The solution here is fairly simple. After obtaining the lock (at 4a),
+the check is enhanced to make sure that the task is still at the head of
+the pushable tasks list. If not, then it is anyway not suitable for
+being pushed out.
+
+Testing
+=======
+The fix is tested on a cluster of 3 nodes, where the panics due to this
+are hit every couple of days. A fix similar to this was deployed on such
+cluster and was stable for more than 30 days.
+
+Co-developed-by: Jon Kohler <jon@nutanix.com>
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Tested-by: Will Ton <william.ton@nutanix.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/imx/imx8mp-blk-ctrl.c |   26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ kernel/sched/rt.c |   52 +++++++++++++++++++++++++---------------------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
---- a/drivers/soc/imx/imx8mp-blk-ctrl.c
-+++ b/drivers/soc/imx/imx8mp-blk-ctrl.c
-@@ -54,6 +54,7 @@ struct imx8mp_blk_ctrl_domain {
- 	struct icc_bulk_data paths[DOMAIN_MAX_PATHS];
- 	struct device *power_dev;
- 	struct imx8mp_blk_ctrl *bc;
-+	struct notifier_block power_nb;
- 	int num_paths;
- 	int id;
- };
-@@ -492,6 +493,20 @@ static int imx8mp_blk_ctrl_power_off(str
- 	return 0;
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1963,6 +1963,26 @@ static int find_lowest_rq(struct task_st
+ 	return -1;
  }
  
-+static int imx8mp_blk_ctrl_gpc_notifier(struct notifier_block *nb,
-+					unsigned long action, void *data)
++static struct task_struct *pick_next_pushable_task(struct rq *rq)
 +{
-+	struct imx8mp_blk_ctrl_domain *domain =
-+			container_of(nb, struct imx8mp_blk_ctrl_domain, power_nb);
++	struct task_struct *p;
 +
-+	if (action == GENPD_NOTIFY_PRE_OFF) {
-+		if (domain->genpd.status == GENPD_STATE_ON)
-+			return NOTIFY_BAD;
-+	}
++	if (!has_pushable_tasks(rq))
++		return NULL;
 +
-+	return NOTIFY_OK;
++	p = plist_first_entry(&rq->rt.pushable_tasks,
++			      struct task_struct, pushable_tasks);
++
++	BUG_ON(rq->cpu != task_cpu(p));
++	BUG_ON(task_current(rq, p));
++	BUG_ON(p->nr_cpus_allowed <= 1);
++
++	BUG_ON(!task_on_rq_queued(p));
++	BUG_ON(!rt_task(p));
++
++	return p;
 +}
 +
- static struct lock_class_key blk_ctrl_genpd_lock_class;
+ /* Will lock the rq it finds */
+ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ {
+@@ -1993,18 +2013,16 @@ static struct rq *find_lock_lowest_rq(st
+ 			/*
+ 			 * We had to unlock the run queue. In
+ 			 * the mean time, task could have
+-			 * migrated already or had its affinity changed.
+-			 * Also make sure that it wasn't scheduled on its rq.
++			 * migrated already or had its affinity changed,
++			 * therefore check if the task is still at the
++			 * head of the pushable tasks list.
+ 			 * It is possible the task was scheduled, set
+ 			 * "migrate_disabled" and then got preempted, so we must
+ 			 * check the task migration disable flag here too.
+ 			 */
+-			if (unlikely(task_rq(task) != rq ||
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !rt_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     task != pick_next_pushable_task(rq))) {
  
- static int imx8mp_blk_ctrl_probe(struct platform_device *pdev)
-@@ -593,6 +608,14 @@ static int imx8mp_blk_ctrl_probe(struct
- 			goto cleanup_pds;
- 		}
+ 				double_unlock_balance(rq, lowest_rq);
+ 				lowest_rq = NULL;
+@@ -2024,26 +2042,6 @@ static struct rq *find_lock_lowest_rq(st
+ 	return lowest_rq;
+ }
  
-+		domain->power_nb.notifier_call = imx8mp_blk_ctrl_gpc_notifier;
-+		ret = dev_pm_genpd_add_notifier(domain->power_dev, &domain->power_nb);
-+		if (ret) {
-+			dev_err_probe(dev, ret, "failed to add power notifier\n");
-+			dev_pm_domain_detach(domain->power_dev, true);
-+			goto cleanup_pds;
-+		}
-+
- 		domain->genpd.name = data->name;
- 		domain->genpd.power_on = imx8mp_blk_ctrl_power_on;
- 		domain->genpd.power_off = imx8mp_blk_ctrl_power_off;
-@@ -602,6 +625,7 @@ static int imx8mp_blk_ctrl_probe(struct
- 		ret = pm_genpd_init(&domain->genpd, NULL, true);
- 		if (ret) {
- 			dev_err_probe(dev, ret, "failed to init power domain\n");
-+			dev_pm_genpd_remove_notifier(domain->power_dev);
- 			dev_pm_domain_detach(domain->power_dev, true);
- 			goto cleanup_pds;
- 		}
-@@ -644,6 +668,7 @@ cleanup_provider:
- cleanup_pds:
- 	for (i--; i >= 0; i--) {
- 		pm_genpd_remove(&bc->domains[i].genpd);
-+		dev_pm_genpd_remove_notifier(bc->domains[i].power_dev);
- 		dev_pm_domain_detach(bc->domains[i].power_dev, true);
- 	}
- 
-@@ -663,6 +688,7 @@ static int imx8mp_blk_ctrl_remove(struct
- 		struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
- 
- 		pm_genpd_remove(&domain->genpd);
-+		dev_pm_genpd_remove_notifier(domain->power_dev);
- 		dev_pm_domain_detach(domain->power_dev, true);
- 	}
- 
+-static struct task_struct *pick_next_pushable_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_tasks(rq))
+-		return NULL;
+-
+-	p = plist_first_entry(&rq->rt.pushable_tasks,
+-			      struct task_struct, pushable_tasks);
+-
+-	BUG_ON(rq->cpu != task_cpu(p));
+-	BUG_ON(task_current(rq, p));
+-	BUG_ON(p->nr_cpus_allowed <= 1);
+-
+-	BUG_ON(!task_on_rq_queued(p));
+-	BUG_ON(!rt_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * If the current CPU has more than one RT task, see if the non
+  * running task can migrate over to a CPU that is running a task
 
 
 
