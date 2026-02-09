@@ -1,89 +1,117 @@
-Return-Path: <stable+bounces-215511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPi+Goz/iWluFQAAu9opvQ
-	(envelope-from <stable+bounces-215511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:38:52 +0100
+	id uLWiA18AimluFQAAu9opvQ
+	(envelope-from <stable+bounces-215512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:42:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B38D111FC9
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:38:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7573C11207D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 13B3B300E5AD
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 15:38:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7B7F3301FAB7
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 15:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FFF37FF60;
-	Mon,  9 Feb 2026 15:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBF637FF4E;
+	Mon,  9 Feb 2026 15:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="iViBW58p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZwnVSV6S"
 X-Original-To: stable@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010010.outbound.protection.outlook.com [52.101.228.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A7E3803C7;
-	Mon,  9 Feb 2026 15:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DE637FF6A
+	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 15:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770651498; cv=fail; b=dtAGRZQrOrOpDd6RXegVT4pEf65UMcI5BzWpkJE0Q0W0phznkrk10Hpq48OUAI4N8gK77hA3YtdsKOxqTy5ZH2NpLiNZKAphMuJwZQM1B45061un5iB7b9fHzWgILtot1etb/HDMIlog3BHvXTg8flfy2x3FaF5CJYZStqVC8+w=
+	t=1770651686; cv=fail; b=FuBF4Z7PXLTLtKx3df0QlLsnvyDfqv9hDhMANPhFItWUwjiFfYivqqHhw1KYQRwbWbKzkbwQ8eU56+VX9ODfdhxEGJ/U24b9w5gPmSzsBAPLeO+qME79F/imG7VX2q4McSoOP2Mz+/H8dRic66mjdwWoM7ZjUrBzI3iaD4CaJMQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770651498; c=relaxed/simple;
-	bh=dXL7NAvfe/O3ktcZq5sxdD2ROauBlDTcEtvptTYULJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=b5+3NcaLCS9qCXDa235n37NjYjLgqRyueU1Ybg0S3q5xWBJN0VIgb1dr0OJWaLIahjlCeRBR7LZz0uo3nKMjBhBwbU0rZRBx3YMEw8oq+JjKraJRO0vkHsV2g75bXgTFLFeXjs2hBpl1VwzXKfGtMt0CLCia3mkAyL8YnKehxE4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=iViBW58p; arc=fail smtp.client-ip=52.101.228.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+	s=arc-20240116; t=1770651686; c=relaxed/simple;
+	bh=Yd66+gveRXuURrcy3ZOhET73a7tWv1ah9r1EsAEFSXU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=op0wuCWNfukYxvVmjjYZ131cwkOGoFGeUNMn/2RD8qIcCG3z4+OkRfnDdwOw3WNuZCQfpdkorREF67nX6SS5NVt154VeRxng4KXg24hWk7jU1gIWDZpdFCQmD8Z+htsSF5/yjU2X3tWd/zZKNg0usEuCHAyBUX9pXUkws0bTC8E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZwnVSV6S; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770651685; x=1802187685;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=Yd66+gveRXuURrcy3ZOhET73a7tWv1ah9r1EsAEFSXU=;
+  b=ZwnVSV6SeMG8Ltz7HMAsdeDolH7Xjng9ngwkZ9NXQ31eqRYqkg48XLa+
+   4W1uamHYieRnsRDy0Pc0YGXDL7V7hBar6+UnjY/tlP2jB4LxIjGk+jooT
+   l6Hydtp/Ms/Qpw99qU5tJ4lkms2nXW1QhHTDhX8kzDMVkU29NTkrIpFNQ
+   VGTnnxnrduyZ7Jb5mkmMr9JGTPmUNXQn+fnSU3hSvClmTBVZePtj7B5CB
+   dNAeQTV0/TzfdVDBmdsid7zFU+ylNLHA13qlsWwT/61dlzLES7uJyC51m
+   HY6lkN0TxEtvW2ODfqeTd9fHQenrKMaxz5u0G5yNm+3EgxWSoCTwhxxhL
+   A==;
+X-CSE-ConnectionGUID: krf8P6mhT7qAGV7pdqsrWg==
+X-CSE-MsgGUID: gbO8rcYmTkqQPRc1DlJU8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71665348"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="71665348"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 07:41:25 -0800
+X-CSE-ConnectionGUID: tE/BGDWkRU+4kH0g2edBjg==
+X-CSE-MsgGUID: dgPriF0WStu/EoxHBMhalA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="211628480"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 07:41:23 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 07:41:22 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Mon, 9 Feb 2026 07:41:22 -0800
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.47) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 07:41:22 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MTHeuxowInSNPVZzbVHM0X9NdYIGbLXotOLgBUOT9WnojvQSd2NIWASeR2SrPAZEHMhcThYCqGlrphfvLvBsI3QM57f2rGzJyjkfmEr/hZSLe7BDcAjHsoBCHdEiBoz59tBMg4pOJ1tQ2brs9HWy87RD/RwDe1KOanu3ehoIoEnL3/m8/3ljyFQ3J54uJGDUE6xzQxNJCzydZLZmlZleTxAC0/4IvXw2XUeuT1WMljCL0/31ZdvXANuTp3hO+pA7Y5T3RtXNJ69zjjUr4SA7C9mnV3tMtRmpO59vnh2ZvhLTeb2Az6+pyRa6HsaKKasiKNTCe0Psz18j0l+Egi4Xpg==
+ b=Jmqf8SmoCZ02pLouNsEh+BhXL9HyOj8/a/vUpY5Dxlq3nbGeqzla64o199L8q1zAEDJww55umvfQTIX6GDttNq3laeEogFYOzQnylbqDhYqjbFZ7UYVnqQMsRmnMLxJI5ixm8vWQytHnL4ZuBxP+M7ZRobLR5qolQo8Pzq9N5M7A6WC/CJjqRYwjzuDY6v7W6D1ILKlzl3r3QiHmhm1Vmm0NQp+CTg5eNJWWdxjZwFNsxTUDviPnd/y8Z/qwVJGmrHpJdbcyLfTp7QdA75sUpzdWgaz87V3ZEghO7SsWH+3w+S+GdQ+M3euDCHIxmaUHAn4uolbYcyyrR29T1ol+DQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cVhYhKAuUbSQe9vBPJAxmsxW8zO0r/2yRXsqvXnwEYY=;
- b=klAJ7CUvFOE0J5fa4ZTAwNFjFNJosT3oxbRxiOFNSlCjhUffOlYqeWZxJAdcyCSVQGa6zbM7k05DV7fe9STFTIog51cYc77Zj3kW89vHNwK9+SS8gmWNzv0rRGsJJboWoIivLwpQzP+8EkWKiM4teV9i+czh4u919uhx61lebkBv6iVw3Ni62y+08vPeYSf6Kg9HDhXQlPj0czoGQlhr/uvXakx4uLwagS5Vws9aD0/bZpGOYk2y0sdWcKb0Tl8OlkjvJuTAPzsxbXqTbX+VNVhAOnDtfNTPenAHwCfxDXkrytfvTcYc9z7852A871SXQgRDshPIJedLDf0kEWMyTw==
+ bh=j4fICzN1nLPGqt19aPPhVlyqTgYpjL7F4FRi3XzElek=;
+ b=XpH6vFirMyuZE4MEV0jcymZhnxC8eNby13Rqy8DOxEVC0ONK2fiGnWGjYK7ezXLFij7zZxWbt9op26zSl1C3NKNBjt5rdigVHnzTf/mMzG7TnP/AiDU3hJGJPGp21ZJF82fryociZvfEWMCU+NfHTJCu+lQZZN5yby/YKp4oYzYo+S+EmcwgZ8aH6XvCw3uUny+0rPFSVguUqb7t13VaJKhQB99Lj90hjbzkmNDt0XPqLpbh1g2R93Dm0et8P64yaAwDnufI+Sz2kiNGhnHJSxiltTEsV1J0UjCpm9ZvNBL5BeDdThFYrP/bXbCkPLnS+uESjZS5vLr0wnuNllEwJw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cVhYhKAuUbSQe9vBPJAxmsxW8zO0r/2yRXsqvXnwEYY=;
- b=iViBW58pwWyCixUgG1VycpZ0Xx1jUM+sYnh8V2VZzvXQXmzwrwbU1/Gf6owGfdUr1er3IZgNyjOpcFeD81njxC1GX+kE2gLTDyvTEYfTBa8kgQkh3e+E9EWc0rMkV4O62tu3Qu+tE6yyBaCgsWnywdc2u7RJ1anydzscZutDjfE=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com (2603:1096:400:3e1::6)
- by TY4PR01MB15890.jpnprd01.prod.outlook.com (2603:1096:405:2af::9) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
+ by MW4PR11MB6812.namprd11.prod.outlook.com (2603:10b6:303:1ee::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Mon, 9 Feb
- 2026 15:38:13 +0000
-Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com
- ([fe80::33f1:f7cd:46be:e4d8]) by TYCPR01MB11947.jpnprd01.prod.outlook.com
- ([fe80::33f1:f7cd:46be:e4d8%5]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
- 15:38:13 +0000
-Date: Mon, 9 Feb 2026 16:37:57 +0100
-From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: tomm.merciai@gmail.com, linux-renesas-soc@vger.kernel.org,
-	biju.das.jz@bp.renesas.com,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Daniel Scally <dan.scally+renesas@ideasonboard.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] media: rzg2l-cru: Skip ICnMC configuration when
- ICnSVC is used
-Message-ID: <aYn_Vf1H1m1z44p2@tom-desktop>
-References: <cover.1767114395.git.tommaso.merciai.xr@bp.renesas.com>
- <b9aeabb34829b8e97559610a3d00ef67399a300c.1767114395.git.tommaso.merciai.xr@bp.renesas.com>
- <aYnnRWR-5xOPSHOh@zed>
-Content-Type: text/plain; charset=us-ascii
+ 2026 15:41:05 +0000
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::9ca5:4d1d:db45:f523]) by SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::9ca5:4d1d:db45:f523%4]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
+ 15:41:05 +0000
+Date: Mon, 9 Feb 2026 17:40:22 +0200
+From: Imre Deak <imre.deak@intel.com>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+	<stable@vger.kernel.org>, Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Subject: Re: [PATCH v2 1/2] drm/i915/dp: Fix pipe BPP clamping due to HDR
+Message-ID: <aYn_5pIAIq2C5Ezc@ideak-desk.lan>
+Reply-To: <imre.deak@intel.com>
+References: <20260209133817.395823-1-imre.deak@intel.com>
+ <baa6c5c6-5adb-4cf5-9d01-ad8d2c37db1d@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <aYnnRWR-5xOPSHOh@zed>
-X-ClientProxiedBy: FR4P281CA0166.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b7::17) To TYCPR01MB11947.jpnprd01.prod.outlook.com
- (2603:1096:400:3e1::6)
+In-Reply-To: <baa6c5c6-5adb-4cf5-9d01-ad8d2c37db1d@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+X-ClientProxiedBy: GV3P280CA0022.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:b::12) To SJ0PR11MB4845.namprd11.prod.outlook.com
+ (2603:10b6:a03:2d1::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,217 +119,223 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB11947:EE_|TY4PR01MB15890:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6fc9856-8343-4b41-13b3-08de67f13c25
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|MW4PR11MB6812:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3954d67d-2c7c-45be-ddc9-08de67f1a319
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rDSVr58yzg3Q+hMTHASoFePgAiEVTWyJsuSFdBCVjd9Cg/KcrLOaMB/xNC2Y?=
- =?us-ascii?Q?0347wawC87VXAs31fTvjChOKc2Pt0ZEXbl3HKbjbF36iMRvTb6bXQvk/Vi/H?=
- =?us-ascii?Q?95eSteB+OLmXh4Pd0KQithtHr1RPj7YiaM1IBYtrQCI8HDk2FVXXw5OFBoMl?=
- =?us-ascii?Q?KAGsTbAWsOPd9SgeeSfhGfksV9gV7rnwMj5AAYQeRlxlklZSdDohVTrNC6ZI?=
- =?us-ascii?Q?qBy6yO8YJYzFEgzD/F03y16YjVecV9s4d7+3cSxmdcb0bZhprAOlFZdlrHuj?=
- =?us-ascii?Q?U2MEbzGN9TvW4p5dpDl2uTTjdbmvt57pGxpZ/vcguHn516maLWeYdyPugjdL?=
- =?us-ascii?Q?gBrKgx38UedwH3mdS/dDHqlX1uxbuAcIm0ZWcoM0d8/LtOUEGdR2WfQjLsD4?=
- =?us-ascii?Q?3Fdkb3C9GU+oXC9BxUplLO6SH5aAhVX57DbbsHVOvFbbHACInVGIxowvJNO0?=
- =?us-ascii?Q?xnxcKdLja7p7Bn2YGwNQ2b39ztyA22S6l27pHX834uhj2d8BMOJ32ZNoA+r8?=
- =?us-ascii?Q?FnBk7iOfZoB/7vuOpMU5UmhhNcsqdFl+TtbgTz2WEIqN9iuB68xAH/+zU9bO?=
- =?us-ascii?Q?5jbzkEQBFxlcc/JFdOZt+RWX++bFdrA0gNQUCygRg+rqpXPMZSsfXqPzQ8y+?=
- =?us-ascii?Q?sbgMKrsDD49VuyTCRMZMAli4RknPh5Q0YJ3Ndtwt0mRSzxb3upa7s47wVyMv?=
- =?us-ascii?Q?jZdwYvB80SvOkGrWvSGZWd9yCEsO76OexUm26Emf0yhqmlQcvBdZGoCzbJ3g?=
- =?us-ascii?Q?veEDailjP2P3k4VCPgeKjBsEeMMfGGByfVzBB7hCBakdKJU3vkYwUhQPFt/1?=
- =?us-ascii?Q?uKmSZ4Uwklu3x4mtlqNGlnaJFr1Qk5w+21b7uPr1no17nDatnwgZatdIHWFV?=
- =?us-ascii?Q?VVUT73NfBeVr6XMS5DA1fuvkEh/vC2nMcMZINpQNEa4nnLktlufNU3rDXXVn?=
- =?us-ascii?Q?bEJY9is4mSGn86LVNp7F5nkvnHlns91Mk6PeUZM+i14VZpcMp37fT7SNJro+?=
- =?us-ascii?Q?S91s3eVDQ26iMoP/lTJPNB9LwCfyF0x3aSW5eygIj8BcuYFLuyQKBa4fLxzp?=
- =?us-ascii?Q?R/yvypMTPhFUcxFzQxVWzK4A5/yDMnFhGKvccnt2bUy9p1SAAAppwNXarfa6?=
- =?us-ascii?Q?pXIzFP4QFe5rMqdjws3UIHBHYAzy6TIPq2Jev/H0l3CUB5nXdvha9Legfv5W?=
- =?us-ascii?Q?xL71k0A5a71U6585jvW7nqGWae2qaQ5asxw2MtnHnuyDl1gdoTGXOJO+KyCc?=
- =?us-ascii?Q?Sk51dIF6jJa4bZpNs1oELwgu1ptUfax4YMj8S21S6snhbP5WwmYixZVSiSsH?=
- =?us-ascii?Q?0Ezox3i4YfN5weVvLsjOr24+3NXszJwagm2MZJj+9O2XI3iiKhAJ9DLGW0wP?=
- =?us-ascii?Q?NY//E8EPR2knb/OHQVLZVIF3iIWWYvPBoaodm6Xvebp8WENHgePkos8z/u0n?=
- =?us-ascii?Q?rRPVuXDra7ZyWDlDP2NzRZeahxKbOKTJUm8XRgmtXq/BGlM4ldXlLWAg7AIi?=
- =?us-ascii?Q?wR6kGfMqu2yCDWF1kOdVAo2nd3N4n4Qofq/81NzNa7/vi8RrMQyLDjMlFtDP?=
- =?us-ascii?Q?cbFH1y1fM0x6lHtf518lNslKRnSpf3FZ8F46+DEC/n3zRHBdSfmEwVgGETfu?=
- =?us-ascii?Q?/haiPmTCEArDddOlwgUD3H4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11947.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?VPjYU+rzyqMnD5ljQKiBOEH5AU78j7DWeD/c8IOP5e6EomXjYIPtHmM0McN8?=
+ =?us-ascii?Q?0o1/sgJc/tSOVOib/Os47V4+64srnWMC+4TLa9LYMrEEOeGFYXBlfKfHi7gZ?=
+ =?us-ascii?Q?kjPdF6glqs6zKW1KM9pOEeNhv64yyD7UmpnU2Hv8UfqMNdgr0m3VafD5d4IK?=
+ =?us-ascii?Q?qKsvZ0jcnxmz/7GH99gyneuc32TZcuvOr7eGvY8ypUGgLx35ZsayAS6n5DNF?=
+ =?us-ascii?Q?DG5nx9vmVBDh5cm2m4q+7VPolM5FURK5W/EJKDkMzGFWjxOgSujgnodLJCmE?=
+ =?us-ascii?Q?uXM3ym9LrcpBz+sZODvKfCOM/UL8yEWpCOgKMVFVaYwibbkacgrfqlGonL8G?=
+ =?us-ascii?Q?QO5CSqR/iXPbWQWcXVsLHj0gDv/L0cZq4rwEvSu1TH8qmvJpVujf6bLuuKLC?=
+ =?us-ascii?Q?MgEdVIU4tRne1TuuCGSOdwIzaNEnmjoWCDxDpSSeXIMJgIFTi3uqptqcVKk3?=
+ =?us-ascii?Q?hSrXS6dSGeAVwQ8hRbF4AYFRLqUXnpXUmRtLQIz9nqvRFqgYc9rTW+llp48Y?=
+ =?us-ascii?Q?Z8CPpfGHzpgKeyjbH6h8OIXsX1cOonGA9d2zyI7HQ33tK76M9FLjZJ5j6hcq?=
+ =?us-ascii?Q?upD/rOtUJjIkSkJ7My+Ff/Z7PymD4SELsMZxM+R/HTTgzWOXmbvEI1hZ0J3Q?=
+ =?us-ascii?Q?sDBdvTHyqhAq2+EaPWVgNlr2RiiTIx+1eCGlQihZUUcrkVZoH+Xf50vj3pO+?=
+ =?us-ascii?Q?d4wrzQ4tpYed2VBhXnYCfioj2xYuFq9ZsmtCnR8wpLq6SNQBzky809NYO3oN?=
+ =?us-ascii?Q?7Jg79NnQCcLLLz2v/Vsu1DMQxUSS9muOePjAVyu7Z8SVqjtWypPDy06loe5w?=
+ =?us-ascii?Q?8lXqMFQKFfW0NRkzWcbBEELGCTm5AQUxxzAD5etaOlLuk1qFwv50oao1y+iz?=
+ =?us-ascii?Q?gM6w5gINM5Or3r51rHhLd/Jbuli6j6QQxS06spAu22FQtLaTDHYThLV51v3+?=
+ =?us-ascii?Q?H8BvycQ19aBltbuAEx/HapvfbeMndH0qlGo/VpChbopETktFMgV9lDe7rScX?=
+ =?us-ascii?Q?NClip2wFzqXAS71SHYpZGADulyEWQjyCnI2bKsNMjUorM07hVYUXYTXyTLSf?=
+ =?us-ascii?Q?2qMYmXoQIN07nxqqfjYcnuyw1ehlsEshV0ZD4ygL4YOMAj9L9YrzMpwKnYH7?=
+ =?us-ascii?Q?YrJzdvfLpOeHun67MjNGEpUZ9DO9BaSn0q9f+6vcYhcK3VHtMNaAC71pzXgI?=
+ =?us-ascii?Q?9XQL2nBxZ/s/9o9adTc8jSV8z9dZ6fzMqnYulCGU/fa1bzmjFRdk/8fXRC9T?=
+ =?us-ascii?Q?sMxeHOcN7Kg2gp4En63l2cUNxdCDPO8VVBKjesPVI3Z+a+uOQ8QhrOrrwZZ8?=
+ =?us-ascii?Q?fmVEQGB+kLmkJUV3X5HG/9TQD9SDgXebsQlPEAQDUOp/Fiai2yA4E3A7qNPn?=
+ =?us-ascii?Q?f6vwDI2mr5XEWKXPtXuwtGmxnD0mVEXHWJRz/YBMxK/QfpvuMG8t901IfOQh?=
+ =?us-ascii?Q?wsOxtQ6QUTDPHcrC6lucf4eF442jQnmLF6mYYgGzVv01nxF59bMZJfwCS3DX?=
+ =?us-ascii?Q?Fhwm3W5aMPPjw1fw5wAHQ7AWs9cDh+X3tpE1?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?04VJnSusgwDmVI3VTYTIpwwMuF7Sd/84Bnq7bUqEXTnpJoxQk91D+RqLwAva?=
- =?us-ascii?Q?4QqN+Jvv1WcKApreOSPX0ElP2671Cxark35ukwXqKpAABET53a+77NvBPsAe?=
- =?us-ascii?Q?1owf+mIve7M+Kq+1G3cYmEuaZjZOlc14agtdOZuiHUX6aJjrvfh86ltZITgT?=
- =?us-ascii?Q?v31pxol6oEaH7u7CbtHXBnxkuDLK3w9JdvG+w1oQc+pI7PEkvgsjDz3KJukP?=
- =?us-ascii?Q?xGggIYed8bTrPUIZln9tP6qSDPvc+C80ZEaqMN/Be4F9Yj039kubgUMwkfH/?=
- =?us-ascii?Q?i325Npf0D59pyJK4Ln0XNsfAtdGrdZc9M/kATSyzfDO0FVbwY9u00kZJmDlb?=
- =?us-ascii?Q?VKIx6mKxF5tW20GC9xGUSH0rL+QLS6Pk7+PIa3pp7w2ErX7MJa81SQENSZo5?=
- =?us-ascii?Q?a8UZZuZCO2huaroL8cY6RzBFpOHVh7u7S74UrGBhLnrReDimHfAItSmKgnBs?=
- =?us-ascii?Q?fEJKV19wO5a4Q82/rqi3aUMan/hNPqBwe56p4mnCK6a6pJJJGlhhnYlR8VZ1?=
- =?us-ascii?Q?WvTd+Ln/CXjsBeYPE5TUtA96NurpVqI3dAtqwJuEa8uL/QUvowwN8zPOgJhy?=
- =?us-ascii?Q?BD1JTZOaCJCxfO9UwzuAbxqwKSbRSa73WSLwej3Bp1QY1K4mOYavvtrK2Jk+?=
- =?us-ascii?Q?x317NVy41Omk4faWG4/moh1JHSvy4rIlVlg9Fm5dI9kTMLtT1UOLXXyJJKSh?=
- =?us-ascii?Q?5yik4DukitVbbRphR70VTtKwSdP0mwhLyZb9ItnSw50e2YZLIdyK7gpWT/Tx?=
- =?us-ascii?Q?gGiIuZNgAF72Epi4oMi2Sn+2FBiLzN6rSTsNIPNQmQkBxdID/V5yk3jvW+Jt?=
- =?us-ascii?Q?Pi6+nG9V8f4YBnX+phwM9YxwGGSZI1mh/ZsSEoTuO50oETxV0caf/s4cUxev?=
- =?us-ascii?Q?6vTbCxtuC0fptXt/ZLn4vuoqS4542yX10BYA/lklTuny0brxZhb9saY4z7X4?=
- =?us-ascii?Q?4SjbU8m9rrTEKBxEPH3fggxNyV6ivCVrY/Lk1Fe8P0vWzQOdV3QgqepLjSNW?=
- =?us-ascii?Q?Vm6CmJEHLinKf4QD2sCQq1a0TiB5tIcmebWvgQLz426w0UExWs2MXp8V/KBn?=
- =?us-ascii?Q?bPg3xKKIhzJo2abnP+Y6vtzeHQREnpicxlk5398PZ3Ms6VytDoPbupnXRis9?=
- =?us-ascii?Q?QvsK6HBjsxRceE1P+W9lZDuwAf6GzLFNv+5mxn2F7Up/oPSkARlCLHicpDCo?=
- =?us-ascii?Q?FwobWLJMTbb8TwrwHIxpe5GWNPw2Ufp/7tbKUDo9y3vqjbB9nGxnd6oqCvzM?=
- =?us-ascii?Q?fFSbfIxhYfI8Hukpm6cxUIONd7/udL3FemoZ/co+ySFGtMRmp/0qMDr0Qvri?=
- =?us-ascii?Q?11EgcZcy8fq3LDWVROAkYw81pqBNyR+OzvZA92CXgq7FqeZv9cCi0PZfZ2Rf?=
- =?us-ascii?Q?LTwDbyyURjBJBjL9XDaRS2ZeGe/yYXerl9hBx96HRrLIJY/qyn4ThidUnwUD?=
- =?us-ascii?Q?FML/yDv/oaJXqKagzQ8dx4uFGV1rNkyLxNzp3u2/HYjVidymoqpFIWzvLq2q?=
- =?us-ascii?Q?qVOv+4B+2Mgum+v86DBbqvirRdAX2GCFvc4+qA3tTomNTkJ7wueq4aEVI4Dr?=
- =?us-ascii?Q?pP2/6AcjII+b9kVYLbd/D7X3F+Tdo7WhdupzBauYhZiYzAicV/LXXmFLHGqY?=
- =?us-ascii?Q?XWcLczLZ2zh5JYjX+3025lQEUpAP9M8Mn6Fk2Hg/XyrTbkt+2gNztmQsrUub?=
- =?us-ascii?Q?XmI6apV3Ns6nl4dTQyjTK7CXDe07O4HQvV70Hpxqhm5MBgsO6xMy6OJ+svEn?=
- =?us-ascii?Q?uytIa20Jf6dW6ywFfsKRGs8D9yntPG41ym3/mi7sR50KimW2fpCv?=
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6fc9856-8343-4b41-13b3-08de67f13c25
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11947.jpnprd01.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jy1Jh5XHDTv1/WZkjzWT2lXeeasxHlqxxeUp3cigqOfpMhmqdYmJCpq8LgUS?=
+ =?us-ascii?Q?/LZtViv/2+Hy0Sqa4RagvH5NjXbf7A2h4izmTZ2ci72R2qblTnWzcGuiTI9x?=
+ =?us-ascii?Q?UnA22fqsH00pm/1j7VLK1KJQjUCRx3GP5xrN8YhoASfB2JNFinMpJD+tavAV?=
+ =?us-ascii?Q?QFQqrJxOTWfvCMxwYAq8adUWUc5WIZx26JsiYtVrePpgAEiD3KewVl5QnUE3?=
+ =?us-ascii?Q?XGiNdFn067uFI+3KW8e1RXQxLNRwnMfxrUYQu++YiFHfL2fcNQ3fGfM1oKB0?=
+ =?us-ascii?Q?1QdVKFymw4eTIrQvdmMZCaeIS0dddko39nJOkqJ6z0uEKFvp+0NRMXWWO6wY?=
+ =?us-ascii?Q?6KpKXdNAHGIWuI4Ye60D8WFKDchRWUlIK8V3lB6md4/cKuZDRewZSphro/Aa?=
+ =?us-ascii?Q?bIwNBXJ0ZFXuMRnGB5Tc7WuO+Ovr0CKepnTDCUdzCIO+BR3lgzneX34suwlb?=
+ =?us-ascii?Q?/nQOfDhU6SIKhVyjPNJ0XrxTd/q0cXpEvlpSb16Xdveb7f3mZZbwSd08n3B+?=
+ =?us-ascii?Q?H5Xhgu68a/Vit+h6xbV3yQ5OThEChPSubDU8weQ2ZJYD5tpBK+fYEJzgagQc?=
+ =?us-ascii?Q?1JjwtSzPVHapE5k8c9LQBsDnVdGU6vbepYjR2mKNjXNygRHJUR2FNw1U+3KT?=
+ =?us-ascii?Q?peR6+r/DcK8hIm24dam1nEixl8o7Zmz96O+M9OzIWShTtXs8Lg/BadPzOLiW?=
+ =?us-ascii?Q?kE8y5JIKp9twJXLIjc2jogi7pCG22RmZpe/kV7E8Xufe3i0lROdc+Hqd3iTe?=
+ =?us-ascii?Q?HbQh6yOPoBJctHp2UJ1f97fX6wgYzkoVlfc+Z6FDFcKrlAG401mdVec4NWNo?=
+ =?us-ascii?Q?LSbYqK75Fsw7hzeGWUokPmAnfbC60XQWViO+jd6pgupIJii1YZOjd3NPq0E/?=
+ =?us-ascii?Q?ZaXBk5HQc91AvTDtYHSMvjTCnJuxMy0erEPOtVHhbmm5xZNbUNsIvKGLV16l?=
+ =?us-ascii?Q?mU9IIuP+1ql0GGmp15H7crwliJT5mGormdIoG15KOtmZz7zZRjSVxAN/lFsy?=
+ =?us-ascii?Q?MCrvK/MpJaDuk/Xl07XUaP+e42nIKk7REjZ+/L/IHSIgoAWmkd6CP3ZdNqCW?=
+ =?us-ascii?Q?4zu4mbTs51V5DyN3I95/6hrBynobB4x0KAM/+Mj1iW562jXpSuBP97arX03g?=
+ =?us-ascii?Q?i8H0cIOGw/iOVOmYaRyZ/wUg/mfPPJazQwCHy990iF26MllNgI0mVF/Jr/U6?=
+ =?us-ascii?Q?pcyxolKgLOzSs47IkqfOxknk6unc5N2uJEKctXpexvB6gbtRgs2VLH5RRJSD?=
+ =?us-ascii?Q?2wfu/CKM6How4DJhvXay3oL6LDKsHD0IYsD+mu0fUcFx3sm0TRs3oyv5291r?=
+ =?us-ascii?Q?KNWm+ME/LDzGN3+MoXqP6/SxrO/7H/QRXT7+nm//uiwJ149U+JgY1KfvD0R2?=
+ =?us-ascii?Q?hOo7pwPjyMrj1chKcDyTewkSw9GEVjitTmNoLhHaNrmSbfmNFDK1j1FCisC+?=
+ =?us-ascii?Q?djFVD8SQwbyK1Ipf4S76M9ZSYy6PTJhdyf2RhWJdHcGfUhxp5h78CEHoq+E3?=
+ =?us-ascii?Q?jYODEPSBQJjJrlkaZ44Wt2qwUydljvgkdX2I1sx+MktkViuETWQktaNNqZtr?=
+ =?us-ascii?Q?qdns6RfzQPci6Qmd/2mARqMxdjyxv4UvwEsOGK4A29wb6AOXItjWRwPzKAvX?=
+ =?us-ascii?Q?ILTobFgtic9SaxBgdc2na+sDuyQQ02JsmY51azTItz3/gqI0yG07Vfk0i2PV?=
+ =?us-ascii?Q?Dd35YsAC3LvCbX2vZgnhh2ERyToDgmcV2I1HSylWGQsFEwu6slaf8x1OWa5x?=
+ =?us-ascii?Q?+XWiNptjrg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3954d67d-2c7c-45be-ddc9-08de67f1a319
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 15:38:13.0949
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 15:41:05.5962
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P/4tRmdZ1BYAOVcsqZ/95mLzCTpqrC//rZwlGqmsFSzPsZXeuHMJ/VVPNiqE2QNFV1NPArHjHDAVOTyEJyHF7xaAR0+x4v5ms9D6kwXvdzg6E1RGr0tdKMbKb+YREIkB
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB15890
+X-MS-Exchange-CrossTenant-UserPrincipalName: cjb+xYhZQxJ7yJuRbkBqCjsCaeOiC09NAa9i2yE6LeJrivkazFR+ZsZzKeTJ0GF8/5lnHAiQOlTipqxzLQApNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6812
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[renesas.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[bp.renesas.com:s=selector1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215511-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215512-lists,stable=lfdr.de];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,bp.renesas.com,kernel.org,ideasonboard.com];
-	DKIM_TRACE(0.00)[bp.renesas.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tommaso.merciai.xr@bp.renesas.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	HAS_ORG_HEADER(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideak-desk.lan:mid,intel.com:replyto,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[imre.deak@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	HAS_REPLYTO(0.00)[imre.deak@intel.com];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B38D111FC9
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 7573C11207D
 X-Rspamd-Action: no action
 
-Hi Jacopo,
-Thanks for your review!
+On Mon, Feb 09, 2026 at 07:58:32PM +0530, Borah, Chaitanya Kumar wrote:
+> 
+> 
+> On 2/9/2026 7:08 PM, Imre Deak wrote:
+> > The pipe BPP value shouldn't be set outside of the source's / sink's
+> > valid pipe BPP range, ensure this when increasing the minimum pipe BPP
+> > value to 30 due to HDR.
+> > 
+> > While at it debug print if the HDR mode was requested for a connector by
+> > setting the corresponding HDR connector property. This indicates
+> > if the requested HDR mode could not be enabled, since the selected
+> > pipe BPP is below 30, due to a sink capability or link BW limit.
+> > 
+> > v2:
+> > - Also handle the case where the sink could support the target 30 BPP
+> >    only in DSC mode due to a BW limit, but the sink doesn't support DSC
+> >    or 30 BPP as a DSC input BPP. (Chaitanya)
+> > - Debug print the connector's HDR mode in the link config dump, to
+> >    indicate if a BPP >= 30 required by HDR couldn't be reached. (Ankit)
+> > - Add Closes: trailer. (Ankit)
+> > - Don't print the 30 BPP-outside of valid BPP range debug message if
+> >    the min BPP is already > 30 (and so a target BPP >= 30 required
+> >    for HDR is ensured).
+> 
+> Does this match the current implementation?
 
-On Mon, Feb 09, 2026 at 03:21:59PM +0100, Jacopo Mondi wrote:
-> Hi Tommaso
+If you mean the logic that, after the point where the min/max pipe BPP
+based on the source/sink caps has been determined, constrains when the
+minimum pipe BPP is increased due to the requested HDR, then yes.
+
+> > 
+> > Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7052
 > 
-> On Tue, Dec 30, 2025 at 06:09:15PM +0100, Tommaso Merciai wrote:
-> > When the CRU is configured to use ICnSVC for virtual channel mapping,
-> > as on the RZ/{G3E, V2H/P} SoC, the ICnMC register must not be
-> > programmed.
-> 
-> I see a difference indeed between the [G3E, V2H/P] and the G2L version
-> of the IP in the presence of the VCSEL[1:0] field in register ICnMC.
-> 
-> On [G3E, V2H/P] the selection of which virtual channel to accept
-> doesn't go through VCSEL[1:0] in ICnMC but a dedicated register ICnSVC
-> is provided for that purpose. So far so good.
-> 
-> >
-> > Return early after setting up ICnSVC to avoid overriding the ICnMC
-> > register, which is not applicable in this mode.
-> >
-> > This prevents unintended register programming when ICnSVC is enabled.
-> >
-> > Fixes: 3c5ca0a48bb0 ("media: rzg2l-cru: Drop function pointer to configure CSI")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+> Also,
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15503
+
+Ok, can add this as well, while applying the patch.
+
+> > Fixes: ba49a4643cf53 ("drm/i915/dp: Set min_bpp limit to 30 in HDR mode")
+> > Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> > Cc: <stable@vger.kernel.org> # v6.18+
+> > Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com> # v1
+> > Signed-off-by: Imre Deak <imre.deak@intel.com>
 > > ---
-> >  drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-> > index 162e2ace6931..480e9b5dbcfe 100644
-> > --- a/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-> > +++ b/drivers/media/platform/renesas/rzg2l-cru/rzg2l-video.c
-> > @@ -268,6 +268,8 @@ static void rzg2l_cru_csi2_setup(struct rzg2l_cru_dev *cru,
-> >  		rzg2l_cru_write(cru, ICnSVCNUM, csi_vc);
-> >  		rzg2l_cru_write(cru, ICnSVC, ICnSVC_SVC0(0) | ICnSVC_SVC1(1) |
-> >  				ICnSVC_SVC2(2) | ICnSVC_SVC3(3));
+> >   drivers/gpu/drm/i915/display/intel_dp.c | 20 +++++++++++++++++---
+> >   1 file changed, 17 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+> > index 4b786706ea2de..7fd20df10f26f 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> > +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> > @@ -2703,6 +2703,7 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
+> >   			       bool dsc,
+> >   			       struct link_config_limits *limits)
+> >   {
+> > +	struct intel_display *display = to_intel_display(intel_dp);
+> >   	bool is_mst = intel_crtc_has_type(crtc_state, INTEL_OUTPUT_DP_MST);
+> >   	struct intel_connector *connector =
+> >   		to_intel_connector(conn_state->connector);
+> > @@ -2715,8 +2716,7 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
+> >   	limits->min_lane_count = intel_dp_min_lane_count(intel_dp);
+> >   	limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
+> > -	limits->pipe.min_bpp = intel_dp_in_hdr_mode(conn_state) ? 30 :
+> > -				intel_dp_min_bpp(crtc_state->output_format);
+> > +	limits->pipe.min_bpp = intel_dp_min_bpp(crtc_state->output_format);
+> >   	if (is_mst) {
+> >   		/*
+> >   		 * FIXME: If all the streams can't fit into the link with their
+> > @@ -2732,6 +2732,19 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
+> >   							respect_downstream_limits);
+> >   	}
+> > +	if (!dsc && intel_dp_in_hdr_mode(conn_state)) {
+> > +		if (intel_dp_supports_dsc(intel_dp, connector, crtc_state) &&
+> > +		    limits->pipe.max_bpp >= 30)
+> > +			limits->pipe.min_bpp = max(limits->pipe.min_bpp, 30);
+> > +		else
+> > +			drm_dbg_kms(display->drm,
+> > +				    "[CONNECTOR:%d:%s] Can't force 30 bpp for HDR (pipe bpp: %d-%d DSC-support: %s)\n",
+> > +				    connector->base.base.id, connector->base.name,
+> > +				    limits->pipe.min_bpp, limits->pipe.max_bpp,
+> > +				    str_yes_no(intel_dp_supports_dsc(intel_dp, connector,
+> > +								     crtc_state)));
+> > +	}
 > > +
-> > +		return;
-> >  	}
-> >
-> >  	icnmc |= rzg2l_cru_read(cru, info->image_conv) & ~ICnMC_INF_MASK;
 > 
-> However, the rest of the rzg2l_cru_csi2_setup() doesn't only program
-> the virtual channel filtering through ICnMC (which should be skept for
-> G3E, V2H/P) but also programs DT filtering in INF[5:0] of register
-> ICnIPMC_C0 which seems to be available on G3E and V2H/P as well.
+> Nit: We could collect the output of intel_dp_supports_dsc() in a variable.
+
+It's also an extra step to go back and check what that variable exactly
+contains. I prefer a function call for that reason, unless using a
+variable is unavoidable and the code stays readable.
+
+> But not a blocker.
 > 
-> Section "9.2.4.3.6 VC/Data Type Selector (for Image Processing)" of
-> the chip manual (V2H/P) prescribes:
-> 
-> Only one data type can be handled by each SVC and the data types are
-> selected in the ICnIPMC_C0 to 3.INF[5:0] registers.
+> Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-You are correct, thanks.
-I miss that part.
-
-Maybe we can go for:
-
-static void rzg2l_cru_csi2_setup(struct rzg2l_cru_dev *cru,
-				 const struct rzg2l_cru_ip_format *ip_fmt,
-				 u8 csi_vc)
-{
-	const struct rzg2l_cru_info *info = cru->info;
-	u32 icnmc = ICnMC_INF(ip_fmt->datatype);
-
-	if (cru->info->regs[ICnSVC]) {
-		rzg2l_cru_write(cru, ICnSVCNUM, csi_vc);
-		rzg2l_cru_write(cru, ICnSVC, ICnSVC_SVC0(0) | ICnSVC_SVC1(1) |
-				ICnSVC_SVC2(2) | ICnSVC_SVC3(3));
-	} else {
-		/* Set virtual channel CSI2 */
-		icnmc |= ICnMC_VCSEL(csi_vc);
-	}
-
-	icnmc |= rzg2l_cru_read(cru, info->image_conv) & ~ICnMC_INF_MASK;
-	rzg2l_cru_write(cru, info->image_conv, icnmc);
-}
-
-?
+Thanks.
 
 > 
-> And this patch makes the driver skips that part.
-> Has this patch been tested ? It breaks my V2H/P setup:
+> >   	if (dsc && !intel_dp_dsc_compute_pipe_bpp_limits(connector, limits))
+> >   		return false;
+> > @@ -2869,10 +2882,11 @@ intel_dp_compute_link_for_joined_pipes(struct intel_encoder *encoder,
+> >   	}
+> >   	drm_dbg_kms(display->drm,
+> > -		    "DP lane count %d clock %d bpp input %d compressed " FXP_Q4_FMT " link rate required %d available %d\n",
+> > +		    "DP lane count %d clock %d bpp input %d compressed " FXP_Q4_FMT " HDR %s link rate required %d available %d\n",
+> >   		    pipe_config->lane_count, pipe_config->port_clock,
+> >   		    pipe_config->pipe_bpp,
+> >   		    FXP_Q4_ARGS(pipe_config->dsc.compressed_bpp_x16),
+> > +		    str_yes_no(intel_dp_in_hdr_mode(conn_state)),
+> >   		    intel_dp_config_required_rate(pipe_config),
+> >   		    intel_dp_max_link_data_rate(intel_dp,
+> >   						pipe_config->port_clock,
 > 
->  rzg2l-cru 16010000.cru1: Invalid MB address 0x0 (out of range)
-
-I've not seeing that on RZ/G3E.
-Thanks for sharing.
-
-
-Kind Regards,
-Tommaso
-
-> 
-> 
-> > --
-> > 2.43.0
-> >
-> >
 
