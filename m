@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCRzOLL5iWkiFQAAu9opvQ
-	(envelope-from <stable+bounces-215486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:13:54 +0100
+	id QGJzJhr4iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42089111C09
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:13:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063B91118BE
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8CD230E7C3F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:55:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 077F3314B98F
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870E83793B0;
-	Mon,  9 Feb 2026 14:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD9C3783C9;
+	Mon,  9 Feb 2026 14:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V83xmRkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr4WBeCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8CF2750E6;
-	Mon,  9 Feb 2026 14:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9CE2690EC;
+	Mon,  9 Feb 2026 14:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648954; cv=none; b=aGawM7rNGdjqnDZiXk4PfjGm5Q0pYvY1Vxq8Q6sNcWfu3cvpTOkF/mWOeDr1mYDScgTg+5J3JI20WvfkPX41QSrxdkzpU9E1UEehrlAot5JPZzEmf7DNp546xGCQFwltZqcLgmf/R6w8+kZLpilVAouaNFyz/EDN405Kwn0lDFk=
+	t=1770648620; cv=none; b=VJLHGviv5qj3V+KPIgvSx2x6M/p60kUGLv5ZG+t3qIHtAzSnZU7Rdri/9dPu6SCfVw0cMEt6i+5hik1OMWpof+vIfkMcKRN+rXPNggqOFwW0Q6qs48P1ZokqHNPJsJSsQi4hNgG+ReZCJWQ6jBQOYf6s17SH+r5nvzboQVdRwaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648954; c=relaxed/simple;
-	bh=9xcwIQoA5RPPoDj7+us9BKQQFz5dx0GqP2fx9jN1yN0=;
+	s=arc-20240116; t=1770648620; c=relaxed/simple;
+	bh=RFwDqJb+yGwj3rGxknsvsAHFPAbdjyGlC17hQ9TnRJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SucYl1qWVRaFDdWZHWBKeysgYHaLXwpNQr/oVpyLD7hVxMQRAOWWmU6GF4vkq5cjuh85QLif3sRjxDDj98ODIPswekM+UvzfFqn60+JwqCGUzeC0VelgX7abmNRTwtSq4FuxrTZmxhULCk4VCuO1qXo6tWRRNiA1ew9H9tOEvaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V83xmRkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D7CC116C6;
-	Mon,  9 Feb 2026 14:55:53 +0000 (UTC)
+	 MIME-Version; b=P3EIPyNoTyjjzZNyc2/b4mHgkV5+0hb3Di7JX/kmq3o9tEs7GezZAUpCa8l99Ac0rt/panV84yWp3+aMd3neH2ABJ6x4bwnBpnDRRl9O2cgN1Hr53ocaq61S4clrw/mEplOnowtJ+gzgT39A82xDVQk6pKm6ynSO7L9ga47dxHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr4WBeCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D198BC116C6;
+	Mon,  9 Feb 2026 14:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648953;
-	bh=9xcwIQoA5RPPoDj7+us9BKQQFz5dx0GqP2fx9jN1yN0=;
+	s=korg; t=1770648620;
+	bh=RFwDqJb+yGwj3rGxknsvsAHFPAbdjyGlC17hQ9TnRJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V83xmRkQVW9LsuOhFbI/XrOS+2gVoAjQbnDAClWnBagVBs1e/VCKty4FxTfzjo4kC
-	 8HRLqBEF71Bnm2zgq1ijQ8UumFcYdJ+U3vix4toymvLWswUkJlnoms+ohOq8qLcZCj
-	 zWen4R2mH5G0M572y6fSPAklsc/83j1gtcAR2md4=
+	b=Gr4WBeCW5e1584kC5VIpk+xubKBeT0DLjBXX805RPrfXgyH9RXDx08B2kFpwQ6YuB
+	 1iQH3Ay3QJbRpjc+jP5FEHzW3ftgo5JoqFzGFOou6HMPdCfVusM7j0gi9yj5Ie+R2O
+	 uucHeFdnHIYOz6x5PHFcDuEth7rI+LwtZDzfrDk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siarhei Vishniakou <svv@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/75] HID: playstation: Center initial joystick axes to prevent spurious events
+Subject: [PATCH 6.6 65/86] net: liquidio: Fix off-by-one error in VF setup_nic_devices() cleanup
 Date: Mon,  9 Feb 2026 15:24:28 +0100
-Message-ID: <20260209142302.968275689@linuxfoundation.org>
+Message-ID: <20260209142307.116755651@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +69,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215486-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215385-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 42089111C09
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
+X-Rspamd-Queue-Id: 063B91118BE
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siarhei Vishniakou <svv@google.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit e9143268d259d98e111a649affa061acb8e13c5b ]
+[ Upstream commit 6cbba46934aefdfb5d171e0a95aec06c24f7ca30 ]
 
-When a new PlayStation gamepad (DualShock 4 or DualSense) is initialized,
-the input subsystem sets the default value for its absolute axes (e.g.,
-ABS_X, ABS_Y) to 0.
+In setup_nic_devices(), the initialization loop jumps to the label
+setup_nic_dev_free on failure. The current cleanup loop while(i--)
+skip the failing index i, causing a memory leak.
 
-However, the hardware's actual neutral/resting state for these joysticks
-is 128 (0x80). This creates a mismatch.
+Fix this by changing the loop to iterate from the current index i
+down to 0.
 
-When the first HID report arrives from the device, the driver sees the
-resting value of 128. The kernel compares this to its initial state of 0
-and incorrectly interprets this as a delta (0 -> 128). Consequently, it
-generates EV_ABS events for this initial, non-existent movement.
+Compile tested only. Issue found using code review.
 
-This behavior can fail userspace 'sanity check' tests (e.g., in
-Android CTS) that correctly assert no motion events should be generated
-from a device that is already at rest.
-
-This patch fixes the issue by explicitly setting the initial value of the
-main joystick axes (e.g., ABS_X, ABS_Y, ABS_RX, ABS_RY) to 128 (0x80)
-in the common ps_gamepad_create() function.
-
-This aligns the kernel's initial state with the hardware's expected
-neutral state, ensuring that the first report (at 128) produces no
-delta and thus, no spurious event.
-
-Signed-off-by: Siarhei Vishniakou <svv@google.com>
-Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 846b46873eeb ("liquidio CN23XX: VF offload features")
+Suggested-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20260128154440.278369-4-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-playstation.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/cavium/liquidio/lio_vf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
-index 944e5e5ff1348..69c16c9b8c5c9 100644
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -463,11 +463,16 @@ static struct input_dev *ps_gamepad_create(struct hid_device *hdev,
- 	if (IS_ERR(gamepad))
- 		return ERR_CAST(gamepad);
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c b/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
+index 62c2eadc33e35..15ef647e8aad3 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
+@@ -2221,11 +2221,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
  
-+	/* Set initial resting state for joysticks to 128 (center) */
- 	input_set_abs_params(gamepad, ABS_X, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_X].value = 128;
- 	input_set_abs_params(gamepad, ABS_Y, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_Y].value = 128;
- 	input_set_abs_params(gamepad, ABS_Z, 0, 255, 0, 0);
- 	input_set_abs_params(gamepad, ABS_RX, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_RX].value = 128;
- 	input_set_abs_params(gamepad, ABS_RY, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_RY].value = 128;
- 	input_set_abs_params(gamepad, ABS_RZ, 0, 255, 0, 0);
+ setup_nic_dev_free:
  
- 	input_set_abs_params(gamepad, ABS_HAT0X, -1, 1, 0, 0);
+-	while (i--) {
++	do {
+ 		dev_err(&octeon_dev->pci_dev->dev,
+ 			"NIC ifidx:%d Setup failed\n", i);
+ 		liquidio_destroy_nic_device(octeon_dev, i);
+-	}
++	} while (i--);
+ 
+ setup_nic_dev_done:
+ 
 -- 
 2.51.0
 
