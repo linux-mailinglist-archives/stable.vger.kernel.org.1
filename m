@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBJaDojyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:20 +0100
+	id cDU1IFf3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92D1110C61
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E28D911173D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 14442301B7DB
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C5F53113C41
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4EC37C0F5;
-	Mon,  9 Feb 2026 14:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F05B3783C9;
+	Mon,  9 Feb 2026 14:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWd9assQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtGsbLv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BB536828A;
-	Mon,  9 Feb 2026 14:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DC425DB1C;
+	Mon,  9 Feb 2026 14:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648005; cv=none; b=sujZ6rjMBpSPh/dWUoYRP7NnhFKgS9IgkqX6uXkKk9DovKTCgr3xsPCx+a08Mw0+YvJWs9mTIn9HgVQWyefeACpShsauE8HsJ9V8DVYYjTsq5HXhoLE413pvQxeSup30hAIz6ditVN1hnmWrN9RLF4gSpcZwCxI1gGVzMW2rPMk=
+	t=1770648435; cv=none; b=nSvK6G6MlCOgrj+CetyaEv4dGjwUaO4QCJ6xmIJwz9VZ3L7JP/zyassUq4HNCZID9fbUAAEstdgMLZaUMXNnb6XKa9ZQyYV/ty7nFegkFDdEYIfVuDhDYgEIAkquwU+Oi2Ho38bT0rGB8OsDd2rg879OrM8fNZSSInB630oWlnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648005; c=relaxed/simple;
-	bh=np68byDpRSIdYEU+WTuixgeLpizeUdC8r01i9KakiRk=;
+	s=arc-20240116; t=1770648435; c=relaxed/simple;
+	bh=DbQwUXzhuolyVi8EfA46QNtL8gkJWjrOWiaH7l0hZ84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjGBOhqvgVrdXXwZoJGolvyKxYXS9cLD/uDgcNtyRUkm4Fm2d9KPxTwZwSSRS3v6KZlpwQi7V/g/s6ufqLv9YXqzZxcSyzQDJ+uTRMkmQTqdtHsb1gf1r5nAvnx2ibzTb31y4EmabGX8KMH4a6dpAjelQA4h0U1IP6S3BmPqJ90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWd9assQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD6CC116C6;
-	Mon,  9 Feb 2026 14:40:04 +0000 (UTC)
+	 MIME-Version; b=evQEUiU1IBxYl8Dtw4eX7nbPOiuKD9JJ1luOb1669VB/yhID03oTpLKPE1IcMIskLVeYpYYCDXDVD6yiGRUJmUAYm2aD9HdMse7WpTF0TiT4KxlxFiRGzZSrZs2b1Nay9GahXvBK4XLv1Zdgj7wBGOx2YSrFR+FUp1XYDJf7LYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtGsbLv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500B3C19424;
+	Mon,  9 Feb 2026 14:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648004;
-	bh=np68byDpRSIdYEU+WTuixgeLpizeUdC8r01i9KakiRk=;
+	s=korg; t=1770648434;
+	bh=DbQwUXzhuolyVi8EfA46QNtL8gkJWjrOWiaH7l0hZ84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWd9assQgNCP7kYPsixK1B9ND60pK2/WfjXzCh7R4pdEqoIqjNhjtgTCaf+5Z01PW
-	 Im4FDoZ5LPHseOLTSqBvgxjREz7d5NP24H1/7+3LWP6bOfwmjN7L5X1N5K0O+zrqQM
-	 HUskx8vrunBrH4xPZS2a7VUa041P3/9cymvlk4FM=
+	b=TtGsbLv9tNpngCnFtjlsAOn/C86r3ToCuJzVyLLWs8+r8ugN8ptt+sNQyFdKIo4cM
+	 bRsDNeo90vWzma1Njtac8Kgt1u8g8d7z/e5P05JuldAAz2J2ZZE4fEfiBK8TIvabto
+	 RCC5qsrVWBPppUZl7eWseGVNe4+8/m6rJElrB/bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/113] net: usb: r8152: fix resume reset deadlock
+Subject: [PATCH 6.6 37/86] netfilter: replace -EEXIST with -EBUSY
 Date: Mon,  9 Feb 2026 15:24:00 +0100
-Message-ID: <20260209142313.452746656@linuxfoundation.org>
+Message-ID: <20260209142306.121754828@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,136 +67,113 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215199-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215327-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email]
-X-Rspamd-Queue-Id: D92D1110C61
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email,strlen.de:email]
+X-Rspamd-Queue-Id: E28D911173D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Daniel Gomez <da.gomez@samsung.com>
 
-[ Upstream commit 6d06bc83a5ae8777a5f7a81c32dd75b8d9b2fe04 ]
+[ Upstream commit 2bafeb8d2f380c3a81d98bd7b78b854b564f9cd4 ]
 
-rtl8152 can trigger device reset during reset which
-potentially can result in a deadlock:
+The -EEXIST error code is reserved by the module loading infrastructure
+to indicate that a module is already loaded. When a module's init
+function returns -EEXIST, userspace tools like kmod interpret this as
+"module already loaded" and treat the operation as successful, returning
+0 to the user even though the module initialization actually failed.
 
- **** DPM device timeout after 10 seconds; 15 seconds until panic ****
- Call Trace:
- <TASK>
- schedule+0x483/0x1370
- schedule_preempt_disabled+0x15/0x30
- __mutex_lock_common+0x1fd/0x470
- __rtl8152_set_mac_address+0x80/0x1f0
- dev_set_mac_address+0x7f/0x150
- rtl8152_post_reset+0x72/0x150
- usb_reset_device+0x1d0/0x220
- rtl8152_resume+0x99/0xc0
- usb_resume_interface+0x3e/0xc0
- usb_resume_both+0x104/0x150
- usb_resume+0x22/0x110
+Replace -EEXIST with -EBUSY to ensure correct error reporting in the module
+initialization path.
 
-The problem is that rtl8152 resume calls reset under
-tp->control mutex while reset basically re-enters rtl8152
-and attempts to acquire the same tp->control lock once
-again.
+Affected modules:
+  * ebtable_broute ebtable_filter ebtable_nat arptable_filter
+  * ip6table_filter ip6table_mangle ip6table_nat ip6table_raw
+  * ip6table_security iptable_filter iptable_mangle iptable_nat
+  * iptable_raw iptable_security
 
-Reset INACCESSIBLE device outside of tp->control mutex
-scope to avoid recursive mutex_lock() deadlock.
-
-Fixes: 4933b066fefb ("r8152: If inaccessible at resume time, issue a reset")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patch.msgid.link/20260129031106.3805887-1-senozhatsky@chromium.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ net/bridge/netfilter/ebtables.c | 2 +-
+ net/netfilter/nf_log.c          | 4 ++--
+ net/netfilter/x_tables.c        | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 3fcd2b736c5e3..d27e62939bf13 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -8565,19 +8565,6 @@ static int rtl8152_system_resume(struct r8152 *tp)
- 		usb_submit_urb(tp->intr_urb, GFP_NOIO);
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index ed62c1026fe93..f99e348c8f37f 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -1299,7 +1299,7 @@ int ebt_register_template(const struct ebt_table *t, int (*table_init)(struct ne
+ 	list_for_each_entry(tmpl, &template_tables, list) {
+ 		if (WARN_ON_ONCE(strcmp(t->name, tmpl->name) == 0)) {
+ 			mutex_unlock(&ebt_mutex);
+-			return -EEXIST;
++			return -EBUSY;
+ 		}
  	}
  
--	/* If the device is RTL8152_INACCESSIBLE here then we should do a
--	 * reset. This is important because the usb_lock_device_for_reset()
--	 * that happens as a result of usb_queue_reset_device() will silently
--	 * fail if the device was suspended or if too much time passed.
--	 *
--	 * NOTE: The device is locked here so we can directly do the reset.
--	 * We don't need usb_lock_device_for_reset() because that's just a
--	 * wrapper over device_lock() and device_resume() (which calls us)
--	 * does that for us.
--	 */
--	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--		usb_reset_device(tp->udev);
--
- 	return 0;
- }
- 
-@@ -8688,19 +8675,33 @@ static int rtl8152_suspend(struct usb_interface *intf, pm_message_t message)
- static int rtl8152_resume(struct usb_interface *intf)
+diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
+index e16f158388bbe..75c812f157e20 100644
+--- a/net/netfilter/nf_log.c
++++ b/net/netfilter/nf_log.c
+@@ -89,7 +89,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
+ 	if (pf == NFPROTO_UNSPEC) {
+ 		for (i = NFPROTO_UNSPEC; i < NFPROTO_NUMPROTO; i++) {
+ 			if (rcu_access_pointer(loggers[i][logger->type])) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto unlock;
+ 			}
+ 		}
+@@ -97,7 +97,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
+ 			rcu_assign_pointer(loggers[i][logger->type], logger);
+ 	} else {
+ 		if (rcu_access_pointer(loggers[pf][logger->type])) {
+-			ret = -EEXIST;
++			ret = -EBUSY;
+ 			goto unlock;
+ 		}
+ 		rcu_assign_pointer(loggers[pf][logger->type], logger);
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index e50c23b9c9c41..d892afc9a1acc 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -1761,7 +1761,7 @@ EXPORT_SYMBOL_GPL(xt_hook_ops_alloc);
+ int xt_register_template(const struct xt_table *table,
+ 			 int (*table_init)(struct net *net))
  {
- 	struct r8152 *tp = usb_get_intfdata(intf);
-+	bool runtime_resume = test_bit(SELECTIVE_SUSPEND, &tp->flags);
- 	int ret;
+-	int ret = -EEXIST, af = table->af;
++	int ret = -EBUSY, af = table->af;
+ 	struct xt_template *t;
  
- 	mutex_lock(&tp->control);
- 
- 	rtl_reset_ocp_base(tp);
- 
--	if (test_bit(SELECTIVE_SUSPEND, &tp->flags))
-+	if (runtime_resume)
- 		ret = rtl8152_runtime_resume(tp);
- 	else
- 		ret = rtl8152_system_resume(tp);
- 
- 	mutex_unlock(&tp->control);
- 
-+	/* If the device is RTL8152_INACCESSIBLE here then we should do a
-+	 * reset. This is important because the usb_lock_device_for_reset()
-+	 * that happens as a result of usb_queue_reset_device() will silently
-+	 * fail if the device was suspended or if too much time passed.
-+	 *
-+	 * NOTE: The device is locked here so we can directly do the reset.
-+	 * We don't need usb_lock_device_for_reset() because that's just a
-+	 * wrapper over device_lock() and device_resume() (which calls us)
-+	 * does that for us.
-+	 */
-+	if (!runtime_resume && test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+		usb_reset_device(tp->udev);
-+
- 	return ret;
- }
- 
+ 	mutex_lock(&xt[af].mutex);
 -- 
 2.51.0
 
