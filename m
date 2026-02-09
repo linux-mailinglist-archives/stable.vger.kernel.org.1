@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-215310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNzOIX32iWmuFAAAu9opvQ
-	(envelope-from <stable+bounces-215310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:13 +0100
+	id IAthCrf0iWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:52:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECA21115C0
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807B211121E
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:52:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7360930BF9EE
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA73330B27B4
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338AB285073;
-	Mon,  9 Feb 2026 14:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A08D37BE93;
+	Mon,  9 Feb 2026 14:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCLDpPdf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9WxgEuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE4B27CCF2;
-	Mon,  9 Feb 2026 14:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26E637BE8D;
+	Mon,  9 Feb 2026 14:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648379; cv=none; b=fY7/t6kcj9ON0lb0rBQZ3AS5J+S+Zwhv3Vxp2VYgkLgeadND9FKo155NJFW10fowQRae11A56b/Su4FDi6+NoMzXIrIC9paT51OGKbXkOamUPGOOU3v5tpMG3K/5Xv/Y3EeuVf0pjllxeyDlUiXB2BHS4S494ymq+pS1yFcag+k=
+	t=1770647890; cv=none; b=LTnf8krNRHUjreqYm++uqQ6nrNsk7hMGpEaCuFlc41flS6r6wOcIJ7E5YHTWMAD/FVdCXkI8iKxZIBX+r4qlBSPIgP2aZlpAA4te3DH+nkxbelaw0lL6OPkBg0maebNoRzLysPwpdZRsc1afWtukv8l7vBO9tpkx9gkoR4JF50s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648379; c=relaxed/simple;
-	bh=9ioA0RbT24eTdIIzyX5p9mFn51sRQMTQH4AB6e0qgR4=;
+	s=arc-20240116; t=1770647890; c=relaxed/simple;
+	bh=wR4WtsSgaHckqs8uwizeH5ljekIfsoG2E2KdB2kb3h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OspE7W+mynlUWdzZbbZOrhRRlqXLWHn7rDaX5AiRpBIWlKvX1aP8zL4nG0E3XGT2ujR1GFjAJQto5XlR7TjPbdM7VRlvvdUUywUUuTq/SkqO/Jf+v8Xq6Qm7M/1scOdku0sIikNzgRuJqxVra+Y0QhDoAAQXHWPdV0edvpDLxkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCLDpPdf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649E8C116C6;
-	Mon,  9 Feb 2026 14:46:18 +0000 (UTC)
+	 MIME-Version; b=CmnxgnfnX5NmmM9JTd208T/P5LYJTc+YHdopRTY9s2L89gUC4T6a0TJI3TP5pz6up/wXDO+BKzkgXVMPy9ptzByzylq8vvfU1n3xK+whmCMKTLDabju79ZrtbClYzxUaqDqmie4MHRmOGhRVLYStbvBIa/sCETIg56eikz9iYcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9WxgEuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E00C116C6;
+	Mon,  9 Feb 2026 14:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648378;
-	bh=9ioA0RbT24eTdIIzyX5p9mFn51sRQMTQH4AB6e0qgR4=;
+	s=korg; t=1770647890;
+	bh=wR4WtsSgaHckqs8uwizeH5ljekIfsoG2E2KdB2kb3h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCLDpPdfTu59a/t27TkXiziIzWuqPGUFQrr8rJJ23MVgZUPqkVwpEB93UAqnL1ZvK
-	 CzsgH6z5KGYSgMBYJ+Cdrg5nM8yWXdHNtt19SrAVnOsGfss75aKR9JfBgebp3v0rt7
-	 yD+JAPFGWoH+6NjAa38yCCtIwUjNXcOsgfuF7MVI=
+	b=j9WxgEuFhiQIHqOz1EGAsjN8PUXw76d/WJmdLhsQhZVfZwg5isB0kP9v32m06GwlM
+	 RCZWUVnDFE+SQhXuoD7Eqhgy5tGsdT8Ey4DKJKZVVyuQMB+OGMz64V134465Xt0AcS
+	 CT9oADVqcwMgXiuliSaPnrcOBOr5Xr8gXLuSi7n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 03/86] platform/x86: intel_telemetry: Fix swapped arrays in PSS output
+	Kery Qi <qikeyu2017@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 057/113] ASoC: davinci-evm: Fix reference leak in davinci_evm_probe
 Date: Mon,  9 Feb 2026 15:23:26 +0100
-Message-ID: <20260209142304.899820561@linuxfoundation.org>
+Message-ID: <20260209142312.248442233@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,150 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215165-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215310-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email]
-X-Rspamd-Queue-Id: 2ECA21115C0
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 807B211121E
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-commit 25e9e322d2ab5c03602eff4fbf4f7c40019d8de2 upstream.
+[ Upstream commit 5b577d214fcc109707bcb77b4ae72a31cfd86798 ]
 
-The LTR blocking statistics and wakeup event counters are incorrectly
-cross-referenced during debugfs output rendering. The code populates
-pss_ltr_blkd[] with LTR blocking data and pss_s0ix_wakeup[] with wakeup
-data, but the display loops reference the wrong arrays.
+The davinci_evm_probe() function calls of_parse_phandle() to acquire
+device nodes for "ti,audio-codec" and "ti,mcasp-controller". These
+functions return device nodes with incremented reference counts.
 
-This causes the "LTR Blocking Status" section to print wakeup events
-and the "Wakes Status" section to print LTR blockers, misleading power
-management analysis and S0ix residency debugging.
+However, in several error paths (e.g., when the second of_parse_phandle(),
+snd_soc_of_parse_card_name(), or devm_snd_soc_register_card() fails),
+the function returns directly without releasing the acquired nodes,
+leading to reference leaks.
 
-Fix by aligning array usage with the intended output section labels.
+This patch adds an error handling path 'err_put' to properly release
+the device nodes using of_node_put() and clean up the pointers when
+an error occurs.
 
-Fixes: 87bee290998d ("platform:x86: Add Intel Telemetry Debugfs interfaces")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Link: https://patch.msgid.link/20251224032053.3915900-1-kaushlendra.kumar@intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Link: https://patch.msgid.link/20260107154836.1521-2-qikeyu2017@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/telemetry/debugfs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/ti/davinci-evm.c | 39 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 31 insertions(+), 8 deletions(-)
 
---- a/drivers/platform/x86/intel/telemetry/debugfs.c
-+++ b/drivers/platform/x86/intel/telemetry/debugfs.c
-@@ -449,7 +449,7 @@ static int telem_pss_states_show(struct
- 	for (index = 0; index < debugfs_conf->pss_ltr_evts; index++) {
- 		seq_printf(s, "%-32s\t%u\n",
- 			   debugfs_conf->pss_ltr_data[index].name,
--			   pss_s0ix_wakeup[index]);
-+			   pss_ltr_blkd[index]);
+diff --git a/sound/soc/ti/davinci-evm.c b/sound/soc/ti/davinci-evm.c
+index 1bf333d2740d1..5b2b3a072b4a4 100644
+--- a/sound/soc/ti/davinci-evm.c
++++ b/sound/soc/ti/davinci-evm.c
+@@ -193,27 +193,32 @@ static int davinci_evm_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 
+ 	dai->cpus->of_node = of_parse_phandle(np, "ti,mcasp-controller", 0);
+-	if (!dai->cpus->of_node)
+-		return -EINVAL;
++	if (!dai->cpus->of_node) {
++		ret = -EINVAL;
++		goto err_put;
++	}
+ 
+ 	dai->platforms->of_node = dai->cpus->of_node;
+ 
+ 	evm_soc_card.dev = &pdev->dev;
+ 	ret = snd_soc_of_parse_card_name(&evm_soc_card, "ti,model");
+ 	if (ret)
+-		return ret;
++		goto err_put;
+ 
+ 	mclk = devm_clk_get(&pdev->dev, "mclk");
+ 	if (PTR_ERR(mclk) == -EPROBE_DEFER) {
+-		return -EPROBE_DEFER;
++		ret = -EPROBE_DEFER;
++		goto err_put;
+ 	} else if (IS_ERR(mclk)) {
+ 		dev_dbg(&pdev->dev, "mclk not found.\n");
+ 		mclk = NULL;
  	}
  
- 	seq_puts(s, "\n--------------------------------------\n");
-@@ -459,7 +459,7 @@ static int telem_pss_states_show(struct
- 	for (index = 0; index < debugfs_conf->pss_wakeup_evts; index++) {
- 		seq_printf(s, "%-32s\t%u\n",
- 			   debugfs_conf->pss_wakeup[index].name,
--			   pss_ltr_blkd[index]);
-+			   pss_s0ix_wakeup[index]);
- 	}
+ 	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
+-	if (!drvdata)
+-		return -ENOMEM;
++	if (!drvdata) {
++		ret = -ENOMEM;
++		goto err_put;
++	}
  
- 	return 0;
+ 	drvdata->mclk = mclk;
+ 
+@@ -223,7 +228,8 @@ static int davinci_evm_probe(struct platform_device *pdev)
+ 		if (!drvdata->mclk) {
+ 			dev_err(&pdev->dev,
+ 				"No clock or clock rate defined.\n");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto err_put;
+ 		}
+ 		drvdata->sysclk = clk_get_rate(drvdata->mclk);
+ 	} else if (drvdata->mclk) {
+@@ -239,8 +245,25 @@ static int davinci_evm_probe(struct platform_device *pdev)
+ 	snd_soc_card_set_drvdata(&evm_soc_card, drvdata);
+ 	ret = devm_snd_soc_register_card(&pdev->dev, &evm_soc_card);
+ 
+-	if (ret)
++	if (ret) {
+ 		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
++		goto err_put;
++	}
++
++	return ret;
++
++err_put:
++	dai->platforms->of_node = NULL;
++
++	if (dai->cpus->of_node) {
++		of_node_put(dai->cpus->of_node);
++		dai->cpus->of_node = NULL;
++	}
++
++	if (dai->codecs->of_node) {
++		of_node_put(dai->codecs->of_node);
++		dai->codecs->of_node = NULL;
++	}
+ 
+ 	return ret;
+ }
+-- 
+2.51.0
+
 
 
 
