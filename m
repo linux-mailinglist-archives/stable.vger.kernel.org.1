@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-215177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLefN5rxiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:22 +0100
+	id uLqSCZ7ziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE6B110A07
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9359F110FCA
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A303300DEF9
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFD363020E86
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECFE37C0F6;
-	Mon,  9 Feb 2026 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CD737C112;
+	Mon,  9 Feb 2026 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orSSY9ph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mejJR+1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CF637BE65;
-	Mon,  9 Feb 2026 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C3A37BE77;
+	Mon,  9 Feb 2026 14:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647930; cv=none; b=EiX7umeM3qVEvxi3UxCRRz4WDFUVHid7e4NDRUprEFdctVBN4uvOtD2I0OxiTbaBmsNqhIKD5GyIAlXat7o4XjtR5AN+4e1aJjgk4TzHSUituIanFHjJWmUvFgJWmAIrprVTizAL4iGKr3KfWsYDgb1+1qJwGdWuT2YnUj7obOA=
+	t=1770648369; cv=none; b=adSgvXEDTXw7STUTh6V8ZZR8VKXcSNVjpOiBFOC1v3HdFk72REKkeu4D4rLe27E6jsJX+YhoLI0c15NQ42yxCfdvlHOuwNLxLVNGIr3oycaz18B8OBdtx/CSFqIlmLe9ZLJ5lnVenBFXQtgIjpQsQ48yuC9rXORGHD8lunocnAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647930; c=relaxed/simple;
-	bh=l3xreFmhANUDV1hMDWl6EObZ7U42lIP+RKKHCW+PTQo=;
+	s=arc-20240116; t=1770648369; c=relaxed/simple;
+	bh=B17VxzZX1998adQMWqIWQVC3288Vv09AzJB++q++u+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRu+sGBab7m9GBdA5koFNqR2QtizYtKGNt0kuzVX373exMEy3i1o1bnjTxBkVgIwdx0i1cEomKFHYywYYsKP4EcYELVVY6UWhZ32rPa9VEdzhoX8nCQJT9OhOPNrpUabGcuo+yTI00wY6Z4P+vSctoSEC/KNNjDCc1Bc3aMYWt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orSSY9ph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FBDC16AAE;
-	Mon,  9 Feb 2026 14:38:49 +0000 (UTC)
+	 MIME-Version; b=bEOEj/O5oC45BqUAZOtdGZ0q3rfv76jr5nGNIWf9ovgtygBZ3ENRO4HT3+njKUVgANGVR2WbYWTkXopceM+tNTTTB0WHHM06XXsASqyuKFMIijBOtlq8rvdi9YTlsPz7RCSPEGBqHQzPPZ1shBQnxQ5ajBB59Qq+adootG4G+Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mejJR+1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C98DC19422;
+	Mon,  9 Feb 2026 14:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647930;
-	bh=l3xreFmhANUDV1hMDWl6EObZ7U42lIP+RKKHCW+PTQo=;
+	s=korg; t=1770648368;
+	bh=B17VxzZX1998adQMWqIWQVC3288Vv09AzJB++q++u+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orSSY9phHfE62QKDRMYz5tL3dCvMu5sRjr2YSzE+1qfzzXpXFIPbVlEhcX2PW3wAg
-	 f7/vr0U5unDWQC0YA/LwdMUX2WUkRa5ryRvVSQYQsvvUq1TWGEL78eMTzAhR1D1OAX
-	 WCSgcK5w75UsUsMDyWhvsADicHJewklrG6eV6IJU=
+	b=mejJR+1/PsYIyJVCVU061lGx+WN+Je0Kbzy77jbNLMu8jTxNo0oaIkcwmM179+zff
+	 FLfnQ1zeh3V340+i7DKJHK5tDx7yjvOdIc/qe+RsfPlM/y8Pt6KNyssJl0PDIsnkyb
+	 mM0E1RxWnQM5tMIHVSm7Xql9+4GZiV42Lf8UPpIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/113] btrfs: reject new transactions if the fs is fully read-only
+	stable@kernel.org,
+	Steven Moreland <smoreland@google.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.6 17/86] binder: fix BR_FROZEN_REPLY error log
 Date: Mon,  9 Feb 2026 15:23:40 +0100
-Message-ID: <20260209142312.740102770@linuxfoundation.org>
+Message-ID: <20260209142305.397359451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,175 +70,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215177-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215307-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bur.io,wdc.com,suse.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bur.io:email,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,wdc.com:email]
-X-Rspamd-Queue-Id: 7CE6B110A07
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9359F110FCA
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 1972f44c189c8aacde308fa9284e474c1a5cbd9f ]
+commit 1769f90e5ba2a6d24bb46b85da33fe861c68f005 upstream.
 
-[BUG]
-There is a bug report where a heavily fuzzed fs is mounted with all
-rescue mount options, which leads to the following warnings during
-unmount:
+The error logging for failed transactions is misleading as it always
+reports "dead process or thread" even when the target is actually
+frozen. Additionally, the pid and tid are reversed which can further
+confuse debugging efforts. Fix both issues.
 
-  BTRFS: Transaction aborted (error -22)
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 9758 Comm: repro.out Not tainted
-  6.19.0-rc5-00002-gb71e635feefc #7 PREEMPT(full)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:find_free_extent_update_loop fs/btrfs/extent-tree.c:4208 [inline]
-  RIP: 0010:find_free_extent+0x52f0/0x5d20 fs/btrfs/extent-tree.c:4611
-  Call Trace:
-   <TASK>
-   btrfs_reserve_extent+0x2cd/0x790 fs/btrfs/extent-tree.c:4705
-   btrfs_alloc_tree_block+0x1e1/0x10e0 fs/btrfs/extent-tree.c:5157
-   btrfs_force_cow_block+0x578/0x2410 fs/btrfs/ctree.c:517
-   btrfs_cow_block+0x3c4/0xa80 fs/btrfs/ctree.c:708
-   btrfs_search_slot+0xcad/0x2b50 fs/btrfs/ctree.c:2130
-   btrfs_truncate_inode_items+0x45d/0x2350 fs/btrfs/inode-item.c:499
-   btrfs_evict_inode+0x923/0xe70 fs/btrfs/inode.c:5628
-   evict+0x5f4/0xae0 fs/inode.c:837
-   __dentry_kill+0x209/0x660 fs/dcache.c:670
-   finish_dput+0xc9/0x480 fs/dcache.c:879
-   shrink_dcache_for_umount+0xa0/0x170 fs/dcache.c:1661
-   generic_shutdown_super+0x67/0x2c0 fs/super.c:621
-   kill_anon_super+0x3b/0x70 fs/super.c:1289
-   btrfs_kill_super+0x41/0x50 fs/btrfs/super.c:2127
-   deactivate_locked_super+0xbc/0x130 fs/super.c:474
-   cleanup_mnt+0x425/0x4c0 fs/namespace.c:1318
-   task_work_run+0x1d4/0x260 kernel/task_work.c:233
-   exit_task_work include/linux/task_work.h:40 [inline]
-   do_exit+0x694/0x22f0 kernel/exit.c:971
-   do_group_exit+0x21c/0x2d0 kernel/exit.c:1112
-   __do_sys_exit_group kernel/exit.c:1123 [inline]
-   __se_sys_exit_group kernel/exit.c:1121 [inline]
-   __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1121
-   x64_sys_call+0x2210/0x2210 arch/x86/include/generated/asm/syscalls_64.h:232
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe8/0xf80 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x44f639
-  Code: Unable to access opcode bytes at 0x44f60f.
-  RSP: 002b:00007ffc15c4e088 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-  RAX: ffffffffffffffda RBX: 00000000004c32f0 RCX: 000000000044f639
-  RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000001
-  RBP: 0000000000000001 R08: ffffffffffffffc0 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004c32f0
-  R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
-   </TASK>
-
-Since rescue mount options will mark the full fs read-only, there should
-be no new transaction triggered.
-
-But during unmount we will evict all inodes, which can trigger a new
-transaction, and triggers warnings on a heavily corrupted fs.
-
-[CAUSE]
-Btrfs allows new transaction even on a read-only fs, this is to allow
-log replay happen even on read-only mounts, just like what ext4/xfs do.
-
-However with rescue mount options, the fs is fully read-only and cannot
-be remounted read-write, thus in that case we should also reject any new
-transactions.
-
-[FIX]
-If we find the fs has rescue mount options, we should treat the fs as
-error, so that no new transaction can be started.
-
-Reported-by: Jiaming Zhang <r772577952@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CANypQFYw8Nt8stgbhoycFojOoUmt+BoZ-z8WJOZVxcogDdwm=Q@mail.gmail.com/
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Cc: Steven Moreland <smoreland@google.com>
+Fixes: a15dac8b2286 ("binder: additional transaction error logs")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260123175702.2154348-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 13 +++++++++++++
- fs/btrfs/fs.h      |  8 ++++++++
- 2 files changed, 21 insertions(+)
+ drivers/android/binder.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 93300c3fe0cab..034cd7b1d0f5f 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -3202,6 +3202,15 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
- 	return 0;
- }
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -3663,8 +3663,9 @@ static void binder_transaction(struct bi
+ 	return;
  
-+static bool fs_is_full_ro(const struct btrfs_fs_info *fs_info)
-+{
-+	if (!sb_rdonly(fs_info->sb))
-+		return false;
-+	if (unlikely(fs_info->mount_opt & BTRFS_MOUNT_FULL_RO_MASK))
-+		return true;
-+	return false;
-+}
-+
- int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_devices)
- {
- 	u32 sectorsize;
-@@ -3310,6 +3319,10 @@ int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_device
- 	if (btrfs_super_flags(disk_super) & BTRFS_SUPER_FLAG_ERROR)
- 		WRITE_ONCE(fs_info->fs_error, -EUCLEAN);
- 
-+	/* If the fs has any rescue options, no transaction is allowed. */
-+	if (fs_is_full_ro(fs_info))
-+		WRITE_ONCE(fs_info->fs_error, -EROFS);
-+
- 	/* Set up fs_info before parsing mount options */
- 	nodesize = btrfs_super_nodesize(disk_super);
- 	sectorsize = btrfs_super_sectorsize(disk_super);
-diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index 5c8d6149e1421..93ff1db75af48 100644
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -230,6 +230,14 @@ enum {
- 	BTRFS_MOUNT_IGNORESUPERFLAGS		= (1ULL << 32),
- };
- 
-+/* These mount options require a full read-only fs, no new transaction is allowed. */
-+#define BTRFS_MOUNT_FULL_RO_MASK		\
-+	(BTRFS_MOUNT_NOLOGREPLAY |		\
-+	 BTRFS_MOUNT_IGNOREBADROOTS |		\
-+	 BTRFS_MOUNT_IGNOREDATACSUMS |		\
-+	 BTRFS_MOUNT_IGNOREMETACSUMS |		\
-+	 BTRFS_MOUNT_IGNORESUPERFLAGS)
-+
- /*
-  * Compat flags that we support.  If any incompat flags are set other than the
-  * ones specified below then we will fail to mount
--- 
-2.51.0
-
+ err_dead_proc_or_thread:
+-	binder_txn_error("%d:%d dead process or thread\n",
+-		thread->pid, proc->pid);
++	binder_txn_error("%d:%d %s process or thread\n",
++			 proc->pid, thread->pid,
++			 return_error == BR_FROZEN_REPLY ? "frozen" : "dead");
+ 	return_error_line = __LINE__;
+ 	binder_dequeue_work(proc, tcomplete);
+ err_translate_failed:
 
 
 
