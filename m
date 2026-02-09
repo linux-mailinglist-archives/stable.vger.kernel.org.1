@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-215130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PMpDCnxiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215130-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:29 +0100
+	id 2P9aHdrwiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968DD1108C1
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E131107F4
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D4663030D30
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:36:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADC21301650D
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BD13793DB;
-	Mon,  9 Feb 2026 14:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2008837BE69;
+	Mon,  9 Feb 2026 14:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUy2wXXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0F0rVzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C479125B2;
-	Mon,  9 Feb 2026 14:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A4137AA9E;
+	Mon,  9 Feb 2026 14:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647774; cv=none; b=H16fZTqayO5A9Ickc+5P52tLlq4SHIxMmRqRr94ikjmwiL3ygMFyLgKNzT7DyJ8lnjWcXCMQ/t7Ww1U515Hb8KBf3AMAyXFUQsplaFO7MAOBkpzXqbzPLzeei9RHJTr8mSVvtI5F/EtAEGyGuVGXdK6gRMV/Q5ZekGsUxkQWwWA=
+	t=1770647371; cv=none; b=dmm9VFAZnihABeKKY+qtuRsLoIImDc26XNC3GwFAunPs5a1JtLX2aVbHlBlpSVyvF21r83yHY+3jHca5w3ZQKULbOosq3B+/JwTW3gZiGF2QoVqRqd5zCK6Bvzt/jgtWgae4Sc4YITyHJvmcK0dh+yVzykrGfPRwqdrnDYau9fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647774; c=relaxed/simple;
-	bh=iQQyQeccomaOLttv2iYnyx4rtnpAl+8/eMgATNtWw0s=;
+	s=arc-20240116; t=1770647371; c=relaxed/simple;
+	bh=R6Q19zLV1ugv2sqlB8VtbkDUfPtYITxD/QL9qoFtP7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6sjiCzbzV/zj/NmB/Nq6NWfcTiQEnmHtp2LKv6vqgU4xC18m23eU76zOGi/KpZHH6KkH/6pvzUJvmBKn86XLX/rkenNoYLrNTQqojiqksAhJiZMAnyXSLK3MbvLIz0+G9vx5pyD2hkefxaiX5zpoZ+JsTMjTRr8BS8mDIFACIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUy2wXXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7B5C116C6;
-	Mon,  9 Feb 2026 14:36:13 +0000 (UTC)
+	 MIME-Version; b=iUfFLgHX91gOOdyxCKDMU4ARnItd045mx91lVG/PctRpBDIJV3yRNEJ2A8IID8bYg15Yh+Inz1XVMUqs+GfOMnJs/71h799ygs77JVFyW5Jw3nllS4tACZyshdmGwhp9JKbCFQ6N0sDCL5r4sXpD882Qc/1Xu5v0pXkHmsbgzfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0F0rVzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19657C116C6;
+	Mon,  9 Feb 2026 14:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647774;
-	bh=iQQyQeccomaOLttv2iYnyx4rtnpAl+8/eMgATNtWw0s=;
+	s=korg; t=1770647371;
+	bh=R6Q19zLV1ugv2sqlB8VtbkDUfPtYITxD/QL9qoFtP7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUy2wXXgQ7TscITkmbuERCwkHWNRvJdxzyaNUk6UpEE5kTz6NXYyckY3+v7iFrHzB
-	 eenpkP91csAce7Q3B1o1g0JYfw9alcKiFmgRFPuWTHxOnt81+ioGVj1m6Vf7BfhzNh
-	 9c84BMsSpzwuTw4ZelyJZWmUSX8QvV1e25WZIkAY=
+	b=h0F0rVzFdgwNoe/3cw8smVomsv1+P66flYN6woWUkVeH7eDBbSPVIDefDtUDrrBVo
+	 1mit1nmcJai3iK9LuF4UaejhXer3/G1uBtM0LfC56Rb1bABlBZbk9pOyRu4jq1CamK
+	 d72EwAH3bQkmAmWGy9MgJZWhZficQVc/AuE1Iin4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 003/113] x86/kfence: fix booting on 32bit non-PAE systems
+	Perry Yuan <perry.yuan@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 079/175] drm/amd/pm: Disable MMIO access during SMU Mode 1 reset
 Date: Mon,  9 Feb 2026 15:22:32 +0100
-Message-ID: <20260209142310.331300876@linuxfoundation.org>
+Message-ID: <20260209142323.285461750@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,104 +66,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,citrix.com,alien8.de,google.com,linutronix.de,redhat.com,linux.intel.com,zytor.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-215130-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215010-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 968DD1108C1
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: F3E131107F4
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Perry Yuan <perry.yuan@amd.com>
 
-commit 16459fe7e0ca6520a6e8f603de4ccd52b90fd765 upstream.
+[ Upstream commit 0de604d0357d0d22cbf03af1077d174b641707b6 ]
 
-The original patch inverted the PTE unconditionally to avoid
-L1TF-vulnerable PTEs, but Linux doesn't make this adjustment in 2-level
-paging.
+During Mode 1 reset, the ASIC undergoes a reset cycle and becomes
+temporarily inaccessible via PCIe. Any attempt to access MMIO registers
+during this window (e.g., from interrupt handlers or other driver threads)
+can result in uncompleted PCIe transactions, leading to NMI panics or
+system hangs.
 
-Adjust the logic to use the flip_protnone_guard() helper, which is a nop
-on 2-level paging but inverts the address bits in all other paging modes.
+To prevent this, set the `no_hw_access` flag to true immediately after
+triggering the reset. This signals other driver components to skip
+register accesses while the device is offline.
 
-This doesn't matter for the Xen aspect of the original change.  Linux no
-longer supports running 32bit PV under Xen, and Xen doesn't support
-running any 32bit PV guests without using PAE paging.
+A memory barrier `smp_mb()` is added to ensure the flag update is
+globally visible to all cores before the driver enters the sleep/wait
+state.
 
-Link: https://lkml.kernel.org/r/20260126211046.2096622-1-andrew.cooper3@citrix.com
-Fixes: b505f1944535 ("x86/kfence: avoid writing L1TF-vulnerable PTEs")
-Reported-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAKFNMokwjw68ubYQM9WkzOuH51wLznHpEOMSqtMoV1Rn9JV_gw@mail.gmail.com/
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7edb503fe4b6d67f47d8bb0dfafb8e699bb0f8a4)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kfence.h |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c           | 3 +++
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c | 7 ++++++-
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c | 9 +++++++--
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/kfence.h
-+++ b/arch/x86/include/asm/kfence.h
-@@ -42,7 +42,7 @@ static inline bool kfence_protect_page(u
- {
- 	unsigned int level;
- 	pte_t *pte = lookup_address(addr, &level);
--	pteval_t val;
-+	pteval_t val, new;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 49107475af619..53b33a636971a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5739,6 +5739,9 @@ int amdgpu_device_mode1_reset(struct amdgpu_device *adev)
+ 	if (ret)
+ 		goto mode1_reset_failed;
  
- 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
- 		return false;
-@@ -57,11 +57,12 @@ static inline bool kfence_protect_page(u
- 		return true;
++	/* enable mmio access after mode 1 reset completed */
++	adev->no_hw_access = false;
++
+ 	amdgpu_device_load_pci_state(adev->pdev);
+ 	ret = amdgpu_psp_wait_for_bootloader(adev);
+ 	if (ret)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index c1062e5f03936..8d070a9ea2c10 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2922,8 +2922,13 @@ static int smu_v13_0_0_mode1_reset(struct smu_context *smu)
+ 		break;
+ 	}
  
- 	/*
--	 * Otherwise, invert the entire PTE.  This avoids writing out an
-+	 * Otherwise, flip the Present bit, taking care to avoid writing an
- 	 * L1TF-vulnerable PTE (not present, without the high address bits
- 	 * set).
- 	 */
--	set_pte(pte, __pte(~val));
-+	new = val ^ _PAGE_PRESENT;
-+	set_pte(pte, __pte(flip_protnone_guard(val, new, PTE_PFN_MASK)));
+-	if (!ret)
++	if (!ret) {
++		/* disable mmio access while doing mode 1 reset*/
++		smu->adev->no_hw_access = true;
++		/* ensure no_hw_access is globally visible before any MMIO */
++		smp_mb();
+ 		msleep(SMU13_MODE1_RESET_WAIT_TIME_IN_MS);
++	}
  
- 	/*
- 	 * If the page was protected (non-present) and we're making it
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+index e735da7ab6126..bad8dd786bff2 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -2143,10 +2143,15 @@ static int smu_v14_0_2_mode1_reset(struct smu_context *smu)
+ 
+ 	ret = smu_cmn_send_debug_smc_msg(smu, DEBUGSMC_MSG_Mode1Reset);
+ 	if (!ret) {
+-		if (amdgpu_emu_mode == 1)
++		if (amdgpu_emu_mode == 1) {
+ 			msleep(50000);
+-		else
++		} else {
++			/* disable mmio access while doing mode 1 reset*/
++			smu->adev->no_hw_access = true;
++			/* ensure no_hw_access is globally visible before any MMIO */
++			smp_mb();
+ 			msleep(1000);
++		}
+ 	}
+ 
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
