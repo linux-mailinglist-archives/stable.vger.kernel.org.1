@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-215196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UF3nBnnyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:05 +0100
+	id QHW2Arn1iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC660110C3C
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF9E1113FB
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 270023002331
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37DA230BE54C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E787637F8C9;
-	Mon,  9 Feb 2026 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D952222B2;
+	Mon,  9 Feb 2026 14:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOAjSxqR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYdz85vc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E1837E31E;
-	Mon,  9 Feb 2026 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC5236BCE2;
+	Mon,  9 Feb 2026 14:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647994; cv=none; b=H0bvJz4xw14CIMLHwfr4rUjRhsQT08rY228ezobuGHo1iM5fgU3QHKqtWjRhiViVXcBNgfKofAZBjWjYtcZbw3C0iRvvHKNWB+Z9M/BuchaRi9UXTK7QKV/tvUQfVfXYfJE0fNd+ejqp+a+fBxzKWXQMt1ARIjlCrhEJjCwJ7Vk=
+	t=1770648186; cv=none; b=l95Oll/k0EaUk0e2IGY/FxlKhvcs6zLhdLQKwvPy50AkizoVipFvTmDhAa5xBOfBBVYkvaB++4zg1gUPs8FQrDvxcFIrg5xeRVnHtECpGv7SEVBfxfwDnAVIYQwU0ngKk7IsFKKIhLO2AMeXVd3N9IQC+Bbbl+UY/gM4dqvPb7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647994; c=relaxed/simple;
-	bh=oMdzd6zusunKkWAsNk14bPlXU+e+aNXQ5NL4MiIq4aI=;
+	s=arc-20240116; t=1770648186; c=relaxed/simple;
+	bh=fTQ7PdFKLEAeAYllhEAEngyzAq+x0/gJrw+JDPyi0Do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RYTHBx5n9t7t9e8OOfOw+rgCvnlvXmK9reMyXoHOTXZkGCIxBUVbZZ6dqFFrM30nQfTHXw91bmdOdLOjirCf/nQHRhno/jnsgKzxXrBP9tcjmUZ2NfPyDtkc7a07Af+fsKPoze5l6DbZTzIZBcYERC6DukOwVaBvaYth47ajFHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOAjSxqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EFEC16AAE;
-	Mon,  9 Feb 2026 14:39:53 +0000 (UTC)
+	 MIME-Version; b=tZIIZwvlQiEF2wStgLCiVs8/42/DvNhHBLoOngxw4M5jl5HHob5cTRKz/H+onM3kKTblJSKQLVzwrc2LzkXZgujdelvzTr/ty1pQph/+49CxcGPahBkm0VUQgEtuh0GKzwTU/4Vovydgx8Gs/11kUxMe9q4ULLQI3tqRRbKrHGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYdz85vc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16527C116C6;
+	Mon,  9 Feb 2026 14:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647994;
-	bh=oMdzd6zusunKkWAsNk14bPlXU+e+aNXQ5NL4MiIq4aI=;
+	s=korg; t=1770648186;
+	bh=fTQ7PdFKLEAeAYllhEAEngyzAq+x0/gJrw+JDPyi0Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOAjSxqR3l16dPnK2j4rP/TGq8meYvgBDr4zeXdouvEo6/N07HtiP+F5jl8cyqLE5
-	 S+D4Mfzc+yS1WMed8+ET0i84LFtR1r/vGnZWGwTCXwo9ETuaLDPdXKr/7AypyG/8+0
-	 2JED+6S3N3rQDht/EqosD+oLxmGp4wVJSrm8iN2A=
+	b=iYdz85vcWKxlUNTk3xH4KUrarfpBZJIcb54hoaIVgj6YqpcmxHNXuXe0H2NdiyvOx
+	 MjOApyUYQUO+HiICAxb5hkgw6ZRXunrybk6TP7aZUfpABYhIZ4yAYA2jBd38G+hgBB
+	 xDF+XtS61VEPmh0B2Qa/Xk8dR0CXqL6egTi0Px04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/113] net: sfp: Fix quirk for Ubiquiti U-Fiber Instant SFP module
-Date: Mon,  9 Feb 2026 15:23:58 +0100
-Message-ID: <20260209142313.381973048@linuxfoundation.org>
+Subject: [PATCH 6.1 31/69] netfilter: replace -EEXIST with -EBUSY
+Date: Mon,  9 Feb 2026 15:23:59 +0100
+Message-ID: <20260209142303.046710430@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +63,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215196-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215253-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email]
-X-Rspamd-Queue-Id: CC660110C3C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email]
+X-Rspamd-Queue-Id: 6AF9E1113FB
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Daniel Gomez <da.gomez@samsung.com>
 
-[ Upstream commit adcbadfd8e05d3558c9cfaa783f17c645181165f ]
+[ Upstream commit 2bafeb8d2f380c3a81d98bd7b78b854b564f9cd4 ]
 
-Commit fd580c9830316eda ("net: sfp: augment SFP parsing with
-phy_interface_t bitmap") did not add augumentation for the interface
-bitmap in the quirk for Ubiquiti U-Fiber Instant.
+The -EEXIST error code is reserved by the module loading infrastructure
+to indicate that a module is already loaded. When a module's init
+function returns -EEXIST, userspace tools like kmod interpret this as
+"module already loaded" and treat the operation as successful, returning
+0 to the user even though the module initialization actually failed.
 
-The subsequent commit f81fa96d8a6c7a77 ("net: phylink: use
-phy_interface_t bitmaps for optical modules") then changed phylink code
-for selection of SFP interface: instead of using link mode bitmap, the
-interface bitmap is used, and the fastest interface mode supported by
-both SFP module and MAC is chosen.
+Replace -EEXIST with -EBUSY to ensure correct error reporting in the module
+initialization path.
 
-Since the interface bitmap contains also modes faster than 1000base-x,
-this caused a regression wherein this module stopped working
-out-of-the-box.
+Affected modules:
+  * ebtable_broute ebtable_filter ebtable_nat arptable_filter
+  * ip6table_filter ip6table_mangle ip6table_nat ip6table_raw
+  * ip6table_security iptable_filter iptable_mangle iptable_nat
+  * iptable_raw iptable_security
 
-Fix this.
-
-Fixes: fd580c9830316eda ("net: sfp: augment SFP parsing with phy_interface_t bitmap")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20260129082227.17443-1-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bridge/netfilter/ebtables.c | 2 +-
+ net/netfilter/nf_log.c          | 4 ++--
+ net/netfilter/x_tables.c        | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 05dd0cf093482..6153a35af1070 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -472,6 +472,8 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
- 	linkmode_zero(caps->link_modes);
- 	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT,
- 			 caps->link_modes);
-+	phy_interface_zero(caps->interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_1000BASEX, caps->interfaces);
- }
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index ed62c1026fe93..f99e348c8f37f 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -1299,7 +1299,7 @@ int ebt_register_template(const struct ebt_table *t, int (*table_init)(struct ne
+ 	list_for_each_entry(tmpl, &template_tables, list) {
+ 		if (WARN_ON_ONCE(strcmp(t->name, tmpl->name) == 0)) {
+ 			mutex_unlock(&ebt_mutex);
+-			return -EEXIST;
++			return -EBUSY;
+ 		}
+ 	}
  
- #define SFP_QUIRK(_v, _p, _s, _f) \
+diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
+index be93a02497d6c..016e31452cbc4 100644
+--- a/net/netfilter/nf_log.c
++++ b/net/netfilter/nf_log.c
+@@ -89,7 +89,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
+ 	if (pf == NFPROTO_UNSPEC) {
+ 		for (i = NFPROTO_UNSPEC; i < NFPROTO_NUMPROTO; i++) {
+ 			if (rcu_access_pointer(loggers[i][logger->type])) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto unlock;
+ 			}
+ 		}
+@@ -97,7 +97,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
+ 			rcu_assign_pointer(loggers[i][logger->type], logger);
+ 	} else {
+ 		if (rcu_access_pointer(loggers[pf][logger->type])) {
+-			ret = -EEXIST;
++			ret = -EBUSY;
+ 			goto unlock;
+ 		}
+ 		rcu_assign_pointer(loggers[pf][logger->type], logger);
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index e8cc8eef0ab65..c842ec693dad4 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -1761,7 +1761,7 @@ EXPORT_SYMBOL_GPL(xt_hook_ops_alloc);
+ int xt_register_template(const struct xt_table *table,
+ 			 int (*table_init)(struct net *net))
+ {
+-	int ret = -EEXIST, af = table->af;
++	int ret = -EBUSY, af = table->af;
+ 	struct xt_template *t;
+ 
+ 	mutex_lock(&xt[af].mutex);
 -- 
 2.51.0
 
