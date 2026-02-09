@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-215178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215078-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ9BOf7xiWnyEgAAu9opvQ
-	(envelope-from <stable+bounces-215178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:02 +0100
+	id cKroM/HxiWnyEgAAu9opvQ
+	(envelope-from <stable+bounces-215078-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F44D110ABB
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7C2110AAC
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D3EF63017FC7
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47AD2305857C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DFB37C106;
-	Mon,  9 Feb 2026 14:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5F214F112;
+	Mon,  9 Feb 2026 14:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntthAbkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3UR8pa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD73937C0FD;
-	Mon,  9 Feb 2026 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC662C2360;
+	Mon,  9 Feb 2026 14:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647933; cv=none; b=f2jHUYokDAAAApDgg13h01OyXvxqEVm0Y7B/GDQ+w+IL2i7c+5Z1brc772ltKlOmld7kEVvGRBP3nm0kYNgxSV2RI3GyrlEh9qE/R6BCwnBOH5OXdfoExNElQAYUVU/dR7QAHsn5drD5bX4H0ZxCnIuSCrdtcCjREQWih15loKY=
+	t=1770647600; cv=none; b=SYCd9u/LgQI56urfUKiXZpeXlDXFYidoT2ynfPSUrvnXh5AlOzavdTpgJ5cT5zYUK9ijC0cKe7cAQdzTqbtxUT5Vkh4XLnYSM589ZDK/UisQZivSrQikVAOfewdt8gSM9TFX5cs9BavyTZR6xKLyBtki14yEt0FJvGLT4JRikIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647933; c=relaxed/simple;
-	bh=9QvxnkEgmIxrkLE2SyFaDexZkpHp8sW+ctSjuOul/jA=;
+	s=arc-20240116; t=1770647600; c=relaxed/simple;
+	bh=Lll92XrFepvGXe7sNsQw3sQqn0sgLM6fTN+/MKuW+n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDU42N+j/z5oecvJk8ByD9LVS5URs/L2f+MbGvIdinzJkgw42fCOug+Zr7Gd4uv5XDK4WiEkgKAcwb3ErP7NAqOpX86wQix4QvYc4KLghgSWwrCNF+5kfm6aqMsuaMwL/EIiY1jTflk4bI0UNB2VnSgyLYTGV8G5Qcp5pSMInKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntthAbkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE9CC116C6;
-	Mon,  9 Feb 2026 14:38:52 +0000 (UTC)
+	 MIME-Version; b=f5FyFdTluydxlnIdoIHY2bcmhPEWXfGP/a4w+YN0SOy/1fG169gRBZ3tleHF5jAjEP/ef9KXKCgnf1/BSH3R+/4PmYmfVZIoOvTo1jk7iw6hJrnEWmxqCTkBsf0drqb+2OUBcLzPTLwNC8z2O0a1ZBZXZBhxIJopY1gAQlDnGYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3UR8pa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0267C116C6;
+	Mon,  9 Feb 2026 14:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647933;
-	bh=9QvxnkEgmIxrkLE2SyFaDexZkpHp8sW+ctSjuOul/jA=;
+	s=korg; t=1770647600;
+	bh=Lll92XrFepvGXe7sNsQw3sQqn0sgLM6fTN+/MKuW+n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntthAbkg40K1V/J9WR+j3kBmCLt3qjMsVo2L5xhQ9tiAu8duKmxz4veyAafCmkKui
-	 Ier5ORSHYAXpdmLYvEEN1wcUFjRv1E1QZyrcw8KEJ0iYCGvRFZqnqS3j40uCCrRHiL
-	 PBuPhZaZ9KqJpZj1DSZnUIC6H3LCPFKlI/zhbLmE=
+	b=j3UR8pa1/JNN/RAPVFyVvNhC6d4FVULpoYJS0WE7dpj69EYlCSPI0hZeybO8KG0fZ
+	 VAMGgZ3BdHRRKET4FbzcsLLGTvS4lVSA2ecaBCmOvqk+IVfR5jiWCOFcsU1GRlbJWR
+	 L/7NHaRbPf9sZaz7+BLZF3PwMd3+/i4PkG0Pjntk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Hamilton <m@martinh.net>,
-	Takashi Iwai <tiwai@suse.de>,
+	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/113] ALSA: hda/realtek: ALC269 fixup for Lenovo Yoga Book 9i 13IRU8 audio
+Subject: [PATCH 6.18 148/175] net: add proper RCU protection to /proc/net/ptype
 Date: Mon,  9 Feb 2026 15:23:41 +0100
-Message-ID: <20260209142312.775806776@linuxfoundation.org>
+Message-ID: <20260209142325.827039090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,130 +70,223 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215178-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215078-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,martinh.net:email]
-X-Rspamd-Queue-Id: 0F44D110ABB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,alibaba.com:email]
+X-Rspamd-Queue-Id: 2E7C2110AAC
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Hamilton <m@martinh.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 64e0924ed3b446fdd758dfab582e0e961863a116 ]
+[ Upstream commit f613e8b4afea0cd17c7168e8b00e25bc8d33175d ]
 
-The amp/speakers on the Lenovo Yoga Book 9i 13IRU8 laptop aren't
-fully powered up, resulting in horrible tinny sound by default.
+Yin Fengwei reported an RCU stall in ptype_seq_show() and provided
+a patch.
 
-The kernel has an existing quirk for PCI SSID 0x17aa3843 which
-matches this machine and several others. The quirk applies the
-ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP fixup, however the fixup does not
-work on this machine.
+Real issue is that ptype_seq_next() and ptype_seq_show() violate
+RCU rules.
 
-This patch modifies the existing quirk by adding a check for the
-subsystem ID 0x17aa3881. If present, ALC287_FIXUP_TAS2781_I2C will
-be applied instead of ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP. With this
-change the TAS2781 amp is powered up, firmware is downloaded and
-recognised by HDA/SOF - i.e. all is good, and we can boogie.
+ptype_seq_show() runs under rcu_read_lock(), and reads pt->dev
+to get device name without any barrier.
 
-Code is re-used from alc298_fixup_lenovo_c940_duet7(), which fixes a
-similar problem with two other Lenovo laptops.
+At the same time, concurrent writers can remove a packet_type structure
+(which is correctly freed after an RCU grace period) and clear pt->dev
+without an RCU grace period.
 
-Cross checked against ALSA cardinfo database for potential clashes.
-Tested against 6.18.5 kernel built with Arch Linux default options.
-Tested in HDA mode and SOF mode.
+Define ptype_iter_state to carry a dev pointer along seq_net_private:
 
-Note: Possible further work required to address quality of life issues
-caused by the firmware's agressive power saving, and to improve ALSA
-control mappings.
+struct ptype_iter_state {
+	struct seq_net_private	p;
+	struct net_device	*dev; // added in this patch
+};
 
-Signed-off-by: Martin Hamilton <m@martinh.net>
-Link: https://patch.msgid.link/20260122-alc269-yogabook9i-fixup-v1-1-a6883429400f@martinh.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+We need to record the device pointer in ptype_get_idx() and
+ptype_seq_next() so that ptype_seq_show() is safe against
+concurrent pt->dev changes.
+
+We also need to add full RCU protection in ptype_seq_next().
+(Missing READ_ONCE() when reading list.next values)
+
+Many thanks to Dong Chenchen for providing a repro.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1d10f8a1f40b ("net-procfs: show net devices bound packet types")
+Fixes: c353e8983e0d ("net: introduce per netns packet chains")
+Reported-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+Reported-by: Dong Chenchen <dongchenchen2@huawei.com>
+Closes: https://lore.kernel.org/netdev/CANn89iKRRKPnWjJmb-_3a=sq+9h6DvTQM4DBZHT5ZRGPMzQaiA@mail.gmail.com/T/#m7b80b9fc9b9267f90e0b7aad557595f686f9c50d
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Tested-by: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+Link: https://patch.msgid.link/20260202205217.2881198-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ net/core/net-procfs.c | 50 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 8077cdb2987ab..0026c19a10251 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7951,6 +7951,7 @@ enum {
- 	ALC287_FIXUP_LEGION_15IMHG05_AUTOMUTE,
- 	ALC287_FIXUP_YOGA7_14ITL_SPEAKERS,
- 	ALC298_FIXUP_LENOVO_C940_DUET7,
-+	ALC287_FIXUP_LENOVO_YOGA_BOOK_9I,
- 	ALC287_FIXUP_13S_GEN2_SPEAKERS,
- 	ALC256_FIXUP_SET_COEF_DEFAULTS,
- 	ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE,
-@@ -8023,6 +8024,23 @@ static void alc298_fixup_lenovo_c940_duet7(struct hda_codec *codec,
- 	__snd_hda_apply_fixup(codec, id, action, 0);
- }
+diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
+index 70e0e9a3b650c..7dbfa6109f0b8 100644
+--- a/net/core/net-procfs.c
++++ b/net/core/net-procfs.c
+@@ -170,8 +170,14 @@ static const struct seq_operations softnet_seq_ops = {
+ 	.show  = softnet_seq_show,
+ };
  
-+/* A special fixup for Lenovo Yoga 9i and Yoga Book 9i 13IRU8
-+ * both have the very same PCI SSID and vendor ID, so we need
-+ * to apply different fixups depending on the subsystem ID
-+ */
-+static void alc287_fixup_lenovo_yoga_book_9i(struct hda_codec *codec,
-+					   const struct hda_fixup *fix,
-+					   int action)
-+{
-+	int id;
++struct ptype_iter_state {
++	struct seq_net_private	p;
++	struct net_device	*dev;
++};
 +
-+	if (codec->core.subsystem_id == 0x17aa3881)
-+		id = ALC287_FIXUP_TAS2781_I2C; /* Yoga Book 9i 13IRU8 */
-+	else
-+		id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP; /* Yoga 9i */
-+	__snd_hda_apply_fixup(codec, id, action, 0);
-+}
+ static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct list_head *ptype_list = NULL;
+ 	struct packet_type *pt = NULL;
+ 	struct net_device *dev;
+@@ -181,12 +187,16 @@ static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
+ 	for_each_netdev_rcu(seq_file_net(seq), dev) {
+ 		ptype_list = &dev->ptype_all;
+ 		list_for_each_entry_rcu(pt, ptype_list, list) {
+-			if (i == pos)
++			if (i == pos) {
++				iter->dev = dev;
+ 				return pt;
++			}
+ 			++i;
+ 		}
+ 	}
+ 
++	iter->dev = NULL;
 +
- static const struct hda_fixup alc269_fixups[] = {
- 	[ALC269_FIXUP_GPIO2] = {
- 		.type = HDA_FIXUP_FUNC,
-@@ -10003,6 +10021,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc298_fixup_lenovo_c940_duet7,
- 	},
-+	[ALC287_FIXUP_LENOVO_YOGA_BOOK_9I] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc287_fixup_lenovo_yoga_book_9i,
-+	},
- 	[ALC287_FIXUP_13S_GEN2_SPEAKERS] = {
- 		.type = HDA_FIXUP_VERBS,
- 		.v.verbs = (const struct hda_verb[]) {
-@@ -11227,7 +11249,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3827, "Ideapad S740", ALC285_FIXUP_IDEAPAD_S740_COEF),
- 	SND_PCI_QUIRK(0x17aa, 0x3834, "Lenovo IdeaPad Slim 9i 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x383d, "Legion Y9000X 2019", ALC285_FIXUP_LEGION_Y9000X_SPEAKERS),
--	SND_PCI_QUIRK(0x17aa, 0x3843, "Yoga 9i", ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP),
-+	SND_PCI_QUIRK(0x17aa, 0x3843, "Lenovo Yoga 9i / Yoga Book 9i", ALC287_FIXUP_LENOVO_YOGA_BOOK_9I),
- 	SND_PCI_QUIRK(0x17aa, 0x3847, "Legion 7 16ACHG6", ALC287_FIXUP_LEGION_16ACHG6),
- 	SND_PCI_QUIRK(0x17aa, 0x384a, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	list_for_each_entry_rcu(pt, &seq_file_net(seq)->ptype_all, list) {
+ 		if (i == pos)
+ 			return pt;
+@@ -218,6 +228,7 @@ static void *ptype_seq_start(struct seq_file *seq, loff_t *pos)
+ 
+ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct net *net = seq_file_net(seq);
+ 	struct net_device *dev;
+ 	struct packet_type *pt;
+@@ -229,19 +240,21 @@ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 		return ptype_get_idx(seq, 0);
+ 
+ 	pt = v;
+-	nxt = pt->list.next;
+-	if (pt->dev) {
+-		if (nxt != &pt->dev->ptype_all)
++	nxt = READ_ONCE(pt->list.next);
++	dev = iter->dev;
++	if (dev) {
++		if (nxt != &dev->ptype_all)
+ 			goto found;
+ 
+-		dev = pt->dev;
+ 		for_each_netdev_continue_rcu(seq_file_net(seq), dev) {
+-			if (!list_empty(&dev->ptype_all)) {
+-				nxt = dev->ptype_all.next;
++			nxt = READ_ONCE(dev->ptype_all.next);
++			if (nxt != &dev->ptype_all) {
++				iter->dev = dev;
+ 				goto found;
+ 			}
+ 		}
+-		nxt = net->ptype_all.next;
++		iter->dev = NULL;
++		nxt = READ_ONCE(net->ptype_all.next);
+ 		goto net_ptype_all;
+ 	}
+ 
+@@ -252,20 +265,20 @@ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 
+ 		if (nxt == &net->ptype_all) {
+ 			/* continue with ->ptype_specific if it's not empty */
+-			nxt = net->ptype_specific.next;
++			nxt = READ_ONCE(net->ptype_specific.next);
+ 			if (nxt != &net->ptype_specific)
+ 				goto found;
+ 		}
+ 
+ 		hash = 0;
+-		nxt = ptype_base[0].next;
++		nxt = READ_ONCE(ptype_base[0].next);
+ 	} else
+ 		hash = ntohs(pt->type) & PTYPE_HASH_MASK;
+ 
+ 	while (nxt == &ptype_base[hash]) {
+ 		if (++hash >= PTYPE_HASH_SIZE)
+ 			return NULL;
+-		nxt = ptype_base[hash].next;
++		nxt = READ_ONCE(ptype_base[hash].next);
+ 	}
+ found:
+ 	return list_entry(nxt, struct packet_type, list);
+@@ -279,19 +292,24 @@ static void ptype_seq_stop(struct seq_file *seq, void *v)
+ 
+ static int ptype_seq_show(struct seq_file *seq, void *v)
+ {
++	struct ptype_iter_state *iter = seq->private;
+ 	struct packet_type *pt = v;
++	struct net_device *dev;
+ 
+-	if (v == SEQ_START_TOKEN)
++	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq, "Type Device      Function\n");
+-	else if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
+-		 (!pt->dev || net_eq(dev_net(pt->dev), seq_file_net(seq)))) {
++		return 0;
++	}
++	dev = iter->dev;
++	if ((!pt->af_packet_net || net_eq(pt->af_packet_net, seq_file_net(seq))) &&
++		 (!dev || net_eq(dev_net(dev), seq_file_net(seq)))) {
+ 		if (pt->type == htons(ETH_P_ALL))
+ 			seq_puts(seq, "ALL ");
+ 		else
+ 			seq_printf(seq, "%04x", ntohs(pt->type));
+ 
+ 		seq_printf(seq, " %-8s %ps\n",
+-			   pt->dev ? pt->dev->name : "", pt->func);
++			   dev ? dev->name : "", pt->func);
+ 	}
+ 
+ 	return 0;
+@@ -315,7 +333,7 @@ static int __net_init dev_proc_net_init(struct net *net)
+ 			 &softnet_seq_ops))
+ 		goto out_dev;
+ 	if (!proc_create_net("ptype", 0444, net->proc_net, &ptype_seq_ops,
+-			sizeof(struct seq_net_private)))
++			sizeof(struct ptype_iter_state)))
+ 		goto out_softnet;
+ 
+ 	if (wext_proc_init(net))
 -- 
 2.51.0
 
