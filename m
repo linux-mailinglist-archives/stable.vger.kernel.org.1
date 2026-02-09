@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-215029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNB3JCrxiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:30 +0100
+	id cKVBDX7xiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30FB1108C8
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE351109C9
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C222E3041A4E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:30:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09608304002E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08775360741;
-	Mon,  9 Feb 2026 14:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D057837C0F7;
+	Mon,  9 Feb 2026 14:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTNIEjp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2a7katY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C2123B604;
-	Mon,  9 Feb 2026 14:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9246C37C0E2;
+	Mon,  9 Feb 2026 14:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647436; cv=none; b=r4XvR100k1qTdJYfumELkewImwNQ+g6bUiIlUpNk7tgeyrQzXn/oncQwFkRI0f3b42c2/wsIvjy/0QUKwiJ18lMpD5i7xVAATdtaMXk8T/7wUqN7T1U3QIWfRonImbUJ54ZRciUwEMIzA2JhoWvFPCL563Z10CYjDE5l8LV3vNA=
+	t=1770647802; cv=none; b=GL47U3gWhHJw1Zef0YXkhCTfDK065jg4VWghmehaJVS4WIudEJLdreWkHAU+0NMn7kFThvPmx/Vjp74GOv/IAE1NHXmV7s4SK2Pa8TqyLdL3qXvgiFHta91KJEMV/kFeaL3StOzoZ51c1HJZe26xjXUb7xQVk7Kzx0dyLqpXMso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647436; c=relaxed/simple;
-	bh=z+dfw7qW3j4PP0sbWhWt2eHFJxNL+WrEdi/s/PmqW+U=;
+	s=arc-20240116; t=1770647802; c=relaxed/simple;
+	bh=eW6tXNX6PY12/GulqWzQzfTlDneBlvh87aYH0+mcIo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pr/6MWXLn60C66JKSbZNYDfQjw8+Uf7jynediSBcdy7XIrikXlPRto/Y2WmAMfLfdO33zHabcBrpwKdRUeBumaH710RKM6fe/IhnPLFU+6cM2pzuEKClyuwbnC3NJX8g5v5dfWO79WbanjGTJOJK0eaPM36Grtx+dxHePMwqBh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTNIEjp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E38C116C6;
-	Mon,  9 Feb 2026 14:30:35 +0000 (UTC)
+	 MIME-Version; b=bwRMXRGTLP89ZswQvQFb7DXcuJZ3MSZNBbROu4hzUfluOBQxGkjCuM/ox1FKWVSeIZpmuUF6+umoysVdow9Y2s0ywcQSeKWF7Ot7GZaVwzIFT+ujmlzuH+dcG/RmhCWpZ/HsAzgVIHeelaeLstJBJZEDSMch6eqHS+Vd3Zvnm7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2a7katY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4854C116C6;
+	Mon,  9 Feb 2026 14:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647436;
-	bh=z+dfw7qW3j4PP0sbWhWt2eHFJxNL+WrEdi/s/PmqW+U=;
+	s=korg; t=1770647802;
+	bh=eW6tXNX6PY12/GulqWzQzfTlDneBlvh87aYH0+mcIo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTNIEjp3EwhnQT7gUvWNZMnt7vDNgQVDcRHC2qcQOsjjn28OT1jd8NYh4rbDSoQXs
-	 MMkzDFuef2GUcb9UatJ1pdQYWsONwiOVPABkn9JTGChNwEIuu1nGb3TEz+QY5P8GPL
-	 6hxV40jpcuzNwRcl6X9qvj6INWrpPLMBrrltvj8Y=
+	b=c2a7katYzV98axkPPEcLlNx5X9p8WHVUcRMXnQf0l9d6by4OyeYW4Ro0PQYQlNF7t
+	 a75TO8NAPKAwM12IH4/ArxBk0zmHBsusS9UftTR9nzgi/p+8WicYNtWomeHJggIJOO
+	 a6/ASioksWUQMReY/b4ZWJEn5LNERaBkkBESQhh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Zhaojuan Guo <zguo@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 100/175] scsi: target: iscsi: Fix use-after-free in iscsit_dec_session_usage_count()
-Date: Mon,  9 Feb 2026 15:22:53 +0100
-Message-ID: <20260209142324.018595544@linuxfoundation.org>
+	stable@kernel.org,
+	Steven Moreland <smoreland@google.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.12 025/113] binder: fix BR_FROZEN_REPLY error log
+Date: Mon,  9 Feb 2026 15:22:54 +0100
+Message-ID: <20260209142311.112749332@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,82 +70,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215029-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215138-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: E30FB1108C8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9AE351109C9
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 84dc6037390b8607c5551047d3970336cb51ba9a ]
+commit 1769f90e5ba2a6d24bb46b85da33fe861c68f005 upstream.
 
-In iscsit_dec_session_usage_count(), the function calls complete() while
-holding the sess->session_usage_lock. Similar to the connection usage count
-logic, the waiter signaled by complete() (e.g., in the session release
-path) may wake up and free the iscsit_session structure immediately.
+The error logging for failed transactions is misleading as it always
+reports "dead process or thread" even when the target is actually
+frozen. Additionally, the pid and tid are reversed which can further
+confuse debugging efforts. Fix both issues.
 
-This creates a race condition where the current thread may attempt to
-execute spin_unlock_bh() on a session structure that has already been
-deallocated, resulting in a KASAN slab-use-after-free.
-
-To resolve this, release the session_usage_lock before calling complete()
-to ensure all dereferences of the sess pointer are finished before the
-waiter is allowed to proceed with deallocation.
-
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reported-by: Zhaojuan Guo <zguo@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Link: https://patch.msgid.link/20260112165352.138606-3-mlombard@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Cc: Steven Moreland <smoreland@google.com>
+Fixes: a15dac8b2286 ("binder: additional transaction error logs")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260123175702.2154348-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/iscsi/iscsi_target_util.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/android/binder.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
-index 5e6cf34929b55..262a3e76b4b1c 100644
---- a/drivers/target/iscsi/iscsi_target_util.c
-+++ b/drivers/target/iscsi/iscsi_target_util.c
-@@ -741,8 +741,11 @@ void iscsit_dec_session_usage_count(struct iscsit_session *sess)
- 	spin_lock_bh(&sess->session_usage_lock);
- 	sess->session_usage_count--;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -3749,8 +3749,9 @@ static void binder_transaction(struct bi
+ 	return;
  
--	if (!sess->session_usage_count && sess->session_waiting_on_uc)
-+	if (!sess->session_usage_count && sess->session_waiting_on_uc) {
-+		spin_unlock_bh(&sess->session_usage_lock);
- 		complete(&sess->session_waiting_on_uc_comp);
-+		return;
-+	}
- 
- 	spin_unlock_bh(&sess->session_usage_lock);
- }
--- 
-2.51.0
-
+ err_dead_proc_or_thread:
+-	binder_txn_error("%d:%d dead process or thread\n",
+-		thread->pid, proc->pid);
++	binder_txn_error("%d:%d %s process or thread\n",
++			 proc->pid, thread->pid,
++			 return_error == BR_FROZEN_REPLY ? "frozen" : "dead");
+ 	return_error_line = __LINE__;
+ 	binder_dequeue_work(proc, tcomplete);
+ err_translate_failed:
 
 
 
