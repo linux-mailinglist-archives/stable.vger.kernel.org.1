@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yzBGADr5iWkiFQAAu9opvQ
-	(envelope-from <stable+bounces-215459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:54 +0100
+	id SOp2JNb3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590BE111B15
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFDF111820
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABA003055430
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF40F30F788A
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D45737BE77;
-	Mon,  9 Feb 2026 14:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221AE2BCF4C;
+	Mon,  9 Feb 2026 14:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw1Jgywx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcVEWhyk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1186828312F;
-	Mon,  9 Feb 2026 14:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA12D2690EC;
+	Mon,  9 Feb 2026 14:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648864; cv=none; b=O3dynASa2qhxTt36+C40e9A4kiv5e/g634VHKIv/KZeSev90voHH5jc7GMqXOCdlI2ihBW/tKogO6+GpveWsSR0GulVknyi0+rVbE/NkcRZ4avKL1T95HObmxqD7olHnpA9f2QvRoQjfjs09/1ZqL81Ml55TmNOe6quBTyz34Lk=
+	t=1770648550; cv=none; b=MApnoJhyZAsDUyQ2qnwqcYwlj48y/8XSYR1ZHc9QNFyhabzy+A5J62ksMN2ZmitRBndM2crXvj4yTn8vxelTW2/QfgBqFSWDtckhv9sAkoyxTJF17nT9dpU6qb3n2aGiIV+AOIp6LcmlWw79OV9jPt4S2qVxaSOWwAOmIUcjmrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648864; c=relaxed/simple;
-	bh=0fOYARiQUE58WSBy/YraUpbSkgw8glsqNfFg3tOTkrk=;
+	s=arc-20240116; t=1770648550; c=relaxed/simple;
+	bh=hNbAjBR9/feWNB4kIHsCi0w49z1NYL3kgq4hRVNEfcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AR8STKSuV/u/JC4AsVvnB2XS61CUsnS0I6gCPuB07N3m4DKf8ixCOHmX5xECQkpjdbpL9jWtIwTusHz3mSAeLcagP0OyjTvibWsvBX2zOlgY6IBmXHNB+NiZiz+YJuDHefRxBG01o4HG7e3Hc6lXfI0rdpAPOGSLBbUrqgviAoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw1Jgywx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E15EC116C6;
-	Mon,  9 Feb 2026 14:54:22 +0000 (UTC)
+	 MIME-Version; b=qAjGKaX+8Bct5NGuO9iVoFk2oKBcrGqjcU7OII7ZDpEFvUhBcWnd7vbdn6FJkMJ40hpcAekon5GYwF5e90cFSguJd/HUeiVXgP0WYmwHN8M8l091Tb+OeiuUyxy421uTkL3fiDeqR3Cas87eIN7cUWgFXXXYyZzWFNJz/3Hk7BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcVEWhyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE14C116C6;
+	Mon,  9 Feb 2026 14:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648864;
-	bh=0fOYARiQUE58WSBy/YraUpbSkgw8glsqNfFg3tOTkrk=;
+	s=korg; t=1770648550;
+	bh=hNbAjBR9/feWNB4kIHsCi0w49z1NYL3kgq4hRVNEfcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dw1JgywxPSMEWnnR/dzaoFKV4wrHhQDVN5O++lyeWhDGDG4Y7O7Sfvuw8g4860Yv0
-	 6MojPLfjuxnhjTyuqD8z5fNC26cW2gpalJpR2OvoDMkYHfYc43ctLvWrX+sn5pxzZn
-	 1StnrTxyGENRHfKZ1Rglw7n7WNJ3KufaibNjCh0k=
+	b=rcVEWhyk7M143Clq0S77rf/Pz3M7XbXCblkybyGDxaUzsayRj3Tms8S0VL9ttVgDP
+	 nvwEj8AyvpjuJd9dRV0wHD6Cgod3R0EOkoYbzndfUd3MgPKnZUIP8tjm91s0LjrR3j
+	 xhAdASpGjNjzQwyWfsOWA/+M0UPJTnVpcPN8kdCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/75] ASoC: davinci-evm: Fix reference leak in davinci_evm_probe
+Subject: [PATCH 6.6 72/86] drm/mgag200: fix mgag200_bmc_stop_scanout()
 Date: Mon,  9 Feb 2026 15:24:35 +0100
-Message-ID: <20260209142303.218927702@linuxfoundation.org>
+Message-ID: <20260209142307.367428054@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,143 +68,244 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215459-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215363-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 590BE111B15
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 1BFDF111820
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 5b577d214fcc109707bcb77b4ae72a31cfd86798 ]
+[ Upstream commit 0e0c8f4d16de92520623aa1ea485cadbf64e6929 ]
 
-The davinci_evm_probe() function calls of_parse_phandle() to acquire
-device nodes for "ti,audio-codec" and "ti,mcasp-controller". These
-functions return device nodes with incremented reference counts.
+The mgag200_bmc_stop_scanout() function is called by the .atomic_disable()
+handler for the MGA G200 VGA BMC encoder. This function performs a few
+register writes to inform the BMC of an upcoming mode change, and then
+polls to wait until the BMC actually stops.
 
-However, in several error paths (e.g., when the second of_parse_phandle(),
-snd_soc_of_parse_card_name(), or devm_snd_soc_register_card() fails),
-the function returns directly without releasing the acquired nodes,
-leading to reference leaks.
+The polling is implemented using a busy loop with udelay() and an iteration
+timeout of 300, resulting in the function blocking for 300 milliseconds.
 
-This patch adds an error handling path 'err_put' to properly release
-the device nodes using of_node_put() and clean up the pointers when
-an error occurs.
+The function gets called ultimately by the output_poll_execute work thread
+for the DRM output change polling thread of the mgag200 driver:
 
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Link: https://patch.msgid.link/20260107154836.1521-2-qikeyu2017@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+kworker/0:0-mm_    3528 [000]  4555.315364:
+        ffffffffaa0e25b3 delay_halt.part.0+0x33
+        ffffffffc03f6188 mgag200_bmc_stop_scanout+0x178
+        ffffffffc087ae7a disable_outputs+0x12a
+        ffffffffc087c12a drm_atomic_helper_commit_tail+0x1a
+        ffffffffc03fa7b6 mgag200_mode_config_helper_atomic_commit_tail+0x26
+        ffffffffc087c9c1 commit_tail+0x91
+        ffffffffc087d51b drm_atomic_helper_commit+0x11b
+        ffffffffc0509694 drm_atomic_commit+0xa4
+        ffffffffc05105e8 drm_client_modeset_commit_atomic+0x1e8
+        ffffffffc0510ce6 drm_client_modeset_commit_locked+0x56
+        ffffffffc0510e24 drm_client_modeset_commit+0x24
+        ffffffffc088a743 __drm_fb_helper_restore_fbdev_mode_unlocked+0x93
+        ffffffffc088a683 drm_fb_helper_hotplug_event+0xe3
+        ffffffffc050f8aa drm_client_dev_hotplug+0x9a
+        ffffffffc088555a output_poll_execute+0x29a
+        ffffffffa9b35924 process_one_work+0x194
+        ffffffffa9b364ee worker_thread+0x2fe
+        ffffffffa9b3ecad kthread+0xdd
+        ffffffffa9a08549 ret_from_fork+0x29
+
+On a server running ptp4l with the mgag200 driver loaded, we found that
+ptp4l would sometimes get blocked from execution because of this busy
+waiting loop.
+
+Every so often, approximately once every 20 minutes -- though with large
+variance -- the output_poll_execute() thread would detect some sort of
+change that required performing a hotplug event which results in attempting
+to stop the BMC scanout, resulting in a 300msec delay on one CPU.
+
+On this system, ptp4l was pinned to a single CPU. When the
+output_poll_execute() thread ran on that CPU, it blocked ptp4l from
+executing for its 300 millisecond duration.
+
+This resulted in PTP service disruptions such as failure to send a SYNC
+message on time, failure to handle ANNOUNCE messages on time, and clock
+check warnings from the application. All of this despite the application
+being configured with FIFO_RT and a higher priority than the background
+workqueue tasks. (However, note that the kernel did not use
+CONFIG_PREEMPT...)
+
+It is unclear if the event is due to a faulty VGA connection, another bug,
+or actual events causing a change in the connection. At least on the system
+under test it is not a one-time event and consistently causes disruption to
+the time sensitive applications.
+
+The function has some helpful comments explaining what steps it is
+attempting to take. In particular, step 3a and 3b are explained as such:
+
+  3a - The third step is to verify if there is an active scan. We are
+       waiting on a 0 on remhsyncsts (<XSPAREREG<0>.
+
+  3b - This step occurs only if the remove is actually scanning. We are
+       waiting for the end of the frame which is a 1 on remvsyncsts
+       (<XSPAREREG<1>).
+
+The actual steps 3a and 3b are implemented as while loops with a
+non-sleeping udelay(). The first step iterates while the tmp value at
+position 0 is *not* set. That is, it keeps iterating as long as the bit is
+zero. If the bit is already 0 (because there is no active scan), it will
+iterate the entire 300 attempts which wastes 300 milliseconds in total.
+This is opposite of what the description claims.
+
+The step 3b logic only executes if we do not iterate over the entire 300
+attempts in the first loop. If it does trigger, it is trying to check and
+wait for a 1 on the remvsyncsts. However, again the condition is actually
+inverted and it will loop as long as the bit is 1, stopping once it hits
+zero (rather than the explained attempt to wait until we see a 1).
+
+Worse, both loops are implemented using non-sleeping waits which spin
+instead of allowing the scheduler to run other processes. If the kernel is
+not configured to allow arbitrary preemption, it will waste valuable CPU
+time doing nothing.
+
+There does not appear to be any documentation for the BMC register
+interface, beyond what is in the comments here. It seems more probable that
+the comment here is correct and the implementation accidentally got
+inverted from the intended logic.
+
+Reading through other DRM driver implementations, it does not appear that
+the .atomic_enable or .atomic_disable handlers need to delay instead of
+sleep. For example, the ast_astdp_encoder_helper_atomic_disable() function
+calls ast_dp_set_phy_sleep() which uses msleep(). The "atomic" in the name
+is referring to the atomic modesetting support, which is the support to
+enable atomic configuration from userspace, and not to the "atomic context"
+of the kernel. There is no reason to use udelay() here if a sleep would be
+sufficient.
+
+Replace the while loops with a read_poll_timeout() based implementation
+that will sleep between iterations, and which stops polling once the
+condition is met (instead of looping as long as the condition is met). This
+aligns with the commented behavior and avoids blocking on the CPU while
+doing nothing.
+
+Note the RREG_DAC is implemented using a statement expression to allow
+working properly with the read_poll_timeout family of functions. The other
+RREG_<TYPE> macros ought to be cleaned up to have better semantics, and
+several places in the mgag200 driver could make use of RREG_DAC or similar
+RREG_* macros should likely be cleaned up for better semantics as well, but
+that task has been left as a future cleanup for a non-bugfix.
+
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20260202-jk-mgag200-fix-bad-udelay-v2-1-ce1e9665987d@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-evm.c | 39 ++++++++++++++++++++++++++++++--------
- 1 file changed, 31 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/mgag200/mgag200_bmc.c | 31 +++++++++++----------------
+ drivers/gpu/drm/mgag200/mgag200_drv.h |  6 ++++++
+ 2 files changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/sound/soc/ti/davinci-evm.c b/sound/soc/ti/davinci-evm.c
-index b043a0070d201..b554e86280ceb 100644
---- a/sound/soc/ti/davinci-evm.c
-+++ b/sound/soc/ti/davinci-evm.c
-@@ -404,27 +404,32 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/mgag200/mgag200_bmc.c b/drivers/gpu/drm/mgag200/mgag200_bmc.c
+index 2ba2e3c5086a5..852a82f6309ba 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_bmc.c
++++ b/drivers/gpu/drm/mgag200/mgag200_bmc.c
+@@ -1,13 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
- 	dai->cpus->of_node = of_parse_phandle(np, "ti,mcasp-controller", 0);
--	if (!dai->cpus->of_node)
--		return -EINVAL;
-+	if (!dai->cpus->of_node) {
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
+ #include <linux/delay.h>
++#include <linux/iopoll.h>
  
- 	dai->platforms->of_node = dai->cpus->of_node;
+ #include "mgag200_drv.h"
  
- 	evm_soc_card.dev = &pdev->dev;
- 	ret = snd_soc_of_parse_card_name(&evm_soc_card, "ti,model");
- 	if (ret)
--		return ret;
-+		goto err_put;
+ void mgag200_bmc_disable_vidrst(struct mga_device *mdev)
+ {
+ 	u8 tmp;
+-	int iter_max;
++	int ret;
  
- 	mclk = devm_clk_get(&pdev->dev, "mclk");
- 	if (PTR_ERR(mclk) == -EPROBE_DEFER) {
--		return -EPROBE_DEFER;
-+		ret = -EPROBE_DEFER;
-+		goto err_put;
- 	} else if (IS_ERR(mclk)) {
- 		dev_dbg(&pdev->dev, "mclk not found.\n");
- 		mclk = NULL;
- 	}
+ 	/*
+ 	 * 1 - The first step is to inform the BMC of an upcoming mode
+@@ -37,30 +38,22 @@ void mgag200_bmc_disable_vidrst(struct mga_device *mdev)
  
- 	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
--	if (!drvdata)
--		return -ENOMEM;
-+	if (!drvdata) {
-+		ret = -ENOMEM;
-+		goto err_put;
-+	}
+ 	/*
+ 	 * 3a- The third step is to verify if there is an active scan.
+-	 * We are waiting for a 0 on remhsyncsts <XSPAREREG<0>).
++	 * We are waiting for a 0 on remhsyncsts (<XSPAREREG<0>).
+ 	 */
+-	iter_max = 300;
+-	while (!(tmp & 0x1) && iter_max) {
+-		WREG8(DAC_INDEX, MGA1064_SPAREREG);
+-		tmp = RREG8(DAC_DATA);
+-		udelay(1000);
+-		iter_max--;
+-	}
++	ret = read_poll_timeout(RREG_DAC, tmp, !(tmp & 0x1),
++				1000, 300000, false,
++				MGA1064_SPAREREG);
++	if (ret == -ETIMEDOUT)
++		return;
  
- 	drvdata->mclk = mclk;
- 
-@@ -434,7 +439,8 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 		if (!drvdata->mclk) {
- 			dev_err(&pdev->dev,
- 				"No clock or clock rate defined.\n");
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err_put;
- 		}
- 		drvdata->sysclk = clk_get_rate(drvdata->mclk);
- 	} else if (drvdata->mclk) {
-@@ -450,8 +456,25 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 	snd_soc_card_set_drvdata(&evm_soc_card, drvdata);
- 	ret = devm_snd_soc_register_card(&pdev->dev, &evm_soc_card);
- 
--	if (ret)
-+	if (ret) {
- 		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
-+		goto err_put;
-+	}
-+
-+	return ret;
-+
-+err_put:
-+	dai->platforms->of_node = NULL;
-+
-+	if (dai->cpus->of_node) {
-+		of_node_put(dai->cpus->of_node);
-+		dai->cpus->of_node = NULL;
-+	}
-+
-+	if (dai->codecs->of_node) {
-+		of_node_put(dai->codecs->of_node);
-+		dai->codecs->of_node = NULL;
-+	}
- 
- 	return ret;
+ 	/*
+-	 * 3b- This step occurs only if the remove is actually
++	 * 3b- This step occurs only if the remote BMC is actually
+ 	 * scanning. We are waiting for the end of the frame which is
+ 	 * a 1 on remvsyncsts (XSPAREREG<1>)
+ 	 */
+-	if (iter_max) {
+-		iter_max = 300;
+-		while ((tmp & 0x2) && iter_max) {
+-			WREG8(DAC_INDEX, MGA1064_SPAREREG);
+-			tmp = RREG8(DAC_DATA);
+-			udelay(1000);
+-			iter_max--;
+-		}
+-	}
++	(void)read_poll_timeout(RREG_DAC, tmp, (tmp & 0x2),
++				1000, 300000, false,
++				MGA1064_SPAREREG);
  }
+ 
+ void mgag200_bmc_enable_vidrst(struct mga_device *mdev)
+diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
+index 765e49fd89111..44281713db462 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_drv.h
++++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
+@@ -115,6 +115,12 @@
+ #define DAC_INDEX 0x3c00
+ #define DAC_DATA 0x3c0a
+ 
++#define RREG_DAC(reg)						\
++	({							\
++		WREG8(DAC_INDEX, reg);				\
++		RREG8(DAC_DATA);				\
++	})							\
++
+ #define WREG_DAC(reg, v)					\
+ 	do {							\
+ 		WREG8(DAC_INDEX, reg);				\
 -- 
 2.51.0
 
