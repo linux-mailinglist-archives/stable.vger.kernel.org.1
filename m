@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-215376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NnAK+j2iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:00 +0100
+	id +Ey4ERD2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC62111690
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D1C1114A9
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCAF630CF375
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 382AD300EBEB
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306A62DECCB;
-	Mon,  9 Feb 2026 14:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E6F28312F;
+	Mon,  9 Feb 2026 14:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmEwBT2Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdI0y6Fd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E878C2690EC;
-	Mon,  9 Feb 2026 14:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBE53783C9;
+	Mon,  9 Feb 2026 14:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648592; cv=none; b=ugVeGAev4manV7+b0KXLjANQvIAqqST0LnH179uC5YGrJkOLcHKmcFIhxB+132NLWIecYaw5P6+ICIrncEY3jRtI8UopBW/EkzIZjhl0A21ADdSYrNJnTn7LX8YCrHgpf+b2gKGXv606GOZtkYXOIQu4KZZy4ww6ascJY8xDOI8=
+	t=1770648762; cv=none; b=r/mTd2cSqIU+l9XHH7YFlHOsHQN7nJPzl8VjPxIdLNvERMMZOTCmi+GDE9uoj9OBsw+FWjH4AzqWIcfM5KX3ooLWz4zDni7Zyt8K0rLow5xTrCkhQmMESnWw4lIJRpmgDP6CVvSO62nLbhL4FpRsumgIr/Ab0EyaQWYcNUkEpug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648592; c=relaxed/simple;
-	bh=53d4BxtSoFayeJxTW7xUyBZdBEXVZi3GsJMDwMWqAZE=;
+	s=arc-20240116; t=1770648762; c=relaxed/simple;
+	bh=LUFJjE1gOBOgYT4By1hdLp0hXDM52mW4Wb/Qp7zCVWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zn6rRp+Ts1g83h5xXO0NRIMnyw6fwIUNXUTbiOYdCGrdfSh+vuqEkIR6u9U5ti/1kll3XfMZDRF03yti0pEiq6k49DJjvpQESyfm8+KwjSRb3tclLooyyU7VnK8CKkiNm2fYeMcTvvkyAy+I/CaqCD+EZruAlBwh2awPzT19ESU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmEwBT2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DB2C116C6;
-	Mon,  9 Feb 2026 14:49:51 +0000 (UTC)
+	 MIME-Version; b=SJK3dY7Xl92K7twXMI/ki+WcqUcQxe3hTbHeCFeM2Vh7sXAy8iYczrxxfCH1ink40guulXyBpZsqdDzShoZL+78/FKgqnAxD1kYMaPtcUMZXD2J3glM4AZFxCe0pnwYR7QzNktB0ZDWhnpn/Dnil1VIa050e2/caQJypYv5qnbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdI0y6Fd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58FBC116C6;
+	Mon,  9 Feb 2026 14:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648591;
-	bh=53d4BxtSoFayeJxTW7xUyBZdBEXVZi3GsJMDwMWqAZE=;
+	s=korg; t=1770648762;
+	bh=LUFJjE1gOBOgYT4By1hdLp0hXDM52mW4Wb/Qp7zCVWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmEwBT2Z2cFA1eVWkhV7lw6uUwEzDd5x7xHgAdUUg/EJ63Qn1LSSxppJ+NaOvtDfv
-	 H+y4D2pxRgRxuD6/om5+49CdZpeCSGC6hILKRA0onYxMGy13byrTkpzL6p74Q8dD+F
-	 jKYQ3QqhJzth9N9V5mLknbcjJ8kYC7XHeI7UsBYc=
+	b=GdI0y6Fdg3ef0CmY0e6l4lPI8nbHnmo+CwgpbV+b1HX5+D852M/chbp5j9p2Bx8vO
+	 5W4wEGWYqy1/VFRnfvr7K4hg1MrXgzUuch0Axlm/X3dvvtYRcU77PF2lLXjUpQ/W7b
+	 HRrBZrc8fCY4frs9O8HU8yhdCJ4vExQzECzTePdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 84/86] spi: tegra: Fix a memory leak in tegra_slink_probe()
+Subject: [PATCH 5.10 26/41] net: liquidio: Fix off-by-one error in PF setup_nic_devices() cleanup
 Date: Mon,  9 Feb 2026 15:24:47 +0100
-Message-ID: <20260209142307.809111778@linuxfoundation.org>
+Message-ID: <20260209142257.755189989@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
+References: <20260209142256.797267956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +67,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215376-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215429-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 0CC62111690
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: 72D1C1114A9
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 41d9a6795b95d6ea28439ac1e9ce8c95bbca20fc ]
+[ Upstream commit 8558aef4e8a1a83049ab906d21d391093cfa7e7f ]
 
-In tegra_slink_probe(), when platform_get_irq() fails, it directly
-returns from the function with an error code, which causes a memory leak.
+In setup_nic_devices(), the initialization loop jumps to the label
+setup_nic_dev_free on failure. The current cleanup loop while(i--)
+skip the failing index i, causing a memory leak.
 
-Replace it with a goto label to ensure proper cleanup.
+Fix this by changing the loop to iterate from the current index i
+down to 0.
 
-Fixes: eb9913b511f1 ("spi: tegra: Fix missing IRQ check in tegra_slink_probe()")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260202-slink-v1-1-eac50433a6f9@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Also, decrement i in the devlink_alloc failure path to point to the
+last successfully allocated index.
+
+Compile tested only. Issue found using code review.
+
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Suggested-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20260128154440.278369-3-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra20-slink.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/lio_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index f5cd365c913a8..f450409156c64 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1086,8 +1086,10 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	reset_control_deassert(tspi->rst);
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+index 35e46245f1638..c72dbc7252f96 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+@@ -3773,6 +3773,7 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+ 				sizeof(struct lio_devlink_priv));
+ 	if (!devlink) {
+ 		dev_err(&octeon_dev->pci_dev->dev, "devlink alloc failed\n");
++		i--;
+ 		goto setup_nic_dev_free;
+ 	}
  
- 	spi_irq = platform_get_irq(pdev, 0);
--	if (spi_irq < 0)
--		return spi_irq;
-+	if (spi_irq < 0) {
-+		ret = spi_irq;
-+		goto exit_pm_put;
-+	}
- 	tspi->irq = spi_irq;
- 	ret = request_threaded_irq(tspi->irq, tegra_slink_isr,
- 				   tegra_slink_isr_thread, IRQF_ONESHOT,
+@@ -3793,11 +3794,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+ 
+ setup_nic_dev_free:
+ 
+-	while (i--) {
++	do {
+ 		dev_err(&octeon_dev->pci_dev->dev,
+ 			"NIC ifidx:%d Setup failed\n", i);
+ 		liquidio_destroy_nic_device(octeon_dev, i);
+-	}
++	} while (i--);
+ 
+ setup_nic_dev_done:
+ 
 -- 
 2.51.0
 
