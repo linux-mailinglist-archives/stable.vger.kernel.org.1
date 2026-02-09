@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-215257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKJvLpLyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:30 +0100
+	id IBuMM7TziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B06110C7E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34314110FF7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02A7A301D30C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63724302C332
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DE337BE81;
-	Mon,  9 Feb 2026 14:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B847E28725B;
+	Mon,  9 Feb 2026 14:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vl17kVHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1onN3RS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4922937B3EE;
-	Mon,  9 Feb 2026 14:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA9125DB1C;
+	Mon,  9 Feb 2026 14:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648200; cv=none; b=Fgjo04ozoc1wchYgaqOZ9UofdltCkPRUF50XfWRKj6Y1HHYijMZz/pRM0eK8+RXwjNpRor5Qsb6iHSSVG/oz5j5VTFDuDVxP9lnBiAzD3mUa8aD2mD/mNXE/UGopylipdmx6e3yrOWDY9ziKtYGaNMAJD4PJKaj+H8IVVlT+9Lc=
+	t=1770648398; cv=none; b=LaruBR2jgPBPSEbAr76Q0oiTNi3aDumcRxm5OsHysIBoBFjMGGIdcakp8O3Ta8aXey2DiniGpkDJrwM/vuunQStJFII3Zy2TCeu94ivc+syswLNZ7Sium1rPQDepZQBYJWu4+f82uxpF0iEx3Nz1fecXyQ/UCqF62lTmjyFteLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648200; c=relaxed/simple;
-	bh=bSk85ciRSUGlPak5Gg5+H8X5boCVWIkkTSNxBtBJz6o=;
+	s=arc-20240116; t=1770648398; c=relaxed/simple;
+	bh=oh32X8NWEVTrM0kLL07V4oXJ7aRwN+hsIagtQQBpgrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdVTM1Ylhtlk/vPftuWSxC9K1SOOCrtfbsDP4eHJdGdjNVCMZZqXV1tBFxnmeJsWw7Y5LG5QdV/qviBd1LSo5ex5ozh1BI3b3C+x6EyzNo8YcKgehaRulrJe2Z+K3FWgtAemhftWyYVoyMvUsuS323Uisd3FE3yy70kqtjNP0WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vl17kVHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7973C16AAE;
-	Mon,  9 Feb 2026 14:43:19 +0000 (UTC)
+	 MIME-Version; b=Vb1zdh6Yx2HnhaiHN/8NRq0xXYgl9oULrBf2Y38nl8vh+Dhu2YZdmL+0HCQqBmI4FJT3WNEHLqwJWnShA+lzW3aRRfMvhLKdjgb8chak60oB04y7llPewEUmCs+ju3FgSwV/oh4okb9J8qcAqQnffyN1lVxtic7FP1kMH82AXA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1onN3RS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94EFC116C6;
+	Mon,  9 Feb 2026 14:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648200;
-	bh=bSk85ciRSUGlPak5Gg5+H8X5boCVWIkkTSNxBtBJz6o=;
+	s=korg; t=1770648398;
+	bh=oh32X8NWEVTrM0kLL07V4oXJ7aRwN+hsIagtQQBpgrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vl17kVHQ0BXguqBVd7onj5lNh32mrwg9N3K7DWlQc5oFz5b8FHTgQb2aRpj9OXWvE
-	 K0YnUcMFbqLUoVku97yxVRIySWLkvpPeqfh42L2zOla9MD5kMYhMDGIYtJmuDJXPOp
-	 3TfPCb34w3xSloqJ+UgOnVIeOQY9nd9eTb92jT8o=
+	b=f1onN3RSkuJIRU14riKh0yvVm5+BoXhF8kyjjc9awx+GMDN7qDsfwqKuNI6sodD1q
+	 UJFlyeMoMDeTZ5ZaYusCQ/4AYmpnJKgyOr+oH+VCCXPyzmtHB246IhnOTNgXOJSifl
+	 TCgH7zqK8CquwoUJLvYCCBIbgD0XlKVKTx9nXyac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ilya Dryomov <idryomov@gmail.com>,
 	Dongsheng Yang <dongsheng.yang@linux.dev>
-Subject: [PATCH 6.1 04/69] rbd: check for EOD after exclusive lock is ensured to be held
+Subject: [PATCH 6.6 09/86] rbd: check for EOD after exclusive lock is ensured to be held
 Date: Mon,  9 Feb 2026 15:23:32 +0100
-Message-ID: <20260209142302.075400488@linuxfoundation.org>
+Message-ID: <20260209142305.112897639@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215257-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215316-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev];
@@ -90,11 +90,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 54B06110C7E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 34314110FF7
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -128,7 +128,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/block/rbd.c
 +++ b/drivers/block/rbd.c
-@@ -3496,11 +3496,29 @@ static void rbd_img_object_requests(stru
+@@ -3495,11 +3495,29 @@ static void rbd_img_object_requests(stru
  	rbd_assert(!need_exclusive_lock(img_req) ||
  		   __rbd_is_lock_owner(rbd_dev));
  
@@ -161,7 +161,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
  
  	for_each_obj_request(img_req, obj_req) {
-@@ -4726,7 +4744,6 @@ static void rbd_queue_workfn(struct work
+@@ -4725,7 +4743,6 @@ static void rbd_queue_workfn(struct work
  	struct request *rq = blk_mq_rq_from_pdu(img_request);
  	u64 offset = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
  	u64 length = blk_rq_bytes(rq);
@@ -169,7 +169,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	int result;
  
  	/* Ignore/skip any zero-length requests */
-@@ -4739,17 +4756,9 @@ static void rbd_queue_workfn(struct work
+@@ -4738,17 +4755,9 @@ static void rbd_queue_workfn(struct work
  	blk_mq_start_request(rq);
  
  	down_read(&rbd_dev->header_rwsem);
