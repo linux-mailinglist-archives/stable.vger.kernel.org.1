@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-215098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215256-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCUDJDTyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:56 +0100
+	id WGNMGwH0iWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215256-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06488110B82
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1CD1111092
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 203F230668B1
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 322C730080B3
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C2D285060;
-	Mon,  9 Feb 2026 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C51E3793BF;
+	Mon,  9 Feb 2026 14:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP6HW51z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+tTOILw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BFD1AF0AF;
-	Mon,  9 Feb 2026 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EFA2222B2;
+	Mon,  9 Feb 2026 14:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647669; cv=none; b=intbiV/iV1L81ib/rh2MKDW+kyTFRQOkAS5eKKHbjI4yKyX9HBETgpgJFAktVkE76l1jKzYnIqROc4GJ+tL0VY4Zs9cc1GWVpk+/UcEJv4XOgrEXGJ+bbAG7kQeRHMqLobNrjfGGMN49Lw0ziZV5ffM/DFMtgKbj3CzSWeb2zno=
+	t=1770648197; cv=none; b=kO78curCcT6vvyFvXkvnLD734GlOGWaEjkzJrC2fAkqjDa42BaX2mIycXahJAGH3ummuMhQn2mU4fToysZWDnqjKsPawjNRcAMSpSFv0BJM3fqLeH4TLwN5FJYpceFGt/5leBzqlsszk8AnpB9Jf5y4e3D2JDAhli6vx6YRWfn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647669; c=relaxed/simple;
-	bh=Kcl0TNqpGP+wrYTIEPs+JixyBBWzZnkfl+ygfXhl9Wg=;
+	s=arc-20240116; t=1770648197; c=relaxed/simple;
+	bh=fLwa7NF2e7yrROVQw3xUlRPX4HZq9z8gQUG+Y38wSdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzRG2I3+iSGNysG5XX6FZQmALMfiSNaRPJW521njZAfKrAUjSGkNNghaHs7Vf1FV5lnBP+2+7nq2oAw4664iJdq55IuvJbKIOMd07XyqtRQn3X8DB0v+jRItMu9RLsOU29KInxo+GL8ZgscokbEhXjmuh4WHUu3hReRe7biiBBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP6HW51z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E421C116C6;
-	Mon,  9 Feb 2026 14:34:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jw5KZDftCoZDEzrWx95gujk+ex3NAIYd8gTZaOVyzWdnthEsTZSDuyYe1DzSwG4FZo/qaY0zG+KTJJqdxmk6pSLcBqyO2i2plWEkrIJdz9sJiDMoy+hRABcddZzn2Woy1Ra6as3cHlz0PJmDIYHRAXbgWCKFjohNnvuyRBSnaNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+tTOILw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54291C19422;
+	Mon,  9 Feb 2026 14:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647668;
-	bh=Kcl0TNqpGP+wrYTIEPs+JixyBBWzZnkfl+ygfXhl9Wg=;
+	s=korg; t=1770648196;
+	bh=fLwa7NF2e7yrROVQw3xUlRPX4HZq9z8gQUG+Y38wSdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nP6HW51zl2Dc02Tz2VafmIxx9WcqKZOzhlIAPrVFQb9p6p4YyNIo9qW3mcSC8ORS2
-	 DS0Np26SWiY6hxVoRP0SiYT3J87VViBZO7o+fA6FoUhcMR+0I22Bvik12+nDOgXLUc
-	 XyiLiusJNoIbOkMVJRtG9h7C+edieZfYsut/TfEg=
+	b=d+tTOILwPQMQRY4YX+xxlZ6k9JTDSmqpLRyPRERPiXS6a7kM/7U/IkHSckaLJwRsb
+	 e/sHaHnrZLqcZ43KVEsg0oqClIJ8oEWHopD44Uni5bzFfbj9cf9US4PMYPmFm35sff
+	 hTeMs0ykb3lGRsZsyZ3oIgYabF2DrgE0GjT5VePg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Rodrigo=20Lugathe=20da=20Concei=C3=A7=C3=A3o=20Alves?= <lugathe2@gmail.com>,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 169/175] spi: tegra210-quad: Protect curr_xfer clearing in tegra_qspi_non_combined_seq_xfer
+Subject: [PATCH 6.1 34/69] HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
 Date: Mon,  9 Feb 2026 15:24:02 +0100
-Message-ID: <20260209142326.562361981@linuxfoundation.org>
+Message-ID: <20260209142303.153120346@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215098-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215256-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,cosmicgizmosystems.com,suse.com,kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 06488110B82
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,cosmicgizmosystems.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B1CD1111092
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
 
-[ Upstream commit 6d7723e8161f3c3f14125557e19dd080e9d882be ]
+[ Upstream commit 85a866809333cd2bf8ddac93d9a3e3ba8e4f807d ]
 
-Protect the curr_xfer clearing in tegra_qspi_non_combined_seq_xfer()
-with the spinlock to prevent a race with the interrupt handler that
-reads this field to check if a transfer is in progress.
+The USB speaker has a bug that causes it to reboot when changing the
+brightness using the physical knob.
 
-Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20260126-tegra_xfer-v2-5-6d2115e4f387@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add a new vendor and product ID entry in hid-ids.h, and register
+the corresponding device in hid-quirks.c with the required quirk.
+
+Signed-off-by: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
+Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 78e26c25a7b35..7fe16ed7e84bd 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1231,6 +1231,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 	struct spi_transfer *transfer;
- 	bool is_first_msg = true;
- 	int ret = 0, val = 0;
-+	unsigned long flags;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 4b2724f9db6ca..bac298a4930a4 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -418,6 +418,9 @@
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
  
- 	msg->status = 0;
- 	msg->actual_length = 0;
-@@ -1304,7 +1305,9 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 		msg->actual_length += xfer->len + dummy_bytes;
- 
- complete_xfer:
-+		spin_lock_irqsave(&tqspi->lock, flags);
- 		tqspi->curr_xfer = NULL;
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
- 
- 		if (ret < 0) {
- 			tegra_qspi_transfer_end(spi);
++#define USB_VENDOR_ID_EDIFIER		0x2d99
++#define USB_DEVICE_ID_EDIFIER_QR30	0xa101	/* EDIFIER Hal0 2.0 SE */
++
+ #define USB_VENDOR_ID_ELAN		0x04f3
+ #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
+ #define USB_DEVICE_ID_HP_X2		0x074d
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index e7f355068d0b4..457a52cfa17c6 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -81,6 +81,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_PS3), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_WIIU), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DWAV, USB_DEVICE_ID_EGALAX_TOUCHCONTROLLER), HID_QUIRK_MULTI_INPUT | HID_QUIRK_NOGET },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, USB_DEVICE_ID_ELO_TS2700), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_EMS, USB_DEVICE_ID_EMS_TRIO_LINKER_PLUS_II), HID_QUIRK_MULTI_INPUT },
 -- 
 2.51.0
 
