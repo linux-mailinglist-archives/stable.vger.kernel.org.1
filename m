@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-215417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BH6GY34iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:09:01 +0100
+	id YDF0GOL5iWkiFQAAu9opvQ
+	(envelope-from <stable+bounces-215499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:14:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015F41119C9
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:09:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D62111C45
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 249E13088203
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:52:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 016E13072D96
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FCB37A488;
-	Mon,  9 Feb 2026 14:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D075437BE7F;
+	Mon,  9 Feb 2026 14:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KALLc2GU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o702ujm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF9137997A;
-	Mon,  9 Feb 2026 14:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B5B3033D2;
+	Mon,  9 Feb 2026 14:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648723; cv=none; b=G9aD3UPnx/q7E+HaGg7JyoR1KKDjRDe2t43Sk5Q5Wq2XDBP7s66b/uNshOqZXQvnGU3cePCHKHyhVC6SXO95yUFrpKd8X3ii4zHtqeu/RmToBCAMZmnmO8Jvgao8Ufunbg9NPv1+V7csDm/8x22Fj6C8Ya8vIpuBEN/JPI/aI6Y=
+	t=1770648997; cv=none; b=sIHn3er3jRATybzBZi1AfGRZZTxKu5woKZF0b6g1vpaju3A+Q2MFDCeXkhGli1AqELtqcKpxf5AI8fngxlrWDZRsO0Npza3SvwkpzGTRZTZ+pHu3mh5WkHqyQNOJpnw2Jd9KfLVLlrx8qw8xshR9VlEicRCkT9DxCs61o67T1i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648723; c=relaxed/simple;
-	bh=Q0VPcTWBsdmzMxNexktaLoAViUMz4wWc/fs94gcf/4M=;
+	s=arc-20240116; t=1770648997; c=relaxed/simple;
+	bh=ZBcp4+vkPIlZWN5iEbCfEOxJbYmY97eR/xRQ5A6puIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEH6wj2m2hFvdIxSN0jToKU8tzzj93bfBc4hKQi6cZUDubemEVsic6Z40NJBGqT2DjbTWiFuWoUrdEOWEnJjBLLDGBcbsyW0apDQ8J+U1MTK5+kDRgMsOLPybfyF1PwDVjOMd74U8S2cRz0lw1y/D1XHYr2QLqRrBzrk3UXV46E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KALLc2GU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F3FC116C6;
-	Mon,  9 Feb 2026 14:52:02 +0000 (UTC)
+	 MIME-Version; b=iJYQpw8cJMa6cFSlfLSENfn3PRKEAwHsz+FZSY6O2iaRM4JeckhBbXr016FLiXlcwkgKBSdy87Pw6O3KgmZjcnoNWZeJozkuSFeNIQUhknSuDFpzxgdqsuMxOF3X2ItwIcz+AU0QUdAZXD0fEiTR588gynPZ4aR76KsM3UnuBkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o702ujm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61A1C116C6;
+	Mon,  9 Feb 2026 14:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648723;
-	bh=Q0VPcTWBsdmzMxNexktaLoAViUMz4wWc/fs94gcf/4M=;
+	s=korg; t=1770648997;
+	bh=ZBcp4+vkPIlZWN5iEbCfEOxJbYmY97eR/xRQ5A6puIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KALLc2GU9gJVEUCJfdDo43Xmc392WutufKTr9wbnVbUfcqTHaS6iN9Au/5FuUIvII
-	 Zs0DFJ7HrnO21K0jG/E+dYKinTs1C4dpj35Le2wZLykBz4CfjrkBSBCximL81ihXCm
-	 JO3btqYNOavev2GIOXVorkkBrJ8/eMsnWKS/Yegg=
+	b=o702ujm6hq40f/5djO0dvB1MFN67yeBkcWX8XVO4T5mriDuBUc6JQcvooS7WLpVlF
+	 LPJucLyknuWopx8VX7bUkS35Wx9I7YIU8EXSyzd89tATfGXPj/AjKITiAGH4jBUMAp
+	 N/d2yzpERquNriKtohaFspD57kDewQalN5SM+S44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Debarghya Kundu <debarghyak@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 38/41] gve: Fix stats report corruption on queue count change
+	Kang Chen <k.chen@smail.nju.edu.cn>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Jianqiang kang <jianqkang@sina.cn>
+Subject: [PATCH 5.15 62/75] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
 Date: Mon,  9 Feb 2026 15:24:59 +0100
-Message-ID: <20260209142258.191326277@linuxfoundation.org>
+Message-ID: <20260209142304.076711823@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,153 +67,209 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215417-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215499-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,smail.nju.edu.cn,dubeyko.com,sina.cn];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 015F41119C9
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dubeyko.com:email,nju.edu.cn:email]
+X-Rspamd-Queue-Id: B0D62111C45
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Debarghya Kundu <debarghyak@google.com>
+From: Kang Chen <k.chen@smail.nju.edu.cn>
 
-[ Upstream commit 7b9ebcce0296e104a0d82a6b09d68564806158ff ]
+commit bea3e1d4467bcf292c8e54f080353d556d355e26 upstream.
 
-The driver and the NIC share a region in memory for stats reporting.
-The NIC calculates its offset into this region based on the total size
-of the stats region and the size of the NIC's stats.
+BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
+Read of size 2 at addr ffff8880289ef218 by task syz.6.248/14290
 
-When the number of queues is changed, the driver's stats region is
-resized. If the queue count is increased, the NIC can write past
-the end of the allocated stats region, causing memory corruption.
-If the queue count is decreased, there is a gap between the driver
-and NIC stats, leading to incorrect stats reporting.
+CPU: 0 UID: 0 PID: 14290 Comm: syz.6.248 Not tainted 6.16.4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x5f0 mm/kasan/report.c:482
+ kasan_report+0xca/0x100 mm/kasan/report.c:595
+ hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
+ hfsplus_listxattr+0x5b6/0xbd0 fs/hfsplus/xattr.c:738
+ vfs_listxattr+0xbe/0x140 fs/xattr.c:493
+ listxattr+0xee/0x190 fs/xattr.c:924
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x143/0x360 fs/xattr.c:988
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe0e9fae16d
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe0eae67f98 EFLAGS: 00000246 ORIG_RAX: 00000000000000c3
+RAX: ffffffffffffffda RBX: 00007fe0ea205fa0 RCX: 00007fe0e9fae16d
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000000
+RBP: 00007fe0ea0480f0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fe0ea206038 R14: 00007fe0ea205fa0 R15: 00007fe0eae48000
+ </TASK>
 
-This change fixes the issue by allocating stats region with maximum
-size, and the offset calculation for NIC stats is changed to match
-with the calculation of the NIC.
+Allocated by task 14290:
+ kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4333 [inline]
+ __kmalloc_noprof+0x219/0x540 mm/slub.c:4345
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ hfsplus_find_init+0x95/0x1f0 fs/hfsplus/bfind.c:21
+ hfsplus_listxattr+0x331/0xbd0 fs/hfsplus/xattr.c:697
+ vfs_listxattr+0xbe/0x140 fs/xattr.c:493
+ listxattr+0xee/0x190 fs/xattr.c:924
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x143/0x360 fs/xattr.c:988
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Cc: stable@vger.kernel.org
-Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
-Signed-off-by: Debarghya Kundu <debarghyak@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260202193925.3106272-2-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Same changes as 6.1 + context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When hfsplus_uni2asc is called from hfsplus_listxattr,
+it actually passes in a struct hfsplus_attr_unistr*.
+The size of the corresponding structure is different from that of hfsplus_unistr,
+so the previous fix (94458781aee6) is insufficient.
+The pointer on the unicode buffer is still going beyond the allocated memory.
+
+This patch introduces two warpper functions hfsplus_uni2asc_xattr_str and
+hfsplus_uni2asc_str to process two unicode buffers,
+struct hfsplus_attr_unistr* and struct hfsplus_unistr* respectively.
+When ustrlen value is bigger than the allocated memory size,
+the ustrlen value is limited to an safe size.
+
+Fixes: 94458781aee6 ("hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()")
+Signed-off-by: Kang Chen <k.chen@smail.nju.edu.cn>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250909031316.1647094-1-k.chen@smail.nju.edu.cn
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c |   42 +++++++++++++++++---------
- drivers/net/ethernet/google/gve/gve_main.c    |    4 +-
- 2 files changed, 31 insertions(+), 15 deletions(-)
+ fs/hfsplus/dir.c        |    2 +-
+ fs/hfsplus/hfsplus_fs.h |    8 ++++++--
+ fs/hfsplus/unicode.c    |   24 +++++++++++++++++++-----
+ fs/hfsplus/xattr.c      |    6 +++---
+ 4 files changed, 29 insertions(+), 11 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -140,7 +140,8 @@ gve_get_ethtool_stats(struct net_device
- 		tmp_rx_desc_err_dropped_pkt, tmp_tx_pkts, tmp_tx_bytes;
- 	u64 rx_buf_alloc_fail, rx_desc_err_dropped_pkt, rx_pkts,
- 		rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes;
--	int stats_idx, base_stats_idx, max_stats_idx;
-+	int rx_base_stats_idx, max_rx_stats_idx, max_tx_stats_idx;
-+	int stats_idx, stats_region_len, nic_stats_len;
- 	struct stats *report_stats;
- 	int *rx_qid_to_stats_idx;
- 	int *tx_qid_to_stats_idx;
-@@ -226,14 +227,33 @@ gve_get_ethtool_stats(struct net_device
- 	data[i++] = priv->stats_report_trigger_cnt;
- 	i = GVE_MAIN_STATS_LEN;
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -204,7 +204,7 @@ static int hfsplus_readdir(struct file *
+ 			fd.entrylength);
+ 		type = be16_to_cpu(entry.type);
+ 		len = NLS_MAX_CHARSET_SIZE * HFSPLUS_MAX_STRLEN;
+-		err = hfsplus_uni2asc(sb, &fd.key->cat.name, strbuf, &len);
++		err = hfsplus_uni2asc_str(sb, &fd.key->cat.name, strbuf, &len);
+ 		if (err)
+ 			goto out;
+ 		if (type == HFSPLUS_FOLDER) {
+--- a/fs/hfsplus/hfsplus_fs.h
++++ b/fs/hfsplus/hfsplus_fs.h
+@@ -516,8 +516,12 @@ int hfsplus_strcasecmp(const struct hfsp
+ 		       const struct hfsplus_unistr *s2);
+ int hfsplus_strcmp(const struct hfsplus_unistr *s1,
+ 		   const struct hfsplus_unistr *s2);
+-int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
+-		    char *astr, int *len_p);
++int hfsplus_uni2asc_str(struct super_block *sb,
++			const struct hfsplus_unistr *ustr, char *astr,
++			int *len_p);
++int hfsplus_uni2asc_xattr_str(struct super_block *sb,
++			      const struct hfsplus_attr_unistr *ustr,
++			      char *astr, int *len_p);
+ int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
+ 		    int max_unistr_len, const char *astr, int len);
+ int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
+--- a/fs/hfsplus/unicode.c
++++ b/fs/hfsplus/unicode.c
+@@ -143,9 +143,8 @@ static u16 *hfsplus_compose_lookup(u16 *
+ 	return NULL;
+ }
  
--	/* For rx cross-reporting stats, start from nic rx stats in report */
--	base_stats_idx = GVE_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
--		GVE_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues;
--	max_stats_idx = NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
--		base_stats_idx;
-+	rx_base_stats_idx = 0;
-+	max_rx_stats_idx = 0;
-+	max_tx_stats_idx = 0;
-+	stats_region_len = priv->stats_report_len -
-+				sizeof(struct gve_stats_report);
-+	nic_stats_len = (NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
-+		NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues) *
-+		sizeof(struct stats);
-+	if (unlikely((stats_region_len -
-+				nic_stats_len) % sizeof(struct stats))) {
-+		net_err_ratelimited("Starting index of NIC stats should be multiple of stats size");
-+	} else {
-+		/* For rx cross-reporting stats,
-+		 * start from nic rx stats in report
-+		 */
-+		rx_base_stats_idx = (stats_region_len - nic_stats_len) /
-+							sizeof(struct stats);
-+		max_rx_stats_idx = NIC_RX_STATS_REPORT_NUM *
-+			priv->rx_cfg.num_queues +
-+			rx_base_stats_idx;
-+		max_tx_stats_idx = NIC_TX_STATS_REPORT_NUM *
-+			priv->tx_cfg.num_queues +
-+			max_rx_stats_idx;
-+	}
- 	/* Preprocess the stats report for rx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	for (stats_idx = rx_base_stats_idx; stats_idx < max_rx_stats_idx;
- 		stats_idx += NIC_RX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
-@@ -286,13 +306,9 @@ gve_get_ethtool_stats(struct net_device
- 		i += priv->rx_cfg.num_queues * NUM_GVE_RX_CNTS;
+-int hfsplus_uni2asc(struct super_block *sb,
+-		const struct hfsplus_unistr *ustr,
+-		char *astr, int *len_p)
++static int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
++		    int max_len, char *astr, int *len_p)
+ {
+ 	const hfsplus_unichr *ip;
+ 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
+@@ -158,8 +157,8 @@ int hfsplus_uni2asc(struct super_block *
+ 	ip = ustr->unicode;
+ 
+ 	ustrlen = be16_to_cpu(ustr->length);
+-	if (ustrlen > HFSPLUS_MAX_STRLEN) {
+-		ustrlen = HFSPLUS_MAX_STRLEN;
++	if (ustrlen > max_len) {
++		ustrlen = max_len;
+ 		pr_err("invalid length %u has been corrected to %d\n",
+ 			be16_to_cpu(ustr->length), ustrlen);
  	}
+@@ -280,6 +279,21 @@ out:
+ 	return res;
+ }
  
--	/* For tx cross-reporting stats, start from nic tx stats in report */
--	base_stats_idx = max_stats_idx;
--	max_stats_idx = NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
--		max_stats_idx;
--	/* Preprocess the stats report for tx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	/* NIC TX stats start right after NIC RX stats */
-+	for (stats_idx = max_rx_stats_idx; stats_idx < max_tx_stats_idx;
- 		stats_idx += NIC_TX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -124,9 +124,9 @@ static int gve_alloc_stats_report(struct
- 	int tx_stats_num, rx_stats_num;
++inline int hfsplus_uni2asc_str(struct super_block *sb,
++			       const struct hfsplus_unistr *ustr, char *astr,
++			       int *len_p)
++{
++	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
++}
++
++inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
++				     const struct hfsplus_attr_unistr *ustr,
++				     char *astr, int *len_p)
++{
++	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
++			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
++}
++
+ /*
+  * Convert one or more ASCII characters into a single unicode character.
+  * Returns the number of ASCII characters corresponding to the unicode char.
+--- a/fs/hfsplus/xattr.c
++++ b/fs/hfsplus/xattr.c
+@@ -737,9 +737,9 @@ ssize_t hfsplus_listxattr(struct dentry
+ 			goto end_listxattr;
  
- 	tx_stats_num = (GVE_TX_STATS_REPORT_NUM + NIC_TX_STATS_REPORT_NUM) *
--		       priv->tx_cfg.num_queues;
-+				priv->tx_cfg.max_queues;
- 	rx_stats_num = (GVE_RX_STATS_REPORT_NUM + NIC_RX_STATS_REPORT_NUM) *
--		       priv->rx_cfg.num_queues;
-+				priv->rx_cfg.max_queues;
- 	priv->stats_report_len = struct_size(priv->stats_report, stats,
- 					     size_add(tx_stats_num, rx_stats_num));
- 	priv->stats_report =
+ 		xattr_name_len = NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN;
+-		if (hfsplus_uni2asc(inode->i_sb,
+-			(const struct hfsplus_unistr *)&fd.key->attr.key_name,
+-					strbuf, &xattr_name_len)) {
++		if (hfsplus_uni2asc_xattr_str(inode->i_sb,
++					      &fd.key->attr.key_name, strbuf,
++					      &xattr_name_len)) {
+ 			pr_err("unicode conversion failed\n");
+ 			res = -EIO;
+ 			goto end_listxattr;
 
 
 
