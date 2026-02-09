@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-215188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODjxAhfyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:27 +0100
+	id 4OheAGDyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C86110B36
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D63110BF7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 460AE300DF46
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF5B13013A4E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FF637C0F8;
-	Mon,  9 Feb 2026 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42EF37BE7F;
+	Mon,  9 Feb 2026 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgQrikEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaFsbaER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEEE3783A1;
-	Mon,  9 Feb 2026 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D9536828A;
+	Mon,  9 Feb 2026 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647967; cv=none; b=fRLKHxf4gWVSt2Q7/U0MZh9ZLkEKS90XEsyYahLH5WmEhUeWYFrp8S8dmaaY7nZrkJZoDL8/VYVK0uax+dsXl93gtGmSpeFpLvOTroNRPXo4PLb8wp/erpvXmUOFbrOQ6Z/ZCu/erUkuy9IdFsyesGCh1hW9IiIEPofXMhA+7lY=
+	t=1770648152; cv=none; b=GSTlQaZUde467OmK7YB9N3wJMpkhRAnHxqajboT2yCqJZ4+5erWsF1xK28MpXDfDuzKA/VqX5JUQxNikwZnBK8BlflwhsigtwSHzkSwFyUUcL5B1sIEGrov1ygVDO6kmdlZoTUfQwP2KezLhlOvr2iu0Mf4UuYK8s4NJmkaVnzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647967; c=relaxed/simple;
-	bh=6q3quXZx2ZMp+5IF//wrs5t5o73s41MDxoxqYc8Iztk=;
+	s=arc-20240116; t=1770648152; c=relaxed/simple;
+	bh=PHetEdZMsRVC8WD6vOTFslKzdF0+BW7RUJ6SPhw2iyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q04O1p3JFprgkVF1V8DVFqABHIb3VYQNU2OHF2f4kz/M+eRpWN9Aj1JGfPI2d11TPEZuHBWQzYLII7QDBIayv5bVBB4j+j0H7Wmuza2Q0MKcnmqN+lAd7TtIZb9MIIgSlUbMvOS2EYkuBG3TTxC4BifJhS9iqBSQznao9+LQj5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgQrikEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEA6C16AAE;
-	Mon,  9 Feb 2026 14:39:27 +0000 (UTC)
+	 MIME-Version; b=dtjUEP0DB5HmLTxjDUFD26eEd16vh0ocwjONNUFOXYge++atVcQfKcoRjXxeXTWNxsAOOzmo/tUS08y3Cz/R2bgux94nBhc6Zb+xdKbo05WAQljoblMWcH5BtHzqqHYwilsVdfQFkvfy/XJZ0uNRFiYpog2UE2V3A9cQ/4GanY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaFsbaER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE24C16AAE;
+	Mon,  9 Feb 2026 14:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647967;
-	bh=6q3quXZx2ZMp+5IF//wrs5t5o73s41MDxoxqYc8Iztk=;
+	s=korg; t=1770648152;
+	bh=PHetEdZMsRVC8WD6vOTFslKzdF0+BW7RUJ6SPhw2iyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgQrikEirRAuSG8J78I5345lppf1O6hTba5xD9rUb3xsKIkxQ6i//RzuD6wVY0vrO
-	 Fk6JWdZ4l1qxfb2ufWZIUjLGAtpEUvB+prgEftWWYH/iKMcl21IpQEu38RK56oqOjO
-	 3Cvr18NROh0nLhP+lLlF9sqjqYQDfTPJ9PrhyLPA=
+	b=CaFsbaERxjZsczVgywpP0z/1QFdCjITLyI8GZ9EDKrF2Xf+MQBjqASFtBOl2q4OX7
+	 E9FrJxd/oiWmUfP9ZkJ6zbbhEyryRJtR1V2cG/e2IwhX87jA7Nc/PgPflcKSUbx+Jl
+	 RtB3D60HM4/38aTfM6z71LClYZehzhFHgNpLvQmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	ZhangGuoDong <zhangguodong@kylinos.cn>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/113] net: liquidio: Initialize netdev pointer before queue setup
+Subject: [PATCH 6.1 22/69] smb/server: call ksmbd_session_rpc_close() on error path in create_smb2_pipe()
 Date: Mon,  9 Feb 2026 15:23:50 +0100
-Message-ID: <20260209142313.094707133@linuxfoundation.org>
+Message-ID: <20260209142302.726011545@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,125 +71,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215188-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215243-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:email,seu.edu.cn:email]
-X-Rspamd-Queue-Id: 98C86110B36
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email]
+X-Rspamd-Queue-Id: 69D63110BF7
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: ZhangGuoDong <zhangguodong@kylinos.cn>
 
-[ Upstream commit 926ede0c85e1e57c97d64d9612455267d597bb2c ]
+[ Upstream commit 7c28f8eef5ac5312794d8a52918076dcd787e53b ]
 
-In setup_nic_devices(), the netdev is allocated using alloc_etherdev_mq().
-However, the pointer to this structure is stored in oct->props[i].netdev
-only after the calls to netif_set_real_num_rx_queues() and
-netif_set_real_num_tx_queues().
+When ksmbd_iov_pin_rsp() fails, we should call ksmbd_session_rpc_close().
 
-If either of these functions fails, setup_nic_devices() returns an error
-without freeing the allocated netdev. Since oct->props[i].netdev is still
-NULL at this point, the cleanup function liquidio_destroy_nic_device()
-will fail to find and free the netdev, resulting in a memory leak.
-
-Fix this by initializing oct->props[i].netdev before calling the queue
-setup functions. This ensures that the netdev is properly accessible for
-cleanup in case of errors.
-
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: c33c997346c3 ("liquidio: enhanced ethtool --set-channels feature")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20260128154440.278369-2-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/cavium/liquidio/lio_main.c   | 34 +++++++++----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ fs/smb/server/smb2pdu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-index 1d79f6eaa41f6..eba0740782379 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-@@ -3513,6 +3513,23 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 		 */
- 		netdev->netdev_ops = &lionetdevops;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 100016298f87e..14d46c52ee748 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2272,7 +2272,7 @@ static noinline int create_smb2_pipe(struct ksmbd_work *work)
+ {
+ 	struct smb2_create_rsp *rsp;
+ 	struct smb2_create_req *req;
+-	int id;
++	int id = -1;
+ 	int err;
+ 	char *name;
  
-+		lio = GET_LIO(netdev);
-+
-+		memset(lio, 0, sizeof(struct lio));
-+
-+		lio->ifidx = ifidx_or_pfnum;
-+
-+		props = &octeon_dev->props[i];
-+		props->gmxport = resp->cfg_info.linfo.gmxport;
-+		props->netdev = netdev;
-+
-+		/* Point to the  properties for octeon device to which this
-+		 * interface belongs.
-+		 */
-+		lio->oct_dev = octeon_dev;
-+		lio->octprops = props;
-+		lio->netdev = netdev;
-+
- 		retval = netif_set_real_num_rx_queues(netdev, num_oqueues);
- 		if (retval) {
- 			dev_err(&octeon_dev->pci_dev->dev,
-@@ -3529,16 +3546,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 			goto setup_nic_dev_free;
- 		}
+@@ -2329,6 +2329,9 @@ static noinline int create_smb2_pipe(struct ksmbd_work *work)
+ 		break;
+ 	}
  
--		lio = GET_LIO(netdev);
--
--		memset(lio, 0, sizeof(struct lio));
--
--		lio->ifidx = ifidx_or_pfnum;
--
--		props = &octeon_dev->props[i];
--		props->gmxport = resp->cfg_info.linfo.gmxport;
--		props->netdev = netdev;
--
- 		lio->linfo.num_rxpciq = num_oqueues;
- 		lio->linfo.num_txpciq = num_iqueues;
- 		for (j = 0; j < num_oqueues; j++) {
-@@ -3604,13 +3611,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 		netdev->min_mtu = LIO_MIN_MTU_SIZE;
- 		netdev->max_mtu = LIO_MAX_MTU_SIZE;
++	if (id >= 0)
++		ksmbd_session_rpc_close(work->sess, id);
++
+ 	if (!IS_ERR(name))
+ 		kfree(name);
  
--		/* Point to the  properties for octeon device to which this
--		 * interface belongs.
--		 */
--		lio->oct_dev = octeon_dev;
--		lio->octprops = props;
--		lio->netdev = netdev;
--
- 		dev_dbg(&octeon_dev->pci_dev->dev,
- 			"if%d gmx: %d hw_addr: 0x%llx\n", i,
- 			lio->linfo.gmxport, CVM_CAST64(lio->linfo.hw_addr));
 -- 
 2.51.0
 
