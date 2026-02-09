@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-215221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GySKRr0iWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:02 +0100
+	id qAsGMtH4iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:10:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064A31110C6
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330D2111A63
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B02C30D2C09
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BDE030BE007
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3B337B416;
-	Mon,  9 Feb 2026 14:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1F437BE68;
+	Mon,  9 Feb 2026 14:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riLsew9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZ6MmtPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5FB37AA87;
-	Mon,  9 Feb 2026 14:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D1128312F;
+	Mon,  9 Feb 2026 14:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648079; cv=none; b=kbz3Rk7mZSJ/2JAp2QNn564tlGifFcu2yIoB2wXf8EPdDyipo3PsDu5tmZpRckYDZ/fsXEeSrdtf7N2qwMLND5m8kYomGcKWv0eERFThOB3ayaNxJmSFHuH95e46CTcczqNWt968yZsKY7BXbYfha9Udp384JzNlpnnKZw+NsZA=
+	t=1770648776; cv=none; b=DtPI0b8XQgH7USd7iqB3L07zjgDnwIJL9gMBWzrtghX8Q1UReodNOGLWc+I6NHIbJeAouJKfzBFZlsjFkAedO6eCE7gRidCu4GXr21ZCztP/tewFduWNgz9D2FR/oBUF7GrGme4Y3Ta6HcPo4YRAAr47P+1/FdNqSR6ogM29pcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648079; c=relaxed/simple;
-	bh=/tvTzSdIwdz3PNWom4gQE698ApXHGteI0kEPTWrZclg=;
+	s=arc-20240116; t=1770648776; c=relaxed/simple;
+	bh=5bF2NY058YWMR/HrfnS9lsEo1H5dRGyyv8rPOZXgzgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YlPWlRynhODe7T3GFe6hivT65pH2Ed9fSJ5EFEGi5tWFc35cQxsEcbziWP7xsSRuKwX7Y5CDojEAHrb9EVelet0fUHC/6ImJEAXdgOv75xWGNsk9a/toEQZqpArsBCalN1qSf+hqjtgseWG33s8JoMVh6ojxnvM9jdru8p+mCio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riLsew9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A317EC19423;
-	Mon,  9 Feb 2026 14:41:18 +0000 (UTC)
+	 MIME-Version; b=RiOyrd+eAlanDklpIjK8hLzlU8+cfMoChUdF8XCvM5IW0m5tZIeefMUsQyKuLZ4ystXmqnIu4yl68iwPW9IOEoqBfaOzX9fZfksyAbGz5KjmywC5dqdr2lUUpa7QhtyELb09E89pAos8xKdEYcfZxbPxeux/UfoO/0VO949dw7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZ6MmtPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994E1C116C6;
+	Mon,  9 Feb 2026 14:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648079;
-	bh=/tvTzSdIwdz3PNWom4gQE698ApXHGteI0kEPTWrZclg=;
+	s=korg; t=1770648776;
+	bh=5bF2NY058YWMR/HrfnS9lsEo1H5dRGyyv8rPOZXgzgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=riLsew9LS3GNIWmQd/YMIA0rBP1bJl/S3bvIIiQ02fm9tPnvuw2iPWUhRWodlBYiK
-	 cJAffYYR62yFxS7MZolclRcyArsNpgZoITf/8heI5/QiILkmyFFmd8wpoApLdSFZ8K
-	 GUDthdJmgHLdDZmSSLzqbzP3YQ7rWB41KKXt2D8I=
+	b=DZ6MmtPttgBSqvcXeRCPm6lA45GT9gtm0PNFp10bOEBwdkXmM371kTPp1arw+bQiU
+	 MgesRgj1aCJdYDrvOe/PMlIDqhkJK2gj1ARVIsljF/eBHkvnyaLT3JLpLZDGm4I4gh
+	 vGYXjm4sAHyml4N9/dF3HRzISjcV5wwsDCws1hP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthik Poosa <karthik.poosa@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/113] drm/xe/pm: Disable D3Cold for BMG only on specific platforms
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 5.15 12/75] timers: Get rid of del_singleshot_timer_sync()
 Date: Mon,  9 Feb 2026 15:24:09 +0100
-Message-ID: <20260209142313.769998932@linuxfoundation.org>
+Message-ID: <20260209142302.283679184@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +65,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215221-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215433-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linutronix.de,roeck-us.net,intel.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 064A31110C6
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email]
+X-Rspamd-Queue-Id: 330D2111A63
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthik Poosa <karthik.poosa@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit bb36170d959fad7f663f91eb9c32a84dd86bef2b ]
+[ Upstream commit 9a5a305686971f4be10c6d7251c8348d74b3e014 ]
 
-Restrict D3Cold disablement for BMG to unsupported NUC platforms,
-instead of disabling it on all platforms.
+del_singleshot_timer_sync() used to be an optimization for deleting timers
+which are not rearmed from the timer callback function.
 
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-Fixes: 3e331a6715ee ("drm/xe/pm: Temporarily disable D3Cold on BMG")
-Link: https://patch.msgid.link/20260123173238.1642383-1-karthik.poosa@intel.com
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 39125eaf8863ab09d70c4b493f58639b08d5a897)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This optimization turned out to be broken and got mapped to
+del_timer_sync() about 17 years ago.
+
+Get rid of the undocumented indirection and use del_timer_sync() directly.
+
+No functional change.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201624.706987932@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/char/tpm/tpm-dev-common.c     |    4 ++--
+ drivers/staging/wlan-ng/hfa384x_usb.c |    4 ++--
+ drivers/staging/wlan-ng/prism2usb.c   |    6 +++---
+ include/linux/timer.h                 |    2 --
+ kernel/time/timer.c                   |    2 +-
+ net/sunrpc/xprt.c                     |    2 +-
+ 6 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index 1012925aa4816..cab80b947c755 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/pm_runtime.h>
- #include <linux/suspend.h>
-+#include <linux/dmi.h>
- 
- #include <drm/drm_managed.h>
- #include <drm/ttm/ttm_placement.h>
-@@ -270,9 +271,15 @@ int xe_pm_init_early(struct xe_device *xe)
- 
- static u32 vram_threshold_value(struct xe_device *xe)
+--- a/drivers/char/tpm/tpm-dev-common.c
++++ b/drivers/char/tpm/tpm-dev-common.c
+@@ -157,7 +157,7 @@ ssize_t tpm_common_read(struct file *fil
+ out:
+ 	if (!priv->response_length) {
+ 		*off = 0;
+-		del_singleshot_timer_sync(&priv->user_read_timer);
++		del_timer_sync(&priv->user_read_timer);
+ 		flush_work(&priv->timeout_work);
+ 	}
+ 	mutex_unlock(&priv->buffer_mutex);
+@@ -264,7 +264,7 @@ __poll_t tpm_common_poll(struct file *fi
+ void tpm_common_release(struct file *file, struct file_priv *priv)
  {
--	/* FIXME: D3Cold temporarily disabled by default on BMG */
--	if (xe->info.platform == XE_BATTLEMAGE)
--		return 0;
-+	if (xe->info.platform == XE_BATTLEMAGE) {
-+		const char *product_name;
-+
-+		product_name = dmi_get_system_info(DMI_PRODUCT_NAME);
-+		if (product_name && strstr(product_name, "NUC13RNG")) {
-+			drm_warn(&xe->drm, "BMG + D3Cold not supported on this platform\n");
-+			return 0;
-+		}
-+	}
+ 	flush_work(&priv->async_work);
+-	del_singleshot_timer_sync(&priv->user_read_timer);
++	del_timer_sync(&priv->user_read_timer);
+ 	flush_work(&priv->timeout_work);
+ 	file->private_data = NULL;
+ 	priv->response_length = 0;
+--- a/drivers/staging/wlan-ng/hfa384x_usb.c
++++ b/drivers/staging/wlan-ng/hfa384x_usb.c
+@@ -1116,8 +1116,8 @@ cleanup:
+ 		if (ctlx == get_active_ctlx(hw)) {
+ 			spin_unlock_irqrestore(&hw->ctlxq.lock, flags);
  
- 	return DEFAULT_VRAM_THRESHOLD;
+-			del_singleshot_timer_sync(&hw->reqtimer);
+-			del_singleshot_timer_sync(&hw->resptimer);
++			del_timer_sync(&hw->reqtimer);
++			del_timer_sync(&hw->resptimer);
+ 			hw->req_timer_done = 1;
+ 			hw->resp_timer_done = 1;
+ 			usb_kill_urb(&hw->ctlx_urb);
+--- a/drivers/staging/wlan-ng/prism2usb.c
++++ b/drivers/staging/wlan-ng/prism2usb.c
+@@ -171,9 +171,9 @@ static void prism2sta_disconnect_usb(str
+ 		 */
+ 		prism2sta_ifstate(wlandev, P80211ENUM_ifstate_disable);
+ 
+-		del_singleshot_timer_sync(&hw->throttle);
+-		del_singleshot_timer_sync(&hw->reqtimer);
+-		del_singleshot_timer_sync(&hw->resptimer);
++		del_timer_sync(&hw->throttle);
++		del_timer_sync(&hw->reqtimer);
++		del_timer_sync(&hw->resptimer);
+ 
+ 		/* Unlink all the URBs. This "removes the wheels"
+ 		 * from the entire CTLX handling mechanism.
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -198,8 +198,6 @@ static inline int del_timer_sync(struct
+ 	return timer_delete_sync(timer);
  }
--- 
-2.51.0
-
+ 
+-#define del_singleshot_timer_sync(t) del_timer_sync(t)
+-
+ extern void init_timers(void);
+ struct hrtimer;
+ extern enum hrtimer_restart it_real_fn(struct hrtimer *);
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1912,7 +1912,7 @@ signed long __sched schedule_timeout(sig
+ 	timer_setup_on_stack(&timer.timer, process_timeout, 0);
+ 	__mod_timer(&timer.timer, expire, MOD_TIMER_NOTPENDING);
+ 	schedule();
+-	del_singleshot_timer_sync(&timer.timer);
++	del_timer_sync(&timer.timer);
+ 
+ 	/* Remove the timer from the object tracker */
+ 	destroy_timer_on_stack(&timer.timer);
+--- a/net/sunrpc/xprt.c
++++ b/net/sunrpc/xprt.c
+@@ -1160,7 +1160,7 @@ xprt_request_enqueue_receive(struct rpc_
+ 	spin_unlock(&xprt->queue_lock);
+ 
+ 	/* Turn off autodisconnect */
+-	del_singleshot_timer_sync(&xprt->timer);
++	del_timer_sync(&xprt->timer);
+ }
+ 
+ /**
 
 
 
