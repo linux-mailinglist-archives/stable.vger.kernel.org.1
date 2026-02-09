@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMuqEhnxiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:13 +0100
+	id wAmFAcvwiWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-215008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CB5110888
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8514B1107D6
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF8B4301910F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4748F307EC7E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29E9378D85;
-	Mon,  9 Feb 2026 14:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2152837B3F2;
+	Mon,  9 Feb 2026 14:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKNMd5FG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ti6DOjxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8735B125B2;
-	Mon,  9 Feb 2026 14:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D909737AA91;
+	Mon,  9 Feb 2026 14:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647757; cv=none; b=abMf0Qt4izIM8gFf3j05PS3lCZvp6E7kc0JHT1Zw/VZ1GKd2EfoD3L2nSFtnJAloQ9VvJec16SnOKm0hCygakAQwJyE02zIvTA+NXM/ClwHMHT2rFwvZwLtvKKboL9NDCeir8mm/4Fvsh3T9Xak9R8AnIMqWCpkUC+ifF6aIIOs=
+	t=1770647364; cv=none; b=M9BTQrcPMH6tlJgePu+QhBUmgQ9hRFU2JpbdJsZSFl6Ik+9wWnvoI1MVELstHMxY9h2Q0PDCjBmd/iaZTth7N7/5wzUo0QtoyzYZQSTTC0mOoUq9Cxjw1dS0mjMzG6fQxB5oC6C18R9RuF/Gyak6TxXuA4UhL9BeE2N3vFQqSag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647757; c=relaxed/simple;
-	bh=B7GpzaZdcje1OT88ojl0MbVGckp0cSNoBf2HgoZ0pBk=;
+	s=arc-20240116; t=1770647364; c=relaxed/simple;
+	bh=qAEyIB0pzXdoZypSN8zpLAMYFcMmdCuxvrNOnV/0Oi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvdZRDkDBNltrtORB5StNbnuD8QdkoKZJq1ubvh3H7xVhXD4hhgaYxSVPfWbPgBZjHkKt7+w1EZFsspSub7wysuhI/8mtZvowUpRy1hhAS5+0+FwviEJaxtqqpqkt9C8s74wZAk8MUxsrDG30tEQtMBDaCl8vp3U47CcaC0y574=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKNMd5FG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10832C116C6;
-	Mon,  9 Feb 2026 14:35:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jiAoHTveWDLR3DKFEP5z1IQVCP8xHmkx5MSWtpdtTyopgPCIjOZ7PwCywli+k6O8zPVAiHj5NBknovM50jeExI+HM7yRgoJnfllEpBuFpYAY8MU6TTNmDIA4h+JQ5N4/3fl4bcKOgC3VfCwEqN+x0ycxbk5R2svkPPf5yRl1fOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ti6DOjxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F93C116C6;
+	Mon,  9 Feb 2026 14:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647757;
-	bh=B7GpzaZdcje1OT88ojl0MbVGckp0cSNoBf2HgoZ0pBk=;
+	s=korg; t=1770647364;
+	bh=qAEyIB0pzXdoZypSN8zpLAMYFcMmdCuxvrNOnV/0Oi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKNMd5FGKQv4GKAfG5H5WJNRjwsJttiVtxtNUGH3POJxweydbNj+DFutnC0jqiFgx
-	 K32QaoHsVmJ72L03PmJUsl/tM9tGReP5kCC1kwEgvzFGtxzNjFZbUVT2KNVhSUzM+Y
-	 Ttguu0ZhU9YAknLJTfcFC237tEKlqzHoDxUmJSNA=
+	b=Ti6DOjxd6zFxhN8ldVV4QBz+9GCBDTdK+RYKKG1K4fnAXSy9WdhHRjpBpI7ntRcry
+	 HEhxaRy9v0u6FoMorqQKanj5xBCyYMU2Z2UdBdwieuWcx6oD14dlD5HWyCQdRfsJ4a
+	 3WZ43R3qKTkKRVhtJbKIUpYEY2wRdXIPtL8iTVLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Forbes <jforbes@fedoraproject.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 002/113] x86/vmware: Fix hypercall clobbers
+	=?UTF-8?q?Rodrigo=20Lugathe=20da=20Concei=C3=A7=C3=A3o=20Alves?= <lugathe2@gmail.com>,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 078/175] HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
 Date: Mon,  9 Feb 2026 15:22:31 +0100
-Message-ID: <20260209142310.296046407@linuxfoundation.org>
+Message-ID: <20260209142323.250543597@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215125-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215008-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,cosmicgizmosystems.com,suse.com,kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,fedoraproject.org:email]
-X-Rspamd-Queue-Id: E0CB5110888
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8514B1107D6
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
 
-commit 2687c848e57820651b9f69d30c4710f4219f7dbf upstream.
+[ Upstream commit 85a866809333cd2bf8ddac93d9a3e3ba8e4f807d ]
 
-Fedora QA reported the following panic:
+The USB speaker has a bug that causes it to reboot when changing the
+brightness using the physical knob.
 
-  BUG: unable to handle page fault for address: 0000000040003e54
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20251119-3.fc43 11/19/2025
-  RIP: 0010:vmware_hypercall4.constprop.0+0x52/0x90
-  ..
-  Call Trace:
-   vmmouse_report_events+0x13e/0x1b0
-   psmouse_handle_byte+0x15/0x60
-   ps2_interrupt+0x8a/0xd0
-   ...
+Add a new vendor and product ID entry in hid-ids.h, and register
+the corresponding device in hid-quirks.c with the required quirk.
 
-because the QEMU VMware mouse emulation is buggy, and clears the top 32
-bits of %rdi that the kernel kept a pointer in.
-
-The QEMU vmmouse driver saves and restores the register state in a
-"uint32_t data[6];" and as a result restores the state with the high
-bits all cleared.
-
-RDI originally contained the value of a valid kernel stack address
-(0xff5eeb3240003e54).  After the vmware hypercall it now contains
-0x40003e54, and we get a page fault as a result when it is dereferenced.
-
-The proper fix would be in QEMU, but this works around the issue in the
-kernel to keep old setups working, when old kernels had not happened to
-keep any state in %rdi over the hypercall.
-
-In theory this same issue exists for all the hypercalls in the vmmouse
-driver; in practice it has only been seen with vmware_hypercall3() and
-vmware_hypercall4().  For now, just mark RDI/RSI as clobbered for those
-two calls.  This should have a minimal effect on code generation overall
-as it should be rare for the compiler to want to make RDI/RSI live
-across hypercalls.
-
-Reported-by: Justin Forbes <jforbes@fedoraproject.org>
-Link: https://lore.kernel.org/all/99a9c69a-fc1a-43b7-8d1e-c42d6493b41f@broadcom.com/
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
+Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/vmware.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
---- a/arch/x86/include/asm/vmware.h
-+++ b/arch/x86/include/asm/vmware.h
-@@ -140,7 +140,7 @@ unsigned long vmware_hypercall3(unsigned
- 		  "b" (in1),
- 		  "c" (cmd),
- 		  "d" (0)
--		: "cc", "memory");
-+		: "di", "si", "cc", "memory");
- 	return out0;
- }
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 3a22129fb7075..bec913a005a5d 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -439,6 +439,9 @@
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
  
-@@ -165,7 +165,7 @@ unsigned long vmware_hypercall4(unsigned
- 		  "b" (in1),
- 		  "c" (cmd),
- 		  "d" (0)
--		: "cc", "memory");
-+		: "di", "si", "cc", "memory");
- 	return out0;
- }
- 
++#define USB_VENDOR_ID_EDIFIER		0x2d99
++#define USB_DEVICE_ID_EDIFIER_QR30	0xa101	/* EDIFIER Hal0 2.0 SE */
++
+ #define USB_VENDOR_ID_ELAN		0x04f3
+ #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
+ #define USB_DEVICE_ID_HP_X2		0x074d
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 1d5537c0f40d8..31b2a5d1cd98f 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -81,6 +81,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_PS3), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_WIIU), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DWAV, USB_DEVICE_ID_EGALAX_TOUCHCONTROLLER), HID_QUIRK_MULTI_INPUT | HID_QUIRK_NOGET },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, USB_DEVICE_ID_ELO_TS2700), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_EMS, USB_DEVICE_ID_EMS_TRIO_LINKER_PLUS_II), HID_QUIRK_MULTI_INPUT },
+-- 
+2.51.0
+
 
 
 
