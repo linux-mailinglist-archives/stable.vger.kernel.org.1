@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-215095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKqROwfyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:12 +0100
+	id eHu7Cnz2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE91110ADE
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFEF1115B2
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDA313063B57
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A39B630E5678
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731BC285060;
-	Mon,  9 Feb 2026 14:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1A536AB43;
+	Mon,  9 Feb 2026 14:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdZYsZZ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuKifsrH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375C01AF0AF;
-	Mon,  9 Feb 2026 14:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7A227CCF2;
+	Mon,  9 Feb 2026 14:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647658; cv=none; b=MO98ykcfYZXSDsoGucXZ66D+fjdJtCuVb1T3HaWJLvtpeIQzS/hYboJGf8+b0DFgBk3DYS1cjCONEZCk0QFZw2IgFOKQsfJSsdUnIOYriBNDBMLVKPSCxtnK2Yke4M5oIo8o+mYnCLmYw3B26K9i1qFxirsK81IGlY8Hl/x03qc=
+	t=1770648375; cv=none; b=r67vy8a0tuDi4j36kGyyQ5qxkldfSvrR73MlMT0yxRxXGNCvZSpzGsktor9aZ+er08q2METbhonTUIJqjUzgMBtUUNxSbhuid5JjFURrQ6Y4wmcpZSGhkhT23XcuVkvuIZK2tUhBVv0+wnK/OB//mIeXXDFB5oD/GTmrcmfz7IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647658; c=relaxed/simple;
-	bh=R6X/OJx+M/qsMrNvDN/5Ahrjtfks7w8+zPb2S6i2Ep4=;
+	s=arc-20240116; t=1770648375; c=relaxed/simple;
+	bh=EbTPmO+iM1Sxpy/lQzv77wVBIgrwX0tiTJIgXAC6e8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEgRs2Uyb9eDUaPk1WlX1G/sGIsc4hcfM1bW9ir7gGL2iq7d9wjWkEa1p01k/baXrffjdoZsl9IiqsybvTjaMJzmK25Zwrxu+RVZVTfpEqbPH+sUChLQmmyse2+olFM+TaANei58SnCiR99W9IOvwz7GQECPxFO7JfNjYMk3quE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdZYsZZ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84CAC116C6;
-	Mon,  9 Feb 2026 14:34:17 +0000 (UTC)
+	 MIME-Version; b=He8mEGaTgHC8cKz3LzSIouHHGYYK/cxQBZe+oVOoe8OtMDC4fRpsZ+wnbTckAwPfWBbXEB7yynqmr3+Dgi4/nfyD5cTfbpw7IEkwIPprUjHWErQ3EUZFBJ7UvTZI+qdq47eVhDd4+EVl8AVXVAxsFNQF45ZAHnsOcEeF+Xb932g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuKifsrH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EF5C116C6;
+	Mon,  9 Feb 2026 14:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647658;
-	bh=R6X/OJx+M/qsMrNvDN/5Ahrjtfks7w8+zPb2S6i2Ep4=;
+	s=korg; t=1770648375;
+	bh=EbTPmO+iM1Sxpy/lQzv77wVBIgrwX0tiTJIgXAC6e8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BdZYsZZ+ebrQMHCEH0GpV0IhKGJvEmoxEesk/bIdpFZ5xxME2E5bLPdiYc/izkwBa
-	 UARv2PnsCIQVC2fPtxOLWlpcmRek4hF/SEKiBAkdEXFF7i+T9MfvqGtx7+cpStOpyP
-	 AloLpxGuqTU0WFbQfqiVtO0g7PCxZJh3VccJymws=
+	b=RuKifsrHtiPZssV9YTiApIG4XbU+lCgleRKCApvITzgtBEbpwozHkE1xV+RbCZQ2S
+	 XDK3mriIRMo9LUKfYNCiGsG2djgqbJBaCtQe1AlGgTmBaFXU8ZTSLhh5SqIp4J25zb
+	 QiucikVFDCjgJdZLnkdyZSzr5a6zhh0ALzjVnp/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	valis <sec@valis.email>,
-	syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com,
-	Boudewijn van der Heide <boudewijn@delta-utec.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 132/175] macvlan: fix error recovery in macvlan_common_newlink()
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 02/86] x86/kfence: fix booting on 32bit non-PAE systems
 Date: Mon,  9 Feb 2026 15:23:25 +0100
-Message-ID: <20260209142325.259909044@linuxfoundation.org>
+Message-ID: <20260209142304.864049675@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,131 +77,101 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215095-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,citrix.com,alien8.de,google.com,linutronix.de,redhat.com,linux.intel.com,zytor.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-215309-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7182fbe91e58602ec1fe];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,valis.email:email,delta-utec.com:email]
-X-Rspamd-Queue-Id: 4CE91110ADE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8CFEF1115B2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit f8db6475a83649689c087a8f52486fcc53e627e9 ]
+commit 16459fe7e0ca6520a6e8f603de4ccd52b90fd765 upstream.
 
-valis provided a nice repro to crash the kernel:
+The original patch inverted the PTE unconditionally to avoid
+L1TF-vulnerable PTEs, but Linux doesn't make this adjustment in 2-level
+paging.
 
-ip link add p1 type veth peer p2
-ip link set address 00:00:00:00:00:20 dev p1
-ip link set up dev p1
-ip link set up dev p2
+Adjust the logic to use the flip_protnone_guard() helper, which is a nop
+on 2-level paging but inverts the address bits in all other paging modes.
 
-ip link add mv0 link p2 type macvlan mode source
-ip link add invalid% link p2 type macvlan mode source macaddr add 00:00:00:00:00:20
+This doesn't matter for the Xen aspect of the original change.  Linux no
+longer supports running 32bit PV under Xen, and Xen doesn't support
+running any 32bit PV guests without using PAE paging.
 
-ping -c1 -I p1 1.2.3.4
-
-He also gave a very detailed analysis:
-
-<quote valis>
-
-The issue is triggered when a new macvlan link is created  with
-MACVLAN_MODE_SOURCE mode and MACVLAN_MACADDR_ADD (or
-MACVLAN_MACADDR_SET) parameter, lower device already has a macvlan
-port and register_netdevice() called from macvlan_common_newlink()
-fails (e.g. because of the invalid link name).
-
-In this case macvlan_hash_add_source is called from
-macvlan_change_sources() / macvlan_common_newlink():
-
-This adds a reference to vlan to the port's vlan_source_hash using
-macvlan_source_entry.
-
-vlan is a pointer to the priv data of the link that is being created.
-
-When register_netdevice() fails, the error is returned from
-macvlan_newlink() to rtnl_newlink_create():
-
-        if (ops->newlink)
-                err = ops->newlink(dev, &params, extack);
-        else
-                err = register_netdevice(dev);
-        if (err < 0) {
-                free_netdev(dev);
-                goto out;
-        }
-
-and free_netdev() is called, causing a kvfree() on the struct
-net_device that is still referenced in the source entry attached to
-the lower device's macvlan port.
-
-Now all packets sent on the macvlan port with a matching source mac
-address will trigger a use-after-free in macvlan_forward_source().
-
-</quote valis>
-
-With all that, my fix is to make sure we call macvlan_flush_sources()
-regardless of @create value whenever "goto destroy_macvlan_port;"
-path is taken.
-
-Many thanks to valis for following up on this issue.
-
-Fixes: aa5fd0fb7748 ("driver: macvlan: Destroy new macvlan port if macvlan_common_newlink failed.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: valis <sec@valis.email>
-Reported-by: syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com
-Closes: https: //lore.kernel.org/netdev/695fb1e8.050a0220.1c677c.039f.GAE@google.com/T/#u
-Cc: Boudewijn van der Heide <boudewijn@delta-utec.com>
-Link: https://patch.msgid.link/20260129204359.632556-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20260126211046.2096622-1-andrew.cooper3@citrix.com
+Fixes: b505f1944535 ("x86/kfence: avoid writing L1TF-vulnerable PTEs")
+Reported-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAKFNMokwjw68ubYQM9WkzOuH51wLznHpEOMSqtMoV1Rn9JV_gw@mail.gmail.com/
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/macvlan.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/kfence.h |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index b4df7e184791d..c509228be84d1 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1567,9 +1567,10 @@ int macvlan_common_newlink(struct net_device *dev,
- 	/* the macvlan port may be freed by macvlan_uninit when fail to register.
- 	 * so we destroy the macvlan port only when it's valid.
+--- a/arch/x86/include/asm/kfence.h
++++ b/arch/x86/include/asm/kfence.h
+@@ -42,7 +42,7 @@ static inline bool kfence_protect_page(u
+ {
+ 	unsigned int level;
+ 	pte_t *pte = lookup_address(addr, &level);
+-	pteval_t val;
++	pteval_t val, new;
+ 
+ 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
+ 		return false;
+@@ -57,11 +57,12 @@ static inline bool kfence_protect_page(u
+ 		return true;
+ 
+ 	/*
+-	 * Otherwise, invert the entire PTE.  This avoids writing out an
++	 * Otherwise, flip the Present bit, taking care to avoid writing an
+ 	 * L1TF-vulnerable PTE (not present, without the high address bits
+ 	 * set).
  	 */
--	if (create && macvlan_port_get_rtnl(lowerdev)) {
-+	if (macvlan_port_get_rtnl(lowerdev)) {
- 		macvlan_flush_sources(port, vlan);
--		macvlan_port_destroy(port->dev);
-+		if (create)
-+			macvlan_port_destroy(port->dev);
- 	}
- 	return err;
- }
--- 
-2.51.0
-
+-	set_pte(pte, __pte(~val));
++	new = val ^ _PAGE_PRESENT;
++	set_pte(pte, __pte(flip_protnone_guard(val, new, PTE_PFN_MASK)));
+ 
+ 	/*
+ 	 * If the page was protected (non-present) and we're making it
 
 
 
