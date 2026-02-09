@@ -1,167 +1,309 @@
-Return-Path: <stable+bounces-214931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBdmFBTeiWnGCwAAu9opvQ
-	(envelope-from <stable+bounces-214931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 14:16:04 +0100
+	id GLJMEWvjiWnGCwAAu9opvQ
+	(envelope-from <stable+bounces-214932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 14:38:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E9410F817
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 14:16:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A982E10FCC4
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 14:38:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC37F301F4AC
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 13:14:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7EABA3018427
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 13:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6431A377562;
-	Mon,  9 Feb 2026 13:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1551637883C;
+	Mon,  9 Feb 2026 13:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JgjH1jNQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fjbQT5q4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f196.google.com (mail-lj1-f196.google.com [209.85.208.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE7A37756D
-	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 13:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.196
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770642876; cv=none; b=rWPn24zFNUGvfboWFweKU+NS5aVy95lNz3LqxLfKa/yDP4Px5DVlB5LkXPbzp1Pae9k43BHzg5QdUvzdprvxKJ0aZDgsFp6sWlZghAxjx6ppttyEPXlBFVACVhj58mu/LFgMV/QSJMB4BbANEqhujsOapy7z3LmWmHvUzCqKrFc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770642876; c=relaxed/simple;
-	bh=BsCyYY706eP9kibwFEw5teWvvr/D7HjWBFdh5Dsrp0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MdjM+CHCeu2O+0v6UOUbkwOeobx1azZQNwyK+iQuMk3oHuqTgkQW1gJ4xoFmcl6o2QsCEfzvOgMzujdHi2DEH8aOehHHL0xhcHFIQm2pZnPTOhzHz+xKcqrxQFzmEWko+Q39ssJ28Lji5DMfEEOBxjrb20yNhe53MnCDTzwuLd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JgjH1jNQ; arc=none smtp.client-ip=209.85.208.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f196.google.com with SMTP id 38308e7fff4ca-386d3ac7eceso11116681fa.3
-        for <stable@vger.kernel.org>; Mon, 09 Feb 2026 05:14:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770642874; x=1771247674; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RoPSheucwNdJ0J9aHupvUSWIaFIaKnYUl6Un356KuXI=;
-        b=JgjH1jNQnPiNbYKS/ksIUt3FkeHXhEfn0JCASBuctD2odZ8izupOXuNyZ8WW8B3ujU
-         ZkH+OGppkxKSVgu0zfd1VLmqVCULFWQc1C3HxyAwFyqdL5/0OgKZ2uJcghH4H7Ar/r6V
-         RQ3WI6TLJLZjgYcBoNQ4OyS+R5mOiqb3FjoQK24Bk6AxWohR6/Fa4mb4XtZr2WSvw1Hj
-         epJg6db2tEeVzavZOcvX1gHrAfI6rimS9vby9KsZmdoPGbkMTAbfrEOXVbc25YycAENx
-         m4TFO9iBjNSHldJmwdVmEerhs5MVWmzFqJPago0d7UQxnJd3ZSouIAAgzUg5D7C1nNV6
-         NMbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770642874; x=1771247674;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RoPSheucwNdJ0J9aHupvUSWIaFIaKnYUl6Un356KuXI=;
-        b=Gwjf4A/msdU1087OTRX74SniY4U4v489Zf9AE75g2ew4fIwv9LzDRUT7HfyZb2840U
-         8FUCIJpW2llV0QyCN/2aS9NitC0QXBqx7/ecBsqvMN3g5PCxaYQDMdGat5OdUUmkYZpE
-         i38QqnbGCWYw5me51HnbMZgCWPD42o7hfm3tEBYTVlvblfEHtK0HDBUOesWdVLyHLp8o
-         8xYDrKGpk9Xh3SWQIpOZ8X7in6ePDBrmGG3G5Fo2xxUIhxkrUYhZ13NPIRtxhPNcYyMl
-         hyCHyGjNIVhBqanCp0E5M0JCYsciGKIbfL1rCibH1TFcJ4l1xFIH6PljfaLHirXB7Kz7
-         fosA==
-X-Forwarded-Encrypted: i=1; AJvYcCXH/E0JWAq3F9Cl8Cm2Zs5IqgdPmrOY+LBtHq+b8R3XN8ugVAvsTyva/FUOBp5l+3czVCxy7Zk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyURrlY5QMhrOI0CEfLKqM0iCqsTA6zq6Ykw4CEw0n5RrkImBDz
-	LTJkgoi/tNPbK2ON/gAhMz+LBO2k2V9H0B25/vfeMH99SzJ36vSOy761
-X-Gm-Gg: AZuq6aI1pJlhgAt15UtNldK9iv1AATYpnL4BdIAc0UbmXIzNbMxrsOEo0lQ7x2N+vGC
-	DfiUrgdqdcGf+oIbl4RMQTg339U7kjcjhyW+iBuu4tnXNASwJI4JYzVGTTm2bz5PJ2J9GKUYxJn
-	fTkvvy2WM1vez53Z1/W22xOu7aOKoRhJTfO1JXPylATCPE7+i+4Kt9GmeCKgN+Xg87YYZiiWrsO
-	ReqejSCnNG/rK3VZ15GLAEjRUNv6jQGFXnNaz0BPr7RYu+9ah3rEy57Hz3HF73ArqnSc8GHZzCW
-	n0nTgjB1PACqkR1lZn968BaNE1U3GYmohlpgkGVBLdZZJ3U31e1fCy46GnrKGSw5kAvO66d+Ktd
-	DjKtTmxLd3Fo+pjNuHLTlYdq2lpfLmsITC2ObZpfeU1lEt6heO5a3mym/h93j1+SAhAYEzPIjch
-	Ul6zdtrrDPIV4/NR/tm8wEYLhd7xG9QBVthCkbz6LGXemjb7Mdb2ez0BuqFUMDI6GIFbFtGgPIk
-	R9gjO0GOIQg8e8=
-X-Received: by 2002:a05:651c:b22:b0:386:1ce2:1198 with SMTP id 38308e7fff4ca-386b5110ee8mr29967281fa.31.1770642873785;
-        Mon, 09 Feb 2026 05:14:33 -0800 (PST)
-Received: from localhost.localdomain ([176.33.64.73])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-386b63e8483sm27212191fa.34.2026.02.09.05.14.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 05:14:33 -0800 (PST)
-From: Alper Ak <alperyasinak1@gmail.com>
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: Mikko Perttunen <mperttunen@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Alper Ak <alperyasinak1@gmail.com>
-Subject: [PATCH] gpu: host1x: Fix passing zero to ERR_PTR in host1x_iommu_attach()
-Date: Mon,  9 Feb 2026 16:14:26 +0300
-Message-ID: <20260209131426.37611-1-alperyasinak1@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF3E36A02B
+	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 13:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770644326; cv=fail; b=F0IWDutfiSeop2W43myECQ0xLkbQmx4Xxjj3dKooGBKBQxsKbqGVrZfGUxp127xXVAOcW40e07LXVlCwFOJNgmkCmq2s9D5BahAHbGFb9A+Y0ZtaoIphfeAIoHTwolr6/cJTbni9JbYDptVys/wxptrivntMybt/V7f1cNVPQlE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770644326; c=relaxed/simple;
+	bh=bKCySyIdFFo8hWfmcKo8IaEm4yDl+zGC/pDNjQqnUIA=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=AG6SRrHximb4m/U2+weQmjYmqAHDDt1oetlrwqwN3fUXrMI8ZLxIuFMgzjK05jTgseOKj3SRQeHlw3J+137WKDhkV7pJNLhYn/dk5ANiHXdlNM4MMR/nin4PkQhAsW9zCNa41GuHx/Dsvy+rOrpr6uED01BTsVAIc3kTNXuLDTI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fjbQT5q4; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770644327; x=1802180327;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=bKCySyIdFFo8hWfmcKo8IaEm4yDl+zGC/pDNjQqnUIA=;
+  b=fjbQT5q4+C5rDOOcQJCYIYdWvsCn+H3NST6CVGbFardQFlTd8qb1q1WQ
+   U8/QS/UbiyFofLqlIO02fK8T62NXwktkbJtXWPGmmkZSbmXFcRdCMYbPb
+   Z1v7D00//WAoWg59+TnFDS+VH+eqQKV7kd/u32ImoSxXgLw+CZw+PHMjy
+   LfVThdB2j1dxPD1heSI2iNkCBQobn+fAgcYRkNFQ/SMXjPZIBopzZYSUJ
+   KEW0fIDe7XHO9jtYYREKwdbQMKIhLRPsFo1R9/TZ8/+pkmYaZ9+uoTy7g
+   VtdTZ1hkhls4yLvHP+FZSiTIcB/LTJ+AbkjCU+f81l8Bj4dirZXJWPm1Z
+   Q==;
+X-CSE-ConnectionGUID: x7WYTfX5RfizHbH6bQvrPQ==
+X-CSE-MsgGUID: BUsMF0mWRLCUz/fVzPl54w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="74352492"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="74352492"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 05:38:46 -0800
+X-CSE-ConnectionGUID: +xidyTNbRXiJHkhsSZy6/w==
+X-CSE-MsgGUID: tmFhR6CqRYGUGPfbrHvxLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="210735027"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 05:38:46 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 05:38:45 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Mon, 9 Feb 2026 05:38:45 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.69) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 05:38:45 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TdDvp5Pb7qPVUtjRb21YgR1d66poVsCxHbmEu17MdrL/bjbbsW00liR8F7ZS7zR8KoR5eNhWTlKImcOlJVxaaoEQGVUEeojHa5sAlLJ2NEopsV3vGLUTSqLxO3xYQxjLxjtURB0J5/5s4NXdmAtMxZjdcyc68Gkwpx66kV62398NZtaOrs0EgXfTI7k9u85S9mt5hqcKJtVECxLllaFFOUYzBdv6Gx7raAnhu+Kh06lUAjypxQ+e5dzdZNPN5vrOyN3Mk3cs4hVDJTyJnSrcH9xuC7jRpZbvu8Gv6oiHOzfdWiOVAQx+mWx32CgMtpS6Jtj6SVWgnshY33E8kTgWaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SfROHD29xqPtBbIr9DatCuiuuCW/do5J9ZNIF7aIFC0=;
+ b=CFISupAnDB0jpVmIKqD2safmKulDjhNApUGeOe5h5QtH7yOrQlPUcPd3VSc8up163OOu8iq/17vvVkhDSL+xDXH4rtCvWrVxR2ichsBN/9dxNCcjMncc2TI6YlN+rn3le43iL95G8MZJJHU0omzRBI6dl2dDNkpGmdhZddAkzWN4CidJPuwratsjlkpm4MIcJMDcwKNFzRSc+1frVnDJLyV93RcOdlkAqjz41rFF8q9+EDRiLUyqu9ANP3mmALdLRzZWb8re6LqSW8cHYG/JKYahUzNN+Lcaueh79Hrs2hXlibMy4lasXX/ZR0MoG+v8qN9Ko2MJZciDIweENTFflg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
+ by SJ5PPF8622363CD.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::83c) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Mon, 9 Feb
+ 2026 13:38:43 +0000
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::9ca5:4d1d:db45:f523]) by SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::9ca5:4d1d:db45:f523%4]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
+ 13:38:43 +0000
+From: Imre Deak <imre.deak@intel.com>
+To: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
+CC: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	<stable@vger.kernel.org>, Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Subject: [PATCH v2 1/2] drm/i915/dp: Fix pipe BPP clamping due to HDR
+Date: Mon, 9 Feb 2026 15:38:16 +0200
+Message-ID: <20260209133817.395823-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.49.1
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: GV2PEPF00007562.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::3fa) To SJ0PR11MB4845.namprd11.prod.outlook.com
+ (2603:10b6:a03:2d1::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|SJ5PPF8622363CD:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4b5d661-92d0-43e2-ef4c-08de67e08af3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?cvoHbGXMgn/VhFX1kIx3DyqKXsu9gTfD94AepZ1f5Y05udVD8ElW70v+4BMr?=
+ =?us-ascii?Q?aGSryKlVoeXvrDobPofNt49P6cNGrEUgOf1r0+X+3cVTgtJ8nFE3JM5rxTpl?=
+ =?us-ascii?Q?nDN2L/42LbQgP+S/FsqDza5dYB1OwhkX57/fnjTtGn8+5l2kl6KPKDf5Lqt5?=
+ =?us-ascii?Q?P8tKw/Jhg3SBNQjxHCC5p2c9ST/XaGRMoSIaqzCYGiw5Zb2MDEydTHuyZrTm?=
+ =?us-ascii?Q?sf+r+5Pu+a9oyUu4MPMGs2FdCCPyyXIey+ANVgJpXFvaV2OliKa7hRX+ZalH?=
+ =?us-ascii?Q?ahXeJLEe64/biSGG9AC3oQN5oODAvEdxpfD+43ay5Fyc6dz0EGf1YuqR0DBo?=
+ =?us-ascii?Q?qaz1Q2DsCqusjnD/Q19zLhTAJYlYbWuD+ddIL0Y5eKSChAdsSB7mtp40Gzl1?=
+ =?us-ascii?Q?W9SR5Pxhws3DKbxcorcw3/sJsciGFn3wIYfLBw1KqzqasGLiRcbsWnRauGH6?=
+ =?us-ascii?Q?dIe5D2u0FVy2VYHLoogJX4L/EsGMJ7GaGssjcULdAR/noBE9F7RxLBGlx+YQ?=
+ =?us-ascii?Q?QPjYPIVk4ZURhvgcMmyzkuAYbtZzhwCWDEjNivUuSXk7f4YMmnhw6ELvQW4G?=
+ =?us-ascii?Q?315x5G2TrS2E4zNzVjOxCB/3QfWwtQHPZh4dhs/coerSJreljRCMw2DUHQgJ?=
+ =?us-ascii?Q?GStr2eJVO3TRB5kNwlk0EhNSQfTv5AlbHiD1Gr15VCph/uAPXPjoI748rM0a?=
+ =?us-ascii?Q?OZzrMZluMZJaUtMg/TStoz9eTBYlJRWcifjFSPVxy+i/BvStc6PF1PUlB2bY?=
+ =?us-ascii?Q?aBHyXNJKc2WpR8ZsrV9EkpMt9WVdSXi2n1+oqpQ73s2YGjiZ/IoNKfndVQ/L?=
+ =?us-ascii?Q?0k3jEOSuNR5WEqoZLQZoPbhxmwOBmkKWhhMb4Q50/1S5PMLBW4PwB9HA2NBr?=
+ =?us-ascii?Q?oKYZMZ4ji58o99/K2y6z2OnsBszpWRqQIcz0iaExxPurCUfQhM7CuisU06Dg?=
+ =?us-ascii?Q?UrbgXkA8ApQa8BmfKnTu6IJqVgdGttuLez9oRg0hZCI3LlVEeamQWII7XKUz?=
+ =?us-ascii?Q?XiMV9iqW/hQEfIG50dLm8Zfe6ZUxDfrgIPVS7qhWgRysiVg1yKzJdKjbC0Ju?=
+ =?us-ascii?Q?R6xkhEzyguEBWuBgP/6vz82ZXj4QENWo9hrdC78eNq34c4tzQBSHEwhGPY3A?=
+ =?us-ascii?Q?tZsL2jsp6jWPZAAUaHEGtber2dPhZKaNBEsypjvYs6x/vkohL/u7RyCwNhID?=
+ =?us-ascii?Q?20/LbLmR7QwePFPBcRI29k6+IaS3Oj39wyenDR3mJ33+ld96T2hkoNASI1rH?=
+ =?us-ascii?Q?vGE44hhSZCSc+PeXuLrAFVxK9YVsCZydjn7k3AIu3AsYKh2bnNfo0ngLvc3z?=
+ =?us-ascii?Q?dgdKdsZFlJMOrsgDCTqJSI5TvNBDKIvHf2BlpLwUkHU3Dy7zhu7hgiDbePa5?=
+ =?us-ascii?Q?NEaCqXyVM101/kfrTowCq97DiM3/hJhspbRnjj8Nh72rS1AnxrYo51q7/nG5?=
+ =?us-ascii?Q?byH2Ufuy6mauA7TOmEdpeiBFRmAm+gECA02jMotK20C476y4FBgYUmWNh4aJ?=
+ =?us-ascii?Q?z80VdB5tMoqz3Bvh/6l3OF092W52cWYjploU?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tWtDh9EVpk53qLRD39s7BetPSNgIPcbnHlawgXvbw/vG5Apu3u5mfyRziDZA?=
+ =?us-ascii?Q?QOf8BhcgkTA1C4XmtEC7MLMkVqZwyMC9w5U7mqWni/x7uESFHjvRTdYg0/GL?=
+ =?us-ascii?Q?89LFnLJmposnvAt4NBDO8DTb54ZirLRcqTVeitKj6vpdPG9KhjGKCJaBlGer?=
+ =?us-ascii?Q?Tdg2kUx2AkMhLzwV0E6puGDS2n1GXqVRFqkMwlMSH/+476hCn7vFL00OnzMu?=
+ =?us-ascii?Q?DG8jJPWxBUc2QKVBLA5/ACSkDMXOfzKiKleh7bjGMdKDDqwXYaSWU2n943w/?=
+ =?us-ascii?Q?8InJ7YG/+HnBtuha4RdHqn38wwnmpQOUvjdFPz5H2BjrChfsOyFXIt6Z9uJT?=
+ =?us-ascii?Q?aNzP6h/HHQF0fQkb+MglrRsGyZ472bPcAEtPBqx6XZaK25g50f2+ynuzNwAg?=
+ =?us-ascii?Q?YTJRYB5X6ebbGT5FP/90Zi2b3+xfpYXxuvi+NaLt+tv0vFhmmcFM/lKxtzc4?=
+ =?us-ascii?Q?BFF7gHdE+ueYZhDIP/TqEkVUL75Jt7S97dQNoMDpvg0gzdzmWnwVOxCJdvMt?=
+ =?us-ascii?Q?uL8EFpLm5XFbvJHr2lmzUdttfyLwhdySt5m4ZD9BjE/OM8OINw+W0Hnau/r+?=
+ =?us-ascii?Q?zvMPcinfdGex2O+9Saplo6v9Li9ulSVkk+EwXaKJI3kOSqr8MP+uPd1uTQSB?=
+ =?us-ascii?Q?JKNUCmDgvXcLClyTcgl4E6aFWimFba8F5ptSt9ryFkQUsAV7EUfe4RJgPOKn?=
+ =?us-ascii?Q?anJHEdojQaITHlRGuPIYfJaJV37DmsLjQVW6GakgSgZVXH4qJiFKonKTip0v?=
+ =?us-ascii?Q?iBXk9XEVNAaGcUJQJlgS2gHR3DDuXaiQo9Wz9ivQcxWfIwsUlDDXva19SXLZ?=
+ =?us-ascii?Q?9Q1A0IKuBfNLHQsSZreXf7parizY2cMfQwAzxkvnxPKFNxEk0sPu83FaRTfT?=
+ =?us-ascii?Q?ZLenO9FXDzfwrOBj16v5UQ6g6vALHHAjfMJppUt57KiyJUixeaecRZh/NzZ7?=
+ =?us-ascii?Q?UHnAZhIMHHwHiK9y7zqG5j/+DliM5jcmp/fdYndL9s2Um/iz67Y5A+yf5Zr0?=
+ =?us-ascii?Q?LCTVuz+uHZrSTWpqQayGLcxT7RZV5FN/Zx5PPZvtCCGrrrmpUsWzt3SBoe0q?=
+ =?us-ascii?Q?lQ7mYCPMwG3Bvtpr5K/l+P92bBENiOFzGIBjLOzfdyVZWofwnHIAu6gj3wMz?=
+ =?us-ascii?Q?zdXnmWNf8T7ZzOfUnR8lQ3urMSYBWMxXEjXOQqzM5Isy6wvi0S6eb00OhWeZ?=
+ =?us-ascii?Q?XIFBSmrsGN3d0WylTsznNqoC+ZkD536BlUsmCfcDZuLwoWqiEwfzItFlw3QU?=
+ =?us-ascii?Q?jxqRGshB9gUwmF+IUoPCni8dY2yW0AObyi+PPy+Qq394pI3o/JXVa1kE6RNj?=
+ =?us-ascii?Q?7htZHI+gbEK0wROf/DSzvWH68usUEJPOij1eDKS26uFFe0I0WkgDhoJiX4qv?=
+ =?us-ascii?Q?elRC9GojHKEpPrkylju0YYTU5gCPxZceBOXvwQ6vDywS2fqFsq5Rv2j+d1vg?=
+ =?us-ascii?Q?vqBgkcrMg5KRs1kd6Q11d/yigb1yxhkKkz99i6qm32Mw4mcAO92kUKaAdVr4?=
+ =?us-ascii?Q?GqJzKfDo4t2xznFDKz7H8qaCgfdSH63AlmgJrLbV62Aox6miLkpMXw2o+fy8?=
+ =?us-ascii?Q?SQGv5mZLyUPPeHh1U/fwHUI0+5PTSUT8LOBFiRIY9hB7LNjtjsLhKOekg3j8?=
+ =?us-ascii?Q?ftRH7vnozn+7gQaoyxiK2fLe7bdugH5TVBu2QtraC5PparZ3I6WuzJ9cLMeJ?=
+ =?us-ascii?Q?C9Kq7uoIden257s0aKNjFtewMA5+XzH9AOUN3OjIjoO6oAU5FGgG9prm5gcX?=
+ =?us-ascii?Q?1QtFhT5iAg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4b5d661-92d0-43e2-ef4c-08de67e08af3
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 13:38:43.5975
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b5YZyT/XKXbTl/WGyKW3ti5gVnC6mU/Nf1/kAcdWKPtJ2vMWTtjW+xSZzihNHVNl9AkE1HGyNPlOn1d1hw+UDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF8622363CD
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[nvidia.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214932-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-214931-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alperyasinak1@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[imre.deak@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E2E9410F817
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email,gitlab.freedesktop.org:url];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: A982E10FCC4
 X-Rspamd-Action: no action
 
-When iommu_attach_group() returns -ENODEV, the code sets err to 0 but
-still falls through to the error path, returning ERR_PTR(0).
+The pipe BPP value shouldn't be set outside of the source's / sink's
+valid pipe BPP range, ensure this when increasing the minimum pipe BPP
+value to 30 due to HDR.
 
-Returning ERR_PTR(0) evaluates to NULL and breaks the ERR_PTR/IS_ERR
-contract, causing the error to be silently ignored and potentially
-leading to NULL pointer dereferences by callers.
+While at it debug print if the HDR mode was requested for a connector by
+setting the corresponding HDR connector property. This indicates
+if the requested HDR mode could not be enabled, since the selected
+pipe BPP is below 30, due to a sink capability or link BW limit.
 
-Fix this by returning NULL when err is zero, and ERR_PTR(err) only
-for actual error codes.
+v2:
+- Also handle the case where the sink could support the target 30 BPP
+  only in DSC mode due to a BW limit, but the sink doesn't support DSC
+  or 30 BPP as a DSC input BPP. (Chaitanya)
+- Debug print the connector's HDR mode in the link config dump, to
+  indicate if a BPP >= 30 required by HDR couldn't be reached. (Ankit)
+- Add Closes: trailer. (Ankit)
+- Don't print the 30 BPP-outside of valid BPP range debug message if
+  the min BPP is already > 30 (and so a target BPP >= 30 required
+  for HDR is ensured).
 
-This issue was reported by the Smatch static analyzer.
-
-Fixes: 06867a362de0 ("gpu: host1x: Set DMA mask based on IOMMU setup")
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7052
+Fixes: ba49a4643cf53 ("drm/i915/dp: Set min_bpp limit to 30 in HDR mode")
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Cc: <stable@vger.kernel.org> # v6.18+
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com> # v1
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- drivers/gpu/host1x/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/host1x/dev.c b/drivers/gpu/host1x/dev.c
-index 3f475f0e6545..46a570b861ac 100644
---- a/drivers/gpu/host1x/dev.c
-+++ b/drivers/gpu/host1x/dev.c
-@@ -450,7 +450,7 @@ static struct iommu_domain *host1x_iommu_attach(struct host1x *host)
- 	iommu_group_put(host->group);
- 	host->group = NULL;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 4b786706ea2de..7fd20df10f26f 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2703,6 +2703,7 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
+ 			       bool dsc,
+ 			       struct link_config_limits *limits)
+ {
++	struct intel_display *display = to_intel_display(intel_dp);
+ 	bool is_mst = intel_crtc_has_type(crtc_state, INTEL_OUTPUT_DP_MST);
+ 	struct intel_connector *connector =
+ 		to_intel_connector(conn_state->connector);
+@@ -2715,8 +2716,7 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
+ 	limits->min_lane_count = intel_dp_min_lane_count(intel_dp);
+ 	limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
  
--	return ERR_PTR(err);
-+	return err ? ERR_PTR(err) : NULL;
- }
+-	limits->pipe.min_bpp = intel_dp_in_hdr_mode(conn_state) ? 30 :
+-				intel_dp_min_bpp(crtc_state->output_format);
++	limits->pipe.min_bpp = intel_dp_min_bpp(crtc_state->output_format);
+ 	if (is_mst) {
+ 		/*
+ 		 * FIXME: If all the streams can't fit into the link with their
+@@ -2732,6 +2732,19 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
+ 							respect_downstream_limits);
+ 	}
  
- static int host1x_iommu_init(struct host1x *host)
++	if (!dsc && intel_dp_in_hdr_mode(conn_state)) {
++		if (intel_dp_supports_dsc(intel_dp, connector, crtc_state) &&
++		    limits->pipe.max_bpp >= 30)
++			limits->pipe.min_bpp = max(limits->pipe.min_bpp, 30);
++		else
++			drm_dbg_kms(display->drm,
++				    "[CONNECTOR:%d:%s] Can't force 30 bpp for HDR (pipe bpp: %d-%d DSC-support: %s)\n",
++				    connector->base.base.id, connector->base.name,
++				    limits->pipe.min_bpp, limits->pipe.max_bpp,
++				    str_yes_no(intel_dp_supports_dsc(intel_dp, connector,
++								     crtc_state)));
++	}
++
+ 	if (dsc && !intel_dp_dsc_compute_pipe_bpp_limits(connector, limits))
+ 		return false;
+ 
+@@ -2869,10 +2882,11 @@ intel_dp_compute_link_for_joined_pipes(struct intel_encoder *encoder,
+ 	}
+ 
+ 	drm_dbg_kms(display->drm,
+-		    "DP lane count %d clock %d bpp input %d compressed " FXP_Q4_FMT " link rate required %d available %d\n",
++		    "DP lane count %d clock %d bpp input %d compressed " FXP_Q4_FMT " HDR %s link rate required %d available %d\n",
+ 		    pipe_config->lane_count, pipe_config->port_clock,
+ 		    pipe_config->pipe_bpp,
+ 		    FXP_Q4_ARGS(pipe_config->dsc.compressed_bpp_x16),
++		    str_yes_no(intel_dp_in_hdr_mode(conn_state)),
+ 		    intel_dp_config_required_rate(pipe_config),
+ 		    intel_dp_max_link_data_rate(intel_dp,
+ 						pipe_config->port_clock,
 -- 
-2.43.0
+2.49.1
 
 
