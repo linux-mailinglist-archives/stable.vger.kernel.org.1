@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-215316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBuMM7TziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:20 +0100
+	id CBYCK/byiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34314110FF7
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E1F110D9B
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63724302C332
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 463F63017795
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B847E28725B;
-	Mon,  9 Feb 2026 14:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D5437F0EC;
+	Mon,  9 Feb 2026 14:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1onN3RS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJLvdKAT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA9125DB1C;
-	Mon,  9 Feb 2026 14:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6DC3793BF;
+	Mon,  9 Feb 2026 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648398; cv=none; b=LaruBR2jgPBPSEbAr76Q0oiTNi3aDumcRxm5OsHysIBoBFjMGGIdcakp8O3Ta8aXey2DiniGpkDJrwM/vuunQStJFII3Zy2TCeu94ivc+syswLNZ7Sium1rPQDepZQBYJWu4+f82uxpF0iEx3Nz1fecXyQ/UCqF62lTmjyFteLI=
+	t=1770648001; cv=none; b=eVtHZHsyxY+8+zI0Uj7PGiB+w/rbpxgJevB9lXx0d8BNSCnMmyGkUdFF4PRX7C1vb6+sU1Jz8rvIXqQFPuO2SGGpHcp2bUjPlPC6g6DSSfYztIPCtnqOeOh9/oS9XCr5H925BKsgw7nqFScSb6PhbgOyxIN51SNWNSRgSgTNDWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648398; c=relaxed/simple;
-	bh=oh32X8NWEVTrM0kLL07V4oXJ7aRwN+hsIagtQQBpgrU=;
+	s=arc-20240116; t=1770648001; c=relaxed/simple;
+	bh=QpzElN1eHR+h3KtQKuH3oPiH78zWSgUAQXckbjODYVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vb1zdh6Yx2HnhaiHN/8NRq0xXYgl9oULrBf2Y38nl8vh+Dhu2YZdmL+0HCQqBmI4FJT3WNEHLqwJWnShA+lzW3aRRfMvhLKdjgb8chak60oB04y7llPewEUmCs+ju3FgSwV/oh4okb9J8qcAqQnffyN1lVxtic7FP1kMH82AXA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1onN3RS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94EFC116C6;
-	Mon,  9 Feb 2026 14:46:37 +0000 (UTC)
+	 MIME-Version; b=jwEcN2sZD9GxTJe2MBsYM2yXTlj9uJCB/DaIayjzsgJHzeA7e9D/vxjcBwl0bk94yg/gkIUoiidUjs4aYLALeTnOiqhSz+E/iQxGpW6M7IKgjgMOF3qMcm0756MlgrHpMpQfZ/bWC2mBVZtMQa8kRqgWlc8SrbviZge5qf8QX10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJLvdKAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55D2C116C6;
+	Mon,  9 Feb 2026 14:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648398;
-	bh=oh32X8NWEVTrM0kLL07V4oXJ7aRwN+hsIagtQQBpgrU=;
+	s=korg; t=1770648001;
+	bh=QpzElN1eHR+h3KtQKuH3oPiH78zWSgUAQXckbjODYVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1onN3RSkuJIRU14riKh0yvVm5+BoXhF8kyjjc9awx+GMDN7qDsfwqKuNI6sodD1q
-	 UJFlyeMoMDeTZ5ZaYusCQ/4AYmpnJKgyOr+oH+VCCXPyzmtHB246IhnOTNgXOJSifl
-	 TCgH7zqK8CquwoUJLvYCCBIbgD0XlKVKTx9nXyac=
+	b=EJLvdKATrUm/41pBeSjQJO1B3UIbNV4+So/QnrM0V7PZUikynXB3sgsXkisHQOhec
+	 z2bt8mxw18p9qdpTHdgVCX9cJ1JVsLjwrQxyTNuF0B8pTsEn5BGhlZOHjh/kdvvjWu
+	 pwOgvtYB2uHwkl0M2V458EhCjZqWBK6wHiEMJ1fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@linux.dev>
-Subject: [PATCH 6.6 09/86] rbd: check for EOD after exclusive lock is ensured to be held
-Date: Mon,  9 Feb 2026 15:23:32 +0100
-Message-ID: <20260209142305.112897639@linuxfoundation.org>
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 064/113] regmap: maple: free entry on mas_store_gfp() failure
+Date: Mon,  9 Feb 2026 15:23:33 +0100
+Message-ID: <20260209142312.495204881@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +70,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215316-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215198-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 34314110FF7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 17E1F110D9B
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-commit bd3884a204c3b507e6baa9a4091aa927f9af5404 upstream.
+[ Upstream commit f3f380ce6b3d5c9805c7e0b3d5bc28d9ec41e2e8 ]
 
-Similar to commit 870611e4877e ("rbd: get snapshot context after
-exclusive lock is ensured to be held"), move the "beyond EOD" check
-into the image request state machine so that it's performed after
-exclusive lock is ensured to be held.  This avoids various race
-conditions which can arise when the image is shrunk under I/O (in
-practice, mostly readahead).  In one such scenario
+regcache_maple_write() allocates a new block ('entry') to merge
+adjacent ranges and then stores it with mas_store_gfp().
+When mas_store_gfp() fails, the new 'entry' remains allocated and
+is never freed, leaking memory.
 
-    rbd_assert(objno < rbd_dev->object_map_size);
+Free 'entry' on the failure path; on success continue freeing the
+replaced neighbor blocks ('lower', 'upper').
 
-can be triggered if a close-to-EOD read gets queued right before the
-shrink is initiated and the EOD check is performed against an outdated
-mapping_size.  After the resize is done on the server side and exclusive
-lock is (re)acquired bringing along the new (now shrunk) object map, the
-read starts going through the state machine and rbd_obj_may_exist() gets
-invoked on an object that is out of bounds of rbd_dev->object_map array.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Link: https://patch.msgid.link/20260105031820.260119-1-kaushlendra.kumar@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c |   33 +++++++++++++++++++++------------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ drivers/base/regmap/regcache-maple.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3495,11 +3495,29 @@ static void rbd_img_object_requests(stru
- 	rbd_assert(!need_exclusive_lock(img_req) ||
- 		   __rbd_is_lock_owner(rbd_dev));
+diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
+index 23da7b31d7153..34440e188f925 100644
+--- a/drivers/base/regmap/regcache-maple.c
++++ b/drivers/base/regmap/regcache-maple.c
+@@ -96,12 +96,13 @@ static int regcache_maple_write(struct regmap *map, unsigned int reg,
  
--	if (rbd_img_is_write(img_req)) {
--		rbd_assert(!img_req->snapc);
-+	if (test_bit(IMG_REQ_CHILD, &img_req->flags)) {
-+		rbd_assert(!rbd_img_is_write(img_req));
-+	} else {
-+		struct request *rq = blk_mq_rq_from_pdu(img_req);
-+		u64 off = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
-+		u64 len = blk_rq_bytes(rq);
-+		u64 mapping_size;
-+
- 		down_read(&rbd_dev->header_rwsem);
--		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
-+		mapping_size = rbd_dev->mapping.size;
-+		if (rbd_img_is_write(img_req)) {
-+			rbd_assert(!img_req->snapc);
-+			img_req->snapc =
-+			    ceph_get_snap_context(rbd_dev->header.snapc);
-+		}
- 		up_read(&rbd_dev->header_rwsem);
-+
-+		if (unlikely(off + len > mapping_size)) {
-+			rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)",
-+				 off, len, mapping_size);
-+			img_req->pending.result = -EIO;
-+			return;
-+		}
+ 	mas_unlock(&mas);
+ 
+-	if (ret == 0) {
+-		kfree(lower);
+-		kfree(upper);
++	if (ret) {
++		kfree(entry);
++		return ret;
  	}
+-	
+-	return ret;
++	kfree(lower);
++	kfree(upper);
++	return 0;
+ }
  
- 	for_each_obj_request(img_req, obj_req) {
-@@ -4725,7 +4743,6 @@ static void rbd_queue_workfn(struct work
- 	struct request *rq = blk_mq_rq_from_pdu(img_request);
- 	u64 offset = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
- 	u64 length = blk_rq_bytes(rq);
--	u64 mapping_size;
- 	int result;
- 
- 	/* Ignore/skip any zero-length requests */
-@@ -4738,17 +4755,9 @@ static void rbd_queue_workfn(struct work
- 	blk_mq_start_request(rq);
- 
- 	down_read(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
- 	rbd_img_capture_header(img_request);
- 	up_read(&rbd_dev->header_rwsem);
- 
--	if (offset + length > mapping_size) {
--		rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)", offset,
--			 length, mapping_size);
--		result = -EIO;
--		goto err_img_request;
--	}
--
- 	dout("%s rbd_dev %p img_req %p %s %llu~%llu\n", __func__, rbd_dev,
- 	     img_request, obj_op_name(op_type), offset, length);
- 
+ static int regcache_maple_drop(struct regmap *map, unsigned int min,
+-- 
+2.51.0
+
 
 
 
