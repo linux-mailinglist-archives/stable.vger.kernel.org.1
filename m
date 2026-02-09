@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-215234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGWxOMrziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:42 +0100
+	id uDcuBbv3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3769711101E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF011117DC
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C11C8306972A
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4391830B2ADC
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDD437BE8F;
-	Mon,  9 Feb 2026 14:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCAF37997A;
+	Mon,  9 Feb 2026 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQbJcOWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXw3/33Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DCF3783A1;
-	Mon,  9 Feb 2026 14:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438292BCF4C;
+	Mon,  9 Feb 2026 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648123; cv=none; b=VG8Pb25vUwAt4NA/ACDVSWghJb8VedrbknJf6vdVGNVM8VoN+AT7aAe2c59Cuc6+/Wc8YAZAhU0w5MYSlqkDVE9otmxnYOsHZzECLGTEumreh9Yz1fNFWhLY7KCuSMacZ+4n9eL/ASDPrXCp+SORMEIQnnAj/vc+iu0D1jabyeg=
+	t=1770648524; cv=none; b=jJHWlVVLQMdLPbz6jF9VjBRkO5y1I1q1EYlQoK52apewLewOykvtYFq3qcG4oiI2O+kLCSYU4nnIiU8Zwafg95xODyYlTSoIUubNZIfHWN+Vs8dBc4/5rR9w1w4vkcTyioNL08gi8kW9jyRdQLzBDECWs7pBXOI/eOMQs4y8F4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648123; c=relaxed/simple;
-	bh=xmK0IGol/o4cguOxf/uk7DmPGn2QlSI+q68nx3uRooQ=;
+	s=arc-20240116; t=1770648524; c=relaxed/simple;
+	bh=rx9O9ukT7BuvYP8bydQy+XaXFmeezWVMO9quo2PfFiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nnJEm8pgIXVs5iXRSdh/zXWuACzPmqRMH5kIIDkPw6OJwpWwKbjpiba/a1PWb9MJf3k5oAPFCUmocaz0fHXWoWddwpAaofpKZ/IQqdTpLusQjhr7FZYozdErM9A/625PvQbpNK54tzj1Z3+m2oVb+9/14tBhNifft8gIdMJ+y5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQbJcOWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352D1C116C6;
-	Mon,  9 Feb 2026 14:42:02 +0000 (UTC)
+	 MIME-Version; b=drP5J6E3c4bzNjenuz/ax1yRA8ymV/hnu3ak2456+/8f7pJkzMUOOUeOGCBUrGZOS3mWkiLMHdNE6G0wdSTcHGOxgcdbh2vRyLPWAh9uz+qm01P/kXjlzG3uXcX50oGII1egSDzROnbaPiAEJW+CFeUyoOjy59awNWWixZ7IZO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXw3/33Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D3DC116C6;
+	Mon,  9 Feb 2026 14:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648123;
-	bh=xmK0IGol/o4cguOxf/uk7DmPGn2QlSI+q68nx3uRooQ=;
+	s=korg; t=1770648524;
+	bh=rx9O9ukT7BuvYP8bydQy+XaXFmeezWVMO9quo2PfFiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQbJcOWy5UferMVQeFSjlZ1K43eZBT8RHIrMk3UKK+8G96IxoAYVV3hv+uv1Kljox
-	 T5vkQr46VqwOrkidStSiWhmDBLL5eMbz/gMmgM+OO9s0AaWLRFfDbLTXvLMaVQzDyu
-	 fw53du9gtvLHZcun2mIs7B4YLX8GGGB/xWcDSkuQ=
+	b=IXw3/33YYujaF1AG1ZbFyJdir8h3NUHpVTjGjQW3wHVVV9qUDj8rSO6yV7Hg+Ssvv
+	 beUxbb3KMEZE/IxlTmpKtrMQJEk9toPS5nVjUPY4XXkhHZ3TL3CAg9R5Z4Fl9I9+HE
+	 RhJpVq7Fqwc11IKcI9/SaYf5iERGtSs1UrwOkwRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Debarghya Kundu <debarghyak@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhiquan Li <zhiquan_li@163.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/69] gve: Fix stats report corruption on queue count change
+Subject: [PATCH 6.6 19/86] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
 Date: Mon,  9 Feb 2026 15:23:42 +0100
-Message-ID: <20260209142302.435147250@linuxfoundation.org>
+Message-ID: <20260209142305.469047383@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,153 +67,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215234-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215355-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3769711101E
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5BF011117DC
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Debarghya Kundu <debarghyak@google.com>
+From: Zhiquan Li <zhiquan_li@163.com>
 
-[ Upstream commit 7b9ebcce0296e104a0d82a6b09d68564806158ff ]
+[ Upstream commit e396a74222654486d6ab45dca5d0c54c408b8b91 ]
 
-The driver and the NIC share a region in memory for stats reporting.
-The NIC calculates its offset into this region based on the total size
-of the stats region and the size of the NIC's stats.
+Some distributions (such as Ubuntu) configure GCC so that
+_FORTIFY_SOURCE is automatically enabled at -O1 or above.  This results
+in some fortified version of definitions of standard library functions
+are included.  While linker resolves the symbols, the fortified versions
+might override the definitions in lib/string_override.c and reference to
+those PLT entries in GLIBC.  This is not a problem for the code in host,
+but it is a disaster for the guest code.  E.g., if build and run
+x86/nested_emulation_test on Ubuntu 24.04 will encounter a L1 #PF due to
+memset() reference to __memset_chk@plt.
 
-When the number of queues is changed, the driver's stats region is
-resized. If the queue count is increased, the NIC can write past
-the end of the allocated stats region, causing memory corruption.
-If the queue count is decreased, there is a gap between the driver
-and NIC stats, leading to incorrect stats reporting.
+The option -fno-builtin-memset is not helpful here, because those
+fortified versions are not built-in but some definitions which are
+included by header, they are for different intentions.
 
-This change fixes the issue by allocating stats region with maximum
-size, and the offset calculation for NIC stats is changed to match
-with the calculation of the NIC.
+In order to eliminate the unpredictable behaviors may vary depending on
+the linker and platform, add the "-U_FORTIFY_SOURCE" into CFLAGS to
+prevent from introducing the fortified definitions.
 
+Signed-off-by: Zhiquan Li <zhiquan_li@163.com>
+Link: https://patch.msgid.link/20260122053551.548229-1-zhiquan_li@163.com
+Fixes: 6b6f71484bf4 ("KVM: selftests: Implement memcmp(), memcpy(), and memset() for guest use")
 Cc: stable@vger.kernel.org
-Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
-Signed-off-by: Debarghya Kundu <debarghyak@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260202193925.3106272-2-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ gve_num_tx_queues() => priv->tx_cfg.num_queues and no stopped queues ]
+[sean: tag for stable]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ Makefile.kvm -> Makefile ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c |   42 +++++++++++++++++---------
- drivers/net/ethernet/google/gve/gve_main.c    |    4 +-
- 2 files changed, 31 insertions(+), 15 deletions(-)
+ tools/testing/selftests/kvm/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -145,7 +145,8 @@ gve_get_ethtool_stats(struct net_device
- 		tmp_tx_pkts, tmp_tx_bytes;
- 	u64 rx_buf_alloc_fail, rx_desc_err_dropped_pkt, rx_pkts,
- 		rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes, tx_dropped;
--	int stats_idx, base_stats_idx, max_stats_idx;
-+	int rx_base_stats_idx, max_rx_stats_idx, max_tx_stats_idx;
-+	int stats_idx, stats_region_len, nic_stats_len;
- 	struct stats *report_stats;
- 	int *rx_qid_to_stats_idx;
- 	int *tx_qid_to_stats_idx;
-@@ -230,14 +231,33 @@ gve_get_ethtool_stats(struct net_device
- 	data[i++] = priv->stats_report_trigger_cnt;
- 	i = GVE_MAIN_STATS_LEN;
- 
--	/* For rx cross-reporting stats, start from nic rx stats in report */
--	base_stats_idx = GVE_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
--		GVE_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues;
--	max_stats_idx = NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
--		base_stats_idx;
-+	rx_base_stats_idx = 0;
-+	max_rx_stats_idx = 0;
-+	max_tx_stats_idx = 0;
-+	stats_region_len = priv->stats_report_len -
-+				sizeof(struct gve_stats_report);
-+	nic_stats_len = (NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
-+		NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues) *
-+		sizeof(struct stats);
-+	if (unlikely((stats_region_len -
-+				nic_stats_len) % sizeof(struct stats))) {
-+		net_err_ratelimited("Starting index of NIC stats should be multiple of stats size");
-+	} else {
-+		/* For rx cross-reporting stats,
-+		 * start from nic rx stats in report
-+		 */
-+		rx_base_stats_idx = (stats_region_len - nic_stats_len) /
-+							sizeof(struct stats);
-+		max_rx_stats_idx = NIC_RX_STATS_REPORT_NUM *
-+			priv->rx_cfg.num_queues +
-+			rx_base_stats_idx;
-+		max_tx_stats_idx = NIC_TX_STATS_REPORT_NUM *
-+			priv->tx_cfg.num_queues +
-+			max_rx_stats_idx;
-+	}
- 	/* Preprocess the stats report for rx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	for (stats_idx = rx_base_stats_idx; stats_idx < max_rx_stats_idx;
- 		stats_idx += NIC_RX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
-@@ -294,13 +314,9 @@ gve_get_ethtool_stats(struct net_device
- 		i += priv->rx_cfg.num_queues * NUM_GVE_RX_CNTS;
- 	}
- 
--	/* For tx cross-reporting stats, start from nic tx stats in report */
--	base_stats_idx = max_stats_idx;
--	max_stats_idx = NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
--		max_stats_idx;
--	/* Preprocess the stats report for tx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	/* NIC TX stats start right after NIC RX stats */
-+	for (stats_idx = max_rx_stats_idx; stats_idx < max_tx_stats_idx;
- 		stats_idx += NIC_TX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -135,9 +135,9 @@ static int gve_alloc_stats_report(struct
- 	int tx_stats_num, rx_stats_num;
- 
- 	tx_stats_num = (GVE_TX_STATS_REPORT_NUM + NIC_TX_STATS_REPORT_NUM) *
--		       priv->tx_cfg.num_queues;
-+				priv->tx_cfg.max_queues;
- 	rx_stats_num = (GVE_RX_STATS_REPORT_NUM + NIC_RX_STATS_REPORT_NUM) *
--		       priv->rx_cfg.num_queues;
-+				priv->rx_cfg.max_queues;
- 	priv->stats_report_len = struct_size(priv->stats_report, stats,
- 					     size_add(tx_stats_num, rx_stats_num));
- 	priv->stats_report =
+--- a/tools/testing/selftests/kvm/Makefile
++++ b/tools/testing/selftests/kvm/Makefile
+@@ -212,6 +212,7 @@ LINUX_TOOL_ARCH_INCLUDE = $(top_srcdir)/
+ endif
+ CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
+ 	-Wno-gnu-variable-sized-type-not-at-end -MD\
++	-U_FORTIFY_SOURCE \
+ 	-fno-builtin-memcmp -fno-builtin-memcpy -fno-builtin-memset \
+ 	-fno-builtin-strnlen \
+ 	-fno-stack-protector -fno-PIE -I$(LINUX_TOOL_INCLUDE) \
 
 
 
