@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-215240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIYID2H0iWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:13 +0100
+	id yEL3B53yiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78C711117D
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F5C110CAA
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA2C5310C055
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7767F30123EA
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A36E37BE88;
-	Mon,  9 Feb 2026 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD8437BE9E;
+	Mon,  9 Feb 2026 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqQkBaOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJonPMiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D52637AA87;
-	Mon,  9 Feb 2026 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEFB37BE87;
+	Mon,  9 Feb 2026 14:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648143; cv=none; b=VHAlAEDAIRBOjYMS6vbydqjGhAusTbVB+JyNVFwTXdfYEiWeyH2wiiu1t91J6Tx9A1pmVSJyyeF5hkrKzz+Txsyze+WtLEuYfPMeSxTvRT45UzogI6/hCneS+7GZ8WpMbLnKQNhFjsXGPE9md7/ueaJuwEHsxY3WEz264PDM5oY=
+	t=1770648045; cv=none; b=ZQPNI7ywnT++qv+fZyHP8vzjYPwCl64AE9ScZca04xTC+Hen+SuxWtSSQVZNHHuzoKgIIfUj2lFPcZQyUnN8BggOKjjr83+LvTi/e4/2lRKC4s85Xu7vHP7U6kQe15AmHFfASsVZpnIPN8r0rD7Fbs5NE83rWOhoncU50Zy0soU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648143; c=relaxed/simple;
-	bh=3owlrt+jV2hGatJRHQl/zQgd4SbLLwsUCX1LXAfVIfc=;
+	s=arc-20240116; t=1770648045; c=relaxed/simple;
+	bh=8uBnzPx6Xz3aET56qQHemLgSmQB/4T6Nk8gytr2LBRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=muXc7aBMKBG7B8t+G+IWA3/NiUql6oh9y+Uzu1TpFP4j93dblntiLNuj1X1eP1d9gnPdxo3xqwVvjdLIk+0MyHk2GhjMmsTfKo7tALgahIiUAXydkQzedC1x+OBJEN8h3+chpMOykYCy2/eb/35H80ej1lEE1fJrO1f6mUOT7Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqQkBaOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A41AC16AAE;
-	Mon,  9 Feb 2026 14:42:22 +0000 (UTC)
+	 MIME-Version; b=Ra7uDby+jbJVzOZazc/AY+EZj71mDwaweBRi+nSyyyOXEDcA98+tGCelz5MjB5VOLJVcM8oZxGw9RB61SE4YAM1IgdCZx+RGDlPasHXrKrydq9wI2/9Hb7uuyT04F+BxCztprjzv9zwluEAJS+AszB9P8Q4BsQBgEFiF8eArYoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJonPMiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEC6C116C6;
+	Mon,  9 Feb 2026 14:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648142;
-	bh=3owlrt+jV2hGatJRHQl/zQgd4SbLLwsUCX1LXAfVIfc=;
+	s=korg; t=1770648044;
+	bh=8uBnzPx6Xz3aET56qQHemLgSmQB/4T6Nk8gytr2LBRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqQkBaOjQ7puaJH02yWZ5j4vqC3rjepPiLd0DP9ULEINAAYCaAjF3SdIAgkcDjf3r
-	 7yf60CJ4ZGp8e9f75MJMlfezrEF1WbYxkhqYh5wp6bb/JaZC4nPdJ/DRQCpLs1yoNk
-	 zX01CPNgWSRx/NnHuLOibPtUYPwtgDl146X3St9Y=
+	b=AJonPMiEAp/aDMBO+KEm89vXff5qgtZq1iJxF4PF57E4Ne/Ibp5+FI+8EktrKOrW8
+	 KcMc2Nwtg2zhyRY017Xuf/8V2SNzbQVcBuydOFFb6FWABxn4lO2t0OGcWh7XxG8EKW
+	 q1YKlFTNKk+6DRKX0c6icopyID62Z0uybNqjTqOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 02/69] x86/kfence: fix booting on 32bit non-PAE systems
+	Radhi Bajahaw <bajahawradhi@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 061/113] ASoC: amd: yc: Fix microphone on ASUS M6500RE
 Date: Mon,  9 Feb 2026 15:23:30 +0100
-Message-ID: <20260209142302.004567999@linuxfoundation.org>
+Message-ID: <20260209142312.388275989@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,25 +65,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,citrix.com,alien8.de,google.com,linutronix.de,redhat.com,linux.intel.com,zytor.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-215240-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215211-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -100,78 +90,51 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[citrix.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: B78C711117D
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 02F5C110CAA
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Radhi Bajahaw <bajahawradhi@gmail.com>
 
-commit 16459fe7e0ca6520a6e8f603de4ccd52b90fd765 upstream.
+[ Upstream commit 8e29db1b08808f709231e6fd4c79dcdee5b17a17 ]
 
-The original patch inverted the PTE unconditionally to avoid
-L1TF-vulnerable PTEs, but Linux doesn't make this adjustment in 2-level
-paging.
+Add DMI match for ASUSTeK COMPUTER INC. M6500RE to enable the
+internal microphone.
 
-Adjust the logic to use the flip_protnone_guard() helper, which is a nop
-on 2-level paging but inverts the address bits in all other paging modes.
-
-This doesn't matter for the Xen aspect of the original change.  Linux no
-longer supports running 32bit PV under Xen, and Xen doesn't support
-running any 32bit PV guests without using PAE paging.
-
-Link: https://lkml.kernel.org/r/20260126211046.2096622-1-andrew.cooper3@citrix.com
-Fixes: b505f1944535 ("x86/kfence: avoid writing L1TF-vulnerable PTEs")
-Reported-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAKFNMokwjw68ubYQM9WkzOuH51wLznHpEOMSqtMoV1Rn9JV_gw@mail.gmail.com/
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Radhi Bajahaw <bajahawradhi@gmail.com>
+Link: https://patch.msgid.link/20260112203814.155-1-bajahawradhi@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kfence.h |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/include/asm/kfence.h
-+++ b/arch/x86/include/asm/kfence.h
-@@ -42,7 +42,7 @@ static inline bool kfence_protect_page(u
- {
- 	unsigned int level;
- 	pte_t *pte = lookup_address(addr, &level);
--	pteval_t val;
-+	pteval_t val, new;
- 
- 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
- 		return false;
-@@ -57,11 +57,12 @@ static inline bool kfence_protect_page(u
- 		return true;
- 
- 	/*
--	 * Otherwise, invert the entire PTE.  This avoids writing out an
-+	 * Otherwise, flip the Present bit, taking care to avoid writing an
- 	 * L1TF-vulnerable PTE (not present, without the high address bits
- 	 * set).
- 	 */
--	set_pte(pte, __pte(~val));
-+	new = val ^ _PAGE_PRESENT;
-+	set_pte(pte, __pte(flip_protnone_guard(val, new, PTE_PFN_MASK)));
- 
- 	/*
- 	 * If the page was protected (non-present) and we're making it
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 85b3310fdaaa3..346e200613031 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -409,6 +409,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RE"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+-- 
+2.51.0
+
 
 
 
