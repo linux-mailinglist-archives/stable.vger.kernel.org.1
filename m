@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-215230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNteHnL1iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:55:46 +0100
+	id eIWiAG32iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB66F11135A
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5274111157D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9E9C3066BCC
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F37A30A4A43
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2672222B2;
-	Mon,  9 Feb 2026 14:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33850285073;
+	Mon,  9 Feb 2026 14:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZlAXZYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBPOfp8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60205276028;
-	Mon,  9 Feb 2026 14:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB3425DB1C;
+	Mon,  9 Feb 2026 14:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648109; cv=none; b=FPI6A9TwShB6c4uHDrwsK1dafymqNagEH36ANShXNwWAUku64+0pLFUdKsGrymBmk1ejhSMyhENZytORxdfuVTrFUichRE8ETB5MjkT0bCSHAx+s3pdZb47jXy6k3k9sYOMmd99+nuRfp4UD6PZYvuzAsjt/mbPzqUWMp6bozVg=
+	t=1770648362; cv=none; b=k7dKe8wTAllqny4iFdaUQuMQmakIJYerJDMooAewHkLLXq8SaVQ+gtD/YMhdH3mdm2MR1eFF6ze4uf7cdlErHl/NCK90ZEVsfYt/6jsXscfYI2aInT1Zt/wMNN+MRhqatI3otwGjUcW48ekGRB41jk5o4Mxy8wlIlDF4VzbclC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648109; c=relaxed/simple;
-	bh=FHEIm/m8ctVsaJNPDDjUc1cZsxYtFSAzyG1OtrmPDUc=;
+	s=arc-20240116; t=1770648362; c=relaxed/simple;
+	bh=0NQ11y3Z39pde/rbwZphjcrPBQgrgTYuKGqbLWRocBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qg7UzXt8g7MGvU+daTcmAGDUMAwIE+/j9MtPLvqnfvZdsgbMVJrFvcwcFaK9YEFNanM1jD0pDz3AV0IOyrABzQUorm+Z76V1Cg+1EE2KDP5/ivYut5QxiX8Teag/QYVUwgHlL4A/QsGy5StnDVwWJLLj4201NxtOYh9ib0Qw8tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZlAXZYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB81C116C6;
-	Mon,  9 Feb 2026 14:41:48 +0000 (UTC)
+	 MIME-Version; b=gB+duIMABSqnGzLi4+hUQKwXkFMLoG2k0AUEegDgyLmvXvLDIjgXqVzBaeJjQdBLRU+jQ/6e5jQ1WwJRhJ9uZ3HJZYw+XZXWHVtzH4MJnASNG70TtGF2PtWYdTyfyA3FnJPYq5ktpaQrXOs49brYwbJI6u8djUeX7+7AqIfwfrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBPOfp8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1DBC116C6;
+	Mon,  9 Feb 2026 14:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648109;
-	bh=FHEIm/m8ctVsaJNPDDjUc1cZsxYtFSAzyG1OtrmPDUc=;
+	s=korg; t=1770648361;
+	bh=0NQ11y3Z39pde/rbwZphjcrPBQgrgTYuKGqbLWRocBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZlAXZYEk3fxdZdqJ8mO/arjKLgcWR7/J/tK2Ed+F/ARyYWRMYr739/GfWuMwwj+m
-	 rNMiLv+IkLnX5YbQaP90ihVf/A0jcTlSV8d7K6+k4nwiu81m067a3hThpNvFMpg+Kg
-	 T+IQg2m60puOfMpKLAds6zN+L24nukJ0MUDrkDaU=
+	b=jBPOfp8tIhSAFtuR83dE5P5jWbM2fmLroQQtSL+8xCr2fdJEjxpxblT9ZN+DBiUpn
+	 V5yhRNcfjzZ1r1ZmStsJmkUaIvHdMOiImkY/50ajM+baI66pTxO/5+DHjSFvzFo6Ih
+	 3HetKjecpCFBbqdpPONJgIAKtzP1DvMkEmoYlmN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.1 10/69] binderfs: fix ida_alloc_max() upper bound
+	Ming Lei <ming.lei@redhat.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.6 15/86] ublk: fix deadlock when reading partition table
 Date: Mon,  9 Feb 2026 15:23:38 +0100
-Message-ID: <20260209142302.287211103@linuxfoundation.org>
+Message-ID: <20260209142305.326528634@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +68,140 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215230-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-215305-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,purestorage.com,kernel.dk,foxmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: CB66F11135A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,kernel.dk:email]
+X-Rspamd-Queue-Id: 5274111157D
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit ec4ddc90d201d09ef4e4bef8a2c6d9624525ad68 upstream.
+commit c258f5c4502c9667bccf5d76fa731ab9c96687c1 upstream.
 
-The 'max' argument of ida_alloc_max() takes the maximum valid ID and not
-the "count". Using an ID of BINDERFS_MAX_MINOR (1 << 20) for dev->minor
-would exceed the limits of minor numbers (20-bits). Fix this off-by-one
-error by subtracting 1 from the 'max'.
+When one process(such as udev) opens ublk block device (e.g., to read
+the partition table via bdev_open()), a deadlock[1] can occur:
 
-Cc: stable@vger.kernel.org
-Fixes: 3ad20fe393b3 ("binder: implement binderfs")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://patch.msgid.link/20260127235545.2307876-2-cmllamas@google.com
+1. bdev_open() grabs disk->open_mutex
+2. The process issues read I/O to ublk backend to read partition table
+3. In __ublk_complete_rq(), blk_update_request() or blk_mq_end_request()
+   runs bio->bi_end_io() callbacks
+4. If this triggers fput() on file descriptor of ublk block device, the
+   work may be deferred to current task's task work (see fput() implementation)
+5. This eventually calls blkdev_release() from the same context
+6. blkdev_release() tries to grab disk->open_mutex again
+7. Deadlock: same task waiting for a mutex it already holds
+
+The fix is to run blk_update_request() and blk_mq_end_request() with bottom
+halves disabled. This forces blkdev_release() to run in kernel work-queue
+context instead of current task work context, and allows ublk server to make
+forward progress, and avoids the deadlock.
+
+Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
+Link: https://github.com/ublk-org/ublksrv/issues/170 [1]
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+[axboe: rewrite comment in ublk]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ The fix omits the change in __ublk_do_auto_buf_reg() since this function
+  doesn't exist in Linux 6.6. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binderfs.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/block/ublk_drv.c |   30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -131,8 +131,8 @@ static int binderfs_binder_device_create
- 	mutex_lock(&binderfs_minors_mutex);
- 	if (++info->device_count <= info->mount_opts.max)
- 		minor = ida_alloc_max(&binderfs_minors,
--				      use_reserve ? BINDERFS_MAX_MINOR :
--						    BINDERFS_MAX_MINOR_CAPPED,
-+				      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+						    BINDERFS_MAX_MINOR_CAPPED - 1,
- 				      GFP_KERNEL);
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1050,6 +1050,13 @@ static inline bool ubq_daemon_is_dying(s
+ 	return ubq->ubq_daemon->flags & PF_EXITING;
+ }
+ 
++static void ublk_end_request(struct request *req, blk_status_t error)
++{
++	local_bh_disable();
++	blk_mq_end_request(req, error);
++	local_bh_enable();
++}
++
+ /* todo: handle partial completion */
+ static inline void __ublk_complete_rq(struct request *req)
+ {
+@@ -1057,6 +1064,7 @@ static inline void __ublk_complete_rq(st
+ 	struct ublk_io *io = &ubq->ios[req->tag];
+ 	unsigned int unmapped_bytes;
+ 	blk_status_t res = BLK_STS_OK;
++	bool requeue;
+ 
+ 	/* called from ublk_abort_queue() code path */
+ 	if (io->flags & UBLK_IO_FLAG_ABORTED) {
+@@ -1094,14 +1102,30 @@ static inline void __ublk_complete_rq(st
+ 	if (unlikely(unmapped_bytes < io->res))
+ 		io->res = unmapped_bytes;
+ 
+-	if (blk_update_request(req, BLK_STS_OK, io->res))
++	/*
++	 * Run bio->bi_end_io() with softirqs disabled. If the final fput
++	 * happens off this path, then that will prevent ublk's blkdev_release()
++	 * from being called on current's task work, see fput() implementation.
++	 *
++	 * Otherwise, ublk server may not provide forward progress in case of
++	 * reading the partition table from bdev_open() with disk->open_mutex
++	 * held, and causes dead lock as we could already be holding
++	 * disk->open_mutex here.
++	 *
++	 * Preferably we would not be doing IO with a mutex held that is also
++	 * used for release, but this work-around will suffice for now.
++	 */
++	local_bh_disable();
++	requeue = blk_update_request(req, BLK_STS_OK, io->res);
++	local_bh_enable();
++	if (requeue)
+ 		blk_mq_requeue_request(req, true);
  	else
- 		minor = -ENOSPC;
-@@ -422,8 +422,8 @@ static int binderfs_binder_ctl_create(st
- 	/* Reserve a new minor number for the new device. */
- 	mutex_lock(&binderfs_minors_mutex);
- 	minor = ida_alloc_max(&binderfs_minors,
--			      use_reserve ? BINDERFS_MAX_MINOR :
--					    BINDERFS_MAX_MINOR_CAPPED,
-+			      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+					    BINDERFS_MAX_MINOR_CAPPED - 1,
- 			      GFP_KERNEL);
- 	mutex_unlock(&binderfs_minors_mutex);
- 	if (minor < 0) {
+ 		__blk_mq_end_request(req, BLK_STS_OK);
+ 
+ 	return;
+ exit:
+-	blk_mq_end_request(req, res);
++	ublk_end_request(req, res);
+ }
+ 
+ static void ublk_complete_rq(struct kref *ref)
+@@ -1160,7 +1184,7 @@ static inline void __ublk_abort_rq(struc
+ 	if (ublk_queue_can_use_recovery(ubq))
+ 		blk_mq_requeue_request(rq, false);
+ 	else
+-		blk_mq_end_request(rq, BLK_STS_IOERR);
++		ublk_end_request(rq, BLK_STS_IOERR);
+ 
+ 	mod_delayed_work(system_wq, &ubq->dev->monitor_work, 0);
+ }
 
 
 
