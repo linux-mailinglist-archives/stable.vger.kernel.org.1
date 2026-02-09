@@ -1,145 +1,308 @@
-Return-Path: <stable+bounces-215463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OvRMU35iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:13 +0100
+	id EAoqICP4iWn7FAAAu9opvQ
+	(envelope-from <stable+bounces-215412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2048B111B42
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB101118D4
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBC0E3055425
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7074B30E715B
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4F737BE77;
-	Mon,  9 Feb 2026 14:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008B937997A;
+	Mon,  9 Feb 2026 14:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yf/yA9Uc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ft/eeiI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F5C28312F;
-	Mon,  9 Feb 2026 14:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B4528725B;
+	Mon,  9 Feb 2026 14:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648877; cv=none; b=YaRR6sLDc17/8XonKJJhWDXQp4Kw8rOY3KdeDAYyMzFpjOITtd0lqvbbdyLWt43qF7fevB72mxpBTZ9l1P1A/fN/STBxp4unLmd5nQZaB89b5FGaJ42pVCzPScJfkOfI4DDx8dMZ8wCVDO2g0UkEYLCBPxfmkBCpt4kARHvPZFM=
+	t=1770648709; cv=none; b=Sh5jEOk9gxD9BNb0Zky7FSc21wEK7+WFMPYcGUebCTXfZITKutFVibktlWr6lKXaz/X82+VDEq+zG/QRhr9m82+yOLdiRDtDovXqZ+04p2OXPyoYE7yV8p5crJqwShFfFWJQ0LYkVd2YZ0g0dhG2HO6W5Iua1pNAgkMrggx3GGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648877; c=relaxed/simple;
-	bh=KMfzxeXmoOJiaFFl/0BQ8evQWorhxDuceZqe4Vw7KNQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgCpqB/ULtbZ8obwapIKfxGHZkQ6s4kaNbLn8o5XDKpsISdA3IU8LyZmZY3p8PxYBIK0buW5p9makLRpVjzRPP50Gg2dywT+GtZcL963cjsPuLepXUA6eBGT/N2XYRFfNGeNvngE5gkZcCK2Ib4Na329sffoM1sjy1nLListsJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yf/yA9Uc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D387C116C6;
-	Mon,  9 Feb 2026 14:54:36 +0000 (UTC)
+	s=arc-20240116; t=1770648709; c=relaxed/simple;
+	bh=484PVM5OLVqm9LPc0d1xoXwbSw6zuIs+cMSBn4CbJ/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qfYCjoE1bFOZUJH9RvzOBnBEYjaVkSilt7vfYHZNoq4E1U1VfGn66f3+Q697hQnsSQHJH+WdiCIXp9vood+hrHghakVVRueaTkfEVJphjrqlo78f/wqRDAiHpJhMLh7dMNXlG6IwcTB1UMTrihNzJdF36JsxUtLJmdWsQwVUXcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ft/eeiI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF0EC116C6;
+	Mon,  9 Feb 2026 14:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648876;
-	bh=KMfzxeXmoOJiaFFl/0BQ8evQWorhxDuceZqe4Vw7KNQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yf/yA9UcARNBLofXkqQvGKlJrd+OEUtUK7k33ATjmjSw82Ypbhmq7w7gcRVeJwE6e
-	 GnEKkqub12UmhT9zjWs/gMojA/8TmyqMie49tENXQ0tatJHKUSyY/RlAxSPt551pEL
-	 kDQTWS17DYyD9YYhMZoNB6UfKVEL/4jZeQm1+3fI=
+	s=korg; t=1770648709;
+	bh=484PVM5OLVqm9LPc0d1xoXwbSw6zuIs+cMSBn4CbJ/k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ft/eeiI5g6t6fnhfk+oh1HDjXSjl9+V3OWSRfOaNUqWwOGs8653/Y4SBDO9wd4+Gw
+	 AdVmUib1+m/0s4FgyWJ4+4cTCJhnrYqCxndteXCGMPXmDHPdrV/ybbPLgc9yOXDJQS
+	 H+oE9R8pVzovsezGeNHson+vyREJ+FiMTRQEBNbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/75] wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 5.10 00/41] 5.10.250-rc1 review
 Date: Mon,  9 Feb 2026 15:24:21 +0100
-Message-ID: <20260209142302.716570300@linuxfoundation.org>
+Message-ID: <20260209142256.797267956@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.250-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.10.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.10.250-rc1
+X-KernelTest-Deadline: 2026-02-11T14:22+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215463-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-215412-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b364457b2d1d4e4a3054];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2048B111B42
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0BB101118D4
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 5.10.250 release.
+There are 41 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Wed, 11 Feb 2026 14:22:44 +0000.
+Anything received after that time might be too late.
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.250-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+and the diffstat can be found below.
 
-[ Upstream commit ff4071c60018a668249dc6a2df7d16330543540e ]
+thanks,
 
-ieee80211_ocb_rx_no_sta() assumes a valid channel context, which is only
-present after JOIN_OCB.
+greg k-h
 
-RX may run before JOIN_OCB is executed, in which case the OCB interface
-is not operational. Skip RX peer handling when the interface is not
-joined to avoid warnings in the RX path.
+-------------
+Pseudo-Shortlog of commits:
 
-Reported-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b364457b2d1d4e4a3054
-Tested-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Link: https://patch.msgid.link/20251216035932.18332-1-moonhee.lee.ca@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mac80211/ocb.c | 3 +++
- 1 file changed, 3 insertions(+)
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.10.250-rc1
 
-diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
-index 9713e53f11b1b..6688b1dd8aaa4 100644
---- a/net/mac80211/ocb.c
-+++ b/net/mac80211/ocb.c
-@@ -47,6 +47,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
- 	struct sta_info *sta;
- 	int band;
- 
-+	if (!ifocb->joined)
-+		return;
-+
- 	/* XXX: Consider removing the least recently used entry and
- 	 *      allow new one to be added.
- 	 */
--- 
-2.51.0
+Varun Prakash <varun@chelsio.com>
+    nvmet-tcp: pass iov_len instead of sg->length to bvec_set_page()
 
+Max Yuan <maxyuan@google.com>
+    gve: Correct ethtool rx_dropped calculation
+
+Steven Rostedt <rostedt@goodmis.org>
+    tracing: Fix ftrace event field alignments
+
+Debarghya Kundu <debarghyak@google.com>
+    gve: Fix stats report corruption on queue count change
+
+Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+    platform/x86: intel_telemetry: Fix swapped arrays in PSS output
+
+Chris Bainbridge <chris.bainbridge@gmail.com>
+    ASoC: amd: fix memory leak in acp3x pdm dma ops
+
+YunJe Shin <yjshin0438@gmail.com>
+    nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec
+
+Fabio M. De Francesco <fmdefrancesco@gmail.com>
+    nvmet-tcp: don't map pages which can't come from HIGHMEM
+
+Sagi Grimberg <sagi@grimberg.me>
+    nvmet-tcp: fix regression in data_digest calculation
+
+Maurizio Lombardi <mlombard@redhat.com>
+    nvmet-tcp: fix memory leak when performing a controller reset
+
+Maurizio Lombardi <mlombard@redhat.com>
+    nvmet-tcp: add an helper to free the cmd buffers
+
+Arnd Bergmann <arnd@arndb.de>
+    hwmon: (occ) Mark occ_init_attribute() as __printf
+
+Daniel Hodges <hodgesd@meta.com>
+    tipc: use kfree_sensitive() for session key material
+
+Eric Dumazet <edumazet@google.com>
+    macvlan: fix error recovery in macvlan_common_newlink()
+
+Zilin Guan <zilin@seu.edu.cn>
+    net: liquidio: Fix off-by-one error in VF setup_nic_devices() cleanup
+
+Zilin Guan <zilin@seu.edu.cn>
+    net: liquidio: Fix off-by-one error in PF setup_nic_devices() cleanup
+
+Zilin Guan <zilin@seu.edu.cn>
+    net: liquidio: Initialize netdev pointer before queue setup
+
+Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+    platform/x86: intel_telemetry: Fix PSS event register mask
+
+Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    platform/x86: toshiba_haps: Fix memory leaks in add/remove routines
+
+Miri Korenblit <miriam.rachel.korenblit@intel.com>
+    wifi: mac80211: don't increment crypto_tx_tailroom_needed_cnt twice
+
+Maurizio Lombardi <mlombard@redhat.com>
+    scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count()
+
+Maurizio Lombardi <mlombard@redhat.com>
+    scsi: target: iscsi: Fix use-after-free in iscsit_dec_session_usage_count()
+
+Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>
+    wifi: cfg80211: Fix bitrate calculation overflow for HE rates
+
+Dimitrios Katsaros <patcherwork@gmail.com>
+    ASoC: tlv320adcx140: Propagate error codes during probe
+
+Kery Qi <qikeyu2017@gmail.com>
+    ASoC: davinci-evm: Fix reference leak in davinci_evm_probe
+
+Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+    wifi: mac80211: collect station statistics earlier when disconnect
+
+Wupeng Ma <mawupeng1@huawei.com>
+    ring-buffer: Avoid softlockup in ring_buffer_resize() during memory free
+
+Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
+    HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
+
+Chris Chiu <chris.chiu@canonical.com>
+    HID: quirks: Add another Chicony HP 5MP Cameras to hid_ignore_list
+
+Ruslan Krupitsa <krupitsarus@outlook.com>
+    ALSA: hda/realtek: add HP Laptop 15s-eq1xxx mute LED quirk
+
+Zhang Lixu <lixu.zhang@intel.com>
+    HID: intel-ish-hid: Reset enum_devices_done before enumeration
+
+DaytonCL <artem749507@gmail.com>
+    HID: multitouch: add MT_QUIRK_STICKY_FINGERS to MT_CLS_VTL
+
+shechenglong <shechenglong@xfusion.com>
+    block,bfq: fix aux stat accumulation destination
+
+Ethan Nelson-Moore <enelsonmoore@gmail.com>
+    net: usb: sr9700: support devices with virtual driver CD
+
+Peter Åstrand <astrand@lysator.liu.se>
+    wifi: wlcore: ensure skb headroom before skb_push
+
+Moon Hee Lee <moonhee.lee.ca@gmail.com>
+    wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
+
+Carlos Llamas <cmllamas@google.com>
+    binderfs: fix ida_alloc_max() upper bound
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nft_set_pipapo: clamp maximum map bucket size to INT_MAX
+
+Sean Christopherson <seanjc@google.com>
+    KVM: Don't clobber irqfd routing type when deassigning irqfd
+
+Thomas Weissschuh <thomas.weissschuh@linutronix.de>
+    ARM: 9468/1: fix memset64() on big-endian
+
+Ilya Dryomov <idryomov@gmail.com>
+    rbd: check for EOD after exclusive lock is ensured to be held
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/arm/include/asm/string.h                      |   5 +-
+ block/bfq-cgroup.c                                 |   2 +-
+ drivers/android/binderfs.c                         |   8 +-
+ drivers/block/rbd.c                                |  33 ++++---
+ drivers/hid/hid-ids.h                              |   4 +
+ drivers/hid/hid-multitouch.c                       |   1 +
+ drivers/hid/hid-quirks.c                           |   2 +
+ drivers/hid/intel-ish-hid/ishtp-hid-client.c       |   1 +
+ drivers/hwmon/occ/common.c                         |   1 +
+ drivers/net/ethernet/cavium/liquidio/lio_main.c    |  39 ++++----
+ drivers/net/ethernet/cavium/liquidio/lio_vf_main.c |   4 +-
+ drivers/net/ethernet/google/gve/gve_ethtool.c      |  46 ++++++----
+ drivers/net/ethernet/google/gve/gve_main.c         |   4 +-
+ drivers/net/macvlan.c                              |   5 +-
+ drivers/net/usb/sr9700.c                           |   5 ++
+ drivers/net/wireless/ti/wlcore/tx.c                |   5 ++
+ drivers/nvme/target/tcp.c                          | 100 ++++++++++-----------
+ drivers/platform/x86/intel_telemetry_debugfs.c     |   4 +-
+ drivers/platform/x86/intel_telemetry_pltdrv.c      |   2 +-
+ drivers/platform/x86/toshiba_haps.c                |   2 +-
+ drivers/target/iscsi/iscsi_target_util.c           |  10 ++-
+ kernel/trace/ring_buffer.c                         |   2 +
+ kernel/trace/trace.h                               |   7 +-
+ kernel/trace/trace_entries.h                       |  14 +--
+ kernel/trace/trace_export.c                        |  21 +++--
+ net/mac80211/key.c                                 |   3 +-
+ net/mac80211/ocb.c                                 |   3 +
+ net/mac80211/sta_info.c                            |   7 +-
+ net/netfilter/nft_set_pipapo.c                     |   8 ++
+ net/tipc/crypto.c                                  |   4 +-
+ net/wireless/util.c                                |   8 +-
+ sound/pci/hda/patch_realtek.c                      |   1 +
+ sound/soc/amd/renoir/acp3x-pdm-dma.c               |   2 +
+ sound/soc/codecs/tlv320adcx140.c                   |   3 +
+ sound/soc/ti/davinci-evm.c                         |  39 ++++++--
+ virt/kvm/eventfd.c                                 |  34 +++----
+ 37 files changed, 272 insertions(+), 171 deletions(-)
 
 
 
