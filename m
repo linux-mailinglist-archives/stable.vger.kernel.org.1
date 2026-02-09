@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WK2xFl70iWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:10 +0100
+	id kOSNIFz0iWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7C911116D
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA9B111165
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CF7B310B446
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4121D3050ECC
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFE537BE7D;
-	Mon,  9 Feb 2026 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5690337B409;
+	Mon,  9 Feb 2026 14:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2opifG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfnfLUPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A562222B2;
-	Mon,  9 Feb 2026 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACDD28725B;
+	Mon,  9 Feb 2026 14:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648133; cv=none; b=OfcORgmF7Q07TmfZSDS5ro4/abdGIRRX9DDtoTTBx/89u7IcZrCnhcPAcjPuQW4l/RL3Q0Gdz8LpzE+B+NKcq9wm9PK6H5Cm/hmqCkfAJOwsnQIVo8nelfn1b4z4EpLPIY6Ec/HStPPHYhYQYHsCnuOL6L/MIwasHMkJ3+HSKvU=
+	t=1770648478; cv=none; b=XgHfiJ8x8kuIPIVe9CsLkxUnT7UT+k0HCy6Re6nSbFwABdoYX8r62SZhecSenYLoxJpaNa+jodhj+oOk+qgTrSS17KB1doQxPKeaY35qifxkZOTN3B3EecX1Pqj30FBmA9bT5FKd/7/DqxOPTqbKCKQ5YNE2PukvVQSzOs0945U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648133; c=relaxed/simple;
-	bh=+FhbXcZbD0dCFvaquaCg4eiKVqunVk01Vv3W90kHxq8=;
+	s=arc-20240116; t=1770648478; c=relaxed/simple;
+	bh=E5B9jzKd5o3Dk/dwf5MrKvDhmdMORT2g+NcbAHCSkM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=By85Fr21I/uRVstWVNfU2Q1rjSnONt8r3uL8Gd+zKktuvP29yBwsUGqJoSVsPW8eGzHlEYXWhIebHd1AA9kLS/DEuO1lMVgWM4kS2D66dEDfhx4CCFw1vf2Blv/AASc83pNBIsTa+RjBF8vuFiU/+oZ/CDgO2ke5P+8G6TNK78E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2opifG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FD8C16AAE;
-	Mon,  9 Feb 2026 14:42:12 +0000 (UTC)
+	 MIME-Version; b=ABsClybYmulNOu78AfGQNCNH5Onr/8CBzfahSrA6FuN1OmvtUEP5I3YjqgUaot+bMimVaUl5tRhqpWUabgzRBHIcW1zox515g3mq0CT23c4q30VTaORjsZckH9wK5Ay8nyXP9Yp7HwzvoqV12zqG58LA1uSYGkr/9S53+Qg/2vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfnfLUPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD01C116C6;
+	Mon,  9 Feb 2026 14:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648133;
-	bh=+FhbXcZbD0dCFvaquaCg4eiKVqunVk01Vv3W90kHxq8=;
+	s=korg; t=1770648478;
+	bh=E5B9jzKd5o3Dk/dwf5MrKvDhmdMORT2g+NcbAHCSkM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2opifG9UqrTsai/B/NMCR1YTMKlPvcAnYvOGLu0VEnr5TBoSQnGzaTPzar1T7Tw2
-	 2MtckMp4r+16Q0bESP57B8u4yaFTUOgxI7++tztVVsYZ8axs9BBcaSCVmsdqR7nsQ7
-	 siCTOmwWHjZ9fjlBjEgwyuXGoDC60UEB5A9TL2oI=
+	b=bfnfLUPn8Kzi1/Jgx/KrElZHtL9DCD2fciqOW7YtLHrUwdcdBBPNWH3psF0IvoPUR
+	 xELtonMP41801z+lsnakRkw7dsW3dd55EmUoCkwtU+SpwrGl1gSAKHs6fWYAY1ivA9
+	 QCmY3+MEu/kx0CVlf0j8yfcxj1FQ0C23UukE4/M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiquan Li <zhiquan_li@163.com>,
-	Sean Christopherson <seanjc@google.com>,
+	syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/69] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
+Subject: [PATCH 6.6 22/86] wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
 Date: Mon,  9 Feb 2026 15:23:45 +0100
-Message-ID: <20260209142302.546864853@linuxfoundation.org>
+Message-ID: <20260209142305.580178680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +66,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215237-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,google.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215341-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,b364457b2d1d4e4a3054];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: CB7C911116D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url]
+X-Rspamd-Queue-Id: DBA9B111165
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiquan Li <zhiquan_li@163.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit e396a74222654486d6ab45dca5d0c54c408b8b91 ]
+[ Upstream commit ff4071c60018a668249dc6a2df7d16330543540e ]
 
-Some distributions (such as Ubuntu) configure GCC so that
-_FORTIFY_SOURCE is automatically enabled at -O1 or above.  This results
-in some fortified version of definitions of standard library functions
-are included.  While linker resolves the symbols, the fortified versions
-might override the definitions in lib/string_override.c and reference to
-those PLT entries in GLIBC.  This is not a problem for the code in host,
-but it is a disaster for the guest code.  E.g., if build and run
-x86/nested_emulation_test on Ubuntu 24.04 will encounter a L1 #PF due to
-memset() reference to __memset_chk@plt.
+ieee80211_ocb_rx_no_sta() assumes a valid channel context, which is only
+present after JOIN_OCB.
 
-The option -fno-builtin-memset is not helpful here, because those
-fortified versions are not built-in but some definitions which are
-included by header, they are for different intentions.
+RX may run before JOIN_OCB is executed, in which case the OCB interface
+is not operational. Skip RX peer handling when the interface is not
+joined to avoid warnings in the RX path.
 
-In order to eliminate the unpredictable behaviors may vary depending on
-the linker and platform, add the "-U_FORTIFY_SOURCE" into CFLAGS to
-prevent from introducing the fortified definitions.
-
-Signed-off-by: Zhiquan Li <zhiquan_li@163.com>
-Link: https://patch.msgid.link/20260122053551.548229-1-zhiquan_li@163.com
-Fixes: 6b6f71484bf4 ("KVM: selftests: Implement memcmp(), memcpy(), and memset() for guest use")
-Cc: stable@vger.kernel.org
-[sean: tag for stable]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Makefile.kvm -> Makefile ]
+Reported-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b364457b2d1d4e4a3054
+Tested-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Link: https://patch.msgid.link/20251216035932.18332-1-moonhee.lee.ca@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/kvm/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/ocb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/kvm/Makefile
-+++ b/tools/testing/selftests/kvm/Makefile
-@@ -202,6 +202,7 @@ else
- LINUX_TOOL_ARCH_INCLUDE = $(top_srcdir)/tools/arch/$(ARCH)/include
- endif
- CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
-+	-U_FORTIFY_SOURCE \
- 	-fno-stack-protector -fno-PIE -I$(LINUX_TOOL_INCLUDE) \
- 	-I$(LINUX_TOOL_ARCH_INCLUDE) -I$(LINUX_HDR_PATH) -Iinclude \
- 	-I$(<D) -Iinclude/$(UNAME_M) -I ../rseq -I.. $(EXTRA_CFLAGS) \
+diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
+index b44896e145224..1800d59d8b152 100644
+--- a/net/mac80211/ocb.c
++++ b/net/mac80211/ocb.c
+@@ -48,6 +48,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
+ 	struct sta_info *sta;
+ 	int band;
+ 
++	if (!ifocb->joined)
++		return;
++
+ 	/* XXX: Consider removing the least recently used entry and
+ 	 *      allow new one to be added.
+ 	 */
+-- 
+2.51.0
+
 
 
 
