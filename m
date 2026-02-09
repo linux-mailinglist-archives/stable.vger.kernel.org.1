@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAYnCwDyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:04 +0100
+	id 4EEXDar3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A1F110AC9
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EE11117C0
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2184A305B94E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8259830EC045
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E332C2360;
-	Mon,  9 Feb 2026 14:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2882690EC;
+	Mon,  9 Feb 2026 14:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9fhsJnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwBVGLVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA181DE8AD;
-	Mon,  9 Feb 2026 14:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64202BCF4C;
+	Mon,  9 Feb 2026 14:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647614; cv=none; b=cKPyLIq1tJPB4sTqM8i4O1KtnxffKkv+RHpbRQdGCYHbOeLHIfl2QMW1ID1GmQ+cjIGh92MG2zktBZteT045AH8mvGNzfzQEu/lg3fCv3dXO2na+/heMkzouZJ26IVWas9pW4ajC5P9yaEQeDF0GWRSO/IsfSZQs8dGNhmocoqY=
+	t=1770648504; cv=none; b=pahcXoqQbt4rPHYeWo6HLnncLvVF9/LkH2YSh+uu1ZtVasouE7YP+2FGeE/wQGUKFvMopZmt5vq8D2FxDH1Ktz/YIqlHRmo/P9dWtgwnMVzYTyeoBRJuyNep1rchdTccPBPGwl5pR3qzK26n/JgeO6CNlgN0PzzpmKsdj6ZT3w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647614; c=relaxed/simple;
-	bh=y6uxW/vUGNfwjTEa11b5H+ma4GoNJvuIH7EDtFSkedo=;
+	s=arc-20240116; t=1770648504; c=relaxed/simple;
+	bh=dM9kOWJvRQTPpHcAw56alqmPRifjJgSmv4rIaOqZ4HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K9spyOX0/eT7YAMZKwzP5EZX8WAKfsueZNE8Yv6BGEvXq7vJNCHq7I8a54cZ5yMIWB9FjSChq3p/4Wm/s1wMdc6sC6OJAnNJm1bWuxl055ZW7v9ToLnSa3nr9n4uRInmHeJlx4KC2nr4WjvzJkyXTdDaSILmCtr4FuvrABp0YP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9fhsJnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D531DC116C6;
-	Mon,  9 Feb 2026 14:33:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m8Ta3zv3GK5v189FAPFuOdVYpXKKSB9FEwO6eUFgGi4++bTgOec7aBkBzb3FlJshXAQMe2qExdNsfDyFEmPjlXG30kmdhbxAWoyVBw3MX9oNOEmlJpdZSkZIodBZKdD5/9bgN0dJdajgqCj8Fp7C44s4BYkAMJuSoB2v7V5GB18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwBVGLVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C08C116C6;
+	Mon,  9 Feb 2026 14:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647614;
-	bh=y6uxW/vUGNfwjTEa11b5H+ma4GoNJvuIH7EDtFSkedo=;
+	s=korg; t=1770648504;
+	bh=dM9kOWJvRQTPpHcAw56alqmPRifjJgSmv4rIaOqZ4HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9fhsJnTLQ0lwYh8+ZE2+h1VHW9Nrh2NzhGYl5fNZ5TPeA1LvZ0xbQT9YNs5wWtLK
-	 Nyym/8GLz8nDYvAgcIMYlCmaynzuix+JjytYZFJVvpBN4eGLKfkKYxAv1ER1XIR82V
-	 KSvXrlspVf/4VRfVq2K+7SxPmpbzAa+EQhL34oIk=
+	b=IwBVGLVUwqt1FTLyuJHqlITzbdg4+jdcdlxlO8X9q1T9Mq71o47VW7TTJ1H3/Gdpt
+	 TAyn/UgjLYi4ieHkvOzFrRSwDyaNEmiTg/kQGV7VIvZak+CHvMkWvk8V6j3R9mNiWp
+	 GYFlSykhFXD1hksonpmR4AnvWkZ/QF1kXspQmP6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthik Poosa <karthik.poosa@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Peter Astrand <astrand@lysator.liu.se>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 152/175] drm/xe/pm: Disable D3Cold for BMG only on specific platforms
-Date: Mon,  9 Feb 2026 15:23:45 +0100
-Message-ID: <20260209142325.966570427@linuxfoundation.org>
+Subject: [PATCH 6.6 23/86] wifi: wlcore: ensure skb headroom before skb_push
+Date: Mon,  9 Feb 2026 15:23:46 +0100
+Message-ID: <20260209142305.621750172@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +69,66 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215082-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215349-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 81A1F110AC9
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,liu.se:email]
+X-Rspamd-Queue-Id: 85EE11117C0
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthik Poosa <karthik.poosa@intel.com>
+From: Peter Åstrand <astrand@lysator.liu.se>
 
-[ Upstream commit bb36170d959fad7f663f91eb9c32a84dd86bef2b ]
+[ Upstream commit e75665dd096819b1184087ba5718bd93beafff51 ]
 
-Restrict D3Cold disablement for BMG to unsupported NUC platforms,
-instead of disabling it on all platforms.
+This avoids occasional skb_under_panic Oops from wl1271_tx_work. In this case, headroom is
+less than needed (typically 110 - 94 = 16 bytes).
 
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-Fixes: 3e331a6715ee ("drm/xe/pm: Temporarily disable D3Cold on BMG")
-Link: https://patch.msgid.link/20260123173238.1642383-1-karthik.poosa@intel.com
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 39125eaf8863ab09d70c4b493f58639b08d5a897)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Peter Astrand <astrand@lysator.liu.se>
+Link: https://patch.msgid.link/097bd417-e1d7-acd4-be05-47b199075013@lysator.liu.se
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ti/wlcore/tx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index a58bf004aee73..a74e800846ffa 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -8,6 +8,7 @@
- #include <linux/fault-inject.h>
- #include <linux/pm_runtime.h>
- #include <linux/suspend.h>
-+#include <linux/dmi.h>
+diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
+index 7bd3ce2f08044..75ad096676561 100644
+--- a/drivers/net/wireless/ti/wlcore/tx.c
++++ b/drivers/net/wireless/ti/wlcore/tx.c
+@@ -210,6 +210,11 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 	total_blocks = wlcore_hw_calc_tx_blocks(wl, total_len, spare_blocks);
  
- #include <drm/drm_managed.h>
- #include <drm/ttm/ttm_placement.h>
-@@ -300,9 +301,15 @@ ALLOW_ERROR_INJECTION(xe_pm_init_early, ERRNO); /* See xe_pci_probe() */
- 
- static u32 vram_threshold_value(struct xe_device *xe)
- {
--	/* FIXME: D3Cold temporarily disabled by default on BMG */
--	if (xe->info.platform == XE_BATTLEMAGE)
--		return 0;
-+	if (xe->info.platform == XE_BATTLEMAGE) {
-+		const char *product_name;
-+
-+		product_name = dmi_get_system_info(DMI_PRODUCT_NAME);
-+		if (product_name && strstr(product_name, "NUC13RNG")) {
-+			drm_warn(&xe->drm, "BMG + D3Cold not supported on this platform\n");
-+			return 0;
+ 	if (total_blocks <= wl->tx_blocks_available) {
++		if (skb_headroom(skb) < (total_len - skb->len) &&
++		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
++			wl1271_free_tx_id(wl, id);
++			return -EAGAIN;
 +		}
-+	}
+ 		desc = skb_push(skb, total_len - skb->len);
  
- 	return DEFAULT_VRAM_THRESHOLD;
- }
+ 		wlcore_hw_set_tx_desc_blocks(wl, desc, total_blocks,
 -- 
 2.51.0
 
