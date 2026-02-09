@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-215083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFtCNAPyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:07 +0100
+	id gEFgJDHziWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:09 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709F5110AD0
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E19D110E89
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36392305C8C2
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEE0931B9612
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D384A259CAF;
-	Mon,  9 Feb 2026 14:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385243793DB;
+	Mon,  9 Feb 2026 14:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtaBFY6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nagg5brN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975AC1AF0AF;
-	Mon,  9 Feb 2026 14:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E6276028;
+	Mon,  9 Feb 2026 14:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647617; cv=none; b=OkiOxD5ES6vVcBlQTQz6GqkrJ0rt13Hz6PbeJ8Ciccm4GGnKlUXTPzejozL63rKXP2dWVYSbAblFY+B0H+gVTeDEAz11Vut7MeHmRZKlmObRJMdfdAmQMuye3dpLtNakooT/gfZ2Q7DxrSz9p7/mCR+EpiCKzNVc/6yHCRTWSrE=
+	t=1770647867; cv=none; b=saZZ/0M/nhuqHqKgbqqVvRdDUVbsfYXP+koRjNI1XR9jdO0uqqjfSmNmkuyNSddqoZ+FPh7CWgPYfsrJ6AE3INrRJY01qaN/l4OJi2G66P+BlSAb6Ub/NrH+/Sm3KOYK35dPJBi5EerbA0248CksuERHUPzQXZwYljk+gwJ55I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647617; c=relaxed/simple;
-	bh=OsYAwkVl7Y7/Apo1j10G4G1IWOnObAyAq1pRjEqP1J8=;
+	s=arc-20240116; t=1770647867; c=relaxed/simple;
+	bh=lruZDmNWZ1G957l/avSKA+otWkcAGlVvSqJDNqaBXTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fachg3RNKF5mEF3AwfrHDeUWlAyCOWRMErHtR7OoYQuMpsoFNv7j7d4mZ7L9pjxLHNVMqQif95o59bwAVhds5+c+wkdzjSRt1TLX74LaSxBqukGmcp9WiY2jTjkVzGH9+ECeWYAgR8Dcr3ZhVcE2Cnn6mB9PKvf4qq81DsfTPeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtaBFY6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7B4C116C6;
-	Mon,  9 Feb 2026 14:33:36 +0000 (UTC)
+	 MIME-Version; b=JNeQSnykd2lJ8x1L6c7yHXtrDQgXQw/uBrvF2HmDO0Fc9QCnZqarWtb8Wy8xNgCL8oM7Jk8Ils4jT2BD8DcpfOAisKzwH83arg05vzxrflnlW3Kd4X6RLgwsqN/CFa7Wx5YNGZ3Hx2Fp+VFCwySdgkbpe7RsVOIY1SLaExEGxyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nagg5brN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F078C116C6;
+	Mon,  9 Feb 2026 14:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647617;
-	bh=OsYAwkVl7Y7/Apo1j10G4G1IWOnObAyAq1pRjEqP1J8=;
+	s=korg; t=1770647866;
+	bh=lruZDmNWZ1G957l/avSKA+otWkcAGlVvSqJDNqaBXTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rtaBFY6QTKiDN4sYHTFngj1QyOI/u7i4/TQeCjbzdj6n8ZD6yvu1h7dnSHLUcccL4
-	 V4P8/WhlJrlxccijrmrIshdbTDuX24mxOW/qFn1fnStDVV01vI5Pz3fYqHh07aHUHU
-	 IJaf+Tte+gS3UPOHOCFbJ4zTOwGw2w/A1RoMxzEg=
+	b=Nagg5brNlsHD6zSD1xx0e5enQk16BCbcQEWTumWHjCLIC2op6CiOOQHj54apqrCw6
+	 4oReHhi5IupXAWAAxxBuJ2uwgV6gM5rtvSkJ9t64Oayk5HM+BXqOxLuIXMY4ZxJ+V4
+	 w4nvMphlsIBfLLBGXeyGCUYGPlqgzqaYbmFI8BtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH 6.18 126/175] ice: fix missing TX timestamps interrupts on E825 devices
-Date: Mon,  9 Feb 2026 15:23:19 +0100
-Message-ID: <20260209142325.043609755@linuxfoundation.org>
+	Kwok Kin Ming <kenkinming2002@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 051/113] HID: i2c-hid: fix potential buffer overflow in i2c_hid_get_report()
+Date: Mon,  9 Feb 2026 15:23:20 +0100
+Message-ID: <20260209142312.036855067@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,103 +67,76 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215083-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215158-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 709F5110AD0
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2E19D110E89
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Kwok Kin Ming <kenkinming2002@gmail.com>
 
-[ Upstream commit 99854c167cfc113ad863832b1601c4ca1a639cfe ]
+[ Upstream commit 2497ff38c530b1af0df5130ca9f5ab22c5e92f29 ]
 
-Modify PTP (Precision Time Protocol) configuration on link down flow.
-Previously, PHY_REG_TX_OFFSET_READY register was cleared in such case.
-This register is used to determine if the timestamp is valid or not on
-the hardware side.
-However, there is a possibility that there is still the packet in the
-HW queue which originally was supposed to be timestamped but the link
-is already down and given register is cleared.
-This potentially might lead to the situation in which that 'delayed'
-packet's timestamp is treated as invalid one when the link is up
-again.
-This in turn leads to the situation in which the driver is not able to
-effectively clean timestamp memory and interrupt configuration.
->From the hardware perspective, that 'old' interrupt was not handled
-properly and even if new timestamp packets are processed, no new
-interrupts is generated. As a result, providing timestamps to the user
-applications (like ptp4l) is not possible.
-The solution for this problem is implemented at the driver level rather
-than the firmware, and maintains the tx_ready bit high, even during
-link down events. This avoids entering a potential inconsistent state
-between the driver and the timestamp hardware.
+`i2c_hid_xfer` is used to read `recv_len + sizeof(__le16)` bytes of data
+into `ihid->rawbuf`.
 
-Testing hints:
-- run PTP traffic at higher rate (like 16 PTP messages per second)
-- observe ptp4l behaviour at the client side in the following
-  conditions:
-	a) trigger link toggle events. It needs to be physiscal
-           link down/up events
-	b) link speed change
-In all above cases, PTP processing at ptp4l application should resume
-always. In failure case, the following permanent error message in ptp4l
-log was observed:
-controller-0 ptp4l: err [6175.116] ptp4l-legacy timed out while polling
-	for tx timestamp
+The former can come from the userspace in the hidraw driver and is only
+bounded by HID_MAX_BUFFER_SIZE(16384) by default (unless we also set
+`max_buffer_size` field of `struct hid_ll_driver` which we do not).
 
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The latter has size determined at runtime by the maximum size of
+different report types you could receive on any particular device and
+can be a much smaller value.
+
+Fix this by truncating `recv_len` to `ihid->bufsize - sizeof(__le16)`.
+
+The impact is low since access to hidraw devices requires root.
+
+Signed-off-by: Kwok Kin Ming <kenkinming2002@gmail.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/i2c-hid/i2c-hid-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 8ec0f7d0fcebd..4aa88bac759f8 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1338,9 +1338,12 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
- 		/* Do not reconfigure E810 or E830 PHY */
- 		return;
- 	case ICE_MAC_GENERIC:
--	case ICE_MAC_GENERIC_3K_E825:
- 		ice_ptp_port_phy_restart(ptp_port);
- 		return;
-+	case ICE_MAC_GENERIC_3K_E825:
-+		if (linkup)
-+			ice_ptp_port_phy_restart(ptp_port);
-+		return;
- 	default:
- 		dev_warn(ice_pf_to_dev(pf), "%s: Unknown PHY type\n", __func__);
- 	}
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 276490547378d..cf8ae0df0cda9 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -280,6 +280,7 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
+ 	 * In addition to report data device will supply data length
+ 	 * in the first 2 bytes of the response, so adjust .
+ 	 */
++	recv_len = min(recv_len, ihid->bufsize - sizeof(__le16));
+ 	error = i2c_hid_xfer(ihid, ihid->cmdbuf, length,
+ 			     ihid->rawbuf, recv_len + sizeof(__le16));
+ 	if (error) {
 -- 
 2.51.0
 
