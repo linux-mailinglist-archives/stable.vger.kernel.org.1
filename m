@@ -1,458 +1,424 @@
-Return-Path: <stable+bounces-214925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GC08Bk7WiWnZCAAAu9opvQ
-	(envelope-from <stable+bounces-214925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 13:42:54 +0100
+	id MFJVGYTXiWnZCAAAu9opvQ
+	(envelope-from <stable+bounces-214926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 13:48:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFD710EE30
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 13:42:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D198510EF9F
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 13:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCAB730071EC
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 12:42:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5A38E301A7E5
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 12:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD775376483;
-	Mon,  9 Feb 2026 12:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4ED621CFF6;
+	Mon,  9 Feb 2026 12:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S2fEhG4H";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="i4qoXwnn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D+tJQx97"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA90371056
-	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 12:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6F3200110
+	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 12:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770640970; cv=pass; b=BO4BTCUIdilsqFZwgZ0RBQkSvwF9x4b7JcgwfXfyQXbwc89k0fMkdv/w+AxDCysw9wq+xyjXLCO3FlYZrrEeZjk6zXd7mMxw0mPaGtMP/bqRXOiduhVtoDNeFzWt+WCz5vNecO41n6bnRaAqEgB7rSe1Z5UHj+nfd/5p9jPPOLw=
+	t=1770641158; cv=fail; b=Xdd8zku8Etsn7/Y/TAIjd7C53iKXrvFyAVT4CA+N4Yr9smXsXvMy9eAqK/q+Ly/cRxTE+UtDnsbVpTeNLe5RuSWaI5+uwEFnYW2unbhdHAOTOIGYWG9aUyEQTSpT8p8X40QjD1MU014i+4mhJw16ufEyhXtEIM+Y/ZOr201GROQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770640970; c=relaxed/simple;
-	bh=1YAPMat3fgMYTPI9lsT4WpJJ+YO7j5j7QhykCTiO9ck=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CmHoK+naGc7QGTv5n9im2dS1YBUOfdhPwhB0VWGBdPJNXQCBn7GMlkmEWYN2qWSvhklRzF+Haq4vASCkT+WIGX3qCfx9xJPO0k92LdvHjkTCphIV3+PHj+Yj5+j1ImIFdqwtNiBlD6afaGocD0DzrYNa1REQlOZBI8pvrFysKuk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S2fEhG4H; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=i4qoXwnn; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6197pPU42968270
-	for <stable@vger.kernel.org>; Mon, 9 Feb 2026 12:42:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4HXOdUncAgw8qzJsoTSeySMYtHEC/kLDp+/WjXf/xvc=; b=S2fEhG4H8sMcdrTh
-	FqXnPs1I5xUqwgGJSxlfWg3+yq9FcX0Qi9XO7JzNliDrr0g3H78hxshFeN6i8Jt0
-	3JfjAphMhIgDlepocULF72EsgGYuNu8SUcX7+sfWWlUvHC4yLwtmiC8FesSLSqxE
-	AIkgBVCf48JLPtddcB4K/hF1NcedQdBmawgLrde3gpM59gi+SJlAFenOE5jsZRqU
-	laDu2385LSPRGB0Zz7xfd+gNWY63/YKykdXBOLTYy3BX3DTsUJEQj6EEBfogJZp8
-	xfZ5EbQ9HpALMouw8O/yr/LmRQTCS0q8UPvwsssVWo6sw+OllkqCX85/OzaKqr+a
-	SZ4V0Q==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c6g65bgr5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 09 Feb 2026 12:42:49 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2b866e72c00so1335284eec.1
-        for <stable@vger.kernel.org>; Mon, 09 Feb 2026 04:42:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770640968; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dFwmQXzX6xQLb5MlXXvY85+Ck7pt+csZykYxWxbm1XjIE+ebI87rMeHwwCuz5zG5NW
-         DBESMNnv0gj572swPLw61pGVXYTEM3Mnl73GljxefUyyoHlIt1jBvYbrKNjWUZJEg006
-         1REsSHgKydkU2sn5gaHkwEBLKtsO3exGk9S8WsuvEBvOzP4p6t245nU19qKyT2RWn0iV
-         rVmmgUlELnEKj2HDSX4QrxAETLYElnJQnqsBbn5trzInlvlzC5tDCrrFcmrkqCGjhRVU
-         ceuNRNZ88O4uXOGl8LaCVp2Ct3qvAOdiRMlI1BL3WwTs1vbPanx1j+Tvev4UEXBFu2+1
-         VRXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4HXOdUncAgw8qzJsoTSeySMYtHEC/kLDp+/WjXf/xvc=;
-        fh=ZckiDYLUOart0d600GE+CHerCvPboEvK6e6djQ7KLDM=;
-        b=gbY5lRzSqc86iAQg77MJ9aJjIBf+9vksqXm2MQsP6PKXy2HVcUO3V6RGcsmJbSICvu
-         Hw/7UVsTADnaftnt3i9DNv47iZL489WyCCu/cFahvQSE54AOkm0gPI3RBnwXWz6IPa6F
-         kLhlmiY7I9/5ixv5wDKKwLyM/FWdwo2VEOwKZKtVQGMGW0uhjcdMZjE8lL3kLFcRIax3
-         BCY/DWG5p/RuUhqbAfW40vnmqT6eQBxRvquTBywpQOgEre8LL6ve1Bpdtw06eQ2zdsQW
-         G2efmCbtjQdqyH7++hhTeo/+22mlJRFk8brHucfEBDmHDK1bRrFcio+Bqe3pCMExysT4
-         SEJg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1770640968; x=1771245768; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4HXOdUncAgw8qzJsoTSeySMYtHEC/kLDp+/WjXf/xvc=;
-        b=i4qoXwnnJh05Pi5z3tfQ7Rw9tOF+I4resdhn0L8J/UWZaw2rjkdyGLajTPMGptvZHS
-         vrWhlDuHi1NmzlSzC3WJZdhwvTwf9PGGLc0BvQdTdrwmtKvjbpBuG71EmqmPtLvsj7ou
-         l4itBNBleCIRlI6fLKmblSIyyf4tfl9e3wWsAynoGzomqGsSN4kk9wQ8iM4dJ1aOMreB
-         3yqoDDdVwbO1b1bL97vhNiAq3H3eywZWPxpjk39gaugA2xZul9vJWJha0tYyJJ6YGpfq
-         pntlk8bejF1yV/tKZuNkwLt/Y5fc67vlz1smqMVstOlWkghnxbIdl0btmLHzhOZ5Qlpf
-         9ceQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770640968; x=1771245768;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4HXOdUncAgw8qzJsoTSeySMYtHEC/kLDp+/WjXf/xvc=;
-        b=ok8pAP3NP8O2A+si7mcKTLsOCkDTmEfE4RCiv7XooNLrhI3s6HX7LnOvdbQcLvKa6T
-         UdE22xU4HUQnJ0z47cI0sE2bhA81m1D0smSTxkLekpPmfRKf8voaAZShNHON99y+sP4O
-         lSCgpBAlBmewr4wQU3OvFhx3DzC3vxQD+J/OBd8/Kyqp1yP9wyk4J9PUAKb7n64wqhP1
-         L2yMAcO07ubbrcYNxyNGqOH7s2vVGw+qbpPxS2o4e615jEEKP3RmbSK4Mqq+Ttu85oE7
-         8AEoGaJmeXXyLWwh3Ww6gdYPk1eDkYR0UDzPHfR4CbmKZpPkraO/JJLWo7vr7POyrVNT
-         wIAw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5IZdF+80GKeClZbIoy2oWjuN6VAn1N97INAprRIbGV3RARK0M+gMdXnSiXJY9eIJ1Jr4Oeh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNWnB40wgKC+p0aDlu5z2lGySLtD5OiyIOLjlcuijSjAPqLbP7
-	rYHd+PcsShwulSarCCMOmMVcK0DyJZk8UKbuTNsrQtaoxHs/JNlvEidMWMZoayW81t8gNdc9Qe/
-	McN3wsbg1Vc+E+O6X26D9UjV5FyrnCYShZCfHF+DavPwTrAVE1EoXEOgni5NbJ4RIaXweBL2wc6
-	8651ZlR8xZoq+b6Hqg6HQ2lNH1F2vMupj+0w==
-X-Gm-Gg: AZuq6aKIYVZJi5NaJP17KLSN3aGT8acaTaaT3M5dGp9LnNsZg1l/sqJguV7RBC8PlIb
-	YbwB+CC/FTNVo7EgvV6c+FzfAWNLBl5Ixvw+MmkOFy1sPuCd7P5GPC0b47qSTgM7AwtrcL1SLVI
-	ILnCOQatoQ8EWs0cR8f9SG+QtrocOuACFyXYo6QCXxugGRVkgZpXIsxDrMpNiFiKwgEx1x
-X-Received: by 2002:a05:7300:e410:b0:2b7:ee0e:e9ca with SMTP id 5a478bee46e88-2b85647b551mr4807554eec.13.1770640967820;
-        Mon, 09 Feb 2026 04:42:47 -0800 (PST)
-X-Received: by 2002:a05:7300:e410:b0:2b7:ee0e:e9ca with SMTP id
- 5a478bee46e88-2b85647b551mr4807543eec.13.1770640967266; Mon, 09 Feb 2026
- 04:42:47 -0800 (PST)
+	s=arc-20240116; t=1770641158; c=relaxed/simple;
+	bh=ZK2qbWplA4RSlioEAH2sqSKKA9Nyp+y0QAibiJO9eDw=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gpfbznY5dL53hQmrPNctxAoEzvSHm9QJJFf/byDzXENTnq+QVu21enH96xTY4YYJvro4kz9Z+bH9vHgaqf53vAUM7ptDCQgdWjAtNK2kWVhSSpNRdkpvgCzvLuHRJMGVBNBz4WlNA1V/4T7H8b5wvSbRGowbGW6xcuUfVvzuGdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D+tJQx97; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770641157; x=1802177157;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ZK2qbWplA4RSlioEAH2sqSKKA9Nyp+y0QAibiJO9eDw=;
+  b=D+tJQx97k4/q+oqTPmeXZaUkzaWY3l+hlhtlS7x+GIUpPY0yMAu3c1tI
+   jYajgKdWDSDOWlmcTrighv+4WPZAWZxT5Rqjx8QaylTBZWQWf8Xj8TO3l
+   OE9ns5jaVLLr4wCfRymnJPrD1Ft8U4bjvL0WvdaEdZOP3Do01Nhgzuu0m
+   QNd3aJp8tk+mWYsrR1Jisug0G7SpgkoEND8HGbmB3FPbD0lDqfCwUVWGh
+   n036nDSU0dfm61xAy0lE0XHfYrCEL7lSqRP0eOv4eezsgt1drOG4XqJ3U
+   e3JKWluMtUmmmW9ku3+2C+tqREBbN7kSddiJoFIj2cx6DaMpALsuVEYLv
+   Q==;
+X-CSE-ConnectionGUID: EsyceInHT+S0LtAY6Mktdw==
+X-CSE-MsgGUID: NnHIr4wIRvibyhrQDZIliQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="97209949"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="97209949"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 04:45:57 -0800
+X-CSE-ConnectionGUID: R3DHUT1vTwyL+o38PRFv7g==
+X-CSE-MsgGUID: fG3qGP60RXKKyRy/38Sh/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="211395455"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 04:45:57 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 04:45:56 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Mon, 9 Feb 2026 04:45:56 -0800
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.33) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 04:45:56 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M4NDS3ZKp8D32qbGIwey+yGFCHwaEWPIOtYtKhiZPAp8b/L+WodPWlDx8hCoxF+VI8oHmxSeEtw+zXbZF8qlOTisAewij1Eqf0XdLy7j7JAC2i0DiWDMx88XLR2+UOkZohKKOyA2GbKYBHwA3HeZ747+l4nfpln/oNUFzi0ggvqGS/FCJEAp2om8ocLjQza2uFTYtSO1Vu5ieCNCX99isDZB9gljKWD/WYGHmROk94h7g145uqPuMTynn8Ezq4ElDEel+PbN9NH19VydNNKiLozbsSasHkfa7hRzOtCnrClund2upWtEDKY+L4lM2ca1Z8Dp8cxfmX/V4/XHYY6HIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PyqeKin2N8H106UFOqq0hDMjsmrmS4a+4xA2J/wBntY=;
+ b=RrZ9lZWlF7eg4aUAf58JiEvrfyBtNoLRMOKeQAL6K26frIjIYAZw1L1m56uYGjWtRpBrXE9bE0RpJiFLDHop2AUOTFQ69c0DMijT4nxODBRLpgT6GpeWIGnQeenJnDUnqN/nqX0w0vfvCUpLLY+WoDvBSyUJ8AplmxHqtTrE2lrOqLDcP0oSmA8dQnDLsmo7p8wQap6olYyIZgz0SPduoVkwKTj4gY336E9G0walnoBchYtd3rfFHDs9sv2/WnsII6pXRRT1mE8owpC7LJLlXVZnuzpbYrRlRlkklY+hX/X2xg0doKLopO7AQwx7/QNzKYJr3vuz2XclbPmvl3Uw1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
+ by SA2PR11MB4843.namprd11.prod.outlook.com (2603:10b6:806:fb::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Mon, 9 Feb
+ 2026 12:45:54 +0000
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839%3]) with mapi id 15.20.9542.010; Mon, 9 Feb 2026
+ 12:45:53 +0000
+Message-ID: <c17654bf-83df-420a-8a30-2c93cafb2208@intel.com>
+Date: Mon, 9 Feb 2026 18:15:45 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] drm/i915/dp: Fix pipe BPP clamping due to HDR
+To: <imre.deak@intel.com>
+CC: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
+	<stable@vger.kernel.org>
+References: <20260206104227.290231-1-imre.deak@intel.com>
+ <f6b59555-01f6-49ff-aff4-a6da9d347332@intel.com>
+ <9ca3365b-c595-4401-8663-9c18ccc45d45@intel.com>
+ <aYmdYjjRljq0dVSL@ideak-desk.lan>
+ <459f2c53-8679-4987-b190-c7f9c54f237a@intel.com>
+ <aYmqKmGiEz7z6eUV@ideak-desk.lan> <aYmyafbsHVRH2crC@ideak-desk.lan>
+ <371ae01a-acb4-485b-b063-c23999a0f958@intel.com>
+ <aYnK7Osk9sMUwAhO@ideak-desk.lan>
+Content-Language: en-US
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <aYnK7Osk9sMUwAhO@ideak-desk.lan>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0224.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b4::16) To DM4PR11MB5341.namprd11.prod.outlook.com
+ (2603:10b6:5:390::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260203080712.15480-1-manivannan.sadhasivam@oss.qualcomm.com>
-In-Reply-To: <20260203080712.15480-1-manivannan.sadhasivam@oss.qualcomm.com>
-From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Date: Mon, 9 Feb 2026 18:12:35 +0530
-X-Gm-Features: AZwV_QhQGrhmiXiesmhxlG4WV4s55cvRqMlCM-CccbSkZMO1A1Xt1ut2g-2JQXI
-Message-ID: <CAGptzHOfmrHeJWvMxWj_xUTt_Xn-WGX04oc5s7DvjujPUOWQZQ@mail.gmail.com>
-Subject: Re: [PATCH] soc: qcom: ice: Remove platform_driver support and expose
- as a pure library
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Cc: andersson@kernel.org, konradybcio@kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mani@kernel.org, stable@vger.kernel.org,
-        Abel Vesa <abel.vesa@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=GqNPO01C c=1 sm=1 tr=0 ts=6989d649 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8
- a=9JMtb3v2HZz85qpu0UYA:9 a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
-X-Proofpoint-ORIG-GUID: kdqO_dDcywb1S9w4NWTl8iuTdHWtxQ-g
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDEwNiBTYWx0ZWRfXyadeWAG1SrEo
- V3+esNfsiln600U1ZOJ55rUctscHJOpYRuzq4l7pw8jKc2di86Hqq5VgSYV2pMRj9jdOKoGUGyq
- RlslWLVmSYGdh3LeOO2NtLKzHtZngpmNWhcueCFYaz/HXz5HID3rUDBJdrT/dgmRJXu4fUCbCHa
- q6RsNll5XJDf1VBGPPTWzs9hqBWl6plI+acABP7oOl5d+xFb+RoiU2+TKsCsf1QyVS2KJjcisYY
- tD0qhIrwQnl49s0roFQOk0MifJBxgrzFOB5HcLoNe9aIWo0KJDb9GvS5AFK+W9oqWlIyHfCpf+0
- yvMELEgRvzDDwQGNpxOpwe9wUcyZnOxrotUGZUEUgsDCzyN4nDm15LthNogfmKz78ZPd7GsFM5V
- DDkUQDSMbS6fJwQyTr4UASU8A5IiBNuZBL7v7TfLui46F2Uq5pkFPKyVo8pgAIhgke3pEGKcwKC
- Hlnzufai+18ItPl59MQ==
-X-Proofpoint-GUID: kdqO_dDcywb1S9w4NWTl8iuTdHWtxQ-g
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-08_05,2026-02-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 malwarescore=0 adultscore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 phishscore=0 clxscore=1011 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602090106
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|SA2PR11MB4843:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1b07f37-56b0-4b9b-f712-08de67d92961
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WmdjOEpLdHUwZExBMitMWk10MGE5bzJvRE44SXZjejg1cUJSbVZQZ3R5WUhW?=
+ =?utf-8?B?WWZJWmRUdzRiRW1KTXBNbzRUNmJiRjV3MlNEVDAyV2J2YWdwRE1SVHc1cGht?=
+ =?utf-8?B?UDhGYXNUYkdKUE9UbWxnQ29rL2x6ajZ2WnR1aW45NXZqclVoaVRUcTd4eUN4?=
+ =?utf-8?B?ZTQ5d2NJUk9XVHRrSUNiRXEreVQwWlhUbU1BV1V6VEFZREdFQUFaa3d1Zk1o?=
+ =?utf-8?B?V2diVFN3bUkzczArYndYd3FPSzcwanM5Q0FyUU5VMlhlSEFzSXQxVGN6UFM3?=
+ =?utf-8?B?eko2TVlLTkRPNE5BUHFUYUpxYlM3ci9LY2JOaEZTV3dhK2E0alllcW1wNG9i?=
+ =?utf-8?B?TVczWFFUT3VBd1ppNFBxcGt5RVhxNGxTTEpDUU15RW9rdGZySjIrTE9jWWZM?=
+ =?utf-8?B?VXBWdjdOWEc4T0lMRlBCQTg3YXZvd1BEU0Qzdmt2YjBBcVFhK0J2NkdZUWtD?=
+ =?utf-8?B?MVl4WGdUVm45MWxkeWg1YmxLT3k1ZWM1ZkVOMzFCWVlidFpXaXBicHFDZHcz?=
+ =?utf-8?B?YWtZWW8yM1lpSExxUGd2WWpOU1AwTzVySU9lb0JVZVVUeVBiU2xNZG1qUVE3?=
+ =?utf-8?B?bGw2d2FIdHRQYW05NHFHOVdFc3gvbzZUeEltT1dNTnpOZmFTT2tnNnpmczR2?=
+ =?utf-8?B?TWJyUGFzYUxKdTlFUnUrL3FUeVRNQ0RlOHRHbFZUQ2EyU2U2OFl6ZW5jendP?=
+ =?utf-8?B?SHRwVC9QRDAwckJpclpyTmxVWlF5eUtlbTBIVllYQTcvTlVlVnAzNkRGVmVX?=
+ =?utf-8?B?MjhsaHlUMDVxQU9JcUtOUGE4NlN3Y2h1Qkx6NUpZdThEdzRpRk81ZGQvRTFE?=
+ =?utf-8?B?elNzMWlOc1lYWEZqdkR6aWltVE9nWk1PMWU3VnVwZEU3RHdmdng4WC9BNHNk?=
+ =?utf-8?B?SzB1RGk3RW5pY04xTmhvY1cwaWV4SytJSzgrdVMrNUl3SittVkhPMTVJeVA2?=
+ =?utf-8?B?MEQ5Q3QxVDNWajRnK3Fodjh4Uks0UkUwQW5Ec1cvK0pTb3BzMW1jTTlwUE1O?=
+ =?utf-8?B?eG9QL2lPK3l0L2NLTTlVWll2U1lCWGhyblVEVlZ2YmZUWk4vMkhTQWxMQWlE?=
+ =?utf-8?B?K05ON0pNek9LRU5XcTRBNVBlaTg2WklEb1psWXQ4WXo4TmcrTVd0eUNXNXFE?=
+ =?utf-8?B?ZWEzRDhnRk13TEZSdDVUVGdBV0w0UlJzTFAyZzF5Y2p3RGVJSmFwRTZTZFF3?=
+ =?utf-8?B?RUREeWloNmNrdDRwWWIxeFR5WDRZaUFkaklCZUdwTGd5N0VFYWphS0RTOGli?=
+ =?utf-8?B?RFNTUzU2dW5zNjdPK3JTYm1qUkpWVnBtNDEyY3o5UzVOTzNHazU5Q1AvdTUr?=
+ =?utf-8?B?aHU0ampjMUxsY1dIeklEZ3pMSzBMSExMYTl1eTN0MTJpWExIR2l1VDhNM0ZI?=
+ =?utf-8?B?QXpLM3V2MXI1UUtRL2h6LzdDOUhQYWNYOHErWGptdVhTSWhLQUlHVHpZZWU2?=
+ =?utf-8?B?ZnNQZFkyUEZHelcxT0g4UnJQQ1liZFh5S21YamRCdFNDdmgzMS9vVHZWQ2Vk?=
+ =?utf-8?B?S0p6SDg4UnZhSDZHMkx3Q3FraUNrd0ZCVWV3US9Lc0g5N1N1TWtpTXlPcXd6?=
+ =?utf-8?B?MnBXUDRqVnRPbG1ZOEEvUjFwalRaL25UQlFsUlF0TEE5R2FIRmg0ckljQS8r?=
+ =?utf-8?B?aDlaWFgvZk5rV3Ezdk0zWkFRWFlaUGVQMG40bVNzSHZsaStFY1hCL2dNMm4r?=
+ =?utf-8?B?Y3JqTlFRZzlsRThaV1lPa1FnWGZSc3NuQ1NIM1VTSHFJa1UyeFNETFA2alJx?=
+ =?utf-8?B?YnVwMld1a1cvaVB6emxXMDBhODlMSVdPUDZ3OFcvbmZkbmN4TVRYaGp4bkRM?=
+ =?utf-8?B?aWplTVNvcTFYVjZOZFBlUmRUOFlIZExoMXNWM0l4RWZjcFpuUkRYTzEwUkFZ?=
+ =?utf-8?B?TEpXUmdJMG9RUnhKaWkvRUVQN05kamZydmlZcEVXRmtXYzVwalZjZXFxYTUx?=
+ =?utf-8?B?ZUdReDFtQW10N0lzMHlrUmtuVnE4TVFCVnQrN2liNEtCbkRqUVhkdzdIZWpu?=
+ =?utf-8?B?U1lmVEhiU3IzV3BnMnZkeTQ4QUQraXMrY0xzTVNJaWNsLzRDQlZpSmh0VHND?=
+ =?utf-8?Q?qFVWFC?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5341.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aVV3UnF2a0xpUFNhMVFxSWs1dlpTR0RFd2QvSDd2Wmp4NkJYU3lhamdlWDNC?=
+ =?utf-8?B?Tk1hbFlxZk8xbHQraXlOVmVJYlZJR2FXUURQSWZiaVlyN0hiTldTM3lma1F2?=
+ =?utf-8?B?eUNRZkVXUFFsMzRucDNsSEt2Sk9wbjk4bi9hMU95MXhWUm9jNEVPUjlTUEs3?=
+ =?utf-8?B?ZFBiek9sUTR1SmlBVXRQS0ZiNzhkcWMvd0R0TlFjTE15YlRXa2k0SEQ5cHlw?=
+ =?utf-8?B?eDNIU1JwVGVmeXFEYVFkWEk2UmxmalhISkJFQTUwMlJ4bTY4ZzlVUDhOQnE1?=
+ =?utf-8?B?aDk0UGNOWTMvMmJiM0JWVXpmRFBRWTNpRnoycTNCQlUycjRPNmRxQUZpNHJ6?=
+ =?utf-8?B?bUlUaUpTejIvamI3WTlYYjFmMGNqR1NxZ29VUkNCNXA2NE5YODJheEJLaVRq?=
+ =?utf-8?B?bDlNc1psbzBmN01lOEtZakM1U08vRVhwQmVCeXB0c2hzSkYxZmtmdnZ6UzMv?=
+ =?utf-8?B?SFlHOE53dTlLN3BjbFhOL1Z4Q29pOVpuUTVJbG4zYyt1Z200Nm9tVUlmcHFJ?=
+ =?utf-8?B?NStJT3VZN2lmUDlPVm4yeEN1RWdOZlAyc3VqUEVOSUFTTUhaTm9pTExvTy9I?=
+ =?utf-8?B?VkZ6UmlPbFZzeGZSbXFQbU55RzI1ZWl1NC9mMXlDejNDaHJTZkpuWUI4VERh?=
+ =?utf-8?B?YnRiVkJXU2tHTityZjl1ZTQ1OTltSEdRU2x5SkdFbVZWOHlhUHoyV25EcWt0?=
+ =?utf-8?B?NEJyNjNiY3JObG85UWorQlhLaUVRNnFqSFl4MGQxYlBCY3JQZ1VpRmVXOGV0?=
+ =?utf-8?B?c2ZDSk5qcHJOQkdFbExINzZzdG5Tak5NZUNmSVhOS1czOW9KK2JaUWJ0THJN?=
+ =?utf-8?B?RS80MjlNb09kWWFvc01YQUtmMVBpWSt0Y1hUWStjbk1ma2plOTZrRXN3eUFB?=
+ =?utf-8?B?U05iVTFLRzlIK09ScEpLM2t1NzhuNXBjVkl1djFaT1pTdzdzNVo0UW9zZ3cx?=
+ =?utf-8?B?U2hOTVlweXpmTkxRZHZoNlgwNDdvQTlQS1l1Mmk1VEdVR3FoV0g5UVRBTWZV?=
+ =?utf-8?B?LzJSRUp5d1UySHdPVzQrZ0dXV083c0ZiUFNsTTVwMUtycGtGaTlIajhiK3pK?=
+ =?utf-8?B?aDR1UHlBeU9XMHVQd0xYVktoRy94ckxiakdPZVcvM0dNaE56aVdxVFBwZ2tL?=
+ =?utf-8?B?R0V6MjZ1S0xJS010RFFVWFJ2ZitIem83Z2pOVmdsWGVKSUdFNlZad3NXM29I?=
+ =?utf-8?B?ZStOaFk4VEZqUHNFY0NtZjdrWWJjZEExRDAzNG5OM2dNY1MzemlDQnFjK05O?=
+ =?utf-8?B?NTVpQmxFV3NSK2F6dE1nNEdNcVlVNGFHaHdqSlRQdDFLOWh1amFOeDViSmwz?=
+ =?utf-8?B?ZDVWSnFyRThzVmFDZHRjcFdjaE83TTFwc2p2dWN2Ry9qQ2pjMDB6b0hnREFT?=
+ =?utf-8?B?aGlMMVhuN29QendUTXA0cURDeUovSnpnczVHbEVIK1NxMFpYVS93cE5vVXZz?=
+ =?utf-8?B?Y2srVDdRTUhaZVQ1dkRZY3RMTFBjK0g0WEFZNUFjRFcxdWpXNURuSXlNNUto?=
+ =?utf-8?B?dGpsMzZFSnIzTVFxVHlSRVJYYU5URG1wSmx2OGJXV1FabDU4RGR5SkNNajhK?=
+ =?utf-8?B?eVN3NG4vdU9RajZUbElTOWtSc242S0ljcVh4aG8xS1lnSkttV3huRE12ekM1?=
+ =?utf-8?B?TVNESXpON2Nwa1Qvc1VaYVJLY1FrUWxNdUlvWmd1RFRhbDJGLzlCTXZYbFk0?=
+ =?utf-8?B?Qk1XVGNUejVjUzhURkNRc1BWZmEvVUZtUllOektOc0MvR2J2ZHRYcTd4dDhC?=
+ =?utf-8?B?V3R1QStNSjI1Mm01UXZCcWp4d0I4V212MXJ0Q3NWSFVKWWU4eGtsQktpRU9i?=
+ =?utf-8?B?RVVoY1FPUWVENVBEVnNIcWZvTnIxVWxjWk96c0FBWXdKbW01UlBiL1ZkQk5W?=
+ =?utf-8?B?U3FQUDhtZGxXR25vMnlyYklvVzh3ZFllYkFEK3Bib3hjazl4MVUxenQrV2du?=
+ =?utf-8?B?WVdqbWFUWUtMQmFyaWYyUFkvWitHL1BoSDRJVkZYZ0ZBRW1JTDhWdnFwZFlj?=
+ =?utf-8?B?NU1ScHFuWnVUVzE1dGE5a1g4djdrMFhOdFBMbzgrcjV6RjZhVkkvWHhKelhn?=
+ =?utf-8?B?cWYxTnJ2a1JSb01hTXJrb0gvUEkwbm91bTdsTVROT1I3WjdrV0xsZk0rdDdQ?=
+ =?utf-8?B?bnFRVjZaa1U4a0phOVdaZlJmb0hKd2lkdmVqMG1vQXIybFZRbytUR0lXOTkw?=
+ =?utf-8?B?NUQrb29WcWt5SE84dGhKazk1SVI2ajhLRDRQZkRnU3VCeVRaVGxDVDN0U0wv?=
+ =?utf-8?B?WTBRa1NSSjF0QTQxSVNCOFhGR0IxUUI2cXYvZzJQaHU0a1BHaW84Y3pNaXV3?=
+ =?utf-8?B?R3V2N0VzeTJIUjlQK0o1SHQ3UWxwL0F0TUZrTGV3d3pzVVlEeENWYTQvRUxi?=
+ =?utf-8?Q?fystJns/hTcZALRU=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1b07f37-56b0-4b9b-f712-08de67d92961
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 12:45:53.8082
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WBJy3sMMxPEhafVQRcUD9UD6sM7Mwmi/AU9WPiRLyLezXbWAAvSmVfoZbQ786z0Xp9JGAPDbkqNcIvpRMx2l1i5I6FZTPUy7Z8tpTJRYV6A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4843
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
-	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sumit.garg@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url];
+	RCVD_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[ankit.k.nautiyal@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214925-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-214926-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+]
-X-Rspamd-Queue-Id: 7AFD710EE30
+	DKIM_TRACE(0.00)[intel.com:+]
+X-Rspamd-Queue-Id: D198510EF9F
 X-Rspamd-Action: no action
 
-Hi Mani,
 
-On Tue, Feb 3, 2026 at 1:37=E2=80=AFPM Manivannan Sadhasivam
-<manivannan.sadhasivam@oss.qualcomm.com> wrote:
+On 2/9/2026 5:24 PM, Imre Deak wrote:
+> On Mon, Feb 09, 2026 at 05:00:13PM +0530, Nautiyal, Ankit K wrote:
+>> On 2/9/2026 3:39 PM, Imre Deak wrote:
+>>> On Mon, Feb 09, 2026 at 11:34:34AM +0200, Imre Deak wrote:
+>>>> On Mon, Feb 09, 2026 at 02:55:21PM +0530, Borah, Chaitanya Kumar wrote:
+>>>>> On 2/9/2026 2:10 PM, Imre Deak wrote:
+>>>>>> On Mon, Feb 09, 2026 at 12:06:20PM +0530, Borah, Chaitanya Kumar wrote:
+>>>>>>> On 2/6/2026 7:20 PM, Nautiyal, Ankit K wrote:
+>>>>>>>> On 2/6/2026 4:12 PM, Imre Deak wrote:
+>>>>>>>>> The pipe BPP value shouldn't be set outside of the source's / sink's
+>>>>>>>>> valid pipe BPP range, ensure this when increasing the minimum pipe BPP
+>>>>>>>>> value to 30 due to HDR.
+>>>>>>>>>
+>>>>>>>>> Fixes: ba49a4643cf53 ("drm/i915/dp: Set min_bpp limit to 30 in HDR mode")
+>>>>>>>>> Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+>>>>>>>>> Cc: <stable@vger.kernel.org> # v6.18+
+>>>>>>>>> Signed-off-by: Imre Deak <imre.deak@intel.com>
+>>>>>>>>> ---
+>>>>>>>>>      drivers/gpu/drm/i915/display/intel_dp.c | 14 ++++++++++++--
+>>>>>>>>>      1 file changed, 12 insertions(+), 2 deletions(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/
+>>>>>>>>> drm/i915/display/intel_dp.c
+>>>>>>>>> index 2b8f43e211741..4d8f480cf803f 100644
+>>>>>>>>> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+>>>>>>>>> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+>>>>>>>>> @@ -2697,6 +2697,7 @@ intel_dp_compute_config_limits(struct intel_dp
+>>>>>>>>> *intel_dp,
+>>>>>>>>>                         bool dsc,
+>>>>>>>>>                         struct link_config_limits *limits)
+>>>>>>>>>      {
+>>>>>>>>> +    struct intel_display *display = to_intel_display(intel_dp);
+>>>>>>>>>          bool is_mst = intel_crtc_has_type(crtc_state, INTEL_OUTPUT_DP_MST);
+>>>>>>>>>          struct intel_connector *connector =
+>>>>>>>>>              to_intel_connector(conn_state->connector);
+>>>>>>>>> @@ -2709,8 +2710,7 @@ intel_dp_compute_config_limits(struct intel_dp
+>>>>>>>>> *intel_dp,
+>>>>>>>>>          limits->min_lane_count = intel_dp_min_lane_count(intel_dp);
+>>>>>>>>>          limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
+>>>>>>>>> -    limits->pipe.min_bpp = intel_dp_in_hdr_mode(conn_state) ? 30 :
+>>>>>>>>> -                intel_dp_min_bpp(crtc_state->output_format);
+>>>>>>>>> +    limits->pipe.min_bpp = intel_dp_min_bpp(crtc_state->output_format);
+>>>>>>>>>          if (is_mst) {
+>>>>>>>>>              /*
+>>>>>>>>>               * FIXME: If all the streams can't fit into the link with their
+>>>>>>>>> @@ -2726,6 +2726,16 @@ intel_dp_compute_config_limits(struct
+>>>>>>>>> intel_dp *intel_dp,
+>>>>>>>>>                                  respect_downstream_limits);
+>>>>>>>>>          }
+>>>>>>>>> +    if (intel_dp_in_hdr_mode(conn_state)) {
+>>>>>>>>> +        if (limits->pipe.min_bpp <= 30 && limits->pipe.max_bpp >= 30)
+>>>>>>>>> +            limits->pipe.min_bpp = 30;
+>>>>>>>>> +        else
+>>>>>>>>> +            drm_dbg_kms(display->drm,
+>>>>>>>>> +                    "[CONNECTOR:%d:%s] HDR min 30 bpp outside of
+>>>>>>>>> valid pipe bpp range (%d-%d)\n",
+>>>>>>>>> +                    connector->base.base.id, connector->base.name,
+>>>>>>>>> +                    limits->pipe.min_bpp, limits->pipe.max_bpp);
+>>>>>>>> pipe.max_bpp < 30 will be either due to the max_bpc property set to less
+>>>>>>>> than 10, or perhaps when the panel itself does not support 10 bpc
+>>>>>>>> (limited by EDID or VBT).
+>>>>>>>> With these constraints doesn't make sense to enable HDR and send HDR
+>>>>>>>> metadata.
+>>>>>>>> However, as we see in some reported issues [1] [2], in practice some
+>>>>>>>> compositor seems to enable HDR by default and with the hard limit set,
+>>>>>>>> they report blankout.
+>>>>>>>> So it does make sense to raise the min bpp limit only if its inside the
+>>>>>>>> supported range.
+>>>>>>>>
+>>>>>>>> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> [1] https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7052
+>>>>>>>> [2] https://gitlab.freedesktop.org/drm/i915/kernel/-/
+>>>>>>>> issues/5969#note_3248404
+>>>>>>>>
+>>>>>>> I am not sure if this patch would help with the above gitlabs. For example
+>>>>>>> in case of #7052 pipe max bpp is 30 and the commit still fails.
+>>>>>> It does fix though reported cases where the sink does not support 10 BPC
+>>>>>> at all. Yes the monitor in #7052 is still a problem, since it supports
+>>>>>> 10 BPC only with lower resolution, where the link BW would allow this
+>>>>>> and he monitor doesn't have DSC either.
+>>>>>>
+>>>>>>> However, I need to look deeper.
+>>>>>>>
+>>>>>>> I am thinking of relaxing this restriction all together because the earlier
+>>>>>>> assumption that a panel advertising HDR will support atleast 10bpc in all
+>>>>>>> it's mode turns out to be false.
+>>>>>>>
+>>>>>>> Currently, I am inclined on the following policy.
+>>>>>>>
+>>>>>>> - If DSC is not available, fall back to normal bandwidth calculations and
+>>>>>>> select the highest bpp the link can support. (Also preferred by Kwin)
+>>>>>>>
+>>>>>>> - If DSC is available, prefer falling back to DSC and attempt the highest
+>>>>>>> bpp allowed by bandwidth constraints.
+>>>>>> The patch does the above, except for not handling the case where the
+>>>>>> monitor doesn't support DSC. The attach patch handles that too and so
+>>>>>> fixes #7052 as well, are you ok with it?
+>>>>> This should work since [1] did.
+>>>> I think the sink / source support for 10 BPC should be still checked as
+>>>> in this patch.
+>>>>
+>>>>> There is one more (theoritical) scenario that I think is still not covered.
+>>>>> What happens in a case where 30bpp doesnot fit into DSC bandwidth?
+>>>>> As I understand, the min bpp limit of 30bpp would become a bottle-neck even
+>>>>> then?
+>>>> No, the link BW requirement is determined by the link BPP, not the pipe
+>>>> BPP for which the minimum is set. The link BPP in DSC mode can be
+>>>> lowered below that, based on the sink's minimum compressed BPP support.
+>>>> So in the fallback case, where 30 BPP uncompressed mode is not
+>>>> supported by the sink due to a BW limit, DSC is used instead lowering
+>>>> the compressed link BPP as required.
+>>> Although, it's still possible that the sink wouldn't support the minimum
+>>> pipe BPP set here as a DSC input BPP. Setting a minimum (pipe/input) BPP
+>>> in DSC mode isn't actually needed, since the highest possible BPP will
+>>> be selected there anyway. So I think the actual condition for setting
+>>> pipe.min_bpp = 30 above should be:
+>>>
+>>>           if (intel_dp_in_hdr_mode(conn_state) &&
+>>>               intel_dp_supports_dsc(intel_dp, connector, crtc_state) &&
+>>>               !dsc) {
+>>>               ...
+>> Hmm makes sense.
+>>
+>> Perhaps we should also add a debug message right after pipe_bpp is finalized
+>> (and before the full link config dump) to make it clear when HDR is selected
+>> but the chosen input/pipe bpp ends up below 30 bpp.
+>>
+>> Something like below, in intel_dp_compute_link_for_joined_pipes() before the
+>> link config dump:
+>>
+>> if (intel_dp_in_hdr_mode(conn_state) && pipe_config->pipe_bpp < 30)
+>>          drm_dbg_kms(display->drm,
+>>              "HDR mode selected but pipe bpp is limited to %d\n",
+>>               pipe_config->pipe_bpp);
+>>
+>> This will help flag out the cases where HDR is enabled but the pipe can’t
+>> reach 10bpc due to sink or bandwidth limits.
+> Ok, can also debug print the connector's HDR mode, like
 >
-> The current platform driver design causes probe ordering races with clien=
-ts
-> (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE probe
-> fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops wit=
-h
-> -EPROBE_DEFER, leaving clients non-functional even when ICE should be
-> gracefully disabled. devm_of_qcom_ice_get() cannot know if the ICE driver
-> probe has failed due to above reasons or it is waiting for the SCM driver=
-.
+> 	DP lane count ... bpp input x compressed y HDR-sink yes/no ...
 >
-> Moreover, there is no devlink dependency between ICE and client drivers
-> as 'qcom,ice' is not considered as a DT 'supplier'. So the client drivers
-> have no idea of when the ICE driver is going to probe.
->
-> To avoid all this hassle, remove the platform driver support altogether a=
-nd
-> just expose the ICE driver as a pure library to client drivers. With this
-> design, when devm_of_qcom_ice_get() is called, it will check if the ICE
-> instance is available or not. If not, it will create one based on the ICE
-> DT node, increase the refcount and return the handle. When the next clien=
-t
-> calls the API again, the ICE instance would be available. So this functio=
-n
-> will just increment the refcount and return the instance.
->
-> Finally, when the client devices get destroyed, refcount will be
-> decremented and finally the cleanup will happen once all clients are
-> destroyed.
->
-> For the clients using the old DT binding of providing the separate 'ice'
-> register range in their node, this change has no impact.
->
-> Cc: stable@vger.kernel.org
-> Cc: Abel Vesa <abel.vesa@oss.qualcomm.com>
-> Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicat=
-ed driver")
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.=
-com>
-> ---
->  drivers/soc/qcom/ice.c | 100 ++++++++++++++++-------------------------
->  1 file changed, 39 insertions(+), 61 deletions(-)
->
+> at the end of intel_dp_compute_link_for_joined_pipes().
 
-Thanks for this change but we need to avoid building ICE as a module
-too and return error code when ICE SCM calls aren't present.
 
-So following diff on top of this patch works for me, feel free to
-incorporate it in your patch:
+That sounds good. IMHO, let's just drop '-sink' and just have HDR yes/no 
+(HDR-sink might imply HDR capability of the sink)
 
-diff --git a/drivers/soc/qcom/Kconfig b/drivers/soc/qcom/Kconfig
-index 2caadbbcf830..db528104488b 100644
---- a/drivers/soc/qcom/Kconfig
-+++ b/drivers/soc/qcom/Kconfig
-@@ -283,7 +283,7 @@ config QCOM_ICC_BWMON
-          memory throughput even with lower CPU frequencies.
 
- config QCOM_INLINE_CRYPTO_ENGINE
--       tristate
-+       bool
-        select QCOM_SCM
+Regards,
 
- config QCOM_PBS
-diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-index 8640e05becd1..139891a122db 100644
---- a/drivers/soc/qcom/ice.c
-+++ b/drivers/soc/qcom/ice.c
-@@ -563,7 +563,7 @@ static struct qcom_ice *qcom_ice_create(struct device *=
-dev,
+Ankit
 
-        if (!qcom_scm_ice_available()) {
-                dev_warn(dev, "ICE SCM interface not found\n");
--               return NULL;
-+               return ERR_PTR(-EOPNOTSUPP);
-        }
-
-        engine =3D devm_kzalloc(dev, sizeof(*engine), GFP_KERNEL);
-
--Sumit
-
-> diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-> index b203bc685cad..b5a9cf8de6e4 100644
-> --- a/drivers/soc/qcom/ice.c
-> +++ b/drivers/soc/qcom/ice.c
-> @@ -107,12 +107,16 @@ struct qcom_ice {
->         struct device *dev;
->         void __iomem *base;
 >
-> +       struct kref refcount;
->         struct clk *core_clk;
->         bool use_hwkm;
->         bool hwkm_init_complete;
->         u8 hwkm_version;
->  };
->
-> +static DEFINE_MUTEX(ice_mutex);
-> +struct qcom_ice *ice_handle;
-> +
->  static bool qcom_ice_check_supported(struct qcom_ice *ice)
->  {
->         u32 regval =3D qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
-> @@ -599,8 +603,8 @@ static struct qcom_ice *qcom_ice_create(struct device=
- *dev,
->   * This function will provide an ICE instance either by creating one for=
- the
->   * consumer device if its DT node provides the 'ice' reg range and the '=
-ice'
->   * clock (for legacy DT style). On the other hand, if consumer provides =
-a
-> - * phandle via 'qcom,ice' property to an ICE DT, the ICE instance will a=
-lready
-> - * be created and so this function will return that instead.
-> + * phandle via 'qcom,ice' property to an ICE DT node, then the ICE insta=
-nce will
-> + * be created if not already done and will be returned.
->   *
->   * Return: ICE pointer on success, NULL if there is no ICE data provided=
- by the
->   * consumer or ERR_PTR() on error.
-> @@ -611,11 +615,12 @@ static struct qcom_ice *of_qcom_ice_get(struct devi=
-ce *dev)
->         struct qcom_ice *ice;
->         struct resource *res;
->         void __iomem *base;
-> -       struct device_link *link;
->
->         if (!dev || !dev->of_node)
->                 return ERR_PTR(-ENODEV);
->
-> +       guard(mutex)(&ice_mutex);
-> +
->         /*
->          * In order to support legacy style devicetree bindings, we need
->          * to create the ICE instance using the consumer device and the r=
-eg
-> @@ -631,6 +636,16 @@ static struct qcom_ice *of_qcom_ice_get(struct devic=
-e *dev)
->                 return qcom_ice_create(&pdev->dev, base);
->         }
->
-> +       /*
-> +        * If the ICE node has been initialized already, just increase th=
-e
-> +        * refcount and return the handle.
-> +        */
-> +       if (ice_handle) {
-> +               kref_get(&ice_handle->refcount);
-> +
-> +               return ice_handle;
-> +       }
-> +
->         /*
->          * If the consumer node does not provider an 'ice' reg range
->          * (legacy DT binding), then it must at least provide a phandle
-> @@ -643,41 +658,43 @@ static struct qcom_ice *of_qcom_ice_get(struct devi=
-ce *dev)
->
->         pdev =3D of_find_device_by_node(node);
->         if (!pdev) {
-> -               dev_err(dev, "Cannot find device node %s\n", node->name);
-> +               dev_err(dev, "Cannot find ICE platform device\n");
-> +               platform_device_put(pdev);
->                 return ERR_PTR(-EPROBE_DEFER);
->         }
->
-> -       ice =3D platform_get_drvdata(pdev);
-> -       if (!ice) {
-> -               dev_err(dev, "Cannot get ice instance from %s\n",
-> -                       dev_name(&pdev->dev));
-> +       base =3D devm_platform_ioremap_resource(pdev, 0);
-> +       if (IS_ERR(base)) {
-> +               dev_warn(&pdev->dev, "ICE registers not found\n");
->                 platform_device_put(pdev);
-> -               return ERR_PTR(-EPROBE_DEFER);
-> +               return base;
->         }
->
-> -       link =3D device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_SUPP=
-LIER);
-> -       if (!link) {
-> -               dev_err(&pdev->dev,
-> -                       "Failed to create device link to consumer %s\n",
-> -                       dev_name(dev));
-> +       ice =3D qcom_ice_create(&pdev->dev, base);
-> +       if (IS_ERR(ice)) {
->                 platform_device_put(pdev);
-> -               ice =3D ERR_PTR(-EINVAL);
-> +               return ice_handle;
->         }
->
-> -       return ice;
-> +       ice_handle =3D ice;
-> +       kref_init(&ice_handle->refcount);
-> +
-> +       return ice_handle;
->  }
->
-> -static void qcom_ice_put(const struct qcom_ice *ice)
-> +static void qcom_ice_put(struct kref *kref)
->  {
-> -       struct platform_device *pdev =3D to_platform_device(ice->dev);
-> -
-> -       if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> -               platform_device_put(pdev);
-> +       platform_device_put(to_platform_device(ice_handle->dev));
-> +       ice_handle =3D NULL;
->  }
->
->  static void devm_of_qcom_ice_put(struct device *dev, void *res)
->  {
-> -       qcom_ice_put(*(struct qcom_ice **)res);
-> +       const struct qcom_ice *ice =3D *(struct qcom_ice **)res;
-> +       struct platform_device *pdev =3D to_platform_device(ice->dev);
-> +
-> +       if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> +               kref_put(&ice_handle->refcount, qcom_ice_put);
->  }
->
->  /**
-> @@ -713,42 +730,3 @@ struct qcom_ice *devm_of_qcom_ice_get(struct device =
-*dev)
->         return ice;
->  }
->  EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
-> -
-> -static int qcom_ice_probe(struct platform_device *pdev)
-> -{
-> -       struct qcom_ice *engine;
-> -       void __iomem *base;
-> -
-> -       base =3D devm_platform_ioremap_resource(pdev, 0);
-> -       if (IS_ERR(base)) {
-> -               dev_warn(&pdev->dev, "ICE registers not found\n");
-> -               return PTR_ERR(base);
-> -       }
-> -
-> -       engine =3D qcom_ice_create(&pdev->dev, base);
-> -       if (IS_ERR(engine))
-> -               return PTR_ERR(engine);
-> -
-> -       platform_set_drvdata(pdev, engine);
-> -
-> -       return 0;
-> -}
-> -
-> -static const struct of_device_id qcom_ice_of_match_table[] =3D {
-> -       { .compatible =3D "qcom,inline-crypto-engine" },
-> -       { },
-> -};
-> -MODULE_DEVICE_TABLE(of, qcom_ice_of_match_table);
-> -
-> -static struct platform_driver qcom_ice_driver =3D {
-> -       .probe  =3D qcom_ice_probe,
-> -       .driver =3D {
-> -               .name =3D "qcom-ice",
-> -               .of_match_table =3D qcom_ice_of_match_table,
-> -       },
-> -};
-> -
-> -module_platform_driver(qcom_ice_driver);
-> -
-> -MODULE_DESCRIPTION("Qualcomm Inline Crypto Engine driver");
-> -MODULE_LICENSE("GPL");
-> --
-> 2.51.0
->
+>>
+>> Regards,
+>>
+>> Ankit
+>>
+>>>>> [1] https://github.com/ckborah/drm-tip-sandbox/commit/5dd10a763ae6e651a0ab494ab1ad0c9d81c2de47
+>>>>>
+>>>>>>> I am working on a patch for this and should be able to float something soon.
+>>>>>>> Imre, if you agree with this policy, would you please wait for the patch.
+>>>>>>> That should make it easier to send out fix for stable kernels.
+>>>>>>>
+>>>>>>> ==
+>>>>>>> Chaitanya
+>>>>>>>
+>>>>>>>>> +    }
+>>>>>>>>> +
+>>>>>>>>>          if (dsc && !intel_dp_dsc_compute_pipe_bpp_limits(connector,
+>>>>>>>>> limits))
+>>>>>>>>>              return false;
 
