@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-214972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4L4/MLDviWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-214972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:31:12 +0100
+	id GF9EJuzuiWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-214979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E19E1105EC
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:31:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F921104A1
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A50EA301C5A9
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:27:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8BD5A3006174
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB7C37AA9D;
-	Mon,  9 Feb 2026 14:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCA737AA91;
+	Mon,  9 Feb 2026 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVPryUrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BWt+m8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3446C37756C;
-	Mon,  9 Feb 2026 14:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3ED535CB6B;
+	Mon,  9 Feb 2026 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647249; cv=none; b=iQxK3+BnJ/qRD660DKRGo/ez5Oce2JNqfbbX+hvrj/pkfgFBp2czqUHx9bUQ4zBeWPWR9Nl5ANTdAh1Dm908XdM2iqSWGfU0qobB2eYRtNUEZY4I5VVrKictPoVFK1juwOiAaCCHq9dVORkP84/XlIE8EemtQ93+zNc/iPBrTGM=
+	t=1770647273; cv=none; b=Y99xTAh20jLXi6MdDGVusD5DP6uddLeWRJLO98GPJU5UzkT7P2UU+WfUZLCUMTTn5t9kuhazl/6tWwDDwYh36BbQjRNZaZYOfT7NRvhxiJXS47kxnm8JEbSWFBnZcmLPB46tUH//uYFSyOkm08Z75oU02x3rmMe/tCgotdHGp18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647249; c=relaxed/simple;
-	bh=7GFNwywbL6PnfThRuSqtiCJSBQIeGFIxVxg2QQz9KLY=;
+	s=arc-20240116; t=1770647273; c=relaxed/simple;
+	bh=PVAj38ZhDD7DrIrbwB1cBQkSwfvr09Li0DfWKi/9Mdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sq84fCDlwESSkfRF/2RU0g5BiW8FBK9SApbMZz1ly0HaBk2hbnekRFJApzyWxa0zTI0nRVLixBceWGk7auEXbfOg1NLykPJE6TWI3lBDYaG7bYvRnfhVwcHJio0WU6+6yRwkuQjK3cpwdznRfzEM2uO5q/NA7F6vr+LmIl+onoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVPryUrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617EEC116C6;
-	Mon,  9 Feb 2026 14:27:28 +0000 (UTC)
+	 MIME-Version; b=hfpoIRcfL68mfldDGEl19CHKIFhrP9aOldILdi/yFoAUcERFoAf0fnXfpRehxD2l298LR0XDheMW/XdlNIy8SmblwrBcj1l1uk2+BiNiNgjNep/Fd2cwQId6uf9P1TZ9XGHoFnDS89Fviy2OTy/oH8zdN69vaOH0UHZTU8qbjw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BWt+m8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18230C116C6;
+	Mon,  9 Feb 2026 14:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647248;
-	bh=7GFNwywbL6PnfThRuSqtiCJSBQIeGFIxVxg2QQz9KLY=;
+	s=korg; t=1770647273;
+	bh=PVAj38ZhDD7DrIrbwB1cBQkSwfvr09Li0DfWKi/9Mdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVPryUrDC0MWalsWJp+3IBm0vnDqzxO1TcacIDBYXXcsbH1ozp+lrjlcnHPHasRDZ
-	 ZGRg5YhwJ/foSQIdw2csklIP9doQ5IUJU/LZlzckLzxrCRXAtHb72P0bY/NEOvc/tx
-	 0zm/ERv5LP9H3NIGbJiXx1vEgin0Juh5u/pc1/4A=
+	b=1BWt+m8zj7nVvy5aJnq7k5y0sqweKCld5kG+SZt8FfzhO4Fgazs062KmGCmW9APlv
+	 HSt4o4mJuUP8CQlVikIFg4WLz5jKzbkF8Jv4HB+iqzfCrRkyZxKYpwJd3YgZEqWSNC
+	 1pt5CppT4P83aLgpM+24zajxNKKptwHB6dzWcABA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.18 016/175] ARM: 9468/1: fix memset64() on big-endian
-Date: Mon,  9 Feb 2026 15:21:29 +0100
-Message-ID: <20260209142321.059389876@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>,
+	Daniel Vogelbacher <daniel@chaospixel.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.18 017/175] ceph: fix oops due to invalid pointer for kfree() in parse_longname()
+Date: Mon,  9 Feb 2026 15:21:30 +0100
+Message-ID: <20260209142321.096064117@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
 References: <20260209142320.474120190@linuxfoundation.org>
@@ -64,74 +64,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214972-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214979-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,chaospixel.com,ibm.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,arndb.de:email,infradead.org:email]
-X-Rspamd-Queue-Id: 0E19E1105EC
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,gmx.de:email,chaospixel.com:email]
+X-Rspamd-Queue-Id: 31F921104A1
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weissschuh <thomas.weissschuh@linutronix.de>
+From: Daniel Vogelbacher <daniel@chaospixel.com>
 
-commit 23ea2a4c72323feb6e3e025e8a6f18336513d5ad upstream.
+commit bc8dedae022ce3058659c3addef3ec4b41d15e00 upstream.
 
-On big-endian systems the 32-bit low and high halves need to be swapped
-for the underlying assembly implementation to work correctly.
+This fixes a kernel oops when reading ceph snapshot directories (.snap),
+for example by simply running `ls /mnt/my_ceph/.snap`.
 
-Fixes: fd1d362600e2 ("ARM: implement memset32 & memset64")
+The variable str is guarded by __free(kfree), but advanced by one for
+skipping the initial '_' in snapshot names. Thus, kfree() is called
+with an invalid pointer.  This patch removes the need for advancing the
+pointer so kfree() is called with correct memory pointer.
+
+Steps to reproduce:
+
+1. Create snapshots on a cephfs volume (I've 63 snaps in my testcase)
+
+2. Add cephfs mount to fstab
+$ echo "samba-fileserver@.files=/volumes/datapool/stuff/3461082b-ecc9-4e82-8549-3fd2590d3fb6      /mnt/test/stuff   ceph     acl,noatime,_netdev    0       0" >> /etc/fstab
+
+3. Reboot the system
+$ systemctl reboot
+
+4. Check if it's really mounted
+$ mount | grep stuff
+
+5. List snapshots (expected 63 snapshots on my system)
+$ ls /mnt/test/stuff/.snap
+
+Now ls hangs forever and the kernel log shows the oops.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 101841c38346 ("[ceph] parse_longname(): strrchr() expects NUL-terminated string")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220807
+Suggested-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Daniel Vogelbacher <daniel@chaospixel.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/include/asm/string.h |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ceph/crypto.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/arm/include/asm/string.h
-+++ b/arch/arm/include/asm/string.h
-@@ -42,7 +42,10 @@ static inline void *memset32(uint32_t *p
- extern void *__memset64(uint64_t *, uint32_t low, __kernel_size_t, uint32_t hi);
- static inline void *memset64(uint64_t *p, uint64_t v, __kernel_size_t n)
- {
--	return __memset64(p, v, n * 8, v >> 32);
-+	if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
-+		return __memset64(p, v, n * 8, v >> 32);
-+	else
-+		return __memset64(p, v >> 32, n * 8, v);
- }
- 
- /*
+--- a/fs/ceph/crypto.c
++++ b/fs/ceph/crypto.c
+@@ -219,12 +219,13 @@ static struct inode *parse_longname(cons
+ 	struct ceph_vino vino = { .snap = CEPH_NOSNAP };
+ 	char *name_end, *inode_number;
+ 	int ret = -EIO;
+-	/* NUL-terminate */
+-	char *str __free(kfree) = kmemdup_nul(name, *name_len, GFP_KERNEL);
++	/* Snapshot name must start with an underscore */
++	if (*name_len <= 0 || name[0] != '_')
++		return ERR_PTR(-EIO);
++	/* Skip initial '_' and NUL-terminate */
++	char *str __free(kfree) = kmemdup_nul(name + 1, *name_len - 1, GFP_KERNEL);
+ 	if (!str)
+ 		return ERR_PTR(-ENOMEM);
+-	/* Skip initial '_' */
+-	str++;
+ 	name_end = strrchr(str, '_');
+ 	if (!name_end) {
+ 		doutc(cl, "failed to parse long snapshot name: %s\n", str);
 
 
 
