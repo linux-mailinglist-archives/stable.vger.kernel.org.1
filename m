@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-215142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHxXLAjziWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:28 +0100
+	id 8KxROXbxiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA98110DD8
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3D81109BB
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D1C0309BAD7
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:36:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 414FA3101428
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C513D378D85;
-	Mon,  9 Feb 2026 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DC73783D3;
+	Mon,  9 Feb 2026 14:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvjJ7BVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrI4x8yn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89134276028;
-	Mon,  9 Feb 2026 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DFB23B604;
+	Mon,  9 Feb 2026 14:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647815; cv=none; b=lOsv+3uC4DVKjQ1A0AN8J7buaU0FvshT1QHlnjVFp3IEO5JvSmGwBKO0Qq65cVQCPvC8njBg1EkNuIozGt7UzpInNTdyFVOatM3L8XswtYy8bJQg20uxUHyjJWtVQ1wMiSQGIMdXpu7LgVKtLa/u4z3yeLe1fpJA6eqKqTupgbg=
+	t=1770647484; cv=none; b=sEpNRdJH0IMiPYWdapPNZLE7yFMJavKqUDjCZECsdrP+pexuZxpSGqU/1BoVruSffDlsN4w+7Nrr5RsixYivr731ke3wIhrYLKzITpo/eZEH9wgNtY5eMo33wA+k8kfQG3scfSI33i5R4Y5o7t/uYhRxbuSmw/l8ojycu9zCckg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647815; c=relaxed/simple;
-	bh=6Q9nVhahmSBtFbaYbIlgx5T/S57D4PvP5KVg2xhQAe8=;
+	s=arc-20240116; t=1770647484; c=relaxed/simple;
+	bh=Woox1MbkWpl18VcAFzrpkV4p51pP4Mjv5TAMbBsyb3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3RZBbaRQEEWx3zn1WqyN4kxSdRSrgiyAPuggAODGhxJ9gIWItS5G28YGQBUm6thnfAiAAhwg4Z3WZC9mdPrCW8staj9J7Rp2fRXyH4280aPf8ZA2VfSLoPhrjg0QWi/5iTBU+g9qhElcgirR8qqcoa5Z4O6tAXUL5KADzKnW1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvjJ7BVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDF2C19422;
-	Mon,  9 Feb 2026 14:36:54 +0000 (UTC)
+	 MIME-Version; b=nG0LCy5+rzNFV2QcP8aYhBIyJkXrJd1DqdXzWCB9/OgXXeKUrBWLa2WlpIAKVkGn3MrU4mtsGAGyP4YsoLOckWa8Z1WwU8XLaGFJvPRHPPdXRwRqRyZcvAMadsgOAsmVZPqWuGjXvePySpb2krUjgUNyO78c9b/tDoORB+5uPRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrI4x8yn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A09EC116C6;
+	Mon,  9 Feb 2026 14:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647815;
-	bh=6Q9nVhahmSBtFbaYbIlgx5T/S57D4PvP5KVg2xhQAe8=;
+	s=korg; t=1770647484;
+	bh=Woox1MbkWpl18VcAFzrpkV4p51pP4Mjv5TAMbBsyb3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvjJ7BVFgwR1+Xr9kRzOZYpbVPSuGkMeqPmlAU8Fixxweua68Stwi9bFUEa512t8j
-	 1XmmmnA+8ZN6Ol1OAyomkj+kBEW2AAZ8vo3cNDxe8shnHqimLE7IYMU3Z5KZPrRd19
-	 eYCiqLsZRFUUYoK6Gc8d+Jx8KE9dY4i3NIIf68O0=
+	b=IrI4x8ynmDdg5SZJb31R2xWIH7rTvauWO0+b2fCLzMSdxwDVmvkLl/+RDx1Zek2sz
+	 hSmfthx1WjAB017XAykfApHgHw3HgHz9xEScjDNq8DG+c22dKWK0S8RevSmMNGfCNm
+	 lPTXX7zbExl8vEqAOYWJxymBCUVxn29R3OQDXDAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	ZhangGuoDong <zhangguodong@kylinos.cn>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/113] smb/server: fix refcount leak in smb2_open()
+Subject: [PATCH 6.18 113/175] platform/x86: toshiba_haps: Fix memory leaks in add/remove routines
 Date: Mon,  9 Feb 2026 15:23:06 +0100
-Message-ID: <20260209142311.542272608@linuxfoundation.org>
+Message-ID: <20260209142324.481243773@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +66,71 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215142-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215043-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2EA98110DD8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 4A3D81109BB
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhangGuoDong <zhangguodong@kylinos.cn>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit f416c556997aa56ec4384c6b6efd6a0e6ac70aa7 ]
+[ Upstream commit 128497456756e1b952bd5a912cd073836465109d ]
 
-When ksmbd_vfs_getattr() fails, the reference count of ksmbd_file
-must be released.
+toshiba_haps_add() leaks the haps object allocated by it if it returns
+an error after allocating that object successfully.
 
-Suggested-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+toshiba_haps_remove() does not free the object pointed to by
+toshiba_haps before clearing that pointer, so it becomes unreachable
+allocated memory.
+
+Address these memory leaks by using devm_kzalloc() for allocating
+the memory in question.
+
+Fixes: 23d0ba0c908a ("platform/x86: Toshiba HDD Active Protection Sensor")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 2 +-
+ drivers/platform/x86/toshiba_haps.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index a3c0754e3822b..5641faa1f8952 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3006,10 +3006,10 @@ int smb2_open(struct ksmbd_work *work)
- 			file_info = FILE_OPENED;
+diff --git a/drivers/platform/x86/toshiba_haps.c b/drivers/platform/x86/toshiba_haps.c
+index 03dfddeee0c0a..e9324bf16aea4 100644
+--- a/drivers/platform/x86/toshiba_haps.c
++++ b/drivers/platform/x86/toshiba_haps.c
+@@ -183,7 +183,7 @@ static int toshiba_haps_add(struct acpi_device *acpi_dev)
  
- 			rc = ksmbd_vfs_getattr(&fp->filp->f_path, &stat);
-+			ksmbd_put_durable_fd(fp);
- 			if (rc)
- 				goto err_out2;
+ 	pr_info("Toshiba HDD Active Protection Sensor device\n");
  
--			ksmbd_put_durable_fd(fp);
- 			goto reconnected_fp;
- 		}
- 	} else if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
+-	haps = kzalloc(sizeof(struct toshiba_haps_dev), GFP_KERNEL);
++	haps = devm_kzalloc(&acpi_dev->dev, sizeof(*haps), GFP_KERNEL);
+ 	if (!haps)
+ 		return -ENOMEM;
+ 
 -- 
 2.51.0
 
