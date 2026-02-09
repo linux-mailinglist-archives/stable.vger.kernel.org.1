@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHTQCGv4iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:27 +0100
+	id eDkrDxn4iWn7FAAAu9opvQ
+	(envelope-from <stable+bounces-215382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FBA111978
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9C41118B7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1FEB303F7C1
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3D3E314B285
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5317937B409;
-	Mon,  9 Feb 2026 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC8A2690EC;
+	Mon,  9 Feb 2026 14:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmGCd3R1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aK5AJp/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179B637997A;
-	Mon,  9 Feb 2026 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C797628725B;
+	Mon,  9 Feb 2026 14:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648690; cv=none; b=lt8pmf6RvrI+Frk9hiZX2Dd9CGLMDN1qSuzfrIGSradpgYrqqav2DyjobragTMKinLeYwjsXXLv2lPjF9ACK97zQxvuooumqilYP8C9W/lihTWqCwr3xle4bBkwXgp6/d3alEy9HtPEz7vcaOtNbhsOMRuJkMnB1y9Q7At9NNdU=
+	t=1770648610; cv=none; b=oTNpdJZJfFuapZJ9wVysDz1oQG1E3F6n+VxerA5zZI++iwedlAP5FBDuxEh29U4dupkQaWQAereLkioas/HHXx38Zjn7gstLxNzVZNoSaIe4c43MgXuCjp3jTB4a6MLD40URYS9SyQ2UkXVxneCNFa/X4RLLfWpU54XOmUccUt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648690; c=relaxed/simple;
-	bh=HwmnS5u86/vUvBM7Nl1sVhhcHK9Y16Tv18sv+ZdJqc4=;
+	s=arc-20240116; t=1770648610; c=relaxed/simple;
+	bh=ZEHzuE8Vwenm/F8MByqNnxZhnaihwkoQFNa5LleWYRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mji5twVQeNDj1UMW2G/yyaURutUrn9LEFTPTyA+xbTUW8QmT3IeI4NCP22036Jn4hgrbMhFvthYv/7Y6Otk4E42Ne8zH49xGFbXJmeTYJMUlPN+/xq+ua2QniYuQL+hdpRsuhDjcGWqNJ/Tbf3SbVbNzbByTBIE3Eg6GpASw4jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmGCd3R1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB8CC116C6;
-	Mon,  9 Feb 2026 14:51:29 +0000 (UTC)
+	 MIME-Version; b=JJx/RVKOLduoi+sOJxUibWL7PJ+BEp/0ShXhtQgbPUYXA8cHWP/T6GgmEF1IIkR+3UuG2XWnywz1cFqHkPPgardrSBkMWHmnXij95UMOkUCbytVSDTos7wBWCoxOHPOtQVVDOHZZobN+vTFsEGNCgVI9ovriVhJt3Yg83HL+AIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aK5AJp/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42983C116C6;
+	Mon,  9 Feb 2026 14:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648690;
-	bh=HwmnS5u86/vUvBM7Nl1sVhhcHK9Y16Tv18sv+ZdJqc4=;
+	s=korg; t=1770648610;
+	bh=ZEHzuE8Vwenm/F8MByqNnxZhnaihwkoQFNa5LleWYRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmGCd3R1ToYRC2GBw0PAdlay3KujqgblH7N+XnKPgoyyWz7zo1dvPs/Wq7oVHyotp
-	 HadkwlbnGXP7idPoO5VIXPugT7QccWgOZLFy/hEY9PwEwbpI/idpjt4Z1Xf/nvG8gj
-	 zXeDaJTKLfRlPrA/DaivxYkdj8mnZLjEtRX4PQJQ=
+	b=aK5AJp/SgmYkgfj8NX4k0MdhMqcA6lu+227dPgWr+ies2KjHo19w/hDaw806m+OcX
+	 SZX9Dn6Bp6qWdgvskAT/OupGSpZpbxwDeFJXX1pjpuBON73wZfh8cGz4y+j/SWNLdy
+	 +NJQHhKgMXCBb97KSg5yMlnk+kD+xZnNll/1Ek7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 5.10 04/41] netfilter: nft_set_pipapo: clamp maximum map bucket size to INT_MAX
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 62/86] dpaa2-switch: prevent ZERO_SIZE_PTR dereference when num_ifs is zero
 Date: Mon,  9 Feb 2026 15:24:25 +0100
-Message-ID: <20260209142256.961207448@linuxfoundation.org>
+Message-ID: <20260209142307.008660396@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +69,88 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215406-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215382-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lunn.ch,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 63FBA111978
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lunn.ch:email]
+X-Rspamd-Queue-Id: 8E9C41118B7
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit b85e3367a5716ed3662a4fe266525190d2af76df upstream.
+[ Upstream commit ed48a84a72fefb20a82dd90a7caa7807e90c6f66 ]
 
-Otherwise, it is possible to hit WARN_ON_ONCE in __kvmalloc_node_noprof()
-when resizing hashtable because __GFP_NOWARN is unset.
+The driver allocates arrays for ports, FDBs, and filter blocks using
+kcalloc() with ethsw->sw_attr.num_ifs as the element count. When the
+device reports zero interfaces (either due to hardware configuration
+or firmware issues), kcalloc(0, ...) returns ZERO_SIZE_PTR (0x10)
+instead of NULL.
 
-Similar to:
+Later in dpaa2_switch_probe(), the NAPI initialization unconditionally
+accesses ethsw->ports[0]->netdev, which attempts to dereference
+ZERO_SIZE_PTR (address 0x10), resulting in a kernel panic.
 
-  b541ba7d1f5a ("netfilter: conntrack: clamp maximum hashtable size to INT_MAX")
+Add a check to ensure num_ifs is greater than zero after retrieving
+device attributes. This prevents the zero-sized allocations and
+subsequent invalid pointer dereference.
 
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ Keerthana: Handle freeing new_lt ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/SYBPR01MB7881BEABA8DA896947962470AF91A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -665,6 +665,11 @@ static int pipapo_resize(struct nft_pipa
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index cdab37e9634d4..6e3f65e3e8821 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -2988,6 +2988,12 @@ static int dpaa2_switch_init(struct fsl_mc_device *sw_dev)
+ 		goto err_close;
  	}
  
- mt:
-+	if (rules > (INT_MAX / sizeof(*new_mt))) {
-+		kvfree(new_lt);
-+		return -ENOMEM;
++	if (!ethsw->sw_attr.num_ifs) {
++		dev_err(dev, "DPSW device has no interfaces\n");
++		err = -ENODEV;
++		goto err_close;
 +	}
 +
- 	new_mt = kvmalloc(rules * sizeof(*new_mt), GFP_KERNEL);
- 	if (!new_mt) {
- 		kvfree(new_lt);
-@@ -1358,6 +1363,9 @@ static struct nft_pipapo_match *pipapo_c
- 		       src->bsize * sizeof(*dst->lt) *
- 		       src->groups * NFT_PIPAPO_BUCKETS(src->bb));
- 
-+		if (src->rules > (INT_MAX / sizeof(*src->mt)))
-+			goto out_mt;
-+
- 		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL);
- 		if (!dst->mt)
- 			goto out_mt;
+ 	err = dpsw_get_api_version(ethsw->mc_io, 0,
+ 				   &ethsw->major,
+ 				   &ethsw->minor);
+-- 
+2.51.0
+
 
 
 
