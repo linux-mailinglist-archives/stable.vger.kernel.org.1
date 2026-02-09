@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELX4La/yiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:59 +0100
+	id kL04EP73iWn7FAAAu9opvQ
+	(envelope-from <stable+bounces-215378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86445110CD7
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9146D111882
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 620CB3039704
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED5D330D2105
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B976137B416;
-	Mon,  9 Feb 2026 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E9A3783C9;
+	Mon,  9 Feb 2026 14:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiWREMIP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QN3r+ell"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAE736BCE2;
-	Mon,  9 Feb 2026 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CD128725B;
+	Mon,  9 Feb 2026 14:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648072; cv=none; b=gHTgMhIdDIedoRBWwBvCndyHnSr9B8pCZxXbbjUxBwbKjRYrpduHarK04ImxgepujgXVJDm02regoxbkTnE4NwBz5KCqE0RSTbPBw8JQAd+CYciFa5XKr9lIBmrPSzZBwPrG1yhxaD6iIz0GAd/zjnLNXw17/4O5cqc/piCvr7Q=
+	t=1770648598; cv=none; b=HrYCeT8jK6v2wkq0MMuaaLDhoCF5w8EGk3DOq0KhbhQBtvVaYHXiEFC0wZvGqcVaaGfKNc9xT/RCrJ9SPQTbqpaP7Yf457HNfXsVGqSnWdrDjTNXs5RGCc4XwIt3HsMcrAUvw+0hoV5z/UER0nrU8lcrB4D7m6t9cVcOpf0khLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648072; c=relaxed/simple;
-	bh=B5hnpbcDyPgPpP2oH1+ZZ9deLnwPhidnehRhO5xaYbo=;
+	s=arc-20240116; t=1770648598; c=relaxed/simple;
+	bh=Y2brvEyrDBaJjJOwQmpuMIhEccPzF4e1ttKpxZJ65rY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIn9qBbjwe2Z967G/+QrkVDYumBwJkVXvv2Ph350dVoYPAAC5CKxf7bFvFDvsBWO3nlbr5+BbvNabf+OkTYX7RmBi4WLNYrd7Z78p9dv5aNa/tlKkt++8drkKtoiwBT56+zl9LpWpuxmlmEKOAWCf0FQg2DpvsoIq5JBKpmY6WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiWREMIP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B16C116C6;
-	Mon,  9 Feb 2026 14:41:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lJqMvvEwGtvZ7u+FpVMs1W/9Sv8Kj+eybMc+WyPZkAjTiwG2nqw/xRFLtl0sNy7yLq8eP3Fwvde0lXA9z2kQz8OkfYg/0aYGugaVHJBho1OgNXjGX5RkgHd+iAdsQGdjHU/P1uV18213yUEzBlddxz0yC8tl5GFPnp9IUeRILa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QN3r+ell; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7C0C116C6;
+	Mon,  9 Feb 2026 14:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648072;
-	bh=B5hnpbcDyPgPpP2oH1+ZZ9deLnwPhidnehRhO5xaYbo=;
+	s=korg; t=1770648598;
+	bh=Y2brvEyrDBaJjJOwQmpuMIhEccPzF4e1ttKpxZJ65rY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BiWREMIPY6nUH+G0vmtNpteNmC6H+DA22EGzWSE+O7sSP92jDbR+fjOTr7PtXd20Q
-	 Yifbj+7QrdR4IUmF3JSjPoemb6qqRDRoNaqHhJ+3ztDwp7kDj1L54ruVvOmsz4bHz/
-	 PTplopnV62ScJxyZ9Ahu1KTMvcWMSY2ipjF5jRAg=
+	b=QN3r+elle9IzItKqhcWhZFxPtaMp8OLq2eWLys/oDyskhB0+UMHNud34hl1hMc106
+	 OUdtrQFhdqp8+DAsuISs7+IQbUJAt8jAdBywLVY3Btn0MsVgRqdGO9YeNqhS7Gr/pB
+	 oqKugUjt2XgJMENdoIYcSEWx5Pu+MXzWnJ+mxBu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 113/113] ALSA: hda/realtek: Really fix headset mic for TongFang X6AR55xU.
+	Paulo Alcantara <pc@manguebit.org>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 59/86] smb/client: fix memory leak in smb2_open_file()
 Date: Mon,  9 Feb 2026 15:24:22 +0100
-Message-ID: <20260209142314.230860601@linuxfoundation.org>
+Message-ID: <20260209142306.902278010@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +65,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-215378-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215219-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tuxedocomputers.com:email,suse.de:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 86445110CD7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,manguebit.org:email]
+X-Rspamd-Queue-Id: 9146D111882
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-commit 1aaedafb21f38cb872d44f7608b4828a1e14e795 upstream.
+[ Upstream commit e3a43633023e3cacaca60d4b8972d084a2b06236 ]
 
-Add a PCI quirk to enable microphone detection on the headphone jack of
-TongFang X6AR55xU devices.
+Reproducer:
 
-The former quirk entry did not acomplish this and is removed.
+  1. server: directories are exported read-only
+  2. client: mount -t cifs //${server_ip}/export /mnt
+  3. client: dd if=/dev/zero of=/mnt/file bs=512 count=1000 oflag=direct
+  4. client: umount /mnt
+  5. client: sleep 1
+  6. client: modprobe -r cifs
 
-Fixes: b48fe9af1e60 ("ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU")
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260123221233.28273-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The error message is as follows:
+
+  =============================================================================
+  BUG cifs_small_rq (Not tainted): Objects remaining on __kmem_cache_shutdown()
+  -----------------------------------------------------------------------------
+
+  Object 0x00000000d47521be @offset=14336
+  ...
+  WARNING: mm/slub.c:1251 at __kmem_cache_shutdown+0x34e/0x440, CPU#0: modprobe/1577
+  ...
+  Call Trace:
+   <TASK>
+   kmem_cache_destroy+0x94/0x190
+   cifs_destroy_request_bufs+0x3e/0x50 [cifs]
+   cleanup_module+0x4e/0x540 [cifs]
+   __se_sys_delete_module+0x278/0x400
+   __x64_sys_delete_module+0x5f/0x70
+   x64_sys_call+0x2299/0x2ff0
+   do_syscall_64+0x89/0x350
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ...
+  kmem_cache_destroy cifs_small_rq: Slab cache still has objects when called from cifs_destroy_request_bufs+0x3e/0x50 [cifs]
+  WARNING: mm/slab_common.c:532 at kmem_cache_destroy+0x16b/0x190, CPU#0: modprobe/1577
+
+Link: https://lore.kernel.org/linux-cifs/9751f02d-d1df-4265-a7d6-b19761b21834@linux.dev/T/#mf14808c144448b715f711ce5f0477a071f08eaf6
+Fixes: e255612b5ed9 ("cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES")
+Reported-by: Paulo Alcantara <pc@manguebit.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/smb/client/smb2file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11368,6 +11368,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1d05, 0x1409, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d05, 0x300f, "TongFang X6AR5xxY", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d05, 0x3019, "TongFang X6FR5xxY", ALC2XX_FIXUP_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1d05, 0x3031, "TongFang X6AR55xU", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d17, 0x3288, "Haier Boyue G42", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
-@@ -11834,10 +11835,6 @@ static const struct snd_hda_pin_quirk al
- 		{0x12, 0x90a60140},
- 		{0x19, 0x04a11030},
- 		{0x21, 0x04211020}),
--	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
--		{0x17, 0x90170110},
--		{0x19, 0x03a11030},
--		{0x21, 0x03211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
- 		ALC282_STANDARD_PINS,
- 		{0x12, 0x90a609c0},
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index d7f2835e0b1cc..d436057ed77e3 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -122,6 +122,7 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
+ 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 		       &err_buftype);
+ 	if (rc == -EACCES && retry_without_read_attributes) {
++		free_rsp_buf(err_buftype, err_iov.iov_base);
+ 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
+ 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 			       &err_buftype);
+-- 
+2.51.0
+
 
 
 
