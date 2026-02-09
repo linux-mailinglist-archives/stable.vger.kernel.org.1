@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIClA1LyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:26 +0100
+	id +KzpG631iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65125110BC5
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F921113D7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2F93306EC81
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D86B33074F18
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AB8285060;
-	Mon,  9 Feb 2026 14:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7A33783A1;
+	Mon,  9 Feb 2026 14:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJVnMB2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/HI28U2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C29E1AF0AF;
-	Mon,  9 Feb 2026 14:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C52222B2;
+	Mon,  9 Feb 2026 14:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647701; cv=none; b=i+BQ1vTcjX9/JOZVPv2TDOhjocBmE4/aofYkMYP0zjfDcX1bWL+NqGBqxh/mtQqPFCMA0WjCKYuvoooT+G79QDua3WwYDV4EFH41AuaDkZH//13kq37e5fc7JMw+RocVPavwWenUMttOU8zHY9Cx+160zvk/mKfyuuxkzbz1rxE=
+	t=1770648176; cv=none; b=i6Zw9MWxDWiwIl+xqzVT4jXyCOAYAc1Dr/KBYqCsGKVkniLOWMCyivIlOBfu81E9SumRksZskmtZ+uIh9jlHDYUXhUvJJeInio4Vwqryp4XWJUdFd5vbybc9gAObmel+7dgkNLaQ1cM2UQTfSbg8iQr1Kqsqbvw2/FjEpY1G6Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647701; c=relaxed/simple;
-	bh=2ijRq9n+dFpHMSFBJSqbWZ0S3ah7aZYFfiVERQDk4GQ=;
+	s=arc-20240116; t=1770648176; c=relaxed/simple;
+	bh=1Uo7lxIhos3gXIm6m3HRoxMx4p8SO/k5FSBbCPR6dKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnZTD+qco5V1gmBPahPffZ8CQguzCauVO8HBfk0+uKcWIa217uXlccbpusRio+tV+K5Gl6wN5NLLJEEvLITf6E+Kz2BEqPUOsyz854PgGylOCN/pgU7eNV1DsOh8oEhZuU+dEvGVvy2RxsRP3SwixlDnAemwvb0Ct5b+QP8fwsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJVnMB2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3833C116C6;
-	Mon,  9 Feb 2026 14:35:00 +0000 (UTC)
+	 MIME-Version; b=ig/EdVgGYpuWW2Ow7KoBZjT2FbrOlqfIBd1tK2Uh9XHhuBn0qYpBiuheHTtgl5RXhQJesS2Xqi+zfIF/zoqWzqQ6VHiNfxDCaj4wy2gJH0wsFcEKwt8ui/P8W3Plag6B4RdItq304kDX7tb1cYDF5KVZEOkFC8ZUC20MnvnXcdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/HI28U2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A64C116C6;
+	Mon,  9 Feb 2026 14:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647701;
-	bh=2ijRq9n+dFpHMSFBJSqbWZ0S3ah7aZYFfiVERQDk4GQ=;
+	s=korg; t=1770648176;
+	bh=1Uo7lxIhos3gXIm6m3HRoxMx4p8SO/k5FSBbCPR6dKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJVnMB2zSGq7N5Iky4ion3hxcyR2g7CmRom+o1kpZEVrrO1c8J0LGsrxVUmWwZFsc
-	 xhYHYC9hkoD5x6SC1QvJPucXkuy9r7NSQqkH3rssXFValYmO7LCl5yS2dK5iia1Js+
-	 ScsebW0VwIQnBaq0JI5rs/BhyqyefGVyIYD8bHnI=
+	b=X/HI28U2/0rljdPF82WNYcHdzZd6NVLq9jA6HOCqLADxfIeHLXR2l8z8ZkSqgCSN8
+	 CK2QXv3B7rv4nmyOhrfveyJDEVSnciqPhPdHcia6/F7bgamWDNske8SssEgQD0Xzh+
+	 hH9apukF+YjfqkhAKKIOI4njijLsbXrXwW6QpHA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guodong Xu <guodong@riscstar.com>,
-	Mark Brown <broonie@kernel.org>,
+	Siarhei Vishniakou <svv@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 164/175] regulator: spacemit-p1: Fix n_voltages for BUCK and LDO regulators
+Subject: [PATCH 6.1 29/69] HID: playstation: Center initial joystick axes to prevent spurious events
 Date: Mon,  9 Feb 2026 15:23:57 +0100
-Message-ID: <20260209142326.388102600@linuxfoundation.org>
+Message-ID: <20260209142302.975811953@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215108-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215250-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -90,62 +90,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,spacemit.com:url,riscstar.com:email]
-X-Rspamd-Queue-Id: 65125110BC5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C5F921113D7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guodong Xu <guodong@riscstar.com>
+From: Siarhei Vishniakou <svv@google.com>
 
-[ Upstream commit 41399c5d476156635c9a58de870d39318e22fa09 ]
+[ Upstream commit e9143268d259d98e111a649affa061acb8e13c5b ]
 
-Higher voltage settings were unusable due to incorrect n_voltages values
-causing registration failures. For example, setting aldo4 to 3.3V failed
-with -EINVAL because the required selector (123) exceeded the allowed
-range (n_voltages=117).
+When a new PlayStation gamepad (DualShock 4 or DualSense) is initialized,
+the input subsystem sets the default value for its absolute axes (e.g.,
+ABS_X, ABS_Y) to 0.
 
-Fix by aligning n_voltages with the hardware register widths per the P1
-datasheet [1]:
-- BUCK: 255 (was 254), allows selectors 0-254, selector 255 is reserved
-- LDO: 128 (was 117), allows selectors 0-127, selectors 0-10 are for
-  suspend mode, valid operational range is 11-127
+However, the hardware's actual neutral/resting state for these joysticks
+is 128 (0x80). This creates a mismatch.
 
-This enables the full voltage range supported by the hardware.
+When the first HID report arrives from the device, the driver sees the
+resting value of 128. The kernel compares this to its initial state of 0
+and incorrectly interprets this as a delta (0 -> 128). Consequently, it
+generates EV_ABS events for this initial, non-existent movement.
 
-Fixes: 8b84d712ad84 ("regulator: spacemit: support SpacemiT P1 regulators")
-Link: https://developer.spacemit.com/documentation [1]
-Signed-off-by: Guodong Xu <guodong@riscstar.com>
-Link: https://patch.msgid.link/20260122-spacemit-p1-v1-1-309be27fbff9@riscstar.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This behavior can fail userspace 'sanity check' tests (e.g., in
+Android CTS) that correctly assert no motion events should be generated
+from a device that is already at rest.
+
+This patch fixes the issue by explicitly setting the initial value of the
+main joystick axes (e.g., ABS_X, ABS_Y, ABS_RX, ABS_RY) to 128 (0x80)
+in the common ps_gamepad_create() function.
+
+This aligns the kernel's initial state with the hardware's expected
+neutral state, ensuring that the first report (at 128) produces no
+delta and thus, no spurious event.
+
+Signed-off-by: Siarhei Vishniakou <svv@google.com>
+Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/spacemit-p1.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/hid-playstation.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/regulator/spacemit-p1.c b/drivers/regulator/spacemit-p1.c
-index 2bf9137e12b1d..2b585ba01a93d 100644
---- a/drivers/regulator/spacemit-p1.c
-+++ b/drivers/regulator/spacemit-p1.c
-@@ -87,13 +87,13 @@ static const struct linear_range p1_ldo_ranges[] = {
- 	}
+diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
+index 2228f6e4ba23f..38d5171dd25b2 100644
+--- a/drivers/hid/hid-playstation.c
++++ b/drivers/hid/hid-playstation.c
+@@ -487,11 +487,16 @@ static struct input_dev *ps_gamepad_create(struct hid_device *hdev,
+ 	if (IS_ERR(gamepad))
+ 		return ERR_CAST(gamepad);
  
- #define P1_BUCK_DESC(_n) \
--	P1_REG_DESC(BUCK, buck, _n, "vin", 0x47, BUCK_MASK, 254, p1_buck_ranges)
-+	P1_REG_DESC(BUCK, buck, _n, "vin", 0x47, BUCK_MASK, 255, p1_buck_ranges)
++	/* Set initial resting state for joysticks to 128 (center) */
+ 	input_set_abs_params(gamepad, ABS_X, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_X].value = 128;
+ 	input_set_abs_params(gamepad, ABS_Y, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_Y].value = 128;
+ 	input_set_abs_params(gamepad, ABS_Z, 0, 255, 0, 0);
+ 	input_set_abs_params(gamepad, ABS_RX, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_RX].value = 128;
+ 	input_set_abs_params(gamepad, ABS_RY, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_RY].value = 128;
+ 	input_set_abs_params(gamepad, ABS_RZ, 0, 255, 0, 0);
  
- #define P1_ALDO_DESC(_n) \
--	P1_REG_DESC(ALDO, aldo, _n, "vin", 0x5b, LDO_MASK, 117, p1_ldo_ranges)
-+	P1_REG_DESC(ALDO, aldo, _n, "vin", 0x5b, LDO_MASK, 128, p1_ldo_ranges)
- 
- #define P1_DLDO_DESC(_n) \
--	P1_REG_DESC(DLDO, dldo, _n, "buck5", 0x67, LDO_MASK, 117, p1_ldo_ranges)
-+	P1_REG_DESC(DLDO, dldo, _n, "buck5", 0x67, LDO_MASK, 128, p1_ldo_ranges)
- 
- static const struct regulator_desc p1_regulator_desc[] = {
- 	P1_BUCK_DESC(1),
+ 	input_set_abs_params(gamepad, ABS_HAT0X, -1, 1, 0, 0);
 -- 
 2.51.0
 
