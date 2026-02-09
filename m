@@ -1,98 +1,98 @@
-Return-Path: <stable+bounces-214900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MA05Kji8iWmkBQUAu9opvQ
-	(envelope-from <stable+bounces-214900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 11:51:36 +0100
+	id UHXhMDrBiWk/BgUAu9opvQ
+	(envelope-from <stable+bounces-214901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 12:12:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B5810E600
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 11:51:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E9F10E8B9
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 12:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EF5A30117B8
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 10:51:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 088C7302BA40
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 11:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82118367F49;
-	Mon,  9 Feb 2026 10:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A4636C0DE;
+	Mon,  9 Feb 2026 11:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="D5BLWbaZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="cYr2yEgi";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="CglPIfHO";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="8T5a8tSu"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NyVcXt2o";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9qYrvHqP";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NyVcXt2o";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9qYrvHqP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D944A36606B
-	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 10:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6929836C5A5
+	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 11:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770634293; cv=none; b=UDJIX5XTAc4B5n5w4zEgpkUVUqIHKXLbreemapsRDgDdfWfFF45J7NJvghDGMhuPehLyf+0JMu3ps4+eFNrEH0PM0xRGdWfRvgO+VazbG/dzb3G2UY3lKuWZd9bvwnAGxp6AAsNtRErjPt4nu5YFGOYDTrApoF0gHr60o6vUi78=
+	t=1770635492; cv=none; b=gojyHH5u2vcWaIbcIHn9AJyY3bEY8IkcsPVvXr/vA35Tfo8olmXRcWsxWXSUpstZ6s2cef8IuK6KMqMhgu1ITTImF1uTAljYLK7p4EJpfpLXzR8JZzfok8lrJ8dkz6th8p1cfJkB8rVb0sGrwGqruMFdv59Ye+uKwB7XqF3rELs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770634293; c=relaxed/simple;
-	bh=LstStMZczcT4m0dWQzXHT5JF5QbzbPAecbu27TkJcnw=;
+	s=arc-20240116; t=1770635492; c=relaxed/simple;
+	bh=X8ZEnbisnHFDug0RdkwoZLOVc840MUlx1wmtJ/ZBTtE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IexpfIkWgzPFOgl5P4po+eXpF6F3kUiAKmNyEBkIUIfFmE2v9gPl+rtd8Demi2uTod3wb9gcr4osTjJoSXyrDTRUnDt9NdllECXnSyPu485PlTxU1NW7/uY5pBxhs18akiT4eK4qKWrviwOZBXH+2moo45x/MoqEOPlJlf5RIv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=D5BLWbaZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=cYr2yEgi; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=CglPIfHO; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=8T5a8tSu; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=STQe1P7BzQJnGl8tVwU/GNEidNS2b+ytTryZyMZuiZyKG0yXv1vR+eUHNA2Dve2XS+CHoYA5/TqN1MjZMyVjSYqHnUESxh9yd3sg14ObWnqNSeyB5cf9/8plWfxNQkOKYNECs0tHri08xABDyaP5dT25NVdCc+izjKdiZl4euFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NyVcXt2o; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9qYrvHqP; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NyVcXt2o; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9qYrvHqP; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EAE8D5BD0C;
-	Mon,  9 Feb 2026 10:51:29 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A19F43E6F2;
+	Mon,  9 Feb 2026 11:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770634291; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770635490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl9GPRip3rgX2OqDOoiS8dQTWDyvLwz1/dMI6eGzFFE=;
-	b=D5BLWbaZKlII/sOXZc2a6C0+5OkIW73vhjG5RqLeBCp6KdYKOnDrZgvLBvX5RBQp2aAh+K
-	a2Eaap/FKpm0T5jFbHGmuyxfEVSEgE3c5eAWoS2uf7cwp2LeDAL67H7KhuW11Hr5cHl8mA
-	YZDnbJPwg5dMLuvh2GKS3Dymx8cFn7g=
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=NyVcXt2ocC1CVQAT2MPh2t32BXjCv7vkaP3a0lu3iDhzxYu/z2h3IG7qianf+MrpON5MXE
+	TcW8J5gfMgI1dkXFWaAXM7ZbY82FY3HXcAXm2p4UoAubsqjHUbTr7cFnewm5AECj9OGmoZ
+	+xdWcEyC3sP2MMiBBp0IUeaWgoMKCf4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770634291;
+	s=susede2_ed25519; t=1770635490;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl9GPRip3rgX2OqDOoiS8dQTWDyvLwz1/dMI6eGzFFE=;
-	b=cYr2yEgiU1eHJSf/pQ7P5KvmQR9wK+FsWcCorHMmQkk67qKJ8lDKhRT+UUgZmeqklOkYXE
-	e+QsITG32pNkskCQ==
-Authentication-Results: smtp-out2.suse.de;
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=9qYrvHqPlk3lkMfiMYtY7WmM5BFDggncyDFM6w9yLq2+8cw2wAcFKFiPxFSp2ov8WpNjlE
+	MO6BDDkcPrGDXYAQ==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770634289; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770635490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl9GPRip3rgX2OqDOoiS8dQTWDyvLwz1/dMI6eGzFFE=;
-	b=CglPIfHObV7n/enWmPPUs2yFg0dvdh7F1X5BhmH7NuHl8y+oT9NL9YzrW+gIck0qKLf9HR
-	8p54+0Z1rLas7yXzR9brrYC0rbrIAW5MJywQ/BNwfGWxb1nxJr2aSN9Rr1GmmTPkLZZiVL
-	MJApKEZ9g7T/GglrNJENpjjq21kPhao=
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=NyVcXt2ocC1CVQAT2MPh2t32BXjCv7vkaP3a0lu3iDhzxYu/z2h3IG7qianf+MrpON5MXE
+	TcW8J5gfMgI1dkXFWaAXM7ZbY82FY3HXcAXm2p4UoAubsqjHUbTr7cFnewm5AECj9OGmoZ
+	+xdWcEyC3sP2MMiBBp0IUeaWgoMKCf4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770634289;
+	s=susede2_ed25519; t=1770635490;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl9GPRip3rgX2OqDOoiS8dQTWDyvLwz1/dMI6eGzFFE=;
-	b=8T5a8tSuhBcQ2x/0EcWspreSTEAUVDgxMKKyAhzKwKkNCCjofilt/uJ4vf/Q3mWsPNepVD
-	Gd3s+T+Aji6RR7Dg==
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=9qYrvHqPlk3lkMfiMYtY7WmM5BFDggncyDFM6w9yLq2+8cw2wAcFKFiPxFSp2ov8WpNjlE
+	MO6BDDkcPrGDXYAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD6B53EA63;
-	Mon,  9 Feb 2026 10:51:29 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B7393EA63;
+	Mon,  9 Feb 2026 11:11:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9FilKzG8iWmPDgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 09 Feb 2026 10:51:29 +0000
-Message-ID: <577befda-7f41-40bf-8a44-095ae184a100@suse.cz>
-Date: Mon, 9 Feb 2026 11:51:29 +0100
+	id wlXuFOLAiWlPSgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 09 Feb 2026 11:11:30 +0000
+Message-ID: <dc4c016c-90e7-4e60-a73a-a2515ad2f6e8@suse.cz>
+Date: Mon, 9 Feb 2026 12:11:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,18 +100,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/page_alloc: skip debug_check_no_{obj,locks}_freed
- with FPI_TRYLOCK
+Subject: Re: [PATCH v2] mm/page_alloc: clear page->private in
+ free_pages_prepare()
 Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Alexei Starovoitov <ast@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20260209062639.16577-1-harry.yoo@oracle.com>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+ hughd@google.com, ryncsn@gmail.com, ziy@nvidia.com, stable@vger.kernel.org
+References: <17A126A7-BACA-49E5-8A89-F8E665981136@nvidia.com>
+ <20260207153716.59302-1-mikhail.v.gavrilov@gmail.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -152,97 +148,89 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20260209062639.16577-1-harry.yoo@oracle.com>
+In-Reply-To: <20260207153716.59302-1-mikhail.v.gavrilov@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spam-Level: 
 X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-214900-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214901-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,tencent.com,google.com,gmail.com,nvidia.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DMARC_NA(0.00)[suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kvack.org];
 	DKIM_TRACE(0.00)[suse.cz:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.cz,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,suse.cz:mid,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 20B5810E600
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,suse.cz:dkim,suse.cz:mid]
+X-Rspamd-Queue-Id: 23E9F10E8B9
 X-Rspamd-Action: no action
 
-On 2/9/26 07:26, Harry Yoo wrote:
-> When CONFIG_DEBUG_OBJECTS_FREE is enabled,
-> debug_check_no_{obj,locks}_freed() functions are called.
+On 2/7/26 16:37, Mikhail Gavrilov wrote:
+> Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
+> clear it before freeing pages. When these pages are later allocated as
+> high-order pages and split via split_page(), tail pages retain stale
+> page->private values.
 > 
-> Since both of them spin on a lock, they are not safe to be called
-> if the FPI_TRYLOCK flag is specified. This leads to a lockdep splat:
+> This causes a use-after-free in the swap subsystem. The swap code uses
+> page->private to track swap count continuations, assuming freshly
+> allocated pages have page->private == 0. When stale values are present,
+> swap_count_continued() incorrectly assumes the continuation list is valid
+> and iterates over uninitialized page->lru containing LIST_POISON values,
+> causing a crash:
 > 
->   ================================
->   WARNING: inconsistent lock state
->   6.19.0-rc5-slab-for-next+ #326 Tainted: G                 N
->   --------------------------------
->   inconsistent {INITIAL USE} -> {IN-NMI} usage.
->   kunit_try_catch/9046 [HC2[2]:SC0[0]:HE0:SE1] takes:
->   ffffffff84ed6bf8 (&obj_hash[i].lock){-.-.}-{2:2}, at: __debug_check_no_obj_freed+0xe0/0x300
->   {INITIAL USE} state was registered at:
->     lock_acquire+0xd9/0x2f0
->     _raw_spin_lock_irqsave+0x4c/0x80
->     __debug_object_init+0x9d/0x1f0
->     debug_object_init+0x34/0x50
->     __init_work+0x28/0x40
->     init_cgroup_housekeeping+0x151/0x210
->     init_cgroup_root+0x3d/0x140
->     cgroup_init_early+0x30/0x240
->     start_kernel+0x3e/0xcd0
->     x86_64_start_reservations+0x18/0x30
->     x86_64_start_kernel+0xf3/0x140
->     common_startup_64+0x13e/0x148
->   irq event stamp: 2998
->   hardirqs last  enabled at (2997): [<ffffffff8298b77a>] exc_nmi+0x11a/0x240
->   hardirqs last disabled at (2998): [<ffffffff8298b991>] sysvec_irq_work+0x11/0x110
->   softirqs last  enabled at (1416): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
->   softirqs last disabled at (1303): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
+>   KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
+>   RIP: 0010:__do_sys_swapoff+0x1151/0x1860
 > 
->   other info that might help us debug this:
->    Possible unsafe locking scenario:
+> Fix this by clearing page->private in free_pages_prepare(), ensuring all
+> freed pages have clean state regardless of previous use.
 > 
->          CPU0
->          ----
->     lock(&obj_hash[i].lock);
->     <Interrupt>
->       lock(&obj_hash[i].lock);
-> 
->    *** DEADLOCK ***
-> 
-> Rename free_pages_prepare() to __free_pages_prepare(), add an fpi_t
-> parameter, and skip those checks if FPI_TRYLOCK is set. To keep the
-> fpi_t definition in mm/page_alloc.c, add a wrapper function
-> free_pages_prepare() that always passes FPI_NONE and use it in
-> mm/compaction.c.
-> 
-> Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+
+Seems cheap enough and robust to just do it. Could be different for tail
+pages (although we do modify them too anyway).
 
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-Thanks!
+> ---
+>  mm/page_alloc.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index cbf758e27aa2..24ac34199f95 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1430,6 +1430,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+>  
+>  	page_cpupid_reset_last(page);
+>  	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> +	page->private = 0;
+>  	reset_page_owner(page, order);
+>  	page_table_check_free(page, order);
+>  	pgalloc_tag_sub(page, 1 << order);
+
 
