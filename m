@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KZ3HmT3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:04:04 +0100
+	id wN+PKo3yiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D779811175E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:04:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62735110C6F
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E1DA30B3864
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:47:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 686A130370E2
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BB03783C9;
-	Mon,  9 Feb 2026 14:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF3737D120;
+	Mon,  9 Feb 2026 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrPjciKV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrwOrEcq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15F828725B;
-	Mon,  9 Feb 2026 14:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AF037C0F8;
+	Mon,  9 Feb 2026 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648445; cv=none; b=F6VUq5ZT/MB1k2IeM6p7MraAa++IBPI5zBm0uCTh3UJ4TrBaJwm3lxfSFDBBdBgat7a0yBCAvwIxmZaT3Y5k1TIakdPy+Y5p8pBEvpyXWNoGKelUcB9F0ZLrN09uYZaZ04bP+jymetQSwiKkqBBjWj4BrrVZYY4m9uTlcJcFHa4=
+	t=1770648011; cv=none; b=Q4u5oNy/FTgEQhxoSmUiuctuyCUYJs7AOOTYuG4b9n7+3cBjOnydGf4TFmYzVyE93BSQ/lLXmKZFFMClS2hRRnYTFsVAuXdRx1xWj+xZFtwXXACqDBmAE7H3emvQDR6JevcckBIb8U1H4v2Alxc8BzGq8jxdKZsLkWWKS6ZkdHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648445; c=relaxed/simple;
-	bh=fEwHkBjfMS9RDG1BDO56JyJhdJMCUBOTJ07YYe+fqtM=;
+	s=arc-20240116; t=1770648011; c=relaxed/simple;
+	bh=3vuKwk64qI4phz5u+NaVZtaQh8hfWjwOzmzitSUesZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAQWLayqlwUMTFOvdADw9IQLlfSchdoZGclRk6e0/4Ji3Tw/B97/qsr/7SUwSGsBcVd9yrN2siz2Y/4aHfoJW98LUUYOFrWWJqBQ70+z1X9VZq7Y94OVbUG/LKhFl8i6IaX2JA6nxnO76KvT1UewT4IWHUetnbhZ64juvS+Leyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrPjciKV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541A0C116C6;
-	Mon,  9 Feb 2026 14:47:24 +0000 (UTC)
+	 MIME-Version; b=hPDDFXqxiVHY+ZHkAx/iSb20lFAPcd8cRNOUr7H7IoK7TD5TMajIXxy7n6067CVFoJThZ8Eb9PJ8lw0wbx0iz2G0qH86whHEAlJih4UiJ8zfSaeC7CxTSsk8s0RXyux0vbGDfHZVq/huQbDCtwmjc7XJ10pUOGDMh28NdQqmcvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrwOrEcq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96E2C116C6;
+	Mon,  9 Feb 2026 14:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648444;
-	bh=fEwHkBjfMS9RDG1BDO56JyJhdJMCUBOTJ07YYe+fqtM=;
+	s=korg; t=1770648011;
+	bh=3vuKwk64qI4phz5u+NaVZtaQh8hfWjwOzmzitSUesZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrPjciKVggPUI7oB9wvgIX3ztygwZ/wltpIsp4qra/rAUlWnaUWI3EX86PY5MHh4t
-	 Koipomgos16yaquD9K7AvuWC7HX6DqRB7sqZ4ODrIHbA8/xRHC0epqDrmBB9Vn2ZnO
-	 PXlMQnyNqsQToTKpMiaHC+uE9YV5pEyYkkJdOvvg=
+	b=HrwOrEcqqu8hTApnBKbpskwn5QzgNdTPqUHi2kDkNzJXgje4Vo5e072A7jkLrlEuj
+	 RpRBZ64jlSj7Al59wsrL8NOGigHFmhH04mUe4nnWnTOQ7zybItiuobk5W3q97HX2aQ
+	 ZywXjVeeTS2DOFEJBbKAML5CIzpR3t8KBIv6WHfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kwok Kin Ming <kenkinming2002@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 39/86] HID: i2c-hid: fix potential buffer overflow in i2c_hid_get_report()
+Subject: [PATCH 6.12 093/113] tipc: use kfree_sensitive() for session key material
 Date: Mon,  9 Feb 2026 15:24:02 +0100
-Message-ID: <20260209142306.192610616@linuxfoundation.org>
+Message-ID: <20260209142313.523608764@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,73 +70,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215330-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215201-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D779811175E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email]
+X-Rspamd-Queue-Id: 62735110C6F
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kwok Kin Ming <kenkinming2002@gmail.com>
+From: Daniel Hodges <hodgesd@meta.com>
 
-[ Upstream commit 2497ff38c530b1af0df5130ca9f5ab22c5e92f29 ]
+[ Upstream commit 74d9391e8849e70ded5309222d09b0ed0edbd039 ]
 
-`i2c_hid_xfer` is used to read `recv_len + sizeof(__le16)` bytes of data
-into `ihid->rawbuf`.
+The rx->skey field contains a struct tipc_aead_key with GCM-AES
+encryption keys used for TIPC cluster communication. Using plain
+kfree() leaves this sensitive key material in freed memory pages
+where it could potentially be recovered.
 
-The former can come from the userspace in the hidraw driver and is only
-bounded by HID_MAX_BUFFER_SIZE(16384) by default (unless we also set
-`max_buffer_size` field of `struct hid_ll_driver` which we do not).
+Switch to kfree_sensitive() to ensure the key material is zeroed
+before the memory is freed.
 
-The latter has size determined at runtime by the maximum size of
-different report types you could receive on any particular device and
-can be a much smaller value.
-
-Fix this by truncating `recv_len` to `ihid->bufsize - sizeof(__le16)`.
-
-The impact is low since access to hidraw devices requires root.
-
-Signed-off-by: Kwok Kin Ming <kenkinming2002@gmail.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 1ef6f7c9390f ("tipc: add automatic session key exchange")
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+Link: https://patch.msgid.link/20260131180114.2121438-1-hodgesd@meta.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/tipc/crypto.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 172b783274201..0a350780407ec 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -254,6 +254,7 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
- 	 * In addition to report data device will supply data length
- 	 * in the first 2 bytes of the response, so adjust .
- 	 */
-+	recv_len = min(recv_len, ihid->bufsize - sizeof(__le16));
- 	error = i2c_hid_xfer(ihid, ihid->cmdbuf, length,
- 			     ihid->rawbuf, recv_len + sizeof(__le16));
- 	if (error) {
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index ea5bb131ebd06..2721baf9fd2b3 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -1219,7 +1219,7 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
+ 		rx = c;
+ 		tx = tipc_net(rx->net)->crypto_tx;
+ 		if (cancel_delayed_work(&rx->work)) {
+-			kfree(rx->skey);
++			kfree_sensitive(rx->skey);
+ 			rx->skey = NULL;
+ 			atomic_xchg(&rx->key_distr, 0);
+ 			tipc_node_put(rx->node);
+@@ -2394,7 +2394,7 @@ static void tipc_crypto_work_rx(struct work_struct *work)
+ 			break;
+ 		default:
+ 			synchronize_rcu();
+-			kfree(rx->skey);
++			kfree_sensitive(rx->skey);
+ 			rx->skey = NULL;
+ 			break;
+ 		}
 -- 
 2.51.0
 
