@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-215183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDuCBQT1iWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:56 +0100
+	id 8EF/HOjziWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E6A1112C4
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A8411104D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBD4331580CB
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 792DC301BBA3
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00ADF37E2F2;
-	Mon,  9 Feb 2026 14:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4CF37BE77;
+	Mon,  9 Feb 2026 14:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODthn2/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="op3hMYO6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B814437C112;
-	Mon,  9 Feb 2026 14:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66DD2222B2;
+	Mon,  9 Feb 2026 14:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647951; cv=none; b=XYeNRIw33r53C+3SPW1e868TSZpPV/PKrzwJQADdmc4yLumB1KTA8MJ+zPhP7qUPciZak3mZbREqPSwdAGgFp4l/w5QrevUtaweqWdq15au2i91KTZHUr2xThRdU476hpKlOVT7Ur+faSUUIz1jaY54HKAUtOxHJ3kXswdE2Oww=
+	t=1770648136; cv=none; b=GOlI5iLyL5/zbqdsJHzRVK1gb6kJIdqXuhk0Ax6TBiSLt8j3NhZlZi3fXzLR9MGcbXqgM8wZrAO+JfFAEx6V555JiNWJT/4pUkAqVM7knYSUZ21GeSF1zuLsLGgrajCtxb81aHsXMjpStGVO92E4DTlKIuwgU6jIcARRR6ylPsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647951; c=relaxed/simple;
-	bh=i4bpGoAGdhtm3vSb5Qa3rBW2AC14ICBW5LQtiNKrobw=;
+	s=arc-20240116; t=1770648136; c=relaxed/simple;
+	bh=c1UMRApXBTiMnzPt/qcWbVeu7Zz0zqlYtD3yz5zYEGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nDUj4jCDIPSHCboH6mxtgcmDfsQJchg3L5MJwkGcGItv74ZjrhirY88/0Zeyck/HwWA+q2ZWMyiIVoDu+w+PVrdaRZChKBs4113UK58BDaYuD06XO2oWXLeX7MLAy1t3wpnI085jrFsMp3Mskxl0lGQJdbscvIBoWrzpv6ug91Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODthn2/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5136C116C6;
-	Mon,  9 Feb 2026 14:39:10 +0000 (UTC)
+	 MIME-Version; b=nK4s4rjzepfw4ZYqL2yDHhzZMo47E6zw8ChDl6wRolufNq8RDCuRv9SmOOM/8MRJE3tDn29cCh5t9+k7eivNixN+SYNxHIawSiBtz5Ha1tRL8Db9KCCe5xgCOe40P94cKoHinnuBgeHbR1u1fay4/y84BKlxzc7gZPwPnGZdjfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=op3hMYO6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B8FC19422;
+	Mon,  9 Feb 2026 14:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647951;
-	bh=i4bpGoAGdhtm3vSb5Qa3rBW2AC14ICBW5LQtiNKrobw=;
+	s=korg; t=1770648136;
+	bh=c1UMRApXBTiMnzPt/qcWbVeu7Zz0zqlYtD3yz5zYEGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODthn2/wwj0dcaMPfXteZrOP9Muur+hanzkBVR8i4+Pv8hzbVMg610LPTt09dkr2K
-	 H+ft71xus2Ovqt/EQ0b9HwhBfmrdwY2miJUeYoCZlA3n0TMc9W5iQ5BBVC8t3TgnBw
-	 PoZaRV0wkTwfaAWJSYrEgKqkSWIjvTcWaMsz+E/c=
+	b=op3hMYO6VpMCxv095WNe33KjjUVWLBeU9nTqt0dwLBn1yMqun0qda5HzzJCbF2JyR
+	 eFTzRWIAQrKVhIPRQ3qH2rXxE+fgJkqECHEp/Z+KnHjvveW1DidjI/8Uw54J/4HLI4
+	 MSO6FD+dmM0/u1My5TrqiiV+qmxGLscLs+Ia1KjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.org>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/113] smb/client: fix memory leak in smb2_open_file()
+Subject: [PATCH 6.1 18/69] wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
 Date: Mon,  9 Feb 2026 15:23:46 +0100
-Message-ID: <20260209142312.952292752@linuxfoundation.org>
+Message-ID: <20260209142302.584446129@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215183-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215238-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable,b364457b2d1d4e4a3054];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email]
-X-Rspamd-Queue-Id: 55E6A1112C4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,syzkaller.appspot.com:url,appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84A8411104D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit e3a43633023e3cacaca60d4b8972d084a2b06236 ]
+[ Upstream commit ff4071c60018a668249dc6a2df7d16330543540e ]
 
-Reproducer:
+ieee80211_ocb_rx_no_sta() assumes a valid channel context, which is only
+present after JOIN_OCB.
 
-  1. server: directories are exported read-only
-  2. client: mount -t cifs //${server_ip}/export /mnt
-  3. client: dd if=/dev/zero of=/mnt/file bs=512 count=1000 oflag=direct
-  4. client: umount /mnt
-  5. client: sleep 1
-  6. client: modprobe -r cifs
+RX may run before JOIN_OCB is executed, in which case the OCB interface
+is not operational. Skip RX peer handling when the interface is not
+joined to avoid warnings in the RX path.
 
-The error message is as follows:
-
-  =============================================================================
-  BUG cifs_small_rq (Not tainted): Objects remaining on __kmem_cache_shutdown()
-  -----------------------------------------------------------------------------
-
-  Object 0x00000000d47521be @offset=14336
-  ...
-  WARNING: mm/slub.c:1251 at __kmem_cache_shutdown+0x34e/0x440, CPU#0: modprobe/1577
-  ...
-  Call Trace:
-   <TASK>
-   kmem_cache_destroy+0x94/0x190
-   cifs_destroy_request_bufs+0x3e/0x50 [cifs]
-   cleanup_module+0x4e/0x540 [cifs]
-   __se_sys_delete_module+0x278/0x400
-   __x64_sys_delete_module+0x5f/0x70
-   x64_sys_call+0x2299/0x2ff0
-   do_syscall_64+0x89/0x350
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  ...
-  kmem_cache_destroy cifs_small_rq: Slab cache still has objects when called from cifs_destroy_request_bufs+0x3e/0x50 [cifs]
-  WARNING: mm/slab_common.c:532 at kmem_cache_destroy+0x16b/0x190, CPU#0: modprobe/1577
-
-Link: https://lore.kernel.org/linux-cifs/9751f02d-d1df-4265-a7d6-b19761b21834@linux.dev/T/#mf14808c144448b715f711ce5f0477a071f08eaf6
-Fixes: e255612b5ed9 ("cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES")
-Reported-by: Paulo Alcantara <pc@manguebit.org>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b364457b2d1d4e4a3054
+Tested-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Link: https://patch.msgid.link/20251216035932.18332-1-moonhee.lee.ca@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/ocb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index b313c128ffbab..414242a33d61a 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -122,6 +122,7 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
- 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 		       &err_buftype);
- 	if (rc == -EACCES && retry_without_read_attributes) {
-+		free_rsp_buf(err_buftype, err_iov.iov_base);
- 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
- 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 			       &err_buftype);
+diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
+index fcc326913391d..1e1bfaf12b1aa 100644
+--- a/net/mac80211/ocb.c
++++ b/net/mac80211/ocb.c
+@@ -48,6 +48,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
+ 	struct sta_info *sta;
+ 	int band;
+ 
++	if (!ifocb->joined)
++		return;
++
+ 	/* XXX: Consider removing the least recently used entry and
+ 	 *      allow new one to be added.
+ 	 */
 -- 
 2.51.0
 
