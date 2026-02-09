@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HbOIRzyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:32 +0100
+	id KMeDMiPyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD39F110B3E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FCB110B5D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 940F7305F7F6
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7084230219FD
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9E9285060;
-	Mon,  9 Feb 2026 14:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5F837F10B;
+	Mon,  9 Feb 2026 14:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHsjMeIm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqHKYoke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C911AF0AF;
-	Mon,  9 Feb 2026 14:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0086B37E2E0;
+	Mon,  9 Feb 2026 14:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647639; cv=none; b=toVKoocTJPMO0IAowA9/zxELWAWfEEfC4M5dJHqd8+6zptIoK5Tk5HYHxuJHRNTCWFK+rkRPTwyQ9+2YGGRQxtQUOtT32xHImkTwbQQrlwCCACOgoIk95oFc3b1JtJsFr9djuLQRiIH4fqcnsc2TLQbk92CrtibD30WVB8Fh/GY=
+	t=1770647971; cv=none; b=dol+7tiWWzQXLidJ3fgOQtgEYFUUAWDSTlHJAqYxpLJCNUCQ6Fe4Evce+U2+NwHN/KxkAtHU9MkcVqTfqdjc0N54GiYjT3AxANbDFHCdstaBVlv8nw6bMBlsRYcL4x6kR7rhFwjIKPcfj7aQB9EHBA52plm9k6r8udSZoOY4iS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647639; c=relaxed/simple;
-	bh=ePq5dkMqrF6EMbNJryRhyCA4CAWNNMTlUoIgYsWFTGY=;
+	s=arc-20240116; t=1770647971; c=relaxed/simple;
+	bh=UF2P+OXM6YPE+7nvzLzOUxtkCqG+CR0y3gsGXWpROnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hg++qcYXmrOV8LzbyCjNTESf7KLfJbZYuNzN7qyJ/HLY2aREQEBhOH6AxjtY2J43a15kVE7UtvvMdD5rdMy91EhgE8ddm/pB5g4oQ61h6mengwbbaaR9VMx2uzSfLa4y+jKOAvtsgWcP/inSFnkGWksh21vDZ/o6l8UXvOYcSjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHsjMeIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565D3C116C6;
-	Mon,  9 Feb 2026 14:33:58 +0000 (UTC)
+	 MIME-Version; b=tlI4z/UzEphQGR0/jFKvJmHSXhoJ0dzgQIVo1vKKsEN3qUdzUnJctKDR+0t6v0enKj1Egwr9o+LnyDuDsuVCK/HTqWSencOsu7MYJTluvaB1z3t4fJZEL1J4dAQLVzQ4+k2k51m6uUdT1HxTi0fUHkA0RGf+OLK98/vSiXAT/Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqHKYoke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8294CC116C6;
+	Mon,  9 Feb 2026 14:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647639;
-	bh=ePq5dkMqrF6EMbNJryRhyCA4CAWNNMTlUoIgYsWFTGY=;
+	s=korg; t=1770647970;
+	bh=UF2P+OXM6YPE+7nvzLzOUxtkCqG+CR0y3gsGXWpROnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHsjMeImn30j4KOttVIYQLTJ9GMvici7qav6byMtfkZ2iHpbj7QyQMV7xnnjMwJ+4
-	 vI8++C8y6nW6mehAo0zt67xssPPFPlj/0wEU/rNSjXrIux1jIZeB7YhAnm0IQZxrEC
-	 1c1NSF8JbY+48sQ/C2m0Sbk6ubK82bS5yStvy1yA=
+	b=OqHKYoke8nVEXiw8FncFnWrUo/4NYlXu2KNSJG80cOVtONcT6d5GIcEI4c82nltZs
+	 qqISX4OjkZhYLGFgGngQVNOf3dV0zHYsLyjfaZuEB4OTnC75sFRbv0p7/DU5mHWP39
+	 +zNl+wDMEjKiZOwTlA0DV8TQjrO5KmUoMXsI4Oro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 158/175] firmware: cs_dsp: Factor out common debugfs string read
+Subject: [PATCH 6.12 082/113] net: liquidio: Fix off-by-one error in PF setup_nic_devices() cleanup
 Date: Mon,  9 Feb 2026 15:23:51 +0100
-Message-ID: <20260209142326.177995005@linuxfoundation.org>
+Message-ID: <20260209142313.130175172@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,159 +69,89 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215089-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215189-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cirrus.com:email]
-X-Rspamd-Queue-Id: DD39F110B3E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:email,seu.edu.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 71FCB110B5D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 78cfd833bc04c0398ca4cfc64704350aebe4d4c2 ]
+[ Upstream commit 8558aef4e8a1a83049ab906d21d391093cfa7e7f ]
 
-cs_dsp_debugfs_wmfw_read() and cs_dsp_debugfs_bin_read() were identical
-except for which struct member they printed. Move all this duplicated
-code into a common function cs_dsp_debugfs_string_read().
+In setup_nic_devices(), the initialization loop jumps to the label
+setup_nic_dev_free on failure. The current cleanup loop while(i--)
+skip the failing index i, causing a memory leak.
 
-The check for dsp->booted has been removed because this is redundant.
-The two strings are set when the DSP is booted and cleared when the
-DSP is powered-down.
+Fix this by changing the loop to iterate from the current index i
+down to 0.
 
-Access to the string char * must be protected by the pwr_lock mutex. The
-string is passed into cs_dsp_debugfs_string_read() as a pointer to the
-char * so that the mutex lock can also be factored out into
-cs_dsp_debugfs_string_read().
+Also, decrement i in the devlink_alloc failure path to point to the
+last successfully allocated index.
 
-wmfw_file_name and bin_file_name members of struct cs_dsp have been
-changed to const char *. It makes for a better API to pass a const
-pointer into cs_dsp_debugfs_string_read().
+Compile tested only. Issue found using code review.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251120130640.1169780-2-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 10db9f6899dd ("firmware: cs_dsp: rate-limit log messages in KUnit builds")
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Suggested-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20260128154440.278369-3-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c       | 45 ++++++++++++--------------
- include/linux/firmware/cirrus/cs_dsp.h |  4 +--
- 2 files changed, 23 insertions(+), 26 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/lio_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index f51047d8ea64f..58e41751dbc19 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -9,6 +9,7 @@
-  *                         Cirrus Logic International Semiconductor Ltd.
-  */
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+index eba0740782379..ebb82767b6e53 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+@@ -3758,6 +3758,7 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+ 	if (!devlink) {
+ 		device_unlock(&octeon_dev->pci_dev->dev);
+ 		dev_err(&octeon_dev->pci_dev->dev, "devlink alloc failed\n");
++		i--;
+ 		goto setup_nic_dev_free;
+ 	}
  
-+#include <linux/cleanup.h>
- #include <linux/ctype.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
-@@ -410,24 +411,30 @@ static void cs_dsp_debugfs_clear(struct cs_dsp *dsp)
- 	dsp->bin_file_name = NULL;
- }
+@@ -3773,11 +3774,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
  
-+static ssize_t cs_dsp_debugfs_string_read(struct cs_dsp *dsp,
-+					  char __user *user_buf,
-+					  size_t count, loff_t *ppos,
-+					  const char **pstr)
-+{
-+	const char *str;
-+
-+	scoped_guard(mutex, &dsp->pwr_lock) {
-+		str = *pstr;
-+		if (!str)
-+			return 0;
-+
-+		return simple_read_from_buffer(user_buf, count, ppos, str, strlen(str));
-+	}
-+}
-+
- static ssize_t cs_dsp_debugfs_wmfw_read(struct file *file,
- 					char __user *user_buf,
- 					size_t count, loff_t *ppos)
- {
- 	struct cs_dsp *dsp = file->private_data;
--	ssize_t ret;
+ setup_nic_dev_free:
  
--	mutex_lock(&dsp->pwr_lock);
--
--	if (!dsp->wmfw_file_name || !dsp->booted)
--		ret = 0;
--	else
--		ret = simple_read_from_buffer(user_buf, count, ppos,
--					      dsp->wmfw_file_name,
--					      strlen(dsp->wmfw_file_name));
--
--	mutex_unlock(&dsp->pwr_lock);
--	return ret;
-+	return cs_dsp_debugfs_string_read(dsp, user_buf, count, ppos,
-+					  &dsp->wmfw_file_name);
- }
+-	while (i--) {
++	do {
+ 		dev_err(&octeon_dev->pci_dev->dev,
+ 			"NIC ifidx:%d Setup failed\n", i);
+ 		liquidio_destroy_nic_device(octeon_dev, i);
+-	}
++	} while (i--);
  
- static ssize_t cs_dsp_debugfs_bin_read(struct file *file,
-@@ -435,19 +442,9 @@ static ssize_t cs_dsp_debugfs_bin_read(struct file *file,
- 				       size_t count, loff_t *ppos)
- {
- 	struct cs_dsp *dsp = file->private_data;
--	ssize_t ret;
--
--	mutex_lock(&dsp->pwr_lock);
- 
--	if (!dsp->bin_file_name || !dsp->booted)
--		ret = 0;
--	else
--		ret = simple_read_from_buffer(user_buf, count, ppos,
--					      dsp->bin_file_name,
--					      strlen(dsp->bin_file_name));
--
--	mutex_unlock(&dsp->pwr_lock);
--	return ret;
-+	return cs_dsp_debugfs_string_read(dsp, user_buf, count, ppos,
-+					  &dsp->bin_file_name);
- }
- 
- static const struct {
-diff --git a/include/linux/firmware/cirrus/cs_dsp.h b/include/linux/firmware/cirrus/cs_dsp.h
-index a66eb7624730c..69959032f8f51 100644
---- a/include/linux/firmware/cirrus/cs_dsp.h
-+++ b/include/linux/firmware/cirrus/cs_dsp.h
-@@ -188,8 +188,8 @@ struct cs_dsp {
- 
- #ifdef CONFIG_DEBUG_FS
- 	struct dentry *debugfs_root;
--	char *wmfw_file_name;
--	char *bin_file_name;
-+	const char *wmfw_file_name;
-+	const char *bin_file_name;
- #endif
- };
+ setup_nic_dev_done:
  
 -- 
 2.51.0
