@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-215243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OheAGDyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:40 +0100
+	id yB4HMI30iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D63110BF7
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADB81111B8
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF5B13013A4E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3941302B512
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42EF37BE7F;
-	Mon,  9 Feb 2026 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523902BCF4C;
+	Mon,  9 Feb 2026 14:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaFsbaER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnbzWgFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D9536828A;
-	Mon,  9 Feb 2026 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BD72690EC;
+	Mon,  9 Feb 2026 14:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648152; cv=none; b=GSTlQaZUde467OmK7YB9N3wJMpkhRAnHxqajboT2yCqJZ4+5erWsF1xK28MpXDfDuzKA/VqX5JUQxNikwZnBK8BlflwhsigtwSHzkSwFyUUcL5B1sIEGrov1ygVDO6kmdlZoTUfQwP2KezLhlOvr2iu0Mf4UuYK8s4NJmkaVnzM=
+	t=1770648521; cv=none; b=qXrWCbgPui06P1IdYWywA6cI8e6PPGMppcOMKlfSG2htoRkOqx1yHK+sVk3HRIEYpHOhs4D18Z9VT1nA57WJTwB2s4w5Ai1n1dyVTRFm1B3e6Xj7lylPd8PB62lUITk1fmBFpd1NnCK3m+Dg8BahxXO2bRjPleVXEAp115MITXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648152; c=relaxed/simple;
-	bh=PHetEdZMsRVC8WD6vOTFslKzdF0+BW7RUJ6SPhw2iyQ=;
+	s=arc-20240116; t=1770648521; c=relaxed/simple;
+	bh=fZtOdK9xdb4ONPaEscBK4zVtzTCHyBJkaRIvr1Uudx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtjUEP0DB5HmLTxjDUFD26eEd16vh0ocwjONNUFOXYge++atVcQfKcoRjXxeXTWNxsAOOzmo/tUS08y3Cz/R2bgux94nBhc6Zb+xdKbo05WAQljoblMWcH5BtHzqqHYwilsVdfQFkvfy/XJZ0uNRFiYpog2UE2V3A9cQ/4GanY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaFsbaER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE24C16AAE;
-	Mon,  9 Feb 2026 14:42:31 +0000 (UTC)
+	 MIME-Version; b=JVRApGg6Igv+4fnhB5Iq3G+btSSliYWSJ5iac8AAZj6U5XU8LhEVtz9Cv2rJAv+tQCHE4A5lLcbH4RJNioDPigmR+0AlGjfhxvtj9XGWoPNpczAx7uAARQPuTwz3aNq2ED9I7f3KKAXs03FzEVgZY3IKZLTeIJ+ZXYlF2DEVk6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnbzWgFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8818CC116C6;
+	Mon,  9 Feb 2026 14:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648152;
-	bh=PHetEdZMsRVC8WD6vOTFslKzdF0+BW7RUJ6SPhw2iyQ=;
+	s=korg; t=1770648521;
+	bh=fZtOdK9xdb4ONPaEscBK4zVtzTCHyBJkaRIvr1Uudx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CaFsbaERxjZsczVgywpP0z/1QFdCjITLyI8GZ9EDKrF2Xf+MQBjqASFtBOl2q4OX7
-	 E9FrJxd/oiWmUfP9ZkJ6zbbhEyryRJtR1V2cG/e2IwhX87jA7Nc/PgPflcKSUbx+Jl
-	 RtB3D60HM4/38aTfM6z71LClYZehzhFHgNpLvQmM=
+	b=KnbzWgFKyUXRnbhUuFlixPurndn+tpW5pLUVfhCe0R8J1Bbk7LYhz1WCQcyNW67Ot
+	 EcLjFJw54eIWtOosFjeM8CKtdu0pcBEiYBi2hyM2E2vawnFmyvouqFMk4Y2bvCDVwD
+	 yIbW7vUDWSx4vgRg+zN5DNbNOmi66DiXh7cCpBEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	ZhangGuoDong <zhangguodong@kylinos.cn>,
 	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/69] smb/server: call ksmbd_session_rpc_close() on error path in create_smb2_pipe()
-Date: Mon,  9 Feb 2026 15:23:50 +0100
-Message-ID: <20260209142302.726011545@linuxfoundation.org>
+Subject: [PATCH 6.6 28/86] smb/server: fix refcount leak in smb2_open()
+Date: Mon,  9 Feb 2026 15:23:51 +0100
+Message-ID: <20260209142305.797755253@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,20 +71,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215243-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215354-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -92,52 +92,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email]
-X-Rspamd-Queue-Id: 69D63110BF7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3ADB81111B8
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: ZhangGuoDong <zhangguodong@kylinos.cn>
 
-[ Upstream commit 7c28f8eef5ac5312794d8a52918076dcd787e53b ]
+[ Upstream commit f416c556997aa56ec4384c6b6efd6a0e6ac70aa7 ]
 
-When ksmbd_iov_pin_rsp() fails, we should call ksmbd_session_rpc_close().
+When ksmbd_vfs_getattr() fails, the reference count of ksmbd_file
+must be released.
 
+Suggested-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
 Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 100016298f87e..14d46c52ee748 100644
+index 19436ce8a4958..5cbe84938a729 100644
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -2272,7 +2272,7 @@ static noinline int create_smb2_pipe(struct ksmbd_work *work)
- {
- 	struct smb2_create_rsp *rsp;
- 	struct smb2_create_req *req;
--	int id;
-+	int id = -1;
- 	int err;
- 	char *name;
+@@ -2999,10 +2999,10 @@ int smb2_open(struct ksmbd_work *work)
+ 			file_info = FILE_OPENED;
  
-@@ -2329,6 +2329,9 @@ static noinline int create_smb2_pipe(struct ksmbd_work *work)
- 		break;
- 	}
+ 			rc = ksmbd_vfs_getattr(&fp->filp->f_path, &stat);
++			ksmbd_put_durable_fd(fp);
+ 			if (rc)
+ 				goto err_out2;
  
-+	if (id >= 0)
-+		ksmbd_session_rpc_close(work->sess, id);
-+
- 	if (!IS_ERR(name))
- 		kfree(name);
- 
+-			ksmbd_put_durable_fd(fp);
+ 			goto reconnected_fp;
+ 		}
+ 	} else if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
 -- 
 2.51.0
 
