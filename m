@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-215318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KIvIcbziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:38 +0100
+	id IEdFDcLxiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38C5111016
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC5C110A68
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3DC2303B944
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E40AD3000FFD
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4EF3783A8;
-	Mon,  9 Feb 2026 14:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2A037C0F7;
+	Mon,  9 Feb 2026 14:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DW2MufU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdDHzobD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21A537A488;
-	Mon,  9 Feb 2026 14:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2B537D103;
+	Mon,  9 Feb 2026 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648405; cv=none; b=qmQoJ/acucCYzE+9mpIHzJyNrhjUPu4uHE8uR27VJw4h3imV4kU3FJIG1B5Y5/8l9JJskYFa7DAKkAh2fiLEzE3z1+s+pz8Hh+zzqr2QivCkmturve3C2U60IX6o7JDfwuMb2EYubFPDXj/oemFxSJ+pKXTds3Mrwx56X7lYAD0=
+	t=1770647944; cv=none; b=HDJ6+Xiuk8pU31ilP4W/v1/5CU8ZJl7MhhlGeTYbaKGF9Eeh9iYDdcngLuOVxI6Dy9fkXADu0FcnHJcvDS5nlFWypH2FRZ8Ei/cebJ7zW5fV9TO+hd/nQ7h7zDF2xeCXoSRODygUxqzjG/4FECfjPk9c35APp3aRFqWleeKXW7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648405; c=relaxed/simple;
-	bh=ImvAQWU6W1UX0gFcNFtpk+q3R967r7QLb8J4aV8sbtM=;
+	s=arc-20240116; t=1770647944; c=relaxed/simple;
+	bh=FZPNG9XEVk7cqQEnqFVz1dQuYagDEc2fdduWaJw8O5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqeFYOvPjqzHPB8lzSv54WmTK/qTL6JjsZNHTGI1v3/y+dnvsQ3oOigEMEvZQKcUzkHDYUTfAwG+2DaOn8tyCxQph+CZ6wM+9J+GVG7RqodPyW4nIPSRjdCBG9bfzgnLxANnU+ZccTFPiITR65LgoyQSdM0ZEauLIq2x+lZ6ZBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DW2MufU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D287C16AAE;
-	Mon,  9 Feb 2026 14:46:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=urCeagOa/ewz9ZsVum2SWkCGO+ViS6evT8eU2iSmvY+FohRVjHEDpuq2Kr8JqdZz7jiEY8rI0eGC13rpndhQE7f89AQs5HShDk20A91LI1OridQvdh4Hxh60jXZQdrnBgKq6/eckycJJYQTP2u94QKcyGmc/IJdy9qCfaQYu1M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdDHzobD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4D4C16AAE;
+	Mon,  9 Feb 2026 14:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648404;
-	bh=ImvAQWU6W1UX0gFcNFtpk+q3R967r7QLb8J4aV8sbtM=;
+	s=korg; t=1770647944;
+	bh=FZPNG9XEVk7cqQEnqFVz1dQuYagDEc2fdduWaJw8O5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DW2MufU15eFC6tYiqSuRb/X+ZFeC+nsmpRr6vxW8m6aVVqv2B9WC4nzwTXv/xh2OF
-	 vacbRzLkXlQk9jnD3TzioOUAdmpUW8kTtY5mmcQDKi9e5zLHhp00oeyuEtau9Mgu23
-	 rlTWhME/yv0XA7ndmGgSXqvYtDDrOeerY9Ark/X8=
+	b=EdDHzobDSPHv56fd/Fi+LOH72Zznkja4uATyhfk7hm8pyFQKBSq8r60e1L9p5EcFt
+	 8aGNaHab16dLykn5EdMq/pH3S8o13/ib8ALJ8eNk3vDiYLd7noenSQQtMV+Lqk8Hnc
+	 SmbHJjYRD6lGYTpabJwJYZ0mJNYyqy4tWW7jtVe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Debarghya Kundu <debarghyak@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alain Cousinie <alain.cousinie@laposte.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/86] gve: Fix stats report corruption on queue count change
-Date: Mon,  9 Feb 2026 15:23:43 +0100
-Message-ID: <20260209142305.506720279@linuxfoundation.org>
+Subject: [PATCH 6.12 075/113] platform/x86: hp-bioscfg: Skip empty attribute names
+Date: Mon,  9 Feb 2026 15:23:44 +0100
+Message-ID: <20260209142312.881185987@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,156 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215318-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215181-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,laposte.net,amd.com,linux.intel.com,kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: F38C5111016
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,laposte.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,intel.com:email]
+X-Rspamd-Queue-Id: CCC5C110A68
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Debarghya Kundu <debarghyak@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 7b9ebcce0296e104a0d82a6b09d68564806158ff ]
+[ Upstream commit 6222883af286e2feb3c9ff2bf9fd8fdf4220c55a ]
 
-The driver and the NIC share a region in memory for stats reporting.
-The NIC calculates its offset into this region based on the total size
-of the stats region and the size of the NIC's stats.
+Avoid registering kobjects with empty names when a BIOS attribute
+name decodes to an empty string.
 
-When the number of queues is changed, the driver's stats region is
-resized. If the queue count is increased, the NIC can write past
-the end of the allocated stats region, causing memory corruption.
-If the queue count is decreased, there is a gap between the driver
-and NIC stats, leading to incorrect stats reporting.
-
-This change fixes the issue by allocating stats region with maximum
-size, and the offset calculation for NIC stats is changed to match
-with the calculation of the NIC.
-
-Cc: stable@vger.kernel.org
-Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
-Signed-off-by: Debarghya Kundu <debarghyak@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260202193925.3106272-2-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ no stopped-queue feature in older trees ]
+Fixes: a34fc329b1895 ("platform/x86: hp-bioscfg: bioscfg")
+Reported-by: Alain Cousinie <alain.cousinie@laposte.net>
+Closes: https://lore.kernel.org/platform-driver-x86/22ed5f78-c8bf-4ab4-8c38-420cc0201e7e@laposte.net/
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20260128190501.2170068-1-mario.limonciello@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c |   41 +++++++++++++++++---------
- drivers/net/ethernet/google/gve/gve_main.c    |    4 +-
- 2 files changed, 30 insertions(+), 15 deletions(-)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -159,7 +159,8 @@ gve_get_ethtool_stats(struct net_device
- 		tmp_tx_pkts, tmp_tx_bytes;
- 	u64 rx_buf_alloc_fail, rx_desc_err_dropped_pkt, rx_pkts,
- 		rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes, tx_dropped;
--	int stats_idx, base_stats_idx, max_stats_idx;
-+	int rx_base_stats_idx, max_rx_stats_idx, max_tx_stats_idx;
-+	int stats_idx, stats_region_len, nic_stats_len;
- 	struct stats *report_stats;
- 	int *rx_qid_to_stats_idx;
- 	int *tx_qid_to_stats_idx;
-@@ -246,14 +247,32 @@ gve_get_ethtool_stats(struct net_device
- 	data[i++] = priv->stats_report_trigger_cnt;
- 	i = GVE_MAIN_STATS_LEN;
- 
--	/* For rx cross-reporting stats, start from nic rx stats in report */
--	base_stats_idx = GVE_TX_STATS_REPORT_NUM * num_tx_queues +
--		GVE_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues;
--	max_stats_idx = NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
--		base_stats_idx;
-+	rx_base_stats_idx = 0;
-+	max_rx_stats_idx = 0;
-+	max_tx_stats_idx = 0;
-+	stats_region_len = priv->stats_report_len -
-+				sizeof(struct gve_stats_report);
-+	nic_stats_len = (NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
-+		NIC_TX_STATS_REPORT_NUM * num_tx_queues) * sizeof(struct stats);
-+	if (unlikely((stats_region_len -
-+				nic_stats_len) % sizeof(struct stats))) {
-+		net_err_ratelimited("Starting index of NIC stats should be multiple of stats size");
-+	} else {
-+		/* For rx cross-reporting stats,
-+		 * start from nic rx stats in report
-+		 */
-+		rx_base_stats_idx = (stats_region_len - nic_stats_len) /
-+							sizeof(struct stats);
-+		max_rx_stats_idx = NIC_RX_STATS_REPORT_NUM *
-+			priv->rx_cfg.num_queues +
-+			rx_base_stats_idx;
-+		max_tx_stats_idx = NIC_TX_STATS_REPORT_NUM *
-+			num_tx_queues +
-+			max_rx_stats_idx;
-+	}
- 	/* Preprocess the stats report for rx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	for (stats_idx = rx_base_stats_idx; stats_idx < max_rx_stats_idx;
- 		stats_idx += NIC_RX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
-@@ -323,13 +342,9 @@ gve_get_ethtool_stats(struct net_device
- 		i += priv->rx_cfg.num_queues * NUM_GVE_RX_CNTS;
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+index 405b248442ab0..3571780f5ef89 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+@@ -699,6 +699,11 @@ static int hp_init_bios_package_attribute(enum hp_wmi_data_type attr_type,
+ 		return ret;
  	}
  
--	/* For tx cross-reporting stats, start from nic tx stats in report */
--	base_stats_idx = max_stats_idx;
--	max_stats_idx = NIC_TX_STATS_REPORT_NUM * num_tx_queues +
--		max_stats_idx;
--	/* Preprocess the stats report for tx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	/* NIC TX stats start right after NIC RX stats */
-+	for (stats_idx = max_rx_stats_idx; stats_idx < max_tx_stats_idx;
- 		stats_idx += NIC_TX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -186,9 +186,9 @@ static int gve_alloc_stats_report(struct
- 	int tx_stats_num, rx_stats_num;
- 
- 	tx_stats_num = (GVE_TX_STATS_REPORT_NUM + NIC_TX_STATS_REPORT_NUM) *
--		       gve_num_tx_queues(priv);
-+				priv->tx_cfg.max_queues;
- 	rx_stats_num = (GVE_RX_STATS_REPORT_NUM + NIC_RX_STATS_REPORT_NUM) *
--		       priv->rx_cfg.num_queues;
-+				priv->rx_cfg.max_queues;
- 	priv->stats_report_len = struct_size(priv->stats_report, stats,
- 					     size_add(tx_stats_num, rx_stats_num));
- 	priv->stats_report =
++	if (!str_value || !str_value[0]) {
++		pr_debug("Ignoring attribute with empty name\n");
++		goto pack_attr_exit;
++	}
++
+ 	/* All duplicate attributes found are ignored */
+ 	duplicate = kset_find_obj(temp_kset, str_value);
+ 	if (duplicate) {
+-- 
+2.51.0
+
 
 
 
