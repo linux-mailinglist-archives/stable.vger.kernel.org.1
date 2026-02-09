@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK7jJKD1iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:32 +0100
+	id gMz5GKjyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C481113B9
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A151F110CBF
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 155A73070B36
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 672043028380
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63AC3783A1;
-	Mon,  9 Feb 2026 14:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2EE37F73D;
+	Mon,  9 Feb 2026 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyTcNup5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjLDpUIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1F936BCE2;
-	Mon,  9 Feb 2026 14:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4109F37F734;
+	Mon,  9 Feb 2026 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648163; cv=none; b=sLZszRONd8KOxu1lQElzSpi8/azvQIvzo/oNCPc7zMWqE0zvq6fDAYowZHQlPALdraekwabXIjRODMilqxShiPtXc5UqXZtD8anLQXvZGnQjXXmFWTq3XLY55ka6viibwoCk5NnsrJ4EtGT6m2V7wDjOsojRmFilO84iU8CmslE=
+	t=1770647977; cv=none; b=gIs1dhIpTpcCRGYIZRKKBaJxeo6lkWjnLOc7LMT+dVsAFH61NRjRWNdjvGM4weAj0KqW1cTEusde//+6URrhV5nHbDGyWb5Lw9b2TWj4WoG3K53jm82ohSPOrUiavBKGkWTDIASnCOuS3WXjRp8H8JPT2sA3xtRT60eme8v0NEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648163; c=relaxed/simple;
-	bh=Th1Qb9yqHxS0UrtUKyyHMlT2juJRWo4T3tt9C9z4Ru4=;
+	s=arc-20240116; t=1770647977; c=relaxed/simple;
+	bh=1ckv9Wcq9VLkx0qZnskWfpzrY7i0ClehK4Oq1ugkX4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIaKHnup/oeXkkUk41jgzIXWxUqAb8gYoU6iljgks2emupPSRoXJkw8paOBohCcC6/Hfhkmsk4ZHUXvWq2+8NaMZk9A9g8P07iXYjAkDesg3KIgoNPi71CMN+rAIhYxXUgKqkkHH6/E19lks7Rh6lwL60FbYslXb21tT6MCrse4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyTcNup5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854BCC116C6;
-	Mon,  9 Feb 2026 14:42:42 +0000 (UTC)
+	 MIME-Version; b=N6oxs8diAG9PHIQ1Cou/Cy1vo6KAvNXkkGT9LSJMa5q7CSshu3hNF/HLLMre/suqHK2x2oRxcjEHn8rfn23N86ECo3nPVh//kGxkgGVj1upui8Ycdv4b8ZWwwvr+wmzi08fEqkenN+tjOTV1ju5KcFFfZw1sibUX38KuFy7esIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjLDpUIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4E9C116C6;
+	Mon,  9 Feb 2026 14:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648163;
-	bh=Th1Qb9yqHxS0UrtUKyyHMlT2juJRWo4T3tt9C9z4Ru4=;
+	s=korg; t=1770647977;
+	bh=1ckv9Wcq9VLkx0qZnskWfpzrY7i0ClehK4Oq1ugkX4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TyTcNup5+NWKGXEHUcfRHYMtV0f3E5asAee8YdxDcaBMyiQcQKl1Fo+dCJjiMkyGK
-	 LUd2emvCSOn1qt/tlb/EWzLiqhR2u0RuP9tOEDNdmLvMfFmcl2HRVMRT6OLefn4ZS0
-	 RfPbJQ8LoDszFqV08Nxx4RmVdNI0pnZYavvqOUUE=
+	b=xjLDpUIFv9DrgaGJdKcQ5bFr0Y76C8IRTttfya7UD7IkiL6v9DfokYpLSTH+tgiAg
+	 aZOiI3qN0wvq/BNQmO+wf4mezPBlM3ozn4+XaMSyuewtHd4IKqIiMnk2INVWxEPbvZ
+	 fqbtckOTGAfIPvLHtkClZyPGHeyz6pfA+3MIxwyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/69] HID: intel-ish-hid: Update ishtp bus match to support device ID table
+Subject: [PATCH 6.12 084/113] dpaa2-switch: add bounds check for if_id in IRQ handler
 Date: Mon,  9 Feb 2026 15:23:53 +0100
-Message-ID: <20260209142302.833082415@linuxfoundation.org>
+Message-ID: <20260209142313.201537545@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,76 +70,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215246-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215191-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: E5C481113B9
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,outlook.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A151F110CBF
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit daeed86b686855adda79f13729e0c9b0530990be ]
+[ Upstream commit 31a7a0bbeb006bac2d9c81a2874825025214b6d8 ]
 
-The ishtp_cl_bus_match() function previously only checked the first entry
-in the driver's device ID table. Update it to iterate over the entire
-table, allowing proper matching for drivers with multiple supported
-protocol GUIDs.
+The IRQ handler extracts if_id from the upper 16 bits of the hardware
+status register and uses it to index into ethsw->ports[] without
+validation. Since if_id can be any 16-bit value (0-65535) but the ports
+array is only allocated with sw_attr.num_ifs elements, this can lead to
+an out-of-bounds read potentially.
 
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Add a bounds check before accessing the array, consistent with the
+existing validation in dpaa2_switch_rx().
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 24ab724f8a46 ("dpaa2-switch: use the port index in the IRQ handler")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881D420AB43FF1A227B84AFAF91A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ishtp/bus.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/intel-ish-hid/ishtp/bus.c b/drivers/hid/intel-ish-hid/ishtp/bus.c
-index d4296681cf720..67e3215a332e6 100644
---- a/drivers/hid/intel-ish-hid/ishtp/bus.c
-+++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
-@@ -240,9 +240,17 @@ static int ishtp_cl_bus_match(struct device *dev, struct device_driver *drv)
- {
- 	struct ishtp_cl_device *device = to_ishtp_cl_device(dev);
- 	struct ishtp_cl_driver *driver = to_ishtp_cl_driver(drv);
-+	struct ishtp_fw_client *client = device->fw_client;
-+	const struct ishtp_device_id *id;
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index 84c7079d8672d..6ea58fc22783f 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -1530,6 +1530,10 @@ static irqreturn_t dpaa2_switch_irq0_handler_thread(int irq_num, void *arg)
+ 	}
  
--	return(device->fw_client ? guid_equal(&driver->id[0].guid,
--	       &device->fw_client->props.protocol_name) : 0);
-+	if (client) {
-+		for (id = driver->id; !guid_is_null(&id->guid); id++) {
-+			if (guid_equal(&id->guid, &client->props.protocol_name))
-+				return 1;
-+		}
+ 	if_id = (status & 0xFFFF0000) >> 16;
++	if (if_id >= ethsw->sw_attr.num_ifs) {
++		dev_err(dev, "Invalid if_id %d in IRQ status\n", if_id);
++		goto out;
 +	}
-+
-+	return 0;
- }
+ 	port_priv = ethsw->ports[if_id];
  
- /**
+ 	if (status & DPSW_IRQ_EVENT_LINK_CHANGED)
 -- 
 2.51.0
 
