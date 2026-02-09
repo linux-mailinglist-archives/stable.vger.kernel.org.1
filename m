@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-215315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGztDyT3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:00 +0100
+	id UHxbGbL1iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F831116D8
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0BE1113E5
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFEB03096843
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6A46304BCFB
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1E1285073;
-	Mon,  9 Feb 2026 14:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA1B3783A1;
+	Mon,  9 Feb 2026 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkxMekSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gv2sAIl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F73027CCF2;
-	Mon,  9 Feb 2026 14:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEEB2222B2;
+	Mon,  9 Feb 2026 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648395; cv=none; b=UJoeU6K7bhB1lUtQpS2iErh5ha4cbseCtEPaa1Sry0EaX2Fb8eqrRzhId5y7bW7BFNhXd/s5ZN6fLP3qqQ69ux8qwNSJizTyFXC2JbDpD5562aPidJfrc5L3XJMFQTGzSDR7JDnWMayZwkG9y9Yv8vEY1ZPDrK3YXFbaTFFvkG0=
+	t=1770648180; cv=none; b=QDHKE+F4PgPBKI1sC7Wl12dw/yilB9aqletEGBX4T1xfl7rl6YPnyhAxeeIu64gyMUqVCsdv4MtPo0oRJsnnuPtsSwKxciAt0UrIWRL3joMmC1zN6v4LYrmu3rTQvtDvnrYpDm1XD9S4g9v9VxoGZBpBnY3mxGWVP5KNfkQeTDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648395; c=relaxed/simple;
-	bh=12KsIPKWdV6QLhyJOYyPvXihxALZuWn/7FK0q7yLqrs=;
+	s=arc-20240116; t=1770648180; c=relaxed/simple;
+	bh=mc9U4LBgCRAARY9D+ws432OB3o/ZpXLmPtewqFJpb8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOYPvnobAqIsNXDh2z5tSXxouxbIfKj6aXaObVMePnoc512sA9Dggx9d6QrBUlOkS3VAdYxafOAAXxTg4lgnRxmNegEDO6/Epirta0jVXnkCAGGIsyVRJFw9xsRNx7rd1b6O66r6iDaj/y9F6ZjVT2HOwChhlwBJTFmnnEsKbsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkxMekSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8636C116C6;
-	Mon,  9 Feb 2026 14:46:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MiLdBgFf296b4N+8dIROOQwab/GA/v7z63OG8V8WIgOWlfmIZfTJ9QMXx4IBvC2nWtKCdBYxr60nDAsIfiRZh4j0jWQAFSoYiNHSY7ixndKhYGE6TvCMryjrQb5F1o+GCENNqwvE+8QrnZKauGdJM7vdcRPj2OlQSxlr/kwbTGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gv2sAIl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DD4C116C6;
+	Mon,  9 Feb 2026 14:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648395;
-	bh=12KsIPKWdV6QLhyJOYyPvXihxALZuWn/7FK0q7yLqrs=;
+	s=korg; t=1770648180;
+	bh=mc9U4LBgCRAARY9D+ws432OB3o/ZpXLmPtewqFJpb8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IkxMekSHOh+cOjqSI/f9XK0NI0RIxBk6vwKU98pCgfcdPovNokVUybLzKMuVt19t+
-	 bdSnpnsEkvwbXOE93txU3UIxIP4Q0D2GRANn7VqtrghIy47b9VNig9bL6ZgBZ+HIky
-	 C+VwQwE3W8Tnai2/BT4AL1TdlYhHKOE3wG52So/M=
+	b=gv2sAIl5f6C1Ni0ETs9EYO+spudVqX9LBQ3vm4AslLe5/OKCJXhtzeHiJyd8Idp9W
+	 D6FSfPWMkQE+td5qipL+RYO1pdziIMWjD3IVG+DGFeQMGbvMo788WgypehuIZSMvTC
+	 /eJgYzzvWzsExiOPYZfNnCoovlnDddhZy60ugcx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 08/86] pmdomain: imx8m-blk-ctrl: fix out-of-range access of bc->domains
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.1 03/69] platform/x86: intel_telemetry: Fix swapped arrays in PSS output
 Date: Mon,  9 Feb 2026 15:23:31 +0100
-Message-ID: <20260209142305.077476660@linuxfoundation.org>
+Message-ID: <20260209142302.040080979@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215315-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-215251-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: A3F831116D8
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email]
+X-Rspamd-Queue-Id: EC0BE1113E5
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-commit 6bd8b4a92a901fae1a422e6f914801063c345e8d upstream.
+commit 25e9e322d2ab5c03602eff4fbf4f7c40019d8de2 upstream.
 
-Fix out-of-range access of bc->domains in imx8m_blk_ctrl_remove().
+The LTR blocking statistics and wakeup event counters are incorrectly
+cross-referenced during debugfs output rendering. The code populates
+pss_ltr_blkd[] with LTR blocking data and pss_s0ix_wakeup[] with wakeup
+data, but the display loops reference the wrong arrays.
 
-Fixes: 2684ac05a8c4 ("soc: imx: add i.MX8M blk-ctrl driver")
-Cc: stable@kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+This causes the "LTR Blocking Status" section to print wakeup events
+and the "Wakes Status" section to print LTR blockers, misleading power
+management analysis and S0ix residency debugging.
+
+Fix by aligning array usage with the intended output section labels.
+
+Fixes: 87bee290998d ("platform:x86: Add Intel Telemetry Debugfs interfaces")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Link: https://patch.msgid.link/20251224032053.3915900-1-kaushlendra.kumar@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/imx8m-blk-ctrl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/telemetry/debugfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-@@ -337,7 +337,7 @@ static int imx8m_blk_ctrl_remove(struct
+--- a/drivers/platform/x86/intel/telemetry/debugfs.c
++++ b/drivers/platform/x86/intel/telemetry/debugfs.c
+@@ -449,7 +449,7 @@ static int telem_pss_states_show(struct
+ 	for (index = 0; index < debugfs_conf->pss_ltr_evts; index++) {
+ 		seq_printf(s, "%-32s\t%u\n",
+ 			   debugfs_conf->pss_ltr_data[index].name,
+-			   pss_s0ix_wakeup[index]);
++			   pss_ltr_blkd[index]);
+ 	}
  
- 	of_genpd_del_provider(pdev->dev.of_node);
+ 	seq_puts(s, "\n--------------------------------------\n");
+@@ -459,7 +459,7 @@ static int telem_pss_states_show(struct
+ 	for (index = 0; index < debugfs_conf->pss_wakeup_evts; index++) {
+ 		seq_printf(s, "%-32s\t%u\n",
+ 			   debugfs_conf->pss_wakeup[index].name,
+-			   pss_ltr_blkd[index]);
++			   pss_s0ix_wakeup[index]);
+ 	}
  
--	for (i = 0; bc->onecell_data.num_domains; i++) {
-+	for (i = 0; i < bc->onecell_data.num_domains; i++) {
- 		struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
- 
- 		pm_genpd_remove(&domain->genpd);
+ 	return 0;
 
 
 
