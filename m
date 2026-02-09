@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-215110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKAAM2XyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:45 +0100
+	id wEyODx32iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CC5110C0E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFB41114CE
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 697E63070B2F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D4845301C67B
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F332C2360;
-	Mon,  9 Feb 2026 14:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122C037BE68;
+	Mon,  9 Feb 2026 14:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRZT3L0p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcSnr7C8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3941AF0AF;
-	Mon,  9 Feb 2026 14:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF9B3783C9;
+	Mon,  9 Feb 2026 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647707; cv=none; b=YKDp0YvBt+vSkm/XrX4DHlmSbXARDJUMe56uMWE+1RQIJqwv5RB1pUW1+Bf6umgI2PYX53Ly1haaDD5Kn3aogmYcxAXw4M1gsTu3o5H5XYVi4jFh/SRdC6QTqjzDsfRUzU58IJ8xZnwgQav8Fc4WGFdLk6dtbJd48bV57yirM4Y=
+	t=1770648802; cv=none; b=cCCOGwvmMz0zJIL7zDBq7ze+eDERh7gWFDRYgYp1EYd51mkftUuPj8uId8sVjrhZZBoYOGg0o+ow8H3j53RzxLDFPswP+lKWpmvrN2AhvOdAOmg/wzBTunUyqQI+fzNrBxi/FxF+Y94LD7aN3MXTHoNbgpv3NXxD55Ypxwu5zng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647707; c=relaxed/simple;
-	bh=1SXbW4Ad4erZpJ/Bmx26+DkrmWZoTvm09Rr0v+zu3gM=;
+	s=arc-20240116; t=1770648802; c=relaxed/simple;
+	bh=J46Q+OFATO5Cq93QWjg9pbyptAnUGiDgSJN/dfNu8Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPtwv3MbTDyjc96owj9G0UWse2R6xiZ+11NpI6JWPr7OmfcWAlNlqZoHTQpcQstfQjUyz+VwVVjyce4ONLww2Qx9wElV0d24In9UGWIuiXLxyYwxJcpF2hpWFP3snjSnIaLD7ry8nWqIBOvqTTA59sFK9pxyG3YGqB0Xeh2Okcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRZT3L0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008EDC116C6;
-	Mon,  9 Feb 2026 14:35:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JGzbBaaxUEjHkSMx+1EugnFn0GbCAHkh9rzYcPlmtbL6r/sxvOJL4xbOTB/ORJzjTYKXumyJbtbcJlJ+eaA9F+mEy6ltei3y8v+cve15hoVLiJct03PsQKzdWiD0t/eahSVS3UJeT5NENJtdnNWldSPEdAaKftJxL7kmt9mME+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcSnr7C8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF93C116C6;
+	Mon,  9 Feb 2026 14:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647707;
-	bh=1SXbW4Ad4erZpJ/Bmx26+DkrmWZoTvm09Rr0v+zu3gM=;
+	s=korg; t=1770648802;
+	bh=J46Q+OFATO5Cq93QWjg9pbyptAnUGiDgSJN/dfNu8Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRZT3L0pU8m7Rf5bYSzJjvdupYE6rwvsIIf11VUnuG63ka259l8vc4c0u0NgrdF3x
-	 pPJqH9+EejjfXDEaIdjKiJFSt7TOuq9htBX9W/+dJwYpc4Cx5zXsmgKO8jdj9WjvLd
-	 3ix8aX+/+fTve4vpQtkvnHPuA21Ui6mFD95B6azk=
+	b=rcSnr7C82mu4XUf9d1QL4VjFhkI0CGgXB+WBiYlU9AY5UKpgc/IRb389ExtKmW3dL
+	 0MupJYQqwFOJFhpWVpNIXAJOSWLWAqxA5DM5ojDxSJyESmcqawU7Jt57wDZxVD0A/h
+	 HzxTsr7W6cD+uTMEtlg0pMlUD/mCU4qVcSK0Lea8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Thierry Reding <treding@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 166/175] spi: tegra210-quad: Move curr_xfer read inside spinlock
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5.15 02/75] platform/x86: intel_telemetry: Fix swapped arrays in PSS output
 Date: Mon,  9 Feb 2026 15:23:59 +0100
-Message-ID: <20260209142326.458064682@linuxfoundation.org>
+Message-ID: <20260209142301.924556698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215110-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-215441-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 43CC5110C0E
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5EFB41114CE
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit ef13ba357656451d6371940d8414e3e271df97e3 ]
+commit 25e9e322d2ab5c03602eff4fbf4f7c40019d8de2 upstream.
 
-Move the assignment of the transfer pointer from curr_xfer inside the
-spinlock critical section in both handle_cpu_based_xfer() and
-handle_dma_based_xfer().
+The LTR blocking statistics and wakeup event counters are incorrectly
+cross-referenced during debugfs output rendering. The code populates
+pss_ltr_blkd[] with LTR blocking data and pss_s0ix_wakeup[] with wakeup
+data, but the display loops reference the wrong arrays.
 
-Previously, curr_xfer was read before acquiring the lock, creating a
-window where the timeout path could clear curr_xfer between reading it
-and using it. By moving the read inside the lock, the handlers are
-guaranteed to see a consistent value that cannot be modified by the
-timeout path.
+This causes the "LTR Blocking Status" section to print wakeup events
+and the "Wakes Status" section to print LTR blockers, misleading power
+management analysis and S0ix residency debugging.
 
-Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260126-tegra_xfer-v2-2-6d2115e4f387@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by aligning array usage with the intended output section labels.
+
+Fixes: 87bee290998d ("platform:x86: Add Intel Telemetry Debugfs interfaces")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Link: https://patch.msgid.link/20251224032053.3915900-1-kaushlendra.kumar@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/telemetry/debugfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index c6c05e6f48994..a599bad02b4d3 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1376,10 +1376,11 @@ static int tegra_qspi_transfer_one_message(struct spi_controller *host,
- 
- static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- {
--	struct spi_transfer *t = tqspi->curr_xfer;
-+	struct spi_transfer *t;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&tqspi->lock, flags);
-+	t = tqspi->curr_xfer;
- 
- 	if (tqspi->tx_status ||  tqspi->rx_status) {
- 		tegra_qspi_handle_error(tqspi);
-@@ -1410,7 +1411,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- 
- static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- {
--	struct spi_transfer *t = tqspi->curr_xfer;
-+	struct spi_transfer *t;
- 	unsigned int total_fifo_words;
- 	unsigned long flags;
- 	long wait_status;
-@@ -1449,6 +1450,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
+--- a/drivers/platform/x86/intel/telemetry/debugfs.c
++++ b/drivers/platform/x86/intel/telemetry/debugfs.c
+@@ -449,7 +449,7 @@ static int telem_pss_states_show(struct
+ 	for (index = 0; index < debugfs_conf->pss_ltr_evts; index++) {
+ 		seq_printf(s, "%-32s\t%u\n",
+ 			   debugfs_conf->pss_ltr_data[index].name,
+-			   pss_s0ix_wakeup[index]);
++			   pss_ltr_blkd[index]);
  	}
  
- 	spin_lock_irqsave(&tqspi->lock, flags);
-+	t = tqspi->curr_xfer;
+ 	seq_puts(s, "\n--------------------------------------\n");
+@@ -459,7 +459,7 @@ static int telem_pss_states_show(struct
+ 	for (index = 0; index < debugfs_conf->pss_wakeup_evts; index++) {
+ 		seq_printf(s, "%-32s\t%u\n",
+ 			   debugfs_conf->pss_wakeup[index].name,
+-			   pss_ltr_blkd[index]);
++			   pss_s0ix_wakeup[index]);
+ 	}
  
- 	if (num_errors) {
- 		tegra_qspi_dma_unmap_xfer(tqspi, t);
--- 
-2.51.0
-
+ 	return 0;
 
 
 
