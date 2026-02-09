@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-215204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHO9JvnziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:29 +0100
+	id mG+xIzvyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6B11108B
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FC7110B99
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8921330CA257
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 976B53068F30
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B938337C0F1;
-	Mon,  9 Feb 2026 14:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEAE1AF0AF;
+	Mon,  9 Feb 2026 14:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUbIqfes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIDX1mR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDF22222B2;
-	Mon,  9 Feb 2026 14:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A212223D291;
+	Mon,  9 Feb 2026 14:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648021; cv=none; b=IQhcqyGZdWlVY0aR++qkTUyRfe0A21VJ3tzvtxoG32WP0SFpQjvpxUcS0yVxp3MiysJhCW3Mm4pi9M0OihBYpyulNTuI2806HSQsl8u43EEMst3Vt6FDMTEHe6YJVr6Lic4pG9U3yGmElhHrF3rcCD7KX/T28yMdIZNs7HacSVs=
+	t=1770647678; cv=none; b=tr1mQSJdHxfUrHGOrkvyAuCi9vC338R+blSj+Rz7BmqIg0OilQCp9z62dNu4siLXvuoEM+kA/ydQppSfP8zEn/c6sSC6NZGVEjxJKjRcYAV6FtWMOx9LyYeto1e2gCHqkB5fsU15jW5lVcoeHSyNQfjiWCRgNkvWLkeE1qELfA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648021; c=relaxed/simple;
-	bh=10c+rhVDfERDo3IOIiKnjGFCMruyrN9Ia4x8302a9NA=;
+	s=arc-20240116; t=1770647678; c=relaxed/simple;
+	bh=sWBgqQDa2o+/soA+xoQi8bICUeFEKozLm153+v84W7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PN0IThvzEVazbXR/S4ikBlqavPAHCAqFdKD+CEqbkhqXHpzXzSJVjmX4wikBJ+rEnEKEOKOuKMrf6qhMehp/rtfV4n8tU4SVXYPBiSgvzOfL/rauy16n7tqsb0hYbG7eD7BoafoJXbXsDDabb39IhyN8KVCWDqPbhqOsZeii/J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUbIqfes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D7AC116C6;
-	Mon,  9 Feb 2026 14:40:20 +0000 (UTC)
+	 MIME-Version; b=RCyPz/thjAl4C4Xo6Y2lCr6m7I1KdRF52yvyQZK+BzMWotGF2+JZf6veontVzb1O2CTZ867lDgtJgSYGJ6wxZiWnoDq8GpHaHIljoUDdLmwI2hTBnH7TzTMQFACTqQp8JiRH/TGnl2GVf64Qp60CJ1eHS4aGUVs4r6BUmDue1Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIDX1mR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2AEC116C6;
+	Mon,  9 Feb 2026 14:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648021;
-	bh=10c+rhVDfERDo3IOIiKnjGFCMruyrN9Ia4x8302a9NA=;
+	s=korg; t=1770647678;
+	bh=sWBgqQDa2o+/soA+xoQi8bICUeFEKozLm153+v84W7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUbIqfesGNC0hEIB8h9WoArufVuNHJs8GW0mCOX+HUsESiLfRilVtwzMi3Ta7xwu3
-	 5piMqxezygiYpRMgLsGALRYcUior0fh/HNeVQIsEHwrs05KAGgpbgqtZwQp6A15fhK
-	 tTt1TiuOySoWIlZI8nEo0oGO2WJmp3FKGOclUNPI=
+	b=mIDX1mR9/KzVa2WMrvEMWhOXxDssxTwzk7iqiKU8L3XU0aKNgxF+yvTMEzWQzjMWe
+	 wAdUvCI5VRUtY0k0ydiDkjNs9+MstrQwm8pLgLLei0p+YOw8aJ26rzBY93HgCYoKLn
+	 H4LVdJYztk1NL7D9j8eSagMVVnGnfiyOHve7TdvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vishwaroop A <va@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/113] net: gro: fix outer network offset
+Subject: [PATCH 6.18 172/175] spi: tegra114: Preserve SPI mode bits in def_command1_reg
 Date: Mon,  9 Feb 2026 15:24:05 +0100
-Message-ID: <20260209142313.629849469@linuxfoundation.org>
+Message-ID: <20260209142326.666665098@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +67,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215204-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215101-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 3DA6B11108B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: 10FC7110B99
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Vishwaroop A <va@nvidia.com>
 
-[ Upstream commit 5c2c3c38be396257a6a2e55bd601a12bb9781507 ]
+[ Upstream commit a0a75b40c919b9f6d3a0b6c978e6ccf344c1be5a ]
 
-The udp GRO complete stage assumes that all the packets inserted the RX
-have the `encapsulation` flag zeroed. Such assumption is not true, as a
-few H/W NICs can set such flag when H/W offloading the checksum for
-an UDP encapsulated traffic, the tun driver can inject GSO packets with
-UDP encapsulation and the problematic layout can also be created via
-a veth based setup.
+The COMMAND1 register bits [29:28] set the SPI mode, which controls
+the clock idle level. When a transfer ends, tegra_spi_transfer_end()
+writes def_command1_reg back to restore the default state, but this
+register value currently lacks the mode bits. This results in the
+clock always being configured as idle low, breaking devices that
+need it high.
 
-Due to the above, in the problematic scenarios, udp4_gro_complete() uses
-the wrong network offset (inner instead of outer) to compute the outer
-UDP header pseudo checksum, leading to csum validation errors later on
-in packet processing.
+Fix this by storing the mode bits in def_command1_reg during setup,
+to prevent this field from always being cleared.
 
-Address the issue always clearing the encapsulation flag at GRO completion
-time. Such flag will be set again as needed for encapsulated packets by
-udp_gro_complete().
-
-Fixes: 5ef31ea5d053 ("net: gro: fix udp bad offset in socket lookup by adding {inner_}network_offset to napi_gro_cb")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/562638dbebb3b15424220e26a180274b387e2a88.1770032084.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f333a331adfa ("spi/tegra114: add spi driver")
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+Link: https://patch.msgid.link/20260204141212.1540382-1-va@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/gro.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-tegra114.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 0ad549b07e039..40aaac4e04f34 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -265,6 +265,8 @@ static void napi_gro_complete(struct napi_struct *napi, struct sk_buff *skb)
- 		goto out;
- 	}
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 795a8482c2c70..48fb11fea55f2 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -978,11 +978,14 @@ static int tegra_spi_setup(struct spi_device *spi)
+ 	if (spi_get_csgpiod(spi, 0))
+ 		gpiod_set_value(spi_get_csgpiod(spi, 0), 0);
  
-+	/* NICs can feed encapsulated packets into GRO */
-+	skb->encapsulation = 0;
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(ptype, head, list) {
- 		if (ptype->type != type || !ptype->callbacks.gro_complete)
++	/* Update default register to include CS polarity and SPI mode */
+ 	val = tspi->def_command1_reg;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		val &= ~SPI_CS_POL_INACTIVE(spi_get_chipselect(spi, 0));
+ 	else
+ 		val |= SPI_CS_POL_INACTIVE(spi_get_chipselect(spi, 0));
++	val &= ~SPI_CONTROL_MODE_MASK;
++	val |= SPI_MODE_SEL(spi->mode & 0x3);
+ 	tspi->def_command1_reg = val;
+ 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
+ 	spin_unlock_irqrestore(&tspi->lock, flags);
 -- 
 2.51.0
 
