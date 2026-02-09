@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-215268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCDqGOPyiWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:51 +0100
+	id uEYDK6PyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D98110D49
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B76110CB8
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FCC130263C7
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C85B3038858
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ABD37BE86;
-	Mon,  9 Feb 2026 14:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D883276028;
+	Mon,  9 Feb 2026 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVOlPbp9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9EYoihH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C061837BE7D;
-	Mon,  9 Feb 2026 14:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50CA37AA71;
+	Mon,  9 Feb 2026 14:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648237; cv=none; b=ZkzusfsssrPoe1kiJwHF3Webh75L9ybf9pn5Wfvah3JiTIc2qfpMOX4CUh1p020Eg4sUoVzu/wQ0kuQbB0XnUdCqw7P+F7pCXpjeMRc9ZDtKq656sRcW4NPaFMYqTUbC3beIyR9a2MubuVfg53chCgiQQAxzQRKpKmr3RrcRL4w=
+	t=1770648055; cv=none; b=DVD5N4KLuinKVYLE5ib5HzYsORMB2D1RcRIB2SFm/6AVxrvEp2xnRihbm0nz+hhT2hlLLB0XuDXRhKugByyDgPgoO8jKea2UER8dHCg5kUEi+sxbGBg6Tkmkf5rxogroHmlbdM3y5mGA7viKqQ2PWUkM7sWXc9RL+424hHexT2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648237; c=relaxed/simple;
-	bh=L+ZECYuHh/gy5YLGqD6X53HdZy0z4buARw729ejNLtY=;
+	s=arc-20240116; t=1770648055; c=relaxed/simple;
+	bh=mZnKbw3jlwWJSZLygo8I/aKGfqQJiAmE3MMy2lWxPpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajrtf10JOqKdc1GWzluH6EghqgMxb214vL9BJrSrClY2KGeOlrwo7K8E0yj2TvfgP6V/lYEeiRLlnFFqj6Aetkt2N7UIYVhREXlUtR+9zd3YmhUbD8uz9Ep+T9iBvU9gA3TAnLRsN+WXurzTXLWHFjs6DURNvDYI6jOThW0AymA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVOlPbp9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AED4C116C6;
-	Mon,  9 Feb 2026 14:43:56 +0000 (UTC)
+	 MIME-Version; b=ZdWpLy0K2T9ST2biKidTN85ca7gm75azNQMVw9P+oTPDN6Kb6xsqQKj3fItVguKUz+gwXQprGC9iVolCT9F3jeGwTk/fyI7fuC5jvSs5oqj9L1YOvHgb4QcYW3ttW833QRkYd/qpN9r7HmaLfM1gXaKVbps0iR5tc0iCIwe2ViA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9EYoihH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B0BC116C6;
+	Mon,  9 Feb 2026 14:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648237;
-	bh=L+ZECYuHh/gy5YLGqD6X53HdZy0z4buARw729ejNLtY=;
+	s=korg; t=1770648055;
+	bh=mZnKbw3jlwWJSZLygo8I/aKGfqQJiAmE3MMy2lWxPpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVOlPbp97nXl2vJoDTJDc7rPDUq/j0zalXm3kVzzQfT33DHCA0d3pm3fr/S4+7AGp
-	 0ytyMA7TptvQN5Kk7S7+k+BlhOqD4/zRcpmxZuRsMB/hDH+HBEH10fmSqEirGYkCRB
-	 4h/QivBfDO/W5VVvukSzxtdnYm25VPIMZ/ZJaKsM=
+	b=q9EYoihHheuQIpOQpm/wfSW1c9hcytG6CCfgij4qRrRRANbNME8l8C1VH0cVP15Kv
+	 lATd4RTbo6pY46rVFi503+uWHUSCfoMAclLOFRZve7GvjJYuRFVr6Ska7/IdCWUryd
+	 W53j/Mg+LmZirkwkMJRlilS/J95jRMDnSkiwG5Ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 48/69] dpaa2-switch: prevent ZERO_SIZE_PTR dereference when num_ifs is zero
-Date: Mon,  9 Feb 2026 15:24:16 +0100
-Message-ID: <20260209142303.652442275@linuxfoundation.org>
+Subject: [PATCH 6.12 108/113] spi: tegra210-quad: Protect curr_xfer assignment in tegra_qspi_setup_transfer_one
+Date: Mon,  9 Feb 2026 15:24:17 +0100
+Message-ID: <20260209142314.053316142@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,83 +71,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215268-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215214-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lunn.ch,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,lunn.ch:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D3D98110D49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: 50B76110CB8
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit ed48a84a72fefb20a82dd90a7caa7807e90c6f66 ]
+[ Upstream commit f5a4d7f5e32ba163cff893493ec1cbb0fd2fb0d5 ]
 
-The driver allocates arrays for ports, FDBs, and filter blocks using
-kcalloc() with ethsw->sw_attr.num_ifs as the element count. When the
-device reports zero interfaces (either due to hardware configuration
-or firmware issues), kcalloc(0, ...) returns ZERO_SIZE_PTR (0x10)
-instead of NULL.
+When the timeout handler processes a completed transfer and signals
+completion, the transfer thread can immediately set up the next transfer
+and assign curr_xfer to point to it.
 
-Later in dpaa2_switch_probe(), the NAPI initialization unconditionally
-accesses ethsw->ports[0]->netdev, which attempts to dereference
-ZERO_SIZE_PTR (address 0x10), resulting in a kernel panic.
+If a delayed ISR from the previous transfer then runs, it checks if
+(!tqspi->curr_xfer) (currently without the lock also -- to be fixed
+soon) to detect stale interrupts, but this check passes because
+curr_xfer now points to the new transfer. The ISR then incorrectly
+processes the new transfer's context.
 
-Add a check to ensure num_ifs is greater than zero after retrieving
-device attributes. This prevents the zero-sized allocations and
-subsequent invalid pointer dereference.
+Protect the curr_xfer assignment with the spinlock to ensure the ISR
+either sees NULL (and bails out) or sees the new value only after the
+assignment is complete.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/SYBPR01MB7881BEABA8DA896947962470AF91A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-3-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-tegra210-quad.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index e928fea16e841..801956c048752 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -2970,6 +2970,12 @@ static int dpaa2_switch_init(struct fsl_mc_device *sw_dev)
- 		goto err_close;
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 226993cf32669..0c25d9c303bba 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -814,6 +814,7 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
+ 	u32 command1, command2, speed = t->speed_hz;
+ 	u8 bits_per_word = t->bits_per_word;
+ 	u32 tx_tap = 0, rx_tap = 0;
++	unsigned long flags;
+ 	int req_mode;
+ 
+ 	if (!has_acpi_companion(tqspi->dev) && speed != tqspi->cur_speed) {
+@@ -821,10 +822,12 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
+ 		tqspi->cur_speed = speed;
  	}
  
-+	if (!ethsw->sw_attr.num_ifs) {
-+		dev_err(dev, "DPSW device has no interfaces\n");
-+		err = -ENODEV;
-+		goto err_close;
-+	}
-+
- 	err = dpsw_get_api_version(ethsw->mc_io, 0,
- 				   &ethsw->major,
- 				   &ethsw->minor);
++	spin_lock_irqsave(&tqspi->lock, flags);
+ 	tqspi->cur_pos = 0;
+ 	tqspi->cur_rx_pos = 0;
+ 	tqspi->cur_tx_pos = 0;
+ 	tqspi->curr_xfer = t;
++	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 
+ 	if (is_first_of_msg) {
+ 		tegra_qspi_mask_clear_irq(tqspi);
 -- 
 2.51.0
 
