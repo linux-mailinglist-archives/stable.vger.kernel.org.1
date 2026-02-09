@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-215378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kL04EP73iWn7FAAAu9opvQ
-	(envelope-from <stable+bounces-215378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:38 +0100
+	id 4FqZCJr5iWkiFQAAu9opvQ
+	(envelope-from <stable+bounces-215481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:13:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9146D111882
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA39111BDD
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED5D330D2105
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C545530DAF5D
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E9A3783C9;
-	Mon,  9 Feb 2026 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5B937BE77;
+	Mon,  9 Feb 2026 14:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QN3r+ell"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+7dPQ5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CD128725B;
-	Mon,  9 Feb 2026 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023FC2750E6;
+	Mon,  9 Feb 2026 14:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648598; cv=none; b=HrYCeT8jK6v2wkq0MMuaaLDhoCF5w8EGk3DOq0KhbhQBtvVaYHXiEFC0wZvGqcVaaGfKNc9xT/RCrJ9SPQTbqpaP7Yf457HNfXsVGqSnWdrDjTNXs5RGCc4XwIt3HsMcrAUvw+0hoV5z/UER0nrU8lcrB4D7m6t9cVcOpf0khLE=
+	t=1770648938; cv=none; b=C0PD3/hK5bebXOkDLPl2BPmJ/+AM42uXEgYavl52x9fhe88X95hM8Ei4V1J/V/cM/BUuZAX1cNxqGSL55HoJZa6SVojyelYCxphGYn4efWYAYB7nogMpwpUlPet+PMDZoCAi2LjAfvEMb64O5lvMW3q751VxbpOhjTgg96HUMfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648598; c=relaxed/simple;
-	bh=Y2brvEyrDBaJjJOwQmpuMIhEccPzF4e1ttKpxZJ65rY=;
+	s=arc-20240116; t=1770648938; c=relaxed/simple;
+	bh=I52PfU2p+grNN19pjdQh+jzoQbsiuXh7ZABQE7u2YCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lJqMvvEwGtvZ7u+FpVMs1W/9Sv8Kj+eybMc+WyPZkAjTiwG2nqw/xRFLtl0sNy7yLq8eP3Fwvde0lXA9z2kQz8OkfYg/0aYGugaVHJBho1OgNXjGX5RkgHd+iAdsQGdjHU/P1uV18213yUEzBlddxz0yC8tl5GFPnp9IUeRILa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QN3r+ell; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7C0C116C6;
-	Mon,  9 Feb 2026 14:49:57 +0000 (UTC)
+	 MIME-Version; b=VRQWUmIV0eKuoqCite2CK8M4dWajZpYAtFRQXdGbFDlt3DtKpweASX5lZinpq1gXP9sHJn6fgKUF2WypMM9MU07hb6jlkpWqaSXUwFdSUJPSepLrt3iz8GLdy5IEEOx91C2HpCDt1XsEGM8bp3/K77Uf8yQuac2CFPDWPc5lgWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+7dPQ5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35959C116C6;
+	Mon,  9 Feb 2026 14:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648598;
-	bh=Y2brvEyrDBaJjJOwQmpuMIhEccPzF4e1ttKpxZJ65rY=;
+	s=korg; t=1770648937;
+	bh=I52PfU2p+grNN19pjdQh+jzoQbsiuXh7ZABQE7u2YCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QN3r+elle9IzItKqhcWhZFxPtaMp8OLq2eWLys/oDyskhB0+UMHNud34hl1hMc106
-	 OUdtrQFhdqp8+DAsuISs7+IQbUJAt8jAdBywLVY3Btn0MsVgRqdGO9YeNqhS7Gr/pB
-	 oqKugUjt2XgJMENdoIYcSEWx5Pu+MXzWnJ+mxBu0=
+	b=b+7dPQ5SRV3Xdii3krtZd4DuPGYehqY+HrUmBAIDgdhZQqWoEHZrkfj1mLXnfmmjw
+	 mAHI3ZFkdt+meTPsjCZKhdARCr2BRs1g9MnoOu3CwIucg0NXTtEeMeCOSIVYrvNl04
+	 Ycs4JR4NknIpxINR/9bdLK0oSqLcnbcdPWAcy0hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.org>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 59/86] smb/client: fix memory leak in smb2_open_file()
-Date: Mon,  9 Feb 2026 15:24:22 +0100
-Message-ID: <20260209142306.902278010@linuxfoundation.org>
+Subject: [PATCH 5.15 26/75] net: usb: sr9700: support devices with virtual driver CD
+Date: Mon,  9 Feb 2026 15:24:23 +0100
+Message-ID: <20260209142302.789074717@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215378-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215481-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,manguebit.org:email]
-X-Rspamd-Queue-Id: 9146D111882
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6FA39111BDD
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit e3a43633023e3cacaca60d4b8972d084a2b06236 ]
+[ Upstream commit bf4172bd870c3a34d3065cbb39192c22cbd7b18d ]
 
-Reproducer:
+Some SR9700 devices have an SPI flash chip containing a virtual driver
+CD, in which case they appear as a device with two interfaces and
+product ID 0x9702. Interface 0 is the driver CD and interface 1 is the
+Ethernet device.
 
-  1. server: directories are exported read-only
-  2. client: mount -t cifs //${server_ip}/export /mnt
-  3. client: dd if=/dev/zero of=/mnt/file bs=512 count=1000 oflag=direct
-  4. client: umount /mnt
-  5. client: sleep 1
-  6. client: modprobe -r cifs
-
-The error message is as follows:
-
-  =============================================================================
-  BUG cifs_small_rq (Not tainted): Objects remaining on __kmem_cache_shutdown()
-  -----------------------------------------------------------------------------
-
-  Object 0x00000000d47521be @offset=14336
-  ...
-  WARNING: mm/slub.c:1251 at __kmem_cache_shutdown+0x34e/0x440, CPU#0: modprobe/1577
-  ...
-  Call Trace:
-   <TASK>
-   kmem_cache_destroy+0x94/0x190
-   cifs_destroy_request_bufs+0x3e/0x50 [cifs]
-   cleanup_module+0x4e/0x540 [cifs]
-   __se_sys_delete_module+0x278/0x400
-   __x64_sys_delete_module+0x5f/0x70
-   x64_sys_call+0x2299/0x2ff0
-   do_syscall_64+0x89/0x350
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  ...
-  kmem_cache_destroy cifs_small_rq: Slab cache still has objects when called from cifs_destroy_request_bufs+0x3e/0x50 [cifs]
-  WARNING: mm/slab_common.c:532 at kmem_cache_destroy+0x16b/0x190, CPU#0: modprobe/1577
-
-Link: https://lore.kernel.org/linux-cifs/9751f02d-d1df-4265-a7d6-b19761b21834@linux.dev/T/#mf14808c144448b715f711ce5f0477a071f08eaf6
-Fixes: e255612b5ed9 ("cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES")
-Reported-by: Paulo Alcantara <pc@manguebit.org>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://github.com/name-kurniawan/usb-lan
+Link: https://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=2185
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Link: https://patch.msgid.link/20251211062451.139036-1-enelsonmoore@gmail.com
+[pabeni@redhat.com: fixes link tags]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/sr9700.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index d7f2835e0b1cc..d436057ed77e3 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -122,6 +122,7 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
- 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 		       &err_buftype);
- 	if (rc == -EACCES && retry_without_read_attributes) {
-+		free_rsp_buf(err_buftype, err_iov.iov_base);
- 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
- 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 			       &err_buftype);
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 90aed52ce9372..86d14fad318c3 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -539,6 +539,11 @@ static const struct usb_device_id products[] = {
+ 		USB_DEVICE(0x0fe6, 0x9700),	/* SR9700 device */
+ 		.driver_info = (unsigned long)&sr9700_driver_info,
+ 	},
++	{
++		/* SR9700 with virtual driver CD-ROM - interface 0 is the CD-ROM device */
++		USB_DEVICE_INTERFACE_NUMBER(0x0fe6, 0x9702, 1),
++		.driver_info = (unsigned long)&sr9700_driver_info,
++	},
+ 	{},			/* END */
+ };
+ 
 -- 
 2.51.0
 
