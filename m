@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-215146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBt1HVPxiWnyEgAAu9opvQ
-	(envelope-from <stable+bounces-215146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:11 +0100
+	id UGwnMFjwiWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-215048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:34:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86704110963
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBF211071C
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:34:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF04430074E1
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:37:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 06703303A871
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117C737A48A;
-	Mon,  9 Feb 2026 14:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43F337AA6B;
+	Mon,  9 Feb 2026 14:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W76bqNYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1U850HO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1BD3783A1;
-	Mon,  9 Feb 2026 14:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D5937BE93;
+	Mon,  9 Feb 2026 14:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647829; cv=none; b=FWaqg7xVaNovXHWTxlQOU2FNWACZGTzexs75PQcTgntLDTnJ/W66AySeuTbzqfRaHFErmmRfrQnxvYCv2UjLH3shNDp63j78BiL3TMYP0jcPUAWiFOzn+IB+KH1nldgQKhYQilfUgQSuZ80NeG236AEvsxIZgeujBguikc6OXPg=
+	t=1770647501; cv=none; b=BFiyxcfq7gmdv4NBmEFos8677yvvoEVxmpzetfx2GFokenp81MMBeUMV5KmmSWwqb17XteVxvA5b3RcwpDUs3u1VMLBo+YGzG7Y5iZrheHgZZLyHcpKhKcLUsg3vU5nwhcP/jUNhZuRMV4IRgCG++JeMGg7oCY8tTsdG7/BLiR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647829; c=relaxed/simple;
-	bh=B8BVd91MwyG99xS0EC2p7wLmuyZo84aC/97+fqyqznU=;
+	s=arc-20240116; t=1770647501; c=relaxed/simple;
+	bh=dlZHsWCkkQzsxRDJ8D7KK81RKwncEmy1abcSH52AFmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XE1vLgitG7snhpB74nXuu8MHt2Px6RvUKYpb7lqEgWXxDtR0bnohSZIfe3oSfILZhTVRdamaDKUiK2zpN//LRjsREXsyuRKDm3+86YsVt+/stEle6swRy1dscuEYUdrMyo5X2zEuyOmZsK5QUeniJvCjEp8vksoPTC0gWJ4a/eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W76bqNYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E68C116C6;
-	Mon,  9 Feb 2026 14:37:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AxmIYGRkDb2abX61/wgrdgEDlSVKYayghkIGhiA/SfXkPINBTtW+K9fOhVUk9PCluEaCHSvdQmEZf8s5u2MedX2DW/jtdtKcoLzZD4o54lxyLOM7qW6TRsTpxoXhR3DQvAZPce4S+7uVGsmy7N0o4NqzhNTE90b93QPz1WVb/8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1U850HO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12D2C16AAE;
+	Mon,  9 Feb 2026 14:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647829;
-	bh=B8BVd91MwyG99xS0EC2p7wLmuyZo84aC/97+fqyqznU=;
+	s=korg; t=1770647501;
+	bh=dlZHsWCkkQzsxRDJ8D7KK81RKwncEmy1abcSH52AFmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W76bqNYB7m3nLowEU3xExNUtY/KTZMeQT8k1FXyGF0TviolDijtyxbXqIfsIutqOZ
-	 tmiQeAQn/VAik+7sU9d6hOhjKTq9bDDMIF5VvW+G7m1KHgE1APN3R7SEPIyhSw7xxB
-	 O7TAZJt8SpC4Z0tlrLScJRFQ+Lmj+MuXAHIGASs8=
+	b=u1U850HOyXzHZ2vboDlzawpODnRRJxUXPAFsXSe8cVV1Rpwsw6JY008wpMH1OTCxL
+	 z/Ve3YolmksgW0zsMWoTcfQq+WgmTTwEmNyy9pT+TY59PgsSuegYGZ5Sse8WMZSi11
+	 yLblwR0V8PkMFZ/U8F03fIBgZG8j6JIpXCuD3DCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	DaytonCL <artem749507@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/113] HID: multitouch: add MT_QUIRK_STICKY_FINGERS to MT_CLS_VTL
+Subject: [PATCH 6.18 117/175] smb/client: fix memory leak in smb2_open_file()
 Date: Mon,  9 Feb 2026 15:23:10 +0100
-Message-ID: <20260209142311.682723490@linuxfoundation.org>
+Message-ID: <20260209142324.620761199@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-215048-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215146-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 86704110963
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email,manguebit.org:email]
+X-Rspamd-Queue-Id: 3BBF211071C
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaytonCL <artem749507@gmail.com>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-[ Upstream commit ff3f234ff1dcd6d626a989151db067a1b7f0f215 ]
+[ Upstream commit e3a43633023e3cacaca60d4b8972d084a2b06236 ]
 
-Some VTL-class touchpads (e.g. TOPS0102:00 35CC:0104) intermittently
-fail to release a finger contact. A previous slot remains logically
-active, accompanied by stale BTN_TOOL_DOUBLETAP state, causing
-gestures to stay latched and resulting in stuck two-finger
-scrolling and false right-clicks.
+Reproducer:
 
-Apply MT_QUIRK_STICKY_FINGERS to handle the unreleased contact correctly.
+  1. server: directories are exported read-only
+  2. client: mount -t cifs //${server_ip}/export /mnt
+  3. client: dd if=/dev/zero of=/mnt/file bs=512 count=1000 oflag=direct
+  4. client: umount /mnt
+  5. client: sleep 1
+  6. client: modprobe -r cifs
 
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1225
-Suggested-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Tested-by: DaytonCL <artem749507@gmail.com>
-Signed-off-by: DaytonCL <artem749507@gmail.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+The error message is as follows:
+
+  =============================================================================
+  BUG cifs_small_rq (Not tainted): Objects remaining on __kmem_cache_shutdown()
+  -----------------------------------------------------------------------------
+
+  Object 0x00000000d47521be @offset=14336
+  ...
+  WARNING: mm/slub.c:1251 at __kmem_cache_shutdown+0x34e/0x440, CPU#0: modprobe/1577
+  ...
+  Call Trace:
+   <TASK>
+   kmem_cache_destroy+0x94/0x190
+   cifs_destroy_request_bufs+0x3e/0x50 [cifs]
+   cleanup_module+0x4e/0x540 [cifs]
+   __se_sys_delete_module+0x278/0x400
+   __x64_sys_delete_module+0x5f/0x70
+   x64_sys_call+0x2299/0x2ff0
+   do_syscall_64+0x89/0x350
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ...
+  kmem_cache_destroy cifs_small_rq: Slab cache still has objects when called from cifs_destroy_request_bufs+0x3e/0x50 [cifs]
+  WARNING: mm/slab_common.c:532 at kmem_cache_destroy+0x16b/0x190, CPU#0: modprobe/1577
+
+Link: https://lore.kernel.org/linux-cifs/9751f02d-d1df-4265-a7d6-b19761b21834@linux.dev/T/#mf14808c144448b715f711ce5f0477a071f08eaf6
+Fixes: e255612b5ed9 ("cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES")
+Reported-by: Paulo Alcantara <pc@manguebit.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 1 +
+ fs/smb/client/smb2file.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 0e4cb0e668eb5..fcfc508d1b54d 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -379,6 +379,7 @@ static const struct mt_class mt_classes[] = {
- 	{ .name = MT_CLS_VTL,
- 		.quirks = MT_QUIRK_ALWAYS_VALID |
- 			MT_QUIRK_CONTACT_CNT_ACCURATE |
-+			MT_QUIRK_STICKY_FINGERS |
- 			MT_QUIRK_FORCE_GET_FEATURE,
- 	},
- 	{ .name = MT_CLS_GOOGLE,
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index a7f6292388306..03f90553d8319 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -177,6 +177,7 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
+ 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 		       &err_buftype);
+ 	if (rc == -EACCES && retry_without_read_attributes) {
++		free_rsp_buf(err_buftype, err_iov.iov_base);
+ 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
+ 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 			       &err_buftype);
 -- 
 2.51.0
 
