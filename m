@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-214971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLywJ9DuiWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-214971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:28 +0100
+	id mLjHBbTviWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-214973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:31:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FFE110451
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A031105F3
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3ED8B3017508
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:27:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDECC301E3C8
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B6137AA9D;
-	Mon,  9 Feb 2026 14:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BF537AA91;
+	Mon,  9 Feb 2026 14:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2g5Z3SV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtwBfEej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAB437756C;
-	Mon,  9 Feb 2026 14:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2E835CB6B;
+	Mon,  9 Feb 2026 14:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647245; cv=none; b=qwuwHq8SBuuny3fegXA4vriEwmDZX9/X4o2mrIZsrA6bvDt6rmSK1NcQ0rmt31r6FrOiXeXtqIK25Em3kqYahADecj+wQQLjDn8Awz9IE5a3C+NeW7vUojMu5JVr9vOZ0x2pcp17WIdNwWSPmu2FfzNVbtpLscjkgVi+j3COW+E=
+	t=1770647252; cv=none; b=kRi+ixlMp5QJoQCVe+QQdvexVXs2vsBGIS/4bd/5Pfsig6s+OMhAIR595klp9SNOpQ5TNlXTUa2AL1M7SqYMc6u5HSKltXJhSGx/lJnzxoGHvICaTkO/OzeIQXTrw4IDOyO9niciCeJyu8e02l3oofbpO8dnDXlvBunVyJtE7ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647245; c=relaxed/simple;
-	bh=TLeBPhf7QvJsH1x73cFKJAWruDfxHeIyWENWyHAJmgM=;
+	s=arc-20240116; t=1770647252; c=relaxed/simple;
+	bh=/4xrIRW0K5m1ZPmHOnORPcxfvagEd0K2A2uOiIsmUZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQmGSMjJ73TTd20cuhSBYZTKC2OlptlLm05roI5rw7idQP6GnJu85zVE/rIIhuEXC2B5fRWsWIuSjS9GYKGuzL+2H63xl/LWIoLjAVwvF+7OeAwQGMT9e9IeKSBUw90PdyBO82ErW21u08iSGCaILB5HbCtAQochXi+wNd1kf9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2g5Z3SV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606F1C116C6;
-	Mon,  9 Feb 2026 14:27:25 +0000 (UTC)
+	 MIME-Version; b=FG8z7TZ0wKvSlqspwnh00ZB02pxJufYUGYKoWY3bZi1SJUPDASgLtSBeXj2tTz6v2ikVFeuBFB91BwA8fBv/U7R8lIcD7WqD9b3vyLzVPDLysQPjWcLQwtuZJVJd2dvW2x/2HmYkCU+62YoizflCvKdwglI5LJT0Z4bry7kLzPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtwBfEej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F5FC116C6;
+	Mon,  9 Feb 2026 14:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647245;
-	bh=TLeBPhf7QvJsH1x73cFKJAWruDfxHeIyWENWyHAJmgM=;
+	s=korg; t=1770647251;
+	bh=/4xrIRW0K5m1ZPmHOnORPcxfvagEd0K2A2uOiIsmUZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2g5Z3SVGfOAyVqAfHAZPgudwgZ+qr2OxTLh9eoIX+iIX/MVmMskE4XmYPYpmBNQa
-	 99VEWhKyvWsqQvA4dSNofQt5jhAUjtNxjUQ2jCSdK4HTNfxF8DvnkGUaZ7S5ODPNiJ
-	 wA1I4UhxlckBoSnsVL+XNNntLyIgqaKpFZEUbq/Y=
+	b=BtwBfEejY3axixbQXVCcq3q7uMq9kcB74ZTPfjbXlQ2ppX/QlTJVMqzkpXprzBoZz
+	 fMRbJNFL9n8KsZBwUzPx4SWW7u+I1UjYlHYAq2mddCD24y7/dX4HDA8DCAGfk5gg1C
+	 /fRDQ+MngiIERMryTGaypDpojZIi0IVjXDWyrD+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.18 042/175] rust_binder: add additional alignment checks
-Date: Mon,  9 Feb 2026 15:21:55 +0100
-Message-ID: <20260209142321.988610430@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.18 043/175] rust_binderfs: fix ida_alloc_max() upper bound
+Date: Mon,  9 Feb 2026 15:21:56 +0100
+Message-ID: <20260209142322.023620411@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
 References: <20260209142320.474120190@linuxfoundation.org>
@@ -69,19 +70,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214971-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214973-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,168 +90,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 51FFE110451
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 78A031105F3
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit d047248190d86a52164656d47bec9bfba61dc71e upstream.
+commit d6ba734814266bbf7ee01f9030436597116805f3 upstream.
 
-This adds some alignment checks to match C Binder more closely. This
-causes the driver to reject more transactions. I don't think any of the
-transactions in question are harmful, but it's still a bug because it's
-the wrong uapi to accept them.
-
-The cases where usize is changed for u64, it will affect only 32-bit
-kernels.
+The 'max' argument of ida_alloc_max() takes the maximum valid ID and not
+the "count". Using an ID of BINDERFS_MAX_MINOR (1 << 20) for dev->minor
+would exceed the limits of minor numbers (20-bits). Fix this off-by-one
+error by subtracting 1 from the 'max'.
 
 Cc: stable@vger.kernel.org
 Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Link: https://patch.msgid.link/20260123-binder-alignment-more-checks-v1-1-7e1cea77411d@google.com
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202512181203.IOv6IChH-lkp@intel.com/
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260127235545.2307876-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder/thread.rs | 50 +++++++++++++++++++++++---------
- 1 file changed, 36 insertions(+), 14 deletions(-)
+ drivers/android/binder/rust_binderfs.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index dcd47e10aeb8..e0ea33ccfe58 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -39,6 +39,10 @@
-     sync::atomic::{AtomicU32, Ordering},
- };
- 
-+fn is_aligned(value: usize, to: usize) -> bool {
-+    value % to == 0
-+}
-+
- /// Stores the layout of the scatter-gather entries. This is used during the `translate_objects`
- /// call and is discarded when it returns.
- struct ScatterGatherState {
-@@ -795,6 +799,10 @@ fn translate_object(
-                 let num_fds = usize::try_from(obj.num_fds).map_err(|_| EINVAL)?;
-                 let fds_len = num_fds.checked_mul(size_of::<u32>()).ok_or(EINVAL)?;
- 
-+                if !is_aligned(parent_offset, size_of::<u32>()) {
-+                    return Err(EINVAL.into());
-+                }
-+
-                 let info = sg_state.validate_parent_fixup(parent_index, parent_offset, fds_len)?;
-                 view.alloc.info_add_fd_reserve(num_fds)?;
- 
-@@ -809,6 +817,10 @@ fn translate_object(
-                     }
-                 };
- 
-+                if !is_aligned(parent_entry.sender_uaddr, size_of::<u32>()) {
-+                    return Err(EINVAL.into());
-+                }
-+
-                 parent_entry.fixup_min_offset = info.new_min_offset;
-                 parent_entry
-                     .pointer_fixups
-@@ -825,6 +837,7 @@ fn translate_object(
-                     .sender_uaddr
-                     .checked_add(parent_offset)
-                     .ok_or(EINVAL)?;
-+
-                 let mut fda_bytes = KVec::new();
-                 UserSlice::new(UserPtr::from_addr(fda_uaddr as _), fds_len)
-                     .read_all(&mut fda_bytes, GFP_KERNEL)?;
-@@ -958,25 +971,30 @@ pub(crate) fn copy_transaction_data(
- 
-         let data_size = trd.data_size.try_into().map_err(|_| EINVAL)?;
-         let aligned_data_size = ptr_align(data_size).ok_or(EINVAL)?;
--        let offsets_size = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
--        let aligned_offsets_size = ptr_align(offsets_size).ok_or(EINVAL)?;
--        let buffers_size = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
--        let aligned_buffers_size = ptr_align(buffers_size).ok_or(EINVAL)?;
-+        let offsets_size: usize = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
-+        let buffers_size: usize = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
-         let aligned_secctx_size = match secctx.as_ref() {
-             Some((_offset, ctx)) => ptr_align(ctx.len()).ok_or(EINVAL)?,
-             None => 0,
-         };
- 
-+        if !is_aligned(offsets_size, size_of::<u64>()) {
-+            return Err(EINVAL.into());
-+        }
-+        if !is_aligned(buffers_size, size_of::<u64>()) {
-+            return Err(EINVAL.into());
-+        }
-+
-         // This guarantees that at least `sizeof(usize)` bytes will be allocated.
-         let len = usize::max(
-             aligned_data_size
--                .checked_add(aligned_offsets_size)
--                .and_then(|sum| sum.checked_add(aligned_buffers_size))
-+                .checked_add(offsets_size)
-+                .and_then(|sum| sum.checked_add(buffers_size))
-                 .and_then(|sum| sum.checked_add(aligned_secctx_size))
-                 .ok_or(ENOMEM)?,
--            size_of::<usize>(),
-+            size_of::<u64>(),
-         );
--        let secctx_off = aligned_data_size + aligned_offsets_size + aligned_buffers_size;
-+        let secctx_off = aligned_data_size + offsets_size + buffers_size;
-         let mut alloc =
-             match to_process.buffer_alloc(debug_id, len, is_oneway, self.process.task.pid()) {
-                 Ok(alloc) => alloc,
-@@ -1008,13 +1026,13 @@ pub(crate) fn copy_transaction_data(
-             }
- 
-             let offsets_start = aligned_data_size;
--            let offsets_end = aligned_data_size + aligned_offsets_size;
-+            let offsets_end = aligned_data_size + offsets_size;
- 
-             // This state is used for BINDER_TYPE_PTR objects.
-             let sg_state = sg_state.insert(ScatterGatherState {
-                 unused_buffer_space: UnusedBufferSpace {
-                     offset: offsets_end,
--                    limit: len,
-+                    limit: offsets_end + buffers_size,
-                 },
-                 sg_entries: KVec::new(),
-                 ancestors: KVec::new(),
-@@ -1023,12 +1041,16 @@ pub(crate) fn copy_transaction_data(
-             // Traverse the objects specified.
-             let mut view = AllocationView::new(&mut alloc, data_size);
-             for (index, index_offset) in (offsets_start..offsets_end)
--                .step_by(size_of::<usize>())
-+                .step_by(size_of::<u64>())
-                 .enumerate()
-             {
--                let offset = view.alloc.read(index_offset)?;
-+                let offset: usize = view
-+                    .alloc
-+                    .read::<u64>(index_offset)?
-+                    .try_into()
-+                    .map_err(|_| EINVAL)?;
- 
--                if offset < end_of_previous_object {
-+                if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
-                     pr_warn!("Got transaction with invalid offset.");
-                     return Err(EINVAL.into());
-                 }
-@@ -1060,7 +1082,7 @@ pub(crate) fn copy_transaction_data(
-                 }
- 
-                 // Update the indexes containing objects to clean up.
--                let offset_after_object = index_offset + size_of::<usize>();
-+                let offset_after_object = index_offset + size_of::<u64>();
-                 view.alloc
-                     .set_info_offsets(offsets_start..offset_after_object);
-             }
--- 
-2.53.0
-
+--- a/drivers/android/binder/rust_binderfs.c
++++ b/drivers/android/binder/rust_binderfs.c
+@@ -132,8 +132,8 @@ static int binderfs_binder_device_create
+ 	mutex_lock(&binderfs_minors_mutex);
+ 	if (++info->device_count <= info->mount_opts.max)
+ 		minor = ida_alloc_max(&binderfs_minors,
+-				      use_reserve ? BINDERFS_MAX_MINOR :
+-						    BINDERFS_MAX_MINOR_CAPPED,
++				      use_reserve ? BINDERFS_MAX_MINOR - 1 :
++						    BINDERFS_MAX_MINOR_CAPPED - 1,
+ 				      GFP_KERNEL);
+ 	else
+ 		minor = -ENOSPC;
+@@ -416,8 +416,8 @@ static int binderfs_binder_ctl_create(st
+ 	/* Reserve a new minor number for the new device. */
+ 	mutex_lock(&binderfs_minors_mutex);
+ 	minor = ida_alloc_max(&binderfs_minors,
+-			      use_reserve ? BINDERFS_MAX_MINOR :
+-					    BINDERFS_MAX_MINOR_CAPPED,
++			      use_reserve ? BINDERFS_MAX_MINOR - 1 :
++					    BINDERFS_MAX_MINOR_CAPPED - 1,
+ 			      GFP_KERNEL);
+ 	mutex_unlock(&binderfs_minors_mutex);
+ 	if (minor < 0) {
 
 
 
