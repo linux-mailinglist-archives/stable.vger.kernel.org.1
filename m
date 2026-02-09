@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-215426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHFcIwz2iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:20 +0100
+	id mM3MDo/5iWkiFQAAu9opvQ
+	(envelope-from <stable+bounces-215480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:13:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59781114A2
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84F3111BD0
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 12F1D30298EB
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:52:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3146030D9A71
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DB037B409;
-	Mon,  9 Feb 2026 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96ED3793B0;
+	Mon,  9 Feb 2026 14:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnWxMJk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWNtm6mA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55ADE28312F;
-	Mon,  9 Feb 2026 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D89C3033D2;
+	Mon,  9 Feb 2026 14:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648752; cv=none; b=bCn62tmwu78ri0+mwa7FCnHw1dN0M/oDr9zJmEi1i/T70GVg1AGjubo54biqOxyqrhzmvvCrinYV/uCfhvQ6F3zp5yqVvm9YWKBP4qb3wQfQew+bL3mPe7WgPPZe0gmXDcLxy2cZ/zC+Vq1zxy8dZ/J/fS83D1oR0uqy8yHU3Lk=
+	t=1770648934; cv=none; b=gYCmJ5pn50XykSJsa4aKcciSTgJM+BSxIbRmJt0r3Alsft+8aoR3TFw5TCOlCiWBW1Xm0V/Y8VeoHnCXUEbl3qpziZCZ7FYVaSFQfJ6A3bOVV5ugUs2itN8M8KUyu/I9urW74quOdVZ+Dn/SVCHChPOaE2H/q55WqsNHTxwDSSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648752; c=relaxed/simple;
-	bh=3AfTZfkKwIyM4oS9FkGOrVB87bOy7k2+0DCrVP4ks5c=;
+	s=arc-20240116; t=1770648934; c=relaxed/simple;
+	bh=2G6F38IwnfjCO7Q/nTdod5R+g41RCtacPV9GvVbcPss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmGmy4HbepYTRSWO86dP39veRgR2+J9fMyXZ2ZAKdQbv9JqL2kKTEvWEhAWsaYDaUR5ET5szPq/ULTiY4/rK3bzVDetHaVWHgSXU3+byWMLWRox2lT/BAvEGZXMTHodslCf4BzNyMk2vvQljrp45itI+jkFFCWs9ZxPlQhP8oSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnWxMJk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E961C116C6;
-	Mon,  9 Feb 2026 14:52:31 +0000 (UTC)
+	 MIME-Version; b=Kq+xGxR9Q/0LJS8HXUihjclXt7buF09np/3x+R2IFM96mvCjVIZPEvgaqEaAAWMmssrwJme26eMPEV5SeiIOHNBVwfkVndpIcEspN3EGfYk3W08BGZvLrxVSfM3R5vH/gqBx06aYZ8dDpn8oo0yfKgJFw5paqTsexzshVC53jdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWNtm6mA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC241C116C6;
+	Mon,  9 Feb 2026 14:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648751;
-	bh=3AfTZfkKwIyM4oS9FkGOrVB87bOy7k2+0DCrVP4ks5c=;
+	s=korg; t=1770648934;
+	bh=2G6F38IwnfjCO7Q/nTdod5R+g41RCtacPV9GvVbcPss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qnWxMJk/dG8P9pPRhSOn68tIlasTBNXBi6FibwJZxj6/WMKCFjrCVqRlEh3h9owL6
-	 Z1rMKa30LkGT+BKqrheAarIiLB1b0LbwtIfhCWrbLp3syJl1V9x3BMZjMkptov5qRq
-	 CIx3i7N0wWnmW8oUhZFzGQDhofdmWSGtAKoWYSaY=
+	b=GWNtm6mAC7zMnaFgnhw//S6yZ7rVVsQ+K21Lw6Zk/VRb4Q7HC88rWb8ZfxYVnzB9t
+	 /evZghxwXdRI5eTeA3EOOpwRvxQHOd3vaWyy91n8foL0CKEXgvm7OrcvPmNBtgSvQ5
+	 EDGgdjF+IDqMepY3KswTJkrHdNN3onxC50FPyBYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 33/41] nvmet-tcp: fix regression in data_digest calculation
+Subject: [PATCH 5.15 57/75] nvmet-tcp: fix regression in data_digest calculation
 Date: Mon,  9 Feb 2026 15:24:54 +0100
-Message-ID: <20260209142258.009158684@linuxfoundation.org>
+Message-ID: <20260209142303.896431549@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215426-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215480-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,11 +90,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,grimberg.me:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email]
-X-Rspamd-Queue-Id: E59781114A2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,grimberg.me:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C84F3111BD0
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -123,10 +123,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index bf34849c15a20..bc0e860a2887f 100644
+index bf3585652c681..3b32f1e9c18c6 100644
 --- a/drivers/nvme/target/tcp.c
 +++ b/drivers/nvme/target/tcp.c
-@@ -395,7 +395,7 @@ static int nvmet_tcp_map_data(struct nvmet_tcp_cmd *cmd)
+@@ -407,7 +407,7 @@ static int nvmet_tcp_map_data(struct nvmet_tcp_cmd *cmd)
  	return NVME_SC_INTERNAL;
  }
  
@@ -135,7 +135,7 @@ index bf34849c15a20..bc0e860a2887f 100644
  		struct nvmet_tcp_cmd *cmd)
  {
  	ahash_request_set_crypt(hash, cmd->req.sg,
-@@ -403,23 +403,6 @@ static void nvmet_tcp_send_ddgst(struct ahash_request *hash,
+@@ -415,23 +415,6 @@ static void nvmet_tcp_send_ddgst(struct ahash_request *hash,
  	crypto_ahash_digest(hash);
  }
  
@@ -159,7 +159,7 @@ index bf34849c15a20..bc0e860a2887f 100644
  static void nvmet_setup_c2h_data_pdu(struct nvmet_tcp_cmd *cmd)
  {
  	struct nvme_tcp_data_pdu *pdu = cmd->data_pdu;
-@@ -444,7 +427,7 @@ static void nvmet_setup_c2h_data_pdu(struct nvmet_tcp_cmd *cmd)
+@@ -456,7 +439,7 @@ static void nvmet_setup_c2h_data_pdu(struct nvmet_tcp_cmd *cmd)
  
  	if (queue->data_digest) {
  		pdu->hdr.flags |= NVME_TCP_F_DDGST;
@@ -168,7 +168,7 @@ index bf34849c15a20..bc0e860a2887f 100644
  	}
  
  	if (cmd->queue->hdr_digest) {
-@@ -1156,7 +1139,7 @@ static void nvmet_tcp_prep_recv_ddgst(struct nvmet_tcp_cmd *cmd)
+@@ -1168,7 +1151,7 @@ static void nvmet_tcp_prep_recv_ddgst(struct nvmet_tcp_cmd *cmd)
  {
  	struct nvmet_tcp_queue *queue = cmd->queue;
  
