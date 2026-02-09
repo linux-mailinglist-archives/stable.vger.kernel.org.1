@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oD09OlT5iWkiFQAAu9opvQ
-	(envelope-from <stable+bounces-215465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:20 +0100
+	id KGO/D4f1iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4C3111B49
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CD1111385
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F076F30BD84C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5E4E30055CC
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C6E37BE7F;
-	Mon,  9 Feb 2026 14:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA18C2DB7B4;
+	Mon,  9 Feb 2026 14:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5UdBTKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOleinnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E4428312F;
-	Mon,  9 Feb 2026 14:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D14C2690EC;
+	Mon,  9 Feb 2026 14:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648883; cv=none; b=GuWohZHk2vT4HCKiqCvqwh/B43pc1j/om/iVt8/XZsSiNNUmIZMu+sxH/lSLGi7lMe/TkTYPg3+ceUD3a1P3aIMUl6HI2SgYzrB9BwiXfn07XqO9mCuwv2txqRZCFBieuJluZAbdtWm/qdSGkXsm5afwTrVYJUEAWBVYI75Rbis=
+	t=1770648569; cv=none; b=DtAyfmDI4j3CSpanZEJwByP+1BN3EO1JkGW/XYzsdFgNhRkLYjNZUg5DDZEniHz6+sEroh4k62heEoMcbVXII525+Z3waNzqDYbkMlVlFYdwO69/GBANni9RDz71srIs6aT5lKYvvrIyoAzcGEQ7hJVV1tey2ialxX9IfWoZ7UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648883; c=relaxed/simple;
-	bh=vnVqSDCGN2ZWWl3N0uKW0TWJ1LhWvR2mI2IFU/hm+6k=;
+	s=arc-20240116; t=1770648569; c=relaxed/simple;
+	bh=qSRBoLs1BbY8FeSXzyyhlZIgA4w4nrRnkoyZJOgRsiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=do/hkPyec3zNDLLZt9ogWIwBK9LmjnTbBZKefdfCE2oKSwpXx/OiRIUWpkK2ZLHaeVVAV3dsr2SdCBeNbHz3T3YnI24TirTqC5uQpC2MR3m9aAIJ62lqSmt4JMGZITtpip3e5Yowg21yaKAdNGBUaQkoAtSYfSJke4VnckcK3kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5UdBTKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48E2C116C6;
-	Mon,  9 Feb 2026 14:54:42 +0000 (UTC)
+	 MIME-Version; b=csZlS7Gw3qMWAQPrrgMXEukKCrbRAFw6DllperuiNqvl6CcCyu+2hykyzL/VNENsyFC9Hdm7T3ZZkNHUP3Ubkjo8cGp4wGFCz2vTrc70uCF7C/Uu0eTXy4KoTEBOhcFxe22/+xq9D0eXVuixUZbXMgyJT640tjzVzvxun95T+dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOleinnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC10C116C6;
+	Mon,  9 Feb 2026 14:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648883;
-	bh=vnVqSDCGN2ZWWl3N0uKW0TWJ1LhWvR2mI2IFU/hm+6k=;
+	s=korg; t=1770648569;
+	bh=qSRBoLs1BbY8FeSXzyyhlZIgA4w4nrRnkoyZJOgRsiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5UdBTKKwXD5xz6F06zzNg4F7mbqsmixyoJTMJbspeGx5sLZNHRTIpS74fdF3hhDW
-	 MHKjcR/GbMDKivwJJcNSYIuzpAEVn3MdxmNpjOSOY3HtTzA0ejOLqf4PCUi5eMKenf
-	 clUHyki1mQ003L1T37be9V3HZfEXzr4XDMTga2Ss=
+	b=uOleinnQE1dWCElgoWdxJwRCpPrLisyN4MdMArYBS8LFBWfgjpHXwlfxxu7YhZQYQ
+	 Hcr6x14OfCJwu+lTKPlTAkc792OIKURiF57i9xHS9xylmWxyYRz50EM/d6X4V6paQo
+	 Z7RjX/myIFHvWWtMr7/jELHoKw8bhvexnTfkOjzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 43/75] wifi: mac80211: dont increment crypto_tx_tailroom_needed_cnt twice
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.6 77/86] btrfs: fix racy bitfield write in btrfs_clear_space_info_full()
 Date: Mon,  9 Feb 2026 15:24:40 +0100
-Message-ID: <20260209142303.396275185@linuxfoundation.org>
+Message-ID: <20260209142307.546541076@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +68,283 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215465-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215369-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,bur.io,163.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 5A4C3111B49
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bur.io:email]
+X-Rspamd-Queue-Id: A6CD1111385
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 3f3d8ff31496874a69b131866f62474eb24ed20a ]
+commit 38e818718c5e04961eea0fa8feff3f100ce40408 upstream.
 
-In reconfig, in case the driver asks to disconnect during the reconfig,
-all the keys of the interface are marked as tainted.
-Then ieee80211_reenable_keys will loop over all the interface keys, and
-for each one it will
-a) increment crypto_tx_tailroom_needed_cnt
-b) call ieee80211_key_enable_hw_accel, which in turn will detect that
-this key is tainted, so it will mark it as "not in hardware", which is
-paired with crypto_tx_tailroom_needed_cnt incrementation, so we get two
-incrementations for each tainted key.
-Then we get a warning in ieee80211_free_keys.
+>From the memory-barriers.txt document regarding memory barrier ordering
+guarantees:
 
-To fix it, don't increment the count in ieee80211_reenable_keys for
-tainted keys
+ (*) These guarantees do not apply to bitfields, because compilers often
+     generate code to modify these using non-atomic read-modify-write
+     sequences.  Do not attempt to use bitfields to synchronize parallel
+     algorithms.
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260118092821.4ca111fddcda.Id6e554f4b1c83760aa02d5a9e4e3080edb197aa2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ (*) Even in cases where bitfields are protected by locks, all fields
+     in a given bitfield must be protected by one lock.  If two fields
+     in a given bitfield are protected by different locks, the compiler's
+     non-atomic read-modify-write sequences can cause an update to one
+     field to corrupt the value of an adjacent field.
+
+btrfs_space_info has a bitfield sharing an underlying word consisting of
+the fields full, chunk_alloc, and flush:
+
+struct btrfs_space_info {
+        struct btrfs_fs_info *     fs_info;              /*     0     8 */
+        struct btrfs_space_info *  parent;               /*     8     8 */
+        ...
+        int                        clamp;                /*   172     4 */
+        unsigned int               full:1;               /*   176: 0  4 */
+        unsigned int               chunk_alloc:1;        /*   176: 1  4 */
+        unsigned int               flush:1;              /*   176: 2  4 */
+        ...
+
+Therefore, to be safe from parallel read-modify-writes losing a write to
+one of the bitfield members protected by a lock, all writes to all the
+bitfields must use the lock. They almost universally do, except for
+btrfs_clear_space_info_full() which iterates over the space_infos and
+writes out found->full = 0 without a lock.
+
+Imagine that we have one thread completing a transaction in which we
+finished deleting a block_group and are thus calling
+btrfs_clear_space_info_full() while simultaneously the data reclaim
+ticket infrastructure is running do_async_reclaim_data_space():
+
+          T1                                             T2
+btrfs_commit_transaction
+  btrfs_clear_space_info_full
+  data_sinfo->full = 0
+  READ: full:0, chunk_alloc:0, flush:1
+                                              do_async_reclaim_data_space(data_sinfo)
+                                              spin_lock(&space_info->lock);
+                                              if(list_empty(tickets))
+                                                space_info->flush = 0;
+                                                READ: full: 0, chunk_alloc:0, flush:1
+                                                MOD/WRITE: full: 0, chunk_alloc:0, flush:0
+                                                spin_unlock(&space_info->lock);
+                                                return;
+  MOD/WRITE: full:0, chunk_alloc:0, flush:1
+
+and now data_sinfo->flush is 1 but the reclaim worker has exited. This
+breaks the invariant that flush is 0 iff there is no work queued or
+running. Once this invariant is violated, future allocations that go
+into __reserve_bytes() will add tickets to space_info->tickets but will
+see space_info->flush is set to 1 and not queue the work. After this,
+they will block forever on the resulting ticket, as it is now impossible
+to kick the worker again.
+
+I also confirmed by looking at the assembly of the affected kernel that
+it is doing RMW operations. For example, to set the flush (3rd) bit to 0,
+the assembly is:
+  andb    $0xfb,0x60(%rbx)
+and similarly for setting the full (1st) bit to 0:
+  andb    $0xfe,-0x20(%rax)
+
+So I think this is really a bug on practical systems.  I have observed
+a number of systems in this exact state, but am currently unable to
+reproduce it.
+
+Rather than leaving this footgun lying around for the future, take
+advantage of the fact that there is room in the struct anyway, and that
+it is already quite large and simply change the three bitfield members to
+bools. This avoids writes to space_info->full having any effect on
+writes to space_info->flush, regardless of locking.
+
+Fixes: 957780eb2788 ("Btrfs: introduce ticketed enospc infrastructure")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ The context change is due to the commit cc0517fe779f
+  ("btrfs: tweak extent/chunk allocation for space_info sub-space")
+  in v6.16 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/key.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/block-group.c |    6 +++---
+ fs/btrfs/space-info.c  |   22 +++++++++++-----------
+ fs/btrfs/space-info.h  |    6 +++---
+ 3 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index c755e3b332de0..88cf9e63dffe2 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -910,7 +910,8 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
- 
- 	if (ieee80211_sdata_running(sdata)) {
- 		list_for_each_entry(key, &sdata->key_list, list) {
--			increment_tailroom_need_count(sdata);
-+			if (!(key->flags & KEY_FLAG_TAINTED))
-+				increment_tailroom_need_count(sdata);
- 			ieee80211_key_enable_hw_accel(key);
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -4156,7 +4156,7 @@ int btrfs_chunk_alloc(struct btrfs_trans
+ 			mutex_unlock(&fs_info->chunk_mutex);
+ 		} else {
+ 			/* Proceed with allocation */
+-			space_info->chunk_alloc = 1;
++			space_info->chunk_alloc = true;
+ 			wait_for_alloc = false;
+ 			spin_unlock(&space_info->lock);
  		}
+@@ -4205,7 +4205,7 @@ int btrfs_chunk_alloc(struct btrfs_trans
+ 	spin_lock(&space_info->lock);
+ 	if (ret < 0) {
+ 		if (ret == -ENOSPC)
+-			space_info->full = 1;
++			space_info->full = true;
+ 		else
+ 			goto out;
+ 	} else {
+@@ -4215,7 +4215,7 @@ int btrfs_chunk_alloc(struct btrfs_trans
+ 
+ 	space_info->force_alloc = CHUNK_ALLOC_NO_FORCE;
+ out:
+-	space_info->chunk_alloc = 0;
++	space_info->chunk_alloc = false;
+ 	spin_unlock(&space_info->lock);
+ 	mutex_unlock(&fs_info->chunk_mutex);
+ 
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -182,7 +182,7 @@ void btrfs_clear_space_info_full(struct
+ 	struct btrfs_space_info *found;
+ 
+ 	list_for_each_entry(found, head, list)
+-		found->full = 0;
++		found->full = false;
+ }
+ 
+ /*
+@@ -361,7 +361,7 @@ void btrfs_add_bg_to_space_info(struct b
+ 	found->bytes_readonly += block_group->bytes_super;
+ 	btrfs_space_info_update_bytes_zone_unusable(info, found, block_group->zone_unusable);
+ 	if (block_group->length > 0)
+-		found->full = 0;
++		found->full = false;
+ 	btrfs_try_granting_tickets(info, found);
+ 	spin_unlock(&found->lock);
+ 
+@@ -1103,7 +1103,7 @@ static void btrfs_async_reclaim_metadata
+ 	spin_lock(&space_info->lock);
+ 	to_reclaim = btrfs_calc_reclaim_metadata_size(fs_info, space_info);
+ 	if (!to_reclaim) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
  	}
--- 
-2.51.0
-
+@@ -1115,7 +1115,7 @@ static void btrfs_async_reclaim_metadata
+ 		flush_space(fs_info, space_info, to_reclaim, flush_state, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1158,7 +1158,7 @@ static void btrfs_async_reclaim_metadata
+ 					flush_state = FLUSH_DELAYED_ITEMS_NR;
+ 					commit_cycles--;
+ 				} else {
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 				}
+ 			} else {
+ 				flush_state = FLUSH_DELAYED_ITEMS_NR;
+@@ -1320,7 +1320,7 @@ static void btrfs_async_reclaim_data_spa
+ 
+ 	spin_lock(&space_info->lock);
+ 	if (list_empty(&space_info->tickets)) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
+ 	}
+@@ -1331,7 +1331,7 @@ static void btrfs_async_reclaim_data_spa
+ 		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1348,7 +1348,7 @@ static void btrfs_async_reclaim_data_spa
+ 			    data_flush_states[flush_state], false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1365,7 +1365,7 @@ static void btrfs_async_reclaim_data_spa
+ 				if (maybe_fail_all_tickets(fs_info, space_info))
+ 					flush_state = 0;
+ 				else
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 			} else {
+ 				flush_state = 0;
+ 			}
+@@ -1381,7 +1381,7 @@ static void btrfs_async_reclaim_data_spa
+ 
+ aborted_fs:
+ 	maybe_fail_all_tickets(fs_info, space_info);
+-	space_info->flush = 0;
++	space_info->flush = false;
+ 	spin_unlock(&space_info->lock);
+ }
+ 
+@@ -1750,7 +1750,7 @@ static int __reserve_bytes(struct btrfs_
+ 				 */
+ 				maybe_clamp_preempt(fs_info, space_info);
+ 
+-				space_info->flush = 1;
++				space_info->flush = true;
+ 				trace_btrfs_trigger_flush(fs_info,
+ 							  space_info->flags,
+ 							  orig_bytes, flush,
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -126,11 +126,11 @@ struct btrfs_space_info {
+ 				   flushing. The value is >> clamp, so turns
+ 				   out to be a 2^clamp divisor. */
+ 
+-	unsigned int full:1;	/* indicates that we cannot allocate any more
++	bool full;		/* indicates that we cannot allocate any more
+ 				   chunks for this space */
+-	unsigned int chunk_alloc:1;	/* set if we are allocating a chunk */
++	bool chunk_alloc;	/* set if we are allocating a chunk */
+ 
+-	unsigned int flush:1;		/* set if we are trying to make space */
++	bool flush;		/* set if we are trying to make space */
+ 
+ 	unsigned int force_alloc;	/* set if we need to force a chunk
+ 					   alloc for this space */
 
 
 
