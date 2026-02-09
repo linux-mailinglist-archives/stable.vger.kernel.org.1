@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-215298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFydE4/0iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:59 +0100
+	id OO7cOI7yiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935F01111BF
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB71110C76
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 703FF3009F28
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:45:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01BB0304ABB9
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CB036AB43;
-	Mon,  9 Feb 2026 14:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D3037BE89;
+	Mon,  9 Feb 2026 14:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IX6QXbu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm/ufwLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CDC27CCF2;
-	Mon,  9 Feb 2026 14:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B587436828A;
+	Mon,  9 Feb 2026 14:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648337; cv=none; b=o5D9dEaArNXKxRz7G4UAvN667X6d7B4dR1KJ/S68YqY90IBJC/Kd5BV/8SgD10zjcSO2my/Xf6ohXlKhkhqcymEBlQZ8uuRx8MJF+yEZxAEAw+iQS8amuipzWG5dByAqf9ttAEaOV7X5JO1AtwMRoXNYWTk21tbktibgT5ItLdA=
+	t=1770648014; cv=none; b=R3tfsVSKGmVmyIPpiJwnl2hTLDpAL5HjvVf1MVTn2CdPAGgUasw6hCxUyRhjYuQkHwzqlYCkLIGor843UkhFVmPcsK5EHRE2Znlcjbfc/sFIUF2wlULYsxA30vywBsFttUSaA8JdevpmKQbsVu2nTR42kqyQSzVL9kau2mWJheY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648337; c=relaxed/simple;
-	bh=gnqSY1hI/RrQmBh2Qfx8BFNECFAeCQOmbVAiIi4+vJ4=;
+	s=arc-20240116; t=1770648014; c=relaxed/simple;
+	bh=t+9v2Tz9f3NZi05N0MWlUVzXiF9shXAzdrzIv0yFNz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcOhZSa60aNii5vthQmQx0aXb7LfJocIb7W6I9sq9aXKRqDZ74M2XyjXbRuP0SlIDzJ9itFlxEoA6Bag3J2mOUi9rdt++ChqGDMu+i49zPC6p7R0a9MFdZ6iZ9a7tSRLoX5Bu/DgTU1Ct/Po6Qnz4lGv4Ta6JU/nDkwFO/ESvZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IX6QXbu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06670C116C6;
-	Mon,  9 Feb 2026 14:45:36 +0000 (UTC)
+	 MIME-Version; b=YQG4w9Z7jnovAdk50NYKdjiJ2vMh8ioZmArzn3vIt2Yabx4i6z8Y1A/X3BdSrGaMFt1Yg3ktMonSoMGSp0M7yiJn3sMb9apTXCf8bh55Lk3bpyZJ3p+UxgleGxJjC6RJPs/bBprOWb50V4lseDp7tfJ+UJxsFQ2qWQKaV2vtlP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm/ufwLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2972EC116C6;
+	Mon,  9 Feb 2026 14:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648337;
-	bh=gnqSY1hI/RrQmBh2Qfx8BFNECFAeCQOmbVAiIi4+vJ4=;
+	s=korg; t=1770648014;
+	bh=t+9v2Tz9f3NZi05N0MWlUVzXiF9shXAzdrzIv0yFNz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IX6QXbu/I8az6LeITMkhd8gMjxaidFENomH8FbJroWeKg207JpGBk1hY27JzyAiza
-	 0fRJNcNfT5xZOMMSIDGjJw7Wyv/Y1yVGfgbzn6nxKpBskWQNCybpjcpCDro5hF2TS6
-	 g06JTLVI+RKQwY+TUAH4uloD+nfv7Ke1hAu2FjMw=
+	b=hm/ufwLSIzv4qt7s84yXAuLnBSeY+GqVQ1vPB7i808NllevD7n/EiHUkQLZoMb07H
+	 YHntQ3WsCTQajXe4sTYI39ARP1wBhJYWEi6A89/EC4NvwfBAxZSuWcEVoXbe67Tdhr
+	 QUTILHO0TNJkaVnGd+XmdpAE5ZPGJ18QpK5PJj/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mathieu.desnoyers@efficios.com,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Krunoslav Kovac <Krunoslav.Kovac@amd.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/69] ring-buffer: Avoid softlockup in ring_buffer_resize() during memory free
+Subject: [PATCH 6.12 094/113] drm/amd/display: fix wrong color value mapping on MCM shaper LUT
 Date: Mon,  9 Feb 2026 15:24:03 +0100
-Message-ID: <20260209142303.189797447@linuxfoundation.org>
+Message-ID: <20260209142313.559012092@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,20 +71,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215298-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215202-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -92,74 +92,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[efficios.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,goodmis.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 935F01111BF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AFB71110C76
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wupeng Ma <mawupeng1@huawei.com>
+From: Melissa Wen <mwen@igalia.com>
 
-[ Upstream commit 6435ffd6c7fcba330dfa91c58dc30aed2df3d0bf ]
+[ Upstream commit 8f959d37c1f2efec6dac55915ee82302e98101fb ]
 
-When user resize all trace ring buffer through file 'buffer_size_kb',
-then in ring_buffer_resize(), kernel allocates buffer pages for each
-cpu in a loop.
+Some shimmer/colorful points appears when using the steamOS color
+pipeline for HDR on gaming with DCN32. These points look like black
+values being wrongly mapped to red/blue/green values. It was caused
+because the number of hw points in regular LUTs and in a shaper LUT was
+treated as the same.
 
-If the kernel preemption model is PREEMPT_NONE and there are many cpus
-and there are many buffer pages to be freed, it may not give up cpu
-for a long time and finally cause a softlockup.
+DCN3+ regular LUTs have 257 bases and implicit deltas (i.e. HW
+calculates them), but shaper LUT is a special case: it has 256 bases and
+256 deltas, as in DCN1-2 regular LUTs, and outputs 14-bit values.
 
-To avoid it, call cond_resched() after each cpu buffer free as Commit
-f6bd2c92488c ("ring-buffer: Avoid softlockup in ring_buffer_resize()")
-does.
+Fix that by setting by decreasing in 1 the number of HW points computed
+in the LUT segmentation so that shaper LUT (i.e. fixpoint == true) keeps
+the same DCN10 CM logic and regular LUTs go with `hw_points + 1`.
 
-Detailed call trace as follow:
-
-  rcu: INFO: rcu_sched self-detected stall on CPU
-  rcu: 	24-....: (14837 ticks this GP) idle=521c/1/0x4000000000000000 softirq=230597/230597 fqs=5329
-  rcu: 	(t=15004 jiffies g=26003221 q=211022 ncpus=96)
-  CPU: 24 UID: 0 PID: 11253 Comm: bash Kdump: loaded Tainted: G            EL      6.18.2+ #278 NONE
-  pc : arch_local_irq_restore+0x8/0x20
-   arch_local_irq_restore+0x8/0x20 (P)
-   free_frozen_page_commit+0x28c/0x3b0
-   __free_frozen_pages+0x1c0/0x678
-   ___free_pages+0xc0/0xe0
-   free_pages+0x3c/0x50
-   ring_buffer_resize.part.0+0x6a8/0x880
-   ring_buffer_resize+0x3c/0x58
-   __tracing_resize_ring_buffer.part.0+0x34/0xd8
-   tracing_resize_ring_buffer+0x8c/0xd0
-   tracing_entries_write+0x74/0xd8
-   vfs_write+0xcc/0x288
-   ksys_write+0x74/0x118
-   __arm64_sys_write+0x24/0x38
-
-Cc: <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251228065008.2396573-1-mawupeng1@huawei.com
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+CC: Krunoslav Kovac <Krunoslav.Kovac@amd.com>
+Fixes: 4d5fd3d08ea9 ("drm/amd/display: PQ tail accuracy")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5006505b19a2119e71c008044d59f6d753c858b9)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 21b7d044797e3..b141486801b14 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2356,6 +2356,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 					list) {
- 			list_del_init(&bpage->list);
- 			free_buffer_page(bpage);
-+
-+			cond_resched();
- 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+index f31f0e3abfc0f..f299d9455f510 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+@@ -168,6 +168,11 @@ bool cm3_helper_translate_curve_to_hw_format(
+ 			hw_points += (1 << seg_distr[k]);
  	}
-  out_err_unlock:
+ 
++	// DCN3+ have 257 pts in lieu of no separate slope registers
++	// Prior HW had 256 base+slope pairs
++	// Shaper LUT (i.e. fixpoint == true) is still 256 bases and 256 deltas
++	hw_points = fixpoint ? (hw_points - 1) : hw_points;
++
+ 	j = 0;
+ 	for (k = 0; k < (region_end - region_start); k++) {
+ 		increment = NUMBER_SW_SEGMENTS / (1 << seg_distr[k]);
+@@ -228,8 +233,6 @@ bool cm3_helper_translate_curve_to_hw_format(
+ 	corner_points[1].green.slope = dc_fixpt_zero;
+ 	corner_points[1].blue.slope = dc_fixpt_zero;
+ 
+-	// DCN3+ have 257 pts in lieu of no separate slope registers
+-	// Prior HW had 256 base+slope pairs
+ 	lut_params->hw_points_num = hw_points + 1;
+ 
+ 	k = 0;
 -- 
 2.51.0
 
