@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-215011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215131-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHIjJZ7viWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-215011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:30:54 +0100
+	id 8FC1HezyiWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215131-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC731105DC
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:30:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE65110D58
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EABF303098F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:29:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE2F2303DA8C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E30137A496;
-	Mon,  9 Feb 2026 14:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092B03793DB;
+	Mon,  9 Feb 2026 14:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZypcMCV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcWba8aE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BD537AA7E;
-	Mon,  9 Feb 2026 14:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1146125B2;
+	Mon,  9 Feb 2026 14:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647375; cv=none; b=Ktb8rpI/vWVLd9j8YWQe0Fwz2oXxXenqLRd95Db+QsXn6LK1g9LHYtGhsjN8svKOlzU6PVraxRFiVaIBySD9trT1xv0W+YPZ8yjfNqTjuwkJEHjxOLn7Yq/zWhQWjGDjbqskEaYANoW+HCfRURnERYUBpZdz/z0bpMmXmrencYs=
+	t=1770647777; cv=none; b=u6nFvBkHEo2zg9K0hIuur8EgrCbMHqKzlgIM8GKDqErQNGWGizApWqFi8fOUuRUbGLCf3MS+FXUAhNZAjggdRui1qNb11rUnpF3L30OtJL3cjDnxuyDLuFpxCqnytW1FSg37nE5ISLVIQtfs500ci7XEE0rnezrMS5cZ58PnArw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647375; c=relaxed/simple;
-	bh=aP0yRorMjgTUk3cB7A3XcL3nVrVmbGSsUhJMfb9HkxY=;
+	s=arc-20240116; t=1770647777; c=relaxed/simple;
+	bh=TGUBrBjNBTbs6MY7ZI8EdXS/DkJsYOk0KDTvlaJd6Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqG+spRiidNW9Io3yYAFLNoIQd0x0xebtl+aeqEcFkHm3BdicRtgglftOAsNH7xFjH+k+VxilNVhQ08dGuLuv7xwvWr8BX3U97hA4e36qJGznNXxDVAa1DW1qe0QuaYgKWkT5q2VukbP8GTEKjTaOgHTvfXrW8X3lJXyCNZpeBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZypcMCV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5668BC116C6;
-	Mon,  9 Feb 2026 14:29:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hviDIiaspw0bjt4AcVREDBirLVpFl9P+WbLr7wABqIufSUXXDPDnyvuKG1MIB9HIuSpZ+jJbPQOpBA1mkOmzxIl7TuxFy4wcwz0Lp7VWr99gO0qNWKgnAxATOPpz5/4Tv/2yJtTLb+OdZsZnBxgDe3iHiJgJ35CeOYBaSBJ525s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcWba8aE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E56C116C6;
+	Mon,  9 Feb 2026 14:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647374;
-	bh=aP0yRorMjgTUk3cB7A3XcL3nVrVmbGSsUhJMfb9HkxY=;
+	s=korg; t=1770647777;
+	bh=TGUBrBjNBTbs6MY7ZI8EdXS/DkJsYOk0KDTvlaJd6Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZypcMCV82ZyfZctgSx5pqh90hRnMGz8DllURvTa4Mx7ROjSrI5Dqr4ZEm2213GC5F
-	 2Be2NZcSLiTsPrQHVrMEhOhfElGXh7ejt7DPg6GKjCUjp/cbu41GtAI0tOfWR8cpP3
-	 mdsQMiveaUu+N5t2Q2DBVWvjLGM0Rpm4IGsXU18A=
+	b=VcWba8aExqUWPQMduKpI+yyQKngy6fkfJTgAMg6dxakrkIBvZQFMYA9erTjp4cAYY
+	 lFn5fOdcL/YG7Y3peoqprmfyZFdtETPe7dL0fJt8eC7X7+JMyN8n96qRIubO6cjAlQ
+	 a0uTsPx6cQM/ilNKpaU/5r7Myssv3comOD/Hgj7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mathieu.desnoyers@efficios.com,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 080/175] ring-buffer: Avoid softlockup in ring_buffer_resize() during memory free
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 004/113] platform/x86: intel_telemetry: Fix swapped arrays in PSS output
 Date: Mon,  9 Feb 2026 15:22:33 +0100
-Message-ID: <20260209142323.320649920@linuxfoundation.org>
+Message-ID: <20260209142310.367203432@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215011-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-215131-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,goodmis.org:email,msgid.link:url,efficios.com:email]
-X-Rspamd-Queue-Id: 1AC731105DC
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: ECE65110D58
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wupeng Ma <mawupeng1@huawei.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 6435ffd6c7fcba330dfa91c58dc30aed2df3d0bf ]
+commit 25e9e322d2ab5c03602eff4fbf4f7c40019d8de2 upstream.
 
-When user resize all trace ring buffer through file 'buffer_size_kb',
-then in ring_buffer_resize(), kernel allocates buffer pages for each
-cpu in a loop.
+The LTR blocking statistics and wakeup event counters are incorrectly
+cross-referenced during debugfs output rendering. The code populates
+pss_ltr_blkd[] with LTR blocking data and pss_s0ix_wakeup[] with wakeup
+data, but the display loops reference the wrong arrays.
 
-If the kernel preemption model is PREEMPT_NONE and there are many cpus
-and there are many buffer pages to be freed, it may not give up cpu
-for a long time and finally cause a softlockup.
+This causes the "LTR Blocking Status" section to print wakeup events
+and the "Wakes Status" section to print LTR blockers, misleading power
+management analysis and S0ix residency debugging.
 
-To avoid it, call cond_resched() after each cpu buffer free as Commit
-f6bd2c92488c ("ring-buffer: Avoid softlockup in ring_buffer_resize()")
-does.
+Fix by aligning array usage with the intended output section labels.
 
-Detailed call trace as follow:
-
-  rcu: INFO: rcu_sched self-detected stall on CPU
-  rcu: 	24-....: (14837 ticks this GP) idle=521c/1/0x4000000000000000 softirq=230597/230597 fqs=5329
-  rcu: 	(t=15004 jiffies g=26003221 q=211022 ncpus=96)
-  CPU: 24 UID: 0 PID: 11253 Comm: bash Kdump: loaded Tainted: G            EL      6.18.2+ #278 NONE
-  pc : arch_local_irq_restore+0x8/0x20
-   arch_local_irq_restore+0x8/0x20 (P)
-   free_frozen_page_commit+0x28c/0x3b0
-   __free_frozen_pages+0x1c0/0x678
-   ___free_pages+0xc0/0xe0
-   free_pages+0x3c/0x50
-   ring_buffer_resize.part.0+0x6a8/0x880
-   ring_buffer_resize+0x3c/0x58
-   __tracing_resize_ring_buffer.part.0+0x34/0xd8
-   tracing_resize_ring_buffer+0x8c/0xd0
-   tracing_entries_write+0x74/0xd8
-   vfs_write+0xcc/0x288
-   ksys_write+0x74/0x118
-   __arm64_sys_write+0x24/0x38
-
-Cc: <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251228065008.2396573-1-mawupeng1@huawei.com
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 87bee290998d ("platform:x86: Add Intel Telemetry Debugfs interfaces")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Link: https://patch.msgid.link/20251224032053.3915900-1-kaushlendra.kumar@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/intel/telemetry/debugfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index afcd3747264d2..3ba08fc1b7d05 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3121,6 +3121,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 					list) {
- 			list_del_init(&bpage->list);
- 			free_buffer_page(bpage);
-+
-+			cond_resched();
- 		}
+--- a/drivers/platform/x86/intel/telemetry/debugfs.c
++++ b/drivers/platform/x86/intel/telemetry/debugfs.c
+@@ -449,7 +449,7 @@ static int telem_pss_states_show(struct
+ 	for (index = 0; index < debugfs_conf->pss_ltr_evts; index++) {
+ 		seq_printf(s, "%-32s\t%u\n",
+ 			   debugfs_conf->pss_ltr_data[index].name,
+-			   pss_s0ix_wakeup[index]);
++			   pss_ltr_blkd[index]);
  	}
-  out_err_unlock:
--- 
-2.51.0
-
+ 
+ 	seq_puts(s, "\n--------------------------------------\n");
+@@ -459,7 +459,7 @@ static int telem_pss_states_show(struct
+ 	for (index = 0; index < debugfs_conf->pss_wakeup_evts; index++) {
+ 		seq_printf(s, "%-32s\t%u\n",
+ 			   debugfs_conf->pss_wakeup[index].name,
+-			   pss_ltr_blkd[index]);
++			   pss_s0ix_wakeup[index]);
+ 	}
+ 
+ 	return 0;
 
 
 
