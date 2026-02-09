@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG5SOzHziWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:09 +0100
+	id kAzhGCXyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E235110E8A
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D54D5110B64
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C7EB3011878
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:37:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 219ED30616DE
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA593793DB;
-	Mon,  9 Feb 2026 14:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E402C2360;
+	Mon,  9 Feb 2026 14:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rp2RYNZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIs1cmi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D7328150F;
-	Mon,  9 Feb 2026 14:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3DC1AF0AF;
+	Mon,  9 Feb 2026 14:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647870; cv=none; b=uF6jxFCEWKULU9xZm7Z88Lm5dWcwc4f+FFz6rnyWM5GY6Jv5GkTqoYV0NLUCrQ4bdaghMArycup2a9qLT4RbOC2jdBCNgIL4BCul484UNcxxUHEX6lMbjPwLiVWCPOJm/8586/APKoq20/kAB6saztb84msoF0K6vDieTBYAQ28=
+	t=1770647645; cv=none; b=iQscWw8a4AN3lPdxOGvGEgPd+veI066dZ0jPqfOfpjzhX8Aybhy3j0DRq+XYWnhJgUVWm+8yDnV2tBBwLFs/5+M7O+6f3G/WScmQVJDnoirVAJU6mzT4YgFTsfh1obr8+NblTQvm0BfUiAP7Z254EDwOk2BUXcx7hLVQfW0mqJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647870; c=relaxed/simple;
-	bh=wLIoe6F7DJuo3+1Jo8v4zQzpSo3VI6bnD/6f5KUMUvY=;
+	s=arc-20240116; t=1770647645; c=relaxed/simple;
+	bh=+k29YA31CpuoaRsX6bV9sPHXSZj7sNcjz7DSlo0DOQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yva/7xpo5aGDNGraYDYZNhuWb6ybvhwvZbKPtkrEKg207Kd5WMC5rHJ4ssnKTZiQ9H+N3J1SBlJ/K1y77CX4gINiXULMtnX3D8bHQOmW1Icr5kstSTzI+9CF2ubUzpv2ox+NROtINZQzEDiWD6RruHf0pDjhbWSg8yDOrhhFLwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rp2RYNZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE257C116C6;
-	Mon,  9 Feb 2026 14:37:49 +0000 (UTC)
+	 MIME-Version; b=OTJA8zjeSdQ2YILD8KEbnQkO57uUelbuLg33PZLojY76r+OiZ4tPdfp76L6dW5wmdhwspCrtxVgTcRe7+JBAi43StLsipuK36uoPAWJML2I/h3mRmuiHES6Z6CbLTqxoW3hil2z2Xl/MikYUjBEpgFVq//40AwdZnT52bUpijI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIs1cmi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFA0C116C6;
+	Mon,  9 Feb 2026 14:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647870;
-	bh=wLIoe6F7DJuo3+1Jo8v4zQzpSo3VI6bnD/6f5KUMUvY=;
+	s=korg; t=1770647645;
+	bh=+k29YA31CpuoaRsX6bV9sPHXSZj7sNcjz7DSlo0DOQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rp2RYNZTUKcwpRN/77y9NY1002nFg9/Ps4Dd9tZW8pOfBoGbD4BH1YpbPLE7w8WkE
-	 EmSAaSwIKoFhDPlY51pWOAo9kWj1bjmZgkWmiJRs0ZEygcT6dKD9xudXoYlqC8Khp2
-	 D2qHnhkPV8m78E1jO6p1E66CHp77mD4oxZSgdqEA=
+	b=lIs1cmi7/grSD3bP4XhmF592sN+i+auliF6fT6RUO3/CaVgulsR2vJGByeRRy8UGW
+	 PhLQAeHxGL8B5kj256LEFHqPrcOvVt/4LlY01LTg2HttrmptqGg/0CL0HbaHWbUytA
+	 l+0JduuEgLfJ7E0MGhtw5c1uI+/uV3vIpy8Em5Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rodrigo=20Lugathe=20da=20Concei=C3=A7=C3=A3o=20Alves?= <lugathe2@gmail.com>,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/113] HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
+	Aaron Ma <aaron.ma@canonical.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 6.18 128/175] ice: Fix PTP NULL pointer dereference during VSI rebuild
 Date: Mon,  9 Feb 2026 15:23:21 +0100
-Message-ID: <20260209142312.072298955@linuxfoundation.org>
+Message-ID: <20260209142325.116444281@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +64,185 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215159-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,cosmicgizmosystems.com,suse.com,kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215091-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,cosmicgizmosystems.com:email]
-X-Rspamd-Queue-Id: 3E235110E8A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,canonical.com:email]
+X-Rspamd-Queue-Id: D54D5110B64
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
+From: Aaron Ma <aaron.ma@canonical.com>
 
-[ Upstream commit 85a866809333cd2bf8ddac93d9a3e3ba8e4f807d ]
+[ Upstream commit fc6f36eaaedcf4b81af6fe1a568f018ffd530660 ]
 
-The USB speaker has a bug that causes it to reboot when changing the
-brightness using the physical knob.
+Fix race condition where PTP periodic work runs while VSI is being
+rebuilt, accessing NULL vsi->rx_rings.
 
-Add a new vendor and product ID entry in hid-ids.h, and register
-the corresponding device in hid-quirks.c with the required quirk.
+The sequence was:
+1. ice_ptp_prepare_for_reset() cancels PTP work
+2. ice_ptp_rebuild() immediately queues PTP work
+3. VSI rebuild happens AFTER ice_ptp_rebuild()
+4. PTP work runs and accesses NULL vsi->rx_rings
 
-Signed-off-by: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
-Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fix: Keep PTP work cancelled during rebuild, only queue it after
+VSI rebuild completes in ice_rebuild().
+
+Added ice_ptp_queue_work() helper function to encapsulate the logic
+for queuing PTP work, ensuring it's only queued when PTP is supported
+and the state is ICE_PTP_READY.
+
+Error log:
+[  121.392544] ice 0000:60:00.1: PTP reset successful
+[  121.392692] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  121.392712] #PF: supervisor read access in kernel mode
+[  121.392720] #PF: error_code(0x0000) - not-present page
+[  121.392727] PGD 0
+[  121.392734] Oops: Oops: 0000 [#1] SMP NOPTI
+[  121.392746] CPU: 8 UID: 0 PID: 1005 Comm: ice-ptp-0000:60 Tainted: G S                  6.19.0-rc6+ #4 PREEMPT(voluntary)
+[  121.392761] Tainted: [S]=CPU_OUT_OF_SPEC
+[  121.392773] RIP: 0010:ice_ptp_update_cached_phctime+0xbf/0x150 [ice]
+[  121.393042] Call Trace:
+[  121.393047]  <TASK>
+[  121.393055]  ice_ptp_periodic_work+0x69/0x180 [ice]
+[  121.393202]  kthread_worker_fn+0xa2/0x260
+[  121.393216]  ? __pfx_ice_ptp_periodic_work+0x10/0x10 [ice]
+[  121.393359]  ? __pfx_kthread_worker_fn+0x10/0x10
+[  121.393371]  kthread+0x10d/0x230
+[  121.393382]  ? __pfx_kthread+0x10/0x10
+[  121.393393]  ret_from_fork+0x273/0x2b0
+[  121.393407]  ? __pfx_kthread+0x10/0x10
+[  121.393417]  ret_from_fork_asm+0x1a/0x30
+[  121.393432]  </TASK>
+
+Fixes: 803bef817807d ("ice: factor out ice_ptp_rebuild_owner()")
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_main.c |  3 +++
+ drivers/net/ethernet/intel/ice/ice_ptp.c  | 26 ++++++++++++++++++-----
+ drivers/net/ethernet/intel/ice/ice_ptp.h  |  5 +++++
+ 3 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index c34d4ce211e34..9d0a97a3b06a2 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -435,6 +435,9 @@
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 7a59c9dd07cb1..d34a32a09bf87 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -7815,6 +7815,9 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
  
-+#define USB_VENDOR_ID_EDIFIER		0x2d99
-+#define USB_DEVICE_ID_EDIFIER_QR30	0xa101	/* EDIFIER Hal0 2.0 SE */
+ 	/* Restore timestamp mode settings after VSI rebuild */
+ 	ice_ptp_restore_timestamp_mode(pf);
 +
- #define USB_VENDOR_ID_ELAN		0x04f3
- #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
- #define USB_DEVICE_ID_HP_X2		0x074d
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index b2a3ce7bfb6b6..1f531626192cd 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -81,6 +81,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_PS3), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_WIIU), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DWAV, USB_DEVICE_ID_EGALAX_TOUCHCONTROLLER), HID_QUIRK_MULTI_INPUT | HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, USB_DEVICE_ID_ELO_TS2700), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_EMS, USB_DEVICE_ID_EMS_TRIO_LINKER_PLUS_II), HID_QUIRK_MULTI_INPUT },
++	/* Start PTP periodic work after VSI is fully rebuilt */
++	ice_ptp_queue_work(pf);
+ 	return;
+ 
+ err_vsi_rebuild:
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index 44c1ca58b8806..df38345b12d72 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2832,6 +2832,20 @@ static void ice_ptp_periodic_work(struct kthread_work *work)
+ 				   msecs_to_jiffies(err ? 10 : 500));
+ }
+ 
++/**
++ * ice_ptp_queue_work - Queue PTP periodic work for a PF
++ * @pf: Board private structure
++ *
++ * Helper function to queue PTP periodic work after VSI rebuild completes.
++ * This ensures that PTP work only runs when VSI structures are ready.
++ */
++void ice_ptp_queue_work(struct ice_pf *pf)
++{
++	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) &&
++	    pf->ptp.state == ICE_PTP_READY)
++		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work, 0);
++}
++
+ /**
+  * ice_ptp_prepare_rebuild_sec - Prepare second NAC for PTP reset or rebuild
+  * @pf: Board private structure
+@@ -2850,10 +2864,15 @@ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+ 		struct ice_pf *peer_pf = ptp_port_to_pf(port);
+ 
+ 		if (!ice_is_primary(&peer_pf->hw)) {
+-			if (rebuild)
++			if (rebuild) {
++				/* TODO: When implementing rebuild=true:
++				 * 1. Ensure secondary PFs' VSIs are rebuilt
++				 * 2. Call ice_ptp_queue_work(peer_pf) after VSI rebuild
++				 */
+ 				ice_ptp_rebuild(peer_pf, reset_type);
+-			else
++			} else {
+ 				ice_ptp_prepare_for_reset(peer_pf, reset_type);
++			}
+ 		}
+ 	}
+ }
+@@ -2999,9 +3018,6 @@ void ice_ptp_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 
+ 	ptp->state = ICE_PTP_READY;
+ 
+-	/* Start periodic work going */
+-	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
+-
+ 	dev_info(ice_pf_to_dev(pf), "PTP reset successful\n");
+ 	return;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
+index 46005642ef419..4e02f922c1ff8 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
+@@ -316,6 +316,7 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf,
+ void ice_ptp_init(struct ice_pf *pf);
+ void ice_ptp_release(struct ice_pf *pf);
+ void ice_ptp_link_change(struct ice_pf *pf, bool linkup);
++void ice_ptp_queue_work(struct ice_pf *pf);
+ #else /* IS_ENABLED(CONFIG_PTP_1588_CLOCK) */
+ 
+ static inline int ice_ptp_hwtstamp_get(struct net_device *netdev,
+@@ -384,6 +385,10 @@ static inline void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
+ {
+ }
+ 
++static inline void ice_ptp_queue_work(struct ice_pf *pf)
++{
++}
++
+ static inline int ice_ptp_clock_index(struct ice_pf *pf)
+ {
+ 	return -1;
 -- 
 2.51.0
 
