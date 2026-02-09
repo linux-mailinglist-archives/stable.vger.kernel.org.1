@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yD6FKPX2iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:13 +0100
+	id e/T8GV70iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682621116A6
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C7C11116C
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3984314A166
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D7F34300BE03
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1CB37C114;
-	Mon,  9 Feb 2026 14:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C853137AA71;
+	Mon,  9 Feb 2026 14:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9x2GN81"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRTxysIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E1037C106;
-	Mon,  9 Feb 2026 14:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDC122301;
+	Mon,  9 Feb 2026 14:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648607; cv=none; b=iFg36s1fRfcNy2tzf6LUUMy2XO98TIQgw8xrELS+LfVhbTb8I5yzrcPgzwVOUFbbJy3Llxu7OpiO0QQPYPqGW4MpPPoZ/1iNsh37XAHJRujsFPrs7C08I5fJExiP7g9lbiHhfVkhKR+npsHNDHQSFkmRJt56fHkxrxoqqkKZtHA=
+	t=1770648272; cv=none; b=D9HIcJgElqng3xeh3X3KWiKMblTGQFGLplf/fPrncKNIUqFmugBnN9ysVrZO8PUpNoOus5nKoivUry5WHCBy9LUUuK+xJ/pWBqKPT9fSGL4H5aK4djf6DMPJUwXxz3D9JsGTZ9MprTRNSszCT6BxPduh8d/micFPKcXwDImeaCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648607; c=relaxed/simple;
-	bh=/NHHziRo7M/vg+fjQIrGeauIoXZ3IpTnE/jxIOEetPs=;
+	s=arc-20240116; t=1770648272; c=relaxed/simple;
+	bh=MtnOWSUJpVOlgTD+1g92EgZFFT3pfi5vcIzR8WKpzhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bx4OqxiMdEHG0SUJDUEaL24GewtOceDoKxdbCUOipxBumkse/6dLKoFsJbd7A4bIoi9lInFIy0idqBn4ddRPICrWlaCrxK+WLoFk0FG8PbZymD6HB4JDe257wrSn8VnuqnxET0hKg2MurodxueGWHB7o/5RQf3kI0xd670gFmqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9x2GN81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D85AC19422;
-	Mon,  9 Feb 2026 14:50:06 +0000 (UTC)
+	 MIME-Version; b=Jh8WD3OU8Wh/sHKP99iEFBWGnqsXZb2KFemhDctNycAxWyZRfBX3ZycUx60f53jzjeG1L932hbLqtwhpC9cbXQCkSrZi5ZjVh96JuZl/nu9ZIzfrzkNOmHR8Iv9RNEFVncuGI9ErK/jDUXIZudQ2HcTjQH9XzVCnBdwuD0GJyMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRTxysIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183EAC116C6;
+	Mon,  9 Feb 2026 14:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648607;
-	bh=/NHHziRo7M/vg+fjQIrGeauIoXZ3IpTnE/jxIOEetPs=;
+	s=korg; t=1770648272;
+	bh=MtnOWSUJpVOlgTD+1g92EgZFFT3pfi5vcIzR8WKpzhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9x2GN81vHQkdhA3MR7rQ1UrG9qUh51qxj0lCBfQCIHAABoaoHl39VGskicaIJE1m
-	 ahG8HLi8jKUTPM6m0LlyVIhkY8AhFLSLoNPfyC28chUwga/9Q+zCIJvhp5GWX34i0o
-	 AA9UBdLw3FHwUdwjCLa1SlhhM6ZxxIuEW6nZlZvc=
+	b=CRTxysIf9REZlJPmY05AGEg+BXRVL/ltJgCcq8fsjqwaboMaYrQd69SpK9uk5p2m5
+	 wl2vgLZPkxGtE+RySjmomtvHtoZQwbX5ENpfitOQfO7Z4SMWYRUJFKHVGHsaQJents
+	 BCp0Q6xfyBpt8eyRAJga5o4fQ6iWhM5R/JGNd+5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 61/86] net/sched: cls_u32: use skb_header_pointer_careful()
-Date: Mon,  9 Feb 2026 15:24:24 +0100
-Message-ID: <20260209142306.973531985@linuxfoundation.org>
+Subject: [PATCH 6.1 57/69] hwmon: (occ) Mark occ_init_attribute() as __printf
+Date: Mon,  9 Feb 2026 15:24:25 +0100
+Message-ID: <20260209142303.976391843@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215381-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215278-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[kmkim1503.gmail.com:server fail];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 682621116A6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,arndb.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A0C7C11116C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
+[ Upstream commit 831a2b27914cc880130ffe8fb8d1e65a5324d07f ]
 
-skb_header_pointer() does not fully validate negative @offset values.
+This is a printf-style function, which gcc -Werror=suggest-attribute=format
+correctly points out:
 
-Use skb_header_pointer_careful() instead.
+drivers/hwmon/occ/common.c: In function 'occ_init_attribute':
+drivers/hwmon/occ/common.c:761:9: error: function 'occ_init_attribute' might be a candidate for 'gnu_printf' format attribute [-Werror=suggest-attribute=format]
 
-GangMin Kim provided a report and a repro fooling u32_classify():
+Add the attribute to avoid this warning and ensure any incorrect
+format strings are detected here.
 
-BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
-net/sched/cls_u32.c:221
-
-Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 744c2fe950e9 ("hwmon: (occ) Rework attribute registration for stack usage")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20260203163440.2674340-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_u32.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/hwmon/occ/common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index 67f27be138487..1338d9b4c03a4 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -161,10 +161,8 @@ TC_INDIRECT_SCOPE int u32_classify(struct sk_buff *skb,
- 			int toff = off + key->off + (off2 & key->offmask);
- 			__be32 *data, hdata;
- 
--			if (skb_headroom(skb) + toff > INT_MAX)
--				goto out;
--
--			data = skb_header_pointer(skb, toff, 4, &hdata);
-+			data = skb_header_pointer_careful(skb, toff, 4,
-+							  &hdata);
- 			if (!data)
- 				goto out;
- 			if ((*data ^ key->val) & key->mask) {
-@@ -214,8 +212,9 @@ TC_INDIRECT_SCOPE int u32_classify(struct sk_buff *skb,
- 		if (ht->divisor) {
- 			__be32 *data, hdata;
- 
--			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
--						  &hdata);
-+			data = skb_header_pointer_careful(skb,
-+							  off + n->sel.hoff,
-+							  4, &hdata);
- 			if (!data)
- 				goto out;
- 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
-@@ -229,7 +228,7 @@ TC_INDIRECT_SCOPE int u32_classify(struct sk_buff *skb,
- 			if (n->sel.flags & TC_U32_VAROFFSET) {
- 				__be16 *data, hdata;
- 
--				data = skb_header_pointer(skb,
-+				data = skb_header_pointer_careful(skb,
- 							  off + n->sel.offoff,
- 							  2, &hdata);
- 				if (!data)
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 483f79b394298..755926fa0bf7d 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -749,6 +749,7 @@ static ssize_t occ_show_extended(struct device *dev,
+  * are dynamically allocated, we cannot use the existing kernel macros which
+  * stringify the name argument.
+  */
++__printf(7, 8)
+ static void occ_init_attribute(struct occ_attribute *attr, int mode,
+ 	ssize_t (*show)(struct device *dev, struct device_attribute *attr, char *buf),
+ 	ssize_t (*store)(struct device *dev, struct device_attribute *attr,
 -- 
 2.51.0
 
