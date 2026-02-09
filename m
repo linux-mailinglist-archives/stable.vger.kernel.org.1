@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PeSK0n2iWmuFAAAu9opvQ
-	(envelope-from <stable+bounces-215297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:21 +0100
+	id WP9cFNv4iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:10:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E967111541
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BA4111A6A
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B976C30ACE6B
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:45:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BAA33084353
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E4427FB05;
-	Mon,  9 Feb 2026 14:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7365837BE77;
+	Mon,  9 Feb 2026 14:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfEDbnCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X65gCf1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E926285073;
-	Mon,  9 Feb 2026 14:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B7828312F;
+	Mon,  9 Feb 2026 14:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648334; cv=none; b=YaIfCD/bRXh2zkfLnyNKiwdIc6lnfd9v/IG+W/2lG2UFhWqoe4m3SmVPyg/OOAcJ6qCcCpq+aHJdR4y01YBQBEcjwrCOxRRw5ZmMZH+E0lKfCXpuBAr/6R8jWYE9rIqAaBB5XtPCzDnaH8ILgV7xBmXbd+4Ey+3kLy/n7xhOjhM=
+	t=1770648786; cv=none; b=nEWmPVMOFyG4DbveUeRSyzSNyjaqcMgONBJhxW3d5r+nTr/HsK2VMTBEZuJ4zDXaPBJRPAc/jAlA0xX818N/bOz8+o2wI08PHRMO0ahGlcns2VjXShB5DdXbf73nUSZZeF568GxkG4LjBoOuODbD6D73m2HAx3NKCJh+3TSlRVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648334; c=relaxed/simple;
-	bh=HJG0fssy8Cg4ODOFxTmDj1TMvaYm4+IrDjcNMzgFsQw=;
+	s=arc-20240116; t=1770648786; c=relaxed/simple;
+	bh=Vd3WtmNhiVsPlFLtKjXyh2QIuDmJRxrC/oSIPckFLaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeOXghPzgC1VKRPxwesm3hMEwnqxAqAdrtMWC/4M1XwvB8UkfJWOVvt2wEhEM3Swpc0Bmjigsv+G+i6pLBdogBhZkukFebKTY6/++Uf+dipDI7igHlJBfiMaszrjQx3A05DWZj30FOiIBSQOiauEjSw9GYtneixLLisKUpzQjlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfEDbnCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966DDC116C6;
-	Mon,  9 Feb 2026 14:45:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a3jO2kbQF+GSn6qd3w7GQDNKEqp/bHZRb/0bsA4q+JB/VmrN1QI6JR21S788IjhXE02nTEo1iz/PiW351MJ2PkmAQU3HJZKGmkTO5uw9dAWKMWxwucJzvOL6S/cNXQ54D8k6na6GFRsdB7YXSmJQZh7A64PluIlfMX80BmwxUl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X65gCf1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCE1C116C6;
+	Mon,  9 Feb 2026 14:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648334;
-	bh=HJG0fssy8Cg4ODOFxTmDj1TMvaYm4+IrDjcNMzgFsQw=;
+	s=korg; t=1770648786;
+	bh=Vd3WtmNhiVsPlFLtKjXyh2QIuDmJRxrC/oSIPckFLaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfEDbnCTcBKvpGQGUCuGPvtnEdI6TZaIBxna/cxHa6ir2TGPzHwEGmQ496VpjS+nq
-	 of5Xy7CIiP/KYA7DfAeDULk7hM9YBkpKqHScTC0y74jwOC2/G2a02sFSl9aBCz/atE
-	 wea0j1RN919wr2QJjrtzYB0X+RFamoiR+SVWNpTU=
+	b=X65gCf1/ZJQkxnA/cOGMVcgUOxbSLpTdJWPANSrcaPbBs7Yus77yO5tPyZcsKSGiE
+	 834Zy6UluF2+lPS/iM7cWG9w/h7VgklC1UvmPpD4nTgz09JcsZU+OHiUNxOl0zsriG
+	 XYeb9VEadaSLlFFlENP39bPum6tN2yGIRnShJcnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 44/69] wifi: mac80211: dont increment crypto_tx_tailroom_needed_cnt twice
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 5.15 15/75] Documentation: Replace del_timer/del_timer_sync()
 Date: Mon,  9 Feb 2026 15:24:12 +0100
-Message-ID: <20260209142303.508607694@linuxfoundation.org>
+Message-ID: <20260209142302.393321610@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +65,203 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215297-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215436-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,linutronix.de,intel.com,gmail.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 2E967111541
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,goodmis.org:email,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: C4BA4111A6A
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 3f3d8ff31496874a69b131866f62474eb24ed20a ]
+[ Upstream commit 87bdd932e85881895d4720255b40ac28749c4e32 ]
 
-In reconfig, in case the driver asks to disconnect during the reconfig,
-all the keys of the interface are marked as tainted.
-Then ieee80211_reenable_keys will loop over all the interface keys, and
-for each one it will
-a) increment crypto_tx_tailroom_needed_cnt
-b) call ieee80211_key_enable_hw_accel, which in turn will detect that
-this key is tainted, so it will mark it as "not in hardware", which is
-paired with crypto_tx_tailroom_needed_cnt incrementation, so we get two
-incrementations for each tainted key.
-Then we get a warning in ieee80211_free_keys.
+Adjust to the new preferred function names.
 
-To fix it, don't increment the count in ieee80211_reenable_keys for
-tainted keys
-
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260118092821.4ca111fddcda.Id6e554f4b1c83760aa02d5a9e4e3080edb197aa2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201625.075320635@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/key.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/RCU/Design/Requirements/Requirements.rst      |    2 +-
+ Documentation/core-api/local_ops.rst                        |    2 +-
+ Documentation/kernel-hacking/locking.rst                    |   11 +++++------
+ Documentation/timers/hrtimers.rst                           |    2 +-
+ Documentation/translations/it_IT/kernel-hacking/locking.rst |   10 +++++-----
+ Documentation/translations/zh_CN/core-api/local_ops.rst     |    2 +-
+ 6 files changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 585de86fce840..eb1512f1b0071 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -968,7 +968,8 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
+--- a/Documentation/RCU/Design/Requirements/Requirements.rst
++++ b/Documentation/RCU/Design/Requirements/Requirements.rst
+@@ -1858,7 +1858,7 @@ unloaded. After a given module has been
+ one of its functions results in a segmentation fault. The module-unload
+ functions must therefore cancel any delayed calls to loadable-module
+ functions, for example, any outstanding mod_timer() must be dealt
+-with via del_timer_sync() or similar.
++with via timer_delete_sync() or similar.
  
- 	if (ieee80211_sdata_running(sdata)) {
- 		list_for_each_entry(key, &sdata->key_list, list) {
--			increment_tailroom_need_count(sdata);
-+			if (!(key->flags & KEY_FLAG_TAINTED))
-+				increment_tailroom_need_count(sdata);
- 			ieee80211_key_enable_hw_accel(key);
- 		}
- 	}
--- 
-2.51.0
-
+ Unfortunately, there is no way to cancel an RCU callback; once you
+ invoke call_rcu(), the callback function is eventually going to be
+--- a/Documentation/core-api/local_ops.rst
++++ b/Documentation/core-api/local_ops.rst
+@@ -191,7 +191,7 @@ Here is a sample module which implements
+ 
+     static void __exit test_exit(void)
+     {
+-            del_timer_sync(&test_timer);
++            timer_delete_sync(&test_timer);
+     }
+ 
+     module_init(test_init);
+--- a/Documentation/kernel-hacking/locking.rst
++++ b/Documentation/kernel-hacking/locking.rst
+@@ -970,7 +970,7 @@ you might do the following::
+ 
+             while (list) {
+                     struct foo *next = list->next;
+-                    del_timer(&list->timer);
++                    timer_delete(&list->timer);
+                     kfree(list);
+                     list = next;
+             }
+@@ -984,7 +984,7 @@ the lock after we spin_unlock_bh(), and
+ the element (which has already been freed!).
+ 
+ This can be avoided by checking the result of
+-del_timer(): if it returns 1, the timer has been deleted.
++timer_delete(): if it returns 1, the timer has been deleted.
+ If 0, it means (in this case) that it is currently running, so we can
+ do::
+ 
+@@ -993,7 +993,7 @@ do::
+ 
+                     while (list) {
+                             struct foo *next = list->next;
+-                            if (!del_timer(&list->timer)) {
++                            if (!timer_delete(&list->timer)) {
+                                     /* Give timer a chance to delete this */
+                                     spin_unlock_bh(&list_lock);
+                                     goto retry;
+@@ -1008,8 +1008,7 @@ do::
+ Another common problem is deleting timers which restart themselves (by
+ calling add_timer() at the end of their timer function).
+ Because this is a fairly common case which is prone to races, you should
+-use del_timer_sync() (``include/linux/timer.h``) to
+-handle this case.
++use timer_delete_sync() (``include/linux/timer.h``) to
+ 
+ Locking Speed
+ =============
+@@ -1337,7 +1336,7 @@ lock.
+ 
+ -  kfree()
+ 
+--  add_timer() and del_timer()
++-  add_timer() and timer_delete()
+ 
+ Mutex API reference
+ ===================
+--- a/Documentation/timers/hrtimers.rst
++++ b/Documentation/timers/hrtimers.rst
+@@ -118,7 +118,7 @@ existing timer wheel code, as it is matu
+ was not really a win, due to the different data structures. Also, the
+ hrtimer functions now have clearer behavior and clearer names - such as
+ hrtimer_try_to_cancel() and hrtimer_cancel() [which are roughly
+-equivalent to del_timer() and del_timer_sync()] - so there's no direct
++equivalent to timer_delete() and timer_delete_sync()] - so there's no direct
+ 1:1 mapping between them on the algorithmic level, and thus no real
+ potential for code sharing either.
+ 
+--- a/Documentation/translations/it_IT/kernel-hacking/locking.rst
++++ b/Documentation/translations/it_IT/kernel-hacking/locking.rst
+@@ -998,7 +998,7 @@ potreste fare come segue::
+ 
+             while (list) {
+                     struct foo *next = list->next;
+-                    del_timer(&list->timer);
++                    timer_delete(&list->timer);
+                     kfree(list);
+                     list = next;
+             }
+@@ -1011,7 +1011,7 @@ e prenderà il *lock* solo dopo spin_unl
+ di eliminare il suo oggetto (che però è già stato eliminato).
+ 
+ Questo può essere evitato controllando il valore di ritorno di
+-del_timer(): se ritorna 1, il temporizzatore è stato già
++timer_delete(): se ritorna 1, il temporizzatore è stato già
+ rimosso. Se 0, significa (in questo caso) che il temporizzatore è in
+ esecuzione, quindi possiamo fare come segue::
+ 
+@@ -1020,7 +1020,7 @@ esecuzione, quindi possiamo fare come se
+ 
+                     while (list) {
+                             struct foo *next = list->next;
+-                            if (!del_timer(&list->timer)) {
++                            if (!timer_delete(&list->timer)) {
+                                     /* Give timer a chance to delete this */
+                                     spin_unlock_bh(&list_lock);
+                                     goto retry;
+@@ -1034,7 +1034,7 @@ esecuzione, quindi possiamo fare come se
+ Un altro problema è l'eliminazione dei temporizzatori che si riavviano
+ da soli (chiamando add_timer() alla fine della loro esecuzione).
+ Dato che questo è un problema abbastanza comune con una propensione
+-alle corse critiche, dovreste usare del_timer_sync()
++alle corse critiche, dovreste usare timer_delete_sync()
+ (``include/linux/timer.h``) per gestire questo caso.
+ 
+ Velocità della sincronizzazione
+@@ -1380,7 +1380,7 @@ contesto, o trattenendo un qualsiasi *lo
+ 
+ -  kfree()
+ 
+--  add_timer() e del_timer()
++-  add_timer() e timer_delete()
+ 
+ Riferimento per l'API dei Mutex
+ ===============================
+--- a/Documentation/translations/zh_CN/core-api/local_ops.rst
++++ b/Documentation/translations/zh_CN/core-api/local_ops.rst
+@@ -185,7 +185,7 @@ UP之间没有不同的行为，在你�
+ 
+     static void __exit test_exit(void)
+     {
+-            del_timer_sync(&test_timer);
++            timer_delete_sync(&test_timer);
+     }
+ 
+     module_init(test_init);
 
 
 
