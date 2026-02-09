@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-215211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEL3B53yiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:41 +0100
+	id 8MAeOsnxiWnyEgAAu9opvQ
+	(envelope-from <stable+bounces-215067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F5C110CAA
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77578110A79
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7767F30123EA
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA2D03036743
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD8437BE9E;
-	Mon,  9 Feb 2026 14:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF88E3793C6;
+	Mon,  9 Feb 2026 14:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJonPMiE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTnp8GlT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEFB37BE87;
-	Mon,  9 Feb 2026 14:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83760285060;
+	Mon,  9 Feb 2026 14:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648045; cv=none; b=ZQPNI7ywnT++qv+fZyHP8vzjYPwCl64AE9ScZca04xTC+Hen+SuxWtSSQVZNHHuzoKgIIfUj2lFPcZQyUnN8BggOKjjr83+LvTi/e4/2lRKC4s85Xu7vHP7U6kQe15AmHFfASsVZpnIPN8r0rD7Fbs5NE83rWOhoncU50Zy0soU=
+	t=1770647563; cv=none; b=Vn7UJ4K7NrrjK0RTsKVQ4GgxyovOP8Wo5EtucA0rHfwe6bVluy6jAlmukMS0/yNBJ87AbZxo1GirHEQGq2Z/CK85ulVnmcgshnZk420PLrWiSZRIB/Pu+ClGWc8JWs0sW7Dhq3Qp38mo53fB8yvJuIiKgC9Pnl4g9AF69zjuomo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648045; c=relaxed/simple;
-	bh=8uBnzPx6Xz3aET56qQHemLgSmQB/4T6Nk8gytr2LBRw=;
+	s=arc-20240116; t=1770647563; c=relaxed/simple;
+	bh=WP2bIag5LYqg3polU6G0/Z1CsoETWZ1CXk//5VK+caU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ra7uDby+jbJVzOZazc/AY+EZj71mDwaweBRi+nSyyyOXEDcA98+tGCelz5MjB5VOLJVcM8oZxGw9RB61SE4YAM1IgdCZx+RGDlPasHXrKrydq9wI2/9Hb7uuyT04F+BxCztprjzv9zwluEAJS+AszB9P8Q4BsQBgEFiF8eArYoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJonPMiE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEC6C116C6;
-	Mon,  9 Feb 2026 14:40:43 +0000 (UTC)
+	 MIME-Version; b=gqqSCfDeDULr177B4W0E5K7XFQHtE/FVrQv0PtQ2YSRD9nQp0ZsZ2IT1aNYBrI9u9HvsWgRodXXGwM06csCAj0/0Zr9DeMWdQSCB2YLxuGNXQgXYfmVGcj4+mPC2RWOT5j0Uod2VRIm96XdWZ57WR0tgLxVRBMA+eY09Sx1CAMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTnp8GlT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB15C116C6;
+	Mon,  9 Feb 2026 14:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648044;
-	bh=8uBnzPx6Xz3aET56qQHemLgSmQB/4T6Nk8gytr2LBRw=;
+	s=korg; t=1770647563;
+	bh=WP2bIag5LYqg3polU6G0/Z1CsoETWZ1CXk//5VK+caU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJonPMiEAp/aDMBO+KEm89vXff5qgtZq1iJxF4PF57E4Ne/Ibp5+FI+8EktrKOrW8
-	 KcMc2Nwtg2zhyRY017Xuf/8V2SNzbQVcBuydOFFb6FWABxn4lO2t0OGcWh7XxG8EKW
-	 q1YKlFTNKk+6DRKX0c6icopyID62Z0uybNqjTqOo=
+	b=jTnp8GlTh+o4uH1m8Vw5/tJ9OxdFdQ9mQ3x98j4oJ3WEUL35PZzGLIdy8E8Ve+KLM
+	 /qjwzZ6wtRTNh5yyl37HvTLS0/lqDNLQjsgV1YX7JayP4z9sDyv9WPuG/3+zXJJhoV
+	 6Pdnk/SlShB79VjZQfrrXUqXU2x5U9X2UBj7VyXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhi Bajahaw <bajahawradhi@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/113] ASoC: amd: yc: Fix microphone on ASUS M6500RE
-Date: Mon,  9 Feb 2026 15:23:30 +0100
-Message-ID: <20260209142312.388275989@linuxfoundation.org>
+Subject: [PATCH 6.18 138/175] net: rss: fix reporting RXH_XFRM_NO_CHANGE as input_xfrm for contexts
+Date: Mon,  9 Feb 2026 15:23:31 +0100
+Message-ID: <20260209142325.472490406@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,68 +69,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215211-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215067-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 02F5C110CAA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 77578110A79
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhi Bajahaw <bajahawradhi@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 8e29db1b08808f709231e6fd4c79dcdee5b17a17 ]
+[ Upstream commit 1c172febdf065375359b2b95156e476bfee30b60 ]
 
-Add DMI match for ASUSTeK COMPUTER INC. M6500RE to enable the
-internal microphone.
+Initializing input_xfrm to RXH_XFRM_NO_CHANGE in RSS contexts is
+problematic. I think I did this to make it clear that the context
+does not have its own settings applied. But unlike ETH_RSS_HASH_NO_CHANGE
+which is zero, RXH_XFRM_NO_CHANGE is 0xff. We need to be careful
+when reading the value back, and remember to treat 0xff as 0.
 
-Signed-off-by: Radhi Bajahaw <bajahawradhi@gmail.com>
-Link: https://patch.msgid.link/20260112203814.155-1-bajahawradhi@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Remove the initialization and switch to storing 0. This lets us
+also remove the workaround in ethnl_rss_set(). Get side does not
+need any adjustments and context get no longer reports:
+
+  RSS input transformation:
+    symmetric-xor: on
+    symmetric-or-xor: on
+    Unknown bits in RSS input transformation: 0xfc
+
+for NICs which don't support input_xfrm.
+
+Remove the init of hfunc to ETH_RSS_HASH_NO_CHANGE while at it.
+As already mentioned this is a noop since ETH_RSS_HASH_NO_CHANGE
+is 0 and struct is zalloc'd. But as this fix exemplifies storing
+NO_CHANGE as state is fragile.
+
+This issue is implicitly caught by running our selftests because
+YNL in selftests errors out on unknown bits.
+
+Fixes: d3e2c7bab124 ("ethtool: rss: support setting input-xfrm via Netlink")
+Link: https://patch.msgid.link/20260130190311.811129-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/ethtool/common.c | 3 ---
+ net/ethtool/rss.c    | 9 ++-------
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 85b3310fdaaa3..346e200613031 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -409,6 +409,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RE"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/net/ethtool/common.c b/net/ethtool/common.c
+index 55223ebc2a7e6..146c7eaedc5ac 100644
+--- a/net/ethtool/common.c
++++ b/net/ethtool/common.c
+@@ -854,9 +854,6 @@ ethtool_rxfh_ctx_alloc(const struct ethtool_ops *ops,
+ 	ctx->key_off = key_off;
+ 	ctx->priv_size = ops->rxfh_priv_size;
+ 
+-	ctx->hfunc = ETH_RSS_HASH_NO_CHANGE;
+-	ctx->input_xfrm = RXH_XFRM_NO_CHANGE;
+-
+ 	return ctx;
+ }
+ 
+diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
+index 4dced53be4b3b..da5934cceb075 100644
+--- a/net/ethtool/rss.c
++++ b/net/ethtool/rss.c
+@@ -824,8 +824,8 @@ rss_set_ctx_update(struct ethtool_rxfh_context *ctx, struct nlattr **tb,
+ static int
+ ethnl_rss_set(struct ethnl_req_info *req_info, struct genl_info *info)
+ {
+-	bool indir_reset = false, indir_mod, xfrm_sym = false;
+ 	struct rss_req_info *request = RSS_REQINFO(req_info);
++	bool indir_reset = false, indir_mod, xfrm_sym;
+ 	struct ethtool_rxfh_context *ctx = NULL;
+ 	struct net_device *dev = req_info->dev;
+ 	bool mod = false, fields_mod = false;
+@@ -860,12 +860,7 @@ ethnl_rss_set(struct ethnl_req_info *req_info, struct genl_info *info)
+ 
+ 	rxfh.input_xfrm = data.input_xfrm;
+ 	ethnl_update_u8(&rxfh.input_xfrm, tb[ETHTOOL_A_RSS_INPUT_XFRM], &mod);
+-	/* For drivers which don't support input_xfrm it will be set to 0xff
+-	 * in the RSS context info. In all other case input_xfrm != 0 means
+-	 * symmetric hashing is requested.
+-	 */
+-	if (!request->rss_context || ops->rxfh_per_ctx_key)
+-		xfrm_sym = rxfh.input_xfrm || data.input_xfrm;
++	xfrm_sym = rxfh.input_xfrm || data.input_xfrm;
+ 	if (rxfh.input_xfrm == data.input_xfrm)
+ 		rxfh.input_xfrm = RXH_XFRM_NO_CHANGE;
+ 
 -- 
 2.51.0
 
