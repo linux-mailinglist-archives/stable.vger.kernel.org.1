@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-215396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPzMKsj1iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:12 +0100
+	id 8HcGBZ/4iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:09:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021D1111435
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617771119EF
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:09:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A1E9301491B
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35C1631A8726
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4152B3783C9;
-	Mon,  9 Feb 2026 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECA937BE8C;
+	Mon,  9 Feb 2026 14:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY2SNdpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYe9o4d+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0533E28725B;
-	Mon,  9 Feb 2026 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228A628312F;
+	Mon,  9 Feb 2026 14:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648657; cv=none; b=jAZmfbxPnuNYi5mRs06WpWrPwY2xCTHtcQS9iNGp2ye86FUdY06KkBkFIxRrnrHhGxMveSEh73MEJ8D3A+jhaT7N59UkMODa3SeTDrOwnWHxnrRUxtvrAJ/XraL+P11NRmG9Hja6jm2V+WoTys9zPceG7PTCJ8M4jeNd1oCjpqU=
+	t=1770648880; cv=none; b=JwQWHGVGu3vSs+ncyVpkE3k74h0mjdfYjzbVowQ7nOG0cz7ZuirjlP1Q67qEkwXx0dkyvkKJsPhFupu0mdTB+reKA0YgEpenDRi4EVuwSz4TdHuJqQfcSm13ZOuBASJIQEVmUohIqPYWX4xmciCj3mlF53wR/uRfZ/pgLDZ+eOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648657; c=relaxed/simple;
-	bh=6Vbig+42gL3O5LD/0wGlT3xDOQvE15m0yelRvmdEIpE=;
+	s=arc-20240116; t=1770648880; c=relaxed/simple;
+	bh=vCu3UAV7XnSJJFDwPcxO1pt1VUJw20QRgUyvUbk00jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7Zoog1sabevv7Lp9BTRCLgxLbk35gcPCF5rjHAFAWH6rEeBoRO5vSe5xPFXd3zf6ILDM5MxtIV0CaVLJQHsQM9xzuw7dAO2MlIOIhilc8zdlUPtKqKJ+J+Ssl/0O+nJSUijZjk5GoniotAfW+mm0h9euwYuhpGEnibUM8FfKhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY2SNdpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DC6C116C6;
-	Mon,  9 Feb 2026 14:50:56 +0000 (UTC)
+	 MIME-Version; b=faWABkyR8LclXfh5wSiWvbJemZhCdA5TWuETMS+i87NXNZhOTLKHtTnK8KfloawFoy9pqJXXFvQP9Xd8w8o5B5ngNUduy60B0gy2j2fJ+5ViDpSR9+SrAB51j0QZyxuJ+XI7i/xaoX0o26hXRKsHFAqHXuxxVdDihP3cJz1/P40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYe9o4d+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A573C116C6;
+	Mon,  9 Feb 2026 14:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648656;
-	bh=6Vbig+42gL3O5LD/0wGlT3xDOQvE15m0yelRvmdEIpE=;
+	s=korg; t=1770648880;
+	bh=vCu3UAV7XnSJJFDwPcxO1pt1VUJw20QRgUyvUbk00jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QY2SNdpt1O2LOcKNzrJXkSFbWgXEBhUvJGm8KAafTq8uVEIuS2SV8FFvTNv9ZCo0n
-	 bZhty0ET04uhjckpmr18SmGNBzZ6bqkKk4D334hlNO1qS7cCplqbSB37/rh4v69u2K
-	 QqbquLAspD2MdjyTlaZF3wLDivhp1qRN9C2yq38k=
+	b=tYe9o4d+3YQpi9Wkd7/HW1y4AplJqhKoi7D+gBj1JP6vU3K1wrXNgFhbaQ/9M+wGW
+	 otN/4QNzgL5z82ouzwNS5cDryRNqdqwrGQFdDdF6J3yuosjHR5qrXBnr+CfPqEmgQm
+	 BxUoG31dFYgS4sw+Lzc1S4/GYb+ks5VVYSBM4v8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitrios Katsaros <patcherwork@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Zhaojuan Guo <zguo@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/41] ASoC: tlv320adcx140: Propagate error codes during probe
+Subject: [PATCH 5.15 42/75] scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count()
 Date: Mon,  9 Feb 2026 15:24:39 +0100
-Message-ID: <20260209142257.466844170@linuxfoundation.org>
+Message-ID: <20260209142303.360644317@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +71,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215396-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215464-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email]
-X-Rspamd-Queue-Id: 021D1111435
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 617771119EF
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitrios Katsaros <patcherwork@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit d89aad92cfd15edbd704746f44c98fe687f9366f ]
+[ Upstream commit 9411a89e9e7135cc459178fa77a3f1d6191ae903 ]
 
-When scanning for the reset pin, we could get an -EPROBE_DEFER.
-The driver would assume that no reset pin had been defined,
-which would mean that the chip would never be powered.
+In iscsit_dec_conn_usage_count(), the function calls complete() while
+holding the conn->conn_usage_lock. As soon as complete() is invoked, the
+waiter (such as iscsit_close_connection()) may wake up and proceed to free
+the iscsit_conn structure.
 
-Now we both respect any error we get from devm_gpiod_get_optional.
-We also now properly report the missing GPIO definition when
-'gpio_reset' is NULL.
+If the waiter frees the memory before the current thread reaches
+spin_unlock_bh(), it results in a KASAN slab-use-after-free as the function
+attempts to release a lock within the already-freed connection structure.
 
-Signed-off-by: Dimitrios Katsaros <patcherwork@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://patch.msgid.link/20260113-sound-soc-codecs-tvl320adcx140-v4-3-8f7ecec525c8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by releasing the spinlock before calling complete().
+
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reported-by: Zhaojuan Guo <zguo@redhat.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Link: https://patch.msgid.link/20260112165352.138606-2-mlombard@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tlv320adcx140.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/target/iscsi/iscsi_target_util.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tlv320adcx140.c b/sound/soc/codecs/tlv320adcx140.c
-index c7a591ee25900..6e4dbf93c6996 100644
---- a/sound/soc/codecs/tlv320adcx140.c
-+++ b/sound/soc/codecs/tlv320adcx140.c
-@@ -1096,6 +1096,9 @@ static int adcx140_i2c_probe(struct i2c_client *i2c,
- 	adcx140->gpio_reset = devm_gpiod_get_optional(adcx140->dev,
- 						      "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(adcx140->gpio_reset))
-+		return dev_err_probe(&i2c->dev, PTR_ERR(adcx140->gpio_reset),
-+				     "Failed to get Reset GPIO\n");
-+	if (!adcx140->gpio_reset)
- 		dev_info(&i2c->dev, "Reset GPIO not defined\n");
+diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
+index 78aeaf67018f7..6998c0eec3d40 100644
+--- a/drivers/target/iscsi/iscsi_target_util.c
++++ b/drivers/target/iscsi/iscsi_target_util.c
+@@ -857,8 +857,11 @@ void iscsit_dec_conn_usage_count(struct iscsi_conn *conn)
+ 	spin_lock_bh(&conn->conn_usage_lock);
+ 	conn->conn_usage_count--;
  
- 	adcx140->supply_areg = devm_regulator_get_optional(adcx140->dev,
+-	if (!conn->conn_usage_count && conn->conn_waiting_on_uc)
++	if (!conn->conn_usage_count && conn->conn_waiting_on_uc) {
++		spin_unlock_bh(&conn->conn_usage_lock);
+ 		complete(&conn->conn_waiting_on_uc_comp);
++		return;
++	}
+ 
+ 	spin_unlock_bh(&conn->conn_usage_lock);
+ }
 -- 
 2.51.0
 
