@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-214937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDTyLszuiWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-214937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:24 +0100
+	id iEfSIdruiWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-214941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61D5110443
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3CD110460
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51E90301AB83
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:25:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 030553022960
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F15237AA91;
-	Mon,  9 Feb 2026 14:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D0337AA9D;
+	Mon,  9 Feb 2026 14:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1LpRbQa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhU8MXct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80763793AC;
-	Mon,  9 Feb 2026 14:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C74037997D;
+	Mon,  9 Feb 2026 14:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647132; cv=none; b=PzqWpmfHIYiw8cGqt8Pi6T20zLUOgYZLpDrYJIDqgKz4/zxQNAGDIc+ut7RcXhul32PSjibir0pqCp2PcXrJRHRP0VtKnYcKFX+SbzZPEmeKJErNZPA4H15gq911zxtXRYJAiVpKLyCyXkQd+ElmZT1UGULUdyWeeXP9JSKfbrU=
+	t=1770647146; cv=none; b=EmG/TDnsPsmIJgT4IbFkiRKwoA5QxZjSOtTYWTjMEDSms5faddfruL0NpW4LJV04t+29j/cbG1hqLrkZc04YYXHHRXc9mByHHXtlgnLI6TnyyfxHma2QPngbzG6b+yAIbNTUjgDz5RsNLPFPeIvVShKomUnuiOmJ2TK7brJA6fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647132; c=relaxed/simple;
-	bh=ypWJOnwa1Y+exNsdUseGPjuTEJBJ85Rr10BwFTxUsPU=;
+	s=arc-20240116; t=1770647146; c=relaxed/simple;
+	bh=0L4E/8PinjM3npdbecSzs5x61jH7+D3DzkW3zkKBPSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSO4ee7HDNv02Z9vxHNIouVcv6SMli39MtdhXGIjAATLMsDFwAHyMde76d3uBNFZt7bkTpCKPicy+G2kauD7vs3KH3we4gU069aIqjqaSXIAJKCtS/L04LX1I8WKAc0+hoGEFKfKbqvgtQOO9eGpb04ak7HuxBnxsTzHYQmTVeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1LpRbQa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471EDC16AAE;
-	Mon,  9 Feb 2026 14:25:32 +0000 (UTC)
+	 MIME-Version; b=lCIxZiDr5dIQqjUAcrFPsTJAyJDuz7q3y8KtFH4KbnzqYluhD64OKOh5BVVmOFGf1ZAb78NzFxHF0GW+DLW8/Az/NxYnCuHzXQuJc8wrXvy/Q5Z//C+96Wh5PuptB7ivxZ9cnwyo0ltAfxYdCl9vlyFfcqTyCJUB4bjtFya2vuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhU8MXct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDA6C116C6;
+	Mon,  9 Feb 2026 14:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647132;
-	bh=ypWJOnwa1Y+exNsdUseGPjuTEJBJ85Rr10BwFTxUsPU=;
+	s=korg; t=1770647146;
+	bh=0L4E/8PinjM3npdbecSzs5x61jH7+D3DzkW3zkKBPSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1LpRbQa2pMbndvP8riAUh+VZcCBLYWNIy0LnzzzHOKj8b+FuCKFwDMTsozJ27ZEN
-	 +DY+XRfMCSvUGtZxP6ZEPB1s2hpzIMVq+Efk5t28p4/ezaaRO9kkg2zZZE+Bu2YGm1
-	 B+HPaq6yHQNYr1XWpSGbPGhW4THV1SnTUjI/eI4U=
+	b=WhU8MXctVDPSrg5wJBcCETy0HNNNG5hXx0kiP5ptiGJ/8qEHlwEDYwDzwIKAeOiG6
+	 5YwgdCZL37df6G15TKipRLdv745JLp0k+BnOKsSvLJqvNsjT6sZ/MofWMpdC1eaK5Y
+	 OqqxTwbOMjrkooxlL5FUaDwMrZRNHX9C7+HB4xOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YunJe Shin <ioerts@kookmin.ac.kr>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Joonkyo Jung <joonkyoj@yonsei.ac.kr>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.18 001/175] nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec
-Date: Mon,  9 Feb 2026 15:21:14 +0100
-Message-ID: <20260209142320.530837941@linuxfoundation.org>
+	Justin Forbes <jforbes@fedoraproject.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.18 002/175] x86/vmware: Fix hypercall clobbers
+Date: Mon,  9 Feb 2026 15:21:15 +0100
+Message-ID: <20260209142320.566288649@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
 References: <20260209142320.474120190@linuxfoundation.org>
@@ -70,20 +70,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214937-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214941-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -91,81 +91,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,yonsei.ac.kr:email,kookmin.ac.kr:email]
-X-Rspamd-Queue-Id: E61D5110443
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: DA3CD110460
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YunJe Shin <yjshin0438@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 52a0a98549344ca20ad81a4176d68d28e3c05a5c upstream.
+commit 2687c848e57820651b9f69d30c4710f4219f7dbf upstream.
 
-nvmet_tcp_build_pdu_iovec() could walk past cmd->req.sg when a PDU
-length or offset exceeds sg_cnt and then use bogus sg->length/offset
-values, leading to _copy_to_iter() GPF/KASAN. Guard sg_idx, remaining
-entries, and sg->length/offset before building the bvec.
+Fedora QA reported the following panic:
 
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: YunJe Shin <ioerts@kookmin.ac.kr>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Joonkyo Jung <joonkyoj@yonsei.ac.kr>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+  BUG: unable to handle page fault for address: 0000000040003e54
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20251119-3.fc43 11/19/2025
+  RIP: 0010:vmware_hypercall4.constprop.0+0x52/0x90
+  ..
+  Call Trace:
+   vmmouse_report_events+0x13e/0x1b0
+   psmouse_handle_byte+0x15/0x60
+   ps2_interrupt+0x8a/0xd0
+   ...
+
+because the QEMU VMware mouse emulation is buggy, and clears the top 32
+bits of %rdi that the kernel kept a pointer in.
+
+The QEMU vmmouse driver saves and restores the register state in a
+"uint32_t data[6];" and as a result restores the state with the high
+bits all cleared.
+
+RDI originally contained the value of a valid kernel stack address
+(0xff5eeb3240003e54).  After the vmware hypercall it now contains
+0x40003e54, and we get a page fault as a result when it is dereferenced.
+
+The proper fix would be in QEMU, but this works around the issue in the
+kernel to keep old setups working, when old kernels had not happened to
+keep any state in %rdi over the hypercall.
+
+In theory this same issue exists for all the hypercalls in the vmmouse
+driver; in practice it has only been seen with vmware_hypercall3() and
+vmware_hypercall4().  For now, just mark RDI/RSI as clobbered for those
+two calls.  This should have a minimal effect on code generation overall
+as it should be rare for the compiler to want to make RDI/RSI live
+across hypercalls.
+
+Reported-by: Justin Forbes <jforbes@fedoraproject.org>
+Link: https://lore.kernel.org/all/99a9c69a-fc1a-43b7-8d1e-c42d6493b41f@broadcom.com/
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/x86/include/asm/vmware.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -349,11 +349,14 @@ static void nvmet_tcp_free_cmd_buffers(s
- 	cmd->req.sg = NULL;
+--- a/arch/x86/include/asm/vmware.h
++++ b/arch/x86/include/asm/vmware.h
+@@ -140,7 +140,7 @@ unsigned long vmware_hypercall3(unsigned
+ 		  "b" (in1),
+ 		  "c" (cmd),
+ 		  "d" (0)
+-		: "cc", "memory");
++		: "di", "si", "cc", "memory");
+ 	return out0;
  }
  
-+static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
-+
- static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- {
- 	struct bio_vec *iov = cmd->iov;
- 	struct scatterlist *sg;
- 	u32 length, offset, sg_offset;
-+	unsigned int sg_remaining;
- 	int nr_pages;
+@@ -165,7 +165,7 @@ unsigned long vmware_hypercall4(unsigned
+ 		  "b" (in1),
+ 		  "c" (cmd),
+ 		  "d" (0)
+-		: "cc", "memory");
++		: "di", "si", "cc", "memory");
+ 	return out0;
+ }
  
- 	length = cmd->pdu_len;
-@@ -361,9 +364,22 @@ static void nvmet_tcp_build_pdu_iovec(st
- 	offset = cmd->rbytes_done;
- 	cmd->sg_idx = offset / PAGE_SIZE;
- 	sg_offset = offset % PAGE_SIZE;
-+	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
-+		nvmet_tcp_fatal_error(cmd->queue);
-+		return;
-+	}
- 	sg = &cmd->req.sg[cmd->sg_idx];
-+	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
- 
- 	while (length) {
-+		if (!sg_remaining) {
-+			nvmet_tcp_fatal_error(cmd->queue);
-+			return;
-+		}
-+		if (!sg->length || sg->length <= sg_offset) {
-+			nvmet_tcp_fatal_error(cmd->queue);
-+			return;
-+		}
- 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
- 
- 		bvec_set_page(iov, sg_page(sg), iov_len,
-@@ -371,6 +387,7 @@ static void nvmet_tcp_build_pdu_iovec(st
- 
- 		length -= iov_len;
- 		sg = sg_next(sg);
-+		sg_remaining--;
- 		iov++;
- 		sg_offset = 0;
- 	}
 
 
 
