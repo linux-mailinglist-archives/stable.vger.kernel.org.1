@@ -1,60 +1,84 @@
-Return-Path: <stable+bounces-215411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDKEOeL1iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:38 +0100
+	id mA8/Dx7ziWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A62B111468
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AA2110E37
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 49EC5300722C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B65D23010496
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73CD28725B;
-	Mon,  9 Feb 2026 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067A237B416;
+	Mon,  9 Feb 2026 14:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seGEbbzv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaJktZ87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5C42BCF4C;
-	Mon,  9 Feb 2026 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9B7378D84;
+	Mon,  9 Feb 2026 14:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648706; cv=none; b=gaS8eX0XfxWGUMW4xoLFWWCdBjhpCmNpXzChxELIQcunvSJ4JtdTGit2CbjBgJXkiSMbNVx995jIC/0zrWxPKHIi5Fqz4TRjDF/LRX7FJSRZv5+iwB/XmzMDPPPM6iHIzZdhTVY6KWZH/7MQE8w/rtr+R/c7TF8z0IGOFc//I0E=
+	t=1770648288; cv=none; b=iROeSbYOur8Ao9ZHjwOBUondQJvTF2k6u6y9dq7JYe0IpzQ4wjD909bzP7P7n4b3TqY/VW2xp10vebQHiQ76fKhismAEfboOxrUr2H7NjVN55BosfNdDKMnJtovgzGRSviCp8t9Kb6OFSIDtep4BhUNY8ocQPWOQZJmhmh8nwIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648706; c=relaxed/simple;
-	bh=+47BFnW/npC+im4jUNWDN5Uq2WudY8Wu+J2vnBMxtxQ=;
+	s=arc-20240116; t=1770648288; c=relaxed/simple;
+	bh=bp+76BIytzM9Mzx7bvfOuYbr05S1AVjdKOBR8tHuzeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4fRxOHYMa8Kp9yuuR9bwKxAk7Ra1p9ZWfSn8bnqdJy9uBwMF2UVt3T6pf0bFr8D32mk8lYmprkYPQ5Xgrjue2PvXO9ZDSFRsZJp27H/2YpMT1w1P8+GQ6YGTP1rm3at9wtji0YdqyYPGKyP3gvbrst+z5Jzjd9GNUs2/VJFpzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seGEbbzv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8FDC116C6;
-	Mon,  9 Feb 2026 14:51:45 +0000 (UTC)
+	 MIME-Version; b=biXjsSQOsp1NbsvjzJQ+vm8COD656cj5KD2XkW1GLLVxIeC3HFaiWIeo0hqB6s3FHH2eJoNNXdUJNtOXlz3gNR8kwXS0xQWz+LyKIWFcCZydyviEw2P7e6t1EEM4cQkVNwKRPUGm0xVAgoVJUz4dl29PpIbwG3NHLUvl6d4ForM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaJktZ87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E97C116C6;
+	Mon,  9 Feb 2026 14:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648706;
-	bh=+47BFnW/npC+im4jUNWDN5Uq2WudY8Wu+J2vnBMxtxQ=;
+	s=korg; t=1770648288;
+	bh=bp+76BIytzM9Mzx7bvfOuYbr05S1AVjdKOBR8tHuzeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seGEbbzv1pYTedCSSys8mLTZQyLqibwzGeUVHv9yIgIwAKOgYqODGADR/qDrt5nqW
-	 rc5+ZJjPDGeVEWyOnA+/of36tLzdxBVA11QYyvfNCAsUenpLkc7cn00RHFLSjL/gkr
-	 WqG8nGpoQdxe/okMgWedEoarHGILZ3Mk+xFv0tqk=
+	b=iaJktZ87e1d9qL4q+oeEEQnsiMlS48VAW2VirTuTpnxnm7mp7IyzY+63hjbrM0oW8
+	 ONR9/l1FVNGWWjpTrOGu4PjAhNcx3lR89SB/icRG4DyGne+DM8bclM6Dl2n7ndwlQk
+	 /3X27q/ANxEiZq2BH8hpP4TYTGFcpiNqVoYweUwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
-	shechenglong <shechenglong@xfusion.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/41] block,bfq: fix aux stat accumulation destination
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Borislav Betkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Robin Murohy <robin.murphy@arm.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 62/69] iommu: disable SVA when CONFIG_X86 is set
 Date: Mon,  9 Feb 2026 15:24:30 +0100
-Message-ID: <20260209142257.140724596@linuxfoundation.org>
+Message-ID: <20260209142304.157236543@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +92,144 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	TAGGED_FROM(0.00)[bounces-215283-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215411-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,nvidia.com,kernel.org,alien8.de,intel.com,redhat.com,google.com,linaro.org,8bytes.org,oracle.com,infradead.org,arm.com,linutronix.de,gmail.com,amd.com,suse.cz,linux-foundation.org,163.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel.dk:email,xfusion.com:email,fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1A62B111468
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C7AA2110E37
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: shechenglong <shechenglong@xfusion.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 04bdb1a04d8a2a89df504c1e34250cd3c6e31a1c ]
+commit 72f98ef9a4be30d2a60136dd6faee376f780d06c upstream.
 
-Route bfqg_stats_add_aux() time accumulation into the destination
-stats object instead of the source, aligning with other stat fields.
+Patch series "Fix stale IOTLB entries for kernel address space", v7.
 
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: shechenglong <shechenglong@xfusion.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This proposes a fix for a security vulnerability related to IOMMU Shared
+Virtual Addressing (SVA).  In an SVA context, an IOMMU can cache kernel
+page table entries.  When a kernel page table page is freed and
+reallocated for another purpose, the IOMMU might still hold stale,
+incorrect entries.  This can be exploited to cause a use-after-free or
+write-after-free condition, potentially leading to privilege escalation or
+data corruption.
+
+This solution introduces a deferred freeing mechanism for kernel page
+table pages, which provides a safe window to notify the IOMMU to
+invalidate its caches before the page is reused.
+
+
+This patch (of 8):
+
+In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
+shares and walks the CPU's page tables.  The x86 architecture maps the
+kernel's virtual address space into the upper portion of every process's
+page table.  Consequently, in an SVA context, the IOMMU hardware can walk
+and cache kernel page table entries.
+
+The Linux kernel currently lacks a notification mechanism for kernel page
+table changes, specifically when page table pages are freed and reused.
+The IOMMU driver is only notified of changes to user virtual address
+mappings.  This can cause the IOMMU's internal caches to retain stale
+entries for kernel VA.
+
+Use-After-Free (UAF) and Write-After-Free (WAF) conditions arise when
+kernel page table pages are freed and later reallocated.  The IOMMU could
+misinterpret the new data as valid page table entries.  The IOMMU might
+then walk into attacker-controlled memory, leading to arbitrary physical
+memory DMA access or privilege escalation.  This is also a
+Write-After-Free issue, as the IOMMU will potentially continue to write
+Accessed and Dirty bits to the freed memory while attempting to walk the
+stale page tables.
+
+Currently, SVA contexts are unprivileged and cannot access kernel
+mappings.  However, the IOMMU will still walk kernel-only page tables all
+the way down to the leaf entries, where it realizes the mapping is for the
+kernel and errors out.  This means the IOMMU still caches these
+intermediate page table entries, making the described vulnerability a real
+concern.
+
+Disable SVA on x86 architecture until the IOMMU can receive notification
+to flush the paging cache before freeing the CPU kernel page table pages.
+
+Link: https://lkml.kernel.org/r/20251022082635.2462433-1-baolu.lu@linux.intel.com
+Link: https://lkml.kernel.org/r/20251022082635.2462433-2-baolu.lu@linux.intel.com
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Robin Murohy <robin.murphy@arm.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yi Lai <yi1.lai@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ The context change is due to the commit
+  be51b1d6bbff ("iommu/sva: Refactoring iommu_sva_bind/unbind_device()")
+  and the commit 757636ed2607 ("iommu: Rename iommu-sva-lib.{c,h}")
+  in v6.2 which are irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bfq-cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
-index 1f9ccc661d574..14341376702e6 100644
---- a/block/bfq-cgroup.c
-+++ b/block/bfq-cgroup.c
-@@ -387,7 +387,7 @@ static void bfqg_stats_add_aux(struct bfqg_stats *to, struct bfqg_stats *from)
- 	blkg_rwstat_add_aux(&to->merged, &from->merged);
- 	blkg_rwstat_add_aux(&to->service_time, &from->service_time);
- 	blkg_rwstat_add_aux(&to->wait_time, &from->wait_time);
--	bfq_stat_add_aux(&from->time, &from->time);
-+	bfq_stat_add_aux(&to->time, &from->time);
- 	bfq_stat_add_aux(&to->avg_queue_size_sum, &from->avg_queue_size_sum);
- 	bfq_stat_add_aux(&to->avg_queue_size_samples,
- 			  &from->avg_queue_size_samples);
--- 
-2.51.0
-
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2799,6 +2799,9 @@ iommu_sva_bind_device(struct device *dev
+ 	if (!group)
+ 		return ERR_PTR(-ENODEV);
+ 
++	if (IS_ENABLED(CONFIG_X86))
++		return ERR_PTR(-EOPNOTSUPP);
++
+ 	/* Ensure device count and domain don't change while we're binding */
+ 	mutex_lock(&group->mutex);
+ 
 
 
 
