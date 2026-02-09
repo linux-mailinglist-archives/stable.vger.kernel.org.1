@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCXkBpzyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:40 +0100
+	id uMjzMDXziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04EB110CA3
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65066110E9E
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C32FA300D762
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B95B30500C8
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5B937BE75;
-	Mon,  9 Feb 2026 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CD837AA71;
+	Mon,  9 Feb 2026 14:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeihLJlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxHRhcae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38EF37BE7E;
-	Mon,  9 Feb 2026 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42F837C101;
+	Mon,  9 Feb 2026 14:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648040; cv=none; b=on7qFo8waahuXXfhdXMF3dNNzAsmCvT9/1tiatOXyYU0v36klz/rxUg0sXH1QxBSdfR3clwtpt3WdYvux7ZFd4W/4SzKh4u4BjD3hvw7ZB4KaoEXTxEA8a4Ctg3ULnTzVZ2pkwpwVMQ2lQETMY90pgZU15XUmQ5eMKhtqJEGg28=
+	t=1770648116; cv=none; b=WfXdVNZ7f5GotGNnkzRN8c93yxR79SgQpE1uIt4/LDeHxNI2tdWFBVAaEw3hhkRhU7a0H94UDyU3aDt2QK8ms3YV+go60p8AdPde09ZR6jInYfL7kTI/vpSCrRbBPG5R+r+K+xGKqhLFimhc+2tih9eFb42rZJEhaCRaYxd7LT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648040; c=relaxed/simple;
-	bh=DPz5hEDdlv1XmcDj9SYl5bdfMZM7sVQbvCHK2+Jfjwk=;
+	s=arc-20240116; t=1770648116; c=relaxed/simple;
+	bh=SdjrXxvDQ6ZDayCve9yBKelf7f+JzUPCQqmvsRr8ca4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzp4owjiSevLS16ZeiTPJQQjk6PPXJ9bwvkvgSTZl5F7MZ/vMoSDMrIe4tIMUKHt1UFiL9fd4nmwE77jcgUEsVL259RgKTlCrD27fk5j1wjNutIX8s2D1aC6swyEFOD2mYt+ZpjzdEp/fodBHJVqKeW0G3udOK+OEpKgVxjcZIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeihLJlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6D2C116C6;
-	Mon,  9 Feb 2026 14:40:40 +0000 (UTC)
+	 MIME-Version; b=W/it9tf3OeurBq58mzhwPMZXDTWbKUzTAYncDeS5JLqyC/HYGpO1BxK8LEC4G90A1A6xYKHE4pT5kevU64cY+h4oRs1qvUM9RxB7cL+4IKbai/Kt7bE8JPg3U7cPjjatXkE/SoBgQT1YyrjGaD6W9ja/ln+xAWSGQQy6OiBlcJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxHRhcae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D74C116C6;
+	Mon,  9 Feb 2026 14:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648040;
-	bh=DPz5hEDdlv1XmcDj9SYl5bdfMZM7sVQbvCHK2+Jfjwk=;
+	s=korg; t=1770648116;
+	bh=SdjrXxvDQ6ZDayCve9yBKelf7f+JzUPCQqmvsRr8ca4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AeihLJlFKtT4/+uUgCNnV7svpUkNN9B6sTH+bhg2AoKkZtr0W27aA9oKbhcv0Rfn9
-	 1+c57ogvdTHkheCKp2rV0zSOQ/SZ+dxr2O7q+0vLv6x7YPC4kPEkqrza5SK20O1tbT
-	 bDVjXJruiEZyj0M/Xri5Zsd+E/3KxvkttamTsBbg=
+	b=uxHRhcaesrfcZVJSCvERhlzsAcPz7N1g/2d5wMM0aXV2y2Vj++NL0ZexgFLFbXbzs
+	 +Hk2s49m/X2BWfetyCEJiaEZUuCExq/W5pDJa4ypVdllSBtbmiRMlVd78dKAf38gbc
+	 tD3694RO4blyahIF5uJ41u2/iIvvzypoRN3AXInc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/113] wifi: mac80211: dont increment crypto_tx_tailroom_needed_cnt twice
-Date: Mon,  9 Feb 2026 15:23:39 +0100
-Message-ID: <20260209142312.704874330@linuxfoundation.org>
+Subject: [PATCH 6.1 12/69] pmdomain: imx8mp-blk-ctrl: Keep usb phy power domain on for system wakeup
+Date: Mon,  9 Feb 2026 15:23:40 +0100
+Message-ID: <20260209142302.361542299@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215210-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215232-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -90,58 +90,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: B04EB110CA3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,nxp.com:email]
+X-Rspamd-Queue-Id: 65066110E9E
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 3f3d8ff31496874a69b131866f62474eb24ed20a ]
+[ Upstream commit e2c4c5b2bbd4f688a0f9f6da26cdf6d723c53478 ]
 
-In reconfig, in case the driver asks to disconnect during the reconfig,
-all the keys of the interface are marked as tainted.
-Then ieee80211_reenable_keys will loop over all the interface keys, and
-for each one it will
-a) increment crypto_tx_tailroom_needed_cnt
-b) call ieee80211_key_enable_hw_accel, which in turn will detect that
-this key is tainted, so it will mark it as "not in hardware", which is
-paired with crypto_tx_tailroom_needed_cnt incrementation, so we get two
-incrementations for each tainted key.
-Then we get a warning in ieee80211_free_keys.
+USB system wakeup need its PHY on, so add the GENPD_FLAG_ACTIVE_WAKEUP
+flags to USB PHY genpd configuration.
 
-To fix it, don't increment the count in ieee80211_reenable_keys for
-tainted keys
-
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260118092821.4ca111fddcda.Id6e554f4b1c83760aa02d5a9e4e3080edb197aa2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/key.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/imx/imx8mp-blk-ctrl.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index b679ef23d28fd..66fff8e19ca24 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -987,7 +987,8 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
+--- a/drivers/soc/imx/imx8mp-blk-ctrl.c
++++ b/drivers/soc/imx/imx8mp-blk-ctrl.c
+@@ -42,6 +42,7 @@ struct imx8mp_blk_ctrl_domain_data {
+ 	const char * const *path_names;
+ 	int num_paths;
+ 	const char *gpc_name;
++	const unsigned int flags;
+ };
  
- 	if (ieee80211_sdata_running(sdata)) {
- 		list_for_each_entry(key, &sdata->key_list, list) {
--			increment_tailroom_need_count(sdata);
-+			if (!(key->flags & KEY_FLAG_TAINTED))
-+				increment_tailroom_need_count(sdata);
- 			ieee80211_key_enable_hw_accel(key);
- 		}
- 	}
--- 
-2.51.0
-
+ #define DOMAIN_MAX_CLKS 2
+@@ -167,10 +168,12 @@ static const struct imx8mp_blk_ctrl_doma
+ 	[IMX8MP_HSIOBLK_PD_USB_PHY1] = {
+ 		.name = "hsioblk-usb-phy1",
+ 		.gpc_name = "usb-phy1",
++		.flags = GENPD_FLAG_ACTIVE_WAKEUP,
+ 	},
+ 	[IMX8MP_HSIOBLK_PD_USB_PHY2] = {
+ 		.name = "hsioblk-usb-phy2",
+ 		.gpc_name = "usb-phy2",
++		.flags = GENPD_FLAG_ACTIVE_WAKEUP,
+ 	},
+ 	[IMX8MP_HSIOBLK_PD_PCIE] = {
+ 		.name = "hsioblk-pcie",
+@@ -619,6 +622,7 @@ static int imx8mp_blk_ctrl_probe(struct
+ 		domain->genpd.name = data->name;
+ 		domain->genpd.power_on = imx8mp_blk_ctrl_power_on;
+ 		domain->genpd.power_off = imx8mp_blk_ctrl_power_off;
++		domain->genpd.flags = data->flags;
+ 		domain->bc = bc;
+ 		domain->id = i;
+ 
 
 
 
