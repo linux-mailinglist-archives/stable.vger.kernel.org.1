@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-215345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APjmNJb3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:04:54 +0100
+	id sJamNQH0iWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610C51117A2
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:04:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C81111094
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3787831983D4
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01A04305DB8C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19453783C9;
-	Mon,  9 Feb 2026 14:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F08637BE78;
+	Mon,  9 Feb 2026 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xx0RhJiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l27+tYyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6566B285073;
-	Mon,  9 Feb 2026 14:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500B3276028;
+	Mon,  9 Feb 2026 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648491; cv=none; b=YQngJ9ZOUZ+e5RK7TEXURU20muvP0E9wcSo16PAgMqS9Z0ahWOohNR9CFqCcRhhzQ8Qwe3kbMVSrDATisWLTPfXxCGK5LdlDmMHNvdA4VhmSgDb5Y5xbQS2NmXK02xuqTH9kyMBxEIkun5F9iHnauFTPROw48iDz2S7de8bXHlI=
+	t=1770648052; cv=none; b=JrUiDSZlte0ZoHhlKrfay3VjUPiTVRK/vKfwFSRbMSKHguAtsvtEzqj23HqfRf676dhAkpOIaaEWi6hO1oIiz9rW6qkqEr65ccZDYPsBazbWiKKYXZuE6xwUeU3ITZBza3vY0nCb2Ao+zOcCaKu49yVMAvwDZH5VXHN01VJHMB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648491; c=relaxed/simple;
-	bh=j0Dbz5KGWPRkFVu49mMx8cJb90/ztnceHzj712EfYE4=;
+	s=arc-20240116; t=1770648052; c=relaxed/simple;
+	bh=3uJIpRAAXqRwDVv4+i+AZsv7BoDBE3KaflSm/LFc7Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTXCIBo7yTh8WpmuCeY881YEmbqmFAqoB/we3ngUdjqgTJ8NGP9yQvcGMmsBYo2cC3G709G3sq2arS2H97TBbGJqkPGNlvzZzUUp58XKVGe54MpzYutu3R89w5thR9u1piXpJL1zBYNxwDOC9zmhFbauS6AhPdxNoTBZVG8hVzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xx0RhJiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB23C116C6;
-	Mon,  9 Feb 2026 14:48:10 +0000 (UTC)
+	 MIME-Version; b=Baq6iLcM+ww6w/N3M1NmWmaAUPZAzg+GlGsjjOAGljXHiWNxBGjf6t7yhVVZ8qmVTR7TsU48CqcQJOCbAjBHalr9lmu9/K7KzXhVJr1DNRWuFWU6x4jPnIc6rmdAQub6t0/FMb4Mnvi580p/jZm82LDyJ2NANq+flxOwvbFDy18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l27+tYyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75FBC116C6;
+	Mon,  9 Feb 2026 14:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648491;
-	bh=j0Dbz5KGWPRkFVu49mMx8cJb90/ztnceHzj712EfYE4=;
+	s=korg; t=1770648052;
+	bh=3uJIpRAAXqRwDVv4+i+AZsv7BoDBE3KaflSm/LFc7Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xx0RhJiIcyl2yJYVYlo9MO8EwepMx1qB4eIKU6VjN/qJ4XmX+TtvM7hyEUyYnMJXx
-	 94Uty+AQ4YsL3t/h8Clifo44iJ6uZ9VsGjSB1wfR/W7NF02WVPY/LkGf7Kfb84mCJS
-	 gje5qTIKOteFq/PVWCcBBuleNXC+PhrKxeUpZlvI=
+	b=l27+tYytqDP0slLT3cICz/3K1kAZB76hW2HHc72uLDgsnfNG0kyCv027386+GGS/3
+	 x0vXZtwJTUL/alFCG5HVdI+IWQ4/lNl6RIKYYzBOeNjqjgmyXK55DM6VkeleFyeIIY
+	 6ZY2xkRRNkWtf7Htrx1UnQAzL+Ooi8oHbZYf45ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Breno Leitao <leitao@debian.org>,
+	Thierry Reding <treding@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 52/86] ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
-Date: Mon,  9 Feb 2026 15:24:15 +0100
-Message-ID: <20260209142306.653903363@linuxfoundation.org>
+Subject: [PATCH 6.12 107/113] spi: tegra210-quad: Move curr_xfer read inside spinlock
+Date: Mon,  9 Feb 2026 15:24:16 +0100
+Message-ID: <20260209142314.017988603@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,66 +71,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215345-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215213-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: 610C51117A2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 64C81111094
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit b48fe9af1e60360baf09ca6b7a3cd6541f16e611 ]
+[ Upstream commit ef13ba357656451d6371940d8414e3e271df97e3 ]
 
-Add a PCI quirk to enable microphone detection on the headphone jack of
-TongFang X6AR55xU devices.
+Move the assignment of the transfer pointer from curr_xfer inside the
+spinlock critical section in both handle_cpu_based_xfer() and
+handle_dma_based_xfer().
 
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260119151626.35481-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Previously, curr_xfer was read before acquiring the lock, creating a
+window where the timeout path could clear curr_xfer between reading it
+and using it. By moving the read inside the lock, the handlers are
+guaranteed to see a consistent value that cannot be modified by the
+timeout path.
+
+Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-2-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-tegra210-quad.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index e7f6bba3e02b3..908672bab29e3 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11101,6 +11101,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
- 		{0x12, 0x90a60140},
- 		{0x19, 0x04a11030},
- 		{0x21, 0x04211020}),
-+	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
-+		{0x17, 0x90170110},
-+		{0x19, 0x03a11030},
-+		{0x21, 0x03211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
- 		ALC282_STANDARD_PINS,
- 		{0x12, 0x90a609c0},
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 24f92af780188..226993cf32669 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1334,10 +1334,11 @@ static int tegra_qspi_transfer_one_message(struct spi_controller *host,
+ 
+ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
+ {
+-	struct spi_transfer *t = tqspi->curr_xfer;
++	struct spi_transfer *t;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&tqspi->lock, flags);
++	t = tqspi->curr_xfer;
+ 
+ 	if (tqspi->tx_status ||  tqspi->rx_status) {
+ 		tegra_qspi_handle_error(tqspi);
+@@ -1368,7 +1369,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
+ 
+ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
+ {
+-	struct spi_transfer *t = tqspi->curr_xfer;
++	struct spi_transfer *t;
+ 	unsigned int total_fifo_words;
+ 	unsigned long flags;
+ 	long wait_status;
+@@ -1405,6 +1406,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
+ 	}
+ 
+ 	spin_lock_irqsave(&tqspi->lock, flags);
++	t = tqspi->curr_xfer;
+ 
+ 	if (err) {
+ 		tegra_qspi_dma_unmap_xfer(tqspi, t);
 -- 
 2.51.0
 
