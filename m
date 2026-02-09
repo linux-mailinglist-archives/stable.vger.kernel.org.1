@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id tanrHSb2iWmuFAAAu9opvQ
-	(envelope-from <stable+bounces-215449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:46 +0100
+	id CD5VIz7yiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF491114EA
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C83110BA0
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BC9B8302B31F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D16273069AE1
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91AB37BE68;
-	Mon,  9 Feb 2026 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ECF2C2360;
+	Mon,  9 Feb 2026 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFluciBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpgTzjBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEC428312F;
-	Mon,  9 Feb 2026 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB48023D291;
+	Mon,  9 Feb 2026 14:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648829; cv=none; b=gG7KDJIg7wDixwxdBH174yYMYnRFreIMJwsamUpRypfL547tLSDXWtVBQlAmeaQKlw92MyKyX3Alp35W/9Y6e9Sl+Mcvvt48G1KfFSNX71dyJbB7GmYzKIbNmZCpiZw4QUVeYVE/t6GQaErRhNFNCdeESzli9n6tIGrwGlKdggg=
+	t=1770647681; cv=none; b=SRcXXggnRDA+N025B4SY4lv/ykOG8iIM94t9G2fBZ6lYIZk21buOQE0mpP96J4v7rpVcdzcU8A7/lq+jJyOWWjgvDY1i89/ULk5ZlniLqLNgJMFptojDm4juWNYb/fzipaSYh7vKqDnbc1MSQ7w8kDpWpoLCocYLy+Q9iVgyykQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648829; c=relaxed/simple;
-	bh=flxGXVby2knBeD8zHmgd+vBB5im3F/fXvyO3WLULiug=;
+	s=arc-20240116; t=1770647681; c=relaxed/simple;
+	bh=RPnyOV/+fimNFF/sn0kVX85AEnRptWW+hQwEFzN3nrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KxbQ7be5H/UjwLVz1+84Zj344JDpXAdj8A/Nyc7Z6pfwtO7wG9/j/b+Sd0FhAt6AFDQDvGVjunjE+AodbV4Dtfh4/xzsEudq8d6zE5PUConkO8gL5pAa/I2gfPogEuKYjkvRb3G+HXNZ0rQiJSd9Ja5kifLKlbMgXrZV4Ca+9ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFluciBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCF9C116C6;
-	Mon,  9 Feb 2026 14:53:48 +0000 (UTC)
+	 MIME-Version; b=hJJIYn4TNqYrJchWl+gb5xngg5YAiHiiigCjA/EgaXPtBg2Y7v7U4w0eDEEFhiyPF4ENljq22id+mF4J/FP4/3FTaydx/HGsennGu1qlAYdZuZh3J0AyPBabvpNguqoN+ZP0gT+tfyg3qMhUNHbG3p2jWEDT0O2hfYNKosbwEqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpgTzjBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B30C116C6;
+	Mon,  9 Feb 2026 14:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648829;
-	bh=flxGXVby2knBeD8zHmgd+vBB5im3F/fXvyO3WLULiug=;
+	s=korg; t=1770647681;
+	bh=RPnyOV/+fimNFF/sn0kVX85AEnRptWW+hQwEFzN3nrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFluciBvwOwbhPAruYioya9XGolmPTXldHcEFeAgjqSebWRZMqULXVHJ+ecCe5eGU
-	 q/D4Tg8A9Ex44ObUb/HlhkzpJunhSl9uT5fFqqkq4UoVCpe6Gfpostkn4V+vRHlpH3
-	 e6GBgziilFyqZc2FVHWlX5u+7PjB069t459F0iYs=
+	b=OpgTzjBiYQ5cTGui+4OqnxzA0kRtwOEe1lc+V/IlhenxaM1Uqdv+0Uq5EKN4ktWVL
+	 sC6shpLaSEuGKgbVasPZi4+qai4Yug7ccrqh8NDkyVux05hTpXFGQaxSR9F1A7gXFR
+	 11JqYjTy4O++I27tlrSA1SoQDM5lMpnofKjPEJd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 5.15 08/75] Documentation: Remove bogus claim about del_timer_sync()
-Date: Mon,  9 Feb 2026 15:24:05 +0100
-Message-ID: <20260209142302.140104441@linuxfoundation.org>
+	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 173/175] ALSA: hda/realtek: Really fix headset mic for TongFang X6AR55xU.
+Date: Mon,  9 Feb 2026 15:24:06 +0100
+Message-ID: <20260209142326.701123862@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215449-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linutronix.de,intel.com,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215102-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BCF491114EA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.de:email,msgid.link:url,tuxedocomputers.com:email]
+X-Rspamd-Queue-Id: 18C83110BA0
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit b0b0aa5d858d4d2fe39a5e4486e0550e858108f6 ]
+commit 1aaedafb21f38cb872d44f7608b4828a1e14e795 upstream.
 
-del_timer_sync() does not return the number of times it tried to delete the
-timer which rearms itself. It's clearly documented:
+Add a PCI quirk to enable microphone detection on the headphone jack of
+TongFang X6AR55xU devices.
 
- The function returns whether it has deactivated a pending timer or not.
+The former quirk entry did not acomplish this and is removed.
 
-This part of the documentation is from 2003 where del_timer_sync() really
-returned the number of deletion attempts for unknown reasons. The code
-was rewritten in 2005, but the documentation was not updated.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201624.452282769@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Fixes: b48fe9af1e60 ("ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU")
+Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260123221233.28273-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/kernel-hacking/locking.rst                    |    3 +--
- Documentation/translations/it_IT/kernel-hacking/locking.rst |    4 +---
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ sound/hda/codecs/realtek/alc269.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/Documentation/kernel-hacking/locking.rst
-+++ b/Documentation/kernel-hacking/locking.rst
-@@ -1009,8 +1009,7 @@ Another common problem is deleting timer
- calling add_timer() at the end of their timer function).
- Because this is a fairly common case which is prone to races, you should
- use del_timer_sync() (``include/linux/timer.h``) to
--handle this case. It returns the number of times the timer had to be
--deleted before we finally stopped it from adding itself back in.
-+handle this case.
- 
- Locking Speed
- =============
---- a/Documentation/translations/it_IT/kernel-hacking/locking.rst
-+++ b/Documentation/translations/it_IT/kernel-hacking/locking.rst
-@@ -1035,9 +1035,7 @@ Un altro problema è l'eliminazione dei
- da soli (chiamando add_timer() alla fine della loro esecuzione).
- Dato che questo è un problema abbastanza comune con una propensione
- alle corse critiche, dovreste usare del_timer_sync()
--(``include/linux/timer.h``) per gestire questo caso. Questa ritorna il
--numero di volte che il temporizzatore è stato interrotto prima che
--fosse in grado di fermarlo senza che si riavviasse.
-+(``include/linux/timer.h``) per gestire questo caso.
- 
- Velocità della sincronizzazione
- ===============================
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7232,6 +7232,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1d05, 0x1409, "TongFang GMxIXxx", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d05, 0x300f, "TongFang X6AR5xxY", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d05, 0x3019, "TongFang X6FR5xxY", ALC2XX_FIXUP_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1d05, 0x3031, "TongFang X6AR55xU", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d17, 0x3288, "Haier Boyue G42", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
+ 	SND_PCI_QUIRK(0x1d72, 0x1602, "RedmiBook", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1701, "XiaomiNotebook Pro", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE),
+@@ -7701,10 +7702,6 @@ static const struct snd_hda_pin_quirk al
+ 		{0x12, 0x90a60140},
+ 		{0x19, 0x04a11030},
+ 		{0x21, 0x04211020}),
+-	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
+-		{0x17, 0x90170110},
+-		{0x19, 0x03a11030},
+-		{0x21, 0x03211020}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
+ 		ALC282_STANDARD_PINS,
+ 		{0x12, 0x90a609c0},
 
 
 
