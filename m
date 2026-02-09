@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB2PJBz0iWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:04 +0100
+	id MHO9JvnziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241D71110DC
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6B11108B
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54889302F691
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:47:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8921330CA257
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3808537C114;
-	Mon,  9 Feb 2026 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B938337C0F1;
+	Mon,  9 Feb 2026 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ycamnzco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUbIqfes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCAC37C107;
-	Mon,  9 Feb 2026 14:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDF22222B2;
+	Mon,  9 Feb 2026 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648455; cv=none; b=aRuELT5ihCyKyeo4NWjguwDCLI5oD9tNdTwA0jQOYYLcCI5ECus3t3huCTbP/9C0wWP46J15leZAclnoHkZvbeJouoFfW8fe5yGt8uQNThcktHol1F5yr8kSudF0mcToTHp8kVcws7xTvSBfgrU+iKJGx9UGEjKRYPKhRwQgE4Y=
+	t=1770648021; cv=none; b=IQhcqyGZdWlVY0aR++qkTUyRfe0A21VJ3tzvtxoG32WP0SFpQjvpxUcS0yVxp3MiysJhCW3Mm4pi9M0OihBYpyulNTuI2806HSQsl8u43EEMst3Vt6FDMTEHe6YJVr6Lic4pG9U3yGmElhHrF3rcCD7KX/T28yMdIZNs7HacSVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648455; c=relaxed/simple;
-	bh=xqtYwFq3t0VYfQnsdpeWV/ZjrzYmx1HJ6xK+j32CJ5U=;
+	s=arc-20240116; t=1770648021; c=relaxed/simple;
+	bh=10c+rhVDfERDo3IOIiKnjGFCMruyrN9Ia4x8302a9NA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOroKSVg9HtnlCbZQnymWUuxxE2YRXBxnFyhBr1qEzEdedVfGPZ7RWFBAyVuavFlxPIjBflslrxt6tH6m+ti3wZL8yvsOnXCAjQ9E68tg5yUpgWWW6WV/1YaV9senIVRvM7Tv86kgp0j4U5eg9/oFWY/i3AVxKXGEtyOn8NV0DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ycamnzco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA47C16AAE;
-	Mon,  9 Feb 2026 14:47:34 +0000 (UTC)
+	 MIME-Version; b=PN0IThvzEVazbXR/S4ikBlqavPAHCAqFdKD+CEqbkhqXHpzXzSJVjmX4wikBJ+rEnEKEOKOuKMrf6qhMehp/rtfV4n8tU4SVXYPBiSgvzOfL/rauy16n7tqsb0hYbG7eD7BoafoJXbXsDDabb39IhyN8KVCWDqPbhqOsZeii/J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUbIqfes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D7AC116C6;
+	Mon,  9 Feb 2026 14:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648454;
-	bh=xqtYwFq3t0VYfQnsdpeWV/ZjrzYmx1HJ6xK+j32CJ5U=;
+	s=korg; t=1770648021;
+	bh=10c+rhVDfERDo3IOIiKnjGFCMruyrN9Ia4x8302a9NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcamnzcosNSAppbx9rY43rBcIjrYEUB+5jM3hzbO058l19OsVCq5UYUVZ1IU/Ivgw
-	 JPzsnPE/REarRF4DwVzxYZLgQSGm5V5QXDIv69JPyssGVhIUFbBJQO9E2+jx30m8UF
-	 +RkNF7czsVtbtDt7tK1EEb/oRq2tlwnPRXH5XZ/4=
+	b=TUbIqfesGNC0hEIB8h9WoArufVuNHJs8GW0mCOX+HUsESiLfRilVtwzMi3Ta7xwu3
+	 5piMqxezygiYpRMgLsGALRYcUior0fh/HNeVQIsEHwrs05KAGgpbgqtZwQp6A15fhK
+	 tTt1TiuOySoWIlZI8nEo0oGO2WJmp3FKGOclUNPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 42/86] wifi: mac80211: collect station statistics earlier when disconnect
+Subject: [PATCH 6.12 096/113] net: gro: fix outer network offset
 Date: Mon,  9 Feb 2026 15:24:05 +0100
-Message-ID: <20260209142306.298780892@linuxfoundation.org>
+Message-ID: <20260209142313.629849469@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +69,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215333-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215204-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 241D71110DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 3DA6B11108B
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit a203dbeeca15a9b924f0d51f510921f4bae96801 ]
+[ Upstream commit 5c2c3c38be396257a6a2e55bd601a12bb9781507 ]
 
-In __sta_info_destroy_part2(), station statistics are requested after the
-IEEE80211_STA_NONE -> IEEE80211_STA_NOTEXIST transition. This is
-problematic because the driver may be unable to handle the request due to
-the STA being in the NOTEXIST state (i.e. if the driver destroys the
-underlying data when transitioning to NOTEXIST).
+The udp GRO complete stage assumes that all the packets inserted the RX
+have the `encapsulation` flag zeroed. Such assumption is not true, as a
+few H/W NICs can set such flag when H/W offloading the checksum for
+an UDP encapsulated traffic, the tun driver can inject GSO packets with
+UDP encapsulation and the problematic layout can also be created via
+a veth based setup.
 
-Move the statistics collection to before the state transition to avoid
-this issue.
+Due to the above, in the problematic scenarios, udp4_gro_complete() uses
+the wrong network offset (inner instead of outer) to compute the outer
+UDP header pseudo checksum, leading to csum validation errors later on
+in packet processing.
 
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251222-mac80211-move-station-stats-collection-earlier-v1-1-12cd4e42c633@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Address the issue always clearing the encapsulation flag at GRO completion
+time. Such flag will be set again as needed for encapsulated packets by
+udp_gro_complete().
+
+Fixes: 5ef31ea5d053 ("net: gro: fix udp bad offset in socket lookup by adding {inner_}network_offset to napi_gro_cb")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/562638dbebb3b15424220e26a180274b387e2a88.1770032084.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/core/gro.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 64cf5589989bb..9d7d7ee9d7ce2 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1477,6 +1477,10 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
- 		}
+diff --git a/net/core/gro.c b/net/core/gro.c
+index 0ad549b07e039..40aaac4e04f34 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -265,6 +265,8 @@ static void napi_gro_complete(struct napi_struct *napi, struct sk_buff *skb)
+ 		goto out;
  	}
  
-+	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
-+	if (sinfo)
-+		sta_set_sinfo(sta, sinfo, true);
-+
- 	if (sta->uploaded) {
- 		ret = drv_sta_state(local, sdata, sta, IEEE80211_STA_NONE,
- 				    IEEE80211_STA_NOTEXIST);
-@@ -1485,9 +1489,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
- 
- 	sta_dbg(sdata, "Removed STA %pM\n", sta->sta.addr);
- 
--	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
--	if (sinfo)
--		sta_set_sinfo(sta, sinfo, true);
- 	cfg80211_del_sta_sinfo(sdata->dev, sta->sta.addr, sinfo, GFP_KERNEL);
- 	kfree(sinfo);
- 
++	/* NICs can feed encapsulated packets into GRO */
++	skb->encapsulation = 0;
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(ptype, head, list) {
+ 		if (ptype->type != type || !ptype->callbacks.gro_complete)
 -- 
 2.51.0
 
