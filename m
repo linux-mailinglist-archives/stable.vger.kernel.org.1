@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-215309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHu7Cnz2iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:12 +0100
+	id wNuXDZfxiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFEF1115B2
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7726C110A00
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A39B630E5678
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F14083006D7E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1A536AB43;
-	Mon,  9 Feb 2026 14:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EDA37BE78;
+	Mon,  9 Feb 2026 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuKifsrH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDnP2f24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7A227CCF2;
-	Mon,  9 Feb 2026 14:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF72276028;
+	Mon,  9 Feb 2026 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648375; cv=none; b=r67vy8a0tuDi4j36kGyyQ5qxkldfSvrR73MlMT0yxRxXGNCvZSpzGsktor9aZ+er08q2METbhonTUIJqjUzgMBtUUNxSbhuid5JjFURrQ6Y4wmcpZSGhkhT23XcuVkvuIZK2tUhBVv0+wnK/OB//mIeXXDFB5oD/GTmrcmfz7IE=
+	t=1770647887; cv=none; b=fhhBrLk1fwGaLrilN+twRBz09vBmwiumBC3uM5wbdpvqBROi/LLbQAiDjApGFF2nYnsi1VgVua7Du4XTrUZnoGVWqeGceveFOvP/eUBbgd+VfrecFed1Y1s4xGaoXpk3TigC5hQEFgLYdHhs7q9pbWcL40TM7CLMFpTFmEGYkiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648375; c=relaxed/simple;
-	bh=EbTPmO+iM1Sxpy/lQzv77wVBIgrwX0tiTJIgXAC6e8U=;
+	s=arc-20240116; t=1770647887; c=relaxed/simple;
+	bh=49ceuAr79Yeca2OOzIgwQyNUPuveoWafNan57Yq5DAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=He8mEGaTgHC8cKz3LzSIouHHGYYK/cxQBZe+oVOoe8OtMDC4fRpsZ+wnbTckAwPfWBbXEB7yynqmr3+Dgi4/nfyD5cTfbpw7IEkwIPprUjHWErQ3EUZFBJ7UvTZI+qdq47eVhDd4+EVl8AVXVAxsFNQF45ZAHnsOcEeF+Xb932g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuKifsrH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EF5C116C6;
-	Mon,  9 Feb 2026 14:46:14 +0000 (UTC)
+	 MIME-Version; b=eKngwlnjQWX5gBfIaABkXa90PBn1yYv0Pu/7/pbUXFhb35cLAfbTnmuMJmCsfHozX9kgspYnAI0aVQputXaHfLIYu7TZzAW96p5hbxsoOEHScvw9aLVEjaHi5uRVbOm2oEl/lOiRVM9D0LUXfaAxFGNiPTiHPVoZDo1qK4AMd2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDnP2f24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133F4C116C6;
+	Mon,  9 Feb 2026 14:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648375;
-	bh=EbTPmO+iM1Sxpy/lQzv77wVBIgrwX0tiTJIgXAC6e8U=;
+	s=korg; t=1770647887;
+	bh=49ceuAr79Yeca2OOzIgwQyNUPuveoWafNan57Yq5DAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuKifsrHtiPZssV9YTiApIG4XbU+lCgleRKCApvITzgtBEbpwozHkE1xV+RbCZQ2S
-	 XDK3mriIRMo9LUKfYNCiGsG2djgqbJBaCtQe1AlGgTmBaFXU8ZTSLhh5SqIp4J25zb
-	 QiucikVFDCjgJdZLnkdyZSzr5a6zhh0ALzjVnp/g=
+	b=TDnP2f24aleMJjkRJ/XMqNdLo+IXrkwJYoohZE/MyFg7gWyUm5qdlncDRMXRcCTNs
+	 AFqh4ySoWvGzL9SNtM7r1uXvQiEXCQNiclsae7kkUTMNHPzJUM3PdoowBNd+YD2A5X
+	 T45L/71lDpiTGAM7XJDoS9/6dr+gh8sh/hPVw8Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 02/86] x86/kfence: fix booting on 32bit non-PAE systems
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 056/113] wifi: mac80211: collect station statistics earlier when disconnect
 Date: Mon,  9 Feb 2026 15:23:25 +0100
-Message-ID: <20260209142304.864049675@linuxfoundation.org>
+Message-ID: <20260209142312.212681577@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,104 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,citrix.com,alien8.de,google.com,linutronix.de,redhat.com,linux.intel.com,zytor.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-215309-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215164-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8CFEF1115B2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7726C110A00
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-commit 16459fe7e0ca6520a6e8f603de4ccd52b90fd765 upstream.
+[ Upstream commit a203dbeeca15a9b924f0d51f510921f4bae96801 ]
 
-The original patch inverted the PTE unconditionally to avoid
-L1TF-vulnerable PTEs, but Linux doesn't make this adjustment in 2-level
-paging.
+In __sta_info_destroy_part2(), station statistics are requested after the
+IEEE80211_STA_NONE -> IEEE80211_STA_NOTEXIST transition. This is
+problematic because the driver may be unable to handle the request due to
+the STA being in the NOTEXIST state (i.e. if the driver destroys the
+underlying data when transitioning to NOTEXIST).
 
-Adjust the logic to use the flip_protnone_guard() helper, which is a nop
-on 2-level paging but inverts the address bits in all other paging modes.
+Move the statistics collection to before the state transition to avoid
+this issue.
 
-This doesn't matter for the Xen aspect of the original change.  Linux no
-longer supports running 32bit PV under Xen, and Xen doesn't support
-running any 32bit PV guests without using PAE paging.
-
-Link: https://lkml.kernel.org/r/20260126211046.2096622-1-andrew.cooper3@citrix.com
-Fixes: b505f1944535 ("x86/kfence: avoid writing L1TF-vulnerable PTEs")
-Reported-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAKFNMokwjw68ubYQM9WkzOuH51wLznHpEOMSqtMoV1Rn9JV_gw@mail.gmail.com/
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251222-mac80211-move-station-stats-collection-earlier-v1-1-12cd4e42c633@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kfence.h |    7 ++++---
+ net/mac80211/sta_info.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/kfence.h
-+++ b/arch/x86/include/asm/kfence.h
-@@ -42,7 +42,7 @@ static inline bool kfence_protect_page(u
- {
- 	unsigned int level;
- 	pte_t *pte = lookup_address(addr, &level);
--	pteval_t val;
-+	pteval_t val, new;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 4eb45e08b97e7..637756516cf56 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1466,6 +1466,10 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
+ 		}
+ 	}
  
- 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
- 		return false;
-@@ -57,11 +57,12 @@ static inline bool kfence_protect_page(u
- 		return true;
++	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
++	if (sinfo)
++		sta_set_sinfo(sta, sinfo, true);
++
+ 	if (sta->uploaded) {
+ 		ret = drv_sta_state(local, sdata, sta, IEEE80211_STA_NONE,
+ 				    IEEE80211_STA_NOTEXIST);
+@@ -1474,9 +1478,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
  
- 	/*
--	 * Otherwise, invert the entire PTE.  This avoids writing out an
-+	 * Otherwise, flip the Present bit, taking care to avoid writing an
- 	 * L1TF-vulnerable PTE (not present, without the high address bits
- 	 * set).
- 	 */
--	set_pte(pte, __pte(~val));
-+	new = val ^ _PAGE_PRESENT;
-+	set_pte(pte, __pte(flip_protnone_guard(val, new, PTE_PFN_MASK)));
+ 	sta_dbg(sdata, "Removed STA %pM\n", sta->sta.addr);
  
- 	/*
- 	 * If the page was protected (non-present) and we're making it
+-	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
+-	if (sinfo)
+-		sta_set_sinfo(sta, sinfo, true);
+ 	cfg80211_del_sta_sinfo(sdata->dev, sta->sta.addr, sinfo, GFP_KERNEL);
+ 	kfree(sinfo);
+ 
+-- 
+2.51.0
+
 
 
 
