@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-215250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KzpG631iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:45 +0100
+	id QM9pNrL1iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F921113D7
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66FA61113E7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D86B33074F18
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46871307AA6A
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7A33783A1;
-	Mon,  9 Feb 2026 14:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843583783A1;
+	Mon,  9 Feb 2026 14:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/HI28U2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKJ8XmHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C52222B2;
-	Mon,  9 Feb 2026 14:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F2536828A;
+	Mon,  9 Feb 2026 14:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648176; cv=none; b=i6Zw9MWxDWiwIl+xqzVT4jXyCOAYAc1Dr/KBYqCsGKVkniLOWMCyivIlOBfu81E9SumRksZskmtZ+uIh9jlHDYUXhUvJJeInio4Vwqryp4XWJUdFd5vbybc9gAObmel+7dgkNLaQ1cM2UQTfSbg8iQr1Kqsqbvw2/FjEpY1G6Vo=
+	t=1770648183; cv=none; b=nTYMq0E/gLYqzpMzvvGmnw3XHKL4OVw1RwxPIX4MX+38Gz3XF1pA29/OGK2tzBTUPslxQYFjwo4gMGKGK8xVMjwBkWmOh+tYdCmpnZHvWSb5NmwKryz8qxxDa4TO0HIDBnuptzoGEBeNQznim+3ShNmQWvIY6QVMIDBAMavcmz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648176; c=relaxed/simple;
-	bh=1Uo7lxIhos3gXIm6m3HRoxMx4p8SO/k5FSBbCPR6dKM=;
+	s=arc-20240116; t=1770648183; c=relaxed/simple;
+	bh=gL79rOlqwjBDq3h17CZ5Nf0MNrPTI5ZdaNO+nWeTWGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig/EdVgGYpuWW2Ow7KoBZjT2FbrOlqfIBd1tK2Uh9XHhuBn0qYpBiuheHTtgl5RXhQJesS2Xqi+zfIF/zoqWzqQ6VHiNfxDCaj4wy2gJH0wsFcEKwt8ui/P8W3Plag6B4RdItq304kDX7tb1cYDF5KVZEOkFC8ZUC20MnvnXcdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/HI28U2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A64C116C6;
-	Mon,  9 Feb 2026 14:42:55 +0000 (UTC)
+	 MIME-Version; b=SYMx3PAzzxTqc0cQqdyn1Djt2Plx7lZ19eLok87thS0kpPU1LB/X/8gYvax5DdxBiXP5dXJwSHwrzeQgqGDZzCqi4fcHYIxfuijfEHp+Eq1p+crNJ2CT9NAVCF6FbyRkzpY5ZqoeYM+c/HSZtB2FzWk+B0wszo5yCTn/Yem3QcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKJ8XmHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE30C116C6;
+	Mon,  9 Feb 2026 14:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648176;
-	bh=1Uo7lxIhos3gXIm6m3HRoxMx4p8SO/k5FSBbCPR6dKM=;
+	s=korg; t=1770648183;
+	bh=gL79rOlqwjBDq3h17CZ5Nf0MNrPTI5ZdaNO+nWeTWGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/HI28U2/0rljdPF82WNYcHdzZd6NVLq9jA6HOCqLADxfIeHLXR2l8z8ZkSqgCSN8
-	 CK2QXv3B7rv4nmyOhrfveyJDEVSnciqPhPdHcia6/F7bgamWDNske8SssEgQD0Xzh+
-	 hH9apukF+YjfqkhAKKIOI4njijLsbXrXwW6QpHA4=
+	b=wKJ8XmHNZHqQSo4C1W7u/wT573gOIMgV0eMwHg6lijhbX8w+N3SvVmL6HvVXbU7fh
+	 kKriHzRINcoweYaHyo+/75nXqts62CZYVtHHA9QRGY9YZ7ijMaC5MRYX9fzFzv3eQu
+	 5zgMaNCWj010l6CAbY7FpxzOyg+nEy9uznrSjT+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siarhei Vishniakou <svv@google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Ruslan Krupitsa <krupitsarus@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/69] HID: playstation: Center initial joystick axes to prevent spurious events
-Date: Mon,  9 Feb 2026 15:23:57 +0100
-Message-ID: <20260209142302.975811953@linuxfoundation.org>
+Subject: [PATCH 6.1 30/69] ALSA: hda/realtek: add HP Laptop 15s-eq1xxx mute LED quirk
+Date: Mon,  9 Feb 2026 15:23:58 +0100
+Message-ID: <20260209142303.011402291@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
 References: <20260209142301.913348974@linuxfoundation.org>
@@ -74,87 +74,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215250-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-215252-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,suse.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C5F921113D7
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email,outlook.com:email]
+X-Rspamd-Queue-Id: 66FA61113E7
 X-Rspamd-Action: no action
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siarhei Vishniakou <svv@google.com>
+From: Ruslan Krupitsa <krupitsarus@outlook.com>
 
-[ Upstream commit e9143268d259d98e111a649affa061acb8e13c5b ]
+[ Upstream commit 9ed7a28225af02b74f61e7880d460db49db83758 ]
 
-When a new PlayStation gamepad (DualShock 4 or DualSense) is initialized,
-the input subsystem sets the default value for its absolute axes (e.g.,
-ABS_X, ABS_Y) to 0.
+HP Laptop 15s-eq1xxx with ALC236 codec does not enable the
+mute LED automatically. This patch adds a quirk entry for
+subsystem ID 0x8706 using the ALC236_FIXUP_HP_MUTE_LED_COEFBIT2
+fixup, enabling correct mute LED behavior.
 
-However, the hardware's actual neutral/resting state for these joysticks
-is 128 (0x80). This creates a mismatch.
-
-When the first HID report arrives from the device, the driver sees the
-resting value of 128. The kernel compares this to its initial state of 0
-and incorrectly interprets this as a delta (0 -> 128). Consequently, it
-generates EV_ABS events for this initial, non-existent movement.
-
-This behavior can fail userspace 'sanity check' tests (e.g., in
-Android CTS) that correctly assert no motion events should be generated
-from a device that is already at rest.
-
-This patch fixes the issue by explicitly setting the initial value of the
-main joystick axes (e.g., ABS_X, ABS_Y, ABS_RX, ABS_RY) to 128 (0x80)
-in the common ps_gamepad_create() function.
-
-This aligns the kernel's initial state with the hardware's expected
-neutral state, ensuring that the first report (at 128) produces no
-delta and thus, no spurious event.
-
-Signed-off-by: Siarhei Vishniakou <svv@google.com>
-Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Ruslan Krupitsa <krupitsarus@outlook.com>
+Link: https://patch.msgid.link/AS8P194MB112895B8EC2D87D53A876085BBBAA@AS8P194MB1128.EURP194.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-playstation.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
-index 2228f6e4ba23f..38d5171dd25b2 100644
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -487,11 +487,16 @@ static struct input_dev *ps_gamepad_create(struct hid_device *hdev,
- 	if (IS_ERR(gamepad))
- 		return ERR_CAST(gamepad);
- 
-+	/* Set initial resting state for joysticks to 128 (center) */
- 	input_set_abs_params(gamepad, ABS_X, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_X].value = 128;
- 	input_set_abs_params(gamepad, ABS_Y, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_Y].value = 128;
- 	input_set_abs_params(gamepad, ABS_Z, 0, 255, 0, 0);
- 	input_set_abs_params(gamepad, ABS_RX, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_RX].value = 128;
- 	input_set_abs_params(gamepad, ABS_RY, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_RY].value = 128;
- 	input_set_abs_params(gamepad, ABS_RZ, 0, 255, 0, 0);
- 
- 	input_set_abs_params(gamepad, ABS_HAT0X, -1, 1, 0, 0);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index ccbdb01ab6ece..4ab3feb5e5929 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9929,6 +9929,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x8706, "HP Laptop 15s-eq1xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8720, "HP EliteBook x360 1040 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8724, "HP EliteBook 850 G7", ALC285_FIXUP_HP_GPIO_LED),
 -- 
 2.51.0
 
