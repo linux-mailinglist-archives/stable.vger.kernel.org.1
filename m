@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJ3PFmP0iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:15 +0100
+	id yAArFhPyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAD8111185
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB69E110B18
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C3DA310C27E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D2EF305DEF3
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB711378D84;
-	Mon,  9 Feb 2026 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5069A259CAF;
+	Mon,  9 Feb 2026 14:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T+HQKyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2xLKR8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3BE2222B2;
-	Mon,  9 Feb 2026 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148391AF0AF;
+	Mon,  9 Feb 2026 14:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648149; cv=none; b=jhfAFVrTt0OPbFuFJll1kioQzyB6GB/AGWtjBaahpCVcYIZF1KOL5znBVyvUJX0+2UW8rkaP1s1bJMs/nnUbfwTbqsVMAdtJkMnUyxDKbvxek+qZHfGWx+hOrrDDDA9QHWkVyb6JD9Agl0PnlYLY+L3JP0RNiIgYMBzp40/TZc4=
+	t=1770647632; cv=none; b=mFfto+B8uSwnblIkCvLWjq3sRHrv5ATaBSpHIzcledM9IvgDCRU2CHgQeqTJBU0mkNbFKESd96hiVRCLGhbK+k0qkOAHePzbKit9iIyYdDSSn9gR6O9/1TBJJyn6HfCXsEplDK9ocDNSewohTo+vkiRJKX4Ptj+nzgkZgmzwqPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648149; c=relaxed/simple;
-	bh=IXN/nawYpygkbdkJec2Wlhv1lBIkSoVVDpN0mTrwEqY=;
+	s=arc-20240116; t=1770647632; c=relaxed/simple;
+	bh=5oNqdpxw1khcCzu8MmUnwSzgd2rGu54I7EdKP5uYO7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NB4Ur+tUg/Dlkvpqf1pIZxTEybD9vFXRWytc3VuKXU5E1TPrLBN9PGInhlxgJI3ncSYHP/MTviQV39a3atguAQcWq8vCIVwZwif0M6DVS3WTq9VfM5FpQy3MzOwpFtLJE8Y6BYXZgj04DDHeKKHyPoEQjq4eg2H4gfUuD8wdRxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T+HQKyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF873C116C6;
-	Mon,  9 Feb 2026 14:42:28 +0000 (UTC)
+	 MIME-Version; b=rQANdAV+MUIibh3/47rxpkZzoMRufInU8tQR4wFLcBExCp/suSwE+0H4VWhq7bsKn6Lv9SGJsxyYspbSdKl83Tj8iH9ah+BbBcq4LOo3qLwC/zvch7I2NtSETUGFMhU3bmYpJb5t3bH5M53R12qj1GX715F5703MoGn/5oSts6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2xLKR8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829EFC116C6;
+	Mon,  9 Feb 2026 14:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648149;
-	bh=IXN/nawYpygkbdkJec2Wlhv1lBIkSoVVDpN0mTrwEqY=;
+	s=korg; t=1770647632;
+	bh=5oNqdpxw1khcCzu8MmUnwSzgd2rGu54I7EdKP5uYO7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0T+HQKyF0FvwmtLTcouDpEAOslXooZyWmeiPaU8J2rkx5k1v/vD0XTyDza+V/uZvm
-	 /49rS/3+5s4WGFm/RJT1ERzW6fp+LuGfXxuriZSjWs/ZEV98RR3juG8YkN6m2/wc1Q
-	 TleOKornSFSlP26cEIPg54BDR85jC9AAnosqz0mg=
+	b=M2xLKR8EdshDVzi1A1V0wDb0p8g9KiG2ebCzK398NUK+Sh5H90qZhvy8rJUHv4Wqt
+	 Fo8bQ3mfhE9WVzaIasgf2wZhkJx8g5FNVRtmwbYWojSEJRyfMQnb1QewSjNpw6DI+1
+	 yL7ZDljMNdOV4dJpawu9FlPRb1ZSMzptHXv9gILM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
-	shechenglong <shechenglong@xfusion.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Pradeep P V K <pradeep.pragallapati@oss.qualcomm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/69] block,bfq: fix aux stat accumulation destination
+Subject: [PATCH 6.18 156/175] nvme-pci: handle changing device dma map requirements
 Date: Mon,  9 Feb 2026 15:23:49 +0100
-Message-ID: <20260209142302.691084083@linuxfoundation.org>
+Message-ID: <20260209142326.106854609@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215242-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215087-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,42 +91,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fnnas.com:email,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xfusion.com:email]
-X-Rspamd-Queue-Id: BAAD8111185
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
+X-Rspamd-Queue-Id: BB69E110B18
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: shechenglong <shechenglong@xfusion.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 04bdb1a04d8a2a89df504c1e34250cd3c6e31a1c ]
+[ Upstream commit 071be3b0b6575d45be9df9c5b612f5882bfc5e88 ]
 
-Route bfqg_stats_add_aux() time accumulation into the destination
-stats object instead of the source, aligning with other stat fields.
+The initial state of dma_needs_unmap may be false, but change to true
+while mapping the data iterator. Enabling swiotlb is one such case that
+can change the result. The nvme driver needs to save the mapped dma
+vectors to be unmapped later, so allocate as needed during iteration
+rather than assume it was always allocated at the beginning. This fixes
+a NULL dereference from accessing an uninitialized dma_vecs when the
+device dma unmapping requirements change mid-iteration.
 
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: shechenglong <shechenglong@xfusion.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: b8b7570a7ec8 ("nvme-pci: fix dma unmapping when using PRPs and not using the IOVA mapping")
+Link: https://lore.kernel.org/linux-nvme/20260202125738.1194899-1-pradeep.pragallapati@oss.qualcomm.com/
+Reported-by: Pradeep P V K <pradeep.pragallapati@oss.qualcomm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 45 +++++++++++++++++++++++++++--------------
+ 1 file changed, 30 insertions(+), 15 deletions(-)
 
-diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
-index c202e2527d053..8e2478efd6695 100644
---- a/block/bfq-cgroup.c
-+++ b/block/bfq-cgroup.c
-@@ -382,7 +382,7 @@ static void bfqg_stats_add_aux(struct bfqg_stats *to, struct bfqg_stats *from)
- 	blkg_rwstat_add_aux(&to->merged, &from->merged);
- 	blkg_rwstat_add_aux(&to->service_time, &from->service_time);
- 	blkg_rwstat_add_aux(&to->wait_time, &from->wait_time);
--	bfq_stat_add_aux(&from->time, &from->time);
-+	bfq_stat_add_aux(&to->time, &from->time);
- 	bfq_stat_add_aux(&to->avg_queue_size_sum, &from->avg_queue_size_sum);
- 	bfq_stat_add_aux(&to->avg_queue_size_samples,
- 			  &from->avg_queue_size_samples);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 28f638413e122..391c854428d3e 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -771,6 +771,32 @@ static void nvme_unmap_data(struct request *req)
+ 		nvme_free_descriptors(req);
+ }
+ 
++static bool nvme_pci_prp_save_mapping(struct request *req,
++				      struct device *dma_dev,
++				      struct blk_dma_iter *iter)
++{
++	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
++
++	if (dma_use_iova(&iod->dma_state) || !dma_need_unmap(dma_dev))
++		return true;
++
++	if (!iod->nr_dma_vecs) {
++		struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
++
++		iod->dma_vecs = mempool_alloc(nvmeq->dev->dmavec_mempool,
++				GFP_ATOMIC);
++		if (!iod->dma_vecs) {
++			iter->status = BLK_STS_RESOURCE;
++			return false;
++		}
++	}
++
++	iod->dma_vecs[iod->nr_dma_vecs].addr = iter->addr;
++	iod->dma_vecs[iod->nr_dma_vecs].len = iter->len;
++	iod->nr_dma_vecs++;
++	return true;
++}
++
+ static bool nvme_pci_prp_iter_next(struct request *req, struct device *dma_dev,
+ 		struct blk_dma_iter *iter)
+ {
+@@ -780,12 +806,7 @@ static bool nvme_pci_prp_iter_next(struct request *req, struct device *dma_dev,
+ 		return true;
+ 	if (!blk_rq_dma_map_iter_next(req, dma_dev, &iod->dma_state, iter))
+ 		return false;
+-	if (!dma_use_iova(&iod->dma_state) && dma_need_unmap(dma_dev)) {
+-		iod->dma_vecs[iod->nr_dma_vecs].addr = iter->addr;
+-		iod->dma_vecs[iod->nr_dma_vecs].len = iter->len;
+-		iod->nr_dma_vecs++;
+-	}
+-	return true;
++	return nvme_pci_prp_save_mapping(req, dma_dev, iter);
+ }
+ 
+ static blk_status_t nvme_pci_setup_data_prp(struct request *req,
+@@ -798,15 +819,8 @@ static blk_status_t nvme_pci_setup_data_prp(struct request *req,
+ 	unsigned int prp_len, i;
+ 	__le64 *prp_list;
+ 
+-	if (!dma_use_iova(&iod->dma_state) && dma_need_unmap(nvmeq->dev->dev)) {
+-		iod->dma_vecs = mempool_alloc(nvmeq->dev->dmavec_mempool,
+-				GFP_ATOMIC);
+-		if (!iod->dma_vecs)
+-			return BLK_STS_RESOURCE;
+-		iod->dma_vecs[0].addr = iter->addr;
+-		iod->dma_vecs[0].len = iter->len;
+-		iod->nr_dma_vecs = 1;
+-	}
++	if (!nvme_pci_prp_save_mapping(req, nvmeq->dev->dev, iter))
++		return iter->status;
+ 
+ 	/*
+ 	 * PRP1 always points to the start of the DMA transfers.
+@@ -1148,6 +1162,7 @@ static blk_status_t nvme_prep_rq(struct request *req)
+ 	iod->nr_descriptors = 0;
+ 	iod->total_len = 0;
+ 	iod->meta_total_len = 0;
++	iod->nr_dma_vecs = 0;
+ 
+ 	ret = nvme_setup_cmd(req->q->queuedata, req);
+ 	if (ret)
 -- 
 2.51.0
 
