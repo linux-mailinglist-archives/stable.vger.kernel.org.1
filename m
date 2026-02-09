@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIbNEYPyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:15 +0100
+	id EOZNG5XxiWnyEgAAu9opvQ
+	(envelope-from <stable+bounces-215054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4519110C5A
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B884B1109F9
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70F493077E6B
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EB4B3045C24
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A496C378D85;
-	Mon,  9 Feb 2026 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BDA37998A;
+	Mon,  9 Feb 2026 14:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYbgqCkk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5SSXfBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D46276028;
-	Mon,  9 Feb 2026 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A78A2222B2;
+	Mon,  9 Feb 2026 14:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647736; cv=none; b=FrLtSMqN79tTfA8G1nWR625uHj5XCmEmPD8AGgbegneI75+4zq2+CyMeWAK8Xq522ddt0UCwLJvfu5Uv1Sm50uEJI1fAP0DfDPmTtRycVeQkoOfmsaXSE/wpFBCjPpzyyZxBkPctj5gsWB3L7qvK/3TYobl5J1GKj8F8sv1axy4=
+	t=1770647521; cv=none; b=jyuUjHICaNBA67jYEOSX9LlKUbgdGAJSqDhjndP5ACC8QsN9Us9zEe3fxZnIxVQXSF3ZGBCm+VIFzeYiDRuDK3bvp5V1TBIp1q8F8fzns8glZ3aJUFppX+XCAuK8DBbLF0tv1W6Za81KPdT8gDQ2UUAX1VSGh5etiWObEJN8ATc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647736; c=relaxed/simple;
-	bh=3HW+NYXzhmw5Z+Yoj0W/Qq1qMk824RTzlVrjZdsC1mo=;
+	s=arc-20240116; t=1770647521; c=relaxed/simple;
+	bh=R0V81tf7cke0ClPtU+8LOVnnlOnIaTtFUiLRO02Fl/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Uwa57I0N5+rdsaBbXj7mjkvSIEnuT8LQa9vDcY0TkS0O+CQ5B8ZeUrLf2eOGGLnxgMPZRuv9k4i0q4AGEQ6E6GoT8o3pzOGym+ogv5hZdzqdTODqGGHIb77kolQur+9QPmYtrWm/bWFx1+L3HysaCms2RI/VHTgYGTehFGy9vbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYbgqCkk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D88C116C6;
-	Mon,  9 Feb 2026 14:35:35 +0000 (UTC)
+	 MIME-Version; b=H4q41/lllM0gSNIwBatfqLFaBddEl9MN5zAuxXZCmd0IEZu1dH5Tjqd9NfrRcK4N1nOj5k5tc0s6F3WZNae+my6v+5DCPOPfBD23AJ8p0+A3NFAlZDoRaWoDj8hHrHaJajuwnp7jL5HUA+2sOLxH1E244qgPhduG5iiP+2HoF0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5SSXfBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC194C19423;
+	Mon,  9 Feb 2026 14:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647736;
-	bh=3HW+NYXzhmw5Z+Yoj0W/Qq1qMk824RTzlVrjZdsC1mo=;
+	s=korg; t=1770647521;
+	bh=R0V81tf7cke0ClPtU+8LOVnnlOnIaTtFUiLRO02Fl/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYbgqCkku80j7UqBPdt+ON408FmwKNoYFKmeD9IwiQ65ns1ndaACTIThop0O0zfjq
-	 bGyj1iYdhzrbVgn7kS1iMAY/BKtD+kw0hagiCbls8JTr57Fvue/YrE46LhlT6PTzYo
-	 ZHE0kt1oovd1BT2ZVzHReUiZbp8McYkGpu2dyXQo=
+	b=I5SSXfBXYcXpr2XSHyI8DNNEYRRSZ0sfDQRsUZksDWyO8VxAX08JxT6dJS8RTxJy9
+	 S60FG5WIOWH+aFqztVPSqpNRUQObBQBayomiz3QcBAmTw6+UQSnDpElHdJMwKP6Mex
+	 5DFe+lbMLrnyrcaVTBMLT+LqNk7+y/73hk8B5oL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.12 014/113] ARM: 9468/1: fix memset64() on big-endian
+	syzbot+6db0415d6d5c635f72cb@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 090/175] ALSA: usb-audio: Prevent excessive number of frames
 Date: Mon,  9 Feb 2026 15:22:43 +0100
-Message-ID: <20260209142310.723515825@linuxfoundation.org>
+Message-ID: <20260209142323.669977815@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +64,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215119-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,suse.de,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215054-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	TAGGED_RCPT(0.00)[stable,6db0415d6d5c635f72cb];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,infradead.org:email,armlinux.org.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arndb.de:email,linutronix.de:email]
-X-Rspamd-Queue-Id: B4519110C5A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,msgid.link:url,qq.com:email,suse.de:email]
+X-Rspamd-Queue-Id: B884B1109F9
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weissschuh <thomas.weissschuh@linutronix.de>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 23ea2a4c72323feb6e3e025e8a6f18336513d5ad upstream.
+[ Upstream commit ef5749ef8b307bf8717945701b1b79d036af0a15 ]
 
-On big-endian systems the 32-bit low and high halves need to be swapped
-for the underlying assembly implementation to work correctly.
+In this case, the user constructed the parameters with maxpacksize 40
+for rate 22050 / pps 1000, and packsize[0] 22 packsize[1] 23. The buffer
+size for each data URB is maxpacksize * packets, which in this example
+is 40 * 6 = 240; When the user performs a write operation to send audio
+data into the ALSA PCM playback stream, the calculated number of frames
+is packsize[0] * packets = 264, which exceeds the allocated URB buffer
+size, triggering the out-of-bounds (OOB) issue reported by syzbot [1].
 
-Fixes: fd1d362600e2 ("ARM: implement memset32 & memset64")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Added a check for the number of single data URB frames when calculating
+the number of frames to prevent [1].
+
+[1]
+BUG: KASAN: slab-out-of-bounds in copy_to_urb+0x261/0x460 sound/usb/pcm.c:1487
+Write of size 264 at addr ffff88804337e800 by task syz.0.17/5506
+Call Trace:
+ copy_to_urb+0x261/0x460 sound/usb/pcm.c:1487
+ prepare_playback_urb+0x953/0x13d0 sound/usb/pcm.c:1611
+ prepare_outbound_urb+0x377/0xc50 sound/usb/endpoint.c:333
+
+Reported-by: syzbot+6db0415d6d5c635f72cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6db0415d6d5c635f72cb
+Tested-by: syzbot+6db0415d6d5c635f72cb@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_9AECE6CD2C7A826D902D696C289724E8120A@qq.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/string.h |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/usb/pcm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/include/asm/string.h
-+++ b/arch/arm/include/asm/string.h
-@@ -42,7 +42,10 @@ static inline void *memset32(uint32_t *p
- extern void *__memset64(uint64_t *, uint32_t low, __kernel_size_t, uint32_t hi);
- static inline void *memset64(uint64_t *p, uint64_t v, __kernel_size_t n)
- {
--	return __memset64(p, v, n * 8, v >> 32);
-+	if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
-+		return __memset64(p, v, n * 8, v >> 32);
-+	else
-+		return __memset64(p, v >> 32, n * 8, v);
- }
+diff --git a/sound/usb/pcm.c b/sound/usb/pcm.c
+index 54d01dfd820fa..263abb36bb2d1 100644
+--- a/sound/usb/pcm.c
++++ b/sound/usb/pcm.c
+@@ -1553,7 +1553,7 @@ static int prepare_playback_urb(struct snd_usb_substream *subs,
  
- /*
+ 		for (i = 0; i < ctx->packets; i++) {
+ 			counts = snd_usb_endpoint_next_packet_size(ep, ctx, i, avail);
+-			if (counts < 0)
++			if (counts < 0 || frames + counts >= ep->max_urb_frames)
+ 				break;
+ 			/* set up descriptor */
+ 			urb->iso_frame_desc[i].offset = frames * stride;
+-- 
+2.51.0
+
 
 
 
