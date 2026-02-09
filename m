@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CMFL9nziWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:57 +0100
+	id ELQOGZHwiWnHEgAAu9opvQ
+	(envelope-from <stable+bounces-215105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:34:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F23111103F
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA572110785
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A1E4303E758
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5BDDA3004D95
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EBD37C0E0;
-	Mon,  9 Feb 2026 14:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005BE285060;
+	Mon,  9 Feb 2026 14:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GY+4AmKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc2qIHjQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5EE37BE8F;
-	Mon,  9 Feb 2026 14:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B859F23D291;
+	Mon,  9 Feb 2026 14:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648414; cv=none; b=iVDG1YNM0GqSoUCmaZYaAkqXqrdVFJt2O+M9nHfFWdPEmOyvAXQW96Yx+xMyuaYuyz6HuaPnrxQ2GJ9TSmKG7pfZzI2qRlvtlJDuitJBsyzr77KYblbW6xDu9Cy1EEYkWuxzA8FOJB3qJyZOnl7xWjSvi8DVj30kLRitsqzegq8=
+	t=1770647691; cv=none; b=iIGXoqVj6ZTm6qzbmwcTE0hSJ7wNqtIfb80VKPs6ksFr+Q8pdS6r49JLA2eqEFNFdyXpAdZf1kf6lQNW8MSzlVXeWuFqmm37SffxCoS1xkySHv8p0D9x/8kUncRuDlkUMxOpp+otJhSHdmX3WrJ/1tmhBOge2tDuoKMhrYge0Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648414; c=relaxed/simple;
-	bh=QpHvhPjG5lbFZ/3XPNP5k9PJV366zHq/gnV78CERO7E=;
+	s=arc-20240116; t=1770647691; c=relaxed/simple;
+	bh=NMoFxctIa8GNtjcrHDky5S4C1vRA7m+qWgXib/NQsro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQO44poAeTLyyQo8FfKSHb4SPVagrQVmV2PDOmw30tMGNDduOIwgu1oR0ocpbgOBOaDkXmUqPBS/AlBxhMvRrO4lZ5jMl+DwAvIvLqqJG42GAoTOQ/NtMcZwhtvAOfJ9kXF37OaagGAoX4LEHTPV3GW6MjonCZtchLuhOAaYcUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GY+4AmKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FE3C2BCB2;
-	Mon,  9 Feb 2026 14:46:53 +0000 (UTC)
+	 MIME-Version; b=dEP12825s9fXZ3TY80HuXsGB9zbn6FF8YWdHnXGMkO9IW5mKxoVYqHizw8HzBz/G+57fIr3FNG669c54rBtDmvyBC3uEn4pyV/BMy1Fem55kDcSzrrd10jxXrJiyptk6ydw3aA5ZRzdwwt2pXItks6Zpj3QiLv6saJAwr5zB6HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc2qIHjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF8EC116C6;
+	Mon,  9 Feb 2026 14:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648414;
-	bh=QpHvhPjG5lbFZ/3XPNP5k9PJV366zHq/gnV78CERO7E=;
+	s=korg; t=1770647691;
+	bh=NMoFxctIa8GNtjcrHDky5S4C1vRA7m+qWgXib/NQsro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GY+4AmKmJn6gPEs0BdWeePiRuNBxA7SteGPMyrkHDNaXkXYW5eufpG08J/SQWgKIz
-	 2HxrgdLONiQU4h1nIl3YdZ3svTnyKi+wt5XElp6SW4he7J/mgqW9Dz4umYm/yp22JA
-	 S5G4Nh2OhKRDTUywgIixt7iSNTynd3B9XEmqJCDI=
+	b=Jc2qIHjQmbkfvr4aWFCyhLNA9um3HDmlqQee72uzSNagU+iQfyz8JvYZ2tlifwsnJ
+	 zkSy1p4N9QeqVRj7uQauz7fAtZWiYtmcyahNkrmqEH4GDJcRo/R37x0qZXsyHgJfLc
+	 z1pcuwllkXVDiAiI5BRFMrhWF4KeI5rB3bmhQc8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 31/86] HID: intel-ish-hid: Update ishtp bus match to support device ID table
+Subject: [PATCH 6.18 161/175] ASoC: amd: fix memory leak in acp3x pdm dma ops
 Date: Mon,  9 Feb 2026 15:23:54 +0100
-Message-ID: <20260209142305.906580653@linuxfoundation.org>
+Message-ID: <20260209142326.282923449@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215321-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-215105-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 4F23111103F
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BA572110785
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
 
-[ Upstream commit daeed86b686855adda79f13729e0c9b0530990be ]
+[ Upstream commit 7f67ba5413f98d93116a756e7f17cd2c1d6c2bd6 ]
 
-The ishtp_cl_bus_match() function previously only checked the first entry
-in the driver's device ID table. Update it to iterate over the entire
-table, allowing proper matching for drivers with multiple supported
-protocol GUIDs.
-
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 4a767b1d039a8 ("ASoC: amd: add acp3x pdm driver dma ops")
+Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Link: https://patch.msgid.link/20260202205034.7697-1-chris.bainbridge@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ishtp/bus.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ sound/soc/amd/renoir/acp3x-pdm-dma.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/intel-ish-hid/ishtp/bus.c b/drivers/hid/intel-ish-hid/ishtp/bus.c
-index 7fc738a223755..4d97d043aae4b 100644
---- a/drivers/hid/intel-ish-hid/ishtp/bus.c
-+++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
-@@ -240,9 +240,17 @@ static int ishtp_cl_bus_match(struct device *dev, struct device_driver *drv)
+diff --git a/sound/soc/amd/renoir/acp3x-pdm-dma.c b/sound/soc/amd/renoir/acp3x-pdm-dma.c
+index 95ac8c6800375..a560d06097d5e 100644
+--- a/sound/soc/amd/renoir/acp3x-pdm-dma.c
++++ b/sound/soc/amd/renoir/acp3x-pdm-dma.c
+@@ -301,9 +301,11 @@ static int acp_pdm_dma_close(struct snd_soc_component *component,
+ 			     struct snd_pcm_substream *substream)
  {
- 	struct ishtp_cl_device *device = to_ishtp_cl_device(dev);
- 	struct ishtp_cl_driver *driver = to_ishtp_cl_driver(drv);
-+	struct ishtp_fw_client *client = device->fw_client;
-+	const struct ishtp_device_id *id;
+ 	struct pdm_dev_data *adata = dev_get_drvdata(component->dev);
++	struct pdm_stream_instance *rtd = substream->runtime->private_data;
  
--	return(device->fw_client ? guid_equal(&driver->id[0].guid,
--	       &device->fw_client->props.protocol_name) : 0);
-+	if (client) {
-+		for (id = driver->id; !guid_is_null(&id->guid); id++) {
-+			if (guid_equal(&id->guid, &client->props.protocol_name))
-+				return 1;
-+		}
-+	}
-+
-+	return 0;
+ 	disable_pdm_interrupts(adata->acp_base);
+ 	adata->capture_stream = NULL;
++	kfree(rtd);
+ 	return 0;
  }
  
- /**
 -- 
 2.51.0
 
