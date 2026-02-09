@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHLpKXb1iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215484-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:55:50 +0100
+	id mDVRBBT2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC6F111361
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:55:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F89A1114BF
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 98FCF3007497
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:55:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0613B3094634
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D982750E6;
-	Mon,  9 Feb 2026 14:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388E837B416;
+	Mon,  9 Feb 2026 14:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcNKtXEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NCxhg9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880B83033D2;
-	Mon,  9 Feb 2026 14:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AFE22301;
+	Mon,  9 Feb 2026 14:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648947; cv=none; b=bhQhg8aGFvbsP7R8N+vyR9Qk5q1wtSO9W2ElatbIQ1FGJVoAfsFZ77e1H4EyqVbuQHAxlLclsrqLzLPHxwMZl+ejy5Nm0BwaIOxPaZO/owMKBdjyGhpc94NUMm21MRVGA4e0yZEaRog7wqvg2zdiBZ9G4yDFXHo/c+LWBETI2GA=
+	t=1770648276; cv=none; b=hRy8LFTQQ8MGicE+Xoxsp72jTHITl15bofu+JUho//dgBMTERDVi88FIY5yqfPaLKw3YENHZcNZKzP5fYtHRvx9y46TorylJYCOF20DkkTnfrFwSSO3WyXCbS66sfbeWu3q/RB34HuGf5354gvAuMwCPzZVGKGKaXQ1UaZcW4Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648947; c=relaxed/simple;
-	bh=Im2ScG66KNKrMWAR76NUnHpZAMcl22c9VR3u+siaoes=;
+	s=arc-20240116; t=1770648276; c=relaxed/simple;
+	bh=DzjOcv3FPJO2KNWsbipDrl0u+FiEP7T2ob5y99MpzKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sr+oT76v7n0/n2IUcRuOT1qhtd8eecBdlUz56S1UMGp/aYjv1a/7F3EYEnxxG18MlaFsVcotFElbBA9zwMdrRb6DV/ynEIDqVfNrXxX/hUtCRp1gfx5bGwftebyHIhpRXsu3IpEFTYIFsnybjgDsFTq/IqwTMhK8FeWipXL72iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcNKtXEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ECCC116C6;
-	Mon,  9 Feb 2026 14:55:46 +0000 (UTC)
+	 MIME-Version; b=fqv2AAAjKxfdOgn+Af2a0663pumYseL0k3gxzmoISiDPn2laGr/ivSPh/JoBFxjovgYN2DJ+qxBW9OW87uF1MO3NeDuIdMETTT2V+fs1EzOE2FWv+hozAUi3pYnhjHn6FVvOWB5H6W31pl4ioBWaCtmNeA1RM1oiBRpA0p+nnGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NCxhg9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593AEC116C6;
+	Mon,  9 Feb 2026 14:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648947;
-	bh=Im2ScG66KNKrMWAR76NUnHpZAMcl22c9VR3u+siaoes=;
+	s=korg; t=1770648275;
+	bh=DzjOcv3FPJO2KNWsbipDrl0u+FiEP7T2ob5y99MpzKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcNKtXEIfF0kNFr4d7/Y3ga5sFeQ7s9Mhdrtn7vWTOD2Wb8dmLCUnKKaHq6DGYTTh
-	 mTonQic4qkziOm68RAKgghZ5E6y+uo8hHgUVkd5WO++gLEKxgpb1b3cgqLnK7kJZLb
-	 O1aikibj4FV297JM7GckzO+y7CynIkqZ/8j6k7KU=
+	b=2NCxhg9WA0lUPPjAbyPXz6EGgx043SaeMSsG/V74p4Nbm4BRNkYOYpeXkyMUJ8D1G
+	 eCHdAP/RY3GtRpzErXh+1G0CtFfj81Rf39WlxnVjWnfRrHo3U4uKltwErk6SfKTAaj
+	 6Nm2BKNsi2vVlRXaWfyxH0/cNtNhU6eJ+TUoLog0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	DaytonCL <artem749507@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Andrew Fasano <andrew.fasano@nist.gov>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/75] HID: multitouch: add MT_QUIRK_STICKY_FINGERS to MT_CLS_VTL
+Subject: [PATCH 6.1 58/69] netfilter: nf_tables: fix inverted genmask check in nft_map_catchall_activate()
 Date: Mon,  9 Feb 2026 15:24:26 +0100
-Message-ID: <20260209142302.897119734@linuxfoundation.org>
+Message-ID: <20260209142304.012181189@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,72 +67,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215484-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215279-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 4AC6F111361
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nist.gov:email]
+X-Rspamd-Queue-Id: 8F89A1114BF
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaytonCL <artem749507@gmail.com>
+From: Andrew Fasano <andrew.fasano@nist.gov>
 
-[ Upstream commit ff3f234ff1dcd6d626a989151db067a1b7f0f215 ]
+[ Upstream commit f41c5d151078c5348271ffaf8e7410d96f2d82f8 ]
 
-Some VTL-class touchpads (e.g. TOPS0102:00 35CC:0104) intermittently
-fail to release a finger contact. A previous slot remains logically
-active, accompanied by stale BTN_TOOL_DOUBLETAP state, causing
-gestures to stay latched and resulting in stuck two-finger
-scrolling and false right-clicks.
+nft_map_catchall_activate() has an inverted element activity check
+compared to its non-catchall counterpart nft_mapelem_activate() and
+compared to what is logically required.
 
-Apply MT_QUIRK_STICKY_FINGERS to handle the unreleased contact correctly.
+nft_map_catchall_activate() is called from the abort path to re-activate
+catchall map elements that were deactivated during a failed transaction.
+It should skip elements that are already active (they don't need
+re-activation) and process elements that are inactive (they need to be
+restored). Instead, the current code does the opposite: it skips inactive
+elements and processes active ones.
 
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1225
-Suggested-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Tested-by: DaytonCL <artem749507@gmail.com>
-Signed-off-by: DaytonCL <artem749507@gmail.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Compare the non-catchall activate callback, which is correct:
+
+  nft_mapelem_activate():
+    if (nft_set_elem_active(ext, iter->genmask))
+        return 0;   /* skip active, process inactive */
+
+With the buggy catchall version:
+
+  nft_map_catchall_activate():
+    if (!nft_set_elem_active(ext, genmask))
+        continue;   /* skip inactive, process active */
+
+The consequence is that when a DELSET operation is aborted,
+nft_setelem_data_activate() is never called for the catchall element.
+For NFT_GOTO verdict elements, this means nft_data_hold() is never
+called to restore the chain->use reference count. Each abort cycle
+permanently decrements chain->use. Once chain->use reaches zero,
+DELCHAIN succeeds and frees the chain while catchall verdict elements
+still reference it, resulting in a use-after-free.
+
+This is exploitable for local privilege escalation from an unprivileged
+user via user namespaces + nftables on distributions that enable
+CONFIG_USER_NS and CONFIG_NF_TABLES.
+
+Fix by removing the negation so the check matches nft_mapelem_activate():
+skip active elements, process inactive ones.
+
+Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
+Signed-off-by: Andrew Fasano <andrew.fasano@nist.gov>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_tables_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 5dec035c5c1d3..5c40790b977ee 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -379,6 +379,7 @@ static const struct mt_class mt_classes[] = {
- 	{ .name = MT_CLS_VTL,
- 		.quirks = MT_QUIRK_ALWAYS_VALID |
- 			MT_QUIRK_CONTACT_CNT_ACCURATE |
-+			MT_QUIRK_STICKY_FINGERS |
- 			MT_QUIRK_FORCE_GET_FEATURE,
- 	},
- 	{ .name = MT_CLS_GOOGLE,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index d154e3e0c9803..67729d7c913a4 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5211,7 +5211,7 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
+ 
+ 	list_for_each_entry(catchall, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+-		if (!nft_set_elem_active(ext, genmask))
++		if (nft_set_elem_active(ext, genmask))
+ 			continue;
+ 
+ 		elem.priv = catchall->elem;
 -- 
 2.51.0
 
