@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-215391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJOTLMT1iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:08 +0100
+	id kBZcIC74iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF3611142E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E301118EA
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A2EF6301489E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6413230E7823
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2536037997A;
-	Mon,  9 Feb 2026 14:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE3837997A;
+	Mon,  9 Feb 2026 14:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fb+yDhGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdZQcIdK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFF928725B;
-	Mon,  9 Feb 2026 14:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D589F28725B;
+	Mon,  9 Feb 2026 14:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648639; cv=none; b=Jo1apFx2VjYuKuYl37bieBCbhDr/AVvv6wJBv3cSA20YmcTJeWTxdfRHlFgGJStog+CryZBZSiTC9r069gxTNQbJQp1jdYH6WFeMUo0Iwj9QEEOCiddZhQc+YAbH/+iODCmsM0yv+1n93zpqvZMyDulw/dhpcRJ0cBjzz/3h/Q4=
+	t=1770648643; cv=none; b=rW+uTixOCy8bzlDJcepGPUSNKXrS0K3YH1j86r53l4iDM3J2oI099HllfBqAXx6ilji8h4Av62rFmAKpQpiy+DyOY7Oyxm+6q1yHagr9tujWV87D2hL7CgL1VO5TE9WnQOp36RPNBwb5rU23SeUcId30Oq0V8xV++u2Tf5BbWrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648639; c=relaxed/simple;
-	bh=Dj52CyGDlR/FWxV16evXYJKQJpZHWP4s/5vy2ZysS20=;
+	s=arc-20240116; t=1770648643; c=relaxed/simple;
+	bh=/b9AMNF+tVrKV+naVyFCGPGJLjV40MlMI/4XIj79q0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABgjsAt59R8fNA5mud7yxobLVttwFc83GMrqv01Bpujti83P8UF65EBOZAvZmooekB4PEzEXFL1tnWUInSpVz8ncBTeR0IhGncM9KKVafk8hYJ2ti358uqy8LgF4lGCrdbByJTRxk0E26r8r/teMvzlOc02ZXAxJR8j7iFiopG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fb+yDhGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDBEC116C6;
-	Mon,  9 Feb 2026 14:50:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WVef4t3WDNPxhA+F6+Gljkis0F9JuQM9GbZyhqVw4jKNjVLNU8Zu7wgbNHus0OMRlKOlwA0eeRo2cBPqcnUA7dbIXaKaednd4R0nMxTbDauXpYJNtc/OFAPR3cdVlNJ2B1oYcCHzBeRvNmH4Tja/qzinAbea4lNrXg3lWOFjFrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdZQcIdK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D95C116C6;
+	Mon,  9 Feb 2026 14:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648639;
-	bh=Dj52CyGDlR/FWxV16evXYJKQJpZHWP4s/5vy2ZysS20=;
+	s=korg; t=1770648643;
+	bh=/b9AMNF+tVrKV+naVyFCGPGJLjV40MlMI/4XIj79q0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fb+yDhGAT5mCEeCn6KcaGRhWIZ9eWTXVLgz4TeqQpWHq5SES+HXKM5K+0w4waLdAZ
-	 ehk4JMp4he2ShztIx3TNQwqxtEeMEYU5ZvF0FnfjT6DrFb8uVLwDrgFtbUXPjObtFe
-	 IrnpaIiaolR+mhyrJSkHe7ARXF/vomKm8mCF3pwM=
+	b=LdZQcIdKMZXQUph6DL6obe3XpGTx7JGdZ0RKBcpBK5V3MzEQrVnE9yDq67dLHbXH8
+	 f32bv3HvVZ+I7xrr2le/2HeV38pvpBDk6U6OJ5/Vw74MElH4RWuk3bbwIiOQvr1Rpd
+	 GV8YoTdn5BxfBsKTjDTxGT7Okf7f6r/CSyup9mW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	=?UTF-8?q?Rodrigo=20Lugathe=20da=20Concei=C3=A7=C3=A3o=20Alves?= <lugathe2@gmail.com>,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/41] HID: quirks: Add another Chicony HP 5MP Cameras to hid_ignore_list
-Date: Mon,  9 Feb 2026 15:24:34 +0100
-Message-ID: <20260209142257.285975059@linuxfoundation.org>
+Subject: [PATCH 5.10 14/41] HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
+Date: Mon,  9 Feb 2026 15:24:35 +0100
+Message-ID: <20260209142257.321715265@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
 References: <20260209142256.797267956@linuxfoundation.org>
@@ -63,84 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215391-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215392-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,cosmicgizmosystems.com,suse.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,canonical.com:email]
-X-Rspamd-Queue-Id: EEF3611142E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cosmicgizmosystems.com:email]
+X-Rspamd-Queue-Id: E6E301118EA
 X-Rspamd-Action: no action
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
 
-[ Upstream commit c06bc3557542307b9658fbd43cc946a14250347b ]
+[ Upstream commit 85a866809333cd2bf8ddac93d9a3e3ba8e4f807d ]
 
-Another Chicony Electronics HP 5MP Camera with USB ID 04F2:B882
-reports a HID sensor interface that is not actually implemented.
+The USB speaker has a bug that causes it to reboot when changing the
+brightness using the physical knob.
 
-Add the device to the HID ignore list so the bogus sensor is never
-exposed to userspace. Then the system won't hang when runtime PM
-tries to wake the unresponsive device.
+Add a new vendor and product ID entry in hid-ids.h, and register
+the corresponding device in hid-quirks.c with the required quirk.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
+Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-ids.h    | 3 +++
  drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ 2 files changed, 4 insertions(+)
 
 diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 8850a5e5ae0e9..a933e8a94b1e3 100644
+index a933e8a94b1e3..174090489072d 100644
 --- a/drivers/hid/hid-ids.h
 +++ b/drivers/hid/hid-ids.h
-@@ -280,6 +280,7 @@
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3	0xb882
+@@ -397,6 +397,9 @@
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
+ #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
  
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
++#define USB_VENDOR_ID_EDIFIER		0x2d99
++#define USB_DEVICE_ID_EDIFIER_QR30	0xa101	/* EDIFIER Hal0 2.0 SE */
++
+ #define USB_VENDOR_ID_ELAN		0x04f3
+ #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
+ #define USB_DEVICE_ID_HP_X2		0x074d
 diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 0d15148d52533..dffec116b8fad 100644
+index dffec116b8fad..85d81b07b6d47 100644
 --- a/drivers/hid/hid-quirks.c
 +++ b/drivers/hid/hid-quirks.c
-@@ -738,6 +738,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
+@@ -81,6 +81,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_PS3), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_WIIU), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DWAV, USB_DEVICE_ID_EGALAX_TOUCHCONTROLLER), HID_QUIRK_MULTI_INPUT | HID_QUIRK_NOGET },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, USB_DEVICE_ID_ELO_TS2700), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_EMS, USB_DEVICE_ID_EMS_TRIO_LINKER_PLUS_II), HID_QUIRK_MULTI_INPUT },
 -- 
 2.51.0
 
