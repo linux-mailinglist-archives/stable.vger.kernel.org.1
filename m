@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGJxK/70iWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:50 +0100
+	id kOp/Nzr2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D5C1112B9
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2FC11151F
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 476DA302D59A
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4CAED30159C1
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF7B3783C9;
-	Mon,  9 Feb 2026 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E038E37BE8C;
+	Mon,  9 Feb 2026 14:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQHvA3fS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCqN6jTP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F07F28725B;
-	Mon,  9 Feb 2026 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EC228312F;
+	Mon,  9 Feb 2026 14:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648703; cv=none; b=Pywf05tb3bOAYfc4YtBvfpTctmzDwGMPkvT24A3AE2oda1Qkz/w95+pQGt17ZCl99uAOuMS0SG9cvCEM9ET8p5v9spCA5WPxl6zIuclPU3Prfn0JyfsZADtEgAUC6s1XaWX33GeVDoNzKJ8SdOmNFpqXWyyIOrAbIEhEaUAzJPo=
+	t=1770648842; cv=none; b=Oe+R/Q1dzrBsmHsSIo1+/rXYjFCWxbIt5SieeMefaiTk77w+Iv+y17Us8zMR8ukyXqcctIVLSomO6Dg4nTfspOsQ4BoS/cOSTJ6dC3dEZ7Qsz4fWuHJrL39lwY8vc0kbVN4C/0patsPk81jJqOlFZhv3fPtLklTpGu6RAGdl+zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648703; c=relaxed/simple;
-	bh=4ZYeDHK7M9ePp0qoqV4Q2VF39RQIxScGfAwZ3fk90d8=;
+	s=arc-20240116; t=1770648842; c=relaxed/simple;
+	bh=iMqgfUkkBspvbZ9+YXZz0hmlOjFX1VtwM7DM5Onjv74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0WABO0w5UcOqryt6QLpmlS6RP12zRN4QjEapFPnoGdScswGrTXrW3Lf7/5yzG8kMeLRPeugdfzoL80tI+PnFyxba7sgXOTbtw4QSTHgR6LGKlRN+FspGtxrbC9Dp2cCaDS83xfSlApM2Cyvwzp49v8x6lqhCO1f5e1R2vv8EG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQHvA3fS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96220C116C6;
-	Mon,  9 Feb 2026 14:51:42 +0000 (UTC)
+	 MIME-Version; b=askhnY89fvr0uG/pHY8J9Dw4KYC9oEXgHWwADNRL1T97Ai33aF7p4zhF0SxZRbi9i7owcc1IaSJaJZhn3SsqViuVc0UgLYapjWUmCDSfZhSUxZLbHoWdyHVppMJydPEcPCqaH15RBsLGItnULMpPAxy3Q/ab1Uq3uQ9lHWUorHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCqN6jTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3B3C16AAE;
+	Mon,  9 Feb 2026 14:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648703;
-	bh=4ZYeDHK7M9ePp0qoqV4Q2VF39RQIxScGfAwZ3fk90d8=;
+	s=korg; t=1770648842;
+	bh=iMqgfUkkBspvbZ9+YXZz0hmlOjFX1VtwM7DM5Onjv74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQHvA3fSD5mu3AR7WkrEQN0JmG1N+fSjEzonQAzeeW9ECwQs9rhttfL5T2bovvNj3
-	 edhRgWmUxqRXvxi4E6yvnDs/WtCcbyW1O7CxLdlw+LnwC2BySiP8RSStcCCxF1L1IV
-	 x+GhzvT0euTnM0NXWffUfaA0jS1+EolIxDNQsq6A=
+	b=jCqN6jTPtmGuCi2VsIY0hOnnIWqN2mmF74EVVIG4gGN1+ts3Bo7BCDoi7OfHjBdi9
+	 0/OOkJ7MlA0OXlUVXN9Z0nnZ5LIdk1D/rLcfSSq5PjtIMDAODCWhmCxqBs1JB6CMj+
+	 8nlwCf1SC1aseug5mCfSKrzGEBKizdRgc5EFLN4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ruslan Krupitsa <krupitsarus@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 08/41] net: usb: sr9700: support devices with virtual driver CD
+Subject: [PATCH 5.15 32/75] ALSA: hda/realtek: add HP Laptop 15s-eq1xxx mute LED quirk
 Date: Mon,  9 Feb 2026 15:24:29 +0100
-Message-ID: <20260209142257.104860180@linuxfoundation.org>
+Message-ID: <20260209142303.003820587@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215410-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215453-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,suse.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,50 +91,43 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[draisberghof.de:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 25D5C1112B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email]
+X-Rspamd-Queue-Id: 3E2FC11151F
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Ruslan Krupitsa <krupitsarus@outlook.com>
 
-[ Upstream commit bf4172bd870c3a34d3065cbb39192c22cbd7b18d ]
+[ Upstream commit 9ed7a28225af02b74f61e7880d460db49db83758 ]
 
-Some SR9700 devices have an SPI flash chip containing a virtual driver
-CD, in which case they appear as a device with two interfaces and
-product ID 0x9702. Interface 0 is the driver CD and interface 1 is the
-Ethernet device.
+HP Laptop 15s-eq1xxx with ALC236 codec does not enable the
+mute LED automatically. This patch adds a quirk entry for
+subsystem ID 0x8706 using the ALC236_FIXUP_HP_MUTE_LED_COEFBIT2
+fixup, enabling correct mute LED behavior.
 
-Link: https://github.com/name-kurniawan/usb-lan
-Link: https://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=2185
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20251211062451.139036-1-enelsonmoore@gmail.com
-[pabeni@redhat.com: fixes link tags]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ruslan Krupitsa <krupitsarus@outlook.com>
+Link: https://patch.msgid.link/AS8P194MB112895B8EC2D87D53A876085BBBAA@AS8P194MB1128.EURP194.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sr9700.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index d4f0dfe1175ab..4d860d5bbcd73 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -538,6 +538,11 @@ static const struct usb_device_id products[] = {
- 		USB_DEVICE(0x0fe6, 0x9700),	/* SR9700 device */
- 		.driver_info = (unsigned long)&sr9700_driver_info,
- 	},
-+	{
-+		/* SR9700 with virtual driver CD-ROM - interface 0 is the CD-ROM device */
-+		USB_DEVICE_INTERFACE_NUMBER(0x0fe6, 0x9702, 1),
-+		.driver_info = (unsigned long)&sr9700_driver_info,
-+	},
- 	{},			/* END */
- };
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 10f7f807e706e..839a7e957d42a 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9333,6 +9333,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x8706, "HP Laptop 15s-eq1xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8720, "HP EliteBook x360 1040 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8724, "HP EliteBook 850 G7", ALC285_FIXUP_HP_GPIO_LED),
 -- 
 2.51.0
 
