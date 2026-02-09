@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EEXDar3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:14 +0100
+	id SKCEAQfyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:11 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EE11117C0
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A5A110AD7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8259830EC045
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D9FC305D6C8
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2882690EC;
-	Mon,  9 Feb 2026 14:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C15259CAF;
+	Mon,  9 Feb 2026 14:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwBVGLVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJw+E7eS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64202BCF4C;
-	Mon,  9 Feb 2026 14:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6381AF0AF;
+	Mon,  9 Feb 2026 14:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648504; cv=none; b=pahcXoqQbt4rPHYeWo6HLnncLvVF9/LkH2YSh+uu1ZtVasouE7YP+2FGeE/wQGUKFvMopZmt5vq8D2FxDH1Ktz/YIqlHRmo/P9dWtgwnMVzYTyeoBRJuyNep1rchdTccPBPGwl5pR3qzK26n/JgeO6CNlgN0PzzpmKsdj6ZT3w4=
+	t=1770647621; cv=none; b=hfWTj6aezAbvdyQlmdHbMPIHjRNNmkGDkmK8bt/qwK6Jw2qIFXQyu/JUdZiKOVuW/Ht5mj052YIi4V7Kj7OI6IrIQgCf5Qy1kXIHiPHcWkzf1wG0ufgLlARyNE0meKbCAVujr9jo0jbvIlhUMh9wHwo8xg6yhRw3j7Vj9T1Akhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648504; c=relaxed/simple;
-	bh=dM9kOWJvRQTPpHcAw56alqmPRifjJgSmv4rIaOqZ4HE=;
+	s=arc-20240116; t=1770647621; c=relaxed/simple;
+	bh=MOko2+4LJAuudJWkhMjv4QILg4cNuix0e8zJLiCbsHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m8Ta3zv3GK5v189FAPFuOdVYpXKKSB9FEwO6eUFgGi4++bTgOec7aBkBzb3FlJshXAQMe2qExdNsfDyFEmPjlXG30kmdhbxAWoyVBw3MX9oNOEmlJpdZSkZIodBZKdD5/9bgN0dJdajgqCj8Fp7C44s4BYkAMJuSoB2v7V5GB18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwBVGLVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C08C116C6;
-	Mon,  9 Feb 2026 14:48:23 +0000 (UTC)
+	 MIME-Version; b=ZffXik1vFMMSr9AjTME3r7FOt4rX1E8B1afv9b+m8pFnbbcldSGa/j1AasSrh6XsYq5V3mpd0E7R1Tc6DOA8q1ZLZKJXcOWtoqnwRu6fYcdITqDGhph9emiZz6vEDjvoon2FUM7ONXGVK7A6IpHOv1s7k4VV8X15IXbBRisk9pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJw+E7eS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E06C116C6;
+	Mon,  9 Feb 2026 14:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648504;
-	bh=dM9kOWJvRQTPpHcAw56alqmPRifjJgSmv4rIaOqZ4HE=;
+	s=korg; t=1770647621;
+	bh=MOko2+4LJAuudJWkhMjv4QILg4cNuix0e8zJLiCbsHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwBVGLVUwqt1FTLyuJHqlITzbdg4+jdcdlxlO8X9q1T9Mq71o47VW7TTJ1H3/Gdpt
-	 TAyn/UgjLYi4ieHkvOzFrRSwDyaNEmiTg/kQGV7VIvZak+CHvMkWvk8V6j3R9mNiWp
-	 GYFlSykhFXD1hksonpmR4AnvWkZ/QF1kXspQmP6o=
+	b=SJw+E7eS215ondBONNEqv6FnNilsuy3mro73OS4CUZ3Hj4hgZUeunGxl7TYEw5JsI
+	 mAB9cfvbnLP+oETe/2rsux+ioo0V+TCYK4iQ5VHf3izQBORliqxI5SFjN4E4C6Vu9X
+	 ygOhxs0o7po2rYH/ZGXS35xNLDNmGsf5whfry+E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Astrand <astrand@lysator.liu.se>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 23/86] wifi: wlcore: ensure skb headroom before skb_push
+Subject: [PATCH 6.18 153/175] hwmon: (occ) Mark occ_init_attribute() as __printf
 Date: Mon,  9 Feb 2026 15:23:46 +0100
-Message-ID: <20260209142305.621750172@linuxfoundation.org>
+Message-ID: <20260209142326.001857396@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,11 +63,11 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
@@ -75,60 +75,63 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215349-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215084-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,liu.se:email]
-X-Rspamd-Queue-Id: 85EE11117C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84A5A110AD7
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Åstrand <astrand@lysator.liu.se>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e75665dd096819b1184087ba5718bd93beafff51 ]
+[ Upstream commit 831a2b27914cc880130ffe8fb8d1e65a5324d07f ]
 
-This avoids occasional skb_under_panic Oops from wl1271_tx_work. In this case, headroom is
-less than needed (typically 110 - 94 = 16 bytes).
+This is a printf-style function, which gcc -Werror=suggest-attribute=format
+correctly points out:
 
-Signed-off-by: Peter Astrand <astrand@lysator.liu.se>
-Link: https://patch.msgid.link/097bd417-e1d7-acd4-be05-47b199075013@lysator.liu.se
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+drivers/hwmon/occ/common.c: In function 'occ_init_attribute':
+drivers/hwmon/occ/common.c:761:9: error: function 'occ_init_attribute' might be a candidate for 'gnu_printf' format attribute [-Werror=suggest-attribute=format]
+
+Add the attribute to avoid this warning and ensure any incorrect
+format strings are detected here.
+
+Fixes: 744c2fe950e9 ("hwmon: (occ) Rework attribute registration for stack usage")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20260203163440.2674340-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/tx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hwmon/occ/common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
-index 7bd3ce2f08044..75ad096676561 100644
---- a/drivers/net/wireless/ti/wlcore/tx.c
-+++ b/drivers/net/wireless/ti/wlcore/tx.c
-@@ -210,6 +210,11 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
- 	total_blocks = wlcore_hw_calc_tx_blocks(wl, total_len, spare_blocks);
- 
- 	if (total_blocks <= wl->tx_blocks_available) {
-+		if (skb_headroom(skb) < (total_len - skb->len) &&
-+		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
-+			wl1271_free_tx_id(wl, id);
-+			return -EAGAIN;
-+		}
- 		desc = skb_push(skb, total_len - skb->len);
- 
- 		wlcore_hw_set_tx_desc_blocks(wl, desc, total_blocks,
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index b3694a4209b97..89928d38831b6 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -749,6 +749,7 @@ static ssize_t occ_show_extended(struct device *dev,
+  * are dynamically allocated, we cannot use the existing kernel macros which
+  * stringify the name argument.
+  */
++__printf(7, 8)
+ static void occ_init_attribute(struct occ_attribute *attr, int mode,
+ 	ssize_t (*show)(struct device *dev, struct device_attribute *attr, char *buf),
+ 	ssize_t (*store)(struct device *dev, struct device_attribute *attr,
 -- 
 2.51.0
 
