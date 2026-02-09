@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKqPCDjyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:00 +0100
+	id WK2xFl70iWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70251110B91
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7C911116D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E3A43034313
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CF7B310B446
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5101437C101;
-	Mon,  9 Feb 2026 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFE537BE7D;
+	Mon,  9 Feb 2026 14:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2Yj5YLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2opifG9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EDD37C0F1;
-	Mon,  9 Feb 2026 14:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A562222B2;
+	Mon,  9 Feb 2026 14:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647948; cv=none; b=WehxUMlx6HaEOnFIOjpLi67gFVaZpnUMN3x3DJkXbyOOCHzuGho1qlxT0HV1bO4TYb+Jkb6w/zYMm9+ZV4WYI/xSrjlngfmdEiba10D9Tl81pGHJhNR5W6nsreHWCSRS7YIVY8bnCBCsY23twYMKbyygItsjpxAdGGVYuAOmjrE=
+	t=1770648133; cv=none; b=OfcORgmF7Q07TmfZSDS5ro4/abdGIRRX9DDtoTTBx/89u7IcZrCnhcPAcjPuQW4l/RL3Q0Gdz8LpzE+B+NKcq9wm9PK6H5Cm/hmqCkfAJOwsnQIVo8nelfn1b4z4EpLPIY6Ec/HStPPHYhYQYHsCnuOL6L/MIwasHMkJ3+HSKvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647948; c=relaxed/simple;
-	bh=P1CO17NJg0j4Vt0gCktP1lxQgyIW+A8MC+0lSpA8mkM=;
+	s=arc-20240116; t=1770648133; c=relaxed/simple;
+	bh=+FhbXcZbD0dCFvaquaCg4eiKVqunVk01Vv3W90kHxq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NVZ0HlrLFtNrw58atXMrJ0geFspcr1lwKBLvJ7fDofrysp5x/Dq+ZopymkQ9TtjTfYNseheFEPKiykBBrWrsIDvuJDnmSni9ESR0Yor1nryvij6PnJRtSlGnKmsQ84XhSPIrNm/+jZwsaiLfwGw7v5rojqqbQ4XkGiiK/1YtjSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2Yj5YLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528DFC116C6;
-	Mon,  9 Feb 2026 14:39:07 +0000 (UTC)
+	 MIME-Version; b=By85Fr21I/uRVstWVNfU2Q1rjSnONt8r3uL8Gd+zKktuvP29yBwsUGqJoSVsPW8eGzHlEYXWhIebHd1AA9kLS/DEuO1lMVgWM4kS2D66dEDfhx4CCFw1vf2Blv/AASc83pNBIsTa+RjBF8vuFiU/+oZ/CDgO2ke5P+8G6TNK78E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2opifG9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FD8C16AAE;
+	Mon,  9 Feb 2026 14:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647947;
-	bh=P1CO17NJg0j4Vt0gCktP1lxQgyIW+A8MC+0lSpA8mkM=;
+	s=korg; t=1770648133;
+	bh=+FhbXcZbD0dCFvaquaCg4eiKVqunVk01Vv3W90kHxq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2Yj5YLw2odmtRaex7snl/76565mvwrFQn8SC6JDVIoBtz1UdaDO14S+xlVI+uN4c
-	 bLioLaqm9IqXIDxCEW9uYduxfBGNzcBSiiju3IdsEaXM7WCztngE9/o/AHNWfGVxS8
-	 WpbuOYaqWaD74C1WyG9cFwMH5ZWezHueIG8X1nCU=
+	b=F2opifG9UqrTsai/B/NMCR1YTMKlPvcAnYvOGLu0VEnr5TBoSQnGzaTPzar1T7Tw2
+	 2MtckMp4r+16Q0bESP57B8u4yaFTUOgxI7++tztVVsYZ8axs9BBcaSCVmsdqR7nsQ7
+	 siCTOmwWHjZ9fjlBjEgwyuXGoDC60UEB5A9TL2oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Zhiquan Li <zhiquan_li@163.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/113] platform/x86/intel/tpmi/plr: Make the file domain<n>/status writeable
+Subject: [PATCH 6.1 17/69] KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
 Date: Mon,  9 Feb 2026 15:23:45 +0100
-Message-ID: <20260209142312.916714665@linuxfoundation.org>
+Message-ID: <20260209142302.546864853@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215237-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215182-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,google.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 70251110B91
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: CB7C911116D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+From: Zhiquan Li <zhiquan_li@163.com>
 
-[ Upstream commit 008bec8ffe6e7746588d1e12c5b3865fa478fc91 ]
+[ Upstream commit e396a74222654486d6ab45dca5d0c54c408b8b91 ]
 
-The file sys/kernel/debug/tpmi-<n>/plr/domain<n>/status has store and show
-callbacks. Make it writeable.
+Some distributions (such as Ubuntu) configure GCC so that
+_FORTIFY_SOURCE is automatically enabled at -O1 or above.  This results
+in some fortified version of definitions of standard library functions
+are included.  While linker resolves the symbols, the fortified versions
+might override the definitions in lib/string_override.c and reference to
+those PLT entries in GLIBC.  This is not a problem for the code in host,
+but it is a disaster for the guest code.  E.g., if build and run
+x86/nested_emulation_test on Ubuntu 24.04 will encounter a L1 #PF due to
+memset() reference to __memset_chk@plt.
 
-Fixes: 811f67c51636d ("platform/x86/intel/tpmi: Add new auxiliary driver for performance limits")
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://patch.msgid.link/20260127-plr-debugfs-write-v1-1-1fffbc370b1e@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+The option -fno-builtin-memset is not helpful here, because those
+fortified versions are not built-in but some definitions which are
+included by header, they are for different intentions.
+
+In order to eliminate the unpredictable behaviors may vary depending on
+the linker and platform, add the "-U_FORTIFY_SOURCE" into CFLAGS to
+prevent from introducing the fortified definitions.
+
+Signed-off-by: Zhiquan Li <zhiquan_li@163.com>
+Link: https://patch.msgid.link/20260122053551.548229-1-zhiquan_li@163.com
+Fixes: 6b6f71484bf4 ("KVM: selftests: Implement memcmp(), memcpy(), and memset() for guest use")
+Cc: stable@vger.kernel.org
+[sean: tag for stable]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ Makefile.kvm -> Makefile ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/intel_plr_tpmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/intel/intel_plr_tpmi.c b/drivers/platform/x86/intel/intel_plr_tpmi.c
-index 69ace6a629bc7..ffb2f7ffc7b51 100644
---- a/drivers/platform/x86/intel/intel_plr_tpmi.c
-+++ b/drivers/platform/x86/intel/intel_plr_tpmi.c
-@@ -315,7 +315,7 @@ static int intel_plr_probe(struct auxiliary_device *auxdev, const struct auxilia
- 		snprintf(name, sizeof(name), "domain%d", i);
- 
- 		dentry = debugfs_create_dir(name, plr->dbgfs_dir);
--		debugfs_create_file("status", 0444, dentry, &plr->die_info[i],
-+		debugfs_create_file("status", 0644, dentry, &plr->die_info[i],
- 				    &plr_status_fops);
- 	}
- 
--- 
-2.51.0
-
+--- a/tools/testing/selftests/kvm/Makefile
++++ b/tools/testing/selftests/kvm/Makefile
+@@ -202,6 +202,7 @@ else
+ LINUX_TOOL_ARCH_INCLUDE = $(top_srcdir)/tools/arch/$(ARCH)/include
+ endif
+ CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
++	-U_FORTIFY_SOURCE \
+ 	-fno-stack-protector -fno-PIE -I$(LINUX_TOOL_INCLUDE) \
+ 	-I$(LINUX_TOOL_ARCH_INCLUDE) -I$(LINUX_HDR_PATH) -Iinclude \
+ 	-I$(<D) -Iinclude/$(UNAME_M) -I ../rseq -I.. $(EXTRA_CFLAGS) \
 
 
 
