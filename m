@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215085-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCu1Mk/yiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:23 +0100
+	id GBXIGQnyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215085-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFD1110BBE
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D62110AE6
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7B6E4300B28C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79CB83095E6E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1993937BE81;
-	Mon,  9 Feb 2026 14:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB77259CAF;
+	Mon,  9 Feb 2026 14:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrNigEPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2unqeNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E7A2222B2;
-	Mon,  9 Feb 2026 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79511AF0AF;
+	Mon,  9 Feb 2026 14:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647954; cv=none; b=rAyRFulNb8U8akab8Rk0+pIb9HLAi5WlY2SVTRyBdg1uzFxe5SqQxxGVi3byq8SanjrlU0xu9oGfXQeTIfvx8+JGeOMsZge9d/VZi1rsEJInowdvrys3zBShToY5YaThBW2j4K12QKQr3orPSot2HkGH4eni7/5s15H/A7U6+uU=
+	t=1770647624; cv=none; b=g5Z8ZUUEB5QhvUl1Eflv/5tGKwWbax5qQMk39LFZY0Jm49L95vKVbowhVadgYMD7GCxr6+CZuG1du576fw2K2KwUiRYmwDSdG+vtc/27m/d27cQh45/4CsmussgM+ZplA9oDhgM0Huggsh+RVgdI2vdcEzn4TN93tYkv9QMIa+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647954; c=relaxed/simple;
-	bh=7u8C4o6ofCrKC7S4y1piQSYU6YER0w4QvLIATy1Bukc=;
+	s=arc-20240116; t=1770647624; c=relaxed/simple;
+	bh=+ay1AvA4TogwB2pnuk+mZXvQbJ/SOh2hVRQZLBEPiN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXGlFkWgjdftkPLUsFloiIvomR35YDgdXVFbKMP+qzp3fXWSdSWtEA7iF6RyhTwm+L143qbTyVwPHclwo/byG9oM5wpglWSE4OGzIxhCLYLnJBgCYEQ/rpyV7Mp1QlgBJymhLDysFFOJt3I+JlkKUVwsRDH9qjqHdau8MWAyk3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrNigEPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A800C116C6;
-	Mon,  9 Feb 2026 14:39:13 +0000 (UTC)
+	 MIME-Version; b=OFOaD7X68BD4EoKD8UWwJ7mMq7kyG3rM39OUzEuyfGe9k9JF4YKt8bwAM78HGwYnkIbskRJpny4PF6A6/ZEHzR9fwB/IlurRiWB4ljXQPbGBQzuVWRS1DYdBcvPQMZ8hwwh3hJRkuom/LHoehGPB7T8SVmScWL7wIJ0ruxqJQho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2unqeNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABACC116C6;
+	Mon,  9 Feb 2026 14:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647954;
-	bh=7u8C4o6ofCrKC7S4y1piQSYU6YER0w4QvLIATy1Bukc=;
+	s=korg; t=1770647624;
+	bh=+ay1AvA4TogwB2pnuk+mZXvQbJ/SOh2hVRQZLBEPiN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrNigEPCxwMmlIlu0m0jtAo9Xj4mdS7zDrh+QRTVdpSigVlCutBwA2afuNtYvM+7E
-	 d8nIVF55XchaNXzl9DD0IFbNXiPpOxOiep8SPocgpFdQ27SFoNs6azzEtppNA90cHz
-	 CImgGSV64blYbFx3Ni1dXwgexrHHFHykIdbNluSA=
+	b=L2unqeNryX7sZJe8dHkcK85iuvZZwK/Z96RKn+uDbxlVvHTAHdJKtEfO+qfYv9BOQ
+	 UrFYwCOTaCp5qStVIBNhtePHBSDkRD5fjYbEhTxUJQzaJVmn/aR+lTddlwdH4gAyPH
+	 Z5rMhL4mbpcWcIq1Rs2nLSE3JviE/dCG5mhQGw2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Fasano <andrew.fasano@nist.gov>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/113] net: add skb_header_pointer_careful() helper
+Subject: [PATCH 6.18 154/175] netfilter: nf_tables: fix inverted genmask check in nft_map_catchall_activate()
 Date: Mon,  9 Feb 2026 15:23:47 +0100
-Message-ID: <20260209142312.987747462@linuxfoundation.org>
+Message-ID: <20260209142326.036670828@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215184-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215085-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,56 +90,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EEFD1110BBE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 84D62110AE6
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andrew Fasano <andrew.fasano@nist.gov>
 
-[ Upstream commit 13e00fdc9236bd4d0bff4109d2983171fbcb74c4 ]
+[ Upstream commit f41c5d151078c5348271ffaf8e7410d96f2d82f8 ]
 
-This variant of skb_header_pointer() should be used in contexts
-where @offset argument is user-controlled and could be negative.
+nft_map_catchall_activate() has an inverted element activity check
+compared to its non-catchall counterpart nft_mapelem_activate() and
+compared to what is logically required.
 
-Negative offsets are supported, as long as the zone starts
-between skb->head and skb->data.
+nft_map_catchall_activate() is called from the abort path to re-activate
+catchall map elements that were deactivated during a failed transaction.
+It should skip elements that are already active (they don't need
+re-activation) and process elements that are inactive (they need to be
+restored). Instead, the current code does the opposite: it skips inactive
+elements and processes active ones.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: cabd1a976375 ("net/sched: cls_u32: use skb_header_pointer_careful()")
+Compare the non-catchall activate callback, which is correct:
+
+  nft_mapelem_activate():
+    if (nft_set_elem_active(ext, iter->genmask))
+        return 0;   /* skip active, process inactive */
+
+With the buggy catchall version:
+
+  nft_map_catchall_activate():
+    if (!nft_set_elem_active(ext, genmask))
+        continue;   /* skip inactive, process active */
+
+The consequence is that when a DELSET operation is aborted,
+nft_setelem_data_activate() is never called for the catchall element.
+For NFT_GOTO verdict elements, this means nft_data_hold() is never
+called to restore the chain->use reference count. Each abort cycle
+permanently decrements chain->use. Once chain->use reaches zero,
+DELCHAIN succeeds and frees the chain while catchall verdict elements
+still reference it, resulting in a use-after-free.
+
+This is exploitable for local privilege escalation from an unprivileged
+user via user namespaces + nftables on distributions that enable
+CONFIG_USER_NS and CONFIG_NF_TABLES.
+
+Fix by removing the negation so the check matches nft_mapelem_activate():
+skip active elements, process inactive ones.
+
+Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
+Signed-off-by: Andrew Fasano <andrew.fasano@nist.gov>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skbuff.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/netfilter/nf_tables_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 1e07a54602032..2e26a054d260c 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -4202,6 +4202,18 @@ skb_header_pointer(const struct sk_buff *skb, int offset, int len, void *buffer)
- 				    skb_headlen(skb), buffer);
- }
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3cbf2573b9e90..6059a299004d4 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5917,7 +5917,7 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
  
-+/* Variant of skb_header_pointer() where @offset is user-controlled
-+ * and potentially negative.
-+ */
-+static inline void * __must_check
-+skb_header_pointer_careful(const struct sk_buff *skb, int offset,
-+			   int len, void *buffer)
-+{
-+	if (unlikely(offset < 0 && -offset > skb_headroom(skb)))
-+		return NULL;
-+	return skb_header_pointer(skb, offset, len, buffer);
-+}
-+
- static inline void * __must_check
- skb_pointer_if_linear(const struct sk_buff *skb, int offset, int len)
- {
+ 	list_for_each_entry(catchall, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+-		if (!nft_set_elem_active(ext, genmask))
++		if (nft_set_elem_active(ext, genmask))
+ 			continue;
+ 
+ 		nft_clear(ctx->net, ext);
 -- 
 2.51.0
 
