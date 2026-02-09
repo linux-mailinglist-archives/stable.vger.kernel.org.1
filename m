@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-215358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAvpE8j3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:44 +0100
+	id GPiCDRv1iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:54:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563EE111807
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A1F1112E1
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 652C5305595C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 19DD1300C0E5
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904992BCF4C;
-	Mon,  9 Feb 2026 14:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D14637BE7F;
+	Mon,  9 Feb 2026 14:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1O+k8oKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rW38Whfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E222690EC;
-	Mon,  9 Feb 2026 14:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E353B28312F;
+	Mon,  9 Feb 2026 14:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648534; cv=none; b=UrmZ8f2dtk1P823CgPVHpyQ4BGbZ1uOH6OBebyWh6Fp7eDpzo1mLiZvJayUK5gPOqXvpSUkfiXTIV/Vj86GCtHq4xlACmXjLiF/PjQdIlIlu0zwoiXjc3y48er3qtRM7Fmu01ej9D2T9e9kUcGA75hqTgqY/Gg8wNgrAWwJN2H4=
+	t=1770648846; cv=none; b=BucMxBYGoteEb7YjOclY4lOrYPlL/MckvDd0kyUs6+pYN8kdayqe5y7uvaDo/MG5hI4hkdmFscEzaNovOIjaBGlFYPBMywPeDTEsEabbGdThN05T6VTwHDEdUBPveBTzWiyMJmJkEMn+cVDd77JdEw0IFpd3QcnGs/+o9SgyZ2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648534; c=relaxed/simple;
-	bh=ofipjIzMcZPqXhQOgRRP/w+DoOFJF1MxmDBy62Cu378=;
+	s=arc-20240116; t=1770648846; c=relaxed/simple;
+	bh=VFw5haTtysWc2U2SKTXKHOk08OtY2bfUZcvgQaQvGgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8G01Xx3MP0wyCSnjzXahR80wHgjpEKHBWfmhItYwWovyAZJYa+UI/uw74v4z82/0SuK+5OEsMfQDnwhhss79Y44+CAeabJJ1yAorKqwKjs+12jbxMuJXcDcq2PO4QJ/mr0hAfNQ/pXNuIshlZ9lzRpHCF6Md701AIsFH9CwoRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1O+k8oKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFD5C116C6;
-	Mon,  9 Feb 2026 14:48:53 +0000 (UTC)
+	 MIME-Version; b=TVHF9+NufTEAxCWfxUIr7AcTGSxGbfMINtuZistn4IRJXiWvAk1zze+Bl+afVEANT26X+jJobT4FFIdfwy0ryYa72TgzkzXVml3ONPKJq8puxf+Law2ekQkjfrdK7GWa4QgfpKslumkcD6hHu9RQwDQgoNG0JdW3QYCjHrHs8IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rW38Whfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ABAC116C6;
+	Mon,  9 Feb 2026 14:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648534;
-	bh=ofipjIzMcZPqXhQOgRRP/w+DoOFJF1MxmDBy62Cu378=;
+	s=korg; t=1770648845;
+	bh=VFw5haTtysWc2U2SKTXKHOk08OtY2bfUZcvgQaQvGgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1O+k8oKtOWMz7loBJruWtjKZh7PJ3CdUxhYvBA0cMpo6Kk/smHtR3/aTxiIXDbuRS
-	 EcS1eFv1SpoGCU8HXWbb37WDCmMpco/nct/kt5/J5Aql0ZVljRxpqAXkmCZexWZBBl
-	 2AHbNZvAYtnfMMPrLIoMNjXiUG7aGFtnH73jkwzg=
+	b=rW38WhfdnrE7mTsSiGKoFmHEyk/yJ8ftD16oxfl6b+alYTtQ4ya05z1+TERb5x3Il
+	 2OYa7t0XliUls0U/KrH/QFxgZLaNhU0zAhl/L9kzNYdo+ZiQhoswAjY8JINdA+/Fur
+	 Ifaw+jW6xT6L0HnRs37jev/GfR4pxXlr8Trro3MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	valis <sec@valis.email>,
-	syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com,
-	Boudewijn van der Heide <boudewijn@delta-utec.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 67/86] macvlan: fix error recovery in macvlan_common_newlink()
+Subject: [PATCH 5.15 33/75] netfilter: replace -EEXIST with -EBUSY
 Date: Mon,  9 Feb 2026 15:24:30 +0100
-Message-ID: <20260209142307.188195144@linuxfoundation.org>
+Message-ID: <20260209142303.039559903@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,131 +65,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215358-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215454-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7182fbe91e58602ec1fe];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,valis.email:email,delta-utec.com:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 563EE111807
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: C5A1F1112E1
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Daniel Gomez <da.gomez@samsung.com>
 
-[ Upstream commit f8db6475a83649689c087a8f52486fcc53e627e9 ]
+[ Upstream commit 2bafeb8d2f380c3a81d98bd7b78b854b564f9cd4 ]
 
-valis provided a nice repro to crash the kernel:
+The -EEXIST error code is reserved by the module loading infrastructure
+to indicate that a module is already loaded. When a module's init
+function returns -EEXIST, userspace tools like kmod interpret this as
+"module already loaded" and treat the operation as successful, returning
+0 to the user even though the module initialization actually failed.
 
-ip link add p1 type veth peer p2
-ip link set address 00:00:00:00:00:20 dev p1
-ip link set up dev p1
-ip link set up dev p2
+Replace -EEXIST with -EBUSY to ensure correct error reporting in the module
+initialization path.
 
-ip link add mv0 link p2 type macvlan mode source
-ip link add invalid% link p2 type macvlan mode source macaddr add 00:00:00:00:00:20
+Affected modules:
+  * ebtable_broute ebtable_filter ebtable_nat arptable_filter
+  * ip6table_filter ip6table_mangle ip6table_nat ip6table_raw
+  * ip6table_security iptable_filter iptable_mangle iptable_nat
+  * iptable_raw iptable_security
 
-ping -c1 -I p1 1.2.3.4
-
-He also gave a very detailed analysis:
-
-<quote valis>
-
-The issue is triggered when a new macvlan link is created  with
-MACVLAN_MODE_SOURCE mode and MACVLAN_MACADDR_ADD (or
-MACVLAN_MACADDR_SET) parameter, lower device already has a macvlan
-port and register_netdevice() called from macvlan_common_newlink()
-fails (e.g. because of the invalid link name).
-
-In this case macvlan_hash_add_source is called from
-macvlan_change_sources() / macvlan_common_newlink():
-
-This adds a reference to vlan to the port's vlan_source_hash using
-macvlan_source_entry.
-
-vlan is a pointer to the priv data of the link that is being created.
-
-When register_netdevice() fails, the error is returned from
-macvlan_newlink() to rtnl_newlink_create():
-
-        if (ops->newlink)
-                err = ops->newlink(dev, &params, extack);
-        else
-                err = register_netdevice(dev);
-        if (err < 0) {
-                free_netdev(dev);
-                goto out;
-        }
-
-and free_netdev() is called, causing a kvfree() on the struct
-net_device that is still referenced in the source entry attached to
-the lower device's macvlan port.
-
-Now all packets sent on the macvlan port with a matching source mac
-address will trigger a use-after-free in macvlan_forward_source().
-
-</quote valis>
-
-With all that, my fix is to make sure we call macvlan_flush_sources()
-regardless of @create value whenever "goto destroy_macvlan_port;"
-path is taken.
-
-Many thanks to valis for following up on this issue.
-
-Fixes: aa5fd0fb7748 ("driver: macvlan: Destroy new macvlan port if macvlan_common_newlink failed.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: valis <sec@valis.email>
-Reported-by: syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com
-Closes: https: //lore.kernel.org/netdev/695fb1e8.050a0220.1c677c.039f.GAE@google.com/T/#u
-Cc: Boudewijn van der Heide <boudewijn@delta-utec.com>
-Link: https://patch.msgid.link/20260129204359.632556-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/bridge/netfilter/ebtables.c | 2 +-
+ net/netfilter/nf_log.c          | 4 ++--
+ net/netfilter/x_tables.c        | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 09db43ce31767..fea7352e2a470 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1572,9 +1572,10 @@ int macvlan_common_newlink(struct net *src_net, struct net_device *dev,
- 	/* the macvlan port may be freed by macvlan_uninit when fail to register.
- 	 * so we destroy the macvlan port only when it's valid.
- 	 */
--	if (create && macvlan_port_get_rtnl(lowerdev)) {
-+	if (macvlan_port_get_rtnl(lowerdev)) {
- 		macvlan_flush_sources(port, vlan);
--		macvlan_port_destroy(port->dev);
-+		if (create)
-+			macvlan_port_destroy(port->dev);
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index 2f3ea11785ad4..c74efcc2b4996 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -1299,7 +1299,7 @@ int ebt_register_template(const struct ebt_table *t, int (*table_init)(struct ne
+ 	list_for_each_entry(tmpl, &template_tables, list) {
+ 		if (WARN_ON_ONCE(strcmp(t->name, tmpl->name) == 0)) {
+ 			mutex_unlock(&ebt_mutex);
+-			return -EEXIST;
++			return -EBUSY;
+ 		}
  	}
- 	return err;
- }
+ 
+diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
+index 8f5362a19b151..d15d2911a67e3 100644
+--- a/net/netfilter/nf_log.c
++++ b/net/netfilter/nf_log.c
+@@ -89,7 +89,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
+ 	if (pf == NFPROTO_UNSPEC) {
+ 		for (i = NFPROTO_UNSPEC; i < NFPROTO_NUMPROTO; i++) {
+ 			if (rcu_access_pointer(loggers[i][logger->type])) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto unlock;
+ 			}
+ 		}
+@@ -97,7 +97,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
+ 			rcu_assign_pointer(loggers[i][logger->type], logger);
+ 	} else {
+ 		if (rcu_access_pointer(loggers[pf][logger->type])) {
+-			ret = -EEXIST;
++			ret = -EBUSY;
+ 			goto unlock;
+ 		}
+ 		rcu_assign_pointer(loggers[pf][logger->type], logger);
+diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
+index 9a579217763df..6303ba7a62a2f 100644
+--- a/net/netfilter/x_tables.c
++++ b/net/netfilter/x_tables.c
+@@ -1761,7 +1761,7 @@ EXPORT_SYMBOL_GPL(xt_hook_ops_alloc);
+ int xt_register_template(const struct xt_table *table,
+ 			 int (*table_init)(struct net *net))
+ {
+-	int ret = -EEXIST, af = table->af;
++	int ret = -EBUSY, af = table->af;
+ 	struct xt_template *t;
+ 
+ 	mutex_lock(&xt[af].mutex);
 -- 
 2.51.0
 
