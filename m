@@ -1,69 +1,58 @@
-Return-Path: <stable+bounces-214940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BzzItbuiWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-214940-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:34 +0100
+	id aPpiMAjviWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-214985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:28:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAA1110459
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:27:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207D51104D9
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F393830209FB
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:25:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C2F9301D4DD
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849CB37AA8A;
-	Mon,  9 Feb 2026 14:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184E037B3F3;
+	Mon,  9 Feb 2026 14:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8NlM3RG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsvcS9bT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491023793AC;
-	Mon,  9 Feb 2026 14:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE58437B3E4;
+	Mon,  9 Feb 2026 14:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647143; cv=none; b=JI87WyNVdhuhqaq1B6GZ7L0KuD1XroDJ+yIEqbc4O3ztcyuFky2sHyEe+gxNQ5VqMSdexNMcdXvt28X7Z/FQoUt7x8gmgsmIrIXdzfSUiVR8JLe/Er66UzU8tQbH4J/JSEOAUj1Tb6Vzg332LfuSxNgAiJkJNVmhRQ7vsUelPs0=
+	t=1770647293; cv=none; b=FLLcyHI57pGb36wYXZ9+9P9eC6aJKYdTnmLjeKRUOgnzKcqhagWsj6X9iDZM0Kq344FBhjCTgR0sg7v4l/4CHpTq2ssdfJpqsrNG6WhaNHhO99BIrktaI0xiraIS0+lQV6oowD9fQ5vNBWH14xahBdZB+i6dwIplZpqK7BeqqSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647143; c=relaxed/simple;
-	bh=hfT4M6Rh2EpHIVdvOtb5LfnxvKi88BIsMbkfu45Vuho=;
+	s=arc-20240116; t=1770647293; c=relaxed/simple;
+	bh=EUNt2eqBdk1lxelHgSF7MIHarKUZoC0fYqc1IH/HnxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3rGxf0siOah0vckvIutikPf/2/Yh5HNdbbqxX3o1V1nPDxGA/oLLIyvm/Giqyvsc/vwMUJ6UV7qBcAv1PPuufqXx2C5QH4Ki+xRt0YRu8sTVR4cOJwBFNfuN7jJinGkPQiAGcKWGfUuJzBfBrjV0bbUf5rfZ+3H+WdN6P1u3mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8NlM3RG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21927C116C6;
-	Mon,  9 Feb 2026 14:25:42 +0000 (UTC)
+	 MIME-Version; b=L+gIq1x/18k5n7k1xkEhSeoJb+x7x/m9plB12ihxWR/GIRlqUknd9Jauq9u4SOGzHCeCDs/GolYTw9HulvFcLcxOlPeuO5/YVU1oO5NLe/MBIiCZtvzPvnE2fq0k2b0g2ZAkqnqA4gMpXbPUfatjTEmd/wi9JsjR8/2MdfYTb0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsvcS9bT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402F9C116C6;
+	Mon,  9 Feb 2026 14:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647143;
-	bh=hfT4M6Rh2EpHIVdvOtb5LfnxvKi88BIsMbkfu45Vuho=;
+	s=korg; t=1770647293;
+	bh=EUNt2eqBdk1lxelHgSF7MIHarKUZoC0fYqc1IH/HnxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8NlM3RG9RQq95SiEc71unf2Yaw3ngKGZWHB4IlcwRnrcs9ZBAj1hc6XGVFaOHYwc
-	 jX1XOhT0EsTbrpStQ3g3xWo5brLSoDYmemjVUrQP0mzvCU3Fx+Qmg1RNclQJkjAYro
-	 vtvpo2Y4Cp70j6ZlKTN4YDAVZWP4SlyhsxSHzS78=
+	b=ZsvcS9bT60bi6L1GO9Yctpunf3+A2aJ/Ovm+2SyQWmL3Hx0+FyVqFihFiRrtllQfD
+	 Y6xmjksxUL0BkAuYloyCyORStJo4yEsdGm09Da1jTfqmCQ6apaYZBTEtyHm1S0b051
+	 wJ+3ZtnF+FRTsnYPbXf0wbaKNTlhn8SAVvaTKe3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com,
+	Hao Li <hao.li@linux.dev>,
+	Hao Ge <hao.ge@linux.dev>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 012/175] procfs: avoid fetching build ID while holding VMA lock
-Date: Mon,  9 Feb 2026 15:21:25 +0100
-Message-ID: <20260209142320.919126774@linuxfoundation.org>
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.18 013/175] mm/slab: Add alloc_tagging_slab_free_hook for memcg_alloc_abort_single
+Date: Mon,  9 Feb 2026 15:21:26 +0100
+Message-ID: <20260209142320.954502232@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
 References: <20260209142320.474120190@linuxfoundation.org>
@@ -78,296 +67,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,syzkaller.appspotmail.com,google.com,linux.dev,iogearbox.net,gmail.com,fomichev.me,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-214940-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-214985-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,4e70c8e0a2017b432f7a];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CCAA1110459
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.cz:email]
+X-Rspamd-Queue-Id: 207D51104D9
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Hao Ge <hao.ge@linux.dev>
 
-commit b5cbacd7f86f4f62b8813688c8e73be94e8e1951 upstream.
+commit e6c53ead2d8fa73206e0a63e9cd9aea6bc929837 upstream.
 
-Fix PROCMAP_QUERY to fetch optional build ID only after dropping mmap_lock
-or per-VMA lock, whichever was used to lock VMA under question, to avoid
-deadlock reported by syzbot:
+When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
+may be noticed:
 
- -> #1 (&mm->mmap_lock){++++}-{4:4}:
-        __might_fault+0xed/0x170
-        _copy_to_iter+0x118/0x1720
-        copy_page_to_iter+0x12d/0x1e0
-        filemap_read+0x720/0x10a0
-        blkdev_read_iter+0x2b5/0x4e0
-        vfs_read+0x7f4/0xae0
-        ksys_read+0x12a/0x250
-        do_syscall_64+0xcb/0xf80
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[ 3959.023862] ------------[ cut here ]------------
+[ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
+[ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
+[ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+[ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
+[ 3959.024182] Tainted: [W]=WARN
+[ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+[ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 3959.024199] pc : alloc_tag_add+0x128/0x178
+[ 3959.024207] lr : alloc_tag_add+0x128/0x178
+[ 3959.024214] sp : ffff80008b696d60
+[ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
+[ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
+[ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
+[ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
+[ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
+[ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
+[ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
+[ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
+[ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
+[ 3959.024340] Call trace:
+[ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
+[ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
+[ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
+[ 3959.024369]  xas_alloc+0x304/0x4f0
+[ 3959.024381]  xas_create+0x1e0/0x4a0
+[ 3959.024388]  xas_store+0x68/0xda8
+[ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
+[ 3959.024409]  filemap_add_folio+0x16c/0x7e0
+[ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
+[ 3959.024424]  iomap_get_folio+0xfc/0x180
+[ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
+[ 3959.024441]  iomap_write_begin+0x198/0xc18
+[ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
+[ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
+[ 3959.024461]  blkdev_write_iter+0x38c/0x978
+[ 3959.024470]  vfs_write+0x4d4/0x928
+[ 3959.024482]  ksys_write+0xfc/0x1f8
+[ 3959.024489]  __arm64_sys_write+0x74/0xb0
+[ 3959.024496]  invoke_syscall+0xd4/0x258
+[ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
+[ 3959.024514]  do_el0_svc+0x48/0x68
+[ 3959.024520]  el0_svc+0x40/0xf8
+[ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
+[ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
+[ 3959.024540] ---[ end trace 0000000000000000 ]---
 
- -> #0 (&sb->s_type->i_mutex_key#8){++++}-{4:4}:
-        __lock_acquire+0x1509/0x26d0
-        lock_acquire+0x185/0x340
-        down_read+0x98/0x490
-        blkdev_read_iter+0x2a7/0x4e0
-        __kernel_read+0x39a/0xa90
-        freader_fetch+0x1d5/0xa80
-        __build_id_parse.isra.0+0xea/0x6a0
-        do_procmap_query+0xd75/0x1050
-        procfs_procmap_ioctl+0x7a/0xb0
-        __x64_sys_ioctl+0x18e/0x210
-        do_syscall_64+0xcb/0xf80
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+When __memcg_slab_post_alloc_hook() fails, there are two different
+free paths depending on whether size == 1 or size != 1. In the
+kmem_cache_free_bulk() path, we do call alloc_tagging_slab_free_hook().
+However, in memcg_alloc_abort_single() we don't, the above warning will be
+triggered on the next allocation.
 
- other info that might help us debug this:
+Therefore, add alloc_tagging_slab_free_hook() to the
+memcg_alloc_abort_single() path.
 
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   rlock(&mm->mmap_lock);
-                                lock(&sb->s_type->i_mutex_key#8);
-                                lock(&mm->mmap_lock);
-   rlock(&sb->s_type->i_mutex_key#8);
-
-  *** DEADLOCK ***
-
-This seems to be exacerbated (as we haven't seen these syzbot reports
-before that) by the recent:
-
-	777a8560fd29 ("lib/buildid: use __kernel_read() for sleepable context")
-
-To make this safe, we need to grab file refcount while VMA is still locked, but
-other than that everything is pretty straightforward. Internal build_id_parse()
-API assumes VMA is passed, but it only needs the underlying file reference, so
-just add another variant build_id_parse_file() that expects file passed
-directly.
-
-[akpm@linux-foundation.org: fix up kerneldoc]
-Link: https://lkml.kernel.org/r/20260129215340.3742283-1-andrii@kernel.org
-Fixes: ed5d583a88a9 ("fs/procfs: implement efficient VMA querying API for /proc/<pid>/maps")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reported-by: <syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com>
+Fixes: 9f9796b413d3 ("mm, slab: move memcg charging to post-alloc hook")
+Cc: stable@vger.kernel.org
+Suggested-by: Hao Li <hao.li@linux.dev>
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+Reviewed-by: Hao Li <hao.li@linux.dev>
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Tested-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Hao Luo <haoluo@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Song Liu <song@kernel.org>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Cc: Yonghong Song <yonghong.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20260204101401.202762-1-hao.ge@linux.dev
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_mmu.c      |   42 +++++++++++++++++++++++++++---------------
- include/linux/buildid.h |    3 +++
- lib/buildid.c           |   42 ++++++++++++++++++++++++++++++------------
- 3 files changed, 60 insertions(+), 27 deletions(-)
+ mm/slub.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -656,6 +656,7 @@ static int do_procmap_query(struct mm_st
- 	struct proc_maps_locking_ctx lock_ctx = { .mm = mm };
- 	struct procmap_query karg;
- 	struct vm_area_struct *vma;
-+	struct file *vm_file = NULL;
- 	const char *name = NULL;
- 	char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf = NULL;
- 	__u64 usize;
-@@ -727,21 +728,6 @@ static int do_procmap_query(struct mm_st
- 		karg.inode = 0;
- 	}
- 
--	if (karg.build_id_size) {
--		__u32 build_id_sz;
--
--		err = build_id_parse(vma, build_id_buf, &build_id_sz);
--		if (err) {
--			karg.build_id_size = 0;
--		} else {
--			if (karg.build_id_size < build_id_sz) {
--				err = -ENAMETOOLONG;
--				goto out;
--			}
--			karg.build_id_size = build_id_sz;
--		}
--	}
--
- 	if (karg.vma_name_size) {
- 		size_t name_buf_sz = min_t(size_t, PATH_MAX, karg.vma_name_size);
- 		const struct path *path;
-@@ -775,10 +761,34 @@ static int do_procmap_query(struct mm_st
- 		karg.vma_name_size = name_sz;
- 	}
- 
-+	if (karg.build_id_size && vma->vm_file)
-+		vm_file = get_file(vma->vm_file);
-+
- 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
- 	query_vma_teardown(&lock_ctx);
- 	mmput(mm);
- 
-+	if (karg.build_id_size) {
-+		__u32 build_id_sz;
-+
-+		if (vm_file)
-+			err = build_id_parse_file(vm_file, build_id_buf, &build_id_sz);
-+		else
-+			err = -ENOENT;
-+		if (err) {
-+			karg.build_id_size = 0;
-+		} else {
-+			if (karg.build_id_size < build_id_sz) {
-+				err = -ENAMETOOLONG;
-+				goto out;
-+			}
-+			karg.build_id_size = build_id_sz;
-+		}
-+	}
-+
-+	if (vm_file)
-+		fput(vm_file);
-+
- 	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
- 					       name, karg.vma_name_size)) {
- 		kfree(name_buf);
-@@ -798,6 +808,8 @@ static int do_procmap_query(struct mm_st
- out:
- 	query_vma_teardown(&lock_ctx);
- 	mmput(mm);
-+	if (vm_file)
-+		fput(vm_file);
- 	kfree(name_buf);
- 	return err;
- }
---- a/include/linux/buildid.h
-+++ b/include/linux/buildid.h
-@@ -7,7 +7,10 @@
- #define BUILD_ID_SIZE_MAX 20
- 
- struct vm_area_struct;
-+struct file;
-+
- int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
-+int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size);
- int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
- int build_id_parse_buf(const void *buf, unsigned char *build_id, u32 buf_size);
- 
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -295,7 +295,7 @@ static int get_build_id_64(struct freade
- /* enough for Elf64_Ehdr, Elf64_Phdr, and all the smaller requests */
- #define MAX_FREADER_BUF_SZ 64
- 
--static int __build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-+static int __build_id_parse(struct file *file, unsigned char *build_id,
- 			    __u32 *size, bool may_fault)
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6667,8 +6667,12 @@ void slab_free(struct kmem_cache *s, str
+ static noinline
+ void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
  {
- 	const Elf32_Ehdr *ehdr;
-@@ -303,11 +303,7 @@ static int __build_id_parse(struct vm_ar
- 	char buf[MAX_FREADER_BUF_SZ];
- 	int ret;
- 
--	/* only works for page backed storage  */
--	if (!vma->vm_file)
--		return -EINVAL;
--
--	freader_init_from_file(&r, buf, sizeof(buf), vma->vm_file, may_fault);
-+	freader_init_from_file(&r, buf, sizeof(buf), file, may_fault);
- 
- 	/* fetch first 18 bytes of ELF header for checks */
- 	ehdr = freader_fetch(&r, 0, offsetofend(Elf32_Ehdr, e_type));
-@@ -335,8 +331,8 @@ out:
- 	return ret;
- }
- 
--/*
-- * Parse build ID of ELF file mapped to vma
-+/**
-+ * build_id_parse_nofault() - Parse build ID of ELF file mapped to vma
-  * @vma:      vma object
-  * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
-  * @size:     returns actual build id size in case of success
-@@ -348,11 +344,14 @@ out:
-  */
- int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
- {
--	return __build_id_parse(vma, build_id, size, false /* !may_fault */);
-+	if (!vma->vm_file)
-+		return -EINVAL;
++	struct slab *slab = virt_to_slab(object);
 +
-+	return __build_id_parse(vma->vm_file, build_id, size, false /* !may_fault */);
- }
- 
--/*
-- * Parse build ID of ELF file mapped to VMA
-+/**
-+ * build_id_parse() - Parse build ID of ELF file mapped to VMA
-  * @vma:      vma object
-  * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
-  * @size:     returns actual build id size in case of success
-@@ -364,7 +363,26 @@ int build_id_parse_nofault(struct vm_are
-  */
- int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
- {
--	return __build_id_parse(vma, build_id, size, true /* may_fault */);
-+	if (!vma->vm_file)
-+		return -EINVAL;
++	alloc_tagging_slab_free_hook(s, slab, &object, 1);
 +
-+	return __build_id_parse(vma->vm_file, build_id, size, true /* may_fault */);
-+}
-+
-+/**
-+ * build_id_parse_file() - Parse build ID of ELF file
-+ * @file:      file object
-+ * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
-+ * @size:     returns actual build id size in case of success
-+ *
-+ * Assumes faultable context and can cause page faults to bring in file data
-+ * into page cache.
-+ *
-+ * Return: 0 on success; negative error, otherwise
-+ */
-+int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size)
-+{
-+	return __build_id_parse(file, build_id, size, true /* may_fault */);
+ 	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+-		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
++		do_slab_free(s, slab, object, object, 1, _RET_IP_);
  }
+ #endif
  
- /**
 
 
 
