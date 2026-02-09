@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHMrFG75iWkiFQAAu9opvQ
-	(envelope-from <stable+bounces-215472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:46 +0100
+	id +NnAK+j2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEDB111B9B
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC62111690
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E6CE30CC42D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:55:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCAF630CF375
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE2437BE77;
-	Mon,  9 Feb 2026 14:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306A62DECCB;
+	Mon,  9 Feb 2026 14:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pL/7WrT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmEwBT2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C215B28312F;
-	Mon,  9 Feb 2026 14:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E878C2690EC;
+	Mon,  9 Feb 2026 14:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648907; cv=none; b=CX5ZFpuovZc3/zKaRSEPcFPXeU/r0cEJ56fdpXEoB0hkyaUyzmqA/4QjFQ/3hIj5Gs0Kb97q2u4G6wYUjYzOHXuqWB0aGahyYrzIiHThFm+16ePhzAC8YTVEdSPnaULr74lsxlRUKeY44eHjPbhCz+FG+wav74ALlTGkQsXDTkI=
+	t=1770648592; cv=none; b=ugVeGAev4manV7+b0KXLjANQvIAqqST0LnH179uC5YGrJkOLcHKmcFIhxB+132NLWIecYaw5P6+ICIrncEY3jRtI8UopBW/EkzIZjhl0A21ADdSYrNJnTn7LX8YCrHgpf+b2gKGXv606GOZtkYXOIQu4KZZy4ww6ascJY8xDOI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648907; c=relaxed/simple;
-	bh=SH+SibIqnc74Rfp9InqRF28zG9b3mNOyWJFZ/1cpycw=;
+	s=arc-20240116; t=1770648592; c=relaxed/simple;
+	bh=53d4BxtSoFayeJxTW7xUyBZdBEXVZi3GsJMDwMWqAZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2Fp/YJGbqUJ2FqpbXHfQrhgYhEWz0MAndp6x2SdkfqSnlcIuQYWjBlgz/FW0XwFEHXtiitSYJkJURpzNTxOglF0qqacDtMXeSSKxvL5KmUjG6yD562mf7k1N08SMaDt31F7qN1GMInt67zrth59toqaQyDLQiDkOAFHp/sVhY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pL/7WrT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CB3C116C6;
-	Mon,  9 Feb 2026 14:55:07 +0000 (UTC)
+	 MIME-Version; b=Zn6rRp+Ts1g83h5xXO0NRIMnyw6fwIUNXUTbiOYdCGrdfSh+vuqEkIR6u9U5ti/1kll3XfMZDRF03yti0pEiq6k49DJjvpQESyfm8+KwjSRb3tclLooyyU7VnK8CKkiNm2fYeMcTvvkyAy+I/CaqCD+EZruAlBwh2awPzT19ESU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmEwBT2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DB2C116C6;
+	Mon,  9 Feb 2026 14:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648907;
-	bh=SH+SibIqnc74Rfp9InqRF28zG9b3mNOyWJFZ/1cpycw=;
+	s=korg; t=1770648591;
+	bh=53d4BxtSoFayeJxTW7xUyBZdBEXVZi3GsJMDwMWqAZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pL/7WrT6/cew2rrnZ0z3IX8ET3TNryusq/nQYy4n93TfG+uV0Qtz+A19S88vn7TPX
-	 rBtN7GwrNUhr1OqQc3Hgpu+OjQspVluHzCVoac7QUWsPYXtKwZAguhbCMzrQOaTzEt
-	 Kg2t6elhz2CIoHR9ZsJmOJVm+mzzPKyIYyvFCjAI=
+	b=wmEwBT2Z2cFA1eVWkhV7lw6uUwEzDd5x7xHgAdUUg/EJ63Qn1LSSxppJ+NaOvtDfv
+	 H+y4D2pxRgRxuD6/om5+49CdZpeCSGC6hILKRA0onYxMGy13byrTkpzL6p74Q8dD+F
+	 jKYQ3QqhJzth9N9V5mLknbcjJ8kYC7XHeI7UsBYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 50/75] dpaa2-switch: add bounds check for if_id in IRQ handler
+Subject: [PATCH 6.6 84/86] spi: tegra: Fix a memory leak in tegra_slink_probe()
 Date: Mon,  9 Feb 2026 15:24:47 +0100
-Message-ID: <20260209142303.645881634@linuxfoundation.org>
+Message-ID: <20260209142307.809111778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215472-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215376-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9BEDB111B9B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 0CC62111690
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 31a7a0bbeb006bac2d9c81a2874825025214b6d8 ]
+[ Upstream commit 41d9a6795b95d6ea28439ac1e9ce8c95bbca20fc ]
 
-The IRQ handler extracts if_id from the upper 16 bits of the hardware
-status register and uses it to index into ethsw->ports[] without
-validation. Since if_id can be any 16-bit value (0-65535) but the ports
-array is only allocated with sw_attr.num_ifs elements, this can lead to
-an out-of-bounds read potentially.
+In tegra_slink_probe(), when platform_get_irq() fails, it directly
+returns from the function with an error code, which causes a memory leak.
 
-Add a bounds check before accessing the array, consistent with the
-existing validation in dpaa2_switch_rx().
+Replace it with a goto label to ensure proper cleanup.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 24ab724f8a46 ("dpaa2-switch: use the port index in the IRQ handler")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881D420AB43FF1A227B84AFAF91A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: eb9913b511f1 ("spi: tegra: Fix missing IRQ check in tegra_slink_probe()")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260202-slink-v1-1-eac50433a6f9@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-tegra20-slink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index dcb96c2b2820a..5c7055a4acc6f 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -1509,6 +1509,10 @@ static irqreturn_t dpaa2_switch_irq0_handler_thread(int irq_num, void *arg)
- 	}
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index f5cd365c913a8..f450409156c64 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1086,8 +1086,10 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	reset_control_deassert(tspi->rst);
  
- 	if_id = (status & 0xFFFF0000) >> 16;
-+	if (if_id >= ethsw->sw_attr.num_ifs) {
-+		dev_err(dev, "Invalid if_id %d in IRQ status\n", if_id);
-+		goto out;
+ 	spi_irq = platform_get_irq(pdev, 0);
+-	if (spi_irq < 0)
+-		return spi_irq;
++	if (spi_irq < 0) {
++		ret = spi_irq;
++		goto exit_pm_put;
 +	}
- 	port_priv = ethsw->ports[if_id];
- 
- 	if (status & DPSW_IRQ_EVENT_LINK_CHANGED) {
+ 	tspi->irq = spi_irq;
+ 	ret = request_threaded_irq(tspi->irq, tegra_slink_isr,
+ 				   tegra_slink_isr_thread, IRQF_ONESHOT,
 -- 
 2.51.0
 
