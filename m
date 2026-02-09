@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-215402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eG5rMFr4iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:10 +0100
+	id uJ1LJ5P1iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54110111953
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE91911139C
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E71C7307CF12
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D4CB93007AEF
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9548E37BE68;
-	Mon,  9 Feb 2026 14:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB32E2690EC;
+	Mon,  9 Feb 2026 14:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSNyR2GB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaNjpRYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596D72BCF4C;
-	Mon,  9 Feb 2026 14:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB732DB7B4;
+	Mon,  9 Feb 2026 14:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648676; cv=none; b=JKVi+yb8TcLk/a+cdGbxoPyglTSeJ5GdxEGXTnH0i5b51X0Jt9Jlj+Dkc8LkVyX0W/M4zWJydo5s/Mwh45EQzJO+L1SSAHwAcFKfE4eiWEMDSvmOIafnYj8K5vzN/Td0l8B+HKFrh+9cv4nSdvaZ8FDEGX+Bb6vhqpfl5nb6htc=
+	t=1770648585; cv=none; b=jTRzU8zO2rzLUxK+g0IGbBvv5clIpby7igvzj0SUDxt3u/kcTw4ClZU78KlFlH96CkKMQehd/Mly4Scu1Ic6UTPSUD2YJ0V4mIoU63IiPKLy/ayIlQ8NZGyjiZFn0dMiu+3IDK8FZyh18qJESp6tnwzjmui1h/73fVhr/8hrNFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648676; c=relaxed/simple;
-	bh=XovpWE0tRgvjuUg9tmAnjEFlL0r8Fu0/0sEdq24i7vk=;
+	s=arc-20240116; t=1770648585; c=relaxed/simple;
+	bh=t7uJ3q4DmAiDyK30e9bc2r1SGqN/cJNxKG7kLhIK4XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCPNugBK9d8bK+yZGYcWtdFpog1D3A9AaZtNi5ONDcycHh9SvyIna0XSYCbu/KWxN3BKwXnxMuJIV7buwEgAyxnocW/GBMD91jFve9asfmi25as8U/lXBEmLLkQ5W39tHy6vWz3Ww5w54LxuoOgqnB6DW3ugy2A93FA2IUCj2+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSNyR2GB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0747C116C6;
-	Mon,  9 Feb 2026 14:51:15 +0000 (UTC)
+	 MIME-Version; b=dX85SN/AqlAA6sW/vylYJRVXq5a9PD7H8PR/JaclPJuEGvUdKnUQQ4D3cfvaciEcbE2ESsIJW0mYWqTxJtF6MYOY3yRLfHokYB0PImYZQt5S47lY1GUQz5247HrFdqBQX38loYj3HynF2v29MEmWLgrTjMQWlWwcKzM5fCpaFQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaNjpRYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA99C116C6;
+	Mon,  9 Feb 2026 14:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648676;
-	bh=XovpWE0tRgvjuUg9tmAnjEFlL0r8Fu0/0sEdq24i7vk=;
+	s=korg; t=1770648585;
+	bh=t7uJ3q4DmAiDyK30e9bc2r1SGqN/cJNxKG7kLhIK4XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSNyR2GB6Se/FuC1wL2HMHWqiLQaw32Pn4iiFcWBMkdRfsF89KCht3IeJunBg2IC3
-	 wn3ktGBcss7rjcXh58EgogEzeca4VHlhWLBHsKZpuc+DCYLIewcUGJU/JQCt0Tu9dg
-	 gTVHI8OONJoqI1YP2u3jRzq7NPXrphjh328QJkUI=
+	b=ZaNjpRYTgtzKcpiK1WbnBBw1/enL0q+ifnS0i/2nKQ86H6o742S+h+7TXNm/ob0j4
+	 AW/fkaZsVdJnj+eTW6jpoaxwYW28s/kLfUCqhYXwrMz8GSq8M/+jay5VHojAY++bkc
+	 cM9r2Fsd2fFEkyzNROqV32YJPs0Tc6tD2qA56pxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/41] platform/x86: toshiba_haps: Fix memory leaks in add/remove routines
-Date: Mon,  9 Feb 2026 15:24:44 +0100
-Message-ID: <20260209142257.647697991@linuxfoundation.org>
+Subject: [PATCH 6.6 82/86] spi: tegra210-quad: Protect curr_xfer in tegra_qspi_combined_seq_xfer
+Date: Mon,  9 Feb 2026 15:24:45 +0100
+Message-ID: <20260209142307.738950607@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +69,95 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215402-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215374-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 54110111953
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EE91911139C
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 128497456756e1b952bd5a912cd073836465109d ]
+[ Upstream commit bf4528ab28e2bf112c3a2cdef44fd13f007781cd ]
 
-toshiba_haps_add() leaks the haps object allocated by it if it returns
-an error after allocating that object successfully.
+The curr_xfer field is read by the IRQ handler without holding the lock
+to check if a transfer is in progress. When clearing curr_xfer in the
+combined sequence transfer loop, protect it with the spinlock to prevent
+a race with the interrupt handler.
 
-toshiba_haps_remove() does not free the object pointed to by
-toshiba_haps before clearing that pointer, so it becomes unreachable
-allocated memory.
+Protect the curr_xfer clearing at the exit path of
+tegra_qspi_combined_seq_xfer() with the spinlock to prevent a race
+with the interrupt handler that reads this field.
 
-Address these memory leaks by using devm_kzalloc() for allocating
-the memory in question.
+Without this protection, the IRQ handler could read a partially updated
+curr_xfer value, leading to NULL pointer dereference or use-after-free.
 
-Fixes: 23d0ba0c908a ("platform/x86: Toshiba HDD Active Protection Sensor")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-4-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/toshiba_haps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-tegra210-quad.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/platform/x86/toshiba_haps.c b/drivers/platform/x86/toshiba_haps.c
-index b237bd6b1ee54..e9ae102c0bfd7 100644
---- a/drivers/platform/x86/toshiba_haps.c
-+++ b/drivers/platform/x86/toshiba_haps.c
-@@ -185,7 +185,7 @@ static int toshiba_haps_add(struct acpi_device *acpi_dev)
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index a4945ff4fdcb2..4ea46fc038a39 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1064,6 +1064,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 	u32 address_value = 0;
+ 	u32 cmd_config = 0, addr_config = 0;
+ 	u8 cmd_value = 0, val = 0;
++	unsigned long flags;
  
- 	pr_info("Toshiba HDD Active Protection Sensor device\n");
+ 	/* Enable Combined sequence mode */
+ 	val = tegra_qspi_readl(tqspi, QSPI_GLOBAL_CONFIG);
+@@ -1176,13 +1177,17 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 			tegra_qspi_transfer_end(spi);
+ 			spi_transfer_delay_exec(xfer);
+ 		}
++		spin_lock_irqsave(&tqspi->lock, flags);
+ 		tqspi->curr_xfer = NULL;
++		spin_unlock_irqrestore(&tqspi->lock, flags);
+ 		transfer_phase++;
+ 	}
+ 	ret = 0;
  
--	haps = kzalloc(sizeof(struct toshiba_haps_dev), GFP_KERNEL);
-+	haps = devm_kzalloc(&acpi_dev->dev, sizeof(*haps), GFP_KERNEL);
- 	if (!haps)
- 		return -ENOMEM;
+ exit:
++	spin_lock_irqsave(&tqspi->lock, flags);
+ 	tqspi->curr_xfer = NULL;
++	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 	msg->status = ret;
  
+ 	return ret;
 -- 
 2.51.0
 
