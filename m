@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AbIHOX3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:13 +0100
+	id oDE5OybziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9487111836
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41371110E6C
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE2730C9C15
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A5474302E0BB
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EE32DB7B4;
-	Mon,  9 Feb 2026 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FCF37BE7D;
+	Mon,  9 Feb 2026 14:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UODiQzx9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGANrlId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A29B2BCF4C;
-	Mon,  9 Feb 2026 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561212222B2;
+	Mon,  9 Feb 2026 14:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648563; cv=none; b=sIB+PnaReUzbU1tAZolmrGydI/1m8KL/OjdruD2kO1hfmsmhkJn2/THA+KpkWm9BIZz5tUvzT+9taP/3YOabIPGTIngFVoXG3hGWHQYBbzM0LAFGL5E4tIKVnbdNTSDjuUpkPgUcUV+50Tkj0IqcFb8LWUBFzkf/KnZt/ytfwe0=
+	t=1770648069; cv=none; b=iin6WcjWRqFYnOt4o96KEoEiJPa+IRhQYdQxXvg1DG11Xhm8GQfWMojWMJff4obzMX7Gv2l4xjPdIyAHlidkuuYaN0qNMr+JLB5rDzU+JPzSIbGPJThZQOHQX+xTZBmpgpaw33CH0ToUfi8LtxTO7t0XxqF3TPBgBQRNcHSQg6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648563; c=relaxed/simple;
-	bh=m0xnBI7pmWDRuhnh2KQ7J+5f/+FS3fET22UNnKPugbY=;
+	s=arc-20240116; t=1770648069; c=relaxed/simple;
+	bh=ByQGG4KhYnnuXGcWn+zGQDYD8IbxzObdnkrIJeJCN1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kBuOVfZ4bQjMyDGgcas9SqQL7iRAUkXuRclaOzhIJMCcmM72P+ctY+6gRDtBhV0z6ATdoHWbBynvtTD2z56N8au1TSlhujEnixCP01RgXl5WGD7sqXtSxwKEoSed73tUnqO103bhIJLBE3k2NTDp8cmeNWSuohP3D0G0KOdhRXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UODiQzx9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0791C19422;
-	Mon,  9 Feb 2026 14:49:22 +0000 (UTC)
+	 MIME-Version; b=hVczUWO8JNShy/pTONK4hObpDAwgEucEUGVLp64KXxn7TaJAQ6Ud0MQ8HhXAEJuxUSalSwtHORP/Xr11/nHXDUeMSL+Ij3BKi4HVzLseIKqXd+alUWn+EjNO1oXLzi5W86uvEQ2JgVt4UAeVAEE48+0glHAGWbYhtNR+mSO+NiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGANrlId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63D1C116C6;
+	Mon,  9 Feb 2026 14:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648563;
-	bh=m0xnBI7pmWDRuhnh2KQ7J+5f/+FS3fET22UNnKPugbY=;
+	s=korg; t=1770648069;
+	bh=ByQGG4KhYnnuXGcWn+zGQDYD8IbxzObdnkrIJeJCN1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UODiQzx93cJVsBsMNOJuhRUvg31kSHtbfI3kYsKfg61enXpoAcKkjWJcrSJaJkfkl
-	 Y40kPQmTVmDOC6ELQ2TUSF0o6GksjpBXTIs2NjW+CBPniKZ/porh1bMGc7QUMIx66o
-	 8Fwv3kmStgAU8b/MconWI3gZ3QOb8I/JEu6MMplk=
+	b=EGANrlId8pB3tGpG8Y5W9PpSvM4GZqdO2QW/DkDKzOOrPkBMaBb6hadf/XhWKPZP2
+	 ykf6jMsYdnBa821GSn206xuTLrfqjw3K10EG/28G8TFZD48e/XNoU6jvp3NGZOrB8K
+	 otv0cmDmMHwbGVWqHgEgYUljqv57ttGijINxjCRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Cousinie <alain.cousinie@laposte.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vishwaroop A <va@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 58/86] platform/x86: hp-bioscfg: Skip empty attribute names
+Subject: [PATCH 6.12 112/113] spi: tegra114: Preserve SPI mode bits in def_command1_reg
 Date: Mon,  9 Feb 2026 15:24:21 +0100
-Message-ID: <20260209142306.866358404@linuxfoundation.org>
+Message-ID: <20260209142314.195639062@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215367-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,laposte.net,amd.com,linux.intel.com,kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215218-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,laposte.net:email]
-X-Rspamd-Queue-Id: C9487111836
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 41371110E6C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Vishwaroop A <va@nvidia.com>
 
-[ Upstream commit 6222883af286e2feb3c9ff2bf9fd8fdf4220c55a ]
+[ Upstream commit a0a75b40c919b9f6d3a0b6c978e6ccf344c1be5a ]
 
-Avoid registering kobjects with empty names when a BIOS attribute
-name decodes to an empty string.
+The COMMAND1 register bits [29:28] set the SPI mode, which controls
+the clock idle level. When a transfer ends, tegra_spi_transfer_end()
+writes def_command1_reg back to restore the default state, but this
+register value currently lacks the mode bits. This results in the
+clock always being configured as idle low, breaking devices that
+need it high.
 
-Fixes: a34fc329b1895 ("platform/x86: hp-bioscfg: bioscfg")
-Reported-by: Alain Cousinie <alain.cousinie@laposte.net>
-Closes: https://lore.kernel.org/platform-driver-x86/22ed5f78-c8bf-4ab4-8c38-420cc0201e7e@laposte.net/
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20260128190501.2170068-1-mario.limonciello@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fix this by storing the mode bits in def_command1_reg during setup,
+to prevent this field from always being cleared.
+
+Fixes: f333a331adfa ("spi/tegra114: add spi driver")
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+Link: https://patch.msgid.link/20260204141212.1540382-1-va@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-tegra114.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-index e9bade74997bf..ec7a74bee803a 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -701,6 +701,11 @@ static int hp_init_bios_package_attribute(enum hp_wmi_data_type attr_type,
- 		return ret;
- 	}
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 11db703a0dde3..6aed6429358a2 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -978,11 +978,14 @@ static int tegra_spi_setup(struct spi_device *spi)
+ 	if (spi_get_csgpiod(spi, 0))
+ 		gpiod_set_value(spi_get_csgpiod(spi, 0), 0);
  
-+	if (!str_value || !str_value[0]) {
-+		pr_debug("Ignoring attribute with empty name\n");
-+		goto pack_attr_exit;
-+	}
-+
- 	/* All duplicate attributes found are ignored */
- 	duplicate = kset_find_obj(temp_kset, str_value);
- 	if (duplicate) {
++	/* Update default register to include CS polarity and SPI mode */
+ 	val = tspi->def_command1_reg;
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		val &= ~SPI_CS_POL_INACTIVE(spi_get_chipselect(spi, 0));
+ 	else
+ 		val |= SPI_CS_POL_INACTIVE(spi_get_chipselect(spi, 0));
++	val &= ~SPI_CONTROL_MODE_MASK;
++	val |= SPI_MODE_SEL(spi->mode & 0x3);
+ 	tspi->def_command1_reg = val;
+ 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
+ 	spin_unlock_irqrestore(&tspi->lock, flags);
 -- 
 2.51.0
 
