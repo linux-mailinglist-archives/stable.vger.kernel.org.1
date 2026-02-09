@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-215457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGXANC35iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:41 +0100
+	id cA9BJtX3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E475111AFF
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 282D3111819
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53B9D30AEE8D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AD6330BD06B
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C5A37BE77;
-	Mon,  9 Feb 2026 14:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272502BCF4C;
+	Mon,  9 Feb 2026 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mu06uWGa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gr9at36o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8A928312F;
-	Mon,  9 Feb 2026 14:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA852690EC;
+	Mon,  9 Feb 2026 14:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648855; cv=none; b=MDFI6D2RVWAeUvjDQCF8BHWRsgmfM+bB3PcFfqYvQUXlGR+JH/RRdwjycvqzb2xX4ZdK7egBsNo33gOc243Y58fTzbLcebN9iEhm1sKeQ6FRD/KSRsibYbpNhiOoFhO896L2exCJMRJTbKnaJZjGuo8zdYG3UFBusDIN0JvsTmM=
+	t=1770648547; cv=none; b=sCaCu+xNevzxiCmrG5eA3iGk9rPiZM3ZQK/h8rB/FhWDdGIZsc4uAZsPY+7vvL5RwUfEIEfbvQp/JHEi9n57A9j2mQzRajP523zREBUdYLysyg5BvxkXDmviadDqwCtHqmPnguoS2MzyS6uqvvv7rrLSGnqrD0dkdWN1nAfkFcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648855; c=relaxed/simple;
-	bh=wf56Bc9AJGRoICZ6Fe3q5CEfVL9JCIE/i3TM40ajC1I=;
+	s=arc-20240116; t=1770648547; c=relaxed/simple;
+	bh=BPqAeuQsN1ed6ll4+QM/ZS9JGxuia4k+pPkBUpzMjyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Og90Zdux6UVqp79YWqB9/P9WyWVEe2d/SNa85R08CuSeO6nZ5lS4LLNKu+FhzNXtcKOnu5PkrVWZcxoc18kwCleonRbkVJybs4l8vagyZRt7nQQO19Csx0g6AJ5XUr1kIH+pRTsAuob35UDKh521pik2je1aKlw1RjarpdsfRME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mu06uWGa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E192C16AAE;
-	Mon,  9 Feb 2026 14:54:14 +0000 (UTC)
+	 MIME-Version; b=Wc1bYDHdfwrCSTqKvSlx8JbW9ex/Gmor/cBcmWd+m/qSOWvxPdYGnS+S1k8A5SPk0H2KJ4ty5E2cigyC7XfrOkuTbQsAyZYhkjmkcrZSCd4kKTBjF+U/cBydZ2iV5TsjX7YQIIwPNezieqHPyHnZbYOOQ3aP+HjorSNjy8siNL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gr9at36o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCF3C116C6;
+	Mon,  9 Feb 2026 14:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648855;
-	bh=wf56Bc9AJGRoICZ6Fe3q5CEfVL9JCIE/i3TM40ajC1I=;
+	s=korg; t=1770648547;
+	bh=BPqAeuQsN1ed6ll4+QM/ZS9JGxuia4k+pPkBUpzMjyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mu06uWGaX+z7x22Pwt4Ijov0Z0CPLvKZjYE4SEdjEDtoiDjgjIVewD4olWGbLD+jq
-	 cABinlfWpv3txT9OdNMQ/zO/C44YVN+nSIitRgnQc1o9GZAkS2Z3mXDQW1geb1chII
-	 bYocdim5WK9/eZ005jRu+Q3bPNU30cub6IFw0xpo=
+	b=gr9at36oeg7wwwWfR8KzqIspF6jnWhmT+eiB5CbobwNprno7r8iftLPGT3kt0Exws
+	 zEYan9KhexM/H19Qcx3g+GXx3mVcDE2SaA+aRNz8YRuzbst6M3HqCAraQC6Om99dmD
+	 GUPvKE14K9K9qmoJqEncvezj2quWjMLe2Mgm6d7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mathieu.desnoyers@efficios.com,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/75] ring-buffer: Avoid softlockup in ring_buffer_resize() during memory free
-Date: Mon,  9 Feb 2026 15:24:33 +0100
-Message-ID: <20260209142303.148414423@linuxfoundation.org>
+Subject: [PATCH 6.6 71/86] net: gro: fix outer network offset
+Date: Mon,  9 Feb 2026 15:24:34 +0100
+Message-ID: <20260209142307.331706897@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215457-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215362-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -92,74 +92,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,efficios.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 2E475111AFF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 282D3111819
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wupeng Ma <mawupeng1@huawei.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 6435ffd6c7fcba330dfa91c58dc30aed2df3d0bf ]
+[ Upstream commit 5c2c3c38be396257a6a2e55bd601a12bb9781507 ]
 
-When user resize all trace ring buffer through file 'buffer_size_kb',
-then in ring_buffer_resize(), kernel allocates buffer pages for each
-cpu in a loop.
+The udp GRO complete stage assumes that all the packets inserted the RX
+have the `encapsulation` flag zeroed. Such assumption is not true, as a
+few H/W NICs can set such flag when H/W offloading the checksum for
+an UDP encapsulated traffic, the tun driver can inject GSO packets with
+UDP encapsulation and the problematic layout can also be created via
+a veth based setup.
 
-If the kernel preemption model is PREEMPT_NONE and there are many cpus
-and there are many buffer pages to be freed, it may not give up cpu
-for a long time and finally cause a softlockup.
+Due to the above, in the problematic scenarios, udp4_gro_complete() uses
+the wrong network offset (inner instead of outer) to compute the outer
+UDP header pseudo checksum, leading to csum validation errors later on
+in packet processing.
 
-To avoid it, call cond_resched() after each cpu buffer free as Commit
-f6bd2c92488c ("ring-buffer: Avoid softlockup in ring_buffer_resize()")
-does.
+Address the issue always clearing the encapsulation flag at GRO completion
+time. Such flag will be set again as needed for encapsulated packets by
+udp_gro_complete().
 
-Detailed call trace as follow:
-
-  rcu: INFO: rcu_sched self-detected stall on CPU
-  rcu: 	24-....: (14837 ticks this GP) idle=521c/1/0x4000000000000000 softirq=230597/230597 fqs=5329
-  rcu: 	(t=15004 jiffies g=26003221 q=211022 ncpus=96)
-  CPU: 24 UID: 0 PID: 11253 Comm: bash Kdump: loaded Tainted: G            EL      6.18.2+ #278 NONE
-  pc : arch_local_irq_restore+0x8/0x20
-   arch_local_irq_restore+0x8/0x20 (P)
-   free_frozen_page_commit+0x28c/0x3b0
-   __free_frozen_pages+0x1c0/0x678
-   ___free_pages+0xc0/0xe0
-   free_pages+0x3c/0x50
-   ring_buffer_resize.part.0+0x6a8/0x880
-   ring_buffer_resize+0x3c/0x58
-   __tracing_resize_ring_buffer.part.0+0x34/0xd8
-   tracing_resize_ring_buffer+0x8c/0xd0
-   tracing_entries_write+0x74/0xd8
-   vfs_write+0xcc/0x288
-   ksys_write+0x74/0x118
-   __arm64_sys_write+0x24/0x38
-
-Cc: <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251228065008.2396573-1-mawupeng1@huawei.com
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 5ef31ea5d053 ("net: gro: fix udp bad offset in socket lookup by adding {inner_}network_offset to napi_gro_cb")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/562638dbebb3b15424220e26a180274b387e2a88.1770032084.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 2 ++
+ net/core/gro.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 90a8dd91e2eb0..d17ebe6a4ebfd 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2322,6 +2322,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 					list) {
- 			list_del_init(&bpage->list);
- 			free_buffer_page(bpage);
-+
-+			cond_resched();
- 		}
+diff --git a/net/core/gro.c b/net/core/gro.c
+index b8cc44406e69b..87889cb75d219 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -240,6 +240,8 @@ static void napi_gro_complete(struct napi_struct *napi, struct sk_buff *skb)
+ 		goto out;
  	}
-  out_err_unlock:
+ 
++	/* NICs can feed encapsulated packets into GRO */
++	skb->encapsulation = 0;
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(ptype, head, list) {
+ 		if (ptype->type != type || !ptype->callbacks.gro_complete)
 -- 
 2.51.0
 
