@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-215353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIpZMrD3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:20 +0100
+	id GAxhIBbyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7A51117D5
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C20110B29
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 117C830A8C1C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A1E9305ED0C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E252DB7B4;
-	Mon,  9 Feb 2026 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23C6285060;
+	Mon,  9 Feb 2026 14:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFHUkpKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxudLwuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658FE2690EC;
-	Mon,  9 Feb 2026 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8621E1AF0AF;
+	Mon,  9 Feb 2026 14:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648518; cv=none; b=ZO3/7bJMWYxubKeavtEmt4PZ90IKLgtj5oQGj0CrDQqDTGrWveTEkhw+ZwSPoCQA65rxMeIaieM1G5r5Ms4TyXYKMd7qRLW0m696Phqbjto7UONiGA5Z4++gBPiZkl3hGEk0/QnOd+gV46E4DDTGfATn9D8/SUnJqNGbBITqKms=
+	t=1770647635; cv=none; b=WIaLVmy22Qb4vpoxPJ1x7Qxck0lYMzpztW96ieBbou8oLCiBQcUeh766jRwg1bmMbjYldAG58Kf5MtaqkR+v0b1y6goUggP5/A684AC3D0f1TtbKcp8uI9dGYYSmJAlD/m9TJbZFxqFNb4koxtswoeBJtEQyPfQ4u1HgXlV2r7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648518; c=relaxed/simple;
-	bh=96qaCZd4rYa7RTaXAnExqMbDUPmJrizteUutBsos3pU=;
+	s=arc-20240116; t=1770647635; c=relaxed/simple;
+	bh=MqN7gF7ODpxYtvkd8zR1lJ5wzwAnwb3Wwrfcyp6oH3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvWXMYj5QNaqfPL8dmZ6xtNza65aWNzIMcZqOxP16xysndFYQ8SrmQpwuUka2jNoN0jMv0YZF8oDHBSWJS1MQVfde7m01LzqhbLEqOPZYnVygGWQLOTOHN2sMuQHtHvD5oCItCuFd1Ob1L//EL8TmoNVtqSq0b97Gm8mdprjP1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFHUkpKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78312C16AAE;
-	Mon,  9 Feb 2026 14:48:37 +0000 (UTC)
+	 MIME-Version; b=V/0ZiK1wr/4eljs3c3kLzrzujgThrCtvY1s+11fCfF2/5qq68/W8Rv14/utwePANjWvh2+XwPPcMCSejONznCReBMvMR/1P69qPRVz/hG1ABnY64XaiRoWVb1qsMHbrgZgAJQxtOpLN0f8M46bHVfs62At+LOi39t1SNkzYELtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxudLwuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6D3C116C6;
+	Mon,  9 Feb 2026 14:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648517;
-	bh=96qaCZd4rYa7RTaXAnExqMbDUPmJrizteUutBsos3pU=;
+	s=korg; t=1770647635;
+	bh=MqN7gF7ODpxYtvkd8zR1lJ5wzwAnwb3Wwrfcyp6oH3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFHUkpKQq9S2jzXH3cveQhjxoJ0Ezn0lgL5XFqQ54xtLREBj9dfAmSYp3wUe0kqkJ
-	 e+7l86V4oL8FUoYP2MjmJSRJL2Jht5NQrWdvgUCum7J0VKD7GXB/sGnVojC9xecTFm
-	 EmGAKo+MH9295pJp5MPo+UxZvCYuoSFVJxzXnSu4=
+	b=JxudLwuoVhXXKUMPXJlLnt/lQVbsE3HB8RNlM9JeQ2ZjrMJvQMmO+V4QL2w/aol16
+	 VvLQOlvTyJcf0VkVyt2zXQoa7Ve+it1MjXiB9P9w3OLvbwvz3/+ApRlSJa00RLv/YC
+	 rhX4BlmXozppP7jIzpSjLVQ5RIRdMuqJWCkjLj+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	syzbot+cb809def1baaac68ab92@syzkaller.appspotmail.com,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 27/86] LoongArch: Set correct protection_map[] for VM_NONE/VM_SHARED
+Subject: [PATCH 6.18 157/175] ipv6: Fix ECMP sibling count mismatch when clearing RTF_ADDRCONF
 Date: Mon,  9 Feb 2026 15:23:50 +0100
-Message-ID: <20260209142305.762860941@linuxfoundation.org>
+Message-ID: <20260209142326.143435291@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +67,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215353-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215088-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,cb809def1baaac68ab92];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5A7A51117D5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,suse.de:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: C0C20110B29
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit d5be446948b379f1d1a8e7bc6656d13f44c5c7b1 ]
+[ Upstream commit bbf4a17ad9ffc4e3d7ec13d73ecd59dea149ed25 ]
 
-For 32BIT platform _PAGE_PROTNONE is 0, so set a VMA to be VM_NONE or
-VM_SHARED will make pages non-present, then cause Oops with kernel page
-fault.
+syzbot reported a kernel BUG in fib6_add_rt2node() when adding an IPv6
+route. [0]
 
-Fix it by set correct protection_map[] for VM_NONE/VM_SHARED, replacing
-_PAGE_PROTNONE with _PAGE_PRESENT.
+Commit f72514b3c569 ("ipv6: clear RA flags when adding a static
+route") introduced logic to clear RTF_ADDRCONF from existing routes
+when a static route with the same nexthop is added. However, this
+causes a problem when the existing route has a gateway.
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+When RTF_ADDRCONF is cleared from a route that has a gateway, that
+route becomes eligible for ECMP, i.e. rt6_qualify_for_ecmp() returns
+true. The issue is that this route was never added to the
+fib6_siblings list.
+
+This leads to a mismatch between the following counts:
+
+- The sibling count computed by iterating fib6_next chain, which
+  includes the newly ECMP-eligible route
+
+- The actual siblings in fib6_siblings list, which does not include
+  that route
+
+When a subsequent ECMP route is added, fib6_add_rt2node() hits
+BUG_ON(sibling->fib6_nsiblings != rt->fib6_nsiblings) because the
+counts don't match.
+
+Fix this by only clearing RTF_ADDRCONF when the existing route does
+not have a gateway. Routes without a gateway cannot qualify for ECMP
+anyway (rt6_qualify_for_ecmp() requires fib_nh_gw_family), so clearing
+RTF_ADDRCONF on them is safe and matches the original intent of the
+commit.
+
+[0]:
+kernel BUG at net/ipv6/ip6_fib.c:1217!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6010 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:fib6_add_rt2node+0x3433/0x3470 net/ipv6/ip6_fib.c:1217
+[...]
+Call Trace:
+ <TASK>
+ fib6_add+0x8da/0x18a0 net/ipv6/ip6_fib.c:1532
+ __ip6_ins_rt net/ipv6/route.c:1351 [inline]
+ ip6_route_add+0xde/0x1b0 net/ipv6/route.c:3946
+ ipv6_route_ioctl+0x35c/0x480 net/ipv6/route.c:4571
+ inet6_ioctl+0x219/0x280 net/ipv6/af_inet6.c:577
+ sock_do_ioctl+0xdc/0x300 net/socket.c:1245
+ sock_ioctl+0x576/0x790 net/socket.c:1366
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: f72514b3c569 ("ipv6: clear RA flags when adding a static route")
+Reported-by: syzbot+cb809def1baaac68ab92@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cb809def1baaac68ab92
+Tested-by: syzbot+cb809def1baaac68ab92@syzkaller.appspotmail.com
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Link: https://patch.msgid.link/20260204095837.1285552-1-syoshida@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/cache.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_fib.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/mm/cache.c b/arch/loongarch/mm/cache.c
-index 6be04d36ca076..496916845ff76 100644
---- a/arch/loongarch/mm/cache.c
-+++ b/arch/loongarch/mm/cache.c
-@@ -160,8 +160,8 @@ void cpu_cache_init(void)
- 
- static const pgprot_t protection_map[16] = {
- 	[VM_NONE]					= __pgprot(_CACHE_CC | _PAGE_USER |
--								   _PAGE_PROTNONE | _PAGE_NO_EXEC |
--								   _PAGE_NO_READ),
-+								   _PAGE_NO_EXEC | _PAGE_NO_READ |
-+								   (_PAGE_PROTNONE ? : _PAGE_PRESENT)),
- 	[VM_READ]					= __pgprot(_CACHE_CC | _PAGE_VALID |
- 								   _PAGE_USER | _PAGE_PRESENT |
- 								   _PAGE_NO_EXEC),
-@@ -180,8 +180,8 @@ static const pgprot_t protection_map[16] = {
- 	[VM_EXEC | VM_WRITE | VM_READ]			= __pgprot(_CACHE_CC | _PAGE_VALID |
- 								   _PAGE_USER | _PAGE_PRESENT),
- 	[VM_SHARED]					= __pgprot(_CACHE_CC | _PAGE_USER |
--								   _PAGE_PROTNONE | _PAGE_NO_EXEC |
--								   _PAGE_NO_READ),
-+								   _PAGE_NO_EXEC | _PAGE_NO_READ |
-+								   (_PAGE_PROTNONE ? : _PAGE_PRESENT)),
- 	[VM_SHARED | VM_READ]				= __pgprot(_CACHE_CC | _PAGE_VALID |
- 								   _PAGE_USER | _PAGE_PRESENT |
- 								   _PAGE_NO_EXEC),
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 2111af022d946..c6439e30e892a 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1138,7 +1138,8 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 					fib6_set_expires(iter, rt->expires);
+ 					fib6_add_gc_list(iter);
+ 				}
+-				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT))) {
++				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT)) &&
++				    !iter->fib6_nh->fib_nh_gw_family) {
+ 					iter->fib6_flags &= ~RTF_ADDRCONF;
+ 					iter->fib6_flags &= ~RTF_PREFIX_RT;
+ 				}
 -- 
 2.51.0
 
