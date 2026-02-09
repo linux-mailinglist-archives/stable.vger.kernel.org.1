@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKz0AKb1iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:38 +0100
+	id cCzxNU3yiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848C41113CF
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3830B110BB7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C02A3072A1D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 003BD306C515
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364FD3783A1;
-	Mon,  9 Feb 2026 14:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171C72C2360;
+	Mon,  9 Feb 2026 14:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSM2JGRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls3BwKfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB8836828A;
-	Mon,  9 Feb 2026 14:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4F51AF0AF;
+	Mon,  9 Feb 2026 14:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648170; cv=none; b=bUnclrWziycONI9bPmdml3lZq4781Is4shoqfvSM9ofqn8V6vuYt2mmjsFtLLBMqP3k9iBg0oMHZYgfZ5j+Rtk/tQtWmqXbAsUHCmVUM+0t6FL2KbXshmEgTurQz1dtg58GwfpsqbNCwN4CzDiq0yPJIVoA4rMlJk3ijpmoOGdU=
+	t=1770647694; cv=none; b=fHwcwK9OkpdFOVvxzXf7r7F3Z41lIdqk7mSF+L9BrYxI9oDlak1QiPSKOgrUf+HK8TX/A9P0mzxAjkgETJYYBTfacOAMINb3MTf2wCZ7KoahRChk7w4JeDCC0R0PWVaB+05gRfMd5C837MjLEdD0L6OEls25I2ZfNMIVDgJ/ors=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648170; c=relaxed/simple;
-	bh=9+YYedW9ALtjd8iPBjvNQm4tcky03WEzwt9XA2rXYHU=;
+	s=arc-20240116; t=1770647694; c=relaxed/simple;
+	bh=nN19ngKrNGuFupiqP8FepNs0HGA1iOwTRUfgsKMnuH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khM2NYoawaUOuJfOgGtnhFuH1vTWxB3m8mF4PDsIppZT098xrqWNaCwytQKrnyKj0TxPeiyslI9gu8Ju7NL/NFEue6pSPeb0RIuF+euo1iohUNUdQmyG1WWsCAmX4PKB6b4ouBseNBwO6byf1CtIbnEnwe45gqyf9Cr1g/eVSjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSM2JGRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704F6C116C6;
-	Mon,  9 Feb 2026 14:42:49 +0000 (UTC)
+	 MIME-Version; b=AEg5CxDJe/Utn52e8+07n2H1rRMCsxCc58Jbr3U7QVhZVVVIcWwsa3UX95DCyRYJT3OhMX1VnqYh56yev+Pa7IHpXwFTwHC7R7GbrweaTYTJ8PkvB/97+trdoN9+dteNgT9LpjVvO9NyoCAcU5kGvyqhy6P4omz9uheY4FUYTQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls3BwKfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8D4C116C6;
+	Mon,  9 Feb 2026 14:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648169;
-	bh=9+YYedW9ALtjd8iPBjvNQm4tcky03WEzwt9XA2rXYHU=;
+	s=korg; t=1770647694;
+	bh=nN19ngKrNGuFupiqP8FepNs0HGA1iOwTRUfgsKMnuH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSM2JGRj45GjJIRha7tg3OQAAK6AfTYOBDHHp95EFi3hqvuUS7HEmX7j0pFfDnDU8
-	 O18zrF3KCzxlEkb2jAFemJUzVXvW+/V5ZheGGAieLRNDOvwkpMqvmySA19dPtxn/9i
-	 m1CgrZjnH8kE+h0FBxVdfjT6DWDagGB5nGSo5Ofw=
+	b=Ls3BwKflrq5iSy8eulsv3WVTmXvSXdvcI3I75/uWX1xpwIHth1wNCaickI7Fj1iJt
+	 ExCDyUNzhrEhlHPz11kRMsez9svx7s8++SV9pzXJPz0DNShfLYIWj2ROhhunPnhGhZ
+	 EVMbdk8a8MQAoVvLH3i6OhcX1Pgta5Syp5rdk7L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 27/69] btrfs: fix reservation leak in some error paths when inserting inline extent
+Subject: [PATCH 6.18 162/175] gpio: loongson-64bit: Fix incorrect NULL check after devm_kcalloc()
 Date: Mon,  9 Feb 2026 15:23:55 +0100
-Message-ID: <20260209142302.903907512@linuxfoundation.org>
+Message-ID: <20260209142326.317475202@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215248-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215106-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -90,75 +90,43 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 848C41113CF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 3830B110BB7
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit c1c050f92d8f6aac4e17f7f2230160794fceef0c ]
+[ Upstream commit e34f77b09080c86c929153e2a72da26b4f8947ff ]
 
-If we fail to allocate a path or join a transaction, we return from
-__cow_file_range_inline() without freeing the reserved qgroup data,
-resulting in a leak. Fix this by ensuring we call btrfs_qgroup_free_data()
-in such cases.
+Fix incorrect NULL check in loongson_gpio_init_irqchip().
+The function checks chip->parent instead of chip->irq.parents.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 03c146cb6cd1 ("gpio: loongson-64bit: Add support for Loongson-2K0300 SoC")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260205072649.3271158-1-nichen@iscas.ac.cn
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio-loongson-64bit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 78cd7b8ccfc85..c409fb3e55bf8 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -397,7 +397,7 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode, u64 size,
- 	struct btrfs_drop_extents_args drop_args = { 0 };
- 	struct btrfs_root *root = inode->root;
- 	struct btrfs_fs_info *fs_info = root->fs_info;
--	struct btrfs_trans_handle *trans;
-+	struct btrfs_trans_handle *trans = NULL;
- 	u64 data_len = (compressed_size ?: size);
- 	int ret;
- 	struct btrfs_path *path;
-@@ -415,13 +415,16 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode, u64 size,
- 		return 1;
+diff --git a/drivers/gpio/gpio-loongson-64bit.c b/drivers/gpio/gpio-loongson-64bit.c
+index 82d4c3aa4d2fc..d5573fb0616ce 100644
+--- a/drivers/gpio/gpio-loongson-64bit.c
++++ b/drivers/gpio/gpio-loongson-64bit.c
+@@ -263,7 +263,7 @@ static int loongson_gpio_init_irqchip(struct platform_device *pdev,
+ 	chip->irq.num_parents = data->intr_num;
+ 	chip->irq.parents = devm_kcalloc(&pdev->dev, data->intr_num,
+ 					 sizeof(*chip->irq.parents), GFP_KERNEL);
+-	if (!chip->parent)
++	if (!chip->irq.parents)
+ 		return -ENOMEM;
  
- 	path = btrfs_alloc_path();
--	if (!path)
--		return -ENOMEM;
-+	if (!path) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
- 
- 	trans = btrfs_join_transaction(root);
- 	if (IS_ERR(trans)) {
--		btrfs_free_path(path);
--		return PTR_ERR(trans);
-+		ret = PTR_ERR(trans);
-+		trans = NULL;
-+		goto out;
- 	}
- 	trans->block_rsv = &inode->block_rsv;
- 
-@@ -468,7 +471,8 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode, u64 size,
- 	 */
- 	btrfs_qgroup_free_data(inode, NULL, 0, PAGE_SIZE, NULL);
- 	btrfs_free_path(path);
--	btrfs_end_transaction(trans);
-+	if (trans)
-+		btrfs_end_transaction(trans);
- 	return ret;
- }
- 
+ 	for (i = 0; i < data->intr_num; i++) {
 -- 
 2.51.0
 
