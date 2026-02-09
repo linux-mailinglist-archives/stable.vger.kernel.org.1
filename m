@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-215092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOsEByfyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:43 +0100
+	id qJWjFDfziWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9115110B6B
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF01C110EA5
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 279E6306249E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE714308ECCB
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51D5285060;
-	Mon,  9 Feb 2026 14:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160E128150F;
+	Mon,  9 Feb 2026 14:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+LjyM1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKuh2Tf6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D7523D291;
-	Mon,  9 Feb 2026 14:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6B1276028;
+	Mon,  9 Feb 2026 14:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647648; cv=none; b=LicpSHnPwJVGs3Xab7dVuHpactjYh/n7zQM4gy0VKoHL2hArzX19hFQzZIwslbAoGAzl/wc2QVzHfPbTmx/hLkWTFeCwhVWNzdVP+1Lx2d9ZIQiqtLMa8KbtSx63HxqRzWjCeUnRQC9+SXREiQsFmGVI4u073pTMMeaSWPbs7i0=
+	t=1770647880; cv=none; b=CLeE11K2HGxm/UpE+XORYPdJQJHuJzQ/7MzGlmqxEGAG3kV60niZ3uTBGQGSf5UvUkaXAdgUvfG9IoNsRtabHngFN90MCCO1xAwqtuWu7pszcYne1dLnMhztuUtuBuLJkCKBOHFE9TqMa2Q/EfrElAByeBPXN13SNl0hgr9Gsho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647648; c=relaxed/simple;
-	bh=MnZlSQ6W1WXZWUQsc+eogd1PjL8ONXn0nVZiCN9LcUY=;
+	s=arc-20240116; t=1770647880; c=relaxed/simple;
+	bh=RAPvis/cbxYa13B7/WjvQj0XgZiHmd3k97yJXaT1wWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lnhbt/xYSqF6wocqU5RH2b9tNCIdFwU4TURBqHNYM5s9tJrcHGYScfzYRkE+1/+MdKocxicKpZq3gnBGZFPikRz2OfRomtzVjeobkuocj2v7OdEo3QLrDplxV7MBdHoDyXJOhJqtXIvL4ecWY5/zOKMS85F4S1NYMs5ozXKZG+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+LjyM1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DB9C116C6;
-	Mon,  9 Feb 2026 14:34:07 +0000 (UTC)
+	 MIME-Version; b=RlWRuOfHoHx7Wc8Hl3HDK/aa22o3mthz6wl6xUHVXIDkjEfrIAGSYqjdijrOBk5faoXHyOJ8hQKm/jKAuZUDS4TnvtkLloiM1V7pxV7q2qg5HQcqxkHaCC1Hz3GuZHvCiNiAc33QGqL0cifqy1TmhkL+fYR8sVzqVVlNM1WIULY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKuh2Tf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CD3C116C6;
+	Mon,  9 Feb 2026 14:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647648;
-	bh=MnZlSQ6W1WXZWUQsc+eogd1PjL8ONXn0nVZiCN9LcUY=;
+	s=korg; t=1770647880;
+	bh=RAPvis/cbxYa13B7/WjvQj0XgZiHmd3k97yJXaT1wWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+LjyM1AJz//pbYhDqtc+AmWtK3Q1DdAUdrlAAeeCGPyhRtB3Od+lqCs5cwrShuvf
-	 jzyAKGm26kV95hEgw6r2IM9DixoO9o8zrjIoGjpY0/UjSAnWVIimcXWH2Tme6zOOey
-	 Dz8jN12ZrOgFIKobBN8H77q7MvmPyBoH0scmM+20=
+	b=qKuh2Tf6iz5zekwc5Hd+4rPvqW5pQRz3q5YQHs+hqo0G7ocsCBBZHaSNp6EKp26Bq
+	 a9l3io4OYGHxinrea0T0NV9Sfiu93JSbF5DyZ9hOCj+hDtLxerf5Wugq9GfdxE1kjf
+	 b+w1t9K/mn5TDWX1wbSY8SYx3FHDldfXd2oXP1hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 129/175] ice: drop udp_tunnel_get_rx_info() call from ndo_open()
-Date: Mon,  9 Feb 2026 15:23:22 +0100
-Message-ID: <20260209142325.152371336@linuxfoundation.org>
+	mathieu.desnoyers@efficios.com,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 054/113] ring-buffer: Avoid softlockup in ring_buffer_resize() during memory free
+Date: Mon,  9 Feb 2026 15:23:23 +0100
+Message-ID: <20260209142312.142579015@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,20 +71,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215092-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215162-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -92,69 +92,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B9115110B6B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,huawei.com:email,goodmis.org:email,efficios.com:email]
+X-Rspamd-Queue-Id: AF01C110EA5
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Wupeng Ma <mawupeng1@huawei.com>
 
-[ Upstream commit 234e615bfece9e3e91c50fe49ab9e68ee37c791a ]
+[ Upstream commit 6435ffd6c7fcba330dfa91c58dc30aed2df3d0bf ]
 
-The ice driver calls udp_tunnel_get_rx_info() during ice_open_internal().
-This is redundant because UDP tunnel RX offload state is preserved
-across device down/up cycles. The udp_tunnel core handles
-synchronization automatically when required.
+When user resize all trace ring buffer through file 'buffer_size_kb',
+then in ring_buffer_resize(), kernel allocates buffer pages for each
+cpu in a loop.
 
-Furthermore, recent changes in the udp_tunnel infrastructure require
-querying RX info while holding the udp_tunnel lock. Calling it
-directly from the ndo_open path violates this requirement,
-triggering the following lockdep warning:
+If the kernel preemption model is PREEMPT_NONE and there are many cpus
+and there are many buffer pages to be freed, it may not give up cpu
+for a long time and finally cause a softlockup.
 
-Call Trace:
-  <TASK>
-  ice_open_internal+0x253/0x350 [ice]
-  __udp_tunnel_nic_assert_locked+0x86/0xb0 [udp_tunnel]
-  __dev_open+0x2f5/0x880
-  __dev_change_flags+0x44c/0x660
-  netif_change_flags+0x80/0x160
-  devinet_ioctl+0xd21/0x15f0
-  inet_ioctl+0x311/0x350
-  sock_ioctl+0x114/0x220
-  __x64_sys_ioctl+0x131/0x1a0
-  ...
-  </TASK>
+To avoid it, call cond_resched() after each cpu buffer free as Commit
+f6bd2c92488c ("ring-buffer: Avoid softlockup in ring_buffer_resize()")
+does.
 
-Remove the redundant and unsafe call to udp_tunnel_get_rx_info() from
-ice_open_internal() to resolve the locking violation
+Detailed call trace as follow:
 
-Fixes: 1ead7501094c ("udp_tunnel: remove rtnl_lock dependency")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+  rcu: INFO: rcu_sched self-detected stall on CPU
+  rcu: 	24-....: (14837 ticks this GP) idle=521c/1/0x4000000000000000 softirq=230597/230597 fqs=5329
+  rcu: 	(t=15004 jiffies g=26003221 q=211022 ncpus=96)
+  CPU: 24 UID: 0 PID: 11253 Comm: bash Kdump: loaded Tainted: G            EL      6.18.2+ #278 NONE
+  pc : arch_local_irq_restore+0x8/0x20
+   arch_local_irq_restore+0x8/0x20 (P)
+   free_frozen_page_commit+0x28c/0x3b0
+   __free_frozen_pages+0x1c0/0x678
+   ___free_pages+0xc0/0xe0
+   free_pages+0x3c/0x50
+   ring_buffer_resize.part.0+0x6a8/0x880
+   ring_buffer_resize+0x3c/0x58
+   __tracing_resize_ring_buffer.part.0+0x34/0xd8
+   tracing_resize_ring_buffer+0x8c/0xd0
+   tracing_entries_write+0x74/0xd8
+   vfs_write+0xcc/0x288
+   ksys_write+0x74/0x118
+   __arm64_sys_write+0x24/0x38
+
+Cc: <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20251228065008.2396573-1-mawupeng1@huawei.com
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 3 ---
- 1 file changed, 3 deletions(-)
+ kernel/trace/ring_buffer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index d34a32a09bf87..f2b91f7f87861 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -9678,9 +9678,6 @@ int ice_open_internal(struct net_device *netdev)
- 		netdev_err(netdev, "Failed to open VSI 0x%04X on switch 0x%04X\n",
- 			   vsi->vsi_num, vsi->vsw->sw_id);
- 
--	/* Update existing tunnels information */
--	udp_tunnel_get_rx_info(netdev);
--
- 	return err;
- }
- 
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index a785cc3839338..2c42e26ced6b6 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2974,6 +2974,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 					list) {
+ 			list_del_init(&bpage->list);
+ 			free_buffer_page(bpage);
++
++			cond_resched();
+ 		}
+ 	}
+  out_err_unlock:
 -- 
 2.51.0
 
