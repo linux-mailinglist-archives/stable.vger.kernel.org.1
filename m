@@ -1,109 +1,253 @@
-Return-Path: <stable+bounces-215540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFuQApkkimkfHwAAu9opvQ
-	(envelope-from <stable+bounces-215540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:16:57 +0100
+	id wAonIp8limlKHwAAu9opvQ
+	(envelope-from <stable+bounces-215541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:21:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AE0113727
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:16:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6681137AB
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 51678300E59E
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 18:16:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 49803300808C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 18:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6E72D6E55;
-	Mon,  9 Feb 2026 18:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0682DF12F;
+	Mon,  9 Feb 2026 18:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="obhooxvM"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1DF29C321;
-	Mon,  9 Feb 2026 18:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2829C321;
+	Mon,  9 Feb 2026 18:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770661000; cv=none; b=PIghs59JzmlVp5b9jIetbydq7Tco9fRo3kADvoY2WhqmjUMFwQH+aecodoExQHGUBgu6Nm4FHKb4xhpmT8u48f6iX3OdZ8JNFiIMrrVjVWZrh4c2v8K28xW2hTp/xqj7qIsHPY73iAQS2QkiL1jlkIcSmZEqaz6nqBykiF0BFpM=
+	t=1770661238; cv=none; b=UQMgVNtudpmhVXb/MYnk0+GTj8HaLXyJFlZpwKxSlfiiOWOQMOp7dhKbMvOTED/3mEZbuK3+Zemwd8l/i/29jcrwVWhXXiYTpvrrQfwo75m0Aj4Z7EeYR4r+iPWUUwL7S58UTXu2AndNIZSlSnV/dtpDHepU0+StYu4bkNWJcXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770661000; c=relaxed/simple;
-	bh=gx1Mm1v+DvjQm8Pe3A7MTugV1+YM7Gmr+sjjzCHoNiM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqhg7GAJ9SiQKtqmpIbliAsZzVI1ZRJSreXva0gIH8MgTwZKmZGv6KAauYwPlamgblaD1dJ7FR41LDbU7OzhO9As4/bzx2+M1MoJYHvVuVOiLuEtUej/pJQy0DxIHKnKUsENOI/7bjmVwi4ADra/ElhEZBzaiPg0z4mjufCUqKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.6 00/86] 6.6.124-rc1 review
-Date: Mon,  9 Feb 2026 18:16:30 +0000
-Message-ID: <20260209181635.5791-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+	s=arc-20240116; t=1770661238; c=relaxed/simple;
+	bh=7PXbBG4VwmEOeP5gGDpm0rCmhJixzCNNkZssgDhtOgg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n2S11pwSCvIDOih77Sxt0iJPiECfuBs44wSv1gkLBsX23TlLsl9nkWD7eBEF+LgoOqjxg3Pv47xEhyoBHc8EFvQPAP01OVCSnXm9Yqrcx/skTuemY9p7t//ab+6VGGTkWAhpRzjORX3AwTTFCodooO3PagZesO8HF4blSUJIDM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=obhooxvM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61982oHr2344404;
+	Mon, 9 Feb 2026 18:20:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=6kUrJz
+	Nyw4NnLlSAH2QCv/4meAWS923Hh1+kcqhiO90=; b=obhooxvM1R5m8Pct3QkBlg
+	mjffE72xSlKAUS9xFENCB53ihf/LY1QjqZqe8V0EBYKoUFTE0G8DIS615CELgRaL
+	vz12mzT7yB2K6RwxyUezf8PKCIwEWcJmFR4VznvguwBrJdxiXzXHwW10FfM2p9pu
+	swqBYh6QwbPGqlJ2Wj6ow6P0+wNgye8+GpxS6ANwyYH9OiP6pYmuF29pcb0jR5Po
+	HvOnHduzAtEtcsymX4MLJBJ+3u44CXslYgK8/X3aYfZUO2RH4AAYeGrKZmUFscHB
+	ZG6RSkW4cK+OTvFhxfMSYqXtW+xbl/bkF8k0bPTlV/CpHUT+h2kGNkrmqS0Xb1qw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696u8q39-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Feb 2026 18:20:31 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 619EMEwg019251;
+	Mon, 9 Feb 2026 18:20:31 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxjx34p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Feb 2026 18:20:30 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 619IKT2u15008472
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Feb 2026 18:20:29 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0175358055;
+	Mon,  9 Feb 2026 18:20:29 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 40C0858043;
+	Mon,  9 Feb 2026 18:20:28 +0000 (GMT)
+Received: from [9.61.249.49] (unknown [9.61.249.49])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Feb 2026 18:20:28 +0000 (GMT)
+Message-ID: <3f4d4a10-f7a7-4b60-b42a-075b6df395f7@linux.ibm.com>
+Date: Mon, 9 Feb 2026 10:20:27 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/9] PCI: Avoid saving config space state if
+ inaccessible
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, lukas@wunner.de, alex@shazbot.org,
+        clg@redhat.com, stable@vger.kernel.org, schnelle@linux.ibm.com,
+        mjrosato@linux.ibm.com, julianr@linux.ibm.com
+References: <20260207003936.GA112515@bhelgaas>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <20260207003936.GA112515@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=KZnfcAYD c=1 sm=1 tr=0 ts=698a256f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
+ a=k7L6yOQrr6rJGXFB698A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE1NCBTYWx0ZWRfX7P7t/r4q+90g
+ iP6moakpHDB6r4NuGIwKoiMcBsTRCjamchnno+S0U6eWJOQppQ7ThIuXfRa1VFqhHD2AlgoNiC+
+ 719xfYBtzvfEtP97Y3IUITeX90Rd4OSkZh+opg79r1ZcV9DtjMAA/tRsow77poZPp0+wQciJu0d
+ 3KfIfTelRhLxX1b/ci/bsR+7RSpf2RlN6wsSQuVrxUfeejclnBoxffMdpxFtTtkDPo0eyTEL9px
+ HmNhubcDI4azeIKovK79odPUyGSjzHwZS4fG66Enk0rezPqW3q46EX5FqBopPWoB87YNfC4PLzT
+ 8BHqGBiOvy4A8VmcL3uroUGaWjyTFMzzejmbMh9H0h9VhKIgBdATHcpMo0H+BufMPQgSJXyQF2Y
+ xM640fsxAsp95lLoXCwqY95/u0k3HR0OoGwIuBmFBrf7QFP9okqeeuQsND97eHgk7uItLjrDA88
+ TFUSzox6k7biSlxRtvQ==
+X-Proofpoint-ORIG-GUID: qFc341DCRiVukIx7qGmIcgHw2lejbwj5
+X-Proofpoint-GUID: qFc341DCRiVukIx7qGmIcgHw2lejbwj5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-09_01,2026-02-09_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602090154
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[librecast.net];
-	TAGGED_FROM(0.00)[bounces-215540-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,librecast.net:mid,librecast.net:email]
-X-Rspamd-Queue-Id: D1AE0113727
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215541-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.ibm.com:mid];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+]
+X-Rspamd-Queue-Id: DB6681137AB
 X-Rspamd-Action: no action
 
-# Librecast Test Results
+Hi Bjorn,
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+Thanks for reviewing!
 
-CPU/kernel: Linux auntie 6.6.124-rc1-gb4030a6c83e3 #1 SMP PREEMPT_DYNAMIC Mon Feb  9 18:00:40 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+On 2/6/2026 4:39 PM, Bjorn Helgaas wrote:
+> On Thu, Jan 22, 2026 at 11:44:31AM -0800, Farhan Ali wrote:
+>> The current reset process saves the device's config space state before
+>> reset and restores it afterward. However errors may occur unexpectedly and
+>> it may then be impossible to save config space because the device may be
+>> inaccessible (e.g. DPC) or config space may be corrupted. This results in
+>> saving corrupted values that get written back to the device during state
+>> restoration.
+>>
+>> With a reset we want to recover/restore the device into a functional state.
+>> So avoid saving the state of the config space when the device config space
+>> is inaccessible.
+>>
+>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+>> ---
+>>   drivers/pci/pci.c | 14 ++++++++++++++
+>>   1 file changed, 14 insertions(+)
+>>
+>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>> index c105e285cff8..e7beaf1f65a7 100644
+>> --- a/drivers/pci/pci.c
+>> +++ b/drivers/pci/pci.c
+>> @@ -4960,6 +4960,7 @@ EXPORT_SYMBOL_GPL(pci_dev_unlock);
+>>   
+>>   static void pci_dev_save_and_disable(struct pci_dev *dev)
+>>   {
+>> +	u32 val;
+>>   	const struct pci_error_handlers *err_handler =
+>>   			dev->driver ? dev->driver->err_handler : NULL;
+>>   
+>> @@ -4980,6 +4981,19 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
+>>   	 */
+>>   	pci_set_power_state(dev, PCI_D0);
+>>   
+>> +	/*
+>> +	 * If device's config space is inaccessible it can return ~0 for
+>> +	 * any reads. Since VFs can also return ~0 for Device and Vendor ID
+>> +	 * check Command and Status registers. At the very least we should
+>> +	 * avoid restoring config space for device with error bits set in
+>> +	 * Status register.
+>> +	 */
+>> +	pci_read_config_dword(dev, PCI_COMMAND, &val);
+>> +	if (PCI_POSSIBLE_ERROR(val)) {
+>> +		pci_warn(dev, "Device config space inaccessible\n");
+>> +		return;
+>> +	}
+> This seems related to Lukas' recent patches:
+>
+>    a2f1e22390ac ("PCI/ERR: Ensure error recoverability at all times")
+>    5e09895b4063 ("Documentation: PCI: Amend error recovery doc with pci_save_state() rules")
+>
+> My poor understanding is that the PCI core now saves config space for
+> every device at enumeration time, and if a driver wants to capture an
+> updated config space after it has changed things, it is responsible
+> for doing that explicitly.
+>
+> a2f1e22390ac gives us a baseline saved state that will be restored in
+> some cases.  This pci_dev_save_and_disable() is part of the reset path
+> and saves a potentially different state.  I'm a little uncomfortable
+> about the fact that we save the state at different times, including
+> unpredictable times after an error, and I'm not sure the driver can
+> always know what gets restored.
+>
+> Maybe the reset path shouldn't even try to save config space again,
+> since we're now guaranteed to have at least the state from
+> enumeration?  I suppose skipping the save here would expose cases
+> where the driver changed config space without doing a pci_save_state()
+> itself, and a driver- or sysfs-initiated reset would lose that change,
+> whereas today we preserve it because we save/restore as part of that
+> reset.
+>
+> That change would also be lost if the reset was unintentional, e.g.,
+> during error recovery, but I guess in that case the driver does know
+> that an error occurred, so it could redo the change.
+>
+> It seems like the ideal thing would be if every restore used the
+> enumeration saved-state or the driver's intentional saved-state, never
+> a state saved at the unpredictable time of an error recovery reset.
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+Maybe it does makes sense to not save the config space again here. Since 
+we have a baseline saved state with commit a2f1e22390ac, removing the 
+saving of config space here would restore the baseline state unless a 
+driver saved its most recent state. So now we would have a working saved 
+state when we restore.
+
+However my fear is drivers may have come to rely on this to save/restore 
+its latest updated state and we could break some drivers?
+
+Thanks
+
+Farhan
+
+>
+> I hope Lukas and Alex can chime in here.
+>
+>>   	pci_save_state(dev);
+>>   	/*
+>>   	 * Disable the device by clearing the Command register, except for
+>> -- 
+>> 2.43.0
+>>
 
