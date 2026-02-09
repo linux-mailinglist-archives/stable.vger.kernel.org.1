@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-215197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGriI/HziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:21 +0100
+	id mCHLDKj2iWmuFAAAu9opvQ
+	(envelope-from <stable+bounces-215326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB39E111063
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:49:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46F511161D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 006A030C9326
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C779630DAD7F
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E80537FF58;
-	Mon,  9 Feb 2026 14:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EAE3285073;
+	Mon,  9 Feb 2026 14:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtV6lqu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZxKGvwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1233237F0E4;
-	Mon,  9 Feb 2026 14:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6285A25DB1C;
+	Mon,  9 Feb 2026 14:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647998; cv=none; b=CdSS/vGDcreM95Mrv33zLShN7eOys/qp4NagNgEtMEvH7KAUhaJKhlllJL6IYI35vKSmg3nr+p05+WK2YsIp3AEIXK7jdwSITg+sHGbsXAOuaAgnW1mI7nmRq/8vNZAWi0BrxH1RiP02t4L5Wv0wC7Nzri4EQXU2gAN/RPVfJPw=
+	t=1770648431; cv=none; b=Q9sV9tHLMskhAioobl87Ep25E8D+g0WzQnMIuElCM4pRXQyXXe0vxhsmjk8CdvwvuJZfQeYtRzeFH8McDLtGROnPnMFQnYQq+C15422WpFRtYBGe15aLuvCeM6c/ADxWYr1wkPM24opGuYdesmQJlHtZiyLLy+H0zlAqyEaFIf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647998; c=relaxed/simple;
-	bh=f0MbFLYMpQD4rYbvDBKJG1X4IFZvRGh+z98qiRISzCE=;
+	s=arc-20240116; t=1770648431; c=relaxed/simple;
+	bh=MLOpLsTb9sFKNlcpi+3vldTxNNzPVHYBZbfGL2WSM4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XeIMpTocNtZtvepFG9wj1I1V11yjloABKHA1+ncNL2sQFdsaNV7bFe4mGr55kaRcWDOpXzJYDqUhsKXVAdfxAbhZXqrwuvj6t7MkjmUewPpVjhTAjzb9f6dYmOd7DUURT1HFB8cg6eMiS5GN9cA+Lkt/dRo6WlZb9zwwNAg26h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtV6lqu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595A9C116C6;
-	Mon,  9 Feb 2026 14:39:57 +0000 (UTC)
+	 MIME-Version; b=dvYpi4WoRckB9BpeRBX0gc9yD7JRzGPMIyOAs92Zi99zj9HrJEq9FruNSjAVqmHEBuO8vDVBd8BjFZACjJEV2lfTUBJhKtm7NMfcj3axDc54WzbZCQK9+Z9FewJU5bSsOYT6RiPiwEQ9TXpahKCneLisReXEKZlrYeBuECSPReM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZxKGvwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45C6C116C6;
+	Mon,  9 Feb 2026 14:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647997;
-	bh=f0MbFLYMpQD4rYbvDBKJG1X4IFZvRGh+z98qiRISzCE=;
+	s=korg; t=1770648431;
+	bh=MLOpLsTb9sFKNlcpi+3vldTxNNzPVHYBZbfGL2WSM4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtV6lqu0jMqXBRplu4Nyqyr0VFIsWozTMGASfzmWvPzpIzR/xsgmoarZbDpMY0tbt
-	 9bacig95vIrxc2xSPKtEQ/CVI6uilTsH/ZdM0E4D8baoA1fg7URz4Kt7A+rtyfoxrz
-	 mGzPPvMPzV8p7rmVJXWkGlTCbuVBkvkaCWCJ6fDc=
+	b=yZxKGvwgzlDZRJe7mgnRN66cm8S6kqzJSYUQG2CfArY9afxbXkBWjRgzCNknmVxHf
+	 +0dkapYsXzX7V8USRmFPmzn7G6M2yb94Iz0WpNx0LN6ppo5Z3LAn3SrNoyJSyCmQf1
+	 BD3796yCuyWY/kVkJcxhx4QeJKr7VZgWQ8CDvgtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	valis <sec@valis.email>,
-	syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com,
-	Boudewijn van der Heide <boudewijn@delta-utec.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ruslan Krupitsa <krupitsarus@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/113] macvlan: fix error recovery in macvlan_common_newlink()
+Subject: [PATCH 6.6 36/86] ALSA: hda/realtek: add HP Laptop 15s-eq1xxx mute LED quirk
 Date: Mon,  9 Feb 2026 15:23:59 +0100
-Message-ID: <20260209142313.417305107@linuxfoundation.org>
+Message-ID: <20260209142306.086365820@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,131 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215197-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7182fbe91e58602ec1fe];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215326-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,suse.de,kernel.org];
+	RSPAMD_URIBL_FAIL(0.00)[suse.de:query timed out];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,delta-utec.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,valis.email:email]
-X-Rspamd-Queue-Id: DB39E111063
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,outlook.com:email]
+X-Rspamd-Queue-Id: B46F511161D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ruslan Krupitsa <krupitsarus@outlook.com>
 
-[ Upstream commit f8db6475a83649689c087a8f52486fcc53e627e9 ]
+[ Upstream commit 9ed7a28225af02b74f61e7880d460db49db83758 ]
 
-valis provided a nice repro to crash the kernel:
+HP Laptop 15s-eq1xxx with ALC236 codec does not enable the
+mute LED automatically. This patch adds a quirk entry for
+subsystem ID 0x8706 using the ALC236_FIXUP_HP_MUTE_LED_COEFBIT2
+fixup, enabling correct mute LED behavior.
 
-ip link add p1 type veth peer p2
-ip link set address 00:00:00:00:00:20 dev p1
-ip link set up dev p1
-ip link set up dev p2
-
-ip link add mv0 link p2 type macvlan mode source
-ip link add invalid% link p2 type macvlan mode source macaddr add 00:00:00:00:00:20
-
-ping -c1 -I p1 1.2.3.4
-
-He also gave a very detailed analysis:
-
-<quote valis>
-
-The issue is triggered when a new macvlan link is created  with
-MACVLAN_MODE_SOURCE mode and MACVLAN_MACADDR_ADD (or
-MACVLAN_MACADDR_SET) parameter, lower device already has a macvlan
-port and register_netdevice() called from macvlan_common_newlink()
-fails (e.g. because of the invalid link name).
-
-In this case macvlan_hash_add_source is called from
-macvlan_change_sources() / macvlan_common_newlink():
-
-This adds a reference to vlan to the port's vlan_source_hash using
-macvlan_source_entry.
-
-vlan is a pointer to the priv data of the link that is being created.
-
-When register_netdevice() fails, the error is returned from
-macvlan_newlink() to rtnl_newlink_create():
-
-        if (ops->newlink)
-                err = ops->newlink(dev, &params, extack);
-        else
-                err = register_netdevice(dev);
-        if (err < 0) {
-                free_netdev(dev);
-                goto out;
-        }
-
-and free_netdev() is called, causing a kvfree() on the struct
-net_device that is still referenced in the source entry attached to
-the lower device's macvlan port.
-
-Now all packets sent on the macvlan port with a matching source mac
-address will trigger a use-after-free in macvlan_forward_source().
-
-</quote valis>
-
-With all that, my fix is to make sure we call macvlan_flush_sources()
-regardless of @create value whenever "goto destroy_macvlan_port;"
-path is taken.
-
-Many thanks to valis for following up on this issue.
-
-Fixes: aa5fd0fb7748 ("driver: macvlan: Destroy new macvlan port if macvlan_common_newlink failed.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: valis <sec@valis.email>
-Reported-by: syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com
-Closes: https: //lore.kernel.org/netdev/695fb1e8.050a0220.1c677c.039f.GAE@google.com/T/#u
-Cc: Boudewijn van der Heide <boudewijn@delta-utec.com>
-Link: https://patch.msgid.link/20260129204359.632556-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ruslan Krupitsa <krupitsarus@outlook.com>
+Link: https://patch.msgid.link/AS8P194MB112895B8EC2D87D53A876085BBBAA@AS8P194MB1128.EURP194.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index ee59b57dfb53a..aaf7d755fc8a1 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1563,9 +1563,10 @@ int macvlan_common_newlink(struct net *src_net, struct net_device *dev,
- 	/* the macvlan port may be freed by macvlan_uninit when fail to register.
- 	 * so we destroy the macvlan port only when it's valid.
- 	 */
--	if (create && macvlan_port_get_rtnl(lowerdev)) {
-+	if (macvlan_port_get_rtnl(lowerdev)) {
- 		macvlan_flush_sources(port, vlan);
--		macvlan_port_destroy(port->dev);
-+		if (create)
-+			macvlan_port_destroy(port->dev);
- 	}
- 	return err;
- }
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 65c9d47f03af5..e7f6bba3e02b3 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10085,6 +10085,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x8706, "HP Laptop 15s-eq1xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8720, "HP EliteBook x360 1040 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8724, "HP EliteBook 850 G7", ALC285_FIXUP_HP_GPIO_LED),
 -- 
 2.51.0
 
