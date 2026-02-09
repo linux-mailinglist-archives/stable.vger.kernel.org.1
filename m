@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-215121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGPNJPfwiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:39 +0100
+	id OKtoJ5/xiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AB4110835
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F204110A2D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 111D83029A4C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1807330465E6
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E8B125B2;
-	Mon,  9 Feb 2026 14:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A261DE8AD;
+	Mon,  9 Feb 2026 14:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlLOyYaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBJd9iH5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F252BEC45;
-	Mon,  9 Feb 2026 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E089D285060;
+	Mon,  9 Feb 2026 14:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647743; cv=none; b=JjrvDgeD9pMqFTDKaxLASlnBpaS8g1s9EeUxRvRmUyd8ISnsupTdphizDNbdyjogURkWIAPIZoK2HRy55zBPnaNVdO864DL3gQXp+Np/NFviNMTzl+9e9Bez0Iun4bwzdkbykke3Js8Ol810GEGO6GzuEyjVGKJkQO6oLXiCRzQ=
+	t=1770647528; cv=none; b=ZzrlUFByMp2vprGqU+3ItFcrEbmt0NSrNjBb4bNllRg7jDXqTZ1nFKLDn54QcBsOMVfUPakvwnLUTNAqZ62X6UmW7ALSufn4hhkaIaSEi/4t0Px0gcxKjDYO4Ru3+I9DpcFSGbFiGEjdxYYbkhQw3rnF2I4VLyRWn/HRupW14Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647743; c=relaxed/simple;
-	bh=l02qEcrTxm5xJh/5wGRhbtgjEPtUpdCnzkFw74E9P/Q=;
+	s=arc-20240116; t=1770647528; c=relaxed/simple;
+	bh=07mAElcJ9tyawnf/mkYp+AaPpYvofoidVPv3T5RDf7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhCOyh4iLhAaOrxXKm2t9ujrVf7rOE9fhTCX9khT1rMtoupy1BTrG1U0wvVDlcWOyBt4cJp454Pr2swPuocB8/ureZWq1z+yHzg93vQFZH1nnHDMY0JIDhPyz3a5peHAFa+8JmWYvtT1iJA3lxsJNr4Z3xDZlyXWKEvkMxxeJ7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlLOyYaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D39FC116C6;
-	Mon,  9 Feb 2026 14:35:42 +0000 (UTC)
+	 MIME-Version; b=inz64DVlCnkG6F6TEjk7fybUo85BEBIk3A6nnSU/DXnKioCFLNoLdFjl+GWkqjpi6tjG104juMyX33dATQp8ghQ0SFVbEwnje28k8mucNnZIlbRMU7FM/lFCsvFqfZf9yjwbRjVOoPALHtf7KkfK5OlBbAZP0sb3HEnFbV3lP/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBJd9iH5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54213C16AAE;
+	Mon,  9 Feb 2026 14:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647742;
-	bh=l02qEcrTxm5xJh/5wGRhbtgjEPtUpdCnzkFw74E9P/Q=;
+	s=korg; t=1770647527;
+	bh=07mAElcJ9tyawnf/mkYp+AaPpYvofoidVPv3T5RDf7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlLOyYaFwvHluIECaNnNXsKWIAN1rtOMLKBjwru+QxoaPd/iiaqFACWCKPANjJzW5
-	 MrzMOx2/toIHTYu9GJLra2zeLTsWiryA5+KD4aaj1TWMTzodwt66H4TOrH3t8jw5xm
-	 byM4QMIMzp8IF7z0Gn7O+jaULGyq2v+0qTu1YxzM=
+	b=EBJd9iH5kamYrTyWihmg2sgT74Amdgi0yDnBzPS67NEJtD3BnK1LuH6x+58AZLIh+
+	 HtRIypc3OYS44tlx9viE0slU+ACqLTv5yZq05DqqX7Vb5zHXzagPfSg2uUgPwVYezk
+	 AuiACbDw8ad6eH94RYJNi3mruk487iVJFx1A/5hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Debarghya Kundu <debarghyak@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 016/113] gve: Fix stats report corruption on queue count change
+	Radhi Bajahaw <bajahawradhi@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 092/175] ASoC: amd: yc: Fix microphone on ASUS M6500RE
 Date: Mon,  9 Feb 2026 15:22:45 +0100
-Message-ID: <20260209142310.794393292@linuxfoundation.org>
+Message-ID: <20260209142323.739678849@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,163 +67,74 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215121-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215056-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email]
-X-Rspamd-Queue-Id: 38AB4110835
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2F204110A2D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Debarghya Kundu <debarghyak@google.com>
+From: Radhi Bajahaw <bajahawradhi@gmail.com>
 
-commit 7b9ebcce0296e104a0d82a6b09d68564806158ff upstream.
+[ Upstream commit 8e29db1b08808f709231e6fd4c79dcdee5b17a17 ]
 
-The driver and the NIC share a region in memory for stats reporting.
-The NIC calculates its offset into this region based on the total size
-of the stats region and the size of the NIC's stats.
+Add DMI match for ASUSTeK COMPUTER INC. M6500RE to enable the
+internal microphone.
 
-When the number of queues is changed, the driver's stats region is
-resized. If the queue count is increased, the NIC can write past
-the end of the allocated stats region, causing memory corruption.
-If the queue count is decreased, there is a gap between the driver
-and NIC stats, leading to incorrect stats reporting.
-
-This change fixes the issue by allocating stats region with maximum
-size, and the offset calculation for NIC stats is changed to match
-with the calculation of the NIC.
-
-Cc: stable@vger.kernel.org
-Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
-Signed-off-by: Debarghya Kundu <debarghyak@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260202193925.3106272-2-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Radhi Bajahaw <bajahawradhi@gmail.com>
+Link: https://patch.msgid.link/20260112203814.155-1-bajahawradhi@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c |   54 ++++++++++++++++----------
- drivers/net/ethernet/google/gve/gve_main.c    |    4 -
- 2 files changed, 36 insertions(+), 22 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -156,7 +156,8 @@ gve_get_ethtool_stats(struct net_device
- 	u64 rx_buf_alloc_fail, rx_desc_err_dropped_pkt, rx_hsplit_unsplit_pkt,
- 		rx_pkts, rx_hsplit_pkt, rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes,
- 		tx_dropped;
--	int stats_idx, base_stats_idx, max_stats_idx;
-+	int rx_base_stats_idx, max_rx_stats_idx, max_tx_stats_idx;
-+	int stats_idx, stats_region_len, nic_stats_len;
- 	struct stats *report_stats;
- 	int *rx_qid_to_stats_idx;
- 	int *tx_qid_to_stats_idx;
-@@ -265,20 +266,38 @@ gve_get_ethtool_stats(struct net_device
- 	data[i++] = priv->stats_report_trigger_cnt;
- 	i = GVE_MAIN_STATS_LEN;
- 
--	/* For rx cross-reporting stats, start from nic rx stats in report */
--	base_stats_idx = GVE_TX_STATS_REPORT_NUM * num_tx_queues +
--		GVE_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues;
--	/* The boundary between driver stats and NIC stats shifts if there are
--	 * stopped queues.
--	 */
--	base_stats_idx += NIC_RX_STATS_REPORT_NUM * num_stopped_rxqs +
--		NIC_TX_STATS_REPORT_NUM * num_stopped_txqs;
--	max_stats_idx = NIC_RX_STATS_REPORT_NUM *
--		(priv->rx_cfg.num_queues - num_stopped_rxqs) +
--		base_stats_idx;
-+	rx_base_stats_idx = 0;
-+	max_rx_stats_idx = 0;
-+	max_tx_stats_idx = 0;
-+	stats_region_len = priv->stats_report_len -
-+				sizeof(struct gve_stats_report);
-+	nic_stats_len = (NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
-+		NIC_TX_STATS_REPORT_NUM * num_tx_queues) * sizeof(struct stats);
-+	if (unlikely((stats_region_len -
-+				nic_stats_len) % sizeof(struct stats))) {
-+		net_err_ratelimited("Starting index of NIC stats should be multiple of stats size");
-+	} else {
-+		/* For rx cross-reporting stats,
-+		 * start from nic rx stats in report
-+		 */
-+		rx_base_stats_idx = (stats_region_len - nic_stats_len) /
-+							sizeof(struct stats);
-+		/* The boundary between driver stats and NIC stats
-+		 * shifts if there are stopped queues
-+		 */
-+		rx_base_stats_idx += NIC_RX_STATS_REPORT_NUM *
-+			num_stopped_rxqs + NIC_TX_STATS_REPORT_NUM *
-+			num_stopped_txqs;
-+		max_rx_stats_idx = NIC_RX_STATS_REPORT_NUM *
-+			(priv->rx_cfg.num_queues - num_stopped_rxqs) +
-+			rx_base_stats_idx;
-+		max_tx_stats_idx = NIC_TX_STATS_REPORT_NUM *
-+			(num_tx_queues - num_stopped_txqs) +
-+			max_rx_stats_idx;
-+	}
- 	/* Preprocess the stats report for rx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	for (stats_idx = rx_base_stats_idx; stats_idx < max_rx_stats_idx;
- 		stats_idx += NIC_RX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
-@@ -354,14 +373,9 @@ gve_get_ethtool_stats(struct net_device
- 		i += priv->rx_cfg.num_queues * NUM_GVE_RX_CNTS;
- 	}
- 
--	/* For tx cross-reporting stats, start from nic tx stats in report */
--	base_stats_idx = max_stats_idx;
--	max_stats_idx = NIC_TX_STATS_REPORT_NUM *
--		(num_tx_queues - num_stopped_txqs) +
--		max_stats_idx;
--	/* Preprocess the stats report for tx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	/* NIC TX stats start right after NIC RX stats */
-+	for (stats_idx = max_rx_stats_idx; stats_idx < max_tx_stats_idx;
- 		stats_idx += NIC_TX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -244,9 +244,9 @@ static int gve_alloc_stats_report(struct
- 	int tx_stats_num, rx_stats_num;
- 
- 	tx_stats_num = (GVE_TX_STATS_REPORT_NUM + NIC_TX_STATS_REPORT_NUM) *
--		       gve_num_tx_queues(priv);
-+				priv->tx_cfg.max_queues;
- 	rx_stats_num = (GVE_RX_STATS_REPORT_NUM + NIC_RX_STATS_REPORT_NUM) *
--		       priv->rx_cfg.num_queues;
-+				priv->rx_cfg.max_queues;
- 	priv->stats_report_len = struct_size(priv->stats_report, stats,
- 					     size_add(tx_stats_num, rx_stats_num));
- 	priv->stats_report =
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index c0a8afb42e165..c4a4a06528b45 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -416,6 +416,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RE"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+-- 
+2.51.0
+
 
 
 
