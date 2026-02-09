@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-215053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wG74LffviWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-215053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:32:23 +0100
+	id EIy6NSzyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A67110661
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:32:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CCA110B7A
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E8C43008986
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:31:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 207043064518
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DF22222B2;
-	Mon,  9 Feb 2026 14:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253622C2360;
+	Mon,  9 Feb 2026 14:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgYmNpMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKmj4Z2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5001DE8AD;
-	Mon,  9 Feb 2026 14:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6AA1AF0AF;
+	Mon,  9 Feb 2026 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647518; cv=none; b=o0Un/9yZUaQ13+l+leiMFVOgAUzc6ovaNuptE4vUiJ04yVIBCyNrzW/2WtiZNLn3eK7TsUCdsq3bN8EbGI2Ba307ldYTXNlD3/DBHDRwTyiiW3/UUR5NLGofShRTtaP0JXbTyK2UDZGnjmOk+Px5jJKUwQy4TuyR5L/+/OnXgmc=
+	t=1770647661; cv=none; b=KEw9aWSP8EnpalMBnTbPYhWOR7UFG44oRoUyCe5XcvCVZeEj3lx7LKL9NDvK5OBKsOtCJG1fU1TWZdzHmP4O4Gpyv7r2tE/wQ/zdb328fRAiDyLdXlPOKMdhYE2PQ5LTxtlbjxPvzugKHdI8UL3xp1KzrQizGr65Q6wPBrPWtNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647518; c=relaxed/simple;
-	bh=qQu60G/5QArEys7qXH6RbU2wLj0lYaAx03eXgp2yI8I=;
+	s=arc-20240116; t=1770647661; c=relaxed/simple;
+	bh=InDME7NMCaKRiVIDo+77XkZgybEdtAAKXKbnoWrPG3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnwCKbNCK+ip8bUXlPu3X1CK0DP9X5xltXd5ksX0MMMw+C4KKIoGh/qOMbF0f30IHOlSAktgFQsuRY5aLiwZ+0q7yQxYiE+IYnePZEwdPMZa3HTbiQQRB5ZBYjaF71mjLGa/Nqip6bNUsWKYtm8Ox+wgxf6kH/kmHnO+9m/+tGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgYmNpMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C843C116C6;
-	Mon,  9 Feb 2026 14:31:57 +0000 (UTC)
+	 MIME-Version; b=eDbS+uUTgfhL5itNNFUa9DwYdmaFDOhFeOUc5ZUU7VuLPMYdPqbnHrL1OwhWOHo46aZHMy5yef9fMg8Q7jKeQ2oAzLeBzY+yMsc5gqG18K129PZFH4uuCLpuOwozpEkOIfof2HhBHv2kZLxFmJspkrJYvbbKxlnUWRMVBZz2kJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKmj4Z2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFE8C116C6;
+	Mon,  9 Feb 2026 14:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647517;
-	bh=qQu60G/5QArEys7qXH6RbU2wLj0lYaAx03eXgp2yI8I=;
+	s=korg; t=1770647661;
+	bh=InDME7NMCaKRiVIDo+77XkZgybEdtAAKXKbnoWrPG3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgYmNpMJDJufPJQCjRm4ZGYHOgUpsld5R2UvDn8RtTewDqoWAABO3ECyey5HnNGa1
-	 Yr6DU+UtxyTTKrsoQ8s/vgkDBxSvM0QU4X2WgQ23IHEvUUHw8HboBfKk5ngWWxgdiy
-	 TqmsfgTP8kMRhT/JO2c0x79A3JgaxNlEfic7seFE=
+	b=qKmj4Z2dNuwAEyLW3R7dUaHwRv9TJfhAA1p6ZlifBFgozjIRyWgywwujMuyDAiwRJ
+	 NOQ1SfMgYEYvb5R9QV4Q+nit0gojcu0r7iEm3W0Cbwylr/PoabC4WPgOL/u/XQngYM
+	 7ytrMSv3SPSPXn5E129NaKE+wVLhUWMr3KgFUK0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Simon Horman <horms@kernel.org>,
 	Zilin Guan <zilin@seu.edu.cn>,
 	Kory Maincent <kory.maincent@bootlin.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 122/175] net: liquidio: Initialize netdev pointer before queue setup
-Date: Mon,  9 Feb 2026 15:23:15 +0100
-Message-ID: <20260209142324.799186045@linuxfoundation.org>
+Subject: [PATCH 6.18 123/175] net: liquidio: Fix off-by-one error in PF setup_nic_devices() cleanup
+Date: Mon,  9 Feb 2026 15:23:16 +0100
+Message-ID: <20260209142324.833776889@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
 References: <20260209142320.474120190@linuxfoundation.org>
@@ -70,29 +71,29 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215053-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215096-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
-X-Rspamd-Queue-Id: 68A67110661
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: 74CCA110B7A
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -101,94 +102,57 @@ X-Rspamd-Action: no action
 
 From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 926ede0c85e1e57c97d64d9612455267d597bb2c ]
+[ Upstream commit 8558aef4e8a1a83049ab906d21d391093cfa7e7f ]
 
-In setup_nic_devices(), the netdev is allocated using alloc_etherdev_mq().
-However, the pointer to this structure is stored in oct->props[i].netdev
-only after the calls to netif_set_real_num_rx_queues() and
-netif_set_real_num_tx_queues().
+In setup_nic_devices(), the initialization loop jumps to the label
+setup_nic_dev_free on failure. The current cleanup loop while(i--)
+skip the failing index i, causing a memory leak.
 
-If either of these functions fails, setup_nic_devices() returns an error
-without freeing the allocated netdev. Since oct->props[i].netdev is still
-NULL at this point, the cleanup function liquidio_destroy_nic_device()
-will fail to find and free the netdev, resulting in a memory leak.
+Fix this by changing the loop to iterate from the current index i
+down to 0.
 
-Fix this by initializing oct->props[i].netdev before calling the queue
-setup functions. This ensures that the netdev is properly accessible for
-cleanup in case of errors.
+Also, decrement i in the devlink_alloc failure path to point to the
+last successfully allocated index.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
+Compile tested only. Issue found using code review.
 
-Fixes: c33c997346c3 ("liquidio: enhanced ethtool --set-channels feature")
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Suggested-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20260128154440.278369-2-zilin@seu.edu.cn
+Link: https://patch.msgid.link/20260128154440.278369-3-zilin@seu.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/cavium/liquidio/lio_main.c   | 34 +++++++++----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/lio_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-index 8e2fcec26ea13..925512c077a0c 100644
+index 925512c077a0c..eb620e8544cf1 100644
 --- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
 +++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-@@ -3515,6 +3515,23 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 		 */
- 		netdev->netdev_ops = &lionetdevops;
+@@ -3760,6 +3760,7 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+ 	if (!devlink) {
+ 		device_unlock(&octeon_dev->pci_dev->dev);
+ 		dev_err(&octeon_dev->pci_dev->dev, "devlink alloc failed\n");
++		i--;
+ 		goto setup_nic_dev_free;
+ 	}
  
-+		lio = GET_LIO(netdev);
-+
-+		memset(lio, 0, sizeof(struct lio));
-+
-+		lio->ifidx = ifidx_or_pfnum;
-+
-+		props = &octeon_dev->props[i];
-+		props->gmxport = resp->cfg_info.linfo.gmxport;
-+		props->netdev = netdev;
-+
-+		/* Point to the  properties for octeon device to which this
-+		 * interface belongs.
-+		 */
-+		lio->oct_dev = octeon_dev;
-+		lio->octprops = props;
-+		lio->netdev = netdev;
-+
- 		retval = netif_set_real_num_rx_queues(netdev, num_oqueues);
- 		if (retval) {
- 			dev_err(&octeon_dev->pci_dev->dev,
-@@ -3531,16 +3548,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 			goto setup_nic_dev_free;
- 		}
+@@ -3775,11 +3776,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
  
--		lio = GET_LIO(netdev);
--
--		memset(lio, 0, sizeof(struct lio));
--
--		lio->ifidx = ifidx_or_pfnum;
--
--		props = &octeon_dev->props[i];
--		props->gmxport = resp->cfg_info.linfo.gmxport;
--		props->netdev = netdev;
--
- 		lio->linfo.num_rxpciq = num_oqueues;
- 		lio->linfo.num_txpciq = num_iqueues;
- 		for (j = 0; j < num_oqueues; j++) {
-@@ -3606,13 +3613,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 		netdev->min_mtu = LIO_MIN_MTU_SIZE;
- 		netdev->max_mtu = LIO_MAX_MTU_SIZE;
+ setup_nic_dev_free:
  
--		/* Point to the  properties for octeon device to which this
--		 * interface belongs.
--		 */
--		lio->oct_dev = octeon_dev;
--		lio->octprops = props;
--		lio->netdev = netdev;
--
- 		dev_dbg(&octeon_dev->pci_dev->dev,
- 			"if%d gmx: %d hw_addr: 0x%llx\n", i,
- 			lio->linfo.gmxport, CVM_CAST64(lio->linfo.hw_addr));
+-	while (i--) {
++	do {
+ 		dev_err(&octeon_dev->pci_dev->dev,
+ 			"NIC ifidx:%d Setup failed\n", i);
+ 		liquidio_destroy_nic_device(octeon_dev, i);
+-	}
++	} while (i--);
+ 
+ setup_nic_dev_done:
+ 
 -- 
 2.51.0
 
