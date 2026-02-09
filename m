@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBSIEqT1iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:36 +0100
+	id EHP/BMzziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB221113C0
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B25111025
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5695D30713F9
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 196BF30B2AF1
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28573783A1;
-	Mon,  9 Feb 2026 14:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C668D37E2ED;
+	Mon,  9 Feb 2026 14:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OCaP9e1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6JjnrF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974662222B2;
-	Mon,  9 Feb 2026 14:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A03F37BE93;
+	Mon,  9 Feb 2026 14:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648166; cv=none; b=VVKLVd3uLlg0+qB4xoi7hSQwVueKvTiNvrOa4+IFHTWkJe0Dnz0oz2CZAQy/zFAgxzPnO7erGlrkG84AuJOfvhr16b7hxfPJ9JQOwqfUnh+GOgCp6B/bc5NwULAFuHHNtRrkZYy3niYJPRr8VQpYldgLre+EweUeSZ13U9UjRv4=
+	t=1770647980; cv=none; b=ZuMhfs9I2b9vo6c1whn0wpc+VWUU0seTKNH+Br/C3G9P0Js573D570lmLDZe9LwBvM5JaLaMhXcqhgRmWWViX1cH8jbSXc3hSs95fwbaozVzDIM0GGF2s6IUs6K74A/jGqNSIk7JWC91H1SZVIug8qd5nzZHYQkGHnsg/to40gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648166; c=relaxed/simple;
-	bh=rr5J27TqnRz1m/EfGslYlh187WFQzd7AT1Fz17e68Ew=;
+	s=arc-20240116; t=1770647980; c=relaxed/simple;
+	bh=5Gce1GNASLIKecKtOkiqNQOrM9WqYLGE59nDYiyLl1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMU+H+M8LcIw9LATW05ZgU9vk5zjNdACaqQb7kK+pUNPqb7zHlOsdbNt7mMnrwEEu2p+wZkszhmjyi8547m0zkA9OL+W3TUzdi6JSjGHeKeGcdyumTEqfKgr08HN5UsM9x9vGO2EWrt8LA9fkAo/Qu1DeiIPHcV3g48rWk1qMIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OCaP9e1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08103C116C6;
-	Mon,  9 Feb 2026 14:42:45 +0000 (UTC)
+	 MIME-Version; b=SFXTkH37T2MuMs2Y9pONqfyfSCtwVLJMJrvBnrSXlw0FsqJKjFHFAXSMDbnRGAKz5S5+l1LlINBp9VsOOKDUY4vzJIqEBi0gq/WHp44edrhhUHDcTZZjkK4mg0vlZjuO/bCboguO6u2DKrMZtKZKnK/AUpgIng/V6GUMeK36Afk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6JjnrF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F26C116C6;
+	Mon,  9 Feb 2026 14:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648166;
-	bh=rr5J27TqnRz1m/EfGslYlh187WFQzd7AT1Fz17e68Ew=;
+	s=korg; t=1770647980;
+	bh=5Gce1GNASLIKecKtOkiqNQOrM9WqYLGE59nDYiyLl1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OCaP9e1Lvc+AzFfKZIv3m4rQbrfqgJg8KgCgtxjNkciEnors9n/4ZPE+0iKBSDIE
-	 UDpAneCU2pNeZnMkck7kJ7pC3MJtS/7CzVbC3gn6AOSJWjs/ZjFMIycBrsPB3oWNWM
-	 LZzSGAss0Drntc92LJkCMRU8FI32bVN7wos8ZnQI=
+	b=W6JjnrF4fOKiK6kaQ494YyS3szafuEr4VbkKG55Vwzz86ozbXjy/wSNBbVFxdlueT
+	 2Vl1LnIoJ8gGTRtVq23h6dZs8oiBbD/zHLA8z7PovdXpDcywlU0RNse6V6OAdAXwoh
+	 peXja9J3785saPG511LMbCXh5JXBvoZ6d/rrGGPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	DaytonCL <artem749507@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 26/69] HID: multitouch: add MT_QUIRK_STICKY_FINGERS to MT_CLS_VTL
+Subject: [PATCH 6.12 085/113] net: phy: add phy_interface_weight()
 Date: Mon,  9 Feb 2026 15:23:54 +0100
-Message-ID: <20260209142302.868157356@linuxfoundation.org>
+Message-ID: <20260209142313.239874837@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -76,64 +77,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215247-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215192-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: ECB221113C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 74B25111025
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaytonCL <artem749507@gmail.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit ff3f234ff1dcd6d626a989151db067a1b7f0f215 ]
+[ Upstream commit 4beb44a2d62dddfe450f310aa1a950901731cb3a ]
 
-Some VTL-class touchpads (e.g. TOPS0102:00 35CC:0104) intermittently
-fail to release a finger contact. A previous slot remains logically
-active, accompanied by stale BTN_TOOL_DOUBLETAP state, causing
-gestures to stay latched and resulting in stuck two-finger
-scrolling and false right-clicks.
-
-Apply MT_QUIRK_STICKY_FINGERS to handle the unreleased contact correctly.
-
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1225
-Suggested-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Tested-by: DaytonCL <artem749507@gmail.com>
-Signed-off-by: DaytonCL <artem749507@gmail.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/E1uslwn-00000001SOx-0a7H@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: adcbadfd8e05 ("net: sfp: Fix quirk for Ubiquiti U-Fiber Instant SFP module")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/phy.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index b9e67b408a4b9..6d9a85c5fc409 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -379,6 +379,7 @@ static const struct mt_class mt_classes[] = {
- 	{ .name = MT_CLS_VTL,
- 		.quirks = MT_QUIRK_ALWAYS_VALID |
- 			MT_QUIRK_CONTACT_CNT_ACCURATE |
-+			MT_QUIRK_STICKY_FINGERS |
- 			MT_QUIRK_FORCE_GET_FEATURE,
- 	},
- 	{ .name = MT_CLS_GOOGLE,
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index dfc7b97f9648d..6fe5d564beed4 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -187,6 +187,11 @@ static inline bool phy_interface_empty(const unsigned long *intf)
+ 	return bitmap_empty(intf, PHY_INTERFACE_MODE_MAX);
+ }
+ 
++static inline unsigned int phy_interface_weight(const unsigned long *intf)
++{
++	return bitmap_weight(intf, PHY_INTERFACE_MODE_MAX);
++}
++
+ static inline void phy_interface_and(unsigned long *dst, const unsigned long *a,
+ 				     const unsigned long *b)
+ {
 -- 
 2.51.0
 
