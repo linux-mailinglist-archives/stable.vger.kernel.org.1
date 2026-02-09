@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-215067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MAeOsnxiWnyEgAAu9opvQ
-	(envelope-from <stable+bounces-215067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:09 +0100
+	id +HcqJI3xiWnyEgAAu9opvQ
+	(envelope-from <stable+bounces-215176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77578110A79
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3328A1109EB
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA2D03036743
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:32:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 422B8300A30C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF88E3793C6;
-	Mon,  9 Feb 2026 14:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940CD37BE93;
+	Mon,  9 Feb 2026 14:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTnp8GlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvngpgOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83760285060;
-	Mon,  9 Feb 2026 14:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5600637AA87;
+	Mon,  9 Feb 2026 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647563; cv=none; b=Vn7UJ4K7NrrjK0RTsKVQ4GgxyovOP8Wo5EtucA0rHfwe6bVluy6jAlmukMS0/yNBJ87AbZxo1GirHEQGq2Z/CK85ulVnmcgshnZk420PLrWiSZRIB/Pu+ClGWc8JWs0sW7Dhq3Qp38mo53fB8yvJuIiKgC9Pnl4g9AF69zjuomo=
+	t=1770647927; cv=none; b=EvZgRnLdboDVLT+QKgL4BEak2cmNATac6aAJEpB8OjhkfDVfjsIKdkVXl/7TfX+u+Dfsadm2S6FCrLkc7EJjYiHqv1owCvnpRBThe7gtC2m+m+xJ4M9wehivVhafW/+rFzPL77t6KyR6sklelvE8kePnCAcwFmlV2g02Tz1H6Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647563; c=relaxed/simple;
-	bh=WP2bIag5LYqg3polU6G0/Z1CsoETWZ1CXk//5VK+caU=;
+	s=arc-20240116; t=1770647927; c=relaxed/simple;
+	bh=fE+hrgmduEs6xX5A8WW5C5bXS3DiaNQ7GSsLi2AFx8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqqSCfDeDULr177B4W0E5K7XFQHtE/FVrQv0PtQ2YSRD9nQp0ZsZ2IT1aNYBrI9u9HvsWgRodXXGwM06csCAj0/0Zr9DeMWdQSCB2YLxuGNXQgXYfmVGcj4+mPC2RWOT5j0Uod2VRIm96XdWZ57WR0tgLxVRBMA+eY09Sx1CAMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTnp8GlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB15C116C6;
-	Mon,  9 Feb 2026 14:32:42 +0000 (UTC)
+	 MIME-Version; b=Jj4/7GlPUtX3HLjY3ysd6XU6m8izLAQNHHV1vfguWIDYHAdNnvGtZA5WHEMAy6X5H1VwIEbxghf2hfaZELNyiC1rX7AvbkFa3pYRhJRAzqHSyMh0fpC+6F/q7OuocTR1z1kQWvxxl7hf9EXcwlSPqFaGvOIFPBD02DL6LFflavI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvngpgOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60826C16AAE;
+	Mon,  9 Feb 2026 14:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647563;
-	bh=WP2bIag5LYqg3polU6G0/Z1CsoETWZ1CXk//5VK+caU=;
+	s=korg; t=1770647926;
+	bh=fE+hrgmduEs6xX5A8WW5C5bXS3DiaNQ7GSsLi2AFx8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTnp8GlTh+o4uH1m8Vw5/tJ9OxdFdQ9mQ3x98j4oJ3WEUL35PZzGLIdy8E8Ve+KLM
-	 /qjwzZ6wtRTNh5yyl37HvTLS0/lqDNLQjsgV1YX7JayP4z9sDyv9WPuG/3+zXJJhoV
-	 6Pdnk/SlShB79VjZQfrrXUqXU2x5U9X2UBj7VyXs=
+	b=KvngpgOz3vc+MMeSNHUKtunvN5wEdABoHWjpV6IoDZ2uuTXs75kXvtxrw/zzUES7i
+	 IcbiHxQ0eZl3tRabsXG+G/pmXCkXBuf3mFzwzRjuxMf3uaThZ7iJZa1HhgnGeE0Pu1
+	 zbmZELzP6b7VCU7p5wcqBUllfM2pkrv3HeLApI+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dimitrios Katsaros <patcherwork@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 138/175] net: rss: fix reporting RXH_XFRM_NO_CHANGE as input_xfrm for contexts
+Subject: [PATCH 6.12 062/113] ASoC: tlv320adcx140: Propagate error codes during probe
 Date: Mon,  9 Feb 2026 15:23:31 +0100
-Message-ID: <20260209142325.472490406@linuxfoundation.org>
+Message-ID: <20260209142312.425318318@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,117 +68,73 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215067-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215176-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 77578110A79
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pengutronix.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 3328A1109EB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Dimitrios Katsaros <patcherwork@gmail.com>
 
-[ Upstream commit 1c172febdf065375359b2b95156e476bfee30b60 ]
+[ Upstream commit d89aad92cfd15edbd704746f44c98fe687f9366f ]
 
-Initializing input_xfrm to RXH_XFRM_NO_CHANGE in RSS contexts is
-problematic. I think I did this to make it clear that the context
-does not have its own settings applied. But unlike ETH_RSS_HASH_NO_CHANGE
-which is zero, RXH_XFRM_NO_CHANGE is 0xff. We need to be careful
-when reading the value back, and remember to treat 0xff as 0.
+When scanning for the reset pin, we could get an -EPROBE_DEFER.
+The driver would assume that no reset pin had been defined,
+which would mean that the chip would never be powered.
 
-Remove the initialization and switch to storing 0. This lets us
-also remove the workaround in ethnl_rss_set(). Get side does not
-need any adjustments and context get no longer reports:
+Now we both respect any error we get from devm_gpiod_get_optional.
+We also now properly report the missing GPIO definition when
+'gpio_reset' is NULL.
 
-  RSS input transformation:
-    symmetric-xor: on
-    symmetric-or-xor: on
-    Unknown bits in RSS input transformation: 0xfc
-
-for NICs which don't support input_xfrm.
-
-Remove the init of hfunc to ETH_RSS_HASH_NO_CHANGE while at it.
-As already mentioned this is a noop since ETH_RSS_HASH_NO_CHANGE
-is 0 and struct is zalloc'd. But as this fix exemplifies storing
-NO_CHANGE as state is fragile.
-
-This issue is implicitly caught by running our selftests because
-YNL in selftests errors out on unknown bits.
-
-Fixes: d3e2c7bab124 ("ethtool: rss: support setting input-xfrm via Netlink")
-Link: https://patch.msgid.link/20260130190311.811129-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dimitrios Katsaros <patcherwork@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://patch.msgid.link/20260113-sound-soc-codecs-tvl320adcx140-v4-3-8f7ecec525c8@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/common.c | 3 ---
- net/ethtool/rss.c    | 9 ++-------
- 2 files changed, 2 insertions(+), 10 deletions(-)
+ sound/soc/codecs/tlv320adcx140.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 55223ebc2a7e6..146c7eaedc5ac 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -854,9 +854,6 @@ ethtool_rxfh_ctx_alloc(const struct ethtool_ops *ops,
- 	ctx->key_off = key_off;
- 	ctx->priv_size = ops->rxfh_priv_size;
+diff --git a/sound/soc/codecs/tlv320adcx140.c b/sound/soc/codecs/tlv320adcx140.c
+index 62d936c2838c9..1565727ca2f3d 100644
+--- a/sound/soc/codecs/tlv320adcx140.c
++++ b/sound/soc/codecs/tlv320adcx140.c
+@@ -1156,6 +1156,9 @@ static int adcx140_i2c_probe(struct i2c_client *i2c)
+ 	adcx140->gpio_reset = devm_gpiod_get_optional(adcx140->dev,
+ 						      "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(adcx140->gpio_reset))
++		return dev_err_probe(&i2c->dev, PTR_ERR(adcx140->gpio_reset),
++				     "Failed to get Reset GPIO\n");
++	if (!adcx140->gpio_reset)
+ 		dev_info(&i2c->dev, "Reset GPIO not defined\n");
  
--	ctx->hfunc = ETH_RSS_HASH_NO_CHANGE;
--	ctx->input_xfrm = RXH_XFRM_NO_CHANGE;
--
- 	return ctx;
- }
- 
-diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
-index 4dced53be4b3b..da5934cceb075 100644
---- a/net/ethtool/rss.c
-+++ b/net/ethtool/rss.c
-@@ -824,8 +824,8 @@ rss_set_ctx_update(struct ethtool_rxfh_context *ctx, struct nlattr **tb,
- static int
- ethnl_rss_set(struct ethnl_req_info *req_info, struct genl_info *info)
- {
--	bool indir_reset = false, indir_mod, xfrm_sym = false;
- 	struct rss_req_info *request = RSS_REQINFO(req_info);
-+	bool indir_reset = false, indir_mod, xfrm_sym;
- 	struct ethtool_rxfh_context *ctx = NULL;
- 	struct net_device *dev = req_info->dev;
- 	bool mod = false, fields_mod = false;
-@@ -860,12 +860,7 @@ ethnl_rss_set(struct ethnl_req_info *req_info, struct genl_info *info)
- 
- 	rxfh.input_xfrm = data.input_xfrm;
- 	ethnl_update_u8(&rxfh.input_xfrm, tb[ETHTOOL_A_RSS_INPUT_XFRM], &mod);
--	/* For drivers which don't support input_xfrm it will be set to 0xff
--	 * in the RSS context info. In all other case input_xfrm != 0 means
--	 * symmetric hashing is requested.
--	 */
--	if (!request->rss_context || ops->rxfh_per_ctx_key)
--		xfrm_sym = rxfh.input_xfrm || data.input_xfrm;
-+	xfrm_sym = rxfh.input_xfrm || data.input_xfrm;
- 	if (rxfh.input_xfrm == data.input_xfrm)
- 		rxfh.input_xfrm = RXH_XFRM_NO_CHANGE;
- 
+ 	adcx140->supply_areg = devm_regulator_get_optional(adcx140->dev,
 -- 
 2.51.0
 
