@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-215076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPRvJS3wiWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-215076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:33:17 +0100
+	id 0KfBDLLziWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A771106CC
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA22110FE6
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1F8FC3003BF9
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 92AD5301092E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0581DE8AD;
-	Mon,  9 Feb 2026 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5196A37C115;
+	Mon,  9 Feb 2026 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXYuJ2UX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kedtTl4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42989285060;
-	Mon,  9 Feb 2026 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121DA37C103;
+	Mon,  9 Feb 2026 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647593; cv=none; b=YIFvztWc9PD+AbV2VTo7M7WSu6WN/sJYLZIj374eRgS37ZUJrehlKxw5hHimDPI5jqGTcShOk4dbqyTEYq8yexfOSMl8h5Stj+mFLTUmigIAA+XLAnsKcyZ01G8QBuz7IdsO5CWtAOJFFlPOOPsTtROMKfgkhX1fsWATS2hEs7I=
+	t=1770648113; cv=none; b=KDk12cioMo/jDAlux/qXZ99WobgG3EvF2ChvnS4984AXDJSl/90NfN+/fKrG6vnt+c9AbNNLcw3nzGC562FykPyFDKhI3N6NIJaSBHgM1vKTurXXwrh3PnqpMmJSILnr+XpF6gt+2/27OvoHXEFYbIKsaN6CWJjM6iVU5T2jxDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647593; c=relaxed/simple;
-	bh=NZmr/9qI4fD1TMr9R3rjqnmxjQuRF25GoYuKqmxlYV4=;
+	s=arc-20240116; t=1770648113; c=relaxed/simple;
+	bh=7/fyce0YFTCNzHc8zGPyHKtANgv6xDpJaQNjv4w3FO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omXjl8hlcliHDp0O+oq9SZ5a3ZU9FpQi5jDPp2AtBhmtI0DecApihFOCFLZ1kjuMTnq9Tr8fCKv9MYZZp3j1g9lJnUpdr4I+j1mDATORJMrcp2I88mGOhF7Cj1N5p4Pt4nUTXfSoKhLXoydz7XZF0+JB8w3wVYlHuCgzufS0ax8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXYuJ2UX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA6CC116C6;
-	Mon,  9 Feb 2026 14:33:12 +0000 (UTC)
+	 MIME-Version; b=ub9Bck9OBnWPS62zJ3NmhTEQDBAmWfYw84PyTD/SUkN6+YrKhA0jaJYwg2hTvfl+A6waZiHizjL5kvXZG4GQ8PpsSJo/us962LM0t4FAc8wSH93y0rCzsQLjuFU5JJHtux01dRedpIjxzxb3v6plAmc6N9zJcihpw3Ov/qNllmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kedtTl4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702EAC19425;
+	Mon,  9 Feb 2026 14:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647593;
-	bh=NZmr/9qI4fD1TMr9R3rjqnmxjQuRF25GoYuKqmxlYV4=;
+	s=korg; t=1770648113;
+	bh=7/fyce0YFTCNzHc8zGPyHKtANgv6xDpJaQNjv4w3FO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXYuJ2UXo1H4w+hwySshmPHX/xUNK2YNh7vL2M3ClyRd1IkH1ncDHrHA4e9fvQAWt
-	 yag/ds4XRxAgH2bk51d8Km7N+Qie2R1nE7z7pztGasG7cKXjsbcdWHagTxDle26GdW
-	 s6pS4rOwNMLfBdXMjCB7Vdy/b5ePy/C6woeAGymE=
+	b=kedtTl4v5nC29Zk23EhuEhsw8iiwoRhja4oR+s5wIxtMdTxX3GdL/+IbgWXJQIyzc
+	 crzY12AfjbY/7A8JLy3ZuD4dWirezfz34YMpVL/E02kYqcocZeA9c/wRJeNteLh+2W
+	 cTiTywwAJ/aC+GM9/lqfbBX88zVoJMYEN8ej1bdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krunoslav Kovac <Krunoslav.Kovac@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 146/175] drm/amd/display: fix wrong color value mapping on MCM shaper LUT
+Subject: [PATCH 6.1 11/69] pmdomain: imx8mp-blk-ctrl: Keep gpc power domain on for system wakeup
 Date: Mon,  9 Feb 2026 15:23:39 +0100
-Message-ID: <20260209142325.756539270@linuxfoundation.org>
+Message-ID: <20260209142302.324822818@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +67,142 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215076-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215231-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B2A771106CC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9EA22110FE6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 8f959d37c1f2efec6dac55915ee82302e98101fb ]
+[ Upstream commit e9ab2b83893dd03cf04d98faded81190e635233f ]
 
-Some shimmer/colorful points appears when using the steamOS color
-pipeline for HDR on gaming with DCN32. These points look like black
-values being wrongly mapped to red/blue/green values. It was caused
-because the number of hw points in regular LUTs and in a shaper LUT was
-treated as the same.
+Current design will power off all dependent GPC power domains in
+imx8mp_blk_ctrl_suspend(), even though the user device has enabled
+wakeup capability. The result is that wakeup function never works
+for such device.
 
-DCN3+ regular LUTs have 257 bases and implicit deltas (i.e. HW
-calculates them), but shaper LUT is a special case: it has 256 bases and
-256 deltas, as in DCN1-2 regular LUTs, and outputs 14-bit values.
+An example will be USB wakeup on i.MX8MP. PHY device '382f0040.usb-phy'
+is attached to power domain 'hsioblk-usb-phy2' which is spawned by hsio
+block control. A virtual power domain device 'genpd:3:32f10000.blk-ctrl'
+is created to build connection with 'hsioblk-usb-phy2' and it depends on
+GPC power domain 'usb-otg2'. If device '382f0040.usb-phy' enable wakeup,
+only power domain 'hsioblk-usb-phy2' keeps on during system suspend,
+power domain 'usb-otg2' is off all the time. So the wakeup event can't
+happen.
 
-Fix that by setting by decreasing in 1 the number of HW points computed
-in the LUT segmentation so that shaper LUT (i.e. fixpoint == true) keeps
-the same DCN10 CM logic and regular LUTs go with `hw_points + 1`.
+In order to further establish a connection between the power domains
+related to GPC and block control during system suspend, register a genpd
+power on/off notifier for the power_dev. This allows us to prevent the GPC
+power domain from being powered off, in case the block control power
+domain is kept on to serve system wakeup.
 
-CC: Krunoslav Kovac <Krunoslav.Kovac@amd.com>
-Fixes: 4d5fd3d08ea9 ("drm/amd/display: PQ tail accuracy")
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5006505b19a2119e71c008044d59f6d753c858b9)
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/soc/imx/imx8mp-blk-ctrl.c |   26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-index 0690c346f2c52..a4f14b16564c2 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-@@ -163,6 +163,11 @@ bool cm3_helper_translate_curve_to_hw_format(
- 			hw_points += (1 << seg_distr[k]);
+--- a/drivers/soc/imx/imx8mp-blk-ctrl.c
++++ b/drivers/soc/imx/imx8mp-blk-ctrl.c
+@@ -54,6 +54,7 @@ struct imx8mp_blk_ctrl_domain {
+ 	struct icc_bulk_data paths[DOMAIN_MAX_PATHS];
+ 	struct device *power_dev;
+ 	struct imx8mp_blk_ctrl *bc;
++	struct notifier_block power_nb;
+ 	int num_paths;
+ 	int id;
+ };
+@@ -492,6 +493,20 @@ static int imx8mp_blk_ctrl_power_off(str
+ 	return 0;
+ }
+ 
++static int imx8mp_blk_ctrl_gpc_notifier(struct notifier_block *nb,
++					unsigned long action, void *data)
++{
++	struct imx8mp_blk_ctrl_domain *domain =
++			container_of(nb, struct imx8mp_blk_ctrl_domain, power_nb);
++
++	if (action == GENPD_NOTIFY_PRE_OFF) {
++		if (domain->genpd.status == GENPD_STATE_ON)
++			return NOTIFY_BAD;
++	}
++
++	return NOTIFY_OK;
++}
++
+ static struct lock_class_key blk_ctrl_genpd_lock_class;
+ 
+ static int imx8mp_blk_ctrl_probe(struct platform_device *pdev)
+@@ -593,6 +608,14 @@ static int imx8mp_blk_ctrl_probe(struct
+ 			goto cleanup_pds;
+ 		}
+ 
++		domain->power_nb.notifier_call = imx8mp_blk_ctrl_gpc_notifier;
++		ret = dev_pm_genpd_add_notifier(domain->power_dev, &domain->power_nb);
++		if (ret) {
++			dev_err_probe(dev, ret, "failed to add power notifier\n");
++			dev_pm_domain_detach(domain->power_dev, true);
++			goto cleanup_pds;
++		}
++
+ 		domain->genpd.name = data->name;
+ 		domain->genpd.power_on = imx8mp_blk_ctrl_power_on;
+ 		domain->genpd.power_off = imx8mp_blk_ctrl_power_off;
+@@ -602,6 +625,7 @@ static int imx8mp_blk_ctrl_probe(struct
+ 		ret = pm_genpd_init(&domain->genpd, NULL, true);
+ 		if (ret) {
+ 			dev_err_probe(dev, ret, "failed to init power domain\n");
++			dev_pm_genpd_remove_notifier(domain->power_dev);
+ 			dev_pm_domain_detach(domain->power_dev, true);
+ 			goto cleanup_pds;
+ 		}
+@@ -644,6 +668,7 @@ cleanup_provider:
+ cleanup_pds:
+ 	for (i--; i >= 0; i--) {
+ 		pm_genpd_remove(&bc->domains[i].genpd);
++		dev_pm_genpd_remove_notifier(bc->domains[i].power_dev);
+ 		dev_pm_domain_detach(bc->domains[i].power_dev, true);
  	}
  
-+	// DCN3+ have 257 pts in lieu of no separate slope registers
-+	// Prior HW had 256 base+slope pairs
-+	// Shaper LUT (i.e. fixpoint == true) is still 256 bases and 256 deltas
-+	hw_points = fixpoint ? (hw_points - 1) : hw_points;
-+
- 	j = 0;
- 	for (k = 0; k < (region_end - region_start); k++) {
- 		increment = NUMBER_SW_SEGMENTS / (1 << seg_distr[k]);
-@@ -223,8 +228,6 @@ bool cm3_helper_translate_curve_to_hw_format(
- 	corner_points[1].green.slope = dc_fixpt_zero;
- 	corner_points[1].blue.slope = dc_fixpt_zero;
+@@ -663,6 +688,7 @@ static int imx8mp_blk_ctrl_remove(struct
+ 		struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
  
--	// DCN3+ have 257 pts in lieu of no separate slope registers
--	// Prior HW had 256 base+slope pairs
- 	lut_params->hw_points_num = hw_points + 1;
+ 		pm_genpd_remove(&domain->genpd);
++		dev_pm_genpd_remove_notifier(domain->power_dev);
+ 		dev_pm_domain_detach(domain->power_dev, true);
+ 	}
  
- 	k = 0;
--- 
-2.51.0
-
 
 
 
