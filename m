@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-215452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANoiFzf2iWmuFAAAu9opvQ
-	(envelope-from <stable+bounces-215452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:03 +0100
+	id 2AbIHOX3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D84B111518
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9487111836
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7E57730159E9
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE2730C9C15
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856163793B0;
-	Mon,  9 Feb 2026 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EE32DB7B4;
+	Mon,  9 Feb 2026 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVSzMCvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UODiQzx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4956237BE88;
-	Mon,  9 Feb 2026 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A29B2BCF4C;
+	Mon,  9 Feb 2026 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648839; cv=none; b=Iw1ePbR4tO1kZPXkF8wQViLgaFWlAfMp98MRzK8n02J2p8FgbsjeeLrG6RG7rjwJiuI4skxA/xN4zGG50dwcHm7YCyes1FnJ+6FKIkOe444XXjm7JD0XJeMkwNoPIo53hO3dQ7adRCOI4YRY8WeJr/s/SvtGagBWT7uvbwTLNFA=
+	t=1770648563; cv=none; b=sIB+PnaReUzbU1tAZolmrGydI/1m8KL/OjdruD2kO1hfmsmhkJn2/THA+KpkWm9BIZz5tUvzT+9taP/3YOabIPGTIngFVoXG3hGWHQYBbzM0LAFGL5E4tIKVnbdNTSDjuUpkPgUcUV+50Tkj0IqcFb8LWUBFzkf/KnZt/ytfwe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648839; c=relaxed/simple;
-	bh=Wf+3Q/j2cavQAC6U8wUoDgz6af/YtEq85rAL97thHSw=;
+	s=arc-20240116; t=1770648563; c=relaxed/simple;
+	bh=m0xnBI7pmWDRuhnh2KQ7J+5f/+FS3fET22UNnKPugbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A6tfmidd1fFx3MP+LvgkJbe/3C1uPvX7ZJf/0oe7TP5gQ7esk816RF8k+W/RMv19Dz1xbxnTNTncWTjaaA2ZUThnCrU8xzseGvsjQ+pt8EhL+IeFWi0h/AX+CzT8UFFTXUUclpcQkxI8v2NEfEn993thnMe8cXJdsf2777f+T8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVSzMCvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA4BC116C6;
-	Mon,  9 Feb 2026 14:53:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kBuOVfZ4bQjMyDGgcas9SqQL7iRAUkXuRclaOzhIJMCcmM72P+ctY+6gRDtBhV0z6ATdoHWbBynvtTD2z56N8au1TSlhujEnixCP01RgXl5WGD7sqXtSxwKEoSed73tUnqO103bhIJLBE3k2NTDp8cmeNWSuohP3D0G0KOdhRXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UODiQzx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0791C19422;
+	Mon,  9 Feb 2026 14:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648839;
-	bh=Wf+3Q/j2cavQAC6U8wUoDgz6af/YtEq85rAL97thHSw=;
+	s=korg; t=1770648563;
+	bh=m0xnBI7pmWDRuhnh2KQ7J+5f/+FS3fET22UNnKPugbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVSzMCvrqznQbRa8KAe5SiJCbYywLAckHNXIu5G4thcgQf1EKLyxvpNVL5AUyTqpQ
-	 x7quwCNJ9MgqOXvVWwRvKwZ/4PX1WiDiOt99RRHFhMeAiqts05rlp0X72zpj6BFCiO
-	 G2Rb4YmnFpUTsbl3tbfaoxvwxpyDuDag4Xv8R0SA=
+	b=UODiQzx93cJVsBsMNOJuhRUvg31kSHtbfI3kYsKfg61enXpoAcKkjWJcrSJaJkfkl
+	 Y40kPQmTVmDOC6ELQ2TUSF0o6GksjpBXTIs2NjW+CBPniKZ/porh1bMGc7QUMIx66o
+	 8Fwv3kmStgAU8b/MconWI3gZ3QOb8I/JEu6MMplk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 23/75] binderfs: fix ida_alloc_max() upper bound
-Date: Mon,  9 Feb 2026 15:24:20 +0100
-Message-ID: <20260209142302.680991783@linuxfoundation.org>
+	Alain Cousinie <alain.cousinie@laposte.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 58/86] platform/x86: hp-bioscfg: Skip empty attribute names
+Date: Mon,  9 Feb 2026 15:24:21 +0100
+Message-ID: <20260209142306.866358404@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215452-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215367-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,laposte.net,amd.com,linux.intel.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9D84B111518
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,laposte.net:email]
+X-Rspamd-Queue-Id: C9487111836
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ec4ddc90d201d09ef4e4bef8a2c6d9624525ad68 upstream.
+[ Upstream commit 6222883af286e2feb3c9ff2bf9fd8fdf4220c55a ]
 
-The 'max' argument of ida_alloc_max() takes the maximum valid ID and not
-the "count". Using an ID of BINDERFS_MAX_MINOR (1 << 20) for dev->minor
-would exceed the limits of minor numbers (20-bits). Fix this off-by-one
-error by subtracting 1 from the 'max'.
+Avoid registering kobjects with empty names when a BIOS attribute
+name decodes to an empty string.
 
-Cc: stable@vger.kernel.org
-Fixes: 3ad20fe393b3 ("binder: implement binderfs")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://patch.msgid.link/20260127235545.2307876-2-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a34fc329b1895 ("platform/x86: hp-bioscfg: bioscfg")
+Reported-by: Alain Cousinie <alain.cousinie@laposte.net>
+Closes: https://lore.kernel.org/platform-driver-x86/22ed5f78-c8bf-4ab4-8c38-420cc0201e7e@laposte.net/
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20260128190501.2170068-1-mario.limonciello@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binderfs.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -130,8 +130,8 @@ static int binderfs_binder_device_create
- 	mutex_lock(&binderfs_minors_mutex);
- 	if (++info->device_count <= info->mount_opts.max)
- 		minor = ida_alloc_max(&binderfs_minors,
--				      use_reserve ? BINDERFS_MAX_MINOR :
--						    BINDERFS_MAX_MINOR_CAPPED,
-+				      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+						    BINDERFS_MAX_MINOR_CAPPED - 1,
- 				      GFP_KERNEL);
- 	else
- 		minor = -ENOSPC;
-@@ -433,8 +433,8 @@ static int binderfs_binder_ctl_create(st
- 	/* Reserve a new minor number for the new device. */
- 	mutex_lock(&binderfs_minors_mutex);
- 	minor = ida_alloc_max(&binderfs_minors,
--			      use_reserve ? BINDERFS_MAX_MINOR :
--					    BINDERFS_MAX_MINOR_CAPPED,
-+			      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+					    BINDERFS_MAX_MINOR_CAPPED - 1,
- 			      GFP_KERNEL);
- 	mutex_unlock(&binderfs_minors_mutex);
- 	if (minor < 0) {
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+index e9bade74997bf..ec7a74bee803a 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+@@ -701,6 +701,11 @@ static int hp_init_bios_package_attribute(enum hp_wmi_data_type attr_type,
+ 		return ret;
+ 	}
+ 
++	if (!str_value || !str_value[0]) {
++		pr_debug("Ignoring attribute with empty name\n");
++		goto pack_attr_exit;
++	}
++
+ 	/* All duplicate attributes found are ignored */
+ 	duplicate = kset_find_obj(temp_kset, str_value);
+ 	if (duplicate) {
+-- 
+2.51.0
+
 
 
 
