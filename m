@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJflNQ/ziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:35 +0100
+	id QL+oJVv4iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEED110E11
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2355D11195B
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0D4E3030D17
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C143310CA8D
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA7A37AA8A;
-	Mon,  9 Feb 2026 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6532BCF4C;
+	Mon,  9 Feb 2026 14:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER+9Wh88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdU2yIIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D50378D84;
-	Mon,  9 Feb 2026 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF9728725B;
+	Mon,  9 Feb 2026 14:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648269; cv=none; b=BL0OPYc+WMppF+Pqgx7dBrXzamVc7ruDIA9ent3OKyMWd8eg33yqqIyzrfuJ1Nl5KaAa2SlwCvG12hMPCpHq7P5C6yOx4CgDV1E9oqeNVkmPyomNq2cSG34r5Me4ot38oKodqCPYdZYOUfwe0HihtwqVH0xUMYoLxkkg1DkA+5A=
+	t=1770648686; cv=none; b=kEJSEHGQrtRNfe1U3nibKFpx4DLnqi7iztnMfDwQpuQjvACn8exiybIeJItZL4PDQSFTVVfIMGc/a/9AZng+A2f7xiRXPCjnxbY5BJlTcvS+h4kDTTln70FCejSxCnqsRdgALboUNkdORhSO97NrXvUkUEqcQdZdp7hOVBEi9rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648269; c=relaxed/simple;
-	bh=chwxBKPmoqeI+bCJDHYNF3igpVmpY4zsHxejiRhqxyQ=;
+	s=arc-20240116; t=1770648686; c=relaxed/simple;
+	bh=EIVIeX1dpD6LhSOetKDdTXKZqidVtmjDx+UMwdpkThk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=resVIWEzBBJi8AvFbAJhlScLWIr+2tMecmswhLd3Grcc+StpNkw9lzcZlTJL629wgktthZWepbkqEAG805DAKIf7MGF58X2CuY0QMEtddWWcJyntYPG7xEESFFng4YDpl+d5auJNplFS7CPEZLmd+gw9HBwTMyBnqIs0dHPoON4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER+9Wh88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00C6C116C6;
-	Mon,  9 Feb 2026 14:44:28 +0000 (UTC)
+	 MIME-Version; b=bUVqsSAkPbGzdFxHa69/NQl7/nH2StvnLlGmrA72buGZDUZeEvQSvfnOTm3WGTUd5CkB6sGVvEiAMRK9RiQ+nc1O9QbxCpJo/CtkK3aJYO/tuHOOFDcQ+Qw1MBAXXTyWDvgd/L9aQeD8OJNmVDyvTN9jSOMtlniajS9ohFcEl7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdU2yIIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8C1C116C6;
+	Mon,  9 Feb 2026 14:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648269;
-	bh=chwxBKPmoqeI+bCJDHYNF3igpVmpY4zsHxejiRhqxyQ=;
+	s=korg; t=1770648686;
+	bh=EIVIeX1dpD6LhSOetKDdTXKZqidVtmjDx+UMwdpkThk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER+9Wh884Wmp9tiYgipDbXQyIgCXjxqgljVWd1RZ0eUGvZ/78EybF43vgvhJkXuer
-	 MRguUWCjwK1+uAM1KST4lwf5v2WEzFlhzv4AYrL5erwqLQbOzmA2WafFNaXGLZLsla
-	 WtSC/SJUjX1Ja98M3yKxdF5g1H3JJiyxusZGclNc=
+	b=YdU2yIIpLR8jAco9nQYq6AJL7mX08z9DasoynvIu/Ymo1XxFpxRSaKQwefGwMRGjG
+	 OO2msWWpdND12URPDQibYcALN1/eijnNBKaOGFbTQ5SFUvojKdsdJ4gPnWW3sHCQb3
+	 Y/hCU0wxQGIPryLvKNVNUiRqWKxCEHK0jQS/MM0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 56/69] drm/mgag200: fix mgag200_bmc_stop_scanout()
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10 03/41] KVM: Dont clobber irqfd routing type when deassigning irqfd
 Date: Mon,  9 Feb 2026 15:24:24 +0100
-Message-ID: <20260209142303.940808045@linuxfoundation.org>
+Message-ID: <20260209142256.925538451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
+References: <20260209142256.797267956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,247 +67,225 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215277-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215405-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 8EEED110E11
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2355D11195B
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 0e0c8f4d16de92520623aa1ea485cadbf64e6929 ]
+commit b4d37cdb77a0015f51fee083598fa227cc07aaf1 upstream.
 
-The mgag200_bmc_stop_scanout() function is called by the .atomic_disable()
-handler for the MGA G200 VGA BMC encoder. This function performs a few
-register writes to inform the BMC of an upcoming mode change, and then
-polls to wait until the BMC actually stops.
+When deassigning a KVM_IRQFD, don't clobber the irqfd's copy of the IRQ's
+routing entry as doing so breaks kvm_arch_irq_bypass_del_producer() on x86
+and arm64, which explicitly look for KVM_IRQ_ROUTING_MSI.  Instead, to
+handle a concurrent routing update, verify that the irqfd is still active
+before consuming the routing information.  As evidenced by the x86 and
+arm64 bugs, and another bug in kvm_arch_update_irqfd_routing() (see below),
+clobbering the entry type without notifying arch code is surprising and
+error prone.
 
-The polling is implemented using a busy loop with udelay() and an iteration
-timeout of 300, resulting in the function blocking for 300 milliseconds.
+As a bonus, checking that the irqfd is active provides a convenient
+location for documenting _why_ KVM must not consume the routing entry for
+an irqfd that is in the process of being deassigned: once the irqfd is
+deleted from the list (which happens *before* the eventfd is detached), it
+will no longer receive updates via kvm_irq_routing_update(), and so KVM
+could deliver an event using stale routing information (relative to
+KVM_SET_GSI_ROUTING returning to userspace).
 
-The function gets called ultimately by the output_poll_execute work thread
-for the DRM output change polling thread of the mgag200 driver:
+As an even better bonus, explicitly checking for the irqfd being active
+fixes a similar bug to the one the clobbering is trying to prevent: if an
+irqfd is deactivated, and then its routing is changed,
+kvm_irq_routing_update() won't invoke kvm_arch_update_irqfd_routing()
+(because the irqfd isn't in the list).  And so if the irqfd is in bypass
+mode, IRQs will continue to be posted using the old routing information.
 
-kworker/0:0-mm_    3528 [000]  4555.315364:
-        ffffffffaa0e25b3 delay_halt.part.0+0x33
-        ffffffffc03f6188 mgag200_bmc_stop_scanout+0x178
-        ffffffffc087ae7a disable_outputs+0x12a
-        ffffffffc087c12a drm_atomic_helper_commit_tail+0x1a
-        ffffffffc03fa7b6 mgag200_mode_config_helper_atomic_commit_tail+0x26
-        ffffffffc087c9c1 commit_tail+0x91
-        ffffffffc087d51b drm_atomic_helper_commit+0x11b
-        ffffffffc0509694 drm_atomic_commit+0xa4
-        ffffffffc05105e8 drm_client_modeset_commit_atomic+0x1e8
-        ffffffffc0510ce6 drm_client_modeset_commit_locked+0x56
-        ffffffffc0510e24 drm_client_modeset_commit+0x24
-        ffffffffc088a743 __drm_fb_helper_restore_fbdev_mode_unlocked+0x93
-        ffffffffc088a683 drm_fb_helper_hotplug_event+0xe3
-        ffffffffc050f8aa drm_client_dev_hotplug+0x9a
-        ffffffffc088555a output_poll_execute+0x29a
-        ffffffffa9b35924 process_one_work+0x194
-        ffffffffa9b364ee worker_thread+0x2fe
-        ffffffffa9b3ecad kthread+0xdd
-        ffffffffa9a08549 ret_from_fork+0x29
+As for kvm_arch_irq_bypass_del_producer(), clobbering the routing type
+results in KVM incorrectly keeping the IRQ in bypass mode, which is
+especially problematic on AMD as KVM tracks IRQs that are being posted to
+a vCPU in a list whose lifetime is tied to the irqfd.
 
-On a server running ptp4l with the mgag200 driver loaded, we found that
-ptp4l would sometimes get blocked from execution because of this busy
-waiting loop.
+Without the help of KASAN to detect use-after-free, the most common
+sympton on AMD is a NULL pointer deref in amd_iommu_update_ga() due to
+the memory for irqfd structure being re-allocated and zeroed, resulting
+in irqfd->irq_bypass_data being NULL when read by
+avic_update_iommu_vcpu_affinity():
 
-Every so often, approximately once every 20 minutes -- though with large
-variance -- the output_poll_execute() thread would detect some sort of
-change that required performing a hotplug event which results in attempting
-to stop the BMC scanout, resulting in a 300msec delay on one CPU.
+  BUG: kernel NULL pointer dereference, address: 0000000000000018
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 40cf2b9067 P4D 40cf2b9067 PUD 408362a067 PMD 0
+  Oops: Oops: 0000 [#1] SMP
+  CPU: 6 UID: 0 PID: 40383 Comm: vfio_irq_test
+  Tainted: G     U  W  O        6.19.0-smp--5dddc257e6b2-irqfd #31 NONE
+  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 34.78.2-0 09/05/2025
+  RIP: 0010:amd_iommu_update_ga+0x19/0xe0
+  Call Trace:
+   <TASK>
+   avic_update_iommu_vcpu_affinity+0x3d/0x90 [kvm_amd]
+   __avic_vcpu_load+0xf4/0x130 [kvm_amd]
+   kvm_arch_vcpu_load+0x89/0x210 [kvm]
+   vcpu_load+0x30/0x40 [kvm]
+   kvm_arch_vcpu_ioctl_run+0x45/0x620 [kvm]
+   kvm_vcpu_ioctl+0x571/0x6a0 [kvm]
+   __se_sys_ioctl+0x6d/0xb0
+   do_syscall_64+0x6f/0x9d0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x46893b
+    </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-On this system, ptp4l was pinned to a single CPU. When the
-output_poll_execute() thread ran on that CPU, it blocked ptp4l from
-executing for its 300 millisecond duration.
+If AVIC is inhibited when the irfd is deassigned, the bug will manifest as
+list corruption, e.g. on the next irqfd assignment.
 
-This resulted in PTP service disruptions such as failure to send a SYNC
-message on time, failure to handle ANNOUNCE messages on time, and clock
-check warnings from the application. All of this despite the application
-being configured with FIFO_RT and a higher priority than the background
-workqueue tasks. (However, note that the kernel did not use
-CONFIG_PREEMPT...)
+  list_add corruption. next->prev should be prev (ffff8d474d5cd588),
+                       but was 0000000000000000. (next=ffff8d8658f86530).
+  ------------[ cut here ]------------
+  kernel BUG at lib/list_debug.c:31!
+  Oops: invalid opcode: 0000 [#1] SMP
+  CPU: 128 UID: 0 PID: 80818 Comm: vfio_irq_test
+  Tainted: G     U  W  O        6.19.0-smp--f19dc4d680ba-irqfd #28 NONE
+  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 34.78.2-0 09/05/2025
+  RIP: 0010:__list_add_valid_or_report+0x97/0xc0
+  Call Trace:
+   <TASK>
+   avic_pi_update_irte+0x28e/0x2b0 [kvm_amd]
+   kvm_pi_update_irte+0xbf/0x190 [kvm]
+   kvm_arch_irq_bypass_add_producer+0x72/0x90 [kvm]
+   irq_bypass_register_consumer+0xcd/0x170 [irqbypass]
+   kvm_irqfd+0x4c6/0x540 [kvm]
+   kvm_vm_ioctl+0x118/0x5d0 [kvm]
+   __se_sys_ioctl+0x6d/0xb0
+   do_syscall_64+0x6f/0x9d0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-It is unclear if the event is due to a faulty VGA connection, another bug,
-or actual events causing a change in the connection. At least on the system
-under test it is not a one-time event and consistently causes disruption to
-the time sensitive applications.
+On Intel and arm64, the bug is less noisy, as the end result is that the
+device keeps posting IRQs to the vCPU even after it's been deassigned.
 
-The function has some helpful comments explaining what steps it is
-attempting to take. In particular, step 3a and 3b are explained as such:
+Note, the worst of the breakage can be traced back to commit cb210737675e
+("KVM: Pass new routing entries and irqfd when updating IRTEs"), as before
+that commit KVM would pull the routing information from the per-VM routing
+table.  But as above, similar bugs have existed since support for IRQ
+bypass was added.  E.g. if a routing change finished before irq_shutdown()
+invoked kvm_arch_irq_bypass_del_producer(), VMX and SVM would see stale
+routing information and potentially leave the irqfd in bypass mode.
 
-  3a - The third step is to verify if there is an active scan. We are
-       waiting on a 0 on remhsyncsts (<XSPAREREG<0>.
+Alternatively, x86 could be fixed by explicitly checking irq_bypass_vcpu
+instead of irq_entry.type in kvm_arch_irq_bypass_del_producer(), and arm64
+could be modified to utilize irq_bypass_vcpu in a similar manner.  But (a)
+that wouldn't fix the routing updates bug, and (b) fixing core code doesn't
+preclude x86 (or arm64) from adding such code as a sanity check (spoiler
+alert).
 
-  3b - This step occurs only if the remove is actually scanning. We are
-       waiting for the end of the frame which is a 1 on remvsyncsts
-       (<XSPAREREG<1>).
-
-The actual steps 3a and 3b are implemented as while loops with a
-non-sleeping udelay(). The first step iterates while the tmp value at
-position 0 is *not* set. That is, it keeps iterating as long as the bit is
-zero. If the bit is already 0 (because there is no active scan), it will
-iterate the entire 300 attempts which wastes 300 milliseconds in total.
-This is opposite of what the description claims.
-
-The step 3b logic only executes if we do not iterate over the entire 300
-attempts in the first loop. If it does trigger, it is trying to check and
-wait for a 1 on the remvsyncsts. However, again the condition is actually
-inverted and it will loop as long as the bit is 1, stopping once it hits
-zero (rather than the explained attempt to wait until we see a 1).
-
-Worse, both loops are implemented using non-sleeping waits which spin
-instead of allowing the scheduler to run other processes. If the kernel is
-not configured to allow arbitrary preemption, it will waste valuable CPU
-time doing nothing.
-
-There does not appear to be any documentation for the BMC register
-interface, beyond what is in the comments here. It seems more probable that
-the comment here is correct and the implementation accidentally got
-inverted from the intended logic.
-
-Reading through other DRM driver implementations, it does not appear that
-the .atomic_enable or .atomic_disable handlers need to delay instead of
-sleep. For example, the ast_astdp_encoder_helper_atomic_disable() function
-calls ast_dp_set_phy_sleep() which uses msleep(). The "atomic" in the name
-is referring to the atomic modesetting support, which is the support to
-enable atomic configuration from userspace, and not to the "atomic context"
-of the kernel. There is no reason to use udelay() here if a sleep would be
-sufficient.
-
-Replace the while loops with a read_poll_timeout() based implementation
-that will sleep between iterations, and which stops polling once the
-condition is met (instead of looping as long as the condition is met). This
-aligns with the commented behavior and avoids blocking on the CPU while
-doing nothing.
-
-Note the RREG_DAC is implemented using a statement expression to allow
-working properly with the read_poll_timeout family of functions. The other
-RREG_<TYPE> macros ought to be cleaned up to have better semantics, and
-several places in the mgag200 driver could make use of RREG_DAC or similar
-RREG_* macros should likely be cleaned up for better semantics as well, but
-that task has been left as a future cleanup for a non-bugfix.
-
-Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260202-jk-mgag200-fix-bad-udelay-v2-1-ce1e9665987d@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f70c20aaf141 ("KVM: Add an arch specific hooks in 'struct kvm_kernel_irqfd'")
+Fixes: cb210737675e ("KVM: Pass new routing entries and irqfd when updating IRTEs")
+Fixes: a0d7e2fc61ab ("KVM: arm64: vgic-v4: Only attempt vLPI mapping for actual MSIs")
+Cc: stable@vger.kernel.org
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>
+Link: https://patch.msgid.link/20260113174606.104978-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_bmc.c | 31 +++++++++++----------------
- drivers/gpu/drm/mgag200/mgag200_drv.h |  6 ++++++
- 2 files changed, 18 insertions(+), 19 deletions(-)
+ virt/kvm/eventfd.c |   34 ++++++++++++++--------------------
+ 1 file changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/mgag200/mgag200_bmc.c b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-index 2ba2e3c5086a5..852a82f6309ba 100644
---- a/drivers/gpu/drm/mgag200/mgag200_bmc.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-@@ -1,13 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
- #include <linux/delay.h>
-+#include <linux/iopoll.h>
- 
- #include "mgag200_drv.h"
- 
- void mgag200_bmc_disable_vidrst(struct mga_device *mdev)
- {
- 	u8 tmp;
--	int iter_max;
-+	int ret;
- 
- 	/*
- 	 * 1 - The first step is to inform the BMC of an upcoming mode
-@@ -37,30 +38,22 @@ void mgag200_bmc_disable_vidrst(struct mga_device *mdev)
- 
- 	/*
- 	 * 3a- The third step is to verify if there is an active scan.
--	 * We are waiting for a 0 on remhsyncsts <XSPAREREG<0>).
-+	 * We are waiting for a 0 on remhsyncsts (<XSPAREREG<0>).
- 	 */
--	iter_max = 300;
--	while (!(tmp & 0x1) && iter_max) {
--		WREG8(DAC_INDEX, MGA1064_SPAREREG);
--		tmp = RREG8(DAC_DATA);
--		udelay(1000);
--		iter_max--;
--	}
-+	ret = read_poll_timeout(RREG_DAC, tmp, !(tmp & 0x1),
-+				1000, 300000, false,
-+				MGA1064_SPAREREG);
-+	if (ret == -ETIMEDOUT)
-+		return;
- 
- 	/*
--	 * 3b- This step occurs only if the remove is actually
-+	 * 3b- This step occurs only if the remote BMC is actually
- 	 * scanning. We are waiting for the end of the frame which is
- 	 * a 1 on remvsyncsts (XSPAREREG<1>)
- 	 */
--	if (iter_max) {
--		iter_max = 300;
--		while ((tmp & 0x2) && iter_max) {
--			WREG8(DAC_INDEX, MGA1064_SPAREREG);
--			tmp = RREG8(DAC_DATA);
--			udelay(1000);
--			iter_max--;
--		}
--	}
-+	(void)read_poll_timeout(RREG_DAC, tmp, (tmp & 0x2),
-+				1000, 300000, false,
-+				MGA1064_SPAREREG);
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -147,21 +147,18 @@ irqfd_shutdown(struct work_struct *work)
  }
  
- void mgag200_bmc_enable_vidrst(struct mga_device *mdev)
-diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
-index aebd09e2d4087..c84c3d0865345 100644
---- a/drivers/gpu/drm/mgag200/mgag200_drv.h
-+++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-@@ -116,6 +116,12 @@
- #define DAC_INDEX 0x3c00
- #define DAC_DATA 0x3c0a
  
-+#define RREG_DAC(reg)						\
-+	({							\
-+		WREG8(DAC_INDEX, reg);				\
-+		RREG8(DAC_DATA);				\
-+	})							\
+-/* assumes kvm->irqfds.lock is held */
+-static bool
+-irqfd_is_active(struct kvm_kernel_irqfd *irqfd)
++static bool irqfd_is_active(struct kvm_kernel_irqfd *irqfd)
+ {
+ 	return list_empty(&irqfd->list) ? false : true;
+ }
+ 
+ /*
+  * Mark the irqfd as inactive and schedule it for removal
+- *
+- * assumes kvm->irqfds.lock is held
+  */
+-static void
+-irqfd_deactivate(struct kvm_kernel_irqfd *irqfd)
++static void irqfd_deactivate(struct kvm_kernel_irqfd *irqfd)
+ {
++	lockdep_assert_held(&irqfd->kvm->irqfds.lock);
 +
- #define WREG_DAC(reg, v)					\
- 	do {							\
- 		WREG8(DAC_INDEX, reg);				\
--- 
-2.51.0
-
+ 	BUG_ON(!irqfd_is_active(irqfd));
+ 
+ 	list_del_init(&irqfd->list);
+@@ -198,8 +195,15 @@ irqfd_wakeup(wait_queue_entry_t *wait, u
+ 			seq = read_seqcount_begin(&irqfd->irq_entry_sc);
+ 			irq = irqfd->irq_entry;
+ 		} while (read_seqcount_retry(&irqfd->irq_entry_sc, seq));
+-		/* An event has been signaled, inject an interrupt */
+-		if (kvm_arch_set_irq_inatomic(&irq, kvm,
++
++		/*
++		 * An event has been signaled, inject an interrupt unless the
++		 * irqfd is being deassigned (isn't active), in which case the
++		 * routing information may be stale (once the irqfd is removed
++		 * from the list, it will stop receiving routing updates).
++		 */
++		if (unlikely(!irqfd_is_active(irqfd)) ||
++		    kvm_arch_set_irq_inatomic(&irq, kvm,
+ 					      KVM_USERSPACE_IRQ_SOURCE_ID, 1,
+ 					      false) == -EWOULDBLOCK)
+ 			schedule_work(&irqfd->inject);
+@@ -536,18 +540,8 @@ kvm_irqfd_deassign(struct kvm *kvm, stru
+ 	spin_lock_irq(&kvm->irqfds.lock);
+ 
+ 	list_for_each_entry_safe(irqfd, tmp, &kvm->irqfds.items, list) {
+-		if (irqfd->eventfd == eventfd && irqfd->gsi == args->gsi) {
+-			/*
+-			 * This clearing of irq_entry.type is needed for when
+-			 * another thread calls kvm_irq_routing_update before
+-			 * we flush workqueue below (we synchronize with
+-			 * kvm_irq_routing_update using irqfds.lock).
+-			 */
+-			write_seqcount_begin(&irqfd->irq_entry_sc);
+-			irqfd->irq_entry.type = 0;
+-			write_seqcount_end(&irqfd->irq_entry_sc);
++		if (irqfd->eventfd == eventfd && irqfd->gsi == args->gsi)
+ 			irqfd_deactivate(irqfd);
+-		}
+ 	}
+ 
+ 	spin_unlock_irq(&kvm->irqfds.lock);
 
 
 
