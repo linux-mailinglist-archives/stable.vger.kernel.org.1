@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-215099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DlFAbbwiWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-215099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:34 +0100
+	id +A0ROQT5iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F9D1107C0
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E72111AC6
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 36EEB302306D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EF72311F4EB
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CCD285060;
-	Mon,  9 Feb 2026 14:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECB828312F;
+	Mon,  9 Feb 2026 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+4ma1kd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5lvPMJZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CE31AF0AF;
-	Mon,  9 Feb 2026 14:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026B429A9C3;
+	Mon,  9 Feb 2026 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647672; cv=none; b=RlEAEPSMLn4zN89gardanKpjzsJEKMLocqJZCO5VJlHTb6EGPouGnx6RoTKXk1izhtCLVtt3TJ4o5qh9YYsNG6kBZRYGkPXGKhHQZHK/U0OW4LzCakENrnUWO1MSkGKobc/MQ9pGYAQn1N6Tnh0IllWdHY9cv7nlo39YL0qDPfA=
+	t=1770648823; cv=none; b=i5O7VQB5M3DRTCzNH6cQ3+W04QnZ7g2kynTPYQbYoSmhNJhvgruI3ZWmiARe5XoYbk/gCQOexL9ZcT50jnjsk5SjLOpGnxuHfEnOxRcmtZCK+mXxjGrGtYSKQY8TbtbBaz4kM6mNm+zpNMvhH/Hs9QPCn1ftRAoKzYE40ECZcss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647672; c=relaxed/simple;
-	bh=to7FSvaBX4amYQGL81IFT+YzNQ+oZL4Cv11e5Y1Zkxg=;
+	s=arc-20240116; t=1770648823; c=relaxed/simple;
+	bh=fE+HtipzH/1H9aOuvcR+j5tKa9xLcEfyoT08Zs74viM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WG0t/AmXC9xCwaOO9lAL/kUjiQk/okyK9K2fZzyg+U53Z0jxhKn3SSnEIBkXSijKx/QjFRBAFlNFAU/B4KkGNNvZfKdecz2i9YPUVTN8fs5+wuz167gGeDgOjLWRiNb3mly1q/Bc/Ep8ch3iMH7TwiXQNUUEgLMF9WIQJNTFpxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+4ma1kd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4617C116C6;
-	Mon,  9 Feb 2026 14:34:31 +0000 (UTC)
+	 MIME-Version; b=MZBZHmdm0VX0n0aUyBq4UveGqLLi2YteJ4BW0b+AyoTcWChLRa11xgQJg8+mfzJVZHLZw/4+3FGCUySW5DGh6uRg8FYRNXulK0TgNrEre1n9VayhDJB5DkirMKf2IzGYev9ff3SVVvJzo/r/fSkzSJWVtGDrLqONhxJA3VYgPCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5lvPMJZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505F3C116C6;
+	Mon,  9 Feb 2026 14:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647672;
-	bh=to7FSvaBX4amYQGL81IFT+YzNQ+oZL4Cv11e5Y1Zkxg=;
+	s=korg; t=1770648822;
+	bh=fE+HtipzH/1H9aOuvcR+j5tKa9xLcEfyoT08Zs74viM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+4ma1kd8kMoG83Mk26yPNiFmenYPdCDGIa7cJiNWUWMWpEOAISzEI8ddfbtIMFBt
-	 4BDGZl1KhyfE4+8oN4jmPLQiimigMC/Exg1l/suzORdKetMXKaHQc0G4+gJgWQ3HZ8
-	 ms1tIxzjqlPHd9d21QKUnhGC6s3BL+PbhLbE43Sg=
+	b=G5lvPMJZ6r7gga6w0qaDS1ChyX9ZRWN3VsQKsi3WodnJm7jA0MSc3dEq1TgMPA/EI
+	 GyYcl+0DkupWlwm5nbyo0q3Liy334A8wXkwhwAYIsJY7Vb6Q8Zq9G6grcOSkJFDTO1
+	 ss0YRr8m+zlk79niVp0v1nF+dlW8T5MZRlsXQsGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 170/175] spi: tegra210-quad: Protect curr_xfer check in IRQ handler
+	Pimyn Girgis <pimyn@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 06/75] mm/kfence: randomize the freelist on initialization
 Date: Mon,  9 Feb 2026 15:24:03 +0100
-Message-ID: <20260209142326.597230493@linuxfoundation.org>
+Message-ID: <20260209142302.068182390@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,144 +73,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215099-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215447-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 67F9D1107C0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 55E72111AC6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Pimyn Girgis <pimyn@google.com>
 
-[ Upstream commit edf9088b6e1d6d88982db7eb5e736a0e4fbcc09e ]
+commit 870ff19251bf3910dda7a7245da826924045fedd upstream.
 
-Now that all other accesses to curr_xfer are done under the lock,
-protect the curr_xfer NULL check in tegra_qspi_isr_thread() with the
-spinlock. Without this protection, the following race can occur:
+Randomize the KFENCE freelist during pool initialization to make
+allocation patterns less predictable.  This is achieved by shuffling the
+order in which metadata objects are added to the freelist using
+get_random_u32_below().
 
-  CPU0 (ISR thread)              CPU1 (timeout path)
-  ----------------               -------------------
-  if (!tqspi->curr_xfer)
-    // sees non-NULL
-                                 spin_lock()
-                                 tqspi->curr_xfer = NULL
-                                 spin_unlock()
-  handle_*_xfer()
-    spin_lock()
-    t = tqspi->curr_xfer  // NULL!
-    ... t->len ...        // NULL dereference!
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-With this patch, all curr_xfer accesses are now properly synchronized.
-
-Although all accesses to curr_xfer are done under the lock, in
-tegra_qspi_isr_thread() it checks for NULL, releases the lock and
-reacquires it later in handle_cpu_based_xfer()/handle_dma_based_xfer().
-There is a potential for an update in between, which could cause a NULL
-pointer dereference.
-
-To handle this, add a NULL check inside the handlers after acquiring
-the lock. This ensures that if the timeout path has already cleared
-curr_xfer, the handler will safely return without dereferencing the
-NULL pointer.
-
-Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20260126-tegra_xfer-v2-6-6d2115e4f387@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ mm/kfence/core.c |   25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 7fe16ed7e84bd..83def82fe48c1 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1393,6 +1393,11 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- 	spin_lock_irqsave(&tqspi->lock, flags);
- 	t = tqspi->curr_xfer;
- 
-+	if (!t) {
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
-+		return IRQ_HANDLED;
-+	}
-+
- 	if (tqspi->tx_status ||  tqspi->rx_status) {
- 		tegra_qspi_handle_error(tqspi);
- 		complete(&tqspi->xfer_completion);
-@@ -1463,6 +1468,11 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- 	spin_lock_irqsave(&tqspi->lock, flags);
- 	t = tqspi->curr_xfer;
- 
-+	if (!t) {
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
-+		return IRQ_HANDLED;
-+	}
-+
- 	if (num_errors) {
- 		tegra_qspi_dma_unmap_xfer(tqspi, t);
- 		tegra_qspi_handle_error(tqspi);
-@@ -1501,6 +1511,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -520,7 +520,7 @@ static bool __init kfence_init_pool(void
  {
- 	struct tegra_qspi *tqspi = context_data;
-+	unsigned long flags;
- 	u32 status;
+ 	unsigned long addr = (unsigned long)__kfence_pool;
+ 	struct page *pages;
+-	int i;
++	int i, rand;
+ 	char *p;
  
- 	/*
-@@ -1518,7 +1529,9 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
- 	 * If no transfer is in progress, check if this was a real interrupt
- 	 * that the timeout handler already processed, or a spurious one.
- 	 */
-+	spin_lock_irqsave(&tqspi->lock, flags);
- 	if (!tqspi->curr_xfer) {
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
- 		/* Spurious interrupt - transfer not ready */
- 		if (!(status & QSPI_RDY))
- 			return IRQ_NONE;
-@@ -1535,7 +1548,14 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
- 		tqspi->rx_status = tqspi->status_reg & (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF);
+ 	if (!__kfence_pool)
+@@ -576,13 +576,30 @@ static bool __init kfence_init_pool(void
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
  
- 	tegra_qspi_mask_clear_irq(tqspi);
-+	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE))) {
++			addr += 2 * i * PAGE_SIZE;
+ 			goto err;
++		}
++	}
++
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32() % i;
++		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
++	}
++
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
  
-+	/*
-+	 * Lock is released here but handlers safely re-check curr_xfer under
-+	 * lock before dereferencing.
-+	 * DMA handler also needs to sleep in wait_for_completion_*(), which
-+	 * cannot be done while holding spinlock.
-+	 */
- 	if (!tqspi->is_curr_dma_xfer)
- 		return handle_cpu_based_xfer(tqspi);
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
+ 	}
  
--- 
-2.51.0
-
 
 
 
