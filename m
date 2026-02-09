@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-215111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KEtJ83wiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:57 +0100
+	id eJtcEvL0iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205B11107E0
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312E211129B
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59A5C301BA57
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AC403006811
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFD8125B2;
-	Mon,  9 Feb 2026 14:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800E93793B0;
+	Mon,  9 Feb 2026 14:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF1OlZz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/tgzOWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925E01AF0AF;
-	Mon,  9 Feb 2026 14:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442A329A9C3;
+	Mon,  9 Feb 2026 14:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647710; cv=none; b=TUKckvTzP0yNJ0c2Z/yFrUjLldcI4bWs1YEbGZ3L/g/0k1Z0pXpBjIfFdNbiT8fEBlNW1sEC1166mZKSHP1UmeAcRLkq1hkVQwm+ylwkPq9syPiqyWBxH9BNN/osVr4RxiSqUOV1QBMJomqH6HzMZ5AvNRKXy93YGqntooMJn88=
+	t=1770648813; cv=none; b=P1ffKj3hBcqHRaj0nQJkdSRaJLvg21QyEy1AWRoBGvVuBfvUXg+4HQw1DS1hkStkee/9YpO6Y651hBOGGKZcNrMtibNcW8ulE8cyTZRAt7y4zxil+Bov5N4GgeN0bpPmJu4a8CFrov8FwX1ctpEvW4MU3/pP/d36MPc+TxXKkR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647710; c=relaxed/simple;
-	bh=TcUd91dBSCoQdJEE/pZqncBUWyB4TOPxQfqUCdyOY+c=;
+	s=arc-20240116; t=1770648813; c=relaxed/simple;
+	bh=RZeqr1MAme5LRykLI9qL06TWLTBkJmxeW1UWAhL9hak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9n6pVjz2RyEF5YffiN8qnnzM3vhXWwObSqAOVR1FwcHTQCjpnrkjva147rpg6wh9bTy6uviGaZOqbmAcwe5tC7VzRuegjhEVNhoh/uwiDptoMTOijIMpqkTRi4ncUPoQw67SbOgr2fulx+idKnCPUc5qxxK9nFGWlcQJe0quR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF1OlZz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BCCC116C6;
-	Mon,  9 Feb 2026 14:35:09 +0000 (UTC)
+	 MIME-Version; b=oSn6xlk4awu2EmGEPSPQthNIIGwdvqT4+PNz1OGs5tMsB3jj3uAZt4narn1hHGJsgPVhPA5t/Hey3UpmWE6tSJF+puTfFDiy5qGtqDi8GcdRcDQccMe2BoqTpF3DWOn5dK94N/b5aSYecorL4aWsO1gzT/z5CuvSWZRdRSICzSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/tgzOWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EE4C116C6;
+	Mon,  9 Feb 2026 14:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647710;
-	bh=TcUd91dBSCoQdJEE/pZqncBUWyB4TOPxQfqUCdyOY+c=;
+	s=korg; t=1770648813;
+	bh=RZeqr1MAme5LRykLI9qL06TWLTBkJmxeW1UWAhL9hak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JF1OlZz5byrv9UV7JCw4mWG3vF8dAAMWtGRjtM/KNxH1rPK9ZbGwHtTKsOlCMhrMy
-	 558Sv2+/xoc9GZ8DTCT+pmQ3k+2C1IYNBV2ZwfnGa7VLLMIUmJtncA1SUF+IxAMEQE
-	 qmrvLfkFZvOfQR7uxm39BQamIAIHGVADlqkAqork=
+	b=m/tgzOWR1zKEXD1BLkPfr5c7y++ybsb1JyDfqcMpnAmXygh/a0f3oMdG/JATfH6rm
+	 qKg7mSeDDpAG9iWtF4JnBB1VXyVxK+xjgXGalnhPnWNIJ71OJagwqI2xhPwYhdW8yU
+	 7cwNscCgUgs5SORO93B+AhzTgnzSAQByeSXUgQ3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 167/175] spi: tegra210-quad: Protect curr_xfer assignment in tegra_qspi_setup_transfer_one
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@linux.dev>
+Subject: [PATCH 5.15 03/75] rbd: check for EOD after exclusive lock is ensured to be held
 Date: Mon,  9 Feb 2026 15:24:00 +0100
-Message-ID: <20260209142326.492661036@linuxfoundation.org>
+Message-ID: <20260209142301.960766231@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,95 +66,127 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215111-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215444-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 205B11107E0
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 312E211129B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit f5a4d7f5e32ba163cff893493ec1cbb0fd2fb0d5 ]
+commit bd3884a204c3b507e6baa9a4091aa927f9af5404 upstream.
 
-When the timeout handler processes a completed transfer and signals
-completion, the transfer thread can immediately set up the next transfer
-and assign curr_xfer to point to it.
+Similar to commit 870611e4877e ("rbd: get snapshot context after
+exclusive lock is ensured to be held"), move the "beyond EOD" check
+into the image request state machine so that it's performed after
+exclusive lock is ensured to be held.  This avoids various race
+conditions which can arise when the image is shrunk under I/O (in
+practice, mostly readahead).  In one such scenario
 
-If a delayed ISR from the previous transfer then runs, it checks if
-(!tqspi->curr_xfer) (currently without the lock also -- to be fixed
-soon) to detect stale interrupts, but this check passes because
-curr_xfer now points to the new transfer. The ISR then incorrectly
-processes the new transfer's context.
+    rbd_assert(objno < rbd_dev->object_map_size);
 
-Protect the curr_xfer assignment with the spinlock to ensure the ISR
-either sees NULL (and bails out) or sees the new value only after the
-assignment is complete.
+can be triggered if a close-to-EOD read gets queued right before the
+shrink is initiated and the EOD check is performed against an outdated
+mapping_size.  After the resize is done on the server side and exclusive
+lock is (re)acquired bringing along the new (now shrunk) object map, the
+read starts going through the state machine and rbd_obj_may_exist() gets
+invoked on an object that is out of bounds of rbd_dev->object_map array.
 
-Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20260126-tegra_xfer-v2-3-6d2115e4f387@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/block/rbd.c |   33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index a599bad02b4d3..6d89a9309d85e 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -839,6 +839,7 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
- 	u32 command1, command2, speed = t->speed_hz;
- 	u8 bits_per_word = t->bits_per_word;
- 	u32 tx_tap = 0, rx_tap = 0;
-+	unsigned long flags;
- 	int req_mode;
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3497,11 +3497,29 @@ static void rbd_img_object_requests(stru
+ 	rbd_assert(!need_exclusive_lock(img_req) ||
+ 		   __rbd_is_lock_owner(rbd_dev));
  
- 	if (!has_acpi_companion(tqspi->dev) && speed != tqspi->cur_speed) {
-@@ -846,10 +847,12 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
- 		tqspi->cur_speed = speed;
+-	if (rbd_img_is_write(img_req)) {
+-		rbd_assert(!img_req->snapc);
++	if (test_bit(IMG_REQ_CHILD, &img_req->flags)) {
++		rbd_assert(!rbd_img_is_write(img_req));
++	} else {
++		struct request *rq = blk_mq_rq_from_pdu(img_req);
++		u64 off = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
++		u64 len = blk_rq_bytes(rq);
++		u64 mapping_size;
++
+ 		down_read(&rbd_dev->header_rwsem);
+-		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
++		mapping_size = rbd_dev->mapping.size;
++		if (rbd_img_is_write(img_req)) {
++			rbd_assert(!img_req->snapc);
++			img_req->snapc =
++			    ceph_get_snap_context(rbd_dev->header.snapc);
++		}
+ 		up_read(&rbd_dev->header_rwsem);
++
++		if (unlikely(off + len > mapping_size)) {
++			rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)",
++				 off, len, mapping_size);
++			img_req->pending.result = -EIO;
++			return;
++		}
  	}
  
-+	spin_lock_irqsave(&tqspi->lock, flags);
- 	tqspi->cur_pos = 0;
- 	tqspi->cur_rx_pos = 0;
- 	tqspi->cur_tx_pos = 0;
- 	tqspi->curr_xfer = t;
-+	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 	for_each_obj_request(img_req, obj_req) {
+@@ -4727,7 +4745,6 @@ static void rbd_queue_workfn(struct work
+ 	struct request *rq = blk_mq_rq_from_pdu(img_request);
+ 	u64 offset = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
+ 	u64 length = blk_rq_bytes(rq);
+-	u64 mapping_size;
+ 	int result;
  
- 	if (is_first_of_msg) {
- 		tegra_qspi_mask_clear_irq(tqspi);
--- 
-2.51.0
-
+ 	/* Ignore/skip any zero-length requests */
+@@ -4740,17 +4757,9 @@ static void rbd_queue_workfn(struct work
+ 	blk_mq_start_request(rq);
+ 
+ 	down_read(&rbd_dev->header_rwsem);
+-	mapping_size = rbd_dev->mapping.size;
+ 	rbd_img_capture_header(img_request);
+ 	up_read(&rbd_dev->header_rwsem);
+ 
+-	if (offset + length > mapping_size) {
+-		rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)", offset,
+-			 length, mapping_size);
+-		result = -EIO;
+-		goto err_img_request;
+-	}
+-
+ 	dout("%s rbd_dev %p img_req %p %s %llu~%llu\n", __func__, rbd_dev,
+ 	     img_request, obj_op_name(op_type), offset, length);
+ 
 
 
 
