@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-215559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBt4GkxJimndJAAAu9opvQ
-	(envelope-from <stable+bounces-215559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 21:53:32 +0100
+	id IPauCI9JimndJAAAu9opvQ
+	(envelope-from <stable+bounces-215560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 21:54:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84491149D4
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 21:53:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B3B31149FB
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 21:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BE46301C59F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 20:53:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D587301C582
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 20:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C04B30EF94;
-	Mon,  9 Feb 2026 20:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D0733B6DD;
+	Mon,  9 Feb 2026 20:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="bjr82Oqx"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ieqollNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FFF24C676;
-	Mon,  9 Feb 2026 20:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C340232AAB1;
+	Mon,  9 Feb 2026 20:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770670407; cv=none; b=mBqTLUYcm/gSXrIIrSTHPXX0tf/r/rzY9ifcj/2RDWIe/UBYawjOTb0hgh9GRjZ4VPq6fqdTQGZCAPEyJpr3qjmPCsY81fIL7jTXNH7xWH3WKgZicHcs6bs2+c5NhvCoZ0hR1rh/v725akuTgTCP0CajeBlgRKKbo9E3uv1N3WI=
+	t=1770670474; cv=none; b=oB7yOUo/CFce1O3+vUvcADIKhcp9Iybo115AzyibnG3BZUGe6xOVlf/Lf8TYyI4O2ShJKgsGKJOq9GUaIszrhwOQ3DfjS2m9Ko+7aZCbcSmSoNMeTEPcpluDk2yYdwRQtzSs+gMwCSyKhpezfl6B3j5infETZrtG6cHegGf0VwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770670407; c=relaxed/simple;
-	bh=xURu2Rz+v6jTL6BOahSn4AzbIM9sHZJvyxXLtRkHAUQ=;
+	s=arc-20240116; t=1770670474; c=relaxed/simple;
+	bh=+Xh6abvJ4ZsOo0ZMiT0/ttKSi1QTdyNuVkOUe+3rhjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8tPVgWvV9hUDD9Q675h2gGYUiiUHWo2wS036NPyWWvckyTCI424Xzhz+w/db78QvkbmlzAiJ+0Z0gizGU3pIetVntTMLkHQvTwIOfbO+VWewUz/Wat2f/hnCHVaZMrJrj2h2X+GThHklYqy9EYfZdoTmeqNmXDaFIdrAz2pI04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=bjr82Oqx; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=HS15u6GRwvUhNqSnNDV7XmiDSJVYQq7bK0wk9q2J2gjM6RqHUriBoGL/MKhvNgLOpaMaoJFn4u829Bdne+Hn+MrV5VR2QE9Llu3ATnpkxTRNalc2uDAd2W2TZgLj9CITnc8I0YN2dUCtOqHyUhrTys/PufrTD04Lgwnu378FDVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ieqollNQ; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 2138420B7167; Mon,  9 Feb 2026 12:53:26 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2138420B7167
+	id DE2E320B7167; Mon,  9 Feb 2026 12:54:33 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DE2E320B7167
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1770670406;
-	bh=xURu2Rz+v6jTL6BOahSn4AzbIM9sHZJvyxXLtRkHAUQ=;
+	s=default; t=1770670473;
+	bh=+Xh6abvJ4ZsOo0ZMiT0/ttKSi1QTdyNuVkOUe+3rhjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bjr82OqxBI1gQQb0lPWDaM84P1FbmPaeuSlnSCIawbKZrNMuVhQsThLU3NogXLwcd
-	 FYklfXoRlwGJuDWndrm/OWe0LncYBQzxUVf730G8Dgm0uVW1Iwxfeuv2S8heZNZ1OB
-	 uwvJHUtG2TdG1MpGfq+XRiNvQmryJVLr/f+iZ4Mc=
+	b=ieqollNQ4xCr8s6b1i+x2s1nyJ4isb+C5halxFdyzcOC4zFBJ79Xj7S26iNtgF/S5
+	 qR+ijINGZIbh/oHukMh117lXdQw6X1IQT13lDWf0UiIU2eI45htEbyl2k9+YHA3dRD
+	 rtv4iOxVJih18AD6Mvuw+uuhJ39z5nOKDqZd9QYE=
 From: Hardik Garg <hargar@linux.microsoft.com>
 To: gregkh@linuxfoundation.org
 Cc: achill@achill.org,
@@ -64,12 +64,12 @@ Cc: achill@achill.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org,
 	Hardik Garg <hargar@linux.microsoft.com>
-Subject: Re: [PATCH 6.12 000/113] 6.12.70-rc1 review
-Date: Mon,  9 Feb 2026 12:53:24 -0800
-Message-ID: <20260209205324.1216044-1-hargar@linux.microsoft.com>
+Subject: Re: [PATCH 6.18 000/175] 6.18.10-rc1 review
+Date: Mon,  9 Feb 2026 12:54:32 -0800
+Message-ID: <20260209205432.1216109-1-hargar@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,14 +85,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215559-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215560-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linux.microsoft.com:+];
@@ -101,15 +101,15 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,linux.microsoft.com];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:mid,linux.microsoft.com:dkim]
-X-Rspamd-Queue-Id: A84491149D4
+X-Rspamd-Queue-Id: 9B3B31149FB
 X-Rspamd-Action: no action
 
 The kernel, bpf tool, perf tool, and kselftest builds fine for
-v6.12.70-rc1 on x86 and arm64 Azure VM.
+v6.18.10-rc1 on x86 and arm64 Azure VM.
 
 
 Tested-by: Hardik Garg <hargar@linux.microsoft.com>
