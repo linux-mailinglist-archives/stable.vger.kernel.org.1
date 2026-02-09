@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-215328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAcvBFr3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:54 +0100
+	id +B4lD/zyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C70111746
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC57110DC1
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE2B430F7374
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:47:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E2C1C300E188
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C192DB7B4;
-	Mon,  9 Feb 2026 14:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A313793BF;
+	Mon,  9 Feb 2026 14:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj4j4X4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZo4yThJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2771925DB1C;
-	Mon,  9 Feb 2026 14:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7638F37BE88;
+	Mon,  9 Feb 2026 14:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648438; cv=none; b=lNCD5WaS1PiPuUKuYFd307fNnQq2K9Z6Uab/M6SEOHYnQV8a/yLxWirI5QToj8kVnAyE/6gqQHx0JsLIiwtRuM2c4/zKqjzbMKf2vFQk+uonsC/2Wt11B1DKKfzIxWl1cyWFrYwsU5jqFUnlQO4DiIPZWFJSUv9kSgmU2r2RrbY=
+	t=1770648008; cv=none; b=bGsYieEvp67J9FB0RhuaKMR8bOki3RAVOgNBGF6zslGhgx1GBTgPzvxK5wbb+KGCwOaKn3FNDNS8VFkVkJC/PHy1Bqs/EYSW4PwraiOekO1XFWmpLKGoaWKj38bgs8kdSq6RAN93gsS0f7s/gfKfJh3b+2rCVzeEOxj7JtUhbuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648438; c=relaxed/simple;
-	bh=a9NLvXzXR+bY9o03Qc1M4f4B1WavDPT06nvObqShoz4=;
+	s=arc-20240116; t=1770648008; c=relaxed/simple;
+	bh=Q+GQ6p+bzAih5sjZsnsdu5xbQBsSOab34CA6MsW/V+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0JrdunAhYCDN9GecF7kIyJOOXvkaGyxrzGbC2a072V5hK48BqyX4wYejXSQwToyRK4M5Og1PqSPkvqQ12Prb12XNF2cMvAkxeAK8OqI9EnT9zuM4einxI3YCANrwUXBo8HktPU0ICNUhYw9rfOTP5McKWHg7EyPHflp4CZmB9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj4j4X4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC2EC116C6;
-	Mon,  9 Feb 2026 14:47:17 +0000 (UTC)
+	 MIME-Version; b=bPVgxYvmGcP98pMPlo5ma8mkSxr4YvZO8ZTsK/uogzDvH0LqYEs0dZcmIYYPgoOo9/aIpVwyFs0Dq4AAHzWVsGNMqs0BKtWowluy6/dOFcgbYF7nnt1OQtooUBG+9mJP5KkCwuvmQLK5n+/TdIvzFZpTEMzjbMUnfusGFjG9ENA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZo4yThJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B05C116C6;
+	Mon,  9 Feb 2026 14:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648438;
-	bh=a9NLvXzXR+bY9o03Qc1M4f4B1WavDPT06nvObqShoz4=;
+	s=korg; t=1770648007;
+	bh=Q+GQ6p+bzAih5sjZsnsdu5xbQBsSOab34CA6MsW/V+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rj4j4X4zBl2GK3IHfnEfSBW9JjXgyyrY/h6fH9U4MN+75gIB4E6VjHQuExYbwUFvE
-	 r5hz9BB2pL7+OwTc++B4lT/CqFxZmF1TeHgOjF1Vsz3S1ZQR1+VeWmrJLZ+9zXrAz4
-	 EIa2Ie9hSpnBotRiHDgUHeC0Qm5Jw6mn7olXNyKc=
+	b=bZo4yThJ9ufiPjhIHPw5siLmQ6wIbjYd+92ZiRzfhfULuevaTaoIoSyY/GFMr2SAz
+	 pNg3txQF7s2grjZLdnsVfZDRze+rkY7L8bsTiwEsKS2RxWjygnnAfWjf0Odi+wZS6L
+	 KzeGZLCfbvxoyTj5p1uTOkWfZ4byZ4duWzj2jJDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 38/86] HID: quirks: Add another Chicony HP 5MP Cameras to hid_ignore_list
+Subject: [PATCH 6.12 092/113] net: dont touch dev->stats in BPF redirect paths
 Date: Mon,  9 Feb 2026 15:24:01 +0100
-Message-ID: <20260209142306.157663674@linuxfoundation.org>
+Message-ID: <20260209142313.487820267@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,80 +70,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215328-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215200-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 79C70111746
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,iogearbox.net:email]
+X-Rspamd-Queue-Id: 5BC57110DC1
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit c06bc3557542307b9658fbd43cc946a14250347b ]
+[ Upstream commit fdf3f6800be36377e045e2448087f12132b88d2f ]
 
-Another Chicony Electronics HP 5MP Camera with USB ID 04F2:B882
-reports a HID sensor interface that is not actually implemented.
+Gal reports that BPF redirect increments dev->stats.tx_errors
+on failure. This is not correct, most modern drivers completely
+ignore dev->stats so these drops will be invisible to the user.
+Core code should use the dedicated core stats which are folded
+into device stats in dev_get_stats().
 
-Add the device to the HID ignore list so the bogus sensor is never
-exposed to userspace. Then the system won't hang when runtime PM
-tries to wake the unresponsive device.
+Note that we're switching from tx_errors to tx_dropped.
+Core only has tx_dropped, hence presumably users already expect
+that counter to increment for "stack" Tx issues.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Reported-by: Gal Pressman <gal@nvidia.com>
+Link: https://lore.kernel.org/c5df3b60-246a-4030-9c9a-0a35cd1ca924@nvidia.com
+Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260130033827.698841-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ net/core/filter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index ca9c70c8f3cf1..fbbd1dc5582eb 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -307,6 +307,7 @@
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3	0xb882
+diff --git a/net/core/filter.c b/net/core/filter.c
+index bc61ad5f4e054..06e179865a21b 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2297,12 +2297,12 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
  
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 192b8f63baaab..b2a3ce7bfb6b6 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -763,6 +763,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
+ 	err = bpf_out_neigh_v6(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+@@ -2404,12 +2404,12 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	err = bpf_out_neigh_v4(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
 -- 
 2.51.0
 
