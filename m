@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBy4DpTyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:32 +0100
+	id MDZCFs71iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF61E110C86
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA58B11143D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4DD7304C979
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEF12307DD0A
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F164E37C101;
-	Mon,  9 Feb 2026 14:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F51837BE75;
+	Mon,  9 Feb 2026 14:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK6Uo4ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKbfG9dp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53CF2222B2;
-	Mon,  9 Feb 2026 14:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431B23783A1;
+	Mon,  9 Feb 2026 14:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648024; cv=none; b=YXEbDrM4Oe5JByja219s0AtP1b0klMCOWAZ6lNF56mxxAglcWUDgnX/DRF375LQaS8IL6bI+HybBhC1TV5FZXrtfmxDZw73tbrOlr9o5v7p72hlLnuGqVCPc4M+JM9mzVWWeKtX5Qg0iaG5dAXDz6fcsGL9yk04lTSuoPjjyQa8=
+	t=1770648207; cv=none; b=bbBvB3WrHT8ZEbRSfJw2iOE3/fVRpyaEKvJ/ngZT/l0qteIeOdojfiTd7x/nEsIXTkuuHHr1eQeZMhuJLGQA457KWywvFjRsnfxyvO2AgD8jE/ypsw4jokD6xxilw78v1UIib1SXFc4at5KRM8XulV4WhyLQmNL/uTDnxU0/ARk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648024; c=relaxed/simple;
-	bh=bKf5b+AL2R/VHUVeA/embFOXDuo3qMTl/AHkRlQzqmU=;
+	s=arc-20240116; t=1770648207; c=relaxed/simple;
+	bh=bIQl2f3peBECB5sZgdVg1wfGVz65eSh0nPC+sC36tm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrm/fa0zqbhMKeBm8wAoqBGy5zubirCpTHc0kSKOU8hoSb5bNQzzakMqq4kR1bVcwIWq83pOyyAK48aNGxIxhcE5glFo/fTs3B0QWTGq/tvocX+8zoE+DbtpdoAfdZpKB2Zsvk8ewou0OixP85Jaz9V1+JtN0aMO41Qf2qY9nvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK6Uo4ot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C233AC116C6;
-	Mon,  9 Feb 2026 14:40:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tQwcsVKUt1z2fC0Oz2ZlXamEMjwiJdgpXyJti9tQ7XpMysvMWYU9uYVK9fz7rYAJ87q62caEf1sIed8ozhvOWj/NRqubGLuIEHcb9MXuLvsA/rUEIqzDid/hnRNT3QqMygrtWUEqaZxhnKpJvgAOop1L0e6dTWEiHB7EBtu9hnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKbfG9dp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7953C116C6;
+	Mon,  9 Feb 2026 14:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648024;
-	bh=bKf5b+AL2R/VHUVeA/embFOXDuo3qMTl/AHkRlQzqmU=;
+	s=korg; t=1770648207;
+	bh=bIQl2f3peBECB5sZgdVg1wfGVz65eSh0nPC+sC36tm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK6Uo4ot3VAOT1o0rR1x5j4Ic2BLo+pUzDRnz83LywKj+2HFs6CBVf94c5cfO0fbu
-	 8QBr5+nLn9wQAdpWg28NrTEq8+RnUXmvBG4i+UHKyhkAQjCLiPFxLDipw+lU9Hi1wJ
-	 HTDRb6CqJui1FvHrkybAtrnE445XFionHEAp5Zp0=
+	b=YKbfG9dpglBNj2IXRymlEXSfPmmjk6EBwR+tf+enLgCcqqzqp3JbSD/0oMgCQ6nMr
+	 z4edbqyHVx2P+f+RDB0VB5CHvUWkWVquIPkPvlhD3kDtdbf5kgOim0m95ZJPzq2EPT
+	 jdzzAwNnYUK4bE/57A3szyiosTsLDl57tXx3+cYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/113] wifi: cfg80211: Fix bitrate calculation overflow for HE rates
+	Bert Karwatzki <spasswolf@web.de>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 06/69] Revert "drm/amd: Check if ASPM is enabled from PCIe subsystem"
 Date: Mon,  9 Feb 2026 15:23:34 +0100
-Message-ID: <20260209142312.529899404@linuxfoundation.org>
+Message-ID: <20260209142302.146128525@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +65,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215205-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215259-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,amd.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,intel.com:email]
-X-Rspamd-Queue-Id: CF61E110C86
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,amd.com:email]
+X-Rspamd-Queue-Id: AA58B11143D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>
+From: Bert Karwatzki <spasswolf@web.de>
 
-[ Upstream commit a3034bf0746d88a00cceda9541534a5721445a24 ]
+commit 243b467dea1735fed904c2e54d248a46fa417a2d upstream.
 
-An integer overflow occurs in cfg80211_calculate_bitrate_he() when
-calculating bitrates for high throughput HE configurations.
-For example, with 160 MHz bandwidth, HE-MCS 13, HE-NSS 4, and HE-GI 0,
-the multiplication (result * rate->nss) overflows the 32-bit 'result'
-variable before division by 8, leading to significantly underestimated
-bitrate values.
+This reverts commit 7294863a6f01248d72b61d38478978d638641bee.
 
-The overflow occurs because the NSS multiplication operates on a 32-bit
-integer that cannot accommodate intermediate values exceeding
-4,294,967,295. When overflow happens, the value wraps around, producing
-incorrect bitrates for high MCS and NSS combinations.
+This commit was erroneously applied again after commit 0ab5d711ec74
+("drm/amd: Refactor `amdgpu_aspm` to be evaluated per device")
+removed it, leading to very hard to debug crashes, when used with a system with two
+AMD GPUs of which only one supports ASPM.
 
-Fix this by utilizing the 64-bit 'tmp' variable for the NSS
-multiplication and subsequent divisions via do_div(). This approach
-preserves full precision throughout the entire calculation, with the
-final value assigned to 'result' only after completing all operations.
-
-Signed-off-by: Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260109-he_bitrate_overflow-v1-1-95575e466b6e@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-acpi/20251006120944.7880-1-spasswolf@web.de/
+Link: https://github.com/acpica/acpica/issues/1060
+Fixes: 0ab5d711ec74 ("drm/amd: Refactor `amdgpu_aspm` to be evaluated per device")
+Signed-off-by: Bert Karwatzki <spasswolf@web.de>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 97a9689300eb2b393ba5efc17c8e5db835917080)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/util.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 6aff651a9b68d..5be4ccb871411 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1588,12 +1588,14 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	tmp = result;
- 	tmp *= SCALE;
- 	do_div(tmp, mcs_divisors[rate->mcs]);
--	result = tmp;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2067,9 +2067,6 @@ static int amdgpu_pci_probe(struct pci_d
+ 			return -ENODEV;
+ 	}
  
- 	/* and take NSS, DCM into account */
--	result = (result * rate->nss) / 8;
-+	tmp *= rate->nss;
-+	do_div(tmp, 8);
- 	if (rate->he_dcm)
--		result /= 2;
-+		do_div(tmp, 2);
-+
-+	result = tmp;
- 
- 	return result / 10000;
- }
--- 
-2.51.0
-
+-	if (amdgpu_aspm == -1 && !pcie_aspm_enabled(pdev))
+-		amdgpu_aspm = 0;
+-
+ 	if (amdgpu_virtual_display ||
+ 	    amdgpu_device_asic_has_dc_support(flags & AMD_ASIC_MASK))
+ 		supports_atomic = true;
 
 
 
