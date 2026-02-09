@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNzxC4f0iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:51 +0100
+	id +L7UHj3ziWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6822F1111A1
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:51:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2736110EB5
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B284304FA90
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:45:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4A1183031886
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635AA25DB1C;
-	Mon,  9 Feb 2026 14:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3812737C0E0;
+	Mon,  9 Feb 2026 14:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQTeuIrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04lNDkx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F4330BF79;
-	Mon,  9 Feb 2026 14:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DCB37BE93;
+	Mon,  9 Feb 2026 14:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648318; cv=none; b=lhwYXlsV2CuyWPa87GF6z9wwGlhhdU/RG3+sErVM6XuO0gMMmD17+p/x+aTMuX3FmiUfAXM3mgbX6U+pFchPS8BEvjpf5QplP6tIroQwMSPBe3Mn+7Q4VHECE/vb1WEXaYmAwL4l+xZuu9MWoIoVlWNYfa3uyEvvxe4RYFJNwlM=
+	t=1770648076; cv=none; b=KC4ofO0IQ5IOD8XMrHS49wkeqht1cfGfvMX8Y2eHL3LpyhUZ8hH3VmIMedLGpImsC15xA/d68MkmkJKqun5fcM0Eu1yS2/WBPl/b2KyCLWfQIBFfecIoWzTHsoynfTnECFzegqOxgYv8OLHte/a2XcG4wOB2ujsuic54caL/BiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648318; c=relaxed/simple;
-	bh=6QQvXM12SctIbaRcjRwi+yHzT13vCb8VSXlwHe8aN1o=;
+	s=arc-20240116; t=1770648076; c=relaxed/simple;
+	bh=uUhrn2mDrsAUCUToxNJ2NMlP2ntT4Zl9XN8hifueheY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEtJrp0/vKeXLkAvJNx48jrNKbqc8yvonsw89UfP/8sfSJgZ85LN85hnYWDDqX+2ZMMUyDHWNIlycHVAk/qUDhJH+bzYecIEvgK+nIZjgBWqpX9CaXO+oVbuFyYGJ66sNNRyKQN8WpL8jDjrE1b4memHpcOI4QIk2gnyRgeQx+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQTeuIrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FBFC116C6;
-	Mon,  9 Feb 2026 14:45:17 +0000 (UTC)
+	 MIME-Version; b=t8FR0psRdJuWTeCH6sGMNru6cqazcCz6gMta4GRg/FgpsGdqgckLxMRG8YJ7gjpOj7DowOTVUQUa1msTvnVhgQVLCioTlSYdZxOVzVr55er+zWFm8xjnYyWSSWM49lshSXK2GJznSna4xkikWfUrPc/IH3QwuDTYbbSzaWNtJ0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04lNDkx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33417C19422;
+	Mon,  9 Feb 2026 14:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648317;
-	bh=6QQvXM12SctIbaRcjRwi+yHzT13vCb8VSXlwHe8aN1o=;
+	s=korg; t=1770648075;
+	bh=uUhrn2mDrsAUCUToxNJ2NMlP2ntT4Zl9XN8hifueheY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQTeuIrxw5KnpWmQM3uXITI9R5y2nFGDq9XyuWabVNBbYGRV9tgkAUOeDDppOHbcR
-	 tbriduHaF5diXeykDOUj6p95iuF2DGT9mM5Tjd5d/MhhaTWgiALWMlW01KKTzAp7W8
-	 ukZ6NBD1dMUVKobJ3w3nyCRQDB6CeckYlRTaDZdo=
+	b=04lNDkx243lS8liT2lkYMYuqKcmsj+AiXRkor7rDWekQKRlwy2ZSryUYsiAAHGxk0
+	 Wg8tz9nwBtrkrcO8NHzXYUO6I5qLP+UPaGnsvFC42ownEFDzwA9Xj8OijxIoXLwGZw
+	 ttFHK0DvEbY67QMm79BN2myNdEZwbsyLz32T91+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitrios Katsaros <patcherwork@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/69] ASoC: tlv320adcx140: Propagate error codes during probe
-Date: Mon,  9 Feb 2026 15:24:07 +0100
-Message-ID: <20260209142303.331325691@linuxfoundation.org>
+Subject: [PATCH 6.12 099/113] drm/xe/pm: Also avoid missing outer rpm warning on system suspend
+Date: Mon,  9 Feb 2026 15:24:08 +0100
+Message-ID: <20260209142313.734377105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +67,88 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215292-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215220-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6822F1111A1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A2736110EB5
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitrios Katsaros <patcherwork@gmail.com>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-[ Upstream commit d89aad92cfd15edbd704746f44c98fe687f9366f ]
+[ Upstream commit f2eedadf19979109415928f5ea9ba9a73262aa8f ]
 
-When scanning for the reset pin, we could get an -EPROBE_DEFER.
-The driver would assume that no reset pin had been defined,
-which would mean that the chip would never be powered.
+Fix the false-positive "Missing outer runtime PM protection" warning
+triggered by
+release_async_domains() -> intel_runtime_pm_get_noresume() ->
+xe_pm_runtime_get_noresume()
+during system suspend.
 
-Now we both respect any error we get from devm_gpiod_get_optional.
-We also now properly report the missing GPIO definition when
-'gpio_reset' is NULL.
+xe_pm_runtime_get_noresume() is supposed to warn if the device is not in
+the runtime resumed state, using xe_pm_runtime_get_if_in_use() for this.
+However the latter function will fail if called during runtime or system
+suspend/resume, regardless of whether the device is runtime resumed or
+not.
 
-Signed-off-by: Dimitrios Katsaros <patcherwork@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://patch.msgid.link/20260113-sound-soc-codecs-tvl320adcx140-v4-3-8f7ecec525c8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Based on the above suppress the warning during system suspend/resume,
+similarly to how this is done during runtime suspend/resume.
+
+Suggested-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241217230547.1667561-1-rodrigo.vivi@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Stable-dep-of: bb36170d959f ("drm/xe/pm: Disable D3Cold for BMG only on specific platforms")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tlv320adcx140.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/xe/xe_pm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tlv320adcx140.c b/sound/soc/codecs/tlv320adcx140.c
-index 67eef894d0c2d..0323d6341c9ae 100644
---- a/sound/soc/codecs/tlv320adcx140.c
-+++ b/sound/soc/codecs/tlv320adcx140.c
-@@ -1157,6 +1157,9 @@ static int adcx140_i2c_probe(struct i2c_client *i2c)
- 	adcx140->gpio_reset = devm_gpiod_get_optional(adcx140->dev,
- 						      "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(adcx140->gpio_reset))
-+		return dev_err_probe(&i2c->dev, PTR_ERR(adcx140->gpio_reset),
-+				     "Failed to get Reset GPIO\n");
-+	if (!adcx140->gpio_reset)
- 		dev_info(&i2c->dev, "Reset GPIO not defined\n");
+diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+index f8fad9e56805b..1012925aa4816 100644
+--- a/drivers/gpu/drm/xe/xe_pm.c
++++ b/drivers/gpu/drm/xe/xe_pm.c
+@@ -6,6 +6,7 @@
+ #include "xe_pm.h"
  
- 	adcx140->supply_areg = devm_regulator_get_optional(adcx140->dev,
+ #include <linux/pm_runtime.h>
++#include <linux/suspend.h>
+ 
+ #include <drm/drm_managed.h>
+ #include <drm/ttm/ttm_placement.h>
+@@ -622,7 +623,8 @@ static bool xe_pm_suspending_or_resuming(struct xe_device *xe)
+ 	struct device *dev = xe->drm.dev;
+ 
+ 	return dev->power.runtime_status == RPM_SUSPENDING ||
+-		dev->power.runtime_status == RPM_RESUMING;
++		dev->power.runtime_status == RPM_RESUMING ||
++		pm_suspend_target_state != PM_SUSPEND_ON;
+ #else
+ 	return false;
+ #endif
 -- 
 2.51.0
 
