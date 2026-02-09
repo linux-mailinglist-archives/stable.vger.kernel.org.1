@@ -1,377 +1,210 @@
-Return-Path: <stable+bounces-214893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJIaERSoiWk0AQUAu9opvQ
-	(envelope-from <stable+bounces-214893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 10:25:40 +0100
+	id 4PzzM6mqiWlZAgUAu9opvQ
+	(envelope-from <stable+bounces-214895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 10:36:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFA310D852
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 10:25:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BDA10DA0D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 10:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B04D3006827
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 09:25:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 401EE3024447
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 09:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5031C363C5F;
-	Mon,  9 Feb 2026 09:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B54328635;
+	Mon,  9 Feb 2026 09:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O9CUrd/D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C2YYJdE2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E237A363C5A
-	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 09:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770629132; cv=fail; b=n4dKZrTW3xZE23Y57L7ETcZUhqLiJwJozELreOuGTus7WV4u0n6GYtVIn4TytonbePtJ+4+kq74cwVfeTkzh6uc5r/FLZuD8laaprTgFffOvl6kczyDgGsCUWKORJChEvCtKF0YRtczRNLsx1xmHc+zhwWqDfPMsNrEbJl00HDY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770629132; c=relaxed/simple;
-	bh=E/YJ3hxlAyFSa9gO+KXpZBC4Ufj6Du2OngLJxNBBhDA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=mQDKX5bma21di9NQlqZSREfCS61nT00uH22adVrYJoZbglfNARk5Lvk5mV9gdOTG1dBEXpRaEjC/FO59wEjoAH8O1Uact3lNZUjTL8QNbUiRy4QSa8aXDLt7afLCnymc5pDDU3BnD9H1YgGZ5akmOAKVV59RVb4XqBKOEkQzXEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O9CUrd/D; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770629132; x=1802165132;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=E/YJ3hxlAyFSa9gO+KXpZBC4Ufj6Du2OngLJxNBBhDA=;
-  b=O9CUrd/D3PEKnnL1T/VWAupCbqrGdy7e0S2+OJLjbfj6Y+DKLwbQLVi2
-   79ocyNpluW/nW8O7luV5fxbF6xfU46obbKefSMeCrJY/ZSeEodpw5DbSb
-   tOw6b7S0mh1sNMIRZ8Q4riHiNSObOHYJu+zn+tIx62tNULHYsycSjqQti
-   BPSP7zCelcAdnK3KjZP/TJXiY+kHS04Zc7MUIFscXnlVdZIXrc6KGmmbX
-   mtzYyX5L8gNIlWHAiY3TNmfMmlPjfmggYhcPU6IHzVNH1ziLmBXMB2k+V
-   2emKrYYUSlKSYWzxd4EnAdYIbNUgdeMBV2KRSk9mXhWdq2Cdv0NUJeGfI
-   A==;
-X-CSE-ConnectionGUID: qWFLOuXdQ8+Xc/PrNdzqwA==
-X-CSE-MsgGUID: Bjs0FAsaTd+MdQMwV1H1tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="75359637"
-X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; 
-   d="scan'208";a="75359637"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 01:25:32 -0800
-X-CSE-ConnectionGUID: lNT36eXZSGWb1deTWrEBTw==
-X-CSE-MsgGUID: 0yHTujQzTPSoQYpN9yx3qQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; 
-   d="scan'208";a="210627009"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 01:25:31 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 9 Feb 2026 01:25:31 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 9 Feb 2026 01:25:31 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.18)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 9 Feb 2026 01:25:30 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SJDLEaSWwgeRDrribF1SK65qmhkheVcacAJerUTQgY9imBeBxcahW+9ZYH9tBVi0FK1tqQdBNBnu2WhITgy1oERO1ml4jeIRmCs3bxz2sXILJrXTomVq00+jaBD13NRlT3brdrrbnZCuzjNbxzQrgwcINyt+IJGLOQHI6H1+A4sKcfM1V3NjYl0KuhaY22uREbjNN90N18jYA1poFQFp6tfQN+pG17dfwjVRGsLFyd5JTUeO2hh78h/p4juFpxNY5P+VhVQp2f3iCwwIeluYLimrBHEOckUNhDiLDkM3gxKnf5b/pFBPZkO7HYyRoSn6AvCPgDUNFLjiiZaVWxQ9eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+vAV2KWPcLNSQWfGKbTR3aQYTjG4ArNyhBmjxyMxPHY=;
- b=qxRlnT8xTJGcOpyKuvByVdWiP+pSYKXvRQUCPMj/4X+s7lMRg8bjhuEHnUEinNXNcJ82uKazJWBkaE+Ew1iZB/byhUOMHE/Nx/pfGOtUwKBi7ivWThjuf+gEOGhquYWArUWIZvk9+rBDeUKlRd+gq2ytfC/y1MvtH2ZeC/+iztXDtT0SVuj8NGl3GKk6ufhts5enI3wSsBzXJ/R5l3mRdnwWzGaPE2l9hI1Ou5lY5qgSEaoVG7b8wQMXDdM/67bB7+dKQiOyVqsMIppvxU6+YOBeFz1uSzoIwQ267tlXIsA/oRL+XsuKyxO4meTTiTwBP/gLLIRMX/a/gIQ5s2RnuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12)
- by IA0PR11MB7210.namprd11.prod.outlook.com (2603:10b6:208:440::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Mon, 9 Feb
- 2026 09:25:28 +0000
-Received: from SJ1PR11MB6129.namprd11.prod.outlook.com
- ([fe80::45f:5907:efdb:cb5b]) by SJ1PR11MB6129.namprd11.prod.outlook.com
- ([fe80::45f:5907:efdb:cb5b%3]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
- 09:25:28 +0000
-Message-ID: <459f2c53-8679-4987-b190-c7f9c54f237a@intel.com>
-Date: Mon, 9 Feb 2026 14:55:21 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/i915/dp: Fix pipe BPP clamping due to HDR
-Content-Language: en-GB
-To: <imre.deak@intel.com>
-CC: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	<stable@vger.kernel.org>
-References: <20260206104227.290231-1-imre.deak@intel.com>
- <f6b59555-01f6-49ff-aff4-a6da9d347332@intel.com>
- <9ca3365b-c595-4401-8663-9c18ccc45d45@intel.com>
- <aYmdYjjRljq0dVSL@ideak-desk.lan>
-From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-In-Reply-To: <aYmdYjjRljq0dVSL@ideak-desk.lan>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0014.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:179::7) To SJ1PR11MB6129.namprd11.prod.outlook.com
- (2603:10b6:a03:488::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE170205E26;
+	Mon,  9 Feb 2026 09:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770629695; cv=none; b=HQJJVPcgHKJ6FK4V4E5h6e9mXeI8jV1HgcRkf2gys/vp4Xoa5mrwJmngUybnfvloarOdkwcoa9ruoWNYXFIOsJecBjEJ7A6zXj8UznmWTWh83fklRN3Eq64OGY35nOL2Zqe2q/GHxzYVUEIV1h9u1KqUSf6h7He0boXrO2bj+hA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770629695; c=relaxed/simple;
+	bh=LGwf+hfMsPyDS27fugz8eoNWwNfBcyc2TpeqWfnjdUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ROOFP3NQUqZxifbUVZ2qmOOz77dnHUXDbImuqxl2zChVHOSBR3crnCXTZwV5Cn31hzkxol3Qcp86IN0IIi3HzkDM9wZDr17aU8U4YwMamvPjHZZsmpJyACy4G1oH6lvvVoRSN4swlFAXL+yOd3A/NO0HjjV0hciFLMO3GROH0o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C2YYJdE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E8FC116C6;
+	Mon,  9 Feb 2026 09:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770629695;
+	bh=LGwf+hfMsPyDS27fugz8eoNWwNfBcyc2TpeqWfnjdUo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=C2YYJdE2TvlP37CWeVk55w5pv/80P8TqqFVJ3lHr+LQ9Ua3s2voJCN/nzdMh/ee6q
+	 JqlPbUXZEw3wkLvMGsZ9tFoZ0TcJFKz/OuHLR2YcXKEYVGscWedeCNVYT3m6ZL+d7B
+	 vosn2iRZgi0xH6KILnrMT7uJNZxDe6uKcyD0tl2Z2zCUtA0sE/z4DDZHCjkzD8bpF8
+	 Y6L47O5Kjbc7UmYS68NLDDd/35HE5sNYYdDsUpDqLC58yeqv1pPUrQ9cyv3Uk7Gjkc
+	 bCGvnWUQiVd1uMuWClnp/e/AjubUtu+ZCa1HjTHnhEkDtf74i7PxU/knb1cBUW2V0R
+	 GlL/6iP2UWmAw==
+From: Philipp Stanner <phasta@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] rust: list: Add unsafe for container_of
+Date: Mon,  9 Feb 2026 10:34:33 +0100
+Message-ID: <20260209093432.17190-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PR11MB6129:EE_|IA0PR11MB7210:EE_
-X-MS-Office365-Filtering-Correlation-Id: 16ad8691-267f-4ec6-d5c5-08de67bd29ed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ajNjTXEyQXA0bit6TnB4ZlFCczRlUUxCY21TaElEWkJkNlJIUVF6TlBFNlZu?=
- =?utf-8?B?cEhaS1FGL2ZRUE9ZQzFSNU44dkJUdUl5dDVLOUFlaFAvUDJYTXE2eVpaMlVk?=
- =?utf-8?B?cE9jd1J0RGNIRHBGV2RvYzRnc0c3YjVNajZBNHlCVTZOMGJiek9nVk5lK1NF?=
- =?utf-8?B?dmR0SS8yd0lQK3dnWDU0YmFCMlR1RVNrekF2TzdjNi9wdjB0NmZCNTk0WWVE?=
- =?utf-8?B?Q0pZaVlEajRJSVNwckUwb29BMUR4ZGNuQ0lNVTVEdUF5M3orcU1GL3FMeUo5?=
- =?utf-8?B?cnkxZVExRG5sSUxURGhNN2FleHk1ZU9zTmdGRDkxY2RvTjN0S3pYaFhLeWZ1?=
- =?utf-8?B?UElRRUZucWxFWDJmQzdzMkJVUE5zU0N1MDM1VkVDSXIzWk02SGd0TWFRS2d6?=
- =?utf-8?B?MGhtUDVUeHNFTWRDeVRVWEZrV2ZmM3JXTU5LYjZpWVYvT291Y2FjV3ZRd09P?=
- =?utf-8?B?RlhaMEk4UFU1eHozY1dDUE9VSmt0aGpsN2x1TzA3OEl0V0tRTnFIb2pWaU8x?=
- =?utf-8?B?cjIwdXZIRmRRdUJ0Ry8zajJOV2h5YUZrbmpFc3k2ZlBlRUl6SW5OWWVOVndO?=
- =?utf-8?B?VXMxQ0l0S3JRQTdZT0cxemJtOHJtVFhoT2hEOGRMV29JV0dONUpZcm8zY251?=
- =?utf-8?B?V0NUWlNtMHp0OFFlalRPVlNhcEJ0MHIwdXRSZkg1WXdSZjVkSUFoWCtaOU9U?=
- =?utf-8?B?QTZxdXFEaXlubjlNNHNEeHRUd2EwTTZwUG10OWdSOXJMNFpzalRiTnJVZzI4?=
- =?utf-8?B?dkNOSGxUY2lRZG14MVZyY0tUVk9GTGR0THFjWWFlL2ZLNWdLYXVrUlVGZ0J4?=
- =?utf-8?B?bDdhOTZ5M3FIZi9xTTZaRUtkTkJOZzBxZEN5U0lMZEhHSWpoU1k2V29YN0Fs?=
- =?utf-8?B?NWhqN1N6Qnd3N1FVdzRtRWxhTWJTZTVQYnJVZzErSkVTS2U5bitQbW5aVEc3?=
- =?utf-8?B?dHBZNEFYcEFCd2NwUHc4QVptcStoVEtIZ1hoVWtlWmxDcno1OHAwaUdhRXJm?=
- =?utf-8?B?cEZuQndKVTgwT0Uyb0txME9SNVU2MkJsVXNnQlFJMFFRd3hpVUQ5TFg3c3NR?=
- =?utf-8?B?a01VTUJlalFvUGJyNU1sb0ZyR3A4bm9RZGl3bE9MalN4QnhQR3RCMGNHMUNm?=
- =?utf-8?B?OFBBaElnZ01jcTB3RkJCanRhTjJzekQzbW9XYnhPZ2hmYzZEUHZHZzIwVW9D?=
- =?utf-8?B?TWlXRDk0YS9xM0FCY09SVndIV1o1Q09yUHlYUmllanZteDZFZC9XY0Z5dU5X?=
- =?utf-8?B?TlpYL3RPMU54dk1NbUlxQmpxMDFqNXRJdkY4Vi9SeGZaUldodVN6OUlrQjF3?=
- =?utf-8?B?R2ZaQ0hVR1VXaXlSajN0R3lTUHRFa3BQYVRQMFg2RFRjNnRrYkk1MTJHaEZF?=
- =?utf-8?B?WE5yZlltSytoWHc2VkpPNG5HL05KTFR5N0JVY2hiSlR4VW5LR25XVmszTEJY?=
- =?utf-8?B?Wks3Q1ErdndVK1BYalVuVFBMQ0xuc255eTJUK09GM1didG5uNWg5dUY2UHh5?=
- =?utf-8?B?ekNXaVE3am8yTTlaQUQwNytRcHFJcWZNbURUSktSdWdBUmFqQm5oNlBhcnFZ?=
- =?utf-8?B?WlQzMzVJZnJTME8rVWtrSXNrK1YvRWxCNklmWnkrM2pGZkV2Ukhud0h6aldJ?=
- =?utf-8?B?a0NqSnRkdWpKbjdldm9ITHM3S3Rrb3U1MzJIaWVFV0s4empraHNWQVF4SG1I?=
- =?utf-8?B?RTBoMWlUR0lqdkFCUEFGOTJ1UVB4NExLeEFGb2RyM2lwYklYckExTkxROHpl?=
- =?utf-8?B?ZlFzNlh4Z0tyVHAxeWxqZlZ2S2RwOWt0WjczTTNVczJVRFlRSXhvSTlwL3Jj?=
- =?utf-8?B?dWg2RytJOEJiTXNQaGY1ZFZLWVo2N3N6VGRUR01CbVliV3VuSnlJZG4rcHFs?=
- =?utf-8?B?YWx5TnplQ2dQUkpPMTZVU1RzZnFodWVuQklIcDlNQTR4bmo0ZTFyMmVER3BT?=
- =?utf-8?B?cnJzYXBCWGQwVXhWdlBiSUFueFM1Ti9Sc1l3WW1ZVlAyeVpZV2JlR3RDeGc5?=
- =?utf-8?B?YnEwaWU4dmJINUh0SUFrVzQzRTFnakJOL3l5dm1VTmFLVVFERGgxSlRqMVRm?=
- =?utf-8?Q?EEFSeX?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6129.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cjNkYTlIQTJpNnVoYUI4S0IwaWdENzJPVldvQ1kxaFZqYVZhc0FNZi9IeWNW?=
- =?utf-8?B?a3JETjNuYVpESW9WZ0d1bW9HNkJRdGV0clFPOGFPMlp4Yk96ZC9ZUmlFRmMx?=
- =?utf-8?B?NTdibEJGQzNYU2VoVkkxUGtVODlMYmU1NjhtR0RVZ2tHNlhCYlVadGMyNU9P?=
- =?utf-8?B?M1UrRVUyN3dtS2hSSzhSQmFkZkZURldBVVVuQllpaU1LUitxZ2hacVVybXhX?=
- =?utf-8?B?UThLWGwrNVZqZGFjYVFQeUo1T2hkY01wYXl1NDVxbjBBM0ZPdVhKMmFrazRq?=
- =?utf-8?B?M1JwTk1xMDU2SWtFTjV0RlNXU0VoNVRNVmczTmhwTURlcmxIa0pMR0o0ODNq?=
- =?utf-8?B?dFFMZ3dKYjR3QjFqeHNLaVJ6TU1vZ091NUIrVWJQYzNnM0NOZ2FuTkhIbi9N?=
- =?utf-8?B?Y2s4TVJudU8zRTJ0Qjgxa2Z5QTFUL2xoOHNha045R3FrZWJaS0pVNnpzdm81?=
- =?utf-8?B?a0RKb3kwUEkzbVQ3L1NFc1BvaVdpRklIOC9yUWRiRVRiSzJOcFVheHhpNzk4?=
- =?utf-8?B?MWxpSzdMcUdKZEFmYjZ1SWlnU1Y2RVY4ZTYzTWNZd3ZBZUtRTHNvTlNmM3l1?=
- =?utf-8?B?bTNMdFRKUXBweE8wOWtsNTVuT1BVeW0vcVlSVE1zTXRHRXZHV2ZNTGsvbzhk?=
- =?utf-8?B?UEx1c0JHRDdOa2dFSGl0eHhTM21vanNBcjFqQlY3d1VjUms4TGJ2YTZkS2hJ?=
- =?utf-8?B?dHBtL3A1WmFsb3FkM2lmVmxGbUdrVmN5VWJFL1ZrN3lFM0I5VFpZbDNCU3ZW?=
- =?utf-8?B?OFkwWkJhR0lGMHBGLzE2STIrMDBiamt3MDU4YXhUdDUyN3VtTUFqQkROcVBx?=
- =?utf-8?B?K1RPTmtNTWEzZU1vcWFHNUhyU2daUFA4OTFlM2cwdDAwbktJRUliMGc2SFBF?=
- =?utf-8?B?LzNEMWlCZUhhYlBUTGNxSWdqd1l1TjRGZGFjdUJUWWpKUWZmV2cxWVpCeFJC?=
- =?utf-8?B?ZFEzREFKRHVqaTI1c3pSajk1K1pYalZyUE5RNSsyWmt6N0F3NWYwVTFQUmtl?=
- =?utf-8?B?T0xnVWtvcnVCSzkvTlF2Q0pIYVJXZjlENlJHZTJyS3l5V2JIbytOcGZFM3NH?=
- =?utf-8?B?QUlZdU9DTGZYTkNna3BTdVhPVUZDc1pFTzZHTDRKc1VSMWFwNmRWVU5UaUNh?=
- =?utf-8?B?WW9uUHpid25oeGtkRXVWdmlqMlJDdDM1dmZNUGdtOXg3K1plM21GOCtWRkF5?=
- =?utf-8?B?L1ZvRDhieGYvaU9PZzZTazZZQlR2ZUFtQU1WNFhQTWprWTJGZmFNNnUvOUFT?=
- =?utf-8?B?UmpnWTNnRUtuOWl3QloyMG9PZm10TEtpelNGY3o0b3lTMVAwUHFBRzY2MVVh?=
- =?utf-8?B?Z2F2Q1NZT3hxZWNYYzZoT0c4SG85aVVZUHZwbzA5Zzh4OGQxMXNTR2R6anlX?=
- =?utf-8?B?ZnJMSWpyaERTOXVNcktOYzdKUUMxOE5UMlZVdGxlU0Mrbm1aU0Z1eUp3M1dM?=
- =?utf-8?B?R1h6YjF3cE1NQWlZSXlKSzdCYUwvOUZiTEhJZHV3TlBPSDZRcC9TanBLdzdm?=
- =?utf-8?B?WldsNjI0bENsdTNCclY5bjFIbmhwSFN5a2N2V3FkdTM4eC9Zb1pySFRCckVy?=
- =?utf-8?B?dUdtaUI5eVQ1a0loMVdzbGl3ZGY4bkFra0dpeU1aT0VZUW96UnlsZFF5Y0Fo?=
- =?utf-8?B?aUFOcGhwcEkwZU9COFNDenJSdVQ5WWxNcE5Bb2lGWHlraTU2SFNHekUyM0xt?=
- =?utf-8?B?SVkyL2pxdjdZM1pnN2RlL1FhalZmUTlkMzlqTlZJRUpSbGRjZ2UyT3J4VFhG?=
- =?utf-8?B?RzI3b0VCVHV2a3RDZTFCNnVaeVYyQWM3V2hXM3Jjb3Vkbk10TWdFbTJTb2hl?=
- =?utf-8?B?THNwSHQzZmJyMitsRWR5aUFDZUFWUzNmOTMrZGxrajEyOU1jdVFUZkZnTGx0?=
- =?utf-8?B?NEZMNFlBUmxna3p6U2dMWlFzWWU5TzVGTkxFYlYycU1CRldWU1JvRVVzMnF2?=
- =?utf-8?B?QzB4WmxSdndnMWJDaFdlT2FadHo5bndCN1lwNFZkZVg3L1h1VGdwVUd0UnZa?=
- =?utf-8?B?ai9HOHhPeTkydFVCcTRFbm10V0hFZHJIY05SQkpmejlsU2FmNlR0elkyeGZP?=
- =?utf-8?B?elQrUGZFT2VYellPYVFHV2hSQ2k2VTJPOENnQkVJdWh1SmtyLy84UE9sUTFW?=
- =?utf-8?B?aWpLWU1LWW5uUi9ya1ZtaWhhRHpBY1NSd0Z0eityb0tiNFNoKzVaM0NxT0th?=
- =?utf-8?B?Mm9IcVQrSC9pSWZXZmNsNHhRWW9yZlphcHB2Vis4Ymc5OWR5SEh0Q05POUpU?=
- =?utf-8?B?dml0QThKNThJYXc3MSszYmhYY3cwY2kzYkVRa2VWTGNDU2lDVDVPM0MrZFZ6?=
- =?utf-8?B?MGRBcksxY0JaNlk0UTRpL2FsYXBDeVA2SFU5dEVlaHkwcDArU0Ftbm56UTRP?=
- =?utf-8?Q?6+mvIPFFsWaeHJ4M=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16ad8691-267f-4ec6-d5c5-08de67bd29ed
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6129.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 09:25:28.6166
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c8vvfo02eismCUuE1j99xUV1I4KDh+QeJNEInTLREbyd6DS3MHm0NSsBGI34YsbmbfLMqjtFxlIUopBDdU8sIhlOiyZkjByT7FAClXtemtM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7210
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214893-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214895-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[chaitanya.kumar.borah@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_NEQ_ENVFROM(0.00)[phasta@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: DBFA310D852
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 48BDA10DA0D
 X-Rspamd-Action: no action
 
+impl_list_item_mod.rs calls container_of() without unsafe blocks at a
+couple of places. Since container_of() is an unsafe macro / function,
+the blocks are strictly necessary.
 
+The problem was so far not visible because the "unsafe-op-in-unsafe-fn"
+check is a linter rather than a compiler check. Rust suppresses lint
+checks triggered inside of a macro from another crate. Thus, the error
+becomes only visible once someone from without the core crate tries to
+use linked lists:
 
-On 2/9/2026 2:10 PM, Imre Deak wrote:
-> On Mon, Feb 09, 2026 at 12:06:20PM +0530, Borah, Chaitanya Kumar wrote:
->>
->>
->> On 2/6/2026 7:20 PM, Nautiyal, Ankit K wrote:
->>>
->>> On 2/6/2026 4:12 PM, Imre Deak wrote:
->>>> The pipe BPP value shouldn't be set outside of the source's / sink's
->>>> valid pipe BPP range, ensure this when increasing the minimum pipe BPP
->>>> value to 30 due to HDR.
->>>>
->>>> Fixes: ba49a4643cf53 ("drm/i915/dp: Set min_bpp limit to 30 in HDR mode")
->>>> Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
->>>> Cc: <stable@vger.kernel.org> # v6.18+
->>>> Signed-off-by: Imre Deak <imre.deak@intel.com>
->>>> ---
->>>>    drivers/gpu/drm/i915/display/intel_dp.c | 14 ++++++++++++--
->>>>    1 file changed, 12 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/
->>>> drm/i915/display/intel_dp.c
->>>> index 2b8f43e211741..4d8f480cf803f 100644
->>>> --- a/drivers/gpu/drm/i915/display/intel_dp.c
->>>> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
->>>> @@ -2697,6 +2697,7 @@ intel_dp_compute_config_limits(struct intel_dp
->>>> *intel_dp,
->>>>                       bool dsc,
->>>>                       struct link_config_limits *limits)
->>>>    {
->>>> +    struct intel_display *display = to_intel_display(intel_dp);
->>>>        bool is_mst = intel_crtc_has_type(crtc_state, INTEL_OUTPUT_DP_MST);
->>>>        struct intel_connector *connector =
->>>>            to_intel_connector(conn_state->connector);
->>>> @@ -2709,8 +2710,7 @@ intel_dp_compute_config_limits(struct intel_dp
->>>> *intel_dp,
->>>>        limits->min_lane_count = intel_dp_min_lane_count(intel_dp);
->>>>        limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
->>>> -    limits->pipe.min_bpp = intel_dp_in_hdr_mode(conn_state) ? 30 :
->>>> -                intel_dp_min_bpp(crtc_state->output_format);
->>>> +    limits->pipe.min_bpp = intel_dp_min_bpp(crtc_state->output_format);
->>>>        if (is_mst) {
->>>>            /*
->>>>             * FIXME: If all the streams can't fit into the link with their
->>>> @@ -2726,6 +2726,16 @@ intel_dp_compute_config_limits(struct
->>>> intel_dp *intel_dp,
->>>>                                respect_downstream_limits);
->>>>        }
->>>> +    if (intel_dp_in_hdr_mode(conn_state)) {
->>>> +        if (limits->pipe.min_bpp <= 30 && limits->pipe.max_bpp >= 30)
->>>> +            limits->pipe.min_bpp = 30;
->>>> +        else
->>>> +            drm_dbg_kms(display->drm,
->>>> +                    "[CONNECTOR:%d:%s] HDR min 30 bpp outside of
->>>> valid pipe bpp range (%d-%d)\n",
->>>> +                    connector->base.base.id, connector->base.name,
->>>> +                    limits->pipe.min_bpp, limits->pipe.max_bpp);
->>>
->>>
->>> pipe.max_bpp < 30 will be either due to the max_bpc property set to less
->>> than 10, or perhaps when the panel itself does not support 10 bpc
->>> (limited by EDID or VBT).
->>> With these constraints doesn't make sense to enable HDR and send HDR
->>> metadata.
->>> However, as we see in some reported issues [1] [2], in practice some
->>> compositor seems to enable HDR by default and with the hard limit set,
->>> they report blankout.
->>> So it does make sense to raise the min bpp limit only if its inside the
->>> supported range.
->>>
->>> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->>>
->>>
->>> [1] https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7052
->>> [2] https://gitlab.freedesktop.org/drm/i915/kernel/-/
->>> issues/5969#note_3248404
->>>
->>
->> I am not sure if this patch would help with the above gitlabs. For example
->> in case of #7052 pipe max bpp is 30 and the commit still fails.
-> 
-> It does fix though reported cases where the sink does not support 10 BPC
-> at all. Yes the monitor in #7052 is still a problem, since it supports
-> 10 BPC only with lower resolution, where the link BW would allow this
-> and he monitor doesn't have DSC either.
-> 
->> However, I need to look deeper.
->>
->> I am thinking of relaxing this restriction all together because the earlier
->> assumption that a panel advertising HDR will support atleast 10bpc in all
->> it's mode turns out to be false.
->>
->> Currently, I am inclined on the following policy.
->>
->> - If DSC is not available, fall back to normal bandwidth calculations and
->> select the highest bpp the link can support. (Also preferred by Kwin)
->>
->> - If DSC is available, prefer falling back to DSC and attempt the highest
->> bpp allowed by bandwidth constraints.
-> 
-> The patch does the above, except for not handling the case where the
-> monitor doesn't support DSC. The attach patch handles that too and so
-> fixes #7052 as well, are you ok with it?
+error[E0133]: call to unsafe function `core::ptr::mut_ptr::<impl *mut T>::byte_sub`
+is unsafe and requires unsafe block
+   --> rust/kernel/lib.rs:252:29
+    |
+252 |           let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+   ::: rust/kernel/drm/jq.rs:98:1
+    |
+98  | / impl_list_item! {
+99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+100 | | }
+    | |_- in this macro invocation
+    |
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> rust/kernel/list/impl_list_item_mod.rs:216:13
+    |
+216 |               unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+   ::: rust/kernel/drm/jq.rs:98:1
+    |
+98  | / impl_list_item! {
+99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
+100 | | }
+    | |_- in this macro invocation
+    = note: requested on the command line with `-D unsafe-op-in-unsafe-fn`
+    = note: this error originates in the macro `$crate::container_of` which comes
+    from the expansion of the macro `impl_list_item`
 
-This should work since [1] did.
+Add unsafe blocks to container_of to fix the issue.
 
-There is one more (theoritical) scenario that I think is still not 
-covered. What happens in a case where 30bpp doesnot fit into DSC bandwidth?
-As I understand, the min bpp limit of 30bpp would become a bottle-neck 
-even then?
+Cc: stable@vger.kernel.org
+Fixes: c77f85b347dd ("rust: list: remove OFFSET constants")
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+  - Tidy up commit message and provide exact reason for the error.
+  - Add Reviewed-bys.
+---
+ rust/kernel/list/impl_list_item_mod.rs | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-
-[1] 
-https://github.com/ckborah/drm-tip-sandbox/commit/5dd10a763ae6e651a0ab494ab1ad0c9d81c2de47
-
-> 
->> I am working on a patch for this and should be able to float something soon.
->> Imre, if you agree with this policy, would you please wait for the patch.
->> That should make it easier to send out fix for stable kernels.
->>
->> ==
->> Chaitanya
->>
->>>> +    }
->>>> +
->>>>        if (dsc && !intel_dp_dsc_compute_pipe_bpp_limits(connector,
->>>> limits))
->>>>            return false;
->>
+diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
+index 202bc6f97c13..7052095efde5 100644
+--- a/rust/kernel/list/impl_list_item_mod.rs
++++ b/rust/kernel/list/impl_list_item_mod.rs
+@@ -217,7 +217,7 @@ unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+                 // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+                 // points at the field `$field` in a value of type `Self`. Thus, reversing that
+                 // operation is still in-bounds of the allocation.
+-                $crate::container_of!(me, Self, $($field).*)
++                unsafe { $crate::container_of!(me, Self, $($field).*) }
+             }
+ 
+             // GUARANTEES:
+@@ -242,7 +242,7 @@ unsafe fn post_remove(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
+                 // SAFETY: `me` originates from the most recent call to `prepare_to_insert`, so it
+                 // points at the field `$field` in a value of type `Self`. Thus, reversing that
+                 // operation is still in-bounds of the allocation.
+-                $crate::container_of!(me, Self, $($field).*)
++                unsafe { $crate::container_of!(me, Self, $($field).*) }
+             }
+         }
+     )*};
+@@ -270,9 +270,9 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate::list::ListLinks<$nu
+                 // SAFETY: The caller promises that `me` points at a valid value of type `Self`.
+                 let links_field = unsafe { <Self as $crate::list::ListItem<$num>>::view_links(me) };
+ 
+-                let container = $crate::container_of!(
++                let container = unsafe { $crate::container_of!(
+                     links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+-                );
++                ) };
+ 
+                 // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
+                 let self_ptr = unsafe {
+@@ -319,9 +319,9 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::list::ListLinks<$num> {
+             //   `ListArc` containing `Self` until the next call to `post_remove`. The value cannot
+             //   be destroyed while a `ListArc` reference exists.
+             unsafe fn view_value(links_field: *mut $crate::list::ListLinks<$num>) -> *const Self {
+-                let container = $crate::container_of!(
++                let container = unsafe { $crate::container_of!(
+                     links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+-                );
++                ) };
+ 
+                 // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
+                 let self_ptr = unsafe {
+-- 
+2.49.0
 
 
