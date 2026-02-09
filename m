@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-215260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215302-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qN38GLHyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:01 +0100
+	id yEY9GHfziWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215302-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A31110CDF
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04502110F41
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8C5530120CB
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B4ECB3006531
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D923D378D84;
-	Mon,  9 Feb 2026 14:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D08C2DB7B4;
+	Mon,  9 Feb 2026 14:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/3qdSbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOu3z87T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF853793BF;
-	Mon,  9 Feb 2026 14:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C561C25DB1C;
+	Mon,  9 Feb 2026 14:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648210; cv=none; b=hymMagouWH06XtdAPRjcvKWpj084otJc4/2BI/S1xY3qaHfUf9wvKiB13opyVvHvEfEjU8ki7pA6mqI3f88rMajCf07YDCGsCmRdToaEOx7m8ueN8boXkkwegzjXcCnxt5DPXbum7906NKz1D9uKHvG4VpTZBhC/9TymtI18myg=
+	t=1770648350; cv=none; b=h9O88V0XxTJb6L4fRIRcuM238Aiz94zAUu56n92ppcrOGBkLTcwwgac/ojSVvlzuKcsKf8UDt6KEEXtwISiL8Bzr0m2CbYOjgPsDE55WrTTxJ1HxXqWcOY1lsqSvqQDGtw3Y51Lhvf/qMDr7LgnFMq8xZQkmREf65LtHvaIM6wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648210; c=relaxed/simple;
-	bh=n97O9RoPhbVnonPHx6RsC4chGU/aFkREg68hbexJjGw=;
+	s=arc-20240116; t=1770648350; c=relaxed/simple;
+	bh=OlU/llq+1iE6TTAk+8tv3l/ApXVVik0tt3ZkOGzewyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZM1/f/3RSKyfcjYSyYwqQQbGmkbfLvnEgBmb0jEwBg2zeibvSrnpq5GVzuRsyCvCzdt/tZVQ+8R23KoqiOn+O/dJeLMvrg0dODuAgU3eFW+tSfzB87ir8pKR6NFYXv5+w3HWXhDqWvByxBM237gDprD/DxvSHWH02rob/N0KH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/3qdSbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBC4C116C6;
-	Mon,  9 Feb 2026 14:43:29 +0000 (UTC)
+	 MIME-Version; b=HAGUTErOnDsApqnkM2iSzZA7fTb1r4nW6lGibF+CClY5sVvOGi3IEeclyjYzUHJFHA7tN5h447dNYaXl/QufnaiTOSVyJRTjNy/7jdV9OtYIozwdnaOahJtt/KPGoafBLQRSsj4gOlGyGpS2bXgd9D5MwhHttNwrpqKnEQwalOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOu3z87T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54733C116C6;
+	Mon,  9 Feb 2026 14:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648210;
-	bh=n97O9RoPhbVnonPHx6RsC4chGU/aFkREg68hbexJjGw=;
+	s=korg; t=1770648350;
+	bh=OlU/llq+1iE6TTAk+8tv3l/ApXVVik0tt3ZkOGzewyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/3qdSbkbYNUex6nsAZTX7aeVHQPyInzT14Xs5fwW52EpTiJsK8cAU1IFWvXGlwK7
-	 hoJ2SEAfEicH12P/T3wRwUio3Nadpr3k3HbSOaZmw3B7Oi0d0XcTsjLkZ4srywPC5L
-	 Y+tWWL2r+KjvyDJul6rbvTekdMEHhkEtLcu9ojGI=
+	b=YOu3z87TI5uZ5/j6+ACpMLOeZrrNOsqG+7ouK3E6ZVq0bSRL+t6S/JQaUCksgiKE8
+	 4gqqszKpbHDhP3wLrH+nY4K9OisK43YqSc/szK/iLrci88JpjwQReCra0CI93V/ErQ
+	 YYsojfLQ74QxNRPZtabifiBtpaGYYY+mVmm2wMUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Marc Zyngier <maz@kernel.org>,
 	Oliver Upton <oupton@kernel.org>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 07/69] KVM: Dont clobber irqfd routing type when deassigning irqfd
+Subject: [PATCH 6.6 12/86] KVM: Dont clobber irqfd routing type when deassigning irqfd
 Date: Mon,  9 Feb 2026 15:23:35 +0100
-Message-ID: <20260209142302.181522464@linuxfoundation.org>
+Message-ID: <20260209142305.221319663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215260-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215302-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,11 +90,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 07A31110CDF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 04502110F41
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -222,7 +222,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/virt/kvm/eventfd.c
 +++ b/virt/kvm/eventfd.c
-@@ -148,21 +148,28 @@ irqfd_shutdown(struct work_struct *work)
+@@ -156,21 +156,28 @@ irqfd_shutdown(struct work_struct *work)
  }
  
  
@@ -258,7 +258,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	BUG_ON(!irqfd_is_active(irqfd));
  
  	list_del_init(&irqfd->list);
-@@ -203,8 +210,15 @@ irqfd_wakeup(wait_queue_entry_t *wait, u
+@@ -211,8 +218,15 @@ irqfd_wakeup(wait_queue_entry_t *wait, u
  			seq = read_seqcount_begin(&irqfd->irq_entry_sc);
  			irq = irqfd->irq_entry;
  		} while (read_seqcount_retry(&irqfd->irq_entry_sc, seq));
@@ -276,7 +276,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  					      KVM_USERSPACE_IRQ_SOURCE_ID, 1,
  					      false) == -EWOULDBLOCK)
  			schedule_work(&irqfd->inject);
-@@ -549,18 +563,8 @@ kvm_irqfd_deassign(struct kvm *kvm, stru
+@@ -557,18 +571,8 @@ kvm_irqfd_deassign(struct kvm *kvm, stru
  	spin_lock_irq(&kvm->irqfds.lock);
  
  	list_for_each_entry_safe(irqfd, tmp, &kvm->irqfds.items, list) {
