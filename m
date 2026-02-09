@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-215439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFzNGeT4iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:10:28 +0100
+	id 4FPTAun1iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD259111A71
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3365111477
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5D3730996E5
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 747F130A6284
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE4737B409;
-	Mon,  9 Feb 2026 14:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6E237AA8A;
+	Mon,  9 Feb 2026 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfhOtMo2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPykRQxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217EC28312F;
-	Mon,  9 Feb 2026 14:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F323A37AA71;
+	Mon,  9 Feb 2026 14:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648796; cv=none; b=fus//W3aEAUlOP5aGAxq788e/2vpH4LklNn3N6oGLJFgjQIsEMN52aIS0Q6kTGVC8gGxuQIoXxs9nK9VdfvQLNGuXUULDMDqlKmT6TAyFw3iGN+1HXMXs6ztJil2L7r3SSk/VOyG4PV8MLWMe5IznAOh1P6u5Ct78R73G2FruEw=
+	t=1770648234; cv=none; b=Qb7QIV2jYD/nQWYVVVmuWTCM8yHiSJA91bAw1fbsl1J73WQxZi1vd1HIXTzLoBG4zm1nYf2cBlp66bwEzpL24Ax1TsIFza9xl05CrIxDHNssjKYDMj5XiiSAdmpEBigMeCW3TavmyBsvequ23nLp34lCM8pKqybai7lBJ6O6xmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648796; c=relaxed/simple;
-	bh=BuHBdEiWL2J2p8hcKwJ6owCL+0eJHBXLpJH0AzcVAA0=;
+	s=arc-20240116; t=1770648234; c=relaxed/simple;
+	bh=Tq0FEzytigwUij/apLrU4pNdPemtGtij49VjMD4Nyw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPxAFuwS4nfzHGd6b12mjp9L3EQEYrTBIOPkkpzi90TpMNcOx2dTSXYKq+nE1VQoUbL78h0wo8X4MDdPIS2cUhFS4Lcf2WI52mJdMLHgeHijReVc8J/qKKaZBGoBFDs04qOryG9+Hk06EaIwQZX5YAE64gwbAYvAN9YKyW3h+uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfhOtMo2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1F7C116C6;
-	Mon,  9 Feb 2026 14:53:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P9SV/SurgptWRsXH28rusGJagJyWgvwgI+Krl2MLiSyVxe2dqO/+nIxVi7EHtVSDxK7yBi4ru5cJGZTMPh4k6Z6C5nR6C6bA6WHgEBYr3O3+miSV3pNts6uDteYobKHTQkOwPF6j2QEuf4VEtpVgNru4DSmLH0yHqQIFjpppZ44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPykRQxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63022C16AAE;
+	Mon,  9 Feb 2026 14:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648796;
-	bh=BuHBdEiWL2J2p8hcKwJ6owCL+0eJHBXLpJH0AzcVAA0=;
+	s=korg; t=1770648233;
+	bh=Tq0FEzytigwUij/apLrU4pNdPemtGtij49VjMD4Nyw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfhOtMo2IRpBem+UtwKBnhKtGxq63EpsF/3w48eafBCyJqYncjctWfoahds2c8Q77
-	 WCM2wHrXf0e1LqMmb4rHaKeHemeYVFvwGNyfie2PRfiK034BmOk+0548LkAr7wiQQo
-	 6JBl4nnkVCQFENkg2EBcllfjgx3FcI+r6LZg7GRw=
+	b=ZPykRQxRBb3vEUKuAbZ+h1JpCYMZGKtOukHIyBFehCWUQxaTSnhxO+kFOtO7W1q/L
+	 cnU7uP6b0wcSp4ArDKezj9GmWQET67TVNDtsT7Lw2QTQyHzvGnBh/gq4qSV8l9FVcO
+	 auLiIDI8rFr44jNN9fwaocGdXM2JYGUCp+0NKiC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 5.15 18/75] timers: Add shutdown mechanism to the internal functions
+	Paulo Alcantara <pc@manguebit.org>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 47/69] smb/client: fix memory leak in smb2_open_file()
 Date: Mon,  9 Feb 2026 15:24:15 +0100
-Message-ID: <20260209142302.500980508@linuxfoundation.org>
+Message-ID: <20260209142303.616336351@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,218 +65,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-215267-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215439-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,linutronix.de,roeck-us.net,intel.com,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linutronix.de:email,roeck-us.net:email]
-X-Rspamd-Queue-Id: CD259111A71
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,manguebit.org:email]
+X-Rspamd-Queue-Id: A3365111477
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-[ Upstream commit 0cc04e80458a822300b93f82ed861a513edde194 ]
+[ Upstream commit e3a43633023e3cacaca60d4b8972d084a2b06236 ]
 
-Tearing down timers which have circular dependencies to other
-functionality, e.g. workqueues, where the timer can schedule work and work
-can arm timers, is not trivial.
+Reproducer:
 
-In those cases it is desired to shutdown the timer in a way which prevents
-rearming of the timer. The mechanism to do so is to set timer->function to
-NULL and use this as an indicator for the timer arming functions to ignore
-the (re)arm request.
+  1. server: directories are exported read-only
+  2. client: mount -t cifs //${server_ip}/export /mnt
+  3. client: dd if=/dev/zero of=/mnt/file bs=512 count=1000 oflag=direct
+  4. client: umount /mnt
+  5. client: sleep 1
+  6. client: modprobe -r cifs
 
-Add a shutdown argument to the relevant internal functions which makes the
-actual deactivation code set timer->function to NULL which in turn prevents
-rearming of the timer.
+The error message is as follows:
 
-Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
-Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
-Link: https://lore.kernel.org/r/20221123201625.253883224@linutronix.de
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  =============================================================================
+  BUG cifs_small_rq (Not tainted): Objects remaining on __kmem_cache_shutdown()
+  -----------------------------------------------------------------------------
+
+  Object 0x00000000d47521be @offset=14336
+  ...
+  WARNING: mm/slub.c:1251 at __kmem_cache_shutdown+0x34e/0x440, CPU#0: modprobe/1577
+  ...
+  Call Trace:
+   <TASK>
+   kmem_cache_destroy+0x94/0x190
+   cifs_destroy_request_bufs+0x3e/0x50 [cifs]
+   cleanup_module+0x4e/0x540 [cifs]
+   __se_sys_delete_module+0x278/0x400
+   __x64_sys_delete_module+0x5f/0x70
+   x64_sys_call+0x2299/0x2ff0
+   do_syscall_64+0x89/0x350
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ...
+  kmem_cache_destroy cifs_small_rq: Slab cache still has objects when called from cifs_destroy_request_bufs+0x3e/0x50 [cifs]
+  WARNING: mm/slab_common.c:532 at kmem_cache_destroy+0x16b/0x190, CPU#0: modprobe/1577
+
+Link: https://lore.kernel.org/linux-cifs/9751f02d-d1df-4265-a7d6-b19761b21834@linux.dev/T/#mf14808c144448b715f711ce5f0477a071f08eaf6
+Fixes: e255612b5ed9 ("cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES")
+Reported-by: Paulo Alcantara <pc@manguebit.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer.c |   62 +++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 54 insertions(+), 8 deletions(-)
+ fs/smb/client/smb2file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1247,12 +1247,19 @@ EXPORT_SYMBOL_GPL(add_timer_on);
- /**
-  * __timer_delete - Internal function: Deactivate a timer
-  * @timer:	The timer to be deactivated
-+ * @shutdown:	If true, this indicates that the timer is about to be
-+ *		shutdown permanently.
-+ *
-+ * If @shutdown is true then @timer->function is set to NULL under the
-+ * timer base lock which prevents further rearming of the time. In that
-+ * case any attempt to rearm @timer after this function returns will be
-+ * silently ignored.
-  *
-  * Return:
-  * * %0 - The timer was not pending
-  * * %1 - The timer was pending and deactivated
-  */
--static int __timer_delete(struct timer_list *timer)
-+static int __timer_delete(struct timer_list *timer, bool shutdown)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1260,9 +1267,22 @@ static int __timer_delete(struct timer_l
- 
- 	debug_assert_init(timer);
- 
--	if (timer_pending(timer)) {
-+	/*
-+	 * If @shutdown is set then the lock has to be taken whether the
-+	 * timer is pending or not to protect against a concurrent rearm
-+	 * which might hit between the lockless pending check and the lock
-+	 * aquisition. By taking the lock it is ensured that such a newly
-+	 * enqueued timer is dequeued and cannot end up with
-+	 * timer->function == NULL in the expiry code.
-+	 *
-+	 * If timer->function is currently executed, then this makes sure
-+	 * that the callback cannot requeue the timer.
-+	 */
-+	if (timer_pending(timer) || shutdown) {
- 		base = lock_timer_base(timer, &flags);
- 		ret = detach_if_pending(timer, base, true);
-+		if (shutdown)
-+			timer->function = NULL;
- 		raw_spin_unlock_irqrestore(&base->lock, flags);
- 	}
- 
-@@ -1285,20 +1305,31 @@ static int __timer_delete(struct timer_l
-  */
- int timer_delete(struct timer_list *timer)
- {
--	return __timer_delete(timer);
-+	return __timer_delete(timer, false);
- }
- EXPORT_SYMBOL(timer_delete);
- 
- /**
-  * __try_to_del_timer_sync - Internal function: Try to deactivate a timer
-  * @timer:	Timer to deactivate
-+ * @shutdown:	If true, this indicates that the timer is about to be
-+ *		shutdown permanently.
-+ *
-+ * If @shutdown is true then @timer->function is set to NULL under the
-+ * timer base lock which prevents further rearming of the timer. Any
-+ * attempt to rearm @timer after this function returns will be silently
-+ * ignored.
-+ *
-+ * This function cannot guarantee that the timer cannot be rearmed
-+ * right after dropping the base lock if @shutdown is false. That
-+ * needs to be prevented by the calling code if necessary.
-  *
-  * Return:
-  * * %0  - The timer was not pending
-  * * %1  - The timer was pending and deactivated
-  * * %-1 - The timer callback function is running on a different CPU
-  */
--static int __try_to_del_timer_sync(struct timer_list *timer)
-+static int __try_to_del_timer_sync(struct timer_list *timer, bool shutdown)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1310,6 +1341,8 @@ static int __try_to_del_timer_sync(struc
- 
- 	if (base->running_timer != timer)
- 		ret = detach_if_pending(timer, base, true);
-+	if (shutdown)
-+		timer->function = NULL;
- 
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
- 
-@@ -1334,7 +1367,7 @@ static int __try_to_del_timer_sync(struc
-  */
- int try_to_del_timer_sync(struct timer_list *timer)
- {
--	return __try_to_del_timer_sync(timer);
-+	return __try_to_del_timer_sync(timer, false);
- }
- EXPORT_SYMBOL(try_to_del_timer_sync);
- 
-@@ -1415,12 +1448,25 @@ static inline void del_timer_wait_runnin
-  * __timer_delete_sync - Internal function: Deactivate a timer and wait
-  *			 for the handler to finish.
-  * @timer:	The timer to be deactivated
-+ * @shutdown:	If true, @timer->function will be set to NULL under the
-+ *		timer base lock which prevents rearming of @timer
-+ *
-+ * If @shutdown is not set the timer can be rearmed later. If the timer can
-+ * be rearmed concurrently, i.e. after dropping the base lock then the
-+ * return value is meaningless.
-+ *
-+ * If @shutdown is set then @timer->function is set to NULL under timer
-+ * base lock which prevents rearming of the timer. Any attempt to rearm
-+ * a shutdown timer is silently ignored.
-+ *
-+ * If the timer should be reused after shutdown it has to be initialized
-+ * again.
-  *
-  * Return:
-  * * %0	- The timer was not pending
-  * * %1	- The timer was pending and deactivated
-  */
--static int __timer_delete_sync(struct timer_list *timer)
-+static int __timer_delete_sync(struct timer_list *timer, bool shutdown)
- {
- 	int ret;
- 
-@@ -1450,7 +1496,7 @@ static int __timer_delete_sync(struct ti
- 		lockdep_assert_preemption_enabled();
- 
- 	do {
--		ret = __try_to_del_timer_sync(timer);
-+		ret = __try_to_del_timer_sync(timer, shutdown);
- 
- 		if (unlikely(ret < 0)) {
- 			del_timer_wait_running(timer);
-@@ -1502,7 +1548,7 @@ static int __timer_delete_sync(struct ti
-  */
- int timer_delete_sync(struct timer_list *timer)
- {
--	return __timer_delete_sync(timer);
-+	return __timer_delete_sync(timer, false);
- }
- EXPORT_SYMBOL(timer_delete_sync);
- 
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index afdc78e92ee9b..7fc7fcabce80c 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -123,6 +123,7 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
+ 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 		       &err_buftype);
+ 	if (rc == -EACCES && retry_without_read_attributes) {
++		free_rsp_buf(err_buftype, err_iov.iov_base);
+ 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
+ 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 			       &err_buftype);
+-- 
+2.51.0
+
 
 
 
