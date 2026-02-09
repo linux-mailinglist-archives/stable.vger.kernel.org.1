@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBQ2GzzwiWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-215080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:33:32 +0100
+	id sFLLDhXyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F93A1106F9
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A00C110B21
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 276FD3004CA5
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C0C9A300E4B0
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0577914F112;
-	Mon,  9 Feb 2026 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4381E37C0E7;
+	Mon,  9 Feb 2026 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNo9vKA6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2I5AGA3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD90259CAF;
-	Mon,  9 Feb 2026 14:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074E337C0F2;
+	Mon,  9 Feb 2026 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647607; cv=none; b=LPO4Z2LLIwk8jKXe+Ryi/9V4FgY4z44DXYEHewxLODOu8lrjV8riwPyj10zujgA52KceRPD5IODKJrQRRO/vXvfg/qtg9EreQrU+rcpSbrKty0QVCbCm0+AFDK3xzX0SsgSgYHT4ZBXHxOW9a7efMkTX6345i6oDbdzdqe8ymIQ=
+	t=1770647941; cv=none; b=AornRzXAh20j36lj9Dkw2rB8sHpKOCeS0xAig3i2G0F/+nhVo4LyM3+OWqckq3ueICtj1WlY2N2yGTSVvwCp3KcaXcTSX2XyKb6dpfEaxIhSw8c0y5iMqz1g/Sp20llX3E1+bV93uWHatBSltZulzsitlIGz9aGGwYsnNQ3TkKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647607; c=relaxed/simple;
-	bh=jdJsZwPSBENFYNgZcunc1MhO3os4xLM3R61j4BrTwT8=;
+	s=arc-20240116; t=1770647941; c=relaxed/simple;
+	bh=LIIEoddAiGKPboJcKmHu7avzmEMTUxQ47Iyk8LMSRX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVbKhXxvBiEylTAdwf7w5GVtWRNUQGHr4Mpsj1pBGXQOO8lySjgiqmGJgYtcxHCb6Ljm3n+lAv/DHoBl4Y5Mxt6QNp9dmrkRj8pSaphYvWG39+6w8hpwt9HMVkO+4or/8UocREhGPW1sgEjMUEsbM/NglhRC/uAn2LxAztsSgwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNo9vKA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330C1C116C6;
-	Mon,  9 Feb 2026 14:33:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SKdbSCdl0iUw16TURn5mwa0AMnLVZA8Ik5pZirvU2vc/M154U6Ck60MtbuaAOyScZoQBfPXnSc2jCm3Xy2wbRUmrCZaTU1nLFCImm1VBeVuhuo2tKMhClGrBU/wG/SbNQxHiPxlLP8IOCJ+yytHSVrbOdf4YrVSYSkEl0Ea3ovo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2I5AGA3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203C7C16AAE;
+	Mon,  9 Feb 2026 14:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647607;
-	bh=jdJsZwPSBENFYNgZcunc1MhO3os4xLM3R61j4BrTwT8=;
+	s=korg; t=1770647940;
+	bh=LIIEoddAiGKPboJcKmHu7avzmEMTUxQ47Iyk8LMSRX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNo9vKA6lF8I97xn4rTKtsAizGJb4mxPYQ430Rksvd9iQG6Kikx1OEazZC6TZXZYM
-	 358EUYGfKNnykTqGcAcp6f/BxCqr2zq7n58aRG3psibxsohY1lNaBtSCbIgARWPJnp
-	 cwr+3zzqKytsdqLtqs6X5avPDj6HvHYrpI9zXX04=
+	b=2I5AGA3JhLXGhJMgc1vfpv8bjffg2OX74ZdG8dUWI9ow8Y7ikayekSNSoJzTbStG5
+	 OT/owTi8blPpExgBaVFKQVjq9oKMexwvXSGq55+xLCqpVRlGa98qlvJ72zrMQrWXP0
+	 Od4MEh+UwDUBt8xZ/zu+5vyPCHqETNqwuUHzLYK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 150/175] drm/mgag200: fix mgag200_bmc_stop_scanout()
+Subject: [PATCH 6.12 074/113] platform/x86: intel_telemetry: Fix PSS event register mask
 Date: Mon,  9 Feb 2026 15:23:43 +0100
-Message-ID: <20260209142325.897191201@linuxfoundation.org>
+Message-ID: <20260209142312.846153076@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,249 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215080-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-215180-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 8F93A1106F9
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7A00C110B21
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 0e0c8f4d16de92520623aa1ea485cadbf64e6929 ]
+[ Upstream commit 39e9c376ac42705af4ed4ae39eec028e8bced9b4 ]
 
-The mgag200_bmc_stop_scanout() function is called by the .atomic_disable()
-handler for the MGA G200 VGA BMC encoder. This function performs a few
-register writes to inform the BMC of an upcoming mode change, and then
-polls to wait until the BMC actually stops.
+The PSS telemetry info parsing incorrectly applies
+TELEM_INFO_SRAMEVTS_MASK when extracting event register
+count from firmware response. This reads bits 15-8 instead
+of the correct bits 7-0, causing misdetection of hardware
+capabilities.
 
-The polling is implemented using a busy loop with udelay() and an iteration
-timeout of 300, resulting in the function blocking for 300 milliseconds.
+The IOSS path correctly uses TELEM_INFO_NENABLES_MASK for
+register count. Apply the same mask to PSS parsing for
+consistency.
 
-The function gets called ultimately by the output_poll_execute work thread
-for the DRM output change polling thread of the mgag200 driver:
-
-kworker/0:0-mm_    3528 [000]  4555.315364:
-        ffffffffaa0e25b3 delay_halt.part.0+0x33
-        ffffffffc03f6188 mgag200_bmc_stop_scanout+0x178
-        ffffffffc087ae7a disable_outputs+0x12a
-        ffffffffc087c12a drm_atomic_helper_commit_tail+0x1a
-        ffffffffc03fa7b6 mgag200_mode_config_helper_atomic_commit_tail+0x26
-        ffffffffc087c9c1 commit_tail+0x91
-        ffffffffc087d51b drm_atomic_helper_commit+0x11b
-        ffffffffc0509694 drm_atomic_commit+0xa4
-        ffffffffc05105e8 drm_client_modeset_commit_atomic+0x1e8
-        ffffffffc0510ce6 drm_client_modeset_commit_locked+0x56
-        ffffffffc0510e24 drm_client_modeset_commit+0x24
-        ffffffffc088a743 __drm_fb_helper_restore_fbdev_mode_unlocked+0x93
-        ffffffffc088a683 drm_fb_helper_hotplug_event+0xe3
-        ffffffffc050f8aa drm_client_dev_hotplug+0x9a
-        ffffffffc088555a output_poll_execute+0x29a
-        ffffffffa9b35924 process_one_work+0x194
-        ffffffffa9b364ee worker_thread+0x2fe
-        ffffffffa9b3ecad kthread+0xdd
-        ffffffffa9a08549 ret_from_fork+0x29
-
-On a server running ptp4l with the mgag200 driver loaded, we found that
-ptp4l would sometimes get blocked from execution because of this busy
-waiting loop.
-
-Every so often, approximately once every 20 minutes -- though with large
-variance -- the output_poll_execute() thread would detect some sort of
-change that required performing a hotplug event which results in attempting
-to stop the BMC scanout, resulting in a 300msec delay on one CPU.
-
-On this system, ptp4l was pinned to a single CPU. When the
-output_poll_execute() thread ran on that CPU, it blocked ptp4l from
-executing for its 300 millisecond duration.
-
-This resulted in PTP service disruptions such as failure to send a SYNC
-message on time, failure to handle ANNOUNCE messages on time, and clock
-check warnings from the application. All of this despite the application
-being configured with FIFO_RT and a higher priority than the background
-workqueue tasks. (However, note that the kernel did not use
-CONFIG_PREEMPT...)
-
-It is unclear if the event is due to a faulty VGA connection, another bug,
-or actual events causing a change in the connection. At least on the system
-under test it is not a one-time event and consistently causes disruption to
-the time sensitive applications.
-
-The function has some helpful comments explaining what steps it is
-attempting to take. In particular, step 3a and 3b are explained as such:
-
-  3a - The third step is to verify if there is an active scan. We are
-       waiting on a 0 on remhsyncsts (<XSPAREREG<0>.
-
-  3b - This step occurs only if the remove is actually scanning. We are
-       waiting for the end of the frame which is a 1 on remvsyncsts
-       (<XSPAREREG<1>).
-
-The actual steps 3a and 3b are implemented as while loops with a
-non-sleeping udelay(). The first step iterates while the tmp value at
-position 0 is *not* set. That is, it keeps iterating as long as the bit is
-zero. If the bit is already 0 (because there is no active scan), it will
-iterate the entire 300 attempts which wastes 300 milliseconds in total.
-This is opposite of what the description claims.
-
-The step 3b logic only executes if we do not iterate over the entire 300
-attempts in the first loop. If it does trigger, it is trying to check and
-wait for a 1 on the remvsyncsts. However, again the condition is actually
-inverted and it will loop as long as the bit is 1, stopping once it hits
-zero (rather than the explained attempt to wait until we see a 1).
-
-Worse, both loops are implemented using non-sleeping waits which spin
-instead of allowing the scheduler to run other processes. If the kernel is
-not configured to allow arbitrary preemption, it will waste valuable CPU
-time doing nothing.
-
-There does not appear to be any documentation for the BMC register
-interface, beyond what is in the comments here. It seems more probable that
-the comment here is correct and the implementation accidentally got
-inverted from the intended logic.
-
-Reading through other DRM driver implementations, it does not appear that
-the .atomic_enable or .atomic_disable handlers need to delay instead of
-sleep. For example, the ast_astdp_encoder_helper_atomic_disable() function
-calls ast_dp_set_phy_sleep() which uses msleep(). The "atomic" in the name
-is referring to the atomic modesetting support, which is the support to
-enable atomic configuration from userspace, and not to the "atomic context"
-of the kernel. There is no reason to use udelay() here if a sleep would be
-sufficient.
-
-Replace the while loops with a read_poll_timeout() based implementation
-that will sleep between iterations, and which stops polling once the
-condition is met (instead of looping as long as the condition is met). This
-aligns with the commented behavior and avoids blocking on the CPU while
-doing nothing.
-
-Note the RREG_DAC is implemented using a statement expression to allow
-working properly with the read_poll_timeout family of functions. The other
-RREG_<TYPE> macros ought to be cleaned up to have better semantics, and
-several places in the mgag200 driver could make use of RREG_DAC or similar
-RREG_* macros should likely be cleaned up for better semantics as well, but
-that task has been left as a future cleanup for a non-bugfix.
-
-Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260202-jk-mgag200-fix-bad-udelay-v2-1-ce1e9665987d@intel.com
+Fixes: 9d16b482b059 ("platform:x86: Add Intel telemetry platform driver")
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Link: https://patch.msgid.link/20251224061144.3925519-1-kaushlendra.kumar@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_bmc.c | 31 +++++++++++----------------
- drivers/gpu/drm/mgag200/mgag200_drv.h |  6 ++++++
- 2 files changed, 18 insertions(+), 19 deletions(-)
+ drivers/platform/x86/intel/telemetry/pltdrv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mgag200/mgag200_bmc.c b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-index a689c71ff1653..bbdeb791c5b38 100644
---- a/drivers/gpu/drm/mgag200/mgag200_bmc.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
- #include <linux/delay.h>
-+#include <linux/iopoll.h>
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_edid.h>
-@@ -12,7 +13,7 @@
- void mgag200_bmc_stop_scanout(struct mga_device *mdev)
- {
- 	u8 tmp;
--	int iter_max;
-+	int ret;
- 
- 	/*
- 	 * 1 - The first step is to inform the BMC of an upcoming mode
-@@ -42,30 +43,22 @@ void mgag200_bmc_stop_scanout(struct mga_device *mdev)
- 
- 	/*
- 	 * 3a- The third step is to verify if there is an active scan.
--	 * We are waiting for a 0 on remhsyncsts <XSPAREREG<0>).
-+	 * We are waiting for a 0 on remhsyncsts (<XSPAREREG<0>).
- 	 */
--	iter_max = 300;
--	while (!(tmp & 0x1) && iter_max) {
--		WREG8(DAC_INDEX, MGA1064_SPAREREG);
--		tmp = RREG8(DAC_DATA);
--		udelay(1000);
--		iter_max--;
--	}
-+	ret = read_poll_timeout(RREG_DAC, tmp, !(tmp & 0x1),
-+				1000, 300000, false,
-+				MGA1064_SPAREREG);
-+	if (ret == -ETIMEDOUT)
-+		return;
- 
- 	/*
--	 * 3b- This step occurs only if the remove is actually
-+	 * 3b- This step occurs only if the remote BMC is actually
- 	 * scanning. We are waiting for the end of the frame which is
- 	 * a 1 on remvsyncsts (XSPAREREG<1>)
- 	 */
--	if (iter_max) {
--		iter_max = 300;
--		while ((tmp & 0x2) && iter_max) {
--			WREG8(DAC_INDEX, MGA1064_SPAREREG);
--			tmp = RREG8(DAC_DATA);
--			udelay(1000);
--			iter_max--;
--		}
--	}
-+	(void)read_poll_timeout(RREG_DAC, tmp, (tmp & 0x2),
-+				1000, 300000, false,
-+				MGA1064_SPAREREG);
- }
- 
- void mgag200_bmc_start_scanout(struct mga_device *mdev)
-diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
-index f4bf40cd7c88a..a875c4bf8cbe4 100644
---- a/drivers/gpu/drm/mgag200/mgag200_drv.h
-+++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-@@ -111,6 +111,12 @@
- #define DAC_INDEX 0x3c00
- #define DAC_DATA 0x3c0a
- 
-+#define RREG_DAC(reg)						\
-+	({							\
-+		WREG8(DAC_INDEX, reg);				\
-+		RREG8(DAC_DATA);				\
-+	})							\
-+
- #define WREG_DAC(reg, v)					\
- 	do {							\
- 		WREG8(DAC_INDEX, reg);				\
+diff --git a/drivers/platform/x86/intel/telemetry/pltdrv.c b/drivers/platform/x86/intel/telemetry/pltdrv.c
+index 767a0bc6c7ad5..29991bc80dada 100644
+--- a/drivers/platform/x86/intel/telemetry/pltdrv.c
++++ b/drivers/platform/x86/intel/telemetry/pltdrv.c
+@@ -610,7 +610,7 @@ static int telemetry_setup(struct platform_device *pdev)
+ 	/* Get telemetry Info */
+ 	events = (read_buf & TELEM_INFO_SRAMEVTS_MASK) >>
+ 		  TELEM_INFO_SRAMEVTS_SHIFT;
+-	event_regs = read_buf & TELEM_INFO_SRAMEVTS_MASK;
++	event_regs = read_buf & TELEM_INFO_NENABLES_MASK;
+ 	if ((events < TELEM_MAX_EVENTS_SRAM) ||
+ 	    (event_regs < TELEM_MAX_EVENTS_SRAM)) {
+ 		dev_err(&pdev->dev, "PSS:Insufficient Space for SRAM Trace\n");
 -- 
 2.51.0
 
