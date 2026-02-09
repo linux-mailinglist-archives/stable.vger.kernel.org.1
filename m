@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OB1RE1nyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:33 +0100
+	id mC2wJZL1iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AB1110BD3
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA1211139D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B3E1303A909
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:39:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3613310C242
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2894037E30E;
-	Mon,  9 Feb 2026 14:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5B23793BF;
+	Mon,  9 Feb 2026 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDB9jsp9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urODWAFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E031037E300;
-	Mon,  9 Feb 2026 14:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503E92222B2;
+	Mon,  9 Feb 2026 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647958; cv=none; b=JPPNebWGCV4z3Ce6yPe5uCtN5NF21wzs9QowsrWng7rl0nZUcDxLD96jUkLpqeUFxsENzyvFHZ4T7I9qUyatBAHPY3nRbQq2yc5sZtUflEulk7AZdd8QPRAUT5/oz7f51nuAkN3NuS1ToC6BJtgVcPojlMkFuZPrGDg0Za+0r10=
+	t=1770648146; cv=none; b=aUW4TD1Dd3+6jRPily8QICoE9jD5/uaQSFN6c4rmmR4xcadzvojVaoIEwCVTanXe+FuMfQtPd+bmLcgOJH24hD3Kc67qdIhIEDGVcrvvW0dnggWtXEPnu/tIgmfDZavVnFYKuQSvSc81dyQVIfboRnRxh9CHIZ9oL6IxYrx6PLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647958; c=relaxed/simple;
-	bh=uUt+KcK6xbdxLv2lZCFsxTz6SxgFUKYAqfVInUAO2J0=;
+	s=arc-20240116; t=1770648146; c=relaxed/simple;
+	bh=n8TDFrI6FMBXguhr3CiUl28ukJ7P1EnRKFeT3+QY+Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1t3NvSVcFryA+2BigNN7ODhWVhkxvBtmz5afD24eBOCRyOtkqxrVSbHITrH1tc+XVuaDOF+mZBApL0d+8czT9NswzUvoQvMfGSErk8oTbGWGsGkVKrZeOuCRYJdqF0eDq60Hfxwibqrm9kIDMD1ApRlapdNhRkEOBBVaEsrLok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDB9jsp9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458BEC19423;
-	Mon,  9 Feb 2026 14:39:17 +0000 (UTC)
+	 MIME-Version; b=oJwv3ZmCTbbrPD5tdq+4GIC09S9XowcCRatMhRAe6vPNCa6oYtjQhX+RGGfropI/WSw4P5k7GUhcUS1RYiXL8bhFDniSe4k61DpGVq+RehrakU+5F2uuG/rDhAPjt3FWR+B83dqmiGCuT7umvDb4ddlzPfGOZHVb83pma1Agwlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urODWAFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8E8C116C6;
+	Mon,  9 Feb 2026 14:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647957;
-	bh=uUt+KcK6xbdxLv2lZCFsxTz6SxgFUKYAqfVInUAO2J0=;
+	s=korg; t=1770648146;
+	bh=n8TDFrI6FMBXguhr3CiUl28ukJ7P1EnRKFeT3+QY+Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDB9jsp9igHb1QShjrjVUfUweljL+sPtOBevLcKG1bMi4vd0aAnx6eIllRbbv9QzV
-	 yOlPpDbt3rjVhpgDXI6qBpshTUc8LEk6CTgljir5mqM47Dgo8olSBHiRMfGMan4CqE
-	 CDT+sUzoxSPnhUsKvUzBSRnZqxlSSBg3aW4X4hP4=
+	b=urODWAFhZWDEulVVbov/1u41cAcnapceBkAvTniSjUq+axu403xp0P+kptJ/Q0Be4
+	 NPjrUAaXZR9esNTUfrdEzA3O50Fqpmiln0QM/g9UPPS6NxJJKD4FjOSSWwnxfKJLyi
+	 q2f5i1TyvwNNlh9+ZsrDpvJPd1wH86VTUGokOhDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/113] net/sched: cls_u32: use skb_header_pointer_careful()
+Subject: [PATCH 6.1 20/69] net: usb: sr9700: support devices with virtual driver CD
 Date: Mon,  9 Feb 2026 15:23:48 +0100
-Message-ID: <20260209142313.023557748@linuxfoundation.org>
+Message-ID: <20260209142302.655509515@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215185-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215241-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 67AB1110BD3
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,draisberghof.de:url]
+X-Rspamd-Queue-Id: EBA1211139D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
+[ Upstream commit bf4172bd870c3a34d3065cbb39192c22cbd7b18d ]
 
-skb_header_pointer() does not fully validate negative @offset values.
+Some SR9700 devices have an SPI flash chip containing a virtual driver
+CD, in which case they appear as a device with two interfaces and
+product ID 0x9702. Interface 0 is the driver CD and interface 1 is the
+Ethernet device.
 
-Use skb_header_pointer_careful() instead.
-
-GangMin Kim provided a report and a repro fooling u32_classify():
-
-BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
-net/sched/cls_u32.c:221
-
-Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/name-kurniawan/usb-lan
+Link: https://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=2185
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Link: https://patch.msgid.link/20251211062451.139036-1-enelsonmoore@gmail.com
+[pabeni@redhat.com: fixes link tags]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_u32.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/net/usb/sr9700.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index 2a1c00048fd6f..58e849c0acf41 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -161,10 +161,8 @@ TC_INDIRECT_SCOPE int u32_classify(struct sk_buff *skb,
- 			int toff = off + key->off + (off2 & key->offmask);
- 			__be32 *data, hdata;
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 9587eb98cdb3b..213b4817cfdf6 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -539,6 +539,11 @@ static const struct usb_device_id products[] = {
+ 		USB_DEVICE(0x0fe6, 0x9700),	/* SR9700 device */
+ 		.driver_info = (unsigned long)&sr9700_driver_info,
+ 	},
++	{
++		/* SR9700 with virtual driver CD-ROM - interface 0 is the CD-ROM device */
++		USB_DEVICE_INTERFACE_NUMBER(0x0fe6, 0x9702, 1),
++		.driver_info = (unsigned long)&sr9700_driver_info,
++	},
+ 	{},			/* END */
+ };
  
--			if (skb_headroom(skb) + toff > INT_MAX)
--				goto out;
--
--			data = skb_header_pointer(skb, toff, 4, &hdata);
-+			data = skb_header_pointer_careful(skb, toff, 4,
-+							  &hdata);
- 			if (!data)
- 				goto out;
- 			if ((*data ^ key->val) & key->mask) {
-@@ -214,8 +212,9 @@ TC_INDIRECT_SCOPE int u32_classify(struct sk_buff *skb,
- 		if (ht->divisor) {
- 			__be32 *data, hdata;
- 
--			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
--						  &hdata);
-+			data = skb_header_pointer_careful(skb,
-+							  off + n->sel.hoff,
-+							  4, &hdata);
- 			if (!data)
- 				goto out;
- 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
-@@ -229,7 +228,7 @@ TC_INDIRECT_SCOPE int u32_classify(struct sk_buff *skb,
- 			if (n->sel.flags & TC_U32_VAROFFSET) {
- 				__be16 *data, hdata;
- 
--				data = skb_header_pointer(skb,
-+				data = skb_header_pointer_careful(skb,
- 							  off + n->sel.offoff,
- 							  2, &hdata);
- 				if (!data)
 -- 
 2.51.0
 
