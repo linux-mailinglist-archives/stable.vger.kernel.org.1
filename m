@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOoDAiDxiWnyEgAAu9opvQ
-	(envelope-from <stable+bounces-215028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:20 +0100
+	id 8Cs8DNbyiWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7293E1108AC
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8155C110D3B
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B021308A857
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:30:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5BBE309463D
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B44C360741;
-	Mon,  9 Feb 2026 14:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1205A37BE6C;
+	Mon,  9 Feb 2026 14:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Whv8cbQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xT6ifQ8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F71723B604;
-	Mon,  9 Feb 2026 14:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2F137AA6B;
+	Mon,  9 Feb 2026 14:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647433; cv=none; b=SqkFlMB2kMraxFsWNld1hiWNb1jM8xMjOC1cN4U51Aa8g6klcjTLdAaRihbsrL8rMkWGZL3L7RMkoHRLKjcwsQxN3pKyBdNvo0btpH+8B6kMs3EVgdVFnGJCl669oSAnbXY6zwhTyknjDilBqdxO6QRHp/9HE4PVtLcz0GpDqo8=
+	t=1770647770; cv=none; b=IsjCRkm+0aACagIcNGNtH3O6UiPoIplcdS9fqmvTgcJzGrZ3ZWyjdqMWY4Aj3LXGotd2vK+l5LAmQ1xfjtPzn1agP1LxTLwn12p+7LoTY1lGrq65C950mo1yO5oM9ft8NZGem6ahdCk/sL5o+Q3JYRZLnaEeMvqta7bMm5aRtcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647433; c=relaxed/simple;
-	bh=ZWdXkSec91ruftnq+NDvW50KhcxUZVjLW5SufT2osWk=;
+	s=arc-20240116; t=1770647770; c=relaxed/simple;
+	bh=Y8bTsl91ZMoRE0Y2dGskOww6PvcjW5bDWyIyt1xq/WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WU2DktGsii8D7MtFM8pUHPyNh9Xrt2LStWU+7UQCggSC9zs1RVZvdu30/dLz7WMFBHXfyXa6xcuTS3PHpGVr8dtS3HnAdyiopWuaJQfeDjRMD4Q5C6RAF8BhB1VXa4GbK3w99EJKiqkI722A+pnhdcSS6AfH73m7p2TAW3wda3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Whv8cbQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E44C116C6;
-	Mon,  9 Feb 2026 14:30:31 +0000 (UTC)
+	 MIME-Version; b=bmEQJmAdg5DNUAj1wqogJe7o+Y1irCke/Y6GQF9lACLctWYy9e4b65xkoBOJi7PU4p5wSmk6qlSvY9HPX/ebWzgfYLcCRr7TeIlmsqaTbgZtePMhK103twIEQBVQpziEo2saGPBK3O+xzThfbugqAROAuK1jj0dMILMQPr0Ct1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xT6ifQ8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B559C116C6;
+	Mon,  9 Feb 2026 14:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647433;
-	bh=ZWdXkSec91ruftnq+NDvW50KhcxUZVjLW5SufT2osWk=;
+	s=korg; t=1770647770;
+	bh=Y8bTsl91ZMoRE0Y2dGskOww6PvcjW5bDWyIyt1xq/WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Whv8cbQM3IscYOo7Tt041eNYl7uGtnVaS/OymDyzV3E4cuVlTXqk+08ohhwbCRPhc
-	 m9JfmXAUOd+utQXnDvlmi5F8zDSg+BqbQRso5tm/DIEDyPOGPalMUACZrvh2ShKe7z
-	 LnMtFylzcSb18Q+raGSTRDmjD8b3lT+OwAnkW6ZA=
+	b=xT6ifQ8BNH5zWKBJfnA4OMUwEsaZHqpLv7WFk4/vlpAu9g2e0IbdQjERqGKcYfLu9
+	 csJLznhfuPDI9+Wfu9XU6CtphIHdt5mGL26B+XCraSCVtGDrGzXguBNNXFDgQdxNYl
+	 ppf2BqmyJg90IOvJm8JoH1DTOO6CyDPvfuuycV48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/175] wifi: cfg80211: Fix bitrate calculation overflow for HE rates
+	Ming Lei <ming.lei@redhat.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.12 023/113] ublk: fix deadlock when reading partition table
 Date: Mon,  9 Feb 2026 15:22:52 +0100
-Message-ID: <20260209142323.982826378@linuxfoundation.org>
+Message-ID: <20260209142311.042505770@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +68,140 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215028-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215129-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,purestorage.com,kernel.dk,foxmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 7293E1108AC
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,foxmail.com:email]
+X-Rspamd-Queue-Id: 8155C110D3B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit a3034bf0746d88a00cceda9541534a5721445a24 ]
+commit c258f5c4502c9667bccf5d76fa731ab9c96687c1 upstream.
 
-An integer overflow occurs in cfg80211_calculate_bitrate_he() when
-calculating bitrates for high throughput HE configurations.
-For example, with 160 MHz bandwidth, HE-MCS 13, HE-NSS 4, and HE-GI 0,
-the multiplication (result * rate->nss) overflows the 32-bit 'result'
-variable before division by 8, leading to significantly underestimated
-bitrate values.
+When one process(such as udev) opens ublk block device (e.g., to read
+the partition table via bdev_open()), a deadlock[1] can occur:
 
-The overflow occurs because the NSS multiplication operates on a 32-bit
-integer that cannot accommodate intermediate values exceeding
-4,294,967,295. When overflow happens, the value wraps around, producing
-incorrect bitrates for high MCS and NSS combinations.
+1. bdev_open() grabs disk->open_mutex
+2. The process issues read I/O to ublk backend to read partition table
+3. In __ublk_complete_rq(), blk_update_request() or blk_mq_end_request()
+   runs bio->bi_end_io() callbacks
+4. If this triggers fput() on file descriptor of ublk block device, the
+   work may be deferred to current task's task work (see fput() implementation)
+5. This eventually calls blkdev_release() from the same context
+6. blkdev_release() tries to grab disk->open_mutex again
+7. Deadlock: same task waiting for a mutex it already holds
 
-Fix this by utilizing the 64-bit 'tmp' variable for the NSS
-multiplication and subsequent divisions via do_div(). This approach
-preserves full precision throughout the entire calculation, with the
-final value assigned to 'result' only after completing all operations.
+The fix is to run blk_update_request() and blk_mq_end_request() with bottom
+halves disabled. This forces blkdev_release() to run in kernel work-queue
+context instead of current task work context, and allows ublk server to make
+forward progress, and avoids the deadlock.
 
-Signed-off-by: Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260109-he_bitrate_overflow-v1-1-95575e466b6e@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
+Link: https://github.com/ublk-org/ublksrv/issues/170 [1]
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+[axboe: rewrite comment in ublk]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ The fix omits the change in __ublk_do_auto_buf_reg() since this function
+  doesn't exist in Linux 6.12. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/util.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/block/ublk_drv.c |   30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 4eb028ad16836..81d6d27d273cc 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1561,12 +1561,14 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	tmp = result;
- 	tmp *= SCALE;
- 	do_div(tmp, mcs_divisors[rate->mcs]);
--	result = tmp;
- 
- 	/* and take NSS, DCM into account */
--	result = (result * rate->nss) / 8;
-+	tmp *= rate->nss;
-+	do_div(tmp, 8);
- 	if (rate->he_dcm)
--		result /= 2;
-+		do_div(tmp, 2);
-+
-+	result = tmp;
- 
- 	return result / 10000;
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1020,6 +1020,13 @@ static inline bool ubq_daemon_is_dying(s
+ 	return ubq->ubq_daemon->flags & PF_EXITING;
  }
--- 
-2.51.0
-
+ 
++static void ublk_end_request(struct request *req, blk_status_t error)
++{
++	local_bh_disable();
++	blk_mq_end_request(req, error);
++	local_bh_enable();
++}
++
+ /* todo: handle partial completion */
+ static inline void __ublk_complete_rq(struct request *req)
+ {
+@@ -1027,6 +1034,7 @@ static inline void __ublk_complete_rq(st
+ 	struct ublk_io *io = &ubq->ios[req->tag];
+ 	unsigned int unmapped_bytes;
+ 	blk_status_t res = BLK_STS_OK;
++	bool requeue;
+ 
+ 	/* called from ublk_abort_queue() code path */
+ 	if (io->flags & UBLK_IO_FLAG_ABORTED) {
+@@ -1064,14 +1072,30 @@ static inline void __ublk_complete_rq(st
+ 	if (unlikely(unmapped_bytes < io->res))
+ 		io->res = unmapped_bytes;
+ 
+-	if (blk_update_request(req, BLK_STS_OK, io->res))
++	/*
++	 * Run bio->bi_end_io() with softirqs disabled. If the final fput
++	 * happens off this path, then that will prevent ublk's blkdev_release()
++	 * from being called on current's task work, see fput() implementation.
++	 *
++	 * Otherwise, ublk server may not provide forward progress in case of
++	 * reading the partition table from bdev_open() with disk->open_mutex
++	 * held, and causes dead lock as we could already be holding
++	 * disk->open_mutex here.
++	 *
++	 * Preferably we would not be doing IO with a mutex held that is also
++	 * used for release, but this work-around will suffice for now.
++	 */
++	local_bh_disable();
++	requeue = blk_update_request(req, BLK_STS_OK, io->res);
++	local_bh_enable();
++	if (requeue)
+ 		blk_mq_requeue_request(req, true);
+ 	else
+ 		__blk_mq_end_request(req, BLK_STS_OK);
+ 
+ 	return;
+ exit:
+-	blk_mq_end_request(req, res);
++	ublk_end_request(req, res);
+ }
+ 
+ static void ublk_complete_rq(struct kref *ref)
+@@ -1149,7 +1173,7 @@ static inline void __ublk_abort_rq(struc
+ 	if (ublk_nosrv_dev_should_queue_io(ubq->dev))
+ 		blk_mq_requeue_request(rq, false);
+ 	else
+-		blk_mq_end_request(rq, BLK_STS_IOERR);
++		ublk_end_request(rq, BLK_STS_IOERR);
+ }
+ 
+ static inline void __ublk_rq_task_work(struct request *req,
 
 
 
