@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNN8MLDziWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:16 +0100
+	id EOc5Bj30iWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59972110FD9
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:48:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACBA111111
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3A143021D12
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A53D630E4642
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B942C3268;
-	Mon,  9 Feb 2026 14:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226D637AA71;
+	Mon,  9 Feb 2026 14:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJiM3ZZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elVhPh9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9793627CCF2;
-	Mon,  9 Feb 2026 14:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0F2276028;
+	Mon,  9 Feb 2026 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648388; cv=none; b=g18bQ6FI6R/1kKtp70L3MDQAv+JNTLrQUZCxpSuB6WKqihgXDLySd0OhLF+C9/E79VuuLYdNsJdNVr1Iv/BnGdyzupNLynW0REqvHbTgwtNf/MlEdb71WRFZQBirS4YfkCW3Cu/XLmvUPBac/4OFO/uYDFYEFrT7zJGU5xanCw4=
+	t=1770648105; cv=none; b=d4azgGU9019OaEo62aoJDjPBMsWJb7Z0uwajYSIYBswgnsKvG0QRikE6saZY7tqlJbCQrPERtSwDHVLxgxzy66J/C8YeiqH+Hgo71FfOzGXYm6L1NxdD5fxh3sDINjj1lUf0A2m4Ptel08O16NwSm1MMl1X21UzFQ1F6U2omCn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648388; c=relaxed/simple;
-	bh=IVWigjh51O+lVjsBskJesKFdF/Vjs6g3oXenEGpw410=;
+	s=arc-20240116; t=1770648105; c=relaxed/simple;
+	bh=Fm4Oy5xYvaq8e1hR0/y321MDwOxnZjnMjoUBMMQYT0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hHEld38sz+Bsde3scgDEQFyv87GJZUklr1lKx+oZ6ShsuF4EhfKkiXzww0FpqVxp0cyTXlUHR43YZn58NFnPZsA5jxDsqPbuH8gDpTJINhqgPbaZRX4Y/pQr4wtIcRFmeQT66bdAVe9laVcB7zN6K6Ia++gkI1uPR1QHe4vqWJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJiM3ZZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05ED4C2BC9E;
-	Mon,  9 Feb 2026 14:46:27 +0000 (UTC)
+	 MIME-Version; b=PKb9kgFUa6vTjkRAZ8mBEOScOPzaowfZqFNOPN8TEnEYuzlYeS1COJCBIwnPIAFP8OenwstHv0lMz5fwjXn4VPaRzTTbwMs4qjx/MQF8pNMgz+Inx1RnzGNv2aQk26UBVBbbXcURNSs87FoUP7me0H9IXF9yI1Qfwn6Ek7yQZ2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elVhPh9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF9EC19423;
+	Mon,  9 Feb 2026 14:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648388;
-	bh=IVWigjh51O+lVjsBskJesKFdF/Vjs6g3oXenEGpw410=;
+	s=korg; t=1770648105;
+	bh=Fm4Oy5xYvaq8e1hR0/y321MDwOxnZjnMjoUBMMQYT0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJiM3ZZ/CQjflCnuqWVJiwhzepHfwltXde5JUR/EkDKHR2wOWtReOfPRCLNXJ6qfo
-	 kRu3y/XqoAmWz5dbbrR55q4QNkvfMm7YucUH4ycMUSoRsa8WPrLy9Gwb7q5s47sWCK
-	 dbLxAhhLii2yEUc1vngcOj2Pa70bntmmHGWO3KYM=
+	b=elVhPh9ARYuqEyndyVXwyevQgsC+seaM6tdr5H8q2RWINaR3LhJ3inrEtMGCS0LpO
+	 Ky9gOqa70pJb7I/VBVj+1z0xX0neF1/dFVtpCsTSZZ91LA1WOV8HZ73uPL5/lzXdZG
+	 /ESpTbD6eV30p1Mwo7fNH8dbKPME1IP4ZlMinJmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 06/86] pmdomain: imx: gpcv2: Fix the imx8mm gpu hang due to wrong adb400 reset
+	YunJe Shin <ioerts@kookmin.ac.kr>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Joonkyo Jung <joonkyoj@yonsei.ac.kr>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 01/69] nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec
 Date: Mon,  9 Feb 2026 15:23:29 +0100
-Message-ID: <20260209142305.006057007@linuxfoundation.org>
+Message-ID: <20260209142301.969554338@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +64,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215313-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215229-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,pengutronix.de:email,linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 59972110FD9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kookmin.ac.kr:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,grimberg.me:email,yonsei.ac.kr:email]
+X-Rspamd-Queue-Id: 6ACBA111111
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: YunJe Shin <yjshin0438@gmail.com>
 
-commit ae0a24c5a8dcea20bf8e344eadf6593e6d1959c3 upstream.
+commit 52a0a98549344ca20ad81a4176d68d28e3c05a5c upstream.
 
-On i.MX8MM, the GPUMIX, GPU2D, and GPU3D blocks share a common reset
-domain. Due to this hardware limitation, powering off/on GPU2D or GPU3D
-also triggers a reset of the GPUMIX domain, including its ADB400 port.
-However, the ADB400 interface must always be placed into power‑down mode
-before being reset.
+nvmet_tcp_build_pdu_iovec() could walk past cmd->req.sg when a PDU
+length or offset exceeds sg_cnt and then use bogus sg->length/offset
+values, leading to _copy_to_iter() GPF/KASAN. Guard sg_idx, remaining
+entries, and sg->length/offset before building the bvec.
 
-Currently the GPUMIX and GPU2D/3D power domains rely on runtime PM to
-handle dependency ordering. In some corner cases, the GPUMIX power off
-sequence is skipped, leaving the ADB400 port active when GPU2D/3D reset.
-This causes the GPUMIX ADB400 port to be reset while still active,
-leading to unpredictable bus behavior and GPU hangs.
-
-To avoid this, refine the power‑domain control logic so that the GPUMIX
-ADB400 port is explicitly powered down and powered up as part of the GPU
-power domain on/off sequence. This ensures proper ordering and prevents
-incorrect ADB400 reset.
-
-Suggested-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Tested-by: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
+Signed-off-by: YunJe Shin <ioerts@kookmin.ac.kr>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Joonkyo Jung <joonkyoj@yonsei.ac.kr>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/gpcv2.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/nvme/target/tcp.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -165,13 +165,11 @@
- #define IMX8M_VPU_HSK_PWRDNREQN			BIT(5)
- #define IMX8M_DISP_HSK_PWRDNREQN		BIT(4)
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -306,11 +306,14 @@ static void nvmet_tcp_free_cmd_buffers(s
+ 	cmd->req.sg = NULL;
+ }
  
--#define IMX8MM_GPUMIX_HSK_PWRDNACKN		BIT(29)
--#define IMX8MM_GPU_HSK_PWRDNACKN		(BIT(27) | BIT(28))
-+#define IMX8MM_GPU_HSK_PWRDNACKN		GENMASK(29, 27)
- #define IMX8MM_VPUMIX_HSK_PWRDNACKN		BIT(26)
- #define IMX8MM_DISPMIX_HSK_PWRDNACKN		BIT(25)
- #define IMX8MM_HSIO_HSK_PWRDNACKN		(BIT(23) | BIT(24))
--#define IMX8MM_GPUMIX_HSK_PWRDNREQN		BIT(11)
--#define IMX8MM_GPU_HSK_PWRDNREQN		(BIT(9) | BIT(10))
-+#define IMX8MM_GPU_HSK_PWRDNREQN		GENMASK(11, 9)
- #define IMX8MM_VPUMIX_HSK_PWRDNREQN		BIT(8)
- #define IMX8MM_DISPMIX_HSK_PWRDNREQN		BIT(7)
- #define IMX8MM_HSIO_HSK_PWRDNREQN		(BIT(5) | BIT(6))
-@@ -783,8 +781,6 @@ static const struct imx_pgc_domain imx8m
- 		.bits  = {
- 			.pxx = IMX8MM_GPUMIX_SW_Pxx_REQ,
- 			.map = IMX8MM_GPUMIX_A53_DOMAIN,
--			.hskreq = IMX8MM_GPUMIX_HSK_PWRDNREQN,
--			.hskack = IMX8MM_GPUMIX_HSK_PWRDNACKN,
- 		},
- 		.pgc   = BIT(IMX8MM_PGC_GPUMIX),
- 		.keep_clocks = true,
++static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
++
+ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ {
+ 	struct bio_vec *iov = cmd->iov;
+ 	struct scatterlist *sg;
+ 	u32 length, offset, sg_offset;
++	unsigned int sg_remaining;
+ 	int nr_pages;
+ 
+ 	length = cmd->pdu_len;
+@@ -318,9 +321,22 @@ static void nvmet_tcp_build_pdu_iovec(st
+ 	offset = cmd->rbytes_done;
+ 	cmd->sg_idx = offset / PAGE_SIZE;
+ 	sg_offset = offset % PAGE_SIZE;
++	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
++		nvmet_tcp_fatal_error(cmd->queue);
++		return;
++	}
+ 	sg = &cmd->req.sg[cmd->sg_idx];
++	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
+ 
+ 	while (length) {
++		if (!sg_remaining) {
++			nvmet_tcp_fatal_error(cmd->queue);
++			return;
++		}
++		if (!sg->length || sg->length <= sg_offset) {
++			nvmet_tcp_fatal_error(cmd->queue);
++			return;
++		}
+ 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+ 
+ 		bvec_set_page(iov, sg_page(sg), iov_len,
+@@ -328,6 +344,7 @@ static void nvmet_tcp_build_pdu_iovec(st
+ 
+ 		length -= iov_len;
+ 		sg = sg_next(sg);
++		sg_remaining--;
+ 		iov++;
+ 		sg_offset = 0;
+ 	}
 
 
 
