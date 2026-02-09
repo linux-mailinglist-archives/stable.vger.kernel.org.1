@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-215306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFyaG4vziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:39 +0100
+	id GCXkBpzyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10F6110F75
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04EB110CA3
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3936302EAA7
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C32FA300D762
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B04A37C0E1;
-	Mon,  9 Feb 2026 14:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5B937BE75;
+	Mon,  9 Feb 2026 14:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAW6518F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeihLJlF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF6237BE8C;
-	Mon,  9 Feb 2026 14:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38EF37BE7E;
+	Mon,  9 Feb 2026 14:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648365; cv=none; b=qgkjhZpvhyVmpy28UlAhZ3wXrwhmvZw7oMxZ73IZB14VTA54tJQrSH7/e4401a8vF36/6hkMdCfUmB6MjB7Fhk3Bqttk3m7bYSLJODtwq4Zskp8fJ4XRhs5uX2YpcNeMy6ObGT9HqRk/wJiFkR2l5NkHKHlX/CDxX/GSwAWN9TE=
+	t=1770648040; cv=none; b=on7qFo8waahuXXfhdXMF3dNNzAsmCvT9/1tiatOXyYU0v36klz/rxUg0sXH1QxBSdfR3clwtpt3WdYvux7ZFd4W/4SzKh4u4BjD3hvw7ZB4KaoEXTxEA8a4Ctg3ULnTzVZ2pkwpwVMQ2lQETMY90pgZU15XUmQ5eMKhtqJEGg28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648365; c=relaxed/simple;
-	bh=SDb6YwbuhHekVKBwlYmSToyZ/Zk++eMKtemWYMigdZY=;
+	s=arc-20240116; t=1770648040; c=relaxed/simple;
+	bh=DPz5hEDdlv1XmcDj9SYl5bdfMZM7sVQbvCHK2+Jfjwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pb0ojakgPye0Yy35J1QT7ywY0RlhI3RvckE8yW8FquplC10Qiq2UDsYIC3l82gRAgAmXt4zs0XtVTYck8CNDNUIpdipu7VDNnkwDkccOUL272ohaQKiMm3L/OPNNDx3cSj+DrtmEj/molcP1XIiGm2vMwpuZUdV7+Ljtx1qiRMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAW6518F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27D3C19422;
-	Mon,  9 Feb 2026 14:46:04 +0000 (UTC)
+	 MIME-Version; b=uzp4owjiSevLS16ZeiTPJQQjk6PPXJ9bwvkvgSTZl5F7MZ/vMoSDMrIe4tIMUKHt1UFiL9fd4nmwE77jcgUEsVL259RgKTlCrD27fk5j1wjNutIX8s2D1aC6swyEFOD2mYt+ZpjzdEp/fodBHJVqKeW0G3udOK+OEpKgVxjcZIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeihLJlF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6D2C116C6;
+	Mon,  9 Feb 2026 14:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648365;
-	bh=SDb6YwbuhHekVKBwlYmSToyZ/Zk++eMKtemWYMigdZY=;
+	s=korg; t=1770648040;
+	bh=DPz5hEDdlv1XmcDj9SYl5bdfMZM7sVQbvCHK2+Jfjwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAW6518FrhBFnWMZvaXMqs7exuXSihpo1xInO/rlTp8hXVu6SUGLDaULsfIt+rmOS
-	 3monvWXAV2Tw97v6smJRTP9m0SP+el/GCZjIgkNqHIFfqMATtJq8GSlz4Naqgjy9GI
-	 oM4Kr12bUW9VlSElgROsbiQ4mIAL2+aDQO6RHZNI=
+	b=AeihLJlFKtT4/+uUgCNnV7svpUkNN9B6sTH+bhg2AoKkZtr0W27aA9oKbhcv0Rfn9
+	 1+c57ogvdTHkheCKp2rV0zSOQ/SZ+dxr2O7q+0vLv6x7YPC4kPEkqrza5SK20O1tbT
+	 bDVjXJruiEZyj0M/Xri5Zsd+E/3KxvkttamTsBbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Kohler <jon@nutanix.com>,
-	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
-	Rahul Chunduru <rahul.chunduru@nutanix.com>,
-	Harshit Agarwal <harshit@nutanix.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Phil Auld <pauld@redhat.com>,
-	Will Ton <william.ton@nutanix.com>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.6 16/86] sched/rt: Fix race in push_rt_task
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 070/113] wifi: mac80211: dont increment crypto_tx_tailroom_needed_cnt twice
 Date: Mon,  9 Feb 2026 15:23:39 +0100
-Message-ID: <20260209142305.361957813@linuxfoundation.org>
+Message-ID: <20260209142312.704874330@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,326 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215306-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215210-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nutanix.com,infradead.org,goodmis.org,redhat.com,139.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,goodmis.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: E10F6110F75
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: B04EB110CA3
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Agarwal <harshit@nutanix.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-commit 690e47d1403e90b7f2366f03b52ed3304194c793 upstream.
+[ Upstream commit 3f3d8ff31496874a69b131866f62474eb24ed20a ]
 
-Overview
-========
-When a CPU chooses to call push_rt_task and picks a task to push to
-another CPU's runqueue then it will call find_lock_lowest_rq method
-which would take a double lock on both CPUs' runqueues. If one of the
-locks aren't readily available, it may lead to dropping the current
-runqueue lock and reacquiring both the locks at once. During this window
-it is possible that the task is already migrated and is running on some
-other CPU. These cases are already handled. However, if the task is
-migrated and has already been executed and another CPU is now trying to
-wake it up (ttwu) such that it is queued again on the runqeue
-(on_rq is 1) and also if the task was run by the same CPU, then the
-current checks will pass even though the task was migrated out and is no
-longer in the pushable tasks list.
+In reconfig, in case the driver asks to disconnect during the reconfig,
+all the keys of the interface are marked as tainted.
+Then ieee80211_reenable_keys will loop over all the interface keys, and
+for each one it will
+a) increment crypto_tx_tailroom_needed_cnt
+b) call ieee80211_key_enable_hw_accel, which in turn will detect that
+this key is tainted, so it will mark it as "not in hardware", which is
+paired with crypto_tx_tailroom_needed_cnt incrementation, so we get two
+incrementations for each tainted key.
+Then we get a warning in ieee80211_free_keys.
 
-Crashes
-=======
-This bug resulted in quite a few flavors of crashes triggering kernel
-panics with various crash signatures such as assert failures, page
-faults, null pointer dereferences, and queue corruption errors all
-coming from scheduler itself.
+To fix it, don't increment the count in ieee80211_reenable_keys for
+tainted keys
 
-Some of the crashes:
--> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >= MAX_RT_PRIO)
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? die+0x2a/0x50
-   ? do_trap+0x85/0x100
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? do_error_trap+0x64/0xa0
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? exc_invalid_op+0x4c/0x60
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? pick_next_task_rt+0x6e/0x1d0
-   __schedule+0x5cb/0x790
-   ? update_ts_time_stats+0x55/0x70
-   schedule_idle+0x1e/0x40
-   do_idle+0x15e/0x200
-   cpu_startup_entry+0x19/0x20
-   start_secondary+0x117/0x160
-   secondary_startup_64_no_verify+0xb0/0xbb
-
--> BUG: kernel NULL pointer dereference, address: 00000000000000c0
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? no_context+0x183/0x350
-   ? __warn+0x8a/0xe0
-   ? exc_page_fault+0x3d6/0x520
-   ? asm_exc_page_fault+0x1e/0x30
-   ? pick_next_task_rt+0xb5/0x1d0
-   ? pick_next_task_rt+0x8c/0x1d0
-   __schedule+0x583/0x7e0
-   ? update_ts_time_stats+0x55/0x70
-   schedule_idle+0x1e/0x40
-   do_idle+0x15e/0x200
-   cpu_startup_entry+0x19/0x20
-   start_secondary+0x117/0x160
-   secondary_startup_64_no_verify+0xb0/0xbb
-
--> BUG: unable to handle page fault for address: ffff9464daea5900
-   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu != task_cpu(p))
-
--> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? die+0x2a/0x50
-   ? do_trap+0x85/0x100
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? do_error_trap+0x64/0xa0
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? exc_invalid_op+0x4c/0x60
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   dequeue_rt_entity+0x1f/0x70
-   dequeue_task_rt+0x2d/0x70
-   __schedule+0x1a8/0x7e0
-   ? blk_finish_plug+0x25/0x40
-   schedule+0x3c/0xb0
-   futex_wait_queue_me+0xb6/0x120
-   futex_wait+0xd9/0x240
-   do_futex+0x344/0xa90
-   ? get_mm_exe_file+0x30/0x60
-   ? audit_exe_compare+0x58/0x70
-   ? audit_filter_rules.constprop.26+0x65e/0x1220
-   __x64_sys_futex+0x148/0x1f0
-   do_syscall_64+0x30/0x80
-   entry_SYSCALL_64_after_hwframe+0x62/0xc7
-
--> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? no_context+0x183/0x350
-   ? spurious_kernel_fault+0x171/0x1c0
-   ? exc_page_fault+0x3b6/0x520
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? asm_exc_page_fault+0x1e/0x30
-   ? _cond_resched+0x15/0x30
-   ? futex_wait_queue_me+0xc8/0x120
-   ? futex_wait+0xd9/0x240
-   ? try_to_wake_up+0x1b8/0x490
-   ? futex_wake+0x78/0x160
-   ? do_futex+0xcd/0xa90
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? plist_del+0x6a/0xd0
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? dequeue_pushable_task+0x20/0x70
-   ? __schedule+0x382/0x7e0
-   ? asm_sysvec_reschedule_ipi+0xa/0x20
-   ? schedule+0x3c/0xb0
-   ? exit_to_user_mode_prepare+0x9e/0x150
-   ? irqentry_exit_to_user_mode+0x5/0x30
-   ? asm_sysvec_reschedule_ipi+0x12/0x20
-
-Above are some of the common examples of the crashes that were observed
-due to this issue.
-
-Details
-=======
-Let's look at the following scenario to understand this race.
-
-1) CPU A enters push_rt_task
-  a) CPU A has chosen next_task = task p.
-  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
-  c) CPU A identifies CPU X as a destination CPU (X < Z).
-  d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
-  e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
-     locked CPU X’s rq, and thus, CPU A must wait.
-
-2) At CPU Z
-  a) Previous task has completed execution and thus, CPU Z enters
-     schedule, locks its own rq after CPU A releases it.
-  b) CPU Z dequeues previous task and begins executing task p.
-  c) CPU Z unlocks its rq.
-  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
-     lock) which triggers the schedule function on CPU Z.
-  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
-  f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
-
-3) At CPU B
-  a) CPU B enters try_to_wake_up with input task p.
-  b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
-     B.state = WAKING.
-  c) CPU B via select_task_rq determines CPU Y as the target CPU.
-
-4) The race
-  a) CPU A acquires CPU X’s lock and relocks CPU Z.
-  b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
-     still on CPU Z.
-  c) CPU A failed to notice task p had been dequeued from CPU Z while
-     CPU A was waiting for locks in double_lock_balance. If CPU A knew
-     that task p had been dequeued, it would return NULL forcing
-     push_rt_task to give up the task p's migration.
-  d) CPU B updates task p.cpu = Y and calls ttwu_queue.
-  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
-     p.on_rq = 1.
-  f) CPU B unlocks CPU Y, triggering memory synchronization.
-  g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
-     has not migrated.
-  h) CPU A decides to migrate p to CPU X.
-
-This leads to A dequeuing p from Y's queue and various crashes down the
-line.
-
-Solution
-========
-The solution here is fairly simple. After obtaining the lock (at 4a),
-the check is enhanced to make sure that the task is still at the head of
-the pushable tasks list. If not, then it is anyway not suitable for
-being pushed out.
-
-Testing
-=======
-The fix is tested on a cluster of 3 nodes, where the panics due to this
-are hit every couple of days. A fix similar to this was deployed on such
-cluster and was stable for more than 30 days.
-
-Co-developed-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
-Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Tested-by: Will Ton <william.ton@nutanix.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
-Signed-off-by: Rajani Kantha <681739313@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260118092821.4ca111fddcda.Id6e554f4b1c83760aa02d5a9e4e3080edb197aa2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/rt.c |   52 +++++++++++++++++++++++++---------------------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
+ net/mac80211/key.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1963,6 +1963,26 @@ static int find_lowest_rq(struct task_st
- 	return -1;
- }
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index b679ef23d28fd..66fff8e19ca24 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -987,7 +987,8 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
  
-+static struct task_struct *pick_next_pushable_task(struct rq *rq)
-+{
-+	struct task_struct *p;
-+
-+	if (!has_pushable_tasks(rq))
-+		return NULL;
-+
-+	p = plist_first_entry(&rq->rt.pushable_tasks,
-+			      struct task_struct, pushable_tasks);
-+
-+	BUG_ON(rq->cpu != task_cpu(p));
-+	BUG_ON(task_current(rq, p));
-+	BUG_ON(p->nr_cpus_allowed <= 1);
-+
-+	BUG_ON(!task_on_rq_queued(p));
-+	BUG_ON(!rt_task(p));
-+
-+	return p;
-+}
-+
- /* Will lock the rq it finds */
- static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
- {
-@@ -1993,18 +2013,16 @@ static struct rq *find_lock_lowest_rq(st
- 			/*
- 			 * We had to unlock the run queue. In
- 			 * the mean time, task could have
--			 * migrated already or had its affinity changed.
--			 * Also make sure that it wasn't scheduled on its rq.
-+			 * migrated already or had its affinity changed,
-+			 * therefore check if the task is still at the
-+			 * head of the pushable tasks list.
- 			 * It is possible the task was scheduled, set
- 			 * "migrate_disabled" and then got preempted, so we must
- 			 * check the task migration disable flag here too.
- 			 */
--			if (unlikely(task_rq(task) != rq ||
-+			if (unlikely(is_migration_disabled(task) ||
- 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
--				     task_on_cpu(rq, task) ||
--				     !rt_task(task) ||
--				     is_migration_disabled(task) ||
--				     !task_on_rq_queued(task))) {
-+				     task != pick_next_pushable_task(rq))) {
- 
- 				double_unlock_balance(rq, lowest_rq);
- 				lowest_rq = NULL;
-@@ -2024,26 +2042,6 @@ static struct rq *find_lock_lowest_rq(st
- 	return lowest_rq;
- }
- 
--static struct task_struct *pick_next_pushable_task(struct rq *rq)
--{
--	struct task_struct *p;
--
--	if (!has_pushable_tasks(rq))
--		return NULL;
--
--	p = plist_first_entry(&rq->rt.pushable_tasks,
--			      struct task_struct, pushable_tasks);
--
--	BUG_ON(rq->cpu != task_cpu(p));
--	BUG_ON(task_current(rq, p));
--	BUG_ON(p->nr_cpus_allowed <= 1);
--
--	BUG_ON(!task_on_rq_queued(p));
--	BUG_ON(!rt_task(p));
--
--	return p;
--}
--
- /*
-  * If the current CPU has more than one RT task, see if the non
-  * running task can migrate over to a CPU that is running a task
+ 	if (ieee80211_sdata_running(sdata)) {
+ 		list_for_each_entry(key, &sdata->key_list, list) {
+-			increment_tailroom_need_count(sdata);
++			if (!(key->flags & KEY_FLAG_TAINTED))
++				increment_tailroom_need_count(sdata);
+ 			ieee80211_key_enable_hw_accel(key);
+ 		}
+ 	}
+-- 
+2.51.0
+
 
 
 
