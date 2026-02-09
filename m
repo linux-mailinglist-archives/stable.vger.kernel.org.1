@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-215304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNHxAWb2iWmuFAAAu9opvQ
-	(envelope-from <stable+bounces-215304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:50 +0100
+	id SNteHnL1iWkaFAAAu9opvQ
+	(envelope-from <stable+bounces-215230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:55:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C109111575
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB66F11135A
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34EB130E4A41
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:45:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9E9C3066BCC
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD669285073;
-	Mon,  9 Feb 2026 14:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2672222B2;
+	Mon,  9 Feb 2026 14:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSXF4VFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZlAXZYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF5B25DB1C;
-	Mon,  9 Feb 2026 14:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60205276028;
+	Mon,  9 Feb 2026 14:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648357; cv=none; b=MYNp7LPrDBRZxipGZEAYVoI40490LoY5H4jH1ljW1fzuhgbmMEsOf1sGNyUenw72liF0HPJxZt3MzkMzP3hKDikQvmwB5Fl8ngVs4chjiHKdbED0D2Q1RyWkKXUHJd2d6z/pjnCj4jFuHNXAMk0AajuOrWxhhy0XaA/Jw+phz9o=
+	t=1770648109; cv=none; b=FPI6A9TwShB6c4uHDrwsK1dafymqNagEH36ANShXNwWAUku64+0pLFUdKsGrymBmk1ejhSMyhENZytORxdfuVTrFUichRE8ETB5MjkT0bCSHAx+s3pdZb47jXy6k3k9sYOMmd99+nuRfp4UD6PZYvuzAsjt/mbPzqUWMp6bozVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648357; c=relaxed/simple;
-	bh=rr3kHeRDJXNWt9qHbi3NPKFGz85Y0J51ljnxSo9V6Uo=;
+	s=arc-20240116; t=1770648109; c=relaxed/simple;
+	bh=FHEIm/m8ctVsaJNPDDjUc1cZsxYtFSAzyG1OtrmPDUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6XYxae3nUxKbTO/WCOViOCk+uNzKQC0Fep62TrMvSjn9b285m8BQKp67bilWM3ioJf5YhZ68Zili7z26vm7ZJb8ypanl2EEvlQQmPazHyhr5ylj7XfYRgrElFcUniAmvnryf+5gYse55UojHLTYoAemHecC8grZosS/iJ1iDrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSXF4VFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05341C116C6;
-	Mon,  9 Feb 2026 14:45:56 +0000 (UTC)
+	 MIME-Version; b=qg7UzXt8g7MGvU+daTcmAGDUMAwIE+/j9MtPLvqnfvZdsgbMVJrFvcwcFaK9YEFNanM1jD0pDz3AV0IOyrABzQUorm+Z76V1Cg+1EE2KDP5/ivYut5QxiX8Teag/QYVUwgHlL4A/QsGy5StnDVwWJLLj4201NxtOYh9ib0Qw8tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZlAXZYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB81C116C6;
+	Mon,  9 Feb 2026 14:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648357;
-	bh=rr3kHeRDJXNWt9qHbi3NPKFGz85Y0J51ljnxSo9V6Uo=;
+	s=korg; t=1770648109;
+	bh=FHEIm/m8ctVsaJNPDDjUc1cZsxYtFSAzyG1OtrmPDUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSXF4VFOSFojIri2uAGqiRyHN91/E+Ho1uukfB0ciHzVOTpWuLvNohvRrmZtvhDoo
-	 +8ekojlAFVOq9TuYbVDFtSNHt3VSGTDztmSyqjwXUlfcJdKrtIqNVV5agzb9Cyp7h4
-	 6ZZJ+RFnHFrhCaAcB+Pw3WwnHNBHUKLs1p5aEN/E=
+	b=rZlAXZYEk3fxdZdqJ8mO/arjKLgcWR7/J/tK2Ed+F/ARyYWRMYr739/GfWuMwwj+m
+	 rNMiLv+IkLnX5YbQaP90ihVf/A0jcTlSV8d7K6+k4nwiu81m067a3hThpNvFMpg+Kg
+	 T+IQg2m60puOfMpKLAds6zN+L24nukJ0MUDrkDaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Chen <k.chen@smail.nju.edu.cn>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Jianqiang kang <jianqkang@sina.cn>
-Subject: [PATCH 6.6 14/86] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
-Date: Mon,  9 Feb 2026 15:23:37 +0100
-Message-ID: <20260209142305.291513604@linuxfoundation.org>
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.1 10/69] binderfs: fix ida_alloc_max() upper bound
+Date: Mon,  9 Feb 2026 15:23:38 +0100
+Message-ID: <20260209142302.287211103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,207 +67,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215304-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,smail.nju.edu.cn,dubeyko.com,sina.cn];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215230-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,nju.edu.cn:email,dubeyko.com:email,sina.cn:email]
-X-Rspamd-Queue-Id: 5C109111575
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: CB66F11135A
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Chen <k.chen@smail.nju.edu.cn>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit bea3e1d4467bcf292c8e54f080353d556d355e26 upstream.
+commit ec4ddc90d201d09ef4e4bef8a2c6d9624525ad68 upstream.
 
-BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
-Read of size 2 at addr ffff8880289ef218 by task syz.6.248/14290
+The 'max' argument of ida_alloc_max() takes the maximum valid ID and not
+the "count". Using an ID of BINDERFS_MAX_MINOR (1 << 20) for dev->minor
+would exceed the limits of minor numbers (20-bits). Fix this off-by-one
+error by subtracting 1 from the 'max'.
 
-CPU: 0 UID: 0 PID: 14290 Comm: syz.6.248 Not tainted 6.16.4 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1b0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x5f0 mm/kasan/report.c:482
- kasan_report+0xca/0x100 mm/kasan/report.c:595
- hfsplus_uni2asc+0xa71/0xb90 fs/hfsplus/unicode.c:186
- hfsplus_listxattr+0x5b6/0xbd0 fs/hfsplus/xattr.c:738
- vfs_listxattr+0xbe/0x140 fs/xattr.c:493
- listxattr+0xee/0x190 fs/xattr.c:924
- filename_listxattr fs/xattr.c:958 [inline]
- path_listxattrat+0x143/0x360 fs/xattr.c:988
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe0e9fae16d
-Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fe0eae67f98 EFLAGS: 00000246 ORIG_RAX: 00000000000000c3
-RAX: ffffffffffffffda RBX: 00007fe0ea205fa0 RCX: 00007fe0e9fae16d
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000000
-RBP: 00007fe0ea0480f0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fe0ea206038 R14: 00007fe0ea205fa0 R15: 00007fe0eae48000
- </TASK>
-
-Allocated by task 14290:
- kasan_save_stack+0x24/0x50 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4333 [inline]
- __kmalloc_noprof+0x219/0x540 mm/slub.c:4345
- kmalloc_noprof include/linux/slab.h:909 [inline]
- hfsplus_find_init+0x95/0x1f0 fs/hfsplus/bfind.c:21
- hfsplus_listxattr+0x331/0xbd0 fs/hfsplus/xattr.c:697
- vfs_listxattr+0xbe/0x140 fs/xattr.c:493
- listxattr+0xee/0x190 fs/xattr.c:924
- filename_listxattr fs/xattr.c:958 [inline]
- path_listxattrat+0x143/0x360 fs/xattr.c:988
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcb/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-When hfsplus_uni2asc is called from hfsplus_listxattr,
-it actually passes in a struct hfsplus_attr_unistr*.
-The size of the corresponding structure is different from that of hfsplus_unistr,
-so the previous fix (94458781aee6) is insufficient.
-The pointer on the unicode buffer is still going beyond the allocated memory.
-
-This patch introduces two warpper functions hfsplus_uni2asc_xattr_str and
-hfsplus_uni2asc_str to process two unicode buffers,
-struct hfsplus_attr_unistr* and struct hfsplus_unistr* respectively.
-When ustrlen value is bigger than the allocated memory size,
-the ustrlen value is limited to an safe size.
-
-Fixes: 94458781aee6 ("hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()")
-Signed-off-by: Kang Chen <k.chen@smail.nju.edu.cn>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250909031316.1647094-1-k.chen@smail.nju.edu.cn
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Cc: stable@vger.kernel.org
+Fixes: 3ad20fe393b3 ("binder: implement binderfs")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://patch.msgid.link/20260127235545.2307876-2-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/dir.c        |    2 +-
- fs/hfsplus/hfsplus_fs.h |    8 ++++++--
- fs/hfsplus/unicode.c    |   24 +++++++++++++++++++-----
- fs/hfsplus/xattr.c      |    6 +++---
- 4 files changed, 29 insertions(+), 11 deletions(-)
+ drivers/android/binderfs.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -204,7 +204,7 @@ static int hfsplus_readdir(struct file *
- 			fd.entrylength);
- 		type = be16_to_cpu(entry.type);
- 		len = NLS_MAX_CHARSET_SIZE * HFSPLUS_MAX_STRLEN;
--		err = hfsplus_uni2asc(sb, &fd.key->cat.name, strbuf, &len);
-+		err = hfsplus_uni2asc_str(sb, &fd.key->cat.name, strbuf, &len);
- 		if (err)
- 			goto out;
- 		if (type == HFSPLUS_FOLDER) {
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -518,8 +518,12 @@ int hfsplus_strcasecmp(const struct hfsp
- 		       const struct hfsplus_unistr *s2);
- int hfsplus_strcmp(const struct hfsplus_unistr *s1,
- 		   const struct hfsplus_unistr *s2);
--int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
--		    char *astr, int *len_p);
-+int hfsplus_uni2asc_str(struct super_block *sb,
-+			const struct hfsplus_unistr *ustr, char *astr,
-+			int *len_p);
-+int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+			      const struct hfsplus_attr_unistr *ustr,
-+			      char *astr, int *len_p);
- int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
- 		    int max_unistr_len, const char *astr, int len);
- int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
---- a/fs/hfsplus/unicode.c
-+++ b/fs/hfsplus/unicode.c
-@@ -143,9 +143,8 @@ static u16 *hfsplus_compose_lookup(u16 *
- 	return NULL;
- }
- 
--int hfsplus_uni2asc(struct super_block *sb,
--		const struct hfsplus_unistr *ustr,
--		char *astr, int *len_p)
-+static int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
-+		    int max_len, char *astr, int *len_p)
- {
- 	const hfsplus_unichr *ip;
- 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
-@@ -158,8 +157,8 @@ int hfsplus_uni2asc(struct super_block *
- 	ip = ustr->unicode;
- 
- 	ustrlen = be16_to_cpu(ustr->length);
--	if (ustrlen > HFSPLUS_MAX_STRLEN) {
--		ustrlen = HFSPLUS_MAX_STRLEN;
-+	if (ustrlen > max_len) {
-+		ustrlen = max_len;
- 		pr_err("invalid length %u has been corrected to %d\n",
- 			be16_to_cpu(ustr->length), ustrlen);
- 	}
-@@ -280,6 +279,21 @@ out:
- 	return res;
- }
- 
-+inline int hfsplus_uni2asc_str(struct super_block *sb,
-+			       const struct hfsplus_unistr *ustr, char *astr,
-+			       int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
-+}
-+
-+inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+				     const struct hfsplus_attr_unistr *ustr,
-+				     char *astr, int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
-+			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
-+}
-+
- /*
-  * Convert one or more ASCII characters into a single unicode character.
-  * Returns the number of ASCII characters corresponding to the unicode char.
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -737,9 +737,9 @@ ssize_t hfsplus_listxattr(struct dentry
- 			goto end_listxattr;
- 
- 		xattr_name_len = NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN;
--		if (hfsplus_uni2asc(inode->i_sb,
--			(const struct hfsplus_unistr *)&fd.key->attr.key_name,
--					strbuf, &xattr_name_len)) {
-+		if (hfsplus_uni2asc_xattr_str(inode->i_sb,
-+					      &fd.key->attr.key_name, strbuf,
-+					      &xattr_name_len)) {
- 			pr_err("unicode conversion failed\n");
- 			res = -EIO;
- 			goto end_listxattr;
+--- a/drivers/android/binderfs.c
++++ b/drivers/android/binderfs.c
+@@ -131,8 +131,8 @@ static int binderfs_binder_device_create
+ 	mutex_lock(&binderfs_minors_mutex);
+ 	if (++info->device_count <= info->mount_opts.max)
+ 		minor = ida_alloc_max(&binderfs_minors,
+-				      use_reserve ? BINDERFS_MAX_MINOR :
+-						    BINDERFS_MAX_MINOR_CAPPED,
++				      use_reserve ? BINDERFS_MAX_MINOR - 1 :
++						    BINDERFS_MAX_MINOR_CAPPED - 1,
+ 				      GFP_KERNEL);
+ 	else
+ 		minor = -ENOSPC;
+@@ -422,8 +422,8 @@ static int binderfs_binder_ctl_create(st
+ 	/* Reserve a new minor number for the new device. */
+ 	mutex_lock(&binderfs_minors_mutex);
+ 	minor = ida_alloc_max(&binderfs_minors,
+-			      use_reserve ? BINDERFS_MAX_MINOR :
+-					    BINDERFS_MAX_MINOR_CAPPED,
++			      use_reserve ? BINDERFS_MAX_MINOR - 1 :
++					    BINDERFS_MAX_MINOR_CAPPED - 1,
+ 			      GFP_KERNEL);
+ 	mutex_unlock(&binderfs_minors_mutex);
+ 	if (minor < 0) {
 
 
 
