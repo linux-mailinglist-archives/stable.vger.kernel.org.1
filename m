@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-215206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJUaCJXyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:33 +0100
+	id 8McoC9nxiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0D6110C93
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B4F110A8E
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4477F301525F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F5643039EEF
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAABF37C107;
-	Mon,  9 Feb 2026 14:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F6736828A;
+	Mon,  9 Feb 2026 14:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyqJFHwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w31Go/0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E96836828A;
-	Mon,  9 Feb 2026 14:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C884125B2;
+	Mon,  9 Feb 2026 14:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648027; cv=none; b=eqTdhzjitT0FONJEdaBSvBj/r7g75uKZ9BUTDcvVIa1kRSpLXwJTqRUAFnn9ma7/D+/RvYSigqUk645RpLNQnOQDxEqF/R95A3QyxkIXW9bdS95ncpFX5NuZu1yXIo+66mn2Dckrkb0PJKSrvnvN+kJ35dcd8BXr5hiKQh3SdjY=
+	t=1770647577; cv=none; b=hmQoJdG1upjzLsd5IFSI6GHi8/ATcyscoXNiWEU62cjNDrHr7VWONajHImj2uH6D0yrxYZwUF6Po5abX6k3a3dDern0ZfVXDDPqC3zG2izk/AMowkdYbli4W4o07oIMXjUs9EVzIic+JMpCCZMc64Ckujm/wLr/MtgV5a77ajFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648027; c=relaxed/simple;
-	bh=LTd8beAHCRgV/JGHspvTzFEgLEdwKhiV80R8S0poiMQ=;
+	s=arc-20240116; t=1770647577; c=relaxed/simple;
+	bh=HfFSH8yRsPjQv20btnjCYh9FpCDPLu2/q3+N84lzCDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+Jl+cmCNcjtEl4vqWWtpcsuM5t6gNH7CD+9tF/do05AwBBVm4Iry6CxS8m0rMIh9FItzBBFFVOVgX5PAQOfSqGMOjpXg6yVNB40peHGfoE2R7SM6cRmpYqs3c9y+jL7uCVQjYkMc5fm596E5I37pkc4QJJ45AsSElciN8M+1ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyqJFHwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC06DC16AAE;
-	Mon,  9 Feb 2026 14:40:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s+l9jhUuTcxYtlgwVWsLnUsoM9eWLohGj1Ah4lS9htwSIsPer2uhY44wSWoq9sPnt5ceLPUZJ/5VOmFNncq1B4h/GvJN3aR8pWSg1WZPkrHCVXhqOBhb4Ozx8RgzMq7qypUscS5GjNl3ViovEbhQSKfwTnwQO+xHL6cZRr0mLTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w31Go/0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E03EC116C6;
+	Mon,  9 Feb 2026 14:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648027;
-	bh=LTd8beAHCRgV/JGHspvTzFEgLEdwKhiV80R8S0poiMQ=;
+	s=korg; t=1770647577;
+	bh=HfFSH8yRsPjQv20btnjCYh9FpCDPLu2/q3+N84lzCDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyqJFHwgho0MQ9TpcwMvgrfrGZ1Q+0Mp45eZMNd2qbwp1BqKLIzYm7McNO9icc3uO
-	 IgF6caUO0ze+ytJKR6Mdn0mFR4dg01+oBC7W0GPbb79F4BpkZ2DKhu0xcnrjuRbTot
-	 e4fjUq6tLoBqB8PU+deoXmUyV8eg7Nm49Hxrg+Ec=
+	b=w31Go/0jyvzhw67tYGmEb190QOk7IHHzozDMWlGvXb31sFXi8js2Og5VLPNpGAG1a
+	 9sRawn7g0b8paKpSDRYpbcJBg6ZYFyZ+eWudzc+ALzZimvWlIQlDFFEUqGd8/pYmfI
+	 sybbJN3y7fVa5ENVWU9laIZnyA9XOL8pztaGR0zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Zhaojuan Guo <zguo@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/113] scsi: target: iscsi: Fix use-after-free in iscsit_dec_session_usage_count()
+Subject: [PATCH 6.18 142/175] net: enetc: Convert 16-bit register writes to 32-bit for ENETC v4
 Date: Mon,  9 Feb 2026 15:23:35 +0100
-Message-ID: <20260209142312.564484217@linuxfoundation.org>
+Message-ID: <20260209142325.616002099@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +64,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-215071-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215206-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: CD0D6110C93
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B5B4F110A8E
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
 
-[ Upstream commit 84dc6037390b8607c5551047d3970336cb51ba9a ]
+[ Upstream commit 21d0fc95b5920ae8e69a2c0394bef82b8392bcc9 ]
 
-In iscsit_dec_session_usage_count(), the function calls complete() while
-holding the sess->session_usage_lock. Similar to the connection usage count
-logic, the waiter signaled by complete() (e.g., in the session release
-path) may wake up and free the iscsit_session structure immediately.
+For ENETC v4, which is integrated into more complex SoCs (compared to v1),
+16‑bit register writes are blocked in the SoC interconnect on some chips.
 
-This creates a race condition where the current thread may attempt to
-execute spin_unlock_bh() on a session structure that has already been
-deallocated, resulting in a KASAN slab-use-after-free.
+To be fair, it is not recommended to access 32‑bit registers of this IP
+using lower‑width accessors (i.e. 16‑bit), and the only exception to
+this rule was introduced by me in the initial ENETC v1 driver for the
+PMAR1 register, which holds the lower 16 bits of the primary MAC address
+of an SI. Meanwhile, this exception has been replicated for v4 as well.
 
-To resolve this, release the session_usage_lock before calling complete()
-to ensure all dereferences of the sess pointer are finished before the
-waiter is allowed to proceed with deallocation.
+Since LS1028 (the only SoC with ENETC v1) is not affected by this issue,
+the current patch fixes the 16‑bit writes to PMAR1 starting with ENETC
+v4.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reported-by: Zhaojuan Guo <zguo@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Link: https://patch.msgid.link/20260112165352.138606-3-mlombard@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
+Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20260130141035.272471-4-claudiu.manoil@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_util.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
-index 91a75a4a7cc1a..ee0cf2c74952a 100644
---- a/drivers/target/iscsi/iscsi_target_util.c
-+++ b/drivers/target/iscsi/iscsi_target_util.c
-@@ -785,8 +785,11 @@ void iscsit_dec_session_usage_count(struct iscsit_session *sess)
- 	spin_lock_bh(&sess->session_usage_lock);
- 	sess->session_usage_count--;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index 82c443b28b154..b270a01f5b718 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -49,10 +49,10 @@ static void enetc4_pf_set_si_primary_mac(struct enetc_hw *hw, int si,
  
--	if (!sess->session_usage_count && sess->session_waiting_on_uc)
-+	if (!sess->session_usage_count && sess->session_waiting_on_uc) {
-+		spin_unlock_bh(&sess->session_usage_lock);
- 		complete(&sess->session_waiting_on_uc_comp);
-+		return;
-+	}
- 
- 	spin_unlock_bh(&sess->session_usage_lock);
+ 	if (si != 0) {
+ 		__raw_writel(upper, hw->port + ENETC4_PSIPMAR0(si));
+-		__raw_writew(lower, hw->port + ENETC4_PSIPMAR1(si));
++		__raw_writel(lower, hw->port + ENETC4_PSIPMAR1(si));
+ 	} else {
+ 		__raw_writel(upper, hw->port + ENETC4_PMAR0);
+-		__raw_writew(lower, hw->port + ENETC4_PMAR1);
++		__raw_writel(lower, hw->port + ENETC4_PMAR1);
+ 	}
  }
+ 
 -- 
 2.51.0
 
