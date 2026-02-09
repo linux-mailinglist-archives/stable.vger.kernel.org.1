@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EWqFwrziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:30 +0100
+	id GMVvHMfviWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-215044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:31:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC6C110DED
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123CB110610
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:31:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A020A3089B19
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:37:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4239D30098A1
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07257378D85;
-	Mon,  9 Feb 2026 14:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC72637BE7E;
+	Mon,  9 Feb 2026 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFSp/xRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6Q07cSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEB6276028;
-	Mon,  9 Feb 2026 14:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1F37B416;
+	Mon,  9 Feb 2026 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647819; cv=none; b=gHzCkT9MkqdKTHaPFvuWce4f2Y7ZeHvbWtNGmE+f3BufFD1oPO/DijvxhmeygSP9X5fb7rM36/pNs1IMcxVrj27bqmDTzQ0g9kRvpzUFWoY8xIARrL6zaHGHe3FCrM+Gl02xMiD+PPDZpaaXsIPgpdvp4aB71hZUyQhnjpDfl2I=
+	t=1770647487; cv=none; b=MGlkPaV6EQJq3zOjnUa5L4Ie7kta7puSC6ZnGRorZxQCjBV1HTiQTiISuT62j9Z1Yup3INzdxUzPE+CSCZMQ33HFi2NHV2RznunBLbXgOxI8MK3oY11WkNaBFjijad3omOkFfuBeCBwAdEbCUxmMyaPHJQnNitn9/znLb/nVcAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647819; c=relaxed/simple;
-	bh=+FabBQdsbv5V4VwS1d0R9YrmMp1WynC0W0kvEN1KqpQ=;
+	s=arc-20240116; t=1770647487; c=relaxed/simple;
+	bh=SMGrSt+eJ3N2qALT4brlnlB4Jlk2h16Ks143go8X67U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gCVdejJdbEqLZVAJvcX6lzT+spHDRTEnD2NMDNYkO4hED7hCTDYRo41s6lG885aDtSkWjy8YD0kRFbaYCGyHFZgAkkTd1wgOPrYwi0DvDFlPc8084Lxmitj7yM69LRn6KGxui1HPfx8lRePYxEMU/alqePcnVv3hSmkUjDzIgV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFSp/xRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AF1C116C6;
-	Mon,  9 Feb 2026 14:36:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i2ctt/XqiAy4o4ONJXqL81nqBiL/DtOaV4mYFBXNbZV758tWPAoJHWn+uyQukfJHWBd70RGZRTa+DuqOSvgcYnBH1/+GeqbakPnDyvFQZC3I3JbFQADHvWfNMWsU8UFtG5Xf5S2DqTOWkY7qBckir/ecoQBws7qzp527jQv4OcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6Q07cSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0569FC19423;
+	Mon,  9 Feb 2026 14:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647819;
-	bh=+FabBQdsbv5V4VwS1d0R9YrmMp1WynC0W0kvEN1KqpQ=;
+	s=korg; t=1770647487;
+	bh=SMGrSt+eJ3N2qALT4brlnlB4Jlk2h16Ks143go8X67U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFSp/xRIGyMUhyLnwtWir19i2F9/Hr0Gx1yCMasemje058kMNcW/rJltl4KkcqucV
-	 imAU3L3zRQKNoWpJUrzL1vwjH0TRUCvQUygsrdGsKdXHNync18nVy5KL6+Hf8pPYm9
-	 3TMSd+TQAWTJjqVx7TVtk6XQNUF8jIsyjpnw1hfU=
+	b=j6Q07cSWEq0HsdrJhKHkknoj/tAkgHJQk3/Li8LcWwxr0SDL/gmgRfqomtxJ4wgGD
+	 KTjj32hGEWJPSDh0kXzxGlqitCznQeSs+7R4jBzGgWkewp/l6F8804GUR08jxrWzLE
+	 3KJuJh2rv1EEZGqRM/oVQ4PiciQ/QXr3mwfa88Uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/113] LoongArch: Enable exception fixup for specific ADE subcode
+Subject: [PATCH 6.18 114/175] platform/x86: intel_telemetry: Fix PSS event register mask
 Date: Mon,  9 Feb 2026 15:23:07 +0100
-Message-ID: <20260209142311.578092645@linuxfoundation.org>
+Message-ID: <20260209142324.516149704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215143-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215044-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,61 +90,51 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DEC6C110DED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 123CB110610
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 9bdc1ab5e4ce6f066119018d8f69631a46f9c5a0 ]
+[ Upstream commit 39e9c376ac42705af4ed4ae39eec028e8bced9b4 ]
 
-This patch allows the LoongArch BPF JIT to handle recoverable memory
-access errors generated by BPF_PROBE_MEM* instructions.
+The PSS telemetry info parsing incorrectly applies
+TELEM_INFO_SRAMEVTS_MASK when extracting event register
+count from firmware response. This reads bits 15-8 instead
+of the correct bits 7-0, causing misdetection of hardware
+capabilities.
 
-When a BPF program performs memory access operations, the instructions
-it executes may trigger ADEM exceptions. The kernel’s built-in BPF
-exception table mechanism (EX_TYPE_BPF) will generate corresponding
-exception fixup entries in the JIT compilation phase; however, the
-architecture-specific trap handling function needs to proactively call
-the common fixup routine to achieve exception recovery.
+The IOSS path correctly uses TELEM_INFO_NENABLES_MASK for
+register count. Apply the same mask to PSS parsing for
+consistency.
 
-do_ade(): fix EX_TYPE_BPF memory access exceptions for BPF programs,
-ensure safe execution.
-
-Relevant test cases: illegal address access tests in module_attach and
-subprogs_extable of selftests/bpf.
-
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 9d16b482b059 ("platform:x86: Add Intel telemetry platform driver")
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Link: https://patch.msgid.link/20251224061144.3925519-1-kaushlendra.kumar@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/traps.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/platform/x86/intel/telemetry/pltdrv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/traps.c b/arch/loongarch/kernel/traps.c
-index d827ed3178b02..40c162fb645a3 100644
---- a/arch/loongarch/kernel/traps.c
-+++ b/arch/loongarch/kernel/traps.c
-@@ -534,10 +534,15 @@ asmlinkage void noinstr do_fpe(struct pt_regs *regs, unsigned long fcsr)
- asmlinkage void noinstr do_ade(struct pt_regs *regs)
- {
- 	irqentry_state_t state = irqentry_enter(regs);
-+	unsigned int esubcode = FIELD_GET(CSR_ESTAT_ESUBCODE, regs->csr_estat);
-+
-+	if ((esubcode == EXSUBCODE_ADEM) && fixup_exception(regs))
-+		goto out;
- 
- 	die_if_kernel("Kernel ade access", regs);
- 	force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)regs->csr_badvaddr);
- 
-+out:
- 	irqentry_exit(regs, state);
- }
- 
+diff --git a/drivers/platform/x86/intel/telemetry/pltdrv.c b/drivers/platform/x86/intel/telemetry/pltdrv.c
+index f23c170a55dc6..d9aa349f81e41 100644
+--- a/drivers/platform/x86/intel/telemetry/pltdrv.c
++++ b/drivers/platform/x86/intel/telemetry/pltdrv.c
+@@ -610,7 +610,7 @@ static int telemetry_setup(struct platform_device *pdev)
+ 	/* Get telemetry Info */
+ 	events = (read_buf & TELEM_INFO_SRAMEVTS_MASK) >>
+ 		  TELEM_INFO_SRAMEVTS_SHIFT;
+-	event_regs = read_buf & TELEM_INFO_SRAMEVTS_MASK;
++	event_regs = read_buf & TELEM_INFO_NENABLES_MASK;
+ 	if ((events < TELEM_MAX_EVENTS_SRAM) ||
+ 	    (event_regs < TELEM_MAX_EVENTS_SRAM)) {
+ 		dev_err(&pdev->dev, "PSS:Insufficient Space for SRAM Trace\n");
 -- 
 2.51.0
 
