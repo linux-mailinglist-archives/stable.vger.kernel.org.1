@@ -1,253 +1,171 @@
-Return-Path: <stable+bounces-215541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAonIp8limlKHwAAu9opvQ
-	(envelope-from <stable+bounces-215541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:21:19 +0100
+	id MOfUGCMmimlKHwAAu9opvQ
+	(envelope-from <stable+bounces-215542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:23:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6681137AB
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:21:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4B01137F7
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 19:23:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 49803300808C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 18:20:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B4814300729D
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 18:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0682DF12F;
-	Mon,  9 Feb 2026 18:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261272ECE93;
+	Mon,  9 Feb 2026 18:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="obhooxvM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eav+MmGr"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC2829C321;
-	Mon,  9 Feb 2026 18:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770661238; cv=none; b=UQMgVNtudpmhVXb/MYnk0+GTj8HaLXyJFlZpwKxSlfiiOWOQMOp7dhKbMvOTED/3mEZbuK3+Zemwd8l/i/29jcrwVWhXXiYTpvrrQfwo75m0Aj4Z7EeYR4r+iPWUUwL7S58UTXu2AndNIZSlSnV/dtpDHepU0+StYu4bkNWJcXg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770661238; c=relaxed/simple;
-	bh=7PXbBG4VwmEOeP5gGDpm0rCmhJixzCNNkZssgDhtOgg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n2S11pwSCvIDOih77Sxt0iJPiECfuBs44wSv1gkLBsX23TlLsl9nkWD7eBEF+LgoOqjxg3Pv47xEhyoBHc8EFvQPAP01OVCSnXm9Yqrcx/skTuemY9p7t//ab+6VGGTkWAhpRzjORX3AwTTFCodooO3PagZesO8HF4blSUJIDM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=obhooxvM; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61982oHr2344404;
-	Mon, 9 Feb 2026 18:20:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6kUrJz
-	Nyw4NnLlSAH2QCv/4meAWS923Hh1+kcqhiO90=; b=obhooxvM1R5m8Pct3QkBlg
-	mjffE72xSlKAUS9xFENCB53ihf/LY1QjqZqe8V0EBYKoUFTE0G8DIS615CELgRaL
-	vz12mzT7yB2K6RwxyUezf8PKCIwEWcJmFR4VznvguwBrJdxiXzXHwW10FfM2p9pu
-	swqBYh6QwbPGqlJ2Wj6ow6P0+wNgye8+GpxS6ANwyYH9OiP6pYmuF29pcb0jR5Po
-	HvOnHduzAtEtcsymX4MLJBJ+3u44CXslYgK8/X3aYfZUO2RH4AAYeGrKZmUFscHB
-	ZG6RSkW4cK+OTvFhxfMSYqXtW+xbl/bkF8k0bPTlV/CpHUT+h2kGNkrmqS0Xb1qw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696u8q39-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Feb 2026 18:20:31 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 619EMEwg019251;
-	Mon, 9 Feb 2026 18:20:31 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxjx34p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Feb 2026 18:20:30 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 619IKT2u15008472
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Feb 2026 18:20:29 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0175358055;
-	Mon,  9 Feb 2026 18:20:29 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 40C0858043;
-	Mon,  9 Feb 2026 18:20:28 +0000 (GMT)
-Received: from [9.61.249.49] (unknown [9.61.249.49])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Feb 2026 18:20:28 +0000 (GMT)
-Message-ID: <3f4d4a10-f7a7-4b60-b42a-075b6df395f7@linux.ibm.com>
-Date: Mon, 9 Feb 2026 10:20:27 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BC829C321
+	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 18:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770661403; cv=pass; b=UQaUOXDjKSmPjloRGR+PRC6tzMLwE47O9owKnym9RyAAUUqS9z6ZX/q9fMYP1Sdpm7sd4YgT32uAywZNR3pDEnqZguq+4+pVTfDfKTYXNYWjGbjcV9JxTyElsFbQBLChGYudp+BLsMNqsb/nAxng9Pol+3ueqGJsJPh6GmmI60I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770661403; c=relaxed/simple;
+	bh=Ze/Rk5WFcOqujthpZphKY+7Nj1NmEfH45a4ZKRl1LFk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ldb9EGGlCB+gDuU1ZxzX0P/ixbLAD7aVYt9dGjdpqQigRcz9hT+ORpd1iR9UaU9tM1eb4fCPkRieKzSWK5IC7rUqN7ASzSWEntFnXWKNEru38cnvOreep5kzA2QOItPKT75umoNfMFT99Xp3psT/Pi1daBJF6AzopYSKMDn0YaM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eav+MmGr; arc=pass smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ba68df3687so2487419eec.1
+        for <stable@vger.kernel.org>; Mon, 09 Feb 2026 10:23:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770661403; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Oor5LiiVz8FsUlglP8BkmxUXV5RvR1uk+yAZ9mmDQAXaN+p3hhseRJRdrIh3+3XR50
+         b3zjrogGNZYBNvEYoZycdSfMcu6MYTIEpKGoKkS+/rFId+ANMqze7BokGyp55LrUKcj1
+         xLIcTeeB6K+1CmRVjK6bqsGg+m/opAyQwirSFUPVYGjWMEAfxxU2HWkTSQ/Iqm6bjXGx
+         khCL59Bt9GnUp1E9TMPHWG9JnNfwP9mWCsixVvOaw/PbDqn1CgqbPgxGdpi6PyLYPwMD
+         NPPrmXXLjyd0Aa4gtF3frU/VHO31bpGu3AiLav9zPDHVNXNNUlDJ5VhQNH+lvhq+MAqH
+         pqIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sMVaof/1OVk8lLRJok2TPHua87GRlj8RXP7UoaSkwnI=;
+        fh=xHsMpZUwhaAmyg4mMmYMqmI7CrsCMmhwg/Om+X77P4M=;
+        b=FV/3uB2R3dajO+869pzRUEech/9lpvTzZEHsSvRDLzk6I7x050I9frNiGMkIAeFOi1
+         AdQ/tKMiHEHZTPAJel6Rqi7o89zzrNbk7ksnwf3Zoo8VwZIwSut5niVHO24CdMLnljYq
+         rNJa9g7FcLQWnXPa580ya9DIlNhn1VluWqyVIpWgHQAP42sAgM4VWAxvwrSYUv0j6f6X
+         AC8yYCDrf9hA/as+A9pIxHO2Kpcjf5SX1lnAJYFn3YFAWL6P2zrot+9X5MnW0Hf4mWTx
+         deyEPvJO9IAC1U1nPxmS5Vne3kN2LL5LSr5zgvWE5LdkTSJr/Q+FshAD4g5gP+0I/Z3/
+         4jdw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770661403; x=1771266203; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sMVaof/1OVk8lLRJok2TPHua87GRlj8RXP7UoaSkwnI=;
+        b=eav+MmGroCl1PEraPnJxAHD1hmZ5gIdaeHZj7ki5JgTJTWm93BaFXVqrqVe9WpFnKq
+         n3srcVOO5NwHyGd/dph1hU1HQGCSygmXmpWCnjAmq0RGhmwtK90THtbCl86Q6N7wVj5M
+         uw6DTdJeonaBcHd8uXLlwJE+iq39D9rUI3iqlPowcuu2K6s6DFw5NEqJrjU97VVccCc5
+         wjABSGSlpBTW3UC/81J+YRbWIEkrXcTUeDXwaW89KdbB7tns0Fl1Va3mh5nfw6bFgdv7
+         0VXbhg+hq5U7xSQ737EaqIHrb0R7hnHi9yz0PiKZJkdN3eSFE90cFJ5+JgPpyMoT+f+7
+         uQ/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770661403; x=1771266203;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sMVaof/1OVk8lLRJok2TPHua87GRlj8RXP7UoaSkwnI=;
+        b=AaDqCCZEgfOiGdIOqflrpQvlvP9TPUkJUwlaShEFD9/WSEhDjwcuCbNiamvPi9fEJN
+         Cox8DC1WR5ykEqFTSdQDdT+UmRmrP9mfxGEeaiKN2WOTlvqLm4Pet+bPVsv9PPtme67g
+         imVH9UxFYhbJxOHqYwpWmeMHDSn6UeqOZzGdvma48KutR7a+KQWzYYMwEEQ6BEu5gdUm
+         4BhjD2W2+brdICB2I1qQ4T/adWe+7xtW7PgmJsLLFLt7ruJMfLS0nWuLTmIsWPs9bHjQ
+         DoJOeYBrSkWcajnCBpEKLvzBloj3nYIAP+fCRn6SSz3ZQhuL0RXGWAawEZb//W/500aO
+         Vn9A==
+X-Forwarded-Encrypted: i=1; AJvYcCU48BxjpbaxZJxGZa5GLPL2Gt6OqjK5eVTjteeYLD1Zt6dbziaivXMTHc7AWQ87sFkF8nrL08s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFQt+KNNEJUI45Gs6g2+y5A7u9K44omOp+zoZKQwjtIYNCIZeA
+	q1YHtgM719Edct4uaxOMC66aVYX75IALoHQQgx6/VMjdYpeH4jE0D/AxI9LzrdMNdlSpRQqQwd5
+	9WNYrnc0ckOlO2Zj71ca5F8DEPCgYjEM=
+X-Gm-Gg: AZuq6aJy/WNPq7a9E5mhAIJF7qDLTvsik5qoxszaFPDbsg4uqQxwil4YjvZe1FxNh9B
+	lDoqnSa7vaiimUg1rWzx7DN3a02v6gOrS2Te5jVJbH9aNqCeIrmNZSdhWZprRgV5FASqv4GVa5q
+	a94u5QExbR3uY2FRm7koyQBK6DXzNnCcOW+wZMytS+CdwS9xmBvPSYHMRz8BIlbNlY4POs42rkh
+	yBggN4E8UJvkRaIrUDtX0tB53ed6iFesDbcGOeaOcoeJNhWo1h2lfVPsksBa9F9VGwzYc6ur4Lw
+	5r037u5kbYZe44AWq+7OB6GGnUupr++2vu7hHYOra6N4IU3GLDmyvszjEpWQol7ItJKYQRvJ71r
+	zOSyZv9SGJa/fMLWespbNqSvA0ROY4WxtgHG17JYIOln3yZKtOEMjESDGJfCvoFIAXuAJQ4njzm
+	5gojIounI=
+X-Received: by 2002:a05:693c:631a:b0:2b8:c1b4:9cb7 with SMTP id
+ 5a478bee46e88-2b8c1b4a017mr2572950eec.22.1770661402855; Mon, 09 Feb 2026
+ 10:23:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/9] PCI: Avoid saving config space state if
- inaccessible
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, lukas@wunner.de, alex@shazbot.org,
-        clg@redhat.com, stable@vger.kernel.org, schnelle@linux.ibm.com,
-        mjrosato@linux.ibm.com, julianr@linux.ibm.com
-References: <20260207003936.GA112515@bhelgaas>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20260207003936.GA112515@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=KZnfcAYD c=1 sm=1 tr=0 ts=698a256f cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=k7L6yOQrr6rJGXFB698A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE1NCBTYWx0ZWRfX7P7t/r4q+90g
- iP6moakpHDB6r4NuGIwKoiMcBsTRCjamchnno+S0U6eWJOQppQ7ThIuXfRa1VFqhHD2AlgoNiC+
- 719xfYBtzvfEtP97Y3IUITeX90Rd4OSkZh+opg79r1ZcV9DtjMAA/tRsow77poZPp0+wQciJu0d
- 3KfIfTelRhLxX1b/ci/bsR+7RSpf2RlN6wsSQuVrxUfeejclnBoxffMdpxFtTtkDPo0eyTEL9px
- HmNhubcDI4azeIKovK79odPUyGSjzHwZS4fG66Enk0rezPqW3q46EX5FqBopPWoB87YNfC4PLzT
- 8BHqGBiOvy4A8VmcL3uroUGaWjyTFMzzejmbMh9H0h9VhKIgBdATHcpMo0H+BufMPQgSJXyQF2Y
- xM640fsxAsp95lLoXCwqY95/u0k3HR0OoGwIuBmFBrf7QFP9okqeeuQsND97eHgk7uItLjrDA88
- TFUSzox6k7biSlxRtvQ==
-X-Proofpoint-ORIG-GUID: qFc341DCRiVukIx7qGmIcgHw2lejbwj5
-X-Proofpoint-GUID: qFc341DCRiVukIx7qGmIcgHw2lejbwj5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-09_01,2026-02-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602090154
+References: <20260209142320.474120190@linuxfoundation.org> <0c7d0dcb-fb37-420e-bf42-7929f7bdf781@gmx.de>
+In-Reply-To: <0c7d0dcb-fb37-420e-bf42-7929f7bdf781@gmx.de>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Mon, 9 Feb 2026 19:23:10 +0100
+X-Gm-Features: AZwV_Qha5YCQzRf67ubA4-i0FU-1CsrY-YCKhL9ssBpK8maTgChfHYLPFkRtMLI
+Message-ID: <CADo9pHjJpiWd+D3yn-zy=wuhYW3YbG3P3hsL91VM5sjsoKnwaA@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/175] 6.18.10-rc1 review
+To: Ronald Warsow <rwarsow@gmx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215541-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.ibm.com:mid];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+]
-X-Rspamd-Queue-Id: DB6681137AB
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmx.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215542-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[droidbittin@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,gmx.de:email]
+X-Rspamd-Queue-Id: 7B4B01137F7
 X-Rspamd-Action: no action
 
-Hi Bjorn,
+Tested on: Arch Linux Machine a Dell Micro 3050 with a
+model name    : Intel(R) Core(TM) i5-6500T CPU @ 2.50GHz
+and works as it should
 
-Thanks for reviewing!
 
-On 2/6/2026 4:39 PM, Bjorn Helgaas wrote:
-> On Thu, Jan 22, 2026 at 11:44:31AM -0800, Farhan Ali wrote:
->> The current reset process saves the device's config space state before
->> reset and restores it afterward. However errors may occur unexpectedly and
->> it may then be impossible to save config space because the device may be
->> inaccessible (e.g. DPC) or config space may be corrupted. This results in
->> saving corrupted values that get written back to the device during state
->> restoration.
->>
->> With a reset we want to recover/restore the device into a functional state.
->> So avoid saving the state of the config space when the device config space
->> is inaccessible.
->>
->> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
->> ---
->>   drivers/pci/pci.c | 14 ++++++++++++++
->>   1 file changed, 14 insertions(+)
->>
->> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
->> index c105e285cff8..e7beaf1f65a7 100644
->> --- a/drivers/pci/pci.c
->> +++ b/drivers/pci/pci.c
->> @@ -4960,6 +4960,7 @@ EXPORT_SYMBOL_GPL(pci_dev_unlock);
->>   
->>   static void pci_dev_save_and_disable(struct pci_dev *dev)
->>   {
->> +	u32 val;
->>   	const struct pci_error_handlers *err_handler =
->>   			dev->driver ? dev->driver->err_handler : NULL;
->>   
->> @@ -4980,6 +4981,19 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
->>   	 */
->>   	pci_set_power_state(dev, PCI_D0);
->>   
->> +	/*
->> +	 * If device's config space is inaccessible it can return ~0 for
->> +	 * any reads. Since VFs can also return ~0 for Device and Vendor ID
->> +	 * check Command and Status registers. At the very least we should
->> +	 * avoid restoring config space for device with error bits set in
->> +	 * Status register.
->> +	 */
->> +	pci_read_config_dword(dev, PCI_COMMAND, &val);
->> +	if (PCI_POSSIBLE_ERROR(val)) {
->> +		pci_warn(dev, "Device config space inaccessible\n");
->> +		return;
->> +	}
-> This seems related to Lukas' recent patches:
->
->    a2f1e22390ac ("PCI/ERR: Ensure error recoverability at all times")
->    5e09895b4063 ("Documentation: PCI: Amend error recovery doc with pci_save_state() rules")
->
-> My poor understanding is that the PCI core now saves config space for
-> every device at enumeration time, and if a driver wants to capture an
-> updated config space after it has changed things, it is responsible
-> for doing that explicitly.
->
-> a2f1e22390ac gives us a baseline saved state that will be restored in
-> some cases.  This pci_dev_save_and_disable() is part of the reset path
-> and saves a potentially different state.  I'm a little uncomfortable
-> about the fact that we save the state at different times, including
-> unpredictable times after an error, and I'm not sure the driver can
-> always know what gets restored.
->
-> Maybe the reset path shouldn't even try to save config space again,
-> since we're now guaranteed to have at least the state from
-> enumeration?  I suppose skipping the save here would expose cases
-> where the driver changed config space without doing a pci_save_state()
-> itself, and a driver- or sysfs-initiated reset would lose that change,
-> whereas today we preserve it because we save/restore as part of that
-> reset.
->
-> That change would also be lost if the reset was unintentional, e.g.,
-> during error recovery, but I guess in that case the driver does know
-> that an error occurred, so it could redo the change.
->
-> It seems like the ideal thing would be if every restore used the
-> enumeration saved-state or the driver's intentional saved-state, never
-> a state saved at the unpredictable time of an error recovery reset.
+Tested-by: Luna Jernberg <droidbittin@gmail.com>
 
-Maybe it does makes sense to not save the config space again here. Since 
-we have a baseline saved state with commit a2f1e22390ac, removing the 
-saving of config space here would restore the baseline state unless a 
-driver saved its most recent state. So now we would have a working saved 
-state when we restore.
-
-However my fear is drivers may have come to rely on this to save/restore 
-its latest updated state and we could break some drivers?
-
-Thanks
-
-Farhan
-
+Den m=C3=A5n 9 feb. 2026 kl 18:25 skrev Ronald Warsow <rwarsow@gmx.de>:
 >
-> I hope Lukas and Alex can chime in here.
+> Hi
 >
->>   	pci_save_state(dev);
->>   	/*
->>   	 * Disable the device by clearing the Command register, except for
->> -- 
->> 2.43.0
->>
+> no regressions here on x86_64 (Intel 11th Gen. CPU)
+>
+> Thanks
+>
+> Tested-by: Ronald Warsow <rwarsow@gmx.de>
+>
 
