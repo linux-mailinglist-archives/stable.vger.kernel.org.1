@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-215370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215400-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8X9kEO33iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:21 +0100
+	id SN2OD1D4iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215400-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8283E111844
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C221E11192C
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 016623145827
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD6513109F2B
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3138D2DB7B4;
-	Mon,  9 Feb 2026 14:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FCD37B409;
+	Mon,  9 Feb 2026 14:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3gG5Unm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFScAUIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F762690EC;
-	Mon,  9 Feb 2026 14:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C8C28725B;
+	Mon,  9 Feb 2026 14:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648573; cv=none; b=A5vqXDeDAaj8utn37v+o5TL9yQ74wZBxlW1SqhDhxh7Ano/WNaKQ/L4Fm9RzcJ48wv1BJbf9NL9vzD/UatK7tx9VTE68tqcj+NhQjw/WyKD6SazSMd1Vz3K5wBj6Su2A5tB9EVKqGH4bsP+RLi/J4kmHRJTMfkTCxvvK/mUP/I4=
+	t=1770648669; cv=none; b=tn4GhRVwXfqAy48E8nuJ4E5hzAFrEzJXZTc21iGWGz5aXyJ+u1n/hg/z6/QcYF/PX7ggluczrlJLlDqrU7r6OlJSv8RQ4kx+VV7E/I+KW2mZrbPkNpf9KZhxNNOvX6s7kz3mR8/baBsKr3bZQ9qoBUpdhIgmsRqaG6+NJBfeYKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648573; c=relaxed/simple;
-	bh=S7mg6I4wk2ujloylxxaYa3v09PrnPzyc8prx9qmJNCQ=;
+	s=arc-20240116; t=1770648669; c=relaxed/simple;
+	bh=c3LcmWLfPYEecp6xMea+yBJAv9xT9oeJmmfpoiuh59A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AArDMyBq/j+m/jbunF3sB/SdehQps5MGbOF6PBpwzVxGyCesLZ0PDgueYEFGNVyBD36I+6yla3XWHby1K8+VENWl0aYiEmHObYfttekGTb4ZrWq5GxxD5u50semT3Ehl6brG76pJM2v/gM7IPS6lhc926JknQn+wJZCy+Yn25NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3gG5Unm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63206C116C6;
-	Mon,  9 Feb 2026 14:49:32 +0000 (UTC)
+	 MIME-Version; b=ZJ/TwEzmEUMpr1HWUKYl7s+0MvUbBafSA9a0n+0yoSAol8RF/gDWsVh2m5jk/8wuUeaC0pnp02Q9UOi43Xwh8RkY/G45kbfxePP/JLqdgWwLujR4gMK71pjQ5/OpyGqhKosaL+hWhwX0Zo+pMhKix/BPaOpW2SkMR4YIXrgZUl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFScAUIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F107C116C6;
+	Mon,  9 Feb 2026 14:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648572;
-	bh=S7mg6I4wk2ujloylxxaYa3v09PrnPzyc8prx9qmJNCQ=;
+	s=korg; t=1770648669;
+	bh=c3LcmWLfPYEecp6xMea+yBJAv9xT9oeJmmfpoiuh59A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3gG5UnmCjUPV9L5RzPk7tIQvmvZhG+OTIzO3Yjj/uI6aKErczwfQQAf8h/zIbJJv
-	 JpyUib59J2F/bo4LTuYPeKaa3cMYQqMivha/vtg6Ndy1xAYx1bb+l8GuYl/SrNKATX
-	 r2x3q3JLP37i6qgYYJrla8mhsMZALRaDMaGe77Pg=
+	b=wFScAUIkinZuOqc8lKiFLW9vHiUmICxVuBEm5cnxGye1tTOr6/LqklJ8bs6yii8tQ
+	 nOWnIEQ5PGUYn5cQab9QnKjrLSp/paUQlp960z8VKmgAZmjTSlp8PsRkN17XK4JJSR
+	 1B7hF7hgsZWxYPGb2HPGOj4rjKWxRZt/pCwoASg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Yuan <maxyuan@google.com>,
-	Jordan Rhee <jordanrhee@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Matt Olson <maolson@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Zhaojuan Guo <zguo@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 78/86] gve: Correct ethtool rx_dropped calculation
-Date: Mon,  9 Feb 2026 15:24:41 +0100
-Message-ID: <20260209142307.593172527@linuxfoundation.org>
+Subject: [PATCH 5.10 21/41] scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count()
+Date: Mon,  9 Feb 2026 15:24:42 +0100
+Message-ID: <20260209142257.576369347@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
+References: <20260209142256.797267956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215370-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215400-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -89,131 +86,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8283E111844
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C221E11192C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Yuan <maxyuan@google.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit c7db85d579a1dccb624235534508c75fbf2dfe46 ]
+[ Upstream commit 9411a89e9e7135cc459178fa77a3f1d6191ae903 ]
 
-The gve driver's "rx_dropped" statistic, exposed via `ethtool -S`,
-incorrectly includes `rx_buf_alloc_fail` counts. These failures
-represent an inability to allocate receive buffers, not true packet
-drops where a received packet is discarded. This misrepresentation can
-lead to inaccurate diagnostics.
+In iscsit_dec_conn_usage_count(), the function calls complete() while
+holding the conn->conn_usage_lock. As soon as complete() is invoked, the
+waiter (such as iscsit_close_connection()) may wake up and proceed to free
+the iscsit_conn structure.
 
-This patch rectifies the ethtool "rx_dropped" calculation. It removes
-`rx_buf_alloc_fail` from the total and adds `xdp_tx_errors` and
-`xdp_redirect_errors`, which represent legitimate packet drops within
-the XDP path.
+If the waiter frees the memory before the current thread reaches
+spin_unlock_bh(), it results in a KASAN slab-use-after-free as the function
+attempts to release a lock within the already-freed connection structure.
 
-Cc: stable@vger.kernel.org
-Fixes: 433e274b8f7b ("gve: Add stats for gve.")
-Signed-off-by: Max Yuan <maxyuan@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Reviewed-by: Matt Olson <maolson@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260202193925.3106272-3-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by releasing the spinlock before calling complete().
+
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reported-by: Zhaojuan Guo <zguo@redhat.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Link: https://patch.msgid.link/20260112165352.138606-2-mlombard@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c | 27 ++++++++++++++-----
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ drivers/target/iscsi/iscsi_target_util.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index 59c509ade2625..b1c4df3bab292 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -156,9 +156,11 @@ gve_get_ethtool_stats(struct net_device *netdev,
- {
- 	u64 tmp_rx_pkts, tmp_rx_bytes, tmp_rx_skb_alloc_fail,
- 		tmp_rx_buf_alloc_fail, tmp_rx_desc_err_dropped_pkt,
--		tmp_tx_pkts, tmp_tx_bytes;
-+		tmp_tx_pkts, tmp_tx_bytes,
-+		tmp_xdp_tx_errors, tmp_xdp_redirect_errors;
- 	u64 rx_buf_alloc_fail, rx_desc_err_dropped_pkt, rx_pkts,
--		rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes, tx_dropped;
-+		rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes, tx_dropped,
-+		xdp_tx_errors, xdp_redirect_errors;
- 	int rx_base_stats_idx, max_rx_stats_idx, max_tx_stats_idx;
- 	int stats_idx, stats_region_len, nic_stats_len;
- 	struct stats *report_stats;
-@@ -187,7 +189,9 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 		return;
- 	}
- 	for (rx_pkts = 0, rx_bytes = 0, rx_skb_alloc_fail = 0,
--	     rx_buf_alloc_fail = 0, rx_desc_err_dropped_pkt = 0, ring = 0;
-+	     rx_buf_alloc_fail = 0, rx_desc_err_dropped_pkt = 0,
-+	     xdp_tx_errors = 0, xdp_redirect_errors = 0,
-+	     ring = 0;
- 	     ring < priv->rx_cfg.num_queues; ring++) {
- 		if (priv->rx) {
- 			do {
-@@ -201,6 +205,9 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 				tmp_rx_buf_alloc_fail = rx->rx_buf_alloc_fail;
- 				tmp_rx_desc_err_dropped_pkt =
- 					rx->rx_desc_err_dropped_pkt;
-+				tmp_xdp_tx_errors = rx->xdp_tx_errors;
-+				tmp_xdp_redirect_errors =
-+					rx->xdp_redirect_errors;
- 			} while (u64_stats_fetch_retry(&priv->rx[ring].statss,
- 						       start));
- 			rx_pkts += tmp_rx_pkts;
-@@ -208,6 +215,8 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 			rx_skb_alloc_fail += tmp_rx_skb_alloc_fail;
- 			rx_buf_alloc_fail += tmp_rx_buf_alloc_fail;
- 			rx_desc_err_dropped_pkt += tmp_rx_desc_err_dropped_pkt;
-+			xdp_tx_errors += tmp_xdp_tx_errors;
-+			xdp_redirect_errors += tmp_xdp_redirect_errors;
- 		}
- 	}
- 	for (tx_pkts = 0, tx_bytes = 0, tx_dropped = 0, ring = 0;
-@@ -232,8 +241,8 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 	data[i++] = rx_bytes;
- 	data[i++] = tx_bytes;
- 	/* total rx dropped packets */
--	data[i++] = rx_skb_alloc_fail + rx_buf_alloc_fail +
--		    rx_desc_err_dropped_pkt;
-+	data[i++] = rx_skb_alloc_fail + rx_desc_err_dropped_pkt +
-+		    xdp_tx_errors + xdp_redirect_errors;
- 	data[i++] = tx_dropped;
- 	data[i++] = priv->tx_timeo_cnt;
- 	data[i++] = rx_skb_alloc_fail;
-@@ -300,6 +309,9 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 				tmp_rx_buf_alloc_fail = rx->rx_buf_alloc_fail;
- 				tmp_rx_desc_err_dropped_pkt =
- 					rx->rx_desc_err_dropped_pkt;
-+				tmp_xdp_tx_errors = rx->xdp_tx_errors;
-+				tmp_xdp_redirect_errors =
-+					rx->xdp_redirect_errors;
- 			} while (u64_stats_fetch_retry(&priv->rx[ring].statss,
- 						       start));
- 			data[i++] = tmp_rx_bytes;
-@@ -309,8 +321,9 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 			data[i++] = rx->rx_frag_alloc_cnt;
- 			/* rx dropped packets */
- 			data[i++] = tmp_rx_skb_alloc_fail +
--				tmp_rx_buf_alloc_fail +
--				tmp_rx_desc_err_dropped_pkt;
-+				    tmp_rx_desc_err_dropped_pkt +
-+				    tmp_xdp_tx_errors +
-+				    tmp_xdp_redirect_errors;
- 			data[i++] = rx->rx_copybreak_pkt;
- 			data[i++] = rx->rx_copied_pkt;
- 			/* stats from NIC */
+diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
+index 58b3eb589bc77..29ad78fcdd5f8 100644
+--- a/drivers/target/iscsi/iscsi_target_util.c
++++ b/drivers/target/iscsi/iscsi_target_util.c
+@@ -873,8 +873,11 @@ void iscsit_dec_conn_usage_count(struct iscsi_conn *conn)
+ 	spin_lock_bh(&conn->conn_usage_lock);
+ 	conn->conn_usage_count--;
+ 
+-	if (!conn->conn_usage_count && conn->conn_waiting_on_uc)
++	if (!conn->conn_usage_count && conn->conn_waiting_on_uc) {
++		spin_unlock_bh(&conn->conn_usage_lock);
+ 		complete(&conn->conn_waiting_on_uc_comp);
++		return;
++	}
+ 
+ 	spin_unlock_bh(&conn->conn_usage_lock);
+ }
 -- 
 2.51.0
 
