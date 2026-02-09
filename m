@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHPzIU73iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:42 +0100
+	id YCq/JG7yiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E092E111725
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324D7110C1D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 686E6313DFF3
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:47:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A8BAB3025784
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF6137BE8F;
-	Mon,  9 Feb 2026 14:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9173337F8B2;
+	Mon,  9 Feb 2026 14:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLmkUXtW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bu/8GKEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AF837AA91;
-	Mon,  9 Feb 2026 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5527A37BE78;
+	Mon,  9 Feb 2026 14:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648425; cv=none; b=BtYaztV8LAiimY8IVq+D4tnpFP5/u+aJYQeu2e9Wv2SRNbipx3Glg2/HR4x3uykHM+vae1KdQ7RmSVfUIKf+u+sd6TwnduaG/y0YYJGjM7MC1P8nQhMkQozkBeGSShOeWDNG/upV6um3RnLfodmECUB9xBOjmoa6FF5403iy7C0=
+	t=1770647991; cv=none; b=pzxbjRVbCooUCscCMRTYLCDtx2e1bsH5aHcmu4I6x+mLiCQcpNq2/yuT6akG/TLTS7yBIeLZqvgnYlCm30mdEVQgEtfpmXybP8PGwaLZ4s+p1vgAuWloXxzzpWvUlpZUq5sAWZ8v3KswYKu/SzJiEmT7SzpFRl0ue36m6tlG1B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648425; c=relaxed/simple;
-	bh=0/rvZUlYOICGCH4rCCd6hqO0opv/tPBfPx8/4XeTkTI=;
+	s=arc-20240116; t=1770647991; c=relaxed/simple;
+	bh=i6YmMTtEuMXC31lHJY+Mlh30k2n/KZ7DiLO5b94+pxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sX3ibf7LSCL36m56i1RlIhGUS6zH4hgaLP5r4Ab7Pez73MtxM+TVGfl9YVrtUPoPX04QXQkZfj9BWzpBMNySnur2kVoAN0J8WMDcJb8tffx8nkSxolUQZLlFrSRz5Mvw/qkgQc8OysWayY6VSOmByoJ3ASfGBae2mHORludyvQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLmkUXtW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CFCC116C6;
-	Mon,  9 Feb 2026 14:47:04 +0000 (UTC)
+	 MIME-Version; b=OiHijfCjcEZZN3VHVPJfDp3M9hnU4htP1LMejkduANoDgkcQGygPMpq9Kr3GX9+LQkwv2cOuBU6a2fCbdyvtzo0Q5AWBLj9xIDtK3NDpjmrwETU6aVrLHPpcuKkITolkxpUy0UkF2Qs/dtU1oKGW9pnTajzjQQAZkRRwCEDxhYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bu/8GKEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A85C116C6;
+	Mon,  9 Feb 2026 14:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648424;
-	bh=0/rvZUlYOICGCH4rCCd6hqO0opv/tPBfPx8/4XeTkTI=;
+	s=korg; t=1770647991;
+	bh=i6YmMTtEuMXC31lHJY+Mlh30k2n/KZ7DiLO5b94+pxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLmkUXtW1HmfXFPrGwvI13px+fULp232exT3/OXs1wcNSgA3BwfQK8AUTe4PyuDQF
-	 y7HEM/RqAqhWIZJakZeEatzvCiKFGtxXlAiMVxHQKAhYg3dGPph5bufBzwZ8WNoLdC
-	 nmpd6KD3dd4SrniQMoZnSVEZ9PqoqGlihAlBSL1g=
+	b=Bu/8GKEQFKBabZrxkfLksZRcSUiOlvNkkRRYTirjnCForhYABOggRjYNKZs8BeXg1
+	 znroz8DZydEm5xWZA/kxrnlsss2K1+GqTZwuACZ7wUX1Fltn3oStKZW361NLwpao9R
+	 J8KtuXrQ6p0EshIG9eYqJciGEeGBPbkwb29Sr4xA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 34/86] HID: intel-ish-hid: Reset enum_devices_done before enumeration
+Subject: [PATCH 6.12 088/113] net: sfp: convert sfp quirks to modify struct sfp_module_support
 Date: Mon,  9 Feb 2026 15:23:57 +0100
-Message-ID: <20260209142306.013598764@linuxfoundation.org>
+Message-ID: <20260209142313.347133356@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +65,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215324-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215195-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: E092E111725
+	TAGGED_RCPT(0.00)[stable,kernel];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email,msgid.link:url]
+X-Rspamd-Queue-Id: 324D7110C1D
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 56e230723e3a818373bd62331bccb1c6d2b3881b ]
+[ Upstream commit a7dc35a9e49b103ff2a8a96519c47e149d733ccd ]
 
-Some systems have enabled ISH without any sensors. In this case sending
-HOSTIF_DM_ENUM_DEVICES results in 0 sensors. This triggers ISH hardware
-reset on subsequent enumeration after S3/S4 resume.
+In order to provide extensible module support properties, arrange for
+the SFP quirks to modify any member of the sfp_module_support struct,
+rather than just the ethtool link modes and interfaces.
 
-The enum_devices_done flag was not reset before sending the
-HOSTIF_DM_ENUM_DEVICES command. On subsequent enumeration calls (such as
-after S3/S4 resume), this flag retains its previous true value, causing the
-wait loop to be skipped and returning prematurely to hid_ishtp_cl_init().
-If 0 HID devices are found, hid_ishtp_cl_init() skips getting HID device
-descriptors and sets init_done to true. When the delayed enumeration
-response arrives with init_done already true, the driver treats it as a bad
-packet and triggers an ISH hardware reset.
-
-Set enum_devices_done to false before sending the enumeration command,
-consistent with similar functions like ishtp_get_hid_descriptor() and
-ishtp_get_report_descriptor() which reset their respective flags.
-
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/E1uydVe-000000061WK-3KwI@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: adcbadfd8e05 ("net: sfp: Fix quirk for Ubiquiti U-Fiber Instant SFP module")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ishtp-hid-client.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/sfp-bus.c |  5 ++--
+ drivers/net/phy/sfp.c     | 49 +++++++++++++++++++--------------------
+ drivers/net/phy/sfp.h     |  4 ++--
+ 3 files changed, 28 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ishtp-hid-client.c b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-index e3d70c5460e96..a0c1dc0941497 100644
---- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-@@ -496,6 +496,7 @@ static int ishtp_enum_enum_devices(struct ishtp_cl *hid_ishtp_cl)
- 	int rv;
+diff --git a/drivers/net/phy/sfp-bus.c b/drivers/net/phy/sfp-bus.c
+index 35030c527fbed..b77190494b045 100644
+--- a/drivers/net/phy/sfp-bus.c
++++ b/drivers/net/phy/sfp-bus.c
+@@ -373,9 +373,8 @@ static void sfp_init_module(struct sfp_bus *bus,
+ 	sfp_module_parse_port(bus, id);
+ 	sfp_module_parse_may_have_phy(bus, id);
  
- 	/* Send HOSTIF_DM_ENUM_DEVICES */
-+	client_data->enum_devices_done = false;
- 	memset(&msg, 0, sizeof(struct hostif_msg));
- 	msg.hdr.command = HOSTIF_DM_ENUM_DEVICES;
- 	rv = ishtp_cl_send(hid_ishtp_cl, (unsigned char *)&msg,
+-	if (quirk && quirk->modes)
+-		quirk->modes(id, bus->caps.link_modes,
+-			     bus->caps.interfaces);
++	if (quirk && quirk->support)
++		quirk->support(id, &bus->caps);
+ }
+ 
+ /**
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 90bb5559af5bf..05dd0cf093482 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -439,45 +439,44 @@ static void sfp_fixup_rollball_cc(struct sfp *sfp)
+ }
+ 
+ static void sfp_quirk_2500basex(const struct sfp_eeprom_id *id,
+-				unsigned long *modes,
+-				unsigned long *interfaces)
++				struct sfp_module_caps *caps)
+ {
+-	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseX_Full_BIT, modes);
+-	__set_bit(PHY_INTERFACE_MODE_2500BASEX, interfaces);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseX_Full_BIT,
++			 caps->link_modes);
++	__set_bit(PHY_INTERFACE_MODE_2500BASEX, caps->interfaces);
+ }
+ 
+ static void sfp_quirk_disable_autoneg(const struct sfp_eeprom_id *id,
+-				      unsigned long *modes,
+-				      unsigned long *interfaces)
++				      struct sfp_module_caps *caps)
+ {
+-	linkmode_clear_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, modes);
++	linkmode_clear_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, caps->link_modes);
+ }
+ 
+ static void sfp_quirk_oem_2_5g(const struct sfp_eeprom_id *id,
+-			       unsigned long *modes,
+-			       unsigned long *interfaces)
++			       struct sfp_module_caps *caps)
+ {
+ 	/* Copper 2.5G SFP */
+-	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, modes);
+-	__set_bit(PHY_INTERFACE_MODE_2500BASEX, interfaces);
+-	sfp_quirk_disable_autoneg(id, modes, interfaces);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
++			 caps->link_modes);
++	__set_bit(PHY_INTERFACE_MODE_2500BASEX, caps->interfaces);
++	sfp_quirk_disable_autoneg(id, caps);
+ }
+ 
+ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
+-				      unsigned long *modes,
+-				      unsigned long *interfaces)
++				      struct sfp_module_caps *caps)
+ {
+ 	/* Ubiquiti U-Fiber Instant module claims that support all transceiver
+ 	 * types including 10G Ethernet which is not truth. So clear all claimed
+ 	 * modes and set only one mode which module supports: 1000baseX_Full.
+ 	 */
+-	linkmode_zero(modes);
+-	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT, modes);
++	linkmode_zero(caps->link_modes);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT,
++			 caps->link_modes);
+ }
+ 
+-#define SFP_QUIRK(_v, _p, _m, _f) \
+-	{ .vendor = _v, .part = _p, .modes = _m, .fixup = _f, }
+-#define SFP_QUIRK_M(_v, _p, _m) SFP_QUIRK(_v, _p, _m, NULL)
++#define SFP_QUIRK(_v, _p, _s, _f) \
++	{ .vendor = _v, .part = _p, .support = _s, .fixup = _f, }
++#define SFP_QUIRK_S(_v, _p, _s) SFP_QUIRK(_v, _p, _s, NULL)
+ #define SFP_QUIRK_F(_v, _p, _f) SFP_QUIRK(_v, _p, NULL, _f)
+ 
+ static const struct sfp_quirk sfp_quirks[] = {
+@@ -517,7 +516,7 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 
+ 	// HG MXPD-483II-F 2.5G supports 2500Base-X, but incorrectly reports
+ 	// 2600MBd in their EERPOM
+-	SFP_QUIRK_M("HG GENUINE", "MXPD-483II", sfp_quirk_2500basex),
++	SFP_QUIRK_S("HG GENUINE", "MXPD-483II", sfp_quirk_2500basex),
+ 
+ 	// Huawei MA5671A can operate at 2500base-X, but report 1.2GBd NRZ in
+ 	// their EEPROM
+@@ -526,9 +525,9 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 
+ 	// Lantech 8330-262D-E can operate at 2500base-X, but incorrectly report
+ 	// 2500MBd NRZ in their EEPROM
+-	SFP_QUIRK_M("Lantech", "8330-262D-E", sfp_quirk_2500basex),
++	SFP_QUIRK_S("Lantech", "8330-262D-E", sfp_quirk_2500basex),
+ 
+-	SFP_QUIRK_M("UBNT", "UF-INSTANT", sfp_quirk_ubnt_uf_instant),
++	SFP_QUIRK_S("UBNT", "UF-INSTANT", sfp_quirk_ubnt_uf_instant),
+ 
+ 	// Walsun HXSX-ATR[CI]-1 don't identify as copper, and use the
+ 	// Rollball protocol to talk to the PHY.
+@@ -541,9 +540,9 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
+ 
+ 	SFP_QUIRK_F("OEM", "SFP-10G-T", sfp_fixup_rollball_cc),
+-	SFP_QUIRK_M("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
+-	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-D", sfp_quirk_2500basex),
+-	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-U", sfp_quirk_2500basex),
++	SFP_QUIRK_S("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
++	SFP_QUIRK_S("OEM", "SFP-2.5G-BX10-D", sfp_quirk_2500basex),
++	SFP_QUIRK_S("OEM", "SFP-2.5G-BX10-U", sfp_quirk_2500basex),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
+diff --git a/drivers/net/phy/sfp.h b/drivers/net/phy/sfp.h
+index 1fd097dccb9fc..879dff7afe6a4 100644
+--- a/drivers/net/phy/sfp.h
++++ b/drivers/net/phy/sfp.h
+@@ -9,8 +9,8 @@ struct sfp;
+ struct sfp_quirk {
+ 	const char *vendor;
+ 	const char *part;
+-	void (*modes)(const struct sfp_eeprom_id *id, unsigned long *modes,
+-		      unsigned long *interfaces);
++	void (*support)(const struct sfp_eeprom_id *id,
++			struct sfp_module_caps *caps);
+ 	void (*fixup)(struct sfp *sfp);
+ };
+ 
 -- 
 2.51.0
 
