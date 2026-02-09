@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFDEHcP2iWmuFAAAu9opvQ
-	(envelope-from <stable+bounces-215338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:01:23 +0100
+	id 6FS/Esj4iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:10:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB68011165C
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:01:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FE5111A54
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71EE33141E6F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:47:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BC93316E550
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAB637BE8F;
-	Mon,  9 Feb 2026 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADAB37B409;
+	Mon,  9 Feb 2026 14:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRxKnpKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r442zhCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB652DB7B4;
-	Mon,  9 Feb 2026 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37D628312F;
+	Mon,  9 Feb 2026 14:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648468; cv=none; b=cWqXGdRkoOZebTo0HsvojadnfrzuxoSXGwjiYhvrTThlx34GGSt4z+5DYN+scRjt+6wU9ide6eyhbZC16gdF8J0zILNaP/ToUl/J07RkOJEdcEeTj7vY03md3GaUeO6YYgZvNKZLcF0M+hpEihyg/F4wwx/Tvc5ukWP9KIealVI=
+	t=1770648779; cv=none; b=Em45xSoHIrslhrdJ3bfFnW7tnXbz2QPxoQQcsHUvp6ZXKYPA3ohEfr9Dz1YhDus3p8CfSgtLQvsV1JVbzc8jVquAc9MZYZUjfkVNd8Xp7RtBoMN2VgTH6O5rOAWhNg+YEtmt/5GhTyyC7Es+AQwpYTU2sdflZfJzEGemT/si/v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648468; c=relaxed/simple;
-	bh=y3lEGcSHHHJRvjgjtliYrLENhv1ikrWk7CqqqcjX7sk=;
+	s=arc-20240116; t=1770648779; c=relaxed/simple;
+	bh=cOYV3aAlT3C7k/RfHEdkF08+5SDG3cED5JVRXUGFZgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKkkeI97EuvSKkfQO9l3clDL4jngNMn3olfj3zGO+pCBT16CfLrylQhnisfct/lzi8FL0/uOFY+humqGhHZEsOtCUvsZR2vxEBEEynC9nBAt4zgqYWXnQc6NxXcVAU39cnVoDvfPQVfO5stjGUgTsPQ8EVDk1N6tDgZURbYi7+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRxKnpKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCE3C19422;
-	Mon,  9 Feb 2026 14:47:47 +0000 (UTC)
+	 MIME-Version; b=Ukp/FLHnl4EWUGaqWzKWTOJIzAb0clSvcKiBSESCQ9zHuG8HUEvu1WV5mP5aU/izQU8vU3AfN7cyeZGL1rf8cgWu12pVCbKnZtkiqfaI6ekb4E/L4jleaX0gfpDVgBcaqgM/uYK6ODA2SfrKO1JW1PuL4LzwOHZMuNt+6qdrbBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r442zhCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DA5C116C6;
+	Mon,  9 Feb 2026 14:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648468;
-	bh=y3lEGcSHHHJRvjgjtliYrLENhv1ikrWk7CqqqcjX7sk=;
+	s=korg; t=1770648779;
+	bh=cOYV3aAlT3C7k/RfHEdkF08+5SDG3cED5JVRXUGFZgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRxKnpKE4NpIjPHEFoatLmsxGD/Ep6xmAw/BV+ewEAOGNQGoX9fSQxzZul0C7+x46
-	 tNHvDFW2C+wejkrg9FHdPzOGD1yVPLRge+SLoVJQAvOP3SeCZe4Uqyxe5O9uDYs59V
-	 ccNckfWsWg0VRTjSHEsR5Pwa7aQUaYM8uVCicwLk=
+	b=r442zhCE8KWjr6I1gTUGtJ/TY90XBoSKIF43LcPnsJZknoZXTkcJRg3MCGX3BQX9O
+	 9Zsd97xJSW/XsjzOjo3dqPeXSWjRhM4BYg+ZbzmKKOxFM4fiX0xGqUNRZTA/FlVAMy
+	 CKHjAo7N50GBZs6z1fN67aJ7q7yFgsezIO8Qlzjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhi Bajahaw <bajahawradhi@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 46/86] ASoC: amd: yc: Fix microphone on ASUS M6500RE
-Date: Mon,  9 Feb 2026 15:24:09 +0100
-Message-ID: <20260209142306.440640975@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 5.15 13/75] timers: Replace BUG_ON()s
+Date: Mon,  9 Feb 2026 15:24:10 +0100
+Message-ID: <20260209142302.319876788@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +69,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215338-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215434-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linutronix.de,roeck-us.net,intel.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BB68011165C
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,linutronix.de:email]
+X-Rspamd-Queue-Id: B4FE5111A54
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhi Bajahaw <bajahawradhi@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 8e29db1b08808f709231e6fd4c79dcdee5b17a17 ]
+[ Upstream commit 82ed6f7ef58f9634fe4462dd721902c580f01569 ]
 
-Add DMI match for ASUSTeK COMPUTER INC. M6500RE to enable the
-internal microphone.
+The timer code still has a few BUG_ON()s left which are crashing the kernel
+in situations where it still can recover or simply refuse to take an
+action.
 
-Signed-off-by: Radhi Bajahaw <bajahawradhi@gmail.com>
-Link: https://patch.msgid.link/20260112203814.155-1-bajahawradhi@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the one in the hotplug callback which checks for the CPU being
+offline. If that happens then the whole hotplug machinery will explode in
+colourful ways.
+
+Replace the rest with WARN_ON_ONCE() and conditional returns where
+appropriate.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201624.769128888@linutronix.de
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/time/timer.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 00e4ffeb6fb00..b0456be5d921a 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -409,6 +409,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RE"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
--- 
-2.51.0
-
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1155,7 +1155,8 @@ EXPORT_SYMBOL(timer_reduce);
+  */
+ void add_timer(struct timer_list *timer)
+ {
+-	BUG_ON(timer_pending(timer));
++	if (WARN_ON_ONCE(timer_pending(timer)))
++		return;
+ 	__mod_timer(timer, timer->expires, MOD_TIMER_NOTPENDING);
+ }
+ EXPORT_SYMBOL(add_timer);
+@@ -1174,7 +1175,8 @@ void add_timer_on(struct timer_list *tim
+ 	struct timer_base *new_base, *base;
+ 	unsigned long flags;
+ 
+-	BUG_ON(timer_pending(timer) || !timer->function);
++	if (WARN_ON_ONCE(timer_pending(timer) || !timer->function))
++		return;
+ 
+ 	new_base = get_timer_cpu_base(timer->flags, cpu);
+ 
+@@ -1995,8 +1997,6 @@ int timers_dead_cpu(unsigned int cpu)
+ 	struct timer_base *new_base;
+ 	int b, i;
+ 
+-	BUG_ON(cpu_online(cpu));
+-
+ 	for (b = 0; b < NR_BASES; b++) {
+ 		old_base = per_cpu_ptr(&timer_bases[b], cpu);
+ 		new_base = get_cpu_ptr(&timer_bases[b]);
+@@ -2013,7 +2013,8 @@ int timers_dead_cpu(unsigned int cpu)
+ 		 */
+ 		forward_timer_base(new_base);
+ 
+-		BUG_ON(old_base->running_timer);
++		WARN_ON_ONCE(old_base->running_timer);
++		old_base->running_timer = NULL;
+ 
+ 		for (i = 0; i < WHEEL_SIZE; i++)
+ 			migrate_timer_list(new_base, old_base->vectors + i);
 
 
 
