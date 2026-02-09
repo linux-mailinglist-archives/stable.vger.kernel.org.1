@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kM1dOiz5iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:40 +0100
+	id wBwkIq/3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C17111AF8
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDA51117CE
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B90030FB227
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AB53312D9D8
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB38937BE77;
-	Mon,  9 Feb 2026 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9823E3783C9;
+	Mon,  9 Feb 2026 14:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCCt8KM3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdyHoxxs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE4428312F;
-	Mon,  9 Feb 2026 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C007285073;
+	Mon,  9 Feb 2026 14:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648852; cv=none; b=b3fYNSysx/4qLbka+CSU6vlAgAiOs97VUbG3J4NRc6AtOD9WyPfOILJZrzrxD7BzH1Ndvg866em+SfCsdP0HPSQ0lNRElud7XKKulnsFcXE5LAhQaPxs3WfJFES8JC2bbDsGpUPTusyIWJ+piITtDZharRcqqu1DQd451Qf5Avc=
+	t=1770648541; cv=none; b=YcZLuWCEX9BIeKgE6EvAtNMMGTaK6+BTvcJuJe0/AVbPoSJSa4xBcLblGI2krvO5cPo2eXtmC9dOwWS/dl1f1PJEz9lW0sNwg4nT+xVViZozXw54FGuKL+KyUl2iVIptbVJowP7B2E+hPhh8btYQvn8cYZgmhaU4TKtKGZ+N+Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648852; c=relaxed/simple;
-	bh=KwzY0MyMH2q8q30Ov7V1n0LpmFdpIaeUq2HIIpg1ue8=;
+	s=arc-20240116; t=1770648541; c=relaxed/simple;
+	bh=XBF9yqv+ypediRNL/wymj1llc1aU5s40HOkApkdLnhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DPjDaL00Vhaq05CG2OC29yVaofjII6pYa7kqQo4k/uURKAtlcmMlFljBudprtC9b8KMIeu406cUwOTaPvQaJrHTbnF0bZoZZeeb78Jo4Nm5JN8KGlc2wAa/NZ4SmN4f3FE5Sa/4iboe2IELmim2ZxmAufeQyoX4sCDh26jEt9uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCCt8KM3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0295C116C6;
-	Mon,  9 Feb 2026 14:54:11 +0000 (UTC)
+	 MIME-Version; b=LFnkcuTJjR1PSwloF4Fa9GYUzSR1lVzSWeS6S40eEZzPJxx4LAVtlpzvtkeIyXzJwoE8BQOcVU/qeW8kIt1Oj9g7kRQ+Uw6hs/+QHhDVi6KFJmg6iZKa73c6IqVWZGzyPopsomabfEfzYA+joXQhiqxO6ry6Y9AvN6KfYJ2Gtho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdyHoxxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C194CC16AAE;
+	Mon,  9 Feb 2026 14:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648852;
-	bh=KwzY0MyMH2q8q30Ov7V1n0LpmFdpIaeUq2HIIpg1ue8=;
+	s=korg; t=1770648541;
+	bh=XBF9yqv+ypediRNL/wymj1llc1aU5s40HOkApkdLnhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCCt8KM3Hz5NM/Tg0dn4FyNt3sCArROIjKQFTg4SzTp3HxsmuSPQ5IgLAW3feRG0G
-	 gvTDV+HBDWE+HyfnYHeZ3alDYaRFGL0S1zjkdPBt5ONRtOcrms+MQoZ88/ljhXS/Dk
-	 HyDw03+zqkkhqdBoHliVHTStYjX7CRE0FU5KNC/Y=
+	b=gdyHoxxsueWNUdRXOSIkvfxnwg8RBOSi/oAFJAhOjoIvW4PMf9grxdjw8JqHm44xS
+	 PLChjPwv3GVVYuWniEk2+SiLZ/2AOl2VOVO6XxdVIrabPV+NNXvCgeOv8ztwUsj2zX
+	 Dp8ZylTjPu88ERnDXAL/W9r8W0+F1XmC+84kG99k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rodrigo=20Lugathe=20da=20Concei=C3=A7=C3=A3o=20Alves?= <lugathe2@gmail.com>,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/75] HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
+Subject: [PATCH 6.6 69/86] tipc: use kfree_sensitive() for session key material
 Date: Mon,  9 Feb 2026 15:24:32 +0100
-Message-ID: <20260209142303.112641607@linuxfoundation.org>
+Message-ID: <20260209142307.260750981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215456-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,cosmicgizmosystems.com,suse.com,kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215360-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cosmicgizmosystems.com:email]
-X-Rspamd-Queue-Id: 46C17111AF8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,meta.com:email]
+X-Rspamd-Queue-Id: EDDA51117CE
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
+From: Daniel Hodges <hodgesd@meta.com>
 
-[ Upstream commit 85a866809333cd2bf8ddac93d9a3e3ba8e4f807d ]
+[ Upstream commit 74d9391e8849e70ded5309222d09b0ed0edbd039 ]
 
-The USB speaker has a bug that causes it to reboot when changing the
-brightness using the physical knob.
+The rx->skey field contains a struct tipc_aead_key with GCM-AES
+encryption keys used for TIPC cluster communication. Using plain
+kfree() leaves this sensitive key material in freed memory pages
+where it could potentially be recovered.
 
-Add a new vendor and product ID entry in hid-ids.h, and register
-the corresponding device in hid-quirks.c with the required quirk.
+Switch to kfree_sensitive() to ensure the key material is zeroed
+before the memory is freed.
 
-Signed-off-by: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
-Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 1ef6f7c9390f ("tipc: add automatic session key exchange")
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+Link: https://patch.msgid.link/20260131180114.2121438-1-hodgesd@meta.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ net/tipc/crypto.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index de62855d89f14..1dc28cabd71d5 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -401,6 +401,9 @@
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
- 
-+#define USB_VENDOR_ID_EDIFIER		0x2d99
-+#define USB_DEVICE_ID_EDIFIER_QR30	0xa101	/* EDIFIER Hal0 2.0 SE */
-+
- #define USB_VENDOR_ID_ELAN		0x04f3
- #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
- #define USB_DEVICE_ID_HP_X2		0x074d
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 445132b6f8c88..b4f4f6823c5f6 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -81,6 +81,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_PS3), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_WIIU), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DWAV, USB_DEVICE_ID_EGALAX_TOUCHCONTROLLER), HID_QUIRK_MULTI_INPUT | HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, USB_DEVICE_ID_ELO_TS2700), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_EMS, USB_DEVICE_ID_EMS_TRIO_LINKER_PLUS_II), HID_QUIRK_MULTI_INPUT },
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index ea5bb131ebd06..2721baf9fd2b3 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -1219,7 +1219,7 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
+ 		rx = c;
+ 		tx = tipc_net(rx->net)->crypto_tx;
+ 		if (cancel_delayed_work(&rx->work)) {
+-			kfree(rx->skey);
++			kfree_sensitive(rx->skey);
+ 			rx->skey = NULL;
+ 			atomic_xchg(&rx->key_distr, 0);
+ 			tipc_node_put(rx->node);
+@@ -2394,7 +2394,7 @@ static void tipc_crypto_work_rx(struct work_struct *work)
+ 			break;
+ 		default:
+ 			synchronize_rcu();
+-			kfree(rx->skey);
++			kfree_sensitive(rx->skey);
+ 			rx->skey = NULL;
+ 			break;
+ 		}
 -- 
 2.51.0
 
