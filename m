@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HcqJI3xiWnyEgAAu9opvQ
-	(envelope-from <stable+bounces-215176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:09 +0100
+	id UGztDyT3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:03:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3328A1109EB
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:39:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F831116D8
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 422B8300A30C
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:38:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFEB03096843
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940CD37BE93;
-	Mon,  9 Feb 2026 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1E1285073;
+	Mon,  9 Feb 2026 14:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvngpgOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkxMekSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5600637AA87;
-	Mon,  9 Feb 2026 14:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F73027CCF2;
+	Mon,  9 Feb 2026 14:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647927; cv=none; b=EvZgRnLdboDVLT+QKgL4BEak2cmNATac6aAJEpB8OjhkfDVfjsIKdkVXl/7TfX+u+Dfsadm2S6FCrLkc7EJjYiHqv1owCvnpRBThe7gtC2m+m+xJ4M9wehivVhafW/+rFzPL77t6KyR6sklelvE8kePnCAcwFmlV2g02Tz1H6Dw=
+	t=1770648395; cv=none; b=UJoeU6K7bhB1lUtQpS2iErh5ha4cbseCtEPaa1Sry0EaX2Fb8eqrRzhId5y7bW7BFNhXd/s5ZN6fLP3qqQ69ux8qwNSJizTyFXC2JbDpD5562aPidJfrc5L3XJMFQTGzSDR7JDnWMayZwkG9y9Yv8vEY1ZPDrK3YXFbaTFFvkG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647927; c=relaxed/simple;
-	bh=fE+hrgmduEs6xX5A8WW5C5bXS3DiaNQ7GSsLi2AFx8Y=;
+	s=arc-20240116; t=1770648395; c=relaxed/simple;
+	bh=12KsIPKWdV6QLhyJOYyPvXihxALZuWn/7FK0q7yLqrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jj4/7GlPUtX3HLjY3ysd6XU6m8izLAQNHHV1vfguWIDYHAdNnvGtZA5WHEMAy6X5H1VwIEbxghf2hfaZELNyiC1rX7AvbkFa3pYRhJRAzqHSyMh0fpC+6F/q7OuocTR1z1kQWvxxl7hf9EXcwlSPqFaGvOIFPBD02DL6LFflavI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvngpgOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60826C16AAE;
-	Mon,  9 Feb 2026 14:38:46 +0000 (UTC)
+	 MIME-Version; b=XOYPvnobAqIsNXDh2z5tSXxouxbIfKj6aXaObVMePnoc512sA9Dggx9d6QrBUlOkS3VAdYxafOAAXxTg4lgnRxmNegEDO6/Epirta0jVXnkCAGGIsyVRJFw9xsRNx7rd1b6O66r6iDaj/y9F6ZjVT2HOwChhlwBJTFmnnEsKbsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkxMekSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8636C116C6;
+	Mon,  9 Feb 2026 14:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647926;
-	bh=fE+hrgmduEs6xX5A8WW5C5bXS3DiaNQ7GSsLi2AFx8Y=;
+	s=korg; t=1770648395;
+	bh=12KsIPKWdV6QLhyJOYyPvXihxALZuWn/7FK0q7yLqrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvngpgOz3vc+MMeSNHUKtunvN5wEdABoHWjpV6IoDZ2uuTXs75kXvtxrw/zzUES7i
-	 IcbiHxQ0eZl3tRabsXG+G/pmXCkXBuf3mFzwzRjuxMf3uaThZ7iJZa1HhgnGeE0Pu1
-	 zbmZELzP6b7VCU7p5wcqBUllfM2pkrv3HeLApI+c=
+	b=IkxMekSHOh+cOjqSI/f9XK0NI0RIxBk6vwKU98pCgfcdPovNokVUybLzKMuVt19t+
+	 bdSnpnsEkvwbXOE93txU3UIxIP4Q0D2GRANn7VqtrghIy47b9VNig9bL6ZgBZ+HIky
+	 C+VwQwE3W8Tnai2/BT4AL1TdlYhHKOE3wG52So/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitrios Katsaros <patcherwork@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/113] ASoC: tlv320adcx140: Propagate error codes during probe
+	stable@kernel.org,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 08/86] pmdomain: imx8m-blk-ctrl: fix out-of-range access of bc->domains
 Date: Mon,  9 Feb 2026 15:23:31 +0100
-Message-ID: <20260209142312.425318318@linuxfoundation.org>
+Message-ID: <20260209142305.077476660@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,74 +70,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215176-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215315-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pengutronix.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 3328A1109EB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
+X-Rspamd-Queue-Id: A3F831116D8
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitrios Katsaros <patcherwork@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit d89aad92cfd15edbd704746f44c98fe687f9366f ]
+commit 6bd8b4a92a901fae1a422e6f914801063c345e8d upstream.
 
-When scanning for the reset pin, we could get an -EPROBE_DEFER.
-The driver would assume that no reset pin had been defined,
-which would mean that the chip would never be powered.
+Fix out-of-range access of bc->domains in imx8m_blk_ctrl_remove().
 
-Now we both respect any error we get from devm_gpiod_get_optional.
-We also now properly report the missing GPIO definition when
-'gpio_reset' is NULL.
-
-Signed-off-by: Dimitrios Katsaros <patcherwork@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://patch.msgid.link/20260113-sound-soc-codecs-tvl320adcx140-v4-3-8f7ecec525c8@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2684ac05a8c4 ("soc: imx: add i.MX8M blk-ctrl driver")
+Cc: stable@kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tlv320adcx140.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tlv320adcx140.c b/sound/soc/codecs/tlv320adcx140.c
-index 62d936c2838c9..1565727ca2f3d 100644
---- a/sound/soc/codecs/tlv320adcx140.c
-+++ b/sound/soc/codecs/tlv320adcx140.c
-@@ -1156,6 +1156,9 @@ static int adcx140_i2c_probe(struct i2c_client *i2c)
- 	adcx140->gpio_reset = devm_gpiod_get_optional(adcx140->dev,
- 						      "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(adcx140->gpio_reset))
-+		return dev_err_probe(&i2c->dev, PTR_ERR(adcx140->gpio_reset),
-+				     "Failed to get Reset GPIO\n");
-+	if (!adcx140->gpio_reset)
- 		dev_info(&i2c->dev, "Reset GPIO not defined\n");
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -337,7 +337,7 @@ static int imx8m_blk_ctrl_remove(struct
  
- 	adcx140->supply_areg = devm_regulator_get_optional(adcx140->dev,
--- 
-2.51.0
-
+ 	of_genpd_del_provider(pdev->dev.of_node);
+ 
+-	for (i = 0; bc->onecell_data.num_domains; i++) {
++	for (i = 0; i < bc->onecell_data.num_domains; i++) {
+ 		struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
+ 
+ 		pm_genpd_remove(&domain->genpd);
 
 
 
