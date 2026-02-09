@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-215458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHkrIC75iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:42 +0100
+	id SJOTLMT1iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03319111B06
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:11:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF3611142E
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AB3030C2501
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A2EF6301489E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E069328312F;
-	Mon,  9 Feb 2026 14:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2536037997A;
+	Mon,  9 Feb 2026 14:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtdY3IEW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fb+yDhGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F3F37BE7F;
-	Mon,  9 Feb 2026 14:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFF928725B;
+	Mon,  9 Feb 2026 14:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648859; cv=none; b=dSVkALP3UStd9pOnpkkqhl+Hx9XzFMAHPNaa0cXSsPbgGyAbof4lg/AGKa6HslXJAGsYNDFa8y+H6Drb4XZG5nCStHkdKW2bstmMCuu4KD1eKdEvBbE2cZK2rK/FXvBFTRuvFnq+InDZ+ED5YD5ZqbHb40OLmJVpcm5GRBoWOfs=
+	t=1770648639; cv=none; b=Jo1apFx2VjYuKuYl37bieBCbhDr/AVvv6wJBv3cSA20YmcTJeWTxdfRHlFgGJStog+CryZBZSiTC9r069gxTNQbJQp1jdYH6WFeMUo0Iwj9QEEOCiddZhQc+YAbH/+iODCmsM0yv+1n93zpqvZMyDulw/dhpcRJ0cBjzz/3h/Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648859; c=relaxed/simple;
-	bh=OODtnCwjRatCCojOYVqm24fvb3yHUmoMmpWYLgVg+oY=;
+	s=arc-20240116; t=1770648639; c=relaxed/simple;
+	bh=Dj52CyGDlR/FWxV16evXYJKQJpZHWP4s/5vy2ZysS20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmb+qNhb0hhy8XiBUQBaeU0sLqtLPe9gNZmEj2kMWjPr3u/nMKG+7cZy4LM+pqrOX4SoTqIN7/HIhxMhdRPSNPJd1VEIkoAxQPdyL5GIW5S3/58HRAipsWnac2qa/TdquFglpwwTzQXtrFAK8tG52FDyIDwdJkDp8OTNJHlQb0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtdY3IEW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DD1C116C6;
-	Mon,  9 Feb 2026 14:54:18 +0000 (UTC)
+	 MIME-Version; b=ABgjsAt59R8fNA5mud7yxobLVttwFc83GMrqv01Bpujti83P8UF65EBOZAvZmooekB4PEzEXFL1tnWUInSpVz8ncBTeR0IhGncM9KKVafk8hYJ2ti358uqy8LgF4lGCrdbByJTRxk0E26r8r/teMvzlOc02ZXAxJR8j7iFiopG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fb+yDhGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDBEC116C6;
+	Mon,  9 Feb 2026 14:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648859;
-	bh=OODtnCwjRatCCojOYVqm24fvb3yHUmoMmpWYLgVg+oY=;
+	s=korg; t=1770648639;
+	bh=Dj52CyGDlR/FWxV16evXYJKQJpZHWP4s/5vy2ZysS20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtdY3IEWRH3MXzFv74MJOdcunCLd5CJBQnNUGd6hatWbATI+7EsCYnrPiPMwXT7KG
-	 a0IrfxRhWNYV3mYhnEQTQ+yTr0Ncpxr54YTQdl1qnCpnZttsU+fNCGkUbzAw/HCvQI
-	 AX9mQRooMNHWMq2IDOSWWXwCW0SqaoVJkIuyAExg=
+	b=fb+yDhGAT5mCEeCn6KcaGRhWIZ9eWTXVLgz4TeqQpWHq5SES+HXKM5K+0w4waLdAZ
+	 ehk4JMp4he2ShztIx3TNQwqxtEeMEYU5ZvF0FnfjT6DrFb8uVLwDrgFtbUXPjObtFe
+	 IrnpaIiaolR+mhyrJSkHe7ARXF/vomKm8mCF3pwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Chris Chiu <chris.chiu@canonical.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/75] wifi: mac80211: collect station statistics earlier when disconnect
+Subject: [PATCH 5.10 13/41] HID: quirks: Add another Chicony HP 5MP Cameras to hid_ignore_list
 Date: Mon,  9 Feb 2026 15:24:34 +0100
-Message-ID: <20260209142303.183391394@linuxfoundation.org>
+Message-ID: <20260209142257.285975059@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
+References: <20260209142256.797267956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215458-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215391-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,60 +90,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 03319111B06
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,canonical.com:email]
+X-Rspamd-Queue-Id: EEF3611142E
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Chris Chiu <chris.chiu@canonical.com>
 
-[ Upstream commit a203dbeeca15a9b924f0d51f510921f4bae96801 ]
+[ Upstream commit c06bc3557542307b9658fbd43cc946a14250347b ]
 
-In __sta_info_destroy_part2(), station statistics are requested after the
-IEEE80211_STA_NONE -> IEEE80211_STA_NOTEXIST transition. This is
-problematic because the driver may be unable to handle the request due to
-the STA being in the NOTEXIST state (i.e. if the driver destroys the
-underlying data when transitioning to NOTEXIST).
+Another Chicony Electronics HP 5MP Camera with USB ID 04F2:B882
+reports a HID sensor interface that is not actually implemented.
 
-Move the statistics collection to before the state transition to avoid
-this issue.
+Add the device to the HID ignore list so the bogus sensor is never
+exposed to userspace. Then the system won't hang when runtime PM
+tries to wake the unresponsive device.
 
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251222-mac80211-move-station-stats-collection-earlier-v1-1-12cd4e42c633@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index d1460b870ed5a..f9a5bda1f925d 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1101,6 +1101,10 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 		}
- 	}
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 8850a5e5ae0e9..a933e8a94b1e3 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -280,6 +280,7 @@
+ #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
+ #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
+ #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
++#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3	0xb882
  
-+	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
-+	if (sinfo)
-+		sta_set_sinfo(sta, sinfo, true);
-+
- 	if (sta->uploaded) {
- 		ret = drv_sta_state(local, sdata, sta, IEEE80211_STA_NONE,
- 				    IEEE80211_STA_NOTEXIST);
-@@ -1109,9 +1113,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 
- 	sta_dbg(sdata, "Removed STA %pM\n", sta->sta.addr);
- 
--	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
--	if (sinfo)
--		sta_set_sinfo(sta, sinfo, true);
- 	cfg80211_del_sta_sinfo(sdata->dev, sta->sta.addr, sinfo, GFP_KERNEL);
- 	kfree(sinfo);
- 
+ #define USB_VENDOR_ID_CHUNGHWAT		0x2247
+ #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 0d15148d52533..dffec116b8fad 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -738,6 +738,7 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
 -- 
 2.51.0
 
