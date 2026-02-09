@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CxbLSPxiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:23 +0100
+	id cALzIeHyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E7E1108BA
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC94F110D42
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC91E304074D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:30:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 649583083A77
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76979360741;
-	Mon,  9 Feb 2026 14:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86813793DB;
+	Mon,  9 Feb 2026 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4U4iDxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kohKeVsC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A58F23B604;
-	Mon,  9 Feb 2026 14:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9A7125B2;
+	Mon,  9 Feb 2026 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647429; cv=none; b=WJPM6G4v82lZ2RaofCNrNwNwnMnIaEnHxgT00rpStsnFy+cAm8PvIew2AR4j80LyGLNXM9pPnFQLReTR2T0uNaWjKwHH52azLkAcSDljvHrkNoRloJu38B3pQgegiYm5ukRgD3oE2pQy8Gp+x3/WLbSJiyclj6eEm/dnXeR7ZOA=
+	t=1770647767; cv=none; b=QITvdtrO60jY+lnDU2b8PLZWa5Tu5zxLS2TslzOhHUgn65NcedRROgV3wIrdv/F/khqalTMGeqTi9Q+LPn2awftkwmcFZNceXAdB6IjXzycMqt54TfkIVHUlYL3WE3g+A8QflY7J2FLV7dQrX4WxZrysEqE/5n69iaGkPILK13E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647429; c=relaxed/simple;
-	bh=DyZa6X5/jh+1YahfAJRmvHPVmPx4J6LE+0Wzr0VpDkE=;
+	s=arc-20240116; t=1770647767; c=relaxed/simple;
+	bh=fbCV7HOeR3O4BpCEcCes4Q5ST6K9Ia1cDYlxfTj51N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aigIWRL6+QWLQobF0tNqpmzPGfO+QfKMCF2QYw8W848zE6Peo8mMOcJcvJ8kmm155ix6zZ6SerL2WgJ/65EhDUKGsOx6FKxW9cLi7GP4CcFUVU90IsFlv1eM+DRKEFpuRkvt+2EbVdx0h0UGh0Fgd1sVc0cjqxCHaWwqDu992gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4U4iDxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668EBC116C6;
-	Mon,  9 Feb 2026 14:30:28 +0000 (UTC)
+	 MIME-Version; b=P0mDE0qDRs30SA//PbhuRvCmrUnlYHFGohjyMsurSbTUHWLPPueGAO4XLEtXf32nUxP92nzjuzG8o/oGPZP2HzfEopTYfheVWKo2/tet1Ep9BdTAxLHBicsAV3U2igh6oX0vMCW1PIxJ2qI4q+OwIPkVVLKkf2ECxW/eWCMn0GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kohKeVsC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF06C116C6;
+	Mon,  9 Feb 2026 14:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647428;
-	bh=DyZa6X5/jh+1YahfAJRmvHPVmPx4J6LE+0Wzr0VpDkE=;
+	s=korg; t=1770647767;
+	bh=fbCV7HOeR3O4BpCEcCes4Q5ST6K9Ia1cDYlxfTj51N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4U4iDxK+QACgEvk9A1F8cq2YzdVWGdXF+0cYgXHGW1nIeVXluruC7jVHykqiMJdK
-	 obDS/b0UiuHkwtX5tcy9n5vG2k39Pwn2SK1QlaKFOTrijD5FgXV23upg1vSPB3rnru
-	 4SiRaIwpd4aawh8AN+J941twXwrSoeIscHV0SJFQ=
+	b=kohKeVsCYe263N4E0yNIElYG8C6tvpOw6mXcEXcZzPmxBhT1/9Nj81lXP18eHZT0b
+	 b/FcuAloMNpJPqOWhs/KH4nUYM0KMjxDKc4+kcotrslASyaDqxXRf7jaOPVw4lAFFP
+	 zO5jb/GMEQR0MPOiFd43Fr2VGigBZkIoYfV94X5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 098/175] spi: intel-pci: Add support for Nova Lake SPI serial flash
+	Todd Brandt <todd.e.brandt@intel.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Len Brown <len.brown@intel.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.12 022/113] tools/power turbostat: fix GCC9 build regression
 Date: Mon,  9 Feb 2026 15:22:51 +0100
-Message-ID: <20260209142323.948360933@linuxfoundation.org>
+Message-ID: <20260209142311.007633179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,20 +70,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215027-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215128-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -91,46 +91,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 43E7E1108BA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yandex-team.ru:email]
+X-Rspamd-Queue-Id: EC94F110D42
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+From: Todd Brandt <todd.e.brandt@intel.com>
 
-[ Upstream commit caa329649259d0f90c0056c9860ca659d4ba3211 ]
+commit d4a058762f3d931aa1159b64ba94a09a04024f8c upstream.
 
-Add Intel Nova Lake PCH-S SPI serial flash PCI ID to the list of
-supported devices. This is the same controller found in previous
-generations.
+Fix build regression seen when using old gcc-9 compiler.
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260115120305.10080-1-alan.borzeszkowski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-intel-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/power/x86/turbostat/turbostat.c |   15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index b8c572394aac2..bce3d149bea18 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -81,6 +81,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x54a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x5794), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x5825), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0x6e24), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7723), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7a24), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7aa4), (unsigned long)&cnl_info },
--- 
-2.51.0
-
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -2798,6 +2798,8 @@ int format_counters(struct thread_data *
+ 	}
+ 
+ 	for (i = 0, ppmt = sys.pmt_tp; ppmt; i++, ppmt = ppmt->next) {
++		const unsigned long value_raw = t->pmt_counter[i];
++		const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 		switch (ppmt->type) {
+ 		case PMT_TYPE_RAW:
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+@@ -2809,9 +2811,6 @@ int format_counters(struct thread_data *
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			const unsigned long value_raw = t->pmt_counter[i];
+-			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+-
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+ 		}
+@@ -2879,6 +2878,8 @@ int format_counters(struct thread_data *
+ 	}
+ 
+ 	for (i = 0, ppmt = sys.pmt_cp; ppmt; i++, ppmt = ppmt->next) {
++		const unsigned long value_raw = c->pmt_counter[i];
++		const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 		switch (ppmt->type) {
+ 		case PMT_TYPE_RAW:
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+@@ -2890,9 +2891,6 @@ int format_counters(struct thread_data *
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			const unsigned long value_raw = c->pmt_counter[i];
+-			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+-
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+ 		}
+@@ -3078,6 +3076,8 @@ int format_counters(struct thread_data *
+ 	}
+ 
+ 	for (i = 0, ppmt = sys.pmt_pp; ppmt; i++, ppmt = ppmt->next) {
++		const unsigned long value_raw = p->pmt_counter[i];
++		const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+ 		switch (ppmt->type) {
+ 		case PMT_TYPE_RAW:
+ 			if (pmt_counter_get_width(ppmt) <= 32)
+@@ -3089,9 +3089,6 @@ int format_counters(struct thread_data *
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			const unsigned long value_raw = p->pmt_counter[i];
+-			const double value_converted = 100.0 * value_raw / crystal_hz / interval_float;
+-
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+ 		}
 
 
 
