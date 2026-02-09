@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-214950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFy7OBfviWn4EQAAu9opvQ
-	(envelope-from <stable+bounces-214950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:28:39 +0100
+	id eIvbIK/uiWn4EQAAu9opvQ
+	(envelope-from <stable+bounces-214961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:26:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F34A110500
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:28:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB494110411
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:26:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C3F63038A7D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:26:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D89BB3016807
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7931A37AA96;
-	Mon,  9 Feb 2026 14:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEAB37AA91;
+	Mon,  9 Feb 2026 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClLvu7m0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Em2Ng2/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0FD3793AC;
-	Mon,  9 Feb 2026 14:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ADB37756C;
+	Mon,  9 Feb 2026 14:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647175; cv=none; b=s9t1dolcFJcyMiZ7QPGSUn/CYKdF3trn1B1Nr/uxStJVIF8gG37eX7/yn6GtrFdioYxsNAi40fvfQu73SQDu2cYuZ0JfwBV1pgHVP7FLfINbUWBK/7BDe1UfcDssLDJqp/5b0KY5rAdX3Q4dTWNZBCMls+g4gi6MtKDAi3H6zeE=
+	t=1770647212; cv=none; b=pYB7MA6zkj4TnjYyq7ww7WMEgYpeal9RRbWkHnAvfyfQXxsHZStQ0pqUA23btwBOLJYgweJr86E9WmHcIBKKi5Yoof1DkobSXE2dFPqDKLD1+fN2jLThT6hiWvzo35JlJBlWE1LmGnvprJXVFa0L2JLvFo81FWVrU+4wOk1udAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647175; c=relaxed/simple;
-	bh=o9qB46M3PH8gLn1dwqZaIv9vVjEWNqwGIXR82S1qKLY=;
+	s=arc-20240116; t=1770647212; c=relaxed/simple;
+	bh=TzSKviIfkuPnrqjDxguw9syUkTUIO7uDu83exmnDYAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcwPskJfktlFGarMRg8ZH9FnXqB0PgdZTtFFpqf0sPCJMmWml3V2oJsNMMBbjGEJYd7o6SmuqbQ9m3KUP5pzR2z6rSeut/g12WD7HQL5H2/WjYYYBwhdcMGr0ZGUId89wG16jke+at0rznRPIHibRz3OAZGbpCx7vR9HyebYeeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClLvu7m0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62FFC16AAE;
-	Mon,  9 Feb 2026 14:26:14 +0000 (UTC)
+	 MIME-Version; b=tuG/iDVZxkKk+b742ra6tnxYiZajzqecRHU+6KpiZnnish8u+bpku8vbMRG2BwvN8C08do01nmZTYfRpu02EWvVS3lTQJxKMlBbaAFaCiL/YySMPoGjCp6Rv3XEx203kao688KisM5rUKqmVrxxU67fqnuRya/thEEcxd4p4Kt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Em2Ng2/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF24C116C6;
+	Mon,  9 Feb 2026 14:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647175;
-	bh=o9qB46M3PH8gLn1dwqZaIv9vVjEWNqwGIXR82S1qKLY=;
+	s=korg; t=1770647211;
+	bh=TzSKviIfkuPnrqjDxguw9syUkTUIO7uDu83exmnDYAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClLvu7m0ZGBGS50YbJToVgVGjBSO0yekwWthdZqmKQD7e3OevOczjZo8bLj8spAyg
-	 qPXNB6jhBTEkHXXs8YR+9OEVfJHT3hOH//YfQzGZ1ewm3MTxmLBySWdqb0/KjwH1D5
-	 yAxEskWC0LIgboU874h0cPluIeyNo+miWRa94QlE=
+	b=Em2Ng2/q/pUKGu4rHB8XsPER7k1WZZA7+gX0TS5gBmCGHUIjmLBnHIHaLUUm3259S
+	 oLrn+RO1gLRwNPr8s+a64SFVKZ3UYKxEAo3fo5u6+x+1Zoc+qsFTpLgsuIPUL2hG1A
+	 33vRhARqrDzICXmtXSjmnfXGAb6K4ONV1iz/kDvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Patrick Donnelly <pdonnell@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.18 014/175] ceph: fix NULL pointer dereference in ceph_mds_auth_match()
-Date: Mon,  9 Feb 2026 15:21:27 +0100
-Message-ID: <20260209142320.989265945@linuxfoundation.org>
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@linux.dev>
+Subject: [PATCH 6.18 015/175] rbd: check for EOD after exclusive lock is ensured to be held
+Date: Mon,  9 Feb 2026 15:21:28 +0100
+Message-ID: <20260209142321.024890762@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
 References: <20260209142320.474120190@linuxfoundation.org>
@@ -70,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-214950-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214961-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ibm.com,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,191 +89,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ceph.com:url]
-X-Rspamd-Queue-Id: 6F34A110500
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: EB494110411
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 7987cce375ac8ce98e170a77aa2399f2cf6eb99f upstream.
+commit bd3884a204c3b507e6baa9a4091aa927f9af5404 upstream.
 
-The CephFS kernel client has regression starting from 6.18-rc1.
-We have issue in ceph_mds_auth_match() if fs_name == NULL:
+Similar to commit 870611e4877e ("rbd: get snapshot context after
+exclusive lock is ensured to be held"), move the "beyond EOD" check
+into the image request state machine so that it's performed after
+exclusive lock is ensured to be held.  This avoids various race
+conditions which can arise when the image is shrunk under I/O (in
+practice, mostly readahead).  In one such scenario
 
-    const char fs_name = mdsc->fsc->mount_options->mds_namespace;
-    ...
-    if (auth->match.fs_name && strcmp(auth->match.fs_name, fs_name)) {
-            / fsname mismatch, try next one */
-            return 0;
-    }
+    rbd_assert(objno < rbd_dev->object_map_size);
 
-Patrick Donnelly suggested that: In summary, we should definitely start
-decoding `fs_name` from the MDSMap and do strict authorizations checks
-against it. Note that the `-o mds_namespace=foo` should only be used for
-selecting the file system to mount and nothing else. It's possible
-no mds_namespace is specified but the kernel will mount the only
-file system that exists which may have name "foo".
-
-This patch reworks ceph_mdsmap_decode() and namespace_equals() with
-the goal of supporting the suggested concept. Now struct ceph_mdsmap
-contains m_fs_name field that receives copy of extracted FS name
-by ceph_extract_encoded_string(). For the case of "old" CephFS file
-systems, it is used "cephfs" name.
-
-[ idryomov: replace redundant %*pE with %s in ceph_mdsmap_decode(),
-  get rid of a series of strlen() calls in ceph_namespace_match(),
-  drop changes to namespace_equals() body to avoid treating empty
-  mds_namespace as equal, drop changes to ceph_mdsc_handle_fsmap()
-  as namespace_equals() isn't an equivalent substitution there ]
+can be triggered if a close-to-EOD read gets queued right before the
+shrink is initiated and the EOD check is performed against an outdated
+mapping_size.  After the resize is done on the server side and exclusive
+lock is (re)acquired bringing along the new (now shrunk) object map, the
+read starts going through the state machine and rbd_obj_may_exist() gets
+invoked on an object that is out of bounds of rbd_dev->object_map array.
 
 Cc: stable@vger.kernel.org
-Fixes: 22c73d52a6d0 ("ceph: fix multifs mds auth caps issue")
-Link: https://tracker.ceph.com/issues/73886
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Patrick Donnelly <pdonnell@ibm.com>
-Tested-by: Patrick Donnelly <pdonnell@ibm.com>
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/mds_client.c         |    5 +++--
- fs/ceph/mdsmap.c             |   26 +++++++++++++++++++-------
- fs/ceph/mdsmap.h             |    1 +
- fs/ceph/super.h              |   16 ++++++++++++++--
- include/linux/ceph/ceph_fs.h |    6 ++++++
- 5 files changed, 43 insertions(+), 11 deletions(-)
+ drivers/block/rbd.c |   33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -5655,7 +5655,7 @@ static int ceph_mds_auth_match(struct ce
- 	u32 caller_uid = from_kuid(&init_user_ns, cred->fsuid);
- 	u32 caller_gid = from_kgid(&init_user_ns, cred->fsgid);
- 	struct ceph_client *cl = mdsc->fsc->client;
--	const char *fs_name = mdsc->fsc->mount_options->mds_namespace;
-+	const char *fs_name = mdsc->mdsmap->m_fs_name;
- 	const char *spath = mdsc->fsc->mount_options->server_path;
- 	bool gid_matched = false;
- 	u32 gid, tlen, len;
-@@ -5663,7 +5663,8 @@ static int ceph_mds_auth_match(struct ce
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3495,11 +3495,29 @@ static void rbd_img_object_requests(stru
+ 	rbd_assert(!need_exclusive_lock(img_req) ||
+ 		   __rbd_is_lock_owner(rbd_dev));
  
- 	doutc(cl, "fsname check fs_name=%s  match.fs_name=%s\n",
- 	      fs_name, auth->match.fs_name ? auth->match.fs_name : "");
--	if (auth->match.fs_name && strcmp(auth->match.fs_name, fs_name)) {
-+
-+	if (!ceph_namespace_match(auth->match.fs_name, fs_name)) {
- 		/* fsname mismatch, try next one */
- 		return 0;
- 	}
---- a/fs/ceph/mdsmap.c
-+++ b/fs/ceph/mdsmap.c
-@@ -353,22 +353,33 @@ struct ceph_mdsmap *ceph_mdsmap_decode(s
- 		__decode_and_drop_type(p, end, u8, bad_ext);
- 	}
- 	if (mdsmap_ev >= 8) {
--		u32 fsname_len;
-+		size_t fsname_len;
-+
- 		/* enabled */
- 		ceph_decode_8_safe(p, end, m->m_enabled, bad_ext);
-+
- 		/* fs_name */
--		ceph_decode_32_safe(p, end, fsname_len, bad_ext);
-+		m->m_fs_name = ceph_extract_encoded_string(p, end,
-+							   &fsname_len,
-+							   GFP_NOFS);
-+		if (IS_ERR(m->m_fs_name)) {
-+			m->m_fs_name = NULL;
-+			goto nomem;
-+		}
- 
- 		/* validate fsname against mds_namespace */
--		if (!namespace_equals(mdsc->fsc->mount_options, *p,
-+		if (!namespace_equals(mdsc->fsc->mount_options, m->m_fs_name,
- 				      fsname_len)) {
--			pr_warn_client(cl, "fsname %*pE doesn't match mds_namespace %s\n",
--				       (int)fsname_len, (char *)*p,
-+			pr_warn_client(cl, "fsname %s doesn't match mds_namespace %s\n",
-+				       m->m_fs_name,
- 				       mdsc->fsc->mount_options->mds_namespace);
- 			goto bad;
- 		}
--		/* skip fsname after validation */
--		ceph_decode_skip_n(p, end, fsname_len, bad);
+-	if (rbd_img_is_write(img_req)) {
+-		rbd_assert(!img_req->snapc);
++	if (test_bit(IMG_REQ_CHILD, &img_req->flags)) {
++		rbd_assert(!rbd_img_is_write(img_req));
 +	} else {
-+		m->m_enabled = false;
-+		m->m_fs_name = kstrdup(CEPH_OLD_FS_NAME, GFP_NOFS);
-+		if (!m->m_fs_name)
-+			goto nomem;
++		struct request *rq = blk_mq_rq_from_pdu(img_req);
++		u64 off = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
++		u64 len = blk_rq_bytes(rq);
++		u64 mapping_size;
++
+ 		down_read(&rbd_dev->header_rwsem);
+-		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
++		mapping_size = rbd_dev->mapping.size;
++		if (rbd_img_is_write(img_req)) {
++			rbd_assert(!img_req->snapc);
++			img_req->snapc =
++			    ceph_get_snap_context(rbd_dev->header.snapc);
++		}
+ 		up_read(&rbd_dev->header_rwsem);
++
++		if (unlikely(off + len > mapping_size)) {
++			rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)",
++				 off, len, mapping_size);
++			img_req->pending.result = -EIO;
++			return;
++		}
  	}
- 	/* damaged */
- 	if (mdsmap_ev >= 9) {
-@@ -430,6 +441,7 @@ void ceph_mdsmap_destroy(struct ceph_mds
- 		kfree(m->m_info);
- 	}
- 	kfree(m->m_data_pg_pools);
-+	kfree(m->m_fs_name);
- 	kfree(m);
- }
  
---- a/fs/ceph/mdsmap.h
-+++ b/fs/ceph/mdsmap.h
-@@ -45,6 +45,7 @@ struct ceph_mdsmap {
- 	bool m_enabled;
- 	bool m_damaged;
- 	int m_num_laggy;
-+	char *m_fs_name;
- };
+ 	for_each_obj_request(img_req, obj_req) {
+@@ -4725,7 +4743,6 @@ static void rbd_queue_workfn(struct work
+ 	struct request *rq = blk_mq_rq_from_pdu(img_request);
+ 	u64 offset = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
+ 	u64 length = blk_rq_bytes(rq);
+-	u64 mapping_size;
+ 	int result;
  
- static inline struct ceph_entity_addr *
---- a/fs/ceph/super.h
-+++ b/fs/ceph/super.h
-@@ -104,14 +104,26 @@ struct ceph_mount_options {
- 	struct fscrypt_dummy_policy dummy_enc_policy;
- };
+ 	/* Ignore/skip any zero-length requests */
+@@ -4738,17 +4755,9 @@ static void rbd_queue_workfn(struct work
+ 	blk_mq_start_request(rq);
  
-+#define CEPH_NAMESPACE_WILDCARD		"*"
-+
-+static inline bool ceph_namespace_match(const char *pattern,
-+					const char *target)
-+{
-+	if (!pattern || !pattern[0] ||
-+	    !strcmp(pattern, CEPH_NAMESPACE_WILDCARD))
-+		return true;
-+
-+	return !strcmp(pattern, target);
-+}
-+
- /*
-  * Check if the mds namespace in ceph_mount_options matches
-  * the passed in namespace string. First time match (when
-  * ->mds_namespace is NULL) is treated specially, since
-  * ->mds_namespace needs to be initialized by the caller.
-  */
--static inline int namespace_equals(struct ceph_mount_options *fsopt,
--				   const char *namespace, size_t len)
-+static inline bool namespace_equals(struct ceph_mount_options *fsopt,
-+				    const char *namespace, size_t len)
- {
- 	return !(fsopt->mds_namespace &&
- 		 (strlen(fsopt->mds_namespace) != len ||
---- a/include/linux/ceph/ceph_fs.h
-+++ b/include/linux/ceph/ceph_fs.h
-@@ -31,6 +31,12 @@
- #define CEPH_INO_CEPH   2            /* hidden .ceph dir */
- #define CEPH_INO_GLOBAL_SNAPREALM  3 /* global dummy snaprealm */
+ 	down_read(&rbd_dev->header_rwsem);
+-	mapping_size = rbd_dev->mapping.size;
+ 	rbd_img_capture_header(img_request);
+ 	up_read(&rbd_dev->header_rwsem);
  
-+/*
-+ * name for "old" CephFS file systems,
-+ * see ceph.git e2b151d009640114b2565c901d6f41f6cd5ec652
-+ */
-+#define CEPH_OLD_FS_NAME	"cephfs"
-+
- /* arbitrary limit on max # of monitors (cluster of 3 is typical) */
- #define CEPH_MAX_MON   31
+-	if (offset + length > mapping_size) {
+-		rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)", offset,
+-			 length, mapping_size);
+-		result = -EIO;
+-		goto err_img_request;
+-	}
+-
+ 	dout("%s rbd_dev %p img_req %p %s %llu~%llu\n", __func__, rbd_dev,
+ 	     img_request, obj_op_name(op_type), offset, length);
  
 
 
