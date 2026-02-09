@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-215437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIP9H9f0iWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:11 +0100
+	id 2I/XLi/0iWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F58B11126E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:53:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7381110FB
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC2C1300748D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:53:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9DE830D9775
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D527737B409;
-	Mon,  9 Feb 2026 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0171936828A;
+	Mon,  9 Feb 2026 14:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVZh6lWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ut98uYSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F7128312F;
-	Mon,  9 Feb 2026 14:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B863037998B;
+	Mon,  9 Feb 2026 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648789; cv=none; b=EWZX/JjaTk7AXTjm2j94+gAruAV81pO+zO36L3OPbcda4nGRrjAOOM14hXvT9uDvcvjmrUGFD4GrDAbQ+pJcdYpgWD2Ojh6JI0hTn/KTWzqtm+7Iq0TRCb3Nx+/LJIMmvbYpkHmEUpHv2M/NV69ujcz1Jhp7wWTU7Cvd1y7o0RQ=
+	t=1770648092; cv=none; b=JFyO0ZwDkHOuWDG3EhFckv3WDuGwLyvRVTdibZ01CBwWvTYWmc9ZqM56ly946nit0G9FBs0Q6518W1lS9eknjNTfeo5qGrRx7NIFMeGRiFJzaNsGUKdDebfMPqIWGLCcoShEgZEa+5EfSxX4urVxXVopdzMdJlqFPdKiBJWEV50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648789; c=relaxed/simple;
-	bh=Bir9FChIjviexzRaB8A+SZKt/T8txJKq5p2yHplAAjo=;
+	s=arc-20240116; t=1770648092; c=relaxed/simple;
+	bh=JeMuVL1zBz7Mv1mPrmdRhquU0ZOVFHF8tcbUIfWRJFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TShnbcpPr9Wl8ALHBMxgpPkVcUrp9dyz3A5rMGrAiIVwIdcW1LtgacsOnAgIYJ0SyrLoxRqOhLIVg0R6slri7sYltw3myAsiWPr9luXdktdnRTm2rir1LALb3TpBHjRHguLwgxmUrOSB1R+iyD6KK4qRg66Pv+yO2jk8jJde2Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVZh6lWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09540C116C6;
-	Mon,  9 Feb 2026 14:53:08 +0000 (UTC)
+	 MIME-Version; b=nM7VbUl419oV8TUL74lyENnnTp1VAA0LxkbTX8jgM+CeZw9xEg6xQpWbmn6VK83XGIuFdKmkwSHJS1YY0Ma1oul4bdfQvTgbtlmhIPr2/AT/FjTZox58hvLfCoBKiKWVUWwx9RlkXIXitiXRNGzW8RUE8OrNWpxVIHD28uZ0jVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ut98uYSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E29EC16AAE;
+	Mon,  9 Feb 2026 14:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648789;
-	bh=Bir9FChIjviexzRaB8A+SZKt/T8txJKq5p2yHplAAjo=;
+	s=korg; t=1770648092;
+	bh=JeMuVL1zBz7Mv1mPrmdRhquU0ZOVFHF8tcbUIfWRJFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVZh6lWfQq3Nybd05fq1pm96/ukFz60XefPI5bglCME3yr8Wsl9TWtVaH4/3KLXkS
-	 kY+u4wwhjNWZ/VeHL5waRh7sp/xPqehre1GseiQoKi5GTRI4yYgOtXgp2AsD3TY8y2
-	 MVs7A1MjHupGxxGjZS3De8b/c29IWCeQS5IjStU0=
+	b=ut98uYShpzcDZGEU70nCUZbd3dy6QmcQiMuIvDPhQ4abtjGaeizcnJHyQcZPD0sq+
+	 +kBv8MAxdAA7wrDg7EtQoiS2plKnf1Y7wmm0fSWns5Sgg3EhcUhcgJJAfKFFE2YV3F
+	 s09UqnCZkwSy5ZnrqBtUdehQxVUDNli+muTwkxUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 5.15 16/75] timers: Silently ignore timers with a NULL function
+	Sergey Shtylyov <s.shtylyov@auroraos.dev>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 104/113] ALSA: usb-audio: fix broken logic in snd_audigy2nx_led_update()
 Date: Mon,  9 Feb 2026 15:24:13 +0100
-Message-ID: <20260209142302.428829118@linuxfoundation.org>
+Message-ID: <20260209142313.911878886@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,218 +67,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215437-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215225-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,goodmis.org,linutronix.de,roeck-us.net,intel.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,goodmis.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email]
-X-Rspamd-Queue-Id: 5F58B11126E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxtesting.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2F7381110FB
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
 
-[ Upstream commit d02e382cef06cc73561dd32dfdc171c00dcc416d ]
+[ Upstream commit 124bdc6eccc8c5cba68fee00e01c084c116c4360 ]
 
-Tearing down timers which have circular dependencies to other
-functionality, e.g. workqueues, where the timer can schedule work and work
-can arm timers, is not trivial.
+When the support for the Sound Blaster X-Fi Surround 5.1 Pro was added,
+the existing logic for the X-Fi Surround 5.1 in snd_audigy2nx_led_put()
+was broken due to missing *else* before the added *if*: snd_usb_ctl_msg()
+became incorrectly called twice and an error from first snd_usb_ctl_msg()
+call ignored.  As the added snd_usb_ctl_msg() call was totally identical
+to the existing one for the "plain" X-Fi Surround 5.1, just merge those
+two *if* statements while fixing the broken logic...
 
-In those cases it is desired to shutdown the timer in a way which prevents
-rearming of the timer. The mechanism to do so is to set timer->function to
-NULL and use this as an indicator for the timer arming functions to ignore
-the (re)arm request.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-In preparation for that replace the warnings in the relevant code paths
-with checks for timer->function == NULL. If the pointer is NULL, then
-discard the rearm request silently.
-
-Add debug_assert_init() instead of the WARN_ON_ONCE(!timer->function)
-checks so that debug objects can warn about non-initialized timers.
-
-The warning of debug objects does not warn if timer->function == NULL.  It
-warns when timer was not initialized using timer_setup[_on_stack]() or via
-DEFINE_TIMER(). If developers fail to enable debug objects and then waste
-lots of time to figure out why their non-initialized timer is not firing,
-they deserve it. Same for initializing a timer with a NULL function.
-
-Co-developed-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/all/20220407161745.7d6754b3@gandalf.local.home
-Link: https://lore.kernel.org/all/20221110064101.429013735@goodmis.org
-Link: https://lore.kernel.org/r/87wn7kdann.ffs@tglx
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7cdd8d73139e ("ALSA: usb-audio - Add support for USB X-Fi S51 Pro")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+Link: https://patch.msgid.link/20260203161558.18680-1-s.shtylyov@auroraos.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer.c |   57 +++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 5 deletions(-)
+ sound/usb/mixer_quirks.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -964,7 +964,7 @@ __mod_timer(struct timer_list *timer, un
- 	unsigned int idx = UINT_MAX;
- 	int ret = 0;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index b663764644cd8..6d6308ca4fa82 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -310,13 +310,8 @@ static int snd_audigy2nx_led_update(struct usb_mixer_interface *mixer,
+ 	if (err < 0)
+ 		return err;
  
--	BUG_ON(!timer->function);
-+	debug_assert_init(timer);
- 
- 	/*
- 	 * This is a common optimization triggered by the networking code - if
-@@ -991,6 +991,14 @@ __mod_timer(struct timer_list *timer, un
- 		 * dequeue/enqueue dance.
- 		 */
- 		base = lock_timer_base(timer, &flags);
-+		/*
-+		 * Has @timer been shutdown? This needs to be evaluated
-+		 * while holding base lock to prevent a race against the
-+		 * shutdown code.
-+		 */
-+		if (!timer->function)
-+			goto out_unlock;
-+
- 		forward_timer_base(base);
- 
- 		if (timer_pending(timer) && (options & MOD_TIMER_REDUCE) &&
-@@ -1017,6 +1025,14 @@ __mod_timer(struct timer_list *timer, un
- 		}
- 	} else {
- 		base = lock_timer_base(timer, &flags);
-+		/*
-+		 * Has @timer been shutdown? This needs to be evaluated
-+		 * while holding base lock to prevent a race against the
-+		 * shutdown code.
-+		 */
-+		if (!timer->function)
-+			goto out_unlock;
-+
- 		forward_timer_base(base);
- 	}
- 
-@@ -1075,8 +1091,12 @@ out_unlock:
-  * mod_timer_pending() is the same for pending timers as mod_timer(), but
-  * will not activate inactive timers.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded.
-+ *
-  * Return:
-- * * %0 - The timer was inactive and not modified
-+ * * %0 - The timer was inactive and not modified or was in
-+ *	  shutdown state and the operation was discarded
-  * * %1 - The timer was active and requeued to expire at @expires
-  */
- int mod_timer_pending(struct timer_list *timer, unsigned long expires)
-@@ -1102,8 +1122,12 @@ EXPORT_SYMBOL(mod_timer_pending);
-  * same timer, then mod_timer() is the only safe way to modify the timeout,
-  * since add_timer() cannot modify an already running timer.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded. In this case the return value is 0 and meaningless.
-+ *
-  * Return:
-- * * %0 - The timer was inactive and started
-+ * * %0 - The timer was inactive and started or was in shutdown
-+ *	  state and the operation was discarded
-  * * %1 - The timer was active and requeued to expire at @expires or
-  *	  the timer was active and not modified because @expires did
-  *	  not change the effective expiry time
-@@ -1123,8 +1147,12 @@ EXPORT_SYMBOL(mod_timer);
-  * modify an enqueued timer if that would reduce the expiration time. If
-  * @timer is not enqueued it starts the timer.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded.
-+ *
-  * Return:
-- * * %0 - The timer was inactive and started
-+ * * %0 - The timer was inactive and started or was in shutdown
-+ *	  state and the operation was discarded
-  * * %1 - The timer was active and requeued to expire at @expires or
-  *	  the timer was active and not modified because @expires
-  *	  did not change the effective expiry time such that the
-@@ -1147,6 +1175,9 @@ EXPORT_SYMBOL(timer_reduce);
-  * The @timer->expires and @timer->function fields must be set prior
-  * to calling this function.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded.
-+ *
-  * If @timer->expires is already in the past @timer will be queued to
-  * expire at the next timer tick.
-  *
-@@ -1175,7 +1206,9 @@ void add_timer_on(struct timer_list *tim
- 	struct timer_base *new_base, *base;
- 	unsigned long flags;
- 
--	if (WARN_ON_ONCE(timer_pending(timer) || !timer->function))
-+	debug_assert_init(timer);
-+
-+	if (WARN_ON_ONCE(timer_pending(timer)))
- 		return;
- 
- 	new_base = get_timer_cpu_base(timer->flags, cpu);
-@@ -1186,6 +1219,13 @@ void add_timer_on(struct timer_list *tim
- 	 * wrong base locked.  See lock_timer_base().
- 	 */
- 	base = lock_timer_base(timer, &flags);
-+	/*
-+	 * Has @timer been shutdown? This needs to be evaluated while
-+	 * holding base lock to prevent a race against the shutdown code.
-+	 */
-+	if (!timer->function)
-+		goto out_unlock;
-+
- 	if (base != new_base) {
- 		timer->flags |= TIMER_MIGRATING;
- 
-@@ -1199,6 +1239,7 @@ void add_timer_on(struct timer_list *tim
- 
- 	debug_timer_activate(timer);
- 	internal_add_timer(base, timer);
-+out_unlock:
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
- }
- EXPORT_SYMBOL_GPL(add_timer_on);
-@@ -1488,6 +1529,12 @@ static void expire_timers(struct timer_b
- 
- 		fn = timer->function;
- 
-+		if (WARN_ON_ONCE(!fn)) {
-+			/* Should never happen. Emphasis on should! */
-+			base->running_timer = NULL;
-+			continue;
-+		}
-+
- 		if (timer->flags & TIMER_IRQSAFE) {
- 			raw_spin_unlock(&base->lock);
- 			call_timer_fn(timer, fn, baseclk);
+-	if (chip->usb_id == USB_ID(0x041e, 0x3042))
+-		err = snd_usb_ctl_msg(chip->dev,
+-				      usb_sndctrlpipe(chip->dev, 0), 0x24,
+-				      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_OTHER,
+-				      !value, 0, NULL, 0);
+-	/* USB X-Fi S51 Pro */
+-	if (chip->usb_id == USB_ID(0x041e, 0x30df))
++	if (chip->usb_id == USB_ID(0x041e, 0x3042) ||	/* USB X-Fi S51 */
++	    chip->usb_id == USB_ID(0x041e, 0x30df))	/* USB X-Fi S51 Pro */
+ 		err = snd_usb_ctl_msg(chip->dev,
+ 				      usb_sndctrlpipe(chip->dev, 0), 0x24,
+ 				      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_OTHER,
+-- 
+2.51.0
+
 
 
 
