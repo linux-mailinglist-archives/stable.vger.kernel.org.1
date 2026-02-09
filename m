@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-215427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAsgAKj4iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:09:28 +0100
+	id 4PUVMhX6iWkiFQAAu9opvQ
+	(envelope-from <stable+bounces-215505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:15:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5271F111A0E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:09:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20737111C87
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 800623087D0F
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:52:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C96EF30F0C98
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7D337B409;
-	Mon,  9 Feb 2026 14:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F43E36BCE2;
+	Mon,  9 Feb 2026 14:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yX1DrTwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HUs1p42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25CC28312F;
-	Mon,  9 Feb 2026 14:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A182750E6;
+	Mon,  9 Feb 2026 14:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648755; cv=none; b=JgBB04eAQkyKxWb5sXdrl4PeiNF1+Eg+2l9pFvBgOz3IboyS38DCeCrNGKtgxcmZmFhsvRFpazXGmlzMO44EgvW1UMHig93myh51uVUmie6U6VyKJnkYeGPCzuWdCYm+WJcLRKWNhe0FAvgOQB2gq0qDYBJXCm7UMkcz56xKH4s=
+	t=1770649019; cv=none; b=X6hTCnF/Q3LL8vgWkMt1rQTjqqeU9+dOUArTPuLVZaxfRLWSRhwvOPKjFhTUy4E//mPxJpLrKw1WLsX98yzvEw0uCoFzHGtpMWVV20g9E4vU2VSZP7ZTBgGOKldBRSVgim1OT8vAuWeu/c50xaik7s/9ef46nXf2aYkOi+S4JNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648755; c=relaxed/simple;
-	bh=fAp0VdXwneE5DgElL2Sw8/vGKYSmEvUN4nstvlEp4LU=;
+	s=arc-20240116; t=1770649019; c=relaxed/simple;
+	bh=7pyYBDjYVsdxGkkL8Rjik1290kBOsxrSOvfXcx7rnk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WEkwnN/DJtRlZ0fYptyDop0inBkDFlEhc624AMiUpGgCrqYagJBFAvtSYEqkPwzbALI7JtDX15xCvyoyop/FsfbBFT1ojXySz1+s7sLVNuFTQYL78nzJ5YQtX8qINv9WBKgNttnDHXvLzzSewiOECKQbNALEfkWxRQE1etfE2kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yX1DrTwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361FAC116C6;
-	Mon,  9 Feb 2026 14:52:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sf+lsFnrCpZ9lbbXnIpoLYYh5rGD9aO+16fDl/nNZRuU0oIpCEysemideVJgPmR33UpcblGHy45ye3taZTktvpkNb/BpnRUm1OkXyFjs92RFZ4sTfUnQcHeQ/Wf/BPf4vmJzqEY9heGwSAoz5sBe5WRzPX8SpqllUZ798+RsrLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HUs1p42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D12DC116C6;
+	Mon,  9 Feb 2026 14:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648755;
-	bh=fAp0VdXwneE5DgElL2Sw8/vGKYSmEvUN4nstvlEp4LU=;
+	s=korg; t=1770649019;
+	bh=7pyYBDjYVsdxGkkL8Rjik1290kBOsxrSOvfXcx7rnk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yX1DrTwBnlw08W8fm1SxG4t0M1Ci+33wr126LbIxpvXxNRff1jO9jbg1KaD2nj6Qd
-	 Nie9lbshgMKuNSGtQTwtZ8AvH1wQxrpB4lyhl1wLzleG/3PsRxHZPu4ZGzCl4JYZt0
-	 V+A2TiEoIHrQOoMXMHQwGmyb4+HhIWJiiJuV26KY=
+	b=2HUs1p42XRpvodGbaLGUf/rzTvvd6XwOhVyYQ7wE8znbUkJ7XO+/mY6b7nrd4lY7A
+	 L0w16rIPE7WrLzEIsNdhfE+hI3mf+p2UzdId4P64cfs+kYkSiSCdz0VCfU3x9WyGCX
+	 kRnPNzfasGdb5FK4w7yWWpeD4o2MeSmpT3x4b0Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -53,12 +53,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 34/41] nvmet-tcp: dont map pages which cant come from HIGHMEM
+Subject: [PATCH 5.15 58/75] nvmet-tcp: dont map pages which cant come from HIGHMEM
 Date: Mon,  9 Feb 2026 15:24:55 +0100
-Message-ID: <20260209142258.045752726@linuxfoundation.org>
+Message-ID: <20260209142303.933882496@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,11 +75,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215427-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215505-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,kernel.org,intel.com,gmail.com,lst.de,zeniv.linux.org.uk,grimberg.me];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -96,11 +96,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,nvidia.com:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5271F111A0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,grimberg.me:email,linux.org.uk:email]
+X-Rspamd-Queue-Id: 20737111C87
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -149,10 +149,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index bc0e860a2887f..6fd4f74315f6c 100644
+index 3b32f1e9c18c6..d0fcce6aec93f 100644
 --- a/drivers/nvme/target/tcp.c
 +++ b/drivers/nvme/target/tcp.c
-@@ -68,9 +68,8 @@ struct nvmet_tcp_cmd {
+@@ -78,9 +78,8 @@ struct nvmet_tcp_cmd {
  	u32				pdu_len;
  	u32				pdu_recv;
  	int				sg_idx;
@@ -163,7 +163,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  	u32				flags;
  
  	struct list_head		entry;
-@@ -156,7 +155,6 @@ static const struct nvmet_fabrics_ops nvmet_tcp_ops;
+@@ -168,7 +167,6 @@ static const struct nvmet_fabrics_ops nvmet_tcp_ops;
  static void nvmet_tcp_free_cmd(struct nvmet_tcp_cmd *c);
  static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd);
  static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd);
@@ -171,7 +171,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  
  static inline u16 nvmet_tcp_cmd_tag(struct nvmet_tcp_queue *queue,
  		struct nvmet_tcp_cmd *cmd)
-@@ -290,35 +288,21 @@ static int nvmet_tcp_check_ddgst(struct nvmet_tcp_queue *queue, void *pdu)
+@@ -302,35 +300,21 @@ static int nvmet_tcp_check_ddgst(struct nvmet_tcp_queue *queue, void *pdu)
  
  static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
  {
@@ -211,7 +211,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  	offset = cmd->rbytes_done;
  	cmd->sg_idx = offset / PAGE_SIZE;
  	sg_offset = offset % PAGE_SIZE;
-@@ -327,8 +311,9 @@ static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+@@ -339,8 +323,9 @@ static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
  	while (length) {
  		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
  
@@ -223,7 +223,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  
  		length -= iov_len;
  		sg = sg_next(sg);
-@@ -336,8 +321,8 @@ static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+@@ -348,8 +333,8 @@ static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
  		sg_offset = 0;
  	}
  
@@ -234,7 +234,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  }
  
  static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
-@@ -913,7 +898,7 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
+@@ -925,7 +910,7 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
  	}
  
  	queue->rcv_state = NVMET_TCP_RECV_DATA;
@@ -243,7 +243,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
  }
  
-@@ -966,7 +951,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+@@ -978,7 +963,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
  		goto err_proto;
  	}
  	cmd->pdu_recv = 0;
@@ -252,7 +252,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  	queue->cmd = cmd;
  	queue->rcv_state = NVMET_TCP_RECV_DATA;
  
-@@ -1040,7 +1025,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
+@@ -1052,7 +1037,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
  	if (nvmet_tcp_need_data_in(queue->cmd)) {
  		if (nvmet_tcp_has_inline_data(queue->cmd)) {
  			queue->rcv_state = NVMET_TCP_RECV_DATA;
@@ -261,7 +261,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  			return 0;
  		}
  		/* send back R2T */
-@@ -1160,7 +1145,6 @@ static int nvmet_tcp_try_recv_data(struct nvmet_tcp_queue *queue)
+@@ -1172,7 +1157,6 @@ static int nvmet_tcp_try_recv_data(struct nvmet_tcp_queue *queue)
  		cmd->rbytes_done += ret;
  	}
  
@@ -269,7 +269,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  	if (queue->data_digest) {
  		nvmet_tcp_prep_recv_ddgst(cmd);
  		return 0;
-@@ -1415,7 +1399,6 @@ static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
+@@ -1445,7 +1429,6 @@ static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
  static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd)
  {
  	nvmet_req_uninit(&cmd->req);
@@ -277,7 +277,7 @@ index bc0e860a2887f..6fd4f74315f6c 100644
  	nvmet_tcp_free_cmd_buffers(cmd);
  }
  
-@@ -1428,7 +1411,6 @@ static void nvmet_tcp_uninit_data_in_cmds(struct nvmet_tcp_queue *queue)
+@@ -1458,7 +1441,6 @@ static void nvmet_tcp_uninit_data_in_cmds(struct nvmet_tcp_queue *queue)
  		if (nvmet_tcp_need_data_in(cmd))
  			nvmet_req_uninit(&cmd->req);
  
