@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAzhGCXyiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:41 +0100
+	id EHibGKD0iWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:52:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54D5110B64
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E18CA1111F9
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 219ED30616DE
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07761308DB9A
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E402C2360;
-	Mon,  9 Feb 2026 14:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64642379990;
+	Mon,  9 Feb 2026 14:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIs1cmi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxNzN0lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3DC1AF0AF;
-	Mon,  9 Feb 2026 14:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F1B125B2;
+	Mon,  9 Feb 2026 14:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647645; cv=none; b=iQscWw8a4AN3lPdxOGvGEgPd+veI066dZ0jPqfOfpjzhX8Aybhy3j0DRq+XYWnhJgUVWm+8yDnV2tBBwLFs/5+M7O+6f3G/WScmQVJDnoirVAJU6mzT4YgFTsfh1obr8+NblTQvm0BfUiAP7Z254EDwOk2BUXcx7hLVQfW0mqJg=
+	t=1770647874; cv=none; b=QPk3uLS4RT5wXkc4fd2tdQPhCcop8utc9jgsaVqHGXS50khRvdWzOnNrF0T4xA4QBr+fGXvWkSQhn6FfGbvjcgHk1iQJCZglYdcqmr4r3CWQWz0+9h95HmlgxzU5AYpjrfbjPbzMGyLdZzpVhe0NsczOLLXp4jAzzuIiMTmnloQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647645; c=relaxed/simple;
-	bh=+k29YA31CpuoaRsX6bV9sPHXSZj7sNcjz7DSlo0DOQ0=;
+	s=arc-20240116; t=1770647874; c=relaxed/simple;
+	bh=CccUSdBbNzAZQUhgcHCeppmOCrUNTRr1RXXviYbuRh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTJA8zjeSdQ2YILD8KEbnQkO57uUelbuLg33PZLojY76r+OiZ4tPdfp76L6dW5wmdhwspCrtxVgTcRe7+JBAi43StLsipuK36uoPAWJML2I/h3mRmuiHES6Z6CbLTqxoW3hil2z2Xl/MikYUjBEpgFVq//40AwdZnT52bUpijI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIs1cmi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFA0C116C6;
-	Mon,  9 Feb 2026 14:34:04 +0000 (UTC)
+	 MIME-Version; b=AOwSeJe02GTK46t9KccYS4/TYhT1QUS5HoOkb148+uX2I7FlKa5CgPml42RupPiMjuDj6IX3iDe3n4P9rkXXJoMhiUiN7t7q69BS6OypWdeGhfMigseez/XSy+MqwRYNrga4hC0J7HkL37w+UD/rxRtYJa0C13NOXjyDYvQ2Emw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxNzN0lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3A4C116C6;
+	Mon,  9 Feb 2026 14:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647645;
-	bh=+k29YA31CpuoaRsX6bV9sPHXSZj7sNcjz7DSlo0DOQ0=;
+	s=korg; t=1770647874;
+	bh=CccUSdBbNzAZQUhgcHCeppmOCrUNTRr1RXXviYbuRh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIs1cmi7/grSD3bP4XhmF592sN+i+auliF6fT6RUO3/CaVgulsR2vJGByeRRy8UGW
-	 PhLQAeHxGL8B5kj256LEFHqPrcOvVt/4LlY01LTg2HttrmptqGg/0CL0HbaHWbUytA
-	 l+0JduuEgLfJ7E0MGhtw5c1uI+/uV3vIpy8Em5Wc=
+	b=KxNzN0lcTI0R8/55NhW8/YLFVU/6UMUUG0SUL1LbRUZKIWjAcsNAqK0Y75GC30bzv
+	 dHjAGnkzTGQddv9KWro9AtnYyw2l7jwETuHfPMYoVBVq8V1lk83bbJzWkA8eqGuxSL
+	 srAhBS5uG6OVvF+DpyGP4WSqs69dwSxxfflXNQ4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Ma <aaron.ma@canonical.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH 6.18 128/175] ice: Fix PTP NULL pointer dereference during VSI rebuild
-Date: Mon,  9 Feb 2026 15:23:21 +0100
-Message-ID: <20260209142325.116444281@linuxfoundation.org>
+	Perry Yuan <perry.yuan@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/113] drm/amd/pm: Disable MMIO access during SMU Mode 1 reset
+Date: Mon,  9 Feb 2026 15:23:22 +0100
+Message-ID: <20260209142312.108179491@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,20 +70,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215091-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215160-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -91,158 +91,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,canonical.com:email]
-X-Rspamd-Queue-Id: D54D5110B64
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E18CA1111F9
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Ma <aaron.ma@canonical.com>
+From: Perry Yuan <perry.yuan@amd.com>
 
-[ Upstream commit fc6f36eaaedcf4b81af6fe1a568f018ffd530660 ]
+[ Upstream commit 0de604d0357d0d22cbf03af1077d174b641707b6 ]
 
-Fix race condition where PTP periodic work runs while VSI is being
-rebuilt, accessing NULL vsi->rx_rings.
+During Mode 1 reset, the ASIC undergoes a reset cycle and becomes
+temporarily inaccessible via PCIe. Any attempt to access MMIO registers
+during this window (e.g., from interrupt handlers or other driver threads)
+can result in uncompleted PCIe transactions, leading to NMI panics or
+system hangs.
 
-The sequence was:
-1. ice_ptp_prepare_for_reset() cancels PTP work
-2. ice_ptp_rebuild() immediately queues PTP work
-3. VSI rebuild happens AFTER ice_ptp_rebuild()
-4. PTP work runs and accesses NULL vsi->rx_rings
+To prevent this, set the `no_hw_access` flag to true immediately after
+triggering the reset. This signals other driver components to skip
+register accesses while the device is offline.
 
-Fix: Keep PTP work cancelled during rebuild, only queue it after
-VSI rebuild completes in ice_rebuild().
+A memory barrier `smp_mb()` is added to ensure the flag update is
+globally visible to all cores before the driver enters the sleep/wait
+state.
 
-Added ice_ptp_queue_work() helper function to encapsulate the logic
-for queuing PTP work, ensuring it's only queued when PTP is supported
-and the state is ICE_PTP_READY.
-
-Error log:
-[  121.392544] ice 0000:60:00.1: PTP reset successful
-[  121.392692] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  121.392712] #PF: supervisor read access in kernel mode
-[  121.392720] #PF: error_code(0x0000) - not-present page
-[  121.392727] PGD 0
-[  121.392734] Oops: Oops: 0000 [#1] SMP NOPTI
-[  121.392746] CPU: 8 UID: 0 PID: 1005 Comm: ice-ptp-0000:60 Tainted: G S                  6.19.0-rc6+ #4 PREEMPT(voluntary)
-[  121.392761] Tainted: [S]=CPU_OUT_OF_SPEC
-[  121.392773] RIP: 0010:ice_ptp_update_cached_phctime+0xbf/0x150 [ice]
-[  121.393042] Call Trace:
-[  121.393047]  <TASK>
-[  121.393055]  ice_ptp_periodic_work+0x69/0x180 [ice]
-[  121.393202]  kthread_worker_fn+0xa2/0x260
-[  121.393216]  ? __pfx_ice_ptp_periodic_work+0x10/0x10 [ice]
-[  121.393359]  ? __pfx_kthread_worker_fn+0x10/0x10
-[  121.393371]  kthread+0x10d/0x230
-[  121.393382]  ? __pfx_kthread+0x10/0x10
-[  121.393393]  ret_from_fork+0x273/0x2b0
-[  121.393407]  ? __pfx_kthread+0x10/0x10
-[  121.393417]  ret_from_fork_asm+0x1a/0x30
-[  121.393432]  </TASK>
-
-Fixes: 803bef817807d ("ice: factor out ice_ptp_rebuild_owner()")
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7edb503fe4b6d67f47d8bb0dfafb8e699bb0f8a4)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c |  3 +++
- drivers/net/ethernet/intel/ice/ice_ptp.c  | 26 ++++++++++++++++++-----
- drivers/net/ethernet/intel/ice/ice_ptp.h  |  5 +++++
- 3 files changed, 29 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c           | 3 +++
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c | 7 ++++++-
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c | 9 +++++++--
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 7a59c9dd07cb1..d34a32a09bf87 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -7815,6 +7815,9 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index fb5d2de035df0..1cf90557b310b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5325,6 +5325,9 @@ int amdgpu_device_mode1_reset(struct amdgpu_device *adev)
+ 	if (ret)
+ 		goto mode1_reset_failed;
  
- 	/* Restore timestamp mode settings after VSI rebuild */
- 	ice_ptp_restore_timestamp_mode(pf);
++	/* enable mmio access after mode 1 reset completed */
++	adev->no_hw_access = false;
 +
-+	/* Start PTP periodic work after VSI is fully rebuilt */
-+	ice_ptp_queue_work(pf);
- 	return;
- 
- err_vsi_rebuild:
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 44c1ca58b8806..df38345b12d72 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -2832,6 +2832,20 @@ static void ice_ptp_periodic_work(struct kthread_work *work)
- 				   msecs_to_jiffies(err ? 10 : 500));
- }
- 
-+/**
-+ * ice_ptp_queue_work - Queue PTP periodic work for a PF
-+ * @pf: Board private structure
-+ *
-+ * Helper function to queue PTP periodic work after VSI rebuild completes.
-+ * This ensures that PTP work only runs when VSI structures are ready.
-+ */
-+void ice_ptp_queue_work(struct ice_pf *pf)
-+{
-+	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) &&
-+	    pf->ptp.state == ICE_PTP_READY)
-+		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work, 0);
-+}
-+
- /**
-  * ice_ptp_prepare_rebuild_sec - Prepare second NAC for PTP reset or rebuild
-  * @pf: Board private structure
-@@ -2850,10 +2864,15 @@ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
- 		struct ice_pf *peer_pf = ptp_port_to_pf(port);
- 
- 		if (!ice_is_primary(&peer_pf->hw)) {
--			if (rebuild)
-+			if (rebuild) {
-+				/* TODO: When implementing rebuild=true:
-+				 * 1. Ensure secondary PFs' VSIs are rebuilt
-+				 * 2. Call ice_ptp_queue_work(peer_pf) after VSI rebuild
-+				 */
- 				ice_ptp_rebuild(peer_pf, reset_type);
--			else
-+			} else {
- 				ice_ptp_prepare_for_reset(peer_pf, reset_type);
-+			}
- 		}
+ 	amdgpu_device_load_pci_state(adev->pdev);
+ 	ret = amdgpu_psp_wait_for_bootloader(adev);
+ 	if (ret)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index 5a0a10144a73f..d83f04b282534 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2853,8 +2853,13 @@ static int smu_v13_0_0_mode1_reset(struct smu_context *smu)
+ 		break;
  	}
+ 
+-	if (!ret)
++	if (!ret) {
++		/* disable mmio access while doing mode 1 reset*/
++		smu->adev->no_hw_access = true;
++		/* ensure no_hw_access is globally visible before any MMIO */
++		smp_mb();
+ 		msleep(SMU13_MODE1_RESET_WAIT_TIME_IN_MS);
++	}
+ 
+ 	return ret;
  }
-@@ -2999,9 +3018,6 @@ void ice_ptp_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+index f34cef26b382c..3bab8269a46aa 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -2129,10 +2129,15 @@ static int smu_v14_0_2_mode1_reset(struct smu_context *smu)
  
- 	ptp->state = ICE_PTP_READY;
+ 	ret = smu_cmn_send_debug_smc_msg(smu, DEBUGSMC_MSG_Mode1Reset);
+ 	if (!ret) {
+-		if (amdgpu_emu_mode == 1)
++		if (amdgpu_emu_mode == 1) {
+ 			msleep(50000);
+-		else
++		} else {
++			/* disable mmio access while doing mode 1 reset*/
++			smu->adev->no_hw_access = true;
++			/* ensure no_hw_access is globally visible before any MMIO */
++			smp_mb();
+ 			msleep(1000);
++		}
+ 	}
  
--	/* Start periodic work going */
--	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
--
- 	dev_info(ice_pf_to_dev(pf), "PTP reset successful\n");
- 	return;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-index 46005642ef419..4e02f922c1ff8 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -316,6 +316,7 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf,
- void ice_ptp_init(struct ice_pf *pf);
- void ice_ptp_release(struct ice_pf *pf);
- void ice_ptp_link_change(struct ice_pf *pf, bool linkup);
-+void ice_ptp_queue_work(struct ice_pf *pf);
- #else /* IS_ENABLED(CONFIG_PTP_1588_CLOCK) */
- 
- static inline int ice_ptp_hwtstamp_get(struct net_device *netdev,
-@@ -384,6 +385,10 @@ static inline void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
- {
- }
- 
-+static inline void ice_ptp_queue_work(struct ice_pf *pf)
-+{
-+}
-+
- static inline int ice_ptp_clock_index(struct ice_pf *pf)
- {
- 	return -1;
+ 	return ret;
 -- 
 2.51.0
 
