@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-215016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PxKMevwiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:27 +0100
+	id 0GOQHVnyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E437110810
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E13F8110BDA
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93416304E30D
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:29:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA6DD307671C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB2737AA9E;
-	Mon,  9 Feb 2026 14:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9B5276028;
+	Mon,  9 Feb 2026 14:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9T1FehE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZhqZdu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C743237A496;
-	Mon,  9 Feb 2026 14:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F75125B2;
+	Mon,  9 Feb 2026 14:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647391; cv=none; b=KGiGwiykUACwClwiEmoKmjqbArd4MPPsRT7ZBAVIc/Y9BH9ZhwpP0cpOyPOA2xWBX4AZjEThixkR2bGXZRej0IVDr3mRuDAY3mHiK2sdNSPBopRPj+m1EC7yFhi5oZgi18m/ZDmxPROEIJu4oazq/voDbJ6HwPH/8cMGVrtPFU4=
+	t=1770647723; cv=none; b=k2dbrIVHm/VCT4ohnvvNC9omza3xM32p0VmALEMZaoLrBR78gyM+HAchGlhKjOdSKxh5nHnyUlJMQB0qSzkIMIcVt5A9VB8ffSeRncwknps3Yh+z7GpeDYsvKbi7sF3Ur7P4ZSMMXiHmVHdFIax558eWd9LC40eji6cgy9i1GHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647391; c=relaxed/simple;
-	bh=Qtbf6uSwj92W25+R1yN/1rLGzNtCv8Wtdducwy3OQXY=;
+	s=arc-20240116; t=1770647723; c=relaxed/simple;
+	bh=DMVLfy3nDHjOj4MkPAXE+7JTarYbrme8CuDxvjcNHaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9/Fs0QjaMRouU/MSiKm89ahYNxetF4+zKsJuHI/J+a5morc4487H0/b2UvhWTxohHfCo6cAFMFTQE1XB2M+ogEvYliT5knhwIdTbnG5jA+CMac9/OB8uGrpn5WRyhQdQitlGpa2O4dSAEJjDqk1iBxcEYyxZqnootstVK0p6GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9T1FehE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B871CC116C6;
-	Mon,  9 Feb 2026 14:29:50 +0000 (UTC)
+	 MIME-Version; b=m9Xawt5MWuYZ11YdQEDOlCFlMdXfK818FQ5qwJrh4IJZVkUkXDFP7QdisNaHV/6OjgBoCUzbP1HsAQG7lXWMwfS8y14iLh6NvaLjMjYt8Q+PvHKeDe873kNmY7OQX8uhqjCvyLubhKscYDbmNt9n8pJ3AnqBQMHeIx6pfXPovQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZhqZdu/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978D4C116C6;
+	Mon,  9 Feb 2026 14:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647391;
-	bh=Qtbf6uSwj92W25+R1yN/1rLGzNtCv8Wtdducwy3OQXY=;
+	s=korg; t=1770647723;
+	bh=DMVLfy3nDHjOj4MkPAXE+7JTarYbrme8CuDxvjcNHaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9T1FehEmPotpnWqO0azPfK3+y87mKWA6zNN4nwerSb0jiCR+YMBMtWGjCpicXJyy
-	 wV8SPxPgjaM6N7S+i9iWCsfckdwatc7ywE84clZ540Ff2SUVMBESUNx8RnPCgLMsPH
-	 L7xP8+u/4VWK8uA0JmE3zndDeZY+QCJn6XquOJTg=
+	b=QZhqZdu/L0ow1E6ULcpTFuCb9A2R6Qqq3gP8hfnw4caboT0o6XT3y8VJoGIW9+l1S
+	 fT4TkB0naWGpq61we1YQZjyJF3UHpLQaHbwOhM77cCpKsLPXf/a/3TiG629Vr/WwYN
+	 vt0gvw5/aeVEppSTmb8lczhQvrVpx9vsFghy0zho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deep Harsora <Deep_Harsora@dell.com>,
-	Maciej Strozek <mstrozek@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 085/175] ASoC: Intel: sof_sdw: Add new quirks for PTL on Dell with CS42L43
-Date: Mon,  9 Feb 2026 15:22:38 +0100
-Message-ID: <20260209142323.493813046@linuxfoundation.org>
+	stable@kernel.org,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 010/113] pmdomain: imx8m-blk-ctrl: fix out-of-range access of bc->domains
+Date: Mon,  9 Feb 2026 15:22:39 +0100
+Message-ID: <20260209142310.582949893@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215016-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215115-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,52 +91,41 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
-X-Rspamd-Queue-Id: 1E437110810
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linaro.org:email,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E13F8110BDA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deep Harsora <Deep_Harsora@dell.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 12cacdfb023d1b2f6c4e5af471f2d5b6f0cbf909 ]
+commit 6bd8b4a92a901fae1a422e6f914801063c345e8d upstream.
 
-Add missing quirks for some new Dell laptops using cs42l43's speaker
-outputs.
+Fix out-of-range access of bc->domains in imx8m_blk_ctrl_remove().
 
-Signed-off-by: Deep Harsora <Deep_Harsora@dell.com>
-Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260102152132.3053106-1-mstrozek@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2684ac05a8c4 ("soc: imx: add i.MX8M blk-ctrl driver")
+Cc: stable@kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index c013e31d098e7..92fac7ed782f7 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -750,6 +750,14 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
- 	},
- 	/* Pantherlake devices*/
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0DD6")
-+		},
-+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
--- 
-2.51.0
-
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -340,7 +340,7 @@ static void imx8m_blk_ctrl_remove(struct
+ 
+ 	of_genpd_del_provider(pdev->dev.of_node);
+ 
+-	for (i = 0; bc->onecell_data.num_domains; i++) {
++	for (i = 0; i < bc->onecell_data.num_domains; i++) {
+ 		struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
+ 
+ 		pm_genpd_remove(&domain->genpd);
 
 
 
