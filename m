@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-215387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDfsCyD4iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:12 +0100
+	id 4Aa5BfTyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCAC1118C6
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:07:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BB9110D8B
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B623C314B9B6
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99D2C301DC32
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2312F37997A;
-	Mon,  9 Feb 2026 14:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB6F37AA71;
+	Mon,  9 Feb 2026 14:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTlzhpbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sR3nwsaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB31428725B;
-	Mon,  9 Feb 2026 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D8D22301;
+	Mon,  9 Feb 2026 14:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648626; cv=none; b=cLvDf/OZyAoYV5UtNA/ASJqNOKVMqOsrgin8SnEvDvWCGxPbgi6wl4luiK8Gx8+QYJ63EN1YD0yxWkCnFJ1kVzn+Y5u0v8bGVZV1WGPkF080DsHs0YGUxFCl76kTcgD+UYXvElx7xfivQ4HhHLv91y2W4bARgNqP6s8vRnqfAp0=
+	t=1770648259; cv=none; b=EhqhQYfUaDPFd2/cDBmCBUBEMv9tTkG42KVGrWS9WMiVgsuuLRtUUeMzIzkz75LsLInmy/IPkhiIbvPDIrdT+zMc9VSDT39Wi0aPwavJgfc4h6i2mLmfUL/zllOUBq5qzGEQCNcBfU4CWN2s8PNEXUfFc86p2dDDZ5/Tex5gXrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648626; c=relaxed/simple;
-	bh=EFmNRhp+JRwJrN2f/r+V5lLULPvXlr8AVAvjBySWp1A=;
+	s=arc-20240116; t=1770648259; c=relaxed/simple;
+	bh=KkBYAng50BYXVz5g2R5TsHAlmWr2OdqW3Jowm8/YFC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdeHRl0VmORboLoC9YLoChS/pwZWlm+qD++bW/R0XcS5YoQTcyxKY+Cy9iVa5ObqODU4zB6tG2H597uf6fDqYGzimkh6pscja6BJ7chWa7MP0p3izODVnva2KzOGmfOm+Ph3VYaiKoGt6npyRfHFHoI3pZV3DXcrP5QBB62oMss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTlzhpbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0C3C16AAE;
-	Mon,  9 Feb 2026 14:50:26 +0000 (UTC)
+	 MIME-Version; b=m+ow+PrHqoz9c4hZ3CPYsxcFJ7T4MUEqtCq6mb84x8iOm0CJlbXG4QtCyZ514uksMSkUqkQ956TpyvmJIyglV+QK1AuRGhseNjEFXfV/0KV3c3tDnhvGLvlQ5jSoimtrlgl8dzqhFtLtlz7qrScyUNCaWyrmvOTbWP42dERHrUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sR3nwsaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE64EC116C6;
+	Mon,  9 Feb 2026 14:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648626;
-	bh=EFmNRhp+JRwJrN2f/r+V5lLULPvXlr8AVAvjBySWp1A=;
+	s=korg; t=1770648259;
+	bh=KkBYAng50BYXVz5g2R5TsHAlmWr2OdqW3Jowm8/YFC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTlzhpbmNpI8iya7UB5Hjvg3fZY2mq/k81rbBCpntU0b+Z6RPmDsJliYHDNptFzba
-	 wYUN6eOFN1ob/ZYAz7jtKhngKvy22jzP63uE1BIs6Cy4fIpH5tx1r7YmBJb4BKW/xq
-	 /IDD8NmFhbNjHncMc+cfhvHW6BKqMqNcfz/xknOY=
+	b=sR3nwsazx7ZGCWdHXpTTvBxBsILJrYUbwfT+uwSbDfeezlPrYUZjFqE1gVT9R32Y7
+	 xzmYMkK3DX+kn1VThV3yf05jX1vnA5F6soaJY6Woqyp5QkAU5GehroCIph9lp/YzS6
+	 rWdrdInXaCntYkgvnhZ4KSXOvdXP8CS4Ei1uEtYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@linux.dev>
-Subject: [PATCH 5.10 01/41] rbd: check for EOD after exclusive lock is ensured to be held
+	Gal Pressman <gal@nvidia.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 54/69] net: dont touch dev->stats in BPF redirect paths
 Date: Mon,  9 Feb 2026 15:24:22 +0100
-Message-ID: <20260209142256.852900943@linuxfoundation.org>
+Message-ID: <20260209142303.868433696@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,127 +70,101 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215387-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215274-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 7BCAC1118C6
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,iogearbox.net:email,msgid.link:url]
+X-Rspamd-Queue-Id: A8BB9110D8B
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit bd3884a204c3b507e6baa9a4091aa927f9af5404 upstream.
+[ Upstream commit fdf3f6800be36377e045e2448087f12132b88d2f ]
 
-Similar to commit 870611e4877e ("rbd: get snapshot context after
-exclusive lock is ensured to be held"), move the "beyond EOD" check
-into the image request state machine so that it's performed after
-exclusive lock is ensured to be held.  This avoids various race
-conditions which can arise when the image is shrunk under I/O (in
-practice, mostly readahead).  In one such scenario
+Gal reports that BPF redirect increments dev->stats.tx_errors
+on failure. This is not correct, most modern drivers completely
+ignore dev->stats so these drops will be invisible to the user.
+Core code should use the dedicated core stats which are folded
+into device stats in dev_get_stats().
 
-    rbd_assert(objno < rbd_dev->object_map_size);
+Note that we're switching from tx_errors to tx_dropped.
+Core only has tx_dropped, hence presumably users already expect
+that counter to increment for "stack" Tx issues.
 
-can be triggered if a close-to-EOD read gets queued right before the
-shrink is initiated and the EOD check is performed against an outdated
-mapping_size.  After the resize is done on the server side and exclusive
-lock is (re)acquired bringing along the new (now shrunk) object map, the
-read starts going through the state machine and rbd_obj_may_exist() gets
-invoked on an object that is out of bounds of rbd_dev->object_map array.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Gal Pressman <gal@nvidia.com>
+Link: https://lore.kernel.org/c5df3b60-246a-4030-9c9a-0a35cd1ca924@nvidia.com
+Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260130033827.698841-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c |   33 +++++++++++++++++++++------------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ net/core/filter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3560,11 +3560,29 @@ static void rbd_img_object_requests(stru
- 	rbd_assert(!need_exclusive_lock(img_req) ||
- 		   __rbd_is_lock_owner(rbd_dev));
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 305c38636b32b..e19bf63ad9a44 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2274,12 +2274,12 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
  
--	if (rbd_img_is_write(img_req)) {
--		rbd_assert(!img_req->snapc);
-+	if (test_bit(IMG_REQ_CHILD, &img_req->flags)) {
-+		rbd_assert(!rbd_img_is_write(img_req));
-+	} else {
-+		struct request *rq = blk_mq_rq_from_pdu(img_req);
-+		u64 off = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
-+		u64 len = blk_rq_bytes(rq);
-+		u64 mapping_size;
-+
- 		down_read(&rbd_dev->header_rwsem);
--		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
-+		mapping_size = rbd_dev->mapping.size;
-+		if (rbd_img_is_write(img_req)) {
-+			rbd_assert(!img_req->snapc);
-+			img_req->snapc =
-+			    ceph_get_snap_context(rbd_dev->header.snapc);
-+		}
- 		up_read(&rbd_dev->header_rwsem);
-+
-+		if (unlikely(off + len > mapping_size)) {
-+			rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)",
-+				 off, len, mapping_size);
-+			img_req->pending.result = -EIO;
-+			return;
-+		}
- 	}
+ 	err = bpf_out_neigh_v6(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+@@ -2382,12 +2382,12 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
  
- 	for_each_obj_request(img_req, obj_req) {
-@@ -4781,7 +4799,6 @@ static void rbd_queue_workfn(struct work
- 	struct request *rq = blk_mq_rq_from_pdu(img_request);
- 	u64 offset = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
- 	u64 length = blk_rq_bytes(rq);
--	u64 mapping_size;
- 	int result;
- 
- 	/* Ignore/skip any zero-length requests */
-@@ -4794,17 +4811,9 @@ static void rbd_queue_workfn(struct work
- 	blk_mq_start_request(rq);
- 
- 	down_read(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
- 	rbd_img_capture_header(img_request);
- 	up_read(&rbd_dev->header_rwsem);
- 
--	if (offset + length > mapping_size) {
--		rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)", offset,
--			 length, mapping_size);
--		result = -EIO;
--		goto err_img_request;
--	}
--
- 	dout("%s rbd_dev %p img_req %p %s %llu~%llu\n", __func__, rbd_dev,
- 	     img_request, obj_op_name(op_type), offset, length);
- 
+ 	err = bpf_out_neigh_v4(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
