@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAwPMmrxiWnyEgAAu9opvQ
-	(envelope-from <stable+bounces-215156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:34 +0100
+	id CLrEFJXwiWnHEgAAu9opvQ
+	(envelope-from <stable+bounces-215072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2456B11098F
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:38:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB31A110794
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BE74E30055ED
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:37:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 750C7301BEF3
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F70276028;
-	Mon,  9 Feb 2026 14:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1E736828A;
+	Mon,  9 Feb 2026 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj8vIals"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekwStY+k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A556A28150F;
-	Mon,  9 Feb 2026 14:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D88125B2;
+	Mon,  9 Feb 2026 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647860; cv=none; b=tRwJOcvXryoXJ9aVlXrT6AjoQNNRROv6hdTlMZd0TIIdkpywtOMkxsbYbHi7os6pOv7yARqrc7CqPX8CgO24sU8cFId+5vHb1NLO1uGQzHlXpzC6v/uUcpR0PrbeKdLL1JLSvUuaJjiedilUNj5/Pny25VdvhEGTDT7RG8iAg8M=
+	t=1770647580; cv=none; b=X9KQmTAqv88o8GzrDoLnqC5nCOijJT9yjJolbD2vGzAnTPeh6zparwVsy2P4dMWjrvYIinh0cpuZBz0OVPUovgYzf7ANNzUGg0PNtY5onnQL6Fyx17HJMFUPHbK+6JmbnT3jOR6dOniN2jC/P9D4kursBl7v4FrklZl0tX7kUGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647860; c=relaxed/simple;
-	bh=EGxneIW2BtBHKKZ36pFhJNpjtOo0I25FJ5z8EGKnoHQ=;
+	s=arc-20240116; t=1770647580; c=relaxed/simple;
+	bh=v6hdiEfCKYeRmnVa0kRvSXzMc5siFMYDnPu0dJYP1TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vkd2x/ZW8f7jSr+oDZTfibcSPBE9lJVH6QIt3YnAwJMyfbcvWizPzinZ0jPEin38UWvB68HdNdVErEZq1zLtSW7ViJgh3HrADVBeSDRxBWnAEXsl9+g5nZIltOgEx3pniCR0Rk7V/E5NLLKZSsFEp8LVmjdWjTdBeHRrTc+jUGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lj8vIals; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C47C116C6;
-	Mon,  9 Feb 2026 14:37:39 +0000 (UTC)
+	 MIME-Version; b=GvWZEZOdRhPiGNWfE/sP52SucRBLhZkSeoBOa7tGYGtSZT5fH2/pAuluMxTiU+JD1y0pa4X8IuWE7oqwjJtXby/9TQNJ+ufEyPTHUZGQBIf6jQAoUboZ1HWHC+4CCsyiQ81+dln1nZv0qZymLRN6KZJZZziRXuUAk9WXmMuhHz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekwStY+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6017C116C6;
+	Mon,  9 Feb 2026 14:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647860;
-	bh=EGxneIW2BtBHKKZ36pFhJNpjtOo0I25FJ5z8EGKnoHQ=;
+	s=korg; t=1770647580;
+	bh=v6hdiEfCKYeRmnVa0kRvSXzMc5siFMYDnPu0dJYP1TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lj8vIalsRPS7BWISOYYqmPUteiDM24g+G0JsYRW4s0SwOP4vfVB/og7PatZZF/drR
-	 4nQY1FewXdcnBXuZQH2CZgfGn3TTLhgFHSUGVEHc2n2acfBEYlj4oqQgpG22syGBwH
-	 d7TkALbemw2QQ5RdpOydaSKIQa2eFqH63Zed4BIc=
+	b=ekwStY+kMQwAevrMGUDsFvkNB+MDMtRUomIHP2dajFl38scRAArdZrxEFZlRQqmwx
+	 QUQXKS7xIXjRVhjY+okhT6/g5xjLAyLDbz1MhbXOlYOPc5loeh8/radQt26fnl7W4R
+	 yv3LyDAmfhwbo39+MKgkpur75kS6z62z8Ue1ZM58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Florian Westphal <fw@strlen.de>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/113] netfilter: replace -EEXIST with -EBUSY
+Subject: [PATCH 6.18 125/175] dpaa2-switch: add bounds check for if_id in IRQ handler
 Date: Mon,  9 Feb 2026 15:23:18 +0100
-Message-ID: <20260209142311.964030592@linuxfoundation.org>
+Message-ID: <20260209142325.008498985@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
-References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,113 +68,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215156-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215072-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,samsung.com:email,strlen.de:email]
-X-Rspamd-Queue-Id: 2456B11098F
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,outlook.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CB31A110794
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 2bafeb8d2f380c3a81d98bd7b78b854b564f9cd4 ]
+[ Upstream commit 31a7a0bbeb006bac2d9c81a2874825025214b6d8 ]
 
-The -EEXIST error code is reserved by the module loading infrastructure
-to indicate that a module is already loaded. When a module's init
-function returns -EEXIST, userspace tools like kmod interpret this as
-"module already loaded" and treat the operation as successful, returning
-0 to the user even though the module initialization actually failed.
+The IRQ handler extracts if_id from the upper 16 bits of the hardware
+status register and uses it to index into ethsw->ports[] without
+validation. Since if_id can be any 16-bit value (0-65535) but the ports
+array is only allocated with sw_attr.num_ifs elements, this can lead to
+an out-of-bounds read potentially.
 
-Replace -EEXIST with -EBUSY to ensure correct error reporting in the module
-initialization path.
+Add a bounds check before accessing the array, consistent with the
+existing validation in dpaa2_switch_rx().
 
-Affected modules:
-  * ebtable_broute ebtable_filter ebtable_nat arptable_filter
-  * ip6table_filter ip6table_mangle ip6table_nat ip6table_raw
-  * ip6table_security iptable_filter iptable_mangle iptable_nat
-  * iptable_raw iptable_security
-
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 24ab724f8a46 ("dpaa2-switch: use the port index in the IRQ handler")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881D420AB43FF1A227B84AFAF91A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/ebtables.c | 2 +-
- net/netfilter/nf_log.c          | 4 ++--
- net/netfilter/x_tables.c        | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 3e67d4aff419b..a461c59ad2859 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1299,7 +1299,7 @@ int ebt_register_template(const struct ebt_table *t, int (*table_init)(struct ne
- 	list_for_each_entry(tmpl, &template_tables, list) {
- 		if (WARN_ON_ONCE(strcmp(t->name, tmpl->name) == 0)) {
- 			mutex_unlock(&ebt_mutex);
--			return -EEXIST;
-+			return -EBUSY;
- 		}
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index 0ff234f6a3ed9..66240c340492c 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -1531,6 +1531,10 @@ static irqreturn_t dpaa2_switch_irq0_handler_thread(int irq_num, void *arg)
  	}
  
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index 6dd0de33eebd8..e684ab7198c72 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -89,7 +89,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 	if (pf == NFPROTO_UNSPEC) {
- 		for (i = NFPROTO_UNSPEC; i < NFPROTO_NUMPROTO; i++) {
- 			if (rcu_access_pointer(loggers[i][logger->type])) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto unlock;
- 			}
- 		}
-@@ -97,7 +97,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 			rcu_assign_pointer(loggers[i][logger->type], logger);
- 	} else {
- 		if (rcu_access_pointer(loggers[pf][logger->type])) {
--			ret = -EEXIST;
-+			ret = -EBUSY;
- 			goto unlock;
- 		}
- 		rcu_assign_pointer(loggers[pf][logger->type], logger);
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 709840612f0df..ada27e24f7021 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -1762,7 +1762,7 @@ EXPORT_SYMBOL_GPL(xt_hook_ops_alloc);
- int xt_register_template(const struct xt_table *table,
- 			 int (*table_init)(struct net *net))
- {
--	int ret = -EEXIST, af = table->af;
-+	int ret = -EBUSY, af = table->af;
- 	struct xt_template *t;
+ 	if_id = (status & 0xFFFF0000) >> 16;
++	if (if_id >= ethsw->sw_attr.num_ifs) {
++		dev_err(dev, "Invalid if_id %d in IRQ status\n", if_id);
++		goto out;
++	}
+ 	port_priv = ethsw->ports[if_id];
  
- 	mutex_lock(&xt[af].mutex);
+ 	if (status & DPSW_IRQ_EVENT_LINK_CHANGED)
 -- 
 2.51.0
 
