@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEY9GHfziWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:19 +0100
+	id wJUaCJXyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04502110F41
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:47:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0D6110C93
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4ECB3006531
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:45:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4477F301525F
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D08C2DB7B4;
-	Mon,  9 Feb 2026 14:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAABF37C107;
+	Mon,  9 Feb 2026 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOu3z87T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyqJFHwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C561C25DB1C;
-	Mon,  9 Feb 2026 14:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E96836828A;
+	Mon,  9 Feb 2026 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648350; cv=none; b=h9O88V0XxTJb6L4fRIRcuM238Aiz94zAUu56n92ppcrOGBkLTcwwgac/ojSVvlzuKcsKf8UDt6KEEXtwISiL8Bzr0m2CbYOjgPsDE55WrTTxJ1HxXqWcOY1lsqSvqQDGtw3Y51Lhvf/qMDr7LgnFMq8xZQkmREf65LtHvaIM6wg=
+	t=1770648027; cv=none; b=eqTdhzjitT0FONJEdaBSvBj/r7g75uKZ9BUTDcvVIa1kRSpLXwJTqRUAFnn9ma7/D+/RvYSigqUk645RpLNQnOQDxEqF/R95A3QyxkIXW9bdS95ncpFX5NuZu1yXIo+66mn2Dckrkb0PJKSrvnvN+kJ35dcd8BXr5hiKQh3SdjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648350; c=relaxed/simple;
-	bh=OlU/llq+1iE6TTAk+8tv3l/ApXVVik0tt3ZkOGzewyw=;
+	s=arc-20240116; t=1770648027; c=relaxed/simple;
+	bh=LTd8beAHCRgV/JGHspvTzFEgLEdwKhiV80R8S0poiMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAGUTErOnDsApqnkM2iSzZA7fTb1r4nW6lGibF+CClY5sVvOGi3IEeclyjYzUHJFHA7tN5h447dNYaXl/QufnaiTOSVyJRTjNy/7jdV9OtYIozwdnaOahJtt/KPGoafBLQRSsj4gOlGyGpS2bXgd9D5MwhHttNwrpqKnEQwalOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOu3z87T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54733C116C6;
-	Mon,  9 Feb 2026 14:45:50 +0000 (UTC)
+	 MIME-Version; b=l+Jl+cmCNcjtEl4vqWWtpcsuM5t6gNH7CD+9tF/do05AwBBVm4Iry6CxS8m0rMIh9FItzBBFFVOVgX5PAQOfSqGMOjpXg6yVNB40peHGfoE2R7SM6cRmpYqs3c9y+jL7uCVQjYkMc5fm596E5I37pkc4QJJ45AsSElciN8M+1ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyqJFHwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC06DC16AAE;
+	Mon,  9 Feb 2026 14:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648350;
-	bh=OlU/llq+1iE6TTAk+8tv3l/ApXVVik0tt3ZkOGzewyw=;
+	s=korg; t=1770648027;
+	bh=LTd8beAHCRgV/JGHspvTzFEgLEdwKhiV80R8S0poiMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOu3z87TI5uZ5/j6+ACpMLOeZrrNOsqG+7ouK3E6ZVq0bSRL+t6S/JQaUCksgiKE8
-	 4gqqszKpbHDhP3wLrH+nY4K9OisK43YqSc/szK/iLrci88JpjwQReCra0CI93V/ErQ
-	 YYsojfLQ74QxNRPZtabifiBtpaGYYY+mVmm2wMUU=
+	b=ZyqJFHwgho0MQ9TpcwMvgrfrGZ1Q+0Mp45eZMNd2qbwp1BqKLIzYm7McNO9icc3uO
+	 IgF6caUO0ze+ytJKR6Mdn0mFR4dg01+oBC7W0GPbb79F4BpkZ2DKhu0xcnrjuRbTot
+	 e4fjUq6tLoBqB8PU+deoXmUyV8eg7Nm49Hxrg+Ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 12/86] KVM: Dont clobber irqfd routing type when deassigning irqfd
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Zhaojuan Guo <zguo@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 066/113] scsi: target: iscsi: Fix use-after-free in iscsit_dec_session_usage_count()
 Date: Mon,  9 Feb 2026 15:23:35 +0100
-Message-ID: <20260209142305.221319663@linuxfoundation.org>
+Message-ID: <20260209142312.564484217@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,235 +69,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215302-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215206-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 04502110F41
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: CD0D6110C93
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit b4d37cdb77a0015f51fee083598fa227cc07aaf1 upstream.
+[ Upstream commit 84dc6037390b8607c5551047d3970336cb51ba9a ]
 
-When deassigning a KVM_IRQFD, don't clobber the irqfd's copy of the IRQ's
-routing entry as doing so breaks kvm_arch_irq_bypass_del_producer() on x86
-and arm64, which explicitly look for KVM_IRQ_ROUTING_MSI.  Instead, to
-handle a concurrent routing update, verify that the irqfd is still active
-before consuming the routing information.  As evidenced by the x86 and
-arm64 bugs, and another bug in kvm_arch_update_irqfd_routing() (see below),
-clobbering the entry type without notifying arch code is surprising and
-error prone.
+In iscsit_dec_session_usage_count(), the function calls complete() while
+holding the sess->session_usage_lock. Similar to the connection usage count
+logic, the waiter signaled by complete() (e.g., in the session release
+path) may wake up and free the iscsit_session structure immediately.
 
-As a bonus, checking that the irqfd is active provides a convenient
-location for documenting _why_ KVM must not consume the routing entry for
-an irqfd that is in the process of being deassigned: once the irqfd is
-deleted from the list (which happens *before* the eventfd is detached), it
-will no longer receive updates via kvm_irq_routing_update(), and so KVM
-could deliver an event using stale routing information (relative to
-KVM_SET_GSI_ROUTING returning to userspace).
+This creates a race condition where the current thread may attempt to
+execute spin_unlock_bh() on a session structure that has already been
+deallocated, resulting in a KASAN slab-use-after-free.
 
-As an even better bonus, explicitly checking for the irqfd being active
-fixes a similar bug to the one the clobbering is trying to prevent: if an
-irqfd is deactivated, and then its routing is changed,
-kvm_irq_routing_update() won't invoke kvm_arch_update_irqfd_routing()
-(because the irqfd isn't in the list).  And so if the irqfd is in bypass
-mode, IRQs will continue to be posted using the old routing information.
+To resolve this, release the session_usage_lock before calling complete()
+to ensure all dereferences of the sess pointer are finished before the
+waiter is allowed to proceed with deallocation.
 
-As for kvm_arch_irq_bypass_del_producer(), clobbering the routing type
-results in KVM incorrectly keeping the IRQ in bypass mode, which is
-especially problematic on AMD as KVM tracks IRQs that are being posted to
-a vCPU in a list whose lifetime is tied to the irqfd.
-
-Without the help of KASAN to detect use-after-free, the most common
-sympton on AMD is a NULL pointer deref in amd_iommu_update_ga() due to
-the memory for irqfd structure being re-allocated and zeroed, resulting
-in irqfd->irq_bypass_data being NULL when read by
-avic_update_iommu_vcpu_affinity():
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 40cf2b9067 P4D 40cf2b9067 PUD 408362a067 PMD 0
-  Oops: Oops: 0000 [#1] SMP
-  CPU: 6 UID: 0 PID: 40383 Comm: vfio_irq_test
-  Tainted: G     U  W  O        6.19.0-smp--5dddc257e6b2-irqfd #31 NONE
-  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 34.78.2-0 09/05/2025
-  RIP: 0010:amd_iommu_update_ga+0x19/0xe0
-  Call Trace:
-   <TASK>
-   avic_update_iommu_vcpu_affinity+0x3d/0x90 [kvm_amd]
-   __avic_vcpu_load+0xf4/0x130 [kvm_amd]
-   kvm_arch_vcpu_load+0x89/0x210 [kvm]
-   vcpu_load+0x30/0x40 [kvm]
-   kvm_arch_vcpu_ioctl_run+0x45/0x620 [kvm]
-   kvm_vcpu_ioctl+0x571/0x6a0 [kvm]
-   __se_sys_ioctl+0x6d/0xb0
-   do_syscall_64+0x6f/0x9d0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x46893b
-    </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-If AVIC is inhibited when the irfd is deassigned, the bug will manifest as
-list corruption, e.g. on the next irqfd assignment.
-
-  list_add corruption. next->prev should be prev (ffff8d474d5cd588),
-                       but was 0000000000000000. (next=ffff8d8658f86530).
-  ------------[ cut here ]------------
-  kernel BUG at lib/list_debug.c:31!
-  Oops: invalid opcode: 0000 [#1] SMP
-  CPU: 128 UID: 0 PID: 80818 Comm: vfio_irq_test
-  Tainted: G     U  W  O        6.19.0-smp--f19dc4d680ba-irqfd #28 NONE
-  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 34.78.2-0 09/05/2025
-  RIP: 0010:__list_add_valid_or_report+0x97/0xc0
-  Call Trace:
-   <TASK>
-   avic_pi_update_irte+0x28e/0x2b0 [kvm_amd]
-   kvm_pi_update_irte+0xbf/0x190 [kvm]
-   kvm_arch_irq_bypass_add_producer+0x72/0x90 [kvm]
-   irq_bypass_register_consumer+0xcd/0x170 [irqbypass]
-   kvm_irqfd+0x4c6/0x540 [kvm]
-   kvm_vm_ioctl+0x118/0x5d0 [kvm]
-   __se_sys_ioctl+0x6d/0xb0
-   do_syscall_64+0x6f/0x9d0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-On Intel and arm64, the bug is less noisy, as the end result is that the
-device keeps posting IRQs to the vCPU even after it's been deassigned.
-
-Note, the worst of the breakage can be traced back to commit cb210737675e
-("KVM: Pass new routing entries and irqfd when updating IRTEs"), as before
-that commit KVM would pull the routing information from the per-VM routing
-table.  But as above, similar bugs have existed since support for IRQ
-bypass was added.  E.g. if a routing change finished before irq_shutdown()
-invoked kvm_arch_irq_bypass_del_producer(), VMX and SVM would see stale
-routing information and potentially leave the irqfd in bypass mode.
-
-Alternatively, x86 could be fixed by explicitly checking irq_bypass_vcpu
-instead of irq_entry.type in kvm_arch_irq_bypass_del_producer(), and arm64
-could be modified to utilize irq_bypass_vcpu in a similar manner.  But (a)
-that wouldn't fix the routing updates bug, and (b) fixing core code doesn't
-preclude x86 (or arm64) from adding such code as a sanity check (spoiler
-alert).
-
-Fixes: f70c20aaf141 ("KVM: Add an arch specific hooks in 'struct kvm_kernel_irqfd'")
-Fixes: cb210737675e ("KVM: Pass new routing entries and irqfd when updating IRTEs")
-Fixes: a0d7e2fc61ab ("KVM: arm64: vgic-v4: Only attempt vLPI mapping for actual MSIs")
-Cc: stable@vger.kernel.org
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>
-Link: https://patch.msgid.link/20260113174606.104978-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reported-by: Zhaojuan Guo <zguo@redhat.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Link: https://patch.msgid.link/20260112165352.138606-3-mlombard@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/eventfd.c |   44 ++++++++++++++++++++++++--------------------
- 1 file changed, 24 insertions(+), 20 deletions(-)
+ drivers/target/iscsi/iscsi_target_util.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -156,21 +156,28 @@ irqfd_shutdown(struct work_struct *work)
+diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
+index 91a75a4a7cc1a..ee0cf2c74952a 100644
+--- a/drivers/target/iscsi/iscsi_target_util.c
++++ b/drivers/target/iscsi/iscsi_target_util.c
+@@ -785,8 +785,11 @@ void iscsit_dec_session_usage_count(struct iscsit_session *sess)
+ 	spin_lock_bh(&sess->session_usage_lock);
+ 	sess->session_usage_count--;
+ 
+-	if (!sess->session_usage_count && sess->session_waiting_on_uc)
++	if (!sess->session_usage_count && sess->session_waiting_on_uc) {
++		spin_unlock_bh(&sess->session_usage_lock);
+ 		complete(&sess->session_waiting_on_uc_comp);
++		return;
++	}
+ 
+ 	spin_unlock_bh(&sess->session_usage_lock);
  }
- 
- 
--/* assumes kvm->irqfds.lock is held */
--static bool
--irqfd_is_active(struct kvm_kernel_irqfd *irqfd)
-+static bool irqfd_is_active(struct kvm_kernel_irqfd *irqfd)
- {
-+	/*
-+	 * Assert that either irqfds.lock or SRCU is held, as irqfds.lock must
-+	 * be held to prevent false positives (on the irqfd being active), and
-+	 * while false negatives are impossible as irqfds are never added back
-+	 * to the list once they're deactivated, the caller must at least hold
-+	 * SRCU to guard against routing changes if the irqfd is deactivated.
-+	 */
-+	lockdep_assert_once(lockdep_is_held(&irqfd->kvm->irqfds.lock) ||
-+			    srcu_read_lock_held(&irqfd->kvm->irq_srcu));
-+
- 	return list_empty(&irqfd->list) ? false : true;
- }
- 
- /*
-  * Mark the irqfd as inactive and schedule it for removal
-- *
-- * assumes kvm->irqfds.lock is held
-  */
--static void
--irqfd_deactivate(struct kvm_kernel_irqfd *irqfd)
-+static void irqfd_deactivate(struct kvm_kernel_irqfd *irqfd)
- {
-+	lockdep_assert_held(&irqfd->kvm->irqfds.lock);
-+
- 	BUG_ON(!irqfd_is_active(irqfd));
- 
- 	list_del_init(&irqfd->list);
-@@ -211,8 +218,15 @@ irqfd_wakeup(wait_queue_entry_t *wait, u
- 			seq = read_seqcount_begin(&irqfd->irq_entry_sc);
- 			irq = irqfd->irq_entry;
- 		} while (read_seqcount_retry(&irqfd->irq_entry_sc, seq));
--		/* An event has been signaled, inject an interrupt */
--		if (kvm_arch_set_irq_inatomic(&irq, kvm,
-+
-+		/*
-+		 * An event has been signaled, inject an interrupt unless the
-+		 * irqfd is being deassigned (isn't active), in which case the
-+		 * routing information may be stale (once the irqfd is removed
-+		 * from the list, it will stop receiving routing updates).
-+		 */
-+		if (unlikely(!irqfd_is_active(irqfd)) ||
-+		    kvm_arch_set_irq_inatomic(&irq, kvm,
- 					      KVM_USERSPACE_IRQ_SOURCE_ID, 1,
- 					      false) == -EWOULDBLOCK)
- 			schedule_work(&irqfd->inject);
-@@ -557,18 +571,8 @@ kvm_irqfd_deassign(struct kvm *kvm, stru
- 	spin_lock_irq(&kvm->irqfds.lock);
- 
- 	list_for_each_entry_safe(irqfd, tmp, &kvm->irqfds.items, list) {
--		if (irqfd->eventfd == eventfd && irqfd->gsi == args->gsi) {
--			/*
--			 * This clearing of irq_entry.type is needed for when
--			 * another thread calls kvm_irq_routing_update before
--			 * we flush workqueue below (we synchronize with
--			 * kvm_irq_routing_update using irqfds.lock).
--			 */
--			write_seqcount_begin(&irqfd->irq_entry_sc);
--			irqfd->irq_entry.type = 0;
--			write_seqcount_end(&irqfd->irq_entry_sc);
-+		if (irqfd->eventfd == eventfd && irqfd->gsi == args->gsi)
- 			irqfd_deactivate(irqfd);
--		}
- 	}
- 
- 	spin_unlock_irq(&kvm->irqfds.lock);
+-- 
+2.51.0
+
 
 
 
