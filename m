@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-215273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDEAIvz1iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:04 +0100
+	id 6OvRMU35iWn5FAAAu9opvQ
+	(envelope-from <stable+bounces-215463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7B211148D
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2048B111B42
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4044830A6440
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBC0E3055425
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E12F22301;
-	Mon,  9 Feb 2026 14:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4F737BE77;
+	Mon,  9 Feb 2026 14:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+Iuh3Ag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yf/yA9Uc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018A3378D84;
-	Mon,  9 Feb 2026 14:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F5C28312F;
+	Mon,  9 Feb 2026 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648255; cv=none; b=iRETcqpOiVnuNZy10h/1pLyRwSalDu1OXElDofnWBp5jVB+pdJrorRfTZbHtreqc0A/sJo/2WhYie1XbrTWOwBrfn9g3T4/O2n1awIlO+cctFtIAlh0L+DGyRvnvgKTRnI6UQ7sF68cv4GEYTFgf9kRdgMhXlLg2LWzRNSWu1ZI=
+	t=1770648877; cv=none; b=YaRR6sLDc17/8XonKJJhWDXQp4Kw8rOY3KdeDAYyMzFpjOITtd0lqvbbdyLWt43qF7fevB72mxpBTZ9l1P1A/fN/STBxp4unLmd5nQZaB89b5FGaJ42pVCzPScJfkOfI4DDx8dMZ8wCVDO2g0UkEYLCBPxfmkBCpt4kARHvPZFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648255; c=relaxed/simple;
-	bh=AF9S/2S9xSklYAWIHf9ndO6lHQCNgrlX/OFGJC+lEiE=;
+	s=arc-20240116; t=1770648877; c=relaxed/simple;
+	bh=KMfzxeXmoOJiaFFl/0BQ8evQWorhxDuceZqe4Vw7KNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhlSeDpmQzKguQj4GCCX15XjXf5SFmT10+E6BblO2v0FtR07004hY+qUgrLwbzhBKeXZ1Xwa91uktjySlU16geZmL0RNZmRoD+UCQN7WkP46fZlqCppMYWmgJJ0MjuuHpj7cnKWGZg9RSz/Svkhsz0JnnLxyTwvMkvi/M3qgTP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+Iuh3Ag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA9BC116C6;
-	Mon,  9 Feb 2026 14:44:14 +0000 (UTC)
+	 MIME-Version; b=GgCpqB/ULtbZ8obwapIKfxGHZkQ6s4kaNbLn8o5XDKpsISdA3IU8LyZmZY3p8PxYBIK0buW5p9makLRpVjzRPP50Gg2dywT+GtZcL963cjsPuLepXUA6eBGT/N2XYRFfNGeNvngE5gkZcCK2Ib4Na329sffoM1sjy1nLListsJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yf/yA9Uc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D387C116C6;
+	Mon,  9 Feb 2026 14:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648254;
-	bh=AF9S/2S9xSklYAWIHf9ndO6lHQCNgrlX/OFGJC+lEiE=;
+	s=korg; t=1770648876;
+	bh=KMfzxeXmoOJiaFFl/0BQ8evQWorhxDuceZqe4Vw7KNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+Iuh3Agx5oSIOppMj5+PKf+jw3cEkaPNxJytSWlrw/wVSAy+FDHkakDmjVRG/gEe
-	 EZ37PxcevohrGexamwYg6XjAKtHL+Anp/1jgy2XzQntuUedRvkHbIM3OQwbt2oDl/8
-	 CrWDAjt+aKaNgl6rxT4XLN7iDfThGjNlRJwal6t4=
+	b=Yf/yA9UcARNBLofXkqQvGKlJrd+OEUtUK7k33ATjmjSw82Ypbhmq7w7gcRVeJwE6e
+	 GnEKkqub12UmhT9zjWs/gMojA/8TmyqMie49tENXQ0tatJHKUSyY/RlAxSPt551pEL
+	 kDQTWS17DYyD9YYhMZoNB6UfKVEL/4jZeQm1+3fI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	valis <sec@valis.email>,
-	syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com,
-	Boudewijn van der Heide <boudewijn@delta-utec.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com,
+	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/69] macvlan: fix error recovery in macvlan_common_newlink()
+Subject: [PATCH 5.15 24/75] wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
 Date: Mon,  9 Feb 2026 15:24:21 +0100
-Message-ID: <20260209142303.832514060@linuxfoundation.org>
+Message-ID: <20260209142302.716570300@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+References: <20260209142301.830618238@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,128 +69,74 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215273-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215463-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7182fbe91e58602ec1fe];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,b364457b2d1d4e4a3054];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[delta-utec.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,valis.email:email,msgid.link:url,appspotmail.com:email]
-X-Rspamd-Queue-Id: 0D7B211148D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2048B111B42
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
 
-[ Upstream commit f8db6475a83649689c087a8f52486fcc53e627e9 ]
+[ Upstream commit ff4071c60018a668249dc6a2df7d16330543540e ]
 
-valis provided a nice repro to crash the kernel:
+ieee80211_ocb_rx_no_sta() assumes a valid channel context, which is only
+present after JOIN_OCB.
 
-ip link add p1 type veth peer p2
-ip link set address 00:00:00:00:00:20 dev p1
-ip link set up dev p1
-ip link set up dev p2
+RX may run before JOIN_OCB is executed, in which case the OCB interface
+is not operational. Skip RX peer handling when the interface is not
+joined to avoid warnings in the RX path.
 
-ip link add mv0 link p2 type macvlan mode source
-ip link add invalid% link p2 type macvlan mode source macaddr add 00:00:00:00:00:20
-
-ping -c1 -I p1 1.2.3.4
-
-He also gave a very detailed analysis:
-
-<quote valis>
-
-The issue is triggered when a new macvlan link is created  with
-MACVLAN_MODE_SOURCE mode and MACVLAN_MACADDR_ADD (or
-MACVLAN_MACADDR_SET) parameter, lower device already has a macvlan
-port and register_netdevice() called from macvlan_common_newlink()
-fails (e.g. because of the invalid link name).
-
-In this case macvlan_hash_add_source is called from
-macvlan_change_sources() / macvlan_common_newlink():
-
-This adds a reference to vlan to the port's vlan_source_hash using
-macvlan_source_entry.
-
-vlan is a pointer to the priv data of the link that is being created.
-
-When register_netdevice() fails, the error is returned from
-macvlan_newlink() to rtnl_newlink_create():
-
-        if (ops->newlink)
-                err = ops->newlink(dev, &params, extack);
-        else
-                err = register_netdevice(dev);
-        if (err < 0) {
-                free_netdev(dev);
-                goto out;
-        }
-
-and free_netdev() is called, causing a kvfree() on the struct
-net_device that is still referenced in the source entry attached to
-the lower device's macvlan port.
-
-Now all packets sent on the macvlan port with a matching source mac
-address will trigger a use-after-free in macvlan_forward_source().
-
-</quote valis>
-
-With all that, my fix is to make sure we call macvlan_flush_sources()
-regardless of @create value whenever "goto destroy_macvlan_port;"
-path is taken.
-
-Many thanks to valis for following up on this issue.
-
-Fixes: aa5fd0fb7748 ("driver: macvlan: Destroy new macvlan port if macvlan_common_newlink failed.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: valis <sec@valis.email>
-Reported-by: syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com
-Closes: https: //lore.kernel.org/netdev/695fb1e8.050a0220.1c677c.039f.GAE@google.com/T/#u
-Cc: Boudewijn van der Heide <boudewijn@delta-utec.com>
-Link: https://patch.msgid.link/20260129204359.632556-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b364457b2d1d4e4a3054
+Tested-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
+Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Link: https://patch.msgid.link/20251216035932.18332-1-moonhee.lee.ca@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mac80211/ocb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 428b139822cf6..5fb956adc4260 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1539,9 +1539,10 @@ int macvlan_common_newlink(struct net *src_net, struct net_device *dev,
- 	/* the macvlan port may be freed by macvlan_uninit when fail to register.
- 	 * so we destroy the macvlan port only when it's valid.
+diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
+index 9713e53f11b1b..6688b1dd8aaa4 100644
+--- a/net/mac80211/ocb.c
++++ b/net/mac80211/ocb.c
+@@ -47,6 +47,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
+ 	struct sta_info *sta;
+ 	int band;
+ 
++	if (!ifocb->joined)
++		return;
++
+ 	/* XXX: Consider removing the least recently used entry and
+ 	 *      allow new one to be added.
  	 */
--	if (create && macvlan_port_get_rtnl(lowerdev)) {
-+	if (macvlan_port_get_rtnl(lowerdev)) {
- 		macvlan_flush_sources(port, vlan);
--		macvlan_port_destroy(port->dev);
-+		if (create)
-+			macvlan_port_destroy(port->dev);
- 	}
- 	return err;
- }
 -- 
 2.51.0
 
