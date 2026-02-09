@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wA9rGgzxiWnGEgAAu9opvQ
-	(envelope-from <stable+bounces-215024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:37:00 +0100
+	id mBeRD+bwiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC3A11086C
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5042110802
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C28B4308A846
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:30:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 59CB4302517E
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF3C360741;
-	Mon,  9 Feb 2026 14:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B906137BE65;
+	Mon,  9 Feb 2026 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2Yd8A5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAx9ozs/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4AE29D265;
-	Mon,  9 Feb 2026 14:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6CF37A4AE;
+	Mon,  9 Feb 2026 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647419; cv=none; b=eq3E7YDC30zckW5he7+qQpq0eS4r7NdwAd16mRQF+JIl2z6+essg4dQDU8pJ/wkio8Lrki1CX/ZIEeqCONcidiTEagUFzjdtRsFCSQbE92aNq6iayazu+gMcpuN2IhHcs6TVcoS0egLHRyCCVmRBLRnld+rh4lJ3fYR+D2cDaWU=
+	t=1770647726; cv=none; b=lsTuQOAR+IkoId8qy80eJ5HGDRzvo+qB2ltOrI1NnNlS04+VQHrJr1HgMw32MQUx+z3SbBDoiTOS6WK29mle8HQfB+LbwHzrVYfBnxHf7AQt2228MibnPzyccIjLypQ0oTgMmK+pjFL6V5Z98926kH6rdYoz+Tg+EBm0+ikRBM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647419; c=relaxed/simple;
-	bh=fs6uKhuBTtk3W8jIF8FkwSBsax7jCgdYwb9j6q5YMUU=;
+	s=arc-20240116; t=1770647726; c=relaxed/simple;
+	bh=Dx8Mq5D1p5V9nRH/92a4xaRAfoD1NJX0kM4iapHlkwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xwmptjb+lzSAYJ5amvjHjs2kMFWZ4F2bYlQOnn1ka7s/VMTJRQVZc/HoHtVwJNhqVXjT+VYcPjA64Fh7gQwRBQsH651vpXXrhu52hHTnqPA6nY1eTiWKHOZBl8eKWnfRjhyDP2pbOxoS57RjflgZXscokoZnbDKO2wNqWZchiyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2Yd8A5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEB2C116C6;
-	Mon,  9 Feb 2026 14:30:18 +0000 (UTC)
+	 MIME-Version; b=o1IdyhfnIwxVZ0tTY07TiFyOnzdJ7EPoNGNBrpdi+6pdyhoAALsNqNXlDCoHTA+c7v2UmPKxA0vtyr3FPu2T5N79eFPGT+wVeOWza1e1qLM/8FRucIT+eRr8TRUpox6IY0ZBmMkQANFXcHtKcZ/Lu7esfjw5H7DDjhtBiYQFOb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAx9ozs/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC83C116C6;
+	Mon,  9 Feb 2026 14:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770647419;
-	bh=fs6uKhuBTtk3W8jIF8FkwSBsax7jCgdYwb9j6q5YMUU=;
+	s=korg; t=1770647726;
+	bh=Dx8Mq5D1p5V9nRH/92a4xaRAfoD1NJX0kM4iapHlkwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2Yd8A5zJQ+ifgt1RQfuoSvSJNil401G4bkWN5QeLIhuhZYmq64SppsewAIxyKr20
-	 dJz/QKDUugL72AWCPuwwbNSUMiR7MqfKETwbUWF5mg+Z0teXCfv+/6Y7+eqMnTVAhX
-	 r/5PaQd05WWWOORBEhl9QXRcMPdWuyOhaDvICCio=
+	b=rAx9ozs/b9kfKtP8THXKd7o3ZGG+cvBqCilj8NbLGipa7G1mzNXaTCg5RYlXm0kxt
+	 tjONETbzyNPZtfqDssdmk3pUiF3cebXBfZS7k9wPc5kyTf3Oip+DqEIEOjj5n2WDPP
+	 bHMJxenSBOTF1T1U7LCzc7XSw6dZmXqIeFjVzYfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/175] ASoC: davinci-evm: Fix reference leak in davinci_evm_probe
+	Hao Li <hao.li@linux.dev>,
+	Hao Ge <hao.ge@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.12 011/113] mm/slab: Add alloc_tagging_slab_free_hook for memcg_alloc_abort_single
 Date: Mon,  9 Feb 2026 15:22:40 +0100
-Message-ID: <20260209142323.564739282@linuxfoundation.org>
+Message-ID: <20260209142310.618266453@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
-References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,146 +69,131 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215024-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215116-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: BFC3A11086C
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,linux.dev:email]
+X-Rspamd-Queue-Id: A5042110802
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Hao Ge <hao.ge@linux.dev>
 
-[ Upstream commit 5b577d214fcc109707bcb77b4ae72a31cfd86798 ]
+commit e6c53ead2d8fa73206e0a63e9cd9aea6bc929837 upstream.
 
-The davinci_evm_probe() function calls of_parse_phandle() to acquire
-device nodes for "ti,audio-codec" and "ti,mcasp-controller". These
-functions return device nodes with incremented reference counts.
+When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
+may be noticed:
 
-However, in several error paths (e.g., when the second of_parse_phandle(),
-snd_soc_of_parse_card_name(), or devm_snd_soc_register_card() fails),
-the function returns directly without releasing the acquired nodes,
-leading to reference leaks.
+[ 3959.023862] ------------[ cut here ]------------
+[ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
+[ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
+[ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+[ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
+[ 3959.024182] Tainted: [W]=WARN
+[ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+[ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 3959.024199] pc : alloc_tag_add+0x128/0x178
+[ 3959.024207] lr : alloc_tag_add+0x128/0x178
+[ 3959.024214] sp : ffff80008b696d60
+[ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
+[ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
+[ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
+[ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
+[ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
+[ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
+[ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
+[ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
+[ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
+[ 3959.024340] Call trace:
+[ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
+[ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
+[ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
+[ 3959.024369]  xas_alloc+0x304/0x4f0
+[ 3959.024381]  xas_create+0x1e0/0x4a0
+[ 3959.024388]  xas_store+0x68/0xda8
+[ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
+[ 3959.024409]  filemap_add_folio+0x16c/0x7e0
+[ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
+[ 3959.024424]  iomap_get_folio+0xfc/0x180
+[ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
+[ 3959.024441]  iomap_write_begin+0x198/0xc18
+[ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
+[ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
+[ 3959.024461]  blkdev_write_iter+0x38c/0x978
+[ 3959.024470]  vfs_write+0x4d4/0x928
+[ 3959.024482]  ksys_write+0xfc/0x1f8
+[ 3959.024489]  __arm64_sys_write+0x74/0xb0
+[ 3959.024496]  invoke_syscall+0xd4/0x258
+[ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
+[ 3959.024514]  do_el0_svc+0x48/0x68
+[ 3959.024520]  el0_svc+0x40/0xf8
+[ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
+[ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
+[ 3959.024540] ---[ end trace 0000000000000000 ]---
 
-This patch adds an error handling path 'err_put' to properly release
-the device nodes using of_node_put() and clean up the pointers when
-an error occurs.
+When __memcg_slab_post_alloc_hook() fails, there are two different
+free paths depending on whether size == 1 or size != 1. In the
+kmem_cache_free_bulk() path, we do call alloc_tagging_slab_free_hook().
+However, in memcg_alloc_abort_single() we don't, the above warning will be
+triggered on the next allocation.
 
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Link: https://patch.msgid.link/20260107154836.1521-2-qikeyu2017@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, add alloc_tagging_slab_free_hook() to the
+memcg_alloc_abort_single() path.
+
+Fixes: 9f9796b413d3 ("mm, slab: move memcg charging to post-alloc hook")
+Cc: stable@vger.kernel.org
+Suggested-by: Hao Li <hao.li@linux.dev>
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20260204101401.202762-1-hao.ge@linux.dev
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/ti/davinci-evm.c | 39 ++++++++++++++++++++++++++++++--------
- 1 file changed, 31 insertions(+), 8 deletions(-)
+ mm/slub.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/davinci-evm.c b/sound/soc/ti/davinci-evm.c
-index 2a2f5bc95576e..a55a369ce71c2 100644
---- a/sound/soc/ti/davinci-evm.c
-+++ b/sound/soc/ti/davinci-evm.c
-@@ -193,27 +193,32 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 
- 	dai->cpus->of_node = of_parse_phandle(np, "ti,mcasp-controller", 0);
--	if (!dai->cpus->of_node)
--		return -EINVAL;
-+	if (!dai->cpus->of_node) {
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
- 
- 	dai->platforms->of_node = dai->cpus->of_node;
- 
- 	evm_soc_card.dev = &pdev->dev;
- 	ret = snd_soc_of_parse_card_name(&evm_soc_card, "ti,model");
- 	if (ret)
--		return ret;
-+		goto err_put;
- 
- 	mclk = devm_clk_get(&pdev->dev, "mclk");
- 	if (PTR_ERR(mclk) == -EPROBE_DEFER) {
--		return -EPROBE_DEFER;
-+		ret = -EPROBE_DEFER;
-+		goto err_put;
- 	} else if (IS_ERR(mclk)) {
- 		dev_dbg(&pdev->dev, "mclk not found.\n");
- 		mclk = NULL;
- 	}
- 
- 	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
--	if (!drvdata)
--		return -ENOMEM;
-+	if (!drvdata) {
-+		ret = -ENOMEM;
-+		goto err_put;
-+	}
- 
- 	drvdata->mclk = mclk;
- 
-@@ -223,7 +228,8 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 		if (!drvdata->mclk) {
- 			dev_err(&pdev->dev,
- 				"No clock or clock rate defined.\n");
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err_put;
- 		}
- 		drvdata->sysclk = clk_get_rate(drvdata->mclk);
- 	} else if (drvdata->mclk) {
-@@ -239,8 +245,25 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 	snd_soc_card_set_drvdata(&evm_soc_card, drvdata);
- 	ret = devm_snd_soc_register_card(&pdev->dev, &evm_soc_card);
- 
--	if (ret)
-+	if (ret) {
- 		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
-+		goto err_put;
-+	}
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4657,8 +4657,12 @@ void slab_free(struct kmem_cache *s, str
+ static noinline
+ void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
+ {
++	struct slab *slab = virt_to_slab(object);
 +
-+	return ret;
++	alloc_tagging_slab_free_hook(s, slab, &object, 1);
 +
-+err_put:
-+	dai->platforms->of_node = NULL;
-+
-+	if (dai->cpus->of_node) {
-+		of_node_put(dai->cpus->of_node);
-+		dai->cpus->of_node = NULL;
-+	}
-+
-+	if (dai->codecs->of_node) {
-+		of_node_put(dai->codecs->of_node);
-+		dai->codecs->of_node = NULL;
-+	}
- 
- 	return ret;
+ 	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+-		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
++		do_slab_free(s, slab, object, object, 1, _RET_IP_);
  }
--- 
-2.51.0
-
+ #endif
+ 
 
 
 
