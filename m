@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPdcBub3iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:14 +0100
+	id SPzMKsj1iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4C811183D
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:06:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021D1111435
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF13630CA248
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:49:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A1E9301491B
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0AC285073;
-	Mon,  9 Feb 2026 14:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4152B3783C9;
+	Mon,  9 Feb 2026 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1ijS+Tz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY2SNdpt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50C028725B;
-	Mon,  9 Feb 2026 14:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0533E28725B;
+	Mon,  9 Feb 2026 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648567; cv=none; b=APCyiP/qNjhvxW92p7U9nVmbSEmDf9bYwd7rYYYi4ifUNN+A8NY+YCTE88AkqchQUbOnxidYRmHZqJByJ+4DbOoFxLpx7LwAU6onf6xm0soOW1X2KFCuJGBBasZeSz1rwV8wYYa5kb3Vsr22mKiuSwagt3/oKUVCrZeIEwsghuI=
+	t=1770648657; cv=none; b=jAZmfbxPnuNYi5mRs06WpWrPwY2xCTHtcQS9iNGp2ye86FUdY06KkBkFIxRrnrHhGxMveSEh73MEJ8D3A+jhaT7N59UkMODa3SeTDrOwnWHxnrRUxtvrAJ/XraL+P11NRmG9Hja6jm2V+WoTys9zPceG7PTCJ8M4jeNd1oCjpqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648567; c=relaxed/simple;
-	bh=Ktr0GmOTaiho6vfh55iO7RK3pqi10pq6xKYzdZXxVKM=;
+	s=arc-20240116; t=1770648657; c=relaxed/simple;
+	bh=6Vbig+42gL3O5LD/0wGlT3xDOQvE15m0yelRvmdEIpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0nJvFF+LepUDGn+Lc39Ffkz/iUrNYTT+uSrg4YpDdhp8Hdyl+iMmevZdcRImfctcpThiKbELlqNqkTln77zecJIEsCRM6z3PUGJMZWfSfiMZqYLnirvSOX2yMG40ydzKSAxCA+xerI2wb9YftKOm2XLPYWwJSGT121xQtX7XUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1ijS+Tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31664C116C6;
-	Mon,  9 Feb 2026 14:49:25 +0000 (UTC)
+	 MIME-Version; b=J7Zoog1sabevv7Lp9BTRCLgxLbk35gcPCF5rjHAFAWH6rEeBoRO5vSe5xPFXd3zf6ILDM5MxtIV0CaVLJQHsQM9xzuw7dAO2MlIOIhilc8zdlUPtKqKJ+J+Ssl/0O+nJSUijZjk5GoniotAfW+mm0h9euwYuhpGEnibUM8FfKhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY2SNdpt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DC6C116C6;
+	Mon,  9 Feb 2026 14:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648566;
-	bh=Ktr0GmOTaiho6vfh55iO7RK3pqi10pq6xKYzdZXxVKM=;
+	s=korg; t=1770648656;
+	bh=6Vbig+42gL3O5LD/0wGlT3xDOQvE15m0yelRvmdEIpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1ijS+Tz1LVDjp5i1wp5XaOREzwtR0clMTpLN8rcQ/3YxiLkb1/VcE6QmZ1KTpkEt
-	 VtuIGpfJfqhccs0r1GIiXNgz6qoAPtb/7n9yQVApFwZL7UMUo4LWGAC85/M8CHRBfa
-	 hDsenQ9H0ja76gBmwyocwQPazoDFj/dc03W2oqew=
+	b=QY2SNdpt1O2LOcKNzrJXkSFbWgXEBhUvJGm8KAafTq8uVEIuS2SV8FFvTNv9ZCo0n
+	 bZhty0ET04uhjckpmr18SmGNBzZ6bqkKk4D334hlNO1qS7cCplqbSB37/rh4v69u2K
+	 QqbquLAspD2MdjyTlaZF3wLDivhp1qRN9C2yq38k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Dimitrios Katsaros <patcherwork@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 76/86] ASoC: amd: fix memory leak in acp3x pdm dma ops
+Subject: [PATCH 5.10 18/41] ASoC: tlv320adcx140: Propagate error codes during probe
 Date: Mon,  9 Feb 2026 15:24:39 +0100
-Message-ID: <20260209142307.510873149@linuxfoundation.org>
+Message-ID: <20260209142257.466844170@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-References: <20260209142304.770150175@linuxfoundation.org>
+In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
+References: <20260209142256.797267956@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +66,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-215368-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-215396-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,pengutronix.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AA4C811183D
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email]
+X-Rspamd-Queue-Id: 021D1111435
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
+From: Dimitrios Katsaros <patcherwork@gmail.com>
 
-[ Upstream commit 7f67ba5413f98d93116a756e7f17cd2c1d6c2bd6 ]
+[ Upstream commit d89aad92cfd15edbd704746f44c98fe687f9366f ]
 
-Fixes: 4a767b1d039a8 ("ASoC: amd: add acp3x pdm driver dma ops")
-Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Link: https://patch.msgid.link/20260202205034.7697-1-chris.bainbridge@gmail.com
+When scanning for the reset pin, we could get an -EPROBE_DEFER.
+The driver would assume that no reset pin had been defined,
+which would mean that the chip would never be powered.
+
+Now we both respect any error we get from devm_gpiod_get_optional.
+We also now properly report the missing GPIO definition when
+'gpio_reset' is NULL.
+
+Signed-off-by: Dimitrios Katsaros <patcherwork@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://patch.msgid.link/20260113-sound-soc-codecs-tvl320adcx140-v4-3-8f7ecec525c8@pengutronix.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/renoir/acp3x-pdm-dma.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/tlv320adcx140.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/amd/renoir/acp3x-pdm-dma.c b/sound/soc/amd/renoir/acp3x-pdm-dma.c
-index c3b47e9bd2392..39223ff37b14e 100644
---- a/sound/soc/amd/renoir/acp3x-pdm-dma.c
-+++ b/sound/soc/amd/renoir/acp3x-pdm-dma.c
-@@ -301,9 +301,11 @@ static int acp_pdm_dma_close(struct snd_soc_component *component,
- 			     struct snd_pcm_substream *substream)
- {
- 	struct pdm_dev_data *adata = dev_get_drvdata(component->dev);
-+	struct pdm_stream_instance *rtd = substream->runtime->private_data;
+diff --git a/sound/soc/codecs/tlv320adcx140.c b/sound/soc/codecs/tlv320adcx140.c
+index c7a591ee25900..6e4dbf93c6996 100644
+--- a/sound/soc/codecs/tlv320adcx140.c
++++ b/sound/soc/codecs/tlv320adcx140.c
+@@ -1096,6 +1096,9 @@ static int adcx140_i2c_probe(struct i2c_client *i2c,
+ 	adcx140->gpio_reset = devm_gpiod_get_optional(adcx140->dev,
+ 						      "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(adcx140->gpio_reset))
++		return dev_err_probe(&i2c->dev, PTR_ERR(adcx140->gpio_reset),
++				     "Failed to get Reset GPIO\n");
++	if (!adcx140->gpio_reset)
+ 		dev_info(&i2c->dev, "Reset GPIO not defined\n");
  
- 	disable_pdm_interrupts(adata->acp_base);
- 	adata->capture_stream = NULL;
-+	kfree(rtd);
- 	return 0;
- }
- 
+ 	adcx140->supply_areg = devm_regulator_get_optional(adcx140->dev,
 -- 
 2.51.0
 
