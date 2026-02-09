@@ -1,348 +1,355 @@
-Return-Path: <stable+bounces-214883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-214884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPkpD5qAiWlx+AQAu9opvQ
-	(envelope-from <stable+bounces-214883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 07:37:14 +0100
+	id QPe2Lz2CiWkg+QQAu9opvQ
+	(envelope-from <stable+bounces-214884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 07:44:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B1010C284
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 07:37:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292AF10C31F
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 07:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2FBE30022D4
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 06:37:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0D28A30062DE
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 06:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DED2EC09F;
-	Mon,  9 Feb 2026 06:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD3430FC0A;
+	Mon,  9 Feb 2026 06:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q/RJSBxN"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gk4IK5zD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D478F2620E5
-	for <stable@vger.kernel.org>; Mon,  9 Feb 2026 06:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770619031; cv=fail; b=Qb/6+t4Hnzpfbitss2INywc8RS5jdjfBCzheINe3Qt4XrSqqNB7TCdkXtIvf0ed4MzQyP3wV4U7Q1/l8FJ0k8AqCG+FSY5iPb5pR6Yjz2fNL+L928yNuX1NS1GHR/7kwJi2qzhRa3ttUYJvW2NliDhMvHYk9K+01GnzMwLj+UI4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770619031; c=relaxed/simple;
-	bh=QAiJ0ikf+ScT8sliNnmt7L+ViXniSAwMCwpzd2eZQgI=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=D6P7JPIf8/Dv+tNDPmG0EyMXH3EPeDCUFvCUSFjTTnBS3KeCMjp/7LpJj4vzvvCMLQsnMeWNTnUl5VfvQRlv5w0RBlB1Uazrf4Mj+7sO9lJnzempVsmpmv9I5ZcRitbU1IVMaEaRwzZLgdENye9+iVwSRJK09n6MPOOfX7z0rvM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q/RJSBxN; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770619031; x=1802155031;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=QAiJ0ikf+ScT8sliNnmt7L+ViXniSAwMCwpzd2eZQgI=;
-  b=Q/RJSBxN5Y313Szw4Ir2D5Vb0/8eUwPwHje/xkDN4xsYE3X8L86qkhXM
-   gL2c/lX2HCwPVIZHVRW0RPSfms0WAc3tPRgvhbmq9A22Zyvb0CoIqjuNL
-   qgiKZgbQdP322NkWhHmgcbzKZOSEZGRZhyHnrS1PXCtX+uPV36k9NonEl
-   74XvgZq3ykNyBsFTEu9pxAE+X212IR6X9Qrk0mEQhRqxKGIdRpwzpqKg/
-   +SrBa22Z52weXxU2w2Gy9nwPQklyuUzkNkI3uRQjlhpeIFalWU7zeR1Tc
-   Ijswe6zr+M6azuv6ziA5lf69o3U70YOO9rrPcaE/nIPxWY+13PxRE8aOv
-   g==;
-X-CSE-ConnectionGUID: LfJ0RRGMRPmD2x6knAl3Xg==
-X-CSE-MsgGUID: fc2b5O5NTpSxalXiynacgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="71626204"
-X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; 
-   d="scan'208";a="71626204"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 22:37:01 -0800
-X-CSE-ConnectionGUID: eXntfvIDTJqCjdJS+776bA==
-X-CSE-MsgGUID: 9Mdsh9bnQNqkFDDUWcbGVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; 
-   d="scan'208";a="211299129"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 22:37:01 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Sun, 8 Feb 2026 22:36:49 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Sun, 8 Feb 2026 22:36:49 -0800
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.17) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Sun, 8 Feb 2026 22:36:35 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fulCwh7D8d1+f5yRtyTreePpeeTWPdhz7iJYokcu8b7H4J9yLSO8sfNADzVZmJc6UVA9EnKFfgztecVqy/pZ3kLr10qhuD+eBF+v66DnlmRyjNBC/bBSz22K9MSyWmefUEA9n4a3yW3iUr/DNpgR+lQHzTLl9cmSM8KMHyg21ZI4INEJh1Qxsl3dDenNggvuMd5CsvjWyCHwCxWDMqf1gLeamglHyGxdT5AUa4DrZlnPZokQvWWqbCEDWlLgNGSRUuBZSqmxvJe29b/wM0T8pu+RfRj5JMVyg347WdJ+EcENCVGaWgJDoT8hl3gZdFpKxdfuOlEAY19x6IsKBeZMSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lroMLVMzWmdWcXfAoozA5WNKnRDdWT6vCsVF5gQOlfM=;
- b=OUDUuDjR0owhj07UuVvJRiIpQ6dXxPy0o8yuBMeL5I8lnE/WxfdPIIRWR0g9fOrkzhNpwPjOeTL/zpIATu8WV3wsqztzvn4T/OI4lM7fACqXLL1fp10ujeX/dUZsJmdrd/IYkre243rE0djLSSr+muk+GyrzL3d8J4at5QSdWV1mXZkvNRuBTs3UgpkqlXKSPeAqrHBw6XgRwWiaxspvK0c0qfCaAh/goRpM0DD5hkJATcKEGh50rkK0BylKG9+0JuxWp2psvSTL5ne/A85fwr8QrdWWwtS65s5zBAvOvoFtfviYqhLBlbkfxvzXpQgA70B8kNOqCPTd1fHsi3bBxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12)
- by IA4PR11MB9012.namprd11.prod.outlook.com (2603:10b6:208:56d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Mon, 9 Feb
- 2026 06:36:28 +0000
-Received: from SJ1PR11MB6129.namprd11.prod.outlook.com
- ([fe80::45f:5907:efdb:cb5b]) by SJ1PR11MB6129.namprd11.prod.outlook.com
- ([fe80::45f:5907:efdb:cb5b%3]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
- 06:36:26 +0000
-Message-ID: <9ca3365b-c595-4401-8663-9c18ccc45d45@intel.com>
-Date: Mon, 9 Feb 2026 12:06:20 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/i915/dp: Fix pipe BPP clamping due to HDR
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, Imre Deak
-	<imre.deak@intel.com>, <intel-gfx@lists.freedesktop.org>,
-	<intel-xe@lists.freedesktop.org>
-CC: <stable@vger.kernel.org>
-References: <20260206104227.290231-1-imre.deak@intel.com>
- <f6b59555-01f6-49ff-aff4-a6da9d347332@intel.com>
-Content-Language: en-GB
-From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-In-Reply-To: <f6b59555-01f6-49ff-aff4-a6da9d347332@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0161.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ba::12) To SJ1PR11MB6129.namprd11.prod.outlook.com
- (2603:10b6:a03:488::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D58176FB1;
+	Mon,  9 Feb 2026 06:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770619447; cv=none; b=jEx2zkPtV6UqzTR1o4jmYMDzHCHNwlbksEnP5ohMMPrLXQnbQknt2uNWQUOc21ll8TzvhUkNZSDTeHMs4RKOD9DqpxbQLH/ASa2/To8eaKPxmmVb9eTbd+yOfHcV3EVxO6KxMI2nHaOPN8ucqhqf0RHLBPzXIdz+IV3pVU0J7IM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770619447; c=relaxed/simple;
+	bh=tcS9dOGPIVKdw2PRy6hrOK5m20Ybb/O5DexFXdS7eZc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OjdToz5mRihiMcgd4YKyqLnIr/+KfRAObk8+9WEtu9MzbcFvP7oj5cWWGDjwfe68K98SAnBq080TaCvOoT1/smuseQ80D5eAl68l9KroaTCH96HgqLVoRvEkAIr+y6RV8pIax2QFXbxe64OaLUrqpQ10d626U+VpfcKamZvaRJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gk4IK5zD; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=GD
+	puaZDxFVdIR5XCpiwOISUf173r8Fq/huCbbthjHiI=; b=gk4IK5zD34xzRd2lFD
+	oATTTCp0yVWpW6SnybMPy2sVp1dLQstHYevFgcOFATFsW1PaugEcXbjskAKb926E
+	NQLf+YIGHUfe2EgwgqUD+NJImt0OzXThicr7g2sjD6UUdt6B3CBPCWAzbb8fnKul
+	AAjdML4s55cgJ4p6a62oKTBtQ=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBXlPkTgolpYcNILA--.24663S2;
+	Mon, 09 Feb 2026 14:43:32 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.6.y] btrfs: fix racy bitfield write in btrfs_clear_space_info_full()
+Date: Mon,  9 Feb 2026 14:43:31 +0800
+Message-Id: <20260209064331.1748206-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PR11MB6129:EE_|IA4PR11MB9012:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5b92bfe-eaac-4b6a-5593-08de67a58d01
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MzBEYU9xNS8reW1vSHN0b2ZoMjVxMmZsZW5mMW5pY1hORUUvNG5ESGRoODZa?=
- =?utf-8?B?a2RDU3pMV3JLQ0k0OCtoRFdPZFVZbEtwcjZONUVHaVUwQ2VIckl5YStRTXdJ?=
- =?utf-8?B?TXljMUZWSkQxZm1zSnQ2SjRCZkdtcThNTkRWMnVDMWhOWnRSdXZuM24wbDc3?=
- =?utf-8?B?TmxnbmF0VkU1Q0dpcGgxNHlUQjZxaFcyUXQzTk5OamdQMVlUR2V0MDg0cGVp?=
- =?utf-8?B?OW9GbjYwSFlaL1hPTGc3M0dobW9rdUtuMFVCTjVVRDhFN2drOURWOWhPSWRK?=
- =?utf-8?B?NlRrYXlYcnV0WktKeFMwMFBlSkxVN09aaTQwMXkvOVFrbE1vMUR1eXpkeVZv?=
- =?utf-8?B?NmdhZ21EMjhKbGFTU2ViV2txZytZQUlHTTRycHFmenpFMFhsVjF4UFRTUFlY?=
- =?utf-8?B?eThuVHJMMGNWVnp1cmcxVWJwVEU5bVkxTkh5UXFVMzhBUDcrVklVenc5MFF5?=
- =?utf-8?B?djJya3UwRTEvMi82TTlRNG9zRzhYT204dSt4cnZlTWloQ0RKbWFYT1lWZkx5?=
- =?utf-8?B?SU0xckhIaDFTS0YyYk1MK1oyOFF0Y0J5TW40TnZqTjRYQVFzOHNEU0czc1Vh?=
- =?utf-8?B?dkxrd0RFcU0zcW1tN2hRSy9uSVFxcm1CV3ZzQmhTZUg5RnVHbVNLblVvNzRN?=
- =?utf-8?B?NkNpWVF4VzRhTGtPWml2UzI1MVF2SDZhbGRadWZOcGs2cXNRYlNrVEZ5N1hT?=
- =?utf-8?B?K2dhUFhXNHY4cmc2QkMreXlUR3IxVHhzZ0x6Z0ZtTjNXdncydFpFTEZUcVVH?=
- =?utf-8?B?am4zVm5PZGwrekJlZHRvMG9GMDN5cWhDOXlMeFJNSzNncEdkYkFBeEI4Vmhw?=
- =?utf-8?B?RFhNQ0F0UEMyR2JIclIzNUQ1eEZ6U0pvN2hGYWFzQVhvNTdyaHp2Tk1wcVhH?=
- =?utf-8?B?NkZzZUlWYXlpdmZvazdIajkrNm0wRENBeHFYQzVVdmlXbktscXNoRnY5VytT?=
- =?utf-8?B?WVZIaHptR0V0b3cvcU9ROE50dVQ5cnlLcitCdEJDLzRYRFJnWEIzdGk3LzdD?=
- =?utf-8?B?WXJtTWlsdGM5ZU81TXJWaXVldFJZL1pEWXZWNWRkeU1QNTZIR0pDTlU2c0Zh?=
- =?utf-8?B?RnRlYnFWY1czN0EyZVhtcUthOFAwQWsvTmIwMHNhSUhtNVMvaVBEK0dFR0hR?=
- =?utf-8?B?MGNINkh2MW10d2xzalVEUHd5WEtmOWU4V2dVZmo4OGQ2WUc2ci9aV0VqSGM0?=
- =?utf-8?B?R1MrbmZIemUzRUErTVJRelJwVXZQOGlFdWEyOVR5ajRqa1pUSEQ1RmduZTRG?=
- =?utf-8?B?cDBkc2JPYURwbWY3bkp6bTlWMDBJYjZPTUtDWEFkOXVONXpBSG9oemwrejV2?=
- =?utf-8?B?S2NtdEhwSjUxOWJwVzVPcTFQWThCNStwbllYZzVId0pkeU5tRzM0YjMzL1ZT?=
- =?utf-8?B?VmN4SDRVYXl0ZXhGZUJENmZGMmQ0UW00aENqUGtGd2I0MUlzK243VGVVQlZi?=
- =?utf-8?B?Y04yclhpUlI5SmtRMmN1bWtJM2Y3VTlxV08vdi82SU9oQ3M0VHJmL3U4T3o2?=
- =?utf-8?B?cEpUVjlySlcyckFjOFh1Um0rQ1NyclRVWkRLeGFQZHJySXZMYjZRN0hISG5I?=
- =?utf-8?B?QThWRDhvQnRWbnBzdUo4cjk3alk2TXBqYzF6aGZmeldQODkvOEZwYkRhaUJp?=
- =?utf-8?B?MU1qUk1acXZudWd3OWE4UVVwMkJsSm9TSjBFaEZOUU9QbEhINTQ2NGtKTG9J?=
- =?utf-8?B?OFM3UngyTmJ4N0swWE0vRkVwT1JudnduWFpYaFpvcmFSMnUrQlUzbFNvZTJz?=
- =?utf-8?B?NWtveVIrak5rUUNxa1FvckZFcDRaYmM2eTQ0NnY1WThzenZPZ3FtZVgrd3dP?=
- =?utf-8?B?MW5kZmFLNGowTlhPUktNUHR0TU1zRVhHRllnUGlaZmZ0b3d4M2xxRDVVTith?=
- =?utf-8?B?ZkhvcXJqbDV0M2V3NnlKSG8vOC9SSFFpTy9IaGVocWRWQ29FZDBQeWVFelNQ?=
- =?utf-8?B?TkFhRk8zVExBRWhUS01oZTl6RlhLNFZtV2FpbmlWaXMybkpIempqb1ZzR0ZD?=
- =?utf-8?B?bTVma1ZsMlVKaFRQSFQvZSt3OUhoNzdvQVhkclBJVU5DaEtMWFpBUy94NTFu?=
- =?utf-8?Q?+N0ZB1?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6129.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDY4S2o4azgveVNGVDFpNlpsNDlpQVl4V0pGRm80SjBWME9GcnhZdlFNU2Zw?=
- =?utf-8?B?SUpBbjJ1eUFkYTFxOTl6a0JNcE5FTVhFNjhWWGdZV25EWjd4MzRPZWlDdHYw?=
- =?utf-8?B?RFpweDZXVUNwZXBSZ0FEWk5aWWRCUndtWVVOby8xRWsvakExTkRXYzZUNVNM?=
- =?utf-8?B?VExQZTdmaFQ4OVBwWWpQQm5UajM3WnhPRUdYNHFDUHp1ZEdoTHNxcGRYZkI2?=
- =?utf-8?B?ZDJtcVJxa1IrYkEzSEw5ZEl0Z1AyTmdocUJOSkJTemxUcWVOWFJ0U2x2RmdO?=
- =?utf-8?B?M0dXQ0NzcDhRZllTTTlmakk5Y2tucE50dkUwODc3VUFwL2tZOVo4bndUM2p5?=
- =?utf-8?B?NXFBVWtpVWVpS0NqZUlpT2ZIcFIxWXI3ZGlEWEtWYVNDK3FhM0h6aU9oRS80?=
- =?utf-8?B?NFJVL2lzS2VXMzNxL1N4b0UwamoyaStCL1l5UFcxSmFYdWJMTzIxdXRTdHNW?=
- =?utf-8?B?c053SGtIK0lPRlJjeXR6RDkxTk9vQXpDYlhvQm5sWG9rUW50c0lCcmVacjlh?=
- =?utf-8?B?VHFNQ3hzV1Z3SlBwNXQ4NGlabW5LNER5MUFzVkhOcHgrVHE3aWpWazJ0Rzl3?=
- =?utf-8?B?eEZNOHlFTDIzSkJHWUJrYXp5MElRL1ExeUZMN0xHNEpMK0R6ajFjazNBeFFv?=
- =?utf-8?B?RGxCM3YzcnVqT0NJOUIyZzBkYzcvc1JKL1dCd3JDVTBSWS84UVZBQnN3L1F5?=
- =?utf-8?B?eDA2QlN5dUtaWmlLYU5EZWdKN2U3ektQNGZDQ2hDMFRBcTdDbFV1Vzk5VEZn?=
- =?utf-8?B?dGtNUmc3VUlZTmg3L2pGUWpMZDM1dnlRVm04cWRRMWprTzBnUitGdUo2b25j?=
- =?utf-8?B?aWFzNHVrcE90eEhhSVVDeTJLOExRbHNEdjU2b3VIQ0Y1V05BOFlUM2F4ek12?=
- =?utf-8?B?MnZ0dFBkRHoyaW9nNTJkZmttRmw1RDVpU25wOWN1TlhobnNEVTBCK01Hc2Ft?=
- =?utf-8?B?MU1FOXNHRzh2d3ZKU3V2UmtoWXo5TklVWGpzQTByZnRWd0NvYkZaUCtpUVh5?=
- =?utf-8?B?QkhKT2RZNk9VTDVqbWltclo0ZnRBMGU3NGJReDZyV3Q5U2dEZFhMd3BaYjh1?=
- =?utf-8?B?NU1PZFV0TVBPVU94WFRlT0hhOFY3MWNudlNWejlPZjMxMjlCanpRRHoyc0J2?=
- =?utf-8?B?RENIaHB2R2l0dTJuU0Jlb3VibVJMSTErd2FqbkpyOW5aOU5TNTVlWEpTU1V4?=
- =?utf-8?B?ZDg3ZzVNajZTRlQ4N1ZWTDNPeGJva2JINEtlZlg0VEFSYitaeUM5OThpU3lL?=
- =?utf-8?B?SWcvakE1UXphTzlyYnRjMWxIcy9QODY3TGdIb2x3a3pUcGFmRTA0aUZUQm4x?=
- =?utf-8?B?Tmw2bFhRbFRWSkg1Mi9rTFVLWENhMkRIR3ZSUlR6SXRNRmxTNGUvVTgvR1Jn?=
- =?utf-8?B?dUVMZnR1T25rbWJxTFA0V1hONWVSMWg0NHNDekc3Tk1rckMzSUlNNUV3Vzk3?=
- =?utf-8?B?cklPS1FSeHBsTk1zQmJmb3g2UDdaUjAyZ1E3UVdqQ04yYmQzOFNMcmp6T1Ny?=
- =?utf-8?B?NGthVUcxaVNGQVdySWQ0SFFQMUczWm43WjRYOVdNVWJLbGM2MjhxWUlzQjdx?=
- =?utf-8?B?UEpodEw5akNwTlJvbktuT1FESXRtaThSYUdXV1FDQ1ArTEJ1d25XeFVjTWZR?=
- =?utf-8?B?ZzFncTRQSFRnUkVKSE9FVUd3Y1U2bXNCMEo4WmNGM01vRnk4UzZ1M2tJOWNl?=
- =?utf-8?B?VlMxdlZ1YU93RkR5TXR1cXJzaFlRRGVpQ1FqNFlRZ3NnNUs5Zmx6VnpyRVQ5?=
- =?utf-8?B?QnZVb2JuVTFIL1lrTWlJZit3K1ZWY05IRGpScEpaaG43U2RnRHNBSEtBTmQ0?=
- =?utf-8?B?VUcvVWQ3NTBVRkF1Q0dJcHFPQnA2S1JnSGFIby9lbUNFenppcFRTT0EzcHVq?=
- =?utf-8?B?UWk5UUZxWmxnUjdvVWhkUzlHWXpSbjhEVkRaQi9DK2ZTODlsWnlveUNGcFFt?=
- =?utf-8?B?WVM0UXhiYkxWeSszK2x0Uit5dm1MK1k3MG1mWjZMVlZXNDMrUHBwMW1OL2hE?=
- =?utf-8?B?andQZUtPMzc5ems1QTZNNzdJVlB0eUREa2xzNm5KYVBRNEJ0amFaSWV3NG5x?=
- =?utf-8?B?dmloeG94b1A2VVUyKzNsaGE4ZkJWd0twUktndGN0Ukw2UFZGYjAzNm1uOFZr?=
- =?utf-8?B?MDF4dlZGekprbjF2ZzBlRlpQTjB3MVZRL1BDcGVlRi9kWVlyMlBjbWNyVmNG?=
- =?utf-8?B?R3JDYnlkaTNwMVFZdVdXUk0vNnJDNTF1dFlwVEU5MlNTZm94ZnBkOFlxT0ZT?=
- =?utf-8?B?MDhVSmdPdlFVRkkxS3hPR29vQnBhVTNlalg0UkVWV2FpazY5cWlLTkNaTXdI?=
- =?utf-8?B?REtxbFFQb2tYMEwxbTFQUUYvQ0Z3VnJHVy9NL3RkVjlXaUR0Q1NVRUtXbit6?=
- =?utf-8?Q?uNshUMzCaN/FghBw=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5b92bfe-eaac-4b6a-5593-08de67a58d01
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6129.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 06:36:26.7556
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S2OoDo5kQlg34MS6+cxcEpqwmCkxLijx4ORFdCKz93B/hMMj8PYmMlsKPqGPVsovIdbb0X8NNosBhJhCgg/OxdCJNsRLkqc1/x2P11XWfZM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9012
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBXlPkTgolpYcNILA--.24663S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKr4UKr1ruFy7AF4kCF1rJFb_yoWfurWkpr
+	Wa9r9Iyw4kJFn5Wr4kWw4kXa1fKwn5W3W5tr9xA3WrZrn8Grn8WrWqka4FvF1ktrn5XF4a
+	qF4UGr15XF15C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziRuWdUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3hRi+2mJghTJhQAA3p
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-214883-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-214884-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,bur.io,suse.com,163.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid,gitlab.freedesktop.org:url];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[chaitanya.kumar.borah@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: B2B1010C284
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 292AF10C31F
 X-Rspamd-Action: no action
 
+From: Boris Burkov <boris@bur.io>
 
+[ Upstream commit 38e818718c5e04961eea0fa8feff3f100ce40408 ]
 
-On 2/6/2026 7:20 PM, Nautiyal, Ankit K wrote:
-> 
-> On 2/6/2026 4:12 PM, Imre Deak wrote:
->> The pipe BPP value shouldn't be set outside of the source's / sink's
->> valid pipe BPP range, ensure this when increasing the minimum pipe BPP
->> value to 30 due to HDR.
->>
->> Fixes: ba49a4643cf53 ("drm/i915/dp: Set min_bpp limit to 30 in HDR mode")
->> Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.18+
->> Signed-off-by: Imre Deak <imre.deak@intel.com>
->> ---
->>   drivers/gpu/drm/i915/display/intel_dp.c | 14 ++++++++++++--
->>   1 file changed, 12 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/ 
->> drm/i915/display/intel_dp.c
->> index 2b8f43e211741..4d8f480cf803f 100644
->> --- a/drivers/gpu/drm/i915/display/intel_dp.c
->> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
->> @@ -2697,6 +2697,7 @@ intel_dp_compute_config_limits(struct intel_dp 
->> *intel_dp,
->>                      bool dsc,
->>                      struct link_config_limits *limits)
->>   {
->> +    struct intel_display *display = to_intel_display(intel_dp);
->>       bool is_mst = intel_crtc_has_type(crtc_state, INTEL_OUTPUT_DP_MST);
->>       struct intel_connector *connector =
->>           to_intel_connector(conn_state->connector);
->> @@ -2709,8 +2710,7 @@ intel_dp_compute_config_limits(struct intel_dp 
->> *intel_dp,
->>       limits->min_lane_count = intel_dp_min_lane_count(intel_dp);
->>       limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
->> -    limits->pipe.min_bpp = intel_dp_in_hdr_mode(conn_state) ? 30 :
->> -                intel_dp_min_bpp(crtc_state->output_format);
->> +    limits->pipe.min_bpp = intel_dp_min_bpp(crtc_state->output_format);
->>       if (is_mst) {
->>           /*
->>            * FIXME: If all the streams can't fit into the link with their
->> @@ -2726,6 +2726,16 @@ intel_dp_compute_config_limits(struct intel_dp 
->> *intel_dp,
->>                               respect_downstream_limits);
->>       }
->> +    if (intel_dp_in_hdr_mode(conn_state)) {
->> +        if (limits->pipe.min_bpp <= 30 && limits->pipe.max_bpp >= 30)
->> +            limits->pipe.min_bpp = 30;
->> +        else
->> +            drm_dbg_kms(display->drm,
->> +                    "[CONNECTOR:%d:%s] HDR min 30 bpp outside of 
->> valid pipe bpp range (%d-%d)\n",
->> +                    connector->base.base.id, connector->base.name,
->> +                    limits->pipe.min_bpp, limits->pipe.max_bpp);
-> 
-> 
-> pipe.max_bpp < 30 will be either due to the max_bpc property set to less 
-> than 10, or perhaps when the panel itself does not support 10 bpc 
-> (limited by EDID or VBT).
-> With these constraints doesn't make sense to enable HDR and send HDR 
-> metadata.
-> However, as we see in some reported issues [1] [2], in practice some 
-> compositor seems to enable HDR by default and with the hard limit set, 
-> they report blankout.
-> So it does make sense to raise the min bpp limit only if its inside the 
-> supported range.
-> 
-> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> 
-> 
-> [1] https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7052
-> [2] https://gitlab.freedesktop.org/drm/i915/kernel/-/ 
-> issues/5969#note_3248404
-> 
+From the memory-barriers.txt document regarding memory barrier ordering
+guarantees:
 
-I am not sure if this patch would help with the above gitlabs. For 
-example in case of #7052 pipe max bpp is 30 and the commit still fails.
-However, I need to look deeper.
+ (*) These guarantees do not apply to bitfields, because compilers often
+     generate code to modify these using non-atomic read-modify-write
+     sequences.  Do not attempt to use bitfields to synchronize parallel
+     algorithms.
 
-I am thinking of relaxing this restriction all together because the 
-earlier assumption that a panel advertising HDR will support atleast 
-10bpc in all it's mode turns out to be false.
+ (*) Even in cases where bitfields are protected by locks, all fields
+     in a given bitfield must be protected by one lock.  If two fields
+     in a given bitfield are protected by different locks, the compiler's
+     non-atomic read-modify-write sequences can cause an update to one
+     field to corrupt the value of an adjacent field.
 
-Currently, I am inclined on the following policy.
+btrfs_space_info has a bitfield sharing an underlying word consisting of
+the fields full, chunk_alloc, and flush:
 
-- If DSC is not available, fall back to normal bandwidth calculations 
-and select the highest bpp the link can support. (Also preferred by Kwin)
+struct btrfs_space_info {
+        struct btrfs_fs_info *     fs_info;              /*     0     8 */
+        struct btrfs_space_info *  parent;               /*     8     8 */
+        ...
+        int                        clamp;                /*   172     4 */
+        unsigned int               full:1;               /*   176: 0  4 */
+        unsigned int               chunk_alloc:1;        /*   176: 1  4 */
+        unsigned int               flush:1;              /*   176: 2  4 */
+        ...
 
-- If DSC is available, prefer falling back to DSC and attempt the 
-highest bpp allowed by bandwidth constraints.
+Therefore, to be safe from parallel read-modify-writes losing a write to
+one of the bitfield members protected by a lock, all writes to all the
+bitfields must use the lock. They almost universally do, except for
+btrfs_clear_space_info_full() which iterates over the space_infos and
+writes out found->full = 0 without a lock.
 
-I am working on a patch for this and should be able to float something 
-soon. Imre, if you agree with this policy, would you please wait for the 
-patch. That should make it easier to send out fix for stable kernels.
+Imagine that we have one thread completing a transaction in which we
+finished deleting a block_group and are thus calling
+btrfs_clear_space_info_full() while simultaneously the data reclaim
+ticket infrastructure is running do_async_reclaim_data_space():
 
-==
-Chaitanya
+          T1                                             T2
+btrfs_commit_transaction
+  btrfs_clear_space_info_full
+  data_sinfo->full = 0
+  READ: full:0, chunk_alloc:0, flush:1
+                                              do_async_reclaim_data_space(data_sinfo)
+                                              spin_lock(&space_info->lock);
+                                              if(list_empty(tickets))
+                                                space_info->flush = 0;
+                                                READ: full: 0, chunk_alloc:0, flush:1
+                                                MOD/WRITE: full: 0, chunk_alloc:0, flush:0
+                                                spin_unlock(&space_info->lock);
+                                                return;
+  MOD/WRITE: full:0, chunk_alloc:0, flush:1
 
->> +    }
->> +
->>       if (dsc && !intel_dp_dsc_compute_pipe_bpp_limits(connector, 
->> limits))
->>           return false;
+and now data_sinfo->flush is 1 but the reclaim worker has exited. This
+breaks the invariant that flush is 0 iff there is no work queued or
+running. Once this invariant is violated, future allocations that go
+into __reserve_bytes() will add tickets to space_info->tickets but will
+see space_info->flush is set to 1 and not queue the work. After this,
+they will block forever on the resulting ticket, as it is now impossible
+to kick the worker again.
+
+I also confirmed by looking at the assembly of the affected kernel that
+it is doing RMW operations. For example, to set the flush (3rd) bit to 0,
+the assembly is:
+  andb    $0xfb,0x60(%rbx)
+and similarly for setting the full (1st) bit to 0:
+  andb    $0xfe,-0x20(%rax)
+
+So I think this is really a bug on practical systems.  I have observed
+a number of systems in this exact state, but am currently unable to
+reproduce it.
+
+Rather than leaving this footgun lying around for the future, take
+advantage of the fact that there is room in the struct anyway, and that
+it is already quite large and simply change the three bitfield members to
+bools. This avoids writes to space_info->full having any effect on
+writes to space_info->flush, regardless of locking.
+
+Fixes: 957780eb2788 ("Btrfs: introduce ticketed enospc infrastructure")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ The context change is due to the commit cc0517fe779f
+("btrfs: tweak extent/chunk allocation for space_info sub-space")
+in v6.16 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ fs/btrfs/block-group.c |  6 +++---
+ fs/btrfs/space-info.c  | 22 +++++++++++-----------
+ fs/btrfs/space-info.h  |  6 +++---
+ 3 files changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 2dda388c9853..a08e03a74909 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -4156,7 +4156,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
+ 			mutex_unlock(&fs_info->chunk_mutex);
+ 		} else {
+ 			/* Proceed with allocation */
+-			space_info->chunk_alloc = 1;
++			space_info->chunk_alloc = true;
+ 			wait_for_alloc = false;
+ 			spin_unlock(&space_info->lock);
+ 		}
+@@ -4205,7 +4205,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
+ 	spin_lock(&space_info->lock);
+ 	if (ret < 0) {
+ 		if (ret == -ENOSPC)
+-			space_info->full = 1;
++			space_info->full = true;
+ 		else
+ 			goto out;
+ 	} else {
+@@ -4215,7 +4215,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
+ 
+ 	space_info->force_alloc = CHUNK_ALLOC_NO_FORCE;
+ out:
+-	space_info->chunk_alloc = 0;
++	space_info->chunk_alloc = false;
+ 	spin_unlock(&space_info->lock);
+ 	mutex_unlock(&fs_info->chunk_mutex);
+ 
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 00d596a8176f..12f8f55bb993 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -182,7 +182,7 @@ void btrfs_clear_space_info_full(struct btrfs_fs_info *info)
+ 	struct btrfs_space_info *found;
+ 
+ 	list_for_each_entry(found, head, list)
+-		found->full = 0;
++		found->full = false;
+ }
+ 
+ /*
+@@ -361,7 +361,7 @@ void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
+ 	found->bytes_readonly += block_group->bytes_super;
+ 	btrfs_space_info_update_bytes_zone_unusable(info, found, block_group->zone_unusable);
+ 	if (block_group->length > 0)
+-		found->full = 0;
++		found->full = false;
+ 	btrfs_try_granting_tickets(info, found);
+ 	spin_unlock(&found->lock);
+ 
+@@ -1103,7 +1103,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 	spin_lock(&space_info->lock);
+ 	to_reclaim = btrfs_calc_reclaim_metadata_size(fs_info, space_info);
+ 	if (!to_reclaim) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
+ 	}
+@@ -1115,7 +1115,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 		flush_space(fs_info, space_info, to_reclaim, flush_state, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1158,7 +1158,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 					flush_state = FLUSH_DELAYED_ITEMS_NR;
+ 					commit_cycles--;
+ 				} else {
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 				}
+ 			} else {
+ 				flush_state = FLUSH_DELAYED_ITEMS_NR;
+@@ -1320,7 +1320,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 
+ 	spin_lock(&space_info->lock);
+ 	if (list_empty(&space_info->tickets)) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
+ 	}
+@@ -1331,7 +1331,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1348,7 +1348,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 			    data_flush_states[flush_state], false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1365,7 +1365,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 				if (maybe_fail_all_tickets(fs_info, space_info))
+ 					flush_state = 0;
+ 				else
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 			} else {
+ 				flush_state = 0;
+ 			}
+@@ -1381,7 +1381,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 
+ aborted_fs:
+ 	maybe_fail_all_tickets(fs_info, space_info);
+-	space_info->flush = 0;
++	space_info->flush = false;
+ 	spin_unlock(&space_info->lock);
+ }
+ 
+@@ -1750,7 +1750,7 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 				 */
+ 				maybe_clamp_preempt(fs_info, space_info);
+ 
+-				space_info->flush = 1;
++				space_info->flush = true;
+ 				trace_btrfs_trigger_flush(fs_info,
+ 							  space_info->flags,
+ 							  orig_bytes, flush,
+diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
+index 0670f074902d..6b93974a75a2 100644
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -126,11 +126,11 @@ struct btrfs_space_info {
+ 				   flushing. The value is >> clamp, so turns
+ 				   out to be a 2^clamp divisor. */
+ 
+-	unsigned int full:1;	/* indicates that we cannot allocate any more
++	bool full;		/* indicates that we cannot allocate any more
+ 				   chunks for this space */
+-	unsigned int chunk_alloc:1;	/* set if we are allocating a chunk */
++	bool chunk_alloc;	/* set if we are allocating a chunk */
+ 
+-	unsigned int flush:1;		/* set if we are trying to make space */
++	bool flush;		/* set if we are trying to make space */
+ 
+ 	unsigned int force_alloc;	/* set if we need to force a chunk
+ 					   alloc for this space */
+-- 
+2.34.1
 
 
