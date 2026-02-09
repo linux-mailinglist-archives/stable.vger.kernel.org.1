@@ -1,84 +1,62 @@
-Return-Path: <stable+bounces-215283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA8/Dx7ziWl+EwAAu9opvQ
-	(envelope-from <stable+bounces-215283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:50 +0100
+	id wAvpE8j3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AA2110E37
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 563EE111807
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B65D23010496
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 652C5305595C
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067A237B416;
-	Mon,  9 Feb 2026 14:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904992BCF4C;
+	Mon,  9 Feb 2026 14:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaJktZ87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1O+k8oKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9B7378D84;
-	Mon,  9 Feb 2026 14:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E222690EC;
+	Mon,  9 Feb 2026 14:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648288; cv=none; b=iROeSbYOur8Ao9ZHjwOBUondQJvTF2k6u6y9dq7JYe0IpzQ4wjD909bzP7P7n4b3TqY/VW2xp10vebQHiQ76fKhismAEfboOxrUr2H7NjVN55BosfNdDKMnJtovgzGRSviCp8t9Kb6OFSIDtep4BhUNY8ocQPWOQZJmhmh8nwIQ=
+	t=1770648534; cv=none; b=UrmZ8f2dtk1P823CgPVHpyQ4BGbZ1uOH6OBebyWh6Fp7eDpzo1mLiZvJayUK5gPOqXvpSUkfiXTIV/Vj86GCtHq4xlACmXjLiF/PjQdIlIlu0zwoiXjc3y48er3qtRM7Fmu01ej9D2T9e9kUcGA75hqTgqY/Gg8wNgrAWwJN2H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648288; c=relaxed/simple;
-	bh=bp+76BIytzM9Mzx7bvfOuYbr05S1AVjdKOBR8tHuzeY=;
+	s=arc-20240116; t=1770648534; c=relaxed/simple;
+	bh=ofipjIzMcZPqXhQOgRRP/w+DoOFJF1MxmDBy62Cu378=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=biXjsSQOsp1NbsvjzJQ+vm8COD656cj5KD2XkW1GLLVxIeC3HFaiWIeo0hqB6s3FHH2eJoNNXdUJNtOXlz3gNR8kwXS0xQWz+LyKIWFcCZydyviEw2P7e6t1EEM4cQkVNwKRPUGm0xVAgoVJUz4dl29PpIbwG3NHLUvl6d4ForM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaJktZ87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E97C116C6;
-	Mon,  9 Feb 2026 14:44:48 +0000 (UTC)
+	 MIME-Version; b=N8G01Xx3MP0wyCSnjzXahR80wHgjpEKHBWfmhItYwWovyAZJYa+UI/uw74v4z82/0SuK+5OEsMfQDnwhhss79Y44+CAeabJJ1yAorKqwKjs+12jbxMuJXcDcq2PO4QJ/mr0hAfNQ/pXNuIshlZ9lzRpHCF6Md701AIsFH9CwoRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1O+k8oKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFD5C116C6;
+	Mon,  9 Feb 2026 14:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648288;
-	bh=bp+76BIytzM9Mzx7bvfOuYbr05S1AVjdKOBR8tHuzeY=;
+	s=korg; t=1770648534;
+	bh=ofipjIzMcZPqXhQOgRRP/w+DoOFJF1MxmDBy62Cu378=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iaJktZ87e1d9qL4q+oeEEQnsiMlS48VAW2VirTuTpnxnm7mp7IyzY+63hjbrM0oW8
-	 ONR9/l1FVNGWWjpTrOGu4PjAhNcx3lR89SB/icRG4DyGne+DM8bclM6Dl2n7ndwlQk
-	 /3X27q/ANxEiZq2BH8hpP4TYTGFcpiNqVoYweUwc=
+	b=1O+k8oKtOWMz7loBJruWtjKZh7PJ3CdUxhYvBA0cMpo6Kk/smHtR3/aTxiIXDbuRS
+	 EcS1eFv1SpoGCU8HXWbb37WDCmMpco/nct/kt5/J5Aql0ZVljRxpqAXkmCZexWZBBl
+	 2AHbNZvAYtnfMMPrLIoMNjXiUG7aGFtnH73jkwzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Borislav Betkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Robin Murohy <robin.murphy@arm.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Will Deacon <will@kernel.org>,
-	Yi Lai <yi1.lai@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 62/69] iommu: disable SVA when CONFIG_X86 is set
+	Eric Dumazet <edumazet@google.com>,
+	valis <sec@valis.email>,
+	syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com,
+	Boudewijn van der Heide <boudewijn@delta-utec.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 67/86] macvlan: fix error recovery in macvlan_common_newlink()
 Date: Mon,  9 Feb 2026 15:24:30 +0100
-Message-ID: <20260209142304.157236543@linuxfoundation.org>
+Message-ID: <20260209142307.188195144@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -90,146 +68,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	TAGGED_FROM(0.00)[bounces-215283-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,nvidia.com,kernel.org,alien8.de,intel.com,redhat.com,google.com,linaro.org,8bytes.org,oracle.com,infradead.org,arm.com,linutronix.de,gmail.com,amd.com,suse.cz,linux-foundation.org,163.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215358-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,7182fbe91e58602ec1fe];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C7AA2110E37
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,valis.email:email,delta-utec.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 563EE111807
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 72f98ef9a4be30d2a60136dd6faee376f780d06c upstream.
+[ Upstream commit f8db6475a83649689c087a8f52486fcc53e627e9 ]
 
-Patch series "Fix stale IOTLB entries for kernel address space", v7.
+valis provided a nice repro to crash the kernel:
 
-This proposes a fix for a security vulnerability related to IOMMU Shared
-Virtual Addressing (SVA).  In an SVA context, an IOMMU can cache kernel
-page table entries.  When a kernel page table page is freed and
-reallocated for another purpose, the IOMMU might still hold stale,
-incorrect entries.  This can be exploited to cause a use-after-free or
-write-after-free condition, potentially leading to privilege escalation or
-data corruption.
+ip link add p1 type veth peer p2
+ip link set address 00:00:00:00:00:20 dev p1
+ip link set up dev p1
+ip link set up dev p2
 
-This solution introduces a deferred freeing mechanism for kernel page
-table pages, which provides a safe window to notify the IOMMU to
-invalidate its caches before the page is reused.
+ip link add mv0 link p2 type macvlan mode source
+ip link add invalid% link p2 type macvlan mode source macaddr add 00:00:00:00:00:20
 
+ping -c1 -I p1 1.2.3.4
 
-This patch (of 8):
+He also gave a very detailed analysis:
 
-In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
-shares and walks the CPU's page tables.  The x86 architecture maps the
-kernel's virtual address space into the upper portion of every process's
-page table.  Consequently, in an SVA context, the IOMMU hardware can walk
-and cache kernel page table entries.
+<quote valis>
 
-The Linux kernel currently lacks a notification mechanism for kernel page
-table changes, specifically when page table pages are freed and reused.
-The IOMMU driver is only notified of changes to user virtual address
-mappings.  This can cause the IOMMU's internal caches to retain stale
-entries for kernel VA.
+The issue is triggered when a new macvlan link is created  with
+MACVLAN_MODE_SOURCE mode and MACVLAN_MACADDR_ADD (or
+MACVLAN_MACADDR_SET) parameter, lower device already has a macvlan
+port and register_netdevice() called from macvlan_common_newlink()
+fails (e.g. because of the invalid link name).
 
-Use-After-Free (UAF) and Write-After-Free (WAF) conditions arise when
-kernel page table pages are freed and later reallocated.  The IOMMU could
-misinterpret the new data as valid page table entries.  The IOMMU might
-then walk into attacker-controlled memory, leading to arbitrary physical
-memory DMA access or privilege escalation.  This is also a
-Write-After-Free issue, as the IOMMU will potentially continue to write
-Accessed and Dirty bits to the freed memory while attempting to walk the
-stale page tables.
+In this case macvlan_hash_add_source is called from
+macvlan_change_sources() / macvlan_common_newlink():
 
-Currently, SVA contexts are unprivileged and cannot access kernel
-mappings.  However, the IOMMU will still walk kernel-only page tables all
-the way down to the leaf entries, where it realizes the mapping is for the
-kernel and errors out.  This means the IOMMU still caches these
-intermediate page table entries, making the described vulnerability a real
-concern.
+This adds a reference to vlan to the port's vlan_source_hash using
+macvlan_source_entry.
 
-Disable SVA on x86 architecture until the IOMMU can receive notification
-to flush the paging cache before freeing the CPU kernel page table pages.
+vlan is a pointer to the priv data of the link that is being created.
 
-Link: https://lkml.kernel.org/r/20251022082635.2462433-1-baolu.lu@linux.intel.com
-Link: https://lkml.kernel.org/r/20251022082635.2462433-2-baolu.lu@linux.intel.com
-Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Kevin Tian <kevin.tian@intel.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Robin Murohy <robin.murphy@arm.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yi Lai <yi1.lai@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ The context change is due to the commit
-  be51b1d6bbff ("iommu/sva: Refactoring iommu_sva_bind/unbind_device()")
-  and the commit 757636ed2607 ("iommu: Rename iommu-sva-lib.{c,h}")
-  in v6.2 which are irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When register_netdevice() fails, the error is returned from
+macvlan_newlink() to rtnl_newlink_create():
+
+        if (ops->newlink)
+                err = ops->newlink(dev, &params, extack);
+        else
+                err = register_netdevice(dev);
+        if (err < 0) {
+                free_netdev(dev);
+                goto out;
+        }
+
+and free_netdev() is called, causing a kvfree() on the struct
+net_device that is still referenced in the source entry attached to
+the lower device's macvlan port.
+
+Now all packets sent on the macvlan port with a matching source mac
+address will trigger a use-after-free in macvlan_forward_source().
+
+</quote valis>
+
+With all that, my fix is to make sure we call macvlan_flush_sources()
+regardless of @create value whenever "goto destroy_macvlan_port;"
+path is taken.
+
+Many thanks to valis for following up on this issue.
+
+Fixes: aa5fd0fb7748 ("driver: macvlan: Destroy new macvlan port if macvlan_common_newlink failed.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: valis <sec@valis.email>
+Reported-by: syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com
+Closes: https: //lore.kernel.org/netdev/695fb1e8.050a0220.1c677c.039f.GAE@google.com/T/#u
+Cc: Boudewijn van der Heide <boudewijn@delta-utec.com>
+Link: https://patch.msgid.link/20260129204359.632556-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/macvlan.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2799,6 +2799,9 @@ iommu_sva_bind_device(struct device *dev
- 	if (!group)
- 		return ERR_PTR(-ENODEV);
- 
-+	if (IS_ENABLED(CONFIG_X86))
-+		return ERR_PTR(-EOPNOTSUPP);
-+
- 	/* Ensure device count and domain don't change while we're binding */
- 	mutex_lock(&group->mutex);
- 
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index 09db43ce31767..fea7352e2a470 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -1572,9 +1572,10 @@ int macvlan_common_newlink(struct net *src_net, struct net_device *dev,
+ 	/* the macvlan port may be freed by macvlan_uninit when fail to register.
+ 	 * so we destroy the macvlan port only when it's valid.
+ 	 */
+-	if (create && macvlan_port_get_rtnl(lowerdev)) {
++	if (macvlan_port_get_rtnl(lowerdev)) {
+ 		macvlan_flush_sources(port, vlan);
+-		macvlan_port_destroy(port->dev);
++		if (create)
++			macvlan_port_destroy(port->dev);
+ 	}
+ 	return err;
+ }
+-- 
+2.51.0
+
 
 
 
