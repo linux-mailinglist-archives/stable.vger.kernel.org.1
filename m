@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-215255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKaBHcD1iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:04 +0100
+	id kCUDJDTyiWnGEgAAu9opvQ
+	(envelope-from <stable+bounces-215098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B3F111427
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06488110B82
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E0A1307D7C5
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 203F230668B1
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E023793BF;
-	Mon,  9 Feb 2026 14:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C2D285060;
+	Mon,  9 Feb 2026 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN809VXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP6HW51z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784142222B2;
-	Mon,  9 Feb 2026 14:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BFD1AF0AF;
+	Mon,  9 Feb 2026 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648193; cv=none; b=jSftOrFfQ8p0R0enQxwNf7VtJ81rlOeduqKMqCXN/C7otPTabNiyghesD5BeOuj6feQvFhUBzW6yND3kX8p7oZJQFf+96BjcPZAhrFbBWWMaJnhjwu0Y5KfT+lE+4nN5oTZaAlo7OD0fKlAcem4QtU8mH/XSwWOG4kYv6ERnNL0=
+	t=1770647669; cv=none; b=intbiV/iV1L81ib/rh2MKDW+kyTFRQOkAS5eKKHbjI4yKyX9HBETgpgJFAktVkE76l1jKzYnIqROc4GJ+tL0VY4Zs9cc1GWVpk+/UcEJv4XOgrEXGJ+bbAG7kQeRHMqLobNrjfGGMN49Lw0ziZV5ffM/DFMtgKbj3CzSWeb2zno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648193; c=relaxed/simple;
-	bh=gWwnDCJD0G3AiyIL14qGxz9QsemLY8/TJvieeNmZiHk=;
+	s=arc-20240116; t=1770647669; c=relaxed/simple;
+	bh=Kcl0TNqpGP+wrYTIEPs+JixyBBWzZnkfl+ygfXhl9Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQvn2g3vqStc4TD8QWDzXMk4Jwt4BC81rPRRcFO899a8bY1L2+iae2mRGD4NMtogfD+ar9hmQRCbmu49TIrORjdRk2LZ8hC+3ovC1xYMXrKw4F9VnAKpw05dyB8MKro/o2hDkjLLh2Ouduhzhn5JMhRBa+U+iKLCdQtcHC2w/Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN809VXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9B7C116C6;
-	Mon,  9 Feb 2026 14:43:12 +0000 (UTC)
+	 MIME-Version; b=JzRG2I3+iSGNysG5XX6FZQmALMfiSNaRPJW521njZAfKrAUjSGkNNghaHs7Vf1FV5lnBP+2+7nq2oAw4664iJdq55IuvJbKIOMd07XyqtRQn3X8DB0v+jRItMu9RLsOU29KInxo+GL8ZgscokbEhXjmuh4WHUu3hReRe7biiBBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP6HW51z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E421C116C6;
+	Mon,  9 Feb 2026 14:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648193;
-	bh=gWwnDCJD0G3AiyIL14qGxz9QsemLY8/TJvieeNmZiHk=;
+	s=korg; t=1770647668;
+	bh=Kcl0TNqpGP+wrYTIEPs+JixyBBWzZnkfl+ygfXhl9Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MN809VXiAk8znNQ+l/treuqIk1qHB89iyCB4sI+dc59AdXg55a2kvSaDVxfpx/gx1
-	 7y+KU5imlI7y4m49kaj7yE9cdKzY/Aaq8ARVwsZAVHVaP/4cD8RL+0ujqxInhj+KBh
-	 enpyUI3CqEvCwRHL8kl5/zfhzeGP/7UtXROVgdZQ=
+	b=nP6HW51zl2Dc02Tz2VafmIxx9WcqKZOzhlIAPrVFQb9p6p4YyNIo9qW3mcSC8ORS2
+	 DS0Np26SWiY6hxVoRP0SiYT3J87VViBZO7o+fA6FoUhcMR+0I22Bvik12+nDOgXLUc
+	 XyiLiusJNoIbOkMVJRtG9h7C+edieZfYsut/TfEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kwok Kin Ming <kenkinming2002@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/69] HID: i2c-hid: fix potential buffer overflow in i2c_hid_get_report()
-Date: Mon,  9 Feb 2026 15:24:01 +0100
-Message-ID: <20260209142303.118287904@linuxfoundation.org>
+Subject: [PATCH 6.18 169/175] spi: tegra210-quad: Protect curr_xfer clearing in tegra_qspi_non_combined_seq_xfer
+Date: Mon,  9 Feb 2026 15:24:02 +0100
+Message-ID: <20260209142326.562361981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+References: <20260209142320.474120190@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +69,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215255-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215098-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 03B3F111427
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 06488110B82
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kwok Kin Ming <kenkinming2002@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 2497ff38c530b1af0df5130ca9f5ab22c5e92f29 ]
+[ Upstream commit 6d7723e8161f3c3f14125557e19dd080e9d882be ]
 
-`i2c_hid_xfer` is used to read `recv_len + sizeof(__le16)` bytes of data
-into `ihid->rawbuf`.
+Protect the curr_xfer clearing in tegra_qspi_non_combined_seq_xfer()
+with the spinlock to prevent a race with the interrupt handler that
+reads this field to check if a transfer is in progress.
 
-The former can come from the userspace in the hidraw driver and is only
-bounded by HID_MAX_BUFFER_SIZE(16384) by default (unless we also set
-`max_buffer_size` field of `struct hid_ll_driver` which we do not).
-
-The latter has size determined at runtime by the maximum size of
-different report types you could receive on any particular device and
-can be a much smaller value.
-
-Fix this by truncating `recv_len` to `ihid->bufsize - sizeof(__le16)`.
-
-The impact is low since access to hidraw devices requires root.
-
-Signed-off-by: Kwok Kin Ming <kenkinming2002@gmail.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-5-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-tegra210-quad.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 8a7ac016b1abe..624d542df3a7d 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -257,6 +257,7 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
- 	 * In addition to report data device will supply data length
- 	 * in the first 2 bytes of the response, so adjust .
- 	 */
-+	recv_len = min(recv_len, ihid->bufsize - sizeof(__le16));
- 	error = i2c_hid_xfer(ihid, ihid->cmdbuf, length,
- 			     ihid->rawbuf, recv_len + sizeof(__le16));
- 	if (error) {
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 78e26c25a7b35..7fe16ed7e84bd 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1231,6 +1231,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 	struct spi_transfer *transfer;
+ 	bool is_first_msg = true;
+ 	int ret = 0, val = 0;
++	unsigned long flags;
+ 
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+@@ -1304,7 +1305,9 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 		msg->actual_length += xfer->len + dummy_bytes;
+ 
+ complete_xfer:
++		spin_lock_irqsave(&tqspi->lock, flags);
+ 		tqspi->curr_xfer = NULL;
++		spin_unlock_irqrestore(&tqspi->lock, flags);
+ 
+ 		if (ret < 0) {
+ 			tegra_qspi_transfer_end(spi);
 -- 
 2.51.0
 
