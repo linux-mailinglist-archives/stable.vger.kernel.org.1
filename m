@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-215267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FPTAun1iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:45 +0100
+	id UDxlJ/byiWl+EwAAu9opvQ
+	(envelope-from <stable+bounces-215227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3365111477
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:57:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A613110D9D
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 747F130A6284
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:43:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 556923016891
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6E237AA8A;
-	Mon,  9 Feb 2026 14:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B6037BE8F;
+	Mon,  9 Feb 2026 14:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPykRQxR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbdxdV/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F323A37AA71;
-	Mon,  9 Feb 2026 14:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F8F37BE93;
+	Mon,  9 Feb 2026 14:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648234; cv=none; b=Qb7QIV2jYD/nQWYVVVmuWTCM8yHiSJA91bAw1fbsl1J73WQxZi1vd1HIXTzLoBG4zm1nYf2cBlp66bwEzpL24Ax1TsIFza9xl05CrIxDHNssjKYDMj5XiiSAdmpEBigMeCW3TavmyBsvequ23nLp34lCM8pKqybai7lBJ6O6xmw=
+	t=1770648099; cv=none; b=QEmKri4Vj7W0iGRqJJ5B2dKxVYqwVptav8E+9dTA5t152FJfZjmjduKRUq3x33IZgaLikpFWNkAHsr3mRA+wcvpszK4VFgs0tpEIPkS+MRs4XPmMvrJ76CPGhcm+bX83X73y9M07EytyReN+AcSknnWkaMLzLXmzQfeXc2T7Ou4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648234; c=relaxed/simple;
-	bh=Tq0FEzytigwUij/apLrU4pNdPemtGtij49VjMD4Nyw4=;
+	s=arc-20240116; t=1770648099; c=relaxed/simple;
+	bh=qwmSXtAWSdmigiMpMDKg15o3SxDuHupE9tiLbqBwSPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P9SV/SurgptWRsXH28rusGJagJyWgvwgI+Krl2MLiSyVxe2dqO/+nIxVi7EHtVSDxK7yBi4ru5cJGZTMPh4k6Z6C5nR6C6bA6WHgEBYr3O3+miSV3pNts6uDteYobKHTQkOwPF6j2QEuf4VEtpVgNru4DSmLH0yHqQIFjpppZ44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPykRQxR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63022C16AAE;
-	Mon,  9 Feb 2026 14:43:53 +0000 (UTC)
+	 MIME-Version; b=gs/HbCu5ZQovDgj90esSrEiAsHC/kvbX/LwcXdEGLc9EV+c5G/FhCFJW2RFG9anzWw1eVeT5YqOb4qpAKC8VEpK47cWsgiU0+4FWnyn3pUV+quXlm16frF3eR6aVJXmwCibrG9d3DZgxTbAODmfLdSnuitL8ogoCYRZDOgQCCkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbdxdV/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C735DC16AAE;
+	Mon,  9 Feb 2026 14:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648233;
-	bh=Tq0FEzytigwUij/apLrU4pNdPemtGtij49VjMD4Nyw4=;
+	s=korg; t=1770648099;
+	bh=qwmSXtAWSdmigiMpMDKg15o3SxDuHupE9tiLbqBwSPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPykRQxRBb3vEUKuAbZ+h1JpCYMZGKtOukHIyBFehCWUQxaTSnhxO+kFOtO7W1q/L
-	 cnU7uP6b0wcSp4ArDKezj9GmWQET67TVNDtsT7Lw2QTQyHzvGnBh/gq4qSV8l9FVcO
-	 auLiIDI8rFr44jNN9fwaocGdXM2JYGUCp+0NKiC8=
+	b=BbdxdV/WVr5I2HD0g5gsS837pP/kXCp7lVoDIgc+pvTTD69gccNGfcqkMW7EBvfTz
+	 QDKPlz0325n5/0N6mCh26SCrrXmQIZDGyGgn25c8ydv0VeE2x01qEQEBQTnPeTousP
+	 UsmNVPPi6yesSnfHsHZZXpWQ3fvx4ZowLYHgRxE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.org>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Breno Leitao <leitao@debian.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/69] smb/client: fix memory leak in smb2_open_file()
+Subject: [PATCH 6.12 106/113] spi: tegra210-quad: Return IRQ_HANDLED when timeout already processed transfer
 Date: Mon,  9 Feb 2026 15:24:15 +0100
-Message-ID: <20260209142303.616336351@linuxfoundation.org>
+Message-ID: <20260209142313.982827603@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+References: <20260209142310.204833231@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +66,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215267-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215227-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,gmail.com,nvidia.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,manguebit.org:email]
-X-Rspamd-Queue-Id: A3365111477
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A613110D9D
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit e3a43633023e3cacaca60d4b8972d084a2b06236 ]
+[ Upstream commit aabd8ea0aa253d40cf5f20a609fc3d6f61e38299 ]
 
-Reproducer:
+When the ISR thread wakes up late and finds that the timeout handler
+has already processed the transfer (curr_xfer is NULL), return
+IRQ_HANDLED instead of IRQ_NONE.
 
-  1. server: directories are exported read-only
-  2. client: mount -t cifs //${server_ip}/export /mnt
-  3. client: dd if=/dev/zero of=/mnt/file bs=512 count=1000 oflag=direct
-  4. client: umount /mnt
-  5. client: sleep 1
-  6. client: modprobe -r cifs
+Use a similar approach to tegra_qspi_handle_timeout() by reading
+QSPI_TRANS_STATUS and checking the QSPI_RDY bit to determine if the
+hardware actually completed the transfer. If QSPI_RDY is set, the
+interrupt was legitimate and triggered by real hardware activity.
+The fact that the timeout path handled it first doesn't make it
+spurious. Returning IRQ_NONE incorrectly suggests the interrupt
+wasn't for this device, which can cause issues with shared interrupt
+lines and interrupt accounting.
 
-The error message is as follows:
-
-  =============================================================================
-  BUG cifs_small_rq (Not tainted): Objects remaining on __kmem_cache_shutdown()
-  -----------------------------------------------------------------------------
-
-  Object 0x00000000d47521be @offset=14336
-  ...
-  WARNING: mm/slub.c:1251 at __kmem_cache_shutdown+0x34e/0x440, CPU#0: modprobe/1577
-  ...
-  Call Trace:
-   <TASK>
-   kmem_cache_destroy+0x94/0x190
-   cifs_destroy_request_bufs+0x3e/0x50 [cifs]
-   cleanup_module+0x4e/0x540 [cifs]
-   __se_sys_delete_module+0x278/0x400
-   __x64_sys_delete_module+0x5f/0x70
-   x64_sys_call+0x2299/0x2ff0
-   do_syscall_64+0x89/0x350
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  ...
-  kmem_cache_destroy cifs_small_rq: Slab cache still has objects when called from cifs_destroy_request_bufs+0x3e/0x50 [cifs]
-  WARNING: mm/slab_common.c:532 at kmem_cache_destroy+0x16b/0x190, CPU#0: modprobe/1577
-
-Link: https://lore.kernel.org/linux-cifs/9751f02d-d1df-4265-a7d6-b19761b21834@linux.dev/T/#mf14808c144448b715f711ce5f0477a071f08eaf6
-Fixes: e255612b5ed9 ("cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES")
-Reported-by: Paulo Alcantara <pc@manguebit.org>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-1-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-tegra210-quad.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index afdc78e92ee9b..7fc7fcabce80c 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -123,6 +123,7 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
- 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 		       &err_buftype);
- 	if (rc == -EACCES && retry_without_read_attributes) {
-+		free_rsp_buf(err_buftype, err_iov.iov_base);
- 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
- 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 			       &err_buftype);
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 39aa0f1485686..24f92af780188 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1444,15 +1444,30 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
+ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ {
+ 	struct tegra_qspi *tqspi = context_data;
++	u32 status;
++
++	/*
++	 * Read transfer status to check if interrupt was triggered by transfer
++	 * completion
++	 */
++	status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
+ 
+ 	/*
+ 	 * Occasionally the IRQ thread takes a long time to wake up (usually
+ 	 * when the CPU that it's running on is excessively busy) and we have
+ 	 * already reached the timeout before and cleaned up the timed out
+ 	 * transfer. Avoid any processing in that case and bail out early.
++	 *
++	 * If no transfer is in progress, check if this was a real interrupt
++	 * that the timeout handler already processed, or a spurious one.
+ 	 */
+-	if (!tqspi->curr_xfer)
+-		return IRQ_NONE;
++	if (!tqspi->curr_xfer) {
++		/* Spurious interrupt - transfer not ready */
++		if (!(status & QSPI_RDY))
++			return IRQ_NONE;
++		/* Real interrupt, already handled by timeout path */
++		return IRQ_HANDLED;
++	}
+ 
+ 	tqspi->status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
+ 
 -- 
 2.51.0
 
