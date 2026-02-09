@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-215454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPiCDRv1iWkaFAAAu9opvQ
-	(envelope-from <stable+bounces-215454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:54:19 +0100
+	id ID1pKsX3iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A1F1112E1
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:54:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082161117F9
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 19DD1300C0E5
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:54:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA17330BA343
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D14637BE7F;
-	Mon,  9 Feb 2026 14:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BF62BCF4C;
+	Mon,  9 Feb 2026 14:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rW38Whfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBFP9rqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E353B28312F;
-	Mon,  9 Feb 2026 14:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0B92690EC;
+	Mon,  9 Feb 2026 14:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648846; cv=none; b=BucMxBYGoteEb7YjOclY4lOrYPlL/MckvDd0kyUs6+pYN8kdayqe5y7uvaDo/MG5hI4hkdmFscEzaNovOIjaBGlFYPBMywPeDTEsEabbGdThN05T6VTwHDEdUBPveBTzWiyMJmJkEMn+cVDd77JdEw0IFpd3QcnGs/+o9SgyZ2Q=
+	t=1770648537; cv=none; b=nW7px0CPaB98g5D/6kFrpmqSyAf/gInZ9SuZ47u77V5VfGLM6jXEM8HteB/WLfAA7P+02YU7qmaMQyXIrYiJixSQbLH7dj8bThtsZTQTQkWALf+kQ0EZGsPR9/4q7bAOK6rrPatjxXd/jdS6h7UA7Loi0wLf5tNn+fZlJBoD/6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648846; c=relaxed/simple;
-	bh=VFw5haTtysWc2U2SKTXKHOk08OtY2bfUZcvgQaQvGgQ=;
+	s=arc-20240116; t=1770648537; c=relaxed/simple;
+	bh=xN8rNWLfPB1u6Zx6Sh38A8YMowgqrQUJ4P28Szt8jSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVHF9+NufTEAxCWfxUIr7AcTGSxGbfMINtuZistn4IRJXiWvAk1zze+Bl+afVEANT26X+jJobT4FFIdfwy0ryYa72TgzkzXVml3ONPKJq8puxf+Law2ekQkjfrdK7GWa4QgfpKslumkcD6hHu9RQwDQgoNG0JdW3QYCjHrHs8IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rW38Whfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ABAC116C6;
-	Mon,  9 Feb 2026 14:54:05 +0000 (UTC)
+	 MIME-Version; b=oOWa7NLRrXJlM0+HTsEZ5WhpChXYXPPnFIaJBE5WJ/j53yATezczU8t+ZcKIExRnGwrkARDtSVXGp1Gp7QFo930b0s/nCecyXCygjcOcsNW/+jid/20jpfGYmAMnqpNCNp6li3e6atoCQoO/krVuuaxyxF2a8HaZOLiWetPpNXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBFP9rqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183A6C116C6;
+	Mon,  9 Feb 2026 14:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648845;
-	bh=VFw5haTtysWc2U2SKTXKHOk08OtY2bfUZcvgQaQvGgQ=;
+	s=korg; t=1770648537;
+	bh=xN8rNWLfPB1u6Zx6Sh38A8YMowgqrQUJ4P28Szt8jSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rW38WhfdnrE7mTsSiGKoFmHEyk/yJ8ftD16oxfl6b+alYTtQ4ya05z1+TERb5x3Il
-	 2OYa7t0XliUls0U/KrH/QFxgZLaNhU0zAhl/L9kzNYdo+ZiQhoswAjY8JINdA+/Fur
-	 Ifaw+jW6xT6L0HnRs37jev/GfR4pxXlr8Trro3MM=
+	b=QBFP9rqcwB2Q/ee7Bi3zJBo6K9ikSOZg0USrghgNAJEKVAHd2ekSd4X049+gzYt7F
+	 imDv8FNYrb3toxVhqTssN/uqYqrg6L0m+72CsZRXKQwHLXVIryBFyBXEoVCChHsKlc
+	 /H8sYmjmbhIcE7oGBbmVr6nWqaLITj7WKNwDznGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Florian Westphal <fw@strlen.de>,
+	Gal Pressman <gal@nvidia.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/75] netfilter: replace -EEXIST with -EBUSY
-Date: Mon,  9 Feb 2026 15:24:30 +0100
-Message-ID: <20260209142303.039559903@linuxfoundation.org>
+Subject: [PATCH 6.6 68/86] net: dont touch dev->stats in BPF redirect paths
+Date: Mon,  9 Feb 2026 15:24:31 +0100
+Message-ID: <20260209142307.224784326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
-References: <20260209142301.830618238@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,113 +70,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215454-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215359-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email]
-X-Rspamd-Queue-Id: C5A1F1112E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,iogearbox.net:email]
+X-Rspamd-Queue-Id: 082161117F9
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 2bafeb8d2f380c3a81d98bd7b78b854b564f9cd4 ]
+[ Upstream commit fdf3f6800be36377e045e2448087f12132b88d2f ]
 
-The -EEXIST error code is reserved by the module loading infrastructure
-to indicate that a module is already loaded. When a module's init
-function returns -EEXIST, userspace tools like kmod interpret this as
-"module already loaded" and treat the operation as successful, returning
-0 to the user even though the module initialization actually failed.
+Gal reports that BPF redirect increments dev->stats.tx_errors
+on failure. This is not correct, most modern drivers completely
+ignore dev->stats so these drops will be invisible to the user.
+Core code should use the dedicated core stats which are folded
+into device stats in dev_get_stats().
 
-Replace -EEXIST with -EBUSY to ensure correct error reporting in the module
-initialization path.
+Note that we're switching from tx_errors to tx_dropped.
+Core only has tx_dropped, hence presumably users already expect
+that counter to increment for "stack" Tx issues.
 
-Affected modules:
-  * ebtable_broute ebtable_filter ebtable_nat arptable_filter
-  * ip6table_filter ip6table_mangle ip6table_nat ip6table_raw
-  * ip6table_security iptable_filter iptable_mangle iptable_nat
-  * iptable_raw iptable_security
-
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Reported-by: Gal Pressman <gal@nvidia.com>
+Link: https://lore.kernel.org/c5df3b60-246a-4030-9c9a-0a35cd1ca924@nvidia.com
+Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260130033827.698841-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/ebtables.c | 2 +-
- net/netfilter/nf_log.c          | 4 ++--
- net/netfilter/x_tables.c        | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ net/core/filter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 2f3ea11785ad4..c74efcc2b4996 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1299,7 +1299,7 @@ int ebt_register_template(const struct ebt_table *t, int (*table_init)(struct ne
- 	list_for_each_entry(tmpl, &template_tables, list) {
- 		if (WARN_ON_ONCE(strcmp(t->name, tmpl->name) == 0)) {
- 			mutex_unlock(&ebt_mutex);
--			return -EEXIST;
-+			return -EBUSY;
- 		}
- 	}
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 99e931bc9e9aa..ddb6d3dd34deb 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2281,12 +2281,12 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
  
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index 8f5362a19b151..d15d2911a67e3 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -89,7 +89,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 	if (pf == NFPROTO_UNSPEC) {
- 		for (i = NFPROTO_UNSPEC; i < NFPROTO_NUMPROTO; i++) {
- 			if (rcu_access_pointer(loggers[i][logger->type])) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto unlock;
- 			}
- 		}
-@@ -97,7 +97,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 			rcu_assign_pointer(loggers[i][logger->type], logger);
- 	} else {
- 		if (rcu_access_pointer(loggers[pf][logger->type])) {
--			ret = -EEXIST;
-+			ret = -EBUSY;
- 			goto unlock;
- 		}
- 		rcu_assign_pointer(loggers[pf][logger->type], logger);
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 9a579217763df..6303ba7a62a2f 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -1761,7 +1761,7 @@ EXPORT_SYMBOL_GPL(xt_hook_ops_alloc);
- int xt_register_template(const struct xt_table *table,
- 			 int (*table_init)(struct net *net))
- {
--	int ret = -EEXIST, af = table->af;
-+	int ret = -EBUSY, af = table->af;
- 	struct xt_template *t;
+ 	err = bpf_out_neigh_v6(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+@@ -2389,12 +2389,12 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
  
- 	mutex_lock(&xt[af].mutex);
+ 	err = bpf_out_neigh_v4(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
 -- 
 2.51.0
 
