@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKnmEHb4iWn5FAAAu9opvQ
-	(envelope-from <stable+bounces-215408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:38 +0100
+	id sJmfAhr2iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9490B11198E
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 16:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960321114C6
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7DD3310EFB9
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:51:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDF7C31162F7
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3093F37A488;
-	Mon,  9 Feb 2026 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B7C37B416;
+	Mon,  9 Feb 2026 14:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jl8QVE8R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+MzxZV/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88F128725B;
-	Mon,  9 Feb 2026 14:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDD2378D84;
+	Mon,  9 Feb 2026 14:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648697; cv=none; b=rohMz8MVO0/Q0h9Vu6yjmr+5ayCv/gz7809iGCStXrr2PecRUs1zxa4nRsBtObsn5TzGwf1At5NXQpe1XAff+mdwdgh3LrrTueG0dXbadZqT69nPyIS/xP4iiaxqD343/oaI5bJ/uBR2ToJL5yrX5JrhzYoRPy0oo34hs0QnYaA=
+	t=1770648279; cv=none; b=uciZaeGkZ28aibRoZ8nXazkk0ovhxTZQ0Gu8W5jRXbR2233DotpPi5YZAL/6EfJvYIBRBNqmHeDhTXCoZgZsK8xE8GVo6XcjKvVfly5CrAQSJKLKobLXYHwhTypobjmx/kjyk8UAzs3/gPnTcGB8eriA+X8CW5gBcrYTQy2J6rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648697; c=relaxed/simple;
-	bh=m9ij1h0klxQ20PH6Zvirq264jqm63C7fpwGhFR+6imQ=;
+	s=arc-20240116; t=1770648279; c=relaxed/simple;
+	bh=qPgx3pxU2o0Pjg88w7vlwbtPTRZcZQW5e9Wdl4xPJs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2UUsYQYhCOV/3TcFWq3XBMKov1/ILqSOtLT6vrVt2zfRphabicPC3vSvy003V9mBvQVrlQDL0LVEKtty2YqR+QMygd5CSrjzP3CMRQr4hM+rkYb9Eh2x4ZNd72DCWbb7lk8r7V6DppMidwv2+f1NS8q/BLaA3Z6jsPcFDBQyEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jl8QVE8R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D36CC116C6;
-	Mon,  9 Feb 2026 14:51:35 +0000 (UTC)
+	 MIME-Version; b=kEAJsmNs0VHSBPvd6NJOioX27h64+IXwhey8wI9qNnVzKfNPFdFRO31Hlu8HgcgVzWar5U/724gbAQm2okbSkI3JC0RCJhSZlJaLM4zTh2PPU+KN/YYNFBfowGvROUiAMiD1vzKW3tcRpYT75ZTCvA33ftxIZ9RlrHvrMTcgFxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+MzxZV/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1375C116C6;
+	Mon,  9 Feb 2026 14:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648696;
-	bh=m9ij1h0klxQ20PH6Zvirq264jqm63C7fpwGhFR+6imQ=;
+	s=korg; t=1770648279;
+	bh=qPgx3pxU2o0Pjg88w7vlwbtPTRZcZQW5e9Wdl4xPJs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jl8QVE8R0KP40v8wtxW6BwpZAoE6KV30lj+EX47Fq1k8Tc5PTc5gHqdaYBqzmsbul
-	 5Voc/pjnZws6lRhr8hf/ueBeo0wcBLkJac8Sg1MYKADWonrXWnj4iiZYnTNX+lZhQ1
-	 BIomh2oqVpwEP7VpciUCbYJGQvtz5XnR7/TwkK/s=
+	b=S+MzxZV/Xzao8X5Slx4/YfEfrEyxllwFYOV+5MAqsx5Mi7M3YWVXh6CaoByPhXeOn
+	 nd+3W8UJs470L4gbem3AgnGCwdBGICdbw+IfmEHOQmKLD31CqQlqbafS5OsR6sxmlr
+	 2+EmU8AV6lqQZsYsXb7fj+qWtbAHZVsUm9Sb7b+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/41] wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
+Subject: [PATCH 6.1 59/69] ASoC: amd: fix memory leak in acp3x pdm dma ops
 Date: Mon,  9 Feb 2026 15:24:27 +0100
-Message-ID: <20260209142257.032781620@linuxfoundation.org>
+Message-ID: <20260209142304.048931670@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142256.797267956@linuxfoundation.org>
-References: <20260209142256.797267956@linuxfoundation.org>
+In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
+References: <20260209142301.913348974@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,67 +75,60 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215408-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-215280-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b364457b2d1d4e4a3054];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 9490B11198E
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 960321114C6
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
 
-[ Upstream commit ff4071c60018a668249dc6a2df7d16330543540e ]
+[ Upstream commit 7f67ba5413f98d93116a756e7f17cd2c1d6c2bd6 ]
 
-ieee80211_ocb_rx_no_sta() assumes a valid channel context, which is only
-present after JOIN_OCB.
-
-RX may run before JOIN_OCB is executed, in which case the OCB interface
-is not operational. Skip RX peer handling when the interface is not
-joined to avoid warnings in the RX path.
-
-Reported-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b364457b2d1d4e4a3054
-Tested-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Link: https://patch.msgid.link/20251216035932.18332-1-moonhee.lee.ca@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 4a767b1d039a8 ("ASoC: amd: add acp3x pdm driver dma ops")
+Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Link: https://patch.msgid.link/20260202205034.7697-1-chris.bainbridge@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ocb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/amd/renoir/acp3x-pdm-dma.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
-index 7c1a735b9eee3..736e5c08bfd7b 100644
---- a/net/mac80211/ocb.c
-+++ b/net/mac80211/ocb.c
-@@ -47,6 +47,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
- 	struct sta_info *sta;
- 	int band;
+diff --git a/sound/soc/amd/renoir/acp3x-pdm-dma.c b/sound/soc/amd/renoir/acp3x-pdm-dma.c
+index 7203c6488df0e..643deed487ab4 100644
+--- a/sound/soc/amd/renoir/acp3x-pdm-dma.c
++++ b/sound/soc/amd/renoir/acp3x-pdm-dma.c
+@@ -295,9 +295,11 @@ static int acp_pdm_dma_close(struct snd_soc_component *component,
+ 			     struct snd_pcm_substream *substream)
+ {
+ 	struct pdm_dev_data *adata = dev_get_drvdata(component->dev);
++	struct pdm_stream_instance *rtd = substream->runtime->private_data;
  
-+	if (!ifocb->joined)
-+		return;
-+
- 	/* XXX: Consider removing the least recently used entry and
- 	 *      allow new one to be added.
- 	 */
+ 	disable_pdm_interrupts(adata->acp_base);
+ 	adata->capture_stream = NULL;
++	kfree(rtd);
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
