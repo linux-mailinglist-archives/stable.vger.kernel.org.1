@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDVRBBT2iWl7FAAAu9opvQ
-	(envelope-from <stable+bounces-215279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:28 +0100
+	id sDIWNLn1iWl7FAAAu9opvQ
+	(envelope-from <stable+bounces-215383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F89A1114BF
-	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:58:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03451113FC
+	for <lists+stable@lfdr.de>; Mon, 09 Feb 2026 15:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0613B3094634
-	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:44:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD2D83026975
+	for <lists+stable@lfdr.de>; Mon,  9 Feb 2026 14:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388E837B416;
-	Mon,  9 Feb 2026 14:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A95E37BE88;
+	Mon,  9 Feb 2026 14:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NCxhg9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqbd3+Wq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AFE22301;
-	Mon,  9 Feb 2026 14:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E280A37B409;
+	Mon,  9 Feb 2026 14:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770648276; cv=none; b=hRy8LFTQQ8MGicE+Xoxsp72jTHITl15bofu+JUho//dgBMTERDVi88FIY5yqfPaLKw3YENHZcNZKzP5fYtHRvx9y46TorylJYCOF20DkkTnfrFwSSO3WyXCbS66sfbeWu3q/RB34HuGf5354gvAuMwCPzZVGKGKaXQ1UaZcW4Fg=
+	t=1770648614; cv=none; b=KQ30dMDEdbP+khIV/ub7UlvKDgR2bl0F6fVHIs9zQP3JaQdHQ2rsH4d/AHRJoim2IpaK8w8JZ2K0VBHhJwP1W2p9n7Nl+GwzHyt/b0HpIuQzvJEswWXVuZ7ye77k9FaNdYWvrYW1oOGHIXA/SmPveEaeLpiWUGDFtt+EheiYzY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770648276; c=relaxed/simple;
-	bh=DzjOcv3FPJO2KNWsbipDrl0u+FiEP7T2ob5y99MpzKY=;
+	s=arc-20240116; t=1770648614; c=relaxed/simple;
+	bh=noOKj57qDJwUQw8/u+aJsh66/m97qFj0oGdRuDlV3EA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqv2AAAjKxfdOgn+Af2a0663pumYseL0k3gxzmoISiDPn2laGr/ivSPh/JoBFxjovgYN2DJ+qxBW9OW87uF1MO3NeDuIdMETTT2V+fs1EzOE2FWv+hozAUi3pYnhjHn6FVvOWB5H6W31pl4ioBWaCtmNeA1RM1oiBRpA0p+nnGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NCxhg9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593AEC116C6;
-	Mon,  9 Feb 2026 14:44:35 +0000 (UTC)
+	 MIME-Version; b=F2vv6PAb3rK0F7z1Am5TTIe5aq7V4WxXQbQ574XxEA7GxPUW3u+dxdQ6SXmpSIq5y4XjCL4cOrPW45GxWxgfFrHrV3UNtu8MuKe+q1Z7tmo0f1IDo+JAB0drDNcHtIcRoVL9IKIsuVLn3E8CikMPBJRqPh6D1r/W50AmJ7Uxbno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqbd3+Wq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689FFC116C6;
+	Mon,  9 Feb 2026 14:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770648275;
-	bh=DzjOcv3FPJO2KNWsbipDrl0u+FiEP7T2ob5y99MpzKY=;
+	s=korg; t=1770648613;
+	bh=noOKj57qDJwUQw8/u+aJsh66/m97qFj0oGdRuDlV3EA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NCxhg9WA0lUPPjAbyPXz6EGgx043SaeMSsG/V74p4Nbm4BRNkYOYpeXkyMUJ8D1G
-	 eCHdAP/RY3GtRpzErXh+1G0CtFfj81Rf39WlxnVjWnfRrHo3U4uKltwErk6SfKTAaj
-	 6Nm2BKNsi2vVlRXaWfyxH0/cNtNhU6eJ+TUoLog0=
+	b=rqbd3+Wq7tDEH9qDgkf2gRIVVFK+BRm6ifrNOv5iKB/LyaGjxoi5yl3CeoB+8RW57
+	 /qzEp4qp5FBfMv/wvNh0TSsEk4qhUi6gYAiGB/8SNTTFxSHbc5ukxS6pwmBCDW7XVE
+	 H2okhVaWS8Tkq5njlcN4c7Kj8/r+NZe4tJy4eR3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Fasano <andrew.fasano@nist.gov>,
-	Florian Westphal <fw@strlen.de>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 58/69] netfilter: nf_tables: fix inverted genmask check in nft_map_catchall_activate()
+Subject: [PATCH 6.6 63/86] net: liquidio: Initialize netdev pointer before queue setup
 Date: Mon,  9 Feb 2026 15:24:26 +0100
-Message-ID: <20260209142304.012181189@linuxfoundation.org>
+Message-ID: <20260209142307.045302017@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-References: <20260209142301.913348974@linuxfoundation.org>
+In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
+References: <20260209142304.770150175@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +68,127 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215279-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215383-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nist.gov:email]
-X-Rspamd-Queue-Id: 8F89A1114BF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url,seu.edu.cn:email]
+X-Rspamd-Queue-Id: F03451113FC
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Fasano <andrew.fasano@nist.gov>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit f41c5d151078c5348271ffaf8e7410d96f2d82f8 ]
+[ Upstream commit 926ede0c85e1e57c97d64d9612455267d597bb2c ]
 
-nft_map_catchall_activate() has an inverted element activity check
-compared to its non-catchall counterpart nft_mapelem_activate() and
-compared to what is logically required.
+In setup_nic_devices(), the netdev is allocated using alloc_etherdev_mq().
+However, the pointer to this structure is stored in oct->props[i].netdev
+only after the calls to netif_set_real_num_rx_queues() and
+netif_set_real_num_tx_queues().
 
-nft_map_catchall_activate() is called from the abort path to re-activate
-catchall map elements that were deactivated during a failed transaction.
-It should skip elements that are already active (they don't need
-re-activation) and process elements that are inactive (they need to be
-restored). Instead, the current code does the opposite: it skips inactive
-elements and processes active ones.
+If either of these functions fails, setup_nic_devices() returns an error
+without freeing the allocated netdev. Since oct->props[i].netdev is still
+NULL at this point, the cleanup function liquidio_destroy_nic_device()
+will fail to find and free the netdev, resulting in a memory leak.
 
-Compare the non-catchall activate callback, which is correct:
+Fix this by initializing oct->props[i].netdev before calling the queue
+setup functions. This ensures that the netdev is properly accessible for
+cleanup in case of errors.
 
-  nft_mapelem_activate():
-    if (nft_set_elem_active(ext, iter->genmask))
-        return 0;   /* skip active, process inactive */
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-With the buggy catchall version:
-
-  nft_map_catchall_activate():
-    if (!nft_set_elem_active(ext, genmask))
-        continue;   /* skip inactive, process active */
-
-The consequence is that when a DELSET operation is aborted,
-nft_setelem_data_activate() is never called for the catchall element.
-For NFT_GOTO verdict elements, this means nft_data_hold() is never
-called to restore the chain->use reference count. Each abort cycle
-permanently decrements chain->use. Once chain->use reaches zero,
-DELCHAIN succeeds and frees the chain while catchall verdict elements
-still reference it, resulting in a use-after-free.
-
-This is exploitable for local privilege escalation from an unprivileged
-user via user namespaces + nftables on distributions that enable
-CONFIG_USER_NS and CONFIG_NF_TABLES.
-
-Fix by removing the negation so the check matches nft_mapelem_activate():
-skip active elements, process inactive ones.
-
-Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
-Signed-off-by: Andrew Fasano <andrew.fasano@nist.gov>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: c33c997346c3 ("liquidio: enhanced ethtool --set-channels feature")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20260128154440.278369-2-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/cavium/liquidio/lio_main.c   | 34 +++++++++----------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index d154e3e0c9803..67729d7c913a4 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5211,7 +5211,7 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+index 100daadbea2a6..a1c50cbc44beb 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
+@@ -3519,6 +3519,23 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+ 		 */
+ 		netdev->netdev_ops = &lionetdevops;
  
- 	list_for_each_entry(catchall, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
--		if (!nft_set_elem_active(ext, genmask))
-+		if (nft_set_elem_active(ext, genmask))
- 			continue;
++		lio = GET_LIO(netdev);
++
++		memset(lio, 0, sizeof(struct lio));
++
++		lio->ifidx = ifidx_or_pfnum;
++
++		props = &octeon_dev->props[i];
++		props->gmxport = resp->cfg_info.linfo.gmxport;
++		props->netdev = netdev;
++
++		/* Point to the  properties for octeon device to which this
++		 * interface belongs.
++		 */
++		lio->oct_dev = octeon_dev;
++		lio->octprops = props;
++		lio->netdev = netdev;
++
+ 		retval = netif_set_real_num_rx_queues(netdev, num_oqueues);
+ 		if (retval) {
+ 			dev_err(&octeon_dev->pci_dev->dev,
+@@ -3535,16 +3552,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+ 			goto setup_nic_dev_free;
+ 		}
  
- 		elem.priv = catchall->elem;
+-		lio = GET_LIO(netdev);
+-
+-		memset(lio, 0, sizeof(struct lio));
+-
+-		lio->ifidx = ifidx_or_pfnum;
+-
+-		props = &octeon_dev->props[i];
+-		props->gmxport = resp->cfg_info.linfo.gmxport;
+-		props->netdev = netdev;
+-
+ 		lio->linfo.num_rxpciq = num_oqueues;
+ 		lio->linfo.num_txpciq = num_iqueues;
+ 		for (j = 0; j < num_oqueues; j++) {
+@@ -3610,13 +3617,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+ 		netdev->min_mtu = LIO_MIN_MTU_SIZE;
+ 		netdev->max_mtu = LIO_MAX_MTU_SIZE;
+ 
+-		/* Point to the  properties for octeon device to which this
+-		 * interface belongs.
+-		 */
+-		lio->oct_dev = octeon_dev;
+-		lio->octprops = props;
+-		lio->netdev = netdev;
+-
+ 		dev_dbg(&octeon_dev->pci_dev->dev,
+ 			"if%d gmx: %d hw_addr: 0x%llx\n", i,
+ 			lio->linfo.gmxport, CVM_CAST64(lio->linfo.hw_addr));
 -- 
 2.51.0
 
