@@ -1,232 +1,171 @@
-Return-Path: <stable+bounces-215681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFjuEkldi2mYUAAAu9opvQ
-	(envelope-from <stable+bounces-215681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:31:05 +0100
+	id sOzyHwhgi2nDUAAAu9opvQ
+	(envelope-from <stable+bounces-215682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:42:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33BB11D315
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:31:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EF611D5ED
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D20A3053BA3
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:29:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E3D83004D36
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24400388840;
-	Tue, 10 Feb 2026 16:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9540630FF33;
+	Tue, 10 Feb 2026 16:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H9oUAjMF"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="fjkNyX1U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D233033D1
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 16:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770740989; cv=none; b=sljowRho03HmAwFovMGoHD1EeksvSBHEBTbYf/t8ZoIT7+SIMOYX6oPD7bKXxAzLjODGJPlMUw13EU1Cqi40LvJsCh9F0Ys0Yx0JOzf6IWVh9wREJSrjsGoOdKufJJ+LJsdkEmHRm+r08sFP6gYCrs8FgAM8ehVaDRW9f8tHnLA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770740989; c=relaxed/simple;
-	bh=n5cxhcAYuqXwVPgqUWtTDYlwQYPPyoUIskghINChSL0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GW/AGc40dK/1+f4ZP7CPlHsq4xyqiWr0ss1NlpT47jTanc+kt2BVZdURVqSnZqKRn43riH2aB6fOIaCg10wZVH4TlsnJERD9KVRx1GkSoK0vkYdQQH/zKdYT+OoSrX6PiuRYplNuTMrMBJoQV8lSUE78eLT/VH1UU6jhL40oK1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H9oUAjMF; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-483487335c2so17797305e9.2
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 08:29:48 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7BE30EF7F
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 16:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770741761; cv=pass; b=uIZ1YTzdjngjx6SU2ayC5xDH+19cuOQo6UfePxN6v9jfjKoxKZsHGcNk9fNbZzQumv4XtNvck+oVtfovFsP9YclDUJWOv+lytwHaBtmpLs4ZQh86/Ml9mB7h+Xn7hL0VKhv8qA4VAhIxhwxrDEejm0t8H5DBKwcf1uqJCUldt10=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770741761; c=relaxed/simple;
+	bh=R27vjPThPF4gZpuO2X4CyaikTBZPoJwo+jfJS1RMcyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HSS4/6jiGUDuyXLdrhJU2ShjgIL+TqEJUkMp3rfS4NWDhamG/dMtfdZPsexu8k6Qesj1Lmy9T5aJP1wQGCWVLwsfcaMjXPsU4SEgn+UMP2MTwVI/0BsVQbqFcJw9KPXakrXfKgCGoizvWEnGTifBL+M8hvHtjmRgst+Uv1wp860=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=fjkNyX1U; arc=pass smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so154974466b.2
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 08:42:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770741759; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Gcxr3sH2/yhYte7VnksOEKJNiR99FsD7kVNozAp6N1UZHC7EhWmQ3vW5uFHJPuz1fc
+         W3Kpt7AQlXnmeGzBsjlje7NAdwZ4Qo78+D4+h5RIAGGZkRqRJclqIViuQ4HJusH6Cuae
+         UaTJUBnUxWYEqHqG3lm5LUJrNJwJrOoSC1ZUnpBu10v4RxwWOYCwUjobjlHKYRBr9Jl2
+         aN0HkHd53Q6ct9pYvJxMWTybWz5ZTuOWCtrsFubPq6MBUch8pOksUZRoKfG06fow8unz
+         7cEOYSZTDx/a017fE/FiZxTYeyzyKn7Jpwx+qel3NlhsyRS8bAUIQ+F+ZHcSWnErc3Hk
+         DNLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wyp/Y3IdbKULn1kjcIoZk7XD4vO5YGxkd7qKZ8DS29U=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=WR4eIHRenxYJCe74uIUZAIPYXwrMKlkcjiVhFGF0TpvIEtoWB3oBPMUqt2aYGdpzw6
+         +F0iHqQ/hjtSXDudjkGFfFbVfUwbobE7WJJVoUIgVWru+FZmd8q4gVPJpzSnxew/uofL
+         Lm5o5JoYiSAyxZ3au3GBGmLOGdnNtz1qMA953lC9OCz9lZO1kn9jAMv0v2gKppOI6ukN
+         oo31u6XHLP+qDVOCCHbBQ7JE7GJaI6DSGK9iCraPXubp2spZcXpnr1pOJtQkKxZcIXOY
+         ysCOhrKOIPcWKTn008HSPltBxYBxSgF7MqyAMSuhq4IZfStf8u8KEFviD1UPLQZjq5ax
+         /law==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770740987; x=1771345787; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sdzOxstMlsYuxY5gUUqtUIeZeD3M+KWyBuexQsbSY20=;
-        b=H9oUAjMFywEmCbFxUgvVBLHd0kGnex+5KeeRaYdxZ2V0q+X3h9WS6do0e7mo0t5P/Q
-         n+ElNiySFa/hUBIMxzTxjSDDJ+jEQTqjm/3FJ5SDpLa7phG5H2BAkPwS1DaLFp6nlNeO
-         DzViIpKKqV2sNpOAF2wiNCCTUElk63fyaewDkzhlQp83X8YqPKAh0ChWZE9VSYRGpEYZ
-         MrATeTGlJ5Itca4K47wXtMcvHymVx8b6kH2yRPng6IpQPi/AmrisaoxEwkDURhcVV+HV
-         U8hC4pUOYQd+JzUBsfprtlHzDj69EuTU4w3gihkKDIswzLRAAAfmTJYzTjyKr8fpJfqK
-         gitA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770740987; x=1771345787;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770741759; x=1771346559; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sdzOxstMlsYuxY5gUUqtUIeZeD3M+KWyBuexQsbSY20=;
-        b=vChLmrHhVQFQp5vUKSsubZ4pw6/tolgp0rWONxLpmrW0CXNwpBVuXGOMusfx3qLcIE
-         ApvbPvqFw65n4jOc09rV0p17bIgzb6a08TG18XLIEN44H10rM5CoqK+URFZxrHq1/vJu
-         8qKudXbdF6LdLFXBOU2AwkgRCtCXvgZyCsjW8eVf9Kmb3qgxVq0oKNRF82kSuIhO13ZD
-         vf0Mt+p12lCFMms/0lsShLhL+Yy+qk8+QwdTuJcLEdwPHBK+x7eTazFQsKfU1AmpxuBB
-         TwVgrLdjaxlpUbvFMtcom9fFVZ1HMLNxtlu67Brspqp6Y9UaT/fxeIPrG/N3idYrh59R
-         8UbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRwW6z0dmIElTF7Gyti1h7NJYKwNl8bNYVr+XvpeW+igFU2YZvN/6IvG05/6exb7XbmmWpCfk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytXqHzcxNJPCgQ+gQBrQGlxowTv6iSPvrqlh/7OhH3I05hhi6/
-	/Io0D7g/1M2Zx6RbX6+AXDziostGsKs+mtE3S/KGRI5c//t+G1nqzDI=
-X-Gm-Gg: AZuq6aKCJXyVdkZXT2YFXHCq4BYc2Am+C187gEB/ZV785ZOFbNG0NMs3DtLAzoq1Z4v
-	btLb8i4udihufx/gPTtCNwRhGdoNkqEmokq/QWhd/K1Y1/CXBbaLJVk8cGYQQBOhD2+aBRTztSp
-	tj3WTsAHN69xeWm+8kHII2eMKLZ0SdAooZnKagL5JVF+oFyk6yYrkcPsY6dGB+kfC+l74cX41XJ
-	18cIZDoFVZMZDQTQzxvFG2DMZ2DLFBcIyKc8kPZkGZQGWlTMx8M092J4xIK50q3YU61KZAII+zZ
-	AxDbjbfFo2RWoZbOHUnid3ZvAmlO1v1TuDkCJ+iTdhAVUVxDcag2s0RBnFTUPjhDZ04ic1+WMSc
-	Lj5S8bqBuSYoVB0YbAUjR6Fo97xVBOtANhOmTelBQVSvL8xrqitkHZjeoU27W5IrUBCcy8w/fLM
-	7IdJ2ww/iQDyWcgzQVD/NixtB9kOpQXV0Z9toCRf53l9FmXm8TqerF7EfqLNMGrk9flagg2sLup
-	KkUU+JlNBA4GA==
-X-Received: by 2002:a05:600c:3148:b0:47a:8154:33e3 with SMTP id 5b1f17b1804b1-4832097e27fmr187592045e9.28.1770740986868;
-        Tue, 10 Feb 2026 08:29:46 -0800 (PST)
-Received: from [192.168.1.17] (host-79-19-172-190.retail.telecomitalia.it. [79.19.172.190])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d5d78cfsm95182975e9.1.2026.02.10.08.29.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 08:29:46 -0800 (PST)
-From: Anna Maniscalco <anna.maniscalco2000@gmail.com>
-Date: Tue, 10 Feb 2026 17:29:42 +0100
-Subject: [PATCH] drm/msm: always recover the gpu
+        bh=wyp/Y3IdbKULn1kjcIoZk7XD4vO5YGxkd7qKZ8DS29U=;
+        b=fjkNyX1UV4TFzBW3oewsrM2oj+gyVP1l8sQE+O84KYjXhkbocADRwKjB6BPsxQiXlM
+         C6DHbzCij7WxoFoAhZPkqpThUIgHSsUSvTrSyobzwx0fvQXrd5yKaI1YPMrvUR3u2CV+
+         QnUx19GBItFFxZAuQoOQvNayFagX8WlRMK7lol6f0asjYEFCS7zzZN+Jkf7q89HM9y4p
+         0RQt5r13BUOdvvTgGSTk5W6hiozDzhnVe1ze9Rt6yGizSu2dVf/pCUS08L0ZmsOxi8Fo
+         waSIpQ4EqWBMSYhyAwA7ZUgpamhM9/7MXgEbcVtPHxZVoErPUQTu1f0zLCANSXGI5I0i
+         e7ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770741759; x=1771346559;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wyp/Y3IdbKULn1kjcIoZk7XD4vO5YGxkd7qKZ8DS29U=;
+        b=FdT6NF2ZplmI9Yq6lxkHX9aE8iNZpHEA5c97jBaKRPAHHcQbZ9I5F/vv8zvPBjuWp5
+         e6MeTBNS0Y/st02/fQRdpRYGuzZP7ULhnLJaFlMldJnKmZO0RDdJNxEWv0ZZJfMiX7ua
+         +k5VC6NyT+Nk5Pv+02buMAlszlsfNbaH8T8yxOjllaVR9IzqJTslSo4IXXhbG8aTUeXv
+         fZEMta8SfDMUgHd558iuMenVoEo0VuFqnIVMTuaM0mYMKFlk4Z4Kbqe59Trj5unJwL3m
+         DWNsRKJrAjYVNiEOMwnj2c6FMxFLdtIhR8SiwUjkGeXC821/1cfZIFyFrwB+xjj/AnQc
+         xfag==
+X-Gm-Message-State: AOJu0Yxxs5tVJ0ljqpuXgM0WhTTJEn1DfklQ2gnkLgSSb2DbByMDUA03
+	xsV5HOYZMXKUabJyIdsGzk1EXy72t2WzwF0Ij3xxtTWE9TjXoHAMzfWYIRsCqUXmuL5VmK5ASZ5
+	tVEYWu4sgf1hZsTF6z1Rc1wVy4IIBct0/8y5WAHL0Lw==
+X-Gm-Gg: AZuq6aKT8Yo63HuV1JZ+NBhlaIUMtC0YMLqd/cXUcPHtaB6+bl6tDlubT3eqC4C2MCZ
+	80ECwn2TWf9u+5wn9C5l7Xsi27a5MTG9eYzEXagvhK58gCzo+NAAsrghpqXOZ7OsaJwv/jy6B6H
+	gNxupCLMXkssRNwC17jjK3xs/ci6mKWCD0/clE778Gw4+DJ+m+ulDCub3OPdridP++dnX3T/5Md
+	W1nt363J36RAF2UsJUBNgBC1GbBAhQkOoRKJsZ0IEUV8Tps9X8DiRDd0t0400lpLRB74nqVXIax
+	VRw/GYzDZNsif31DL+O+TmFZYgedvcWaBsuoDvw+mdoVILpfvtwroWFPrZLH4gfnXRt3fQ==
+X-Received: by 2002:a17:907:849:b0:b87:720c:f182 with SMTP id
+ a640c23a62f3a-b8edf173b94mr836851366b.9.1770741758598; Tue, 10 Feb 2026
+ 08:42:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260210-recovery_suspend_fix-v1-1-00ed9013da04@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MWwqAIBAArxL7naD2oq4SIWJb7Y/GLkUR3T3pc
- wZmHhBkQoGheIDxJKEUM5iygLD5uKKiOTNYbVttjVaMIZ3It5NDdoyzW+hSXefbpq/s4usAOd0
- Zs/634/S+H7EzSB1mAAAA
-X-Change-ID: 20260210-recovery_suspend_fix-77a65932fa4c
-To: Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Akhil P Oommen <akhilpo@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Anna Maniscalco <anna.maniscalco2000@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770740985; l=2814;
- i=anna.maniscalco2000@gmail.com; s=20240815; h=from:subject:message-id;
- bh=n5cxhcAYuqXwVPgqUWtTDYlwQYPPyoUIskghINChSL0=;
- b=M9SJ3nUQubja4jNzIiH2tA9YijW97ffp9B+aOxZx4Zzsd4ZwxYxM2PqFAUA4PUMwW1FxjOr3Y
- r9kplVv06gSCIjLoDjXxpAys0/yewGxd4mLhyICAH8uf89NNneUrX8G
-X-Developer-Key: i=anna.maniscalco2000@gmail.com; a=ed25519;
- pk=0zicFb38tVla+iHRo4kWpOMsmtUrpGBEa7LkFF81lyY=
+References: <20260209142320.474120190@linuxfoundation.org> <CAG=yYwkhAAm76qUH_2dCHUp8+hGzvgT1Fm_288Z-=QRG+tAbfQ@mail.gmail.com>
+ <2026021034-salt-unhearing-88b5@gregkh>
+In-Reply-To: <2026021034-salt-unhearing-88b5@gregkh>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Tue, 10 Feb 2026 22:12:00 +0530
+X-Gm-Features: AZwV_Qiyrx5DzjivxeQYlkKlLQf016y2YvbWZSbuIjVSoODzbueV9Z2dTXJhL0g
+Message-ID: <CAG=yYwkUnCcHhB3WYXQ7kVn4VX59O67NmGQCieZkiPo8oOw+uw@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/175] 6.18.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215681-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,poorly.run,kernel.org,linux.dev,gmail.com,somainline.org,ffwll.ch];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
+	TAGGED_FROM(0.00)[bounces-215682-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[annamaniscalco2000@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C33BB11D315
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 62EF611D5ED
 X-Rspamd-Action: no action
 
-Previously, in case there was no more work to do, recover worker
-wouldn't trigger recovery and would instead rely on the gpu going to
-sleep and then resuming when more work is submitted.
+On Tue, Feb 10, 2026 at 9:13=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Feb 10, 2026 at 08:34:53PM +0530, Jeffrin Thalakkottoor wrote:
+> That's good, finding one here would mean that there was a problem :)
+>
 
-Recover_worker will first increment the fence of the hung ring so, if
-there's only one job submitted to a ring and that causes an hang, it
-will early out.
+> Why did you load/build this driver into the kernel?
+i did not load it manually . May be  it came through  "make localmodconfig"
 
-There's no guarantee that the gpu will suspend and resume before more
-work is submitted and if the gpu is in a hung state it will stay in that
-state and probably trigger a timeout again.
+> Any other lp  messages or drivers loaded?
+---------------screenshot--------------------------
+$lsmod | grep lp
+lp                     36864  0
+parport                81920  3 parport_pc,lp,ppdev
+-----------------screenshot-------------------------
 
-Just stop checking and always recover the gpu.
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
-Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/gpu/drm/msm/msm_gpu.c | 42 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
-index 995549d0bbbc..ea3e79670f75 100644
---- a/drivers/gpu/drm/msm/msm_gpu.c
-+++ b/drivers/gpu/drm/msm/msm_gpu.c
-@@ -547,32 +547,30 @@ static void recover_worker(struct kthread_work *work)
- 		msm_update_fence(ring->fctx, fence);
- 	}
- 
--	if (msm_gpu_active(gpu)) {
--		/* retire completed submits, plus the one that hung: */
--		retire_submits(gpu);
-+	/* retire completed submits, plus the one that hung: */
-+	retire_submits(gpu);
- 
--		gpu->funcs->recover(gpu);
-+	gpu->funcs->recover(gpu);
- 
--		/*
--		 * Replay all remaining submits starting with highest priority
--		 * ring
--		 */
--		for (i = 0; i < gpu->nr_rings; i++) {
--			struct msm_ringbuffer *ring = gpu->rb[i];
--			unsigned long flags;
-+	/*
-+	 * Replay all remaining submits starting with highest priority
-+	 * ring
-+	 */
-+	for (i = 0; i < gpu->nr_rings; i++) {
-+		struct msm_ringbuffer *ring = gpu->rb[i];
-+		unsigned long flags;
- 
--			spin_lock_irqsave(&ring->submit_lock, flags);
--			list_for_each_entry(submit, &ring->submits, node) {
--				/*
--				 * If the submit uses an unusable vm make sure
--				 * we don't actually run it
--				 */
--				if (to_msm_vm(submit->vm)->unusable)
--					submit->nr_cmds = 0;
--				gpu->funcs->submit(gpu, submit);
--			}
--			spin_unlock_irqrestore(&ring->submit_lock, flags);
-+		spin_lock_irqsave(&ring->submit_lock, flags);
-+		list_for_each_entry(submit, &ring->submits, node) {
-+			/*
-+			 * If the submit uses an unusable vm make sure
-+			 * we don't actually run it
-+			 */
-+			if (to_msm_vm(submit->vm)->unusable)
-+				submit->nr_cmds = 0;
-+			gpu->funcs->submit(gpu, submit);
- 		}
-+		spin_unlock_irqrestore(&ring->submit_lock, flags);
- 	}
- 
- 	pm_runtime_put(&gpu->pdev->dev);
-
----
-base-commit: 50c4a49f7292b33b454ea1a16c4f77d6965405dc
-change-id: 20260210-recovery_suspend_fix-77a65932fa4c
-
-Best regards,
--- 
-Anna Maniscalco <anna.maniscalco2000@gmail.com>
-
+--
+software engineer
+rajagiri school of engineering and technology-
 
