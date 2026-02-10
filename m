@@ -1,140 +1,129 @@
-Return-Path: <stable+bounces-215670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMbHKLw+i2mfRwAAu9opvQ
-	(envelope-from <stable+bounces-215670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:20:44 +0100
+	id kMKsALw/i2mfRwAAu9opvQ
+	(envelope-from <stable+bounces-215671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:25:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B216011BD26
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:20:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5512011BDA1
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DF45C300602C
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 14:20:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 104663009F9F
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 14:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE0E328B61;
-	Tue, 10 Feb 2026 14:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8DF371077;
+	Tue, 10 Feb 2026 14:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gT4yu+tm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQN8ab73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB431B394F
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 14:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A730836F403
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 14:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770733239; cv=none; b=M0goEA6N83n2DuQhH8c7kswC7af9NegdLeRJYJDWEKyj4J2SZLZfl3RqnrI5LAe+l4ngXWcGlTOAyGO4kQsY1uqXtxlQ7Ku4g0VBm63hQkv2AysvC4LXDqbcqdrES4cVvElcmPHw3DQH3EhQZRdHlwbn+PikL0dWEmduVbixxlo=
+	t=1770733494; cv=none; b=d0xAnEjn7HWe7Bn8+lcJ3UBPcBxV05jaQkSYAdXLiH+8ghXhj4QWXbNi15wO9KAZWiIAQJbi6EbS1Owm8d4w2/aEYpaLuRabqUEx+oZpcPSBVlISxA+XeSlr+ep4gP4LZRjrPU4ROlcmoTaOEKKVPY7gz+dcogDyACPLyWbd+Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770733239; c=relaxed/simple;
-	bh=SUGiEfZ3fHXPWVOgTjgLB566Tb3Wxd2PtqPRcr8k9MM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OkXse3YWxMnP6tY5mz4L8QY7hGtYw1nm6ChS3jGIiNs5yZHVSwo5s01McP/KHehmJGcZmVOTWcBQ1sDHBWqvDMXOEFNxW3b0cPRMBgH/wIttyo4VSLRlEF87ypEiKllcFlqihK+mvkHIIC4DLUGxGMmufVF8ZGvsilbqC7TSdUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gT4yu+tm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D2CC116C6;
-	Tue, 10 Feb 2026 14:20:37 +0000 (UTC)
+	s=arc-20240116; t=1770733494; c=relaxed/simple;
+	bh=iE5gywKERunbgzXJaftgR9IipO+8a5Woc/+KRyEgdj8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XYJ9TqJVi11dvZB1/7CeEFflIDUIipyqVq3W+/7kF6jh4g2MCDvzVenv3D0GbzKX+QWutJ3U+QxUTpR0itxBDpPInt143KCFLZdX1IjjcMeyBakv9arquOXmSwYcmLpfF+9UEDL6SwCPf0qSkkG368t5It+BXDukc8eXSGigXno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQN8ab73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A54C2BC86
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 14:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770733239;
-	bh=SUGiEfZ3fHXPWVOgTjgLB566Tb3Wxd2PtqPRcr8k9MM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gT4yu+tmD5rydLu1gDKq8elNIncFWSOILJvaw9TJAPf7CxADe4X7q1CiCgZG8jHRu
-	 z7b+QRshFSjME23IGvBfd8aRYJMrEUmOVzI1qxe12iGvZWMn91tbrkL9EabeUbNzDn
-	 9vg0L2uaR51SzrBL+OVV7jkoaqdswBu/eAi9+vFqH20ELXW7wR8t51MS2YgEmz0Glk
-	 dJJ9pUfDTxRVizoFRHuVj7DevFml2O6jJ/RMgsCQqDwgZVatbz2BXNQEdO/OxHROv2
-	 yEGklJmO181nHjzUigumv1TjNNLWFWg2R278fH8JYc6E9sfvhWyoCVO0zu3/MqS6SM
-	 P0sIeEB1k1/qw==
-From: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y] net: sfp: Fix quirk for Ubiquiti U-Fiber Instant SFP module
-Date: Tue, 10 Feb 2026 15:20:34 +0100
-Message-ID: <20260210142034.13606-1-kabel@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	s=k20201202; t=1770733494;
+	bh=iE5gywKERunbgzXJaftgR9IipO+8a5Woc/+KRyEgdj8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IQN8ab73ts0uoLy5SWkSNZSPjilcJBg/jCaZCXKT5WKjKIFYtafTvi1zKJ2a8zvOq
+	 FIQxs6ida8ZcHZ77eb0q6yGDHpv0ZzC3J3gQjtJiY3Iq+P1l+2hsfjo2VeMzgdQ62j
+	 WpeyVWVoUpR4vzozTvEIFuSHR4PTYPuaQ3OIwFOdlLqbjx93PA9i+qNsXRiwYQAxmf
+	 tu/zw8hTptAmYnwfhJfcaZnqBtKe22CrRdT0Wmkyd8DOdPr0OAS6c1W6Ka/8QRr4v/
+	 Av32f8q7Y6nIDvriyjAnC8Uth3+XLFNlRYq/FbadfAmdHK0Gwu3TL6j/OG5jfbW3O5
+	 PDK/vMgHO3NkA==
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-45c838069e5so3792887b6e.0
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 06:24:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU+l1D+FabSEEQ1BKOe6WcRhjP/86lU2QmMDsNVM8cdOXedoT3mDiT5hiTvO1gJPhZqV6wExos=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9bUOlQ+AjetBoIeMf/wHUXckEtwTKQH8Ue2Nba/uV/Web0iW0
+	sNrWbM5l5LlDXUy3MFdmuduyi4yA95mUnBuxdGjbQfGOuHHBQwY0yDUYYMqTNCIhHITC6QDDk7+
+	DpEUYUtvGrg3G1wQfTXfAtbOUPSIXQxg=
+X-Received: by 2002:a05:6808:179f:b0:450:7df:e90b with SMTP id
+ 5614622812f47-462fd0aaaefmr7845678b6e.52.1770733493317; Tue, 10 Feb 2026
+ 06:24:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <006601dc965c$afe30280$0fa90780$@telus.net> <20260210093321.71876-1-luoxueqin@kylinos.cn>
+ <67clm4sqv5cbqxjhjoyn4eodwocc2jm6piwky6cyv4zncfrp7p@izdkjc5db37j>
+In-Reply-To: <67clm4sqv5cbqxjhjoyn4eodwocc2jm6piwky6cyv4zncfrp7p@izdkjc5db37j>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 10 Feb 2026 15:24:42 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gxNdQG8O32PrBcSa3GGvQCYObrquuiUXyJ8kgPV=91Sg@mail.gmail.com>
+X-Gm-Features: AZwV_QiZMtZJvYN-Ddn8-eQsn0RdQzvnX3Te4YF2JEC8OycBM3RvEupsJLgMx_8
+Message-ID: <CAJZ5v0gxNdQG8O32PrBcSa3GGvQCYObrquuiUXyJ8kgPV=91Sg@mail.gmail.com>
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Xueqin Luo <luoxueqin@kylinos.cn>, dsmythies@telus.net, christian.loehle@arm.com, 
+	daniel.lezcano@linaro.org, gregkh@linuxfoundation.org, 
+	harshvardhan.j.jha@oracle.com, linux-pm@vger.kernel.org, rafael@kernel.org, 
+	sashal@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-215670-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215671-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kabel@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
-X-Rspamd-Queue-Id: B216011BD26
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5512011BDA1
 X-Rspamd-Action: no action
 
-[ Upstream commit adcbadfd8e05d3558c9cfaa783f17c645181165f ]
+On Tue, Feb 10, 2026 at 11:04=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> On (26/02/10 17:33), Xueqin Luo wrote:
+> >
+> > In addition to the cpuidle statistics, measured system idle power is
+> > about 2W higher when this commit is applied.
+> >
+>
+> We also noticed shorted battery life on some of the affected laptops.
 
-Commit fd580c9830316eda ("net: sfp: augment SFP parsing with
-phy_interface_t bitmap") did not add augumentation for the interface
-bitmap in the quirk for Ubiquiti U-Fiber Instant.
+Was the difference significant?
 
-The subsequent commit f81fa96d8a6c7a77 ("net: phylink: use
-phy_interface_t bitmaps for optical modules") then changed phylink code
-for selection of SFP interface: instead of using link mode bitmap, the
-interface bitmap is used, and the fastest interface mode supported by
-both SFP module and MAC is chosen.
+Overall, this clearly is a "help some - hurt some" situation and I am
+not at all convinced that restoring the commit in question is a good
+idea (with all due respect to everyone who thinks otherwise or got
+better results when it was there).
 
-Since the interface bitmap contains also modes faster than 1000base-x,
-this caused a regression wherein this module stopped working
-out-of-the-box.
-
-Fix this.
-
-Fixes: fd580c9830316eda ("net: sfp: augment SFP parsing with phy_interface_t bitmap")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20260129082227.17443-1-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/phy/sfp.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 0666a39dc485..5cc3d53bbf66 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -376,6 +376,8 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
- 	 */
- 	linkmode_zero(modes);
- 	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT, modes);
-+	phy_interface_zero(interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_1000BASEX, interfaces);
- }
- 
- #define SFP_QUIRK(_v, _p, _m, _f) \
--- 
-2.52.0
-
+Honestly, I'd rather stop tweaking the menu governor at this point and
+kindly ask people who want to sacrifice some energy for more
+performance to try the teo governor instead.
 
