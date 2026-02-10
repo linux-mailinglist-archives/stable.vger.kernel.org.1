@@ -1,391 +1,378 @@
-Return-Path: <stable+bounces-215679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GODNDxci2mQUAAAu9opvQ
-	(envelope-from <stable+bounces-215679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:26:36 +0100
+	id cLVEE09ci2mQUAAAu9opvQ
+	(envelope-from <stable+bounces-215680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:26:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3EB11D258
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:26:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA03811D266
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:26:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A6D73033F9B
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:26:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A483C30143C5
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AEA389471;
-	Tue, 10 Feb 2026 16:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50DF3876CA;
+	Tue, 10 Feb 2026 16:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="M3jyYGUF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TD48Ds0m"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056943876CA
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 16:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770740772; cv=none; b=T8HEia587xBuW5qVxraKfUyqbWk31mFx9ojEAEDJsM4X0A9l0W62O2su0mdjHiJnOB06gQaMmREszZ5lq/4GuLP68J2tL5XmUQZJsWhmFiFmRHDw6TsVfWQkO7nIYMy2Julu6D3Aji1uLGrraN1j74S6Brtz4T/dnkUb0BJ6biw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770740772; c=relaxed/simple;
-	bh=IRtNdHJUYXvudf2IbFhxByVidZ3yhKOJyab21cQnVN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=euz11YbV4HnR9zOXs/vBhh9bAcjuDJMMBWlK/hiH57A2I1gnLnwp85GtwaJzfvLmgsBW3YVq7J+Tbr1V16INsUq3RsmZiv956nz8yBSn2dsfhSoX4+nNUGPoQ8IGhG5CMrWQWuqHohUyO555SQ3bsftCaqhHiAda/9rlXxoYvBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=M3jyYGUF; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 10 Feb 2026 16:25:45 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770740759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pX2jQUgUQMkczRIpbux/k20EVOaSPs5F20Z5EnM9clw=;
-	b=M3jyYGUFes3lHUjECO0bwxqgAhLgjLFmmzfvyJjmV7LtAZ9pCvm1tASWdnkMOMUpLlGz6h
-	fm3kQCfMXZ/ZNQUSYTJf03Gtpf0QaO6pkaAF5nPu+YT8Kx4Qk8Dhm+hbTzH8jHHoYBRC2h
-	M8uykBhB7fGuqXBQsqenlUU/kq8v6zU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after
- VMRUN of L2
-Message-ID: <4g25s35ty23lx2je4aknn6dg4ohviqhkbvvel4wkc4chhgp6af@kbqz3lnezo3j>
-References: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
- <20260210005449.3125133-2-yosry.ahmed@linux.dev>
- <aYqOkvHs3L-AX-CG@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B4438944E
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 16:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770740812; cv=fail; b=RcDpAUADSg2fpy9q8TwW0I9DYL8ze2CKbiiJrIYDIXPTaXTU+1lcRCziUo5bE2orO200UgXRuuy7HYWLvohMMjD0/kejYhnCPOO7VskEAPB+EhjY1+sLtdgR4WoaQOuJW5ho6dkMp6R2GQZrvtDsOL/V792d89Fpm8mdi4gPgmk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770740812; c=relaxed/simple;
+	bh=dJV8+UWUKcDr0WNa2vz5Lj8QIJbGhGrxLE278s/W7TU=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=QuvnEMbpCTryilgXay2VXC59QnGgUF4ppaxgJdN7gwMRLiPvjWh7vq53nK3Ke87ka+cmEVRojEp9/MWkudSF9HyeOC6c3mRjNdQKwc7DeEDNuS23x932GzOPwP/mjKK5C5FMzV4E4V3YCxor4vRgeER3neg9eMMMGQ72YRrBM2M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TD48Ds0m; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770740809; x=1802276809;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=dJV8+UWUKcDr0WNa2vz5Lj8QIJbGhGrxLE278s/W7TU=;
+  b=TD48Ds0mwjZebBhR4xAl2e39zSb/IKc9RkC3uWhMRtjjJqlYj+YWq4bF
+   6v+Q6+JNHpvJ7pW0cgqvwc2/SfOT+H2jkr62oLLTRizb2IdCM5iIRU4LQ
+   4f/TBvDSErcofqdzRy47mfBD/pKms0gquLgjSr3evMlTLT04U88Dcu67W
+   uoIB+RULk9N7KncCWuZTySO7vfSzxlHMem95BwYzycu1MwhWqae8TgEOR
+   MPvtD6FenAf+Cc6Jz9fsVEWyxGzrRYhYDa+HHDb5NkSDHk7etDcftXEDE
+   yetHRfOOhJCTvcZqK6Nsg1fckR2HhiI4cfzTQTnxrRoKuyIlzineF+WHL
+   g==;
+X-CSE-ConnectionGUID: YcJOQ/lNT/a6YC9eIdMa4g==
+X-CSE-MsgGUID: 4r/7AcYeSOyFG50hiqIkDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="82603998"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="82603998"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 08:26:49 -0800
+X-CSE-ConnectionGUID: AzPAGmvIRRWN+4s3F/wqBg==
+X-CSE-MsgGUID: TZ6NsF67T66p2jIC5pGm4Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="212047654"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 08:26:49 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 10 Feb 2026 08:26:48 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Tue, 10 Feb 2026 08:26:48 -0800
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.60) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 10 Feb 2026 08:26:48 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WcJMDpvCXHvh2fE2/hLkADYym/l2iPqyLjCaUykZWB1rtKzfd+21VBUsUPbr+acapA0ckIuKESNLHXsBK/iAmH/C2+BZxdJ5MfmuYlYEBAvALaWxD7fIsbTDRuMFHH31/whe7oWtuwSz1k36PUn/tybuqH9WD+HORGcwOMQfK51tdYiNgf4ua6zdlvy3+yCsiq8MBap3MOqkfJ+TgKWuzfR+md4FJFTj0obpEf9xLhQvhmTMBuww7mgzkDA3g76JO+XDtDbLkU4vHKOioDjuo4XPJWpsDGeMyOnQrYVVPXDL/NSLSKA596W5pwLe5xWp9Qz/n7/vra2anoEWonsjpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8/LENalR2gTlcbNygGtYKatmnWwadqHvhin2n56Jv9A=;
+ b=EqypgCM2+haFBH76DU+Z8+UiygmEsA7IIesQqqtGZNF9fG06gzj8qK6T+pnebJjPDV5GZJfGR4pM7R6dwVL/7VeI10y3lLAkKA7ycg9u3IGmxKatppMgBUGy6Jv4u7CkYaSY0mand3fgIciqmTq+Dqse18VAhTso5JHUPbNNn+NLaURy02JglSBIUWiN3gFUnKWFUpgtl6UoxkUle0a5II3bkH0gsI9ht0zZ11oB4iHskBesUGyvtQRumvQheLbBniA0GAfny5v3XKlt2uPUHTgOyQCaSHTcsCXDKPkHRZNfaO31r5l4HuDgFyZgE74xk/7XwnDIZwYGVWBuPOHYQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM3PPF63A6024A9.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f27) by MN2PR11MB4631.namprd11.prod.outlook.com
+ (2603:10b6:208:262::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Tue, 10 Feb
+ 2026 16:26:46 +0000
+Received: from DM3PPF63A6024A9.namprd11.prod.outlook.com
+ ([fe80::14c9:399c:8e7c:d8e5]) by DM3PPF63A6024A9.namprd11.prod.outlook.com
+ ([fe80::14c9:399c:8e7c:d8e5%3]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
+ 16:26:46 +0000
+Message-ID: <7b1eb42d-65d2-4e60-961b-c6b474aa8205@intel.com>
+Date: Tue, 10 Feb 2026 17:26:41 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 134/175] hwmon: (acpi_power_meter) Fix deadlocks
+ related to acpi_power_meter_notify()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jaroslav Pulchart
+	<jaroslav.pulchart@gooddata.com>
+CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>, Guenter Roeck
+	<linux@roeck-us.net>, Sasha Levin <sashal@kernel.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>
+References: <20260209142320.474120190@linuxfoundation.org>
+ <20260209142325.330634333@linuxfoundation.org>
+ <CAK8fFZ5n-og8dxFrh4J7pWW9h+iTp+AbdGUF1cd_7jDZpKEj8w@mail.gmail.com>
+ <2026021009-cavalry-spearman-1950@gregkh>
+Content-Language: en-US
+From: "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
+In-Reply-To: <2026021009-cavalry-spearman-1950@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR04CA0044.eurprd04.prod.outlook.com
+ (2603:10a6:802:2::15) To DM3PPF63A6024A9.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f27)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYqOkvHs3L-AX-CG@google.com>
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PPF63A6024A9:EE_|MN2PR11MB4631:EE_
+X-MS-Office365-Filtering-Correlation-Id: 049309b3-4091-434b-1da6-08de68c12f00
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?OTFaVmtPdnNEWGNYNVUvd1cvY2cxMWpPK0l1N3NnUm5CNlcwTTMza3hncm0r?=
+ =?utf-8?B?VE9uQjN4N1JBMEpOUnRZSU03RVZtLzhaSkRHRVRNWjBMTXRac0ZoWGRHSjNm?=
+ =?utf-8?B?SStTZkVMVFRRM0ZQWWpCYmJCaE93VFlDNkp1dEIyOTlXSk8vNi9nU1ZzODQ3?=
+ =?utf-8?B?cEtyZ3A5TGRPeTYxT2t5NFpuaUVqeFFNUERvUmZtS2NrNGkzait2T2dXU0Nq?=
+ =?utf-8?B?Vk40bklEcXVDTlZmQmlqTVN4K0ErUVpYZTNoc3JhbSt0MENUYXJzOUcrVysv?=
+ =?utf-8?B?UkY1WGwxQUJpYURza2JhRTQ3M0l0VkU4QTNleDllK2VXQ3haVTdJL2J6bUtH?=
+ =?utf-8?B?eVV0V0xOVXU5VUtIcEdUWDdxODAxT29VemtVWlhHSGhIeXdRREpFR2thTS9S?=
+ =?utf-8?B?T212ZVM2a3JxTGoyOWtGb3JaeklwNGRVcjVHcEtHQXpkVWJYYkFROXNDVEJ0?=
+ =?utf-8?B?RXI0VjBydVBPdHc0NEpuTi9BM3JJTjc2UG5BOXRoYktCbWcrWStuMEluSG1v?=
+ =?utf-8?B?L2xzM0NobW1pMlVxcVRhOVhRVm9hMjVWTFRtWllyQWM4RVNKMG9BMW1ETERv?=
+ =?utf-8?B?RHovWmJNTnBpS0pNR3d5OS8zWUhyTmdqbXBaWldIK21TQ3FhamZZVDAvNDRo?=
+ =?utf-8?B?SklSSTYwbnE3RWRMTmFvR3hybEthZmZNVXhnelpIWmp6SXYxK09FSkNkbnNG?=
+ =?utf-8?B?MGJGY0U1SVE0QTVBdFNXMEwrVGswWXlXNFNycWZGbVBnaC9rekRncEVkeG5N?=
+ =?utf-8?B?bmdpa01VSjhUTjcxdCtNQ25nS2RVQTZDM0R0YzJjZElxblhGbmtZcHgxNTND?=
+ =?utf-8?B?cEl4QjlVMm12N05qYkVLU1NtVjAwTVRaWlh6TmpIcWp3a0RhWTZvUE52N3Fr?=
+ =?utf-8?B?NzVGczdFakZEakUyeDRrcjNEbzhYM3R2eFF4Um9Senl5VE1vMkl3VTdPYVI0?=
+ =?utf-8?B?ZVJ1SmdYQ25VTytDejdrZlVJeERBVHIrOE1NUkY1eTRmRzcyVlVha0k5cmFC?=
+ =?utf-8?B?Y20rcTQydVNMTGpXVUlSV0JKaHdnQVMxSE1pcmFQbHNFVkVDcDAwWUpid01s?=
+ =?utf-8?B?VDJHVG1rTDZrNEZZalBndDcxd3JkbllvTVpPTFBLblAvZVIyUFhRZ2NqYjRo?=
+ =?utf-8?B?c2k5dlpnc1VNeWRtRldJQzJEZW5IWUhGRWtpck5uQjlZTldSUXpiR1JSSXJZ?=
+ =?utf-8?B?NjFqMHcyWGRqUUlNdDNMQTBvSFV6T0Y2UHB2bEZvY2J4a2dKVEFEdEd3ajZ4?=
+ =?utf-8?B?c25mOTU4Y1lWeE95WXZoaHpPS0RmcU5OYkYzc3lpTGRPRnVlZVk3b3BlMVN3?=
+ =?utf-8?B?UEVXL3d5eUFXamdMZDFxRm14azZwdzRyTmJZc3VMMStUQmdWK3BYUjB0d0Mv?=
+ =?utf-8?B?TTZ5YjR6NndWK3YvenF5c3pweWdqblZ0OFBKc0VHOTFkUUdzbllNYjhJK3dW?=
+ =?utf-8?B?SFV3ZW1nb1ZjdHBVZ09lQzliSVJjV1R1L2lpSmtUaTU2MHV0UHpSSGpGSStO?=
+ =?utf-8?B?QmJLSENiSkl6MjVBTDZmYTVLcnM2RzFEaUZLK1VCV2NZblRsK01LNWJ4V055?=
+ =?utf-8?B?VFJWMjBWQ3J1ZkhPRjVuTWJ6Qmt0cXZINFZEWUM2SkNyUnB2YTVZUG5nZENH?=
+ =?utf-8?B?Zml4eXlXZk9qQjNmbmJRKzMweFlzamlld2dYb2V2ay96ODN6QU1TRVpLazBK?=
+ =?utf-8?B?Y1lvVGwyZXFuUUFMOENXNU1ra2RJZStabTNMS2ZDSi9oZk11WTI3c0NwNm9R?=
+ =?utf-8?B?WG1sSmpxRERmM2FaODkxSjdWRWlyMkRnOWQ5NzJBc3R5RDJrRXJoQ3lyYWRx?=
+ =?utf-8?B?UE9ac1hRTURodGVIRWhRbm1xVGhTUE5xeW96QnlhcjNUUnluVk12QUkyb0ta?=
+ =?utf-8?B?ZWxHYUZNQ1hGWW1pOVZkRHVYdXZ5UFpPdTNyWlRaaU5DbjNINlJ5cVRxaU1C?=
+ =?utf-8?B?enprOUVsUGlySEVaamdsckhFcU1uT0RwRkRaeFdaMkk1eEp6NEtsOHpsNnFw?=
+ =?utf-8?B?ZUx6N3Z2Nmh2MkpzOXFhYjFmZk9PWDdYdlF3U3I3dWNkVEU5cVB5L015NE9J?=
+ =?utf-8?B?djlBd3Ztd0dZelU3a3doTTY0MkxIN21sVGpjalNlQ1Q3UTJwYmZkTjlKWG5t?=
+ =?utf-8?Q?THUGq6sOAO7ZWLKpCbkCYyIed?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PPF63A6024A9.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZlFIT0NQaFJ6TkdaamNQdmRydEI1WXdRbVEydXIrZjJzZGN5cno1MWVjRDNV?=
+ =?utf-8?B?N3pyV2YxSkpqeXl0WWgxbVVsQm5uZE5xQXo3OWZVbTdib2lkWVlpZ0dTZ0wz?=
+ =?utf-8?B?SzBOMEUxQ25jSjJtVEF2Y3FKWElVa2JYSVpuaGZXKzhKTHB4a3pCM2ExWTRz?=
+ =?utf-8?B?cCs5Rk82bjVQQ3puRDk1TmpjQ2l1MjV1R2NqVWlLR1g4UEJNa2IrdGtLR003?=
+ =?utf-8?B?K3FTWkRUUC8vbWJKKzJCZnlFbzlOaFp2OEJRaXBIdnV6R2ZuSFpIcEhHODVx?=
+ =?utf-8?B?SFVOY3prei8rTlowUjlHK0tWbnFZRmhmVXdYaS8renBBL1g1eHNRL0pHVWJC?=
+ =?utf-8?B?d21BQWFzVzY4ZUpCMnlZN2Y5cGVvS3ZBNkRyUUN4RDV5cnNTN01yeGRwanNs?=
+ =?utf-8?B?cEpOOGR6VDh5NHFVZExzNThTVHhZSm9rTVRkeWc3ZUZvaFVjYkV5SHJFR29O?=
+ =?utf-8?B?TWxSaHhKRzBNWGdjSzBtalBTWXFtTXkrQ2FzUHhlOFNldGNvOUlJblF0allM?=
+ =?utf-8?B?SEFqdVBrM24rSWtudUw5SHlaZFVyZzlzdmh2LzNJbVorZUgrZXI5QUgzVlJI?=
+ =?utf-8?B?VkhZOU1mTmVpN2Rnb0VCdHBNTWtReVROUFc5VHJFeFhGajcvZmovcUoySHNC?=
+ =?utf-8?B?QUorY3VCSWtWL0hYZEhxYy9oL2QrbzZ6QTJ2ajREQ1JPbUZoc3NmWG50Rklk?=
+ =?utf-8?B?YmkvbkZ0UGx0ZldvaWUyZmRlRFNSaFdhZE5PbmlUTU9Ock1xUDVXZFl5cDVm?=
+ =?utf-8?B?ZXhpaWhUelBEcEtPcjMzUlYxR0dETlhIOGN1L283d1V3OS9xZHJUU2VlbGd0?=
+ =?utf-8?B?U2FqV3d4UlZCNSt1R3hpczhVUERra3lUU0VFTmJpaU9HOHNESldObFhiMGRl?=
+ =?utf-8?B?VDB6d2J3elgvaFJhbXZGMlNacVFXRjhXYXFmcmF3RFVnWk04eStLYi9rNVQ0?=
+ =?utf-8?B?dDE4bjFoWEVHTVFMdEsxNFpTc2dIbUtsWGxaaUxPOGkvU0lYb1lhZFdXdDhq?=
+ =?utf-8?B?S0VKZVRtZTVtWWlnZEpBV3lZT3Zsb0hKcDNGUG4xUDlTbFdweGw0bmZHVHRr?=
+ =?utf-8?B?TEdMT0s2eUpJQjg5YjZJZ0lEbmxuZktVM01jQTk2bi9uREczWFhYczBCL3Va?=
+ =?utf-8?B?QXY0dHYwZVpqUEpGSzV2ZHdOeDk3VTlLWWRqQ1M1QXRyd2FGM2lSK3FGeVdN?=
+ =?utf-8?B?cWppT3VBcnVySVVZSmxkRzBreDBReXR5S2FvOU9hc2RLK09IZDBtVkVuZGow?=
+ =?utf-8?B?RmtienkxNnVNa0ZpbjhqTzdtY3ZxSGo5RGRxZEREUkdTb0NGbFhwUGp6YUIv?=
+ =?utf-8?B?ejVWeEJDSlVPZk1WRC9JeEtmUHJhaE02VVZVLzBzVjZJalFzZzFyTjVnZE8v?=
+ =?utf-8?B?N2pWbERPeGovbXNhZjZFaklETDFUbHN2ZVVpb1J1NzRGRU54aHArTVlpbi9K?=
+ =?utf-8?B?QUJLS25kcGlwRVNFOExIK3BGNStUemx6WVZGdVVyNWNLa0lQYThCU1hLVVo1?=
+ =?utf-8?B?UTBXYytPM0wycjNDYTdGaHF3UGh6bVdSSVhRSGNROEtvTmJJQlQ1dCtqRDlo?=
+ =?utf-8?B?aDBsNGlBVUlYSTR4bHQ5YUM3NHVmcmxaSUc4Z3VDOS80aVNxaHIrYnFvdEs1?=
+ =?utf-8?B?YTdlRGlBclVzcHlzUEZJek9nWDQ2Yy9DYXpPMzZYTWtBYnhTbHR1amJjQU1y?=
+ =?utf-8?B?Wlg4UkQrNkFmUDhaa21zSnJlNW9vbzFja0FteDFNbXFxaEN6YUg4eWhSdzlq?=
+ =?utf-8?B?dTFTM0RIb0Z4OXJkV2dWMjZRajRTeGpGNkR0emZobTMvdTBHK3FuRkQrOUlp?=
+ =?utf-8?B?UHBTYnF1SGtKR3FqUXNRMnErYkFlUE5uRGFqYUhrd3h0cnRCMGo4UkpTaHdH?=
+ =?utf-8?B?UDZnS1NTSCtXVXF6TkhlT0tEMHdzMFZZdDExVjZnVjJ0TjlsMTdWMkNlM0Fm?=
+ =?utf-8?B?cmlySCs4Q2lENzRJNkdSZS9YaURjVFFQYkJWWTljREhpM2RucmVMUERHMXVH?=
+ =?utf-8?B?VU1kRFM2Rlc2T3VuaHVFYjhPSEFHdzllTjZ4T1VJbW8rQjBIT3ZVUFg2UDMv?=
+ =?utf-8?B?alRWa3JBVnV1NGZXVlNnTzJ3VjVTMVoycWU4dXR1cE1ubzZNcC9nVDQ5OTBj?=
+ =?utf-8?B?alVZWVBBQUhXd0ZuL2xlK1VCelN3cDVjK05CQ3NTN2N2ZEQxNlg5em5VZEY4?=
+ =?utf-8?B?ZG5kdFFzRWdBRVg5WWNyRUkwbFRFc3Q0bVRsM0J4UmxZOTkzOWoxYzgzT080?=
+ =?utf-8?B?R0hSR1BJbWF3Rm9hVktZN08xNFJlVzRMdnZ1Uy85SlVyVjJkbG1PUEJIbUdH?=
+ =?utf-8?B?OEd0SkxFU3lyQ05HVmZvRXF4eW95QUZUY3V4ajl4TEdOa0JkeEEwZWx2czBt?=
+ =?utf-8?Q?q9SdVL6n2yyc9ZOQ=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 049309b3-4091-434b-1da6-08de68c12f00
+X-MS-Exchange-CrossTenant-AuthSource: DM3PPF63A6024A9.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 16:26:46.1910
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8LPlx4auOGczxML9qtGDcBVq2j7FMlud02ypgL2n+Qp//9B9uM5R5ty07XAKtVAJPkhXPOqMuOh6aA7l+deEjTLXs9bW+gnt6HoRfhW4P5A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4631
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215679-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3F3EB11D258
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email,roeck-us.net:email,gooddata.com:email];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael.j.wysocki@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215680-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+]
+X-Rspamd-Queue-Id: BA03811D266
 X-Rspamd-Action: no action
 
-On Mon, Feb 09, 2026 at 05:49:06PM -0800, Sean Christopherson wrote:
-> On Tue, Feb 10, 2026, Yosry Ahmed wrote:
-> > After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-> > fields written by the CPU from vmcb02 to the cached vmcb12. This is
-> > because the cached vmcb12 is used as the authoritative copy of some of
-> > the controls, and is the payload when saving/restoring nested state.
-> > 
-> > next_rip is also written by the CPU (in some cases) after VMRUN, but is
-> > not sync'd to cached vmcb12. As a result, it is corrupted after
-> > save/restore (replaced by the original value written by L1 on nested
-> > VMRUN). This could cause problems for both KVM (e.g. when injecting a
-> > soft IRQ) or L1 (e.g. when using next_rip to advance RIP after emulating
-> > an instruction).
-> > 
-> > Fix this by sync'ing next_rip in nested_sync_control_from_vmcb02(). Move
-> > the call to nested_sync_control_from_vmcb02() (and the entire
-> > is_guest_mode() block) after svm_complete_interrupts(), as it may update
-> > next_rip in vmcb02.
-> 
-> I'll give you one guess as to what I would say about bundling changes.  AFAICT,
-> there is _zero_ reason to move the call nested_sync_control_from_vmcb02() in a
-> patch tagged for stable@.
+On 2/10/2026 12:19 PM, Greg Kroah-Hartman wrote:
+> On Tue, Feb 10, 2026 at 11:19:12AM +0100, Jaroslav Pulchart wrote:
+>>> 6.18-stable review patch.  If anyone has any objections, please let me know.
+>>>
+>>> ------------------
+>>>
+>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>
+>>> [ Upstream commit 615901b57b7ef8eb655f71358f7e956e42bcd16b ]
+>>>
+>>> The acpi_power_meter driver's .notify() callback function,
+>>> acpi_power_meter_notify(), calls hwmon_device_unregister() under a lock
+>>> that is also acquired by callbacks in sysfs attributes of the device
+>>> being unregistered which is prone to deadlocks between sysfs access and
+>>> device removal.
+>>>
+>>> Address this by moving the hwmon device removal in
+>>> acpi_power_meter_notify() outside the lock in question, but notice
+>>> that doing it alone is not sufficient because two concurrent
+>>> METER_NOTIFY_CONFIG notifications may be attempting to remove the
+>>> same device at the same time.  To prevent that from happening, add a
+>>> new lock serializing the execution of the switch () statement in
+>>> acpi_power_meter_notify().  For simplicity, it is a static mutex
+>>> which should not be a problem from the performance perspective.
+>>>
+>>> The new lock also allows the hwmon_device_register_with_info()
+>>> in acpi_power_meter_notify() to be called outside the inner lock
+>>> because it prevents the other notifications handled by that function
+>>> from manipulating the "resource" object while the hwmon device based
+>>> on it is being registered.  The sending of ACPI netlink messages from
+>>> acpi_power_meter_notify() is serialized by the new lock too which
+>>> generally helps to ensure that the order of handling firmware
+>>> notifications is the same as the order of sending netlink messages
+>>> related to them.
+>>>
+>>> In addition, notice that hwmon_device_register_with_info() may fail
+>>> in which case resource->hwmon_dev will become an error pointer,
+>>> so add checks to avoid attempting to unregister the hwmon device
+>>> pointer to by it in that case to acpi_power_meter_notify() and
+>>> acpi_power_meter_remove().
+>>>
+>>> Fixes: 16746ce8adfe ("hwmon: (acpi_power_meter) Replace the deprecated hwmon_device_register")
+>>> Closes: https://lore.kernel.org/linux-hwmon/CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com/
+>>> Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>> ---
+>>>   drivers/hwmon/acpi_power_meter.c | 17 ++++++++++++++---
+>>>   1 file changed, 14 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+>>> index 29ccdc2fb7ff8..de408df0c4d78 100644
+>>> --- a/drivers/hwmon/acpi_power_meter.c
+>>> +++ b/drivers/hwmon/acpi_power_meter.c
+>>> @@ -47,6 +47,8 @@
+>>>   static int cap_in_hardware;
+>>>   static bool force_cap_on;
+>>>
+>>> +static DEFINE_MUTEX(acpi_notify_lock);
+>>> +
+>>>   static int can_cap_in_hardware(void)
+>>>   {
+>>>          return force_cap_on || cap_in_hardware;
+>>> @@ -823,18 +825,26 @@ static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
+>>>
+>>>          resource = acpi_driver_data(device);
+>>>
+>>> +       guard(mutex)(&acpi_notify_lock);
+>>> +
+>>>          switch (event) {
+>>>          case METER_NOTIFY_CONFIG:
+>>> +               if (!IS_ERR(resource->hwmon_dev))
+>>> +                       hwmon_device_unregister(resource->hwmon_dev);
+>>> +
+>>>                  mutex_lock(&resource->lock);
+>>> +
+>>>                  free_capabilities(resource);
+>>>                  remove_domain_devices(resource);
+>>> -               hwmon_device_unregister(resource->hwmon_dev);
+>>>                  res = read_capabilities(resource);
+>>>                  if (res)
+>>>                          dev_err_once(&device->dev, "read capabilities failed.\n");
+>>>                  res = read_domain_devices(resource);
+>>>                  if (res && res != -ENODEV)
+>>>                          dev_err_once(&device->dev, "read domain devices failed.\n");
+>>> +
+>>> +               mutex_unlock(&resource->lock);
+>>> +
+>>>                  resource->hwmon_dev =
+>>>                          hwmon_device_register_with_info(&device->dev,
+>>>                                                          ACPI_POWER_METER_NAME,
+>>> @@ -843,7 +853,7 @@ static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
+>>>                                                          power_extra_groups);
+>>>                  if (IS_ERR(resource->hwmon_dev))
+>>>                          dev_err_once(&device->dev, "register hwmon device failed.\n");
+>>> -               mutex_unlock(&resource->lock);
+>>> +
+>>>                  break;
+>>>          case METER_NOTIFY_TRIP:
+>>>                  sysfs_notify(&device->dev.kobj, NULL, POWER_AVERAGE_NAME);
+>>> @@ -953,7 +963,8 @@ static void acpi_power_meter_remove(struct acpi_device *device)
+>>>                  return;
+>>>
+>>>          resource = acpi_driver_data(device);
+>>> -       hwmon_device_unregister(resource->hwmon_dev);
+>>> +       if (!IS_ERR(resource->hwmon_dev))
+>>> +               hwmon_device_unregister(resource->hwmon_dev);
+>>>
+>>>          remove_domain_devices(resource);
+>>>          free_capabilities(resource);
+>>> --
+>>> 2.51.0
+>>>
+>>>
+>>>
+>> Hello, I tested this patch, but unfortunately it does not resolve the
+>> reported issue on our systems the deadlock is still reproducible with
+>> the same iDRAC reset reproducer.
+> Is 6.19 also a problem here, or does it work properly on that release?
 
-I generally agree with your previous feedback about combining changes,
-but I think I disagree for this specific instance. I did actually have
-two separate changes: one to move the call to
-nested_sync_control_from_vmcb02() (still tagged for stable@), and one to
-add next_rip.
+To be precise, the patch does fix a problem, but it is not sufficient to 
+make the reported observed symptoms go away, so the Closes: tag of it is 
+inaccurate.
 
-However, I found myself explaining a lot of the next_rip context in the
-commit log of moving nested_sync_control_from_vmcb02(), to explain why
-it specifically needed to go after svm_complete_interrupts(). Also, I
-had to add the comment above the call to
-nested_sync_control_from_vmcb02() in the patch adding next_rip to it.
+An IPMI fix is needed in addition to it to really close the bug report, 
+please see:
 
-Looking at both patches, it made more sense to combine them given their
-tight connection and simplicity. The history is clearer when the move,
-comment, and next_rip addition are bundled.
+https://lore.kernel.org/linux-acpi/aYYPnATz1JakV3m7@mail.minyard.net/
 
-Or..
-
-Did you mean to have a patch that just copied next_rip outside of
-nested_sync_control_from_vmcb02(), after svm_complete_interrupts(), for
-stable@, and then clean it up on top? Eh, not a big fan of that either
-because the current patch is simple enough for stable@ imo.
-
-> 
-> > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > ---
-> >  arch/x86/kvm/svm/nested.c |  6 ++++--
-> >  arch/x86/kvm/svm/svm.c    | 26 +++++++++++++++-----------
-> >  2 files changed, 19 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index de90b104a0dd..70086ba6497f 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -519,8 +519,10 @@ void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
-> >  void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
-> >  {
-> >  	u32 mask;
-> > -	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
-> > -	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-> > +
-> > +	svm->nested.ctl.event_inj	= svm->vmcb->control.event_inj;
-> > +	svm->nested.ctl.event_inj_err	= svm->vmcb->control.event_inj_err;
-> > +	svm->nested.ctl.next_rip	= svm->vmcb->control.next_rip;
-> 
-> This is all a mess (the existing code).  nested_svm_vmexit() does this:
-> 
-> 	vmcb12->control.int_state         = vmcb02->control.int_state;
-> 	vmcb12->control.exit_code         = vmcb02->control.exit_code;
-> 	vmcb12->control.exit_info_1       = vmcb02->control.exit_info_1;
-> 	vmcb12->control.exit_info_2       = vmcb02->control.exit_info_2;
-> 
-> 	if (!svm_is_vmrun_failure(vmcb12->control.exit_code))
-> 		nested_save_pending_event_to_vmcb12(svm, vmcb12);
-> 
-> 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
-> 
-> 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
-> 	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
-> 	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
-> 
-> but then svm_get_nested_state(), by way of nested_copy_vmcb_cache_to_control(),
-> pulls everything from the cached fields.  Which probably only works because the
-> only fields that are pulled from vmcb02 nested_svm_vmexit() are never modified
-> by the CPU.
-
-Yeah I think that's the key. The main distinction is whether fields
-are"in", "out" or "in/out" fields. I wish those were more clearly
-separated by the APM. More below.
-
-> 
-> Actually, I take that back, I have no idea how this code works.  How does e.g.
-> exit_info_1 not get clobbered on save/restore?
-
-I *think* KVM always sets the error_code and exit_info_* fields before
-synthesizing a #VMEXIT to L1, usually right before calling
-nested_svm_vmeit(), so no chance for save/restore in between.
-
-I think generally, most "out" fields are consumed by KVM before
-userspace can save/restore, hence them getting lost on save/restore is
-fine?
-
-It's still probably worse than we think, I see
-svm->nested.ctl.bus_lock_rip is not saved/restored, because it's not
-part of the VMCB. So in
-svm_set_nested_state()->nested_vmcb02_prepare_control() we end up
-comparing garbage to garbage (because vmcb02->save.rip is also wrong):
-
-	if (vmcb02->save.rip && (svm->nested.ctl.bus_lock_rip == vmcb02->save.rip))
-		vmcb02->control.bus_lock_counter = 1;
-	else
-		vmcb02->control.bus_lock_counter = 0;
-
-> 
-> In other words, AFAICT, nested.ctl.int_ctl is special in that KVM needs it to be
-> up-to-date at all times, *and* it needs to copied back to vmcb12 (or userspace).
-
-Hmm actually looking at nested.ctl.int_ctl, I don't think it's that
-special. Most KVM usages are checking "in" bits, i.e. whether some
-features (e.g. vGIF) are enabled or not.
-
-The "out" bits seem to only be consumed by svm_clear_vintr(), and I
-think this can be worked around.
-
-So maybe we don't really need to keep it up-to-date in the cache at all
-times.
-
-> 
-> Part of me wants to remove these two fields entirely:
-> 
-> 	/* cache for control fields of the guest */
-> 	struct vmcb_ctrl_area_cached ctl;
-> 
-> 	/*
-> 	 * Note: this struct is not kept up-to-date while L2 runs; it is only
-> 	 * valid within nested_svm_vmrun.
-> 	 */
-> 	struct vmcb_save_area_cached save;
-> 
-> and instead use "full" caches only for the duration of nested_svm_vmrun().  Or
-> hell, just copy the entire vmcb12 and throw the cached structures in the garbage.
-> But that'll probably end in a game of whack-a-mole as things get moved back in.
-
-Yeah, KVM needs to keep some of the fields around :/
-
-> 
-> So rather than do something totally drastic, I think we should kill
-> nested_copy_vmcb_cache_to_control() and replace it with a "save control" flow.
-> And then have it share code as much code as possible with nested_svm_vmexit(),
-> and fixup nested_svm_vmexit() to not pull from svm->nested.ctl unnecessarily.
-> Which, again AFICT, is pretty much limited to int_ctl: either vmcb02 is
-> authoritative, or KVM shouldn't be updating vmcb12, and so only the "save control"
-> for KVM_GET_NESTED_STATE needs to copy from the cache to the migrated vmcb12.
-
-I think this works if we draw a clear extinction between "in","out", and
-"in/out" fields, which is not great because some fields (like int_ctl)
-have different directions for different bits :/
-
-But if we do draw that distinction, and have helpers that copy fields
-based on direction, things become more intuitive:
-
-During nested VMRUN, we use the "in" and "in/out" fields from cached
-vmcb12 to construct vmcb02 through nested_vmcb02_prepare_control().
-
-During save, we save "in" fields from the cached vmcb12, "out" and
-"in/out" fields from vmcb02.
-
-During restore, we use the "in" and "in/out" fields from the restored
-payload to construct vmcb02 through nested_vmcb02_prepare_control(), AND
-update the "out" fields as well from the payload.
-
-During synthesized #VMEXIT, we save the "out" and "in/out" fields from
-vmcb02 (shared part with save/restore).
-
-The save/restore changes would need a flag to avoid restoring garbage
-from an older KVM. It's also probably not as straightforward as I am
-making it out to be. For example, "in/out" fields may not be reflected
-as-is from vmcb12 to vmcb02, so if we save+restore with
-nested_run_pending, we end up creating vmcb02 on the destination from
-what we put in vmcb02 in the source, not vmcb12, which may or may not be
-the right thing to do.
-
-This is probably a heavier lift than we think it is, or maybe it's
-simpler once I start coding it :)
-
-> 
-> That'll probably end up a bit fat for a stable@ patch, so we could do a gross
-> one-off fix for this issue, and then do cleanups on top.
-
-Honestly, I'd rather keep the existing patch for stable@. It's not that
-complicated, and downstream trees that take it don't have to live with
-the FIXME code.
-
-The heavier lift to clean this up can be done separately, or I can send
-a new version with the first 2 patches in the beginning for stable@ and
-the cleanups on top, depends on how we decide to implement this.
-
-> 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 5f0136dbdde6..cd5664c65a00 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4435,6 +4435,16 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
->  
->         svm_complete_interrupts(vcpu);
->  
-> +       /*
-> +        * Update the cache after completing interrupts to get an accurate
-> +        * NextRIP, e.g. when re-injecting a soft interrupt.
-> +        *
-> +        * FIXME: Rework svm_get_nested_state() to not pull data from the
-> +        *        cache (except for maybe int_ctl).
-> +        */
-> +       if (is_guest_mode(vcpu))
-> +               svm->nested.ctl.next_rip = svm->vmcb->control.next_rip;
-> +
->         return svm_exit_handlers_fastpath(vcpu);
->  }
->  
-> >  	/* Only a few fields of int_ctl are written by the processor.  */
-> >  	mask = V_IRQ_MASK | V_TPR_MASK;
-> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> > index 5f0136dbdde6..6d8d4d19455e 100644
-> > --- a/arch/x86/kvm/svm/svm.c
-> > +++ b/arch/x86/kvm/svm/svm.c
-> > @@ -4399,17 +4399,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
-> >  	sync_cr8_to_lapic(vcpu);
-> >  
-> >  	svm->next_rip = 0;
-> > -	if (is_guest_mode(vcpu)) {
-> > -		nested_sync_control_from_vmcb02(svm);
-> > -
-> > -		/* Track VMRUNs that have made past consistency checking */
-> > -		if (svm->nested.nested_run_pending &&
-> > -		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
-> > -                        ++vcpu->stat.nested_run;
-> > -
-> > -		svm->nested.nested_run_pending = 0;
-> > -	}
-> > -
-> >  	svm->vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
-> >  
-> >  	/*
-> > @@ -4435,6 +4424,21 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
-> >  
-> >  	svm_complete_interrupts(vcpu);
-> >  
-> > +	/*
-> > +	 * svm_complete_interrupts() may update svm->vmcb->control.next_rip,
-> > +	 * which is sync'd by nested_sync_control_from_vmcb02() below.
-> 
-> Please try to avoid referencing functions and fields in comments.  History has
-> shown that they almost always become stale.
-
-Generally agree, but in this case I am referencing the calls right above
-and right below, and it's probably clearer to mention the ordering
-constraint directly with their names.
-
-That being said, if you feel strongly I can probably do sth like your
-suggestion above:
-
-	/*
-	 * Only sync fields from vmcb02 to cache after completing
-	 * interrupts, as NextRIP may be updated (e.g. when re-injecting a
-	 * soft interrupt).
-	 */
-
-> 
-> > +	 */
-> > +	if (is_guest_mode(vcpu)) {
-> > +		nested_sync_control_from_vmcb02(svm);
-> > +
-> > +		/* Track VMRUNs that have made past consistency checking */
-> > +		if (svm->nested.nested_run_pending &&
-> > +		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
-> > +			++vcpu->stat.nested_run;
-> > +
-> > +		svm->nested.nested_run_pending = 0;
-> > +	}
-> > +
-> >  	return svm_exit_handlers_fastpath(vcpu);
-> >  }
-> >  
-> > 
-> > base-commit: e944fe2c09f405a2e2d147145c9b470084bc4c9a
-> > -- 
-> > 2.53.0.rc2.204.g2597b5adb4-goog
-> > 
 
