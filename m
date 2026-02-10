@@ -1,356 +1,192 @@
-Return-Path: <stable+bounces-215633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHnrEpgBi2npPAAAu9opvQ
-	(envelope-from <stable+bounces-215633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:59:52 +0100
+	id cGDwETwCi2npPAAAu9opvQ
+	(envelope-from <stable+bounces-215634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:02:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36531194A9
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:59:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3712C11951B
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 97DD6302A7D7
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:59:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A781302BDE4
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CF0342C8E;
-	Tue, 10 Feb 2026 09:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEC6346AE3;
+	Tue, 10 Feb 2026 10:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="m6wQLq+F"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C93311C11;
-	Tue, 10 Feb 2026 09:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B648344D97
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 10:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770717589; cv=none; b=C9hXnfwOH/kCsUxLRCf1XKHQBBEO4sT+oZ9vV9eN5aGC3JIqHDjq+74s1JD1TmnOSJXQnwV2/L9iTqvohT4M8AR1tefIeiN5AaSK1ss13nMDV2w7NSE2ujK4ghGhigcJInzymKptg05ceGXB5FDkvn6NYeIMiHYelsQcJTRpyrM=
+	t=1770717750; cv=none; b=n2mCx4bjEftz+kmf7kHgmohaevJ3kWb/xkDBThvbAUgow623EfGwsw68+cBMTv/YpySinLZWlyiKWrA0cU+Xfir6ZEGjtRoZPnclLBEFn+hOtOMYIN3YLWE5tHV16VJmls/v46GeyUAGuOUTObPdhntLc5t3fTAkYoiNKar0us8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770717589; c=relaxed/simple;
-	bh=AibfQrkZn/0Olb/lhTjWpkK4AwopBZOXERY8kcEOjk0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TrW53zijXAHTLmjo7FjJcLQXPqnjKy3p1RL004bxFMHLk4L+MfB9BgvkV8ttXJA9CwFvwUwn6eod1AL9RxEu4uqUlgLV17iPbqUOuVG/NgjhblRYFP4ViZoPzqiPa6Eh02bClT17ue9ISuJYRP++BnWSWkB+QDMdh4rdlqmc198=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F222339;
-	Tue, 10 Feb 2026 01:59:40 -0800 (PST)
-Received: from [10.163.170.66] (unknown [10.163.170.66])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C40993F632;
-	Tue, 10 Feb 2026 01:59:40 -0800 (PST)
-Message-ID: <de94c15e-7778-416a-a023-bbefc18c7c02@arm.com>
-Date: Tue, 10 Feb 2026 15:29:36 +0530
+	s=arc-20240116; t=1770717750; c=relaxed/simple;
+	bh=D5zc+mEsKUNcL+dL8qQRS578P6ZdoxEsV5FPL4Q0XT0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z+6IL2UO0v/S4YeKqEmRe1WOgzSdhOOGiDSWjE9z9OIDGYiAcqY3Qum2oc+YlGKwrg1h5xNrWx7WE5ePymhxFcEWqCreL/j1mkEpPnV+TzTfTtdsCOUHhGYH49zCKdtQQfouOxuVmdVtXClPWc+/QxQ15HvaUNUbeNK+1ex7y8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=m6wQLq+F; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
+	by cmsmtp with ESMTPS
+	id pfr2vsw3HVCBNpkZdvkpX0; Tue, 10 Feb 2026 10:02:26 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id pkZcvGkx92l0kpkZdvNM9f; Tue, 10 Feb 2026 10:02:25 +0000
+X-Authority-Analysis: v=2.4 cv=UfRRSLSN c=1 sm=1 tr=0 ts=698b0231
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=h0uksLzaAAAA:8 a=HaFmDPmJAAAA:8 a=djn8nBB36KeQ6tMeFF8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=MSi_79tMYmZZG2gvAgS0:22 a=nmWuMzfKamIsx3l42hEX:22
+ a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=zzGhcwBQ0Ex+g2JcqOwHNtbJCaWlj3nGXCTugZPDWrw=; b=m6wQLq+FLvPgIaTsIrrt0cJ2yH
+	jKSj1JhyXvD1rdqXsWXDSkIBui/QhDeK8/rp77PsPGvYNpsatLO/+3Cs4X9EREnbcbOcMB2q47rHt
+	dKxJ9hgwVf7KD5ikn83DvbAF1XKps5yJbPA+V4f2ih6QYjBgi7ObeoWMxSFAb2yRkdkrCpyrVhIoL
+	hpMFxTLkRp1qUTgr4wtX99r7s4Xx5UUkG45uZW8j6sBgkh9NUWDjZUGxOCOeVvOXxhd85tLJEFPb8
+	R7jkCWWc0MBjX5Rhb0B5MqapCU9bwSZA1sIlbH71of2abHNwTnCMinMAYEuY5Vwbd7k4Y2vFXikjn
+	S7vswPkQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:44804 helo=beavis.silicon)
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vpkZc-00000000nbw-2jNV;
+	Tue, 10 Feb 2026 03:02:24 -0700
+From: Ron Economos <re@w6rz.net>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Ron Economos <re@w6rz.net>
+Subject: [PATCH 5.15] riscv: Replace function-like macro by static inline function
+Date: Tue, 10 Feb 2026 02:01:48 -0800
+Message-ID: <20260210100148.3674334-1-re@w6rz.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 2/2] arm64/mm: Reject memory removal that splits a
- kernel leaf mapping
-To: Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260203130348.612150-1-anshuman.khandual@arm.com>
- <20260203130348.612150-3-anshuman.khandual@arm.com>
- <9ede3f81-5325-4acc-8ca1-ccb243c71961@arm.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <9ede3f81-5325-4acc-8ca1-ccb243c71961@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vpkZc-00000000nbw-2jNV
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net (beavis.silicon) [73.162.206.103]:44804
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 4
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNmNHp/iecChfG0PGxVi8B2YyV1UZBlSFYF2VUFOVx3s8BOrk3THnFhBWnyNN9k049sYFMInsnzTNxb9F1kq3MKL9bKvWZTiCUBqQG6Eb63HaMJkahLS
+ Lrax0u/same/iTQwNwPfB8Zi0robzmVntnN6rH6ELdtwoKope+0uAkRKy25bszzWROwUaozYT1QSVg==
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:mid,arm.com:email,infradead.org:email];
+	HAS_X_SOURCE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215634-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	RCVD_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anshuman.khandual@arm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215633-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: A36531194A9
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,w6rz.net:mid,w6rz.net:email,rivosinc.com:email]
+X-Rspamd-Queue-Id: 3712C11951B
 X-Rspamd-Action: no action
 
-On 10/02/26 3:17 PM, Ryan Roberts wrote:
-> On 03/02/2026 13:03, Anshuman Khandual wrote:
->> Linear and vmemmap mapings that get teared down during a memory hot remove
->> operation might contain leaf level entries on any page table level. If the
->> requested memory range's linear or vmemmap mappings falls within such leaf
->> entries, new mappings need to be created for the remaning memory mapped on
->> the leaf entry earlier, following standard break before make aka BBM rules.
->> But kernel cannot tolerate BBM amd hemce remapping to fine grained leaves
-> 
-> nits:                            ^^^ ^^^^^
+From: Björn Töpel <bjorn@rivosinc.com>
 
-Yikes ! will fix the typos.
+commit 121f34341d396b666d8a90b24768b40e08ca0d61 upstream.
 
-> 
->> would not be possible on systems without BBML2_NOABORT.
->>
->> Currently memory hot remove operation does not perform such restructuring,
->> and so removing memory ranges that could split a kernel leaf level mapping
->> need to be rejected.
->>
->> while memory_hotplug.c does appear to permit hot removing arbitrary ranges
->> of memory, the higher layers that drive memory_hotplug (e.g. ACPI, virtio,
->> ...) all appear to treat memory as fixed size devices. So it is impossible
->> to hotunplug a different amount than was previously hotplugged, and hence
->> we should never see a rejection in practice, but adding the check makes us
->> robust against a future change.
->>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
->> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
->> Cc: stable@vger.kernel.org
-> 
-> Given your statement in the commit log above about how this never happens in
-> practice but is instead to make us robust to any future changes, perhaps this is
-> not a stable candidate?
-> 
-> For clarity; I do agree that this extra robustness is useful so I think we
-> should aim to get it upstream, I just don't think it needs to go to stable.
+The flush_icache_range() function is implemented as a "function-like
+macro with unused parameters", which can result in "unused variables"
+warnings.
 
-Will drop the `Cc: stable` reference.
+Replace the macro with a static inline function, as advised by
+Documentation/process/coding-style.rst.
 
-> 
->> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> 
-> Other than above nit, LGTM:
-> 
-> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250419111402.1660267-1-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Ron Economos <re@w6rz.net>
+---
+ arch/riscv/include/asm/cacheflush.h | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-Thanks ! 
-
-Will respin the series on upcoming - rc1 version.
-
-> 
->> ---
->>  arch/arm64/mm/mmu.c | 155 ++++++++++++++++++++++++++++++++++++++++++--
->>  1 file changed, 149 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 8ec8a287aaa1..3fb9bcbd739a 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -2063,6 +2063,142 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->>  	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
->>  }
->>  
->> +
->> +static bool addr_splits_kernel_leaf(unsigned long addr)
->> +{
->> +	pgd_t *pgdp, pgd;
->> +	p4d_t *p4dp, p4d;
->> +	pud_t *pudp, pud;
->> +	pmd_t *pmdp, pmd;
->> +	pte_t *ptep, pte;
->> +
->> +	/*
->> +	 * PGD level:
->> +	 *
->> +	 * If addr is PGD_SIZE aligned - already on a leaf boundary
->> +	 */
->> +	if (ALIGN_DOWN(addr, PGDIR_SIZE) == addr)
->> +		return false;
->> +
->> +	pgdp = pgd_offset_k(addr);
->> +	pgd = pgdp_get(pgdp);
->> +	if (!pgd_present(pgd))
->> +		return false;
->> +
->> +	/*
->> +	 * P4D level:
->> +	 *
->> +	 * If addr is P4D_SIZE aligned - already on a leaf boundary
->> +	 */
->> +	if (ALIGN_DOWN(addr, P4D_SIZE) == addr)
->> +		return false;
->> +
->> +	p4dp = p4d_offset(pgdp, addr);
->> +	p4d = p4dp_get(p4dp);
->> +	if (!p4d_present(p4d))
->> +		return false;
->> +
->> +	/*
->> +	 * PUD level:
->> +	 *
->> +	 * If addr is PUD_SIZE aligned - already on a leaf boundary
->> +	 */
->> +	if (ALIGN_DOWN(addr, PUD_SIZE) == addr)
->> +		return false;
->> +
->> +	pudp = pud_offset(p4dp, addr);
->> +	pud = pudp_get(pudp);
->> +	if (!pud_present(pud))
->> +		return false;
->> +
->> +	if (pud_leaf(pud))
->> +		return true;
->> +
->> +	/*
->> +	 * CONT_PMD level:
->> +	 *
->> +	 * If addr is CONT_PMD_SIZE aligned - already on a leaf boundary
->> +	 */
->> +	if (ALIGN_DOWN(addr, CONT_PMD_SIZE) == addr)
->> +		return false;
->> +
->> +	pmdp = pmd_offset(pudp, addr);
->> +	pmd = pmdp_get(pmdp);
->> +	if (!pmd_present(pmd))
->> +		return false;
->> +
->> +	if (pmd_cont(pmd))
->> +		return true;
->> +
->> +	/*
->> +	 * PMD level:
->> +	 *
->> +	 * If addr is PMD_SIZE aligned - already on a leaf boundary
->> +	 */
->> +	if (ALIGN_DOWN(addr, PMD_SIZE) == addr)
->> +		return false;
->> +
->> +	if (pmd_leaf(pmd))
->> +		return true;
->> +
->> +	/*
->> +	 * CONT_PTE level:
->> +	 *
->> +	 * If addr is CONT_PTE_SIZE aligned - already on a leaf boundary
->> +	 */
->> +	if (ALIGN_DOWN(addr, CONT_PTE_SIZE) == addr)
->> +		return false;
->> +
->> +	ptep = pte_offset_kernel(pmdp, addr);
->> +	pte = __ptep_get(ptep);
->> +	if (!pte_present(pte))
->> +		return false;
->> +
->> +	if (pte_cont(pte))
->> +		return true;
->> +
->> +	/*
->> +	 * PTE level:
->> +	 *
->> +	 * If addr is PAGE_SIZE aligned - already on a leaf boundary
->> +	 */
->> +	if (ALIGN_DOWN(addr, PAGE_SIZE) == addr)
->> +		return false;
->> +	return true;
->> +}
->> +
->> +static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
->> +{
->> +	unsigned long phys_start, phys_end, size, start, end;
->> +
->> +	phys_start = PFN_PHYS(pfn);
->> +	phys_end = phys_start + nr_pages * PAGE_SIZE;
->> +
->> +	/*
->> +	 * PFN range's linear map edges are leaf entry aligned
->> +	 */
->> +	start = __phys_to_virt(phys_start);
->> +	end =  __phys_to_virt(phys_end);
->> +	if (addr_splits_kernel_leaf(start) || addr_splits_kernel_leaf(end)) {
->> +		pr_warn("[%lx %lx] splits a leaf entry in linear map\n",
->> +			phys_start, phys_end);
->> +		return false;
->> +	}
->> +
->> +	/*
->> +	 * PFN range's vmemmap edges are leaf entry aligned
->> +	 */
->> +	size = nr_pages * sizeof(struct page);
->> +	start = (unsigned long)pfn_to_page(pfn);
->> +	end = start + size;
->> +	if (addr_splits_kernel_leaf(start) || addr_splits_kernel_leaf(end)) {
->> +		pr_warn("[%lx %lx] splits a leaf entry in vmemmap\n",
->> +			phys_start, phys_end);
->> +		return false;
->> +	}
->> +	return true;
->> +}
->> +
->>  /*
->>   * This memory hotplug notifier helps prevent boot memory from being
->>   * inadvertently removed as it blocks pfn range offlining process in
->> @@ -2071,8 +2207,11 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->>   * In future if and when boot memory could be removed, this notifier
->>   * should be dropped and free_hotplug_page_range() should handle any
->>   * reserved pages allocated during boot.
->> + *
->> + * This also blocks any memory remove that would have caused a split
->> + * in leaf entry in kernel linear or vmemmap mapping.
->>   */
->> -static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
->> +static int prevent_memory_remove_notifier(struct notifier_block *nb,
->>  					   unsigned long action, void *data)
->>  {
->>  	struct mem_section *ms;
->> @@ -2118,11 +2257,15 @@ static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
->>  			return NOTIFY_DONE;
->>  		}
->>  	}
->> +
->> +	if (!can_unmap_without_split(pfn, arg->nr_pages))
->> +		return NOTIFY_BAD;
->> +
->>  	return NOTIFY_OK;
->>  }
->>  
->> -static struct notifier_block prevent_bootmem_remove_nb = {
->> -	.notifier_call = prevent_bootmem_remove_notifier,
->> +static struct notifier_block prevent_memory_remove_nb = {
->> +	.notifier_call = prevent_memory_remove_notifier,
->>  };
->>  
->>  /*
->> @@ -2172,7 +2315,7 @@ static void validate_bootmem_online(void)
->>  	}
->>  }
->>  
->> -static int __init prevent_bootmem_remove_init(void)
->> +static int __init prevent_memory_remove_init(void)
->>  {
->>  	int ret = 0;
->>  
->> @@ -2180,13 +2323,13 @@ static int __init prevent_bootmem_remove_init(void)
->>  		return ret;
->>  
->>  	validate_bootmem_online();
->> -	ret = register_memory_notifier(&prevent_bootmem_remove_nb);
->> +	ret = register_memory_notifier(&prevent_memory_remove_nb);
->>  	if (ret)
->>  		pr_err("%s: Notifier registration failed %d\n", __func__, ret);
->>  
->>  	return ret;
->>  }
->> -early_initcall(prevent_bootmem_remove_init);
->> +early_initcall(prevent_memory_remove_init);
->>  #endif
->>  
->>  pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
-> 
+diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
+index 23ff70350992..f42d73573f3c 100644
+--- a/arch/riscv/include/asm/cacheflush.h
++++ b/arch/riscv/include/asm/cacheflush.h
+@@ -22,11 +22,6 @@ static inline void flush_dcache_page(struct page *page)
+ }
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+ 
+-/*
+- * RISC-V doesn't have an instruction to flush parts of the instruction cache,
+- * so instead we just flush the whole thing.
+- */
+-#define flush_icache_range(start, end) flush_icache_all()
+ #define flush_icache_user_page(vma, pg, addr, len) \
+ 	flush_icache_mm(vma->vm_mm, 0)
+ 
+@@ -42,6 +37,16 @@ void flush_icache_mm(struct mm_struct *mm, bool local);
+ 
+ #endif /* CONFIG_SMP */
+ 
++/*
++ * RISC-V doesn't have an instruction to flush parts of the instruction cache,
++ * so instead we just flush the whole thing.
++ */
++#define flush_icache_range flush_icache_range
++static inline void flush_icache_range(unsigned long start, unsigned long end)
++{
++	flush_icache_all();
++}
++
+ /*
+  * Bits in sys_riscv_flush_icache()'s flags argument.
+  */
+-- 
+2.43.0
 
 
