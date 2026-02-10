@@ -1,465 +1,159 @@
-Return-Path: <stable+bounces-215688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIypHgmFi2neVAAAu9opvQ
-	(envelope-from <stable+bounces-215688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 20:20:41 +0100
+	id aJxhF++Hi2lWVgAAu9opvQ
+	(envelope-from <stable+bounces-215689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 20:33:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E22B11E9B6
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 20:20:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFB111EA4C
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 20:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89EF9304B5D9
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 19:20:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A66C23026A9E
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 19:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E1A38A9B7;
-	Tue, 10 Feb 2026 19:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D3F204F8B;
+	Tue, 10 Feb 2026 19:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fF2bpKuA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uF0QGUH8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E64330678
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 19:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA05A1FB1;
+	Tue, 10 Feb 2026 19:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770751223; cv=none; b=P3l6e3Lj/ybe9yIT86n2k6LZlJYzlyfAgUal+tlvnO1/HN94vhburpvGCVY69YjYatoJ/PRpIhQSZpbNVky4Q/3691lFnaWtA6fodJRXsYfXr9Sod8d26kwEUdKhsEVNQGFvZN4/yWQrFvc29eKTVOtm6vrOaAKV9/8mJM+D6u4=
+	t=1770751979; cv=none; b=r97shVnQxNenmx0c+RbCg/TmJR7YqPzGUkmPM7qwFbeTUXN4i9DVSlVsJtM8q5wJRprhgKWg3Fq3O3CYaxhcMkbsfpcSBAVnDRMpsz7WDWBuvtFnhMtgr93V3wMwV63fC0q+oxuO3+PQsG7u4M2p14WRsjp4SfHBt17J2nVYsok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770751223; c=relaxed/simple;
-	bh=v5UxQBC0xj2arJocASFGL+zWoCcnWc8HHChHl2ACHqA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OAAJ7kIB90tp0l15lizfiBctVVAinq2wQEcwRRbKAs4lu5zvJCCUmbItT632U9R0pw/pVXlDfKjJjuWc5fra5sQt+jDsWDxBtOOa8t02Uw+ZMAB8KUXDrYlBaVFHUQtMtcvs5R5fcstSCT2wwj5hPXzXkguaE/s6X9JYHYEDxU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fF2bpKuA; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354be486779so2363104a91.0
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 11:20:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770751221; x=1771356021; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iyRmVFGIBDJL0RV063w8dUAUjLnD+Is7vZ5/YOsyIqU=;
-        b=fF2bpKuA86bGDBwVPsus0zcrq51T625NwtvRJ2phUCIJEz99gSK91lgog5fspuXqKp
-         hBglC+WOzlaLtNjdLXskgPp17GIDn44HpaTGFvjAxGBVxZwwjprUwwk9UZXS0g5mTZhs
-         mApaloyLU8EXVXYHdyupqTXEXaeQ9+nZ6aF2hTnuQw/UlxX2NzD8kD8+scQ12tn6oxUv
-         KeephAat7tUAqFebsEQC95XRoqBYxVyIzDisMVqMfPavXQP9MGTpXLIGCyKL0kCQpqRP
-         u1cXlVCtCWttuuuBVglLxbFOAqHCx+lGiDDAnAM2PcKLiIcgutak0uv2riyAV48rhyl7
-         N3JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770751221; x=1771356021;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iyRmVFGIBDJL0RV063w8dUAUjLnD+Is7vZ5/YOsyIqU=;
-        b=JC87t29mgorei05LoaS3mlmTT3MJlIfN5He8CRsB/52l3ZG/rlrVOM0Z01tmJbBzNR
-         CmLGwN6Fs6Fk7nFNgd4zD5IRnvpqgpAcY2GFz8GTjxE+4YRw1AUjrPhprk6nVS/EhhCO
-         Q47dDrXfFIevn2yzWXW4a+C2TxoT6/kkfl6n2vwpzcP+1cCzU1NjAnQbEaW6Z4GvbJE7
-         +8mT/CtfkGrFEzMlyy7FnYZER7xeVMOJ8sXQ6hxS1fUufQsVjFF6Eme4MQGXy4AjC8Bn
-         UeohlqHuah1Tmhaupxnc3k3JzUsv4/Du1JnJ/ZTqIwPhiYtPACr9mgUyfHMGyvvEh2s5
-         PXTg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+K9ipdzYLfKxmALAlHlI59lLcaXJoEQabRLk5BaN8i/KVmpVzdEIjwCagb8jtF0Bqm02ZSWA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrgyBDXHmsEHYgriJ/g28ASdI2CD8uUoNcBUp3hsSop0Ba3F1y
-	H4/UMzvrzlS4yXfj/QZlQ5k2KoK0grHcvI3vo+BTo95xXRvGsUrO2xVT8MDOtXfG6bw+E/yjqX2
-	OXC4JJQ==
-X-Received: from pjyd6.prod.google.com ([2002:a17:90a:dfc6:b0:34a:bf4e:cb5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3b85:b0:356:7a0c:372f
- with SMTP id 98e67ed59e1d1-3567a0c3fd5mr411036a91.17.1770751221066; Tue, 10
- Feb 2026 11:20:21 -0800 (PST)
-Date: Tue, 10 Feb 2026 11:20:19 -0800
-In-Reply-To: <4g25s35ty23lx2je4aknn6dg4ohviqhkbvvel4wkc4chhgp6af@kbqz3lnezo3j>
+	s=arc-20240116; t=1770751979; c=relaxed/simple;
+	bh=aJaQgc9RiUGvmnXKSPrxC6bbowcWSn8ILZ5/EO+IxxA=;
+	h=Date:To:From:Subject:Message-Id; b=I97HES7nOVGUkRVKeZn8z0p7vhGx5YfhKEQOpzB0DFsAyrpBjmsH217eJfNUN5lvNkASKpeL2lRrCguPSj69IbiZQk/rmwD2r7SlNqHGvBoN5vf5DASgYx346r/c1OMuEPGNAYURQTjaU44FA+ymXOK87AvlHmk2D/P7bsZZu9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uF0QGUH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FA8C116C6;
+	Tue, 10 Feb 2026 19:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770751979;
+	bh=aJaQgc9RiUGvmnXKSPrxC6bbowcWSn8ILZ5/EO+IxxA=;
+	h=Date:To:From:Subject:From;
+	b=uF0QGUH8wQE4C0Tsq06ArI+by5hwYizp0SXHSd/AiwFpR26eu5suIMzkbT6sZ8WCs
+	 dT15mmul4E4/OQ/5ptMz5Dq9RioaS0Sd0vIRbV/x2VxybZWoT9my18tzHpzhHMdGHs
+	 XflUjPNxnEnpxH0eUe2sgdQoW2u+BLgHLUya5VmE=
+Date: Tue, 10 Feb 2026 11:32:58 -0800
+To: mm-commits@vger.kernel.org,tglx@kernel.org,stable@vger.kernel.org,ruikai@pwno.io,andrii@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + procfs-fix-possible-double-mmput-in-do_procmap_query.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260210193259.40FA8C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
- <20260210005449.3125133-2-yosry.ahmed@linux.dev> <aYqOkvHs3L-AX-CG@google.com>
- <4g25s35ty23lx2je4aknn6dg4ohviqhkbvvel4wkc4chhgp6af@kbqz3lnezo3j>
-Message-ID: <aYuE8xQdE5pQrmUs@google.com>
-Subject: Re: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after VMRUN
- of L2
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215689-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215688-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2E22B11E9B6
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,appspotmail.com:email]
+X-Rspamd-Queue-Id: AFFB111EA4C
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026, Yosry Ahmed wrote:
-> On Mon, Feb 09, 2026 at 05:49:06PM -0800, Sean Christopherson wrote:
-> > On Tue, Feb 10, 2026, Yosry Ahmed wrote:
-> > > After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-> > > fields written by the CPU from vmcb02 to the cached vmcb12. This is
-> > > because the cached vmcb12 is used as the authoritative copy of some of
-> > > the controls, and is the payload when saving/restoring nested state.
-> > > 
-> > > next_rip is also written by the CPU (in some cases) after VMRUN, but is
-> > > not sync'd to cached vmcb12. As a result, it is corrupted after
-> > > save/restore (replaced by the original value written by L1 on nested
-> > > VMRUN). This could cause problems for both KVM (e.g. when injecting a
-> > > soft IRQ) or L1 (e.g. when using next_rip to advance RIP after emulating
-> > > an instruction).
-> > > 
-> > > Fix this by sync'ing next_rip in nested_sync_control_from_vmcb02(). Move
-> > > the call to nested_sync_control_from_vmcb02() (and the entire
-> > > is_guest_mode() block) after svm_complete_interrupts(), as it may update
-> > > next_rip in vmcb02.
-> > 
-> > I'll give you one guess as to what I would say about bundling changes.  AFAICT,
-> > there is _zero_ reason to move the call nested_sync_control_from_vmcb02() in a
-> > patch tagged for stable@.
-> 
-> I generally agree with your previous feedback about combining changes,
-> but I think I disagree for this specific instance. I did actually have
-> two separate changes: one to move the call to
-> nested_sync_control_from_vmcb02() (still tagged for stable@), and one to
-> add next_rip.
-> 
-> However, I found myself explaining a lot of the next_rip context in the
-> commit log of moving nested_sync_control_from_vmcb02(), to explain why
-> it specifically needed to go after svm_complete_interrupts().
 
-And?  That's kinda the whole point of changelogs.  I'm also not seeing an onerous
-amount of documentation, e.g.
+The patch titled
+     Subject: procfs: fix possible double mmput() in do_procmap_query()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     procfs-fix-possible-double-mmput-in-do_procmap_query.patch
 
-  KVM: SVM: Sync control from vmcb02 on #VMEXIT after completing interrupts
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/procfs-fix-possible-double-mmput-in-do_procmap_query.patch
 
-  Refresh KVM's cache of VMCB control fields, which is a weird combination
-  of original vmcb12 data and current vmcb02 data, after completing
-  interrupts and exceptions so that a future fix can refresh next_rip
-  without dropping the next_rip updates made for completing soft interrupts.
-  
-> Also, I had to add the comment above the call to
-> nested_sync_control_from_vmcb02() in the patch adding next_rip to it.
-> 
-> Looking at both patches, it made more sense to combine them given their
-> tight connection and simplicity. The history is clearer when the move,
-> comment, and next_rip addition are bundled.
-> 
-> Or..
-> 
-> Did you mean to have a patch that just copied next_rip outside of
-> nested_sync_control_from_vmcb02(), after svm_complete_interrupts(), for
-> stable@, and then clean it up on top? Eh, not a big fan of that either
-> because the current patch is simple enough for stable@ imo.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-My objection to bundling is that it subtly requires guarnteeing that none of the
-fields updated by nested_sync_control_from_vmcb02() are consumed between its
-current location and the new location.  That alone warrants a changelog.  I.e.
-it's as much that there's _zero_ analysis in the current changelog as to the
-safety, as it is that the movement is bundled together.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-> > > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-> > > CC: stable@vger.kernel.org
-> > > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > > ---
-> > >  arch/x86/kvm/svm/nested.c |  6 ++++--
-> > >  arch/x86/kvm/svm/svm.c    | 26 +++++++++++++++-----------
-> > >  2 files changed, 19 insertions(+), 13 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > > index de90b104a0dd..70086ba6497f 100644
-> > > --- a/arch/x86/kvm/svm/nested.c
-> > > +++ b/arch/x86/kvm/svm/nested.c
-> > > @@ -519,8 +519,10 @@ void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
-> > >  void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
-> > >  {
-> > >  	u32 mask;
-> > > -	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
-> > > -	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-> > > +
-> > > +	svm->nested.ctl.event_inj	= svm->vmcb->control.event_inj;
-> > > +	svm->nested.ctl.event_inj_err	= svm->vmcb->control.event_inj_err;
-> > > +	svm->nested.ctl.next_rip	= svm->vmcb->control.next_rip;
-> > 
-> > This is all a mess (the existing code).  nested_svm_vmexit() does this:
-> > 
-> > 	vmcb12->control.int_state         = vmcb02->control.int_state;
-> > 	vmcb12->control.exit_code         = vmcb02->control.exit_code;
-> > 	vmcb12->control.exit_info_1       = vmcb02->control.exit_info_1;
-> > 	vmcb12->control.exit_info_2       = vmcb02->control.exit_info_2;
-> > 
-> > 	if (!svm_is_vmrun_failure(vmcb12->control.exit_code))
-> > 		nested_save_pending_event_to_vmcb12(svm, vmcb12);
-> > 
-> > 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> > 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
-> > 
-> > 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
-> > 	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
-> > 	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
-> > 
-> > but then svm_get_nested_state(), by way of nested_copy_vmcb_cache_to_control(),
-> > pulls everything from the cached fields.  Which probably only works because the
-> > only fields that are pulled from vmcb02 nested_svm_vmexit() are never modified
-> > by the CPU.
-> 
-> Yeah I think that's the key. The main distinction is whether fields
-> are"in", "out" or "in/out" fields. I wish those were more clearly
-> separated by the APM. More below.
-> 
-> > 
-> > Actually, I take that back, I have no idea how this code works.  How does e.g.
-> > exit_info_1 not get clobbered on save/restore?
-> 
-> I *think* KVM always sets the error_code and exit_info_* fields before
-> synthesizing a #VMEXIT to L1, usually right before calling
-> nested_svm_vmeit(), so no chance for save/restore in between.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Ugh, right, KVM generally doesn't recognize signals until after invoking the exit
-handler.  Actually, even that isn't the key, it's that this flaw only affects
-"in/out" fields, as you note above.  Heh, and even that probably isn't entirely
-precise, as it's really "in/out fields that KVM consumes while running L2 are
-buggy".  E.g. in this case, nested_vmcb02_prepare_control() pulls next_rip for
-vmcb02 from the cache.
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
-	else if (boot_cpu_has(X86_FEATURE_NRIPS))
-		vmcb02->control.next_rip    = vmcb12_rip;
+------------------------------------------------------
+From: Andrii Nakryiko <andrii@kernel.org>
+Subject: procfs: fix possible double mmput() in do_procmap_query()
+Date: Tue, 10 Feb 2026 11:27:38 -0800
 
-> I think generally, most "out" fields are consumed by KVM before userspace can
-> save/restore, hence them getting lost on save/restore is fine?
+When user provides incorrectly sized buffer for build ID for PROCMAP_QUERY
+we return with -ENAMETOOLONG error.  After recent changes this condition
+happens later, after we unlocked mmap_lock/per-VMA lock and did mmput(),
+so original goto out is now wrong and will double-mmput() mm_struct.  Fix
+by jumping further to clean up only vm_file and name_buf.
 
-Yep.
+Link: https://lkml.kernel.org/r/20260210192738.3041609-1-andrii@kernel.org
+Fixes: b5cbacd7f86f ("procfs: avoid fetching build ID while holding VMA lock")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reported-by: Ruikai Peng <ruikai@pwno.io>
+Reported-by: Thomas Gleixner <tglx@kernel.org>
+Reported-by: syzbot+237b5b985b78c1da9600@syzkaller.appspotmail.com
+Cc: Ruikai Peng <ruikai@pwno.io>
+CLoses: https://lkml.kernel.org/r/CAFD3drOJANTZPuyiqMdqpiRwOKnHwv5QgMNZghCDr-WxdiHvMg@mail.gmail.com
+Closes: https://lore.kernel.org/all/698aaf3c.050a0220.3b3015.0088.GAE@google.com/T/#u
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-> It's still probably worse than we think, I see
-> svm->nested.ctl.bus_lock_rip is not saved/restored, because it's not
-> part of the VMCB. So in
-> svm_set_nested_state()->nested_vmcb02_prepare_control() we end up
-> comparing garbage to garbage (because vmcb02->save.rip is also wrong):
-> 
-> 	if (vmcb02->save.rip && (svm->nested.ctl.bus_lock_rip == vmcb02->save.rip))
-> 		vmcb02->control.bus_lock_counter = 1;
-> 	else
-> 		vmcb02->control.bus_lock_counter = 0;
+ fs/proc/task_mmu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Let's ignore this one.  It's overall a non-issue, and we're already planning on
-moving it out of the control cache.
+--- a/fs/proc/task_mmu.c~procfs-fix-possible-double-mmput-in-do_procmap_query
++++ a/fs/proc/task_mmu.c
+@@ -780,7 +780,7 @@ static int do_procmap_query(struct mm_st
+ 		} else {
+ 			if (karg.build_id_size < build_id_sz) {
+ 				err = -ENAMETOOLONG;
+-				goto out;
++				goto out_file;
+ 			}
+ 			karg.build_id_size = build_id_sz;
+ 		}
+@@ -808,6 +808,7 @@ static int do_procmap_query(struct mm_st
+ out:
+ 	query_vma_teardown(&lock_ctx);
+ 	mmput(mm);
++out_file:
+ 	if (vm_file)
+ 		fput(vm_file);
+ 	kfree(name_buf);
+_
 
-> > In other words, AFAICT, nested.ctl.int_ctl is special in that KVM needs it to be
-> > up-to-date at all times, *and* it needs to copied back to vmcb12 (or userspace).
-> 
-> Hmm actually looking at nested.ctl.int_ctl, I don't think it's that special.
-> Most KVM usages are checking "in" bits, i.e. whether some features (e.g.
-> vGIF) are enabled or not.
->
-> The "out" bits seem to only be consumed by svm_clear_vintr(), and I
-> think this can be worked around.
+Patches currently in -mm which might be from andrii@kernel.org are
 
-OMG that code makes my head hurt.  Isn't that code just this?
+procfs-fix-possible-double-mmput-in-do_procmap_query.patch
 
-	/*
-	 * Drop int_ctl fields related to VINTR injection.  If L2 is active,
-	 * restore the virtual IRQ flag and its vector from vmcb12 now that KVM
-	 * is done usurping virtual IRQs for its own purposes.
-	 */
-	svm->vmcb01.ptr->control.int_ctl &= ~V_IRQ_INJECTION_BITS_MASK;
-
-	if (is_guest_mode(&svm->vcpu)) {
-		svm->vmcb->control.int_ctl = (svm->vmcb->control.int_ctl & ~V_IRQ_MASK) |
-					     (svm->nested.ctl.int_ctl & V_IRQ_MASK);
-		svm->vmcb->control.int_vector = svm->nested.ctl.int_vector;
-	} else {
-		WARN_ON_ONCE(svm->vmcb != svm->vmcb01.ptr);
-	}
-
-	svm_clr_intercept(svm, INTERCEPT_VINTR);
-	vmcb_mark_dirty(svm->vmcb, VMCB_INTR);
-
-> So maybe we don't really need to keep it up-to-date in the cache at all
-> times.
-
-Yeah, IMO that approach is unnecessarily convoluted.  The actual logic isn't all
-that complex, all of the complexity comes from juggling state between the cache
-and vmcb02 just so that the cache can be authoritative.  Given that we failed
-miserably in actually making the cache authoritative, e.g. see the nested #VMEXIT
-flow, I think we should kill the entire concept and instead maintain an *exact*
-snapshot of vmcb12's controls, and then make vmcb02 authoritative.  We'll still
-need the logic in nested_sync_control_from_vmcb02() to updated int_ctl on save
-or #VMEXIT if KVM is still intercepting VINTR for its own purposes, but at least
-the code will be contained.
-
-Then to make it all but impossible to re-introduce this mess, do something like
-this so that someone would have to go way out of their way to try and modify the
-cache.
-
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index ebd7b36b1ceb..2de6305be9ce 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -199,14 +199,13 @@ struct svm_nested_state {
-         * we cannot inject a nested vmexit yet.  */
-        bool nested_run_pending;
- 
--       /* cache for control fields of the guest */
--       struct vmcb_ctrl_area_cached ctl;
--
-        /*
--        * Note: this struct is not kept up-to-date while L2 runs; it is only
--        * valid within nested_svm_vmrun.
-+        * An opaque, read-only cache of vmcb12 controls, used to query L1's
-+        * controls while running L2, e.g. to route intercepts appropriately.
-+        * All reads are routed through accessors to make it all but impossible
-+        * for KVM to clobber its snapshot of vmcb12.
-         */
--       struct vmcb_save_area_cached save;
-+       u8 __vmcb12_ctrl[sizeof(struct vmcb_ctrl_area_cached)];
- 
-        bool initialized;
-
-> > Part of me wants to remove these two fields entirely:
-> > 
-> > 	/* cache for control fields of the guest */
-> > 	struct vmcb_ctrl_area_cached ctl;
-> > 
-> > 	/*
-> > 	 * Note: this struct is not kept up-to-date while L2 runs; it is only
-> > 	 * valid within nested_svm_vmrun.
-> > 	 */
-> > 	struct vmcb_save_area_cached save;
-> > 
-> > and instead use "full" caches only for the duration of nested_svm_vmrun().  Or
-> > hell, just copy the entire vmcb12 and throw the cached structures in the garbage.
-> > But that'll probably end in a game of whack-a-mole as things get moved back in.
-> 
-> Yeah, KVM needs to keep some of the fields around :/
-
-For me, that's totally fine.  As above, the problem I see is that there is no
-single source of truth, i.e. that the authoritative state is spread across vmcb02
-and the cache.
-
-> > So rather than do something totally drastic, I think we should kill
-> > nested_copy_vmcb_cache_to_control() and replace it with a "save control" flow.
-> > And then have it share code as much code as possible with nested_svm_vmexit(),
-> > and fixup nested_svm_vmexit() to not pull from svm->nested.ctl unnecessarily.
-> > Which, again AFICT, is pretty much limited to int_ctl: either vmcb02 is
-> > authoritative, or KVM shouldn't be updating vmcb12, and so only the "save control"
-> > for KVM_GET_NESTED_STATE needs to copy from the cache to the migrated vmcb12.
-> 
-> I think this works if we draw a clear extinction between "in","out", and
-> "in/out" fields, which is not great because some fields (like int_ctl)
-> have different directions for different bits :/
-> 
-> But if we do draw that distinction, and have helpers that copy fields
-> based on direction, things become more intuitive:
-> 
-> During nested VMRUN, we use the "in" and "in/out" fields from cached
-> vmcb12 to construct vmcb02 through nested_vmcb02_prepare_control().
-> 
-> During save, we save "in" fields from the cached vmcb12, "out" and
-> "in/out" fields from vmcb02.
-> 
-> During restore, we use the "in" and "in/out" fields from the restored
-> payload to construct vmcb02 through nested_vmcb02_prepare_control(), AND
-> update the "out" fields as well from the payload.
-
-Why the last part?  If L2 is active, then the pure "out" fields are guaranteed
-to be written on nested #VMEXIT.  Anything else simply can't work.
-
-> During synthesized #VMEXIT, we save the "out" and "in/out" fields from
-> vmcb02 (shared part with save/restore).
-
-Yeah, that all works.  We could also treat save() as an extension of #VMEXIT, but
-that could make KVM_GET_NESTED_STATE non-idempotent (which might already be the
-case for VMX?).  I.e. we could sync vmcb02 to vmcb12 (cache), and then copy that
-to userspace. 
-
-> The save/restore changes would need a flag to avoid restoring garbage
-> from an older KVM.
-
-I don't follow.  I was thinking we'd only change how KVM maintains authoritative
-state while runnign L2, i.e. not make any changes (other than fixes) to the
-serialized state for save/restore.
-
-> It's also probably not as straightforward as I am making it out to be. For
-> example, "in/out" fields may not be reflected as-is from vmcb12 to vmcb02, so
-> if we save+restore with nested_run_pending, we end up creating vmcb02 on the
-> destination from what we put in vmcb02 in the source, not vmcb12, which may
-> or may not be the right thing to do.
-
-If that's a problem, we've already messed up.  Because we _must_ get that right
-for nested #VMEXIT, i.e. KVM _must_ be able to extract the pieces of vmcb02 that
-belong to L1 vs. L0.  At a glance, it seems very doable to writ the code so that
-it's shareable between #VMEXIT and save().
-
-> This is probably a heavier lift than we think it is, or maybe it's
-> simpler once I start coding it :)
-
-Maybe?  It's certainly not trivial, but I don't think it's terribly complex either,
-at least not what I have in mind.
-
-> > That'll probably end up a bit fat for a stable@ patch, so we could do a gross
-> > one-off fix for this issue, and then do cleanups on top.
-> 
-> Honestly, I'd rather keep the existing patch for stable@. It's not that
-> complicated, and downstream trees that take it don't have to live with
-> the FIXME code.
-
-I'd rather omit the FIXME than move the nested_sync_control_from_vmcb02() call.
-Because it's entirely possible that the code movement will apply cleanly to an
-older kernel, but semantically be broken due something in-between consuming
-int_ctl.  The odds of that happening are low, but I don't want to have to audit
-every LTS kernel (or set up others to fail).
-
-> The heavier lift to clean this up can be done separately,
-
-Yes, for sure.
-
-> or I can send a new version with the first 2 patches in the beginning for
-> stable@ and the cleanups on top, depends on how we decide to implement this.
-
-As above, my preference is to throw in a super minimal fix for next_rip, and then
-commit ourselves to removing nested_sync_control_from_vmcb02() sooner or later.
-
-> > > @@ -4435,6 +4424,21 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
-> > >  
-> > >  	svm_complete_interrupts(vcpu);
-> > >  
-> > > +	/*
-> > > +	 * svm_complete_interrupts() may update svm->vmcb->control.next_rip,
-> > > +	 * which is sync'd by nested_sync_control_from_vmcb02() below.
-> > 
-> > Please try to avoid referencing functions and fields in comments.  History has
-> > shown that they almost always become stale.
-> 
-> Generally agree, but in this case I am referencing the calls right above
-> and right below, and it's probably clearer to mention the ordering
-> constraint directly with their names.
-> 
-> That being said, if you feel strongly
-
-I do.  I appreciate that it requires more effort to write comments that don't
-reference functions/variables/fields, and that it can be downright annoying, but
-we've had far too many orphaned comments over the years.
 
