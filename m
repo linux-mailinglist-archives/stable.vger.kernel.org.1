@@ -1,171 +1,359 @@
-Return-Path: <stable+bounces-215682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOzyHwhgi2nDUAAAu9opvQ
-	(envelope-from <stable+bounces-215682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:42:48 +0100
+	id MIK9MElii2nDUAAAu9opvQ
+	(envelope-from <stable+bounces-215683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:52:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EF611D5ED
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:42:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A69311D71E
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 17:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0E3D83004D36
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:42:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25362301F498
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9540630FF33;
-	Tue, 10 Feb 2026 16:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7DE320A04;
+	Tue, 10 Feb 2026 16:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="fjkNyX1U"
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="aBREA8XG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7BE30EF7F
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 16:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770741761; cv=pass; b=uIZ1YTzdjngjx6SU2ayC5xDH+19cuOQo6UfePxN6v9jfjKoxKZsHGcNk9fNbZzQumv4XtNvck+oVtfovFsP9YclDUJWOv+lytwHaBtmpLs4ZQh86/Ml9mB7h+Xn7hL0VKhv8qA4VAhIxhwxrDEejm0t8H5DBKwcf1uqJCUldt10=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770741761; c=relaxed/simple;
-	bh=R27vjPThPF4gZpuO2X4CyaikTBZPoJwo+jfJS1RMcyA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HSS4/6jiGUDuyXLdrhJU2ShjgIL+TqEJUkMp3rfS4NWDhamG/dMtfdZPsexu8k6Qesj1Lmy9T5aJP1wQGCWVLwsfcaMjXPsU4SEgn+UMP2MTwVI/0BsVQbqFcJw9KPXakrXfKgCGoizvWEnGTifBL+M8hvHtjmRgst+Uv1wp860=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=fjkNyX1U; arc=pass smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so154974466b.2
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 08:42:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770741759; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Gcxr3sH2/yhYte7VnksOEKJNiR99FsD7kVNozAp6N1UZHC7EhWmQ3vW5uFHJPuz1fc
-         W3Kpt7AQlXnmeGzBsjlje7NAdwZ4Qo78+D4+h5RIAGGZkRqRJclqIViuQ4HJusH6Cuae
-         UaTJUBnUxWYEqHqG3lm5LUJrNJwJrOoSC1ZUnpBu10v4RxwWOYCwUjobjlHKYRBr9Jl2
-         aN0HkHd53Q6ct9pYvJxMWTybWz5ZTuOWCtrsFubPq6MBUch8pOksUZRoKfG06fow8unz
-         7cEOYSZTDx/a017fE/FiZxTYeyzyKn7Jpwx+qel3NlhsyRS8bAUIQ+F+ZHcSWnErc3Hk
-         DNLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wyp/Y3IdbKULn1kjcIoZk7XD4vO5YGxkd7qKZ8DS29U=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=WR4eIHRenxYJCe74uIUZAIPYXwrMKlkcjiVhFGF0TpvIEtoWB3oBPMUqt2aYGdpzw6
-         +F0iHqQ/hjtSXDudjkGFfFbVfUwbobE7WJJVoUIgVWru+FZmd8q4gVPJpzSnxew/uofL
-         Lm5o5JoYiSAyxZ3au3GBGmLOGdnNtz1qMA953lC9OCz9lZO1kn9jAMv0v2gKppOI6ukN
-         oo31u6XHLP+qDVOCCHbBQ7JE7GJaI6DSGK9iCraPXubp2spZcXpnr1pOJtQkKxZcIXOY
-         ysCOhrKOIPcWKTn008HSPltBxYBxSgF7MqyAMSuhq4IZfStf8u8KEFviD1UPLQZjq5ax
-         /law==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770741759; x=1771346559; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wyp/Y3IdbKULn1kjcIoZk7XD4vO5YGxkd7qKZ8DS29U=;
-        b=fjkNyX1UV4TFzBW3oewsrM2oj+gyVP1l8sQE+O84KYjXhkbocADRwKjB6BPsxQiXlM
-         C6DHbzCij7WxoFoAhZPkqpThUIgHSsUSvTrSyobzwx0fvQXrd5yKaI1YPMrvUR3u2CV+
-         QnUx19GBItFFxZAuQoOQvNayFagX8WlRMK7lol6f0asjYEFCS7zzZN+Jkf7q89HM9y4p
-         0RQt5r13BUOdvvTgGSTk5W6hiozDzhnVe1ze9Rt6yGizSu2dVf/pCUS08L0ZmsOxi8Fo
-         waSIpQ4EqWBMSYhyAwA7ZUgpamhM9/7MXgEbcVtPHxZVoErPUQTu1f0zLCANSXGI5I0i
-         e7ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770741759; x=1771346559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wyp/Y3IdbKULn1kjcIoZk7XD4vO5YGxkd7qKZ8DS29U=;
-        b=FdT6NF2ZplmI9Yq6lxkHX9aE8iNZpHEA5c97jBaKRPAHHcQbZ9I5F/vv8zvPBjuWp5
-         e6MeTBNS0Y/st02/fQRdpRYGuzZP7ULhnLJaFlMldJnKmZO0RDdJNxEWv0ZZJfMiX7ua
-         +k5VC6NyT+Nk5Pv+02buMAlszlsfNbaH8T8yxOjllaVR9IzqJTslSo4IXXhbG8aTUeXv
-         fZEMta8SfDMUgHd558iuMenVoEo0VuFqnIVMTuaM0mYMKFlk4Z4Kbqe59Trj5unJwL3m
-         DWNsRKJrAjYVNiEOMwnj2c6FMxFLdtIhR8SiwUjkGeXC821/1cfZIFyFrwB+xjj/AnQc
-         xfag==
-X-Gm-Message-State: AOJu0Yxxs5tVJ0ljqpuXgM0WhTTJEn1DfklQ2gnkLgSSb2DbByMDUA03
-	xsV5HOYZMXKUabJyIdsGzk1EXy72t2WzwF0Ij3xxtTWE9TjXoHAMzfWYIRsCqUXmuL5VmK5ASZ5
-	tVEYWu4sgf1hZsTF6z1Rc1wVy4IIBct0/8y5WAHL0Lw==
-X-Gm-Gg: AZuq6aKT8Yo63HuV1JZ+NBhlaIUMtC0YMLqd/cXUcPHtaB6+bl6tDlubT3eqC4C2MCZ
-	80ECwn2TWf9u+5wn9C5l7Xsi27a5MTG9eYzEXagvhK58gCzo+NAAsrghpqXOZ7OsaJwv/jy6B6H
-	gNxupCLMXkssRNwC17jjK3xs/ci6mKWCD0/clE778Gw4+DJ+m+ulDCub3OPdridP++dnX3T/5Md
-	W1nt363J36RAF2UsJUBNgBC1GbBAhQkOoRKJsZ0IEUV8Tps9X8DiRDd0t0400lpLRB74nqVXIax
-	VRw/GYzDZNsif31DL+O+TmFZYgedvcWaBsuoDvw+mdoVILpfvtwroWFPrZLH4gfnXRt3fQ==
-X-Received: by 2002:a17:907:849:b0:b87:720c:f182 with SMTP id
- a640c23a62f3a-b8edf173b94mr836851366b.9.1770741758598; Tue, 10 Feb 2026
- 08:42:38 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECD431D72D;
+	Tue, 10 Feb 2026 16:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770742315; cv=none; b=BgDFxwmJKKOVvPkSynzHMhGoiQP2Mz07A5Z6HpvY5NCYv7hnj8pqQSONo2FCmQbMxsxN52XIVUz0A3znU4//3NsJLh3pUNk9hsSVN5k5PdPuTiloat1PdwO+HIsvg9VDpnt4SkKhEnzM1dnfP8orGcflWfsVJ3ozJOQnvEZ1FYI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770742315; c=relaxed/simple;
+	bh=JLIm3Ajp2nokifNAYIugpAdlCN26av5ZYJ6U/qlBX4k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Pv5MZU8lEtdtMKT3+6pq/C5tDPg9EGvkZwqISxU+pSG2kDZ42K42jtNDUqne/zWoXMUotflOINrM60RwY3a7Hy2SV5NIOMGOycsnwJqnrrLiEQ+u/QMxfxqYPzCqGh31ww2DcpqxJ4n1FUfZhTrMeqOBIak5IqldOLMp/VfFYlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=aBREA8XG; arc=none smtp.client-ip=67.231.157.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+Received: from pps.filterd (m0122331.ppops.net [127.0.0.1])
+	by mx0b-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ACkuNU1000174;
+	Tue, 10 Feb 2026 16:51:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=jan2016.eng; bh=SQOWISIN2EEtxnjr7TyU
+	6E8Fj6Y7wrnADCdYC6biFC4=; b=aBREA8XG15z70mWxBIF+7MtR9BvceB4yq0kJ
+	sE6zEoIi0uQ6IoTTAkK80In1s76U402ln5TM/B0xx5xYcXNH8lXirYVxNS2ilWEP
+	xIuCLhlOwPpnZgH5ChUKPE/eCl0OmSfk0jTPXHNieXK8ChYXRF0YKvIZ/8bRCwhy
+	UghsmDgQWYGpirWbhNT/vza+NHNbzL03RDe2E3e88H+tkVefhVAdLVB4hcyldzrL
+	OtzrUQdjYLIRjBgHd++Urz9FtGn0FMYe8UAzhwPbIKScR0bsPz2PJjV9kAK9G9f7
+	AyT85l14nEtJE05XHOu5eJq0eMMT7hqN5iyRE3Mabc2H+rZtug==
+Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60])
+	by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 4c5xcv1pmq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Feb 2026 16:51:28 +0000 (GMT)
+Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
+	by prod-mail-ppoint5.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 61ACqQc2026826;
+	Tue, 10 Feb 2026 08:51:28 -0800
+Received: from email.msg.corp.akamai.com ([172.27.91.40])
+	by prod-mail-ppoint5.akamai.com (PPS) with ESMTPS id 4c648futxc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Feb 2026 08:51:28 -0800
+Received: from usma1ex-exedge1.msg.corp.akamai.com (172.27.91.34) by
+ usma1ex-dag5mb1.msg.corp.akamai.com (172.27.91.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 10 Feb 2026 08:51:27 -0800
+Received: from usma1ex-dag5mb2.msg.corp.akamai.com (172.27.91.41) by
+ usma1ex-exedge1.msg.corp.akamai.com (172.27.91.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 10 Feb 2026 11:51:27 -0500
+Received: from bos-lhvx56.bos01.corp.akamai.com (172.28.222.78) by
+ usma1ex-dag5mb2.msg.corp.akamai.com (172.27.91.41) with Microsoft SMTP Server
+ id 15.2.2562.29 via Frontend Transport; Tue, 10 Feb 2026 08:51:27 -0800
+Received: by bos-lhvx56.bos01.corp.akamai.com (Postfix, from userid 30754)
+	id 92E5F15FE0A; Tue, 10 Feb 2026 11:51:27 -0500 (EST)
+From: Josh Hunt <johunt@akamai.com>
+To: <song@kernel.org>, <yukuai@fnnas.com>, <linan122@huawei.com>,
+        <linux-raid@vger.kernel.org>
+CC: <ncroxon@redhat.com>, Josh Hunt <johunt@akamai.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v2] md/raid10: fix deadlock with check operation and nowait requests
+Date: Tue, 10 Feb 2026 11:51:26 -0500
+Message-ID: <20260210165126.3963677-1-johunt@akamai.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209142320.474120190@linuxfoundation.org> <CAG=yYwkhAAm76qUH_2dCHUp8+hGzvgT1Fm_288Z-=QRG+tAbfQ@mail.gmail.com>
- <2026021034-salt-unhearing-88b5@gregkh>
-In-Reply-To: <2026021034-salt-unhearing-88b5@gregkh>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Tue, 10 Feb 2026 22:12:00 +0530
-X-Gm-Features: AZwV_Qiyrx5DzjivxeQYlkKlLQf016y2YvbWZSbuIjVSoODzbueV9Z2dTXJhL0g
-Message-ID: <CAG=yYwkUnCcHhB3WYXQ7kVn4VX59O67NmGQCieZkiPo8oOw+uw@mail.gmail.com>
-Subject: Re: [PATCH 6.18 000/175] 6.18.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-10_01,2026-02-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2602100140
+X-Proofpoint-ORIG-GUID: F34ei3Izttam0qiw_Ti5hHtzs3YWZyTv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDE0MSBTYWx0ZWRfX6ThlStgOkCqC
+ J7tWGUzxX1WLe/3YO3w771B4l3RVFBAEGyENu+h2HtaE5M6Ua2/Vp2KdzlLmXeDC1/4WK7s4rmH
+ CHfX8LMZ9xpNUgkD3+AIuHMQon00ai2KJsXGqSUtDD/BqmxGerLyQ/pp+ePSgSJm/f6mEljb4l5
+ 3eBU90VeheHOOpgtDF+WgzLbAUpNgUQJ3Iife8HqtwpvYaJCaDw8tDVF1WlCCGevNZKt4fhL2FX
+ LDxIRF19HQogKpzuCf+eQwduuBBpsNQtehdE9fQcABnH/m2AaUnL7g3K198htoaS0sFrqWH9qHa
+ 0AK+mfXMc4Ru9aqRR1zRUI7nMJfwghZP8URjn+5jhcuThkzp6X/sv+5RkvlFwgaIKNQr+pFkbYD
+ 1MrAzK6AfgZ5I7iLi8iilE5qt4m3/LCgCP/qeXOmFoX+Y/Pl03CigsRTM8xnXNe52JtFXweBsLZ
+ qmBx8mSR1Vm6wsDR2HQ==
+X-Proofpoint-GUID: F34ei3Izttam0qiw_Ti5hHtzs3YWZyTv
+X-Authority-Analysis: v=2.4 cv=NdPrFmD4 c=1 sm=1 tr=0 ts=698b6210 cx=c_pps
+ a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=X7Ea-ya5AAAA:8
+ a=yyCKoCU9HyUBiAoV0dgA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-10_01,2026-02-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 clxscore=1015 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602100141
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[akamai.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[akamai.com:s=jan2016.eng];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[rajagiritech.edu.in];
-	TAGGED_FROM(0.00)[bounces-215682-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215683-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[akamai.com:mid,akamai.com:dkim,akamai.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[johunt@akamai.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 62EF611D5ED
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[akamai.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 2A69311D71E
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026 at 9:13=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Feb 10, 2026 at 08:34:53PM +0530, Jeffrin Thalakkottoor wrote:
-> That's good, finding one here would mean that there was a problem :)
->
+When an array check is running it will raise the barrier at which point
+normal requests will become blocked and increment the nr_pending value to
+signal there is work pending inside of wait_barrier(). NOWAIT requests
+do not block and so will return immediately with an error, and additionally
+do not increment nr_pending in wait_barrier(). Upstream change
+43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request") added a
+call to raid_end_bio_io() to fix a memory leak when NOWAIT requests hit
+this condition. raid_end_bio_io() eventually calls allow_barrier() and
+it will unconditionally do an atomic_dec_and_test(&conf->nr_pending) even
+though the corresponding increment on nr_pending didn't happen in the
+NOWAIT case.
 
-> Why did you load/build this driver into the kernel?
-i did not load it manually . May be  it came through  "make localmodconfig"
+This can be easily seen by starting a check operation while an application is
+doing nowait IO on the same array. This results in a deadlocked state due to
+nr_pending value underflowing and so the md resync thread gets stuck waiting
+for nr_pending to == 0.
 
-> Any other lp  messages or drivers loaded?
----------------screenshot--------------------------
-$lsmod | grep lp
-lp                     36864  0
-parport                81920  3 parport_pc,lp,ppdev
------------------screenshot-------------------------
+Output of r10conf state of the array when we hit this condition:
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+  crash> struct r10conf.barrier,nr_pending,nr_waiting,nr_queued <addr of r10conf>
+    barrier = 1,
+    nr_pending = {
+      counter = -41
+    },
+    nr_waiting = 15,
+    nr_queued = 0,
 
---
-software engineer
-rajagiri school of engineering and technology-
+Example of md_sync thread stuck waiting on raise_barrier() and other requests
+stuck in wait_barrier():
+
+md1_resync
+[<0>] raise_barrier+0xce/0x1c0
+[<0>] raid10_sync_request+0x1ca/0x1ed0
+[<0>] md_do_sync+0x779/0x1110
+[<0>] md_thread+0x90/0x160
+[<0>] kthread+0xbe/0xf0
+[<0>] ret_from_fork+0x34/0x50
+[<0>] ret_from_fork_asm+0x1a/0x30
+
+kworker/u1040:2+flush-253:4
+[<0>] wait_barrier+0x1de/0x220
+[<0>] regular_request_wait+0x30/0x180
+[<0>] raid10_make_request+0x261/0x1000
+[<0>] md_handle_request+0x13b/0x230
+[<0>] __submit_bio+0x107/0x1f0
+[<0>] submit_bio_noacct_nocheck+0x16f/0x390
+[<0>] ext4_io_submit+0x24/0x40
+[<0>] ext4_do_writepages+0x254/0xc80
+[<0>] ext4_writepages+0x84/0x120
+[<0>] do_writepages+0x7a/0x260
+[<0>] __writeback_single_inode+0x3d/0x300
+[<0>] writeback_sb_inodes+0x1dd/0x470
+[<0>] __writeback_inodes_wb+0x4c/0xe0
+[<0>] wb_writeback+0x18b/0x2d0
+[<0>] wb_workfn+0x2a1/0x400
+[<0>] process_one_work+0x149/0x330
+[<0>] worker_thread+0x2d2/0x410
+[<0>] kthread+0xbe/0xf0
+[<0>] ret_from_fork+0x34/0x50
+[<0>] ret_from_fork_asm+0x1a/0x30
+
+Fixes: 43806c3d5b9b ("raid10: cleanup memleak at raid10_make_request")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josh Hunt <johunt@akamai.com>
+---
+ drivers/md/raid10.c | 40 +++++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 9debb20cf129..b05066dde693 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -68,6 +68,7 @@
+  */
+ 
+ static void allow_barrier(struct r10conf *conf);
++static void allow_barrier_nowait(struct r10conf *conf);
+ static void lower_barrier(struct r10conf *conf);
+ static int _enough(struct r10conf *conf, int previous, int ignore);
+ static int enough(struct r10conf *conf, int ignore);
+@@ -317,7 +318,7 @@ static void reschedule_retry(struct r10bio *r10_bio)
+  * operation and are ready to return a success/failure code to the buffer
+  * cache layer.
+  */
+-static void raid_end_bio_io(struct r10bio *r10_bio)
++static void raid_end_bio_io(struct r10bio *r10_bio, bool adjust_pending)
+ {
+ 	struct bio *bio = r10_bio->master_bio;
+ 	struct r10conf *conf = r10_bio->mddev->private;
+@@ -332,7 +333,10 @@ static void raid_end_bio_io(struct r10bio *r10_bio)
+ 	 * Wake up any possible resync thread that waits for the device
+ 	 * to go idle.
+ 	 */
+-	allow_barrier(conf);
++	if (adjust_pending)
++		allow_barrier(conf);
++	else
++		allow_barrier_nowait(conf);
+ 
+ 	free_r10bio(r10_bio);
+ }
+@@ -414,7 +418,7 @@ static void raid10_end_read_request(struct bio *bio)
+ 			uptodate = 1;
+ 	}
+ 	if (uptodate) {
+-		raid_end_bio_io(r10_bio);
++		raid_end_bio_io(r10_bio, true);
+ 		rdev_dec_pending(rdev, conf->mddev);
+ 	} else {
+ 		/*
+@@ -446,7 +450,7 @@ static void one_write_done(struct r10bio *r10_bio)
+ 			if (test_bit(R10BIO_MadeGood, &r10_bio->state))
+ 				reschedule_retry(r10_bio);
+ 			else
+-				raid_end_bio_io(r10_bio);
++				raid_end_bio_io(r10_bio, true);
+ 		}
+ 	}
+ }
+@@ -1030,13 +1034,23 @@ static bool wait_barrier(struct r10conf *conf, bool nowait)
+ 	return ret;
+ }
+ 
+-static void allow_barrier(struct r10conf *conf)
++static void __allow_barrier(struct r10conf *conf, bool adjust_pending)
+ {
+-	if ((atomic_dec_and_test(&conf->nr_pending)) ||
++	if ((adjust_pending && atomic_dec_and_test(&conf->nr_pending)) ||
+ 			(conf->array_freeze_pending))
+ 		wake_up_barrier(conf);
+ }
+ 
++static void allow_barrier(struct r10conf *conf)
++{
++	__allow_barrier(conf, true);
++}
++
++static void allow_barrier_nowait(struct r10conf *conf)
++{
++	__allow_barrier(conf, false);
++}
++
+ static void freeze_array(struct r10conf *conf, int extra)
+ {
+ 	/* stop syncio and normal IO and wait for everything to
+@@ -1184,7 +1198,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 	}
+ 
+ 	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
+-		raid_end_bio_io(r10_bio);
++		raid_end_bio_io(r10_bio, false);
+ 		return;
+ 	}
+ 
+@@ -1195,7 +1209,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 					    mdname(mddev), b,
+ 					    (unsigned long long)r10_bio->sector);
+ 		}
+-		raid_end_bio_io(r10_bio);
++		raid_end_bio_io(r10_bio, true);
+ 		return;
+ 	}
+ 	if (err_rdev)
+@@ -1240,7 +1254,7 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 	return;
+ err_handle:
+ 	atomic_dec(&rdev->nr_pending);
+-	raid_end_bio_io(r10_bio);
++	raid_end_bio_io(r10_bio, true);
+ }
+ 
+ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
+@@ -1372,7 +1386,7 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 
+ 	sectors = r10_bio->sectors;
+ 	if (!regular_request_wait(mddev, conf, bio, sectors)) {
+-		raid_end_bio_io(r10_bio);
++		raid_end_bio_io(r10_bio, false);
+ 		return;
+ 	}
+ 
+@@ -1523,7 +1537,7 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 		}
+ 	}
+ 
+-	raid_end_bio_io(r10_bio);
++	raid_end_bio_io(r10_bio, true);
+ }
+ 
+ static void __make_request(struct mddev *mddev, struct bio *bio, int sectors)
+@@ -2952,7 +2966,7 @@ static void handle_write_completed(struct r10conf *conf, struct r10bio *r10_bio)
+ 			if (test_bit(R10BIO_WriteError,
+ 				     &r10_bio->state))
+ 				close_write(r10_bio);
+-			raid_end_bio_io(r10_bio);
++			raid_end_bio_io(r10_bio, true);
+ 		}
+ 	}
+ }
+@@ -2987,7 +3001,7 @@ static void raid10d(struct md_thread *thread)
+ 			if (test_bit(R10BIO_WriteError,
+ 				     &r10_bio->state))
+ 				close_write(r10_bio);
+-			raid_end_bio_io(r10_bio);
++			raid_end_bio_io(r10_bio, true);
+ 		}
+ 	}
+ 
+-- 
+2.34.1
+
 
