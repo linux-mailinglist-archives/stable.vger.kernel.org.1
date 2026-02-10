@@ -1,344 +1,353 @@
-Return-Path: <stable+bounces-215597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEH0Oq2kimmhMgAAu9opvQ
-	(envelope-from <stable+bounces-215597-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:23:25 +0100
+	id KLkPIxOmimnqMgAAu9opvQ
+	(envelope-from <stable+bounces-215598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:29:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01BF116B8D
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BA9116BF2
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:29:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEC8830086E7
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 03:23:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39048300A8FB
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 03:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50658285073;
-	Tue, 10 Feb 2026 03:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832E42FD689;
+	Tue, 10 Feb 2026 03:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8uwrp4S"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="iTgsIZ6c"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737E33A1C9
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 03:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC3B25C6EE;
+	Tue, 10 Feb 2026 03:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770693791; cv=none; b=Ao31i2xOHb0mA9nd2ok3H3IfJF/cm8pb4FsLV8Coab7J6KG3fbusObBGVbSvylfbL51h+F65J9occooboIRk/Yr0s6stl/pJnCBa8e35mFWg3NNuzSFoIhEaxQbGmMDNDF/D4izeG593Mk6gJtAeFsALObirFwKhd3j60E2umkM=
+	t=1770694158; cv=none; b=eMfWvvB0DCfiseEBLBmZtGTuaxI1LuS3tOSO1Wketk/HzZoxI5A/RP0p5soRZlwwWUvFl0zJTM1mz5w1DbG/s1KSGLK7TS0FvMv268WcPeKSGKxAUNbAOGEqluReHalCoal8Jkpf+NQmGFynonI/ClhLH2yXzbBm3knU3cf1JiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770693791; c=relaxed/simple;
-	bh=gVrMey1DIUk/OJv7ojBAa1Os8S/2D8csj2CRybOyjq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VI5hV3ReTR8/Q0yM8HJSrBNeYNAHEQkwU/nhPjBDHR5bP4ANPMZdIf23J20DxIwg2X900ujutmvjM9TfLD/j5+5UmVCOrTpU914LfdfEQCetRjb2llhdOVaZsDUhBBgcPcCn7u37bdGC5owS9UZhukGZAdhTAK0fAAd7KnUpn5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L8uwrp4S; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6582e8831aeso554170a12.1
-        for <stable@vger.kernel.org>; Mon, 09 Feb 2026 19:23:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770693788; x=1771298588; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hc6QPKraklZc802qcURShhVzZIMv2vVuwuGAuOaJIEo=;
-        b=L8uwrp4St/tH9W1OHtBii4vmtwa7AHToeXJEW/ejzId8ahJym9jWc/z+Umx3AIdh1E
-         3x1vGDuojGrnYSEMXRz19HSDpYQ/CuqCH8NBeKnDuXexOi5LexgGq82FCU3Erdz5JYIH
-         VuB9iXAG3MIumelwvjcE+s1u3s2po6S9CAWoZONtRZN1+nczYI6Ui6nnm0rl3Lo2w+5g
-         zIFo/2o1mSSIf2bNNm2IrHI2PkeVPnoXzyGLbueX/+2ZPzteeA/dMbT/Uz+tP18vBGmq
-         kToMC33vow33tSnbbi+8/zTGe/KkmK4GJG3CURKKNBW2zrUTxheAavS8jTN7TOTZxDN1
-         2ZfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770693788; x=1771298588;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hc6QPKraklZc802qcURShhVzZIMv2vVuwuGAuOaJIEo=;
-        b=ic2bLMM0SPcNYCEaLQzG+kT3k+Jnf9lt9eI9iMmiNOVmTOdDAqdBLdGesLsaZA6BuN
-         pOv9S4s2pWVIsL6QmIIiH5aQRPNpW+aGFHn2GkssoMtnM2Q+Ehv7BRklKwNsYSICjHkR
-         DObUl11RWCZoCvo+FW154bWFbAqM3kal2g3MFMH8IMIBZKlvSi3p0syCXwIcQe6KAdWY
-         4XyX/goJx2SwvtUJh3o/lr4M1/pxmfDf7o+gC4r4xLqHzH3xMTw7iIx9MaDZLlNbxMmc
-         QKZdrLnpSlxfmguwXsIcs/yNnmBoKhshexQ8XnTdLaZ1Nxg2TlyV3Mj/hLC3j00UhgjH
-         cWWw==
-X-Forwarded-Encrypted: i=1; AJvYcCWD+7hNmQr3+nxf677o9CG6Umr/YD6es7nvglbnHH8ncbdVEL/nhlYNKmcmtYqEHLbwcfWUioI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO4yR6+CS9R5f1R/WV/SUh/MYCsEaw7E2jZyZ5UHm8ej+5Ws2b
-	vbz+fRl5qTn+Ip10P912iG0+b6JWOpTNF86YCDil+xyNMGvEL3Jv7avE
-X-Gm-Gg: AZuq6aJ/jQx3vlLILGN64Kk6FkbXx077F8lNR8ERGZIp2kleRH/YN6XDmobh1v1Y5Gl
-	//sp46vg2/Cl0dhG2898zbXvUm1CjcGXDFcaHNsc3OOpSQdf1TKn5bqtGAMCfcCGkoK6LBFu+67
-	+aH30jyeHSNVxNeZkEYZd/VT4OhkQAK8I1iHJId/E4MT//LzSM/l5q/Qd8S/cCffMvhdjUkp5SL
-	e+p7BrE6BijdEJu9cR8TxyyyTuLvARYdJrmPyc356K1j2EwHpL+adC0XBU8f302Mo4KnYE65Lm6
-	T9qZFFuuz3MtgoQR9o9+NWw0y88lv05P8zpWmRDTmP1Fy6FapFHjHyCDlJ4PvOS8oWq3OiajvUC
-	jaqhaWi8/daKrBKyXvVaBv26OLae+Siht0FgwvOcNK9YEO5qqhY+j8qU/Gl8+VLqjrZZ+Rydyus
-	oSUqoz1QhUfhJAEB9Skit1Pg==
-X-Received: by 2002:a17:907:a03:b0:b87:5464:8b5c with SMTP id a640c23a62f3a-b8edf48fac1mr816411666b.63.1770693787443;
-        Mon, 09 Feb 2026 19:23:07 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8edacb1d3fsm444339366b.34.2026.02.09.19.23.05
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 09 Feb 2026 19:23:06 -0800 (PST)
-Date: Tue, 10 Feb 2026 03:23:04 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, riel@surriel.com, Liam.Howlett@oracle.com,
-	vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com,
-	gavinguo@igalia.com, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
-	linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
+	s=arc-20240116; t=1770694158; c=relaxed/simple;
+	bh=UUr3VfcLjPYA+Yu03+CthNcOImY+t8YSs4peW5Ec4do=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XmZnBEIV0yW4k6TkZGkD4gvl+N6j06ro8vwB9zCjwQfJVCgQSFsTjOGi673BIvd8Aa/FNXyOkucKniVvvVEtw8D68p8FJWJi50PrfhsHR9HHBo6TjXofXuOfMAEN09rx0ubXtYOuppVt0bwG+U4PAKEc9eqBhpnS/hCAWDhJeFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=iTgsIZ6c; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Zj
+	OXH3dxhwKXUKRoFlUSdjm8A1Z7veN1Ce41vIdTaZY=; b=iTgsIZ6cdDgeYr68/K
+	RNT9GYHFWc8K15xTdWRh7USjGgVSfsR2EZVwOlOUiQOoK5hh1+iXJv6wwpxcxanD
+	sBBCmuxhJat/eqVeup9OZsIpNXyHra34+rFDGGLHHt9KZ8J7ApVwLXOi3mCut+AO
+	cFrC5hafDuLEQg6tuIixzCIoA=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgCHcOrxpYppJQAFNw--.11677S2;
+	Tue, 10 Feb 2026 11:28:52 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: Re: [Patch v3] mm/huge_memory: fix early failure try_to_migrate()
- when split huge pmd for shared thp
-Message-ID: <20260210032304.j4k5izweewouabqb@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260205033113.30724-1-richard.weiyang@gmail.com>
- <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
+Cc: linux-kernel@vger.kernel.org,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1.y] btrfs: fix racy bitfield write in btrfs_clear_space_info_full()
+Date: Tue, 10 Feb 2026 11:28:35 +0800
+Message-Id: <20260210032835.3606934-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgCHcOrxpYppJQAFNw--.11677S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKr4UKr1ruFy7AF4kCF1rJFb_yoWfurWkpF
+	Wa9r9Iyw48JF95Wr4kWw4kXF4fKwn5Wa15tr9xAa4rZrnxGrn8WrWqka4FvF1ktrn5XF4a
+	qF4UGr15XF15C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi3rcfUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3RSjPWmKpfQ1ZQAA31
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-215598-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215597-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_REPLYTO(0.00)[richard.weiyang@gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[richardweiyang@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,linux-foundation.org,kernel.org,surriel.com,oracle.com,suse.cz,google.com,igalia.com,linux.alibaba.com,nvidia.com,kvack.org,linux.dev,vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,bur.io,suse.com,163.com];
+	DKIM_TRACE(0.00)[163.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	REPLYTO_EQ_FROM(0.00)[]
-X-Rspamd-Queue-Id: F01BF116B8D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D6BA9116BF2
 X-Rspamd-Action: no action
 
-On Mon, Feb 09, 2026 at 05:08:16PM +0000, Lorenzo Stoakes wrote:
->On Thu, Feb 05, 2026 at 03:31:13AM +0000, Wei Yang wrote:
->> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
->> split_huge_pmd_locked()") return false unconditionally after
->> split_huge_pmd_locked() which may fail early during try_to_migrate() for
->> shared thp. This will lead to unexpected folio split failure.
->
->I think this could be put more clearly. 'When splitting a PMD THP migration
->entry in try_to_migrate_one() in a rmap walk invoked by try_to_migrate() when
+From: Boris Burkov <boris@bur.io>
 
-split_huge_pmd_locked() could split a PMD THP migration entry, but here we
-expect a PMD THP normal entry.
+[ Upstream commit 38e818718c5e04961eea0fa8feff3f100ce40408 ]
 
->TTU_SPLIT_HUGE_PMD is specified.' or something like that.
->
->>
->> One way to reproduce:
->>
->>     Create an anonymous thp range and fork 512 children, so we have a
->>     thp shared mapped in 513 processes. Then trigger folio split with
->>     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
->>     order 0.
->
->I think you should explain the issue before the repro. This is just confusing
->things. Mention the repro _afterwards_.
->
+From the memory-barriers.txt document regarding memory barrier ordering
+guarantees:
 
-OK, will move afterwards.
+ (*) These guarantees do not apply to bitfields, because compilers often
+     generate code to modify these using non-atomic read-modify-write
+     sequences.  Do not attempt to use bitfields to synchronize parallel
+     algorithms.
 
->>
->> Without the above commit, we can successfully split to order 0.
->> With the above commit, the folio is still a large folio.
->>
->> The reason is the above commit return false after split pmd
->
->This sentence doesn't really make sense. Returns false where? And under what
->circumstances?
->
->I'm having to look through 60fbb14396d5 to understand this which isn't a good
->sign.
->
->'This patch adjusted try_to_migrate_one() to, when a PMD-mapped THP migration
+ (*) Even in cases where bitfields are protected by locks, all fields
+     in a given bitfield must be protected by one lock.  If two fields
+     in a given bitfield are protected by different locks, the compiler's
+     non-atomic read-modify-write sequences can cause an update to one
+     field to corrupt the value of an adjacent field.
 
-I am afraid the original intention of commit 60fbb14396d5 is not just for
-migration entry.
+btrfs_space_info has a bitfield sharing an underlying word consisting of
+the fields full, chunk_alloc, and flush:
 
->entry is found, and TTU_SPLIT_HUGE_PMD is specified (for example, via
->unmap_folio()), exit the walk and return false unconditionally'.
->
->> unconditionally in the first process and break try_to_migrate().
->>
->> On memory pressure or failure, we would try to reclaim unused memory or
->> limit bad memory after folio split. If failed to split it, we will leave
->
->Limit bad memory? What does that mean? Also should be If '_we_' or '_it_' or
->something like that.
->
+struct btrfs_space_info {
+        struct btrfs_fs_info *     fs_info;              /*     0     8 */
+        struct btrfs_space_info *  parent;               /*     8     8 */
+        ...
+        int                        clamp;                /*   172     4 */
+        unsigned int               full:1;               /*   176: 0  4 */
+        unsigned int               chunk_alloc:1;        /*   176: 1  4 */
+        unsigned int               flush:1;              /*   176: 2  4 */
+        ...
 
-What I want to mean is in memory_failure() we use try_to_split_thp_page() and
-the PG_has_hwpoisoned bit is only set in the after-split folio contains
-@split_at.
+Therefore, to be safe from parallel read-modify-writes losing a write to
+one of the bitfield members protected by a lock, all writes to all the
+bitfields must use the lock. They almost universally do, except for
+btrfs_clear_space_info_full() which iterates over the space_infos and
+writes out found->full = 0 without a lock.
 
->> some more memory unusable than expected.
->
->'We will leave some more memory unusable than expected' is super unclear.
->
->You mean we will fail to migrate THP entries at the PTE level?
->
+Imagine that we have one thread completing a transaction in which we
+finished deleting a block_group and are thus calling
+btrfs_clear_space_info_full() while simultaneously the data reclaim
+ticket infrastructure is running do_async_reclaim_data_space():
 
-No. 
+          T1                                             T2
+btrfs_commit_transaction
+  btrfs_clear_space_info_full
+  data_sinfo->full = 0
+  READ: full:0, chunk_alloc:0, flush:1
+                                              do_async_reclaim_data_space(data_sinfo)
+                                              spin_lock(&space_info->lock);
+                                              if(list_empty(tickets))
+                                                space_info->flush = 0;
+                                                READ: full: 0, chunk_alloc:0, flush:1
+                                                MOD/WRITE: full: 0, chunk_alloc:0, flush:0
+                                                spin_unlock(&space_info->lock);
+                                                return;
+  MOD/WRITE: full:0, chunk_alloc:0, flush:1
 
-Hmm... I would like to clarify before continue.
+and now data_sinfo->flush is 1 but the reclaim worker has exited. This
+breaks the invariant that flush is 0 iff there is no work queued or
+running. Once this invariant is violated, future allocations that go
+into __reserve_bytes() will add tickets to space_info->tickets but will
+see space_info->flush is set to 1 and not queue the work. After this,
+they will block forever on the resulting ticket, as it is now impossible
+to kick the worker again.
 
-This fix is not to fix migration case. This is to fix folio split for a shared
-mapped PMD THP. Current folio split leverage migration entry during split
-anonymous folio. So the action here is not to migrate it.
+I also confirmed by looking at the assembly of the affected kernel that
+it is doing RMW operations. For example, to set the flush (3rd) bit to 0,
+the assembly is:
+  andb    $0xfb,0x60(%rbx)
+and similarly for setting the full (1st) bit to 0:
+  andb    $0xfe,-0x20(%rax)
 
-I am a little lost here.
+So I think this is really a bug on practical systems.  I have observed
+a number of systems in this exact state, but am currently unable to
+reproduce it.
 
->Can we say this instead please?
->
->>
->> The tricky thing in above reproduce method is current debugfs interface
->> leverage function split_huge_pages_pid(), which will iterate the whole
->> pmd range and do folio split on each base page address. This means it
->> will try 512 times, and each time split one pmd from pmd mapped to pte
->> mapped thp. If there are less than 512 shared mapped process,
->> the folio is still split successfully at last. But in real world, we
->> usually try it for once.
->
->This whole sentence could be dropped I think I don't think it adds anything.
->
->And you're really confusing the issue by dwelling on this I think.
->
->You need to restart the walk in this case in order for the PTEs to be correctly
->handled right?
->
->Can you explain why we can't just essentially revert 60fbb14396d5? Or at least
->the bit that did this change?
->
->Also is unmap_folio() the only caller with TTU_SPLIT_HUGE_PMD as the comment
->that was deleted by 60fbb14396d5 implied? Or are there others? If it is, please
->mention the commit msg.
->
->
->>
->> This patch fixes this by restart page_vma_mapped_walk() after
->> split_huge_pmd_locked(). We cannot simply return "true" to fix the
->> problem, as that would affect another case:
->
->I mean how would it fix the problem to incorrectly have it return true when the
->walk had not in fact completed?
->
->I'm not sure why you're dwelling on this idea in the commit msg?
->
->> split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
->> leave the folio mapped through PTEs; we would return "true" from
->> try_to_migrate_one() in that case as well. While that is mostly
->> harmless, we could end up walking the rmap, wasting some cycles.
->
->I mean I think we can just drop this whole paragraph no?
->
->You might think I'm being picky about the commit msg here, but as is I find it
->pretty much incomprehensible and that's not helpful if we have to go back and
->read this in future.
->
+Rather than leaving this footgun lying around for the future, take
+advantage of the fact that there is room in the struct anyway, and that
+it is already quite large and simply change the three bitfield members to
+bools. This avoids writes to space_info->full having any effect on
+writes to space_info->flush, regardless of locking.
 
-Never mind.
+Fixes: 957780eb2788 ("Btrfs: introduce ticketed enospc infrastructure")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ The context change is due to the commit cc0517fe779f
+("btrfs: tweak extent/chunk allocation for space_info sub-space")
+in v6.16 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ fs/btrfs/block-group.c |  6 +++---
+ fs/btrfs/space-info.c  | 22 +++++++++++-----------
+ fs/btrfs/space-info.h  |  6 +++---
+ 3 files changed, 17 insertions(+), 17 deletions(-)
 
-A clearer and comprehensive change log is helpful for all. And my English is
-not native language, so your suggestion helps a lot.
-
->>
->> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->> Tested-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Gavin Guo <gavinguo@igalia.com>
->> Acked-by: David Hildenbrand (arm) <david@kernel.org>
->> Cc: Gavin Guo <gavinguo@igalia.com>
->> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Cc: Lance Yang <lance.yang@linux.dev>
->> Cc: <stable@vger.kernel.org>
->>
->> ---
->> v3:
->>   * gather RB
->>   * adjust the commit log and comment per David
->
->Clearly not enough :)
->
->>   * add userspace-visible runtime effect in change log
->
->Which one was that?
->
->> v2:
->>   * restart page_vma_mapped_walk() after split_huge_pmd_locked()
->> ---
->>  mm/rmap.c | 12 +++++++++---
->>  1 file changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 618df3385c8b..1041a64b8e6b 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>  			__maybe_unused pmd_t pmdval;
->>
->>  			if (flags & TTU_SPLIT_HUGE_PMD) {
->> +				/*
->> +				 * split_huge_pmd_locked() might leave the
->> +				 * folio mapped through PTEs. Retry the walk
->> +				 * so we can detect this scenario and properly
->> +				 * abort the walk.
->> +				 */
->
->This comment is a lot clearer than the commit msg :)
->
->>  				split_huge_pmd_locked(vma, pvmw.address,
->>  						      pvmw.pmd, true);
->> -				ret = false;
->> -				page_vma_mapped_walk_done(&pvmw);
->> -				break;
->> +				flags &= ~TTU_SPLIT_HUGE_PMD;
->> +				page_vma_mapped_walk_restart(&pvmw);
->> +				continue;
->
->This logic does lok reasonable.
->
->>  			}
->>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->>  			pmdval = pmdp_get(pvmw.pmd);
->> --
->> 2.34.1
->>
->
->Cheers, Lorenzo
-
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 2338d42b8f4e..880288d7358e 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -3924,7 +3924,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
+ 			mutex_unlock(&fs_info->chunk_mutex);
+ 		} else {
+ 			/* Proceed with allocation */
+-			space_info->chunk_alloc = 1;
++			space_info->chunk_alloc = true;
+ 			wait_for_alloc = false;
+ 			spin_unlock(&space_info->lock);
+ 		}
+@@ -3973,7 +3973,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
+ 	spin_lock(&space_info->lock);
+ 	if (ret < 0) {
+ 		if (ret == -ENOSPC)
+-			space_info->full = 1;
++			space_info->full = true;
+ 		else
+ 			goto out;
+ 	} else {
+@@ -3983,7 +3983,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
+ 
+ 	space_info->force_alloc = CHUNK_ALLOC_NO_FORCE;
+ out:
+-	space_info->chunk_alloc = 0;
++	space_info->chunk_alloc = false;
+ 	spin_unlock(&space_info->lock);
+ 	mutex_unlock(&fs_info->chunk_mutex);
+ 
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 230e086ddee8..2f23bbcbd231 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -179,7 +179,7 @@ void btrfs_clear_space_info_full(struct btrfs_fs_info *info)
+ 	struct btrfs_space_info *found;
+ 
+ 	list_for_each_entry(found, head, list)
+-		found->full = 0;
++		found->full = false;
+ }
+ 
+ /*
+@@ -360,7 +360,7 @@ void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
+ 	found->bytes_readonly += block_group->bytes_super;
+ 	btrfs_space_info_update_bytes_zone_unusable(info, found, block_group->zone_unusable);
+ 	if (block_group->length > 0)
+-		found->full = 0;
++		found->full = false;
+ 	btrfs_try_granting_tickets(info, found);
+ 	spin_unlock(&found->lock);
+ 
+@@ -1116,7 +1116,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 	spin_lock(&space_info->lock);
+ 	to_reclaim = btrfs_calc_reclaim_metadata_size(fs_info, space_info);
+ 	if (!to_reclaim) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
+ 	}
+@@ -1128,7 +1128,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 		flush_space(fs_info, space_info, to_reclaim, flush_state, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1171,7 +1171,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
+ 					flush_state = FLUSH_DELAYED_ITEMS_NR;
+ 					commit_cycles--;
+ 				} else {
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 				}
+ 			} else {
+ 				flush_state = FLUSH_DELAYED_ITEMS_NR;
+@@ -1333,7 +1333,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 
+ 	spin_lock(&space_info->lock);
+ 	if (list_empty(&space_info->tickets)) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
+ 	}
+@@ -1344,7 +1344,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1361,7 +1361,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 			    data_flush_states[flush_state], false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1378,7 +1378,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 				if (maybe_fail_all_tickets(fs_info, space_info))
+ 					flush_state = 0;
+ 				else
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 			} else {
+ 				flush_state = 0;
+ 			}
+@@ -1394,7 +1394,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
+ 
+ aborted_fs:
+ 	maybe_fail_all_tickets(fs_info, space_info);
+-	space_info->flush = 0;
++	space_info->flush = false;
+ 	spin_unlock(&space_info->lock);
+ }
+ 
+@@ -1719,7 +1719,7 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
+ 				 */
+ 				maybe_clamp_preempt(fs_info, space_info);
+ 
+-				space_info->flush = 1;
++				space_info->flush = true;
+ 				trace_btrfs_trigger_flush(fs_info,
+ 							  space_info->flags,
+ 							  orig_bytes, flush,
+diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
+index dc69138f3de1..7aebb6c4132c 100644
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -109,11 +109,11 @@ struct btrfs_space_info {
+ 				   flushing. The value is >> clamp, so turns
+ 				   out to be a 2^clamp divisor. */
+ 
+-	unsigned int full:1;	/* indicates that we cannot allocate any more
++	bool full;		/* indicates that we cannot allocate any more
+ 				   chunks for this space */
+-	unsigned int chunk_alloc:1;	/* set if we are allocating a chunk */
++	bool chunk_alloc;	/* set if we are allocating a chunk */
+ 
+-	unsigned int flush:1;		/* set if we are trying to make space */
++	bool flush;		/* set if we are trying to make space */
+ 
+ 	unsigned int force_alloc;	/* set if we need to force a chunk
+ 					   alloc for this space */
 -- 
-Wei Yang
-Help you, Help me
+2.34.1
+
 
