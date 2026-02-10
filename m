@@ -1,145 +1,131 @@
-Return-Path: <stable+bounces-215580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AE/pEtCHimk1LgAAu9opvQ
-	(envelope-from <stable+bounces-215580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 02:20:16 +0100
+	id sXPMBjyLimk5LwAAu9opvQ
+	(envelope-from <stable+bounces-215581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 02:34:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C20CF115F4C
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 02:20:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD26116020
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 02:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D121A300C596
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 01:20:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0054030056FC
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 01:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5F6246783;
-	Tue, 10 Feb 2026 01:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE06F2609DC;
+	Tue, 10 Feb 2026 01:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="C6QebXQ6"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2n4Qvnv3"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB7E7262A;
-	Tue, 10 Feb 2026 01:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C62F2522A1
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 01:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770686411; cv=none; b=oVQDh34F1FujBSCmCnC1eo6v6M3SD3TYhpe2HLBgG2YpDJPjCAbYTNNluRBnmZjq3vIVSDfLzAzU7ZunXbxVlLWHFlkjSjvOd2Dljz2KAPMBFxUe0r3tCbMcRqdcLn0mHslh885FgVWknO3UmBC9NHwRXn0HJV7ZWSPlktIv/C4=
+	t=1770687287; cv=none; b=OYm9rTEIEv945zog92zseBmjgEWZ4Xw3viVtwIpBIfxAsHtrEQiryaBw5Zv6JgoQVvdbWn3q2OetyHsVdp3Tegv3EY/kqEK6FP00PzRaCxzUFdAZ6/SA4NhUc+OJLb7MwsTWD4MpxlgqXbXapMlM29l/sgH2AdCzNLE6nPY+Fj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770686411; c=relaxed/simple;
-	bh=KQDMo6KDE8bY9om2BIOOP4wysK63lPkaFonb63R/kcc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qtj0VcXBxq7JEfpiPk8/MwWiwkyRbgLGd6wDItO1U3ZZTcdKndBHEms4qD6UJ2a7Dnx8+/f9Et2fTOqbSi0s5m4AKau6Wl89eEUGs99wPDLD2qjMDNtD4WhebKt4STQ0kKGjjZw1iiwRAJHWAqH7G//aPoPklQA5L37qVh84+NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=C6QebXQ6; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770686406; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=cN85VGoE32TAaBeuh7trX4TvvDZc5iL4HxTbBbIYYCc=;
-	b=C6QebXQ6fNMh2yrMD4tomXEcyMyuk52FjdP05uOIaIM8FejLaa2ZMRSL/XyBG1b3O0mxf+Z69GRFUiDRRJy/U+838tEfbWsxnE9w42Ho46agRXLnilyb4B+s0+JWGqPx0sN4NutrXRwCZGdhNtkKhqMuOOK6LZBAaxltxf2BQJo=
-Received: from 30.74.144.109(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wyx9JBp_1770686404 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Feb 2026 09:20:05 +0800
-Message-ID: <e69270cf-dac1-448c-ace8-3f789e5cdc6e@linux.alibaba.com>
-Date: Tue, 10 Feb 2026 09:20:04 +0800
+	s=arc-20240116; t=1770687287; c=relaxed/simple;
+	bh=T/HCmpcNqFcFD7xZ86y+ZqO8jXnLnbpyYwBENPJl2eI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Cbxo/gY+6gPWfBT9J3h6gc4hgLfaMfrl1/c4+6hi+OV+j7dXn7A3LIcUrlf87DflBYlX3EKdPVXj2JBNC1x4jcwP+m+Bp5neey3NWfxPNfrUnUQ4WNQEWo7uUa13vUjl+g4B/VPmNFzMXS/KqEV2b6+LVrAPvxnlYlCznSvNdbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2n4Qvnv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F5BC116C6;
+	Tue, 10 Feb 2026 01:34:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770687287;
+	bh=T/HCmpcNqFcFD7xZ86y+ZqO8jXnLnbpyYwBENPJl2eI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=2n4Qvnv3dtojiMggwW254KgxnSn9CjO1dUWy3GOSer8V7sbAUuJUTPUZ4qine7txY
+	 V0v6T4Ggpk2LSpnLqB0OWN7YCvMGMU4/BzUzjxpvxFWoZLP+xlzPqjvxQstWW9Gw/O
+	 Yq/kTGRQ24+XqR4ouSD4ZmCR29P6yO2J3fgcgqNA=
+Date: Mon, 9 Feb 2026 17:34:46 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+Cc: intel-xe@lists.freedesktop.org, Alistair Popple <apopple@nvidia.com>,
+ Ralph Campbell <rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+ Jason Gunthorpe <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>, Leon
+ Romanovsky <leon@kernel.org>, Matthew Brost <matthew.brost@intel.com>, John
+ Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-Id: <20260209173446.b76547c4028132f71de1b8eb@linux-foundation.org>
+In-Reply-To: <89cb1d4744789702cd80dba8eb40dd50bf053b4e.camel@linux.intel.com>
+References: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
+	<89cb1d4744789702cd80dba8eb40dd50bf053b4e.camel@linux.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/page_alloc: clear page->private in
- free_pages_prepare()
-To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, npiggin@gmail.com,
- linux-kernel@vger.kernel.org, kasong@tencent.com, hughd@google.com,
- chrisl@kernel.org, ryncsn@gmail.com, stable@vger.kernel.org,
- willy@infradead.org
-References: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
- <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
- <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
- <0BC1D792-80CA-4E60-AEA0-187F73BD4723@nvidia.com>
- <bc0b6d03-4309-463d-a112-aae57cee335d@kernel.org>
- <22431471-b569-4ade-9881-387debada00b@kernel.org>
- <91F2E741-5473-4D34-ADA1-C9E6EDCBF5E0@nvidia.com>
- <546b200d-5b70-4db4-99f1-f50f6a343c10@kernel.org>
- <3E055DAD-647A-456B-9230-4DD2574D4E8E@nvidia.com>
- <4a759288-baf9-4fe6-9d16-034edf6615f0@kernel.org>
- <72534BCC-2581-4BFA-B3BC-2CC6FF1B1E7A@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <72534BCC-2581-4BFA-B3BC-2CC6FF1B1E7A@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215580-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215581-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,kvack.org,linux-foundation.org,suse.cz,google.com,suse.com,cmpxchg.org,vger.kernel.org,tencent.com,kernel.org,infradead.org];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C20CF115F4C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:mid,linux-foundation.org:dkim,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 6DD26116020
 X-Rspamd-Action: no action
 
+On Mon, 09 Feb 2026 15:47:38 +0100 Thomas Hellstr=F6m <thomas.hellstrom@lin=
+ux.intel.com> wrote:
 
+> @Alistair, any chance of an R-B for the below version?
 
-On 2/10/26 3:42 AM, Zi Yan wrote:
-> On 9 Feb 2026, at 14:39, David Hildenbrand (Arm) wrote:
-> 
->> On 2/9/26 18:44, Zi Yan wrote:
->>> On 9 Feb 2026, at 12:36, David Hildenbrand (Arm) wrote:
->>>
->>>> On 2/9/26 17:33, Zi Yan wrote:
->>>>>
->>>>>
->>>>> I agree. Silently fixing non zero ->private just moves the work/responsibility
->>>>> from users to core mm. They could do better. :)
->>>>>
->>>>> We can have a patch or multiple patches to fix users do not zero ->private
->>>>> when freeing a page and add the patch below.
->>>>
->>>> Do we know roughly which ones don't zero it out?
->>>
->>> So far based on [1], I found:
->>>
->>> 1. shmem_swapin_folio() in mm/shmem.c does not zero ->swap.val (overlapping
->>> with private);
+Yes please.
 
-After Kairui’s series [1], the shmem part looks good to me. As we no 
-longer skip the swapcache now, we shouldn’t clear the ->swap.val of a 
-swapcache folio if failed to swap-in.
+> @Andrew, will this go through the -mm tree or alternaltively an ack for
+> merging through drm-xe-fixes?
 
-[1]https://lore.kernel.org/all/20251219195751.61328-1-ryncsn@gmail.com/T/#mcba8a32e1021dc28ce1e824c9d042dca316a30d7
+Either works.  I'll grab a copy.  It you want to take this via drm then
+I'll drop the mm.git copy once the drm tree's version appears in linux-next.
 
->>> 2. __free_slab() in mm/slub.c does not zero ->inuse, ->objects, ->frozen
->>> (overlapping with private).
->>>
->>> Mikhail found ttm_pool_unmap_and_free() in drivers/gpu/drm/ttm/ttm_pool.c
->>> does not zero ->private, which stores page order.
+Acked-by: Andrew Morton <akpm@linux-foundation.org>
 
+> > The lru_add_drain_all() function requires a short work-item
+
+Pet peeve: s/the foo() function/foo()/g.  It's just as good!
+
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > =A0				unlock_page(vmf->page);
+> > =A0				put_page(vmf->page);
+> > =A0			} else {
+> > -				pte_unmap_unlock(vmf->pte, vmf->ptl);
+> > +				pte_unmap(vmf->pte);
+> > +				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+> > =A0			}
+> > =A0		} else if (softleaf_is_hwpoison(entry)) {
+> > =A0			ret =3D VM_FAULT_HWPOISON;
+
+So apart from the rename, this is the whole patch.  This got nicer!
 
