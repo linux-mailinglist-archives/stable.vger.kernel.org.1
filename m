@@ -1,152 +1,251 @@
-Return-Path: <stable+bounces-215699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id DLcsHru7i2k6aAAAu9opvQ
-	(envelope-from <stable+bounces-215699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:14:03 +0100
+	id OFR6HB7Ai2l6aQAAu9opvQ
+	(envelope-from <stable+bounces-215700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:32:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E9B11FE4A
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:14:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6864120012
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EC9F3300A248
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:13:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FF4030BBE34
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23DF314D03;
-	Tue, 10 Feb 2026 23:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A104303A15;
+	Tue, 10 Feb 2026 23:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J3jtm16p"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eoTsNhOw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746B3314B6F
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 23:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8008F338907
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 23:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770765236; cv=none; b=BKR0OLnC/aUJxJgTpoLQNufqcIi6svm23bwaKTj9exhuw6vC9pbiVW1a8ulOqWGyWjxY9XEdl2z0PWk8HfYVxORB1YmtLJpMjs/maKL59b38K+HLjF3mgPmpSanRyxSGhpg/fYIDYYy42MN5km+a1J0xnnLJpbtxReYVY3ukTVc=
+	t=1770766219; cv=none; b=Pk53pd9cy7u/l0KRtR4+GdkaRe+TyPdB7qdRqanf57scvwliChQEWGGY+bZOmymilYIiCmrzuBvMWScfZjB8a2Wm2t98K0t0n9Xcp1oGS70CoXLfKYgTNswaGQq5PdktNIumoYyJHGxCCnakd2JVRHO1KVHvbX2b1D7f/+1IN0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770765236; c=relaxed/simple;
-	bh=qMqaPEKoWyjXmYfAH/4rFVHq2BLU9FWeOfW6jUzTfto=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HY6yuUHY9Tk8XFOcRyF8LpU5yK8/OsHtFl8pCHHLloGLcCZeGCquoMEiHe10oLUSZLtQmWN0tR6NavCn+JdCo2v0Reb6ptAv5rPs8vUSLynDN9VQoF7gpM7U3bSp2mdHU/VBiftgudF62FfKKXLljfmZoi2Zqtau7eTyKxJpgRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J3jtm16p; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43284ed32a0so4205493f8f.3
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:13:55 -0800 (PST)
+	s=arc-20240116; t=1770766219; c=relaxed/simple;
+	bh=7Pa7vSAHTHgeNPV7lnCcMA0KjCpXbLVVkJL+cwa0SSA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=O470NhdbTUbUBiKnvNnuNH6g5gCwvP4yMD54APj+TWnycYfe+eWWAeYuQAZ6FILFEOrZJPU0RkoHsB+oy205Ucn7uybCcCCoGXdqV2eJsOPLw4M3v57vTSiNBY+3S12mdZj9IIEpkO0mOr72+3blNR/zkZLVMnH8oRNCke1dXQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eoTsNhOw; arc=none smtp.client-ip=74.125.82.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b86381a107so25500883eec.1
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:30:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770765234; x=1771370034; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6bD4A8iLkPT86OVNtKue5n8u7ZlVzU2MVeKWEyFIN18=;
-        b=J3jtm16pugWt+krb61JLBFjfYJZDTVqfPSyBoOEWtWTKMN78KAb628+5T0pe5RgN4J
-         Y9LmkeYMtQrWW8tJlAVDbrlKgF1QtVMahKruvugR8TrO8rkcGoLIxHD0yNxDa+4pDlLH
-         +voU/Psy9hh5uSU+cVDZh04Bim0SmtUhybz7KOcqSVxyN+0YgfEmIaLmaxPMnrdXNfnR
-         EQdD5dPqss2H+3gC684Yn8r3N6RDaP157DP4i7blRt66CAgzhaRJQE9XVbBK2X5eGj2t
-         urKLvysB0mnjpDxTrqm181sCO/6Jmp3NCx+nNLhTVRNc1Q1BJuMRi619O84Z0D3niWef
-         R4Ug==
+        d=google.com; s=20230601; t=1770766215; x=1771371015; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lj0RKcz76JMrswthVhhC2aRGx+N/zrzPWxqncCabNxk=;
+        b=eoTsNhOw0aUkf3EWeJf9zAHvaEjxsawLRqtMQDupJzY2racsqPulP3pwTlOIeV/gul
+         nuT5eX4FOXsWPpEz0IlB7wqcUsAnILPfia8p8klBJ3r/lk3gffHizixNrPq2y4Af2P73
+         e9jUXF2WcilwkPm8rqXngrvjWNvNp2NcHV7NBah7q8xs5p8TtsHtOCWw3/qxM8YU+3Uk
+         Nz99hlWv35qfoyzXuIz/Dj5DPWV+jBOCG3iyjMTkO1+uR7Gu4BlZwuDr/sITsTctZxk/
+         h5ycMATOkangjBvKarRGVTZXXOzCOiftaZ0Jz6m2CvB9ODuCXeVZarK10iuIxqqHTl2b
+         kmqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770765234; x=1771370034;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6bD4A8iLkPT86OVNtKue5n8u7ZlVzU2MVeKWEyFIN18=;
-        b=UItwor6XFXcCH9vAuj5wZZ2Cn5zBNvdcg56mCl3fV9QB+a7EPz5gVy+r6dw4p9U0s/
-         jG45DzXw9mxpHFL9cVlwT3rfFNzJc4OfvUrXZguod2Bq9lhoqMRZkeKvZEJdrjsA7/YH
-         Midu0tnIZ+D9jFMuaMP7+LONB5wSikBDm7lRilGvUqtosoJarV7JxyhNqw810GEU0VAv
-         in/DXTkbuEBfoHsNDg0Qt3yDrcTIqk3tMOn+ALseC4o0FOkoyN1CNSz5Iq6AIMzIjj6v
-         4GdO+k0usWIDFq/eHJUtuI5mEJDnl8XJI8YUKuEFglCdl8N202hfw5Fjr8lszYeXZ7Hu
-         fg3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXyxRICPzmB52dmdm8aG1qLmxIU5Df+Vi7EpvoOi3OiF6hE9/ity3Nn9S9XEXAilkSD3hDJCfw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywp+5AL7UQxBOMD7zgDJSt3Z6TszeNA6Z+uMjA770wxRVUC4Xbo
-	qY7oIyRb/gUeL04XkdBkhgO711OBeNUcPn2ZAtF+nYy4DKdyyX6S5C4I
-X-Gm-Gg: AZuq6aJ+wfYYvqqtRBulaShrl44oJ2Y28AHkcw77ON/979fhGirWkaFxXj/WMQp94BV
-	c4TMQxUNa2GcMJlz3NtsOjR9RZBxhfCqGfLFGIs1BzJpmJCeGTNMoVBO71q+bIYcIZaSJIweE5m
-	vOABPrgWtOPDR8l4rWFbP+dR14DejEvkMN9Y7iMcxUciyCK8ywVjYC2MVtLWOvwxiYyIuHYflju
-	CYkQAzcdVPiR4d8Io9WxDs24cITmH4HPUhBhmSQCTfTF4OiqQU3C8ac49MCjAqz2pNb1scAQr6u
-	5/p3GNHam1Yn/DwqvUyJ5dsVChIeN9HcGVsDSrBduP2N8EB3NqZ/laj6M+9wK60Sxi201IicGee
-	sA8tGq0Di5bAwMRI9dcWR/avC193b/7LxHgqiZFiMdaXfwyD+A8GaFcvNcOWmcPkoHPn9V1jdcS
-	F7hWtEE7SzWyKm41nUX4Hnc5AlqJNxDmmnQSuS/uiZqydFqn/4yxLJGxHVFp/Ejre9y/I1yxisY
-	mi0d8cz
-X-Received: by 2002:a05:6000:230c:b0:435:9d70:f2a2 with SMTP id ffacd0b85a97d-4378455b876mr12695f8f.25.1770765233786;
-        Tue, 10 Feb 2026 15:13:53 -0800 (PST)
-Received: from lewis-s360.localdomain (static-193-237-220-23.vodafonexdsl.co.uk. [193.237.220.23])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43783e39c6asm262034f8f.28.2026.02.10.15.13.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 15:13:52 -0800 (PST)
-From: Lewis Mason <mason8110@gmail.com>
-X-Google-Original-From: Lewis Mason <lewis@ocuru.co.uk>
-To: linux-sound@vger.kernel.org
-Cc: tiwai@suse.com,
-	perex@perex.cz,
-	stable@vger.kernel.org,
-	Lewis Mason <lewis@ocuru.co.uk>
-Subject: [PATCH] ALSA: hda/realtek: Add quirk for Samsung Galaxy Book3 Pro 360 (NP965QFG)
-Date: Tue, 10 Feb 2026 23:13:37 +0000
-Message-ID: <20260210231337.7265-1-lewis@ocuru.co.uk>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1770766215; x=1771371015;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lj0RKcz76JMrswthVhhC2aRGx+N/zrzPWxqncCabNxk=;
+        b=enBXv+zZdUSewvbr1UKS8gAOs0tzziCEBSCvVyd/zTDAbuUwiITVnBLNakURtxZ1vm
+         54FRXGU4j4woUvfMTNjpOFlDsH0uvsV+lpqgbcmIp4dx0F6i90QisucY3TfaksmI/5Xq
+         AlofF1hsgsevYsh9kh7BhAWNw0JBx2dzsL6doLh7RWt6a34aT2UPv2D+ScR8sJz8kJD4
+         C6vJuhx9rKuazGjC3BDD/bEXJ+7xhS/QTBvf02Qzl5kGZXe6cJk4iOEPGFDSqSVoGoDY
+         he5t/P9nT9DMTaMZz+2gYMWO5el+XgJB61CjaXT/1xHtqrP84bUBKSZSFNDBn1OSsFry
+         LY1w==
+X-Forwarded-Encrypted: i=1; AJvYcCV8qM99rH6giE/3r41PPNdWYECjSsh0OlTc4xEcqRKzZAMTv+qsSs1mDYoWZKO0WlxTyhmmn6M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJV9Gs1hiwyS/elPzntopgFbi9MqNVY5w1siN8+gMeJd2HytkW
+	9SrwOhWb8NSGz1BI/Vy54wuE4XTRVo7SEylKnqpEsnISEDeVBRQ7gat6ZXONntYBb2ZiRGZEJFI
+	/D7zVgS9lo73aBQ==
+X-Received: from dlbeg13.prod.google.com ([2002:a05:7022:f8d:b0:124:a511:1ddf])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:4581:b0:119:e569:fb9b with SMTP id a92af1059eb24-1270411bf1cmr8087419c88.10.1770766215449;
+ Tue, 10 Feb 2026 15:30:15 -0800 (PST)
+Date: Tue, 10 Feb 2026 23:28:20 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.239.g8d8fc8a987-goog
+Message-ID: <20260210232949.3770644-1-cmllamas@google.com>
+Subject: [PATCH] rust_binder: fix oneway spam detection
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Matt Gilbride <mattgilbride@google.com>, Paul Moore <paul@paul-moore.com>, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, Miguel Ojeda <ojeda@kernel.org>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	Tiffany Yang <ynaffit@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-215699-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mason8110@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,android.com,kernel.org,google.com,gmail.com,paul-moore.com,konsulko.se];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cmllamas@google.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-215700-lists,stable=lfdr.de];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ocuru.co.uk:mid,ocuru.co.uk:email]
-X-Rspamd-Queue-Id: 91E9B11FE4A
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,args.pid:url]
+X-Rspamd-Queue-Id: C6864120012
 X-Rspamd-Action: no action
 
-The Samsung Galaxy Book3 Pro 360 NP965QFG (subsystem ID 0x144d:0xc1cb)
-uses the same Realtek ALC298 codec and amplifier configuration as the
-NP960QFG (0x144d:0xc1ca). Apply the same ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS
-fixup to enable the internal speakers.
+The spam detection logic in TreeRange was executed before the current
+request was inserted into the tree. So the new request was not being
+factored in the spam calculation. Fix this by moving the logic after
+the new range has been inserted.
+
+Also, the detection logic for ArrayRange was missing altogether which
+meant large spamming transactions could get away without being detected.
+Fix this by implementing an equivalent low_oneway_space() in ArrayRange.
+
+Note that I looked into centralizing this logic in RangeAllocator but
+iterating through 'state' and 'size' got a bit too complicated (for me)
+and I abandoned this effort.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Lewis Mason <lewis@ocuru.co.uk>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/android/binder/range_alloc/array.rs | 35 +++++++++++++++++++--
+ drivers/android/binder/range_alloc/mod.rs   |  4 +--
+ drivers/android/binder/range_alloc/tree.rs  | 18 +++++------
+ 3 files changed, 44 insertions(+), 13 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 80f0be13b..1a98ad9b1 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7318,6 +7318,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x144d, 0xc872, "Samsung Galaxy Book2 Pro (NP950XEE)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
- 	SND_PCI_QUIRK(0x144d, 0xc886, "Samsung Galaxy Book3 Pro (NP964XFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x144d, 0xc1cb, "Samsung Galaxy Book3 Pro 360 (NP965QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
+diff --git a/drivers/android/binder/range_alloc/array.rs b/drivers/android/binder/range_alloc/array.rs
+index 07e1dec2ce63..ada1d1b4302e 100644
+--- a/drivers/android/binder/range_alloc/array.rs
++++ b/drivers/android/binder/range_alloc/array.rs
+@@ -118,7 +118,7 @@ pub(crate) fn reserve_new(
+         size: usize,
+         is_oneway: bool,
+         pid: Pid,
+-    ) -> Result<usize> {
++    ) -> Result<(usize, bool)> {
+         // Compute new value of free_oneway_space, which is set only on success.
+         let new_oneway_space = if is_oneway {
+             match self.free_oneway_space.checked_sub(size) {
+@@ -146,7 +146,38 @@ pub(crate) fn reserve_new(
+             .ok()
+             .unwrap();
+ 
+-        Ok(insert_at_offset)
++        // Start detecting spammers once we have less than 20%
++        // of async space left (which is less than 10% of total
++        // buffer size).
++        //
++        // (This will short-circuit, so `low_oneway_space` is
++        // only called when necessary.)
++        let oneway_spam_detected =
++            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
++
++        Ok((insert_at_offset, oneway_spam_detected))
++    }
++
++    /// Find the amount and size of buffers allocated by the current caller.
++    ///
++    /// The idea is that once we cross the threshold, whoever is responsible
++    /// for the low async space is likely to try to send another async transaction,
++    /// and at some point we'll catch them in the act.  This is more efficient
++    /// than keeping a map per pid.
++    fn low_oneway_space(&self, calling_pid: Pid) -> bool {
++        let mut total_alloc_size = 0;
++        let mut num_buffers = 0;
++
++        // Warn if this pid has more than 50 transactions, or more than 50% of
++        // async space (which is 25% of total buffer size). Oneway spam is only
++        // detected when the threshold is exceeded.
++        for range in &self.ranges {
++            if range.state.is_oneway() && range.state.pid() == calling_pid {
++                total_alloc_size += range.size;
++                num_buffers += 1;
++            }
++        }
++        num_buffers > 50 || total_alloc_size > self.size / 4
+     }
+ 
+     pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange> {
+diff --git a/drivers/android/binder/range_alloc/mod.rs b/drivers/android/binder/range_alloc/mod.rs
+index 2301e2bc1a1f..1f4734468ff1 100644
+--- a/drivers/android/binder/range_alloc/mod.rs
++++ b/drivers/android/binder/range_alloc/mod.rs
+@@ -188,11 +188,11 @@ pub(crate) fn reserve_new(&mut self, mut args: ReserveNewArgs<T>) -> Result<Rese
+                 self.reserve_new(args)
+             }
+             Impl::Array(array) => {
+-                let offset =
++                let (offset, oneway_spam_detected) =
+                     array.reserve_new(args.debug_id, args.size, args.is_oneway, args.pid)?;
+                 Ok(ReserveNew::Success(ReserveNewSuccess {
+                     offset,
+-                    oneway_spam_detected: false,
++                    oneway_spam_detected,
+                     _empty_array_alloc: args.empty_array_alloc,
+                     _new_tree_alloc: args.new_tree_alloc,
+                     _tree_alloc: args.tree_alloc,
+diff --git a/drivers/android/binder/range_alloc/tree.rs b/drivers/android/binder/range_alloc/tree.rs
+index 838fdd2b47ea..48796fcdb362 100644
+--- a/drivers/android/binder/range_alloc/tree.rs
++++ b/drivers/android/binder/range_alloc/tree.rs
+@@ -164,15 +164,6 @@ pub(crate) fn reserve_new(
+             self.free_oneway_space
+         };
+ 
+-        // Start detecting spammers once we have less than 20%
+-        // of async space left (which is less than 10% of total
+-        // buffer size).
+-        //
+-        // (This will short-circut, so `low_oneway_space` is
+-        // only called when necessary.)
+-        let oneway_spam_detected =
+-            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
+-
+         let (found_size, found_off, tree_node, free_tree_node) = match self.find_best_match(size) {
+             None => {
+                 pr_warn!("ENOSPC from range_alloc.reserve_new - size: {}", size);
+@@ -203,6 +194,15 @@ pub(crate) fn reserve_new(
+             self.free_tree.insert(free_tree_node);
+         }
+ 
++        // Start detecting spammers once we have less than 20%
++        // of async space left (which is less than 10% of total
++        // buffer size).
++        //
++        // (This will short-circuit, so `low_oneway_space` is
++        // only called when necessary.)
++        let oneway_spam_detected =
++            is_oneway && new_oneway_space < self.size / 10 && self.low_oneway_space(pid);
++
+         Ok((found_off, oneway_spam_detected))
+     }
+ 
 -- 
-2.43.0
+2.53.0.239.g8d8fc8a987-goog
 
 
