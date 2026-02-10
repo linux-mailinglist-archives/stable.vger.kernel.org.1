@@ -1,318 +1,513 @@
-Return-Path: <stable+bounces-215599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COgcDOmvimklNAAAu9opvQ
-	(envelope-from <stable+bounces-215599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 05:11:21 +0100
+	id wE9tCtG6imlmNQAAu9opvQ
+	(envelope-from <stable+bounces-215600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 05:57:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88AAE116DAB
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 05:11:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CC2116EE7
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 05:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 043203012C57
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:11:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3039C300622D
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AACB31355C;
-	Tue, 10 Feb 2026 04:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA7B328B53;
+	Tue, 10 Feb 2026 04:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WwOT0AkO"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NifceJas";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JuvvWt9H"
 X-Original-To: stable@vger.kernel.org
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011028.outbound.protection.outlook.com [52.101.62.28])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2F330DED8;
-	Tue, 10 Feb 2026 04:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7906D25C809
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 04:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770696675; cv=fail; b=pdsayykKIqXobCzUDO0hTN9iIgPYQcmYG4te6UZXr5giMichZKnfKJ14eyMXR0BDMrKAKc7ye9ojZFMXUYCwjFpAWS22axX9T5B/CgMhOxfvTBzGrzaJ/9el/XaFIT0luftVL0qK5g3UOBbaPftWjM5gFY3y97pfoOR6V2TzNzQ=
+	t=1770699464; cv=pass; b=UwXroi/xrOpZPXX6+ZgD5PU1FY4rn+RHCzdJcMm5gfd9Sx8lO+a/EZE2mRMyVbae+LjTQHSBXJ6sY7nKRZfVZsFpxMkxJrpJOceXSWIYzyHLSSMegBWoq98BocwNMzigrza3tcyJkwvuC8i8NAPvdqCd8hspTsyHEV8OKyIOhGU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770696675; c=relaxed/simple;
-	bh=uUlL6pamdwoEY17HqGeQWYQBzpEeK1XhVz8We2wLzOY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=mZNeOUdeYOvely9g5DHv01JYaMwsV4Y4dBgFSBsfMzIN2tJaUHlLMluO56okDAadjScMRfgO3aYLY6cl8S6a3NvP04+wiWtXTZzvyOqOYoZFzimuO6AbNb9nX6Q38EHQ/ofJLxRyrlcpcl2q124Dz228nbmKIqB/haRgqNgT9+Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WwOT0AkO; arc=fail smtp.client-ip=52.101.62.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rViS7Rz5tGeucimKIl4pMNN4pGZDFiYFJPISbxuVq8v1NA0QpAiCjB5a1rtCrbQwY7P0D6/ubMSUNf6PvZHvMyxgpYPUWKDtxKCE5Xwe2ShtsEPzUbEkT87cRuLkud7lrJvyE9o58Dnb0GpRiOQdbxvg7lIEF0qB4lXJhQKWo/MTNvDC9nwD3KnrxUOKKNaV/3e0KNMI8fQvcQLpBy6dupdVEEEKIDpD18FiJYCM8G0TrPQn7RejjYdXfLY43X9PTHmUFT5RU+PXl6rUomXmevmd3O2C4/ozKlj2tJntIAm8wG9e9nCJwO472aBjq6QF29nS5QdKOzPxVPQUV+0O1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uUlL6pamdwoEY17HqGeQWYQBzpEeK1XhVz8We2wLzOY=;
- b=UzGAewpHa1nOkY7Qgd43FGsXCGoBtR4oUvKR/Bl1iDd0SmNYx/8NiMiFIJo16M9YV8l+y2N2caSDpMVsQoRXC9Hkkaukkg1EkdEYWfnaddAlJFalqsUzndIXbKQa966Tdrzgy9YDx8BKtLfm1xEWYBmBRmx4/DoiH3Ph61Cmn/l4dgHpveyqLSI4XRy2C3K4+ReuG+VJREknPz/gUeHX7t8ONtjVJ5TRNjWU04SPJWjAg0aPDVHO2yx0gWr0Ccz7faHq5G67sSR7IKbmH8qahB546N7ZT3bwUkEkCqOwYMWI3FH7z610h3WWr/Lc8kCTkaBYklHH5JATsgTCViQZuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uUlL6pamdwoEY17HqGeQWYQBzpEeK1XhVz8We2wLzOY=;
- b=WwOT0AkONHp3KAGy6h0yDPGCa9r8tluKsMTyAFj7Foj89CqBkTp5lCKQ+xf/MAUBzAIdXD8IJFfg2wwov+BPLXQC8bf5gnH8A8ydgG8a7jojkMNB65kEifbUDJL+AECeg9nRRP+qU7mBx1pqix+5rVhHtmJQmXaYSc89wT/rxhqqGypr/j37stjJFOi0PVjCOEn6BWMg4VvfnDfEBVq87xOoH6YHK7C81KVLUT5KCTTMMxcTteU7MoXlkDxHkgTYY3IxBoz6IwMfJyY4qhNPftPJb/XzzcgFFEoNI5eEPDaOUvv6K2RMTzKTK5vUTjS0UxCC/UH8QkuLl7cEb15pFw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB8245.namprd12.prod.outlook.com (2603:10b6:8:f2::16) by
- LV2PR12MB5894.namprd12.prod.outlook.com (2603:10b6:408:174::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.17; Tue, 10 Feb
- 2026 04:11:10 +0000
-Received: from DS0PR12MB8245.namprd12.prod.outlook.com
- ([fe80::e7c5:cfca:a597:7fa4]) by DS0PR12MB8245.namprd12.prod.outlook.com
- ([fe80::e7c5:cfca:a597:7fa4%4]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
- 04:11:10 +0000
-Message-ID: <94458c39-587b-4bb4-a410-e921e5d99f10@nvidia.com>
-Date: Tue, 10 Feb 2026 09:40:44 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] PCI: tegra194: Reset BARs when running in PCIe
- endpoint mode
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Vidya Sagar <vidyas@nvidia.com>,
- Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>, stable@vger.kernel.org,
- Thierry Reding <treding@nvidia.com>, linux-pci@vger.kernel.org,
- linux-tegra@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Rob Herring <robh@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-References: <20250922140822.519796-5-cassel@kernel.org>
- <20250922140822.519796-7-cassel@kernel.org>
- <2fedf28e-83ea-4e51-b1a1-e45f0e928509@nvidia.com> <aYonDJyd_dbV0GBK@ryzen>
-Content-Language: en-US
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-X-Nvconfidentiality: nvpublic
-In-Reply-To: <aYonDJyd_dbV0GBK@ryzen>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0050.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d3::14) To DS0PR12MB8245.namprd12.prod.outlook.com
- (2603:10b6:8:f2::16)
+	s=arc-20240116; t=1770699464; c=relaxed/simple;
+	bh=mvRCNCDWnnyTl7hSDZjHxriAP6B18Za3FG0XAiIQ0/Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BMz1HU+uaxlxLL96VMQrYex40a0OAVG1HYMEUn/gYJGyoyycqfws2fG8Wzh7SdkKBK9nCTjNqYVzDH7t2UPvBChxUwFUyR/s+M8QipUwDuifmBTCXZsaTFhkF2qY9tw5OK0oWojVPIPGYuatpOiEr/qmTwZsyhG2DCkV+w+83eI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NifceJas; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JuvvWt9H; arc=pass smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619I5bbg3700007
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 04:57:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	q/VnniC6/jkG+UbrSHCb3Fqlsu2pmu+Q7rIfJiTi0IE=; b=NifceJasvrVhWia8
+	/eVoda4vIk5jSqj1qYtsEKR9EUeOqgn6VYRplDMClN6R4oVW+OKVRaAvaA5ovNYQ
+	8hQbIq+etgln8bUGvQzAnGxnZxzaBpCcPyklVFT6L+T9UTUIIUB1JKaWZ14AVBbO
+	c7jiUAzvmfDCCpaWtuNUqCTn/tLZvGxEuGgad3ykBEBzUinE3d5ao2spZPlE0MrC
+	YdYeWpVoD6uqQ95sOU3TPnjX1POqWfIt64L0LrVIqSt7qW3/iJMI09DZ1ET6qEwG
+	3ZT4Br8OwYWGHjydfrdduarPqg+ipW/ItcCogS64SWCQEqMVXsH+1XbMjj9OU4Va
+	XSxkWw==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c7e4mb8u9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 04:57:41 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2ba87c0e198so367448eec.1
+        for <stable@vger.kernel.org>; Mon, 09 Feb 2026 20:57:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770699461; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JUitoi+m8Cq3pWieVMC0s5HbMKvGU57N6sfj0h5rqdb/LKjqiUZl0sclkUojU163H6
+         wtxFq8rPKkhBqqPW8KVrxyuDBbcUJFLDICP33+Erz+p0o6sMxJzeuS8uJkv2Nn+Nmrdv
+         8EwQws1Nd5oiaJ1ujamp270McW/RIlH8iQQy4MMlY5A1Ami64AuAVwd7aqOZvC4UQ3En
+         rWXSzZVVgFInTfmj0oiUIgmdtYc1yJNrOJPeoAhaj0JQRI0HBCYdJffI2SeHRP4xo6tl
+         jev8Q0n3lgzf/9tWpYZmwK2y0iCycEIumjIXFfceFp+lkM58Yt0weV6ZbxG1kj8vKZXc
+         JD3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=q/VnniC6/jkG+UbrSHCb3Fqlsu2pmu+Q7rIfJiTi0IE=;
+        fh=seIGe1BNU7rPzl3zqleu3/8aeFXVALNpHECwboXrGp8=;
+        b=AeGEHrP3GGZ+TFPGZVqrB+r8wrmCzzDphVl36hA3hH6i1dljypYRvx0wCSXn9dneea
+         yngUxJCMf7d66mH8wS5Kpe3eQi83IrHUQDfO2NKYLO9xiqQ1yTryK3K0nTkwvtoeJQrO
+         sbpUrMDgHXo1rYmvAiVvH3v8TFjtuvPQG+YpFr5VDISMCRtlqaYPCCljJ8/4BAH3V8FB
+         MNHjFxQx1yrvMzN+QrFeZhecN8lWh8KLHBIjU3ZI+Dkm9GJY45rmtWw4mus0sw1ZOpzg
+         JIimVU7XZcVCtcIhT7ZysNgdHSLJmHVwHwT7C9bE0s53dDhjHLU5SLdcHo3lrPgZ/18h
+         t3lg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1770699461; x=1771304261; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q/VnniC6/jkG+UbrSHCb3Fqlsu2pmu+Q7rIfJiTi0IE=;
+        b=JuvvWt9HeojyR9sCCiyvssZui1ZYUNVw21D9vnSTAOKh+4RMZYCmm9i/Pl5qL1XnTv
+         0FKKwGTCBmmTnIJ2Le6u9NLf8fUuDyDPAzy6GpNIxm/ts7f1FdVC7c+SrWFtjLCYvyVW
+         DCxLxC04t7OG0Vo4VrBFbQYbfP4ztLrIJU562et2fc81kys4z+5MAhEZ1dLarMa4bKIj
+         1p2IDMGMIqqvDnbEez5KeC6yhus9X2DhXuaIQ+C5b4A5gobl2p4bfJenWqlxqTLpUYFU
+         6Grycgb2tJRnON6b97WT8quz0f753C8SPOhdvOoUpSECzb99GLn2Z0wPC4yRy7eun5eK
+         zhFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770699461; x=1771304261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q/VnniC6/jkG+UbrSHCb3Fqlsu2pmu+Q7rIfJiTi0IE=;
+        b=ApdDr4+4hLYAgLmwBEzseJ8OaFQzplNqGOCdXVCJ0Ygiw84SAEKbA4FmWlP9aQpqiz
+         4ubMEs+UtC1aj5aYxRIdGEtJVOkzwaYs6YtI7LeyIjxVDlI9eGxOGHD83Oy0evsSkBLs
+         Xw/hgI9CiuyzmZ2a8146iNWfenq4R9bTDWxFXAqdScFUg93QrHdFqAGkuPsD64llnJpH
+         QUZy8ejE9Mh2ObeKLZxSGfE0jj5YRoGR8lnrz+ENshrUgPQ23AStWeQb75PuIdEtwUCo
+         5HhBez/ZkMrKbjdp2bQAP/h26uUgsqdUs8T8z4wCT0xti17ubVC9HGpxZbftcpcAH6Lb
+         sNKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxQkT74DRqFrYVACBZe8IaFTbeLRZDR24dT3E8NYlkQms4STd3KpNe7SCMkEN3ivNtKLKscdM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywzry/fKGRaPiZ1lghMsjx5c7YHU8YwDRW8XV2Grf9X6k0G1aPv
+	JJ/o7qy5FCs0+M6Y4GK44CB36NhosUAVEaoKOqiRlWPS5pyOsFVxBa3REHSukbout5o2nV0YgWc
+	46GWhtXOuXC1UXpnTNve7XoNPO652zQJWBswY9wqhBj6YVajW+gFKGU9SQfpQRkHh3iyZwUrhws
+	ixhUT+WJzSrH2mUxoGcm9WAaQud7kJjHQUBA==
+X-Gm-Gg: AZuq6aJpRGYpJIg2IhQfXFfzdenUr39ej5L8TIZP62WoytdPiY9rkr/OBggeLgcfYYS
+	g3iggtEoFcYnN7Aq2GOO9wqkmjCO+GyTPMyEvcH0mPrIIuaiPzId7d5yIxLMNs/h65R2CFCen11
+	BmNbCkPzzwBx2igbPqQr4Owp/kw0Ga0b6tbbyy6D/C0EyMdJH6ta9y2rK/FgAKDTI1yeArzC3lV
+	hfqXxXZ
+X-Received: by 2002:a05:7301:3f16:b0:2ba:6458:b320 with SMTP id 5a478bee46e88-2ba8a64ad8cmr478981eec.7.1770699460522;
+        Mon, 09 Feb 2026 20:57:40 -0800 (PST)
+X-Received: by 2002:a05:7301:3f16:b0:2ba:6458:b320 with SMTP id
+ 5a478bee46e88-2ba8a64ad8cmr478971eec.7.1770699459827; Mon, 09 Feb 2026
+ 20:57:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB8245:EE_|LV2PR12MB5894:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5281f8ab-c21e-4869-1a00-08de685a6bdd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZlN1cjAwc21mMUd3d2JNK2RCUEltZ2YzTXlJeEEyZmRKZTlrMm1sNlJTNHBi?=
- =?utf-8?B?bTlsL1Nzci9SOXZYT2NMZWxCdVFsbHVuTFA4UExLSm9MbHRpSFBCcHVERmhG?=
- =?utf-8?B?M1pVdVpwVzgySkcrSFVjbU9IQ2lkRGRMejZ3NCtOTHE3ek9LNjhTL3hiSEFm?=
- =?utf-8?B?QTEvejFWbGlUam9CL1p3ZkU5T2NXQnI0NVBPdDFNWEpKSFVneTkrb28vdk50?=
- =?utf-8?B?VWdyekN0WU51MC9kRmdQRldOaXZSTTVJenFPRDNyUmNobXg0SG12ZzZPOHNx?=
- =?utf-8?B?b0RlWHluNEpHSVBCT2l6TnYwSVIrRTJoMURJYS94VXM5UWlnYnFUaURyd3ZD?=
- =?utf-8?B?cVpkTzd0THhSU05yTjlxUGx1SVA4L2tNUTFxL04wbWZrVmxvRFZ5bzByNll4?=
- =?utf-8?B?V1YvWjNlQ0RHcncwNHRnbWJSWExUTS8wQ24rME9yUkRZWGV3Uituam5PS3FB?=
- =?utf-8?B?QkIrTFFURW5OZnRwRWhiL093aFVjMnRGblRuelJKOWlheDhKUHZrM2gxYUF2?=
- =?utf-8?B?L3pXaStTSzQrWFd5cW9PaHVhdE9oZFVmVjFRajI3RHZNZU9kYnA4eVNYdUFt?=
- =?utf-8?B?UFZKZm9qTmQ3NDV3UTdTWHFtTmdQam1ZdlhsVTluK3Z0Skh4Mi9Eb3hKdTFh?=
- =?utf-8?B?bTllZTgyK2ZWazR3bzBoSGJ4QXRjVHcwdStmL2crOW1HdG05S3A3M3ZUTlY0?=
- =?utf-8?B?REF4ditxbzFCNXZKdWJPMjk4clRDMDZSc1RqdXhkRGdIaXJnVTh3Zll1MCt3?=
- =?utf-8?B?RzdodkI0Z1lmbHMxbkp6TTZBWVVaSW4yeGE2RkNCLzl4bWpTaHVqMTBCVGVR?=
- =?utf-8?B?eW9aUnp2TkM1ZW1OQ3ArMXA0ZDlnWlpuZVFHSCs3WmZyWlRMWGQzRy9mZkYv?=
- =?utf-8?B?c0NPQ2hsUjJKbnNWWDNtRjhsVWJlQnl3U1VYR2xWZDZURktKQkNudWgzcEJ2?=
- =?utf-8?B?cmVFQVEwL0Fza0RuU0dUb2lSM0srTFU2RERyL0Q4cEJxN05Bam8wQkpKaVBY?=
- =?utf-8?B?aitIMUVDNWZ2SEtoSk9yelY3T1UzQW5PcGJIVWEydEplRC9kZHF2TG94TDI3?=
- =?utf-8?B?QVMrR1JJWlVma3pQNXBTZmNqbll6aVF4L29pcC9nQ2NWT2JpRVk2MW5qY3A0?=
- =?utf-8?B?Nzk1Y21SaGtzcmZLeGZzeXJlN0tLWEx5K1FEMGtqSllZUVV1bXNXZ0VDRFAz?=
- =?utf-8?B?R0xqTG1sT01CMTZHUDFTdW5OdFFRZHNKWHkwdVlwTVM1OGVhZml3ZXdkY3Q1?=
- =?utf-8?B?akJLN21yM2w2NFJmM2EyNnpzbGdiSE5tdkFERWdOSnArMVJiU3BGOWp4U3RU?=
- =?utf-8?B?Q3BYeUpTdzR2OUlkS1lMdmZIUUV0eXllMjRUOWEyQUd3K0xZMEY2dzREQ0Er?=
- =?utf-8?B?TnlJZW5YYTIraG9xZUF3dFV2dWpBc0xXd2d2MlVJWCtZd29QZTV2VGZWeFkw?=
- =?utf-8?B?OU5OL1oxeWRXZlN1YVBWMDl0QURjZS9iRzZnUmhJWEh1UEJWTjJFY2s5Wita?=
- =?utf-8?B?TWREMDlPazF2c3F3TEdRY05FNVlYRlFJb2lzdE5mLy9SQXplWWtvckVwUGZk?=
- =?utf-8?B?b0tmLzkxMzgyaVdRWWJ0ampXcHVUV05ZTGs0bUJhVTFuMDlsbGVkbGJLWmk3?=
- =?utf-8?B?MEw3OW4vS013bnh0S3drN2RxK2FoUGVkOStWS1RVemhIbW5uMnhwNVR2OEZ0?=
- =?utf-8?B?SmdXTXVieUo1SUdSRVlGZU9LYWpOeDIrODhpc1FxU1ZhSUZic1BObUxnV2h5?=
- =?utf-8?B?Uzc1cmdVMTl3U25sYlVrZ2k2MUtlTXFsT1NGOEwzMUVVTzcwUU9wbktXQzBt?=
- =?utf-8?B?b3p6cTl1NUVLbFhLNGdNMG1FOTBjWXg4ZGk1WFFtK3VsYTBhejd1SkpEWWdI?=
- =?utf-8?B?a2lLMW9RRlFIK1p6WVJoNXZWV1A5S3RKYjkzZy8wUEozQzRGbzYxdHNLT3k5?=
- =?utf-8?B?WHVUYWNneWtTV2VSaHBVeE1QbUdNTFhtMk1zV3YweStUcDdCaDZVb2h0RjNm?=
- =?utf-8?B?MXp0bWg1bFQvZ2tibkF1RnBSMmlnOFkvblAycDZRZmFVcnIrTHZFMXpPVkNP?=
- =?utf-8?B?QUhQZVBkL050MFFUOXllN1pWanFrTFBxOGNEMmV5clpLZ0E2RXBOM3QvUUtZ?=
- =?utf-8?Q?mUYg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB8245.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SVFka1hKQTBSOERiRllHSFZKUkFmcUlJOHgyL2g0c3hyc3NleENBUHEzNkxu?=
- =?utf-8?B?N2sxRFBFYmtWTHlvdW1MZzU1R1VuMVdsZUxiajA1UkxnN2VYK0g5WVVZNWJt?=
- =?utf-8?B?YndtSkhGR3JwTDErZzh0NWlSbUF1WTZ6UWthamJocHI4UWxGT0FSeGFORzkw?=
- =?utf-8?B?S1FBd2VHYTdhSTd5T1NGMzl0RVhkUVhORnJ3eXUvK3BUYlhVMTc4ekZqcmdQ?=
- =?utf-8?B?bzc3WmpKUGlYYlhWb1VjL0tjaXZ3QnBEQVBYUnRBdVUwbEwrNUdxc3FEczVI?=
- =?utf-8?B?RWVhdHJDUklFcnRjZlZMTjlsd2N5ekVXenNSSnUycjVuWlJCTVRLZ1JraTJs?=
- =?utf-8?B?VE9uSXcrN2xUcmJCam0zeXhKUndNbGV2YnJmTFdFUkt2S3k0amFkNlBZQS9N?=
- =?utf-8?B?SmdoK0hkOXdkeG9nMTI2eVhacm4xWHVUQ3ZUMWxwOEFJaFpidFFzVEJENDlv?=
- =?utf-8?B?VWsxRHhja0MzQjlDdmJsNGRtQkF6YmdTa21HMk5CeUFhRStWTzhHVGJ6bkV6?=
- =?utf-8?B?c1RGVjFVQ1FxZnl0UEVNSGNOc3V2WWkvOUJIWXM1cURSNTVweGZUWk1kUjU4?=
- =?utf-8?B?UExzbmoxYXBLL2xpQUxBUW83UzR0NVg0ZWlyTTdYa0RwNnFJWGg0bFBiZElJ?=
- =?utf-8?B?bzlvaWpmV3FSSFA1aG5GWUJwZTRFejJVZVpxM3dtRDYvemROREw1MHNoMzA1?=
- =?utf-8?B?L2VKNWpLY2RRU3RLNzVCV1RBaFMxT3RwYzIvYU14TmFmNlo1SEdUUWQ3b1Qy?=
- =?utf-8?B?aW93clVwb0htQ29QQlg3UzJmRlpNeGFPY29rVVA0bjZ4eXIxazlUQlBRTm9h?=
- =?utf-8?B?b2tXUUxXNXRYY2dHSmlCc0dHNHR4bHdZbzlSSUhGU1dUamZiTzdvTFh4ZCtH?=
- =?utf-8?B?Z1JBc2NBRHVLRkxyMmRNTEsySWx1c1IvcHVLcS9LS2FBYWNXTVR3Z0t2dElP?=
- =?utf-8?B?ancrb09VOUlyai9MV0lhMnRiU1R3Vk9mR0M3c3V1WWFrWFVXWDdjSVM3V3dK?=
- =?utf-8?B?RmJJV09zcnR5bXRONHdIVkdsbE9LTHh0ZlgrZ2dLa2ZDWTZWc0V1eW1pOUtr?=
- =?utf-8?B?VEJua1F3Mi9nNlcyNEdRd3hma2dhVHg4YkltcGNWbnJGdnM4NWQwaGsrTXkw?=
- =?utf-8?B?SEkxZ0ViNmxCZmdpN3I3a2RtbGx0cVQzeDZEa1VpT3lIRXFxUGN4QlVrNjhx?=
- =?utf-8?B?dEVUdUt0b3FydmYveDBzSFk4SHJ5R3NjTDQxUGFDNHZRUGVVV0s0R2VkbjUw?=
- =?utf-8?B?OXVxamlUcHBycS93Y0V4S3FiY01JTUJWMzFnRUpVb2ZyUS9CandkUFNONldX?=
- =?utf-8?B?ZjVNT1BDblY0WERyUW1OQUdtTndSK3lIOE90MTBsditzR1UxVk1DUkV1SmF1?=
- =?utf-8?B?RXZsNlNSaHVVUG5CWXQvTW40ZzlkSnA0eExTdjJNLzY4WjVlQ3JuNEFIb05W?=
- =?utf-8?B?K1BEelRScHhOSUlOQVBpMk1sbVl2c2tSNGZ0Z1RQTkhYYjhvRmw0bWNmb1hw?=
- =?utf-8?B?ZHFHMS8rOEpZRVorRDF6NEtKWC82aUVEcnAvSEVmS3h5V01vQ1ZTUzM1Qm9l?=
- =?utf-8?B?Zm5YODlQWkxFcGs0RDVlNGZRYTBZak1ZSmdPNEdyRWMxR3FGOVZ3Tng5TzZZ?=
- =?utf-8?B?dENiMjNYSjZWeUtSWllyMTNuL0EwOW5YU0dXVFYwUThPWnl4eWszQ2svcXY0?=
- =?utf-8?B?aFpuTUZRZzFnaG0vQTJQdHlJVmRzZlYrM1JicW9idlB2ZiszQWJ1U2NiV2Zp?=
- =?utf-8?B?bUgxV0hydXdPTnNoRHpJay91YkNpc1k3Q0NzMTRuekx3TTZvRm9yaHl4WXFT?=
- =?utf-8?B?SG1rVU9QQ013ZzJCTzkxeGlmSGN5RldoU1BBNEdUOTE3YUF0Z1hVaVhMb3VB?=
- =?utf-8?B?YkxWZlNMcW1mOHJibEtldTk3TGhoa215b1dtb0w4eWlBbThQRU9wVTg4UVZv?=
- =?utf-8?B?YkxEUVFIcnNmRm80OHhhZDhSTGhZUGlMTW9ReHdMdUQrVmJGNTF3NENVL1Vl?=
- =?utf-8?B?R0syNHNKU3d1cnlCMVU0SXdrVW1XSzJ1b0hobE9JUGhsL0VmWDViUStZWmcr?=
- =?utf-8?B?cGg2RUMwSTFQTFpUbmRIY0xNaGJuRkwxSnFDYS9DWFczb0QyTGhld3hGZ1Rh?=
- =?utf-8?B?UkFqd0dlbS9PaVJ0TGVVSTcxT20xYjhhSHNKbEQvbGRDaWlXNmZEU1Q0UElZ?=
- =?utf-8?B?N1J4bm1LaXZOYmVxZ3I2RDdIdGxLTEpjVlpMRU9udk5oQXlDSUNCc1VzaUZZ?=
- =?utf-8?B?blZyOFBpSDVLK0xLeWFvbWd6eUVHTExtcXlrdW1reHd6TFRKbFdVclJDWkYv?=
- =?utf-8?B?Y2RJZm44UzExcTRVWCtPblFXZ2FWcDdvVDRCQXpOTFJrUEI2UzBmQ0FHbmJC?=
- =?utf-8?Q?f5I8IhqY6aS3OlBA=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5281f8ab-c21e-4869-1a00-08de685a6bdd
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB8245.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 04:11:10.2878
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GQLnU5SuVjusj53lzrwXCgEGqb/MveOtLZ5oLeWBAfJ1aGNOv3c0UTTau3Oe02aUzePjLOebVR2vmMQGM+6y6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5894
+References: <20260203080712.15480-1-manivannan.sadhasivam@oss.qualcomm.com>
+ <CAGptzHOfmrHeJWvMxWj_xUTt_Xn-WGX04oc5s7DvjujPUOWQZQ@mail.gmail.com> <bznckulswclw6zwaf4r524hxsimz3d2p4rk5lrnvlcgpyxqlru@nenunn2h7fjz>
+In-Reply-To: <bznckulswclw6zwaf4r524hxsimz3d2p4rk5lrnvlcgpyxqlru@nenunn2h7fjz>
+From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Date: Tue, 10 Feb 2026 10:27:28 +0530
+X-Gm-Features: AZwV_Qj31EA1wabXFQjs_IM7u4yQr0FvN8fdYwxlE2tfWRzXNB0WGy6hWsS7ai0
+Message-ID: <CAGptzHOTi=ysnYS_nXhn-m+hC969LW2tdCnU5P-y5sKaxt6MMg@mail.gmail.com>
+Subject: Re: [PATCH] soc: qcom: ice: Remove platform_driver support and expose
+ as a pure library
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+        andersson@kernel.org, konradybcio@kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Abel Vesa <abel.vesa@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: MRsS-FQbfrce86XWebR3-LoqSrSTKThn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDAzOSBTYWx0ZWRfX5vCfmGrkIReh
+ x+dYEJ9Y1yAD6Gjq7rGUAdoFURQ1XqsxVq9HVCaOvDreYcRTbtDZdBKQQMID4QUj/DzTcScfBba
+ WyKqJhsUEmZxfNY6Hz0LOxbE0MPi08L4FwtnnbFgwLyPXXJkzeTl45J86kEicLkmVNwZzVjWiEL
+ gWk/nHZAX531zqsI+dpXrXrXy+ydyrACej1DbwQMjA9uyWrZG1ZmDW3Zak9L+rF6GJtWNCrcMJR
+ jH98e71YNjNg0+HXXa51RMXqobd6kYvNMYXfHnDRf1SxnOgoKhbN88n38H5LDkBdzE3sqimwPP0
+ Xm1ZvhqHYgwtShW+483Rm4Kd1jFrg8cYIXsKnyWn2nhpRoeOVXfQ2yVCqJChS1VTEAB0D/4XAxx
+ j+zptQ/8m4mr1PgRGfyEs7gPUq7qZ5sxA3jsb+vMzv5DKMM9s+8zAY2FXI3XSzQbx8TJbolsIs1
+ CglFsvmseH2Z0FBa6/Q==
+X-Proofpoint-ORIG-GUID: MRsS-FQbfrce86XWebR3-LoqSrSTKThn
+X-Authority-Analysis: v=2.4 cv=WecBqkhX c=1 sm=1 tr=0 ts=698abac5 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=PRTK_1lWvyV9fVIPR8EA:9 a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-09_01,2026-02-09_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ spamscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602100039
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215599-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,wdc.com,vger.kernel.org,google.com,gmail.com];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mmaddireddy@nvidia.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215600-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sumit.garg@oss.qualcomm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[qualcomm.com:query timed out];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 88AAE116DAB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oss.qualcomm.com:dkim]
+X-Rspamd-Queue-Id: 90CC2116EE7
 X-Rspamd-Action: no action
 
-On 09/02/26 11:57 pm, Niklas Cassel wrote:
-
-> On Sun, Feb 08, 2026 at 11:41:42PM +0530, Manikanta Maddireddy wrote:
->> Hi Niklas,
->>
->> Tegra PCIe exposes only DMA register over BAR4, not iATU.
->> So, the issue described in this commit message is not applicable.
->> This patch is disabling BAR2 and BAR4, after enumeration I see
->> only BAR0. I think we should revert this patch.
->> Please share your inputs on this.
-> If you look at this commit, it only disables all BARs by default,
-> which brings the tegra driver in-line with all other DWC based
-> endpoint drivers: dra7xx, imx6, layerscape-ep, artpec6, dw-rockchip,
-> qcom-ep, rcar-gen4, and uniphier-ep.
+On Mon, Feb 9, 2026 at 6:27=E2=80=AFPM Manivannan Sadhasivam <mani@kernel.o=
+rg> wrote:
 >
-> A PCI endpoint function (EPF) driver will still be able to enable a
-> BAR that was disabled in .init().
-> However, an EPF driver will not be able to use/enable a reserved BAR.
+> On Mon, Feb 09, 2026 at 06:12:35PM +0530, Sumit Garg wrote:
+> > Hi Mani,
+> >
+> > On Tue, Feb 3, 2026 at 1:37=E2=80=AFPM Manivannan Sadhasivam
+> > <manivannan.sadhasivam@oss.qualcomm.com> wrote:
+> > >
+> > > The current platform driver design causes probe ordering races with c=
+lients
+> > > (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE pro=
+be
+> > > fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops=
+ with
+> > > -EPROBE_DEFER, leaving clients non-functional even when ICE should be
+> > > gracefully disabled. devm_of_qcom_ice_get() cannot know if the ICE dr=
+iver
+> > > probe has failed due to above reasons or it is waiting for the SCM dr=
+iver.
+> > >
+> > > Moreover, there is no devlink dependency between ICE and client drive=
+rs
+> > > as 'qcom,ice' is not considered as a DT 'supplier'. So the client dri=
+vers
+> > > have no idea of when the ICE driver is going to probe.
+> > >
+> > > To avoid all this hassle, remove the platform driver support altogeth=
+er and
+> > > just expose the ICE driver as a pure library to client drivers. With =
+this
+> > > design, when devm_of_qcom_ice_get() is called, it will check if the I=
+CE
+> > > instance is available or not. If not, it will create one based on the=
+ ICE
+> > > DT node, increase the refcount and return the handle. When the next c=
+lient
+> > > calls the API again, the ICE instance would be available. So this fun=
+ction
+> > > will just increment the refcount and return the instance.
+> > >
+> > > Finally, when the client devices get destroyed, refcount will be
+> > > decremented and finally the cleanup will happen once all clients are
+> > > destroyed.
+> > >
+> > > For the clients using the old DT binding of providing the separate 'i=
+ce'
+> > > register range in their node, this change has no impact.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Cc: Abel Vesa <abel.vesa@oss.qualcomm.com>
+> > > Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > > Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a ded=
+icated driver")
+> > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualc=
+omm.com>
+> > > ---
+> > >  drivers/soc/qcom/ice.c | 100 ++++++++++++++++-----------------------=
+--
+> > >  1 file changed, 39 insertions(+), 61 deletions(-)
+> > >
+> >
+> > Thanks for this change but we need to avoid building ICE as a module
+> > too and return error code when ICE SCM calls aren't present.
+> >
 >
-> Look at e.g. the code in pci-epf-test. It will not allocate backing
-> memory for a BAR that is reserved, so having a BAR enabled that we
-> have not allocated backing memory for is wrong.
+> Why built-in?
+
+If the intention is to build it as a module then you don't drop following:
+
+diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+index 139891a122db..bfe23cb232fc 100644
+--- a/drivers/soc/qcom/ice.c
++++ b/drivers/soc/qcom/ice.c
+@@ -729,3 +729,6 @@ struct qcom_ice *devm_of_qcom_ice_get(struct device *de=
+v)
+        return ice;
+ }
+ EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
++
++MODULE_DESCRIPTION("Qualcomm Inline Crypto Engine driver");
++MODULE_LICENSE("GPL");
+
+-Sumit
+
 >
-> Commit c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint
-> mode in Tegra194") is the commit that marked all BARs other than
-> BAR0 as reserved, so if you want to test BARs other than BAR0,
-> talk to the author of that commit.
+> > So following diff on top of this patch works for me, feel free to
+> > incorporate it in your patch:
+> >
+> > diff --git a/drivers/soc/qcom/Kconfig b/drivers/soc/qcom/Kconfig
+> > index 2caadbbcf830..db528104488b 100644
+> > --- a/drivers/soc/qcom/Kconfig
+> > +++ b/drivers/soc/qcom/Kconfig
+> > @@ -283,7 +283,7 @@ config QCOM_ICC_BWMON
+> >           memory throughput even with lower CPU frequencies.
+> >
+> >  config QCOM_INLINE_CRYPTO_ENGINE
+> > -       tristate
+> > +       bool
+> >         select QCOM_SCM
+> >
+> >  config QCOM_PBS
+> > diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+> > index 8640e05becd1..139891a122db 100644
+> > --- a/drivers/soc/qcom/ice.c
+> > +++ b/drivers/soc/qcom/ice.c
+> > @@ -563,7 +563,7 @@ static struct qcom_ice *qcom_ice_create(struct devi=
+ce *dev,
+> >
+> >         if (!qcom_scm_ice_available()) {
+> >                 dev_warn(dev, "ICE SCM interface not found\n");
+> > -               return NULL;
+> > +               return ERR_PTR(-EOPNOTSUPP);
 >
-> If you revert this patch, tools/testing/selftests/pci_endpoint/pci_endpoint_test
-> will once again fail the consecutive BAR test, so I think it would
-> be wrong to revert this patch.
+> This makes sense.
 >
-> If it is ATU registers or eDMA registers exposed in BAR4 does not
-> really matter. The end result is that you overwrite eDMA registers
-> that you should not be overwriting when you run the BAR tests.
-> (So BAR4 should absolutely be marked as reserved).
+> - Mani
 >
-> I don't recall, but if you overwrite the eDMA registers, then in
-> addition to the consecutive BAR test failing, most likely the DMA
-> test cases will also fail.
+> >         }
+> >
+> >         engine =3D devm_kzalloc(dev, sizeof(*engine), GFP_KERNEL);
+> >
+> > -Sumit
+> >
+> > > diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+> > > index b203bc685cad..b5a9cf8de6e4 100644
+> > > --- a/drivers/soc/qcom/ice.c
+> > > +++ b/drivers/soc/qcom/ice.c
+> > > @@ -107,12 +107,16 @@ struct qcom_ice {
+> > >         struct device *dev;
+> > >         void __iomem *base;
+> > >
+> > > +       struct kref refcount;
+> > >         struct clk *core_clk;
+> > >         bool use_hwkm;
+> > >         bool hwkm_init_complete;
+> > >         u8 hwkm_version;
+> > >  };
+> > >
+> > > +static DEFINE_MUTEX(ice_mutex);
+> > > +struct qcom_ice *ice_handle;
+> > > +
+> > >  static bool qcom_ice_check_supported(struct qcom_ice *ice)
+> > >  {
+> > >         u32 regval =3D qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
+> > > @@ -599,8 +603,8 @@ static struct qcom_ice *qcom_ice_create(struct de=
+vice *dev,
+> > >   * This function will provide an ICE instance either by creating one=
+ for the
+> > >   * consumer device if its DT node provides the 'ice' reg range and t=
+he 'ice'
+> > >   * clock (for legacy DT style). On the other hand, if consumer provi=
+des a
+> > > - * phandle via 'qcom,ice' property to an ICE DT, the ICE instance wi=
+ll already
+> > > - * be created and so this function will return that instead.
+> > > + * phandle via 'qcom,ice' property to an ICE DT node, then the ICE i=
+nstance will
+> > > + * be created if not already done and will be returned.
+> > >   *
+> > >   * Return: ICE pointer on success, NULL if there is no ICE data prov=
+ided by the
+> > >   * consumer or ERR_PTR() on error.
+> > > @@ -611,11 +615,12 @@ static struct qcom_ice *of_qcom_ice_get(struct =
+device *dev)
+> > >         struct qcom_ice *ice;
+> > >         struct resource *res;
+> > >         void __iomem *base;
+> > > -       struct device_link *link;
+> > >
+> > >         if (!dev || !dev->of_node)
+> > >                 return ERR_PTR(-ENODEV);
+> > >
+> > > +       guard(mutex)(&ice_mutex);
+> > > +
+> > >         /*
+> > >          * In order to support legacy style devicetree bindings, we n=
+eed
+> > >          * to create the ICE instance using the consumer device and t=
+he reg
+> > > @@ -631,6 +636,16 @@ static struct qcom_ice *of_qcom_ice_get(struct d=
+evice *dev)
+> > >                 return qcom_ice_create(&pdev->dev, base);
+> > >         }
+> > >
+> > > +       /*
+> > > +        * If the ICE node has been initialized already, just increas=
+e the
+> > > +        * refcount and return the handle.
+> > > +        */
+> > > +       if (ice_handle) {
+> > > +               kref_get(&ice_handle->refcount);
+> > > +
+> > > +               return ice_handle;
+> > > +       }
+> > > +
+> > >         /*
+> > >          * If the consumer node does not provider an 'ice' reg range
+> > >          * (legacy DT binding), then it must at least provide a phand=
+le
+> > > @@ -643,41 +658,43 @@ static struct qcom_ice *of_qcom_ice_get(struct =
+device *dev)
+> > >
+> > >         pdev =3D of_find_device_by_node(node);
+> > >         if (!pdev) {
+> > > -               dev_err(dev, "Cannot find device node %s\n", node->na=
+me);
+> > > +               dev_err(dev, "Cannot find ICE platform device\n");
+> > > +               platform_device_put(pdev);
+> > >                 return ERR_PTR(-EPROBE_DEFER);
+> > >         }
+> > >
+> > > -       ice =3D platform_get_drvdata(pdev);
+> > > -       if (!ice) {
+> > > -               dev_err(dev, "Cannot get ice instance from %s\n",
+> > > -                       dev_name(&pdev->dev));
+> > > +       base =3D devm_platform_ioremap_resource(pdev, 0);
+> > > +       if (IS_ERR(base)) {
+> > > +               dev_warn(&pdev->dev, "ICE registers not found\n");
+> > >                 platform_device_put(pdev);
+> > > -               return ERR_PTR(-EPROBE_DEFER);
+> > > +               return base;
+> > >         }
+> > >
+> > > -       link =3D device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_=
+SUPPLIER);
+> > > -       if (!link) {
+> > > -               dev_err(&pdev->dev,
+> > > -                       "Failed to create device link to consumer %s\=
+n",
+> > > -                       dev_name(dev));
+> > > +       ice =3D qcom_ice_create(&pdev->dev, base);
+> > > +       if (IS_ERR(ice)) {
+> > >                 platform_device_put(pdev);
+> > > -               ice =3D ERR_PTR(-EINVAL);
+> > > +               return ice_handle;
+> > >         }
+> > >
+> > > -       return ice;
+> > > +       ice_handle =3D ice;
+> > > +       kref_init(&ice_handle->refcount);
+> > > +
+> > > +       return ice_handle;
+> > >  }
+> > >
+> > > -static void qcom_ice_put(const struct qcom_ice *ice)
+> > > +static void qcom_ice_put(struct kref *kref)
+> > >  {
+> > > -       struct platform_device *pdev =3D to_platform_device(ice->dev)=
+;
+> > > -
+> > > -       if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"=
+))
+> > > -               platform_device_put(pdev);
+> > > +       platform_device_put(to_platform_device(ice_handle->dev));
+> > > +       ice_handle =3D NULL;
+> > >  }
+> > >
+> > >  static void devm_of_qcom_ice_put(struct device *dev, void *res)
+> > >  {
+> > > -       qcom_ice_put(*(struct qcom_ice **)res);
+> > > +       const struct qcom_ice *ice =3D *(struct qcom_ice **)res;
+> > > +       struct platform_device *pdev =3D to_platform_device(ice->dev)=
+;
+> > > +
+> > > +       if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"=
+))
+> > > +               kref_put(&ice_handle->refcount, qcom_ice_put);
+> > >  }
+> > >
+> > >  /**
+> > > @@ -713,42 +730,3 @@ struct qcom_ice *devm_of_qcom_ice_get(struct dev=
+ice *dev)
+> > >         return ice;
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
+> > > -
+> > > -static int qcom_ice_probe(struct platform_device *pdev)
+> > > -{
+> > > -       struct qcom_ice *engine;
+> > > -       void __iomem *base;
+> > > -
+> > > -       base =3D devm_platform_ioremap_resource(pdev, 0);
+> > > -       if (IS_ERR(base)) {
+> > > -               dev_warn(&pdev->dev, "ICE registers not found\n");
+> > > -               return PTR_ERR(base);
+> > > -       }
+> > > -
+> > > -       engine =3D qcom_ice_create(&pdev->dev, base);
+> > > -       if (IS_ERR(engine))
+> > > -               return PTR_ERR(engine);
+> > > -
+> > > -       platform_set_drvdata(pdev, engine);
+> > > -
+> > > -       return 0;
+> > > -}
+> > > -
+> > > -static const struct of_device_id qcom_ice_of_match_table[] =3D {
+> > > -       { .compatible =3D "qcom,inline-crypto-engine" },
+> > > -       { },
+> > > -};
+> > > -MODULE_DEVICE_TABLE(of, qcom_ice_of_match_table);
+> > > -
+> > > -static struct platform_driver qcom_ice_driver =3D {
+> > > -       .probe  =3D qcom_ice_probe,
+> > > -       .driver =3D {
+> > > -               .name =3D "qcom-ice",
+> > > -               .of_match_table =3D qcom_ice_of_match_table,
+> > > -       },
+> > > -};
+> > > -
+> > > -module_platform_driver(qcom_ice_driver);
+> > > -
+> > > -MODULE_DESCRIPTION("Qualcomm Inline Crypto Engine driver");
+> > > -MODULE_LICENSE("GPL");
+> > > --
+> > > 2.51.0
+> > >
 >
-> Have you tried running
-> tools/testing/selftests/pci_endpoint/pci_endpoint_test
-> ?
->
->
-> Kind regards,
-> Niklas
-
-Hi Niklas,
-
-In Tegra234 PCIe, BAR1 is MSI-X table and BAR2 is DMA registers backed
-
-by PCIe HW RAM and registers. EPF driver shouldn't allocate memory for
-
-these two BARs. This is the reason for marking them as reserved in
-
-Tegra PCIe driver. DMA registers are exposed over BAR2 to allow
-
-PCI client driver in host to transfer data from host to endpoint
-
-using endpoint remote DMA read functionality. BAR test fails on this
-
-because not all register bits are writable. Consider NVMe example
-
-which has RO capability bits at the start of the BAR, it is not correct
-
-to add BAR test on these bits.
-
-
-I think following fixes are required to address this issue,
-
-1. BAR test in pci_endpoint_test should skip MSI-X table.
-
-2. BAR test in pci_endpoint_test should provide option to
-
-skip this test on known reserved BARs, maybe we can use
-
-pci_endpoint_test_data for this.
-
-3. EPC driver should provide BAR_DISABLED enum to disable
-
-unused BARs.
-
-4. Tegra PCIe driver should disable only BAR_DISABLED bars and
-
-leave BAR_RESERVED untouched.
-
-5. Return NO_BAR for both BAR_DISABLED and BAR_RESERVED in
-
-pci_epc_get_next_free_bar()
-
-
-Let me know your opinion on this.
-
+> --
+> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=
+=E0=AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=
+=E0=AF=8D
 
