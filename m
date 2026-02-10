@@ -1,153 +1,170 @@
-Return-Path: <stable+bounces-215645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKq7GCoMi2lXPQAAu9opvQ
-	(envelope-from <stable+bounces-215645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:44:58 +0100
+	id cP+1DPwQi2l/PQAAu9opvQ
+	(envelope-from <stable+bounces-215646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 12:05:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C30119C49
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F3A119FB2
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 12:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92F51303E4A5
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:44:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 649323073F53
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AA334216C;
-	Tue, 10 Feb 2026 10:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A633612E8;
+	Tue, 10 Feb 2026 11:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="n3JSbTNz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wft85wPu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E290B316912
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 10:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D7C34CFBB;
+	Tue, 10 Feb 2026 11:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770720262; cv=none; b=e/nOYfuSzId5V72aFSKZKHBbGWCGeYtWGMs6UHKjIuu4885+Xo81Jz0HwY2rNDk1CxjkN6/m9N//3DihyPyHph7EwMMbIJ+xyO+3t41TJbg67NGYSiGFIH8RzWhpuu6ccacPLFQ6RdA/Jz+qrSKKuPyFhzQP9SJMWUx9P8i5Ygg=
+	t=1770721473; cv=none; b=pC8N3tWv+N5+DHPGC6XxReCfkZqGoZThaWCtIJMufEYGDLNKODgmvLLRaG0QRSiTWkBOVAp31b+nFoDlDwrjSG899dkWjnK7AKU6KcBI4I6xRuzYn6EToAa6sfZwv6zWFrHLC4wPFQ6hkVU6EJAoNC7ITDxkHNRR65o0Ce5kNfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770720262; c=relaxed/simple;
-	bh=TeT8fFaQDNGxM84WrlNaLg8VOUAzH6x6QlmmFTijl3M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=nAlxO8OLiq+da5BL70JVPWz5At469aTDPDKVoDbLLOJSmPwzOVWW1uaqyzwYy/MKN8GSf+m1gZYJh5f267p0s/D3mQx+HhHUrEkS7QFjdb6t73AeXXLK8CG0gT7Pfy75UmYrk8zjJflqeTfFVgKN2lM69z04K4qydWYL78ZV9X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=n3JSbTNz; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 595DEC8F1FC;
-	Tue, 10 Feb 2026 10:44:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 03B6A606BD;
-	Tue, 10 Feb 2026 10:44:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 35628119D1118;
-	Tue, 10 Feb 2026 11:44:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770720257; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=rgIZKpgJemM2O7tuO8K6vUcedAgz0oWF401av9M9oVc=;
-	b=n3JSbTNzPPfJM80F/e/8JHK/PLG6zjf37tfVMjKnZYMhvuMrbw+0KmWFM6LCcaoSvdp1zW
-	L7Zc0a2KN806lX4XRiSL2ul+0I4OYgYssPNrlLIiBMoVkXla5L07BnhnQUCXO0v0r7gsC+
-	RFSv5GXp5LcbmZGzFv5tTZwK2j7zqhuvI0iWFgeI49pT3+IfcB77lionxNxp8txH6otmLU
-	WJaONHLOTQVq080OME35wHuksw66On1DSxoepctGmq+EjHQFlOOzrWy2TliVIn8yr9T78B
-	mEbkbdUfrLg4flbTtpKjsgKWyX0FSsfKt4g0743yTcFBGvPfvUxZP2j5pyJyHg==
+	s=arc-20240116; t=1770721473; c=relaxed/simple;
+	bh=7yZxFkNNQCJkdJ9pJ8Eclg+/98lS5/890gc/MqlDytE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rpM8/6Pg6r+Sv0YPGiaV34enGTmpiBHXkoDZoVOrn3qSAZAsGZhRjIivcInMyNTVJkJxQsbMW6TKTNqF9yRgeQgnulAMLVxKAACixVxq46+PSMywfxSgXL8hYmeD9LfZxraI86jIIuY9LWOun4+JHVCsAbRnFn2OapQuvAnwNVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wft85wPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8200BC19423;
+	Tue, 10 Feb 2026 11:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770721473;
+	bh=7yZxFkNNQCJkdJ9pJ8Eclg+/98lS5/890gc/MqlDytE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wft85wPujxS+9BjK2WLUDPsGY6vtTTreoK9vPzH9LeH9UgyXeKZFuQ63xNu4VKecU
+	 JPHBfH4t0OuagB0TGt6HZgqJnXcX0/97je7QQK1PtjNdtE4D21Kped2mkXpva0KPYX
+	 SL/6UB/pTKm3unBM71PslUCqZt4qddum7pbDFPnGKxiE20d3zUNBSqcY7jGhc4WQwG
+	 7bgOesbGPXv7RS0/TsDtiAgbTlwaAXnrUmrCeD3X9nxaqwinK/d3A5L1ml4leDi7Uq
+	 7DpeZR1XYO80lqYHfnHwTVfyCxgkcBLvS9lOrsK5ysDNM2FYHE33/cZku1NWXMi7Mf
+	 Ui2wBaYWwSIyQ==
+Date: Tue, 10 Feb 2026 12:04:27 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	stable@vger.kernel.org, Thierry Reding <treding@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-tegra@vger.kernel.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: Re: [PATCH v2 2/3] PCI: tegra194: Reset BARs when running in PCIe
+ endpoint mode
+Message-ID: <aYsQu9lQi4IzfBiP@ryzen>
+References: <20250922140822.519796-5-cassel@kernel.org>
+ <20250922140822.519796-7-cassel@kernel.org>
+ <2fedf28e-83ea-4e51-b1a1-e45f0e928509@nvidia.com>
+ <aYonDJyd_dbV0GBK@ryzen>
+ <94458c39-587b-4bb4-a410-e921e5d99f10@nvidia.com>
+ <aYsDDOZA18BBeOsd@ryzen>
+ <c8e42e96-212f-451d-802b-7166611f6fcd@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Feb 2026 11:44:11 +0100
-Message-Id: <DGB7XXI0HSXY.2MZIDNCGYLTFR@bootlin.com>
-To: "Osama Abdelkader" <osama.abdelkader@gmail.com>, "Inki Dae"
- <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Marek Vasut"
- <marex@denx.de>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH] drm/bridge: samsung-dsim: Fix memory leak in error path
-Cc: <stable@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20260209184115.10937-1-osama.abdelkader@gmail.com>
-In-Reply-To: <20260209184115.10937-1-osama.abdelkader@gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c8e42e96-212f-451d-802b-7166611f6fcd@nvidia.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215645-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,samsung.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,linux.intel.com,suse.de,ffwll.ch,denx.de,lists.freedesktop.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-215646-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,wdc.com,vger.kernel.org,google.com,gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:mid,bootlin.com:dkim,bootlin.com:url,bootlin.com:email]
-X-Rspamd-Queue-Id: C7C30119C49
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C9F3A119FB2
 X-Rspamd-Action: no action
 
-Hello Osama,
+On Tue, Feb 10, 2026 at 04:09:05PM +0530, Manikanta Maddireddy wrote:
+> > For pci-keystone.c, this is the only driver that is a bit weird, it marks
+> > BAR0 and BAR1 as reserved, but does not disable them in the init() callback.
+> > It seems force set BAR0 as a 32-bit BAR in the init() callback.
+> > 
+> > Thus, for all drivers except for pci-keystone.c, BAR_RESERVED does mean
+> > BAR_DISABLED. Feel free to send a patch that renames BAR_RESERVED to
+> > BAR_DISABLED.
+> > 
+> > If you send such a patch, perhaps you also want to modify the PCI endpoint
+> > core to call reset_bar() for all BARs marked as BAR_RESERVED/BAR_DISABLED,
+> > instead of each EPC driver doing so in the init() callback. I think the main
+> > reason why this is not done already is that thare is no reset_bar() op in
+> > struct pci_epc_ops epc_ops, there is only clear_bar() which clears an BAR
+> > enabled by an EPF driver. (So you would most likely also need to add a
+> > .disable_bar() op in struct pci_epc_ops epc_ops.)
+> > 
+> pci-epc.h defined
+> 
+>  * @BAR_RESERVED: The BAR should not be touched by an EPF driver.
+> 
+> I believe you are interpreting this as unused BAR?
+> 
+> In Tegra PCIe, BAR2 and BAR4 are backed by PCIe HW memory which
+> 
+> shouldn't be touched by EPF, but should be kept enabled.
+> 
+> This support is not available. I suggested to add BAR_DISABLED
+> 
+> for unused and use BAR_RESERVED for bars like above.
 
-On Mon Feb 9, 2026 at 7:41 PM CET, Osama Abdelkader wrote:
-> In samsung_dsim_host_attach(), drm_bridge_add() is called to add the
-> bridge. However, if samsung_dsim_register_te_irq() or
-> pdata->host_ops->attach() fails afterwards, the function returns
-> without removing the bridge, causing a memory leak.
->
-> Fix this by adding proper error handling with goto labels to ensure
-> drm_bridge_remove() is called in all error paths. Also ensure that
-> samsung_dsim_unregister_te_irq() is called if the attach operation
-> fails after the TE IRQ has been registered.
->
-> samsung_dsim_unregister_te_irq() function is moved without changes
-> to be before samsung_dsim_host_attach() to avoid forward declaration.
->
-> Fixes: e7447128ca4a ("drm: bridge: Generalize Exynos-DSI driver into a Sa=
-msung DSIM bridge")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> ---
-> v2:
+I understand what you want. You want to have a BAR_RESERVED and a
+BAR_DISABLED.
 
-Please add the version number to the e-mail Subject, it should be:
-  [PATCH v2] drm/bridge: ...
-         ^^
+Sounds like a nice feature. Feel free to add that.
 
-No need to resend just for this, but please keep it in mind for the future.
 
-Using b4 automates all of this very nicely, you can consider using it.
+But like I mentioned in my reply, for all existing drivers, except for
+pci-keystone.c, in practice BAR_RESERVED actually means BAR_DISABLED.
+(Since all drivers except for pci-keystone.c call reset_bar() in init(),
+and pci-epf-test will not enable BARs marked as BAR_RESERVED).
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+So if you add a BAR_DISABLED, make sure that you convert all existing
+uses of BAR_RESERVED (except for pci-keystone.c) to BAR_DISABLED.
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+pci-keystone.c and pcie-tegra194.c can then be the only drivers that
+have BARs marked as BAR_RESERVED (all other drivers would use BAR_DISABLED).
+
+Please just make sure that you don't regress the amount of currently passing
+pci_endpoint_test test cases that are passing for pcie-tegra194.c.
+(Which would be the case if you revert the patch in $subject without first
+adding your proposed new BAR_DISABLED, such that we can have a distinction
+between BAR_DISABLED and BAR_RESERVED.)
+
+
+Kind regards,
+Niklas
 
