@@ -1,196 +1,177 @@
-Return-Path: <stable+bounces-215725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YF3XKfXBi2l6aQAAu9opvQ
-	(envelope-from <stable+bounces-215725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:40:37 +0100
+	id QG0EEnzFi2k7awAAu9opvQ
+	(envelope-from <stable+bounces-215726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:55:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103F712020B
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:40:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B759912030E
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11AFB3070B1F
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:39:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC4E73047069
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA34A338907;
-	Tue, 10 Feb 2026 23:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B5033ADAC;
+	Tue, 10 Feb 2026 23:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZJihtdu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+rIjo+y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF8E336EE7;
-	Tue, 10 Feb 2026 23:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770766754; cv=none; b=LLgFWH60SYLFWN+d+BKT85nWEaJAMLo6JxSdLAArSp4eZn5BmudFARVAMgTuUcSUv9C1v3Py2LEi9lWvL6do2OVVS1YE1XO7lH//eWJ4q0i9rycgP0+NZ3x1d/bubKSWE5va15z8ArW138GF265ldEYvQlZhrdeDsKhJCB5FSNc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770766754; c=relaxed/simple;
-	bh=l40g5XI76/xjtVu1Jy+IaqFzXlkV1FpHj5AiocgwbO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=aJEmwfLZ5plYhouPko/vQTLCsSrbvMlMGWo1/efdZw/covQAKvBo2SFXJmHKSleYABRx0wx5eyYvxQP6usM2EfMS9cCO9zyRvqzKrKL0EHLImbSqXNk0BXc6Za/uyf/UW4m3Rq+rdazUpS0gGvAElEjNWIjuHofi0zrrWH6tgQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZJihtdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2503C116C6;
-	Tue, 10 Feb 2026 23:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770766754;
-	bh=l40g5XI76/xjtVu1Jy+IaqFzXlkV1FpHj5AiocgwbO8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=jZJihtdu138tStN5TC6+zNiXMs6e6OsK5vCJ57kpp0QTfjhvVtjevVk1jo1h7SDV5
-	 612nz8Gqrzdnipw0K3meJ7Rb9qxC8DPC3FpID2GXrjImserEwTHvaX+ahhrelsZg08
-	 33pKH3lZVtMIVauguNwwSu3nBNz113j0Xyh5Coy75w+PwMhYvpZK6JzoHXMnDcI5fz
-	 BGKjVfF+cWlO3YWZ3JDIRzJwmD+QCeJbDOSdq5U+Qssbs8Oxikz6lLjwND6wBC6wWL
-	 hyjhLMR0vHidMKkptqn+vmnpfXpkfYTVxa/nJ7fQfI7P8OanFUYh9WIJ4Mt5eWRxd3
-	 N2AmndRMXtdkg==
-Date: Tue, 10 Feb 2026 17:39:12 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>,
-	"Guo, Jinhui" <guojinhui.liam@bytedance.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"dwmw2@infradead.org" <dwmw2@infradead.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"joro@8bytes.org" <joro@8bytes.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"will@kernel.org" <will@kernel.org>,
-	Alex Williamson <alex@shazbot.org>
-Subject: Re: [PATCH v2 2/2] iommu/vt-d: Flush dev-IOTLB only when PCIe device
- is accessible in scalable mode
-Message-ID: <20260210233912.GA93504@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1A0322C73
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 23:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770767734; cv=pass; b=avzGscKU3FQLva5JG9pyiOila8sKjkCUXcIsY4ZHeoFxLZPor9Uy5Q4V+4x1X1lfdbEf4MO+GY5cacCaYwrCMEEVIVzX5/Jxaeysm3APPsFly4xf6Y9O66JxaIH9+PqXErGyg+0OcTZgwxAMonaqeZhw2ZlzMd6lgOLUPHGpejY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770767734; c=relaxed/simple;
+	bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jy4JleYT9ipcTn72Ad/jCsRLKJjIktZIL+NkerPGZP1QtQa7DVWJ7Dw4nlXJT5t0cRwVrpROXsC9gLMo0sNji8JXlAPG8/f98VEIbciafGSwzZQU9E5MO0X7pbMLNnk3HE3UaYmDVskZcFGyaJFF/hbK99fMMGwxDqMIBPWt+EQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+rIjo+y; arc=pass smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2b867142b07so239172eec.0
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:55:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770767732; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dKNW2vHs3FOnAEFkTba+HdykTzFb3laYZpFTdd9rkt6q67X1rQcYT4K30C1uq4shLU
+         na14+517OcUBiquwke2bfDcA0nLi4fjIcrArKdaU56zvJNz8MknBe3MAoakSgh6Wc0uN
+         eqmiGXgiAkk6vxW3qm9UEjVzqSTL3j+oL1MekdhP0aOaV/lTZOnjTbv8aarTaRyeidYL
+         8+1BbZ5SoKfVoPUYcZwvEQxb40aA0xqyddKc0UFdfS4IINjmYD0kJyGweiX1Arf70Qpy
+         kCb3WE2UuJsXnqE1PoMC6LV77y5kM5nfRdI91DPChMBKyv52wLWiJ6F6ibmEWUDFxxMZ
+         2idg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
+        fh=qYYZ6PAKUMZBPL+7wIUl0lMjgIc9ho/ByA2721shivw=;
+        b=eo/ovul8ZsBibSYKg0ORzwSD3lB80awugiecEMXQZ2WfndYfTZwpHgz1kj3RCRLA9r
+         SJ80E1l3bMEyUwoOGWGvA4m8VW/znuB6ftc0+Ag3k5BGZzzJ8BjPOuHRgjrgEVxGXGgQ
+         g5NPY0cBa6OKXBpSpHk1CDzchgznpk1ojGDoxN1OqB2jVMYtwv1gN/wc5tJzSmAAjFzS
+         fXEjNAmw4DICVGkUSjIhoWp+RxIMblKEPCvkw2bJ26WMzqqTsvwQADybEr2Uo/xWBYQp
+         Qe6h6RUEXTAh53X9Fc2BHWJZAVckY3sxfCM43ot8+IltZVOQI3z9wZl6/QafYfL6IOgm
+         BFUA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770767732; x=1771372532; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
+        b=R+rIjo+yeTl32D2LKK/1hPvSm0rb94oMG5avlKUGPXvh/lsjOp8hCDyvgiG9KHB+xy
+         AVPE6L0A0pSlpR6hq+oG4YBbx3veMZ+XFGUh+FDVZwc2JOPSGewp/WzLOR4RwfhC/HdY
+         UeAEz2R5vrB+cbYnXZvKuIUiLYKjZbFkvf6K12PA2kyu0eh7JFrgXQ7DZJrNYN9SRsT2
+         0YUgbk/b741JbwYLdChRyAkfYKjiudF7yemagDr29oi9RA7qrF2GOxKTHosRp42vz+p3
+         STn0WsxMupLfdp+jYEz6CDqhxiaJFaQYs7Qy2/7oZQ9Cq2usVhNYYUa5mmTKDV+bpHHx
+         4P6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770767732; x=1771372532;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
+        b=XizOYJkq8xR6gbirswHqXeBLvrFNw4IAwJvoqCjVC7inb4yChpm8ptT5cOmFmAw2EM
+         EL841kO7maESCZ1DrosJI+gGdsCmd9IasETUHivN6maCN4TPYHBXAHNr1m+JweykDzSn
+         eBPh9d8t8FsIjOarjfcP81cQ9ycyjvEdy9tMgUnOBuEBpDvRfbDYdHAlo7GKaTREO8iF
+         k+GCntNx+Hvsjkg/ZyDRS/sTRFC5927jLh90qEsxPHIbg0WCEb0HH71CkxiWjFoWkhei
+         /19url8pCEGA7rNadzTU8KWXdw6rP8bhZYiaKlem54GpTJjlmuAFCSE+0I2W+XpoJgWh
+         lJIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPIY1elXRaIhW8Y0UY7h6+pUkkTV5eUTCZWiq5RY2X1lsDc9w3RXyF8T4qLshTiOpx+/S1fg0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoiHRrWBg9j32P9LW3ej9AYDhWsuCZD3suTRk4OzUMLrUrK9zl
+	L+xTMWwzM3z/RVeph64rFUJVbarG2MA5juDg4HnUmOSw+zngQ4Fd9tlX6LWvrIBNSbZX/nuY0c1
+	HcnvFOEqzG+T7FRMXs961bBQetF3aKwI=
+X-Gm-Gg: AZuq6aKU/m4BIIPwM1f6/yaLE24pyRtFXtJvrEGlrCvzFT42O/CR7K7KB9QzAk1/cGL
+	4+kjzMj6kqseKIrml9Lvy3McbjNdKtCwaXDDO1ErLsfPOw7RT4pRUWef5SLdLDJ1B49QJcUT+bO
+	ga87box6TrJJiBx8BiLQ/6ha2q0cD04o10pdUN7T1rtZ3MsrJ60IdiAcHVYa/yutEJXawRYqcKl
+	CaQa4qgNkFSy9jpgvo2PQaPMD3Z/hhIOOq+plOHjYiL2C5ddtk2RSExO35bMRnqx4eVucC3deFM
+	At3n/6Hfo+WjYDOnRzHi55c8Slp/Bjv4Y+x/ZY4sMQy90Ia9NRbSUDpk+BheeqrbzjE2HGwWlXB
+	1Cc+FmxiyOG0wa6Aht/Q1um+r
+X-Received: by 2002:a05:693c:3b03:b0:2b0:4f9a:724b with SMTP id
+ 5a478bee46e88-2ba8cdb3d32mr825524eec.6.1770767732055; Tue, 10 Feb 2026
+ 15:55:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <BN9PR11MB5276FCF5D751DE7432A32BBB8CB2A@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <20260210232949.3770644-1-cmllamas@google.com>
+In-Reply-To: <20260210232949.3770644-1-cmllamas@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 11 Feb 2026 00:55:19 +0100
+X-Gm-Features: AZwV_QhspIVFMH3tEzHxhp3tdie1pO5H-yKNMpIPHp3A2MnDfnLnbLxBqljb69E
+Message-ID: <CANiq72nU1rUrxfAZUMeOF70gwvTPqo6Wcv6VUqYZ6mCPpyY=JQ@mail.gmail.com>
+Subject: Re: [PATCH] rust_binder: fix oneway spam detection
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Matt Gilbride <mattgilbride@google.com>, Paul Moore <paul@paul-moore.com>, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, Miguel Ojeda <ojeda@kernel.org>, kernel-team@android.com, 
+	linux-kernel@vger.kernel.org, Tiffany Yang <ynaffit@google.com>, stable@vger.kernel.org, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215726-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215725-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:email]
-X-Rspamd-Queue-Id: 103F712020B
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,android.com,kernel.org,google.com,gmail.com,paul-moore.com,konsulko.se,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: B759912030E
 X-Rspamd-Action: no action
 
-[+cc Alex, beginning of thread:
-https://lore.kernel.org/all/20251211035946.2071-1-guojinhui.liam@bytedance.com/]
+On Wed, Feb 11, 2026 at 12:30=E2=80=AFAM Carlos Llamas <cmllamas@google.com=
+> wrote:
+>
+> The spam detection logic in TreeRange was executed before the current
+> request was inserted into the tree. So the new request was not being
+> factored in the spam calculation. Fix this by moving the logic after
+> the new range has been inserted.
+>
+> Also, the detection logic for ArrayRange was missing altogether which
+> meant large spamming transactions could get away without being detected.
+> Fix this by implementing an equivalent low_oneway_space() in ArrayRange.
+>
+> Note that I looked into centralizing this logic in RangeAllocator but
+> iterating through 'state' and 'size' got a bit too complicated (for me)
+> and I abandoned this effort.
+>
+> Cc: stable@vger.kernel.org
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-On Wed, Dec 24, 2025 at 03:08:49AM +0000, Tian, Kevin wrote:
-> +Bjorn for guidance.
+Cc'ing rust-for-linux (we still do our best to send all Rust-related
+patches there too, to have an index).
 
-Sorry for the late response.
-
-> quick context - previously intel-iommu driver fixed a lockup issue in surprise
-> removal, by checking pci_dev_is_disconnected(). But Jinhui still observed the
-> lockup issue in a setup where no interrupt is raised to pci core upon surprise
-> removal (so pci_dev_is_disconnected() is false), hence suggesting to replace
-> the check with pci_device_is_present() instead.
-
-I think checking pci_dev_is_disconnected() or pci_device_is_present()
-in drivers is usually bad practice because it's always racy, as you've
-already pointed out.
-
-I don't think it's possible to avoid Invalidate Completion Timeouts in
-general, so I think the real solution is to figure out how to
-gracefully handle them without running into the lockup detection.
-
-I assume the lockup is the loop in qi_submit_sync() where we wait for
-QI_DONE with interrupts disabled.  Maybe we need something like
-watchdog_hardlockup_touch_cpu() there, along with a timeout in that
-loop?
-
-The PCIe r7.0, sec 10.3.1, implementation note suggests the timeout
-might be in the 1-2 minute range, which is pretty extreme, but if we
-can at least handle timeouts gracefully, we can think about ways to
-make them less likely, e.g., by coordinating with FLR and VFIO detach
-(maybe the sort of thing Alex alluded to at
-https://lore.kernel.org/all/20251223153534.0968cc15.alex@shazbot.org).
-
-> Bjorn, is it a common practice to fix it directly/only in drivers or should the
-> pci core be notified e.g. simulating a late removal event? By searching the
-> code looks it's the former, but better confirm with you before picking this
-> fix...
-
-I don't know exactly what it would look like to simulate a late
-removal event, but it sounds like some kind of complicated
-infrastructure that would still be only a 90% solution, which I
-wouldn't recommend.
-
-> > From: Baolu Lu <baolu.lu@linux.intel.com>
-> > Sent: Tuesday, December 23, 2025 12:06 PM
-> > 
-> > On 12/22/25 19:19, Jinhui Guo wrote:
-> > > On Thu, Dec 18, 2025 08:04:20AM +0000, Tian, Kevin wrote:
-> > >>> From: Jinhui Guo<guojinhui.liam@bytedance.com>
-> > >>> Sent: Thursday, December 11, 2025 12:00 PM
-> > >>>
-> > >>> Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
-> > >>> request when device is disconnected") relies on
-> > >>> pci_dev_is_disconnected() to skip ATS invalidation for
-> > >>> safely-removed devices, but it does not cover link-down caused
-> > >>> by faults, which can still hard-lock the system.
-> > >> According to the commit msg it actually tries to fix the hard lockup
-> > >> with surprise removal. For safe removal the device is not removed
-> > >> before invalidation is done:
-> > >>
-> > >> "
-> > >>      For safe removal, device wouldn't be removed until the whole software
-> > >>      handling process is done, it wouldn't trigger the hard lock up issue
-> > >>      caused by too long ATS Invalidation timeout wait.
-> > >> "
-> > >>
-> > >> Can you help articulate the problem especially about the part
-> > >> 'link-down caused by faults"? What are those faults? How are
-> > >> they different from the said surprise removal in the commit
-> > >> msg to not set pci_dev_is_disconnected()?
-> > >>
-> > > Hi, kevin, sorry for the delayed reply.
-> > >
-> > > A normal or surprise removal of a PCIe device on a hot-plug port normally
-> > > triggers an interrupt from the PCIe switch.
-> > >
-> > > We have, however, observed cases where no interrupt is generated when
-> > the
-> > > device suddenly loses its link; the behaviour is identical to setting the
-> > > Link Disable bit in the switch’s Link Control register (offset 10h). Exactly
-> > > what goes wrong in the LTSSM between the PCIe switch and the endpoint
-> > remains
-> > > unknown.
-> > 
-> > In this scenario, the hardware has effectively vanished, yet the device
-> > driver remains bound and the IOMMU resources haven't been released. I’m
-> > just curious if this stale state could trigger issues in other places
-> > before the kernel fully realizes the device is gone? I’m not objecting
-> > to the fix. I'm just interested in whether this 'zombie' state creates
-> > risks elsewhere.
-> > 
+Cheers,
+Miguel
 
