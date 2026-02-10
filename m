@@ -1,167 +1,183 @@
-Return-Path: <stable+bounces-215664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBvzFnQ5i2neRgAAu9opvQ
-	(envelope-from <stable+bounces-215664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 14:58:12 +0100
+	id IJOLG4A6i2neRgAAu9opvQ
+	(envelope-from <stable+bounces-215665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:02:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF78011BA1F
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 14:58:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7D011BABA
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F02130BC5B5
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 13:54:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BFA33080F06
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 13:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140F1354ACA;
-	Tue, 10 Feb 2026 13:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7827634C14C;
+	Tue, 10 Feb 2026 13:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBWb6pa6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q1dbYch/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DFF34167B;
-	Tue, 10 Feb 2026 13:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E8C26ED3A;
+	Tue, 10 Feb 2026 13:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770731669; cv=none; b=EjKm5y6zvle1DQ2c7FTf5KjH7rS2lEX/YAbSHk9S0rnEdcGR7HgTvX/avKrOAqH7B6sDuT2MT+wZ9P5KpInu9lYzTSDW1ZcRwkczVf/WTv4lLTkx3aunXOZUINIObpFfMNLL2fOKPXCSU98UPGklfEu7FGsX5Z2KyrAr9i35Ah8=
+	t=1770731914; cv=none; b=RBpfM2vw9azeRQQ4/EKebw/m4MQR05lgbQuG3YfPxGQEiohzhgP4BklTn33dznskb+tVexu5vQpH/A1BytxCnIy3T0WzAPuQHqVmGhmFuN8TzPtwfMB69GffoH3dgiNaebJdx0riBiFIwjmbtc/Y5tRupf9urenO5unbYPqH14M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770731669; c=relaxed/simple;
-	bh=nwZUHE376cmJsamlkoacloSAsBqHZzZIso7GijVf1J8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TTNYisHDHfjvVy26rPDIC9/4UwhsUIfqKlkIDFxHS9ZRYKn/uTrAwD7LAceSEjWBOUTfh9gAvlbhRBZoNiocHoUuIBviA60A32t5Mod2SJxBaX6hXus68rym5/eXbzToAkTQG2bmFvQYCElpkRJ8sbTibWUBDE5UhiyNysBbs74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBWb6pa6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46D8C116C6;
-	Tue, 10 Feb 2026 13:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770731669;
-	bh=nwZUHE376cmJsamlkoacloSAsBqHZzZIso7GijVf1J8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eBWb6pa6t4WHkLe39BI2VgLpPgF8zmW7A5Lt5Y8xhwKkTY42Fr3Pv5SxQrd7KqIX9
-	 9UEY1ylBKH88fbCydDHF4kzDMlDC+loO3xKKJ0CJA2gYgS0Xo+0XJn3w0Ep8kMj7sX
-	 rRYrmPKh6SrB5Fx6w8Y3zbYg+lJ0vZSJ+LeTZRQAt7b+dqPRUT4oQw0hO/ARbQvOh8
-	 UvydUuHKRajAjVjVwPqA2MGuCtMt5j1GHyZ8pe6EKVNhUbVrbk8n5cTo5rLeWaeONd
-	 dGqLdfNc/d4FVQrX6WXuQO72orHFCgsMLjpYBev5DGCMOBKnWISPLONvawvRq6AvWM
-	 0gy0J87OovdKA==
-Date: Tue, 10 Feb 2026 19:24:20 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Abel Vesa <abel.vesa@linaro.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org, 
-	Abel Vesa <abel.vesa@oss.qualcomm.com>
-Subject: Re: [PATCH v2 0/4] soc: qcom: ice: Remove platform_driver support
- and expose as a pure library
-Message-ID: <h3b67ea7kkofh3jtmgvxvago5cejf3gyjwzdynkigk6ljdtp6w@dmg76x46tcjf>
-References: <20260210-qcom-ice-fix-v2-0-9c1ab5d6502c@oss.qualcomm.com>
- <CAPDyKFocm3yRTG0TJJRxfDvJMjvvvri5fzi_HoNY4YSd-41oKA@mail.gmail.com>
+	s=arc-20240116; t=1770731914; c=relaxed/simple;
+	bh=m5Dj4gxkuHL8c1PcLJHB5d6IMv21j3TjFODSPGiJ31M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XL7MKuKB0+dP9E7gmInIQXuuhVG/scI+iLIuKE6JxmvgLLLz7fmHW4AWfAbUfiOjXkPXc7jKyWAkIFeqeFhMj1x0Co9RLD3n/4hlBF4yLk2fK+bDF3pKOAVO7nA6BTIqzqTD8Ng1AAQ/ff9xlv70dvh2mKI2WRG4ywvxAYLflzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q1dbYch/; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770731913; x=1802267913;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=m5Dj4gxkuHL8c1PcLJHB5d6IMv21j3TjFODSPGiJ31M=;
+  b=Q1dbYch/53AWDEJPN3hb+pyNZqb013gAn/709ByoT22ujgS0QKumAuBT
+   xIpIeb5ezy9/ZevlpoJQQL/1GpWUhwGfRaflcEZ7Fv/IsVSkIaf/I5XGe
+   7RTIXw8ZWzX3mzze8d4EtaQOeZKEOFaVQw2Uz2kil/1DHqsuv1FHSsHTN
+   m9T2Kdc41TaNmQAzJLyIVxYV/BB24mhr4MduYEiWV1nPyABHeCxFMSiMb
+   tHAZD2AbfvA9KBNLCSpsXjVV381/NOGDNFxSR8ppCkAHsa1WaQgHDfudw
+   vsYMmiRNORxb7bhezFNmvUa/+MOqNt9I3AeqebmfKhrNrJfmLZrN0X5mL
+   A==;
+X-CSE-ConnectionGUID: X891ucwPSpSEJ45A3SCwUw==
+X-CSE-MsgGUID: PVML8s0tS+SEEItkZqEIOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71577654"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="71577654"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 05:58:32 -0800
+X-CSE-ConnectionGUID: F/r0FAoSRZ+1u5u4B7vrEQ==
+X-CSE-MsgGUID: K877X934RHqky+kk2znn0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="210982022"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa006.fm.intel.com with ESMTP; 10 Feb 2026 05:58:29 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id B27D198; Tue, 10 Feb 2026 14:58:27 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/1] device property: Allow secondary lookup in fwnode_get_next_child_node()
+Date: Tue, 10 Feb 2026 14:58:22 +0100
+Message-ID: <20260210135822.47335-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPDyKFocm3yRTG0TJJRxfDvJMjvvvri5fzi_HoNY4YSd-41oKA@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215664-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215665-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,linuxfoundation.org,kernel.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: DF78011BA1F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.intel.com:mid,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 2F7D011BABA
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026 at 02:43:53PM +0100, Ulf Hansson wrote:
-> On Tue, 10 Feb 2026 at 07:56, Manivannan Sadhasivam via B4 Relay
-> <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org> wrote:
-> >
-> > Hi,
-> >
-> > This series removes the platform_driver support from Qcom ICE driver and
-> > exposes it as a pure library to the clients to avoid race conditions with ICE
-> > SCM call availability.
-> >
-> > Merge Strategy
-> > ==============
-> >
-> > ICE patches (1,2) through Qcom tree and MMC/UFS patches (3,4) through respective
-> > subsystem trees as there is no dependency.
-> 
-> Just wanted to double check that this is really correct....
-> 
-> The propagated error codes (or NULL) are changed in patch1/patch2, so
-> is it really okay to pick the mmc/ufs patches (patch3 and patch4)
-> independently?
-> 
+When device_get_child_node_count() got split to the fwnode and device
+respective APIs, the fwnode didn't inherit the ability to traverse over
+the secondary fwnode. Hence any user, that switches from device to fwnode
+API misses this feature. In particular, this was revealed by the commit
+1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
+that effectively broke the GPIO enumeration on Intel Galileo boards.
+Fix this by moving the secondary lookup from device to fwnode API.
 
-Darn... No, I was being stupid here. Without patch 2, removing NULL check in
-patches 3 and 4 will break the respective drivers, but patch 1 is fine though.
+Note, in general no device_*() API should go into the depth of the fwnode
+implementation.
 
-Thanks for spotting this. All patches should go at once through Qcom tree.
+Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/base/property.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-- Mani
-
-> Kind regards
-> Uffe
-> 
-> >
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> > Changes in v2:
-> >
-> > * Added MODULE_* macros back
-> > * Removed spurious platform_device_put()
-> > * Added patches to remove NULL return
-> >
-> > ---
-> > Manivannan Sadhasivam (4):
-> >       soc: qcom: ice: Remove platform_driver support and expose as a pure library
-> >       soc: qcom: ice: Return proper error codes from devm_of_qcom_ice_get() instead of NULL
-> >       mmc: sdhci-msm: Remove NULL check from devm_of_qcom_ice_get()
-> >       scsi: ufs: ufs-qcom: Remove NULL check from devm_of_qcom_ice_get()
-> >
-> >  drivers/mmc/host/sdhci-msm.c |  10 ++--
-> >  drivers/soc/qcom/ice.c       | 127 ++++++++++++++++---------------------------
-> >  drivers/ufs/host/ufs-qcom.c  |  10 ++--
-> >  3 files changed, 58 insertions(+), 89 deletions(-)
-> > ---
-> > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> > change-id: 20260210-qcom-ice-fix-d2a3a045b32d
-> >
-> > Best regards,
-> > --
-> > Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> >
-> >
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 6a63860579dd..8d9a34be57fb 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -797,7 +797,18 @@ struct fwnode_handle *
+ fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+ 			   struct fwnode_handle *child)
+ {
+-	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	struct fwnode_handle *next;
++
++	if (IS_ERR_OR_NULL(fwnode))
++		return NULL;
++
++	/* Try to find a child in primary fwnode */
++	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	if (next)
++		return next;
++
++	/* When no more children in primary, continue with secondary */
++	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
+ }
+ EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
+ 
+@@ -841,19 +852,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_available_child_node);
+ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 						 struct fwnode_handle *child)
+ {
+-	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+-	struct fwnode_handle *next;
+-
+-	if (IS_ERR_OR_NULL(fwnode))
+-		return NULL;
+-
+-	/* Try to find a child in primary fwnode */
+-	next = fwnode_get_next_child_node(fwnode, child);
+-	if (next)
+-		return next;
+-
+-	/* When no more children in primary, continue with secondary */
+-	return fwnode_get_next_child_node(fwnode->secondary, child);
++	return fwnode_get_next_child_node(dev_fwnode(dev), child);
+ }
+ EXPORT_SYMBOL_GPL(device_get_next_child_node);
+ 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.50.1
+
 
