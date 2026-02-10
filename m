@@ -1,157 +1,178 @@
-Return-Path: <stable+bounces-215643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBN2O9UKi2lQPQAAu9opvQ
-	(envelope-from <stable+bounces-215643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:39:17 +0100
+	id YFzyKHILi2lXPQAAu9opvQ
+	(envelope-from <stable+bounces-215644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:41:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B95119B48
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:39:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A754119BA7
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D6023018432
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:39:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C81030293FB
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C44431690A;
-	Tue, 10 Feb 2026 10:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6149133E34C;
+	Tue, 10 Feb 2026 10:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kbeGcdok"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1XLD7df"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8793168E1;
-	Tue, 10 Feb 2026 10:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220AB3164A5;
+	Tue, 10 Feb 2026 10:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770719955; cv=none; b=m1fUzQFhByNkuO6NvTakUv8WXrhzwuAq42nYaeLpAmJDXW5LbnNj/SgIqmc4UDYAZ35UcSfWK8dxigrGeFN85asSwDpS8TH2kAyG9TG4FnkbLuQfj1vbxE9lEjXtPvu7GyO8vmBDue/ONjwVCjdZSdRNdbRFnpm8zyuaz0oqVtw=
+	t=1770720104; cv=none; b=AKCyGCzio00LdkUk2TeOBT9HLfLAASbEZuLxLaSrx8P1HMC+DlahJb9J2cWB2onGl+mR1umMaPSOk9fgGJ6/HR5R0e1Df3vs42WTG3G8ZvqUjQE4sIj6NhYb9lbFvT5db60y4Q351sf9WXjv6IR4XvoQBLPp523IAeuD++7czzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770719955; c=relaxed/simple;
-	bh=EXWvU3l3SxXvylYPwC9SWvwtV6vz8L7IbmmOR0Dymk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uCdVYXKHMqy5mf0IvGcKPlmanBERNlhBR3BZIDxXpNymqdZ5UPhfOJbzFe7nRXTSgceRiqCF/NIaJBh2AK3IDdGwBzq0AewLnoKAXfpT+FWmFaldHUessFYcqXHNwSGkg0gaziM3IasFehpEzBz0PArSwh9zGne4+GCxGM8bxa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kbeGcdok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CEAC116C6;
-	Tue, 10 Feb 2026 10:39:11 +0000 (UTC)
+	s=arc-20240116; t=1770720104; c=relaxed/simple;
+	bh=b2GOcGwn5DzDpShBURk8TYAQ9YVP1nK5iYwXXc1HUCw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tQbGO4psvNyhrcxHjmZ3t412D110ehuBGckdBBN2g6pldcNwhKnLGRo8x+iqC7j76a1A4K9S2ZkIWgL6wKl7G46/oyg2DMr8IJaqQwAZbI7WKk8cM1gM30q4o81XTc++otkknSApfZirzqUqMnpPJZ05zFQUd3r5aYWx9ik0RSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1XLD7df; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82270C116C6;
+	Tue, 10 Feb 2026 10:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770719954;
-	bh=EXWvU3l3SxXvylYPwC9SWvwtV6vz8L7IbmmOR0Dymk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kbeGcdokdoZtL526Ut5lHEGDQMLybi9mbob1t+oHUu1v3rGDonbM4TG2GVgTgvG5+
-	 TXeE70YdEISkjLc+TrrIhwXsROXyntdKC0HFYGiJ/cHXvNfoo94UpPtjznEqovP8/U
-	 uC27PVwY93HRVWsW+AQZgdZrLVpgb5dH5uEoZcxtX59SxF5Dy66zoYzXaASec7WgIf
-	 5MoHvbSXiv30StxC8iwTQk7nwpwlXfb5RSFdDiApeb2WQpd+kmdi2vkfCwpid1Wrzo
-	 ddNAChSAwUPnSLsVI35n1ebUxLkgUij41k9i4BR8RjN4aAkc9nltBGOgLI62RhXZZf
-	 zDVJ1GEyx7b7g==
-Date: Tue, 10 Feb 2026 11:39:08 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Aksh Garg <a-garg7@ti.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	stable@vger.kernel.org, Thierry Reding <treding@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: Re: [PATCH v2 2/3] PCI: tegra194: Reset BARs when running in PCIe
- endpoint mode
-Message-ID: <aYsKzBjmGEi1z0am@ryzen>
-References: <20250922140822.519796-5-cassel@kernel.org>
- <20250922140822.519796-7-cassel@kernel.org>
- <2fedf28e-83ea-4e51-b1a1-e45f0e928509@nvidia.com>
- <aYonDJyd_dbV0GBK@ryzen>
- <94458c39-587b-4bb4-a410-e921e5d99f10@nvidia.com>
- <aYsDDOZA18BBeOsd@ryzen>
+	s=k20201202; t=1770720103;
+	bh=b2GOcGwn5DzDpShBURk8TYAQ9YVP1nK5iYwXXc1HUCw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=D1XLD7df9wGt3WGmpnFj2sTKRNleRcQridocbYNT+S2bnNoZZLvNciE4jmYJS+KCs
+	 lvyRdkNDTdLUhZPGvu3l8LiIuR1aZQ5ZsLRaozZ7RTlj9TP7nlmZKEHHE10PsV0wy6
+	 RDuWuG3kx2/vp5nNLwcHzCASpEyPrk1M1hqwrDqFhm0rAvNUCj8YIXBMZ0NRhQBeZ0
+	 2xoQ8zxzZc+hVo0U8ne4SYUB10JxYMPE+ME7PccvWIgqg/S633I+eGDcPvUVoYjj1M
+	 GVEIkTQq1f5PRhbah/uIZCkIdEd6lyWtuD5LcWhA0kPSFumf7om5x7H+D6+n2Ub0rt
+	 AC4fWjQzIYy6g==
+Message-ID: <75e26353-2704-4dda-9537-5d22a4887553@kernel.org>
+Date: Tue, 10 Feb 2026 11:41:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYsDDOZA18BBeOsd@ryzen>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpio: swnode: restore the swnode-name-against-chip-label
+ matching
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Arnd Bergmann
+ <arnd@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+References: <20260210094806.38146-1-bartosz.golaszewski@oss.qualcomm.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20260210094806.38146-1-bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215643-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215644-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,linux.intel.com,linuxfoundation.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,wdc.com,vger.kernel.org,google.com,gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 84B95119B48
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4A754119BA7
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026 at 11:06:04AM +0100, Niklas Cassel wrote:
-> BAR_RESERVED already means disabled, it just assumes that an EPC driver
-> disables all BARs by default, which is the case for:
-> pci-dra7xx.c, pci-imx6.c, pci-layerscape-ep.c, pcie-artpec6.c,
-> pcie-designware-plat.c, pcie-dw-rockchip.c, pcie-qcom-ep.c, pcie-rcar-gen4.c,
-> pcie-stm32-ep.c, pcie-uniphier-ep.c.
-> (All drivers which disables all BARs by default in the init() callback using
-> dw_pcie_ep_reset_bar(). pci-epf-test will later enable all BARs that are not
-> marked as BAR_RESERVED.)
-> 
-> That leaves: pcie-keembay.c, pci-keystone.c, pcie-tegra194.c (before my patch).
-> 
-> For pcie-keembay.c, this is not a problem, because BAR0, BAR2, BAR4 are marked
-> as only_64bit, so pci-epf-test configure these BARs as 64-bit BARs, and thus
-> BAR1, BAR3, and BAR5 will get disabled implicitly.
-> 
-> For pci-keystone.c, this is the only driver that is a bit weird, it marks
-> BAR0 and BAR1 as reserved, but does not disable them in the init() callback.
-> It seems force set BAR0 as a 32-bit BAR in the init() callback.
-> 
-> Thus, for all drivers except for pci-keystone.c, BAR_RESERVED does mean
-> BAR_DISABLED. Feel free to send a patch that renames BAR_RESERVED to
-> BAR_DISABLED.
-> 
-> If you send such a patch, perhaps you also want to modify the PCI endpoint
-> core to call reset_bar() for all BARs marked as BAR_RESERVED/BAR_DISABLED,
-> instead of each EPC driver doing so in the init() callback. I think the main
-> reason why this is not done already is that thare is no reset_bar() op in
-> struct pci_epc_ops epc_ops, there is only clear_bar() which clears an BAR
-> enabled by an EPF driver. (So you would most likely also need to add a
-> .disable_bar() op in struct pci_epc_ops epc_ops.)
+Hi,
 
-Aksh (on To:),
+On 10-Feb-26 10:48, Bartosz Golaszewski wrote:
+> Using the remote firmware node for software node lookup is the right
+> thing to do. The GPIO controller we want to resolve should have the
+> software node we scooped out of the reference attached to it. However,
+> there are existing users who abuse the software node API by creating
+> dummy swnodes whose name is set to the expected label string of the GPIO
+> controller whose pins they want to control and use them in their local
+> swnode references as GPIO properties.
+> 
+> This used to work when we compared the software node's name to the
+> chip's label. When we switched to using a real fwnode lookup, these
+> users broke down because the firmware nodes in question were never
+> attached to the controllers they were looking for.
+> 
+> Restore the label matching as a fallback to fix the broken users but add
+> a big FIXME urging for a better solution.
+> 
+> Link: https://lore.kernel.org/all/aYmV5Axyfo76D19T@smile.fi.intel.com/
+> Cc: stable@vger.kernel.org # v6.18, v6.19
+> Fixes: 216c12047571 ("gpio: swnode: allow referencing GPIO chips by firmware nodes")
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>  drivers/gpio/gpiolib-swnode.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
+> index 21478b45c127d..c88313b0026b9 100644
+> --- a/drivers/gpio/gpiolib-swnode.c
+> +++ b/drivers/gpio/gpiolib-swnode.c
+> @@ -42,6 +42,25 @@ static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+>  
+>  fwnode_lookup:
+>  	gdev = gpio_device_find_by_fwnode(fwnode);
+> +	if (!gdev)
 
-since you have a @ti.com email, perhaps you can explain how pci-keystone.c
-can pass all the pci-epf-test test cases, considering that this is the only
-driver that has BARs (BAR0 and BAR1) marked as BAR_RESERVED but do not also
-disable the BARs (using dw_pcie_ep_reset_bar()) in the init() callback.
+This needs to be:
 
-Or, perhaps the simple answer is that pci-keystone.c does not pass all
-pci-epf-test test cases?
+	if (!gdev && gdev_node->name)
 
 
-Kind regards,
-Niklas
+gdev_node->name may be NULL and calling gpio_device_find_by_label()
+with a NULL pointer does not end well.
+
+Regards,
+
+Hans
+
+
+
+
+> +		/*
+> +		 * FIXME: We shouldn't need to compare the GPIO controller's
+> +		 * label against the software node that is supposedly attached
+> +		 * to it. However there are currently GPIO users that - knowing
+> +		 * the expected label of the GPIO chip whose pins they want to
+> +		 * control - set up dummy software nodes named after those GPIO
+> +		 * controllers, which aren't actually attached to them. In this
+> +		 * case gpio_device_find_by_fwnode() will fail as no device on
+> +		 * the GPIO bus is actually associated with the fwnode we're
+> +		 * looking for.
+> +		 *
+> +		 * As a fallback: continue checking the label if we have no
+> +		 * match. However, the situation described above is an abuse
+> +		 * of the software node API and should be phased out and the
+> +		 * following line - eventually removed.
+> +		 */
+> +		gdev = gpio_device_find_by_label(gdev_node->name);
+> +
+>  	return gdev ?: ERR_PTR(-EPROBE_DEFER);
+>  }
+>  
+
 
