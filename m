@@ -1,152 +1,173 @@
-Return-Path: <stable+bounces-215637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGXmG2gEi2kMPQAAu9opvQ
-	(envelope-from <stable+bounces-215637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:11:52 +0100
+	id wIROJpMDi2kMPQAAu9opvQ
+	(envelope-from <stable+bounces-215638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:08:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03721197AB
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:11:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C86191196DE
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B02D13070DCF
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:06:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7758930116AF
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846A2346E71;
-	Tue, 10 Feb 2026 10:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D39F3431E6;
+	Tue, 10 Feb 2026 10:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxGyz3iJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="CprmzF1S"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683122ECE9B;
-	Tue, 10 Feb 2026 10:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E60347BA5
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 10:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770717990; cv=none; b=fmEiCCnpdnv1UDglam2nsNi94xoUT8b5yC1CUEEoTxbnJt7ycKGbpmBPoLUxW1q08y7/Bq2qquLLg6SgANFp9JqxmGmfXuNSQnrfqAPBA2FQYHv199nyYYA6HDEpbVk6qw8wDk3HLUzKQX7rkWMtvswNkY9S6agiIzN/u1prspg=
+	t=1770718052; cv=none; b=Oey0gsVKhSGbMfHfbwp6nVMU8+O38zt+Fd0FPMvRM4fOWN+ZEJH3H+4ZdCSP4r6SBqOUeMK7C6ooP9x6KCnN6xj1xuZeozeIO+Zb9pejKoVuAY7wSLHnrYy9t8YYWyWzcS6K6CeniZAvF0Cx/ISK+P4uBMfqsHRa4beVc0NdR78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770717990; c=relaxed/simple;
-	bh=/bTmQM2IbaG4yBpW9mOQ8aMqXe7doEFJMG4YiD7b+tY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fyZG++VP6AFrSPFsUb+WxNb5pbp0/V9MK6BmMCytXpih9wAZkC6sr4h3O44iFp0me7sdoGxLLUCPhGM4Q5wo6S4g9FdgyZ94dsc1S8+a5NxEyWIte/eBl5Rz8ydEM984k4oex7zIt5qj0BwAdo7qOwSN0fOyDHc68zb/XYJT1ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxGyz3iJ; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770717990; x=1802253990;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/bTmQM2IbaG4yBpW9mOQ8aMqXe7doEFJMG4YiD7b+tY=;
-  b=UxGyz3iJp8cvXLk5GmjT9mIMxSxJcAkrmaN+Be/g2e/63YI/DeOsy+Qc
-   pciC4z8B0iJ3N9mjS9e/4HRQW86E9Cy3iyVUBKYyrxdbTMiovwC6kRSa8
-   YelxcCXl8PpT9NWl7qhXIe+snI8rudKE457bm0g0Etrd80hD6AsIQM0uY
-   t0lJjJc5A8jhVssEG9hV3TFPVc2+iKfGXuAyo1SzoTFd8VDwmDeQouR3k
-   Z2OdZqDBn2N+T8vcSikdZUX+Krut2kaO/B2EtciKICXA2fMFkO99umJWD
-   bYK5j63Ci4KZ9sA7orTLp8/fKbd+jHLpqT1YLYRIZMsq3kdNfFfEaCKuO
-   w==;
-X-CSE-ConnectionGUID: s0YTub0aRmSWRFwabgqcSg==
-X-CSE-MsgGUID: TXtETVSPRcy0z3FKwLRiHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71741062"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="71741062"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 02:06:28 -0800
-X-CSE-ConnectionGUID: OFUGUk5aSVWjpcyEr77N1g==
-X-CSE-MsgGUID: 19xDLYcqQR+cwZ0cAzI+0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="249516733"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.39])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 02:06:23 -0800
-Date: Tue, 10 Feb 2026 12:06:21 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Arnd Bergmann <arnd@kernel.org>, Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] gpio: swnode: restore the swnode-name-against-chip-label
- matching
-Message-ID: <aYsDHUTsX4o76OQa@smile.fi.intel.com>
-References: <20260210094806.38146-1-bartosz.golaszewski@oss.qualcomm.com>
+	s=arc-20240116; t=1770718052; c=relaxed/simple;
+	bh=swbo/Sf54WOt1r7kLvsMt0x+7Lm9qiFagtDXc2yxkOw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LZsJBoeTdzkLfos5l4rMhvhAjL1+gfslmJormfspOkVvVQrELrWDnlxq3k3AmAkJrPl7oWEPiHlHRzmlByXqOXnce/D28k/y7KygYM2ktSpdLOjUIPQMYWQAoELdRspX5sVYlr0/RggFQ8BEKxoqYr/AbxQDOd/+9KjOLa8/z2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=CprmzF1S; arc=none smtp.client-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
+	by cmsmtp with ESMTPS
+	id peb1vRdbsKjfopkeYvVgXE; Tue, 10 Feb 2026 10:07:30 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id pkeYvaq26qfpWpkeYvcgE1; Tue, 10 Feb 2026 10:07:30 +0000
+X-Authority-Analysis: v=2.4 cv=A55sP7WG c=1 sm=1 tr=0 ts=698b0362
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=-Qcm0AZxhyoZnww38z8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=SRJEKlgf1cU8u7kDgnrAbTXG2Eipl6g3LX3Q0whDiAk=; b=CprmzF1SlTN2TWExz1yYUvPO1B
+	WbCSBnXc0LfK6FXzgvMatFDecj+4Ku2yhp9WNP3+IliSxAyWmZ5bjLMWmWPB38tm+8ujNFt30buCn
+	aG8CgUD/N8bCpuxGhCdwNAzhP6c/RYAxyONpn/qMc6EOQi8DLiMyhYb2FP2LR2C1qhA8SxP5fioRY
+	qxOf/zuhhB68US/2klfhX515+x6v5Z+UzXSoX0wd2BvI6L1VOox/IFbI0idHMWuk4+Cqf/HrnR+YC
+	AwHqWLTw1kKMIXvelUjCoM3+UeOzUUwv2CVOHF4s/FgMtBf5+vk7bq/s/sbft4NAoyatRDlahCOK6
+	/eQTqaEQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:52582 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vpkeX-00000000pLb-2Zfh;
+	Tue, 10 Feb 2026 03:07:29 -0700
+Message-ID: <0fefff6f-127a-4be8-a479-fc52b6e1d590@w6rz.net>
+Date: Tue, 10 Feb 2026 02:07:27 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260210094806.38146-1-bartosz.golaszewski@oss.qualcomm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/75] 5.15.200-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260209142301.830618238@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260209142301.830618238@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vpkeX-00000000pLb-2Zfh
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:52582
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 24
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGPO81KgHBUs6Bqk9GmsYMFTZ/XWcEgaOcMK6k/168xZ848VObyDWB7zd3XAr8hPH/h+IR1RloFywJgCenORCoK8OPla3hdtv9XSw5rNIwQskGLI143p
+ Ac3DlCAx8sFubffV5EbGG/jufhG1pOLJugJ5/e9E1B5wynuRBCNizMv5ovdajhvywCTCsOA0i8ClXw==
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,gmail.com,linux.intel.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-215637-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215638-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	HAS_X_SOURCE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: B03721197AB
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,w6rz.net:mid]
+X-Rspamd-Queue-Id: C86191196DE
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026 at 10:48:06AM +0100, Bartosz Golaszewski wrote:
-> Using the remote firmware node for software node lookup is the right
-> thing to do. The GPIO controller we want to resolve should have the
-> software node we scooped out of the reference attached to it. However,
-> there are existing users who abuse the software node API by creating
-> dummy swnodes whose name is set to the expected label string of the GPIO
-> controller whose pins they want to control and use them in their local
-> swnode references as GPIO properties.
-> 
-> This used to work when we compared the software node's name to the
-> chip's label. When we switched to using a real fwnode lookup, these
-> users broke down because the firmware nodes in question were never
-> attached to the controllers they were looking for.
-> 
-> Restore the label matching as a fallback to fix the broken users but add
-> a big FIXME urging for a better solution.
-> 
-> Link: https://lore.kernel.org/all/aYmV5Axyfo76D19T@smile.fi.intel.com/
+On 2/9/26 06:23, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.200 release.
+> There are 75 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 11 Feb 2026 14:22:44 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.200-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Should be
+There's a build warning on RISC-V.
 
-Link: https://lore.kernel.org/all/aYkdKfP5fg6iywgr@jekhomev/
+arch/riscv/kernel/probes/uprobes.c: In function 'arch_uprobe_copy_ixol':
+arch/riscv/kernel/probes/uprobes.c:164:23: warning: unused variable 'start' [-Wunused-variable]
+   164 |         unsigned long start = (unsigned long)dst;
+       |                       ^~~~~
 
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+I've sent a fixup patch.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+https://lore.kernel.org/lkml/20260210100148.3674334-1-re@w6rz.net/T/#u
 
 
