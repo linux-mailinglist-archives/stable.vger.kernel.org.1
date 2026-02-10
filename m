@@ -1,239 +1,235 @@
-Return-Path: <stable+bounces-215624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHjUOhf1imkNPAAAu9opvQ
-	(envelope-from <stable+bounces-215624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:06:31 +0100
+	id +ABTHd72imn2OwAAu9opvQ
+	(envelope-from <stable+bounces-215625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:14:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFA81188BE
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:06:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2961F118B79
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:14:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 819D7302DA3D
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:06:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 87B95303EFF3
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA2E33EB1B;
-	Tue, 10 Feb 2026 09:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FBC233F8D4;
+	Tue, 10 Feb 2026 09:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rryLx/vv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TgCAGtR1";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rryLx/vv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TgCAGtR1"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="E+yz8YdV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-79.sinamail.sina.com.cn (mail115-79.sinamail.sina.com.cn [218.30.115.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B6933DEE9
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 09:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBB633F38E
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 09:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770714387; cv=none; b=NVNvmlQ1QdU5hERRNg+uULOd4qUYx09ssv/cYZKe29hfmZ3hBO4vgARWwXNqPtOzSbVjfoQjtY0EcfbUmzNuD12zcfmFNLMJGAR3UU8KKyNbeTioyFXSSCAOw5lIwfmBHHUEs1L6hfYAHcMlOZ65if+VJD9cdOT41wQfOdMbI8c=
+	t=1770714791; cv=none; b=sfHaJbIM5H3/RlCqzA3S4etYf26T5jUFPeYVj3/494ChRtj5RxkPjygQ06mdVv9zeWIfWtJ4AGg3Vz/J5TtI29WY7OTKpT8ukFdQ+er8XWSXIP25W1+wmcNzvd50nknfVBY5AWdhg1nH0Lcr/VWUFP5+9wpnX/nl4rLV1xqYvmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770714387; c=relaxed/simple;
-	bh=U18CLTNG8sEzss/Ty+AvhRxvPqgYXgM1Z66fgMb+e9U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vu+hE0bAHNUnu5LFFDAd0PjraV9zHrWK+IzYDmP9fSTA7Hq4vqMP9IuwugE+fW+itXlagrIuABkfQmXRdwsl+k0/nwSyrJKdtPSmkJr70ZzzTz/UxqAZ8prg4ZdtxqnLTuqObf8FI8NIHg+a/d8oE3bzo8SgmTuwh56ZGLKDwus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rryLx/vv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TgCAGtR1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rryLx/vv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TgCAGtR1; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 010B45BCD3;
-	Tue, 10 Feb 2026 09:06:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770714383; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2zZ/wKM3Ns11Odbs9dhoE5BBxpUvbuB2Bbz9Jl/8EqU=;
-	b=rryLx/vv4m6GWCSeTlhQd2ZhsZKU4CI8RUJqDIAWB8ly3P0L1s3xUbwLGsoCn6fOk4HJBi
-	hokgLeSWzQqVX1eYy55hxvQd9ak0CjnCAMfMT8MQ+tcA1jqT/Nw+o/zruompoIx7AMiYR8
-	FgrkLyOsG4HS0k8LIlxn5rgXOZslNaU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770714383;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2zZ/wKM3Ns11Odbs9dhoE5BBxpUvbuB2Bbz9Jl/8EqU=;
-	b=TgCAGtR1ALgaBugqSm0XdwVzsNxCTpOo9TwobehaVH96qmU5iq6WgimPnggye8m/LBTRfU
-	r0wCk0icWRIxM9Dw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770714383; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2zZ/wKM3Ns11Odbs9dhoE5BBxpUvbuB2Bbz9Jl/8EqU=;
-	b=rryLx/vv4m6GWCSeTlhQd2ZhsZKU4CI8RUJqDIAWB8ly3P0L1s3xUbwLGsoCn6fOk4HJBi
-	hokgLeSWzQqVX1eYy55hxvQd9ak0CjnCAMfMT8MQ+tcA1jqT/Nw+o/zruompoIx7AMiYR8
-	FgrkLyOsG4HS0k8LIlxn5rgXOZslNaU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770714383;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2zZ/wKM3Ns11Odbs9dhoE5BBxpUvbuB2Bbz9Jl/8EqU=;
-	b=TgCAGtR1ALgaBugqSm0XdwVzsNxCTpOo9TwobehaVH96qmU5iq6WgimPnggye8m/LBTRfU
-	r0wCk0icWRIxM9Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C4CF43EA62;
-	Tue, 10 Feb 2026 09:06:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id puLYLg71imn1VAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 10 Feb 2026 09:06:22 +0000
-Message-ID: <a4f65f26-f577-4029-b0cc-db9da95222dd@suse.de>
-Date: Tue, 10 Feb 2026 10:06:22 +0100
+	s=arc-20240116; t=1770714791; c=relaxed/simple;
+	bh=RW9o8qXMDmFr2cTNtgGcRS0WMtbL2a+7DAZq/tKMdWU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kjT6MZqIGhd6nZ0PPZM8XXvdt9NTksSgkkzQKocyvnMsfrDDtQaFsqOccy8cMO8Y0YK6Yy1Euj/ebiWxEl3I5OMdGgaCHWCz2/I+ghtSG7HDalRxGVE2y9aopnkwXM/Q9ezEZhWZyKW4biVqBxU5xBUiSd1hN8Bag7mqNOAU61I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=E+yz8YdV; arc=none smtp.client-ip=218.30.115.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770714787;
+	bh=AwwrFyXVRggsvgwH85FXnzJjrnjYzB5017/O7KRuerI=;
+	h=From:Subject:Date:Message-Id;
+	b=E+yz8YdVgg+Yd9e3YgS56tVmTMGCet2CCC8yNXpYDAnXfhOafcy5fPNky9Ddinvsl
+	 U2grwilmu22UBUIGZAorsZG5j3JwNYgGQ0wJaTEh9a457I/7eQo63QuUjhsNuqfXY6
+	 zfFJlm+gP0mNa14QmKY2jzOcLgWheBy0VqneOSy8=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.22) with ESMTP
+	id 698AF693000015A4; Tue, 10 Feb 2026 17:12:58 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 3316687602327
+X-SMAIL-UIID: BA8516D35CD3404984D84B981A4C8F07-20260210-171258-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	e.kubanski@partner.samsung.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	i.maximets@samsung.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH 6.1.y] xsk: Fix race condition in AF_XDP generic RX path
+Date: Tue, 10 Feb 2026 17:12:51 +0800
+Message-Id: <20260210091251.1690056-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbcon: Remove struct fbcon_display.inverse
-To: Helge Deller <deller@gmx.de>, geert@linux-m68k.org
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- stable@vger.kernel.org
-References: <20260209161609.251510-1-tzimmermann@suse.de>
- <3e70bea8-aa35-4cfd-9e54-eaeaa7b5267a@gmx.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <3e70bea8-aa35-4cfd-9e54-eaeaa7b5267a@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215624-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,linux-m68k.org];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-215625-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,intel.com,gmail.com,davemloft.net,google.com,redhat.com,iogearbox.net,samsung.com];
+	DKIM_TRACE(0.00)[sina.cn:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-m68k.org:email,suse.de:mid,suse.de:dkim,suse.de:email,suse.com:url]
-X-Rspamd-Queue-Id: 4DFA81188BE
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sina.cn:mid,sina.cn:dkim,sina.cn:email,samsung.com:email]
+X-Rspamd-Queue-Id: 2961F118B79
 X-Rspamd-Action: no action
 
-Hi
+From: "e.kubanski" <e.kubanski@partner.samsung.com>
 
-Am 09.02.26 um 22:31 schrieb Helge Deller:
-> On 2/9/26 17:15, Thomas Zimmermann wrote:
->> The field inverse in struct fbcon_display is unused. Remove it.
->
-> Indeed, seems to be unused.
->
->> The field apparently never did anything. Commit c7ef5e285c84 ("video:
->> fbdev: atari: Fix inverse handling") converted its final user to call
->> fb_invert_cmaps() instead.
->
-> That commit seems not to be related, as it touches a static
-> inverse variable inside the atafb driver only.
-> Commit e4fc27618b75 (from 2005) touched it last time, but it seems 
-> even older.
+[ Upstream commit a1356ac7749cafc4e27aa62c0c4604b5dca4983e ]
 
-Oh well. What a stupid mistake...
+Move rx_lock from xsk_socket to xsk_buff_pool.
+Fix synchronization for shared umem mode in
+generic RX path where multiple sockets share
+single xsk_buff_pool.
 
->
-> Patch applied to fbdev, but I dropped the wrong commit reference in the
-> commit message.
+RX queue is exclusive to xsk_socket, while FILL
+queue can be shared between multiple sockets.
+This could result in race condition where two
+CPU cores access RX path of two different sockets
+sharing the same umem.
 
-Thanks a lot.
+Protect both queues by acquiring spinlock in shared
+xsk_buff_pool.
 
-Best regards,
-Thomas
+Lock contention may be minimized in the future by some
+per-thread FQ buffering.
 
->
-> Thanks!
-> Helge
->
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: c7ef5e285c84 ("video: fbdev: atari: Fix inverse handling")
->> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
->> Cc: Helge Deller <deller@gmx.de>
->> Cc: <stable@vger.kernel.org> # v6.0+
->> ---
->>   drivers/video/fbdev/core/fbcon.h | 1 -
->>   1 file changed, 1 deletion(-)
->>
->> diff --git a/drivers/video/fbdev/core/fbcon.h 
->> b/drivers/video/fbdev/core/fbcon.h
->> index 1cd10a7faab0..fca14e9b729b 100644
->> --- a/drivers/video/fbdev/core/fbcon.h
->> +++ b/drivers/video/fbdev/core/fbcon.h
->> @@ -30,7 +30,6 @@ struct fbcon_display {
->>   #ifdef CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION
->>       u_short scrollmode;             /* Scroll Method, use 
->> fb_scrollmode() */
->>   #endif
->> -    u_short inverse;                /* != 0 text black on white as 
->> default */
->>       short yscroll;                  /* Hardware scrolling */
->>       int vrows;                      /* number of virtual rows */
->>       int cursor_shape;
->
->
+It's safe and necessary to move spin_lock_bh(rx_lock)
+after xsk_rcv_check():
+* xs->pool and spinlock_init is synchronized by
+  xsk_bind() -> xsk_is_bound() memory barriers.
+* xsk_rcv_check() may return true at the moment
+  of xsk_release() or xsk_unbind_dev(),
+  however this will not cause any data races or
+  race conditions. xsk_unbind_dev() removes xdp
+  socket from all maps and waits for completion
+  of all outstanding rx operations. Packets in
+  RX path will either complete safely or drop.
 
+Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
+Fixes: bf0bdd1343efb ("xdp: fix race on generic receive path")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Link: https://patch.msgid.link/20250416101908.10919-1-e.kubanski@partner.samsung.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict is resolved when backporting this fix. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+---
+ include/net/xdp_sock.h      | 2 --
+ include/net/xsk_buff_pool.h | 2 ++
+ net/xdp/xsk.c               | 6 +++---
+ net/xdp/xsk_buff_pool.c     | 1 +
+ 4 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+index 3057e1a4a11c..b8001d24106a 100644
+--- a/include/net/xdp_sock.h
++++ b/include/net/xdp_sock.h
+@@ -59,8 +59,6 @@ struct xdp_sock {
+ 
+ 	struct xsk_queue *tx ____cacheline_aligned_in_smp;
+ 	struct list_head tx_list;
+-	/* Protects generic receive. */
+-	spinlock_t rx_lock;
+ 
+ 	/* Statistics */
+ 	u64 rx_dropped;
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index 996eaf1ef1a1..e436363c2192 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -48,6 +48,8 @@ struct xsk_buff_pool {
+ 	refcount_t users;
+ 	struct xdp_umem *umem;
+ 	struct work_struct work;
++	/* Protects generic receive in shared and non-shared umem mode. */
++	spinlock_t rx_lock;
+ 	struct list_head free_list;
+ 	u32 heads_cnt;
+ 	u16 queue_id;
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index e3bdfc517424..e55e153377c8 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -237,13 +237,14 @@ int xsk_generic_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
+ {
+ 	int err;
+ 
+-	spin_lock_bh(&xs->rx_lock);
+ 	err = xsk_rcv_check(xs, xdp);
+ 	if (!err) {
++		spin_lock_bh(&xs->pool->rx_lock);
+ 		err = __xsk_rcv(xs, xdp);
+ 		xsk_flush(xs);
++		spin_unlock_bh(&xs->pool->rx_lock);
+ 	}
+-	spin_unlock_bh(&xs->rx_lock);
++
+ 	return err;
+ }
+ 
+@@ -1448,7 +1449,6 @@ static int xsk_create(struct net *net, struct socket *sock, int protocol,
+ 	xs = xdp_sk(sk);
+ 	xs->state = XSK_READY;
+ 	mutex_init(&xs->mutex);
+-	spin_lock_init(&xs->rx_lock);
+ 
+ 	INIT_LIST_HEAD(&xs->map_list);
+ 	spin_lock_init(&xs->map_list_lock);
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 21d5fdba47c4..b2004a8bf67f 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -85,6 +85,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
+ 		XDP_PACKET_HEADROOM;
+ 	pool->umem = umem;
+ 	pool->addrs = umem->addrs;
++	spin_lock_init(&pool->rx_lock);
+ 	INIT_LIST_HEAD(&pool->free_list);
+ 	INIT_LIST_HEAD(&pool->xsk_tx_list);
+ 	spin_lock_init(&pool->xsk_tx_list_lock);
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+2.34.1
 
 
