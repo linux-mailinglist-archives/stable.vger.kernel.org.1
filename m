@@ -1,353 +1,318 @@
-Return-Path: <stable+bounces-215598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLkPIxOmimnqMgAAu9opvQ
-	(envelope-from <stable+bounces-215598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:29:23 +0100
+	id COgcDOmvimklNAAAu9opvQ
+	(envelope-from <stable+bounces-215599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 05:11:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BA9116BF2
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:29:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AAE116DAB
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 05:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39048300A8FB
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 03:29:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 043203012C57
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 04:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832E42FD689;
-	Tue, 10 Feb 2026 03:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AACB31355C;
+	Tue, 10 Feb 2026 04:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="iTgsIZ6c"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WwOT0AkO"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011028.outbound.protection.outlook.com [52.101.62.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC3B25C6EE;
-	Tue, 10 Feb 2026 03:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770694158; cv=none; b=eMfWvvB0DCfiseEBLBmZtGTuaxI1LuS3tOSO1Wketk/HzZoxI5A/RP0p5soRZlwwWUvFl0zJTM1mz5w1DbG/s1KSGLK7TS0FvMv268WcPeKSGKxAUNbAOGEqluReHalCoal8Jkpf+NQmGFynonI/ClhLH2yXzbBm3knU3cf1JiQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770694158; c=relaxed/simple;
-	bh=UUr3VfcLjPYA+Yu03+CthNcOImY+t8YSs4peW5Ec4do=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XmZnBEIV0yW4k6TkZGkD4gvl+N6j06ro8vwB9zCjwQfJVCgQSFsTjOGi673BIvd8Aa/FNXyOkucKniVvvVEtw8D68p8FJWJi50PrfhsHR9HHBo6TjXofXuOfMAEN09rx0ubXtYOuppVt0bwG+U4PAKEc9eqBhpnS/hCAWDhJeFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=iTgsIZ6c; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Zj
-	OXH3dxhwKXUKRoFlUSdjm8A1Z7veN1Ce41vIdTaZY=; b=iTgsIZ6cdDgeYr68/K
-	RNT9GYHFWc8K15xTdWRh7USjGgVSfsR2EZVwOlOUiQOoK5hh1+iXJv6wwpxcxanD
-	sBBCmuxhJat/eqVeup9OZsIpNXyHra34+rFDGGLHHt9KZ8J7ApVwLXOi3mCut+AO
-	cFrC5hafDuLEQg6tuIixzCIoA=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgCHcOrxpYppJQAFNw--.11677S2;
-	Tue, 10 Feb 2026 11:28:52 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1.y] btrfs: fix racy bitfield write in btrfs_clear_space_info_full()
-Date: Tue, 10 Feb 2026 11:28:35 +0800
-Message-Id: <20260210032835.3606934-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2F330DED8;
+	Tue, 10 Feb 2026 04:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770696675; cv=fail; b=pdsayykKIqXobCzUDO0hTN9iIgPYQcmYG4te6UZXr5giMichZKnfKJ14eyMXR0BDMrKAKc7ye9ojZFMXUYCwjFpAWS22axX9T5B/CgMhOxfvTBzGrzaJ/9el/XaFIT0luftVL0qK5g3UOBbaPftWjM5gFY3y97pfoOR6V2TzNzQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770696675; c=relaxed/simple;
+	bh=uUlL6pamdwoEY17HqGeQWYQBzpEeK1XhVz8We2wLzOY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=mZNeOUdeYOvely9g5DHv01JYaMwsV4Y4dBgFSBsfMzIN2tJaUHlLMluO56okDAadjScMRfgO3aYLY6cl8S6a3NvP04+wiWtXTZzvyOqOYoZFzimuO6AbNb9nX6Q38EHQ/ofJLxRyrlcpcl2q124Dz228nbmKIqB/haRgqNgT9+Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WwOT0AkO; arc=fail smtp.client-ip=52.101.62.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rViS7Rz5tGeucimKIl4pMNN4pGZDFiYFJPISbxuVq8v1NA0QpAiCjB5a1rtCrbQwY7P0D6/ubMSUNf6PvZHvMyxgpYPUWKDtxKCE5Xwe2ShtsEPzUbEkT87cRuLkud7lrJvyE9o58Dnb0GpRiOQdbxvg7lIEF0qB4lXJhQKWo/MTNvDC9nwD3KnrxUOKKNaV/3e0KNMI8fQvcQLpBy6dupdVEEEKIDpD18FiJYCM8G0TrPQn7RejjYdXfLY43X9PTHmUFT5RU+PXl6rUomXmevmd3O2C4/ozKlj2tJntIAm8wG9e9nCJwO472aBjq6QF29nS5QdKOzPxVPQUV+0O1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uUlL6pamdwoEY17HqGeQWYQBzpEeK1XhVz8We2wLzOY=;
+ b=UzGAewpHa1nOkY7Qgd43FGsXCGoBtR4oUvKR/Bl1iDd0SmNYx/8NiMiFIJo16M9YV8l+y2N2caSDpMVsQoRXC9Hkkaukkg1EkdEYWfnaddAlJFalqsUzndIXbKQa966Tdrzgy9YDx8BKtLfm1xEWYBmBRmx4/DoiH3Ph61Cmn/l4dgHpveyqLSI4XRy2C3K4+ReuG+VJREknPz/gUeHX7t8ONtjVJ5TRNjWU04SPJWjAg0aPDVHO2yx0gWr0Ccz7faHq5G67sSR7IKbmH8qahB546N7ZT3bwUkEkCqOwYMWI3FH7z610h3WWr/Lc8kCTkaBYklHH5JATsgTCViQZuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uUlL6pamdwoEY17HqGeQWYQBzpEeK1XhVz8We2wLzOY=;
+ b=WwOT0AkONHp3KAGy6h0yDPGCa9r8tluKsMTyAFj7Foj89CqBkTp5lCKQ+xf/MAUBzAIdXD8IJFfg2wwov+BPLXQC8bf5gnH8A8ydgG8a7jojkMNB65kEifbUDJL+AECeg9nRRP+qU7mBx1pqix+5rVhHtmJQmXaYSc89wT/rxhqqGypr/j37stjJFOi0PVjCOEn6BWMg4VvfnDfEBVq87xOoH6YHK7C81KVLUT5KCTTMMxcTteU7MoXlkDxHkgTYY3IxBoz6IwMfJyY4qhNPftPJb/XzzcgFFEoNI5eEPDaOUvv6K2RMTzKTK5vUTjS0UxCC/UH8QkuLl7cEb15pFw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB8245.namprd12.prod.outlook.com (2603:10b6:8:f2::16) by
+ LV2PR12MB5894.namprd12.prod.outlook.com (2603:10b6:408:174::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.17; Tue, 10 Feb
+ 2026 04:11:10 +0000
+Received: from DS0PR12MB8245.namprd12.prod.outlook.com
+ ([fe80::e7c5:cfca:a597:7fa4]) by DS0PR12MB8245.namprd12.prod.outlook.com
+ ([fe80::e7c5:cfca:a597:7fa4%4]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
+ 04:11:10 +0000
+Message-ID: <94458c39-587b-4bb4-a410-e921e5d99f10@nvidia.com>
+Date: Tue, 10 Feb 2026 09:40:44 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] PCI: tegra194: Reset BARs when running in PCIe
+ endpoint mode
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Vidya Sagar <vidyas@nvidia.com>,
+ Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>, stable@vger.kernel.org,
+ Thierry Reding <treding@nvidia.com>, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Rob Herring <robh@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+References: <20250922140822.519796-5-cassel@kernel.org>
+ <20250922140822.519796-7-cassel@kernel.org>
+ <2fedf28e-83ea-4e51-b1a1-e45f0e928509@nvidia.com> <aYonDJyd_dbV0GBK@ryzen>
+Content-Language: en-US
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+X-Nvconfidentiality: nvpublic
+In-Reply-To: <aYonDJyd_dbV0GBK@ryzen>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0050.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d3::14) To DS0PR12MB8245.namprd12.prod.outlook.com
+ (2603:10b6:8:f2::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgCHcOrxpYppJQAFNw--.11677S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKr4UKr1ruFy7AF4kCF1rJFb_yoWfurWkpF
-	Wa9r9Iyw48JF95Wr4kWw4kXF4fKwn5Wa15tr9xAa4rZrnxGrn8WrWqka4FvF1ktrn5XF4a
-	qF4UGr15XF15C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi3rcfUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3RSjPWmKpfQ1ZQAA31
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB8245:EE_|LV2PR12MB5894:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5281f8ab-c21e-4869-1a00-08de685a6bdd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZlN1cjAwc21mMUd3d2JNK2RCUEltZ2YzTXlJeEEyZmRKZTlrMm1sNlJTNHBi?=
+ =?utf-8?B?bTlsL1Nzci9SOXZYT2NMZWxCdVFsbHVuTFA4UExLSm9MbHRpSFBCcHVERmhG?=
+ =?utf-8?B?M1pVdVpwVzgySkcrSFVjbU9IQ2lkRGRMejZ3NCtOTHE3ek9LNjhTL3hiSEFm?=
+ =?utf-8?B?QTEvejFWbGlUam9CL1p3ZkU5T2NXQnI0NVBPdDFNWEpKSFVneTkrb28vdk50?=
+ =?utf-8?B?VWdyekN0WU51MC9kRmdQRldOaXZSTTVJenFPRDNyUmNobXg0SG12ZzZPOHNx?=
+ =?utf-8?B?b0RlWHluNEpHSVBCT2l6TnYwSVIrRTJoMURJYS94VXM5UWlnYnFUaURyd3ZD?=
+ =?utf-8?B?cVpkTzd0THhSU05yTjlxUGx1SVA4L2tNUTFxL04wbWZrVmxvRFZ5bzByNll4?=
+ =?utf-8?B?V1YvWjNlQ0RHcncwNHRnbWJSWExUTS8wQ24rME9yUkRZWGV3Uituam5PS3FB?=
+ =?utf-8?B?QkIrTFFURW5OZnRwRWhiL093aFVjMnRGblRuelJKOWlheDhKUHZrM2gxYUF2?=
+ =?utf-8?B?L3pXaStTSzQrWFd5cW9PaHVhdE9oZFVmVjFRajI3RHZNZU9kYnA4eVNYdUFt?=
+ =?utf-8?B?UFZKZm9qTmQ3NDV3UTdTWHFtTmdQam1ZdlhsVTluK3Z0Skh4Mi9Eb3hKdTFh?=
+ =?utf-8?B?bTllZTgyK2ZWazR3bzBoSGJ4QXRjVHcwdStmL2crOW1HdG05S3A3M3ZUTlY0?=
+ =?utf-8?B?REF4ditxbzFCNXZKdWJPMjk4clRDMDZSc1RqdXhkRGdIaXJnVTh3Zll1MCt3?=
+ =?utf-8?B?RzdodkI0Z1lmbHMxbkp6TTZBWVVaSW4yeGE2RkNCLzl4bWpTaHVqMTBCVGVR?=
+ =?utf-8?B?eW9aUnp2TkM1ZW1OQ3ArMXA0ZDlnWlpuZVFHSCs3WmZyWlRMWGQzRy9mZkYv?=
+ =?utf-8?B?c0NPQ2hsUjJKbnNWWDNtRjhsVWJlQnl3U1VYR2xWZDZURktKQkNudWgzcEJ2?=
+ =?utf-8?B?cmVFQVEwL0Fza0RuU0dUb2lSM0srTFU2RERyL0Q4cEJxN05Bam8wQkpKaVBY?=
+ =?utf-8?B?aitIMUVDNWZ2SEtoSk9yelY3T1UzQW5PcGJIVWEydEplRC9kZHF2TG94TDI3?=
+ =?utf-8?B?QVMrR1JJWlVma3pQNXBTZmNqbll6aVF4L29pcC9nQ2NWT2JpRVk2MW5qY3A0?=
+ =?utf-8?B?Nzk1Y21SaGtzcmZLeGZzeXJlN0tLWEx5K1FEMGtqSllZUVV1bXNXZ0VDRFAz?=
+ =?utf-8?B?R0xqTG1sT01CMTZHUDFTdW5OdFFRZHNKWHkwdVlwTVM1OGVhZml3ZXdkY3Q1?=
+ =?utf-8?B?akJLN21yM2w2NFJmM2EyNnpzbGdiSE5tdkFERWdOSnArMVJiU3BGOWp4U3RU?=
+ =?utf-8?B?Q3BYeUpTdzR2OUlkS1lMdmZIUUV0eXllMjRUOWEyQUd3K0xZMEY2dzREQ0Er?=
+ =?utf-8?B?TnlJZW5YYTIraG9xZUF3dFV2dWpBc0xXd2d2MlVJWCtZd29QZTV2VGZWeFkw?=
+ =?utf-8?B?OU5OL1oxeWRXZlN1YVBWMDl0QURjZS9iRzZnUmhJWEh1UEJWTjJFY2s5Wita?=
+ =?utf-8?B?TWREMDlPazF2c3F3TEdRY05FNVlYRlFJb2lzdE5mLy9SQXplWWtvckVwUGZk?=
+ =?utf-8?B?b0tmLzkxMzgyaVdRWWJ0ampXcHVUV05ZTGs0bUJhVTFuMDlsbGVkbGJLWmk3?=
+ =?utf-8?B?MEw3OW4vS013bnh0S3drN2RxK2FoUGVkOStWS1RVemhIbW5uMnhwNVR2OEZ0?=
+ =?utf-8?B?SmdXTXVieUo1SUdSRVlGZU9LYWpOeDIrODhpc1FxU1ZhSUZic1BObUxnV2h5?=
+ =?utf-8?B?Uzc1cmdVMTl3U25sYlVrZ2k2MUtlTXFsT1NGOEwzMUVVTzcwUU9wbktXQzBt?=
+ =?utf-8?B?b3p6cTl1NUVLbFhLNGdNMG1FOTBjWXg4ZGk1WFFtK3VsYTBhejd1SkpEWWdI?=
+ =?utf-8?B?a2lLMW9RRlFIK1p6WVJoNXZWV1A5S3RKYjkzZy8wUEozQzRGbzYxdHNLT3k5?=
+ =?utf-8?B?WHVUYWNneWtTV2VSaHBVeE1QbUdNTFhtMk1zV3YweStUcDdCaDZVb2h0RjNm?=
+ =?utf-8?B?MXp0bWg1bFQvZ2tibkF1RnBSMmlnOFkvblAycDZRZmFVcnIrTHZFMXpPVkNP?=
+ =?utf-8?B?QUhQZVBkL050MFFUOXllN1pWanFrTFBxOGNEMmV5clpLZ0E2RXBOM3QvUUtZ?=
+ =?utf-8?Q?mUYg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB8245.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SVFka1hKQTBSOERiRllHSFZKUkFmcUlJOHgyL2g0c3hyc3NleENBUHEzNkxu?=
+ =?utf-8?B?N2sxRFBFYmtWTHlvdW1MZzU1R1VuMVdsZUxiajA1UkxnN2VYK0g5WVVZNWJt?=
+ =?utf-8?B?YndtSkhGR3JwTDErZzh0NWlSbUF1WTZ6UWthamJocHI4UWxGT0FSeGFORzkw?=
+ =?utf-8?B?S1FBd2VHYTdhSTd5T1NGMzl0RVhkUVhORnJ3eXUvK3BUYlhVMTc4ekZqcmdQ?=
+ =?utf-8?B?bzc3WmpKUGlYYlhWb1VjL0tjaXZ3QnBEQVBYUnRBdVUwbEwrNUdxc3FEczVI?=
+ =?utf-8?B?RWVhdHJDUklFcnRjZlZMTjlsd2N5ekVXenNSSnUycjVuWlJCTVRLZ1JraTJs?=
+ =?utf-8?B?VE9uSXcrN2xUcmJCam0zeXhKUndNbGV2YnJmTFdFUkt2S3k0amFkNlBZQS9N?=
+ =?utf-8?B?SmdoK0hkOXdkeG9nMTI2eVhacm4xWHVUQ3ZUMWxwOEFJaFpidFFzVEJENDlv?=
+ =?utf-8?B?VWsxRHhja0MzQjlDdmJsNGRtQkF6YmdTa21HMk5CeUFhRStWTzhHVGJ6bkV6?=
+ =?utf-8?B?c1RGVjFVQ1FxZnl0UEVNSGNOc3V2WWkvOUJIWXM1cURSNTVweGZUWk1kUjU4?=
+ =?utf-8?B?UExzbmoxYXBLL2xpQUxBUW83UzR0NVg0ZWlyTTdYa0RwNnFJWGg0bFBiZElJ?=
+ =?utf-8?B?bzlvaWpmV3FSSFA1aG5GWUJwZTRFejJVZVpxM3dtRDYvemROREw1MHNoMzA1?=
+ =?utf-8?B?L2VKNWpLY2RRU3RLNzVCV1RBaFMxT3RwYzIvYU14TmFmNlo1SEdUUWQ3b1Qy?=
+ =?utf-8?B?aW93clVwb0htQ29QQlg3UzJmRlpNeGFPY29rVVA0bjZ4eXIxazlUQlBRTm9h?=
+ =?utf-8?B?b2tXUUxXNXRYY2dHSmlCc0dHNHR4bHdZbzlSSUhGU1dUamZiTzdvTFh4ZCtH?=
+ =?utf-8?B?Z1JBc2NBRHVLRkxyMmRNTEsySWx1c1IvcHVLcS9LS2FBYWNXTVR3Z0t2dElP?=
+ =?utf-8?B?ancrb09VOUlyai9MV0lhMnRiU1R3Vk9mR0M3c3V1WWFrWFVXWDdjSVM3V3dK?=
+ =?utf-8?B?RmJJV09zcnR5bXRONHdIVkdsbE9LTHh0ZlgrZ2dLa2ZDWTZWc0V1eW1pOUtr?=
+ =?utf-8?B?VEJua1F3Mi9nNlcyNEdRd3hma2dhVHg4YkltcGNWbnJGdnM4NWQwaGsrTXkw?=
+ =?utf-8?B?SEkxZ0ViNmxCZmdpN3I3a2RtbGx0cVQzeDZEa1VpT3lIRXFxUGN4QlVrNjhx?=
+ =?utf-8?B?dEVUdUt0b3FydmYveDBzSFk4SHJ5R3NjTDQxUGFDNHZRUGVVV0s0R2VkbjUw?=
+ =?utf-8?B?OXVxamlUcHBycS93Y0V4S3FiY01JTUJWMzFnRUpVb2ZyUS9CandkUFNONldX?=
+ =?utf-8?B?ZjVNT1BDblY0WERyUW1OQUdtTndSK3lIOE90MTBsditzR1UxVk1DUkV1SmF1?=
+ =?utf-8?B?RXZsNlNSaHVVUG5CWXQvTW40ZzlkSnA0eExTdjJNLzY4WjVlQ3JuNEFIb05W?=
+ =?utf-8?B?K1BEelRScHhOSUlOQVBpMk1sbVl2c2tSNGZ0Z1RQTkhYYjhvRmw0bWNmb1hw?=
+ =?utf-8?B?ZHFHMS8rOEpZRVorRDF6NEtKWC82aUVEcnAvSEVmS3h5V01vQ1ZTUzM1Qm9l?=
+ =?utf-8?B?Zm5YODlQWkxFcGs0RDVlNGZRYTBZak1ZSmdPNEdyRWMxR3FGOVZ3Tng5TzZZ?=
+ =?utf-8?B?dENiMjNYSjZWeUtSWllyMTNuL0EwOW5YU0dXVFYwUThPWnl4eWszQ2svcXY0?=
+ =?utf-8?B?aFpuTUZRZzFnaG0vQTJQdHlJVmRzZlYrM1JicW9idlB2ZiszQWJ1U2NiV2Zp?=
+ =?utf-8?B?bUgxV0hydXdPTnNoRHpJay91YkNpc1k3Q0NzMTRuekx3TTZvRm9yaHl4WXFT?=
+ =?utf-8?B?SG1rVU9QQ013ZzJCTzkxeGlmSGN5RldoU1BBNEdUOTE3YUF0Z1hVaVhMb3VB?=
+ =?utf-8?B?YkxWZlNMcW1mOHJibEtldTk3TGhoa215b1dtb0w4eWlBbThQRU9wVTg4UVZv?=
+ =?utf-8?B?YkxEUVFIcnNmRm80OHhhZDhSTGhZUGlMTW9ReHdMdUQrVmJGNTF3NENVL1Vl?=
+ =?utf-8?B?R0syNHNKU3d1cnlCMVU0SXdrVW1XSzJ1b0hobE9JUGhsL0VmWDViUStZWmcr?=
+ =?utf-8?B?cGg2RUMwSTFQTFpUbmRIY0xNaGJuRkwxSnFDYS9DWFczb0QyTGhld3hGZ1Rh?=
+ =?utf-8?B?UkFqd0dlbS9PaVJ0TGVVSTcxT20xYjhhSHNKbEQvbGRDaWlXNmZEU1Q0UElZ?=
+ =?utf-8?B?N1J4bm1LaXZOYmVxZ3I2RDdIdGxLTEpjVlpMRU9udk5oQXlDSUNCc1VzaUZZ?=
+ =?utf-8?B?blZyOFBpSDVLK0xLeWFvbWd6eUVHTExtcXlrdW1reHd6TFRKbFdVclJDWkYv?=
+ =?utf-8?B?Y2RJZm44UzExcTRVWCtPblFXZ2FWcDdvVDRCQXpOTFJrUEI2UzBmQ0FHbmJC?=
+ =?utf-8?Q?f5I8IhqY6aS3OlBA=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5281f8ab-c21e-4869-1a00-08de685a6bdd
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB8245.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 04:11:10.2878
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GQLnU5SuVjusj53lzrwXCgEGqb/MveOtLZ5oLeWBAfJ1aGNOv3c0UTTau3Oe02aUzePjLOebVR2vmMQGM+6y6g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5894
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215598-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215599-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,bur.io,suse.com,163.com];
-	DKIM_TRACE(0.00)[163.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,wdc.com,vger.kernel.org,google.com,gmail.com];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mmaddireddy@nvidia.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D6BA9116BF2
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 88AAE116DAB
 X-Rspamd-Action: no action
 
-From: Boris Burkov <boris@bur.io>
+On 09/02/26 11:57 pm, Niklas Cassel wrote:
 
-[ Upstream commit 38e818718c5e04961eea0fa8feff3f100ce40408 ]
+> On Sun, Feb 08, 2026 at 11:41:42PM +0530, Manikanta Maddireddy wrote:
+>> Hi Niklas,
+>>
+>> Tegra PCIe exposes only DMA register over BAR4, not iATU.
+>> So, the issue described in this commit message is not applicable.
+>> This patch is disabling BAR2 and BAR4, after enumeration I see
+>> only BAR0. I think we should revert this patch.
+>> Please share your inputs on this.
+> If you look at this commit, it only disables all BARs by default,
+> which brings the tegra driver in-line with all other DWC based
+> endpoint drivers: dra7xx, imx6, layerscape-ep, artpec6, dw-rockchip,
+> qcom-ep, rcar-gen4, and uniphier-ep.
+>
+> A PCI endpoint function (EPF) driver will still be able to enable a
+> BAR that was disabled in .init().
+> However, an EPF driver will not be able to use/enable a reserved BAR.
+>
+> Look at e.g. the code in pci-epf-test. It will not allocate backing
+> memory for a BAR that is reserved, so having a BAR enabled that we
+> have not allocated backing memory for is wrong.
+>
+> Commit c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint
+> mode in Tegra194") is the commit that marked all BARs other than
+> BAR0 as reserved, so if you want to test BARs other than BAR0,
+> talk to the author of that commit.
+>
+> If you revert this patch, tools/testing/selftests/pci_endpoint/pci_endpoint_test
+> will once again fail the consecutive BAR test, so I think it would
+> be wrong to revert this patch.
+>
+> If it is ATU registers or eDMA registers exposed in BAR4 does not
+> really matter. The end result is that you overwrite eDMA registers
+> that you should not be overwriting when you run the BAR tests.
+> (So BAR4 should absolutely be marked as reserved).
+>
+> I don't recall, but if you overwrite the eDMA registers, then in
+> addition to the consecutive BAR test failing, most likely the DMA
+> test cases will also fail.
+>
+> Have you tried running
+> tools/testing/selftests/pci_endpoint/pci_endpoint_test
+> ?
+>
+>
+> Kind regards,
+> Niklas
 
-From the memory-barriers.txt document regarding memory barrier ordering
-guarantees:
+Hi Niklas,
 
- (*) These guarantees do not apply to bitfields, because compilers often
-     generate code to modify these using non-atomic read-modify-write
-     sequences.  Do not attempt to use bitfields to synchronize parallel
-     algorithms.
+In Tegra234 PCIe, BAR1 is MSI-X table and BAR2 is DMA registers backed
 
- (*) Even in cases where bitfields are protected by locks, all fields
-     in a given bitfield must be protected by one lock.  If two fields
-     in a given bitfield are protected by different locks, the compiler's
-     non-atomic read-modify-write sequences can cause an update to one
-     field to corrupt the value of an adjacent field.
+by PCIe HW RAM and registers. EPF driver shouldn't allocate memory for
 
-btrfs_space_info has a bitfield sharing an underlying word consisting of
-the fields full, chunk_alloc, and flush:
+these two BARs. This is the reason for marking them as reserved in
 
-struct btrfs_space_info {
-        struct btrfs_fs_info *     fs_info;              /*     0     8 */
-        struct btrfs_space_info *  parent;               /*     8     8 */
-        ...
-        int                        clamp;                /*   172     4 */
-        unsigned int               full:1;               /*   176: 0  4 */
-        unsigned int               chunk_alloc:1;        /*   176: 1  4 */
-        unsigned int               flush:1;              /*   176: 2  4 */
-        ...
+Tegra PCIe driver. DMA registers are exposed over BAR2 to allow
 
-Therefore, to be safe from parallel read-modify-writes losing a write to
-one of the bitfield members protected by a lock, all writes to all the
-bitfields must use the lock. They almost universally do, except for
-btrfs_clear_space_info_full() which iterates over the space_infos and
-writes out found->full = 0 without a lock.
+PCI client driver in host to transfer data from host to endpoint
 
-Imagine that we have one thread completing a transaction in which we
-finished deleting a block_group and are thus calling
-btrfs_clear_space_info_full() while simultaneously the data reclaim
-ticket infrastructure is running do_async_reclaim_data_space():
+using endpoint remote DMA read functionality. BAR test fails on this
 
-          T1                                             T2
-btrfs_commit_transaction
-  btrfs_clear_space_info_full
-  data_sinfo->full = 0
-  READ: full:0, chunk_alloc:0, flush:1
-                                              do_async_reclaim_data_space(data_sinfo)
-                                              spin_lock(&space_info->lock);
-                                              if(list_empty(tickets))
-                                                space_info->flush = 0;
-                                                READ: full: 0, chunk_alloc:0, flush:1
-                                                MOD/WRITE: full: 0, chunk_alloc:0, flush:0
-                                                spin_unlock(&space_info->lock);
-                                                return;
-  MOD/WRITE: full:0, chunk_alloc:0, flush:1
+because not all register bits are writable. Consider NVMe example
 
-and now data_sinfo->flush is 1 but the reclaim worker has exited. This
-breaks the invariant that flush is 0 iff there is no work queued or
-running. Once this invariant is violated, future allocations that go
-into __reserve_bytes() will add tickets to space_info->tickets but will
-see space_info->flush is set to 1 and not queue the work. After this,
-they will block forever on the resulting ticket, as it is now impossible
-to kick the worker again.
+which has RO capability bits at the start of the BAR, it is not correct
 
-I also confirmed by looking at the assembly of the affected kernel that
-it is doing RMW operations. For example, to set the flush (3rd) bit to 0,
-the assembly is:
-  andb    $0xfb,0x60(%rbx)
-and similarly for setting the full (1st) bit to 0:
-  andb    $0xfe,-0x20(%rax)
+to add BAR test on these bits.
 
-So I think this is really a bug on practical systems.  I have observed
-a number of systems in this exact state, but am currently unable to
-reproduce it.
 
-Rather than leaving this footgun lying around for the future, take
-advantage of the fact that there is room in the struct anyway, and that
-it is already quite large and simply change the three bitfield members to
-bools. This avoids writes to space_info->full having any effect on
-writes to space_info->flush, regardless of locking.
+I think following fixes are required to address this issue,
 
-Fixes: 957780eb2788 ("Btrfs: introduce ticketed enospc infrastructure")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ The context change is due to the commit cc0517fe779f
-("btrfs: tweak extent/chunk allocation for space_info sub-space")
-in v6.16 which is irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
----
- fs/btrfs/block-group.c |  6 +++---
- fs/btrfs/space-info.c  | 22 +++++++++++-----------
- fs/btrfs/space-info.h  |  6 +++---
- 3 files changed, 17 insertions(+), 17 deletions(-)
+1. BAR test in pci_endpoint_test should skip MSI-X table.
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 2338d42b8f4e..880288d7358e 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -3924,7 +3924,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
- 			mutex_unlock(&fs_info->chunk_mutex);
- 		} else {
- 			/* Proceed with allocation */
--			space_info->chunk_alloc = 1;
-+			space_info->chunk_alloc = true;
- 			wait_for_alloc = false;
- 			spin_unlock(&space_info->lock);
- 		}
-@@ -3973,7 +3973,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
- 	spin_lock(&space_info->lock);
- 	if (ret < 0) {
- 		if (ret == -ENOSPC)
--			space_info->full = 1;
-+			space_info->full = true;
- 		else
- 			goto out;
- 	} else {
-@@ -3983,7 +3983,7 @@ int btrfs_chunk_alloc(struct btrfs_trans_handle *trans, u64 flags,
- 
- 	space_info->force_alloc = CHUNK_ALLOC_NO_FORCE;
- out:
--	space_info->chunk_alloc = 0;
-+	space_info->chunk_alloc = false;
- 	spin_unlock(&space_info->lock);
- 	mutex_unlock(&fs_info->chunk_mutex);
- 
-diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
-index 230e086ddee8..2f23bbcbd231 100644
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -179,7 +179,7 @@ void btrfs_clear_space_info_full(struct btrfs_fs_info *info)
- 	struct btrfs_space_info *found;
- 
- 	list_for_each_entry(found, head, list)
--		found->full = 0;
-+		found->full = false;
- }
- 
- /*
-@@ -360,7 +360,7 @@ void btrfs_add_bg_to_space_info(struct btrfs_fs_info *info,
- 	found->bytes_readonly += block_group->bytes_super;
- 	btrfs_space_info_update_bytes_zone_unusable(info, found, block_group->zone_unusable);
- 	if (block_group->length > 0)
--		found->full = 0;
-+		found->full = false;
- 	btrfs_try_granting_tickets(info, found);
- 	spin_unlock(&found->lock);
- 
-@@ -1116,7 +1116,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
- 	spin_lock(&space_info->lock);
- 	to_reclaim = btrfs_calc_reclaim_metadata_size(fs_info, space_info);
- 	if (!to_reclaim) {
--		space_info->flush = 0;
-+		space_info->flush = false;
- 		spin_unlock(&space_info->lock);
- 		return;
- 	}
-@@ -1128,7 +1128,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
- 		flush_space(fs_info, space_info, to_reclaim, flush_state, false);
- 		spin_lock(&space_info->lock);
- 		if (list_empty(&space_info->tickets)) {
--			space_info->flush = 0;
-+			space_info->flush = false;
- 			spin_unlock(&space_info->lock);
- 			return;
- 		}
-@@ -1171,7 +1171,7 @@ static void btrfs_async_reclaim_metadata_space(struct work_struct *work)
- 					flush_state = FLUSH_DELAYED_ITEMS_NR;
- 					commit_cycles--;
- 				} else {
--					space_info->flush = 0;
-+					space_info->flush = false;
- 				}
- 			} else {
- 				flush_state = FLUSH_DELAYED_ITEMS_NR;
-@@ -1333,7 +1333,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
- 
- 	spin_lock(&space_info->lock);
- 	if (list_empty(&space_info->tickets)) {
--		space_info->flush = 0;
-+		space_info->flush = false;
- 		spin_unlock(&space_info->lock);
- 		return;
- 	}
-@@ -1344,7 +1344,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
- 		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE, false);
- 		spin_lock(&space_info->lock);
- 		if (list_empty(&space_info->tickets)) {
--			space_info->flush = 0;
-+			space_info->flush = false;
- 			spin_unlock(&space_info->lock);
- 			return;
- 		}
-@@ -1361,7 +1361,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
- 			    data_flush_states[flush_state], false);
- 		spin_lock(&space_info->lock);
- 		if (list_empty(&space_info->tickets)) {
--			space_info->flush = 0;
-+			space_info->flush = false;
- 			spin_unlock(&space_info->lock);
- 			return;
- 		}
-@@ -1378,7 +1378,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
- 				if (maybe_fail_all_tickets(fs_info, space_info))
- 					flush_state = 0;
- 				else
--					space_info->flush = 0;
-+					space_info->flush = false;
- 			} else {
- 				flush_state = 0;
- 			}
-@@ -1394,7 +1394,7 @@ static void btrfs_async_reclaim_data_space(struct work_struct *work)
- 
- aborted_fs:
- 	maybe_fail_all_tickets(fs_info, space_info);
--	space_info->flush = 0;
-+	space_info->flush = false;
- 	spin_unlock(&space_info->lock);
- }
- 
-@@ -1719,7 +1719,7 @@ static int __reserve_bytes(struct btrfs_fs_info *fs_info,
- 				 */
- 				maybe_clamp_preempt(fs_info, space_info);
- 
--				space_info->flush = 1;
-+				space_info->flush = true;
- 				trace_btrfs_trigger_flush(fs_info,
- 							  space_info->flags,
- 							  orig_bytes, flush,
-diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
-index dc69138f3de1..7aebb6c4132c 100644
---- a/fs/btrfs/space-info.h
-+++ b/fs/btrfs/space-info.h
-@@ -109,11 +109,11 @@ struct btrfs_space_info {
- 				   flushing. The value is >> clamp, so turns
- 				   out to be a 2^clamp divisor. */
- 
--	unsigned int full:1;	/* indicates that we cannot allocate any more
-+	bool full;		/* indicates that we cannot allocate any more
- 				   chunks for this space */
--	unsigned int chunk_alloc:1;	/* set if we are allocating a chunk */
-+	bool chunk_alloc;	/* set if we are allocating a chunk */
- 
--	unsigned int flush:1;		/* set if we are trying to make space */
-+	bool flush;		/* set if we are trying to make space */
- 
- 	unsigned int force_alloc;	/* set if we need to force a chunk
- 					   alloc for this space */
--- 
-2.34.1
+2. BAR test in pci_endpoint_test should provide option to
+
+skip this test on known reserved BARs, maybe we can use
+
+pci_endpoint_test_data for this.
+
+3. EPC driver should provide BAR_DISABLED enum to disable
+
+unused BARs.
+
+4. Tegra PCIe driver should disable only BAR_DISABLED bars and
+
+leave BAR_RESERVED untouched.
+
+5. Return NO_BAR for both BAR_DISABLED and BAR_RESERVED in
+
+pci_epc_get_next_free_bar()
+
+
+Let me know your opinion on this.
 
 
