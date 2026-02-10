@@ -1,359 +1,196 @@
-Return-Path: <stable+bounces-215724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JTsGQPAi2l6aQAAu9opvQ
-	(envelope-from <stable+bounces-215724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:32:19 +0100
+	id YF3XKfXBi2l6aQAAu9opvQ
+	(envelope-from <stable+bounces-215725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:40:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2AF011FFA8
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:32:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103F712020B
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EBE7E3056242
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:32:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11AFB3070B1F
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEB731618C;
-	Tue, 10 Feb 2026 23:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA34A338907;
+	Tue, 10 Feb 2026 23:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NuEXAMHV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZJihtdu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F252DC76F;
-	Tue, 10 Feb 2026 23:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF8E336EE7;
+	Tue, 10 Feb 2026 23:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770766321; cv=none; b=rT+VMZs61ohB1qZjlo4ilPPaU7IMq1c9v72FXuOvwg1+YC3+odR+jWX1LJFn/E98bfcdbUDOqjnYi0kXE9q0kbFV5l2jw5eRhreyh1toVEaJOm6ZDnrxTjRJFJsurOPL5wmXBL3xtZMO0leaUFyc7Pf4eteX0dNgSGMSm4mKZII=
+	t=1770766754; cv=none; b=LLgFWH60SYLFWN+d+BKT85nWEaJAMLo6JxSdLAArSp4eZn5BmudFARVAMgTuUcSUv9C1v3Py2LEi9lWvL6do2OVVS1YE1XO7lH//eWJ4q0i9rycgP0+NZ3x1d/bubKSWE5va15z8ArW138GF265ldEYvQlZhrdeDsKhJCB5FSNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770766321; c=relaxed/simple;
-	bh=SBo6Ip6zL7CuuAgpcphvuJ//YLD9xP6ZS8NtBlTW6CU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dzPTxOLHG0Zi/dNox3v28cZAa9Ce744yN91DidL0uDRmayv9ifS9qt5WtrE2SoKQqkyOuB8FFiQNUL2d6ChIGiXU/zshBOMsxQg+jDBWz2kL+hLLDlglFA3SQPaYhOojRvhbduijSb0MHH61tuifMth8k6HoDmooE2N7DK7OfzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NuEXAMHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637C5C19423;
-	Tue, 10 Feb 2026 23:32:00 +0000 (UTC)
+	s=arc-20240116; t=1770766754; c=relaxed/simple;
+	bh=l40g5XI76/xjtVu1Jy+IaqFzXlkV1FpHj5AiocgwbO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=aJEmwfLZ5plYhouPko/vQTLCsSrbvMlMGWo1/efdZw/covQAKvBo2SFXJmHKSleYABRx0wx5eyYvxQP6usM2EfMS9cCO9zyRvqzKrKL0EHLImbSqXNk0BXc6Za/uyf/UW4m3Rq+rdazUpS0gGvAElEjNWIjuHofi0zrrWH6tgQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZJihtdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2503C116C6;
+	Tue, 10 Feb 2026 23:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770766321;
-	bh=SBo6Ip6zL7CuuAgpcphvuJ//YLD9xP6ZS8NtBlTW6CU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuEXAMHVyFeBIp+0A3CE7lAfqe6cThzLq0kNjlRKE1MsO9L6Dkwg1F0sLo+e3KV08
-	 3DjtG9aV5B7NvPfKd2q9IcZNAwc4wiwnCYXB1sR9OcpkCF/udJzIxTl2eGQ1tf10Fd
-	 wS4vUsOY5Bp+1v2bfGGhffYj5vZwaIjwrqhsMck3IJpcHiYAElzxUn4qlVctm+X5FE
-	 MGi73hGla/qRR69TmXNb0dxtABekZoupS+0ajVEq+Ej95D7I3LF1VwRlFc4fHfN7Ci
-	 W1uHTx/TX+hIxBlmzpHcyDLN2WiAN4u2Nai5akOOGogpu5ejjJT/7MfModHQoZop2C
-	 f/sgG7tD/Kiig==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jori Koolstra <jkoolstra@xs4all.nl>,
-	Jan Kara <jack@suse.cz>,
-	syzbot+5ad0824204c7bf9b67f2@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	penguin-kernel@I-love.SAKURA.ne.jp,
-	mjguzik@gmail.com,
-	chentaotao@didiglobal.com
-Subject: [PATCH AUTOSEL 6.19-5.10] minix: Add required sanity checking to minix_check_superblock()
-Date: Tue, 10 Feb 2026 18:31:09 -0500
-Message-ID: <20260210233123.2905307-24-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260210233123.2905307-1-sashal@kernel.org>
-References: <20260210233123.2905307-1-sashal@kernel.org>
+	s=k20201202; t=1770766754;
+	bh=l40g5XI76/xjtVu1Jy+IaqFzXlkV1FpHj5AiocgwbO8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=jZJihtdu138tStN5TC6+zNiXMs6e6OsK5vCJ57kpp0QTfjhvVtjevVk1jo1h7SDV5
+	 612nz8Gqrzdnipw0K3meJ7Rb9qxC8DPC3FpID2GXrjImserEwTHvaX+ahhrelsZg08
+	 33pKH3lZVtMIVauguNwwSu3nBNz113j0Xyh5Coy75w+PwMhYvpZK6JzoHXMnDcI5fz
+	 BGKjVfF+cWlO3YWZ3JDIRzJwmD+QCeJbDOSdq5U+Qssbs8Oxikz6lLjwND6wBC6wWL
+	 hyjhLMR0vHidMKkptqn+vmnpfXpkfYTVxa/nJ7fQfI7P8OanFUYh9WIJ4Mt5eWRxd3
+	 N2AmndRMXtdkg==
+Date: Tue, 10 Feb 2026 17:39:12 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>,
+	"Guo, Jinhui" <guojinhui.liam@bytedance.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"dwmw2@infradead.org" <dwmw2@infradead.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"joro@8bytes.org" <joro@8bytes.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"will@kernel.org" <will@kernel.org>,
+	Alex Williamson <alex@shazbot.org>
+Subject: Re: [PATCH v2 2/2] iommu/vt-d: Flush dev-IOTLB only when PCIe device
+ is accessible in scalable mode
+Message-ID: <20260210233912.GA93504@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <BN9PR11MB5276FCF5D751DE7432A32BBB8CB2A@BN9PR11MB5276.namprd11.prod.outlook.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[xs4all.nl,suse.cz,syzkaller.appspotmail.com,kernel.org,I-love.SAKURA.ne.jp,gmail.com,didiglobal.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215724-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215725-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,5ad0824204c7bf9b67f2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,xs4all.nl:email,msgid.link:url,suse.cz:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: D2AF011FFA8
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:email]
+X-Rspamd-Queue-Id: 103F712020B
 X-Rspamd-Action: no action
 
-From: Jori Koolstra <jkoolstra@xs4all.nl>
+[+cc Alex, beginning of thread:
+https://lore.kernel.org/all/20251211035946.2071-1-guojinhui.liam@bytedance.com/]
 
-[ Upstream commit 8c97a6ddc95690a938ded44b4e3202f03f15078c ]
+On Wed, Dec 24, 2025 at 03:08:49AM +0000, Tian, Kevin wrote:
+> +Bjorn for guidance.
 
-The fs/minix implementation of the minix filesystem does not currently
-support any other value for s_log_zone_size than 0. This is also the
-only value supported in util-linux; see mkfs.minix.c line 511. In
-addition, this patch adds some sanity checking for the other minix
-superblock fields, and moves the minix_blocks_needed() checks for the
-zmap and imap also to minix_check_super_block().
+Sorry for the late response.
 
-This also closes a related syzbot bug report.
+> quick context - previously intel-iommu driver fixed a lockup issue in surprise
+> removal, by checking pci_dev_is_disconnected(). But Jinhui still observed the
+> lockup issue in a setup where no interrupt is raised to pci core upon surprise
+> removal (so pci_dev_is_disconnected() is false), hence suggesting to replace
+> the check with pci_device_is_present() instead.
 
-Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
-Link: https://patch.msgid.link/20251208153947.108343-1-jkoolstra@xs4all.nl
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reported-by: syzbot+5ad0824204c7bf9b67f2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5ad0824204c7bf9b67f2
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+I think checking pci_dev_is_disconnected() or pci_device_is_present()
+in drivers is usually bad practice because it's always racy, as you've
+already pointed out.
 
-LLM Generated explanations, may be completely bogus:
+I don't think it's possible to avoid Invalidate Completion Timeouts in
+general, so I think the real solution is to figure out how to
+gracefully handle them without running into the lockup detection.
 
-Now I have a complete picture. Let me write the comprehensive analysis.
+I assume the lockup is the loop in qi_submit_sync() where we wait for
+QI_DONE with interrupts disabled.  Maybe we need something like
+watchdog_hardlockup_touch_cpu() there, along with a timeout in that
+loop?
 
----
+The PCIe r7.0, sec 10.3.1, implementation note suggests the timeout
+might be in the 1-2 minute range, which is pretty extreme, but if we
+can at least handle timeouts gracefully, we can think about ways to
+make them less likely, e.g., by coordinating with FLR and VFIO detach
+(maybe the sort of thing Alex alluded to at
+https://lore.kernel.org/all/20251223153534.0968cc15.alex@shazbot.org).
 
-## Comprehensive Analysis
+> Bjorn, is it a common practice to fix it directly/only in drivers or should the
+> pci core be notified e.g. simulating a late removal event? By searching the
+> code looks it's the former, but better confirm with you before picking this
+> fix...
 
-### 1. COMMIT MESSAGE ANALYSIS
+I don't know exactly what it would look like to simulate a late
+removal event, but it sounds like some kind of complicated
+infrastructure that would still be only a 90% solution, which I
+wouldn't recommend.
 
-The commit message clearly states it adds "required sanity checking" for
-the minix superblock, specifically:
-- Validates `s_log_zone_size == 0` (only supported value)
-- Adds validation for `s_ninodes`, `s_firstdatazone`, and zone/inode map
-  block counts
-- Moves existing `minix_blocks_needed()` checks from
-  `minix_fill_super()` to `minix_check_superblock()` (earlier
-  validation)
-- Explicitly closes a **syzbot bug report** with a C reproducer
-
-Key trust indicators:
-- **Reported-by: syzbot** - fuzzer-found, reproducible bug with a
-  concrete C reproducer
-- **Reviewed-by: Jan Kara** - experienced filesystem developer at SUSE
-- **Signed-off-by: Christian Brauner** - VFS maintainer
-- The syzbot bug has been open for **1521+ days** (since Dec 2021),
-  demonstrating a long-standing issue
-
-### 2. CODE CHANGE ANALYSIS
-
-**The root cause bug**: In `minix_statfs()` at line 415:
-
-```415:415:fs/minix/inode.c
-        buf->f_blocks = (sbi->s_nzones - sbi->s_firstdatazone) <<
-sbi->s_log_zone_size;
-```
-
-The `s_log_zone_size` field is read directly from the on-disk superblock
-(`__u16` type, values 0-65535) and stored in `sbi->s_log_zone_size`
-(unsigned long) **without any validation**. When a crafted/corrupt minix
-image provides a large value (e.g., 768, as shown in the syzbot crash),
-this causes a UBSAN shift-out-of-bounds because the shift exponent
-exceeds 64 bits.
-
-The same vulnerability also exists in `minix_count_free_blocks()` in
-`bitmap.c`:
-
-```102:103:fs/minix/bitmap.c
-        return (count_free(sbi->s_zmap, sb->s_blocksize, bits)
-                << sbi->s_log_zone_size);
-```
-
-Additionally, `sbi->s_nzones - sbi->s_firstdatazone` can **underflow**
-(unsigned subtraction wrapping around) if `s_firstdatazone >= s_nzones`,
-affecting both `minix_statfs()` and `minix_count_free_blocks()`.
-
-**What the fix does (line by line)**:
-
-1. **Validates `s_log_zone_size == 0`**: The Linux minix implementation
-   doesn't support zone sizes different from block sizes. This is
-   consistent with `mkfs.minix` in util-linux. This single check
-   prevents the UBSAN shift-out-of-bounds.
-
-2. **Validates `s_ninodes >= 1`**: Prevents issues with zero-inode
-   filesystems.
-
-3. **Validates `s_firstdatazone > 4`**: The minimum layout of a minix FS
-   requires: boot block (0), superblock (1), at least 1 imap block (2),
-   at least 1 zmap block (3), at least 1 inode table block (4), so first
-   data zone must be >= 5.
-
-4. **Validates `s_firstdatazone < s_nzones`**: Prevents unsigned
-   underflow in `s_nzones - s_firstdatazone` used in multiple places.
-
-5. **Moves `minix_blocks_needed()` checks earlier**: Moves existing
-   imap/zmap block validation from after bitmap buffer allocation (in
-   `minix_fill_super()`) to before allocation (in
-   `minix_check_superblock()`). This is an improvement because it
-   rejects bad images before doing unnecessary I/O (sb_bread calls for
-   bitmap blocks).
-
-6. **Removes the old `s_imap_blocks == 0 || s_zmap_blocks == 0` check**:
-   This is subsumed by the new `minix_blocks_needed()` checks — if
-   either block count is 0 while `s_ninodes >= 1`, the blocks_needed
-   check will catch it.
-
-### 3. CLASSIFICATION
-
-This is clearly a **bug fix** — specifically a UBSAN: shift-out-of-
-bounds fix triggered by crafted filesystem images. It also fixes
-potential unsigned integer underflow. There are zero new features.
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-- **Lines changed**: 29 additions, 21 deletions — **small and
-  contained**
-- **Files touched**: 1 file (`fs/minix/inode.c`)
-- **Complexity**: Low — all changes are straightforward value
-  comparisons
-- **Risk of regression**: Very low — the changes only add validation at
-  mount time. A valid minix filesystem would pass all checks. A
-  filesystem rejected by these checks was always corrupt/invalid.
-- **Subsystem**: minix filesystem — mature, rarely modified, not in a
-  hot development path
-
-### 5. USER IMPACT
-
-- **Severity**: UBSAN/undefined behavior triggered from userspace (mount
-  syscall with crafted image)
-- **Attack surface**: Any user who can mount a minix filesystem (often
-  root, but in some configurations could be unprivileged)
-- **Syzbot confirmed affected stable trees**: linux-5.15 and linux-6.1
-  both have the same bug (syzbot "Similar bugs" section shows them as
-  unpatched: "0/3")
-- **Reproducible**: Yes, syzbot provides a C reproducer
-- **Duration**: The bug has been open since December 2021 — over 4 years
-
-### 6. STABILITY INDICATORS
-
-- Reviewed-by: Jan Kara (experienced FS developer)
-- Signed-off-by: Christian Brauner (VFS maintainer)
-- Tested by syzbot (patch testing returned OK)
-- The commit has been in mainline since the 6.19 merge window
-
-### 7. DEPENDENCY CHECK
-
-- `minix_check_superblock()` was introduced in commit 270ef41094e9f (Aug
-  2020, with `Cc: stable`), so it **exists in all current stable
-  trees**.
-- The function signature was changed to `struct super_block *sb` in
-  32ac86efff91a (also Aug 2020, also in stable), so the same signature
-  is used everywhere.
-- `minix_blocks_needed()` has existed since 2011 (commit 016e8d44bc06d).
-- The mount API conversion (7cd7bfe593287, Mar 2024) may mean older
-  stable trees (5.15, 6.1, 6.6) need minor context adjustments, but the
-  core changes to `minix_check_superblock()` apply cleanly regardless.
-- **No other commits are needed** — this is fully self-contained.
-
-### 8. CONCLUSION
-
-This commit fixes a **long-standing syzbot-reported UBSAN bug** (1521+
-days old) in the minix filesystem's superblock validation. The bug is
-triggered by crafted filesystem images and causes undefined behavior
-(shift-out-of-bounds) that is reproducible with a C reproducer. The fix
-is small (29 additions, 21 deletions in 1 file), self-contained,
-obviously correct, reviewed by an experienced FS developer, and signed
-off by the VFS maintainer. The affected code exists in all stable trees,
-and syzbot confirms the bug is present and unfixed in at least
-linux-5.15 and linux-6.1. The risk of regression is minimal since the
-changes only reject invalid filesystem images at mount time. This is a
-textbook stable backport candidate.
-
-**YES**
-
- fs/minix/inode.c | 50 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
-
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index 51ea9bdc813f7..c8c6b2135abe7 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -170,10 +170,38 @@ static int minix_reconfigure(struct fs_context *fc)
- static bool minix_check_superblock(struct super_block *sb)
- {
- 	struct minix_sb_info *sbi = minix_sb(sb);
-+	unsigned long block;
- 
--	if (sbi->s_imap_blocks == 0 || sbi->s_zmap_blocks == 0)
-+	if (sbi->s_log_zone_size != 0) {
-+		printk("minix-fs error: zone size must equal block size. "
-+		       "s_log_zone_size > 0 is not supported.\n");
-+		return false;
-+	}
-+
-+	if (sbi->s_ninodes < 1 || sbi->s_firstdatazone <= 4 ||
-+	    sbi->s_firstdatazone >= sbi->s_nzones)
- 		return false;
- 
-+	/* Apparently minix can create filesystems that allocate more blocks for
-+	 * the bitmaps than needed.  We simply ignore that, but verify it didn't
-+	 * create one with not enough blocks and bail out if so.
-+	 */
-+	block = minix_blocks_needed(sbi->s_ninodes, sb->s_blocksize);
-+	if (sbi->s_imap_blocks < block) {
-+		printk("MINIX-fs: file system does not have enough "
-+		       "imap blocks allocated. Refusing to mount.\n");
-+		return false;
-+	}
-+
-+	block = minix_blocks_needed(
-+			(sbi->s_nzones - sbi->s_firstdatazone + 1),
-+			sb->s_blocksize);
-+	if (sbi->s_zmap_blocks < block) {
-+		printk("MINIX-fs: file system does not have enough "
-+		       "zmap blocks allocated. Refusing to mount.\n");
-+		return false;
-+	}
-+
- 	/*
- 	 * s_max_size must not exceed the block mapping limitation.  This check
- 	 * is only needed for V1 filesystems, since V2/V3 support an extra level
-@@ -293,26 +321,6 @@ static int minix_fill_super(struct super_block *s, struct fs_context *fc)
- 	minix_set_bit(0,sbi->s_imap[0]->b_data);
- 	minix_set_bit(0,sbi->s_zmap[0]->b_data);
- 
--	/* Apparently minix can create filesystems that allocate more blocks for
--	 * the bitmaps than needed.  We simply ignore that, but verify it didn't
--	 * create one with not enough blocks and bail out if so.
--	 */
--	block = minix_blocks_needed(sbi->s_ninodes, s->s_blocksize);
--	if (sbi->s_imap_blocks < block) {
--		printk("MINIX-fs: file system does not have enough "
--				"imap blocks allocated.  Refusing to mount.\n");
--		goto out_no_bitmap;
--	}
--
--	block = minix_blocks_needed(
--			(sbi->s_nzones - sbi->s_firstdatazone + 1),
--			s->s_blocksize);
--	if (sbi->s_zmap_blocks < block) {
--		printk("MINIX-fs: file system does not have enough "
--				"zmap blocks allocated.  Refusing to mount.\n");
--		goto out_no_bitmap;
--	}
--
- 	/* set up enough so that it can read an inode */
- 	s->s_op = &minix_sops;
- 	s->s_time_min = 0;
--- 
-2.51.0
-
+> > From: Baolu Lu <baolu.lu@linux.intel.com>
+> > Sent: Tuesday, December 23, 2025 12:06 PM
+> > 
+> > On 12/22/25 19:19, Jinhui Guo wrote:
+> > > On Thu, Dec 18, 2025 08:04:20AM +0000, Tian, Kevin wrote:
+> > >>> From: Jinhui Guo<guojinhui.liam@bytedance.com>
+> > >>> Sent: Thursday, December 11, 2025 12:00 PM
+> > >>>
+> > >>> Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
+> > >>> request when device is disconnected") relies on
+> > >>> pci_dev_is_disconnected() to skip ATS invalidation for
+> > >>> safely-removed devices, but it does not cover link-down caused
+> > >>> by faults, which can still hard-lock the system.
+> > >> According to the commit msg it actually tries to fix the hard lockup
+> > >> with surprise removal. For safe removal the device is not removed
+> > >> before invalidation is done:
+> > >>
+> > >> "
+> > >>      For safe removal, device wouldn't be removed until the whole software
+> > >>      handling process is done, it wouldn't trigger the hard lock up issue
+> > >>      caused by too long ATS Invalidation timeout wait.
+> > >> "
+> > >>
+> > >> Can you help articulate the problem especially about the part
+> > >> 'link-down caused by faults"? What are those faults? How are
+> > >> they different from the said surprise removal in the commit
+> > >> msg to not set pci_dev_is_disconnected()?
+> > >>
+> > > Hi, kevin, sorry for the delayed reply.
+> > >
+> > > A normal or surprise removal of a PCIe device on a hot-plug port normally
+> > > triggers an interrupt from the PCIe switch.
+> > >
+> > > We have, however, observed cases where no interrupt is generated when
+> > the
+> > > device suddenly loses its link; the behaviour is identical to setting the
+> > > Link Disable bit in the switch’s Link Control register (offset 10h). Exactly
+> > > what goes wrong in the LTSSM between the PCIe switch and the endpoint
+> > remains
+> > > unknown.
+> > 
+> > In this scenario, the hardware has effectively vanished, yet the device
+> > driver remains bound and the IOMMU resources haven't been released. I’m
+> > just curious if this stale state could trigger issues in other places
+> > before the kernel fully realizes the device is gone? I’m not objecting
+> > to the fix. I'm just interested in whether this 'zombie' state creates
+> > risks elsewhere.
+> > 
 
