@@ -1,170 +1,356 @@
-Return-Path: <stable+bounces-215632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8O69OnoAi2nJPAAAu9opvQ
-	(envelope-from <stable+bounces-215632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:55:06 +0100
+	id sHnrEpgBi2npPAAAu9opvQ
+	(envelope-from <stable+bounces-215633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:59:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2149D11933B
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:55:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36531194A9
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:59:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 508BC3055106
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:50:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 97DD6302A7D7
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735F634214A;
-	Tue, 10 Feb 2026 09:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1Jrfkg4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CF0342C8E;
+	Tue, 10 Feb 2026 09:59:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA27C342519
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 09:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C93311C11;
+	Tue, 10 Feb 2026 09:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770717047; cv=none; b=j7MbeZpyR5Ww+oBzF0G7t5w49LF33pqfjbTqc2cJ0z5Ysth/NZ7hAvXZrxOuK6ScG8kvOcEQw9oHi9cT3eZeKgKHQ4XowWWXZ0YPKC/l1s9GoFmHJ56iD80/FG2j7/UnOpVZVEIPWtGt7TSLUATnc96JAX3J931Ah080J+QnJNY=
+	t=1770717589; cv=none; b=C9hXnfwOH/kCsUxLRCf1XKHQBBEO4sT+oZ9vV9eN5aGC3JIqHDjq+74s1JD1TmnOSJXQnwV2/L9iTqvohT4M8AR1tefIeiN5AaSK1ss13nMDV2w7NSE2ujK4ghGhigcJInzymKptg05ceGXB5FDkvn6NYeIMiHYelsQcJTRpyrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770717047; c=relaxed/simple;
-	bh=FzUa2h0cznjZCgel5VHCjhSB3pMwOsaKbhc6w65ivdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SbCXJnWLvS6ccl/60VQ8gzQGhyET43tz4VCAon7FZYehWZDgkLWbSJwwzo/o8vxiixTc4NyjBPS1OLPy/nBvd2xIzwyWvgkz3L32VFg5HY7HrTSdGw3iiJ68EHgfOaPuswF/PuQY6e2GIFu7Ziv4P4LVXlpn7H0ODXlYogQcT+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1Jrfkg4; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6582e8831aeso989313a12.1
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 01:50:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770717044; x=1771321844; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0mZEeVQ0QwOznaKfyu8Y0DuL81Ja7HibPoeTh6Jnlyo=;
-        b=i1Jrfkg4zn9F0b5KeocofCLUfX3V2Uiriu3V7iWXEEUuRMVsY2LyyOpeDrp5QPNOPd
-         ulwSubrv4mw3rJOLy61uWuIDi5SDITZJPpfz2fxVUbsQTBTJAKZP+zy/IesjxPnKirU5
-         dV7osavq2e86clkZ36F+P3x8kSYfUfb84A+Sy87nCM9l82qOG2JucpbVckKk+zg5ZFjz
-         fc5C1G8mPvmlbVC7HJWNWhnbQQm3yvZ2HlP/83hOo3kTvipJO3TSzu6WuSFngxNlSiy2
-         HAAHg6XjN/4/sIaJpptYl1ARw/D7Hz7s24AV+hNPsIaQARiV+ILcIWEt9y+GazuQ8ci/
-         2pTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770717044; x=1771321844;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0mZEeVQ0QwOznaKfyu8Y0DuL81Ja7HibPoeTh6Jnlyo=;
-        b=HqPky+pS1yIjjdxnjaRACN88IK49sTL6pzM7urT0ogLnIwQ9oPVvaO1I+RtZWg/aZa
-         gg0fYhxAVhEjf2LrcayKbcyg3otRWcQJf7N0SaQULeP6scz0lsg6Hf0a3FMPw8hlNnXm
-         XYxLhU6heGrZu9izMiMJhdw/oGVLNlYtUj0C9S5BH+bFIktJ4ECFLjEmLmqKoshalNiS
-         cqv+F3xWm93LrYrRYHIJGJfNLDiU5lklplqZfwrgKVNa7O41VOR5kYL3grr1Q5wBwcbh
-         A+dPq9gbZY5zozBAqAeHk4JUcYDKewhSaShkOIiquf49rNNjm/VWQV59l0/3dXeWWoAo
-         6zAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU90nit3w09A1AkPOuFP7Kk2KConmT/2LeFKxFDvcwA6MEjgeYPdh295CRHRkUQFJ4QdEuhFIQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykFfDO0KbDKOhWXF6Exsjcfom2LScBs5BU+f9vFAAT5wxDAH3u
-	Aw/nRCiAlWoKZ497SHDEI3cu6H52D8N7UNpV7n4hMSnC44It4RnKY9Jx
-X-Gm-Gg: AZuq6aKggOjQ9C88Sy9WADYyV3puHl7oKQzQr5UIAFqo6Shvn1NkilmvN2l/ZGCon0P
-	lqSMweTYG5U0aFSRwzsOw2Ux6O5H0TqtlxDPPHemSjTCeKhQPk7++X9OWdhlWLNHMRfqD/VvtWi
-	AQd9hE1U8S0vcqknS37SrqIlf/WTFXA172R4C8TR+V21n+tkMMOCAVSNakQpbE5Sr6aKK32VZ8r
-	RNkHEvhpjGfa+88qYYzMWetkc5pGl6kwf8/HZ6iOAnwF+Pt2ICzxc4JhHaxQqkZEdhrisR4QFxt
-	96skJQzvVCvJ+GohBUVGAGDjWRNBHrMjSNCf1cigwxXHSTKM3HtbTsVf9YMLZCQOZIxtyEr4D+8
-	LSEE7D7zYnGwudVjVTFb+GVMPntCj4mCZt5AlpwhbxzldCnxHyunPYbstWaMLxluXnAGV2lWQyj
-	vzefBWokBBfbbuAWWN2N/IU9T91XGOFWxxSWLFf/oA3PvzeUN2zHnEMY73rBmEV2LMaYsuQ9CYz
-	xHKA+ptOGahasHNSless78HBg==
-X-Received: by 2002:a05:6402:13c1:b0:659:3ff1:58fa with SMTP id 4fb4d7f45d1cf-659843bdc44mr6047224a12.29.1770717043948;
-        Tue, 10 Feb 2026 01:50:43 -0800 (PST)
-Received: from localhost (2001-1c00-570d-ee00-0695-e133-2257-07cf.cable.dynamic.v6.ziggo.nl. [2001:1c00:570d:ee00:695:e133:2257:7cf])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65983eaa593sm3602304a12.2.2026.02.10.01.50.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 01:50:43 -0800 (PST)
-From: Amir Goldstein <amir73il@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Andrey Albershteyn <aalbersh@redhat.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Jan Kara <jack@suse.cz>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	syzbot+fa79520cb6cf363d660d@syzkaller.appspotmail.com,
-	Andrey Albershteyn <aalbersh@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] fs: set fsx_valid hint in file_getattr() syscall
-Date: Tue, 10 Feb 2026 10:50:42 +0100
-Message-ID: <20260210095042.506707-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1770717589; c=relaxed/simple;
+	bh=AibfQrkZn/0Olb/lhTjWpkK4AwopBZOXERY8kcEOjk0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TrW53zijXAHTLmjo7FjJcLQXPqnjKy3p1RL004bxFMHLk4L+MfB9BgvkV8ttXJA9CwFvwUwn6eod1AL9RxEu4uqUlgLV17iPbqUOuVG/NgjhblRYFP4ViZoPzqiPa6Eh02bClT17ue9ISuJYRP++BnWSWkB+QDMdh4rdlqmc198=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F222339;
+	Tue, 10 Feb 2026 01:59:40 -0800 (PST)
+Received: from [10.163.170.66] (unknown [10.163.170.66])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C40993F632;
+	Tue, 10 Feb 2026 01:59:40 -0800 (PST)
+Message-ID: <de94c15e-7778-416a-a023-bbefc18c7c02@arm.com>
+Date: Tue, 10 Feb 2026 15:29:36 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 2/2] arm64/mm: Reject memory removal that splits a
+ kernel leaf mapping
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260203130348.612150-1-anshuman.khandual@arm.com>
+ <20260203130348.612150-3-anshuman.khandual@arm.com>
+ <9ede3f81-5325-4acc-8ca1-ccb243c71961@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <9ede3f81-5325-4acc-8ca1-ccb243c71961@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:mid,arm.com:email,infradead.org:email];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215632-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[amir73il@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,fa79520cb6cf363d660d];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2149D11933B
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[anshuman.khandual@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215633-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: A36531194A9
 X-Rspamd-Action: no action
 
-The vfs_fileattr_get() API is a unification of the two legacy ioctls
-FS_IOC_GETFLAGS and FS_IOC_FSGETXATTR.
+On 10/02/26 3:17 PM, Ryan Roberts wrote:
+> On 03/02/2026 13:03, Anshuman Khandual wrote:
+>> Linear and vmemmap mapings that get teared down during a memory hot remove
+>> operation might contain leaf level entries on any page table level. If the
+>> requested memory range's linear or vmemmap mappings falls within such leaf
+>> entries, new mappings need to be created for the remaning memory mapped on
+>> the leaf entry earlier, following standard break before make aka BBM rules.
+>> But kernel cannot tolerate BBM amd hemce remapping to fine grained leaves
+> 
+> nits:                            ^^^ ^^^^^
 
-The legacy ioctls set a hint flag, either flags_valid or fsx_valid,
-which overlayfs and fuse may use to convert back to one of the two
-legacy ioctls.
+Yikes ! will fix the typos.
 
-The new file_getattr() syscall is a modern version of the ioctl
-FS_IOC_FSGETXATTR, but it does not set the fsx_valid hint leading to
-uninit-value KMSAN warning in ovl_fileattr_get() as is also expected
-to happen in fuse_fileattr_get().
+> 
+>> would not be possible on systems without BBML2_NOABORT.
+>>
+>> Currently memory hot remove operation does not perform such restructuring,
+>> and so removing memory ranges that could split a kernel leaf level mapping
+>> need to be rejected.
+>>
+>> while memory_hotplug.c does appear to permit hot removing arbitrary ranges
+>> of memory, the higher layers that drive memory_hotplug (e.g. ACPI, virtio,
+>> ...) all appear to treat memory as fixed size devices. So it is impossible
+>> to hotunplug a different amount than was previously hotplugged, and hence
+>> we should never see a rejection in practice, but adding the check makes us
+>> robust against a future change.
+>>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+>> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+>> Cc: stable@vger.kernel.org
+> 
+> Given your statement in the commit log above about how this never happens in
+> practice but is instead to make us robust to any future changes, perhaps this is
+> not a stable candidate?
+> 
+> For clarity; I do agree that this extra robustness is useful so I think we
+> should aim to get it upstream, I just don't think it needs to go to stable.
 
-Reported-by: syzbot+fa79520cb6cf363d660d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/698ad8b7.050a0220.3b3015.008b.GAE@google.com/
-Fixes: be7efb2d20d67 ("fs: introduce file_getattr and file_setattr syscalls")
-Cc: Andrey Albershteyn <aalbersh@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
- fs/file_attr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Will drop the `Cc: stable` reference.
 
-diff --git a/fs/file_attr.c b/fs/file_attr.c
-index 53b356dd8c33a..910c346d81bcd 100644
---- a/fs/file_attr.c
-+++ b/fs/file_attr.c
-@@ -379,7 +379,7 @@ SYSCALL_DEFINE5(file_getattr, int, dfd, const char __user *, filename,
- 	struct filename *name __free(putname) = NULL;
- 	unsigned int lookup_flags = 0;
- 	struct file_attr fattr;
--	struct file_kattr fa;
-+	struct file_kattr fa = { .fsx_valid = true }; /* hint only */
- 	int error;
- 
- 	BUILD_BUG_ON(sizeof(struct file_attr) < FILE_ATTR_SIZE_VER0);
--- 
-2.52.0
+> 
+>> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> 
+> Other than above nit, LGTM:
+> 
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+
+Thanks ! 
+
+Will respin the series on upcoming - rc1 version.
+
+> 
+>> ---
+>>  arch/arm64/mm/mmu.c | 155 ++++++++++++++++++++++++++++++++++++++++++--
+>>  1 file changed, 149 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 8ec8a287aaa1..3fb9bcbd739a 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -2063,6 +2063,142 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+>>  	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
+>>  }
+>>  
+>> +
+>> +static bool addr_splits_kernel_leaf(unsigned long addr)
+>> +{
+>> +	pgd_t *pgdp, pgd;
+>> +	p4d_t *p4dp, p4d;
+>> +	pud_t *pudp, pud;
+>> +	pmd_t *pmdp, pmd;
+>> +	pte_t *ptep, pte;
+>> +
+>> +	/*
+>> +	 * PGD level:
+>> +	 *
+>> +	 * If addr is PGD_SIZE aligned - already on a leaf boundary
+>> +	 */
+>> +	if (ALIGN_DOWN(addr, PGDIR_SIZE) == addr)
+>> +		return false;
+>> +
+>> +	pgdp = pgd_offset_k(addr);
+>> +	pgd = pgdp_get(pgdp);
+>> +	if (!pgd_present(pgd))
+>> +		return false;
+>> +
+>> +	/*
+>> +	 * P4D level:
+>> +	 *
+>> +	 * If addr is P4D_SIZE aligned - already on a leaf boundary
+>> +	 */
+>> +	if (ALIGN_DOWN(addr, P4D_SIZE) == addr)
+>> +		return false;
+>> +
+>> +	p4dp = p4d_offset(pgdp, addr);
+>> +	p4d = p4dp_get(p4dp);
+>> +	if (!p4d_present(p4d))
+>> +		return false;
+>> +
+>> +	/*
+>> +	 * PUD level:
+>> +	 *
+>> +	 * If addr is PUD_SIZE aligned - already on a leaf boundary
+>> +	 */
+>> +	if (ALIGN_DOWN(addr, PUD_SIZE) == addr)
+>> +		return false;
+>> +
+>> +	pudp = pud_offset(p4dp, addr);
+>> +	pud = pudp_get(pudp);
+>> +	if (!pud_present(pud))
+>> +		return false;
+>> +
+>> +	if (pud_leaf(pud))
+>> +		return true;
+>> +
+>> +	/*
+>> +	 * CONT_PMD level:
+>> +	 *
+>> +	 * If addr is CONT_PMD_SIZE aligned - already on a leaf boundary
+>> +	 */
+>> +	if (ALIGN_DOWN(addr, CONT_PMD_SIZE) == addr)
+>> +		return false;
+>> +
+>> +	pmdp = pmd_offset(pudp, addr);
+>> +	pmd = pmdp_get(pmdp);
+>> +	if (!pmd_present(pmd))
+>> +		return false;
+>> +
+>> +	if (pmd_cont(pmd))
+>> +		return true;
+>> +
+>> +	/*
+>> +	 * PMD level:
+>> +	 *
+>> +	 * If addr is PMD_SIZE aligned - already on a leaf boundary
+>> +	 */
+>> +	if (ALIGN_DOWN(addr, PMD_SIZE) == addr)
+>> +		return false;
+>> +
+>> +	if (pmd_leaf(pmd))
+>> +		return true;
+>> +
+>> +	/*
+>> +	 * CONT_PTE level:
+>> +	 *
+>> +	 * If addr is CONT_PTE_SIZE aligned - already on a leaf boundary
+>> +	 */
+>> +	if (ALIGN_DOWN(addr, CONT_PTE_SIZE) == addr)
+>> +		return false;
+>> +
+>> +	ptep = pte_offset_kernel(pmdp, addr);
+>> +	pte = __ptep_get(ptep);
+>> +	if (!pte_present(pte))
+>> +		return false;
+>> +
+>> +	if (pte_cont(pte))
+>> +		return true;
+>> +
+>> +	/*
+>> +	 * PTE level:
+>> +	 *
+>> +	 * If addr is PAGE_SIZE aligned - already on a leaf boundary
+>> +	 */
+>> +	if (ALIGN_DOWN(addr, PAGE_SIZE) == addr)
+>> +		return false;
+>> +	return true;
+>> +}
+>> +
+>> +static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
+>> +{
+>> +	unsigned long phys_start, phys_end, size, start, end;
+>> +
+>> +	phys_start = PFN_PHYS(pfn);
+>> +	phys_end = phys_start + nr_pages * PAGE_SIZE;
+>> +
+>> +	/*
+>> +	 * PFN range's linear map edges are leaf entry aligned
+>> +	 */
+>> +	start = __phys_to_virt(phys_start);
+>> +	end =  __phys_to_virt(phys_end);
+>> +	if (addr_splits_kernel_leaf(start) || addr_splits_kernel_leaf(end)) {
+>> +		pr_warn("[%lx %lx] splits a leaf entry in linear map\n",
+>> +			phys_start, phys_end);
+>> +		return false;
+>> +	}
+>> +
+>> +	/*
+>> +	 * PFN range's vmemmap edges are leaf entry aligned
+>> +	 */
+>> +	size = nr_pages * sizeof(struct page);
+>> +	start = (unsigned long)pfn_to_page(pfn);
+>> +	end = start + size;
+>> +	if (addr_splits_kernel_leaf(start) || addr_splits_kernel_leaf(end)) {
+>> +		pr_warn("[%lx %lx] splits a leaf entry in vmemmap\n",
+>> +			phys_start, phys_end);
+>> +		return false;
+>> +	}
+>> +	return true;
+>> +}
+>> +
+>>  /*
+>>   * This memory hotplug notifier helps prevent boot memory from being
+>>   * inadvertently removed as it blocks pfn range offlining process in
+>> @@ -2071,8 +2207,11 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+>>   * In future if and when boot memory could be removed, this notifier
+>>   * should be dropped and free_hotplug_page_range() should handle any
+>>   * reserved pages allocated during boot.
+>> + *
+>> + * This also blocks any memory remove that would have caused a split
+>> + * in leaf entry in kernel linear or vmemmap mapping.
+>>   */
+>> -static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
+>> +static int prevent_memory_remove_notifier(struct notifier_block *nb,
+>>  					   unsigned long action, void *data)
+>>  {
+>>  	struct mem_section *ms;
+>> @@ -2118,11 +2257,15 @@ static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
+>>  			return NOTIFY_DONE;
+>>  		}
+>>  	}
+>> +
+>> +	if (!can_unmap_without_split(pfn, arg->nr_pages))
+>> +		return NOTIFY_BAD;
+>> +
+>>  	return NOTIFY_OK;
+>>  }
+>>  
+>> -static struct notifier_block prevent_bootmem_remove_nb = {
+>> -	.notifier_call = prevent_bootmem_remove_notifier,
+>> +static struct notifier_block prevent_memory_remove_nb = {
+>> +	.notifier_call = prevent_memory_remove_notifier,
+>>  };
+>>  
+>>  /*
+>> @@ -2172,7 +2315,7 @@ static void validate_bootmem_online(void)
+>>  	}
+>>  }
+>>  
+>> -static int __init prevent_bootmem_remove_init(void)
+>> +static int __init prevent_memory_remove_init(void)
+>>  {
+>>  	int ret = 0;
+>>  
+>> @@ -2180,13 +2323,13 @@ static int __init prevent_bootmem_remove_init(void)
+>>  		return ret;
+>>  
+>>  	validate_bootmem_online();
+>> -	ret = register_memory_notifier(&prevent_bootmem_remove_nb);
+>> +	ret = register_memory_notifier(&prevent_memory_remove_nb);
+>>  	if (ret)
+>>  		pr_err("%s: Notifier registration failed %d\n", __func__, ret);
+>>  
+>>  	return ret;
+>>  }
+>> -early_initcall(prevent_bootmem_remove_init);
+>> +early_initcall(prevent_memory_remove_init);
+>>  #endif
+>>  
+>>  pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
+> 
 
 
