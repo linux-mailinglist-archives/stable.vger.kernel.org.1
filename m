@@ -1,165 +1,160 @@
-Return-Path: <stable+bounces-215676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215677-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOQaA1hUi2kMUAAAu9opvQ
-	(envelope-from <stable+bounces-215676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:52:56 +0100
+	id YJZCISNVi2k1UAAAu9opvQ
+	(envelope-from <stable+bounces-215677-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:56:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B31F11CC62
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:52:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37E611CD2B
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:56:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0875C3005997
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:52:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 697A93037E53
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1972381714;
-	Tue, 10 Feb 2026 15:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4736D3859CF;
+	Tue, 10 Feb 2026 15:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QF9J1YA/"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="CpZP/rmN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F53632C33E
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770738771; cv=none; b=rO8Dyifyh2nbw03MFlLP4nKw35870LvAIj8rSWL1TBoBPvawBhT7lk+ARyCDKOb6AfJKedc+MwvG9HedzTe4/MOkJu3nKLCD5ari1K+OfpUnDmdf8URvUGP9krHwRYjs0B5oST/zMjXdjsV4dxVtGn5swGvrna5Tzi6yEKzT9/w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770738771; c=relaxed/simple;
-	bh=+JHjufB3LEg/r3kx5N0o14L2zrHU9TKE8m4ej17mLC8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FEXtth9alhU/dJyb+1o4uplfQgWnken/vPMxZEs0MUi6XaaRxUpt8QEOh3Sp7PDQ3iHiV40GNFf2SUXWBcZxprfRbEs+G5L8BXhDQ9ubFVxpk3VT7ZAjGS+0Nwer8JNpIeRT0vHM7oVCmi4zZd8uFJ96YqV/csaUxrD9IS/YjaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QF9J1YA/; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7964fb9ae3dso21707557b3.0
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 07:52:50 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC853009E8
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770738976; cv=pass; b=Ns/wJaal0Knf0R2tV6zBt4VF5aYR+mJuNV4wHJjF7716sD6pbTWeAmO+JHxFc/FqQTV0oS31IBZ77w9YABaCh23jyJQNdnt723bRAJGOtzjiseEJ6brLw8iG320oV66jxpXlcTZfAOwMrB1KDGegdIeGo4kGtr5NjsFZFqYChO4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770738976; c=relaxed/simple;
+	bh=OAIEf0O+vVao9qslAHfoebqBUgeg/8PJahh0DJj5fLM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UaOk9nUfPdHwHf0knmzvaByHtqsa0UwORyv0J8VYUt4skogMt5RJ0M8wm0aAzbpLztuK4sLTJu+LMLf1dAwmiwMcV1/Mxf0iswZWyPjfklMx4Bn/1L5syV965nllqRmpV9EMvPaV8aEQmIYCI/qx8Wv3jU+sKT1bm4HACd8Irlk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=CpZP/rmN; arc=pass smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b885e8c6727so709822266b.1
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 07:56:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770738973; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YNtKetW0AcRpXt76LWXP+nD86CQegszJQx9BICEJGDFX6uaPH+D7boLucV8sgM7MfS
+         Rm6pDGcqSY93qraDNs8IQaK4Yne6AlnyrJ1ytO8PWKIs51d3FglINcqvXCmFc5tLtADs
+         gO1z2IWOAFk1RzhbGyqw/VmDk1DwrFVY2MhlTIM86LgxmXbembgYwgpXkOIbnsw7rg6x
+         r723Gtjf35jxhSIKsMPHpn/mP8jOMcVwaiKFhm3Cn+I9+ONw2+sJhywACY050H3e2kUN
+         8z4/10U/9QJJHLVd+7Xj0PY2OSDJfh6oevOoROTmNXj+Uhh3YT4fmfMyau63kA5gm/I/
+         IEyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=RHNM3wxM8gq7b7JGa1HDs6bGHDU6U4Hwkp51bCUb8F8=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=KgxdV3aN/dpAOUcY3gtO3F5R/+qvU+Mj1Vz2cohdHhXFnY5YJAbmcrZ18K+yteDrfo
+         0P11WqGw06J14b/PXSWQLnjerp25riP4zuRE+FxipEVCPElTUnh7/YZSWiiSTxBUp5lQ
+         wZGsRmKscp1izVl1YY8oZvdfmhYVmdx0CUjPzyiLsSTrz11LsnIIS39+QjVBu7YOzvVK
+         sfrj1e8e23tFL5Zblb1Vkcm0GqzMoO/ehoLl3guBHiwUVp4Obf2dHHmH3Np8R/wi2YQ2
+         m04BchFJTIovb+QM3614JjJVN/oWExolQuti3/Oa4YvJRq2YbCeE2PYQsS8Ey1HzoMDo
+         zXgg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770738769; x=1771343569; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PsdoeDEVnIgEyOgR/pPJak/Bop4P70sJ/00MCCs+jug=;
-        b=QF9J1YA/xSZx15oP8H4+eZfjRVlLuqDjEsfMeV6guK43eysgXw6oseLhsxfncEiwmU
-         Sca7vav3KinlP2r+YSjLlwTDqMZAbZXwqYyGatPXFcn2UifqqvtHfdUDjyh2D+r/y7Ce
-         dVo0cSJreGdGlN4B7xekMARu41OYHzehm0EJnUwffgTXTBPuDE+Gg9MEJRf7wOZoo/Lr
-         UxCaRT6IjjKIIRqsYfYvmwg6nsq0VmDkhP7D/MOP1LxlY+lzx17fcSnZn0X275nYPJhO
-         rI9gW4CHM/YlZc1dTTewJcQS1rqrJOiVYiMXEGr0+2Yo1fKD/v86TKkK3HFbDBtskJUw
-         n6Dg==
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770738973; x=1771343773; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RHNM3wxM8gq7b7JGa1HDs6bGHDU6U4Hwkp51bCUb8F8=;
+        b=CpZP/rmNQFyPZjdmXf19mIFetkLPDgAtPyeVZBYyxtI69AdHdl4dvr05k89IJeNzqr
+         fFKPHKnNE/Wge+p9GnFiZnK+FZr7JQqvB/XNd/9ZCwicxlVv3z3LvKESKGv7xzaCnvpd
+         xtdxmsPQKT4z/RJ8F2bOfHbnqCVstKkxTjF+lsZwIpVojAa/N/2MLTZADzTSf0zpZrFt
+         fKu1hJplPpSXftSOI2dDF4M7nSX74QjeNLLLxjF9NbFtjYb6fOAYcYFqy0r1ezruMc9r
+         ofUCEligQicS7Rsrq8QbpUaQKQnan9Tz7m1W92zQLuK5NDmxnIr2h4yyCZAfyYwiuHLG
+         cD0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770738769; x=1771343569;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1770738973; x=1771343773;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PsdoeDEVnIgEyOgR/pPJak/Bop4P70sJ/00MCCs+jug=;
-        b=Cb7k79m8AauPdJChyVPrn7MxIvmL9TrNsavRRqh2Xa3BoXXb9Tc+xQnCsQjHo4nOZ5
-         0RsMWu0EtR4Zc+cgXSTK6v8jXyPstz6qWyCuSj1daho9vH47E36r0Ey7OvugzTK0DyR4
-         GiCu/4mm5v41gBPMq71/Kk4J7VwLc/pQNLrUVKPnpWLrB3RFazjl3o9L3aObCFmBVTa2
-         aVUH2UWik6SxMOOlUUkmagejaLf50wHG1iPgzfy8x0TCCy4+ugqI3jFVhocAg+/fQhxH
-         kjPkEQC9j7jDZn4Ue5jb2vEYDVDWuiydjXxzGToiOGM5B5XkaZXh5gE3wRPnAW8QeKCX
-         w+eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpV66NgEzyNUaHHaOImRBj4xCP13Krq9LLwsfhBaeQVDbjUzjjBP7MEsop+mJiEbYNay+0PzY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwijOtgL7jJ4FaGxttXaaY/6YFHQJU3pM3fTtS+hnWkzAZFwJ4
-	5mVGXygdaLnyYAGWUHXyoN6XSVX0DDDLTtCq+7Z3syBGOZDFIHKWJaPt
-X-Gm-Gg: AZuq6aIY9IcNrfgIX3jnb4+7PrUvbQXbaXE89Kio+NhSg5rR8CMJGvVcSY0eeYvGdAq
-	dADXiPmGMMs+SrSUnjtD6QogQB8RhPVx9I2W8sbVcWGXUproyXS8unmEjJXmj9vlHBdrGV6RLLc
-	tLymZr1nFk+seirDEAlg7NA6xXERhqwmgy1+f3WyfL1jakq/CFY93eTpvdO+YqnsfgkNcgyFP3K
-	qxoBPInQzIaJUwC+H27hJpxFC9hK+SIACnhlZPfoqp2g53FeaA+Ve5bfUHMHfqfPBMPESwrYaIV
-	Rsx+UsTcvxnNKPjr5jNZAOjazYIbJ6440HJMj9WqCk+K606sad2CrGWf+qlsy9XNUiikZOG7m3p
-	O+mn12w8Y/an/P9wq41osX0AcMc0U6SL7Hdo2plFSu+tsNxrtYO8ubnzI4sCeC9kqv95L81iLNn
-	myQGIu50FNcYizYQW8mPHkkKPXu2eX67UD2/Z0CV3LpjUjTkdNlKqBAa1b
-X-Received: by 2002:a05:690c:60c1:b0:795:294c:fd2c with SMTP id 00721157ae682-7952ab3faf5mr115261447b3.43.1770738769451;
-        Tue, 10 Feb 2026 07:52:49 -0800 (PST)
-Received: from fedora ([2802:8010:26eb:6900:67c8:420d:6b48:1a65])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-796506f1dddsm42994797b3.25.2026.02.10.07.52.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 07:52:48 -0800 (PST)
-From: Gustavo Salvini <guspatagonico@gmail.com>
-To: broonie@kernel.org
-Cc: alsa-devel@alsa-project.org,
-	linux-kernel@vger.kernel.org,
-	mario.limonciello@amd.com,
-	Vijendar.Mukunda@amd.com,
-	tiwai@suse.com,
-	stable@vger.kernel.org,
-	Gustavo Salvini <guspatagonico@gmail.com>
-Subject: [PATCH] ASoC: amd: yc: Add DMI quirk for ASUS Vivobook Pro 15X M6501RR
-Date: Tue, 10 Feb 2026 12:51:56 -0300
-Message-ID: <20260210155156.29079-1-guspatagonico@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=RHNM3wxM8gq7b7JGa1HDs6bGHDU6U4Hwkp51bCUb8F8=;
+        b=sguSd5W2dag8SpjAleMVhgvBBITSAO36GqzU+s54L8hUTRctg7bCeT+bKf72TmTuDk
+         1nMSBhxsBLeqFDpWOc0J/Mge8dqdoGVysAYbLnNH6qyd0ZsExfdF2HfCO6mrOcNRHTui
+         GOtQ3L/gZyOdXSgE8u1sDiMRrMOLLskdtPwyuYPAPCU3mSaHNJ/7fQdZ3+NXlqORwj3T
+         oKMcsjdB6fmRCyF3pUfn5kHN7kBMiw6cMqb0xEcoJ4FXWWlKG5o3Wilg5oPrZzRRbgac
+         3hu933BOR24gTreNzVzii/OIAmWm59gc56Rcz3uyZ7qb4JomxP9jcPCUU0i8wdK/vsi4
+         TIzw==
+X-Gm-Message-State: AOJu0YxGMH1gjsrBIAQnpM5/1t7hHlLHvC5aF2DNVkRuOtes+z+77qD+
+	Ofnc1uuwQuDCHfjMd3KoG60lTfsEiOBvXOfSvaMF85K0+TXxI9eo4r29nOXMjLiLpjz/Er0/ruu
+	6Z1accG1gNnenAf9cKAaj13n4liL3l6KeVeNt3QFLAg==
+X-Gm-Gg: AZuq6aK4AL2T4OjY+iXWYf+pOkFXbwMH7qVp6j0RT/l1+Fys1Tk2wWaXTh3LMzcJGYm
+	qE7q8rAMcLsF0evM/sotxR68cQHmovUN5UscY9M6wSheqpJxaj+snLtSqYJ8KyFjcqwa8rH3UZS
+	0NrrSc0FVedNbXvIg+/02jd7Kv2LBSpuO1wmTX5IDYOpAi6y8Emb8E/2BhJAC4RL/hHCnzTQiBp
+	Oj4vdIt7Rfv0osuGtzOpbARe+4dkm7R7EMIaWziT/jXtwaPCyp4ZndVuqvISgy1RZYnXZO7ZDln
+	sToVM+moQ6fcbJiC45tnRGl3ctQOB/YFiRUPy4IDwd3rEleRMKlBBWQtXQQ/Sx2GKpNeqg==
+X-Received: by 2002:a17:907:968f:b0:b88:23f5:3cfa with SMTP id
+ a640c23a62f3a-b8f50cba6c5mr174846866b.31.1770738973279; Tue, 10 Feb 2026
+ 07:56:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260209142310.204833231@linuxfoundation.org>
+In-Reply-To: <20260209142310.204833231@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Tue, 10 Feb 2026 21:25:36 +0530
+X-Gm-Features: AZwV_QgUraP5QxouttC8DAmvBsk5r6YbfdwZIJudFIlSp0DiJPGvGCnq-Z06DDA
+Message-ID: <CAG=yYwmDgTBF89qwFTYzohZGoypkETQ6n29CXqVzoO4vxTNp6w@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/113] 6.12.70-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[alsa-project.org,vger.kernel.org,amd.com,suse.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-215676-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guspatagonico@gmail.com,stable@vger.kernel.org];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
+	TAGGED_FROM(0.00)[bounces-215677-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9B31F11CC62
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,rajagiritech.edu.in:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rajagiritech-edu-in.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: D37E611CD2B
 X-Rspamd-Action: no action
 
-The ASUS Vivobook Pro 15X (M6501RR) with AMD Ryzen 9 6900HX has an
-internal DMIC that is not detected without a DMI quirk entry, as the
-BIOS does not set the AcpDmicConnected ACPI _DSD property.
+ hello ,
 
-Adding the DMI entry enables the ACP6x DMIC machine driver to probe
-successfully.
+dmesg Stuff...
 
-Cc: stable@vger.kernel.org
+----------------info---------------------------'
+[   37.458874] evm: overlay not supported
+-------------------info-----------------------
 
-Signed-off-by: Gustavo Salvini <guspatagonico@gmail.com>
----
- sound/soc/amd/yc/acp6x-mach.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 67f2fee19398..f1a63475100d 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -696,7 +696,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "XyloD5_RBU"),
- 		}
- 	},
--
-+	{
-+			.driver_data = &acp6x_card,
-+			.matches = {
-+				DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_PRODUCT_NAME, "Vivobook_ASUSLaptop M6501RR_M6501RR"),
-+			}
-+		},
- 	{}
- };
- 
--- 
-2.53.0
 
+--
+software engineer
+rajagiri school of engineering and technology
 
