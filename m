@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-215575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJrZBROCimlaLQAAu9opvQ
-	(envelope-from <stable+bounces-215575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 01:55:47 +0100
+	id SGnzMm+DimmfLQAAu9opvQ
+	(envelope-from <stable+bounces-215576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 02:01:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9ECF115CF4
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 01:55:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDD4115E2E
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 02:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 49DE0300B8C4
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 00:55:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C9553069749
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 00:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF52725B662;
-	Tue, 10 Feb 2026 00:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63E9272E63;
+	Tue, 10 Feb 2026 00:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cuQvDLCG"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="u9QMHXYj"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F191F1315
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 00:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA20C26ED3F
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 00:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770684920; cv=none; b=FDCU/oigBVDXEAVfVOvf2xcK5y8HRXMqbZOv4/bw3k7N2qGQqQRaFQr98RgzLE8eyFIkg+2lgVfsohZiO3zQ/W7Scu5PcmZ792hi1frNLFF13Wme4OtZV3tpP+fI7wCqJ8OQPBrC5AwPTyLSEARSPHZ967iDSo0Rr/eqcIwggwI=
+	t=1770684922; cv=none; b=ot6aH+JUgbP4dMaEFvKVK0gtVBtYgxhplsPjSjA8CHe8tttBFn4+NooFbTDAy4cFqHf9D1jWlqKzkCT4OPQsLiVg+YBDsMWItRCPdD1ndMIEkAKeCG7x5nnEbkxOhpOci48OmJzCiUveHBTN078zg8nHoyQFagkmpv+tMR603B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770684920; c=relaxed/simple;
-	bh=0xYTA5O8n2Un7nIegn4K2tJVnxu5c3fQRxZ2nWTeMVI=;
+	s=arc-20240116; t=1770684922; c=relaxed/simple;
+	bh=8qdbIjRxa9nJLV9evrdN17b0sf2bnxg2AJ97er+o+Rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q72wXt9oblURLhuGVna2e1K7H1dKKxIHDOqD6d1++LdwhIp1AZ25BVNOWHTqX+5lQKI9dBLT73JM7zJ9JPnLHniNjcEvanfQyDl4LOe8KM4rPc7m7DVnJxJAmNeiKVg5LdG67szRGmclmAPzH0k4xoSMBKJ0kkCAK6gZhWCLm6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cuQvDLCG; arc=none smtp.client-ip=95.215.58.176
+	 MIME-Version; b=bydKFfLxG5sf2gEzNJlvpO71o+9O5Y9en87/b7ZoWl1l87T1LMznx1lVZgacVBcWnROb51CIIIpvd9Ii9stQJwzzfYnd7trzOthVecHb53xprDgL+tKNeh6l96QfNGCg8E2BpR7IguKE5n/f1Yhl9QuwqDe0omNks+B42j5ZwwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=u9QMHXYj; arc=none smtp.client-ip=95.215.58.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770684916;
+	t=1770684919;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ojZz514RvzyouqbQnt4yvqck/hytcluQX/sLI1bmLEw=;
-	b=cuQvDLCG8jNbQtONDjaeA868o012sFQs+ompDLcD/Lduo7vbDQU1NIb91Zy+riDbRM6Mcq
-	zWjcdpHUmcDNJy/6e7KBluJSCyf4l0ABntpgJabATXKxwhhvIG4ONGjWF2WGiZh+J70lNm
-	Xm8QIkFqSv3FHwkEKOjOao2s7/Hq+kU=
+	bh=2J5PouiLGGC2lSaBelHHWIjarzEiNNlCjAXNBFFbCqM=;
+	b=u9QMHXYjgL7ULBxfZcR5DWb5xZeuBRaKuH5LatfmAO9CB4tsnF+oUZokxdj3QTnv9pw6yi
+	G3zph5tjf3bSQ577QAzG+eUFUnLT+1Ue+zga+eCaywn4KIFStYJFCAb2Qz6HYV78J6hmh4
+	yRhU/uS1PoXsodxACXLV9FlHwZDavoI=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after VMRUN of L2
-Date: Tue, 10 Feb 2026 00:54:46 +0000
-Message-ID: <20260210005449.3125133-2-yosry.ahmed@linux.dev>
+Subject: [PATCH 2/4] KVM: nSVM: Sync int_state to cached vmcb12 after VMRUN of L2
+Date: Tue, 10 Feb 2026 00:54:47 +0000
+Message-ID: <20260210005449.3125133-3-yosry.ahmed@linux.dev>
 In-Reply-To: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
 References: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215575-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215576-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,11 +88,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:mid,linux.dev:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: D9ECF115CF4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1FDD4115E2E
 X-Rspamd-Action: no action
 
 After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
@@ -100,89 +100,43 @@ fields written by the CPU from vmcb02 to the cached vmcb12. This is
 because the cached vmcb12 is used as the authoritative copy of some of
 the controls, and is the payload when saving/restoring nested state.
 
-next_rip is also written by the CPU (in some cases) after VMRUN, but is
-not sync'd to cached vmcb12. As a result, it is corrupted after
-save/restore (replaced by the original value written by L1 on nested
-VMRUN). This could cause problems for both KVM (e.g. when injecting a
-soft IRQ) or L1 (e.g. when using next_rip to advance RIP after emulating
-an instruction).
+int_state is also written by the CPU, specifically bit 0 (i.e.
+SVM_INTERRUPT_SHADOW_MASK) for nested VMs, but it is not sync'd to
+cached vmcb12. This does not cause a problem if KVM_SET_NESTED_STATE
+preceeds KVM_SET_VCPU_EVENTS in the restore path, as an interrupt shadow
+would be correctly restored to vmcb02 (KVM_SET_VCPU_EVENTS overwrites
+what KVM_SET_NESTED_STATE restored in int_state).
 
-Fix this by sync'ing next_rip in nested_sync_control_from_vmcb02(). Move
-the call to nested_sync_control_from_vmcb02() (and the entire
-is_guest_mode() block) after svm_complete_interrupts(), as it may update
-next_rip in vmcb02.
+However, if KVM_SET_VCPU_EVENTS preceeds KVM_SET_NESTED_STATE, an
+interrupt shadow would be restored into vmcb01 instead of vmcb02. This
+would mostly be benign for L1 (delays an interrupt), but not for L2. For
+L2, the vCPU could hang (e.g. if a wakeup interrupt is delivered before
+a HLT that should have been in an interrupt shadow).
+
+Sync int_state to the cached vmcb12 in nested_sync_control_from_vmcb02()
+to avoid this problem. With that, KVM_SET_NESTED_STATE restores the
+correct interrupt shadow state, and if KVM_SET_VCPU_EVENTS follows it
+would overwrite it with the same value.
 
 Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
 CC: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c |  6 ++++--
- arch/x86/kvm/svm/svm.c    | 26 +++++++++++++++-----------
- 2 files changed, 19 insertions(+), 13 deletions(-)
+ arch/x86/kvm/svm/nested.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index de90b104a0dd..70086ba6497f 100644
+index 70086ba6497f..ff24a5748c7d 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -519,8 +519,10 @@ void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
- void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
- {
- 	u32 mask;
--	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
--	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-+
-+	svm->nested.ctl.event_inj	= svm->vmcb->control.event_inj;
-+	svm->nested.ctl.event_inj_err	= svm->vmcb->control.event_inj_err;
-+	svm->nested.ctl.next_rip	= svm->vmcb->control.next_rip;
+@@ -523,6 +523,7 @@ void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
+ 	svm->nested.ctl.event_inj	= svm->vmcb->control.event_inj;
+ 	svm->nested.ctl.event_inj_err	= svm->vmcb->control.event_inj_err;
+ 	svm->nested.ctl.next_rip	= svm->vmcb->control.next_rip;
++	svm->nested.ctl.int_state	= svm->vmcb->control.int_state;
  
  	/* Only a few fields of int_ctl are written by the processor.  */
  	mask = V_IRQ_MASK | V_TPR_MASK;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 5f0136dbdde6..6d8d4d19455e 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4399,17 +4399,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	sync_cr8_to_lapic(vcpu);
- 
- 	svm->next_rip = 0;
--	if (is_guest_mode(vcpu)) {
--		nested_sync_control_from_vmcb02(svm);
--
--		/* Track VMRUNs that have made past consistency checking */
--		if (svm->nested.nested_run_pending &&
--		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
--                        ++vcpu->stat.nested_run;
--
--		svm->nested.nested_run_pending = 0;
--	}
--
- 	svm->vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
- 
- 	/*
-@@ -4435,6 +4424,21 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 
- 	svm_complete_interrupts(vcpu);
- 
-+	/*
-+	 * svm_complete_interrupts() may update svm->vmcb->control.next_rip,
-+	 * which is sync'd by nested_sync_control_from_vmcb02() below.
-+	 */
-+	if (is_guest_mode(vcpu)) {
-+		nested_sync_control_from_vmcb02(svm);
-+
-+		/* Track VMRUNs that have made past consistency checking */
-+		if (svm->nested.nested_run_pending &&
-+		    !svm_is_vmrun_failure(svm->vmcb->control.exit_code))
-+			++vcpu->stat.nested_run;
-+
-+		svm->nested.nested_run_pending = 0;
-+	}
-+
- 	return svm_exit_handlers_fastpath(vcpu);
- }
- 
-
-base-commit: e944fe2c09f405a2e2d147145c9b470084bc4c9a
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
 
