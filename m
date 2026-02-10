@@ -1,70 +1,43 @@
-Return-Path: <stable+bounces-215621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPzjEZbyimnUOwAAu9opvQ
-	(envelope-from <stable+bounces-215621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:55:50 +0100
+	id WHRMHg3zimnUOwAAu9opvQ
+	(envelope-from <stable+bounces-215622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:57:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36B01186D8
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:55:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B7B1118730
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99CD6304481A
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 08:55:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1B1E300C340
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 08:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8AA33DED6;
-	Tue, 10 Feb 2026 08:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="su8fl4ql"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984E033D6FE;
+	Tue, 10 Feb 2026 08:57:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8423F23A9A8
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 08:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBA73375AA;
+	Tue, 10 Feb 2026 08:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770713734; cv=none; b=snZkMBcJQ0PFCy9pDct/qmcquHgzEOi9gGsygAk2OP9/31E9froJnz63WozeBsrarZhUAM2F2pC6X+H2Kc+0I4lfspxIALghFBmjXCAMv4B9XAgbStIxKw5K8bcjSDQLU+Izcu8NB2lMRyAzBLkgZZXZcpYm2zmhabkL3y8Lh8k=
+	t=1770713853; cv=none; b=bczAW0BIEdH0DqdH0YsVGhc8lWB70PMsXecOG794UHQfSsjTAWv8kvNvhZvTMBvCd1O1FpUFx9LmI9XiT6VOElHvtUVwJUw/AehzDzavI2yiMGHeFCEIJYf0AIj053wCHCpQARnqrzsGA49s/q2ikEvbzYaQH4ALPc8/7Xpa3CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770713734; c=relaxed/simple;
-	bh=bWuW8A//YShuTXHPUwzvMwJr+2cZY0AFlBFHtKbEz3I=;
+	s=arc-20240116; t=1770713853; c=relaxed/simple;
+	bh=j3PmniGhuDoQ4/vEh3AHo+Nka8lVaTgFBrcLO+s8oGw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g2SGdU27f4fiVH4D5NTeZNK3ajgaBdh2ozx/TPTBvDDmhJeI3A6llgUP2kxYpzr7SGews/SAEf8K6w0f6yHXDEuAj4NrgPvU2IYqxcfiPyxEmUi6lekMVBV8U3QioL9fEen7A6NPENJuhuF+ym+wbhj9kffzTawWxu72npV/fCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=su8fl4ql; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
-	by cmsmtp with ESMTPS
-	id pgUzvDjQkaPqLpjWtvhKDz; Tue, 10 Feb 2026 08:55:31 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id pjWsvzjiXh8QWpjWsvNRL1; Tue, 10 Feb 2026 08:55:31 +0000
-X-Authority-Analysis: v=2.4 cv=Mcdsu4/f c=1 sm=1 tr=0 ts=698af283
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=-Qcm0AZxhyoZnww38z8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MljNIwuBjtm56yXxQp+lCzhvVFK7kJFfM3Qf7jtw6EM=; b=su8fl4qlBv09s7TwW3YZTLqphD
-	FRDhyocZDxe2uOuSK8NeoSLVah559RRchooo8sgsbvS3tCW7sJYCjE87W97YGgThcxzt2fnqp692h
-	1MbCmjCQIC2LAxy4cDkcsX0mu+83CUpgKQLk5oVtJNZZdxL6yA+XLdqwY5JSEAeonJWDo0sAFozv3
-	cnRKluaGDGLbB7+I5RDK8wUBZOMkMC/3KBCTdscHjIHb74XGswi1zfhNyaaSDnNusyQkYz/f72FN1
-	ptJfnW9LGf6kMCYHxOMJhmr5+BtiShhXeETcJUsQnZOaZOmF2FVTlsYr2vi753gS3PUM1dCdFP8oo
-	soGMNwxg==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:49842 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vpjWs-00000000L4b-1Y3f;
-	Tue, 10 Feb 2026 01:55:30 -0700
-Message-ID: <4542559a-ed5a-4ab9-bdae-0978b2dc4b49@w6rz.net>
-Date: Tue, 10 Feb 2026 00:55:28 -0800
+	 In-Reply-To:Content-Type; b=hRAaBFfV+51JUN00+CTpUF+ihquVZk9mR/KM3f/LbJrsNSb10wI8+FyKfmlrrycVefJr+2h/5ATqEhVKc4hDRirBercYgYGgttYp/G68tc4uxtXorYPHYx4aG1gtDJMC7k6+xd1ZVCjYtMG3RH+JmJnIUG1IDjBSB8btN0JmWro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CFECD339;
+	Tue, 10 Feb 2026 00:57:23 -0800 (PST)
+Received: from [10.1.31.20] (unknown [10.1.31.20])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 49A5D3F740;
+	Tue, 10 Feb 2026 00:57:28 -0800 (PST)
+Message-ID: <946c9ff1-a0cf-4faa-aeb9-405f89121b81@arm.com>
+Date: Tue, 10 Feb 2026 08:57:26 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,106 +45,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/69] 6.1.163-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260209142301.913348974@linuxfoundation.org>
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Doug Smythies <dsmythies@telus.net>,
+ "'Rafael J. Wysocki'" <rafael@kernel.org>,
+ 'Harshvardhan Jha' <harshvardhan.j.jha@oracle.com>,
+ 'Sasha Levin' <sashal@kernel.org>,
+ 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
+ stable@vger.kernel.org, 'Daniel Lezcano' <daniel.lezcano@linaro.org>
+References: <CAJZ5v0gcSb_6QPMfHkjSMJ6OOF+PaCZrUKOafYQ++tHE2jBB4w@mail.gmail.com>
+ <3b0720d2-9b72-48d0-998a-1fd091cec44f@arm.com>
+ <5d4b624c-f993-49aa-95ab-5f279f7f6599@oracle.com>
+ <8fd5a9d4-e555-4db1-aa02-8fe5b8a2962c@arm.com>
+ <3395ad0b-425e-40f5-844c-627cff471353@oracle.com>
+ <3f0cfac2-b753-413c-9a7e-0892c23cdbf4@arm.com>
+ <CAJZ5v0j+jfTHog+rVO0816mofk7nSSKCt7dbwSa2QCpYSN013Q@mail.gmail.com>
+ <005401dc9638$b3e2ea40$1ba8bec0$@telus.net>
+ <m7pzdjfjcm2gr4gpru3rk26o2wn5iarihff6kz3o7n3slsvonx@k6jkyemuywgk>
+ <29b3287e-0a08-4648-9e54-32889c99b1e3@arm.com>
+ <ioyakugzog4uecwugy4b5ysxdimvh7qtosainou37rwp5bpoks@5csx6sn7ziso>
 Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1vpjWs-00000000L4b-1Y3f
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:49842
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfA5Hzaz53bmWBNusI/JBC+aYn/N3z8c3lTsoxcSP4KWGbzC+DP76f1aEXxI8ZOI/K99wOaFuH2mJunnUhJyfcVSfLUBqwGsaIbx0YqQ5UKv2+VNBxPTg
- iCL4eQzesd5rfd1NuA7HtIuPuqQM3rfCy3mwqfnEBQF+RXgfAcDTnikBuzanRtZawguxUIEkT63vJA==
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <ioyakugzog4uecwugy4b5ysxdimvh7qtosainou37rwp5bpoks@5csx6sn7ziso>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215621-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arm.com:mid];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A36B01186D8
+	FROM_NEQ_ENVFROM(0.00)[christian.loehle@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215622-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 9B7B1118730
 X-Rspamd-Action: no action
 
-On 2/9/26 06:23, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.163 release.
-> There are 69 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 11 Feb 2026 14:22:44 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.163-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 2/10/26 08:02, Sergey Senozhatsky wrote:
+> On (26/02/05 07:15), Christian Loehle wrote:
+> [..]
+>> @Doug given this is on Chromebooks base=84.5 and revert=59.5 doesn't necessarily mean
+>> 29.6% decrease in system performance in a traditional throughput sense.
+>> The "benchmark" might me measuring dropped frames, user input latency or what have you.
+>> Nonetheless @Sergey do feel free to expand.
+> 
+> I'm not on the performance team and I don't define those metrics, so
+> I can't really comment.  But frame drops during Google Docs scrolling,
+> for instance, or typing is a user visible regression, that people tend
+> to notice.
 
-There's a build warning on RISC-V.
-
-arch/riscv/kernel/probes/uprobes.c: In function 'arch_uprobe_copy_ixol':
-arch/riscv/kernel/probes/uprobes.c:164:23: warning: unused variable 'start' [-Wunused-variable]
-   164 |         unsigned long start = (unsigned long)dst;
-       |                       ^~~~~
-
-This can fixed with the fixup patch that I sent for 6.6.121.
-
-riscv: Replace function-like macro by static inline function
-
-commit 0b1ac9743f3d9cfced2ac3cb9f274c0675bd4189
-
-The cherry-pick applies cleanly.
-
+Yeah I guess that was my point already, i.e. it isn't implausible that
+e.g. a frequency reduction from 2.2GHz to 2.0GHz (-10%) might result in
+double the number of dropped frames (= score reduction of 50%).
+Everything just an example but don't be thrown off by the 29.6% reduction in
+score and expect to go looking for -29.6% cpu frequency (like you would expect
+for many purely cpubound benchmarks).
 
