@@ -1,80 +1,58 @@
-Return-Path: <stable+bounces-215647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CsXNU8Ti2npPQAAu9opvQ
-	(envelope-from <stable+bounces-215647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 12:15:27 +0100
+	id sBT9OEUUi2n5PQAAu9opvQ
+	(envelope-from <stable+bounces-215648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 12:19:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3A211A097
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 12:15:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329F711A0C8
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 12:19:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D9D79300DF7D
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:15:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8D203038AD9
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DEC314B6D;
-	Tue, 10 Feb 2026 11:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B9F2E093A;
+	Tue, 10 Feb 2026 11:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OWToVBHz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScjOb1p+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6223191C8;
-	Tue, 10 Feb 2026 11:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE902DC782;
+	Tue, 10 Feb 2026 11:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770722124; cv=none; b=C6iEr4L5qGiARvcR1PiwWUPIx/SsWX2LuA1mGi80mN1G4rPLV4d6Rng7kfCUyd4zNYNIy8QiDTeWyRMH9GHyTlb7NNVTl7t0IVpnWo2EIcsbk1n2udxSyOUIwwugdUUYUdki4Fbk5V8aZO0souexKls1Gn70nIG7gYWDfiMniCg=
+	t=1770722370; cv=none; b=gVzCeG1WF+SvQntt2m2GdOpFvOE6PU/p/3fVJa8CEaEp5GkWNri8yPloJIOpf8lD7TIwU5J4lO0x+TUx7xQd30PmUtOGkBDSGlrVtLQ3gn5MwtYrJGBh5dEPDXOYATOg+FVzGQx1kas6H3FXtxI1Sw2eSSOvzwPKYL/c1/VUuyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770722124; c=relaxed/simple;
-	bh=hPer5DuuhHwWGWLHiuyjR6VMGR0KWf+Hs6oysMEpB7M=;
+	s=arc-20240116; t=1770722370; c=relaxed/simple;
+	bh=iN7Zpx9HA0TLyuHI4vyYnN/jAq81qcroUDuqIKBurao=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hxq0pq1bP6GEpAfzI5Z+mwzk47nGWb46nmnVBn+sKmzv4pCQ5OT6zRpfA5dERJ+iGsP3DhdYtYWy2+ec+XfeWsqtx7ox9d+u7VusnZckcVxvbVwrpJtexZXnj1ShZXmkFAfShWG4mJx/hPRoegSvnaUvfRVJyTK1eHBaXayDfZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OWToVBHz; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770722122; x=1802258122;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hPer5DuuhHwWGWLHiuyjR6VMGR0KWf+Hs6oysMEpB7M=;
-  b=OWToVBHz7q1i+ED5W0iMKlE6uNZRsvxsasdbSZSV+fNWghYbFkcklJMD
-   1aElXNOiB3yUklldDPBmOnN5KbznpGff8WNCgKt+cyeAMCXQSCug27XjP
-   TlkvxBzxWQXyFNQrob7PmAYjfwURvl2g0R52dTwE17Nu8NG2gkMHBEFOy
-   9XTy9pi8ui7E1JrRxFqYsbkxY5K+tcp9CNDfEzCwepembueKZNv1u45bN
-   hdAQb4fQjWNa0QwmBGAu7DYOgwEElFyP2ZU76WPQfiqeSOAKHIyOo+lbe
-   tWx7scrurYhPX2LKaosf49M6enqlTwTd+chBTKd0nwAw+Ik0rAgSzr9df
-   w==;
-X-CSE-ConnectionGUID: ZBBhmxEVQCanoa0z8U2j9w==
-X-CSE-MsgGUID: SMxWShEoTgSXec7P7Jgulw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="97307739"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="97307739"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 03:15:21 -0800
-X-CSE-ConnectionGUID: AxPKUe/qTE+wrOk9jpf8tg==
-X-CSE-MsgGUID: fC92wVP4Se21KDRfvsadnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="216854604"
-Received: from igk-lkp-server01.igk.intel.com (HELO e5404a91d123) ([10.211.93.152])
-  by orviesa005.jf.intel.com with ESMTP; 10 Feb 2026 03:15:18 -0800
-Received: from kbuild by e5404a91d123 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vpli2-000000000mL-3z75;
-	Tue, 10 Feb 2026 11:15:10 +0000
-Date: Tue, 10 Feb 2026 12:14:56 +0100
-From: kernel test robot <lkp@intel.com>
-To: Josh Hunt <johunt@akamai.com>, song@kernel.org, yukuai@fnnas.com,
-	linan122@huawei.com, linux-raid@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, ncroxon@redhat.com,
-	Josh Hunt <johunt@akamai.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] md/raid10: fix deadlock with check operation and nowait
- requests
-Message-ID: <202602101220.J4BofeDD-lkp@intel.com>
-References: <20260210050942.3731656-1-johunt@akamai.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZijZz2aVgb97CxDiQ8Oj6K3mnJQX9rQbdJfFCDW55oT9nZweQtDtJL/kKH8+WRP7TbCyw1CCejIv2v8EFR5ynORiM0kihylaQeReKpbuRrePEAb/GhDFGdSd8p2QcojQisbrhKSXFZOeqcLTSkjbhoQepIW88CsfQhIiJwvHYkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ScjOb1p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41419C116C6;
+	Tue, 10 Feb 2026 11:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770722369;
+	bh=iN7Zpx9HA0TLyuHI4vyYnN/jAq81qcroUDuqIKBurao=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ScjOb1p+eYNh6kGa6EyNbL4jPaoIw93pN3CrrI6kVcyEYFjA7hrJFDlrUWJadjNSt
+	 7brHSwMZ6w96gdIZxKgoCM82HEOc7hIxQv2gtwnzHHrODKV1E6f2aPewQpZr6YhTqE
+	 tYr/0CNP1GFtZyK7be84NR9eBWB9Pw8wzqw8i8pg=
+Date: Tue, 10 Feb 2026 12:19:26 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.18 134/175] hwmon: (acpi_power_meter) Fix deadlocks
+ related to acpi_power_meter_notify()
+Message-ID: <2026021009-cavalry-spearman-1950@gregkh>
+References: <20260209142320.474120190@linuxfoundation.org>
+ <20260209142325.330634333@linuxfoundation.org>
+ <CAK8fFZ5n-og8dxFrh4J7pWW9h+iTp+AbdGUF1cd_7jDZpKEj8w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,180 +61,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260210050942.3731656-1-johunt@akamai.com>
+In-Reply-To: <CAK8fFZ5n-og8dxFrh4J7pWW9h+iTp+AbdGUF1cd_7jDZpKEj8w@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215647-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215648-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,git-scm.com:url]
-X-Rspamd-Queue-Id: 7D3A211A097
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,roeck-us.net:email]
+X-Rspamd-Queue-Id: 329F711A0C8
 X-Rspamd-Action: no action
 
-Hi Josh,
+On Tue, Feb 10, 2026 at 11:19:12AM +0100, Jaroslav Pulchart wrote:
+> >
+> > 6.18-stable review patch.  If anyone has any objections, please let me know.
+> >
+> > ------------------
+> >
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > [ Upstream commit 615901b57b7ef8eb655f71358f7e956e42bcd16b ]
+> >
+> > The acpi_power_meter driver's .notify() callback function,
+> > acpi_power_meter_notify(), calls hwmon_device_unregister() under a lock
+> > that is also acquired by callbacks in sysfs attributes of the device
+> > being unregistered which is prone to deadlocks between sysfs access and
+> > device removal.
+> >
+> > Address this by moving the hwmon device removal in
+> > acpi_power_meter_notify() outside the lock in question, but notice
+> > that doing it alone is not sufficient because two concurrent
+> > METER_NOTIFY_CONFIG notifications may be attempting to remove the
+> > same device at the same time.  To prevent that from happening, add a
+> > new lock serializing the execution of the switch () statement in
+> > acpi_power_meter_notify().  For simplicity, it is a static mutex
+> > which should not be a problem from the performance perspective.
+> >
+> > The new lock also allows the hwmon_device_register_with_info()
+> > in acpi_power_meter_notify() to be called outside the inner lock
+> > because it prevents the other notifications handled by that function
+> > from manipulating the "resource" object while the hwmon device based
+> > on it is being registered.  The sending of ACPI netlink messages from
+> > acpi_power_meter_notify() is serialized by the new lock too which
+> > generally helps to ensure that the order of handling firmware
+> > notifications is the same as the order of sending netlink messages
+> > related to them.
+> >
+> > In addition, notice that hwmon_device_register_with_info() may fail
+> > in which case resource->hwmon_dev will become an error pointer,
+> > so add checks to avoid attempting to unregister the hwmon device
+> > pointer to by it in that case to acpi_power_meter_notify() and
+> > acpi_power_meter_remove().
+> >
+> > Fixes: 16746ce8adfe ("hwmon: (acpi_power_meter) Replace the deprecated hwmon_device_register")
+> > Closes: https://lore.kernel.org/linux-hwmon/CAK8fFZ58fidGUCHi5WFX0uoTPzveUUDzT=k=AAm4yWo3bAuCFg@mail.gmail.com/
+> > Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/hwmon/acpi_power_meter.c | 17 ++++++++++++++---
+> >  1 file changed, 14 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+> > index 29ccdc2fb7ff8..de408df0c4d78 100644
+> > --- a/drivers/hwmon/acpi_power_meter.c
+> > +++ b/drivers/hwmon/acpi_power_meter.c
+> > @@ -47,6 +47,8 @@
+> >  static int cap_in_hardware;
+> >  static bool force_cap_on;
+> >
+> > +static DEFINE_MUTEX(acpi_notify_lock);
+> > +
+> >  static int can_cap_in_hardware(void)
+> >  {
+> >         return force_cap_on || cap_in_hardware;
+> > @@ -823,18 +825,26 @@ static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
+> >
+> >         resource = acpi_driver_data(device);
+> >
+> > +       guard(mutex)(&acpi_notify_lock);
+> > +
+> >         switch (event) {
+> >         case METER_NOTIFY_CONFIG:
+> > +               if (!IS_ERR(resource->hwmon_dev))
+> > +                       hwmon_device_unregister(resource->hwmon_dev);
+> > +
+> >                 mutex_lock(&resource->lock);
+> > +
+> >                 free_capabilities(resource);
+> >                 remove_domain_devices(resource);
+> > -               hwmon_device_unregister(resource->hwmon_dev);
+> >                 res = read_capabilities(resource);
+> >                 if (res)
+> >                         dev_err_once(&device->dev, "read capabilities failed.\n");
+> >                 res = read_domain_devices(resource);
+> >                 if (res && res != -ENODEV)
+> >                         dev_err_once(&device->dev, "read domain devices failed.\n");
+> > +
+> > +               mutex_unlock(&resource->lock);
+> > +
+> >                 resource->hwmon_dev =
+> >                         hwmon_device_register_with_info(&device->dev,
+> >                                                         ACPI_POWER_METER_NAME,
+> > @@ -843,7 +853,7 @@ static void acpi_power_meter_notify(struct acpi_device *device, u32 event)
+> >                                                         power_extra_groups);
+> >                 if (IS_ERR(resource->hwmon_dev))
+> >                         dev_err_once(&device->dev, "register hwmon device failed.\n");
+> > -               mutex_unlock(&resource->lock);
+> > +
+> >                 break;
+> >         case METER_NOTIFY_TRIP:
+> >                 sysfs_notify(&device->dev.kobj, NULL, POWER_AVERAGE_NAME);
+> > @@ -953,7 +963,8 @@ static void acpi_power_meter_remove(struct acpi_device *device)
+> >                 return;
+> >
+> >         resource = acpi_driver_data(device);
+> > -       hwmon_device_unregister(resource->hwmon_dev);
+> > +       if (!IS_ERR(resource->hwmon_dev))
+> > +               hwmon_device_unregister(resource->hwmon_dev);
+> >
+> >         remove_domain_devices(resource);
+> >         free_capabilities(resource);
+> > --
+> > 2.51.0
+> >
+> >
+> >
+> 
+> Hello, I tested this patch, but unfortunately it does not resolve the
+> reported issue on our systems the deadlock is still reproducible with
+> the same iDRAC reset reproducer.
 
-kernel test robot noticed the following build errors:
+Is 6.19 also a problem here, or does it work properly on that release?
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.19 next-20260209]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+thanks,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Josh-Hunt/md-raid10-fix-deadlock-with-check-operation-and-nowait-requests/20260210-135305
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260210050942.3731656-1-johunt%40akamai.com
-patch subject: [PATCH] md/raid10: fix deadlock with check operation and nowait requests
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260210/202602101220.J4BofeDD-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602101220.J4BofeDD-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602101220.J4BofeDD-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/md/raid10.c: In function 'raid10_read_request':
->> drivers/md/raid10.c:1257:9: error: too few arguments to function 'raid_end_bio_io'
-    1257 |         raid_end_bio_io(r10_bio);
-         |         ^~~~~~~~~~~~~~~
-   drivers/md/raid10.c:321:13: note: declared here
-     321 | static void raid_end_bio_io(struct r10bio *r10_bio, bool adjust_pending)
-         |             ^~~~~~~~~~~~~~~
-   drivers/md/raid10.c: In function 'raid10_write_request':
-   drivers/md/raid10.c:1540:9: error: too few arguments to function 'raid_end_bio_io'
-    1540 |         raid_end_bio_io(r10_bio);
-         |         ^~~~~~~~~~~~~~~
-   drivers/md/raid10.c:321:13: note: declared here
-     321 | static void raid_end_bio_io(struct r10bio *r10_bio, bool adjust_pending)
-         |             ^~~~~~~~~~~~~~~
-
-
-vim +/raid_end_bio_io +1257 drivers/md/raid10.c
-
-caea3c47ad5152 Guoqing Jiang     2018-12-07  1161  
-bb5f1ed70bc3bb Robert LeBlanc    2016-12-05  1162  static void raid10_read_request(struct mddev *mddev, struct bio *bio,
-820455238366a7 Yu Kuai           2023-06-22  1163  				struct r10bio *r10_bio, bool io_accounting)
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1164  {
-e879a8793f915a NeilBrown         2011-10-11  1165  	struct r10conf *conf = mddev->private;
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1166  	struct bio *read_bio;
-d4432c23be957f NeilBrown         2011-07-28  1167  	int max_sectors;
-bb5f1ed70bc3bb Robert LeBlanc    2016-12-05  1168  	struct md_rdev *rdev;
-545250f2480911 NeilBrown         2017-04-05  1169  	char b[BDEVNAME_SIZE];
-545250f2480911 NeilBrown         2017-04-05  1170  	int slot = r10_bio->read_slot;
-545250f2480911 NeilBrown         2017-04-05  1171  	struct md_rdev *err_rdev = NULL;
-545250f2480911 NeilBrown         2017-04-05  1172  	gfp_t gfp = GFP_NOIO;
-9b622e2bbcf049 Tomasz Majchrzak  2016-07-28  1173  
-93decc563637c4 Kevin Vigor       2020-11-06  1174  	if (slot >= 0 && r10_bio->devs[slot].rdev) {
-545250f2480911 NeilBrown         2017-04-05  1175  		/*
-545250f2480911 NeilBrown         2017-04-05  1176  		 * This is an error retry, but we cannot
-545250f2480911 NeilBrown         2017-04-05  1177  		 * safely dereference the rdev in the r10_bio,
-545250f2480911 NeilBrown         2017-04-05  1178  		 * we must use the one in conf.
-545250f2480911 NeilBrown         2017-04-05  1179  		 * If it has already been disconnected (unlikely)
-545250f2480911 NeilBrown         2017-04-05  1180  		 * we lose the device name in error messages.
-545250f2480911 NeilBrown         2017-04-05  1181  		 */
-545250f2480911 NeilBrown         2017-04-05  1182  		int disk;
-545250f2480911 NeilBrown         2017-04-05  1183  		/*
-545250f2480911 NeilBrown         2017-04-05  1184  		 * As we are blocking raid10, it is a little safer to
-545250f2480911 NeilBrown         2017-04-05  1185  		 * use __GFP_HIGH.
-545250f2480911 NeilBrown         2017-04-05  1186  		 */
-545250f2480911 NeilBrown         2017-04-05  1187  		gfp = GFP_NOIO | __GFP_HIGH;
-545250f2480911 NeilBrown         2017-04-05  1188  
-545250f2480911 NeilBrown         2017-04-05  1189  		disk = r10_bio->devs[slot].devnum;
-a448af25becf4b Yu Kuai           2023-11-25  1190  		err_rdev = conf->mirrors[disk].rdev;
-545250f2480911 NeilBrown         2017-04-05  1191  		if (err_rdev)
-900d156bac2bc4 Christoph Hellwig 2022-07-13  1192  			snprintf(b, sizeof(b), "%pg", err_rdev->bdev);
-545250f2480911 NeilBrown         2017-04-05  1193  		else {
-545250f2480911 NeilBrown         2017-04-05  1194  			strcpy(b, "???");
-545250f2480911 NeilBrown         2017-04-05  1195  			/* This never gets dereferenced */
-545250f2480911 NeilBrown         2017-04-05  1196  			err_rdev = r10_bio->devs[slot].rdev;
-545250f2480911 NeilBrown         2017-04-05  1197  		}
-545250f2480911 NeilBrown         2017-04-05  1198  	}
-856e08e23762df NeilBrown         2011-07-28  1199  
-43806c3d5b9bb7 Nigel Croxon      2025-07-03  1200  	if (!regular_request_wait(mddev, conf, bio, r10_bio->sectors)) {
-4e9814d1943b0e Josh Hunt         2026-02-10  1201  		raid_end_bio_io(r10_bio, false);
-c9aa889b035fca Vishal Verma      2021-12-21  1202  		return;
-43806c3d5b9bb7 Nigel Croxon      2025-07-03  1203  	}
-43806c3d5b9bb7 Nigel Croxon      2025-07-03  1204  
-96c3fd1f380237 NeilBrown         2011-12-23  1205  	rdev = read_balance(conf, r10_bio, &max_sectors);
-96c3fd1f380237 NeilBrown         2011-12-23  1206  	if (!rdev) {
-545250f2480911 NeilBrown         2017-04-05  1207  		if (err_rdev) {
-545250f2480911 NeilBrown         2017-04-05  1208  			pr_crit_ratelimited("md/raid10:%s: %s: unrecoverable I/O read error for block %llu\n",
-545250f2480911 NeilBrown         2017-04-05  1209  					    mdname(mddev), b,
-545250f2480911 NeilBrown         2017-04-05  1210  					    (unsigned long long)r10_bio->sector);
-545250f2480911 NeilBrown         2017-04-05  1211  		}
-4e9814d1943b0e Josh Hunt         2026-02-10  1212  		raid_end_bio_io(r10_bio, true);
-5a7bbad27a4103 Christoph Hellwig 2011-09-12  1213  		return;
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1214  	}
-545250f2480911 NeilBrown         2017-04-05  1215  	if (err_rdev)
-913cce5a1e588e Christoph Hellwig 2022-05-12  1216  		pr_err_ratelimited("md/raid10:%s: %pg: redirecting sector %llu to another mirror\n",
-545250f2480911 NeilBrown         2017-04-05  1217  				   mdname(mddev),
-913cce5a1e588e Christoph Hellwig 2022-05-12  1218  				   rdev->bdev,
-545250f2480911 NeilBrown         2017-04-05  1219  				   (unsigned long long)r10_bio->sector);
-fc9977dd069e4f NeilBrown         2017-04-05  1220  	if (max_sectors < bio_sectors(bio)) {
-e820d55cb99dd9 Guoqing Jiang     2018-12-19  1221  		allow_barrier(conf);
-6fc07785d9b892 Yu Kuai           2025-09-10  1222  		bio = bio_submit_split_bioset(bio, max_sectors,
-6fc07785d9b892 Yu Kuai           2025-09-10  1223  					      &conf->bio_split);
-c9aa889b035fca Vishal Verma      2021-12-21  1224  		wait_barrier(conf, false);
-6fc07785d9b892 Yu Kuai           2025-09-10  1225  		if (!bio) {
-6fc07785d9b892 Yu Kuai           2025-09-10  1226  			set_bit(R10BIO_Returned, &r10_bio->state);
-4cf58d95290973 John Garry        2024-11-11  1227  			goto err_handle;
-4cf58d95290973 John Garry        2024-11-11  1228  		}
-22f166218f7313 Yu Kuai           2025-09-10  1229  
-fc9977dd069e4f NeilBrown         2017-04-05  1230  		r10_bio->master_bio = bio;
-fc9977dd069e4f NeilBrown         2017-04-05  1231  		r10_bio->sectors = max_sectors;
-fc9977dd069e4f NeilBrown         2017-04-05  1232  	}
-96c3fd1f380237 NeilBrown         2011-12-23  1233  	slot = r10_bio->read_slot;
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1234  
-820455238366a7 Yu Kuai           2023-06-22  1235  	if (io_accounting) {
-820455238366a7 Yu Kuai           2023-06-22  1236  		md_account_bio(mddev, &bio);
-820455238366a7 Yu Kuai           2023-06-22  1237  		r10_bio->master_bio = bio;
-820455238366a7 Yu Kuai           2023-06-22  1238  	}
-abfc426d1b2fb2 Christoph Hellwig 2022-02-02  1239  	read_bio = bio_alloc_clone(rdev->bdev, bio, gfp, &mddev->bio_set);
-5fa31c49928139 Zheng Qixing      2025-07-02  1240  	read_bio->bi_opf &= ~REQ_NOWAIT;
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1241  
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1242  	r10_bio->devs[slot].bio = read_bio;
-abbf098e6e1e23 NeilBrown         2011-12-23  1243  	r10_bio->devs[slot].rdev = rdev;
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1244  
-4f024f3797c43c Kent Overstreet   2013-10-11  1245  	read_bio->bi_iter.bi_sector = r10_bio->devs[slot].addr +
-f8c9e74ff0832f NeilBrown         2012-05-21  1246  		choose_data_offset(r10_bio, rdev);
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1247  	read_bio->bi_end_io = raid10_end_read_request;
-8d3ca83dcf9ca3 NeilBrown         2016-11-18  1248  	if (test_bit(FailFast, &rdev->flags) &&
-8d3ca83dcf9ca3 NeilBrown         2016-11-18  1249  	    test_bit(R10BIO_FailFast, &r10_bio->state))
-8d3ca83dcf9ca3 NeilBrown         2016-11-18  1250  	        read_bio->bi_opf |= MD_FAILFAST;
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1251  	read_bio->bi_private = r10_bio;
-c396b90e502691 Christoph Hellwig 2024-03-03  1252  	mddev_trace_remap(mddev, read_bio, r10_bio->sector);
-ed00aabd5eb9fb Christoph Hellwig 2020-07-01  1253  	submit_bio_noacct(read_bio);
-5a7bbad27a4103 Christoph Hellwig 2011-09-12  1254  	return;
-4cf58d95290973 John Garry        2024-11-11  1255  err_handle:
-4cf58d95290973 John Garry        2024-11-11  1256  	atomic_dec(&rdev->nr_pending);
-4cf58d95290973 John Garry        2024-11-11 @1257  	raid_end_bio_io(r10_bio);
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1258  }
-^1da177e4c3f41 Linus Torvalds    2005-04-16  1259  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+greg k-h
 
