@@ -1,105 +1,43 @@
-Return-Path: <stable+bounces-215628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MM/YGCn9imlyPAAAu9opvQ
-	(envelope-from <stable+bounces-215628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:40:57 +0100
+	id gMvlClr/imnJPAAAu9opvQ
+	(envelope-from <stable+bounces-215630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:50:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05807118FE1
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:40:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899871191B6
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 105333051448
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:40:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFED6302C6E0
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F196341AD0;
-	Tue, 10 Feb 2026 09:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mLbAddnd";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XYEcGnEk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C24A33F39E;
+	Tue, 10 Feb 2026 09:47:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303FE341648
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 09:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E53303C87;
+	Tue, 10 Feb 2026 09:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770716402; cv=none; b=W322CrgymTUZ6rW9pSPJJ28aYvOXRqtgVWdnhtTR0sujCtm9RLgAsEngkyqhs5154l82F1a+RmW6MjS/eBWpYaVUIgDa7uzJ9i2877TFK8NeoFJOQ19dZ+FlqT3R+hD92UR+7lagJIfCktugYprd70IVcXviqPCKSYF5QNQRWuw=
+	t=1770716878; cv=none; b=bPeL27cK/NXbcNnWLeZa8IKe/xjFd+rz+1CL/TuccgGJarU4s7UtSlbzXNa4ucRkn7KIq0UA5N6XH+95kbYY+aRk0NR+mL4/kvawjP5gqnJ2fLC0Z781QvKM4kT26M5M6OFBa2L4pzzRsw9bFmABa+VBvjonow4BUr5zMbetGv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770716402; c=relaxed/simple;
-	bh=iJ8I2MLehXxWMGH8SM93i052CBAir46Pqt//1QASbh8=;
+	s=arc-20240116; t=1770716878; c=relaxed/simple;
+	bh=Wvo48SiOyLBwfDoM5BEYarxmyCve4mRC2wdyhNoizuE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rD8fx/2Q+HBboGgcpdsy5tJMJdDnDrQ1lACP6uuy1Cq+rHtpcK19e0eBjTVQRH7dPYmO33h5v6qvrcJYMTdiZo7973ySr1NYgLQyCUhPVrRe5b9clvJQU7hB3VRvmpgrBIC6eAj/RByfnHkuMQM49gnx2JJRBqIvU0kWnexQqWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mLbAddnd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XYEcGnEk; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61A3iN721940310
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 09:40:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0TAMvNeZiQWgcpalJSVZi3FF+L38Q5MAyklwP4Kb4qQ=; b=mLbAddndJbDn5ony
-	egOTVcGnWdUyI2FZkelsdXo6pWG2Xk9p06LQyqwgfs8jtv1q7zKoJkESvCZd5Olu
-	Xz39JOMVgn4SrsG4UcIsll0CQr7NTMHY/D0L6qmnvwn/ib5SI38kzjTrb7Nda0Aq
-	L4LzVAuq2EqosezwVlLyuEm+88a9WfDLxBOxrCMMg2dpMm0DW2iEpG2gFjtOybrG
-	/oC+uKEGwUoOBLGbnZApqOcDzBIwUNCAXEWnGGg14kVTpz78X070JJ6hfJHBlw89
-	g2UzMyvtUVO5hChmc5Yug9js03JjvYkJ/z1w7JjH6ByLJT79R6hrPdVjKGx003zN
-	ATYssQ==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c7w1js1x4-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 09:40:00 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c6a182d4e1so95886685a.0
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 01:40:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1770716399; x=1771321199; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0TAMvNeZiQWgcpalJSVZi3FF+L38Q5MAyklwP4Kb4qQ=;
-        b=XYEcGnEkYYX6QW12NkiKCvTYOa/DtIlHFi1+Lhzet8ERnvFWxGjvZnzG+OX8ljQ5oN
-         98sBosJNd9HBnHtD/qH4YyoTQJ4ycxiKmEPudNX+U/Kx++YcQGZVb76jxG/q/gYAsq2X
-         36Kj3DxzFHgiFOJWWFkHAYyi1p2o9jG8DgZ8oleYe3LFCcwMKidSdstgOAONWSQzhKrZ
-         8iQ3LVY7YrjKosrkq3NrqDTBHxwdOdHj3cc9MgNCxVeRTze+pR872LYA8f3NriQl1WOA
-         h0yeQon7KHFmEMG8N2XHDMQHqd7hpfKI9uuOnNxw+LTxFhnvE8udUZ9jf/aKK0MMIv1I
-         oo8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770716399; x=1771321199;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0TAMvNeZiQWgcpalJSVZi3FF+L38Q5MAyklwP4Kb4qQ=;
-        b=WyLRVq2eva/7TFIJ6z51mJ5VDdyuNIWkQHFCGJgbHMVJ0XGffXoCHa+/e0Fqp/gTTZ
-         86pI9gXEmRY4S27W+Hl8AcmfVB7fjv+63e5BZUNhOulfbsPb/TlgGUe6HktOeXw+UJZC
-         UbjLVUYKG5YM3XffCgqk8X0nOXSRL9RiXIs+Ni9eL8616PCahKS+e/Boez8j4YoqG85d
-         itUVVaap/wzPs/t9f04exr5EdcCQQbS7Qk4Ta0FRF7+/i7lsiZD0+YOzF51Hkb93TTbt
-         tGRkjotEh0qFCtZ9xwfkP/f/hPzpNLQK9tmGmNlN2lR/grI3IQ1kJed/LEx8hbh+EuY1
-         5dqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYVddG7+RRWPCgphqvKlddeY3qVPhj4M6cdrdG5SsTeycnZeX40oLhCvxqS3huj81kswUV+xI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8p6W9pCnJxW18Qr44W1OyknFEs5VL5Mgx941E6EjzJne3avsu
-	rjG8uUDmNiyyv9DT+TrS/QuX6Rd9ng4lQCP90RzJTH2XYFeBKNvMkcp7iFikcgTPgFeR064o2By
-	65qRQriqkeBzBzdLRaV80w0eecx5XJ8dFTo6mBHHEngyxTXGmMWlKX+f4UEk=
-X-Gm-Gg: AZuq6aIftijaXJE35XRfxu0NJYCz2HCoyXOV2ea7+xjHx9lp9fargPwAhBXEeiOgbqU
-	A5vJj1ftmV3kzoWFxmlA5UGWQY4PXrWsYnfmLsBNzNG1Z+pXBGqD1QfZuNXkFapUXGgC/Zs/aH3
-	uTEcPehkqY/m0amo9bWax7LcrTTF6OyU11WvpgDxUeQL/G5BT3f34TarIjdRusi4fW2rGwQplFX
-	2lcEkUNZPTbUMqdpDFQVvqLkqWBYpTWqoaM3AkS1VXRQHlg8OLlblkWVXtJIXrS049rnXOI+0VO
-	RL/UX6M+oWzFibOPBirQZBs5lb6dgskFD4Vp1NQyBBOR4HI5gmTUalQsg5+Nn/v8//3tq97n2QZ
-	+gK6ovqOvWCR127dv8eknO0TC2wwd/XkUEX/joFe7WpUIpIPJcn3VHMDcDKaiZk+iNgp/5DcCwL
-	WnwYQ=
-X-Received: by 2002:a05:620a:468d:b0:8c6:f7ad:49b with SMTP id af79cd13be357-8cb1fef263cmr107729685a.5.1770716399509;
-        Tue, 10 Feb 2026 01:39:59 -0800 (PST)
-X-Received: by 2002:a05:620a:468d:b0:8c6:f7ad:49b with SMTP id af79cd13be357-8cb1fef263cmr107727585a.5.1770716398983;
-        Tue, 10 Feb 2026 01:39:58 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8edae3ae99sm516585566b.60.2026.02.10.01.39.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Feb 2026 01:39:57 -0800 (PST)
-Message-ID: <7d61d324-0d26-47ce-aac6-d17abdcf05cd@oss.qualcomm.com>
-Date: Tue, 10 Feb 2026 10:39:54 +0100
+	 In-Reply-To:Content-Type; b=tl5/uRp8CLPwDWRsdbOHnTfdOvEz2M7Uwr1Q9x48YCr2dBBG6xiZNTE8gsWqkRSbwnI98hnd04x723pMIRFR4jdwbw8GOyDlZj0cURxmqK1a6GxuRcofARbWbpsPaF+UmvR/UhoM1kEiECnH2OmBUayN/0LdxcsigeTkr2H9C4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7176339;
+	Tue, 10 Feb 2026 01:47:43 -0800 (PST)
+Received: from [10.1.35.180] (XHFQ2J9959.cambridge.arm.com [10.1.35.180])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DB6413F740;
+	Tue, 10 Feb 2026 01:47:48 -0800 (PST)
+Message-ID: <9ede3f81-5325-4acc-8ca1-ccb243c71961@arm.com>
+Date: Tue, 10 Feb 2026 09:47:47 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,117 +45,299 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] soc: qcom: ice: Remove platform_driver support and
- expose as a pure library
-To: manivannan.sadhasivam@oss.qualcomm.com,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson
- <ulf.hansson@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org,
-        Abel Vesa <abel.vesa@oss.qualcomm.com>
-References: <20260210-qcom-ice-fix-v2-0-9c1ab5d6502c@oss.qualcomm.com>
- <20260210-qcom-ice-fix-v2-1-9c1ab5d6502c@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260210-qcom-ice-fix-v2-1-9c1ab5d6502c@oss.qualcomm.com>
+Subject: Re: [PATCH V2 2/2] arm64/mm: Reject memory removal that splits a
+ kernel leaf mapping
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Christoph Lameter <cl@gentwo.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260203130348.612150-1-anshuman.khandual@arm.com>
+ <20260203130348.612150-3-anshuman.khandual@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260203130348.612150-3-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Hb9ZAGrY6z2fQvlQ9QIDiqHYEDOXAb39
-X-Proofpoint-ORIG-GUID: Hb9ZAGrY6z2fQvlQ9QIDiqHYEDOXAb39
-X-Authority-Analysis: v=2.4 cv=YrIChoYX c=1 sm=1 tr=0 ts=698afcf0 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=EUspDBNiAAAA:8 a=Oy1HdLtELvYQmIkUJ8cA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDA4MCBTYWx0ZWRfX7cgLtx94RHKR
- wkXh6C7rWu/lwab4nWZsHrb0mKoBTiDKGEyAPbRHDZT0CMPn0VWZqQRCsHdbhOOYBcQsZq9WUoN
- 81hjFb2DU9RAiAoDxD5yiEPcOJmajm8Xc1MCC8sXHlEqRqcqOyofSLl49yv/j1CkfXrkVomaHT4
- NcEqsFp6yDqN6GpYatd2FauOwK9tqINO64kKFy6lLXWalh0YnuiHA/BQOaHXeoMXL8oVEyeN6rT
- Dm4cLOe8USX2TkSBQg1Gz0cD2UbRCWjOI4ZLSNx0GddUj2aJgBC4PKXM0gFbbYn1j9Wm7I5cFtI
- excLl+I5ZPTZFcVfVkSdMfflRPc3pqCjdKUXjBv7X+LwuEx71zcKDwV916vi4dS8g8NWxnJADEM
- gfmrLgd9XYz/qLAimef6J+1w55so7XoISm82GuCrGEDiocPNnkEqyQvChH6yTJV4KKhYB8Ec6NF
- ImsMKbSyfhA5jYxKqfg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-09_01,2026-02-09_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 bulkscore=0 adultscore=0 clxscore=1015
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602100080
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215628-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:mid,arm.com:email];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 05807118FE1
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215630-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 899871191B6
 X-Rspamd-Action: no action
 
-On 2/10/26 7:56 AM, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+On 03/02/2026 13:03, Anshuman Khandual wrote:
+> Linear and vmemmap mapings that get teared down during a memory hot remove
+> operation might contain leaf level entries on any page table level. If the
+> requested memory range's linear or vmemmap mappings falls within such leaf
+> entries, new mappings need to be created for the remaning memory mapped on
+> the leaf entry earlier, following standard break before make aka BBM rules.
+> But kernel cannot tolerate BBM amd hemce remapping to fine grained leaves
+
+nits:                            ^^^ ^^^^^
+
+> would not be possible on systems without BBML2_NOABORT.
 > 
-> The current platform driver design causes probe ordering races with
-> consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
-> probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
-> with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
-> be gracefully disabled. devm_of_qcom_ice_get() cannot know if the ICE
-> driver probe has failed due to above reasons or it is waiting for the SCM
-> driver.
+> Currently memory hot remove operation does not perform such restructuring,
+> and so removing memory ranges that could split a kernel leaf level mapping
+> need to be rejected.
+> 
+> while memory_hotplug.c does appear to permit hot removing arbitrary ranges
+> of memory, the higher layers that drive memory_hotplug (e.g. ACPI, virtio,
+> ...) all appear to treat memory as fixed size devices. So it is impossible
+> to hotunplug a different amount than was previously hotplugged, and hence
+> we should never see a rejection in practice, but adding the check makes us
+> robust against a future change.
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+> Cc: stable@vger.kernel.org
 
-[...]
+Given your statement in the commit log above about how this never happens in
+practice but is instead to make us robust to any future changes, perhaps this is
+not a stable candidate?
 
-> -static void qcom_ice_put(const struct qcom_ice *ice)
-> +static void qcom_ice_put(struct kref *kref)
->  {
-> -	struct platform_device *pdev = to_platform_device(ice->dev);
-> -
-> -	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> -		platform_device_put(pdev);
-> +	platform_device_put(to_platform_device(ice_handle->dev));
-> +	ice_handle = NULL;
+For clarity; I do agree that this extra robustness is useful so I think we
+should aim to get it upstream, I just don't think it needs to go to stable.
+
+> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+Other than above nit, LGTM:
+
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+
+> ---
+>  arch/arm64/mm/mmu.c | 155 ++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 149 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 8ec8a287aaa1..3fb9bcbd739a 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -2063,6 +2063,142 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+>  	__remove_pgd_mapping(swapper_pg_dir, __phys_to_virt(start), size);
 >  }
 >  
->  static void devm_of_qcom_ice_put(struct device *dev, void *res)
->  {
-> -	qcom_ice_put(*(struct qcom_ice **)res);
-> +	const struct qcom_ice *ice = *(struct qcom_ice **)res;
-> +	struct platform_device *pdev = to_platform_device(ice->dev);
 > +
-> +	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> +		kref_put(&ice_handle->refcount, qcom_ice_put);
+> +static bool addr_splits_kernel_leaf(unsigned long addr)
+> +{
+> +	pgd_t *pgdp, pgd;
+> +	p4d_t *p4dp, p4d;
+> +	pud_t *pudp, pud;
+> +	pmd_t *pmdp, pmd;
+> +	pte_t *ptep, pte;
+> +
+> +	/*
+> +	 * PGD level:
+> +	 *
+> +	 * If addr is PGD_SIZE aligned - already on a leaf boundary
+> +	 */
+> +	if (ALIGN_DOWN(addr, PGDIR_SIZE) == addr)
+> +		return false;
+> +
+> +	pgdp = pgd_offset_k(addr);
+> +	pgd = pgdp_get(pgdp);
+> +	if (!pgd_present(pgd))
+> +		return false;
+> +
+> +	/*
+> +	 * P4D level:
+> +	 *
+> +	 * If addr is P4D_SIZE aligned - already on a leaf boundary
+> +	 */
+> +	if (ALIGN_DOWN(addr, P4D_SIZE) == addr)
+> +		return false;
+> +
+> +	p4dp = p4d_offset(pgdp, addr);
+> +	p4d = p4dp_get(p4dp);
+> +	if (!p4d_present(p4d))
+> +		return false;
+> +
+> +	/*
+> +	 * PUD level:
+> +	 *
+> +	 * If addr is PUD_SIZE aligned - already on a leaf boundary
+> +	 */
+> +	if (ALIGN_DOWN(addr, PUD_SIZE) == addr)
+> +		return false;
+> +
+> +	pudp = pud_offset(p4dp, addr);
+> +	pud = pudp_get(pudp);
+> +	if (!pud_present(pud))
+> +		return false;
+> +
+> +	if (pud_leaf(pud))
+> +		return true;
+> +
+> +	/*
+> +	 * CONT_PMD level:
+> +	 *
+> +	 * If addr is CONT_PMD_SIZE aligned - already on a leaf boundary
+> +	 */
+> +	if (ALIGN_DOWN(addr, CONT_PMD_SIZE) == addr)
+> +		return false;
+> +
+> +	pmdp = pmd_offset(pudp, addr);
+> +	pmd = pmdp_get(pmdp);
+> +	if (!pmd_present(pmd))
+> +		return false;
+> +
+> +	if (pmd_cont(pmd))
+> +		return true;
+> +
+> +	/*
+> +	 * PMD level:
+> +	 *
+> +	 * If addr is PMD_SIZE aligned - already on a leaf boundary
+> +	 */
+> +	if (ALIGN_DOWN(addr, PMD_SIZE) == addr)
+> +		return false;
+> +
+> +	if (pmd_leaf(pmd))
+> +		return true;
+> +
+> +	/*
+> +	 * CONT_PTE level:
+> +	 *
+> +	 * If addr is CONT_PTE_SIZE aligned - already on a leaf boundary
+> +	 */
+> +	if (ALIGN_DOWN(addr, CONT_PTE_SIZE) == addr)
+> +		return false;
+> +
+> +	ptep = pte_offset_kernel(pmdp, addr);
+> +	pte = __ptep_get(ptep);
+> +	if (!pte_present(pte))
+> +		return false;
+> +
+> +	if (pte_cont(pte))
+> +		return true;
+> +
+> +	/*
+> +	 * PTE level:
+> +	 *
+> +	 * If addr is PAGE_SIZE aligned - already on a leaf boundary
+> +	 */
+> +	if (ALIGN_DOWN(addr, PAGE_SIZE) == addr)
+> +		return false;
+> +	return true;
+> +}
+> +
+> +static bool can_unmap_without_split(unsigned long pfn, unsigned long nr_pages)
+> +{
+> +	unsigned long phys_start, phys_end, size, start, end;
+> +
+> +	phys_start = PFN_PHYS(pfn);
+> +	phys_end = phys_start + nr_pages * PAGE_SIZE;
+> +
+> +	/*
+> +	 * PFN range's linear map edges are leaf entry aligned
+> +	 */
+> +	start = __phys_to_virt(phys_start);
+> +	end =  __phys_to_virt(phys_end);
+> +	if (addr_splits_kernel_leaf(start) || addr_splits_kernel_leaf(end)) {
+> +		pr_warn("[%lx %lx] splits a leaf entry in linear map\n",
+> +			phys_start, phys_end);
+> +		return false;
+> +	}
+> +
+> +	/*
+> +	 * PFN range's vmemmap edges are leaf entry aligned
+> +	 */
+> +	size = nr_pages * sizeof(struct page);
+> +	start = (unsigned long)pfn_to_page(pfn);
+> +	end = start + size;
+> +	if (addr_splits_kernel_leaf(start) || addr_splits_kernel_leaf(end)) {
+> +		pr_warn("[%lx %lx] splits a leaf entry in vmemmap\n",
+> +			phys_start, phys_end);
+> +		return false;
+> +	}
+> +	return true;
+> +}
+> +
+>  /*
+>   * This memory hotplug notifier helps prevent boot memory from being
+>   * inadvertently removed as it blocks pfn range offlining process in
+> @@ -2071,8 +2207,11 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+>   * In future if and when boot memory could be removed, this notifier
+>   * should be dropped and free_hotplug_page_range() should handle any
+>   * reserved pages allocated during boot.
+> + *
+> + * This also blocks any memory remove that would have caused a split
+> + * in leaf entry in kernel linear or vmemmap mapping.
+>   */
+> -static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
+> +static int prevent_memory_remove_notifier(struct notifier_block *nb,
+>  					   unsigned long action, void *data)
+>  {
+>  	struct mem_section *ms;
+> @@ -2118,11 +2257,15 @@ static int prevent_bootmem_remove_notifier(struct notifier_block *nb,
+>  			return NOTIFY_DONE;
+>  		}
+>  	}
+> +
+> +	if (!can_unmap_without_split(pfn, arg->nr_pages))
+> +		return NOTIFY_BAD;
+> +
+>  	return NOTIFY_OK;
+>  }
+>  
+> -static struct notifier_block prevent_bootmem_remove_nb = {
+> -	.notifier_call = prevent_bootmem_remove_notifier,
+> +static struct notifier_block prevent_memory_remove_nb = {
+> +	.notifier_call = prevent_memory_remove_notifier,
+>  };
+>  
+>  /*
+> @@ -2172,7 +2315,7 @@ static void validate_bootmem_online(void)
+>  	}
+>  }
+>  
+> -static int __init prevent_bootmem_remove_init(void)
+> +static int __init prevent_memory_remove_init(void)
+>  {
+>  	int ret = 0;
+>  
+> @@ -2180,13 +2323,13 @@ static int __init prevent_bootmem_remove_init(void)
+>  		return ret;
+>  
+>  	validate_bootmem_online();
+> -	ret = register_memory_notifier(&prevent_bootmem_remove_nb);
+> +	ret = register_memory_notifier(&prevent_memory_remove_nb);
+>  	if (ret)
+>  		pr_err("%s: Notifier registration failed %d\n", __func__, ret);
+>  
+>  	return ret;
+>  }
+> -early_initcall(prevent_bootmem_remove_init);
+> +early_initcall(prevent_memory_remove_init);
+>  #endif
+>  
+>  pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
 
-IIUC this makes the refcount go down only in the legacy DT case - why?
-
-Konrad
 
