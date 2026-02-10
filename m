@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-215639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HpoMgMGi2kdPQAAu9opvQ
-	(envelope-from <stable+bounces-215639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:18:43 +0100
+	id UKh8NUEGi2kdPQAAu9opvQ
+	(envelope-from <stable+bounces-215640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:19:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECA41198D0
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:18:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308D61198F4
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 11:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CB63F3003364
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:18:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0DA1E3030D33
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 10:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E5D353EF8;
-	Tue, 10 Feb 2026 10:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBA7353EF8;
+	Tue, 10 Feb 2026 10:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C0GksXOJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O4rZz8TC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C957352F9C;
-	Tue, 10 Feb 2026 10:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F474352FA8;
+	Tue, 10 Feb 2026 10:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770718720; cv=none; b=tmJ/HEeB84X05jJPu7cuAajvvyvpntChuwxQa13uoRj1Ucs4hj92+sR9QKbjA2/W1Y1KDwL5mCQzHHI5Ja0h/TMsfjmN4rmQzgGhFE/nYRA5N4ZlGvbHfMUwFjvqH2SjeCfmjGClhlriRbV6Xt8otHIstQfjK9Q+qVSUehwUBwQ=
+	t=1770718779; cv=none; b=C0NrqlIVHS1go6AnisdzxLetCJzxsnl7fizaG/p/ig7LH7l/AxxWIU0LS6xrIZIbBXNMuezZEsZrL8QrguxnNw86PXPvlWyY0A8worh0EeKOSVw7VhwfJrH+n3EG8nazHzbOXW6VMqp8Z0QH4yX/RWem6uCe+OWB0VTy0nI7z0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770718720; c=relaxed/simple;
-	bh=RzrUwRRT2eUqrahgOuEXpnPd1oAq7qguqI65XlwqE9M=;
+	s=arc-20240116; t=1770718779; c=relaxed/simple;
+	bh=bI4f9yR3DlqCt3e3tpq1jfSdQSIXgfbQ3Ib+QVvmerA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PePcC6JGvjRQgE3HOeYYJIgyZLLwPvDd1ddVAwOKjz/ET7aCgQbfsFQRGkkZAS7oE/O7JA1qGthHSXQSKrQ6Yya+RFEirCcfNjMFhtEbzeQgh6pHT8lrDY9c93luWeoVov/BJddmHigDeHCuDkF/vV+0JKrvloJuJz0GCXOFeP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C0GksXOJ; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=BvAUDNgeNXK6JjjN3Q2SJkarE5HtArLrloMe4wdYNJmGowoYbXMaHPeRClL/4IMqhtHmaDoT+N6k1ADuBCqnVuCO0RVi6F1VYg+bpknu3mx+UE3Xvg3FkwK22jrD58FH6sywn0A/RHNLVjssnjDz3cnRvwUC8wuZhmJYiluCPt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O4rZz8TC; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770718718; x=1802254718;
+  t=1770718779; x=1802254779;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=RzrUwRRT2eUqrahgOuEXpnPd1oAq7qguqI65XlwqE9M=;
-  b=C0GksXOJRQoUrR3qIqEMcejXejuELBR73mxJrhsHaQV+JaYgYYj6PAHu
-   8ocPwF1MuzulX64OtCPdgGlewZLVSjHLUMEpsDRm/G+l0sy+YTDt8JIk/
-   nbMYrRrzZQfmvIhwc+/4e6tbeAm/BVOKpYNrYyQQcN9Pl9BuIh7mvfxfz
-   NtHkFvCR/ow2gWgJKHN48USzRBoZQEmXpeoy1aG/Ksw2YNVjayiB9IRAE
-   6FLOD63J54OcqBHBLqtki+mmWxsgzf03bE7QCdJMvPzQ9c30zr8vpIhre
-   3U5HjIlgZikF9ESn4wNJEj6vjlgzkBTOmvElnn+yymdOmCzT5K7LjaK+N
-   w==;
-X-CSE-ConnectionGUID: mUH7biriTe+qq33DL17rmg==
-X-CSE-MsgGUID: 0kz3juWNTNy6+QF5K4WsHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71945533"
+  bh=bI4f9yR3DlqCt3e3tpq1jfSdQSIXgfbQ3Ib+QVvmerA=;
+  b=O4rZz8TC9pivOtVCguEYj9cgYjq98cZHOB/2mpkB/9c1U2R3AuXB8LY+
+   ++Cp6GYXHhBzkNMLu1BbCzOQ9HF/H7nK8emohw9LOydPHzNHX6aPWXSKQ
+   NJL+tQi+87qeBTgdArJ04U1NbXAbS06R+NzhIGNyyrYd9sbzJWbW40J0k
+   zdHFwk5r+Q88Xk+lHHKsjX5ZHLvXycPnBWGqsdhnDPVCaeA9NwK0EWFWq
+   uRso9QQOwfXUwnHApuBvJbXKDC7BBNtasoPhUqmdL0key7E8weyJO6XUn
+   qPKsacrUf8BI5pz9JFMK+a9LKXB0SOMXSGgExiKYB1QHjbt9qk32G3+QA
+   g==;
+X-CSE-ConnectionGUID: D6Hi5+tnQ1y/GZpRc0HbGQ==
+X-CSE-MsgGUID: b7+JOrhHRi+mT2INKlifLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="82167056"
 X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="71945533"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 02:18:38 -0800
-X-CSE-ConnectionGUID: PEbeklGHQ26CievNdYp/1g==
-X-CSE-MsgGUID: qAFHB5bGSgaaFGe/MHz+MQ==
+   d="scan'208";a="82167056"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 02:19:38 -0800
+X-CSE-ConnectionGUID: MunUasx0SEuDoA8p02bxxA==
+X-CSE-MsgGUID: 3GfamkQPQ3ifpIAbRW8TxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="210951265"
+   d="scan'208";a="211530566"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 10 Feb 2026 02:18:35 -0800
+  by fmviesa008.fm.intel.com with ESMTP; 10 Feb 2026 02:19:35 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vpkpF-00000000ouG-1BN1;
-	Tue, 10 Feb 2026 10:18:33 +0000
-Date: Tue, 10 Feb 2026 18:17:44 +0800
+	id 1vpkqD-00000000ouW-1dMQ;
+	Tue, 10 Feb 2026 10:19:33 +0000
+Date: Tue, 10 Feb 2026 18:18:35 +0800
 From: kernel test robot <lkp@intel.com>
 To: Josh Hunt <johunt@akamai.com>, song@kernel.org, yukuai@fnnas.com,
 	linan122@huawei.com, linux-raid@vger.kernel.org
@@ -73,7 +73,7 @@ Cc: oe-kbuild-all@lists.linux.dev, ncroxon@redhat.com,
 	Josh Hunt <johunt@akamai.com>, stable@vger.kernel.org
 Subject: Re: [PATCH] md/raid10: fix deadlock with check operation and nowait
  requests
-Message-ID: <202602101844.0pRyZv4D-lkp@intel.com>
+Message-ID: <202602101850.DC3BeMD5-lkp@intel.com>
 References: <20260210050942.3731656-1-johunt@akamai.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -89,18 +89,18 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215639-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215640-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
@@ -109,8 +109,8 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email,git-scm.com:url]
-X-Rspamd-Queue-Id: 6ECA41198D0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,git-scm.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 308D61198F4
 X-Rspamd-Action: no action
 
 Hi Josh,
@@ -127,26 +127,26 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Josh-Hunt/md-raid10-fix-d
 base:   linus/master
 patch link:    https://lore.kernel.org/r/20260210050942.3731656-1-johunt%40akamai.com
 patch subject: [PATCH] md/raid10: fix deadlock with check operation and nowait requests
-config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260210/202602101844.0pRyZv4D-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602101844.0pRyZv4D-lkp@intel.com/reproduce)
+config: m68k-defconfig (https://download.01.org/0day-ci/archive/20260210/202602101850.DC3BeMD5-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602101850.DC3BeMD5-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602101844.0pRyZv4D-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602101850.DC3BeMD5-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
    drivers/md/raid10.c: In function 'raid10_read_request':
->> drivers/md/raid10.c:1257:9: error: too few arguments to function 'raid_end_bio_io'
+>> drivers/md/raid10.c:1257:9: error: too few arguments to function 'raid_end_bio_io'; expected 2, have 1
     1257 |         raid_end_bio_io(r10_bio);
          |         ^~~~~~~~~~~~~~~
    drivers/md/raid10.c:321:13: note: declared here
      321 | static void raid_end_bio_io(struct r10bio *r10_bio, bool adjust_pending)
          |             ^~~~~~~~~~~~~~~
    drivers/md/raid10.c: In function 'raid10_write_request':
-   drivers/md/raid10.c:1540:9: error: too few arguments to function 'raid_end_bio_io'
+   drivers/md/raid10.c:1540:9: error: too few arguments to function 'raid_end_bio_io'; expected 2, have 1
     1540 |         raid_end_bio_io(r10_bio);
          |         ^~~~~~~~~~~~~~~
    drivers/md/raid10.c:321:13: note: declared here
