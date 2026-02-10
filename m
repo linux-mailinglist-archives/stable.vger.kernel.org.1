@@ -1,549 +1,427 @@
-Return-Path: <stable+bounces-215696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0P/DJTuvi2nmYQAAu9opvQ
-	(envelope-from <stable+bounces-215696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:20:43 +0100
+	id GJX6Gw22i2kKZAAAu9opvQ
+	(envelope-from <stable+bounces-215697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:49:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA0211FBA5
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:20:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D1511FD41
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E2A01301110F
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 22:19:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 62CF3304D90D
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 22:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D721733987;
-	Tue, 10 Feb 2026 22:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8BB30DD3C;
+	Tue, 10 Feb 2026 22:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mX4J+sHT"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ppk6Jpl0"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013026.outbound.protection.outlook.com [40.93.196.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1505B338F45;
-	Tue, 10 Feb 2026 22:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770761985; cv=none; b=HSKQN0FEuOvmiFSjZKKa1ghMHKOjiF06RhrAkR6HKqAJPGpxOPrf3WXr/tJ0frRCasodr6xo0S25BjoXTddQIETmhSMPTsk6zlhooAuKZOECavTnwcFsgK2ee4QvDoYtbCwOUzG8+Dhw3XT/D4tvwzrK/DNvSbuKDL8I7GxQsWU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770761985; c=relaxed/simple;
-	bh=K9uMrUbRxVC4mq4o5CGIXn2AHfwXsiA4zEikAnuV3YY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mWMY8km7GOecv8EV3H3ATEfkuEhnEGm4YS3F1cme/Kxu3rV4AaGuylSN/lqTHKrr1s263koN1zfp7vribfU1lKYMjQ+16lIq0jJeH2ByGyVVeubr8JGFjjas+Z53ddJ+2hQhpgs6fS8U9WbppS3T6K+c9GhSho7zzMWYiGNkhjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mX4J+sHT; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 10 Feb 2026 22:19:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770761968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HbI+Syg14mFnON84SxIlDgQrFOCi8ITvz+lEYGTWK14=;
-	b=mX4J+sHTjONtNYZoIxEl8nZAXDLuaPR65anQPVJF3+9yDJXcVX/R88MLzZLotpkNZa3WBp
-	LEIsvqiVDXBbhjoGehWMtow2WFqVB7B99Y+tqYQs8MiqBf5vL2Tszma1Z9ynEcAmPct3CP
-	xhnaLlO08+t+dHYNLledZ9HgSziVDs0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after
- VMRUN of L2
-Message-ID: <ck57mmdt5phh64cadoqxylw5q2b72ffmabmlzmpphaf27lbtxw@4kscovf6ahve>
-References: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
- <20260210005449.3125133-2-yosry.ahmed@linux.dev>
- <aYqOkvHs3L-AX-CG@google.com>
- <4g25s35ty23lx2je4aknn6dg4ohviqhkbvvel4wkc4chhgp6af@kbqz3lnezo3j>
- <aYuE8xQdE5pQrmUs@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841492ECE9B
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 22:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770763231; cv=fail; b=dFfslfv3WCm4nvzb3+an2M/gIiV4uy0wez2aQv1YIudXHdlVSS1Mm9E/RUP8ui+QgTFf2nFgZ0AkcanaLZYaqOsLPushl5JeLf9k+DajgpJtxlf+gcIsbVjoeOrMH0OsgDFIRl/B48qko/8H9C2cyCpZpyhj65rD+VQWG2Svqj4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770763231; c=relaxed/simple;
+	bh=lJZHWwtwiZ35R6kDmDyt2TUWI2huh/1E0hzZ6U/pXNo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ibAZus1seuHvsvLry2XAh9PFVDvXQER2o1fFCbOWiTMeCnbFwPubjjNkhqzxEAbfx1Utn50pe/jCq1RBuaZNPSf4P3xlZdWR0yhURZuRBvhrBKKkKCCbUGIVS4b81iwLcWNnG8UxiKiJIGrAwqBH5UGiMMZ3LbtHKh0dokZJ7VA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ppk6Jpl0 reason="signature verification failed"; arc=fail smtp.client-ip=40.93.196.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wGmYd657mZlfn3jtMZetkTSA3axwJLZlmwbnifsMzrBWc4THyZKlbFpdT+82VLol6LWqnTYja4V6Imb3gZ7jz8uKC4ful7ZXsQ0Vn24mB1GJmA8HTBlDhcbiW17qffT+n/DuyDAeezeeo0IfaftFrzBIL0zCzJrld5Zt1Uxrvn0eB4k1o51r2wyYArLZc9jfeLJa30UiswOR4l5T12LWnyPNiKKtsq/HW2lE2Q9lcWXSnfbkMqtUrr3bJL1dKda/Gwlg9impAX7nI/o9ElWDCNaEoG2y0XmtmfwweHfev8SqzKZJoTh0hN5Ko+JODmmbvum8Thw+3GZUmzIDMonkFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=59YptWQs9gnklrT62/Tkv/m2fXkge9FLxOx+ruc207U=;
+ b=TcDcd94ukQz/JFkIyNlW8u762bv94Rl/guXEnGVCZwRJlmKZfMvOUaOPSFLLQzHkN3tPbkw5hZsJ8o6eZCtFPQ36JC+vrgRqJxliDEoXP8gsi5CC6tJeYr3S72clSCJg46hJe6blkarartOrEiTTrtD/HknNsY6jITyvgGTFk6YSLBtmKWBezZgjFSHo/X5gfRQqoiwzg6A6mNzi/Ok3LXOiIrA7+3TlfuGOH+BlKd82xqjCNuiEvJsLzoMEsGfA3cDW+kL42DCOJs0dtW/F+tjfaE0m2CBLjt82ouM6zHHuml9COfwKOMyreD/u4S0+ILlvgvG24MeGVV4cY5H+lQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=59YptWQs9gnklrT62/Tkv/m2fXkge9FLxOx+ruc207U=;
+ b=Ppk6Jpl0CBPZgFVac/wuB3FlCtOEs2CMNWkAWj+F/DsnZhxTh6LXM6iYEgjbNgsGx5ql5h+zonkc7JucJ76cEoky5z+mzBBs7shejT/3Z4aaEKlVQuWN9eyRSjCeKeZlvxQUYk3ufxPfiJUJskrF0mi6e30SZfAnBstvTIlsBmSx8FEuT/r8m4W3BcfBavFYj4MxmF6pl1qsQJUYl9XfpNC7ta0J/kD/fDmfTzOkMQjqmICg8RRJoO2oTL+eydsqQl2J5q5sgnMgtoXFnus+z/xBsGvSAT6KbR3elWXNKvqpJYLnjkWeYm3nX9RHFpTaYzLN2xJ5FSV9DctMWoxRUQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ MN6PR12MB8568.namprd12.prod.outlook.com (2603:10b6:208:471::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Tue, 10 Feb
+ 2026 22:40:21 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9611.006; Tue, 10 Feb 2026
+ 22:40:21 +0000
+Date: Wed, 11 Feb 2026 09:40:16 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>, 
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Brost <matthew.brost@intel.com>, 
+	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-ID: <7juf5mznp2fzy6tt2rs7dsjqdyfglzjiwkavoaezq7766csdnd@irbgevj6jesk>
+References: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: SY5PR01CA0081.ausprd01.prod.outlook.com
+ (2603:10c6:10:1f5::15) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYuE8xQdE5pQrmUs@google.com>
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MN6PR12MB8568:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0773d1ef-8a27-440b-cf3d-08de68f55f57
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?3GSzCy7J7Z3Ogo6RxiYFVfEriZcVl6Sh5dj1Z1hXrYowHriwMms+sLH8/c?=
+ =?iso-8859-1?Q?9a8nQHJ3DcrfvrJ12dli+mFzLHgwegxoioyyj7orcsExuNNlsPietLW8mw?=
+ =?iso-8859-1?Q?6BqXmTHX59cCYeLPUqvT5z2Ssr6KglExm9MUNIbfjjr/yIHHsY9/MKZKA+?=
+ =?iso-8859-1?Q?qQIsVn5UBoGkfDqk79/YOsogWDfT7ermH63i33nPNOxfH2baMTw7Z1uxQz?=
+ =?iso-8859-1?Q?QhX/D+2FuAeLVRT7F6iwsSzbzz9+D8np7oshgq0R2qmk97TKvun5XW00vt?=
+ =?iso-8859-1?Q?SAVAiI5BmzDg7lXqZhsKkVzFTjb7YC31jJHOeAJlgJVOxwL2gKcEoeSRa7?=
+ =?iso-8859-1?Q?wFdD3Yf1mXDedsUnVKCUf5hSvnU4jWbfGbl4WRT9b9okGUe5euxFVoVXZw?=
+ =?iso-8859-1?Q?Ab7bCimCgp+0catXsZRhZSmWKT0cXtubnuT0gD6LHeeRF8L5qSeY8ogt0T?=
+ =?iso-8859-1?Q?J+A3F97blyMREswyAO9KkDnxPZ2l0H1N1tc0w3A0WMviBF5AIDINSZyZCa?=
+ =?iso-8859-1?Q?ysWTDB6t9wXjapt2kV5K/THN2gqoffhagLY+29T+/9vmKj1WNg7AOlS5mZ?=
+ =?iso-8859-1?Q?CBdlnrBtwE7UqBOORAYE4wOjFfxOeV5CVQwW47fUH1DMtm19ptNvXPo9H9?=
+ =?iso-8859-1?Q?zwx6/2fwd9TeKR3Vqcszebh/+qVQh+IQTRrkCAXPC7rERNWPEtOgcQhgOv?=
+ =?iso-8859-1?Q?Fz9wDM+xt3feITY8y1I1B3UnZrPVdsR9jE/k0sNO5+tkKp6KK4gDzNNKD+?=
+ =?iso-8859-1?Q?RcpxzcXbtuXh9Bo975FHRQfCoIx/LnlMlVWH1yxMBFLoqDdRSGeMKaOK9V?=
+ =?iso-8859-1?Q?/OsgATMxa9V28FT0nyFUikxsA+ee4yX/Xgc8fbSacHLGpzOewg1Ax4ZYbR?=
+ =?iso-8859-1?Q?koYHkcVMksUDzF6z9gkEGzYUFpapmn1sogoVItlPqiaxHY/DKfe4yzRNPk?=
+ =?iso-8859-1?Q?GF2NlUesON50rTwyYcoKFQGrWw3bYI3UTNyvLxMQiYqJqRa12qgooZDR2C?=
+ =?iso-8859-1?Q?43wr2W5jWNOnz0+b+LudXhXGzl0Uo6DLMtrIDkDYwe4wur7Mb857mgomfY?=
+ =?iso-8859-1?Q?DTF7IsAwvXkNlD/CEQzc9uCKeQ//lC+21RW+7s8j+WOrOG4Di0bZnHhqZq?=
+ =?iso-8859-1?Q?56yy+QoR/od0dvqhTqWMaMwuJZaYY2xk/uA3PxvfWDol6wJQ2V8XDTl9uF?=
+ =?iso-8859-1?Q?S0iJ2L7FwwGWvEmAXQ8uO5haitNU21tOeCvie8jTFjrOa0iExHko7XcfHn?=
+ =?iso-8859-1?Q?FSdWm+IYfflpEafxAgqzPyCVwybnnvBnUv4nbz3Elvy+GubxNpWEeNAnoc?=
+ =?iso-8859-1?Q?GQb3GpKpiyP3luSwVEeP+O3vdKZxgC3loL1F32dLn1SW/QYl9DlGf+c/gp?=
+ =?iso-8859-1?Q?0uJdLLN3HA3rrUCEoDCC5WuaogNjiqGi7mA9YYPCYntBMm38FtqYe/Fwtq?=
+ =?iso-8859-1?Q?FdL9Y1Puq1zsx+SXT0A75lBuCAC/3Qq9PaffNX8CWJpop83T+WiV1WH9Ss?=
+ =?iso-8859-1?Q?qUCG0QCsiCYO7SSvMlA6//rt/Nn+6OV5LdyFMfJO1TESFOIu0r6xjBxAYm?=
+ =?iso-8859-1?Q?kTy3nNUZzywcH6wTJI0EapoNcVlD70KPbzV1WkoxJ4U4GFAuwGdB1oqvEH?=
+ =?iso-8859-1?Q?cyDdEedUYW1L4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?AzNKFXDKl2hb7EGdA5kkkn9MYdTX6PlIiaW3Yy4sDL6dxiW/2GE7YaTthC?=
+ =?iso-8859-1?Q?RvxzN8b8swSieWobT9p7AVh/gbATHds838j8BWd+iBI/u+Ox6o5WFh3S5r?=
+ =?iso-8859-1?Q?zLdhKwSkLUkWUl18CMNecvXhlkCzLlVKxUEpwAbiGkC774PAQpGPbJ96Nb?=
+ =?iso-8859-1?Q?jOWw4QiYINxsAHdbDJCz8yL9a/y8tXLz+d9f2qqmcA0mzLsK+1/rHEL+rL?=
+ =?iso-8859-1?Q?THi6n0hddaj7+jgBSYDGOSQ7qYK1v4KBP0KNHbY1LiXS4n+qQZpJ8H4vv8?=
+ =?iso-8859-1?Q?/l+4L+TEHKlJaJiNnOF/hhReRL7xh/r38h6takMYSgaSaqoG8OgGGhSXJc?=
+ =?iso-8859-1?Q?y2kGhCloidoyRgdmiyFAIbsCixg91CJCRTqEEvBSmv5RbpLD130lopKSos?=
+ =?iso-8859-1?Q?CrxtJlIFQv0q203AdCZkmUdRqD5S+ja4h4XXj2EFvw8hZz1xOeGRX0fd6g?=
+ =?iso-8859-1?Q?Yb4t2QDhQVCjOtPCKgm6MiXNpskYl4D/fRYCx1eVI2TIDVdwbY8dVqqEJH?=
+ =?iso-8859-1?Q?bq5+sHXQLiUzmSPxv84fxnKEYylB/77VcWO/H2cXLvnh0g3HyXJmSVKCNX?=
+ =?iso-8859-1?Q?AD0C6Qu/xGAIbjls5mpBg5sz3iCQTmYvWQmZWGkPYN6Mc6wIgHmk7AznMG?=
+ =?iso-8859-1?Q?EWryGN0xA3MUcG2doGQUQiQ5cscp6SrN84Q0CEo65PyQkyjMyNC0oaExxN?=
+ =?iso-8859-1?Q?Uxa6gksufxUw2sBdFBgeQwwQJ7WVS2RzBZ+jvPHeghWbeS6v9RfhBHyWlV?=
+ =?iso-8859-1?Q?WO0P+hF1dtTXhPjnc9tuW9p9/qWobH0FxnfJH9o+RfkbCXYW/4gXu4NQxE?=
+ =?iso-8859-1?Q?Gsf5iFXxeoshnve+iBfJMjb1pjTAgotM+9CbbhEibcW6OzrpRTngULDHLH?=
+ =?iso-8859-1?Q?IYpTVo/xBNvVaT6EEZdSxxYHz5w1eHKYqO39FeS3ZXH1APPC0MzTSnENBv?=
+ =?iso-8859-1?Q?48yr/0UOHTxhRv++iBn1bzsQV1OVLExF/zivOWG6QEZ+ZkS7DEY4nPkMcK?=
+ =?iso-8859-1?Q?1GA+3o2tgTAw0IBn0CYOxNY7wljk93K9u3t5k5Ko5DqUQPCorR4a/8xG+Z?=
+ =?iso-8859-1?Q?BpDMFOTMvA+jGsY4iP7H8Kkr8mqYdiSVZA58R+2habth4/Iv0Jr+r7YFfT?=
+ =?iso-8859-1?Q?IFyt5XTt7nPz3ot6dyD9IacekC3jx7ZUtoctLvyYQgu8x/clZpdAc9GgFj?=
+ =?iso-8859-1?Q?NFkSuRwyextFK8P/picF38SBDK3MmqsZwBrSTiCGvHyrTm/gBMXjogm666?=
+ =?iso-8859-1?Q?zK/uoMWfi2uDTccCHdtu7NOwnH7MAVEL2NNCfz1+vaNOGhCZq60+P//F7/?=
+ =?iso-8859-1?Q?URWRW6UVKAd83bnDYSqR6YGJ9aqFLius7eT4M+QqKGlIvKBRy2jBhayqjl?=
+ =?iso-8859-1?Q?9PEmZKN5srHTGJn+7ByZ+Rryby7ouU5jU52VbHIahJHlbLsn9MHg9VVuFi?=
+ =?iso-8859-1?Q?M99/itwHaIoOvr4tJysh3FFun+aOiAqJ2tc/QToDQrGA31XHzMmMTBbyJg?=
+ =?iso-8859-1?Q?Gt81KuD7nMu/cndt2uXjc56XXNJwK3QHxquVLwthvm0pHwbVtiGe0/lmFO?=
+ =?iso-8859-1?Q?WSUepLhTz/OyIz+1ktUNTdwyalQ2jm9j7LZe6iMgFryFg2mUJCxptDzfzP?=
+ =?iso-8859-1?Q?82CVGnIzPU3iQsCjpeIAKvMq3zabP8y0Q5OivFZoqACKTREFeNn5SQkslV?=
+ =?iso-8859-1?Q?NXrIf8Yifga68lESq6M3Ak4Y1ruiySIXtXCOW8d0KPjh8yOX3wgMSxZYYw?=
+ =?iso-8859-1?Q?suI/phv04cusQuTStOxYTf1iWm7QDIuEqtXQqQGZEEIO0KgS7iXohrBqYf?=
+ =?iso-8859-1?Q?oFKBxO3XyQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0773d1ef-8a27-440b-cf3d-08de68f55f57
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 22:40:21.0938
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HEOfAOdKD5mtvJZ+P2x1yFjmZhkXpOOsxU/KKqFjNuOLzPOS4G20/vcVka7CT+UiPpKcG6OxafGODxBiFpMnCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8568
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [4.04 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[nvidia.com : SPF not aligned (relaxed),reject];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_DKIM_REJECT(1.00)[Nvidia.com:s=selector2];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-215697-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	GREYLIST(0.00)[pass,body];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215696-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[apopple@nvidia.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:-];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ADA0211FBA5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D9D1511FD41
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026 at 11:20:19AM -0800, Sean Christopherson wrote:
-> On Tue, Feb 10, 2026, Yosry Ahmed wrote:
-> > On Mon, Feb 09, 2026 at 05:49:06PM -0800, Sean Christopherson wrote:
-> > > On Tue, Feb 10, 2026, Yosry Ahmed wrote:
-> > > > After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-> > > > fields written by the CPU from vmcb02 to the cached vmcb12. This is
-> > > > because the cached vmcb12 is used as the authoritative copy of some of
-> > > > the controls, and is the payload when saving/restoring nested state.
-> > > > 
-> > > > next_rip is also written by the CPU (in some cases) after VMRUN, but is
-> > > > not sync'd to cached vmcb12. As a result, it is corrupted after
-> > > > save/restore (replaced by the original value written by L1 on nested
-> > > > VMRUN). This could cause problems for both KVM (e.g. when injecting a
-> > > > soft IRQ) or L1 (e.g. when using next_rip to advance RIP after emulating
-> > > > an instruction).
-> > > > 
-> > > > Fix this by sync'ing next_rip in nested_sync_control_from_vmcb02(). Move
-> > > > the call to nested_sync_control_from_vmcb02() (and the entire
-> > > > is_guest_mode() block) after svm_complete_interrupts(), as it may update
-> > > > next_rip in vmcb02.
-> > > 
-> > > I'll give you one guess as to what I would say about bundling changes.  AFAICT,
-> > > there is _zero_ reason to move the call nested_sync_control_from_vmcb02() in a
-> > > patch tagged for stable@.
-> > 
-> > I generally agree with your previous feedback about combining changes,
-> > but I think I disagree for this specific instance. I did actually have
-> > two separate changes: one to move the call to
-> > nested_sync_control_from_vmcb02() (still tagged for stable@), and one to
-> > add next_rip.
-> > 
-> > However, I found myself explaining a lot of the next_rip context in the
-> > commit log of moving nested_sync_control_from_vmcb02(), to explain why
-> > it specifically needed to go after svm_complete_interrupts().
+On 2026-02-10 at 22:56 +1100, Thomas Hellström <thomas.hellstrom@linux.intel.com> wrote...
+> If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+> trying to acquire the lock of a device-private folio for migration,
+> to ram, the function will spin until it succeeds grabbing the lock.
 > 
-> And?  That's kinda the whole point of changelogs.  I'm also not seeing an onerous
-> amount of documentation, e.g.
+> However, if the process holding the lock is depending on a work
+> item to be completed, which is scheduled on the same CPU as the
+> spinning hmm_range_fault(), that work item might be starved and
+> we end up in a livelock / starvation situation which is never
+> resolved.
 > 
->   KVM: SVM: Sync control from vmcb02 on #VMEXIT after completing interrupts
+> This can happen, for example if the process holding the
+> device-private folio lock is stuck in
+>    migrate_device_unmap()->lru_add_drain_all()
+> sinc lru_add_drain_all() requires a short work-item
+> to be run on all online cpus to complete.
 > 
->   Refresh KVM's cache of VMCB control fields, which is a weird combination
->   of original vmcb12 data and current vmcb02 data, after completing
->   interrupts and exceptions so that a future fix can refresh next_rip
->   without dropping the next_rip updates made for completing soft interrupts.
->   
-> > Also, I had to add the comment above the call to
-> > nested_sync_control_from_vmcb02() in the patch adding next_rip to it.
-> > 
-> > Looking at both patches, it made more sense to combine them given their
-> > tight connection and simplicity. The history is clearer when the move,
-> > comment, and next_rip addition are bundled.
-> > 
-> > Or..
-> > 
-> > Did you mean to have a patch that just copied next_rip outside of
-> > nested_sync_control_from_vmcb02(), after svm_complete_interrupts(), for
-> > stable@, and then clean it up on top? Eh, not a big fan of that either
-> > because the current patch is simple enough for stable@ imo.
+> A prerequisite for this to happen is:
+> a) Both zone device and system memory folios are considered in
+>    migrate_device_unmap(), so that there is a reason to call
+>    lru_add_drain_all() for a system memory folio while a
+>    folio lock is held on a zone device folio.
+> b) The zone device folio has an initial mapcount > 1 which causes
+>    at least one migration PTE entry insertion to be deferred to
+>    try_to_migrate(), which can happen after the call to
+>    lru_add_drain_all().
+> c) No or voluntary only preemption.
 > 
-> My objection to bundling is that it subtly requires guarnteeing that none of the
-> fields updated by nested_sync_control_from_vmcb02() are consumed between its
-> current location and the new location.  That alone warrants a changelog.  I.e.
-> it's as much that there's _zero_ analysis in the current changelog as to the
-> safety, as it is that the movement is bundled together.
+> This all seems pretty unlikely to happen, but indeed is hit by
+> the "xe_exec_system_allocator" igt test.
+> 
+> Resolve this by waiting for the folio to be unlocked if the
+> folio_trylock() fails in do_swap_page().
+> 
+> Rename migration_entry_wait_on_locked() to
+> softleaf_entry_wait_unlock() and update its documentation to
+> indicate the new use-case.
+> 
+> Future code improvements might consider moving
+> the lru_add_drain_all() call in migrate_device_unmap() to be
+> called *after* all pages have migration entries inserted.
+> That would eliminate also b) above.
+> 
+> v2:
+> - Instead of a cond_resched() in hmm_range_fault(),
+>   eliminate the problem by waiting for the folio to be unlocked
+>   in do_swap_page() (Alistair Popple, Andrew Morton)
+> v3:
+> - Add a stub migration_entry_wait_on_locked() for the
+>   !CONFIG_MIGRATION case. (Kernel Test Robot)
+> v4:
+> - Rename migrate_entry_wait_on_locked() to
+>   softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+> v5:
+> - Add a WARN_ON_ONCE() for the !CONFIG_MIGRATION
+>   version of softleaf_entry_wait_on_locked().
 
-Now that I agree this, I should have included more details about why
-it's safe to move the call later. But that feedback is irrelevant to
-splitting the commit imo.
+Thanks!
 
-Anyway, we'll probably drop the code movement.
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
 
+> - Modify wording around function names in the commit message
+>   (Andrew Morton)
 > 
-> > > > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-> > > > CC: stable@vger.kernel.org
-> > > > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > > > ---
-> > > >  arch/x86/kvm/svm/nested.c |  6 ++++--
-> > > >  arch/x86/kvm/svm/svm.c    | 26 +++++++++++++++-----------
-> > > >  2 files changed, 19 insertions(+), 13 deletions(-)
-> > > > 
-> > > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > > > index de90b104a0dd..70086ba6497f 100644
-> > > > --- a/arch/x86/kvm/svm/nested.c
-> > > > +++ b/arch/x86/kvm/svm/nested.c
-> > > > @@ -519,8 +519,10 @@ void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
-> > > >  void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
-> > > >  {
-> > > >  	u32 mask;
-> > > > -	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
-> > > > -	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-> > > > +
-> > > > +	svm->nested.ctl.event_inj	= svm->vmcb->control.event_inj;
-> > > > +	svm->nested.ctl.event_inj_err	= svm->vmcb->control.event_inj_err;
-> > > > +	svm->nested.ctl.next_rip	= svm->vmcb->control.next_rip;
-> > > 
-> > > This is all a mess (the existing code).  nested_svm_vmexit() does this:
-> > > 
-> > > 	vmcb12->control.int_state         = vmcb02->control.int_state;
-> > > 	vmcb12->control.exit_code         = vmcb02->control.exit_code;
-> > > 	vmcb12->control.exit_info_1       = vmcb02->control.exit_info_1;
-> > > 	vmcb12->control.exit_info_2       = vmcb02->control.exit_info_2;
-> > > 
-> > > 	if (!svm_is_vmrun_failure(vmcb12->control.exit_code))
-> > > 		nested_save_pending_event_to_vmcb12(svm, vmcb12);
-> > > 
-> > > 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> > > 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
-> > > 
-> > > 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
-> > > 	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
-> > > 	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
-> > > 
-> > > but then svm_get_nested_state(), by way of nested_copy_vmcb_cache_to_control(),
-> > > pulls everything from the cached fields.  Which probably only works because the
-> > > only fields that are pulled from vmcb02 nested_svm_vmexit() are never modified
-> > > by the CPU.
-> > 
-> > Yeah I think that's the key. The main distinction is whether fields
-> > are"in", "out" or "in/out" fields. I wish those were more clearly
-> > separated by the APM. More below.
-> > 
-> > > 
-> > > Actually, I take that back, I have no idea how this code works.  How does e.g.
-> > > exit_info_1 not get clobbered on save/restore?
-> > 
-> > I *think* KVM always sets the error_code and exit_info_* fields before
-> > synthesizing a #VMEXIT to L1, usually right before calling
-> > nested_svm_vmeit(), so no chance for save/restore in between.
+> Suggested-by: Alistair Popple <apopple@nvidia.com>
+> Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Jason Gunthorpe <jgg@mellanox.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Leon Romanovsky <leon@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: linux-mm@kvack.org
+> Cc: <dri-devel@lists.freedesktop.org>
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.15+
+> Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+> ---
+>  include/linux/migrate.h | 10 +++++++++-
+>  mm/filemap.c            | 15 ++++++++++-----
+>  mm/memory.c             |  3 ++-
+>  mm/migrate.c            |  8 ++++----
+>  mm/migrate_device.c     |  2 +-
+>  5 files changed, 26 insertions(+), 12 deletions(-)
 > 
-> Ugh, right, KVM generally doesn't recognize signals until after invoking the exit
-> handler.  Actually, even that isn't the key, it's that this flaw only affects
-> "in/out" fields, as you note above.  Heh, and even that probably isn't entirely
-> precise, as it's really "in/out fields that KVM consumes while running L2 are
-> buggy".  E.g. in this case, nested_vmcb02_prepare_control() pulls next_rip for
-> vmcb02 from the cache.
-> 
-> 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> 		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
-> 	else if (boot_cpu_has(X86_FEATURE_NRIPS))
-> 		vmcb02->control.next_rip    = vmcb12_rip;
-
-Hmm I thin a pure "out" field would be affected if it's consumed by KVM
-later on, after save+restore is possible, right?
-
-Do you mean that it just happens that the currently affected fields are
-"in/out" fields? Or is there a reason why pure "out" fields cannot be
-affected? AFAICT, these fields are lost after save+restore.
-
-> 
-> > I think generally, most "out" fields are consumed by KVM before userspace can
-> > save/restore, hence them getting lost on save/restore is fine?
-> 
-> Yep.
-> 
-> > It's still probably worse than we think, I see
-> > svm->nested.ctl.bus_lock_rip is not saved/restored, because it's not
-> > part of the VMCB. So in
-> > svm_set_nested_state()->nested_vmcb02_prepare_control() we end up
-> > comparing garbage to garbage (because vmcb02->save.rip is also wrong):
-> > 
-> > 	if (vmcb02->save.rip && (svm->nested.ctl.bus_lock_rip == vmcb02->save.rip))
-> > 		vmcb02->control.bus_lock_counter = 1;
-> > 	else
-> > 		vmcb02->control.bus_lock_counter = 0;
-> 
-> Let's ignore this one.  It's overall a non-issue, and we're already planning on
-> moving it out of the control cache.
-> 
-> > > In other words, AFAICT, nested.ctl.int_ctl is special in that KVM needs it to be
-> > > up-to-date at all times, *and* it needs to copied back to vmcb12 (or userspace).
-> > 
-> > Hmm actually looking at nested.ctl.int_ctl, I don't think it's that special.
-> > Most KVM usages are checking "in" bits, i.e. whether some features (e.g.
-> > vGIF) are enabled or not.
-> >
-> > The "out" bits seem to only be consumed by svm_clear_vintr(), and I
-> > think this can be worked around.
-> 
-> OMG that code makes my head hurt.  Isn't that code just this?
-> 
-> 	/*
-> 	 * Drop int_ctl fields related to VINTR injection.  If L2 is active,
-> 	 * restore the virtual IRQ flag and its vector from vmcb12 now that KVM
-> 	 * is done usurping virtual IRQs for its own purposes.
-> 	 */
-> 	svm->vmcb01.ptr->control.int_ctl &= ~V_IRQ_INJECTION_BITS_MASK;
-> 
-> 	if (is_guest_mode(&svm->vcpu)) {
-> 		svm->vmcb->control.int_ctl = (svm->vmcb->control.int_ctl & ~V_IRQ_MASK) |
-> 					     (svm->nested.ctl.int_ctl & V_IRQ_MASK);
-
-Also V_INTR_PRIO_MASK, I think?
-
-But otherwise yeah I think that's what the function is doing
-more-or-less.
-
-> 		svm->vmcb->control.int_vector = svm->nested.ctl.int_vector;
-> 	} else {
-> 		WARN_ON_ONCE(svm->vmcb != svm->vmcb01.ptr);
-> 	}
-> 
-> 	svm_clr_intercept(svm, INTERCEPT_VINTR);
-> 	vmcb_mark_dirty(svm->vmcb, VMCB_INTR);
-> 
-> > So maybe we don't really need to keep it up-to-date in the cache at all
-> > times.
-> 
-> Yeah, IMO that approach is unnecessarily convoluted.  The actual logic isn't all
-> that complex, all of the complexity comes from juggling state between the cache
-> and vmcb02 just so that the cache can be authoritative.  Given that we failed
-> miserably in actually making the cache authoritative, e.g. see the nested #VMEXIT
-> flow, I think we should kill the entire concept and instead maintain an *exact*
-
-When you say *exact* snapshot, do you mean move all the sanitizing logic
-recently introduced in __nested_copy_vmcb_control_to_cache() (by Kevin
-and myself) to sanitize vmcb02 instead?
-
-That would be annoying. For example, for the intercepts, sanitizing
-vmcb02 (but not vmcb12) means that we need to also add checks in the
-exit path (i.e. in nested_svm_intercept() or even
-vmcb12_is_intercept()), as vmcb12 could have illegal intercepts.
-
-> snapshot of vmcb12's controls, and then make vmcb02 authoritative.  We'll still
-> need the logic in nested_sync_control_from_vmcb02() to updated int_ctl on save
-> or #VMEXIT if KVM is still intercepting VINTR for its own purposes, but at least
-> the code will be contained.
-
-Yeah. We should leave it out of the vmcb12 cache though.
-
-> 
-> Then to make it all but impossible to re-introduce this mess, do something like
-> this so that someone would have to go way out of their way to try and modify the
-> cache.
-> 
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index ebd7b36b1ceb..2de6305be9ce 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -199,14 +199,13 @@ struct svm_nested_state {
->          * we cannot inject a nested vmexit yet.  */
->         bool nested_run_pending;
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index 26ca00c325d9..d5af2b7f577b 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
 >  
-> -       /* cache for control fields of the guest */
-> -       struct vmcb_ctrl_area_cached ctl;
-> -
->         /*
-> -        * Note: this struct is not kept up-to-date while L2 runs; it is only
-> -        * valid within nested_svm_vmrun.
-> +        * An opaque, read-only cache of vmcb12 controls, used to query L1's
-> +        * controls while running L2, e.g. to route intercepts appropriately.
-> +        * All reads are routed through accessors to make it all but impossible
-> +        * for KVM to clobber its snapshot of vmcb12.
->          */
-> -       struct vmcb_save_area_cached save;
-
-Is dropping the cached save area intentional?
-
-We can drop it and make it a local vaiable in nested_svm_vmrun(), and
-plumb it all the way down. But it could be too big for the stack.
-Allocating it every time isn't nice either.
-
-Do you mean to also make it opaque?
-
-> +       u8 __vmcb12_ctrl[sizeof(struct vmcb_ctrl_area_cached)];
-
-We have a lot of accesses to svm->nested.ctl, so we'll need a lot of
-clutter to cast the field in all of these places.
-
-Maybe we add a read-only accessor that returns a pointer to a constant
-struct?
-
+>  int migrate_huge_page_move_mapping(struct address_space *mapping,
+>  		struct folio *dst, struct folio *src);
+> -void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+> +void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+>  		__releases(ptl);
+>  void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+>  int folio_migrate_mapping(struct address_space *mapping,
+> @@ -97,6 +97,14 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+>  	return -ENOSYS;
+>  }
 >  
->         bool initialized;
+> +static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+> +	__releases(ptl)
+> +{
+> +	WARN_ON_ONCE(1);
+> +
+> +	spin_unlock(ptl);
+> +}
+> +
+>  #endif /* CONFIG_MIGRATION */
+>  
+>  #ifdef CONFIG_NUMA_BALANCING
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index ebd75684cb0a..d98e4883f13d 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1379,14 +1379,16 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+>  
+>  #ifdef CONFIG_MIGRATION
+>  /**
+> - * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+> - * @entry: migration swap entry.
+> + * softleaf_entry_wait_on_locked - Wait for a migration entry or
+> + * device_private entry to be removed.
+> + * @entry: migration or device_private swap entry.
+>   * @ptl: already locked ptl. This function will drop the lock.
+>   *
+> - * Wait for a migration entry referencing the given page to be removed. This is
+> + * Wait for a migration entry referencing the given page, or device_private
+> + * entry referencing a dvice_private page to be unlocked. This is
+>   * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+>   * this can be called without taking a reference on the page. Instead this
+> - * should be called while holding the ptl for the migration entry referencing
+> + * should be called while holding the ptl for @entry referencing
+>   * the page.
+>   *
+>   * Returns after unlocking the ptl.
+> @@ -1394,7 +1396,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+>   * This follows the same logic as folio_wait_bit_common() so see the comments
+>   * there.
+>   */
+> -void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+> +void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+>  	__releases(ptl)
+>  {
+>  	struct wait_page_queue wait_page;
+> @@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+>  	 * If a migration entry exists for the page the migration path must hold
+>  	 * a valid reference to the page, and it must take the ptl to remove the
+>  	 * migration entry. So the page is valid until the ptl is dropped.
+> +	 * Similarly any path attempting to drop the last reference to a
+> +	 * device-private page needs to grab the ptl to remove the device-private
+> +	 * entry.
+>  	 */
+>  	spin_unlock(ptl);
+>  
+> diff --git a/mm/memory.c b/mm/memory.c
+> index da360a6eb8a4..20172476a57f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  				unlock_page(vmf->page);
+>  				put_page(vmf->page);
+>  			} else {
+> -				pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +				pte_unmap(vmf->pte);
+> +				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+>  			}
+>  		} else if (softleaf_is_hwpoison(entry)) {
+>  			ret = VM_FAULT_HWPOISON;
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 4688b9e38cd2..cf6449b4202e 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
+>  	if (!softleaf_is_migration(entry))
+>  		goto out;
+>  
+> -	migration_entry_wait_on_locked(entry, ptl);
+> +	softleaf_entry_wait_on_locked(entry, ptl);
+>  	return;
+>  out:
+>  	spin_unlock(ptl);
+> @@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm_area_struct *vma, unsigned long addr, p
+>  		 * If migration entry existed, safe to release vma lock
+>  		 * here because the pgtable page won't be freed without the
+>  		 * pgtable lock released.  See comment right above pgtable
+> -		 * lock release in migration_entry_wait_on_locked().
+> +		 * lock release in softleaf_entry_wait_on_locked().
+>  		 */
+>  		hugetlb_vma_unlock_read(vma);
+> -		migration_entry_wait_on_locked(entry, ptl);
+> +		softleaf_entry_wait_on_locked(entry, ptl);
+>  		return;
+>  	}
+>  
+> @@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
+>  	ptl = pmd_lock(mm, pmd);
+>  	if (!pmd_is_migration_entry(*pmd))
+>  		goto unlock;
+> -	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+> +	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+>  	return;
+>  unlock:
+>  	spin_unlock(ptl);
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 23379663b1e1..deab89fd4541 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+>  		}
+>  
+>  		if (softleaf_is_migration(entry)) {
+> -			migration_entry_wait_on_locked(entry, ptl);
+> +			softleaf_entry_wait_on_locked(entry, ptl);
+>  			spin_unlock(ptl);
+>  			return -EAGAIN;
+>  		}
+> -- 
+> 2.52.0
 > 
-> > > Part of me wants to remove these two fields entirely:
-> > > 
-> > > 	/* cache for control fields of the guest */
-> > > 	struct vmcb_ctrl_area_cached ctl;
-> > > 
-> > > 	/*
-> > > 	 * Note: this struct is not kept up-to-date while L2 runs; it is only
-> > > 	 * valid within nested_svm_vmrun.
-> > > 	 */
-> > > 	struct vmcb_save_area_cached save;
-> > > 
-> > > and instead use "full" caches only for the duration of nested_svm_vmrun().  Or
-> > > hell, just copy the entire vmcb12 and throw the cached structures in the garbage.
-> > > But that'll probably end in a game of whack-a-mole as things get moved back in.
-> > 
-> > Yeah, KVM needs to keep some of the fields around :/
 > 
-> For me, that's totally fine.  As above, the problem I see is that there is no
-> single source of truth, i.e. that the authoritative state is spread across vmcb02
-> and the cache.
-> 
-> > > So rather than do something totally drastic, I think we should kill
-> > > nested_copy_vmcb_cache_to_control() and replace it with a "save control" flow.
-> > > And then have it share code as much code as possible with nested_svm_vmexit(),
-> > > and fixup nested_svm_vmexit() to not pull from svm->nested.ctl unnecessarily.
-> > > Which, again AFICT, is pretty much limited to int_ctl: either vmcb02 is
-> > > authoritative, or KVM shouldn't be updating vmcb12, and so only the "save control"
-> > > for KVM_GET_NESTED_STATE needs to copy from the cache to the migrated vmcb12.
-> > 
-> > I think this works if we draw a clear extinction between "in","out", and
-> > "in/out" fields, which is not great because some fields (like int_ctl)
-> > have different directions for different bits :/
-> > 
-> > But if we do draw that distinction, and have helpers that copy fields
-> > based on direction, things become more intuitive:
-> > 
-> > During nested VMRUN, we use the "in" and "in/out" fields from cached
-> > vmcb12 to construct vmcb02 through nested_vmcb02_prepare_control().
-> > 
-> > During save, we save "in" fields from the cached vmcb12, "out" and
-> > "in/out" fields from vmcb02.
-> > 
-> > During restore, we use the "in" and "in/out" fields from the restored
-> > payload to construct vmcb02 through nested_vmcb02_prepare_control(), AND
-> > update the "out" fields as well from the payload.
-> 
-> Why the last part?  If L2 is active, then the pure "out" fields are guaranteed
-> to be written on nested #VMEXIT.  Anything else simply can't work.
-
-I think it just so happens that all pure "out" fields are consumed by
-KVM before save+restore is possible, but it is possible for an "out"
-field to be used by KVM at a later point, or copied from vmcb02 to
-vmcb12 during nested #VMEXIT (e.g. if KVM exits to L1 directly after
-save+restore, before running L2).
-
-next_rip and int_state fall in this bucket, it just happens to also be
-an "in" field.
-
-For example, if support for decode assists is added, there will be cases
-where KVM just copies insn_bytes from vmcb02 to vmcb12 on nested
-#VMEXIT. If insn_bytes is lost on save+restore, and KVM immediately
-exits to L1 after restore, insn_bytes is lost.
-
-So we need to also save+restore pure "out" fields, which we do not do
-today.
-
-> 
-> > During synthesized #VMEXIT, we save the "out" and "in/out" fields from
-> > vmcb02 (shared part with save/restore).
-> 
-> Yeah, that all works.  We could also treat save() as an extension of #VMEXIT, but
-> that could make KVM_GET_NESTED_STATE non-idempotent (which might already be the
-> case for VMX?).  I.e. we could sync vmcb02 to vmcb12 (cache), and then copy that
-> to userspace.
-
-I think this will require adding more fields to the cache, but wait, we
-already have a lot of "out" fields there but I don't think they are
-being used at all..
-
-Anyway, this may make things simpler. Instead of pulling different
-fields from either cached vmcb12 and vmcb02, we always combine them
-first. I will keep that in mind.
-
-> 
-> > The save/restore changes would need a flag to avoid restoring garbage
-> > from an older KVM.
-> 
-> I don't follow.  I was thinking we'd only change how KVM maintains authoritative
-> state while runnign L2, i.e. not make any changes (other than fixes) to the
-> serialized state for save/restore.
-
-I thought we're not currently saving "out" fields at all, but
-apparently we are, we just do not use them in svm_set_nested_state(). So
-we probably do not need a flag. Even if some fields are not currently
-copied, I assume KVM restoring garbage from an older KVM is no worse
-than having uninitialized garbage :)
-
-I think this will be annoying when new fields are added, like
-insn_bytes. Perhaps at some point we move to just serializing the entire
-combined vmcb02/vmcb12 control area and add a flag for that.
-
-> 
-> > It's also probably not as straightforward as I am making it out to be. For
-> > example, "in/out" fields may not be reflected as-is from vmcb12 to vmcb02, so
-> > if we save+restore with nested_run_pending, we end up creating vmcb02 on the
-> > destination from what we put in vmcb02 in the source, not vmcb12, which may
-> > or may not be the right thing to do.
-> 
-> If that's a problem, we've already messed up.  Because we _must_ get that right
-> for nested #VMEXIT, i.e. KVM _must_ be able to extract the pieces of vmcb02 that
-> belong to L1 vs. L0.  At a glance, it seems very doable to writ the code so that
-> it's shareable between #VMEXIT and save().
-> 
-> > This is probably a heavier lift than we think it is, or maybe it's
-> > simpler once I start coding it :)
-> 
-> Maybe?  It's certainly not trivial, but I don't think it's terribly complex either,
-> at least not what I have in mind.
-> 
-> > > That'll probably end up a bit fat for a stable@ patch, so we could do a gross
-> > > one-off fix for this issue, and then do cleanups on top.
-> > 
-> > Honestly, I'd rather keep the existing patch for stable@. It's not that
-> > complicated, and downstream trees that take it don't have to live with
-> > the FIXME code.
-> 
-> I'd rather omit the FIXME than move the nested_sync_control_from_vmcb02() call.
-> Because it's entirely possible that the code movement will apply cleanly to an
-> older kernel, but semantically be broken due something in-between consuming
-> int_ctl.  The odds of that happening are low, but I don't want to have to audit
-> every LTS kernel (or set up others to fail).
-
-That's fair, but I will keep the FIXME. My problem was not the comment,
-it was sync'ing that one field outside of
-nested_sync_control_from_vmcb02().
-
-> 
-> > The heavier lift to clean this up can be done separately,
-> 
-> Yes, for sure.
-> 
-> > or I can send a new version with the first 2 patches in the beginning for
-> > stable@ and the cleanups on top, depends on how we decide to implement this.
-> 
-> As above, my preference is to throw in a super minimal fix for next_rip, and then
-> commit ourselves to removing nested_sync_control_from_vmcb02() sooner or later.
-
-I will send a v2 with the FIXME fix for next_rip, I assume the int_state
-fix in nested_sync_control_from_vmcb02() is fine.
-
-Hopefully I will find time in the coming weeks to work on the broader
-cleanup.
-
-> 
-> > > > @@ -4435,6 +4424,21 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
-> > > >  
-> > > >  	svm_complete_interrupts(vcpu);
-> > > >  
-> > > > +	/*
-> > > > +	 * svm_complete_interrupts() may update svm->vmcb->control.next_rip,
-> > > > +	 * which is sync'd by nested_sync_control_from_vmcb02() below.
-> > > 
-> > > Please try to avoid referencing functions and fields in comments.  History has
-> > > shown that they almost always become stale.
-> > 
-> > Generally agree, but in this case I am referencing the calls right above
-> > and right below, and it's probably clearer to mention the ordering
-> > constraint directly with their names.
-> > 
-> > That being said, if you feel strongly
-> 
-> I do.  I appreciate that it requires more effort to write comments that don't
-> reference functions/variables/fields, and that it can be downright annoying, but
-> we've had far too many orphaned comments over the years.
-
-Ack, will use your FIXME wording as-is.
 
