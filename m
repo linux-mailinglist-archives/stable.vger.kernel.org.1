@@ -1,187 +1,172 @@
-Return-Path: <stable+bounces-215673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCRSNmFIi2lSTwAAu9opvQ
-	(envelope-from <stable+bounces-215673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:01:53 +0100
+	id +D/aJEpJi2l1TwAAu9opvQ
+	(envelope-from <stable+bounces-215674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:05:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3246611C34F
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:01:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7A111C3BD
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 16:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 589FA30659CC
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:00:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0777D3009399
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 15:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDAD3816ED;
-	Tue, 10 Feb 2026 15:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8BA37FF55;
+	Tue, 10 Feb 2026 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFoRBQUK"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="Qn8M77/8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9669B3815E1
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770735615; cv=none; b=dE1TzTc8pEntTEAPEuNanC7MP5CA9JmIJJ506vbd1hRXzVyt4NgjcLFZzv5hie91SZWfFaCJEv/52Udf82zZfGylpvZhisfvwC5+BI81DEY9ACDOwbUAcb5I0FR6NCF8nlCBGZBOqa4Zz1m19dKncCeW2T5YyWBWPsk1vVkD5M0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770735615; c=relaxed/simple;
-	bh=P5N4ABjZx124VekI186qd2AD4yXfKDQt9Vo1Fag6vHg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aS3OS6kz7VJ3EfC3MSKPDcKcXWkzazsW0Q4E7qOXv/bdAY4M/8aV6qytP7otqZLLUenn32sV/Ru1ozUyQaiSBFZZzjr+q/DfWJKwIEbBPw22TbN0+IK2TYCc//4i4cvuh3yAU66LrknMaxCrhOViU9+o2FRlTIObi1/z6+0BZJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFoRBQUK; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2aadc18f230so17017375ad.3
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 07:00:14 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DFE367F25
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770735933; cv=pass; b=swURVODmGZILorMpb5nlRBXPRczddPeyeDA+/xJFf0DSAbwDdDrjtExM1Xlk3zZ6iGH74ERpNIfSYDCgqu7S5GH6hcXr65HQ48ujCyuqjyz6vrYurnhIC+pxYH6mpRGPbewOPzXw58S6hTi3xOddFfwZY8caDMKvaHuvwMcwjI8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770735933; c=relaxed/simple;
+	bh=lMPk2ACbC+BT7FsHdf5d3nLYVQFBs/ErPnNxK/94ca8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VJmokgl3w/a/nOcmMrjGUMsXS+DZkhJfU8a35U4yNcutpQbJVgPpWLnKah4oIcZ9gH96ZTs4pa6ZF4s8Rl5bTh618FyxGE+imbXyrx5t+oYSGT0wxHuVnmba1/M5wFZ8rtOUjEyIcg0DuOWmKtvNWu19bfgxlLLi082p/1kBc+Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=Qn8M77/8; arc=pass smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b8869cd7bb1so770227766b.1
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 07:05:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770735931; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LTWuqc8hXXmmUT/7mXnb4mqWrVjRh53FZuz7/QqlgWVtZEXcDw1foRbj03Y/7QMSgC
+         EU1ihSXFHDyrteigjk1JwhMbm92fuAMH8vSiskQtLaQGrjXJ+s8vvf/dZsFggeCDS/dM
+         Q/qEAw526W124CW+jBufxtlajcieoMNhvqsrMTJ50H9nODYjyRnMr1hUQZgyP5bLm7uY
+         GJvcJToPYyWJKGsrAqmqidv8qJsWD24zOtv8aBRaNE58HNJgC7d9RNAr31Qttzdnar5F
+         5sWU2pmRhwNQz8fallxaoLjqjd540CcC+6+7UKIj4FziGb7ymWay31EmbTzALUrvZEdy
+         gcPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=rLtp+aeqK918GHQyzuQTcFqlRkjQRR6EBeZu1C1U4j0=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=MgHmPIVVjMiwxLOXhVzPpyg4lZ1BUgDEaW/QLZ/0zQZAJoveCy+jAQZQSIxTqw/t9Z
+         mcrfJs5BIYaXM9P7dEPaBdTtmcQn1sRqIewn+Qg6dgoQGaryxBjqzslMo4/EaSBDkNzG
+         IXgZf5oD0xZ9VgSZtzj+xf9fTHeAJHfGPThJUAmx764Gmy5Cz+nSV/wikApprv24B+eN
+         vMjxZAJAQCozS9E8yC7E8W5xWYksBuWGe8Wy7A8aS09TiTtwTbY1Ijz7eR+c3eT0pC6q
+         elfDuwDIgWYPKSThFA/fPCBCH2YKHVDhy3T0NGDuml7EpkhNLdGzqjT3DN7zB2SE5zib
+         4b2A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770735614; x=1771340414; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v436SyFigxsHrmhj471D+104SnMzTMwy4MIHa73zImY=;
-        b=gFoRBQUKg+Jbo78iDrELjJ0UCZCUblkzS9MxRPdPYY/sbzRniiq1YIPrnkjYGTzhe/
-         22vgvcKY9UueLO/JyQz19mU9CeAdK05ffCOZyY2NXjSSm9wQ6j1P3zvo4pjttVaYo9bJ
-         8NYcXQQTnYonQTIlzzRdwR3DHf8b1HIS+cvuWnXROFtqohoGlfkmfQHL52rr0It3rXsp
-         ILYBHiGc9WK0eIJMjup0tl3t90UmZ0msyQAAtcrZN26Wh4cBlyvoff/bZhCQ+eoIKTI7
-         sdqK3T9oqX4LaxhgNT9KrmcFAFudrlMSOEmRylnCa6AzZvWcMHmd82YrdsAHkIrfjNm/
-         I97Q==
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770735931; x=1771340731; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rLtp+aeqK918GHQyzuQTcFqlRkjQRR6EBeZu1C1U4j0=;
+        b=Qn8M77/8zk3i9nVw/MvXeOelTFqlvCV4hU+uxAC9pJ6J/fjeMy/zR/I1DcSXaBglQS
+         OfYNKPgqiAiANfe5GtJywz9ihSdsuw7OoEKLFhXXF6X71KhXpUuEMgrXK0Do12fRwM09
+         RUUqlFLI/gPR9HoqFZCLqAKQXt9aoGEr3bAiyn+RBg7G+tJTSNaVci4sdBax0XBmK043
+         gZuYtIA6Zqll7Z6AXYPMx2RrgMRW3VSLpwwyWYctcwd1uMMAES9oqalTVgs/xIefmYmd
+         8rlv2ABpgeijqU/c0w5hoFmmnL0kBIb6ZxsrSTVJvPemzKx44Po1egR55B/cUuqxT8RO
+         MVxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770735614; x=1771340414;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v436SyFigxsHrmhj471D+104SnMzTMwy4MIHa73zImY=;
-        b=gMOnWev8yT3qq6yki58vIP5D9j+kFoVAIuAfqDFWA3jb+BdasWx/k4pMYePdjsOLbv
-         O8zok0vHB9SrPLCaIaeHTiOkYaecp71knZ4LVYAmYETVu1E+Q/rk5DTRJq3JkVJp7oxF
-         U/l/AIXIe3bbQadMDvH9X+z7a9bvpVE1IYh8w7KEuK5G5T/0q4mKXa0lV3DCd89QaiDS
-         Ho1DjXJoJU3MX8u8sa4OuYKJqZUv02aqWJRFH8fGh60ww9MSD1paj/fgiEwfdTHhnhEA
-         x+7GU77E2oxMNXQCi4Yp8J7Ux9uIia9gxfQhCUdPVpvJJZ+RuP7P2LjhOesN6Tb1h3ls
-         EYxg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBG071FromXvWrtjQ9nIFLN/zJUfMPZSiJUyGe6WWs2pMAzaYB4b8MEMwoByN325sKQMlaQ5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5tdkuMZDYo168bGu//NcV54gwIiNsneKZqx7yTFW4SJPDXPwL
-	SQlqOkh4dGbVglrJ9iHIxU+VsAjk97xXlAX/VGDpjSpdf+gkJyFMsOfA
-X-Gm-Gg: AZuq6aIgPkTLcf+yTTezBZ23QWRuOTKkbJ13EEFzu+4LINyD2pQTEJHiZmXLi+e6a12
-	bbxIm0S57uLQh2O31NOrKgHm9shaZuP3F+hwNY/gfW9BR74gviUleOvLDgppNAu33RJUcJnr+zR
-	7RFj/lvZEQj/IDxNP4VCWW9F2thXbdeJy3h/kp0OMR7loQkNX8wM+D7kyUeySEqRnILMlEojHog
-	LdR+S6f9ELri/4d9S3mulhjb0+VzX4HLLEMmxn/Pq6gP69CDlTUGAvPlm+wr+l4IMKX18rXS6ge
-	sY/Vrf6rcfHRa5aJxS2BM4gQXMjCWunthXQnEO7V8boGYrW/B0tdI3w3zKu3sRAZGCem879x5Lu
-	kv2+pC5rT4v0FO98qMJd0pUpFH0ohYB1ETcHa/zpgiaC1M/olBUb/ZlvuXyAl19gK6aPe7GbvO2
-	SRJnZ2whuvMRNsybH6ZeoReR4tyyRm1dnJJw==
-X-Received: by 2002:a17:902:e742:b0:2a0:d629:9035 with SMTP id d9443c01a7336-2a951643629mr163927435ad.3.1770735613704;
-        Tue, 10 Feb 2026 07:00:13 -0800 (PST)
-Received: from inspiron ([111.125.237.190])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aa3ec42e2asm149045835ad.53.2026.02.10.07.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 07:00:13 -0800 (PST)
-Date: Tue, 10 Feb 2026 20:30:03 +0530
-From: Prithvi <activprithvi@gmail.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: martin.petersen@oracle.com, d.bogdanov@yadro.com, bvanassche@acm.org,
-	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] scsi: target: fix recursive locking in
- __configfs_open_file()
-Message-ID: <20260210150003.s55mbwdpgbamjtso@inspiron>
-References: <20260205162624.117957-1-activprithvi@gmail.com>
- <20260205192644.GT3183987@ZenIV>
+        d=1e100.net; s=20230601; t=1770735931; x=1771340731;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rLtp+aeqK918GHQyzuQTcFqlRkjQRR6EBeZu1C1U4j0=;
+        b=WqBe3cZ6suC1wEbHxwQXcrMRVR1zhpaii0Bwyc6aztdULnLhQGzNIs+q6Pj+Ig4VNi
+         xIZiJKNofyWi73dZC4fe/KuabszF4+7a6u4qAHWSg6Z3LfD13tn2y8z+Xbn3svW5jchQ
+         M9ASKgkMRdf02dWD4x7CWNe7P6rxkn+PEf8rBbnmgVzmorHm/zR5CCqJlIxaYqOYIvG7
+         srliU62jaK4Tzz+8/s1J/XxTEseazKqwr+7Qq9aUL2iBFxctvvRIsWE7C3UsRdlQatoD
+         leaCu1zzsNS+G0JbEDluRNH8pPJ3XKqW8QJiUtfYRe6mRgZ1sFRuDkExDxjcWl8FIzUZ
+         /t7g==
+X-Gm-Message-State: AOJu0YzfgdA2mGjfrWucAVQSUEDBLeLYR852iuJgtyhyp3g9qPZ8ub4m
+	f79tPkwr80URXhvpgwK7iJ0jCgp97m4hcn4CMAtOp5S/2+QbroZ+IJ+IBtxmYbqPkmoJjZ29PyO
+	Kzc75xqD7ua8VWK0O+ZBuH5xlcPdvxlvB3zmtP2k6VQ==
+X-Gm-Gg: AZuq6aKcJoTjuRWoXbyYGDhb+mS2eZ4GgyseDWLgs/RUA2VKnnrzlhekOV5RL1Hz/49
+	27le+PZjWnvYGMIf3uAA4lYnmB688y5BUVL0IvZNkd2T1TBsQm/25K7QXFbBQmgGIoZc/DC15Li
+	1YHt7ejsYFsIBLBlxNwBOIIGG15GosW6VMbSo0khLh67yzSH39OYgSBPcXB8gWxR7S2FJ0/GH1d
+	T6KShwya/mNS29J5GakXKEBkkvXzls9gS4gkh3UNmZd+2vv7iakVVGuOzEf8ri2zzBoMlqp9Mkd
+	jwn8JNFNcuKE/AYh7SWDlaPAk+SbbUWrTzSwCq7cRgLKHvXyJuRHkTYXKjkYF2sufJ694w==
+X-Received: by 2002:a17:907:2da2:b0:b87:711f:97b9 with SMTP id
+ a640c23a62f3a-b8edf2fb575mr929138166b.31.1770735930534; Tue, 10 Feb 2026
+ 07:05:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205192644.GT3183987@ZenIV>
+References: <20260209142320.474120190@linuxfoundation.org>
+In-Reply-To: <20260209142320.474120190@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Tue, 10 Feb 2026 20:34:53 +0530
+X-Gm-Features: AZwV_Qj_gQ13wu0O2ImrZP1Y1_Vy7B8r-iGyvwPf5l9zCKza4knqIWsae5073_E
+Message-ID: <CAG=yYwkhAAm76qUH_2dCHUp8+hGzvgT1Fm_288Z-=QRG+tAbfQ@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/175] 6.18.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215673-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
+	TAGGED_FROM(0.00)[bounces-215674-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[oracle.com,yadro.com,acm.org,vger.kernel.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[activprithvi@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3246611C34F
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,rajagiritech-edu-in.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 8D7A111C3BD
 X-Rspamd-Action: no action
 
-On Thu, Feb 05, 2026 at 07:26:44PM +0000, Al Viro wrote:
-> On Thu, Feb 05, 2026 at 09:56:24PM +0530, Prithvi Tambewagh wrote:
-> 
-> > +	r = kern_path(db_root_stage, LOOKUP_FOLLOW, &path);
-> > +	if (r) {
-> >  		pr_err("db_root: cannot open: %s\n", db_root_stage);
-> >  		goto unlock;
-> >  	}
-> > -	if (!S_ISDIR(file_inode(fp)->i_mode)) {
-> > -		filp_close(fp, NULL);
-> > +	if (!d_is_dir(path.dentry)) {
-> > +		path_put(&path);
-> >  		pr_err("db_root: not a directory: %s\n", db_root_stage);
-> > +		r = -ENOTDIR;
-> >  		goto unlock;
-> >  	}
-> > -	filp_close(fp, NULL);
-> > +	path_put(&path);
-> 
-> Just pass it LOOKUP_FOLLOW | LOOKUP_DIRECTORY and be done with the manual
-> "is it a directory" tests in any form...
+ hello
 
-Hello Al,
+dmesg  stuff's ...
+------------------------error----------------------------
+[   21.307326] lp lp.0: really_probe: driver_sysfs_add failed
+[   21.309030] kobject: kobject_add_internal failed for lp0 (error: -2
+parent: printer)
+------------------------error----------------------------
+I DO NOT HAVE A PRINTER
 
-I sincerely apologise for the delayed response. I was testing the change you 
-suggested, however, whenever I tried testing my patch against the latest 
-commit where syzbot reported this bug (commit 3a8660878839faadb4f1a6dd72c3179c1df56787
-of upstream repository) it gave me a build failure immediately without any
-debug log, just the message:
+--------------------------info----------------------------
+[   64.066312] traps: wireplumber[1335] general protection fault
+ip:7fa9701d14c2 sp:7ffec89aa4f0 error:0 in
+libgobject-2.0.so.0.8600.3[174c2,7fa9701ca000+36000]
+--------------------------info------------------------------
 
-syzbot tried to test the proposed patch but the build/boot failed:
+my gnome-terminal (VT)  stopped during compilation.
+i forgot to get screenshot (sorry). i  started a fresh new terminal
+and did sync and then   re-compilation continued typically normal.
 
-failed to run ["make" "KERNELVERSION=syzkaller" "KERNELRELEASE=syzkaller" "LOCALVERSION=-syzkaller" "-j" "48" "ARCH=x86_64" "bzImage"]: exit status 2
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
-The issue seems to occur multiple times when a patch is tested against the 
-latest commit where syzbot reported the issue while it doesn't occur on that 
-latest commit of the upstream repository.
 
-However, testing the change on the latest commit of upstream reprository 
-(commit 72c395024dac5e215136cbff793455f065603b06) gives a positive result 
-that the reproducer doesn't trigger any issue.
-
-Reference: https://lore.kernel.org/all/6767d8ea.050a0220.226966.0021.GAE@google.com/T/#mbf32aeb54c4cae609d3b6176ad8dcd99bfc51ad2
-
-IIUC, since the reported failure appears to be unrelated to the change and is working
-successfully on latest commit of upstream, I wanted to confirm if v4 based on 
-these findings is acceptable.
-
-What do you think?
-
-Thank you,
-Prithvi 
+--
+software engineer
+rajagiri school of engineering and technology-
 
