@@ -1,170 +1,189 @@
-Return-Path: <stable+bounces-215619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGJOOPztimmUOwAAu9opvQ
-	(envelope-from <stable+bounces-215619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:36:12 +0100
+	id AM5mDIvvimmwOwAAu9opvQ
+	(envelope-from <stable+bounces-215620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:42:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542181184AA
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:36:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9536F118507
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 09:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4999630416D7
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 08:36:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 06AEB301079D
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 08:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECC63358D0;
-	Tue, 10 Feb 2026 08:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A537E33D50C;
+	Tue, 10 Feb 2026 08:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QAf7PFIC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g86YfLjH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A8A27E1DC
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 08:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770712566; cv=none; b=jA/wHXsBY/D1K4ROgtGcbkvGyZRd9Ye/GAVUTp8380JGfiaiQTT6mvK9NymXgNJCKm+HQhj+/txwdt1qwMThs82FMx7Yb+G8UTcg+p6mUPxtCPy3LeXHVN9cbMVD3N6s3Eg0NmdHf3gfavPZWmSNlCMd9h4/pQIGlqlr5HlgXZk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770712566; c=relaxed/simple;
-	bh=hlVnQjJ+uSVpH3lSq9FenbGENqqQaGOkrUPuxtaW9wQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e/6oG+eyeeudSpshyXpssJ7Qv1xDokqV/waV2pUu/YegdPos4hBa1z+Ks1NnrH7ycM5LsgAK413NCRdno4Ly9KzcG9DfgB5Ypvsk++JmbGBGEYSLR2SlASTLnq+TF8Vd6exu0+QSO/6X6xtWC+Enq1WFtmourXkDqlwQjsErOUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QAf7PFIC; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E6818C933
+	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 08:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770712968; cv=pass; b=btmDxOXtRvqb1f4XV2IwNjNHDaNvqDed/wQGXLgurirzHXyAnCaLtTF3PgVJPBrFb3V6TI6afjGANHRlYUA4yEHGkNDTl6DXsndCAdq+nHSHDkzrHmXHD/Wa2JD6KxiFoiGcbo1Hr8TxAHGxPJ7JqeLzfXMzunwFlM2RRKdTxvM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770712968; c=relaxed/simple;
+	bh=pzj9Ny1KxKgyvqZwK3YaJvtJxyNcZudeF2U8bB6Rm+I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MaGe69ISx4FPAGcZjXvMyaAVMgO6tZt1JVQuhrhEMZINWnQQ3FAotzPWOcoRstX5+Tmf2z19B9aMDa+4M1U7WLXdOF0aG/wzaEKRjy8nI2MVFE9usUka2NN0msD+q2hLa2ftIcpM9y4iZZHVE35m8zmaMptZ5R3RiV5JsUOhyIk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g86YfLjH; arc=pass smtp.client-ip=74.125.82.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-436333dcc42so359482f8f.0
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 00:36:04 -0800 (PST)
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-124713e4244so240586c88.2
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 00:42:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770712966; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ibr18eskQ1pHDUUY4Sj2Svd7WuGY3tCbelCP3whkAT9DkzfFgkGyvzwhc0e5V2jj3U
+         OVdZAhZM9RvgKaqwT9tN7L38mLpztv6RZV3zajSGVN+06D7IZH1TR9REL8cYVrwGAuX5
+         rIzdskobUrwMYnuEt23+vGnXMJRcrSH65DE9qZXz03M38ixEt7z2ebedJcn9xH8ffgSB
+         1tKSM49HkJvNKmt7g/RYxGtXNctmgTPqmTwg/xNKWleAoMRwtOzg+2YgMnhHKhLvS2+V
+         m1419ToWgMPP2JfLMkc64lXUFCX4+tybVdFJdF4kRP1OuT9snSEj1e03sWTHAmNkXJAX
+         ESJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eRd5nGkK/uJsiW/OSeGHF4f73KvZkDNQmuEV0hYZwB0=;
+        fh=XqvoE9iUfZKATj4yotrcWfMz1NNuDyOeMmXJJcgAE58=;
+        b=RR/r+K+2oMjtB3Y5sI8zLqUSs0rqPERjfxtqRHtuUL7TpfyTEbfz2jPNtwGQwZ0lnu
+         8FADnkJ+KBP+MPweDRtSguL41o1w0gENQIVkI6mxW1y4SYj8SrHplzyvDoB1Xrl4L6dG
+         0yA7/UrYvh/pFVdijVN+IFz2/R5I6kmphURwcByKv10qUXzjO0zCIXjCMGpQR4sxM+AN
+         QpXaIyFzSDmWr0hA1exfvd8gwQ4QYtujeqZvNdQTTHUPc8LS3yRdRm+s6jKrev1cQha1
+         D1y/t7G+McBY3bPpAIAFq7WdDfIu19O/l4dRGbZhwwMyTuPKzt/tmpNFESNuErNCGjgf
+         02FQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770712563; x=1771317363; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p6XI8q1fFGx5WhbwxSZeL59bQVB27jLicC8f3KiU06c=;
-        b=QAf7PFIC1/H7AhGpQd6JIZM4GGCsxPju72lYBiMTrnswiH2SzV+wPb82TK+PQk2wm4
-         9jWcfH+/9GoPI0wfPUrS5a2hFC9f86IfHrqA0YkgxxPsvbOxkGp0+JOiJ9yGSAwFMidX
-         bKsMBMIrkqb4/aJ/l3Wt+RXfhcYfPPaEYn2bICQYKmzTNQSFl+nqJ50EX+fFjWZSz6KF
-         wT0bhuTR425j80VNU3bMmj3tf4OKNz8iIm/yRTWc3IKeCWfIHBMX5k7yFME0xOhE9VFP
-         m4GSjB2Quns7YopgvSMedOvyhQrM/6HGgeEhl3rBFaf0hIwzlPMXx2WNJdiX/gUdiuL1
-         gUcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770712563; x=1771317363;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770712966; x=1771317766; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p6XI8q1fFGx5WhbwxSZeL59bQVB27jLicC8f3KiU06c=;
-        b=QSVr3PDforOR4w1q+7jVzSwj+4deuOYym6b9C3nLYt6C2qlAMwdYgFD1WN7hIwLyQz
-         lVOJmQ8ap3o66YK7Cw1VuQSAaNAp+tx9JrSkRHx/ch07eDqOK81DWkl9DLKAdxO/+ycO
-         E8zE0ad70U6Y9swjR2Nj9UHDR6l8vK7+/D32LFeyXUym1HDt3H2iVrzYKmEruhrmcfmO
-         yErEOS1PRI3qWji2iV3G3J8yVfOBIiE/Rp3YgmBu4Sw77CoayzjfdVKLpoVspOsfYUHO
-         O9UiflR3CsBq197keyyJ5LWJMIxv3+zMcAS1oeoVDhN03mK05aLBQ0HCb4Y/9gYwTmjc
-         bKog==
-X-Forwarded-Encrypted: i=1; AJvYcCXVuqHmLbYzZzioTelLjCzB/Jod//j1EATyy4IQ3RlaFT+2N1yyjapoqjEyxFszrtWb2qMS14E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNEe5obNOmTbv8umtRYFI06AyQOF4U6CQSGFoNixjMmDVZJVJD
-	nH7oi09WbNk7pCMZHz2IlUt/jonz6jkndK8Bm2EtZbeOylqtXL9dNbGE
-X-Gm-Gg: AZuq6aKPd2Km45BM1819H8jXrDw7/xEqfV4mFBFFoqP1ucHEEEqCwTCnWQxruEuFjq4
-	LKwWb3Pjj0wsqbAiyQPe6oU5jPd9UwFUa99X44366F9ei+OUrUJOaWum4uWEsFw2nwQwGMYA5jg
-	rlGI5gT5OTsam/WUcV3bPBmLwKZaGDX9gYsRnh3M6tuChNTZdi61/NWv5QHOaRN4xIYD0KFQMp2
-	koWK5j1N4Zwg0lOXb/COAdXmvo6DKjTb+46HPV8uW+R9qzT+cMPK1AOuAoHMfgzu/IPHdkxocUw
-	RTCpmro7YfpxBUkTsvxYddOK2qeCOnSCnCt7bcoZzr6wHBnyAfwptHJvJA/TIxNO6RAAbFdsjVV
-	yxxCmwh18e2uBMTu7Y6on0k0amia2bYjE/mC2OsVmJurkRJ7nVX1hwZ4NBxkRyILpc+97BnHd33
-	N3iNo9WCyMmvYENWmT5VQG9mXF8wHZlQ++BU1TavKt9NQUo+cmCIIFE8WEdtMjAIgaHOXj7xthP
-	zhFQqO54/xI5rwAumU=
-X-Received: by 2002:a05:600c:4f43:b0:477:a977:b8a0 with SMTP id 5b1f17b1804b1-483519c9dafmr7521405e9.3.1770712562678;
-        Tue, 10 Feb 2026 00:36:02 -0800 (PST)
-Received: from thomas-precision3591.. (cust-east-par-46-193-67-14.cust.wifirst.net. [46.193.67.14])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4834d5d8ebfsm71911485e9.2.2026.02.10.00.36.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 00:36:02 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sean Paul <sean@poorly.run>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jonathan Marek <jonathan@marek.ca>,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] accel/qaic: Fix dma_free_attrs() buffer size
-Date: Tue, 10 Feb 2026 09:35:27 +0100
-Message-ID: <20260210083529.22059-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=eRd5nGkK/uJsiW/OSeGHF4f73KvZkDNQmuEV0hYZwB0=;
+        b=g86YfLjHLLROwQ2kshoDhTX3jqvWN9mGJHSO/ArVZzzwmHv3dc5RjEV3XuioS9oK+i
+         2023y40IxKLhkr7WTc7eQ4UG3v7ZwfYhUp2ovmyTq3LnrovQ5Ar9sU61cYhaK7GQzjCm
+         +EVJwa3guOqKJnwnB8iaM2uq9RzJSH7cAw5oAHYlylzxM1QAZncDhSZW27EtflWDtyeE
+         NtO1f3fymHVUbXyxLwgL/GHJnAcjz6dvkLXJ6Fd/34IQlrkf2GrcIF6uUfr+xOPoOeg8
+         QkxDi0ViaMJRH8RwfmOvCD/W1Q/fgpZkCj4fC/f1xix4UES2MuZ5oR7VH9gq8rVs/WeB
+         XLGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770712966; x=1771317766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eRd5nGkK/uJsiW/OSeGHF4f73KvZkDNQmuEV0hYZwB0=;
+        b=sIuNfOlj0IHEn2DZ6/WAG5Vgu5vyY2RuEL8htf477fas4DOaRQBImOs81tHwwHaZM1
+         ObIqhUl9EKjE81XPSwefgkGkRqWutG3DxnURjiOHo9wPyU/sg+sQRVlAJtF6DMUzxHqm
+         2zfTS96Tvh6/m/I1G8kH4eZrj8mT37dgYVuPUbQLVWyLElk8EvxH+Es5K8Nl7Ygf7K13
+         U6/xUxhgXwPXnbv+k95F9XH9vLagKIoHMRIL8klAFguvShn/q7p+Juc7P5NIWhFtALGf
+         +pWvFcxW8soOkQpAkX67afiNChR6MeCb6LQvzVssYIwoWnASDNYsPQMC577GpZGksMMR
+         MJMg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdtk4wHmubZUy6vb8g/FfMMvGOnSY6w4nT2QW990n5WlUt+riOzrpa/v7E/kzg7Bv89XLMONw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXrfGGFwSiB1s0uPh8jh1ZiHT5GEuSKh+Noi99zndQWa0YV4k9
+	z38ktgl7Lh+Vq9rC0sKoqVmYKZA/g1C7bG5wt8z8j2cYesRjt5Dxvj/2OCmSlEsbKxTkJm/0M7G
+	vbuPMptxdw+BMAkts5OfyQnX9IWp386I=
+X-Gm-Gg: AZuq6aLOw2askhqDbxjOfoXwOiJXTy9kP9AICbQdxVdHS8SbKQpFLK3WwSLV6cNNSn5
+	18vYro45vf5rSGL/zEmxTvR+I1R1YOagjlXGi4RBx/L8xYanT3O84GzScnwHSlQIooC1O8FIgwI
+	3Vh57Pk7CWBjIz+b3vyEXVOfRAoBcDJIhVj8fQbrb5vfFCBHB7qRYVP5ykOALxPGdOZLBvpq3wO
+	hvixTSUmvVocFZpNOlvaJidY1GElmHMPgoD7Jc2JwO5mXb4OREiuLYQ1c4dN71PmGvpGIoQ7iXE
+	cOhQS/M8R0p2TsCxXZLwKSRHDRmaeV6J1P/hybPwUdu73WvZMe8WPoibi5/XOYw0awSUv5H4T1i
+	FBE1JFHCtoI0inmo2A9Qy+BwW
+X-Received: by 2002:a05:7300:3721:b0:2ba:7322:6bcd with SMTP id
+ 5a478bee46e88-2ba8cc89047mr187606eec.3.1770712966327; Tue, 10 Feb 2026
+ 00:42:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260206204535.39431-1-ojeda@kernel.org>
+In-Reply-To: <20260206204535.39431-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Feb 2026 09:42:33 +0100
+X-Gm-Features: AZwV_Qg-hW3f7kkxtTxv49a5tYvs160zPEvUI7XxUzESxFFA_J56CIIMLUIrGT0
+Message-ID: <CANiq72=15XC6QT2KucsBhzLOdp=rLtCgC__ncLPwWK44583S+g@mail.gmail.com>
+Subject: Re: [PATCH] rust: kbuild: pass `-Zunstable-options` for Rust 1.95.0
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, David Wood <david@davidtw.co>, 
+	Wesley Wiser <wwiser@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-215619-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215620-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,oss.qualcomm.com,poorly.run,kernel.org,linux.dev,somainline.org,ffwll.ch,marek.ca,lists.freedesktop.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 542181184AA
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,fjasle.eu,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,davidtw.co];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,davidtw.co:email]
+X-Rspamd-Queue-Id: 9536F118507
 X-Rspamd-Action: no action
 
-The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
-a2xx_gpummu_new() but freed with size TABLE_SIZE in
-a2xx_gpummu_destroy().
+On Fri, Feb 6, 2026 at 9:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
+>
+> Custom target specifications are unstable, but starting with Rust 1.95.0,
+> `rustc` requires to explicitly pass `-Zunstable-options` to use them [1]:
+>
+>     error: error loading target specification: custom targets are unstabl=
+e and require `-Zunstable-options`
+>       |
+>       =3D help: run `rustc --print target-list` for a list of built-in ta=
+rgets
+>
+> David (Rust compiler team lead), writes:
+>
+>    "We're destabilising custom targets to allow us to move forward with
+>     build-std without accidentally exposing functionality that we'd like
+>     to revisit prior to committing to. I'll start a thread on Zulip to
+>     discuss with the RfL team how we can come up with an alternative
+>     for them."
+>
+> Thus pass it.
+>
+> Cc: David Wood <david@davidtw.co>
+> Cc: Wesley Wiser <wwiser@gmail.com>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://github.com/rust-lang/rust/pull/151534 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Change the free size to match the allocation.
+Applied to `rust-fixes` -- thanks!
 
-Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/gpu/drm/msm/adreno/a2xx_gpummu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is so that Gary gets it soon in linux-next for Klint -- I may or
+may not need to rebase this one, though.
 
-diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpummu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpummu.c
-index 0407c9bc8c1b..4467b04527cd 100644
---- a/drivers/gpu/drm/msm/adreno/a2xx_gpummu.c
-+++ b/drivers/gpu/drm/msm/adreno/a2xx_gpummu.c
-@@ -78,7 +78,7 @@ static void a2xx_gpummu_destroy(struct msm_mmu *mmu)
- {
- 	struct a2xx_gpummu *gpummu = to_a2xx_gpummu(mmu);
- 
--	dma_free_attrs(mmu->dev, TABLE_SIZE, gpummu->table, gpummu->pt_base,
-+	dma_free_attrs(mmu->dev, TABLE_SIZE + 32, gpummu->table, gpummu->pt_base,
- 		DMA_ATTR_FORCE_CONTIGUOUS);
- 
- 	kfree(gpummu);
--- 
-2.43.0
-
+Cheers,
+Miguel
 
