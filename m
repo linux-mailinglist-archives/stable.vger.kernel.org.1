@@ -1,174 +1,201 @@
-Return-Path: <stable+bounces-215694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABovLyeqi2naYAAAu9opvQ
-	(envelope-from <stable+bounces-215694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 22:59:03 +0100
+	id 8NeVKQiri2lXYQAAu9opvQ
+	(envelope-from <stable+bounces-215695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:02:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B2311F947
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 22:59:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBC711F960
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7977A302A2DD
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 21:58:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05CB13018694
+	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 22:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0AE331A77;
-	Tue, 10 Feb 2026 21:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A3D336EDA;
+	Tue, 10 Feb 2026 22:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="BdUOQQtE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HBwAy5Gs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60253321C8
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 21:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87F03043D5;
+	Tue, 10 Feb 2026 22:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770760730; cv=none; b=XHswmzwx+9qF6D5IYkKI0AZTjAgmKfh6Qy9e249gTjzjQcPVIxyoeM9rz63jCoPaF3UhYMa02O9LU8eIydnn1mVgYxHGX2I4KV0xPxUDySXcLyglkxLnaUQ3ErhGgrFIMMEwaBrHSdFxl6VQ5CxfDY5PNB7I69yw8YM/+fFp48U=
+	t=1770760966; cv=none; b=uYfhgZxk8GhSt40YlZ4cKJL05oygIM/Vc4eB874it00eZlksP0JrSBvPNSssOelfNtZKr0fGHRrjyq34v0jheJQ/puPKRe1PvWPE+Qfe1TON+xj6GchpgyiOcCcdMUjXfYSW38+kcpis2+SxgXD8e/YcG+dEyELWiE9Z3vZDzS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770760730; c=relaxed/simple;
-	bh=o1pAZToFHKjXfyv5shJjrm1Qhbi6A4w+s9RNmG+qjv0=;
-	h=Content-Type:Message-ID:Date:MIME-Version:To:From:Subject; b=PEgOvFW9Vobv8a3lRpA3FEZ/AyXrS6pAuk+FjZQNNYKBZLBUtwZd7wcQqAFD6ZWGQDZ5qkKCubT16VEZEdMwF3jpKDY1W780AZaZPnz6RGIpfLuSouq8vt/c1JXkxS5jJIo2ScTKjhFK9WGoqBrgZt54tAagGLzI/h6w4jF5r1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=BdUOQQtE; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d18d9503eeso1151257a34.1
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 13:58:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1770760727; x=1771365527; darn=vger.kernel.org;
-        h=subject:from:to:content-language:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ypb/2aQP2AuZZypbrhbpDUZTZ5qclsCF8qYGQzw4cVs=;
-        b=BdUOQQtEhA6+xVjiIzj/mfoalVOp6ZbKS3Pg9cPVpguKON0nr/pz9lHkEqVzeDOJZp
-         TqEbV8rUhZJCL6GjYfkEDa8wYQx6vkPGUn5efAFQmNsz91VkZSmzTc67RYx80BBzqBjx
-         Ptz3tvS8ETd7t5LO2SwvQxkj+JX1rycSP35Bf+J6nxYv/wHKrqiqLkxxEZ5QsBStuxqV
-         6F4W1JpiY7djbBqUVuIQTmsCoIWhFzDTEzi6wsIVNJt3W/XcSLuiFzllg8sdqwsIVb90
-         8hxV8xunbcBGFYDkzU7l57KvGKPnt3iRM1tpmk2pQ/h9M3rczHJba6jpyGLImXn9b1UU
-         QVzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770760727; x=1771365527;
-        h=subject:from:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ypb/2aQP2AuZZypbrhbpDUZTZ5qclsCF8qYGQzw4cVs=;
-        b=qk5/C4e8k/POuT8OEDl61/431QQjBVur/8ztsK/0+1zdfrjKdjcw3eRera2OTDIup3
-         FMPOUIDYv/SY4qmT/nRWma9CxURYuGA1ai/hwziDRmhp+Rk35JG2A5z6XY8Pk5AJ75m+
-         p9AgJb0fobePQ/7a5ZOtaN4bC+chsnExFV9ZqECiOi3gyA+NHYqChXrJB8hHef/AH9Dn
-         5XCikFlnctNboIBynIcOklj94czsZRhAvMENu8aUjWAM08frGsVuCPNTzwfAf64Q38dE
-         J7nItrIT4Pfa/mf+FV7w0DRQz1q0sWOIc7XtcUPJOquLj4eZ5qfh690A+up4tgzClT1j
-         lv3A==
-X-Gm-Message-State: AOJu0YwUNHi3HGihyXNUTwjOFMo/8eFCqlyAvk1OE9Xcg9+hYTdBrP68
-	kBN04aC6tGOfZqeABRQ6lm++1GgyKpIMsNgUCj4XlLuUc2aAO2NVUAxPo58FVU8W92Q8XrnK6hq
-	xvfrebC4=
-X-Gm-Gg: AZuq6aKhgztuu2If8LXKkWmREzmMmv7ZEJEp3E8gxLkUf2RlYYKeEMQI5VagXz+BfCu
-	FF12qBLLuk2pBmr21/L8M05IJpWuSgrTr8itKoSmBdE0QAuRmzKUiVlgQY5xUXw1oKR3fDqN+r+
-	QKchRj/1NuChyYbhNCJgzkLZ7PMy+L7BWoqQlUpjYFWG5YExEWtfS0K49Dfs15IfdvXIHttBG2o
-	I7rEqEl8GIGfX3vuuB0xjA+OP4AY12k9T11HSjEjkTxq60pAEwEiCoP/IRCa5Xqhe4E9QgszmO1
-	T0FNuYhHpEg/0ZW9Wcb2hC5kBqqnmGBFTZCrXyqpYQq5UpiID5dNMI1Cs3Tl9yckbW1XVdCFMus
-	Iv1eUNgb1NUtzDTzmuk3IktF/5t707xnHrC1+XUizrFhlkfw/AfQ9EuqL7hhZEvmYa9kokzjH46
-	Bov0f7uRsJtzvs8S0wX+k8uUIwGxxPka/Dq5CRVC3Ft2RZDx4heJoWmVn+cLd7QyHAKMdTB+Yag
-	VQecfMn
-X-Received: by 2002:a05:6830:d8b:b0:7cf:e539:dcf0 with SMTP id 46e09a7af769-7d464408133mr10088923a34.10.1770760727211;
-        Tue, 10 Feb 2026 13:58:47 -0800 (PST)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4646fb56dsm10672131a34.3.2026.02.10.13.58.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Feb 2026 13:58:46 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------3riiYxJ775NHx0tlyS1Rjj0r"
-Message-ID: <51b76881-90fa-4de3-9c39-68d076b5706f@kernel.dk>
-Date: Tue, 10 Feb 2026 14:58:45 -0700
+	s=arc-20240116; t=1770760966; c=relaxed/simple;
+	bh=gWcmNKmtYUdITknuMcYCQG0X69MWxLuzvSKaGyqwQuA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZm3P52ub6fxdAObF/M/oHn7vkMjz6XgQw2/KVhbVcoe9s9hhIgP8OapomphUrsR3gVxziY285xFQaCQAPCFZFUnmi8Rkddq/Q7u19w4EyX6uoLi9jBPLqo/V5dnivkw2/MnT1ISs7BId7RN4gmYTdHbNe9hrm4drbfudCI8AOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HBwAy5Gs; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770760965; x=1802296965;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gWcmNKmtYUdITknuMcYCQG0X69MWxLuzvSKaGyqwQuA=;
+  b=HBwAy5GsiYMxXhBnIsLJkE4NNvcxybbBWckkOlVyxykx6QKi3z8uw4MN
+   aZehAW5AWBgrVxlYmBoQeY6iNvMsWFGmCKYjJzriFbuW7VHY+NnCj8PuT
+   ncg9WelMGBbLd7WIrmP97gz+q2fM+7y03hNXn6nSL884iKgmg6tCv9ORV
+   snYv126Sm2IHrVuOD7JcB7ngizT4G7j1y8WymcSNVnT99aG5msDnyWhhZ
+   jO81oRVFSJGeZc3Wm38zgMkWhq1sTfysQmbi5Kc4H9tF9zU87e/3RH5KZ
+   LKNP4RqC08xBFZwNOiGwYlKtgeDnktxzDKHx+Yt1T8bQLTPRU8HjaS15G
+   w==;
+X-CSE-ConnectionGUID: 97pZj56TRLy/1dmcI6vFMQ==
+X-CSE-MsgGUID: xQRDTbxfRZCmm3V5yLoylQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="70918915"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="70918915"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 14:02:44 -0800
+X-CSE-ConnectionGUID: jHV6+9qQRBOc//sOcFYNeA==
+X-CSE-MsgGUID: HPI+9c58ScmMeFkPnyM9cg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="211875646"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.164])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 14:02:42 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 8073A121D37;
+	Wed, 11 Feb 2026 00:02:57 +0200 (EET)
+Date: Wed, 11 Feb 2026 00:02:57 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] device property: Allow secondary lookup in
+ fwnode_get_next_child_node()
+Message-ID: <aYurEV6kKQfI3cs8@kekkonen.localdomain>
+References: <20260210135822.47335-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable <stable@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Jens Axboe <axboe@kernel.dk>
-Subject: 6.12-stable inclusion request
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260210135822.47335-1-andriy.shevchenko@linux.intel.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.56 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
-	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215695-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linux.intel.com,linuxfoundation.org,kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-215694-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	HAS_ATTACHMENT(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 18B2311F947
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 3BBC711F960
 X-Rspamd-Action: no action
 
-This is a multi-part message in MIME format.
---------------3riiYxJ775NHx0tlyS1Rjj0r
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Hi Andy,
 
-Hi,
+Thanks for the patch.
 
-See:
+On Tue, Feb 10, 2026 at 02:58:22PM +0100, Andy Shevchenko wrote:
+> When device_get_child_node_count() got split to the fwnode and device
+> respective APIs, the fwnode didn't inherit the ability to traverse over
+> the secondary fwnode. Hence any user, that switches from device to fwnode
+> API misses this feature. In particular, this was revealed by the commit
+> 1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
+> that effectively broke the GPIO enumeration on Intel Galileo boards.
+> Fix this by moving the secondary lookup from device to fwnode API.
+> 
+> Note, in general no device_*() API should go into the depth of the fwnode
+> implementation.
+> 
+> Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/base/property.c | 27 +++++++++++++--------------
+>  1 file changed, 13 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 6a63860579dd..8d9a34be57fb 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -797,7 +797,18 @@ struct fwnode_handle *
+>  fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+>  			   struct fwnode_handle *child)
+>  {
+> -	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
+> +	struct fwnode_handle *next;
+> +
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return NULL;
 
-https://github.com/axboe/liburing/issues/1530
+This test is already being done by fwnode_call_ptr_op() (via
+fwnode_has_op()) so I'd omit it here. That would probably be best put in
+another patch though. Up to you.
 
-for the reasonings here, but please add this patch to the 6.12-stable
-queue. Thanks!
+> +
+> +	/* Try to find a child in primary fwnode */
+> +	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
+> +	if (next)
+> +		return next;
+> +
+> +	/* When no more children in primary, continue with secondary */
+> +	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
+>  }
+>  EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
+>  
+> @@ -841,19 +852,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_available_child_node);
+>  struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+>  						 struct fwnode_handle *child)
+>  {
+> -	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+> -	struct fwnode_handle *next;
+> -
+> -	if (IS_ERR_OR_NULL(fwnode))
+> -		return NULL;
+> -
+> -	/* Try to find a child in primary fwnode */
+> -	next = fwnode_get_next_child_node(fwnode, child);
+> -	if (next)
+> -		return next;
+> -
+> -	/* When no more children in primary, continue with secondary */
+> -	return fwnode_get_next_child_node(fwnode->secondary, child);
+> +	return fwnode_get_next_child_node(dev_fwnode(dev), child);
+
+As the function becomes trivial, I'd move it to property.h.
+
+>  }
+>  EXPORT_SYMBOL_GPL(device_get_next_child_node);
+>  
 
 -- 
-Jens Axboe
+Kind regards,
 
-
---------------3riiYxJ775NHx0tlyS1Rjj0r
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-rw-recycle-buffers-manually-for-non-mshot-r.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-rw-recycle-buffers-manually-for-non-mshot-r.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
-
-RnJvbSBhMmQyYmFkNzQ4NWQyYWY4ZGM1NjRjODU2NTgzOWIyM2EzZjgyMDVkIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IFdlZCwgMjAgQXVnIDIwMjUgMjA6MDM6MzUgLTA2MDAKU3ViamVjdDogW1BBVENIXSBp
-b191cmluZy9ydzogcmVjeWNsZSBidWZmZXJzIG1hbnVhbGx5IGZvciBub24tbXNob3QgcmVh
-ZHMKCkNvbW1pdCBkOGUxZGVjMmY4NjBlZTQwNjIzNjA5YWE2YzRmMjJlMWVlNDU2MDVkIHVw
-c3RyZWFtLgoKVGhlIG1zaG90IHNpZGUgb2YgcmVhZHMgYWxyZWFkeSBkb2VzIHRoaXMsIGJ1
-dCB0aGUgcmVndWxhciByZWFkIHBhdGgKZG9lcyBub3QuIFRoaXMgbGVhZHMgdG8gbmVlZGlu
-ZyByZWN5Y2xpbmcgY2hlY2tzIHNwcmlua2xlZCBpbiB2YXJpb3VzCnNwb3RzIGluIHRoZSAi
-Z28gYXN5bmMiIHBhdGgsIGxpa2UgYXJtaW5nIHBvbGwuIEluIHByZXBhcmF0aW9uIGZvcgpn
-ZXR0aW5nIHJpZCBvZiB0aG9zZSwgZW5zdXJlIHRoYXQgcmVhZCByZWN5Y2xlcyBhcHByb3By
-aWF0ZWx5LgoKTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDI1MDgyMTAyMDc1
-MC41OTg0MzItOC1heGJvZUBrZXJuZWwuZGsKU2lnbmVkLW9mZi1ieTogSmVucyBBeGJvZSA8
-YXhib2VAa2VybmVsLmRrPgotLS0KIGlvX3VyaW5nL3J3LmMgfCAyICsrCiAxIGZpbGUgY2hh
-bmdlZCwgMiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvcncuYyBiL2lv
-X3VyaW5nL3J3LmMKaW5kZXggOTk2Y2Q0YmVjNDgyLi4xYTM4YjM1NzgzNjcgMTAwNjQ0Ci0t
-LSBhL2lvX3VyaW5nL3J3LmMKKysrIGIvaW9fdXJpbmcvcncuYwpAQCAtOTUzLDYgKzk1Myw4
-IEBAIGludCBpb19yZWFkKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBpbnQgaXNz
-dWVfZmxhZ3MpCiAJaWYgKHJldCA+PSAwKQogCQlyZXR1cm4ga2lvY2JfZG9uZShyZXEsIHJl
-dCwgaXNzdWVfZmxhZ3MpOwogCisJaWYgKHJlcS0+ZmxhZ3MgJiBSRVFfRl9CVUZGRVJTX0NP
-TU1JVCkKKwkJaW9fa2J1Zl9yZWN5Y2xlKHJlcSwgaXNzdWVfZmxhZ3MpOwogCXJldHVybiBy
-ZXQ7CiB9CiAKLS0gCjIuNTEuMAoK
-
---------------3riiYxJ775NHx0tlyS1Rjj0r--
+Sakari Ailus
 
