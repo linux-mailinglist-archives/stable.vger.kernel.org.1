@@ -1,246 +1,135 @@
-Return-Path: <stable+bounces-215859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKvTF0GfjGmPrgAAu9opvQ
-	(envelope-from <stable+bounces-215859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 16:24:49 +0100
+	id 2P8OAECkjGlhrwAAu9opvQ
+	(envelope-from <stable+bounces-215860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 16:46:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9391259C2
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 16:24:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD37125D31
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 16:46:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF72D3016C9B
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 15:22:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFAA83019503
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 15:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B342DE6FB;
-	Wed, 11 Feb 2026 15:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041BB318B93;
+	Wed, 11 Feb 2026 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Cr1D1YC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuFUBTPF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353D52DC35A
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 15:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770823321; cv=pass; b=IIROr6c1tjLsBAzm7cBgA4nmHHnRwMRGFJpjAnmXlye02zvyTpogGk1sDn0ISvsZ7eS5ZXTcb0mmxbviFEbQkybeFFkDvwrnEQnKdWAry5O/3lwzLf6NJCWxKWhuZ03sxDd22AootBfeYKc10c+YDDEZcLcJ+EkZqJkqPiay/oY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770823321; c=relaxed/simple;
-	bh=jKgnH55cP6rygXD28uxPooGQFmgnbRJFPJU7uSCkyCM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rLSDNDcD2iukn/GBFqJY9auKWgqHEHl08cFtaMGX7bE0J+58n1/pTsk/H87hrkZDFop6TlVMHGyLTWUQCvwghYYv6XOd5KpiRBbeBqGa5pskcfWhOsg7D6A55HiUmjcR9acxnFr7wEt3am/wyeh4WYpnHoMM3fGLwFio79i3Bao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Cr1D1YC4; arc=pass smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59de0b7c28aso2261602e87.1
-        for <stable@vger.kernel.org>; Wed, 11 Feb 2026 07:21:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770823318; cv=none;
-        d=google.com; s=arc-20240605;
-        b=R+1BbNYccpobn9OeZ9I112aCdwue0tGhKSdxA2dwiF8KTNvdecDD/fxgFD+SB0maDf
-         12uuONn5nqXfZDd0uhf3raJNZBohLnC7eOZQ+HQ/OWITV76ukV1pQ6edgvUIiQrXAtvy
-         9E6bo7kX68RvzLzma41iJBqo+zSbiimIuCtr9rJ2oIiWOHIr1eXgPL9LryohebOEwtGv
-         k5W4kZZegpgjZWSH1u1KuX9Xosz/vGHcjM+0IIfJsto6siB0CQHlw6H9XvVUeKy/yon1
-         XDeXuqmqzMruIYFvfNIF3MpxOzBLZsaSTMrZUTyQwGx6a/tA+nfVcgOvm3PtlDPM/JKg
-         b1aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=D8tEaQ6SYPSExfheur4wSJ9KP74RCbKGRXJfEtk6eHc=;
-        fh=YdWRdLX2hN6qHtVjIuj5Voiv2GJ0Cl9Zbu0+GvrlEDQ=;
-        b=Nqa1sCMkd9OjqBcyr5EoWZCA0HNosPzynWOhePummNGVCMXaHPL9zBOApO0fHrwEhr
-         hmLk7KPo1gJUt/fhTr2l0w3/uvOQK/gvDoiWwAYdeEW30qP7dKeaIwmGCe9DbQnyJdyq
-         hbL3+4P/mlCggwh0clL/zoQ3R4pRoJK7+GcLeZBPQYLQoJ28A5Vz/7tSmPgUcU43RLgQ
-         ZSUOzkzREcjjn1ep8alsdJj5unFubPOOuOapuDmFplBIeRKpG4OuY1QIei5Sx/zfS+XF
-         FXcVQDJBb3HJVmQTek9QOeVensvs/OrIEq11pe5KgcGfsuy4/i1AQ2k/3AiGSzHa5tsp
-         KJJA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770823318; x=1771428118; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D8tEaQ6SYPSExfheur4wSJ9KP74RCbKGRXJfEtk6eHc=;
-        b=Cr1D1YC4J51agWTPL3i2QI3a3E5aaDqXAbF2wi8RF4s3N+Xzy4Ze/Ly/z6TihKlccb
-         OaOVvyXVjAoKjFETbl1jcmIb+Bt8raHH0pAla3QWpUlVcrfM5CxmY0NrWNLlZh4mRMMO
-         lAtdulLRC2DOvb1kqlEUgxpwEBkMYJh89Ds6k7Jhm2RpS9f1Wt7fag9dsXf0YpCVl35b
-         iWOPwjwiOyBjKBkQtf1rA22IZ32ni7b+lpEKMauXFbk4pQBQ6xnR0YLKwIhCvesZ00N3
-         NOc+0MakQtxK8EzudQ9QkA/OBspcxIrQNXDbXFFTfBRWMYQpSd3MM534CNdzXPDhTn+b
-         Ojcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770823318; x=1771428118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=D8tEaQ6SYPSExfheur4wSJ9KP74RCbKGRXJfEtk6eHc=;
-        b=Fk2R+LTf1ZvH0ll3ML6GCK57JPAz3+aYZ2zeFlixwDzeC7/Km0MeAriwM2x1QuH5V+
-         N/SmgkszSfJJLR49uDLZOd0AFYlcj7zPaHd6pCUGHt8hX8vxvu59zGerb03o9JpaBvAM
-         /pElcWhplDAelphOGmhjws0SFD6iZAe1r2Ew/0/NmcAoXCgPtS4q4mMbmtukIfEaNbPD
-         LGBvdXYpIrxcm2yYV63pixjaXIoVhL07ZIyvXcCoh6y0++QDOGLDH5VRxx55V9h5waiO
-         c1SlBVCHdHaPp5N+yH1fhsWDfiWVr8i9ZXvnv1Xf3oM4pvD+N+zThlkBb0s6AVdYL3Sl
-         8d0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXysTnyKTzbhv8asd/FF27nVW9QGrXYOqfpqIzko2gQvjQ14Bn4YHCzFvblL450EMcrXkb6nDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4AmZ2Uq1VfSW8aWRF3bKCSl//ySqATxgECKtmHCdu58rCAC9B
-	X057b41IblEhUDhqfCGPYR4chlQ0zPir02iF1wE3U/97m9kJjxMMC//kBjbKNNv35AXMaf1dxOv
-	9hbtYFHNJh7oqeXEjkSW/JdK2nvbKTqvFPto+G3INLQ==
-X-Gm-Gg: AZuq6aLiuq6LNp8D96Iu4xVaz2nTz6mEXNZiMBYXfD4vAamIg64BFDsZ/jQJgolIYmT
-	cZXf0b90+wLTYQq1BGSvqGzuHVjtw4z9rIbJq04T1GVwvkezQQpkR9899XG7p2O+kFROs6y6bsr
-	OgWo9VGAr8UKzXVh+Ho20ynp3gb/DQuY4R7nFELGCPrPWQNze20ZvQ9oCACWNcRdCMZNBGbtSwe
-	b2hXNPo68TxqcQf6tVfsTzTczBW+Gq7TNH9p0qvJEYzkHugLSbp1VbXgaXqJth8NOkShW5GFn0d
-	hTgXn+Da
-X-Received: by 2002:a05:6512:15a9:b0:59d:e5dd:2bf8 with SMTP id
- 2adb3069b0e04-59e45043c8bmr6830204e87.4.1770823318175; Wed, 11 Feb 2026
- 07:21:58 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E757319843
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 15:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770824764; cv=none; b=bhDCm6hHZGn80m8DYp3mlRujT+WL7H/eZ/VPdEURKuYTZeBxPN0snFoFea3ag4kue7wuk2K/eqV1fpnb5M1Nf2vHpz0ZKws8D/pr67w5ys/CSA1JQ+eEPRyBC7o5ys6FIIPc/RlO8B3xBAW+Mahs9fbe1dUwXP3vm1E/oF05EqY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770824764; c=relaxed/simple;
+	bh=XrwKN175hff0plPZmnLVi7V45tlCeXlbQzwGtKr28VA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uHy2iBH6Rs4sn4OY5DF94k9vgAliq1NImHukpOlrUNtuqQwhRHGDFH1I9wvygFwPnKDg5P/yDZYUFuP9P6GYJ2imVvTxHVu9nPETiQqIm8rTzo0TEkUydwVw0jG5k8ZlaeSfKRhDyQhvNVy9dFR1REhTIwKjuWN17DmPWCyUVw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuFUBTPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A58C4CEF7;
+	Wed, 11 Feb 2026 15:46:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770824763;
+	bh=XrwKN175hff0plPZmnLVi7V45tlCeXlbQzwGtKr28VA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QuFUBTPFLATFHUIKdlVZRiJWVKKbrEXM+Zcyfw/g2NsPGtcE2p7z/ZTJDaiDONfsZ
+	 Z+ynbQwe2h2BLhKabGU7JHAFJiu102QsxY0tDCZ4uJ/YyafWVLTqdy1dVD2XAotT0u
+	 NfGbS+Hrb2tn64JI8ek6kAgy5UbHAlEvHvyAOiAk=
+Date: Wed, 11 Feb 2026 16:45:59 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: stable@vger.kernel.org, broonie@kernel.org, lgirdwood@gmail.com,
+	niranjan.hy@ti.com, patches@opensource.cirrus.com
+Subject: Re: [PATCH] ASoC: ops: fix snd_soc_get_volsw for sx controls
+Message-ID: <2026021111-lecturer-heap-aab2@gregkh>
+References: <20260211152032.1075568-1-ckeepax@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260206-imx8mm_gpu_power_domain-v4-1-52fb603da502@nxp.com>
-In-Reply-To: <20260206-imx8mm_gpu_power_domain-v4-1-52fb603da502@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 11 Feb 2026 16:21:21 +0100
-X-Gm-Features: AZwV_Qh6uuJ5R6yExA5NxdnwgpEPG3g1Bp9Nwj2TBDZ8Mr0Gl4mQPg_5pQZVBWI
-Message-ID: <CAPDyKFqkXBa=9qW0rd4=Cf2gjVAVDw3No5DbnSQ4OFuze00Yfg@mail.gmail.com>
-Subject: Re: [PATCH v4] pmdomain: imx: gpcv2: Fix the imx8mm gpu hang due to
- wrong adb400 reset
-To: Jacky Bai <ping.bai@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Lucas Stach <l.stach@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, stable@vger.kernel.org, 
-	Philipp Zabel <p.zabel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260211152032.1075568-1-ckeepax@opensource.cirrus.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215859-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215860-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,pengutronix.de,gmail.com,linuxfoundation.org,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	TAGGED_RCPT(0.00)[stable,dt];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,ti.com,opensource.cirrus.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:dkim,nxp.com:email,pengutronix.de:email]
-X-Rspamd-Queue-Id: BE9391259C2
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,cirrus.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4FD37125D31
 X-Rspamd-Action: no action
 
-On Fri, 6 Feb 2026 at 15:42, Jacky Bai <ping.bai@nxp.com> wrote:
->
-> On i.MX8MM, the GPUMIX, GPU2D, and GPU3D blocks share a common reset
-> domain. Due to this hardware limitation, powering off/on GPU2D or GPU3D
-> also triggers a reset of the GPUMIX domain, including its ADB400 port.
-> However, the ADB400 interface must always be placed into power=E2=80=91do=
-wn mode
-> before being reset.
->
-> Currently the GPUMIX and GPU2D/3D power domains rely on runtime PM to
-> handle dependency ordering. In some corner cases, the GPUMIX power off
-> sequence is skipped, leaving the ADB400 port active when GPU2D/3D reset.
-> This causes the GPUMIX ADB400 port to be reset while still active,
-> leading to unpredictable bus behavior and GPU hangs.
->
-> To avoid this, refine the power=E2=80=91domain control logic so that the =
-GPUMIX
-> ADB400 port is explicitly powered down and powered up as part of the GPU
-> power domain on/off sequence. This ensures proper ordering and prevents
-> incorrect ADB400 reset.
->
-> Fixes: 055467378bf1 ("driver core: Enable fw_devlink=3Drpm by default")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Lucas Stach <l.stach@pengutronix.de>
-> Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-> Tested-by: Philipp Zabel <p.zabel@pengutronix.de>
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-
-This doesn't apply cleanly on my next branch, can you please rebase
-and re-submit a new version?
-
-Kind regards
-Uffe
-
+On Wed, Feb 11, 2026 at 03:20:32PM +0000, Charles Keepax wrote:
+> From: Stefan Binding <sbinding@opensource.cirrus.com>
+> 
+> [ Upstream commit 095d621141826a2841dae85b52c784c147ea99d3 ]
+> 
+> SX controls are currently broken, since the clamp introduced in
+> commit a0ce874cfaaa ("ASoC: ops: improve snd_soc_get_volsw") does not
+> handle SX controls, for example where the min value in the clamp is
+> greater than the max value in the clamp.
+> 
+> Add clamp parameter to prevent clamping in SX controls.
+> The nature of SX controls mean that it wraps around 0, with a variable
+> number of bits, therefore clamping the value becomes complicated and
+> prone to error.
+> 
+> Fixes 35 kunit tests for soc_ops_test_access.
+> 
+> Fixes: a0ce874cfaaa ("ASoC: ops: improve snd_soc_get_volsw")
+> 
+> CC: stable@vger.kernel.org # 6.17
+> Co-developed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+> Tested-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+> Link: https://patch.msgid.link/20251216134938.788625-1-sbinding@opensource.cirrus.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 > ---
-> Changes in v4:
-> - Add the Fixes tag
-> - Link to v3: https://lore.kernel.org/r/20260123-imx8mm_gpu_power_domain-=
-v3-1-3752618050c9@nxp.com
->
-> Changes in v3:
-> - Fix the Suggested-by tag typo
-> - Link to v2: https://lore.kernel.org/r/20260120-imx8mm_gpu_power_domain-=
-v2-1-be10fd018108@nxp.com
->
-> Changes in v2:
-> - add prefix to patch subject as suggested by Krzysztof
-> - refine the patch to move the GPUMIX ADB400 into GPU power domain
-> - Link to v1: https://lore.kernel.org/r/20260119-imx8mm_gpu_power_domain-=
-v1-0-34d81c766916@nxp.com
-> ---
->  drivers/pmdomain/imx/gpcv2.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-> index b7cea89140ee8923f32486eab953c0e1a36bf06d..a829f8da5be70d0392276bd13=
-5fb7fc1bbf10496 100644
-> --- a/drivers/pmdomain/imx/gpcv2.c
-> +++ b/drivers/pmdomain/imx/gpcv2.c
-> @@ -165,13 +165,11 @@
->  #define IMX8M_VPU_HSK_PWRDNREQN                        BIT(5)
->  #define IMX8M_DISP_HSK_PWRDNREQN               BIT(4)
->
-> -#define IMX8MM_GPUMIX_HSK_PWRDNACKN            BIT(29)
-> -#define IMX8MM_GPU_HSK_PWRDNACKN               (BIT(27) | BIT(28))
-> +#define IMX8MM_GPU_HSK_PWRDNACKN               GENMASK(29, 27)
->  #define IMX8MM_VPUMIX_HSK_PWRDNACKN            BIT(26)
->  #define IMX8MM_DISPMIX_HSK_PWRDNACKN           BIT(25)
->  #define IMX8MM_HSIO_HSK_PWRDNACKN              (BIT(23) | BIT(24))
-> -#define IMX8MM_GPUMIX_HSK_PWRDNREQN            BIT(11)
-> -#define IMX8MM_GPU_HSK_PWRDNREQN               (BIT(9) | BIT(10))
-> +#define IMX8MM_GPU_HSK_PWRDNREQN               GENMASK(11, 9)
->  #define IMX8MM_VPUMIX_HSK_PWRDNREQN            BIT(8)
->  #define IMX8MM_DISPMIX_HSK_PWRDNREQN           BIT(7)
->  #define IMX8MM_HSIO_HSK_PWRDNREQN              (BIT(5) | BIT(6))
-> @@ -794,8 +792,6 @@ static const struct imx_pgc_domain imx8mm_pgc_domains=
-[] =3D {
->                 .bits  =3D {
->                         .pxx =3D IMX8MM_GPUMIX_SW_Pxx_REQ,
->                         .map =3D IMX8MM_GPUMIX_A53_DOMAIN,
-> -                       .hskreq =3D IMX8MM_GPUMIX_HSK_PWRDNREQN,
-> -                       .hskack =3D IMX8MM_GPUMIX_HSK_PWRDNACKN,
->                 },
->                 .pgc   =3D BIT(IMX8MM_PGC_GPUMIX),
->                 .keep_clocks =3D true,
->
-> ---
-> base-commit: 0f853ca2a798ead9d24d39cad99b0966815c582a
-> change-id: 20260113-imx8mm_gpu_power_domain-56c22ce012a1
->
-> Best regards,
-> --
-> Jacky Bai <ping.bai@nxp.com>
->
+> 
+> This is a necessary fix to an earlier change that broke SX ALSA controls
+> (see fixes tag), this causes volumes to get set incorrectly on several
+> production laptops. It has already been backported to 6.18 stable, however
+> seems to have been missed on 6.17. I suspect it was missed due to a
+> minor conflict that I have resolved here.
+
+6.17.y is long end-of-life, there is nothing we can do there anymore,
+please do not use that kernel tree at this time.  Always look at the
+front page of kernel.org for the information about what branches are
+still under development, and what ones are not.
+
+thanks,
+
+greg k-h
 
