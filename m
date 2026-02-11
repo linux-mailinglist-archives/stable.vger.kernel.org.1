@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-215870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNnzAFTUjGm+tgAAu9opvQ
-	(envelope-from <stable+bounces-215870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:16 +0100
+	id MH5mDlfUjGm+tgAAu9opvQ
+	(envelope-from <stable+bounces-215871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D66127121
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC3E127128
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85F053090B2A
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:07:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEBBE3020017
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5211526B2CE;
-	Wed, 11 Feb 2026 19:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99851352FBF;
+	Wed, 11 Feb 2026 19:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdmjTZNv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNtsY1Iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1418B303A35;
-	Wed, 11 Feb 2026 19:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594EA346ADC;
+	Wed, 11 Feb 2026 19:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770836820; cv=none; b=qokhCJoDE4TgwFT10/sZVbyl4/rkasuVj5AMIpDIhT4RmG16exSOtXAndgl6UJgCbfd/eHLrlUKqwVps0OpKs63FUq6niMWF9pUHM5UQ85xK4OfHdNsRggyqxNMnJUJXSsGd8qGWXk98pN7CGSAdHvOzUAgP5RMaTSQIQ6pvPMo=
+	t=1770836822; cv=none; b=BIclupD32rKanEjG/5GM6UkrB59jcG5YLrVN9Gr6U9pNioJ/siw0ms9xS4p89I5G4TnIzuuDYHAHkHbsJvchV0gvL5iZ3ks08US+RET4FrJAIVmZanHmdD1hzoXIOYWdm4FKuDegqz9Cv8cwzZ+hcLx5gv8p6/rp9r3Zyn13krQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770836820; c=relaxed/simple;
-	bh=rMABZ5ULTsN0/8tg3HM626ypUOFeIMxiTKhtnZu4SKc=;
+	s=arc-20240116; t=1770836822; c=relaxed/simple;
+	bh=VMMvFuctzIugS+JOh0W1dLNT4/NhATHAqY0+7G6/H3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxwWvYm4cHZaPYuVPpj1lyc6DLVHctQ81P07crvO2PklvhAtDNWeiE4h8MrFbXWTz+NndVcvenOUuBUAU9+KmHn6DEu6jUqY2Qw3g3A8qBoJ+0+R0uZF578evA8CzZec+A7xJ51Rtylf1rBbps02FwRBbpNsLQAIdg60Zb/I0QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdmjTZNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FC0C19423;
-	Wed, 11 Feb 2026 19:06:58 +0000 (UTC)
+	 MIME-Version; b=GLzKIzvQda0ov9zxgxsXM+KHTgPtlSGqTVqpaLPLoYJxW9oBdwIvowb0mJ0aXdczM68zzF+Xuh4Gs33YHK/FyVGu4t8vdqyteaUmEis3ewfHWsLsJoxWiIHEULX5DEDWwluGMjg6v3pi3ZJOczYPBeU3YRY8g/07c5Lpw7DQ0UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNtsY1Iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B255C19424;
+	Wed, 11 Feb 2026 19:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770836819;
-	bh=rMABZ5ULTsN0/8tg3HM626ypUOFeIMxiTKhtnZu4SKc=;
+	s=k20201202; t=1770836821;
+	bh=VMMvFuctzIugS+JOh0W1dLNT4/NhATHAqY0+7G6/H3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdmjTZNvzZ15iJ9pcgo7W1JzsO4Xi8iyVSe0VFVQBUGJLOOLv+01Zv+wyjpl+p006
-	 vPZImeO7gYAIs1BbYTP0j1t4LYtcsa0ew8ZfJQ64KFTj9vOnTfe4FSTSDrcUpEQO5C
-	 OM6NMHWjSX6Bw1eMdItL/EhimX3dgZUiZzKXOMgczmMN/XMRDvcah2rox9FyO0sA1n
-	 GrpDIrj3ohwPMITz6MEr/Koe7ls+noNFpvD2XBdqA2jIklEY7/8HSo2VEJuf4Z7RfU
-	 uXwjC7JgryQJB9ZOBZSTbErO7GG546QFj/zsSk08RVJuUyuSccXG7Ir9KSBL4/4nU0
-	 E0NthlffJB4Jw==
+	b=PNtsY1Iz+XjvKQy7n5hdrcRR3g2en9OV2UP0XOF/2Lz3ZNMAHqDeKgv0Tv04sVuLc
+	 J+ZTlGf3bFdDSL/KlEpJM6ZhezkqEZ7OFaOpNruNruWEyoY382o+lZulB/mJEG5mob
+	 muY+CtObhn6oP7nWrrbUqEl5QoD57gWXHq1wRnaI0W+q52eFrAXXllNe2kJzhCQvkx
+	 E/u8FYclEipnqvrxn1Gf+i+ZXNLJr6HxVoUFbaXwekwW0kbYlDCGHs9PmfGPSiPi/e
+	 B3b/855lx4cBtfioJKA3no9h0NBFiNAfyKHUcU19Pk4OQ/AblXvaowCvMTE2LXITX0
+	 HE0k+IgHm5VWg==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	sashal@kernel.org,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.1.y 3/6] mptcp: ensure context reset on disconnect()
-Date: Wed, 11 Feb 2026 20:06:21 +0100
-Message-ID: <20260211190617.77192-11-matttbe@kernel.org>
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1.y 4/6] selftests: mptcp: check no dup close events after error
+Date: Wed, 11 Feb 2026 20:06:22 +0100
+Message-ID: <20260211190617.77192-12-matttbe@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211190617.77192-8-matttbe@kernel.org>
 References: <20260211190617.77192-8-matttbe@kernel.org>
@@ -63,157 +64,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5474; i=matttbe@kernel.org; h=from:subject; bh=w+gVDIMZ7MyhCPB9jDcoWtrmZeRTY8/GXkykQ/ll+k8=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ7LusZ+7yU+/+55MaiN14N5w6Vn81j2tWcPHuaXNWG7 GeWSma8HaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABO5Ls3IsG3FF1slpWn/Qntb phrnLz14TYLpYXip99F9533/PTZ/ksTI0H3bXyln8tQ7yjuOxEmd3Or8NqPP6oXl2d1CIUIaN1+ fYwQA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5019; i=matttbe@kernel.org; h=from:subject; bh=VMMvFuctzIugS+JOh0W1dLNT4/NhATHAqY0+7G6/H3I=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ7LuuvLD3ct6AiJa/3KotP0JU7ctzVHnPUT86L/FS2w uuxxqLmjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIlsNGf4p/XHb/nFzvKfii4T FwQn/hKZ5z9Rf8aUI199GPedrv6zz5KR4Vf97ZCjubOl34t0P32ctnmx4WuvLCf7DSzpLNJJW6Y IcwEA
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215870-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215871-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 58D66127121
+X-Rspamd-Queue-Id: 9DC3E127128
 X-Rspamd-Action: no action
 
-From: Paolo Abeni <pabeni@redhat.com>
+commit 8467458dfa61b37e259e3485a5d3e415d08193c1 upstream.
 
-commit 86730ac255b0497a272704de9a1df559f5d6602e upstream.
+This validates the previous commit: subflow closed events are re-sent
+with less info when the initial subflow is disconnected after an error
+and each time a subflow is closed after that.
 
-After the blamed commit below, if the MPC subflow is already in TCP_CLOSE
-status or has fallback to TCP at mptcp_disconnect() time,
-mptcp_do_fastclose() skips setting the `send_fastclose flag` and the later
-__mptcp_close_ssk() does not reset anymore the related subflow context.
+In this new test, the userspace PM is involved because that's how it was
+discovered, but it is not specific to it. The initial subflow is
+terminated with a RESET, and that will cause the subflow disconnect.
+Then, a new subflow is initiated, but also got rejected, which cause a
+second subflow closed event, but not a third one.
 
-Any later connection will be created with both the `request_mptcp` flag
-and the msk-level fallback status off (it is unconditionally cleared at
-MPTCP disconnect time), leading to a warning in subflow_data_ready():
+While at it, in case of failure to get the expected amount of events,
+the events are printed.
 
-  WARNING: CPU: 26 PID: 8996 at net/mptcp/subflow.c:1519 subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Modules linked in:
-  CPU: 26 UID: 0 PID: 8996 Comm: syz.22.39 Not tainted 6.18.0-rc7-05427-g11fc074f6c36 #1 PREEMPT(voluntary)
-  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-  RIP: 0010:subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Code: 90 0f 0b 90 90 e9 04 fe ff ff e8 b7 1e f5 fe 89 ee bf 07 00 00 00 e8 db 19 f5 fe 83 fd 07 0f 84 35 ff ff ff e8 9d 1e f5 fe 90 <0f> 0b 90 e9 27 ff ff ff e8 8f 1e f5 fe 4c 89 e7 48 89 de e8 14 09
-  RSP: 0018:ffffc9002646fb30 EFLAGS: 00010293
-  RAX: 0000000000000000 RBX: ffff88813b218000 RCX: ffffffff825c8435
-  RDX: ffff8881300b3580 RSI: ffffffff825c8443 RDI: 0000000000000005
-  RBP: 000000000000000b R08: ffffffff825c8435 R09: 000000000000000b
-  R10: 0000000000000005 R11: 0000000000000007 R12: ffff888131ac0000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f88330af6c0(0000) GS:ffff888a93dd2000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f88330aefe8 CR3: 000000010ff59000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   tcp_data_ready (net/ipv4/tcp_input.c:5356)
-   tcp_data_queue (net/ipv4/tcp_input.c:5445)
-   tcp_rcv_state_process (net/ipv4/tcp_input.c:7165)
-   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1955)
-   __release_sock (include/net/sock.h:1158 (discriminator 6) net/core/sock.c:3180 (discriminator 6))
-   release_sock (net/core/sock.c:3737)
-   mptcp_sendmsg (net/mptcp/protocol.c:1763 net/mptcp/protocol.c:1857)
-   inet_sendmsg (net/ipv4/af_inet.c:853 (discriminator 7))
-   __sys_sendto (net/socket.c:727 (discriminator 15) net/socket.c:742 (discriminator 15) net/socket.c:2244 (discriminator 15))
-   __x64_sys_sendto (net/socket.c:2247)
-   do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  RIP: 0033:0x7f883326702d
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Address the issue setting an explicit `fastclosing` flag at fastclose
-time, and checking such flag after mptcp_do_fastclose().
-
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
+Fixes: d82809b6c5f2 ("mptcp: avoid duplicated SUB_CLOSED events")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-2-d1f9fd1c36c8@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in protocol.[ch] because the context has changed. ]
+Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-2-7f71e1bc4feb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because in this version, commit
+  20ccc7c5f7a3 ("selftests: mptcp: join: validate event numbers") has
+  been backported with adaptations to display results correctly, see
+  commit 5dc9170eee96 ("selftests: mptcp: join: validate event numbers")
+  for more details. The same type of adaptations had to be made here as
+  well, plus importing a few additional helpers: userspace_pm_add_sf,
+  evts_get_info and get_info_value. ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/protocol.c | 9 ++++++---
- net/mptcp/protocol.h | 3 ++-
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 79 +++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index ad0bfdd308be..5274b19a5dbd 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2456,10 +2456,10 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
-  */
- static void __mptcp_subflow_disconnect(struct sock *ssk,
- 				       struct mptcp_subflow_context *subflow,
--				       unsigned int flags)
-+				       bool fastclosing)
- {
- 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    subflow->send_fastclose) {
-+	    fastclosing) {
- 		/* The MPTCP code never wait on the subflow sockets, TCP-level
- 		 * disconnect should never fail
- 		 */
-@@ -2511,7 +2511,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 9f73297b69da..f5ae51dcf811 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3183,6 +3183,35 @@ fail_tests()
+ 	fi
+ }
  
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
--		__mptcp_subflow_disconnect(ssk, subflow, flags);
-+		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
- 		if (msk->subflow && ssk == msk->subflow->sk)
- 			msk->subflow->state = SS_UNCONNECTED;
- 		release_sock(ssk);
-@@ -2802,6 +2802,8 @@ static void mptcp_do_fastclose(struct sock *sk)
- 	struct mptcp_subflow_context *subflow, *tmp;
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
-+	msk->fastclosing = 1;
++# get the value of keyword $1 in the line marked by keyword $2
++get_info_value() {
++	grep "${2}" 2>/dev/null |
++		sed -n 's/.*\('"${1}"':\)\([0-9a-f:.]*\).*$/\2/p;q'
++		# the ';q' at the end limits to the first matched entry.
++}
 +
- 	/* Explicitly send the fastclose reset as need */
- 	if (__mptcp_check_fallback(msk))
- 		return;
-@@ -3290,6 +3292,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- 	WRITE_ONCE(msk->csum_enabled, mptcp_is_checksum_enabled(sock_net(sk)));
- 	mptcp_pm_data_reset(msk);
- 	mptcp_ca_reset(sk);
-+	msk->fastclosing = 0;
++# $1: info name ; $2: evts_ns ; [$3: event type; [$4: addr]]
++evts_get_info() {
++	grep "${4:-}" "${2}" 2>/dev/null |
++		get_info_value "${1}" "^type:${3:-1},"
++}
++
++# $1: ns ; $2: addr ; $3: id
++userspace_pm_add_sf()
++{
++	local evts=$evts_ns1
++	local tk da dp
++
++	[ "$1" == "$ns2" ] && evts=$evts_ns2
++	tk=$(evts_get_info token "$evts")
++	da=$(evts_get_info daddr4 "$evts")
++	dp=$(evts_get_info dport "$evts")
++
++	ip netns exec $1 ./pm_nl_ctl csf lip $2 lid $3 \
++				rip $da rport $dp token $tk
++	sleep 1
++}
++
+ # $1: ns ; $2: event type ; $3: count
+ chk_evt_nr()
+ {
+@@ -3204,11 +3233,32 @@ chk_evt_nr()
+ 		echo "[fail] got $count events, expected $exp"
+ 		fail_test
+ 		dump_stats
++		cat "${evts}"
+ 	else
+ 		echo "[ ok ]"
+ 	fi
+ }
  
- 	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sk_error_report(sk);
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 6575712c789e..dd5070d57d74 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -289,7 +289,8 @@ struct mptcp_sock {
- 			nodelay:1,
- 			fastopening:1,
- 			in_accept_queue:1,
--			free_first:1;
-+			free_first:1,
-+			fastclosing:1;
- 	int		keepalive_cnt;
- 	int		keepalive_idle;
- 	int		keepalive_intvl;
++# $1: ns ; $2: event type ; $3: expected count
++wait_event()
++{
++	local ns="${1}"
++	local evt_name="${2}"
++	local exp="${3}"
++
++	local evt="${!evt_name}"
++	local evts="${evts_ns1}"
++	local count
++
++	[ "${ns}" == "ns2" ] && evts="${evts_ns2}"
++
++	for _ in $(seq 100); do
++		count=$(grep -cw "type:${evt}" "${evts}")
++		[ "${count}" -ge "${exp}" ] && break
++		sleep 0.1
++	done
++}
++
+ userspace_tests()
+ {
+ 	# userspace pm type prevents add_addr
+@@ -3302,6 +3352,35 @@ userspace_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_rm_nr 0 1
+ 	fi
++
++	# userspace pm no duplicated spurious close events after an error
++	if reset_with_events "userspace pm no dup close events after error" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
++		set_userspace_pm $ns2
++		pm_nl_set_limits $ns1 0 2
++		run_tests $ns1 $ns2 10.0.1.1 128 0 0 slow 2>/dev/null &
++		local tests_pid=$!
++		wait_event ns2 MPTCP_LIB_EVENT_ESTABLISHED 1
++		userspace_pm_add_sf $ns2 10.0.3.2 20
++		chk_subflow_nr needtitle "new subflow" 2
++
++		# force quick loss
++		ip netns exec $ns2 sysctl -q net.ipv4.tcp_syn_retries=1
++		if ip netns exec "${ns1}" ${iptables} -A INPUT -s "10.0.1.2" \
++		      -p tcp --tcp-option 30 -j REJECT --reject-with tcp-reset &&
++		   ip netns exec "${ns2}" ${iptables} -A INPUT -d "10.0.1.2" \
++		      -p tcp --tcp-option 30 -j REJECT --reject-with tcp-reset; then
++			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 1
++			wait_event ns1 MPTCP_LIB_EVENT_SUB_CLOSED 1
++			chk_subflow_nr "" "after reject" 1
++			userspace_pm_add_sf $ns2 10.0.1.2 0
++			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
++			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
++		fi
++		kill_wait "${tests_pid}"
++		kill_events_pids
++		kill_tests_wait
++	fi
+ }
+ 
+ endpoint_tests()
 -- 
 2.51.0
 
