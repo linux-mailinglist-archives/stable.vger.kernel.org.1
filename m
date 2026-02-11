@@ -1,221 +1,208 @@
-Return-Path: <stable+bounces-215885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ESAO8kIjWnzxwAAu9opvQ
-	(envelope-from <stable+bounces-215885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 23:55:05 +0100
+	id 6EVmAl4KjWmLyAAAu9opvQ
+	(envelope-from <stable+bounces-215886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 00:01:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359151282F7
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 23:55:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56016128352
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 00:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D4D193022C15
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 22:55:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9888F30804C3
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 23:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035D8347FDE;
-	Wed, 11 Feb 2026 22:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E17433A9EF;
+	Wed, 11 Feb 2026 23:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="itSvhTyf"
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=mhklkml@zohomail.com header.b="J1dOAx8m"
 X-Original-To: stable@vger.kernel.org
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010004.outbound.protection.outlook.com [52.101.46.4])
+Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41AC34C81E
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 22:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7A32FFF94;
+	Wed, 11 Feb 2026 23:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770850499; cv=fail; b=QcL7me3Q7WY2cYNaKbhrZaXIYqmHFpr5DD3+RiQm+xv4oJp291O/EEbSZAiieR/ZLQzPtPXcrj77jA7S8CBqDca2Myb/C8clckQ/5kWfo1KbDusM44wmJtwguuGQ0ifuo5YZ7BtKZY3V3Obx8L7D5YAGDCQ0W0GFH3NSaZUlQUU=
+	t=1770850894; cv=pass; b=OE+s6B4JOToLkT9m3Z4/ZuGEWKe5R0IHPlsOD/ntPjmlt4QzaeALGHg3ORpusUaDWw9Z+JiJ5JmIWDEFHPO8WKAlZk19GQd+J5PRiJptqCDaR/elLe4bsXCtjkvPCbP+GqDRw8HvnOwyilfS2GccMmHi+iEGpuRtu66v2UIvIJs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770850499; c=relaxed/simple;
-	bh=NiVRjZ1MuRMb1Z0XieBCtEuukeb+C+3voUN1fjEVwpk=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=h2VXkc3LY/ZOkryGU1QwU1/ifaZS8kvLiLsg6+wiBCgRp8w3jZl1zp7nb+Z4vizH6PUkSwfKlroZfhZECb8hOL0Rk3WJILDBQWLa3BfrzdRaW5XDLaS92kUvYOfSnxXPKiISbCifrfa4Ccz7m1Oal9FjOde2+67uZRLEPQWVhDY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=itSvhTyf; arc=fail smtp.client-ip=52.101.46.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YUDqfjEnWdtU/5mf5pdTCGO1NPDO7TzEQADb+zvH/1tbrfqgr6dbcDZzSqOVsQAnzEkY1Qs+3x1YyQUO/FiLv9i4PVdS+QthvWS0lJJkWbHVFznRFFEjk/d7yfR2rT1kkKxJ+6OpkPpX0NtCt6Lg0qNvGlG+IzSie59NZAsSnw2zD7Pzbg3VUful0dYXfhd5UXxEYTfU6uE8pzdFuab5dQ3RaOnCSPSs/OWus0tUz5N6ds7iXjCfV2HBGqnfOItZQoSoVGpeqJZMYqZTT6ac9C3/MwCK4qRuqMEK6jtU6sz4ldIjMBItYuaA2ehvS9NKnOWpexGy9Vw1hi0obLBhVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xhxp542lADX2QxvxB63nfRpaT0d8Qi4JSYHEHkrkfGc=;
- b=ufwL+btGnM8T6RyQplMaCZGCEV1mT+7Qwex4xSwIW9J9A7hYDixcPJrVz4Y+OD5OR0YYXhayOnCay0/yw7o17gjDErGd8wgxGilJ9Woq9DaqMMYsik1FnhQOzdXUaxYoSmqpKQ8psaDtnoPHtM+YzWoZ10tCk3zfIqrmxuat4DsgvNa087EHJKhJRbX4TBO+CL7vFAr/kUS8fQK4VEaQLYYCFkPi3S/eTt5KS8oUWN4GYPtSqBZiivd2MXE+IBoRkRtkSvpj2BHaw/tGTiUKdEEldXSCuW7F22r6cWhBU2mlkXf019eBOAfmKnKs09s0kbs2QDaG5pVBawFmGPnvgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xhxp542lADX2QxvxB63nfRpaT0d8Qi4JSYHEHkrkfGc=;
- b=itSvhTyfEzJXOswfhdsulg9nCttlWO3D8im3GsZ6+bFBm9E/HW8unJBhfOhA/rpYu20/YWuKy6t5T17aY4+6C3L776wXqH9IPtKgS+M/mrEg+OmhuHJpXNRg60ilVU3E++7DrdHy2MZoxE8agdYDpwelzJYs3NUmKN32febpiXMOohXtwRsfmsLxSR9P/MiB5HAKeSXnFW4yxpzWl7nDdCqN+9MTdx3AZA1TZudnlWk/1JdkfFDZ8Bc/iLNGb2YeDjPJeL0Sw42q4c+NLRBOak1GgEV9PsBZCnLFeANLwstPUUu4X6c9UBPMmRFE5PNVmOuJ4+GyBPtfsL+Wu2oylg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- SJ5PPFF6E64BC2C.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9aa) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Wed, 11 Feb
- 2026 22:54:55 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9611.008; Wed, 11 Feb 2026
- 22:54:55 +0000
-Date: Thu, 12 Feb 2026 09:54:50 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Thomas =?utf-8?B?SGVsbHN0csOvwr/CvW0=?= <thomas.hellstrom@linux.intel.com>, 
-	intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>, 
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Brost <matthew.brost@intel.com>, 
-	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v5] mm: Fix a hmm_range_fault() livelock / starvation
- problem
-Message-ID: <vfviexoy6uj6cifcbyezshgssomgu2f3jxpckjnapx5fzqb2bd@dpcaefu5m6du>
-References: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
- <20260211222303.42qfp6rqxxnpfkr4@offworld>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260211222303.42qfp6rqxxnpfkr4@offworld>
-X-ClientProxiedBy: SY5P282CA0126.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:209::16) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	s=arc-20240116; t=1770850894; c=relaxed/simple;
+	bh=GUl3h7KjSpNZpEq979Qr9acv+uhNIWB+2s0k6MB6TP4=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cTCrSU7jjsjoPGmZAPiXWv4i7wS8z+BysdFrNCdxRLJ/Qf15kGqD+6ekMjPqSdE7VaAOiJnKFWLg0UK9bcwUmoz4rQvg+uL39MUM/UwT76FUgQ0Q1wAj7iuhMYE3eCEas8MIshrBT75nkMKsObdRd4ZxTo7uPAOn/rMcvKKMMu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=mhklkml@zohomail.com header.b=J1dOAx8m; arc=pass smtp.client-ip=136.143.188.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1770850875; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LwxA8sJafi9WFL5Q0ruLOFqdyD9oE0ts03eJlUHHir2xssUSbYW1i5KcYDzOQ0YmoyfShIZ6pZUiXNfN6f90FPie2MWS47kid9y79kyOBu9AJUcG1fFjWLsGK+jBy/lDz3SUnmKuv9gQH6OaWbYK77UxdtCEOyIQuTsIKO+Oikk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1770850875; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/v4IpnBx8AesptYQpTGBnp5aGZXOHZnGRAcZx9o9l6c=; 
+	b=dV2WuD179DhT7Bt+cPu6Sv1Ab2EhoUX4sHncFfxbtvuyiB7y2o5Aw9+llsTay434BVZErTnQFphMTPit1ug/JKQyPC/flzzBPW5AYG1MXn5u1ld2HHP236Ab29fGQMZ6tHtn3rkgvZc62S7jCyeeRMclP/Edob2UWmdhsWRqm/g=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=mhklkml@zohomail.com;
+	dmarc=pass header.from=<mhklkml@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1770850875;
+	s=zm2022; d=zohomail.com; i=mhklkml@zohomail.com;
+	h=From:From:To:To:Cc:Cc:References:In-Reply-To:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
+	bh=/v4IpnBx8AesptYQpTGBnp5aGZXOHZnGRAcZx9o9l6c=;
+	b=J1dOAx8mMywlm6cUalzSFGXFw5PHe49Lyls+bTq2Wak/46lGSr+5EdH7Zh24qNxc
+	HC6HbjIVu1imlntGPe2eV4F7vEgGqCezrJeupz30k9ktGns/eHegVcsHiXsLm7Dl40T
+	3BrmQCAZsjm8dlI+nQFZqkDRnJuB1RoA6cl3bW0w=
+Received: by mx.zohomail.com with SMTPS id 1770850873502363.73321615779025;
+	Wed, 11 Feb 2026 15:01:13 -0800 (PST)
+From: <mhklkml@zohomail.com>
+To: "'Jocelyn Falempe'" <jfalempe@redhat.com>,
+	<mhklinux@outlook.com>,
+	<drawat.floss@gmail.com>,
+	<maarten.lankhorst@linux.intel.com>,
+	<mripard@kernel.org>,
+	<tzimmermann@suse.de>,
+	<airlied@gmail.com>,
+	<simona@ffwll.ch>,
+	<kys@microsoft.com>,
+	<haiyangz@microsoft.com>,
+	<wei.liu@kernel.org>,
+	<decui@microsoft.com>,
+	<longli@microsoft.com>,
+	<ryasuoka@redhat.com>
+Cc: <dri-devel@lists.freedesktop.org>,
+	<linux-kernel@vger.kernel.org>,
+	<linux-hyperv@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260209070201.1492-1-mhklinux@outlook.com> <20260209070201.1492-2-mhklinux@outlook.com> <a5372b72-8dc0-4f2d-ad5c-086f3e75ee81@redhat.com>
+In-Reply-To: <a5372b72-8dc0-4f2d-ad5c-086f3e75ee81@redhat.com>
+Subject: RE: [PATCH 2/2] drm/hyperv: During panic do VMBus unload after frame buffer is flushed
+Date: Wed, 11 Feb 2026 15:01:09 -0800
+Message-ID: <002601dc9baa$517d8b40$f478a1c0$@zohomail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SJ5PPFF6E64BC2C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 93e94177-2b05-415b-b693-08de69c092bd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?2gV2O8FfUj23k8yUwhvFD3w1BS1IvZGcrdt8RHnPPIgjVPbOMPLwRqXg8F?=
- =?iso-8859-1?Q?KY2jFM2qxgQEHsRgmcoUfEf2LjoZXfyN4a7w4VWhmi50kX9OQqHRcIWFgZ?=
- =?iso-8859-1?Q?Cba6C13Ku8h6RI7W5zeUZSSL96KZOroxgrzs59VBdhJmQBbhu5f5FOtbQo?=
- =?iso-8859-1?Q?RxzJ6K2HaEKuPyOohY/y4piQAOMmSm1nI7OqO/mPxs82nyNvIgJImkPHMm?=
- =?iso-8859-1?Q?cFPhxVnK2bLuH8ahrJd7dEJp7Qyy2ITU+9oweTUwqPYH+KUaqbZ8FXc/kv?=
- =?iso-8859-1?Q?LvwXyP6hjafD3J48hBeRcikmbv82iyDome1vBOTj/M2Gz61tuLitf+jpXa?=
- =?iso-8859-1?Q?v94czwcaAywfXzuYfu3PWnvvGzWfekf9kk6B69MMWEBFOTpAVQUYGKjVP0?=
- =?iso-8859-1?Q?hNjc9um/ArVa7Tsg2XGhPt5ZD5nl2iSmIwaFad4vSVE9anMr10d1yGm3Jt?=
- =?iso-8859-1?Q?YOuqXLYJ+GuhyPb8V0x4KI/GOJectY7UMjlPmk2g9lufhPY1nV+u5Bf1DU?=
- =?iso-8859-1?Q?EdVR5uRPQJ1U6Hvo9n99j7lnIzZ9E1IdUv0PXqpBhTLO/RD5NBKt5MC7fG?=
- =?iso-8859-1?Q?Nt6CFRr6vJAFE3ygEa5zrwxav5+mg4VMjIKEjWD/cxCvEOZ4lOcM4t2XLt?=
- =?iso-8859-1?Q?9lJa4moK8VclFR59n7nFZ6P42mtant8b3cBeBUbVY6xPrnTyMllHdIF5FX?=
- =?iso-8859-1?Q?7S8KUbLQ0yraR5f/I4PIgcWsPb7SJOxK+6jJzOLxsaz4XPM1kIxb0BPHkG?=
- =?iso-8859-1?Q?azR6cM19IkHiMJPPlzd5goCBrJS7J5RwJMpNYaZhW2rZdN6kpHa4dnO/l8?=
- =?iso-8859-1?Q?0aOMoAPlno9Wz7wIzEvAifjT9CgWZogPJj/nUEqCwCqmhWpOEe6eOTEQfP?=
- =?iso-8859-1?Q?wmBj8pgu8fgT/KVvnoGrIGDWWEHMG7jtypjGa4cjSH2ikQfacO68iSaJf2?=
- =?iso-8859-1?Q?oISg4fMzR9vr6yS6uSYzD2ubdnneA9XbzuphAzLivDHbq6gazl5uhG59rq?=
- =?iso-8859-1?Q?PxG8/7Yd4dMsw/cBYit7AbAHAhs4uJjArmx9W3CD/EUfAAxQlCWGSU0tkQ?=
- =?iso-8859-1?Q?kX+YIozcLbqEFtqPQx8wAk4qZqiITBDcdGli99qctZCk40JuGXw1BFh5M6?=
- =?iso-8859-1?Q?7SMRMZLDfAb138sPIr4YHEADrzylFqnTrrBm+MhAeW2AKLPzAqkMMP+oAy?=
- =?iso-8859-1?Q?MNQqbMeQ+xaQFC8zkoHTON1KKe7gS1jmPI+O7JZX6VH1zc2kk9w9uAjJ1P?=
- =?iso-8859-1?Q?KrMP9i+8o5AvFPB8Svt1wplCvQhP0d8B3vX6QFZGMYtp/yPywh8ZRIRlpa?=
- =?iso-8859-1?Q?4ueuEFvEbF0RUFKdItOWsnfQ+q0rOexIz/SiFSaYhxPQPEhjcdWH9oLaW6?=
- =?iso-8859-1?Q?hT6phbUyF0lJWunwTN59ldu5NzCSZFhBN16gr4aVA/Y2pqC1p8S1ElbIhY?=
- =?iso-8859-1?Q?neSySSJqDuBM7IUC+2Tn8GnJndXtxI3a3IleszgEXs+5meX5VMl4IxFhYP?=
- =?iso-8859-1?Q?HPuEhKoKC46+OZ7srJqX1D0gKM3GDFp3CfvauEGsZwYBi9d9UBBSsc64dr?=
- =?iso-8859-1?Q?+ZfUmqEYtn+kueDFEeioKzjQ+0gRScHVBvSP6qLHH+hWGAlgM0NljHwvQB?=
- =?iso-8859-1?Q?Fq0EGfk8dHNX2dGYhMoqMvNaoi8/LjLhzwFITkGnvsuOcSJDlwLpCywQ?=
- =?iso-8859-1?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?X8V+eXHutDY95rfJe0pATfXqZ8L7LI3hTbgBut2ynaABaFcVWhAJB4yG9A?=
- =?iso-8859-1?Q?FS/smUg3sCbiuEHNyxPBIDNorIxa/RS09AijMCbg3+mq+rZ95YoK00rgHR?=
- =?iso-8859-1?Q?VY0c1Rx7V+0DzElscUfI1ZdooYNk5w0oUUf1xujzaXMPSBxW6+W2rHTcsk?=
- =?iso-8859-1?Q?cETvy+qaYoOKjmzUXX0H+KkhIdarT4r97yGhQEbtV+FCBLUNMhosw5PV9B?=
- =?iso-8859-1?Q?GRYk8AhJWGNdom4qojnMb8GKs/FCCw4EX4JPEBSrjd3uf40oU4dogzi2XA?=
- =?iso-8859-1?Q?eoYj5+YgFgXbdDrvHImVfM0wZejfR/gD7po36y/D7wkXQ5qLI1GpWGs+4e?=
- =?iso-8859-1?Q?7YQm+85XA9SEpLowDjYVnwbEKDvIWi6C2wKXPboLaYgc0dPlbRkizHJmEh?=
- =?iso-8859-1?Q?KAVn5hsQhAiNJ1RptJDreK+Ukszkb8NK2d7PFCM3fx9ce7RtJ9Im6azkOh?=
- =?iso-8859-1?Q?0dfOLhBfvIIRFFSGgLZGI51lTDNOkUHagr54NIzqAuwn1V1UxpPc4wAtdI?=
- =?iso-8859-1?Q?RSDyVflDshvZuhPY2NparyE6Nb2qgWRj5ZodcmZidTx9ggLT8a/ur5WIPO?=
- =?iso-8859-1?Q?35WxY/TWv0Nh26NIypK4MVK8Ni841xXZmebmveucBOt8aAfdslzTD/Gm99?=
- =?iso-8859-1?Q?3qftYtEOVPdu+dUWaYloSTsUp+hYL1S2fEnDn1VbJqjQW+Q7jwEWjwOlAY?=
- =?iso-8859-1?Q?v68LgDCciIs47YMlwLwbJ+MqHTGQJex0QSxJzYeH+t1RNiPhYVMj6Poxv4?=
- =?iso-8859-1?Q?KD64dnqQ897+D4QMnFQ5SFIpvC9WyMk4J31W/JgTPC2BfKEgaMTw6ritdM?=
- =?iso-8859-1?Q?79kQLAdl/YyQU653DhJn5OH72PRoibD/xJjU0ktzwIGCNx9Z603x4LzSjw?=
- =?iso-8859-1?Q?FQkonwWZnJKtQjP6ZFwrxiPnfsm/T6Vzgqj7UCMGipAf+rsU0zCzunGBxe?=
- =?iso-8859-1?Q?GQnV1uVu4oZBqOYABWmzbeADjsnVcCfg4draATFuZ5foF9azoWnk6eiiBG?=
- =?iso-8859-1?Q?aZu3q6ODe/z3NzKa3h3zh2lmooTX+rvThRXMe1YmfkmZI4d4XikIFe7Wbu?=
- =?iso-8859-1?Q?0Mvx1lFHXGi7gkrhiUyF8EWAK7FyBgKYxk8nDkRb3Y+USnGRVWBt5hdJos?=
- =?iso-8859-1?Q?tNpMHdtEovCMADFlvo5TXdYRI7GHL72JCmfLGr5hZxS4vCHkVnhOaGH0jK?=
- =?iso-8859-1?Q?7zQcuIWu8eoPqUmtQWzmyLQRtvyrTvYVA1BUFcAV7S6Ksah0cnUAz2AT6m?=
- =?iso-8859-1?Q?cqLNqESLsSfOFCxOeB2ZA9k0GIdaLI68Jmr0hU1LS2FilfR9r+LDItHY/k?=
- =?iso-8859-1?Q?+zWZjHE6uj6P/NPoxAPXdTIskiYt2FIFFpVOWl0x5KV4SKsBOGtC9pHlYS?=
- =?iso-8859-1?Q?9OSjC3T7wt+Chz3EGZq3R/RRn/bFXLTnww+jI3FknRcDrlVhDNukL3d0Sf?=
- =?iso-8859-1?Q?o8UfkiLkmNFhIKHF3wnZT7xMUg84jOW0WbUvz6o6SsuCkGuqBCXyoPrg6f?=
- =?iso-8859-1?Q?Z2UbMmV80Txw1XFUCtB0UpwObFNG/C4Qz7VkshI9PsjHCL+Zqtj5w0tG5q?=
- =?iso-8859-1?Q?lRaAyVuGpF7EL4JfXr+Kj//qCxrGWjnOOEvRaK81RfnttzXJT8c22ce3k8?=
- =?iso-8859-1?Q?wp4aOJ30A5t58KVQRIN9cK1b8EQ+e/P2N4C46RQoHwduj8643V+IItDz4X?=
- =?iso-8859-1?Q?CFaME90mMBLndEH+Z8Tq3a0w5i69Hmm3Jg1ZN/R/at6JUFegmGrGBnkGny?=
- =?iso-8859-1?Q?Uv9a8cMs2GwXYjxAf6PFwbLcvRJ6en38EumXebeXu3Gh/d6qfbSFHsIjAQ?=
- =?iso-8859-1?Q?agpHICMElg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93e94177-2b05-415b-b693-08de69c092bd
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 22:54:55.1285
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bUnIkqs6l3A6I1iq7gfckwJELSjX49wCf3NuNc3ckJHWzLx/Gp2aPKkAeaSflLb+pom18WZKUTYgTqJN6anrIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFF6E64BC2C
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQJO9nqM+3PSL28VGf9uaee72s+bfQD8X2UsAcZTyQS0g09e4A==
+Feedback-ID: rr080112276f0bff552fa972c91e69bbc60000e8c5825fb1e45bc2f26668e518962c583bee303c4ddbc88c1f:zu080112270d1c11740cd942b4e357bf9c000070af211c092d8af91d7479311df3c99054c758bc409412f527:rf08011226531496a33a4b9bfb5b113bd40000f39f2acda6414885ed869a26970cd68ab6a548dd3bef5a06:ZohoMail
+X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[zohomail.com,reject];
+	R_DKIM_ALLOW(-0.20)[zohomail.com:s=zm2022];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215885-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[mhklkml@zohomail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[redhat.com,outlook.com,gmail.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,microsoft.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215886-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[zohomail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[apopple@nvidia.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[stgolabs.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 359151282F7
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zohomail.com:mid,zohomail.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email]
+X-Rspamd-Queue-Id: 56016128352
 X-Rspamd-Action: no action
 
-On 2026-02-12 at 09:23 +1100, Davidlohr Bueso <dave@stgolabs.net> wrote...
-> On Tue, 10 Feb 2026, Thomas Hellstr�m wrote:
+From: Jocelyn Falempe <jfalempe@redhat.com> Sent: Wednesday, February 11, 2026 1:54 PM
 > 
-> > @@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
-> > 		}
-> > 
-> > 		if (softleaf_is_migration(entry)) {
-> > -			migration_entry_wait_on_locked(entry, ptl);
-> > +			softleaf_entry_wait_on_locked(entry, ptl);
-> > 			spin_unlock(ptl);
+> On 09/02/2026 08:02, mhkelley58@gmail.com wrote:
+> > From: Michael Kelley <mhklinux@outlook.com>
+> >
+> > In a VM, Linux panic information (reason for the panic, stack trace,
+> > etc.) may be written to a serial console and/or a virtual frame buffer
+> > for a graphics console. The latter may need to be flushed back to the
+> > host hypervisor for display.
+> >
+> > The current Hyper-V DRM driver for the frame buffer does the flushing
+> > *after* the VMBus connection has been unloaded, such that panic messages
+> > are not displayed on the graphics console. A user with a Hyper-V graphics
+> > console is left with just a hung empty screen after a panic. The enhanced
+> > control that DRM provides over the panic display in the graphics console
+> > is similarly non-functional.
+> >
+> > Commit 3671f3777758 ("drm/hyperv: Add support for drm_panic") added
+> > the Hyper-V DRM driver support to flush the virtual frame buffer. It
+> > provided necessary functionality but did not handle the sequencing
+> > problem with VMBus unload.
+> >
+> > Fix the full problem by using VMBus functions to suppress the VMBus
+> > unload that is normally done by the VMBus driver in the panic path. Then
+> > after the frame buffer has been flushed, do the VMBus unload so that a
+> > kdump kernel can start cleanly. As expected, CONFIG_DRM_PANIC must be
+> > selected for these changes to have effect. As a side benefit, the
+> > enhanced features of the DRM panic path are also functional.
 > 
-> softleaf_entry_wait_on_locked() unconditionally drops the ptl.
+> Thanks for properly fixing this issue with DRM Panic on hyperv.
+> 
+> I've a small comment below.
+> 
+> With that fixed:
+> Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+> 
+> The first patch looks good too, I can review it if no other step up, as
+> I'm not familiar with hyperv.
+> 
+> >
+> > Fixes: 3671f3777758 ("drm/hyperv: Add support for drm_panic")
+> > Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> > ---
+> >   drivers/gpu/drm/hyperv/hyperv_drm_drv.c     |  4 ++++
+> >   drivers/gpu/drm/hyperv/hyperv_drm_modeset.c | 15 ++++++++-------
+> >   2 files changed, 12 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+> b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+> > index 06b5d96e6eaf..79e51643be67 100644
+> > --- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+> > +++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+> > @@ -150,6 +150,9 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
+> >   		goto err_free_mmio;
+> >   	}
+> >
+> > +	/* If DRM panic path is stubbed out VMBus code must do the unload */
+> > +	if (IS_ENABLED(CONFIG_DRM_PANIC) && IS_ENABLED(CONFIG_PRINTK))
+> 
+> I think drm_panic should still work without printk.
+> The "user" panic screen would be unaffected, but the "kmsg" screen might
+> be blank, and the "qr_code" would generate an empty qr code.
+> (Actually I never tried to build a kernel without printk).
 
-As does migration_entry_wait_on_locked() so obviously a pre-existing issue.
-I'm not sure why we would wait on a migration entry here though, maybe Balbir
-can help?
+Yeah, I had never built such a kernel either until recently when the kernel
+test robot flagged an error in Hyper-V code when CONFIG_PRINTK is not set. :-) 
 
-> > 			return -EAGAIN;
-> > 		}
+But for this patch, the issue is that drm_panic() never gets called if CONFIG_PRINTK
+isn't set. In that case, kmsg_dump_register() is a stub that returns an error.  So
+drm_panic_register() never registers the callback to drm_panic(). And if
+drm_panic() isn't going to run, responsibility for doing the VMBus unload
+must remain with the VMBus code. It's hard to actually test this case because
+of depending on printk() for debugging output, so double-check my
+thinking.
+
+Michael
+
+> 
+> > +		vmbus_set_skip_unload(true);
+> >   	drm_client_setup(dev, NULL);
+> >
+> >   	return 0;
+
 
