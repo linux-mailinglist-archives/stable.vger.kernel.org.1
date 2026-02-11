@@ -1,225 +1,180 @@
-Return-Path: <stable+bounces-215731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJ9QBnTVi2kObwAAu9opvQ
-	(envelope-from <stable+bounces-215731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:03:48 +0100
+	id sNmeMWTai2lIcAAAu9opvQ
+	(envelope-from <stable+bounces-215734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:24:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B48120695
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:03:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33AA120746
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:24:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C72213062976
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 01:03:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 261DD3013953
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 01:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD1A25B662;
-	Wed, 11 Feb 2026 01:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB47286415;
+	Wed, 11 Feb 2026 01:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="w0EU0qJh"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="b86/g32+"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF34D2264CF
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 01:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84666285061;
+	Wed, 11 Feb 2026 01:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770771786; cv=none; b=XjUaIwmL0hbMRyDfzHSU1eLY/RJUQkb7yGtWYNkjXUd2pNUiFiStIWOHO4swygS/Zp+ljPVLAexoOcx7GZqtv5mv0h5mx1SS1YQHRvm3k4SBbOsw4lUaLnDES1h974De7dTIMwMvBS/ljuxjL6AeWbdeO4/xyObq0v97F0XIKzw=
+	t=1770773087; cv=none; b=XfhVtwaLaJwhjyBr0W86IroKTUahLdy1G5niX/hjed7WmJspL3x5FqrcTGrLLY4x5WygIgu1A9Jgoi0qbZ/vWr9d9dyW/JkS52gSl4jQdZetlH9bp1ADfcUCYKtucyYs9inRipIgZVK8rONLB7i5TAkUGZ+RgY2v9yVN7OZUkds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770771786; c=relaxed/simple;
-	bh=KcwxNoDNSDyS0+eLUK+Bw0c+k8fKFlTk1zUgDfbN0WQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=STgJNF/Pmr0jEurFYF0Rx0KQY0d6wx8IbXC4/PIzl08s27+1ILKRR0kUUEsZIgpvQr7RLP+LrL3GAkQPijhTRDndt0KaM1Tv8n4xtYzmmHWnwodOORyEdbPLiTsoI0MuQBrrxmlIv0WxloJNMH9Hhzz11l89njRGLXTvS6dnJ7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=w0EU0qJh; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 11 Feb 2026 01:02:46 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770771772;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qJ3zJW8FDpQrdYbm4L488yxyJvVIS8X9c+crsb06WJY=;
-	b=w0EU0qJhncNjbRTBs9AAgKkS1TaCZ4XTYAXEhE3VllhmgYkb7vO37RlNszJ6RnV6wktzxk
-	8nCP2Cut5qFSAeJkXLMT1z4sfAPHacy7vH+l6Jqa1FkBBItZs7g6AP07COkYPWnfNrKUXA
-	/P2B9iBh9iz8PCHM3XCNXfyYbzBeT/A=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after
- VMRUN of L2
-Message-ID: <smsla7jgdncodh57uh7dihumnteu5sgxyzby2jc6lcp3moayzf@ixqj4ivmlgb2>
-References: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
- <20260210005449.3125133-2-yosry.ahmed@linux.dev>
- <aYqOkvHs3L-AX-CG@google.com>
- <4g25s35ty23lx2je4aknn6dg4ohviqhkbvvel4wkc4chhgp6af@kbqz3lnezo3j>
- <aYuE8xQdE5pQrmUs@google.com>
- <ck57mmdt5phh64cadoqxylw5q2b72ffmabmlzmpphaf27lbtxw@4kscovf6ahve>
- <aYvIpwjsJ50Ns4ho@google.com>
- <mxn6y6og34ejncnsvdapcoep4ewcnwnheszhwkp2undkqcu5zv@bpmseexuug5z>
- <aYvPwH8JcRItaQRI@google.com>
+	s=arc-20240116; t=1770773087; c=relaxed/simple;
+	bh=VZw11mAnIHFM71gWThJobMmVmweJG9NUQgyzLaGGqec=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N6tHYOiPUdnPzUPiUEOhnv7goO6Dw26oCklfnmf77AikSyjZVzLImGRlJ3oyIl81Pvh++KeVJR4STEixteePPBcn7Yn3+SOQJz0RnYVn1uh7VlX0Ce8Ek4Jji856ck5pIAcz5X+MURQPsi+QqhjVF1qMCkb0AG9M8cGTYUoC2po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=b86/g32+; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=+M
+	nDmV5IQu/jnXX+pmPU4nJ4kwJNeE3fTXXAd2vIReY=; b=b86/g32+FT4tra5Zfh
+	v4CunaMUZab3+RGQnBJb3CR5/vASUYw3wrGhdN0qoK7D2vF5R0A6MDTVxNYlug05
+	XlObd8HIgY2u6o7KCIHbYwyeKPD0g5rFunf+hPlIDKU74f9KVBfFWmerb2yLH8gy
+	cdIO0xn1JnPe0WP7LoitnFpMw=
+Received: from ubuntu24-z.. (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wBHL1Yj2otp2VksLA--.37135S2;
+	Wed, 11 Feb 2026 09:23:47 +0800 (CST)
+From: ranxiaokai627@163.com
+To: pratyush@kernel.org
+Cc: akpm@linux-foundation.org,
+	graf@amazon.com,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	pasha.tatashin@soleen.com,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com,
+	rppt@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH -next 1/2] kho: fix missing early_memunmap() call in kho_populate()
+Date: Wed, 11 Feb 2026 01:23:46 +0000
+Message-ID: <20260211012346.208225-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2vxzv7g4sof5.fsf@kernel.org>
+References: <2vxzv7g4sof5.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYvPwH8JcRItaQRI@google.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBHL1Yj2otp2VksLA--.37135S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7try3tr18Gw45uFy5GF15urg_yoW8tr4kpF
+	WrGa1jkw48tayjqa12gF12934Fgw4ktw1fta4UAa4fJF1DZrnaq3yxGa40vFnrXr1S93WS
+	yF4vqayfW3WkCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUpVbDUUUUU=
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7gP7SGmL2iPjdwAA3R
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linux-foundation.org,amazon.com,lists.infradead.org,vger.kernel.org,kvack.org,soleen.com,zte.com.cn,163.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215734-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215731-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FROM_NEQ_ENVFROM(0.00)[ranxiaokai627@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim]
-X-Rspamd-Queue-Id: 72B48120695
+	FREEMAIL_FROM(0.00)[163.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zte.com.cn:email]
+X-Rspamd-Queue-Id: D33AA120746
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026 at 04:39:28PM -0800, Sean Christopherson wrote:
-> On Wed, Feb 11, 2026, Yosry Ahmed wrote:
-> > > > We can drop it and make it a local vaiable in nested_svm_vmrun(), and
-> > > > plumb it all the way down. But it could be too big for the stack.
-> > > 
-> > > It's 48 bytes, there's no way that's too big.
-> > 
-> > That's before my hardening series shoved everything in there. It's now
-> > 256 bytes, which is not huge, but makes me nervous. Especially that it
-> > may grow more in the future.
-> > 
-> > > > Allocating it every time isn't nice either.
-> > > 
-> > > > Do you mean to also make it opaque?
-> > > 
-> > > I'd prefer to drop it.
-> > 
-> > Me too, but I am nervous about putting it on the stack.
-> 
-> 256 bytes should be tolerable.  500+ is where things tend to get dicey.
+>Hi Ran,
+>
+>Thanks for the fix.
+>
+>On Fri, Feb 06 2026, ranxiaokai627@163.com wrote:
+>
+>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>>
+>> kho_populate() returns without calling early_memunmap() on success
+>> path, this will cause early ioremap virtual address space leak.
+>>
+>> Fixes: b50634c5e84a ("kho: cleanup error handling in kho_populate()")
+>> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>> ---
+>>
+>> b50634c5e84a ("kho: cleanup error handling in kho_populate()")
+>> has not landed in upstream, so
+>> Cc: <stable@vger.kernel.org> is unnecessary?
+>>
+>>  kernel/liveupdate/kexec_handover.c | 8 +++++---
+>>  1 file changed, 5 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>> index fb3a7b67676e..76b714db175d 100644
+>> --- a/kernel/liveupdate/kexec_handover.c
+>> +++ b/kernel/liveupdate/kexec_handover.c
+>> @@ -1463,6 +1463,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>>  	struct kho_scratch *scratch = NULL;
+>>  	phys_addr_t mem_map_phys;
+>>  	void *fdt = NULL;
+>> +	int populated = 0;
+>
+>Nit: Please use a bool and true/false. I think it reads much nicer.
 
-In that case I think removing it completely should be fine.
+yes.
 
-> 
-> > > > > +       u8 __vmcb12_ctrl[sizeof(struct vmcb_ctrl_area_cached)];
-> > > > 
-> > > > We have a lot of accesses to svm->nested.ctl, so we'll need a lot of
-> > > > clutter to cast the field in all of these places.
-> > > > 
-> > > > Maybe we add a read-only accessor that returns a pointer to a constant
-> > > > struct?
-> > > 
-> > > That's what I said :-D
-> > > 
-> > > 	* All reads are routed through accessors to make it all but impossible
-> > > 	* for KVM to clobber its snapshot of vmcb12.
-> > > 
-> > > There might be a lot of helpers, but I bet it's less than nVMX has for vmcs12.
-> > 
-> > Oh I meant instead of having a lot of helpers, have a single helper that
-> > returns it as a pointer to const struct vmcb_ctrl_area_cached? Then all
-> > current users just switch to the helper instead of directly using
-> > svm->nested.ctl.
-> > 
-> > We can even name it sth more intuitive like svm_cached_vmcb12_control().
-> 
-> That makes it to easy to do something like:
-> 
-> 
-> 	u32 *int_ctl = svm_cached_vmcb12_control(xxx).
-> 
-> 	*int_ctl |= xxx;
-> 
-> Which is what I want to defend against.
+>>  	int err;
+>>  
+>>  	/* Validate the input FDT */
+>> @@ -1529,16 +1530,17 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>>  	kho_in.scratch_phys = scratch_phys;
+>>  	kho_in.mem_map_phys = mem_map_phys;
+>>  	kho_scratch_cnt = scratch_cnt;
+>> -	pr_info("found kexec handover data.\n");
+>>  
+>> -	return;
+>> +	populated = 1;
+>> +	pr_info("found kexec handover data.\n");
+>>  
+>>  err_unmap_scratch:
+>>  	early_memunmap(scratch, scratch_len);
+>>  err_unmap_fdt:
+>>  	early_memunmap(fdt, fdt_len);
+>>  err_report:
+>
+>Nit: now that this code can be reached by non-error paths, we should
+>re-name the labels. I think dropping the "err_" prefix should be enough.
 
-Do compilers allow implicit dropping of const qualifiers?
+Thanks for your review.
+Very helpful suggestion. I will send a v2.
 
-Building with this diff fails for me:
+>With these fixed,
+>
+>Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+>
+>> -	pr_warn("disabling KHO revival\n");
+>> +	if (!populated)
+>> +		pr_warn("disabling KHO revival\n");
+>>  }
+>>  
+>>  /* Helper functions for kexec_file_load */
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index de90b104a0dd..0a73dd8f9163 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1343,10 +1343,17 @@ static void nested_svm_triple_fault(struct kvm_vcpu *vcpu)
-        nested_svm_simple_vmexit(to_svm(vcpu), SVM_EXIT_SHUTDOWN);
- }
-
-+static const struct vmcb_ctrl_area_cached *svm_cached_vmcb12_control(struct vcpu_svm *svm) {
-+       return &svm->nested.ctl;
-+}
-+
- int svm_allocate_nested(struct vcpu_svm *svm)
- {
-+       struct vmcb_ctrl_area_cached *ctl = svm_cached_vmcb12_control(svm);
-        struct page *vmcb02_page;
-
-+       pr_info("%p\n", ctl);
-+
-        if (svm->nested.initialized)
-                return 0;
-
-
-I see:
-
-arch/x86/kvm/svm/nested.c:1352:32: error: initializing 'struct vmcb_ctrl_area_cached *' with an expression of type 'const struct vmcb_ctrl_area_cached *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
- 1352 |         struct vmcb_ctrl_area_cached *ctl = svm_cached_vmcb12_control(svm);
-      |                                       ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1 error generated.
-
-I don't explicitly see 'incompatible-pointer-types-discards-qualifiers'
-anywhere, but I do see 'incompatible-pointer-types' in
-scripts/Makefile.warn:
-
-KBUILD_CFLAGS += $(call cc-option,-Werror=incompatible-pointer-types)
-
-Is this sufficient?
-
-> 
-> > > > I think this will be annoying when new fields are added, like
-> > > > insn_bytes. Perhaps at some point we move to just serializing the entire
-> > > > combined vmcb02/vmcb12 control area and add a flag for that.
-> > > 
-> > > If we do it now, can we avoid the flag?
-> > 
-> > I don't think so. Fields like insn_bytes are not currently serialized at
-> > all. The moment we need them, we'll probably need to add a flag, at
-> > which point serializing everything under the flag would probably be the
-> > sane thing to do.
-> > 
-> > That being said, I don't really know how a KVM that uses insn_bytes
-> > should handle restoring from an older KVM that doesn't serialize it :/
-> > 
-> > Problem for the future, I guess :)
-> 
-> Oh, good point.  In that case, I think it makes sense to add the flag asap, so
-> that _if_ it turns out that KVM needs to consume a field that isn't currently
-> saved/restored, we'll at least have a better story for KVM's that save/restore
-> everything.
-
-Not sure I follow. Do you mean start serializing everything and setting
-the flag ASAP (which IIUC would be after the rework we discussed), or
-what do you mean by "add the flag"?
 
