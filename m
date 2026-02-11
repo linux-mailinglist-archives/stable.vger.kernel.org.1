@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-215869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNbvDlXTjGm+tgAAu9opvQ
-	(envelope-from <stable+bounces-215869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:07:01 +0100
+	id yNnzAFTUjGm+tgAAu9opvQ
+	(envelope-from <stable+bounces-215870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42CE127065
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:07:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D66127121
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C5F1F30058DD
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:06:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85F053090B2A
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BA226B2CE;
-	Wed, 11 Feb 2026 19:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5211526B2CE;
+	Wed, 11 Feb 2026 19:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E9YvCkob"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdmjTZNv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13482346ADC;
-	Wed, 11 Feb 2026 19:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1418B303A35;
+	Wed, 11 Feb 2026 19:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770836818; cv=none; b=R+n/bX7hvxblIMQrfZXSJJck3+IoLA/crxjmqOgnswJZiWNJ05qco/veajulBvIG71RWQtkiaHhz67bANw3lKd0OroQgC9O1KxikzIEXIKk1063bbKtJMeLQU1C8fZ91epxLMDreaIVPcSR3xSUmQiR2NFK1hNW5Dc9g5/zuSzI=
+	t=1770836820; cv=none; b=qokhCJoDE4TgwFT10/sZVbyl4/rkasuVj5AMIpDIhT4RmG16exSOtXAndgl6UJgCbfd/eHLrlUKqwVps0OpKs63FUq6niMWF9pUHM5UQ85xK4OfHdNsRggyqxNMnJUJXSsGd8qGWXk98pN7CGSAdHvOzUAgP5RMaTSQIQ6pvPMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770836818; c=relaxed/simple;
-	bh=1yOQN7PQEIRho9X34GhsEwbRNe8punC0i6d/rfJQc50=;
+	s=arc-20240116; t=1770836820; c=relaxed/simple;
+	bh=rMABZ5ULTsN0/8tg3HM626ypUOFeIMxiTKhtnZu4SKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6s8jNelF0VLllMcVsEE9HkFC0nWnJiA/t58xFR8fGuNf5f4pOaXWHU18jNIZJws1PEOB0q21ivlVXlEs7bsTWidycvW2aFEhAfj6BJXmjTtabYr7oIxeN4WgCJaSMIRTnPjwjURySbeD8LonVhrxG1ROlB4AfqHykuj1zVcO8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E9YvCkob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB08C2BCB1;
-	Wed, 11 Feb 2026 19:06:54 +0000 (UTC)
+	 MIME-Version; b=fxwWvYm4cHZaPYuVPpj1lyc6DLVHctQ81P07crvO2PklvhAtDNWeiE4h8MrFbXWTz+NndVcvenOUuBUAU9+KmHn6DEu6jUqY2Qw3g3A8qBoJ+0+R0uZF578evA8CzZec+A7xJ51Rtylf1rBbps02FwRBbpNsLQAIdg60Zb/I0QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdmjTZNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FC0C19423;
+	Wed, 11 Feb 2026 19:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770836817;
-	bh=1yOQN7PQEIRho9X34GhsEwbRNe8punC0i6d/rfJQc50=;
+	s=k20201202; t=1770836819;
+	bh=rMABZ5ULTsN0/8tg3HM626ypUOFeIMxiTKhtnZu4SKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9YvCkobBCZSo7aJFrSPN3thw+0XHfJNWyi/Empp7b3sP0IJlaRn+bojUbZYPNwiK
-	 QBol6/9QPogue4V/QUooWwIB5wxsBYlME/LgCYxMg92K40buzb4zZ486H+WtEeLLHE
-	 5uONcNldHPW2XIxfmqKZN6FP/SJxpdDRQERIiYgnDX4RCVFA3ut8whKSqjX16j7F0K
-	 KxBC7pmBKQTXb4emJZpDlTuLU2YqgPCYhN6ScRHQbGD6NZEuQdA5BMhNnDquVesB7B
-	 L6j9kBDMjGg/839hbdhWvXU8I0aBfI5SATl8dif7Ya/ZwCfqEtgbKHYoT47BFr8wjW
-	 8Z6IwqYFf6ubQ==
+	b=TdmjTZNvzZ15iJ9pcgo7W1JzsO4Xi8iyVSe0VFVQBUGJLOOLv+01Zv+wyjpl+p006
+	 vPZImeO7gYAIs1BbYTP0j1t4LYtcsa0ew8ZfJQ64KFTj9vOnTfe4FSTSDrcUpEQO5C
+	 OM6NMHWjSX6Bw1eMdItL/EhimX3dgZUiZzKXOMgczmMN/XMRDvcah2rox9FyO0sA1n
+	 GrpDIrj3ohwPMITz6MEr/Koe7ls+noNFpvD2XBdqA2jIklEY7/8HSo2VEJuf4Z7RfU
+	 uXwjC7JgryQJB9ZOBZSTbErO7GG546QFj/zsSk08RVJuUyuSccXG7Ir9KSBL4/4nU0
+	 E0NthlffJB4Jw==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
 Cc: Paolo Abeni <pabeni@redhat.com>,
 	sashal@kernel.org,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y 2/6] mptcp: schedule rtx timer only after pushing data
-Date: Wed, 11 Feb 2026 20:06:20 +0100
-Message-ID: <20260211190617.77192-10-matttbe@kernel.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1.y 3/6] mptcp: ensure context reset on disconnect()
+Date: Wed, 11 Feb 2026 20:06:21 +0100
+Message-ID: <20260211190617.77192-11-matttbe@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211190617.77192-8-matttbe@kernel.org>
 References: <20260211190617.77192-8-matttbe@kernel.org>
@@ -64,110 +63,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2549; i=matttbe@kernel.org; h=from:subject; bh=32qO1VArjJDOXlEbLM+G54M2ILeFc+41VELU3gX5Al8=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ7LuuK1jKLi2/YKvO4uCvTd43dbu9tp3gPij4Kl1DwT SuS2x7SUcrCIMbFICumyCLdFpk/83kVb4mXnwXMHFYmkCEMXJwCMJE7ZowMZ+3nWxZs79BlKV9m s8a0/MjELT6VS1oEL2k+ElniU1FXyciwaJ8z41Nb7UAG55V55+9Unc7PqPl16+LPZTzMvvtul01 nBgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5474; i=matttbe@kernel.org; h=from:subject; bh=w+gVDIMZ7MyhCPB9jDcoWtrmZeRTY8/GXkykQ/ll+k8=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ7LusZ+7yU+/+55MaiN14N5w6Vn81j2tWcPHuaXNWG7 GeWSma8HaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABO5Ls3IsG3FF1slpWn/Qntb phrnLz14TYLpYXip99F9533/PTZ/ksTI0H3bXyln8tQ7yjuOxEmd3Or8NqPP6oXl2d1CIUIaN1+ fYwQA
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215870-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215869-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: A42CE127065
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 58D66127121
 X-Rspamd-Action: no action
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 2ea6190f42d0416a4310e60a7fcb0b49fcbbd4fb upstream.
+commit 86730ac255b0497a272704de9a1df559f5d6602e upstream.
 
-The MPTCP protocol usually schedule the retransmission timer only
-when there is some chances for such retransmissions to happen.
+After the blamed commit below, if the MPC subflow is already in TCP_CLOSE
+status or has fallback to TCP at mptcp_disconnect() time,
+mptcp_do_fastclose() skips setting the `send_fastclose flag` and the later
+__mptcp_close_ssk() does not reset anymore the related subflow context.
 
-With a notable exception: __mptcp_push_pending() currently schedule
-such timer unconditionally, potentially leading to unnecessary rtx
-timer expiration.
+Any later connection will be created with both the `request_mptcp` flag
+and the msk-level fallback status off (it is unconditionally cleared at
+MPTCP disconnect time), leading to a warning in subflow_data_ready():
 
-The issue is present since the blamed commit below but become easily
-reproducible after commit 27b0e701d387 ("mptcp: drop bogus optimization
-in __mptcp_check_push()")
+  WARNING: CPU: 26 PID: 8996 at net/mptcp/subflow.c:1519 subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
+  Modules linked in:
+  CPU: 26 UID: 0 PID: 8996 Comm: syz.22.39 Not tainted 6.18.0-rc7-05427-g11fc074f6c36 #1 PREEMPT(voluntary)
+  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+  RIP: 0010:subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
+  Code: 90 0f 0b 90 90 e9 04 fe ff ff e8 b7 1e f5 fe 89 ee bf 07 00 00 00 e8 db 19 f5 fe 83 fd 07 0f 84 35 ff ff ff e8 9d 1e f5 fe 90 <0f> 0b 90 e9 27 ff ff ff e8 8f 1e f5 fe 4c 89 e7 48 89 de e8 14 09
+  RSP: 0018:ffffc9002646fb30 EFLAGS: 00010293
+  RAX: 0000000000000000 RBX: ffff88813b218000 RCX: ffffffff825c8435
+  RDX: ffff8881300b3580 RSI: ffffffff825c8443 RDI: 0000000000000005
+  RBP: 000000000000000b R08: ffffffff825c8435 R09: 000000000000000b
+  R10: 0000000000000005 R11: 0000000000000007 R12: ffff888131ac0000
+  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f88330af6c0(0000) GS:ffff888a93dd2000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f88330aefe8 CR3: 000000010ff59000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   tcp_data_ready (net/ipv4/tcp_input.c:5356)
+   tcp_data_queue (net/ipv4/tcp_input.c:5445)
+   tcp_rcv_state_process (net/ipv4/tcp_input.c:7165)
+   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1955)
+   __release_sock (include/net/sock.h:1158 (discriminator 6) net/core/sock.c:3180 (discriminator 6))
+   release_sock (net/core/sock.c:3737)
+   mptcp_sendmsg (net/mptcp/protocol.c:1763 net/mptcp/protocol.c:1857)
+   inet_sendmsg (net/ipv4/af_inet.c:853 (discriminator 7))
+   __sys_sendto (net/socket.c:727 (discriminator 15) net/socket.c:742 (discriminator 15) net/socket.c:2244 (discriminator 15))
+   __x64_sys_sendto (net/socket.c:2247)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  RIP: 0033:0x7f883326702d
 
-Fixes: 33d41c9cd74c ("mptcp: more accurate timeout")
+Address the issue setting an explicit `fastclosing` flag at fastclose
+time, and checking such flag after mptcp_do_fastclose().
+
+Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-3-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, because commit 0fa1b3783a17 ("mptcp: use
-  get_send wrapper") is not in this version, and is changing the
-  context. The same modification can still be applied. ]
+Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-2-d1f9fd1c36c8@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in protocol.[ch] because the context has changed. ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/protocol.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ net/mptcp/protocol.c | 9 ++++++---
+ net/mptcp/protocol.h | 3 ++-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 2d107a1f2ef9..ad0bfdd308be 100644
+index ad0bfdd308be..5274b19a5dbd 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1666,7 +1666,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
- 	struct mptcp_sendmsg_info info = {
- 				.flags = flags,
- 	};
--	bool do_check_data_fin = false;
-+	bool copied = false;
- 	struct mptcp_data_frag *dfrag;
- 	int len;
+@@ -2456,10 +2456,10 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
+  */
+ static void __mptcp_subflow_disconnect(struct sock *ssk,
+ 				       struct mptcp_subflow_context *subflow,
+-				       unsigned int flags)
++				       bool fastclosing)
+ {
+ 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
+-	    subflow->send_fastclose) {
++	    fastclosing) {
+ 		/* The MPTCP code never wait on the subflow sockets, TCP-level
+ 		 * disconnect should never fail
+ 		 */
+@@ -2511,7 +2511,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
  
-@@ -1703,7 +1703,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
- 				goto out;
- 			}
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		__mptcp_subflow_disconnect(ssk, subflow, flags);
++		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
+ 		if (msk->subflow && ssk == msk->subflow->sk)
+ 			msk->subflow->state = SS_UNCONNECTED;
+ 		release_sock(ssk);
+@@ -2802,6 +2802,8 @@ static void mptcp_do_fastclose(struct sock *sk)
+ 	struct mptcp_subflow_context *subflow, *tmp;
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
  
--			do_check_data_fin = true;
-+			copied = true;
- 			info.sent += ret;
- 			len -= ret;
++	msk->fastclosing = 1;
++
+ 	/* Explicitly send the fastclose reset as need */
+ 	if (__mptcp_check_fallback(msk))
+ 		return;
+@@ -3290,6 +3292,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	WRITE_ONCE(msk->csum_enabled, mptcp_is_checksum_enabled(sock_net(sk)));
+ 	mptcp_pm_data_reset(msk);
+ 	mptcp_ca_reset(sk);
++	msk->fastclosing = 0;
  
-@@ -1717,11 +1717,14 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
- 		mptcp_push_release(ssk, &info);
- 
- out:
--	/* ensure the rtx timer is running */
--	if (!mptcp_rtx_timer_pending(sk))
--		mptcp_reset_rtx_timer(sk);
--	if (do_check_data_fin)
-+	/* Avoid scheduling the rtx timer if no data has been pushed; the timer
-+	 * will be updated on positive acks by __mptcp_cleanup_una().
-+	 */
-+	if (copied) {
-+		if (!mptcp_rtx_timer_pending(sk))
-+			mptcp_reset_rtx_timer(sk);
- 		mptcp_check_send_data_fin(sk);
-+	}
- }
- 
- static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 6575712c789e..dd5070d57d74 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -289,7 +289,8 @@ struct mptcp_sock {
+ 			nodelay:1,
+ 			fastopening:1,
+ 			in_accept_queue:1,
+-			free_first:1;
++			free_first:1,
++			fastclosing:1;
+ 	int		keepalive_cnt;
+ 	int		keepalive_idle;
+ 	int		keepalive_intvl;
 -- 
 2.51.0
 
