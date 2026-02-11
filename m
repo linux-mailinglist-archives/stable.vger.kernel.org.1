@@ -1,282 +1,140 @@
-Return-Path: <stable+bounces-215785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YI6wActojGkdnAAAu9opvQ
-	(envelope-from <stable+bounces-215785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:32:27 +0100
+	id GIFuJUppjGkMnQAAu9opvQ
+	(envelope-from <stable+bounces-215786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:34:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC28123E23
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:32:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A4E123E52
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBF483059F1E
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:31:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C7FC3019529
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D51315772;
-	Wed, 11 Feb 2026 11:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B076E3148BF;
+	Wed, 11 Feb 2026 11:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0sXGHG1T";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yPcwiIyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LxO1mt0"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D00313E0D;
-	Wed, 11 Feb 2026 11:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729EE30C619;
+	Wed, 11 Feb 2026 11:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770809481; cv=none; b=UqslqKiy3pC4dnn1CBe5vQm4TK5KknCaEyE87OFpIEIW6bm5dcAgvtShVP80IEgeDAzLD5MdwqfNGKNoOmliObECOYVUGvbXSQ0xGeHCEpIa106gO4qXZJBRmJqPNmE3pWT5FhJFjiDRrN8vUSZ+0y5H1y3eViWuitV56sC9jeE=
+	t=1770809664; cv=none; b=VRo6cK4v/tyO4z8BbU04nZSo5PEF0N9l9ejX9eNK01YyaI2i356WaZ5v9qQzkQUYyNhR9yRT71/4eas1thXxp70pWxlQ52RKA0YxvKrDHklYflsZAFnrtYcIECedr6ivXFKr/5i5+V9ONE7SlZYD2pMAF/vNCO6v0z2DeDGcYPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770809481; c=relaxed/simple;
-	bh=r6Oj5uSMc1lzIWi/mj5FIh7uqMehtkOa6MRoztKgJFA=;
+	s=arc-20240116; t=1770809664; c=relaxed/simple;
+	bh=vMyMBNeMUt3sklnAr4/f2e8cY/XRVFNSUbINEvD2eM4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c8ztHOfdUds3IyE2rW4BQJfcv8cKHS7+uH7Lap4faMriWJW9Cx7MKNQDPXQFEblU2j3CqpYcoeZlfGIFruwrUtGiw8g6WK/otUA/DwrdWJodfaVUJ1HoixeMsCBKbWYkoCrPAnNF276J3TkxyNll6CyShrVrYYehVxB732uBKI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0sXGHG1T; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yPcwiIyx; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 11 Feb 2026 12:31:07 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1770809469;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KNAYpsr5sQNu+uU2DhYy3Ytlt/Qx3h50xN9qAwhfg3Q=;
-	b=0sXGHG1T0hKhVFy0Xc0FuppkYJ+mihrldsIu/Nw3sGMS4955Y1s+w2yOJlOL7EMC9TZgQ1
-	xz7H+uNEppsA6gTNTIilzVwMgWeeEAljq1lcURTpO9pGsdl3uiNrwPgVbisDScM8JMhuyE
-	IN5rj+nwXNPlUbz5LxN/nylxY1OkDvNV03TQUZeW2xV7auZAp2nYXi91LF3eyuVYy69OfR
-	1Sp5q4jA+RYWAghnuyaiVsOZDgFM5feaFwRv6jPJ9485ZH03iel7N02Lmp6yjBq5nRcFIu
-	bO3AE34/EDK5KiEovSLv8VLxva/41fYe4f8aT25NrcDzqxL12iIYPX0Tkc1nvg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1770809469;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KNAYpsr5sQNu+uU2DhYy3Ytlt/Qx3h50xN9qAwhfg3Q=;
-	b=yPcwiIyx4Ft1OHoFej6cBLlvAzRLr18f+CbpRKPhkNe4zlPcK4iWYXZXr22+sXRg+B4khD
-	ZXj+HQzIR6i5tgBg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>
-Cc: axboe@kernel.dk, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-users@vger.kernel.org,
-	ming.lei@redhat.com, muchun.song@linux.dev,
-	mkhalfella@purestorage.com, sunlightlinux@gmail.com,
-	chris.friesen@windriver.com, stable@vger.kernel.org,
-	ionut_n2001@yahoo.com
-Subject: Re: [PATCH v2 1/1] block/blk-mq: fix RT kernel regression with
- dedicated quiesce_sync_lock
-Message-ID: <20260211113107.NjjnR0HT@linutronix.de>
-References: <20260210204943.21709-3-ionut.nechita@windriver.com>
- <20260210204943.21709-5-ionut.nechita@windriver.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HCtfieAfO1mVqae/88x05Hr5602GxkfwfQ6OYvFsuPfWQodC2fIaX7XJrp/7RM7L49Hwoc76f/vqCRG2nrHAWvEG2JfpZK0soT/2zZY1gJj/r0WkW3E3lYyuAJZmAOWiprIvTFsAZbYJ4WWGBczDwWTvG92XE6vY8+a6pd0Um3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LxO1mt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEEAC4CEF7;
+	Wed, 11 Feb 2026 11:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770809664;
+	bh=vMyMBNeMUt3sklnAr4/f2e8cY/XRVFNSUbINEvD2eM4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0LxO1mt00/aaWa+nMkx7JtRhGeBv/0RpUeqr6Arvwp/9EL8xlS4V4H83PEhdxgy93
+	 BOUK6gpT0+MlzAWf8qQZJzpkI9X6cBigvaB6vCvghEb8ne753O9t9czG/iT8ppe7NA
+	 KrUkwbDujoC6LM9bAqcmO9o/Rvd8B2GC10ZXtXxc=
+Date: Wed, 11 Feb 2026 12:34:20 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ron Economos <re@w6rz.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.1 00/69] 6.1.163-rc1 review
+Message-ID: <2026021113-sweep-idealness-305e@gregkh>
+References: <20260209142301.913348974@linuxfoundation.org>
+ <4542559a-ed5a-4ab9-bdae-0978b2dc4b49@w6rz.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260210204943.21709-5-ionut.nechita@windriver.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4542559a-ed5a-4ab9-bdae-0978b2dc4b49@w6rz.net>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215785-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.dk,vger.kernel.org,redhat.com,linux.dev,purestorage.com,gmail.com,windriver.com,yahoo.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-215786-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email]
-X-Rspamd-Queue-Id: 5FC28123E23
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 35A4E123E52
 X-Rspamd-Action: no action
 
-On 2026-02-10 22:49:46 [+0200], Ionut Nechita (Wind River) wrote:
-> From: Ionut Nechita <ionut.nechita@windriver.com>
+On Tue, Feb 10, 2026 at 12:55:28AM -0800, Ron Economos wrote:
+> On 2/9/26 06:23, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.163 release.
+> > There are 69 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Wed, 11 Feb 2026 14:22:44 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.163-rc1.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> In RT kernel (PREEMPT_RT), commit 679b1874eba7 ("block: fix ordering
-> between checking QUEUE_FLAG_QUIESCED request adding") causes severe
-> performance regression on systems with multiple MSI-X interrupt vectors.
+> There's a build warning on RISC-V.
 > 
-> The above change added spinlock_t queue_lock to blk_mq_run_hw_queue()
-> to synchronize QUEUE_FLAG_QUIESCED checks with blk_mq_unquiesce_queue().
-> While this works correctly in standard kernel, it causes catastrophic
-> serialization in RT kernel where spinlock_t converts to sleeping
-> rt_mutex.
-
-So !RT has the same synchronisation on the lock but spinning on the lock
-makes it less dramatic?
-
-> Problem in RT kernel:
-> - blk_mq_run_hw_queue() is called from IRQ thread context (I/O completion)
-> - With 8 MSI-X vectors, all 8 IRQ threads contend on the same queue_lock
-> - queue_lock becomes rt_mutex (sleeping) in RT kernel
-> - IRQ threads serialize and enter D-state waiting for lock
-> - Throughput drops from 640 MB/s to 153 MB/s
+> arch/riscv/kernel/probes/uprobes.c: In function 'arch_uprobe_copy_ixol':
+> arch/riscv/kernel/probes/uprobes.c:164:23: warning: unused variable 'start' [-Wunused-variable]
+>   164 |         unsigned long start = (unsigned long)dst;
+>       |                       ^~~~~
 > 
-> The original commit message noted that memory barriers were considered
-> but rejected because "memory barrier is not easy to be maintained" -
-> barriers would need to be added at multiple call sites throughout the
-> block layer where work is added before calling blk_mq_run_hw_queue().
+> This can fixed with the fixup patch that I sent for 6.6.121.
 > 
-> Solution:
-> Instead of using the general-purpose queue_lock or attempting complex
-> memory barrier pairing across many call sites, introduce a dedicated
-> raw_spinlock_t quiesce_sync_lock specifically for synchronizing the
-> quiesce state between:
-> - blk_mq_quiesce_queue_nowait()
-> - blk_mq_unquiesce_queue()
-> - blk_mq_run_hw_queue()
+> riscv: Replace function-like macro by static inline function
 > 
-> Why raw_spinlock is safe:
-> - Critical section is provably short (only flag and counter checks)
-> - No sleeping operations under lock
-> - raw_spinlock does not convert to rt_mutex in RT kernel
-> - Provides same ordering guarantees as original queue_lock approach
-
-Okay.
-
-> This approach:
-> - Maintains correctness of original synchronization
-> - Avoids sleeping in RT kernel's IRQ thread context
-> - Limits scope to only quiesce-related synchronization
-> - Simpler than auditing all call sites for memory barrier pairing
+> commit 0b1ac9743f3d9cfced2ac3cb9f274c0675bd4189
 > 
-> Additionally, change blk_freeze_queue_start to use async=true for better
-> performance in RT kernel by avoiding synchronous queue runs during freeze.
-> 
-> Test results on RT kernel (megaraid_sas with 8 MSI-X vectors):
-> - Before: 153 MB/s, 6-8 IRQ threads in D-state
-> - After:  640 MB/s, 0 IRQ threads blocked
-> 
-> Fixes: 679b1874eba7 ("block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ionut Nechita <ionut.nechita@windriver.com>
-> ---
->  block/blk-core.c       |  1 +
->  block/blk-mq.c         | 27 ++++++++++++++++-----------
->  include/linux/blkdev.h |  6 ++++++
->  3 files changed, 23 insertions(+), 11 deletions(-)
-> 
-> diff --git a/block/blk-core.c b/block/blk-core.c
-> index 474700ffaa1c8..fd615aeb5c463 100644
-> --- a/block/blk-core.c
-> +++ b/block/blk-core.c
-> @@ -434,6 +434,7 @@ struct request_queue *blk_alloc_queue(struct queue_limits *lim, int node_id)
->  	mutex_init(&q->limits_lock);
->  	mutex_init(&q->rq_qos_mutex);
->  	spin_lock_init(&q->queue_lock);
-> +	raw_spin_lock_init(&q->quiesce_sync_lock);
->  
->  	init_waitqueue_head(&q->mq_freeze_wq);
->  	mutex_init(&q->mq_freeze_lock);
-> diff --git a/block/blk-mq.c b/block/blk-mq.c
-> index 0ad3dd3329db7..888718a782f88 100644
-> --- a/block/blk-mq.c
-> +++ b/block/blk-mq.c
-> @@ -171,7 +171,7 @@ bool __blk_freeze_queue_start(struct request_queue *q,
->  		percpu_ref_kill(&q->q_usage_counter);
->  		mutex_unlock(&q->mq_freeze_lock);
->  		if (queue_is_mq(q))
-> -			blk_mq_run_hw_queues(q, false);
-> +			blk_mq_run_hw_queues(q, true);
+> The cherry-pick applies cleanly.
 
-I read what you wrote to Keith here and still don't get it. If the goal
-is to have the same lock contention on RT as on !RT (where we spin on
-the lock) why not keep everything else as-is? Why is important to spread
-it across multiple CPUs? This looks unrelated. It could be added as a
-second optimisation.
+Now queued up, thanks.
 
-Another thing: If you have multiple interrupts, why don't you have one
-queue per interrupt? Wouldn't this also avoid the spinning here?
-
->  	} else {
->  		mutex_unlock(&q->mq_freeze_lock);
->  	}
-> @@ -262,10 +262,10 @@ void blk_mq_quiesce_queue_nowait(struct request_queue *q)
->  {
->  	unsigned long flags;
->  
-> -	spin_lock_irqsave(&q->queue_lock, flags);
-> +	raw_spin_lock_irqsave(&q->quiesce_sync_lock, flags);
->  	if (!q->quiesce_depth++)
->  		blk_queue_flag_set(QUEUE_FLAG_QUIESCED, q);
-> -	spin_unlock_irqrestore(&q->queue_lock, flags);
-> +	raw_spin_unlock_irqrestore(&q->quiesce_sync_lock, flags);
-
-Since you have only "inc and set bit if was zero" and below "dec and
-clear bit if become zero" what about using atomic_t for quiesce_depth?
-There is atomic_inc_return() mostly doing the same thing with one atomic
-op. That flag could be avoided if the the blk_queue_quiesced() condition
-is "quiesce_depth > 0". That could avoid the lock.
-
->  }
->  EXPORT_SYMBOL_GPL(blk_mq_quiesce_queue_nowait);
->  
-> @@ -317,14 +317,14 @@ void blk_mq_unquiesce_queue(struct request_queue *q)
->  	unsigned long flags;
->  	bool run_queue = false;
->  
-> -	spin_lock_irqsave(&q->queue_lock, flags);
-> +	raw_spin_lock_irqsave(&q->quiesce_sync_lock, flags);
->  	if (WARN_ON_ONCE(q->quiesce_depth <= 0)) {
->  		;
->  	} else if (!--q->quiesce_depth) {
->  		blk_queue_flag_clear(QUEUE_FLAG_QUIESCED, q);
->  		run_queue = true;
->  	}
-> -	spin_unlock_irqrestore(&q->queue_lock, flags);
-> +	raw_spin_unlock_irqrestore(&q->quiesce_sync_lock, flags);
->  
->  	/* dispatch requests which are inserted during quiescing */
->  	if (run_queue)
-> @@ -2368,14 +2368,19 @@ void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
->  		unsigned long flags;
->  
->  		/*
-> -		 * Synchronize with blk_mq_unquiesce_queue(), because we check
-> -		 * if hw queue is quiesced locklessly above, we need the use
-> -		 * ->queue_lock to make sure we see the up-to-date status to
-> -		 * not miss rerunning the hw queue.
-> +		 * Synchronize with blk_mq_unquiesce_queue(). We check if hw
-> +		 * queue is quiesced locklessly above, so we need to use
-> +		 * quiesce_sync_lock to ensure we see the up-to-date status
-> +		 * and don't miss rerunning the hw queue.
-> +		 *
-> +		 * Uses raw_spinlock to avoid sleeping in RT kernel's IRQ
-> +		 * thread context during I/O completion. Critical section is
-> +		 * short (only flag and counter checks), making raw_spinlock
-> +		 * safe.
->  		 */
-> -		spin_lock_irqsave(&hctx->queue->queue_lock, flags);
-> +		raw_spin_lock_irqsave(&hctx->queue->quiesce_sync_lock, flags);
->  		need_run = blk_mq_hw_queue_need_run(hctx);
-> -		spin_unlock_irqrestore(&hctx->queue->queue_lock, flags);
-> +		raw_spin_unlock_irqrestore(&hctx->queue->quiesce_sync_lock, flags);
-
-but here I am unsure. If the above operation (setting/ clearing the bit)
-is lockless it might require a handshake if the counter goes back to 0
-before it is visible here. Maybe not since it could be observed before
-the lock was acquired. That is why I am unsure.
-
->  		if (!need_run)
->  			return;
-
-Sebastian
+greg k-h
 
