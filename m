@@ -1,208 +1,254 @@
-Return-Path: <stable+bounces-215790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id w0RmCgVsjGlmngAAu9opvQ
-	(envelope-from <stable+bounces-215790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:46:13 +0100
+	id SFjEIuJsjGlmngAAu9opvQ
+	(envelope-from <stable+bounces-215792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:49:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCF1123F15
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:46:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E736123F46
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C09653010BB0
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:46:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3297F3004D3C
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB88281525;
-	Wed, 11 Feb 2026 11:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A9E30E84A;
+	Wed, 11 Feb 2026 11:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="D6P9gLkf";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="u1YJ5Wap"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="WnKyTasJ"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974E28460;
-	Wed, 11 Feb 2026 11:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0268460
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 11:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770810367; cv=none; b=XBBcCHIM3cTo8f4BvA6TlRQaXG2aOhZpb95ylqkc3A1VA40zNtkQWgfB6b1dyeRdfdsxf3G9mIa3zrGAsufUdhqdFIptPIyl3ijkNw7KMDcEucUuPVbKf/sPn//s1zc4PXfPJU3Ic2SQAoKjuvOVWhxEs3ILI2sHbzoViLkBa/w=
+	t=1770810587; cv=none; b=ua2wVSOPhYRFoVmTVpniKdWxRLGyLz0bKTmez4yiDXR7lXLthnVnL4GMe8wMR8YfXiURcz5BKjMZJVPU3FXYYSE9KiTIz4hQ5T60khMvHhYwQlCJ28iBOb9b6w8kBsxx1uk/uLX5N6bSIb/iaf7o/cdH39z5AhDHiyxWI8WUZ2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770810367; c=relaxed/simple;
-	bh=UMyxJV4svHC9C+Q/U8kxDvWW1hGYe8YJ+LZPzQW1Dn8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ijxlS/dCoCtDCcGa2l0kED1nIVtitW/RnbWuNJmCgjv+GVdC0sJKBJ3wCr/xn7f2/FMOHKpaVBAwP2TzY99vFUUZaloaxLBqy4iinSW5DCCIswZIBTuiuob4MDmcMG4ntfCZd/xXE1ddGY7npixKjAkhYJHXis6smpU5Q8N48VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=D6P9gLkf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=u1YJ5Wap; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfout.stl.internal (Postfix) with ESMTP id 21BD41D00183;
-	Wed, 11 Feb 2026 06:46:04 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Wed, 11 Feb 2026 06:46:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1770810363; x=1770896763; bh=ukbEN640sL
-	CWjepQ3oOy/19KEzPFUeSNtmy3J6LTRuw=; b=D6P9gLkfxYzKfsUf0CAG8VmOmc
-	eJbuwBPDfvJYEDMb2oulNIqbvtpsrgFFuHJ4tOfjjecFZGZ5mLbn6TBLYgV/6Sjv
-	skPR67hPYHcWxpgA7VD+1o1GkWLv9GFPl2wdK24aQM6iT/87Wo7X9Xj///a6ilMH
-	/6vbIRJlMOwyD8R5YRWVl8UrEp6gZMBYAYv5SHpBLm3ES210Hhv7kurNtwbW6SVW
-	wmX+5N39X+0Yr4VgIUd93pZpfvCwqHNG3jsk+jviHLzlf/9Dv3mtulWr2Qd6c+V6
-	wv8PgDJLaxgJKxcpWnWlrk7oWdamcch8NTV/oO/l0TAKCkXLOv+v6GbJAqtQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1770810363; x=1770896763; bh=ukbEN640sLCWjepQ3oOy/19KEzPFUeSNtmy
-	3J6LTRuw=; b=u1YJ5WapTnOO51LbuXW87gB9hcscNuECThY7V6wxz90dm115w7c
-	K7cYdhXPPy9vJGVPvZRt84jkpeR8kfnyjERL7YQxRyk8veqImnEVJ0MFkzrms8e4
-	Kr4/bzXZIzG5CHId/McTed7M8gyjqid5M6L/4adY9F/m+O7gba2CLnB/L+etMiL/
-	96d02g4THzrHOl/mSRH2mRvbgvOMCaFje/0t4KmE9MBcvDNK5o19TcoQJszcDmW9
-	oS+/qZEbDg9DRQirz+CPrQZfWCkJjXtr1kX8tAr5Ti3c4Oz695oLjwMkHKZkIdMN
-	SGMAItjkFgMhmC7n6JE3QWjG0kMUJWn9Xcw==
-X-ME-Sender: <xms:-2uMaVBCbfr859cGEbq5QpG7w_o81C00UlHrFHns-aDa7_Y4aeU-CQ>
-    <xme:-2uMaSkXQtqXsj36Y7Kk5Dr_7dWnVUlIF13FaOWYChiX4W9WU990fZni76g6o5ep-
-    89sUhxhJDv656qa1o6RU3zUlSefJWQQoLdAHWH03KCSxoUMLiQuHWc>
-X-ME-Received: <xmr:-2uMaWxwS8pLkK2QTg-yaSmu99IAdBF6VRf2r5Xj3rlnmYSVMVZ34YF8bIxnlvHpF98GHcaVFdI-sU2p3N-y7z6b7ijKT5A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtddvgeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujggfsehttdortddtreejnecuhfhrohhmpeflrghnucfr
-    rghluhhsuceojhhprghluhhssehfrghsthhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhepvefgtdejgfeugefgffethedvueeigfegteduffeftdeihfduuefgieelteekheeg
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehjphgrlhhushesfhgrshhtmhgrihhlrdgtohhm
-    pdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhvg
-    hikhhosehsnhhtvggthhdruggvpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhn
-    vghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugi
-    dqrhhotghktghhihhpsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthht
-    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepphgsrhhosghinhhsohhnsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhgvghhr
-    vghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfohdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:-2uMacQDmam6Ndluo90DoSSA864FB_o7xtOYntFtqf0478uILqnJ7A>
-    <xmx:-2uMae9Ad0hpCRjGR50u68RSJo8aR50evKXYSrIMLK6rbTHJXIcwJw>
-    <xmx:-2uMaatdKf6p6Cy-_xx49pF4AkcKypYFnHsTXozPWg7lht9t7SvK1Q>
-    <xmx:-2uMaWPUK4iBXdUci29oRFj4fciIDYs-kLRBr_JDKASAnGUmAAdZDQ>
-    <xmx:-2uMaUsoCZr9j0XuJpu1tJMAcY6fId3JDlqUQWUbeVEP8CzFyi-Z0N7R>
-Feedback-ID: i01894241:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Feb 2026 06:46:02 -0500 (EST)
-Date: Wed, 11 Feb 2026 12:46:01 +0100
-From: Jan Palus <jpalus@fastmail.com>
-To: Heiko Stuebner <heiko@sntech.de>
-Cc: linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peter Robinson <pbrobinson@gmail.com>, Thorsten Leemhuis <regressions@leemhuis.info>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "arm64: dts: rockchip: Further describe the WiFi
- for the Pinebook Pro"
-Message-ID: <aYxrhXSLHcAHavAd@rock.grzadka>
-References: <20260210120142.698512-1-heiko@sntech.de>
+	s=arc-20240116; t=1770810587; c=relaxed/simple;
+	bh=/10qhdazdrxunhBQBKC6OuoDepHUwEuYrIDRB1EzC9U=;
+	h=Content-Type:Message-ID:Date:MIME-Version:To:From:Subject; b=gZ3hMcnsPilbrcaN6XZEacmfbZIHLi1i67SPvppBd5SXja+Yd5SpRTX8YAcw01kvVvubFfhN9Qe7uB0drRegDBqsRfH4e+3KGeFLPlqvm7sVFp+ZBBPTDja7K7fvnC02+t+NMA5SRygNwkP/epeNPEeqilu9Pi5MQlYRvoLQEP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=WnKyTasJ; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d122733808so2148147a34.2
+        for <stable@vger.kernel.org>; Wed, 11 Feb 2026 03:49:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1770810583; x=1771415383; darn=vger.kernel.org;
+        h=subject:from:to:content-language:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=n/Ka02HwhOXaE3+0IrENbGY3JcHxoE7z5q6/sxyHR2E=;
+        b=WnKyTasJlE89ns5oqReVJ91HJwZloP+ujo+eEHqOGcVyPKH/EXYVZcs430rtehM+yQ
+         H6UinezCeWuKH3D1FdvHFB8QZjuRGOCjacfum1iuY+NIm4c+f6vOEzy9XyTASY0PZaG4
+         qHyE0jk7192o5l5X8O086oJkKA6SeEXbNSzLOWZDFCdw0D8KW/+J+FqCIyPq0uaU9O8n
+         WqAZeKkS+VYg06sHNNrp5YCFLIZx90TA7+ke6/rlWZexMLRW3u/uDS2/hteIJH+WxQ8P
+         +LZ6vbPzW3/4SywMrN/sQwaM8yl+sOfuK3bD1gS691T7J+SJGX8IJ30LrUfCPl6bEoK4
+         dFLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770810583; x=1771415383;
+        h=subject:from:to:content-language:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n/Ka02HwhOXaE3+0IrENbGY3JcHxoE7z5q6/sxyHR2E=;
+        b=IIAu/KjHovyFpzN/FSvL4DV4Bxpqzt8AdBqUB5LQpQQAq8u+KcWm/s9lTWGqxXfIwS
+         98x4HeCA21QHGoL5TY4u5vl/mH3FRDm/WRrEgufOtwvu4zZARvnwJ4ZOGvrktJaimeGD
+         whLSxsXUgGzZQCz5n3COb29DUV02s8yUacQ6x+/PXfObr4rCpkjvUVmoFgc762YJTg/5
+         mgZJiILTUrXbxpBDAn7llpoZoVFE5GpCsHO3yUKRnOPh45FsqS7f6nJcSVPa40dqWeN+
+         ReMLhvKBa6wBTn1nTMIR2KqGHGUZtcjCF4yvdICFX9QwktdA9iliIkNj7lVwZvHZpSc2
+         tAnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW7nGDasGH+6LJahV5eeO3URMWFvYCQCTDt8nwd/CxIUvgHiFelMo8f7dVoUO7zg9pVSkezpyU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUTkyH7rIEdEFS7j/+oXlZ9nK3ANaLNFYvRQKFUI5uuJESR8B0
+	VzPkV/0BboPapkV/6VsSaNoPjDzdbQjlSZLlvkLBKEyj8/wVTCEQ6FVhiTeRf+lsG2+4AwNzyBI
+	Xje7kkHU=
+X-Gm-Gg: AZuq6aKLbsBFdySifhh58bYKY4UEv5BrMBKJUkyST4qItlQlt5po3qDSyZXI3J4t/Dh
+	RlPRntWeSjoPWwSyJjZ80HOS5TrUHTePJRaXbnqwEJs8i8rcvMNcDSjbACC0ZMFbXYJGPFki+Xn
+	YQ96tHgwOfES/ygQRsyHeVihcwiYuGrSEvrZfzSr9pe2/JWuMQVEeZfYVLo/0k2LlawcDDSs0hl
+	ur/c5SzDGBPxgv5vh7KxPyTdtigIjIMqOA2h21twVZjlLrX/mSU/9eHBIgGT7qZQclP4P+uzi7b
+	l/VceuQwKAkhyGT4cQ0ACMXKpWld79v9sxyIksCV0//utsByZyA22L7zkgrNqd2Af8dSlcIlIfS
+	oPxBYnapEs7NsOFowrVWe4RovtKxEjqx/bp9FOK9qKvsZnIxH2djlQnuroNQ9GWREDKwRRtFNw4
+	jOQL9JcPOTxLiDuTRnqrxyvbY/GXrD87HuiOH+xBC7E21IwOfgfka9yyJl7SkW8wqfB5FzehhWp
+	LXk2sc1Sw==
+X-Received: by 2002:a05:6830:608b:b0:7d1:9195:a83e with SMTP id 46e09a7af769-7d4a5669db4mr1226415a34.12.1770810583566;
+        Wed, 11 Feb 2026 03:49:43 -0800 (PST)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4a7548218sm1177522a34.9.2026.02.11.03.49.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Feb 2026 03:49:42 -0800 (PST)
+Content-Type: multipart/mixed; boundary="------------bsZPDqejl5l0npTTIoJKcNzl"
+Message-ID: <7923dc60-dbf5-44aa-9aab-1c474cea0039@kernel.dk>
+Date: Wed, 11 Feb 2026 04:49:41 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260210120142.698512-1-heiko@sntech.de>
-User-Agent: NeoMutt/20251211
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ stable <stable@vger.kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
+Subject: 6.18-stable inclusion request
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[fastmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[fastmail.com:s=fm3,messagingengine.com:s=fm3];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,gmail.com,leemhuis.info];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215790-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[fastmail.com:+,messagingengine.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[fastmail.com];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-215792-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	HAS_ATTACHMENT(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jpalus@fastmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_PROHIBIT(0.00)[0.0.0.1:email];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sntech.de:email,messagingengine.com:dkim,leemhuis.info:email,rock.grzadka:mid]
-X-Rspamd-Queue-Id: 5BCF1123F15
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel.dk:mid,kernel.dk:email]
+X-Rspamd-Queue-Id: 9E736123F46
 X-Rspamd-Action: no action
 
-On 10.02.2026 13:01, Heiko Stuebner wrote:
-> This reverts commit 6d54d935062e2d4a7d3f779ceb9eeff108d0535d.
-> 
-> It seems there are different variants of the Wifi chipset in use on the
-> Pinebook Pro. And according to the reported regression - see Closes
-> below, the reverted change causes issues with one Wifi chipset.
-> 
-> The original commit message indicates a "further description" only and
-> does not indicate this would fix an actual problem, so a revert should
-> not cause further problems.
-> 
-> Fixes: 6d54d935062e ("arm64: dts: rockchip: Further describe the WiFi for the Pinebook Pro")
-> Cc: Jan Palus <jpalus@fastmail.com>
-> Cc: Peter Robinson <pbrobinson@gmail.com>
-> Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-> Cc: stable@vger.kernel.org
-> Closes: https://lore.kernel.org/r/aUKOlj-RvTYlrpiS@rock.grzadka/
-> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-> ---
->  .../boot/dts/rockchip/rk3399-pinebook-pro.dts  | 18 ------------------
->  1 file changed, 18 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-> index 810ab6ff4e67..7c23971920f0 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-> @@ -883,12 +883,6 @@ vcc5v0_host_en_pin: vcc5v0-host-en-pin {
->  		};
->  	};
->  
-> -	wifi {
-> -		wifi_host_wake_l: wifi-host-wake-l {
-> -			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
-> -		};
-> -	};
-> -
->  	wireless-bluetooth {
->  		bt_wake_pin: bt-wake-pin {
->  			rockchip,pins = <2 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
-> @@ -946,19 +940,7 @@ &sdio0 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&sdio0_bus4 &sdio0_cmd &sdio0_clk>;
->  	sd-uhs-sdr104;
-> -	#address-cells = <1>;
-> -	#size-cells = <0>;
->  	status = "okay";
-> -
-> -	brcmf: wifi@1 {
-> -		compatible = "brcm,bcm4329-fmac";
-> -		reg = <1>;
-> -		interrupt-parent = <&gpio0>;
-> -		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_HIGH>;
-> -		interrupt-names = "host-wake";
-> -		pinctrl-names = "default";
-> -		pinctrl-0 = <&wifi_host_wake_l>;
-> -	};
->  };
->  
->  &sdhci {
+This is a multi-part message in MIME format.
+--------------bsZPDqejl5l0npTTIoJKcNzl
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Although it's pretty much obvious feel free to include:
+Hi Greg/stable,
 
-Tested-by: Jan Palus <jpalus@fastmail.com>
+Can you add these two patches to the 6.18-stable queue? You can also
+just cherry pick these in order:
+
+38aa434ab9335ce2d178b7538cdf01d60b2014c3
+91214661489467f8452d34edbf257488d85176e4
+
+It's in the nice-to-have category just to be consistent with the
+older/current stable release.
+
+Thanks!
+
+-- 
+Jens Axboe
+
+
+--------------bsZPDqejl5l0npTTIoJKcNzl
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-io-wq-add-exit-on-idle-state.patch"
+Content-Disposition: attachment;
+ filename="0001-io_uring-io-wq-add-exit-on-idle-state.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBlZmE5ZjE2NGU5MzQ1ZTYxM2I1MGMyMDNlYjc2MzkyMmEzZDEzMGQwIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBMaSBDaGVuIDxtZUBsaW51eC5iZWF1dHk+CkRhdGU6
+IE1vbiwgMiBGZWIgMjAyNiAyMjozNzo1MyArMDgwMApTdWJqZWN0OiBbUEFUQ0ggMS8yXSBp
+b191cmluZy9pby13cTogYWRkIGV4aXQtb24taWRsZSBzdGF0ZQoKQ29tbWl0IDM4YWE0MzRh
+YjkzMzVjZTJkMTc4Yjc1MzhjZGYwMWQ2MGIyMDE0YzMgdXBzdHJlYW0uCgppby13cSB1c2Vz
+IGFuIGlkbGUgdGltZW91dCB0byBzaHJpbmsgdGhlIHBvb2wsIGJ1dCBrZWVwcyB0aGUgbGFz
+dCB3b3JrZXIKYXJvdW5kIGluZGVmaW5pdGVseSB0byBhdm9pZCBjaHVybi4KCkZvciB0YXNr
+cyB0aGF0IHVzZWQgaW9fdXJpbmcgZm9yIGZpbGUgSS9PIGFuZCB0aGVuIHN0b3AgdXNpbmcg
+aW9fdXJpbmcsCnRoaXMgY2FuIGxlYXZlIGFuIGlvdS13cmstKiB0aHJlYWQgYmVoaW5kIGV2
+ZW4gYWZ0ZXIgYWxsIGlvX3VyaW5nCmluc3RhbmNlcyBhcmUgZ29uZS4gVGhpcyBpcyB1bm5l
+Y2Vzc2FyeSBvdmVyaGVhZCBhbmQgYWxzbyBnZXRzIGluIHRoZQp3YXkgb2YgcHJvY2VzcyBj
+aGVja3BvaW50L3Jlc3RvcmUuCgpBZGQgYW4gZXhpdC1vbi1pZGxlIHN0YXRlIHRoYXQgbWFr
+ZXMgYWxsIGlvLXdxIHdvcmtlcnMgZXhpdCBhcyBzb29uIGFzCnRoZXkgYmVjb21lIGlkbGUs
+IGFuZCBwcm92aWRlIGlvX3dxX3NldF9leGl0X29uX2lkbGUoKSB0byB0b2dnbGUgaXQuCgpT
+aWduZWQtb2ZmLWJ5OiBMaSBDaGVuIDxtZUBsaW51eC5iZWF1dHk+ClNpZ25lZC1vZmYtYnk6
+IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5kaz4KLS0tCiBpb191cmluZy9pby13cS5jIHwg
+MjcgKysrKysrKysrKysrKysrKysrKysrKysrKy0tCiBpb191cmluZy9pby13cS5oIHwgIDEg
+KwogMiBmaWxlcyBjaGFuZ2VkLCAyNiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoK
+ZGlmZiAtLWdpdCBhL2lvX3VyaW5nL2lvLXdxLmMgYi9pb191cmluZy9pby13cS5jCmluZGV4
+IDU2YjZhODI1Nzk1OS4uNDlhOWM5MTRiNGU5IDEwMDY0NAotLS0gYS9pb191cmluZy9pby13
+cS5jCisrKyBiL2lvX3VyaW5nL2lvLXdxLmMKQEAgLTM0LDYgKzM0LDcgQEAgZW51bSB7CiAK
+IGVudW0gewogCUlPX1dRX0JJVF9FWElUCQk9IDAsCS8qIHdxIGV4aXRpbmcgKi8KKwlJT19X
+UV9CSVRfRVhJVF9PTl9JRExFCT0gMSwJLyogYWxsb3cgYWxsIHdvcmtlcnMgdG8gZXhpdCBv
+biBpZGxlICovCiB9OwogCiBlbnVtIHsKQEAgLTcwNiw5ICs3MDcsMTMgQEAgc3RhdGljIGlu
+dCBpb193cV93b3JrZXIodm9pZCAqZGF0YSkKIAkJcmF3X3NwaW5fbG9jaygmYWNjdC0+d29y
+a2Vyc19sb2NrKTsKIAkJLyoKIAkJICogTGFzdCBzbGVlcCB0aW1lZCBvdXQuIEV4aXQgaWYg
+d2UncmUgbm90IHRoZSBsYXN0IHdvcmtlciwKLQkJICogb3IgaWYgc29tZW9uZSBtb2RpZmll
+ZCBvdXIgYWZmaW5pdHkuCisJCSAqIG9yIGlmIHNvbWVvbmUgbW9kaWZpZWQgb3VyIGFmZmlu
+aXR5LiBJZiB3cSBpcyBtYXJrZWQKKwkJICogaWRsZS1leGl0LCBkcm9wIHRoZSB3b3JrZXIg
+YXMgd2VsbC4gVGhpcyBpcyB1c2VkIHRvIGF2b2lkCisJCSAqIGtlZXBpbmcgaW8td3Egd29y
+a2VycyBhcm91bmQgZm9yIHRhc2tzIHRoYXQgbm8gbG9uZ2VyIGhhdmUKKwkJICogYW55IGFj
+dGl2ZSBpb191cmluZyBpbnN0YW5jZXMuCiAJCSAqLwotCQlpZiAobGFzdF90aW1lb3V0ICYm
+IChleGl0X21hc2sgfHwgYWNjdC0+bnJfd29ya2VycyA+IDEpKSB7CisJCWlmICgobGFzdF90
+aW1lb3V0ICYmIChleGl0X21hc2sgfHwgYWNjdC0+bnJfd29ya2VycyA+IDEpKSB8fAorCQkg
+ICAgdGVzdF9iaXQoSU9fV1FfQklUX0VYSVRfT05fSURMRSwgJndxLT5zdGF0ZSkpIHsKIAkJ
+CWFjY3QtPm5yX3dvcmtlcnMtLTsKIAkJCXJhd19zcGluX3VubG9jaygmYWNjdC0+d29ya2Vy
+c19sb2NrKTsKIAkJCV9fc2V0X2N1cnJlbnRfc3RhdGUoVEFTS19SVU5OSU5HKTsKQEAgLTk2
+NSw2ICs5NzAsMjQgQEAgc3RhdGljIGJvb2wgaW9fd3Ffd29ya2VyX3dha2Uoc3RydWN0IGlv
+X3dvcmtlciAqd29ya2VyLCB2b2lkICpkYXRhKQogCXJldHVybiBmYWxzZTsKIH0KIAordm9p
+ZCBpb193cV9zZXRfZXhpdF9vbl9pZGxlKHN0cnVjdCBpb193cSAqd3EsIGJvb2wgZW5hYmxl
+KQoreworCWlmICghd3EtPnRhc2spCisJCXJldHVybjsKKworCWlmICghZW5hYmxlKSB7CisJ
+CWNsZWFyX2JpdChJT19XUV9CSVRfRVhJVF9PTl9JRExFLCAmd3EtPnN0YXRlKTsKKwkJcmV0
+dXJuOworCX0KKworCWlmICh0ZXN0X2FuZF9zZXRfYml0KElPX1dRX0JJVF9FWElUX09OX0lE
+TEUsICZ3cS0+c3RhdGUpKQorCQlyZXR1cm47CisKKwlyY3VfcmVhZF9sb2NrKCk7CisJaW9f
+d3FfZm9yX2VhY2hfd29ya2VyKHdxLCBpb193cV93b3JrZXJfd2FrZSwgTlVMTCk7CisJcmN1
+X3JlYWRfdW5sb2NrKCk7Cit9CisKIHN0YXRpYyB2b2lkIGlvX3J1bl9jYW5jZWwoc3RydWN0
+IGlvX3dxX3dvcmsgKndvcmssIHN0cnVjdCBpb193cSAqd3EpCiB7CiAJZG8gewpkaWZmIC0t
+Z2l0IGEvaW9fdXJpbmcvaW8td3EuaCBiL2lvX3VyaW5nL2lvLXdxLmgKaW5kZXggNzc0YWJh
+YjU0NzMyLi45NGIxNDc0MmI3MDMgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL2lvLXdxLmgKKysr
+IGIvaW9fdXJpbmcvaW8td3EuaApAQCAtNDEsNiArNDEsNyBAQCBzdHJ1Y3QgaW9fd3FfZGF0
+YSB7CiBzdHJ1Y3QgaW9fd3EgKmlvX3dxX2NyZWF0ZSh1bnNpZ25lZCBib3VuZGVkLCBzdHJ1
+Y3QgaW9fd3FfZGF0YSAqZGF0YSk7CiB2b2lkIGlvX3dxX2V4aXRfc3RhcnQoc3RydWN0IGlv
+X3dxICp3cSk7CiB2b2lkIGlvX3dxX3B1dF9hbmRfZXhpdChzdHJ1Y3QgaW9fd3EgKndxKTsK
+K3ZvaWQgaW9fd3Ffc2V0X2V4aXRfb25faWRsZShzdHJ1Y3QgaW9fd3EgKndxLCBib29sIGVu
+YWJsZSk7CiAKIHZvaWQgaW9fd3FfZW5xdWV1ZShzdHJ1Y3QgaW9fd3EgKndxLCBzdHJ1Y3Qg
+aW9fd3Ffd29yayAqd29yayk7CiB2b2lkIGlvX3dxX2hhc2hfd29yayhzdHJ1Y3QgaW9fd3Ff
+d29yayAqd29yaywgdm9pZCAqdmFsKTsKLS0gCjIuNTEuMAoK
+--------------bsZPDqejl5l0npTTIoJKcNzl
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0002-io_uring-allow-io-wq-workers-to-exit-when-unused.patch"
+Content-Disposition: attachment;
+ filename*0="0002-io_uring-allow-io-wq-workers-to-exit-when-unused.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA2ODA5YWQ4NzJkZjlmNzQ2ZjczN2FiNzYyZWU3MmYxZDlhNjkyYzFkIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBMaSBDaGVuIDxtZUBsaW51eC5iZWF1dHk+CkRhdGU6
+IE1vbiwgMiBGZWIgMjAyNiAyMjozNzo1NCArMDgwMApTdWJqZWN0OiBbUEFUQ0ggMi8yXSBp
+b191cmluZzogYWxsb3cgaW8td3Egd29ya2VycyB0byBleGl0IHdoZW4gdW51c2VkCgpDb21t
+aXQgOTEyMTQ2NjE0ODk0NjdmODQ1MmQzNGVkYmYyNTc0ODhkODUxNzZlNCB1cHN0cmVhbS4K
+CmlvX3VyaW5nIGtlZXBzIGEgcGVyLXRhc2sgaW8td3EgYXJvdW5kLCBldmVuIHdoZW4gdGhl
+IHRhc2sgbm8gbG9uZ2VyIGhhcwphbnkgaW9fdXJpbmcgaW5zdGFuY2VzLgoKSWYgdGhlIHRh
+c2sgcHJldmlvdXNseSB1c2VkIGlvX3VyaW5nIGZvciBmaWxlIEkvTywgdGhpcyBjYW4gbGVh
+dmUgYW4KdW5yZWxhdGVkIGlvdS13cmstKiB3b3JrZXIgdGhyZWFkIGJlaGluZCBhZnRlciB0
+aGUgbGFzdCBpb191cmluZwppbnN0YW5jZSBpcyBnb25lLgoKV2hlbiB0aGUgbGFzdCBpb191
+cmluZyBjdHggaXMgcmVtb3ZlZCBmcm9tIHRoZSB0YXNrIGNvbnRleHQsIG1hcmsgdGhlCmlv
+LXdxIGV4aXQtb24taWRsZSBzbyB3b3JrZXJzIGNhbiBnbyBhd2F5LiBDbGVhciB0aGUgZmxh
+ZyBvbiBzdWJzZXF1ZW50CmlvX3VyaW5nIHVzYWdlLgoKU2lnbmVkLW9mZi1ieTogTGkgQ2hl
+biA8bWVAbGludXguYmVhdXR5PgpTaWduZWQtb2ZmLWJ5OiBKZW5zIEF4Ym9lIDxheGJvZUBr
+ZXJuZWwuZGs+Ci0tLQogaW9fdXJpbmcvdGN0eC5jIHwgMTEgKysrKysrKysrKysKIDEgZmls
+ZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvdGN0
+eC5jIGIvaW9fdXJpbmcvdGN0eC5jCmluZGV4IDViNjY3NTU1NzljMC4uMDNjMjc4YWE1ODEy
+IDEwMDY0NAotLS0gYS9pb191cmluZy90Y3R4LmMKKysrIGIvaW9fdXJpbmcvdGN0eC5jCkBA
+IC0xMjIsNiArMTIyLDE0IEBAIGludCBfX2lvX3VyaW5nX2FkZF90Y3R4X25vZGUoc3RydWN0
+IGlvX3JpbmdfY3R4ICpjdHgpCiAJCQkJcmV0dXJuIHJldDsKIAkJfQogCX0KKworCS8qCisJ
+ICogUmUtYWN0aXZhdGUgaW8td3Ega2VlcGFsaXZlIG9uIGFueSBuZXcgaW9fdXJpbmcgdXNh
+Z2UuIFRoZSB3cSBtYXkgaGF2ZQorCSAqIGJlZW4gbWFya2VkIGZvciBpZGxlLWV4aXQgd2hl
+biB0aGUgdGFzayB0ZW1wb3JhcmlseSBoYWQgbm8gYWN0aXZlCisJICogaW9fdXJpbmcgaW5z
+dGFuY2VzLgorCSAqLworCWlmICh0Y3R4LT5pb193cSkKKwkJaW9fd3Ffc2V0X2V4aXRfb25f
+aWRsZSh0Y3R4LT5pb193cSwgZmFsc2UpOwogCWlmICgheGFfbG9hZCgmdGN0eC0+eGEsICh1
+bnNpZ25lZCBsb25nKWN0eCkpIHsKIAkJbm9kZSA9IGttYWxsb2Moc2l6ZW9mKCpub2RlKSwg
+R0ZQX0tFUk5FTCk7CiAJCWlmICghbm9kZSkKQEAgLTE4Myw2ICsxOTEsOSBAQCBfX2NvbGQg
+dm9pZCBpb191cmluZ19kZWxfdGN0eF9ub2RlKHVuc2lnbmVkIGxvbmcgaW5kZXgpCiAJaWYg
+KHRjdHgtPmxhc3QgPT0gbm9kZS0+Y3R4KQogCQl0Y3R4LT5sYXN0ID0gTlVMTDsKIAlrZnJl
+ZShub2RlKTsKKworCWlmICh4YV9lbXB0eSgmdGN0eC0+eGEpICYmIHRjdHgtPmlvX3dxKQor
+CQlpb193cV9zZXRfZXhpdF9vbl9pZGxlKHRjdHgtPmlvX3dxLCB0cnVlKTsKIH0KIAogX19j
+b2xkIHZvaWQgaW9fdXJpbmdfY2xlYW5fdGN0eChzdHJ1Y3QgaW9fdXJpbmdfdGFzayAqdGN0
+eCkKLS0gCjIuNTEuMAoK
+
+--------------bsZPDqejl5l0npTTIoJKcNzl--
 
