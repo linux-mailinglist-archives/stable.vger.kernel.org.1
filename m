@@ -1,100 +1,72 @@
-Return-Path: <stable+bounces-215736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJJPBbLgi2kVcgAAu9opvQ
-	(envelope-from <stable+bounces-215736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:51:46 +0100
+	id YL64KETyi2lXdwAAu9opvQ
+	(envelope-from <stable+bounces-215738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 04:06:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AACCD1208B0
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:51:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCC3120DA2
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 04:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B35C83008332
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 01:51:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FABC3069A3D
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 03:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732D22C15B0;
-	Wed, 11 Feb 2026 01:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FCB2EFD90;
+	Wed, 11 Feb 2026 03:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J8/1joD/"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="s/2lxMsw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp134-33.sina.com.cn (smtp134-33.sina.com.cn [180.149.134.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75AD29BDA5
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 01:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFC6632
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 03:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770774703; cv=none; b=ZoInyS/nYiuIi7wmqwDJ4kr+yByHrAPhdvmhDLLlExdlR0ahwuBLg6VqQ4IPowhJ+pnAlI2MI2iVQBo1/YVlp1nPa7OqiFD1y5S5iCqDFAflS2ihzFTRPvdlSEb/GW4ImTgwFmc+sq8FWdLovtMJuHpVzyHFIWNSSUk417Xjld4=
+	t=1770779168; cv=none; b=WegZ9vGhkVRD9CABtGgAkWTWIlxmw3yF4qw7ugrn+MmodVbDcExZ5CZ/gCk1w8DNNq49R6qGg/wNjLpDoRrSf3OxWnT6+xnIrSpkeUavoX9JB/yGUA1Cz/svsKX49iVT/bd9T6UMuleB5z8HQSn+IIbI3YYyCFKuT16YOWfZfmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770774703; c=relaxed/simple;
-	bh=aeazTpxisGRJ4cM7R4dFbxvIEp42mH8LnFF3RNc2J/8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=begpzxmsPUtQX/2aRtJKY/x9tHO4G6ILFPeIuhQRnQ/7flM4Q8VZTVo3QOszsFo/wzIVpUrzQkSlkPhIV72kFuhnYR7oX0NuBU14k9hPOWnWx3cRatIllS8ZU8HXiqYJ7ulSiV/lL4BUyD4yjAtStK0FPDl8iLsYN7XuF1NWRBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J8/1joD/; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-794fe698e36so15928467b3.2
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 17:51:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770774701; x=1771379501; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lGhMFSn6RfxMnoUYJqlK2uZRccorF8Z8vHJFhcv6GqU=;
-        b=J8/1joD/xXreqabLnuhqZNMxGzTcElOvGEBiEySjowZ/Dh4xcnmMRWxrufQIF8K7Z3
-         sHvbt0h2Bl0M5sxwxWjspfbEOU75d7g9znaZICPscbpOWZ2pe40pET0DBss3uQXg3kS/
-         xBWcrd3JDBQ9Eub90vCzVazFpAmXP0BU4emKJfYHMcCHFGa0A4aMfOeCM/rBF3iXrvDn
-         g3/nKicTDVr43KJ8jP2zDPDfXJhorzjO10+IAwRInnCb31kPhx+7jxJkKot4mPO2k3+e
-         oZ1KblD2NosxAx5QB8eQNt77Vo8RTK4YdOycrGk52OnvsBYbo2yQM+7ECCJNFDwC2kZP
-         Mi2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770774701; x=1771379501;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lGhMFSn6RfxMnoUYJqlK2uZRccorF8Z8vHJFhcv6GqU=;
-        b=uptg2FCXxLZpdnzvm3DxVtIgqqEWumVaQRYIra64Dob96wkCW+7NJPvPGfrlc3u33n
-         s4jlN/VYvX+r94wWKzMBHD4WICm7ugG7z3YcwIawt1DDnFNr/ja837TrsiVhdjmA/Jm8
-         82Ok2IRSZQ8f6WKFz1U+zKPdlZn7boBMU81sSM+WuCIyPhV7H8mBrALFA1fpcbsbwCnC
-         0ZwdvpVVpXCCVVS0DRAbJBY8mn9LpsIUnznLn7phQRjpHinwsYFGhgk8rd+nRAS1i7eB
-         wybiTEIBZITrxVOmN4iSLbpZ+mptgx4amgbWE7RBQO4y37u2DI/Yu5jffuRTFA6GlA9i
-         S/wA==
-X-Forwarded-Encrypted: i=1; AJvYcCU62qBRNRZ1xQ5Mk2dwzcQFrwBpkh2C6HJdNN/4FPrbdtGz4BzhdUpHIeHrsl2OYDwPbb3Zdjo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEHpmoUmyxcioObms1qX24yp1e1wf6woItAoaihyYQZd24WIpo
-	dGeFic9Io7xdomXV+jG0NNiF5Ug5sbn15LQYYihFPDQLHXSLmpeynOia
-X-Gm-Gg: AZuq6aJYmVAGZzthnpHNenTWKr+6gSVchMCN1EKvl7MEp6AX9wagqtXd0tdMQHe4hSr
-	xB/k04CBvITlJddRYa7cnrcjfOmyAe382HfOxUeTWS2zd5Pddu8cxTm5pFgZi3id3bd4qjpSarl
-	bdU38o423StAxG0FVpKegdPL8y5Ke1klQ41+JZXMvqL4HquBOFVsXjvZS5bZNFzN6gRjZuFaap5
-	4KDPlnos6h2Ww//fbrRmh2fDbr0ByZQA/53tvZ2KW2r75Lyy6PdIvMMy7TyQZ4za4AeGablq2hZ
-	SsWt4K5Bm6MebgFpv2Wd1QRTcz0zfjzQ8dsm32nM03goCWWNgGOSbf4BKe9rjUvt3DjQapYYJ3C
-	mD9I034ZX1waoppbhF6VGQkJ38Hn82NrRmoKpSpRkch+LTGFVEI2CipP9E6AyAVN5p2OQn26Rta
-	4TVhRJ8CCq80/NoBk/IELj/iR41GmQTmOs22R4wwX9grZhqhs=
-X-Received: by 2002:a05:690c:102:b0:796:3842:acc5 with SMTP id 00721157ae682-7963842e384mr109295857b3.41.1770774700832;
-        Tue, 10 Feb 2026 17:51:40 -0800 (PST)
-Received: from 5163NRD-SPRABHU.ssi.samsung.com ([50.205.20.42])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7966c16e7c6sm3751557b3.1.2026.02.10.17.51.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 17:51:40 -0800 (PST)
-From: sw.prabhu6@gmail.com
-To: James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	mcgrof@kernel.org,
-	pankaj.raghav@linux.dev,
-	bvanassche@acm.org,
-	dlemoal@kernel.org,
-	Swarna Prabhu <sw.prabhu6@gmail.com>,
+	s=arc-20240116; t=1770779168; c=relaxed/simple;
+	bh=npc2dbBOGo7Aif7S5+nDohPa5CRcvAM4noA1HV94vxI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OWVtljrABwyEl7L4chOLEr32AzqR6UUA1vj/CGgUtjDOMdXYScwxHQye1JsePRnJCZSHLnmJe2kzF2YMOp/KNihj3YKmRI/1oZRuTcC5dt57pDEUIyliICKYOMrLjSkRySdfdroeRN1CRnL3anHktlRCeE1IR5vw1Tfd6i0V7B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=s/2lxMsw; arc=none smtp.client-ip=180.149.134.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770779165;
+	bh=cEK/QkXNtxabPBN96UfAuh6tuWmLKbXJW7876CwA5zw=;
+	h=From:Subject:Date:Message-Id;
+	b=s/2lxMswcubk51PpbtqroJ5xVLHHTKQWXuK6+XpanADRpwEvErsD792PFAcnn6kDl
+	 5fBAKkvNnY2wlRa+3UXqrZjq8B7s/tVTQF0wUdvt2s0dpT9B8S+dSOFgWvDw5C8Et1
+	 GFbLKwl0gZXNX9jyHxpjrjLE5x6gGAK4zQVQQJQk=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.21) with ESMTP
+	id 698BF1F200002A1A; Wed, 11 Feb 2026 11:05:24 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 6981733408340
+X-SMAIL-UIID: 20AF8401DD9D4EF6ADD6BCF3D67D7D2A-20260211-110524-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
-	Swarna Prabhu <s.prabhu@samsung.com>,
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: [PATCH 1/2] scsi: sd: fix write_same(16/10) to enable sector size > PAGE_SIZE
-Date: Tue, 10 Feb 2026 17:50:42 -0800
-Message-Id: <20260211015043.2608866-2-sw.prabhu6@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260211015043.2608866-1-sw.prabhu6@gmail.com>
-References: <20260211015043.2608866-1-sw.prabhu6@gmail.com>
+	jlayton@kernel.org
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	chuck.lever@oracle.com,
+	neilb@suse.de,
+	kolga@netapp.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH 6.6.y] nfsd: don't ignore the return code of svc_proc_register()
+Date: Wed, 11 Feb 2026 11:05:22 +0800
+Message-Id: <20260211030522.2697146-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,239 +75,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,linux.dev,acm.org,gmail.com,samsung.com];
-	TAGGED_FROM(0.00)[bounces-215736-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NO_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215738-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[swprabhu6@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email]
-X-Rspamd-Queue-Id: AACCD1208B0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,appspotmail.com:email,sina.cn:mid,sina.cn:dkim,sina.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1CCC3120DA2
 X-Rspamd-Action: no action
 
-From: Swarna Prabhu <sw.prabhu6@gmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-The WRITE SAME(16) and WRITE SAME(10) scsi commands uses
-a page from a dedicated mempool('sd_page_pool') for its
-payload. This pool was initialized to allocate single
-pages, which was sufficient as long as the device sector
-size did not exceed the PAGE_SIZE.
+[ Upstream commit 930b64ca0c511521f0abdd1d57ce52b2a6e3476b ]
 
-Given that block layer now supports block size upto
-64K ie beyond PAGE_SIZE, initialize large page pool in
-'sd_probe()' if a higher sector device is attached ensuring
-atomicity. Adapt 'sd_set_special_bvec()' to use large page
-pool when a higher sector size device is attached.
+Currently, nfsd_proc_stat_init() ignores the return value of
+svc_proc_register(). If the procfile creation fails, then the kernel
+will WARN when it tries to remove the entry later.
 
-With the above fix, enable sector sizes > PAGE_SIZE in
-scsi sd driver.
+Fix nfsd_proc_stat_init() to return the same type of pointer as
+svc_proc_register(), and fix up nfsd_net_init() to check that and fail
+the nfsd_net construction if it occurs.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Swarna Prabhu <s.prabhu@samsung.com>
-Co-developed-by: Pankaj Raghav <p.raghav@samsung.com>
-Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+svc_proc_register() can fail if the dentry can't be allocated, or if an
+identical dentry already exists. The second case is pretty unlikely in
+the nfsd_net construction codepath, so if this happens, return -ENOMEM.
+
+Reported-by: syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-nfs/67a47501.050a0220.19061f.05f9.GAE@google.com/
+Cc: stable@vger.kernel.org # v6.9
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ Update the cleanup path to use nfsd_stat_counters_destroy. This ensures
+ the teardown logic is correctly paired with nfsd_stat_counters_init, as
+ required by the current NFSD implementation.]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
- drivers/scsi/sd.c | 79 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 67 insertions(+), 12 deletions(-)
+ fs/nfsd/nfsctl.c | 9 ++++++++-
+ fs/nfsd/stats.c  | 4 ++--
+ fs/nfsd/stats.h  | 2 +-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index f50b92e63201..0e0c5dd1c668 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -112,8 +112,11 @@ static void sd_shutdown(struct device *);
- static void scsi_disk_release(struct device *cdev);
- 
- static DEFINE_IDA(sd_index_ida);
-+static DEFINE_MUTEX(sd_mutex_lock);
- 
- static mempool_t *sd_page_pool;
-+static mempool_t *sd_large_page_pool;
-+static atomic_t sd_large_page_pool_users = ATOMIC_INIT(0);
- static struct lock_class_key sd_bio_compl_lkclass;
- 
- static const char *sd_cache_types[] = {
-@@ -922,14 +925,27 @@ static void sd_config_discard(struct scsi_disk *sdkp, struct queue_limits *lim,
- 		(logical_block_size >> SECTOR_SHIFT);
- }
- 
--static void *sd_set_special_bvec(struct request *rq, unsigned int data_len)
-+static void *sd_set_special_bvec(struct scsi_cmnd *cmd, unsigned int data_len)
- {
- 	struct page *page;
-+	struct request *rq = scsi_cmd_to_rq(cmd);
-+	struct scsi_device *sdp = cmd->device;
-+	unsigned sector_size = sdp->sector_size;
-+	unsigned int nr_pages = DIV_ROUND_UP(sector_size, PAGE_SIZE);
-+	int n = 0;
- 
--	page = mempool_alloc(sd_page_pool, GFP_ATOMIC);
-+	if (sector_size > PAGE_SIZE)
-+		page = mempool_alloc(sd_large_page_pool, GFP_ATOMIC);
-+	else
-+		page = mempool_alloc(sd_page_pool, GFP_ATOMIC);
- 	if (!page)
- 		return NULL;
--	clear_highpage(page);
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 78ebdf20c1ef..4703e2a93568 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1526,17 +1526,24 @@ static __net_init int nfsd_net_init(struct net *net)
+ 	retval = nfsd_stat_counters_init(nn);
+ 	if (retval)
+ 		goto out_repcache_error;
 +
-+	do {
-+		clear_highpage(page + n);
-+		n++;
-+	} while (n < nr_pages);
-+
- 	bvec_set_page(&rq->special_vec, page, data_len, 0);
- 	rq->rq_flags |= RQF_SPECIAL_PAYLOAD;
- 	return bvec_virt(&rq->special_vec);
-@@ -945,7 +961,7 @@ static blk_status_t sd_setup_unmap_cmnd(struct scsi_cmnd *cmd)
- 	unsigned int data_len = 24;
- 	char *buf;
- 
--	buf = sd_set_special_bvec(rq, data_len);
-+	buf = sd_set_special_bvec(cmd, data_len);
- 	if (!buf)
- 		return BLK_STS_RESOURCE;
- 
-@@ -1034,7 +1050,7 @@ static blk_status_t sd_setup_write_same16_cmnd(struct scsi_cmnd *cmd,
- 	u32 nr_blocks = sectors_to_logical(sdp, blk_rq_sectors(rq));
- 	u32 data_len = sdp->sector_size;
- 
--	if (!sd_set_special_bvec(rq, data_len))
-+	if (!sd_set_special_bvec(cmd, data_len))
- 		return BLK_STS_RESOURCE;
- 
- 	cmd->cmd_len = 16;
-@@ -1061,7 +1077,7 @@ static blk_status_t sd_setup_write_same10_cmnd(struct scsi_cmnd *cmd,
- 	u32 nr_blocks = sectors_to_logical(sdp, blk_rq_sectors(rq));
- 	u32 data_len = sdp->sector_size;
- 
--	if (!sd_set_special_bvec(rq, data_len))
-+	if (!sd_set_special_bvec(cmd, data_len))
- 		return BLK_STS_RESOURCE;
- 
- 	cmd->cmd_len = 10;
-@@ -1507,9 +1523,15 @@ static blk_status_t sd_init_command(struct scsi_cmnd *cmd)
- static void sd_uninit_command(struct scsi_cmnd *SCpnt)
- {
- 	struct request *rq = scsi_cmd_to_rq(SCpnt);
-+	struct scsi_device *sdp = SCpnt->device;
-+	unsigned sector_size = sdp->sector_size;
- 
--	if (rq->rq_flags & RQF_SPECIAL_PAYLOAD)
--		mempool_free(rq->special_vec.bv_page, sd_page_pool);
-+	if (rq->rq_flags & RQF_SPECIAL_PAYLOAD) {
-+		if (sector_size > PAGE_SIZE)
-+			mempool_free(rq->special_vec.bv_page, sd_large_page_pool);
-+		else
-+			mempool_free(rq->special_vec.bv_page, sd_page_pool);
-+	}
- }
- 
- static bool sd_need_revalidate(struct gendisk *disk, struct scsi_disk *sdkp)
-@@ -2920,10 +2942,7 @@ sd_read_capacity(struct scsi_disk *sdkp, struct queue_limits *lim,
- 			  "assuming 512.\n");
- 	}
- 
--	if (sector_size != 512 &&
--	    sector_size != 1024 &&
--	    sector_size != 2048 &&
--	    sector_size != 4096) {
-+	if (blk_validate_block_size(sector_size)) {
- 		sd_printk(KERN_NOTICE, sdkp, "Unsupported sector size %d.\n",
- 			  sector_size);
- 		/*
-@@ -4044,6 +4063,21 @@ static int sd_probe(struct device *dev)
- 	sdkp->max_medium_access_timeouts = SD_MAX_MEDIUM_TIMEOUTS;
- 
- 	sd_revalidate_disk(gd);
-+	if (sdp->sector_size > PAGE_SIZE) {
-+		mutex_lock(&sd_mutex_lock);
-+		if (!sd_large_page_pool) {
-+			sd_large_page_pool = mempool_create_page_pool(
-+					SD_MEMPOOL_SIZE, get_order(BLK_MAX_BLOCK_SIZE));
-+			if (!sd_large_page_pool) {
-+				printk(KERN_ERR "sd: can't create large page mempool\n");
-+				error = -ENOMEM;
-+				mutex_unlock(&sd_mutex_lock);
-+				goto out_free_index;
-+			}
-+		}
-+		atomic_inc(&sd_large_page_pool_users);
-+		mutex_unlock(&sd_mutex_lock);
-+	}
- 
- 	if (sdp->removable) {
- 		gd->flags |= GENHD_FL_REMOVABLE;
-@@ -4061,6 +4095,14 @@ static int sd_probe(struct device *dev)
- 	if (error) {
- 		device_unregister(&sdkp->disk_dev);
- 		put_disk(gd);
-+		if (sdp->sector_size > PAGE_SIZE) {
-+			mutex_lock(&sd_mutex_lock);
-+			if (atomic_dec_and_test(&sd_large_page_pool_users)) {
-+				mempool_destroy(sd_large_page_pool);
-+				sd_large_page_pool = NULL;
-+			}
-+			mutex_unlock(&sd_mutex_lock);
-+		}
- 		goto out;
- 	}
- 
-@@ -4101,6 +4143,7 @@ static int sd_probe(struct device *dev)
- static int sd_remove(struct device *dev)
- {
- 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
-+	struct scsi_device *sdp = sdkp->device;
- 
- 	scsi_autopm_get_device(sdkp->device);
- 
-@@ -4110,6 +4153,16 @@ static int sd_remove(struct device *dev)
- 		sd_shutdown(dev);
- 
- 	put_disk(sdkp->disk);
-+
-+	if (sdp->sector_size > PAGE_SIZE) {
-+		mutex_lock(&sd_mutex_lock);
-+		if (atomic_dec_and_test(&sd_large_page_pool_users)) {
-+			mempool_destroy(sd_large_page_pool);
-+			sd_large_page_pool = NULL;
-+		}
-+		mutex_unlock(&sd_mutex_lock);
+ 	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
+ 	nn->nfsd_svcstats.program = &nfsd_program;
++	if (!nfsd_proc_stat_init(net)) {
++		retval = -ENOMEM;
++		goto out_proc_error;
 +	}
 +
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
+-	nfsd_proc_stat_init(net);
+ 
  	return 0;
+ 
++out_proc_error:
++	nfsd_stat_counters_destroy(nn);
+ out_repcache_error:
+ 	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
+index 9f606fa08bd4..0a629a18831f 100644
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -115,11 +115,11 @@ void nfsd_stat_counters_destroy(struct nfsd_net *nn)
+ 	nfsd_percpu_counters_destroy(nn->counter, NFSD_STATS_COUNTERS_NUM);
  }
  
-@@ -4446,6 +4499,8 @@ static void __exit exit_sd(void)
+-void nfsd_proc_stat_init(struct net *net)
++struct proc_dir_entry *nfsd_proc_stat_init(struct net *net)
+ {
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
  
- 	scsi_unregister_driver(&sd_template.gendrv);
- 	mempool_destroy(sd_page_pool);
-+	if (sd_large_page_pool)
-+		mempool_destroy(sd_large_page_pool);
+-	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
++	return svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
+ }
  
- 	class_unregister(&sd_disk_class);
+ void nfsd_proc_stat_shutdown(struct net *net)
+diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
+index d2753e975dfd..b1f7d21cbcd1 100644
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -15,7 +15,7 @@ void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+ int nfsd_stat_counters_init(struct nfsd_net *nn);
+ void nfsd_stat_counters_destroy(struct nfsd_net *nn);
+-void nfsd_proc_stat_init(struct net *net);
++struct proc_dir_entry *nfsd_proc_stat_init(struct net *net);
+ void nfsd_proc_stat_shutdown(struct net *net);
  
+ static inline void nfsd_stats_rc_hits_inc(struct nfsd_net *nn)
 -- 
-2.39.5
+2.34.1
 
 
